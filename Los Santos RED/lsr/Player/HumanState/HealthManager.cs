@@ -14,7 +14,6 @@ public class HealthManager
     private ISettingsProvideable Settings;
     private uint GameTimeLastRegenedHealth;
     private uint GameTimeLastDrainedHealth;
-
     private bool IsTimeToUpdate => Game.GameTime - GameTimeLastCheckedRegen >= 1000;
     public bool RecentlyRegenedHealth => GameTimeLastRegenedHealth != 0 && Game.GameTime - GameTimeLastRegenedHealth <= 5000;
     public bool RecentlyDrainedHealth => GameTimeLastDrainedHealth != 0 && Game.GameTime - GameTimeLastDrainedHealth <= 5000;
@@ -58,7 +57,6 @@ public class HealthManager
             GameTimeLastCheckedRegen = Game.GameTime;
         }
     }
-
     public void Dispose()
     {
 
@@ -88,15 +86,6 @@ public class HealthManager
                 Player.Character.Health = 0;
             }
         }
-    }
-    public void ChangeArmor(int ToAdd)
-    {
-        if(Player.Character.Armor + ToAdd <= 0)
-        {
-            Player.Character.Armor = 0;
-            return;
-        }
-        Player.Character.Armor += ToAdd;
     }
     public void SetHealth(int value)
     {

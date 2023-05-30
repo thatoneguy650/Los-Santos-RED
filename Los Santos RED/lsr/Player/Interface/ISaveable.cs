@@ -30,5 +30,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsCop { get; }
         ButtonPrompts ButtonPrompts { get; }
         string FreeModeVoice { get; }
+        Agency AssignedAgency { get; }
+        bool IsFireFighter { get; }
+        bool IsEMT { get; }
     }
 }

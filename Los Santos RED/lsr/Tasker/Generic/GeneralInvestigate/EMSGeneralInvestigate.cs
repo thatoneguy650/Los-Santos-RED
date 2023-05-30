@@ -9,10 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class ServiceGeneralInvestigate : GeneralInvestigate
+public class EMSGeneralInvestigate : GeneralInvestigate
 {
-    public ServiceGeneralInvestigate(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents,
-        IWeaponIssuable weaponIssuable) : base(pedGeneral, ped, player, world, possibleVehicles, placesOfInterest, settings, blockPermanentEvents, weaponIssuable)
+    public EMSGeneralInvestigate(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents,
+        IWeaponIssuable weaponIssuable, bool shouldSearchArea) : base(pedGeneral, ped, player, world, possibleVehicles, placesOfInterest, settings, blockPermanentEvents, weaponIssuable, shouldSearchArea)
     {
 
     }
@@ -25,7 +25,7 @@ public class ServiceGeneralInvestigate : GeneralInvestigate
         {
             return;
         }
-        if (Settings.SettingsManager.PoliceTaskSettings.AllowSettingSirenState && Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren)
+        if (Settings.SettingsManager.WorldSettings.AllowSettingSirenState && Ped.IsDriver && Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren)
         {
             if (IsRespondingCode3)
             {
@@ -60,9 +60,10 @@ public class ServiceGeneralInvestigate : GeneralInvestigate
     }
     public override void OnLocationReached()
     {
+        Player.Investigation.OnEMSArrived();
         Ped.GameTimeReachedInvestigationPosition = Game.GameTime;
         HasReachedLocatePosition = true;
-        EntryPoint.WriteToConsole($"{PedGeneral.Handle} Police Located HasReachedLocatePosition");
+        EntryPoint.WriteToConsole($"{PedGeneral.Handle} EMS Located HasReachedLocatePosition");
     }
 }
 

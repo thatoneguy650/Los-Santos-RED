@@ -389,11 +389,11 @@ public class PedCustomizer
 
             if(AssignedAgency != null)
             {
-                Player.SetCopStatus(true, AssignedAgency);
+                Player.SetAgencyStatus(AssignedAgency);
             }
             else
             {
-                Player.SetCopStatus(false, null);
+                Player.RemoveAgencyStatus();
             }
 
             if (AssignedGang != null)

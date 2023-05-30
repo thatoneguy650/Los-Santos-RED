@@ -9,16 +9,16 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class PoliceGeneralInvestigate : GeneralInvestigate
+public class FireGeneralInvestigate : GeneralInvestigate
 {
-    public PoliceGeneralInvestigate(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents, 
+    public FireGeneralInvestigate(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents,
         IWeaponIssuable weaponIssuable, bool shouldSearchArea) : base(pedGeneral, ped, player, world, possibleVehicles, placesOfInterest, settings, blockPermanentEvents, weaponIssuable, shouldSearchArea)
     {
 
     }
-    private bool IsRespondingCode3 => (Player.Investigation.IsActive && Player.Investigation.InvestigationWantedLevel > 1) || Ped.PedAlerts.IsAlerted || World.CitizenWantedLevel > 1;
-    protected override bool ShouldInvestigateOnFoot => !Ped.IsInHelicopter && Player.IsOnFoot;
-    protected override bool ForceSetArmed => IsRespondingCode3;
+    private bool IsRespondingCode3 => Player.Investigation.IsActive;
+    protected override bool ShouldInvestigateOnFoot => !Ped.IsInHelicopter;
+    protected override bool ForceSetArmed => false;
     protected override void UpdateVehicleState()
     {
         if (!Ped.IsInVehicle || !Ped.Pedestrian.Exists())
@@ -44,12 +44,6 @@ public class PoliceGeneralInvestigate : GeneralInvestigate
                 }
             }
         }
-        NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAbility);
-        NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAggressiveness);
-        if (Settings.SettingsManager.PoliceTaskSettings.DriverRacing > 0f)
-        {
-            NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverRacing);
-        }
     }
     protected override void GetLocations()
     {
@@ -63,18 +57,13 @@ public class PoliceGeneralInvestigate : GeneralInvestigate
             PlaceToDriveTo = Ped.PedAlerts.AlertedPoint;
             PlaceToWalkTo = Ped.PedAlerts.AlertedPoint;
         }
-        else
-        {
-            PlaceToDriveTo = World.PoliceBackupPoint;
-            PlaceToWalkTo = World.PoliceBackupPoint;
-        }
     }
     public override void OnLocationReached()
     {
-        Player.Investigation.OnPoliceArrived();
+        Player.Investigation.OnFireFightersArrived();
         Ped.GameTimeReachedInvestigationPosition = Game.GameTime;
         HasReachedLocatePosition = true;
-        EntryPoint.WriteToConsole($"{PedGeneral.Handle} Police Located HasReachedLocatePosition");
+        EntryPoint.WriteToConsole($"{PedGeneral.Handle} FIRE Located HasReachedLocatePosition");
     }
 }
 

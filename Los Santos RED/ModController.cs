@@ -193,6 +193,7 @@ namespace LosSantosRED.lsr
                     new ModTask(1000, "World.CleanUpVehicles", World.Vehicles.CleanUp, 4),
                     new ModTask(1000, "World.UpdateVehiclePlates", World.Vehicles.PlateController.UpdatePlates, 5),
                     new ModTask(1500, "Player.ScannerUpdate", Player.Scanner.Update, 6),
+                    new ModTask(1000, "World.Pedestrians.UpdateDead", World.Pedestrians.UpdateDead, 7),
                 }),
                 new ModTaskGroup("RG4:Dispatch", new List<ModTask>()
                 {

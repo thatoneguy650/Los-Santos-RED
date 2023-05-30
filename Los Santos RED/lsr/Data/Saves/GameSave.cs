@@ -53,6 +53,9 @@ namespace LosSantosRED.lsr.Data
         public float SleepValue { get; set; }
         public int SpeechSkill { get; set; }
         public bool IsCop { get; set; }
+        public bool IsEMT { get; set; }
+        public bool IsFireFighter { get; set; }
+        public string AssignedAgencyID { get; set; }
         public string VoiceName { get; set; }
         public int Health { get; set; }
         public int Armor { get; set; }
@@ -250,10 +253,13 @@ namespace LosSantosRED.lsr.Data
             }
             SpeechSkill = player.SpeechSkill;
             IsCop = player.IsCop;
+            IsEMT = player.IsEMT;
+            IsFireFighter = player.IsFireFighter;
+            AssignedAgencyID = player.AssignedAgency?.ID;
             VoiceName = player.FreeModeVoice;
             CellPhoneSave = new CellPhoneSave(player.CellPhone.CustomRingtone,player.CellPhone.CustomTextTone,player.CellPhone.CustomTheme,player.CellPhone.CustomBackground,player.CellPhone.CustomVolume,player.CellPhone.SleepMode, player.CellPhone.CustomPhoneType,player.CellPhone.CustomPhoneOS);
         }
-        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
+        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, IAgencies agencies, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
             try
             {
@@ -271,7 +277,8 @@ namespace LosSantosRED.lsr.Data
                 LoadResidences(player, placesOfInterest, modItems, settings);
                 LoadHumanState(player);
                 LoadCellPhoneSettings(player);
-                player.SetCopStatus(IsCop, null);
+                LoadAgencies(agencies, player);
+
                 LoadHealth(player);
                 GameFiber.Sleep(1000);
                 Game.FadeScreenIn(1500, true);
@@ -284,7 +291,17 @@ namespace LosSantosRED.lsr.Data
                 Game.DisplayNotification("Error Loading Save");
             }
         }
-
+        private void LoadAgencies(IAgencies agencies, IInventoryable player)
+        {
+            if (IsCop || IsEMT || IsFireFighter)
+            {
+                player.SetAgencyStatus(agencies.GetAgency(AssignedAgencyID));
+            }
+            else
+            {
+                player.RemoveAgencyStatus();
+            }
+        }
         private void LoadHealth(IInventoryable player)
         {
             if (Health > 0)
@@ -618,33 +635,18 @@ namespace LosSantosRED.lsr.Data
         private List<Tuple<string, string>> AffiliationsInfo(IGangs gangs)
         {
             List<Tuple<string, string>> toreturn = new List<Tuple<string, string>>();
-            bool isGangMember = false;
-            if(IsCop)
+            toreturn.Add(Tuple.Create("Police Officer:", IsCop ? "Yes" : "No"));//store agency here
+            toreturn.Add(Tuple.Create("EMT:", IsEMT ? "Yes" : "No"));//store agency here
+            toreturn.Add(Tuple.Create("Fire Fighter:", IsFireFighter ? "Yes" : "No"));//store agency here
+            GangRepSave memberSave = GangReputationsSave.Where(x => x.IsMember).FirstOrDefault();
+            if(memberSave != null)
             {
-                toreturn.Add(Tuple.Create("Police Officer:", IsCop ? "Yes" : "No"));//store agency here
-            }
-            else 
-            {
-                GangRepSave memberSave = GangReputationsSave.Where(x => x.IsMember).FirstOrDefault();
-                if(memberSave != null)
+                Gang currentGang = gangs.GetGang(memberSave.GangID);
+                if(currentGang != null)
                 {
-                    Gang currentGang = gangs.GetGang(memberSave.GangID);
-                    if(currentGang != null)
-                    {
-                        isGangMember = true;
-                        toreturn.Add(Tuple.Create(currentGang.ShortName,"Member"));
-                    }
+                    toreturn.Add(Tuple.Create(currentGang.ShortName, currentGang.MemberName));
                 }
-            }    
-            if(!isGangMember && !IsCop)
-            {
-                toreturn.Add(Tuple.Create("None", ""));
             }
-            //Gang myGang = gangs?.GetGang(GangKickSave?.GangID);
-            //if (myGang != null)
-            //{
-            //    toreturn.Add(Tuple.Create("Gang:", myGang.ColorInitials));
-            //}
             return toreturn;
         }
         private List<Tuple<string, string>> HumanStateInfo()

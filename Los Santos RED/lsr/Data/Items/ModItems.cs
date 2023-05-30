@@ -116,6 +116,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.RadioItems);
         AllItems.AddRange(PossibleItems.ValuableItems);
         AllItems.AddRange(PossibleItems.EquipmentItems);
+        AllItems.AddRange(PossibleItems.BodyArmorItems);
         return AllItems;
     }
     public List<ModItem> PropItems()
@@ -272,18 +273,21 @@ public class ModItems : IModItems
 
     private void DefaultConfig_Armor()
     {
+        PossibleItems.BodyArmorItems.AddRange(new List<BodyArmorItem>
+        {
+            new BodyArmorItem("Light Body Armor","It's like you're wearing nothing at all!", ItemType.Equipment) {
+                ItemSubType = ItemSubType.BodyArmor, ArmorChangeAmount = 50,PackageItemID = "prop_armour_pickup" },
+            new BodyArmorItem("Medium Body Armor","Actually offers protection instead of just peace of mind..", ItemType.Equipment) {
+                ItemSubType = ItemSubType.BodyArmor,ArmorChangeAmount = 100,PackageItemID = "prop_armour_pickup" },
+            new BodyArmorItem("Heavy Body Armor","Planning on entering a warzone?", ItemType.Equipment) {
+                ItemSubType = ItemSubType.BodyArmor,ArmorChangeAmount = 150,PackageItemID = "prop_armour_pickup" },
+            new BodyArmorItem("Full Body Armor","For the bullet hypochondriacs", ItemType.Equipment) {
+                ItemSubType = ItemSubType.BodyArmor,ArmorChangeAmount = 400,PackageItemID = "prop_armour_pickup" },
+        });
+
+
         PossibleItems.EquipmentItems.AddRange(new List<EquipmentItem>
         {
-            new EquipmentItem("Light Body Armor","It's like you're wearing nothing at all!", ItemType.Equipment) {
-                ItemSubType = ItemSubType.BodyArmor, ArmorChangeAmount = 50,PackageItemID = "prop_armour_pickup" },
-            new EquipmentItem("Medium Body Armor","Actually offers protection instead of just peace of mind..", ItemType.Equipment) {
-                ItemSubType = ItemSubType.BodyArmor,ArmorChangeAmount = 100,PackageItemID = "prop_armour_pickup" },
-            new EquipmentItem("Heavy Body Armor","Planning on entering a warzone?", ItemType.Equipment) {
-                ItemSubType = ItemSubType.BodyArmor,ArmorChangeAmount = 150,PackageItemID = "prop_armour_pickup" },
-            new EquipmentItem("Full Body Armor","For the bullet hypochondriacs", ItemType.Equipment) {
-                ItemSubType = ItemSubType.BodyArmor,ArmorChangeAmount = 400,PackageItemID = "prop_armour_pickup" },
-
-
             new EquipmentItem("Health Pack","Is this real life or a video game?", ItemType.Equipment) {
                 ItemSubType = ItemSubType.HealthPack, AlwaysChangesHealth = true, HealthChangeAmount = 75,PackageItemID = "prop_ld_health_pack" },
         });

@@ -1142,6 +1142,11 @@ public class PopUpMenu
            // new PopUpBox(9,"Enter Vehicle (By Seat)", "EnterSeatSubMenu","Enter vehicle you are looking at and sit on the specific seat") { ClosesMenu = false },
            // new PopUpBox(10,"Toggle Door", "OpenDoorSubMenu","Toggle the door of the vehicle you are looking at") { ClosesMenu = false },
 
+
+            new PopUpBox(7,"BodyArmor","BodyArmorSubMenu","Open Body Armor Menu") { ClosesMenu = false },
+            new PopUpBox(8,"Wave Hands",new Action(() => Player.ActivityManager.WaveHands()),"Get Nearby Attention"),
+
+
         };
 
         List<PopUpBox> VehicleActionsSubMenu = new List<PopUpBox>()
@@ -1161,6 +1166,16 @@ public class PopUpMenu
             new PopUpBox(1,"Sit Here Facing Front", new Action(() => Player.ActivityManager.StartSittingDown(false,true)),"Sit here facing forwards"),
             new PopUpBox(2,"Sit Here Facing Back", new Action(() => Player.ActivityManager.StartSittingDown(false,false)),"Sit here facing forwards"),
         };
+
+
+        List<PopUpBox> BodyArmorSubMenu = new List<PopUpBox>()
+        {
+            new PopUpBox(0,"Remove Armor", new Action(() => Player.ArmorManager.RemoveArmor()),"Remove any armor you have on"),
+            //new PopUpBox(1,"Change Drawable", new Action(() => Player.ArmorManager.ChangeArmorVisual()),"Sit here facing forwards"),
+            //new PopUpBox(2,"Change Texture", new Action(() => Player.ArmorManager.StartSittingDown(false,false)),"Sit here facing forwards"),
+        };
+
+
 
         List<PopUpBox> EnterSeatSubMenu = new List<PopUpBox>()
         {
@@ -1256,6 +1271,7 @@ public class PopUpMenu
         PopUpMenuGroups.Add(new PopUpBoxGroup("VehicleSubMenu", VehicleSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("IndicatorsSubMenu", IndicatorsSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("SitSubMenu", SitSubMenu) { IsChild = true });
+        PopUpMenuGroups.Add(new PopUpBoxGroup("BodyArmorSubMenu", BodyArmorSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("EnterSeatSubMenu", EnterSeatSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("OpenDoorSubMenu", OpenDoorSubMenu) { IsChild = true });
     }

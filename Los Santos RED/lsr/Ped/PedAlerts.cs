@@ -14,13 +14,18 @@ public class PedAlerts
 {
     private PedExt PedExt;
     private ISettingsProvideable Settings;
-
+    private bool IsHelpCryAlerted => GameTimeLastHeardHelpCry > 0 && Game.GameTime - GameTimeLastHeardHelpCry <= Settings.SettingsManager.WorldSettings.HelpCryAlertTimeout;
+    private bool IsBodyAlerted => BodiesSeen.Any() && Game.GameTime - GameTimeLastSeenDeadBody <= Settings.SettingsManager.WorldSettings.DeadBodyAlertTimeout;
+    private bool IsGunshotAlerted => GameTimeLastHeardGunshots> 0 && Game.GameTime - GameTimeLastHeardGunshots <= Settings.SettingsManager.WorldSettings.GunshotAlertTimeout;
     public List<PedExt> BodiesSeen { get; private set; } = new List<PedExt>();
-    public bool IsAlerted => (BodiesSeen.Any() && Game.GameTime - GameTimeLastSeenDeadBody <= 60000) || Game.GameTime - GameTimeLastHeardGunshots <= 60000;
+    public bool IsAlerted => IsBodyAlerted || IsGunshotAlerted || IsHelpCryAlerted;
     public Vector3 PositionLastSeenUnconsciousPed { get; set; }
     public uint GameTimeLastSeenDeadBody { get; private set; }
     public uint GameTimeLastHeardGunshots { get; private set; }
     public bool HasSeenUnconsciousPed { get; set; } = false;
+
+    public uint GameTimeLastHeardHelpCry { get; private set; }
+
     public Vector3 AlertedPoint { get; set; }
     public PedAlerts(PedExt pedExt, ISettingsProvideable settings)
     {
@@ -100,6 +105,19 @@ public class PedAlerts
         GameTimeLastHeardGunshots = Game.GameTime;
         AlertedPoint = locationHeard;
         EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I JUST HEARD GUNFIRE");
+    }
+    public void AddHeardHelpCry(Vector3 locationHeard)
+    {
+        if (locationHeard == Vector3.Zero)
+        {
+            return;
+        }
+        GameTimeLastHeardHelpCry = Game.GameTime;
+        if (!IsBodyAlerted && !IsGunshotAlerted)
+        {
+            AlertedPoint = locationHeard;
+        }
+        EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I JUST HEARD A HELP CRY");
     }
 }
 

@@ -53,6 +53,7 @@ class GoToAndExtinguishTaskState : TaskState
     {
         PedGeneral.ClearTasks(true);
         WeaponIssuable?.WeaponInventory.SetCompletelyUnarmed();
+        EntryPoint.WriteToConsole("GoToAndExtinguishTaskState STOP RAN");
     }
     public void Update()
     {
@@ -77,7 +78,7 @@ class GoToAndExtinguishTaskState : TaskState
         FirePosition = outPosition;
         if (FireChangeDistance >= 3f)
         {
-            FireStandLocation = FirePosition.Around2D(3f);
+            FireStandLocation = FirePosition.Around2D(1f);
             TaskEntry();
             EntryPoint.WriteToConsole("$FIRE POSITION CHANGED RETASKING");
         }

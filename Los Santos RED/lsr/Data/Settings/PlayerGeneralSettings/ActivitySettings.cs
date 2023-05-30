@@ -47,6 +47,12 @@ public class ActivitySettings : ISettingsDefaultable
     public float PlateTheftFloat { get; set; }
     public uint DrinkTimeBetween { get; set; }
     public bool DrinkStartsBase { get; set; }
+    public bool AllowPedReiving { get; set; }
+    public bool DisplayBodyArmor { get; set; }
+    public int BodyArmorDefaultDrawableID { get; set; }
+    public int BodyArmorDefaultTextureID { get; set; }
+
+
     public ActivitySettings()
     {
         SetDefault();
@@ -74,5 +80,13 @@ public class ActivitySettings : ISettingsDefaultable
         PlateTheftFloat = 1.0f;
         DrinkTimeBetween = 0;
         DrinkStartsBase = false;
+        AllowPedReiving = true;
+        DisplayBodyArmor = false;
+        BodyArmorDefaultDrawableID = 11;
+        BodyArmorDefaultTextureID = 1;
+
+#if DEBUG
+        DisplayBodyArmor = true;
+#endif  
     }
 }

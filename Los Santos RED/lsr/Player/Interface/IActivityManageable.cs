@@ -49,6 +49,7 @@ namespace LosSantosRED.lsr.Interface
         ButtonPrompts ButtonPrompts { get; }
         VehicleExt CurrentLookedAtVehicle { get; }
         bool IsMoveControlPressed { get; }
+        bool IsEMT { get; }
 
         void PlaySpeech(string v1, bool v2);
     }

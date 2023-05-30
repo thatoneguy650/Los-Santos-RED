@@ -115,55 +115,16 @@ public class EMTTreat : ComplexTask
             GameTimeFinishedTreatingVictim = Game.GameTime;
 
         }
-
-
         else if(GameTimeFinishedTreatingVictim != 0 && Game.GameTime - GameTimeFinishedTreatingVictim >= 2000)
         {
             if (OtherTarget != null)
             {
-                OtherTarget.HasBeenTreatedByEMTs = true;
-                OtherTarget.HasStartedEMTTreatment = false;
-                if (OtherTarget.Pedestrian.Exists())
+                if(OtherTarget.OnTreatedByEMT(Settings.SettingsManager.EMSSettings.RevivePercentage))//true if died, w/.e
                 {
-                    //EntryPoint.WriteToConsoleTestLong("EMT TREATED VICTIM");
-
-
-                    if (RandomItems.RandomPercent(Settings.SettingsManager.EMSSettings.RevivePercentage))
-                    {
-                        OtherTarget.Pedestrian.IsRagdoll = false;
-                        OtherTarget.IsUnconscious = false;
-                        OtherTarget.CanBeAmbientTasked = true;
-                        OtherTarget.CanBeTasked = true;
-
-                        SayAvailableAmbient(OtherTarget.Pedestrian, new List<string>() { "GENERIC_THANKS" }, false, false);
-                        NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", OtherTarget.Pedestrian, "move_m@drunk@verydrunk", 0x3E800000);
-
-
-
-                        //REQUIRED TO REVIVE DEAD PEDS!, THEY POP UP LIKE THEY WERE JUST SPAWNED >:(
-                        //NativeFunction.Natives.CLEAR_PED_TASKS(OtherTarget.Pedestrian);
-                        //NativeFunction.Natives.RESURRECT_PED(OtherTarget.Pedestrian);
-                        //NativeFunction.Natives.REVIVE_INJURED_PED(OtherTarget.Pedestrian);
-                        //NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(OtherTarget.Pedestrian);
-                        //NativeFunction.Natives.SET_ENTITY_COLLISION(OtherTarget.Pedestrian, true, true);
-
-
-
-                    }
-                    else
-                    {
-                        OtherTarget.YellInPain(true);
-
-                        OtherTarget.Pedestrian.Kill();
-                        OtherTarget.IsUnconscious = false;
-                        SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_SHOCKED_HIGH" }, false, false);
-                    }
-
-
+                    Ped.PlaySpeech("GENERIC_SHOCKED_HIGH", false);
                 }
             }
         }
-
     }
     public override void ReTask()
     {
@@ -331,7 +292,7 @@ public class EMTTreat : ComplexTask
 
     private void SetSiren()
     {
-        if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren && !Ped.Pedestrian.CurrentVehicle.IsSirenOn)
+        if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.HasSiren && !Ped.Pedestrian.CurrentVehicle.IsSirenOn)
         {
             Ped.Pedestrian.CurrentVehicle.IsSirenOn = true;
             Ped.Pedestrian.CurrentVehicle.IsSirenSilent = false;

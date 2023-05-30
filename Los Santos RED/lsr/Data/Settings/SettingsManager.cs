@@ -160,7 +160,6 @@ public class SettingsManager
     [Description("Debug Settings")]
     public DebugSettings DebugSettings { get; set; } = new DebugSettings();
 
-
     public void Setup()
     {
         AllDefaultableSettings = new List<ISettingsDefaultable>()

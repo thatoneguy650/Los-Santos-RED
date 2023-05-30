@@ -796,7 +796,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         
         //EntryPoint.WriteToConsoleTestLong($"PED {Pedestrian.Handle} CLEAR TASKS RAN");
     }
-    private void PlaySpeech(string speechName, bool useMegaphone)
+    public void PlaySpeech(string speechName, bool useMegaphone)
     {
         if (VoiceName != "")
         {
@@ -1082,8 +1082,45 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     {
         HasBeenCarJackedByPlayer = true;
     }
-    public virtual void OnDeath()
+    public virtual void OnDeath(IPoliceRespondable policeRespondable)
     {
         PlayerPerception.Reset();
+    }
+    public virtual void OnUnconscious(IPoliceRespondable policeRespondable)
+    {
+
+    }
+
+    public virtual bool OnTreatedByEMT(float revivePercentage)
+    {
+        HasBeenTreatedByEMTs = true;
+        HasStartedEMTTreatment = false;
+        if(!Pedestrian.Exists())
+        {
+            return false;
+        }
+        EntryPoint.WriteToConsole($"EMT TREATED VICTIM {Handle}");
+        if (RandomItems.RandomPercent(revivePercentage))//Settings.SettingsManager.EMSSettings.RevivePercentage))
+        {
+            Pedestrian.IsRagdoll = false;
+            IsUnconscious = false;
+            CanBeAmbientTasked = true;
+            CanBeTasked = true;
+            PlaySpeech("GENERIC_THANKS", false);
+            NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", Pedestrian, "move_m@drunk@verydrunk", 0x3E800000);
+            return false;
+        }
+        else
+        {
+            YellInPain(true);
+            Pedestrian.Kill();
+            IsUnconscious = false;
+            return true;
+        }    
+    }
+
+    public void SetUnconscious(IPoliceRespondable policeRespondable)
+    {
+        
     }
 }

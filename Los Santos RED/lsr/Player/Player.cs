@@ -20,7 +20,7 @@ namespace Mod
     public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable,
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherAnnounceable,
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable, ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable,
-                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable, IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable
+                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable, IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable
     {
         public int UpdateState = 0;
         private float CurrentVehicleRoll;
@@ -85,6 +85,7 @@ namespace Mod
         private MenuPool MenuPool;
         private UIMenu VehicleInteractMenu;
         private bool disableAutoEngineStart;
+        private bool IsSirenOn;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -146,11 +147,13 @@ namespace Mod
             BankAccounts = new BankAccounts(this, Settings);
             ActivityManager = new ActivityManager(this,settings,this,this,this, this, this,TimeControllable,RadioStations,Crimes,ModItems,Dances,World,Intoxicants,this,Speeches,Seats,Weapons, PlacesOfInterest, Zones, shopMenus, gangs, gangTerritories, VehicleSeatDoorData);
             HealthManager = new HealthManager(this, Settings);
+            ArmorManager = new ArmorManager(this, settings);
             GroupManager = new GroupManager(this, this, Settings, World, gangs, Weapons);
             MeleeManager = new MeleeManager(this, Settings);
             PlayerVoice = new PlayerVoice(this, Settings, Speeches);
             ClipsetManager = new ClipsetManager(this, Settings);
             OutfitManager = new OutfitManager(this, savedOutfits);
+            OfficerMIAWatcher = new OfficerMIAWatcher(World, this, this, Settings, TimeControllable);
         }
         public RelationshipManager RelationshipManager { get; private set; }
         public GPSManager GPSManager { get; private set; }
@@ -181,11 +184,13 @@ namespace Mod
         public BankAccounts BankAccounts { get; private set; }
         public ActivityManager ActivityManager { get; private set; }
         public HealthManager HealthManager { get; private set; }
+        public ArmorManager ArmorManager { get; private set; }
         public GroupManager GroupManager { get; private set; }
         public MeleeManager MeleeManager { get; private set; }
         public PlayerVoice PlayerVoice { get; private set; }
         public ClipsetManager ClipsetManager { get; private set; }
         public OutfitManager OutfitManager { get; private set; }
+        public OfficerMIAWatcher OfficerMIAWatcher { get; private set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
@@ -232,7 +237,7 @@ namespace Mod
         public uint Handle => Game.LocalPlayer.Character.Handle;
         public bool HasBeenMoving => GameTimeStartedMoving != 0 && Game.GameTime - GameTimeStartedMoving >= 5000;
         public bool HasBeenMovingFast => GameTimeStartedMovingFast != 0 && Game.GameTime - GameTimeStartedMovingFast >= 2000;
-        public bool HasOnBodyArmor { get; private set; }
+
         public bool IsAiming
         {
             get => isAiming;
@@ -271,6 +276,9 @@ namespace Mod
         public bool IsCarJacking { get; set; }
         public bool IsChangingLicensePlates { get; set; }
         public bool IsCop { get; set; } = false;
+        public bool IsEMT { get; set; } = false;
+        public bool IsFireFighter { get; set; } = false;
+
         public bool CanArrestPeds => IsCop && !IsIncapacitated;
         public bool AutoDispatch { get; set; } = true;
         public bool IsCustomizingPed { get; set; }
@@ -374,7 +382,7 @@ namespace Mod
         public Vector3 StreetPlacePoliceShouldSearchForPlayer { get; set; }
         public Vector3 StreetPlacePoliceLastSeenPlayer { get; set; }
 
-
+        public bool IsTrafficLawImmune => (IsCop || IsEMT || IsFireFighter) && IsSirenOn;
         public string PlayerName { get; set; }
         public Vector3 Position => position;
         public VehicleExt PreviousVehicle { get; private set; }
@@ -460,11 +468,13 @@ namespace Mod
             VehicleOwnership.Setup();
             BankAccounts.Setup();
             HealthManager.Setup();
+            ArmorManager.Setup();
             GroupManager.Setup();
             MeleeManager.Setup();
             PlayerVoice.Setup();
             ActivityManager.Setup();
             HealthState.Setup();
+            OfficerMIAWatcher.Setup();
             ModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
             FreeModeVoice = Game.LocalPlayer.Character.IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
@@ -568,6 +578,7 @@ namespace Mod
             GameFiber.Yield();//TR Yield RemovedTest 1
             PlayerVoice.Update();
             ActivityManager.Update();
+            OfficerMIAWatcher.Update();
         }
         public void SetNotBusted()
         {
@@ -630,6 +641,7 @@ namespace Mod
             if (resetInventory)
             {
                 Inventory.Reset();
+                ArmorManager.Reset();
             }
             if (resetIntoxication)
             {
@@ -706,6 +718,7 @@ namespace Mod
             VehicleOwnership.Dispose();
             BankAccounts.Dispose();
             HealthManager.Dispose();
+            ArmorManager.Dispose();
             GroupManager.Dispose();
             MeleeManager.Dispose();
             Violations.Dispose();
@@ -713,7 +726,7 @@ namespace Mod
             ActivityManager.Dispose();
             ClipsetManager.Dispose();
             OutfitManager.Dispose();
-
+            OfficerMIAWatcher.Dispose();
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
 
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
@@ -846,25 +859,6 @@ namespace Mod
         {
             GameTimeLastFedUpCop = Game.GameTime;
         }
-        public void SetBodyArmor(int Type)
-        {
-            if (CharacterModelIsFreeMode)
-            {
-                int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(Character, 9, Type) - 1;
-                int TextureID = 0;
-
-                if (NumberOfTextureVariations > 0)
-                {
-                    RandomItems.GetRandomNumberInt(0, NumberOfTextureVariations);
-                }
-                NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Character, 9, Type, TextureID, 0);
-                if (!HasOnBodyArmor)
-                {
-                    Character.Armor = 200;
-                }
-                HasOnBodyArmor = true;
-            }
-        }
         public void ShootAt(Vector3 TargetCoordinate)
         {
             NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
@@ -874,52 +868,52 @@ namespace Mod
         {
             GameTimeLastShot = Game.GameTime;
         }
-        public void ToggleBodyArmor(int Type)
-        {
-            if (CharacterModelIsFreeMode)
-            {
-                if (HasOnBodyArmor)
-                {
-                    NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Character, 9, 0, 0, 0);
-                    HasOnBodyArmor = false;
-                    Character.Armor = 0;
-                }
-                else
-                {
-                    int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(Character, 9, Type) - 1;
-                    int TextureID = 0;
 
-                    if (NumberOfTextureVariations > 0)
-                    {
-                        RandomItems.GetRandomNumberInt(0, NumberOfTextureVariations);
-                    }
-                    NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Character, 9, Type, TextureID, 0);
-                    HasOnBodyArmor = true;
-                    Character.Armor = 200;
-                }
-            }
-        }
-        public void SetCopStatus(bool isCop, Agency toassign)
+
+        public void SetAgencyStatus(Agency toassign)
         {
-            if(isCop)
+            if(toassign == null)
             {
-                if(toassign == null)
-                {
-                    toassign = Agencies.GetAgency("LSPD");
-                }
-                Cop meAsCop = new Cop(Character, Settings, Character.MaxHealth, toassign, true, Crimes, Weapons, PlayerName,ModelName,World);
+                return;
+            }
+            if(toassign.ResponseType == ResponseType.LawEnforcement)
+            {
+                Cop meAsCop = new Cop(Character, Settings, Character.MaxHealth, toassign, true, Crimes, Weapons, PlayerName, ModelName, World);
                 meAsCop.CanBeTasked = false;
                 meAsCop.CanBeAmbientTasked = false;
                 World.Pedestrians.AddEntity(meAsCop);
                 AssignedAgency = toassign;
+                IsCop = true;
+                IsEMT = false;
+                IsFireFighter = false;
+                EntryPoint.WriteToConsole($"Assigned Player As Cop {toassign.ShortName}");
             }
-            else
+            else if (toassign.ResponseType == ResponseType.EMS)
             {
-                AssignedAgency = null;
-                World.Pedestrians.PoliceList.RemoveAll(x => x.Handle == Handle);
+                IsCop = false;
+                IsEMT = true;
+                IsFireFighter = false;
+                EntryPoint.WriteToConsole($"Assigned Player As EMT {toassign.ShortName}");
             }
-            IsCop = isCop;
+            else if (toassign.ResponseType == ResponseType.Fire)
+            {
+                IsCop = false;
+                IsEMT = false;
+                IsFireFighter = true;
+                EntryPoint.WriteToConsole($"Assigned Player As Firefighter {toassign.ShortName}");
+            }
         }
+        public void RemoveAgencyStatus()
+        {
+            AssignedAgency = null;
+            World.Pedestrians.PoliceList.RemoveAll(x => x.Handle == Handle);
+
+            IsCop = false;
+            IsEMT = false;
+            IsFireFighter = false;
+            EntryPoint.WriteToConsole($"Removed Player as Agency");
+        }
+
         public void ToggleCopTaskable()
         {
             Cop meCop = World.Pedestrians.Police.FirstOrDefault(x => x.Handle == Handle);
@@ -1517,6 +1511,14 @@ namespace Mod
                 Scanner.OnMedicalServicesRequested();
             }
         }
+        public void AddOfficerMIACall(Vector3 position)
+        {
+            Crime crimeObserved = Crimes.GetCrime(StaticStrings.KillingPoliceCrimeID);
+            CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, false, position, false);
+            PoliceResponse.AddCrime(crimeObserved, description, false);
+            Investigation.Start(position, false, true, false, false);
+            Scanner.OnOfficerMIA();
+        }
         public void Arrest()
         {
             BeingArrested = true;
@@ -1936,10 +1938,15 @@ namespace Mod
                     }
                 }
 
-                if (Settings.SettingsManager.PoliceTaskSettings.AllowSettingSirenState && CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.HasSiren && CurrentVehicle.Vehicle.IsSirenSilent)
+                if(CurrentVehicle != null && IsDriver && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.HasSiren)
                 {
-                    CurrentVehicle.Vehicle.IsSirenSilent = false;
+                    IsSirenOn = CurrentVehicle.Vehicle.IsSirenOn;
+                    if (Settings.SettingsManager.WorldSettings.AllowSettingSirenState && CurrentVehicle.Vehicle.IsSirenSilent)
+                    {
+                        CurrentVehicle.Vehicle.IsSirenSilent = false;
+                    }
                 }
+               
 
 
                 if (VehicleSpeed >= 0.1f)
@@ -2005,7 +2012,7 @@ namespace Mod
                 PreviousVehicle = CurrentVehicle;
                 CurrentVehicle = null;
                 VehicleSpeed = 0f;
-
+                IsSirenOn = false;
                 float PlayerSpeed = Character.Speed;
                 FootSpeed = PlayerSpeed;
                 if (PlayerSpeed >= 0.1f)

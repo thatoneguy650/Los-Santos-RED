@@ -86,58 +86,7 @@ public class LESpawnTask : SpawnTask
             GameFiber.Yield();
         }
     }
-    private void AddPassengers()
-    {
-        GameFiber.Yield();
-        //EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} START UnitCode {UnitCode} OccupantsToAdd {OccupantsToAdd}");
-        for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
-        {
-            string requiredGroup = "";
-            if (VehicleType != null)
-            {
-                requiredGroup = VehicleType.RequiredPedGroup;
-            }
-            if (Agency != null)
-            {
-                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, requiredGroup, false);
-            }
-            if (PersonType != null && LastCreatedVehicleExists)
-            {
-               // EntryPoint.WriteToConsole($"Adding Passenger IsAnimal: {PersonType.IsAnimal} {PersonType.ModelName} Seat {OccupantIndex - 1}");
-                PedExt Passenger = CreatePerson();
-                if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)
-                {
-                    PutPedInVehicle(Passenger, OccupantIndex - 1);
-                    //EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} ADDED ONE TO VEHICLE");
-                }
-                else
-                {
-                    Cleanup(false);
-                }
-            }
-            GameFiber.Yield();
-        }
-    }
-    private void AttemptPersonOnlySpawn()
-    {
-        CreatePerson();
-        if (Agency != null && AllowBuddySpawn)
-        {
-            int BuddiesToSpawn = RandomItems.MyRand.Next(1, 2 + 1) - 1;
-            for (int BuddyIndex = 1; BuddyIndex <= BuddiesToSpawn; BuddyIndex++)
-            {
-                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, "");
-                if (PersonType != null)
-                {
-                    SpawnLocation.InitialPosition = Position.Around2D(1f);
-                    SpawnLocation.SidewalkPosition = Vector3.Zero;
-                    PedExt Buddy = CreatePerson();
-                    //EntryPoint.WriteToConsole($"SpawnTask: Adding Buddy To LE Spawn", 5);
-                }
-            }
-        }
-    }
-    private void AttemptVehicleSpawn()
+    protected override void AttemptVehicleSpawn()
     {
         LastCreatedVehicle = CreateVehicle();
         if (LastCreatedVehicleExists)
@@ -164,26 +113,7 @@ public class LESpawnTask : SpawnTask
             }
         }
     }
-    private void Cleanup(bool includePeople)
-    {
-        if (LastCreatedVehicle != null && LastCreatedVehicle.Vehicle.Exists())
-        {
-            LastCreatedVehicle.Vehicle.Delete();
-            EntryPoint.WriteToConsole($"LESpawn: ERROR DELETED VEHICLE", 0);
-        }
-        if (includePeople)
-        {
-            foreach (PedExt person in CreatedPeople)
-            {
-                if (person != null && person.Pedestrian.Exists())
-                {
-                    person.Pedestrian.Delete();
-                    EntryPoint.WriteToConsole($"LESpawn: ERROR DELETED PED", 0);
-                }
-            }
-        }
-    }
-    private PedExt CreatePerson()
+    protected override PedExt CreatePerson()
     {
         try
         {
@@ -245,7 +175,7 @@ public class LESpawnTask : SpawnTask
             return null;
         }
     }
-    private VehicleExt CreateVehicle()
+    protected override VehicleExt CreateVehicle()
     {
         try
         {
@@ -294,18 +224,6 @@ public class LESpawnTask : SpawnTask
             GameFiber.Yield();
             return null;
         }
-    }
-    private void PutPedInVehicle(PedExt Person, int seat)
-    {
-        Person.Pedestrian.WarpIntoVehicle(LastCreatedVehicle.Vehicle, seat);
-        Person.AssignedVehicle = LastCreatedVehicle;
-        Person.AssignedSeat = seat;
-        if(VehicleType != null && VehicleType.ForceStayInSeats != null && VehicleType.ForceStayInSeats.Contains(seat))
-        {
-            Person.StayInVehicle = true;
-            //EntryPoint.WriteToConsoleTestLong($"COP {Person.Handle} SET STAY IN VEHICLE Vehicle:{VehicleType.ModelName} seat:{seat}");
-        }
-        Person.UpdateVehicleState();
     }
     private void Setup()
     {
@@ -428,8 +346,11 @@ public class LESpawnTask : SpawnTask
         ped.Health = DesiredHealth;
         ped.Armor = DesiredArmor;
     }
-
-
-
-
+    protected override void GetNewPersonType(string requiredGroup)
+    {
+        if (Agency != null)
+        {
+            PersonType = Agency.GetRandomPed(World.TotalWantedLevel, requiredGroup);
+        }
+    }
 }

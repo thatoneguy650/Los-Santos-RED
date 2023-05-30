@@ -27,11 +27,13 @@ public class GeneralInvestigate : ComplexTask, ILocationReachable
     protected Vector3 PlaceToWalkTo;
     protected Vector3 prevPlaceToDriveTo;
     protected Vector3 prevPlaceToWalkTo;
+    protected bool ShouldSearchArea;
     public bool HasReachedLocatePosition { get; protected set; } = false;
     protected virtual bool ShouldInvestigateOnFoot => !Ped.IsInHelicopter && Player.IsOnFoot;
     protected virtual bool ForceSetArmed => false;
+
     public GeneralInvestigate(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents,
-        IWeaponIssuable weaponIssuable) : base(player, ped, 1500)//1500
+        IWeaponIssuable weaponIssuable, bool shouldSearchArea) : base(player, ped, 1500)//1500
     {
         PedGeneral = pedGeneral;
         complexTaskablePed = ped;
@@ -42,6 +44,7 @@ public class GeneralInvestigate : ComplexTask, ILocationReachable
         Settings = settings;
         BlockPermanentEvents = blockPermanentEvents;
         WeaponIssuable = weaponIssuable;
+        ShouldSearchArea = shouldSearchArea;
         SeatAssigner = new SeatAssigner(Ped, World, possibleVehicles);
     }
     public override void ReTask()
@@ -117,7 +120,7 @@ public class GeneralInvestigate : ComplexTask, ILocationReachable
             {
                 NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(PedGeneral.Pedestrian);
             }
-            CurrentTaskState = new SearchLocationOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToWalkTo, this, WeaponIssuable, ForceSetArmed);
+            CurrentTaskState = new SearchLocationOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToWalkTo, this, WeaponIssuable, ForceSetArmed, ShouldSearchArea);
             SubTaskName = "SearchLocationOnFootTaskState";
         }
         else

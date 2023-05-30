@@ -136,6 +136,14 @@ public class PoliceSettings : ISettingsDefaultable
     public bool AllowReactionsToBodies { get; set; }
     public bool AllowShootingInvestigations { get; set; }
     public bool AllowRadioInAnimation { get; set; }
+    public bool AllowBreachingLogic { get; set; }
+
+
+    public int BreachingExipireTimeOutsideWithMinDistance { get; set; }
+    public float BreachingExipireDistanceOutsideWithMinDistance { get; set; }
+
+    public int BreachingExpireTimeOutsideOnly { get; set; }
+    public float BreachingExpireTimeDistanceOnly { get; set; }
 
     public PoliceSettings()
     {
@@ -231,5 +239,12 @@ public class PoliceSettings : ISettingsDefaultable
         AllowReactionsToBodies = true;
         AllowShootingInvestigations = true;
         AllowRadioInAnimation = true;
+
+        AllowBreachingLogic = true;
+
+        BreachingExipireTimeOutsideWithMinDistance = 10000;
+        BreachingExipireDistanceOutsideWithMinDistance = 75f;
+        BreachingExpireTimeOutsideOnly = 20000;
+        BreachingExpireTimeDistanceOnly = 120f;
     }
 }

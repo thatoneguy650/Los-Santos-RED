@@ -74,8 +74,10 @@ namespace LosSantosRED.lsr.Interface
         bool AutoDispatch { get; set; }
         bool AnyPoliceSawPlayerViolating { get; set; }
         bool CanArrestPeds { get; }
+        OfficerMIAWatcher OfficerMIAWatcher { get; }
 
         void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription, bool announceCrime, bool IsForPlayer);
+        void AddOfficerMIACall(Vector3 positionLastReported);
         void Arrest();
         int FineAmount();
         void OnAppliedWantedStats(int wantedLevel);

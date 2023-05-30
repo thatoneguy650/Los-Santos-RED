@@ -61,6 +61,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsNotWanted { get; }
         bool IsSleepingOutside { get; }
         bool IsInPoliceVehicle { get; }
+        bool IsTrafficLawImmune { get; }
 
         //  bool IsLootingBody { get; }
 

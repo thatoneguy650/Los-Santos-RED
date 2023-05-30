@@ -79,7 +79,7 @@ public abstract class ConsumableItem : ModItem
         }
         if(ChangesArmor)
         {
-            actionable.HealthManager.ChangeArmor(ArmorChangeAmount);
+            actionable.ArmorManager.ChangeArmor(ArmorChangeAmount);
         }
         return true;
     }

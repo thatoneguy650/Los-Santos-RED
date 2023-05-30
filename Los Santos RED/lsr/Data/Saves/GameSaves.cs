@@ -45,9 +45,9 @@ public class GameSaves : IGameSaves
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
         PlayingSave = mySave;
     }
-    public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
+    public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems, IAgencies agencies)
     {       
-        gameSave.Load(weapons, pedSwap, player, settings, world, gangs, time, placesOfInterest, modItems);
+        gameSave.Load(weapons, pedSwap, player, settings, world, gangs, agencies, time, placesOfInterest, modItems);
         PlayingSave = gameSave;
     }
     public void DeleteSave(GameSave toDelete)

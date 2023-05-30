@@ -110,7 +110,7 @@ public class GeneralLocate : ComplexTask, ILocationReachable
         }
         else if (ShouldInvestigateOnFoot)
         {
-            CurrentTaskState = new SearchLocationOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToWalkTo, this, WeaponIssuable, false);
+            CurrentTaskState = new SearchLocationOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToWalkTo, this, WeaponIssuable, false, true);
             SubTaskName = "SearchLocationOnFootTaskState";
         }
         else

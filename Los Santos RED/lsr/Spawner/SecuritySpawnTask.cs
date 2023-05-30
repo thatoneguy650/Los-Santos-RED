@@ -49,82 +49,7 @@ public class SecurityGuardSpawnTask : SpawnTask
             Cleanup(true);
         }
     }
-    private void AddPassengers()
-    {
-        //EntryPoint.WriteToConsole($"SPAWN TASK: UnitCode {UnitCode} OccupantsToAdd {OccupantsToAdd}");
-        for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
-        {
-            string requiredGroup = "";
-            if (VehicleType != null)
-            {
-                requiredGroup = VehicleType.RequiredPedGroup;
-            }
-            if (Agency != null)
-            {
-                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, requiredGroup);
-            }
-            if (PersonType != null)
-            {
-                PedExt Passenger = CreatePerson();
-                if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)
-                {
-                    PutPedInVehicle(Passenger, OccupantIndex - 1);
-                }
-                else
-                {
-                    Cleanup(false);
-                }
-            }
-            GameFiber.Yield();
-        }
-    }
-    private void AttemptPersonOnlySpawn()
-    {
-        CreatePerson();
-    }
-    private void AttemptVehicleSpawn()
-    {
-        LastCreatedVehicle = CreateVehicle();
-        if (LastCreatedVehicleExists)
-        {
-            if (HasPersonToSpawn)
-            {
-                PedExt Person = CreatePerson();
-                if (Person != null && Person.Pedestrian.Exists() && LastCreatedVehicleExists)
-                {
-                    PutPedInVehicle(Person, -1);
-                    if (WillAddPassengers)
-                    {
-                        AddPassengers();
-                    }
-                }
-                else
-                {
-                    Cleanup(true);
-                }
-            }
-        }
-    }
-    private void Cleanup(bool includePeople)
-    {
-        if (LastCreatedVehicle != null && LastCreatedVehicle.Vehicle.Exists())
-        {
-            LastCreatedVehicle.Vehicle.Delete();
-            EntryPoint.WriteToConsole($"SecurityGuardSpawnTask: ERROR DELETED VEHICLE", 0);
-        }
-        if (includePeople)
-        {
-            foreach (PedExt person in CreatedPeople)
-            {
-                if (person != null && person.Pedestrian.Exists())
-                {
-                    person.Pedestrian.Delete();
-                    EntryPoint.WriteToConsole($"SecurityGuardSpawnTask: ERROR DELETED PED", 0);
-                }
-            }
-        }
-    }
-    private PedExt CreatePerson()
+    protected override PedExt CreatePerson()
     {
         try
         {
@@ -158,7 +83,7 @@ public class SecurityGuardSpawnTask : SpawnTask
             return null;
         }
     }
-    private VehicleExt CreateVehicle()
+    protected override VehicleExt CreateVehicle()
     {
         try
         {
@@ -208,13 +133,6 @@ public class SecurityGuardSpawnTask : SpawnTask
             GameFiber.Yield();
             return null;
         }
-    }
-    private void PutPedInVehicle(PedExt Person, int seat)
-    {
-        Person.Pedestrian.WarpIntoVehicle(LastCreatedVehicle.Vehicle, seat);
-        Person.AssignedVehicle = LastCreatedVehicle;
-        Person.AssignedSeat = seat;
-        Person.UpdateVehicleState();
     }
     private void Setup()
     {
@@ -266,5 +184,12 @@ public class SecurityGuardSpawnTask : SpawnTask
         ped.MaxHealth = DesiredHealth;
         ped.Health = DesiredHealth;
         ped.Armor = DesiredArmor;
+    }
+    protected override void GetNewPersonType(string requiredGroup)
+    {
+        if (Agency != null)
+        {
+            PersonType = Agency.GetRandomPed(World.TotalWantedLevel, requiredGroup);
+        }
     }
 }

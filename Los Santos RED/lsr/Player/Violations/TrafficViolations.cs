@@ -66,7 +66,7 @@ public class TrafficViolations
 
     private bool RecentlyHitPed => TimeSincePlayerHitPed > 0 && TimeSincePlayerHitPed <= Settings.SettingsManager.ViolationSettings.RecentlyHitPedTime;
     private bool RecentlyHitVehicle => TimeSincePlayerHitVehicle > 0 && TimeSincePlayerHitVehicle <= Settings.SettingsManager.ViolationSettings.RecentlyHitVehicleTime;
-    private bool ShouldCheckTrafficViolations => Player.IsInVehicle && (Player.IsInAutomobile || Player.IsOnMotorcycle) && !Player.RecentlyStartedPlaying && World.TotalWantedLevel <= 2;
+    private bool ShouldCheckTrafficViolations => Player.IsInVehicle && (Player.IsInAutomobile || Player.IsOnMotorcycle) && !Player.RecentlyStartedPlaying && World.TotalWantedLevel <= 2 ;
     private bool IsFastEnoughToCheckViolations => Player.VehicleSpeedMPH >= Settings.SettingsManager.ViolationSettings.MinTrafficViolationSpeed;
     public void Setup()
     {
@@ -127,7 +127,7 @@ public class TrafficViolations
         {
             SentRecentCrash = false;
         }
-        if (!Player.IsInPoliceVehicle)
+        if (!Player.IsInPoliceVehicle && !Player.IsTrafficLawImmune)
         {
            // GameFiber.Yield();
             if ((HasBeenDrivingAgainstTraffic || Game.LocalPlayer.IsDrivingAgainstTraffic) && IsFastEnoughToCheckViolations)

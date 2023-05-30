@@ -20,11 +20,10 @@ namespace LosSantosRED.lsr.Interface
         Inventory Inventory { get; }
         BankAccounts BankAccounts { get; }
         ActivityManager ActivityManager { get; }
-        //bool IsPerformingActivity { get; }
         Ped Character { get; }
         bool IsCop { get; set; }
-
         void DisplayPlayerNotification();
-        void SetCopStatus(bool isCop, Agency toset);
+        void RemoveAgencyStatus();
+        void SetAgencyStatus(Agency agency);
     }
 }

@@ -10,6 +10,7 @@ using LosSantosRED.lsr.Interface;
 using System.Drawing;
 using ExtensionsMethods;
 using System.Windows.Media;
+using static RAGENativeUI.Elements.UIMenuStatsPanel;
 
 public abstract class SpawnTask
 {
@@ -22,7 +23,7 @@ public abstract class SpawnTask
     protected IWeapons Weapons;
     protected IEntityProvideable World;
     protected IModItems ModItems;
-
+    
     protected bool IsInvalidSpawnPosition => !AllowAnySpawn && Position.DistanceTo2D(Game.LocalPlayer.Character) <= 100f && Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character, Position);
     protected bool LastCreatedVehicleExists => LastCreatedVehicle != null && LastCreatedVehicle.Vehicle.Exists();
     protected bool WillAddPassengers => (VehicleType != null && VehicleType.MinOccupants > 1) || AddOptionalPassengers;
@@ -50,6 +51,7 @@ public abstract class SpawnTask
     public bool AllowBuddySpawn { get; set; } = true;
     public bool ClearArea { get; set; } = false;
     public bool PlacePedOnGround { get; set; } = false;
+    public bool WillAddDriver { get; set; } = true;
     public TaskRequirements SpawnRequirement { get; set; }
     public bool SpawnWithAllWeapons { get; set; } = false;
     public Vector3 Position
@@ -89,5 +91,130 @@ public abstract class SpawnTask
                 ped.Position = new Vector3(ped.Position.X, ped.Position.Y, resultArg);
             }
         }
+    }
+    protected virtual void AttemptVehicleSpawn()
+    {
+        LastCreatedVehicle = CreateVehicle();
+        if (LastCreatedVehicleExists)
+        {
+            if (HasPersonToSpawn)
+            {
+                if (WillAddDriver)
+                {
+                    PedExt Person = CreatePerson();
+                    if (Person != null && Person.Pedestrian.Exists() && LastCreatedVehicleExists)
+                    {
+                        PutPedInVehicle(Person, -1);
+                        if (WillAddPassengers)
+                        {
+                            AddPassengers();
+                        }
+                    }
+                    else
+                    {
+                        Cleanup(true);
+                    }
+                }
+                else
+                {
+                    if (LastCreatedVehicleExists)
+                    {
+                        if (WillAddPassengers)
+                        {
+                            AddPassengers();
+                        }
+                    }
+                    else
+                    {
+                        Cleanup(true);
+                    }
+                }
+            }
+        }
+    }
+    protected virtual void Cleanup(bool includePeople) 
+    {
+        if (LastCreatedVehicle != null && LastCreatedVehicle.Vehicle.Exists())
+        {
+            LastCreatedVehicle.Vehicle.Delete();
+            EntryPoint.WriteToConsole($"Spawn Task: ERROR DELETED VEHICLE", 0);
+        }
+        if (includePeople)
+        {
+            foreach (PedExt person in CreatedPeople)
+            {
+                if (person != null && person.Pedestrian.Exists())
+                {
+                    person.Pedestrian.Delete();
+                    EntryPoint.WriteToConsole($"Spawn Task: ERROR DELETED PED", 0);
+                }
+            }
+        }
+    }
+    protected virtual void AddPassengers()
+    {
+        for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
+        {
+            string requiredGroup = "";
+            if (VehicleType != null)
+            {
+                requiredGroup = VehicleType.RequiredPedGroup;
+            }
+            GetNewPersonType(requiredGroup);
+            if (PersonType != null)
+            {
+                PedExt Passenger = CreatePerson();
+                if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)
+                {
+                    PutPedInVehicle(Passenger, OccupantIndex - 1);
+                }
+                else
+                {
+                    Cleanup(false);
+                }
+            }
+            GameFiber.Yield();
+        }
+    }
+    protected virtual void AttemptPersonOnlySpawn()
+    {
+        CreatePerson();
+        if (AllowBuddySpawn)
+        {
+            int BuddiesToSpawn = RandomItems.MyRand.Next(1, 2 + 1) - 1;
+            for (int BuddyIndex = 1; BuddyIndex <= BuddiesToSpawn; BuddyIndex++)
+            {
+                GetNewPersonType("");
+                if (PersonType != null)
+                {
+                    SpawnLocation.InitialPosition = Position.Around2D(1f);
+                    SpawnLocation.SidewalkPosition = Vector3.Zero;
+                    PedExt Buddy = CreatePerson();
+                }
+            }
+        }
+    }
+    protected virtual PedExt CreatePerson()
+    {
+        return null;
+    }
+    protected virtual VehicleExt CreateVehicle()
+    {
+        return null;
+    }
+    protected virtual void PutPedInVehicle(PedExt Person, int Seat)
+    {
+        Person.Pedestrian.WarpIntoVehicle(LastCreatedVehicle.Vehicle, Seat);
+        Person.AssignedVehicle = LastCreatedVehicle;
+        Person.AssignedSeat = Seat;
+        if (VehicleType != null && VehicleType.ForceStayInSeats != null && VehicleType.ForceStayInSeats.Contains(Seat))
+        {
+            Person.StayInVehicle = true;
+        }
+        Person.UpdateVehicleState();
+    }
+    protected virtual void GetNewPersonType(string requiredGroup)
+    {
+
     }
 }

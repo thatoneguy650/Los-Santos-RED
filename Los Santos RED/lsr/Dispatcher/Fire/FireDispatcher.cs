@@ -476,6 +476,7 @@ public class FireDispatcher
             PersonType = null;
         }
         CallSpawnTask(true, false, false, false, TaskRequirements.None);
+        EntryPoint.WriteToConsole("DebugSpawnFire");
     }
 
 

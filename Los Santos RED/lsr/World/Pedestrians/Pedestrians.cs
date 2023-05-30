@@ -280,6 +280,23 @@ public class Pedestrians : ITaskerReportable
         GameFiber.Yield();//TR 29
         DeadPeds.RemoveAll(x => !x.Pedestrian.Exists());
     }
+    public void UpdateDead()
+    {
+        int updated = 0;
+        foreach(PedExt deadPed in DeadPeds.ToList())
+        {
+            if(!deadPed.Pedestrian.Exists())
+            {
+                continue;
+            }
+            deadPed.UpdatePositionData();
+            updated++;
+            if(updated >= 10)
+            {
+                GameFiber.Yield();
+            }
+        }
+    }
     public bool AnyCopsNearPosition(Vector3 Position, float Distance) => Position != Vector3.Zero && Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Position) <= Distance);
     public bool AnyCopsNearCop(Cop cop, int CellsAway)
     {

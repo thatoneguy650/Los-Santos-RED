@@ -27,7 +27,7 @@ public class EquipmentItem : ConsumableItem
         actionable.Inventory.Use(this);
         if (ChangesArmor)
         {
-            actionable.HealthManager.ChangeArmor(ArmorChangeAmount);
+            actionable.ArmorManager.ChangeArmor(ArmorChangeAmount);
             Game.DisplaySubtitle($"Armor Changed {ArmorChangeAmount}");
         }
         if(ChangesHealth)

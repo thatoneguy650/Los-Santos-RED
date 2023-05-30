@@ -69,7 +69,7 @@ public class ActivityManager
 
     //ALL THESE BOOLS GOTTA GO
 
-    public bool CanConverse => !Player.IsIncapacitated && !Player.IsVisiblyArmed && Player.IsAliveAndFree && !Player.IsMovingDynamically && ((Player.IsInVehicle && Player.VehicleSpeedMPH <= 5f) || !Player.IsMovingFast) && !IsLootingBody && !IsDraggingBody && !IsHoldingHostage && !IsDancing;
+    public bool CanConverse => !Player.IsIncapacitated && !Player.IsVisiblyArmed && Player.IsAliveAndFree && !Player.IsMovingDynamically && ((Player.IsInVehicle && Player.VehicleSpeedMPH <= 5f) || !Player.IsMovingFast) && !IsLootingBody && !IsTreatingPed && !IsDraggingBody && !IsHoldingHostage && !IsDancing;
     public bool CanConverseWithLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && Player.CurrentLookedAtPed.CanConverse && !Player.RelationshipManager.GangRelationships.IsHostile(Player.CurrentLookedAtGangMember?.Gang) && (!Player.CurrentLookedAtPed.IsCop || (Player.IsNotWanted && !Player.Investigation.IsActive)) && CanConverse;
    
     
@@ -78,18 +78,18 @@ public class ActivityManager
 
 
     public bool CanTakeHostageWithLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && CanTakeHostage && !Player.CurrentLookedAtPed.IsInVehicle && !Player.CurrentLookedAtPed.IsUnconscious && !Player.CurrentLookedAtPed.IsDead && Player.CurrentLookedAtPed.DistanceToPlayer <= 5.0f && Player.CurrentLookedAtPed.Pedestrian.Exists() && Player.CurrentLookedAtPed.Pedestrian.IsThisPedInFrontOf(Player.Character) && !Player.Character.IsThisPedInFrontOf(Player.CurrentLookedAtPed.Pedestrian);
-    public bool CanTakeHostage => !Player.IsCop && !Player.IsInVehicle && !Player.IsIncapacitated && !IsLootingBody && !IsDancing && !IsHoldingHostage && Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon.CanPistolSuicide;
+    public bool CanTakeHostage => !Player.IsCop && !Player.IsInVehicle && !Player.IsIncapacitated && !IsLootingBody && !IsTreatingPed && !IsDancing && !IsHoldingHostage && Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon.CanPistolSuicide;
     public bool CanHoldUpTargettedPed => Player.CurrentTargetedPed != null && Player.CurrentTargetedPed.CanBeMugged && Player.IsAliveAndFree && !Player.IsIncapacitated && !Player.IsGettingIntoAVehicle && !Player.IsBreakingIntoCar && Player.IsVisiblyArmed && Player.CurrentTargetedPed.DistanceToPlayer <= Settings.SettingsManager.ActivitySettings.HoldUpDistance;
-    public bool CanLoot => !Player.IsCop && !Player.IsInVehicle && !Player.IsIncapacitated && !Player.IsMovingDynamically && !IsLootingBody && !IsHoldingHostage && !IsDraggingBody && !IsConversing && !IsDancing;
+    public bool CanLoot => !Player.IsCop && !Player.IsInVehicle && !Player.IsIncapacitated && !Player.IsMovingDynamically && !IsLootingBody && !IsTreatingPed && !IsHoldingHostage && !IsDraggingBody && !IsConversing && !IsDancing;
     public bool CanLootLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && CanLoot && Player.CurrentLookedAtPed.CanBeLooted && !Player.CurrentLookedAtPed.HasBeenLooted && !Player.CurrentLookedAtPed.IsInVehicle && (Player.CurrentLookedAtPed.IsUnconscious || Player.CurrentLookedAtPed.IsDead);
-    public bool CanDrag => !Player.IsInVehicle && !Player.IsIncapacitated && !Player.IsMovingDynamically && !IsLootingBody && !IsDraggingBody && !IsHoldingHostage && !IsDancing;
+    public bool CanDrag => !Player.IsInVehicle && !Player.IsIncapacitated && !Player.IsMovingDynamically && !IsLootingBody && !IsTreatingPed && !IsDraggingBody && !IsHoldingHostage && !IsDancing;
     public bool CanDragLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && CanDrag && Player.CurrentLookedAtPed.CanBeDragged && !Player.CurrentLookedAtPed.IsInVehicle && (Player.CurrentLookedAtPed.IsUnconscious || Player.CurrentLookedAtPed.IsDead);
     public bool CanRecruitLookedAtGangMember => Player.CurrentLookedAtGangMember != null && Player.CurrentTargetedPed == null && Player.CurrentLookedAtGangMember.WasModSpawned && Player.RelationshipManager.GangRelationships.CurrentGang != null && Player.CurrentLookedAtGangMember.Gang != null && Player.RelationshipManager.GangRelationships.CurrentGang.ID == Player.CurrentLookedAtGangMember.Gang.ID && !Player.GroupManager.IsMember(Player.CurrentLookedAtGangMember);
-   
-   
-    
 
-    
+
+    public bool CanReviveLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && CanRevive && !Player.CurrentLookedAtPed.IsInVehicle && Player.CurrentLookedAtPed.IsUnconscious;
+    public bool CanRevive => Player.IsEMT && !Player.IsInVehicle && !Player.IsIncapacitated && !Player.IsMovingDynamically && !IsLootingBody && !IsTreatingPed && !IsHoldingHostage && !IsDraggingBody && !IsConversing && !IsDancing;
+
     public string ContinueCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.ContinuePrompt : LowerBodyActivity != null ? LowerBodyActivity.ContinuePrompt : "";
     public string CancelCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.CancelPrompt : LowerBodyActivity != null ? LowerBodyActivity.CancelPrompt : "";
     public string PauseCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.PausePrompt : LowerBodyActivity != null ? LowerBodyActivity.PausePrompt : "";
@@ -118,6 +118,9 @@ public class ActivityManager
     public bool IsLayingDown { get; set; } = false;
     public bool IsCommitingSuicide { get; set; }
     public bool IsLootingBody { get; set; }
+
+    public bool IsTreatingPed { get; set; }
+
     public bool IsDraggingBody { get; set; }
     public bool IsHoldingHostage { get; set; }
     public bool IsDancing { get; set; }
@@ -133,6 +136,8 @@ public class ActivityManager
     public DynamicActivity Activity => UpperBodyActivity != null ? UpperBodyActivity : LowerBodyActivity;
     public bool CanHearScanner => !Settings.SettingsManager.ScannerSettings.DisableScannerWithoutRadioItem || Player.Inventory.Has(typeof(RadioItem));
     public List<DynamicActivity> PausedActivites { get; set; } = new List<DynamicActivity>();
+    public bool IsWavingHands { get; set; }
+
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
         IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories,
@@ -418,6 +423,24 @@ public class ActivityManager
     {
         Gesture(LastGesture);
     }
+
+    public void WaveHands()
+    {
+        if (IsPerformingActivity)
+        {
+            Game.DisplayHelp("Cancel existing activity to start");
+            return;
+        }
+        WaveHandsActivity waveHandsActivity = new WaveHandsActivity(Actionable, World, Settings);
+        if (waveHandsActivity.CanPerform(Actionable))
+        {
+            ForceCancelUpperBody();
+            IsPerformingActivity = true;
+            UpperBodyActivity = waveHandsActivity;
+            UpperBodyActivity.Start();
+        }
+    }
+
     public void Dance(DanceData danceData)
     {
         if (IsPerformingActivity)
@@ -515,6 +538,24 @@ public class ActivityManager
             LowerBodyActivity.Start();
         }
     }
+
+    public void TreatPed()
+    {
+        if (IsPerformingActivity)
+        {
+            Game.DisplayHelp("Cancel existing activity to start");
+            return;
+        }
+        TreatmentActivity treatmentActivity = new TreatmentActivity(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems);
+        if (treatmentActivity.CanPerform(Actionable))
+        {
+            ForceCancelAllActive();
+            IsPerformingActivity = true;
+            LowerBodyActivity = treatmentActivity;
+            LowerBodyActivity.Start();
+        }
+    }
+
     public void DragPed()
     {
         if (IsPerformingActivity)
@@ -1135,6 +1176,8 @@ public class ActivityManager
         string animation = isTaking ? "givetake1_b" : "givetake1_a";
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", animation, 1.0f, -1.0f, 5000, (int)(AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);
     }
+
+
 }
 
 

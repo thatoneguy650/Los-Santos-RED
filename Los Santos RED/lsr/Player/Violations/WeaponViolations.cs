@@ -66,29 +66,29 @@ public class WeaponViolations
         bool isBrandishing = CheckBrandishing();
         if (isBrandishing && Player.Character.Inventory.EquippedWeapon != null && !Player.IsInVehicle)
         {
-            Violations.AddViolating("BrandishingWeapon");//.IsCurrentlyViolating = true;
+            Violations.AddViolating(StaticStrings.BrandishingWeaponCrimeID);// "BrandishingWeapon");//.IsCurrentlyViolating = true;
             if (Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment?.CurrentWeapon?.WeaponLevel >= 4)
             {
                 Violations.AddViolating(StaticStrings.TerroristActivityCrimeID);//.IsCurrentlyViolating = true;
             }
             if (Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment?.CurrentWeapon?.WeaponLevel >= 3)
             {
-                Violations.AddViolating("BrandishingHeavyWeapon");//.IsCurrentlyViolating = true;
+                Violations.AddViolating(StaticStrings.BrandishingHeavyWeaponCrimeID);// "BrandishingHeavyWeapon");//.IsCurrentlyViolating = true;
             }
             if (Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon?.Category == WeaponCategory.Melee)
             {
-                Violations.AddViolating("BrandishingCloseCombatWeapon");//.IsCurrentlyViolating = true;
+                Violations.AddViolating(StaticStrings.BrandishingCloseCombatWeaponCrimeID);// "BrandishingCloseCombatWeapon");//.IsCurrentlyViolating = true;
             }
         }
         if (isBrandishing && Player.CurrentTargetedPed != null && Player.WeaponEquipment?.CurrentWeapon?.Category != WeaponCategory.Melee)
         {
             if (Player.CurrentTargetedPed.IsCop)
             {
-                Violations.AddViolating("AimingWeaponAtPolice");
+                Violations.AddViolating(StaticStrings.AimingWeaponAtPoliceCrimeID);// "AimingWeaponAtPolice");
             }
             else
             {
-                Violations.AddViolating("AssaultingWithDeadlyWeapon");
+                Violations.AddViolating(StaticStrings.AssaultingWithDeadlyWeaponCrimeID);// "AssaultingWithDeadlyWeapon");
             }
         }
     }
@@ -141,13 +141,13 @@ public class WeaponViolations
         }
         else if (weaponInformation.WeaponLevel >= 3)
         {
-            Violations.AddViolatingAndObserved("BrandishingHeavyWeapon");
+            Violations.AddViolatingAndObserved(StaticStrings.BrandishingHeavyWeaponCrimeID);// "BrandishingHeavyWeapon");
             //EntryPoint.WriteToConsoleTestLong("AddFoundWeapon BrandishingHeavyWeapon");
             return true;
         }
         else 
         {
-            Violations.AddViolatingAndObserved("BrandishingWeapon");
+            Violations.AddViolatingAndObserved(StaticStrings.BrandishingWeaponCrimeID);// "BrandishingWeapon");
             //EntryPoint.WriteToConsoleTestLong("AddFoundWeapon !IsLegal");
             return true;
         }

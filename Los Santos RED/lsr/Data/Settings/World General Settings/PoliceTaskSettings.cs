@@ -71,8 +71,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public float DriverRacing { get; set; }
     [Description("If enabled, police can respond without a civilian report.")]
     public bool AllowRespondingWithoutCallIn { get; set; }
-    [Description("If enabled, LSR set the siren state for any vehicle an AI Cop is in.")]
-    public bool AllowSettingSirenState { get; set; }
+
     [Description("If enabled, LSR will not totally control Ped AI during vehicle chase.")]
     public bool BlockEventsDuringVehicleChase { get; set; }
     [Description("If enabled, LSR will not totally control Ped AI during chase.")]
@@ -170,7 +169,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
 
 
 
-        AllowSettingSirenState = true;
+        //AllowSettingSirenState = true;
 
         BlockEventsDuringVehicleChase = true;
         BlockEventsDuringChase = true;

@@ -17,6 +17,9 @@ public class Investigation
     private IEntityProvideable World;
     private bool HavePlayerDescription = false;
     private uint GameTimeLastUpdatedInvestigation;
+    private uint GameTimePoliceArrived;
+    private uint GameTimeEMSArrived;
+    private uint GameTimeFireArrived;
     private int PoliceToRespond(int wantedLevel)
     {
         {
@@ -61,6 +64,19 @@ public class Investigation
     private bool IsOutsideInvestigationRange { get; set; }
 
 
+
+    public bool HasPoliceInvestigated => HasPoliceArrived && Game.GameTime - GameTimePoliceArrived >= Settings.SettingsManager.InvestigationSettings.ExtraTimeAfterReachingInvestigationCenterBeforeExpiring;
+
+    public bool HasEMSInvestigated => HasEMSArrived && Game.GameTime - GameTimeEMSArrived >= Settings.SettingsManager.InvestigationSettings.ExtraTimeAfterReachingInvestigationCenterBeforeExpiring;
+
+    public bool HasFireInvestigated => HasFireArrived && Game.GameTime - GameTimeFireArrived >= Settings.SettingsManager.InvestigationSettings.ExtraTimeAfterReachingInvestigationCenterBeforeExpiring;
+
+
+
+    public bool HasPoliceArrived { get; private set; }
+    public bool HasEMSArrived { get; private set; }
+    public bool HasFireArrived { get; private set; }
+
     public int InvestigationWantedLevel { get; private set; }
 
     public bool RequiresPolice { get; set; }
@@ -92,6 +108,13 @@ public class Investigation
         RequiresEMS = false;
         RequiresFirefighters = false;
         IsNearPosition = false;
+
+        HasPoliceArrived = false;
+        HasFireArrived = false;
+        HasEMSArrived = false;
+        GameTimeEMSArrived = 0;
+        GameTimeFireArrived = 0;
+        GameTimePoliceArrived = 0;
         foreach (Cop cop in World.Pedestrians.AllPoliceList.Where(x => x.IsRespondingToInvestigation))
         {
             cop.IsRespondingToInvestigation = false;
@@ -171,6 +194,38 @@ public class Investigation
         GameTimeLastUpdatedInvestigation = Game.GameTime;
     }
 
+
+    public void OnPoliceArrived()
+    {
+        if(HasPoliceArrived || !IsActive)
+        {
+            return;
+        }
+        GameTimePoliceArrived = Game.GameTime;
+        HasPoliceArrived = true;
+        EntryPoint.WriteToConsole("Investigation OnPoliceArrived");
+    }
+    public void OnEMSArrived()
+    {
+        if (HasEMSArrived || !IsActive)
+        {
+            return;
+        }
+        GameTimeEMSArrived = Game.GameTime;
+        HasEMSArrived = true;
+        EntryPoint.WriteToConsole("Investigation OnEMSArrived");
+    }
+    public void OnFireFightersArrived()
+    {
+        if (HasFireArrived || !IsActive)
+        {
+            return;
+        }
+        GameTimeFireArrived = Game.GameTime;
+        HasFireArrived = true;
+        EntryPoint.WriteToConsole("Investigation OnFireFightersArrived");
+    }
+
     private void CheckExpired()
     {
         if(IsOutsideInvestigationRange)
@@ -191,9 +246,9 @@ public class Investigation
     }
     private bool CheckCriteria()
     {
-        bool CanPoliceExpire = false;
-        bool CanFireExpire = false;
-        bool CanEMSExpire = false;
+        bool CanPoliceExpire;//rewrite, no need for so many IFS!
+        bool CanFireExpire;
+        bool CanEMSExpire;
 
         if(!RequiresPolice)
         {
@@ -201,12 +256,12 @@ public class Investigation
         }
         else 
         {
-            bool isWantedLevelOK = World.TotalWantedLevel <= 1;
-            bool HasArrivedOK = World.Pedestrians.AllPoliceList.Any(x =>
-                        x.GameTimeReachedInvestigationPosition > 0 &&
-                        Game.GameTime - x.GameTimeReachedInvestigationPosition >= Settings.SettingsManager.InvestigationSettings.ExtraTimeAfterReachingInvestigationCenterBeforeExpiring);
+           // bool isWantedLevelOK = ;
+            //bool HasArrivedOK = World.Pedestrians.AllPoliceList.Any(x =>
+            //            x.GameTimeReachedInvestigationPosition > 0 &&
+            //            Game.GameTime - x.GameTimeReachedInvestigationPosition >= Settings.SettingsManager.InvestigationSettings.ExtraTimeAfterReachingInvestigationCenterBeforeExpiring);
 
-            CanPoliceExpire = isWantedLevelOK && HasArrivedOK;
+            CanPoliceExpire = World.TotalWantedLevel <= 1 && HasPoliceInvestigated;
 
             //EntryPoint.WriteToConsole($"INVESTIGATION CheckCriteria {isWantedLevelOK} {HasArrivedOK} RequiresPolice{RequiresPolice} RequiresFirefighters{RequiresFirefighters} RequiresEMS{RequiresEMS}");
         }
@@ -218,7 +273,7 @@ public class Investigation
         }
         else
         { 
-            CanFireExpire = !World.AnyFiresNearPlayer;//NOT IMPLEMENTED!
+            CanFireExpire = !World.AnyFiresNearPlayer && HasFireInvestigated;
         }
 
         if(!RequiresEMS)
@@ -227,14 +282,18 @@ public class Investigation
         }
         else
         {
-            CanEMSExpire = !World.Pedestrians.AnyInjuredPeopleNearPlayer;
+            CanEMSExpire = !World.Pedestrians.AnyInjuredPeopleNearPlayer && !HasEMSInvestigated;
         }
 
         if(CanPoliceExpire)
         {
             RequiresPolice = false;
         }
-        if(CanEMSExpire)
+        if (CanFireExpire)
+        {
+            RequiresFirefighters = false;
+        }
+        if (CanEMSExpire)
         {
             RequiresEMS = false;
         }
@@ -347,6 +406,12 @@ public class Investigation
         RequiresPolice = false;
         RequiresEMS = false;
         RequiresFirefighters = false;
+        HasPoliceArrived = false;
+        HasFireArrived = false;
+        HasEMSArrived = false;
+        GameTimeEMSArrived = 0;
+        GameTimeFireArrived = 0;
+        GameTimePoliceArrived = 0;
         if (InvestigationBlip.Exists())
         {
             InvestigationBlip.Delete();

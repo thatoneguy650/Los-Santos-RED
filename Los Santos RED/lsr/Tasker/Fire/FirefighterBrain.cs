@@ -144,7 +144,7 @@ public class FirefighterBrain : PedBrain
     {
         if (PedExt.CurrentTask?.Name != "Investigate")
         {
-            PedExt.CurrentTask = new ServiceGeneralInvestigate(PedExt, PedExt, Player, World, null, PlacesOfInterest, Settings, false, null);//Cop.CurrentTask = new Investigate(Cop, Player, Settings, World);
+            PedExt.CurrentTask = new FireGeneralInvestigate(PedExt, PedExt, Player, World, null, PlacesOfInterest, Settings, false, null, false);//Cop.CurrentTask = new Investigate(Cop, Player, Settings, World);
             GameFiber.Yield();//TR Added back 4
             PedExt.CurrentTask.Start();
         }

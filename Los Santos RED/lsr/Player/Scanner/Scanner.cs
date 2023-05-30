@@ -411,6 +411,13 @@ namespace LosSantosRED.lsr
         }
         private void CleanQueue()
         {
+
+            if (Player.IsWanted && !Player.PoliceResponse.WantedLevelHasBeenRadioedIn)
+            {
+                DispatchQueue.RemoveAll(x => x.LatestInformation.SeenByOfficers || x.IsPoliceStatus);
+            }
+
+
             if (DispatchQueue.Any(x => x.LatestInformation.SeenByOfficers))
             {
                 DispatchQueue.RemoveAll(x => !x.LatestInformation.SeenByOfficers);
@@ -604,6 +611,13 @@ namespace LosSantosRED.lsr
                 //EntryPoint.WriteToConsole($"SCANNER EVENT: MedicalServicesRequired", 3);
             }
             
+        }
+        public void OnOfficerMIA()
+        {
+            if (!OfficerMIA.HasRecentlyBeenPlayed && (OfficerMIA.TimesPlayed <= 2 || OfficerMIA.HasntBeenPlayedForAWhile))
+            {
+                AddToQueue(OfficerMIA);
+            }
         }
         public void OnNooseDeployed()
         {
@@ -2104,15 +2118,15 @@ namespace LosSantosRED.lsr
             {
                 Name = "Officer MIA",
                 IncludeAttentionAllUnits = true,
-                ResultsInLethalForce = true,
-
+                //ResultsInLethalForce = true,
+                IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Street,
                 MainAudioSet = new List<AudioSet>()
             {
-                //new AudioSet(new List<string>() { we_have.We_Have_1.FileName, crime_officer_down.AnofferdownpossiblyKIA.FileName },"we have an officer down, possibly KIA"),
-                //new AudioSet(new List<string>() { we_have.We_Have_2.FileName, crime_officer_down.Anofficerdownconditionunknown.FileName },"we have an officer down, condition unknown"),
-                new AudioSet(new List<string>() { crime_officer_down.AnofferdownpossiblyKIA.FileName },"an officer down, possibly KIA"),
-                new AudioSet(new List<string>() { crime_officer_down.Anofficerdownconditionunknown.FileName },"an officer down, condition unknown"),
+                //new AudioSet(new List<string>() { crime_officer_down.AnofferdownpossiblyKIA.FileName },"an officer down, possibly KIA"),
+                //new AudioSet(new List<string>() { crime_officer_down.Anofficerdownconditionunknown.FileName },"an officer down, condition unknown"),
+                new AudioSet(new List<string>() { we_have.We_Have_1.FileName, crime_officer_in_need_of_assistance.Anofficerinneedofassistance.FileName },"we have an officer in need of assistance"),
+                new AudioSet(new List<string>() { we_have.We_Have_1.FileName, crime_officer_in_need_of_assistance.Anofficerrequiringassistance.FileName },"we have an officer requiring assistance"),
             },
                 SecondaryAudioSet = new List<AudioSet>()
             {
@@ -3141,6 +3155,12 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { emergency.Apossiblefire.FileName},"a possible fire"),
             },
             };
+
+
+
+
+
+
 
             VehicleStartedFire = new Dispatch()
             {

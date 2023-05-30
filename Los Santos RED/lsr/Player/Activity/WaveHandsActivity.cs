@@ -8,21 +8,19 @@ using System.Linq;
 
 public class WaveHandsActivity : DynamicActivity
 {
-    private IInputable Player;
+    private bool IsCancelled;
+    private IActionable Player;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
-    private uint GameTimeLastYelled;
-    private uint GameTimeLastToggledSurrender;
-    private bool IsToggled;
 
-    public WaveHandsActivity(IInputable currentPlayer, IEntityProvideable world, ISettingsProvideable settings)
+
+    public WaveHandsActivity(IActionable currentPlayer, IEntityProvideable world, ISettingsProvideable settings)
     {
         Player = currentPlayer;
         World = world;
         Settings = settings;
     }
-    public bool CanSurrender => !HandsAreUp && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving) && Player.IsWanted;
-    public bool CanWaveHands => !HandsAreUp && !IsWavingHands && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving) && Player.IsNotWanted;
+
     public override ModItem ModItem { get; set; }
     public override string DebugString => "";
     public override bool CanPause { get; set; } = false;
@@ -31,13 +29,11 @@ public class WaveHandsActivity : DynamicActivity
     public override string PausePrompt { get; set; } = "Pause Activity";
     public override string CancelPrompt { get; set; } = "Stop Activity";
     public override string ContinuePrompt { get; set; } = "Continue Activity";
-    //public bool IsCommitingSuicide { get; set; }
-    public bool IsWavingHands { get; private set; }
-    public bool HandsAreUp { get; private set; }
-
     public override void Cancel()
     {
-        LowerHands();
+        IsCancelled = true;
+        Player.ActivityManager.IsPerformingActivity = false;
+        Player.ActivityManager.IsWavingHands = false;
     }
     public override void Pause()
     {
@@ -50,347 +46,64 @@ public class WaveHandsActivity : DynamicActivity
     }
     public override void Start()
     {
-        RaiseHands();
+        GameFiber WaveWatcher = GameFiber.StartNew(delegate
+        {
+            try
+            {
+                WaveHands();
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "WaveHandsActivity");
     }
     public override bool CanPerform(IActionable player)
     {
-        return true;
-    }
-    public void LowerHands()
-    {
-        if (!IsToggled)
+        if (player.ActivityManager.CanPerformActivitesBase)
         {
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: Lower Hands");
-            HandsAreUp = false; // You put your hands down
-            IsWavingHands = false;
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-            Player.ActivityManager.IsPerformingActivity = false;
+            return true;
         }
-    }
-    public void RaiseHands()
-    {
-        if (!IsToggled)
-        {
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: Raise Hands");
-            if (Player.Character.IsWearingHelmet)
-            {
-                Player.Character.RemoveHelmet(true);
-            }
-            if (HandsAreUp)
-            {
-                return;
-            }
-            Player.WeaponEquipment.SetUnarmed();
-            HandsAreUp = true;
-            if (Player.IsInVehicle)
-            {
-                AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
-                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "veh@busted_std", "stay_in_car_crim", 2.0f, -2.0f, -1, 50, 0, false, false, false);
-            }
-            else
-            {
-                AnimationDictionary.RequestAnimationDictionay("ped");
-                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-            }
-        }
+        Game.DisplayHelp($"Cannot Wave Hands");
+        return false;
     }
     public void WaveHands()
     {
-        if (!IsToggled)
+        Player.WeaponEquipment.SetUnarmed();
+        string Animation;
+        string DictionaryName;
+        if (Player.IsMale)
         {
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: Wave Hands");
-            if (HandsAreUp || Player.IsInVehicle || IsWavingHands)
-            {
-                return;
-            }
+            DictionaryName = "anim@amb@waving@male";
+        }
+        else
+        {
+            DictionaryName = "anim@amb@waving@female";
+        }
+        Animation = "air_wave";
+        AnimationDictionary.RequestAnimationDictionay(DictionaryName);
+
+        Player.ActivityManager.IsWavingHands = true;
+
+
+        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, DictionaryName, Animation, 2.0f, -2.0f, -1, (int)(eAnimationFlags.AF_UPPERBODY | eAnimationFlags.AF_SECONDARY), 0, false, false, false);
+        uint GameTimeStartedWaving = Game.GameTime;
+
+        Player.PlaySpeech("GENERIC_FRIGHTENED_HIGH", false);
+
+        while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && Game.GameTime - GameTimeStartedWaving <= 5000)
+        {
             Player.WeaponEquipment.SetUnarmed();
-            IsWavingHands = true;
-
-            string Animation;
-            string DictionaryName;
-            if (Player.IsMale)
+            float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DictionaryName, Animation);
+            if (AnimationTime >= 1.0f)
             {
-                DictionaryName = "anim@amb@waving@male";
+                break;
             }
-            else
-            {
-                DictionaryName = "anim@amb@waving@female";
-            }
-            //if (RandomItems.RandomPercent(50))
-            //{
-            //    Animation = "ground_wave";
-            //}
-            //else
-            //{
-            Animation = "air_wave";
-            //}
-            AnimationDictionary.RequestAnimationDictionay(DictionaryName);
-            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, DictionaryName, Animation, 2.0f, -2.0f, -1, 49, 0, false, false, false);
+            GameFiber.Yield();
         }
-
-    }
-    public void SetArrestedAnimation(bool StayStanding)
-    {
-        //StayStanding = false;
-        GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
-        {
-            try
-            {
-                AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
-                AnimationDictionary.RequestAnimationDictionay("busted");
-                AnimationDictionary.RequestAnimationDictionay("ped");
-                if (!Player.Character.Exists())
-                {
-                    return;
-                }
-                while (Player.Character.Exists() && (Player.Character.IsRagdoll || Player.Character.IsStunned))
-                {
-                    GameFiber.Yield();
-                }
-                if (!Player.Character.Exists() || !Player.IsBusted)
-                {
-                    return;
-                }
-
-
-                if (!Settings.SettingsManager.PoliceSettings.DropWeaponWhenBusted)
-                {
-
-                    Player.WeaponEquipment.SetUnarmed();
-                }
-
-
-                if (Player.Character.IsInAnyVehicle(false))
-                {
-                    Vehicle oldVehicle = Player.Character.CurrentVehicle;
-                    if (Player.Character.Exists() && oldVehicle.Exists())
-                    {
-                        NativeFunction.Natives.TASK_LEAVE_VEHICLE(Player.Character, oldVehicle, 256);
-                        while (Player.Character.IsInAnyVehicle(false) && Player.IsBusted)
-                        {
-                            GameFiber.Yield();
-                        }
-                        if (!Player.Character.Exists() || !Player.IsBusted)
-                        {
-                            return;
-                        }
-                    }
-                }
-
-
-                if (StayStanding)
-                {
-                    //Player.Equipment.SetUnarmed();
-                    if (IsNotPlayingAnimation("ped", "handsup_enter"))
-                    {
-                        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-
-                        GameFiber.Wait(500);
-                        if (Player.IsBusted && Player.WeaponEquipment.CurrentWeapon != null && Settings.SettingsManager.PoliceSettings.DropWeaponWhenBusted)
-                        {
-                            DropWeapon(false);
-                        }
-                    }
-                }
-                else
-                {
-                    if (IsNotPlayingAnimation("busted", "idle_a") && IsNotPlayingAnimation("busted", "idle_2_hands_up") && IsNotPlayingAnimation("busted", "idle_2_hands_up_2h"))
-                    {
-                        bool isOneHanded = false;
-                        if (Player.WeaponEquipment.CurrentWeapon != null && !Player.WeaponEquipment.CurrentWeaponIsOneHanded)
-                        {
-                            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_2_hands_up_2h", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-
-                        }
-                        else
-                        {
-                            isOneHanded = true;
-                            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_2_hands_up", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-                        }
-                        GameFiber.Wait(1000);
-                        if (!Player.Character.Exists() || !Player.IsBusted)
-                        {
-                            if (Player.Character.Exists())
-                            {
-                                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                            }
-                            return;
-                        }
-                        if (isOneHanded)
-                        {
-                            if (Player.IsBusted && Player.WeaponEquipment.CurrentWeapon != null && Settings.SettingsManager.PoliceSettings.DropWeaponWhenBusted)
-                            {
-                                DropWeapon(false);
-                            }
-                            GameFiber.Wait(5000);//was just 6000 here
-                        }
-                        else
-                        {
-                            GameFiber.Wait(2000);//was just 6000 here
-                            if (Player.IsBusted && Player.WeaponEquipment.CurrentWeapon != null && Settings.SettingsManager.PoliceSettings.DropWeaponWhenBusted)
-                            {
-                                DropWeapon(true);
-                            }
-                            GameFiber.Wait(3000);//was just 6000 here
-                        }
-                        if (!Player.Character.Exists() || !Player.IsBusted)
-                        {
-                            if (Player.Character.Exists())
-                            {
-                                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                            }
-
-                            return;
-                        }
-                        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
-                    }
-                }
-                NativeFunction.Natives.SET_PED_KEEP_TASK(Player.Character, true);
-                //Player.Character.KeepTasks = true;
-            }
-            catch (Exception ex)
-            {
-                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                EntryPoint.ModController.CrashUnload();
-            }
-        }, "SetArrestedAnimation");
-    }
-    private void DropWeapon(bool isLow)
-    {
-        //NativeFunction.Natives.x616093EC6B139DD9(Game.LocalPlayer, NativeFunction.Natives.xD6429A016084F1A5<uint>((int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash), false);
-
-        //NativeFunction.Natives.x88EAEC617CD26926(NativeFunction.Natives.xD6429A016084F1A5<uint>((int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash), false);
-        //NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, 186, false);
-        Vector3 HandPosition = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));
-        Vector3 RootPosition = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 0));
-        Vector3 ResultPosition = HandPosition - RootPosition;
-
-
-        ResultPosition = new Vector3(ResultPosition.X - 0.2f, ResultPosition.Y + 0.2f, ResultPosition.Z - 0.2f);
-        ResultPosition = new Vector3(0.6f, 0.6f, 0.6f);
-
-
-        if (isLow)
-        {
-            ResultPosition = new Vector3(0.75f, 0.75f, -0.3f);
-        }
-
-
-
-        Player.WeaponEquipment.DisableWeaponPickup((uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
-
-
-        NativeFunction.Natives.SET_PED_DROPS_INVENTORY_WEAPON(Game.LocalPlayer.Character, (int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, ResultPosition.X, ResultPosition.Y, ResultPosition.Z, -1);
-
-
-
-
-        if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
-        {
-            NativeFunction.Natives.SET_CURRENT_PED_WEAPON(Game.LocalPlayer.Character, (uint)2725352035, true);
-        }
-        //NativeFunction.Natives.SET_PED_DROPS_WEAPON(Player.Character);
-    }
-    public void UnSetArrestedAnimation()
-    {
-        GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
-        {
-            try
-            {
-                //EntryPoint.WriteToConsoleTestLong("UnsetArrestedRan");
-                AnimationDictionary.RequestAnimationDictionay("random@arrests");
-                AnimationDictionary.RequestAnimationDictionay("busted");
-                AnimationDictionary.RequestAnimationDictionay("ped");
-                if (IsPlayingAnimation("busted", "idle_a") || IsPlayingAnimation("busted", "idle_2_hands_up") || IsPlayingAnimation("busted", "idle_2_hands_up_2h"))
-                {
-                    //EntryPoint.WriteToConsoleTestLong("UnsetArrestedRan Playing Kneeling");
-
-                    NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "hands_up_2_idle", 2.0f, -2.0f, -1, 4096, 0, 0, 1, 0);
-                    GameFiber.Wait(1500);//1250
-                    if (!Player.Character.Exists() || !Player.IsBusted)
-                    {
-                        if (Player.Character.Exists())
-                        {
-                            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                        }
-                        return;
-                    }
-                    if (Player.Character.Exists())
-                    {
-                        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                    }
-                }
-                else if (IsPlayingAnimation("ped", "handsup_enter"))// NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, "ped", "handsup_enter", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "ped", "handsup_enter") > 0f)
-                {
-                    //EntryPoint.WriteToConsoleTestLong("UnsetArrestedRan Playing HandsUp");
-                    NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                }
-                else
-                {
-                    //EntryPoint.WriteToConsoleTestLong("UnsetArrestedRan No Animation Detected, Clearing Tasks");
-                    NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                }
-            }
-            catch (Exception ex)
-            {
-                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                EntryPoint.ModController.CrashUnload();
-            }
-        }, "UnSetArrestedAnimation");
-    }
-    private bool IsPlayingAnimation(string dictionary, string animation)
-    {
-        return NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, dictionary, animation, 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, dictionary, animation) > 0f;
-    }
-    private bool IsNotPlayingAnimation(string dictionary, string animation)
-    {
-        return !NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, dictionary, animation, 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, dictionary, animation) == 0f;
-    }
-    public void OnPlayerBusted()
-    {
-        HandsAreUp = false;
-        IsWavingHands = false;
-        if (Player.WantedLevel > 1)
-        {
-            SetArrestedAnimation(Player.WantedLevel <= 2);//needs to move
-        }
-    }
-    public void ToggleSurrender()
-    {
-
-        if (Game.GameTime - GameTimeLastToggledSurrender >= 500)
-        {
-            //EntryPoint.WriteToConsoleTestLong($"Surrender Toggle START {IsToggled}");
-            if (HandsAreUp)
-            {
-                if (!Player.IsBusted)
-                {
-                    IsToggled = false;
-                    LowerHands();
-
-                }
-            }
-            else if (IsWavingHands)
-            {
-                IsToggled = false;
-                LowerHands();
-
-            }
-            else
-            {
-                if (CanSurrender)
-                {
-                    RaiseHands();
-                    IsToggled = true;
-                }
-                else if (CanWaveHands)
-                {
-                    WaveHands();
-                    IsToggled = true;
-                }
-            }
-            //EntryPoint.WriteToConsoleTestLong($"Surrender Toggle END {IsToggled}");
-            GameTimeLastToggledSurrender = Game.GameTime;
-        }
+        NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
+        Player.ActivityManager.IsPerformingActivity = false;
+        Player.ActivityManager.IsWavingHands = false;
     }
 }

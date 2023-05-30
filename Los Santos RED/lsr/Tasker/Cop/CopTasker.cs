@@ -306,7 +306,7 @@ public class CopTasker
         if (Cop.CurrentTask?.Name != "Investigate")
         {
             // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Investigate", 3);
-            Cop.CurrentTask = new PoliceGeneralInvestigate(Cop, Cop, Player, World, null, PlacesOfInterest, Settings, Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringInvestigate, Cop);//Cop.CurrentTask = new Investigate(Cop, Player, Settings, World);
+            Cop.CurrentTask = new PoliceGeneralInvestigate(Cop, Cop, Player, World, null, PlacesOfInterest, Settings, Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringInvestigate, Cop, true);//Cop.CurrentTask = new Investigate(Cop, Player, Settings, World);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
             Cop.CurrentTask.Start();
@@ -318,7 +318,7 @@ public class CopTasker
         {
             // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
             //Cop.CurrentTask = new Idle(Cop, Player, World, PlacesOfInterest, Cop);
-            Cop.CurrentTask = new GeneralIdle(Cop, Cop, Player, World, World.Vehicles.PoliceVehicleList, PlacesOfInterest, Settings, Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringIdle, true ,Settings.SettingsManager.PoliceTaskSettings.AllowSettingSirenState, true);
+            Cop.CurrentTask = new GeneralIdle(Cop, Cop, Player, World, World.Vehicles.PoliceVehicleList, PlacesOfInterest, Settings, Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringIdle, true ,Settings.SettingsManager.WorldSettings.AllowSettingSirenState, true);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
             Cop.CurrentTask.Start();

@@ -95,6 +95,9 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public float SeeBehindDistanceStealth { get; set; }
     public float SeeBehindDistanceRegular { get; set; }
 
+
+
+
     public PlayerOtherSettings()
     {
         SetDefault();

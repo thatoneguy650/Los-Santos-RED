@@ -104,7 +104,7 @@ public class HealthState
             if(MyPed.Pedestrian.IsDead)
             {
                 HasLoggedDeath = true;//need to check once after the ped died to see who killed them, butr checking more is wasteful
-                MyPed.OnDeath();
+                MyPed.OnDeath(CurrentPlayer);
                 FlagDamage(CurrentPlayer);
                 return;
             }
@@ -130,13 +130,13 @@ public class HealthState
                 }
                 if(Settings.SettingsManager.DamageSettings.AllowAIUnconsciousOnDamage && Health > Settings.SettingsManager.DamageSettings.AIUnconsciousOnDamageAliveHealth && !MyPed.IsUnconscious && (Health <= Settings.SettingsManager.DamageSettings.AIUnconsciousOnDamageMinimumHealth || Health - prevHealth >= Settings.SettingsManager.DamageSettings.AIUnconsciousOnDamageMinimumHealthChange) && RandomItems.RandomPercent(Settings.SettingsManager.DamageSettings.AIUnconsciousOnDamagePercentage))// && RandomItems.RandomPercent(40))
                 {
-                    SetUnconscious();
+                    SetUnconscious(CurrentPlayer);
                 }
                 else if (Settings.SettingsManager.DamageSettings.AllowAIUnconsciousOnStun && MyPed.Pedestrian.Exists() && MyPed.Pedestrian.IsStunned 
                     && //!MyPed.PedViolations.IsCurrentlyViolatingAnyCrimes && 
                     RandomItems.RandomPercent(Settings.SettingsManager.DamageSettings.AIUnconsciousOnStunPercentage))
                 {
-                    SetUnconscious();
+                    SetUnconscious(CurrentPlayer);
                 }
                 if(Settings.SettingsManager.DamageSettings.AllowAIPainYells && (HurtByPed || HurtByVehicle) && !MyPed.IsUnconscious && Health - prevHealth >= Settings.SettingsManager.DamageSettings.AIPainYellsDamageNeeded && MyPed.HasExistedFor >= 4000 && Game.GameTime - GameTimeLastYelledInPain >= 5000)
                 {
@@ -228,18 +228,23 @@ public class HealthState
         NativeFunction.Natives.REVIVE_INJURED_PED(MyPed.Pedestrian);
         MyPed.Pedestrian.Health = MyPed.Pedestrian.MaxHealth;
     }
-    private void SetUnconscious()
+
+
+    public void SetUnconscious(IPoliceRespondable CurrentPlayer)
     {
-        if(MyPed.Pedestrian.Exists())
+        if (MyPed.Pedestrian.Exists())
         {
             MyPed.CanBeAmbientTasked = false;
             MyPed.CanBeTasked = false;
             MyPed.YellInPain(true);
             MyPed.IsUnconscious = true;
+            MyPed.OnUnconscious(CurrentPlayer);
             NativeFunction.Natives.SET_PED_TO_RAGDOLL(MyPed.Pedestrian, -1, -1, 0, true, true, false);
             //EntryPoint.WriteToConsole($"HEALTHSTATE SetUnconscious {MyPed.Pedestrian.Handle} GameTimeLastInjured {MyPed.GameTimeLastInjured} Health {Health}");
         }
     }
+
+
     private void FlagDamage(IPoliceRespondable CurrentPlayer)
     {
         if(CurrentPlayer == null || !MyPed.Pedestrian.Exists())//only flag the player we want to have the damage

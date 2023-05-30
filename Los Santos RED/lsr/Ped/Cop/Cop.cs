@@ -181,6 +181,11 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             PedAlerts.AddHeardGunfire(policeRespondable.Position);
         }
+        if(policeRespondable.ActivityManager.IsWavingHands && (DistanceToPlayer <= 75f || CanSeePlayer))
+        {
+            PedAlerts.AddHeardHelpCry(policeRespondable.Position);
+        }
+
     }
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
@@ -393,6 +398,41 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                 }
             }, "Ped Shooting Checker");
         }
+    }
+
+
+    public override void OnDeath(IPoliceRespondable policeRespondable)
+    {
+        AddPossibleMIA(policeRespondable);
+        base.OnDeath(policeRespondable);
+    }
+    public override void OnUnconscious(IPoliceRespondable policeRespondable)
+    {
+        AddPossibleMIA(policeRespondable);
+        base.OnUnconscious(policeRespondable);
+    }
+    private void AddPossibleMIA(IPoliceRespondable policeRespondable)
+    {
+        if (policeRespondable.IsWanted && policeRespondable.PoliceResponse.WantedLevelHasBeenRadioedIn)
+        {
+            EntryPoint.WriteToConsole($"AddPossibleMIA {Handle} WANTED FAIL");
+            return;
+        }
+        if(PedAlerts.IsAlerted)
+        {
+            if(!RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.OfficerMIAStartPercentage_Alterted))
+            {
+                EntryPoint.WriteToConsole($"AddPossibleMIA {Handle} IsAlerted{PedAlerts.IsAlerted} PERCENTAGE FAIL");
+                return;
+            }
+        }
+        else if (!RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.OfficerMIAStartPercentage_Regular))
+        {
+            EntryPoint.WriteToConsole($"AddPossibleMIA {Handle} IsAlerted{PedAlerts.IsAlerted} PERCENTAGE FAIL");
+            return;
+        }
+        policeRespondable.OfficerMIAWatcher.AddMIA(this, Position);
+        EntryPoint.WriteToConsole($"AddPossibleMIA {Handle} IsAlerted{PedAlerts.IsAlerted}");
     }
     //public void AddDivision(string forceGroupName)
     //{

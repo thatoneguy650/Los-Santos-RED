@@ -86,6 +86,20 @@ public class WorldSettings : ISettingsDefaultable
 
 
 
+    public uint DeadBodyAlertTimeout { get; set; }
+    public uint GunshotAlertTimeout { get; set; }
+
+    public uint HelpCryAlertTimeout { get; set; }
+
+    public float OfficerMIACallInExpireDistance { get; set; }
+    public float OfficerMIACallInDistance { get; set; }
+    public uint OfficerMIACallInTime { get; set; }
+    public bool AllowOfficerMIACallIn { get; set; }
+    public float OfficerMIAStartPercentage_Alterted { get; set; }
+    public float OfficerMIAStartPercentage_Regular { get; set; }
+
+    [Description("If enabled, LSR set the siren state for any vehicle an AI Cop is in.")]
+    public bool AllowSettingSirenState { get; set; }
 
 
     public WorldSettings()
@@ -125,6 +139,18 @@ public class WorldSettings : ISettingsDefaultable
         AirportsRequireLicenseForPrivateFlights = true;
         AllowSettingDistantSirens = true;
         OutOfStateRandomVehiclePlatesPercent = 90f;
+        DeadBodyAlertTimeout = 25000;
+        GunshotAlertTimeout = 35000;
+        HelpCryAlertTimeout = 20000;
+
+        OfficerMIACallInExpireDistance = 200f;
+
+        OfficerMIACallInDistance = 150f;
+        OfficerMIACallInTime = 45000;
+        AllowOfficerMIACallIn = true;
+        AllowSettingSirenState = true;
+        OfficerMIAStartPercentage_Alterted = 80f;
+        OfficerMIAStartPercentage_Regular = 40f;
     }
 
 }

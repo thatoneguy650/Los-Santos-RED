@@ -28,5 +28,7 @@ namespace LosSantosRED.lsr.Interface
         void TreatAsCop();
         void BecomeGangMember(Gang selectedItem);
         void BecomeCreatorPed();
+        void BecomeEMT(Agency selectedItem);
+        void BecomeFireFighter(Agency selectedItem);
     }
 }

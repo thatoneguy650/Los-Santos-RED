@@ -33,6 +33,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsTransacting { get; set; }
         Stance Stance { get; }
         bool IsShowingActionWheel { get; }
+
+        void PlaySpeech(string v1, bool v2);
         void SetAngeredCop();
     }
 }

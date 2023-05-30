@@ -211,6 +211,10 @@ public class Weapons : IWeapons
         WeaponsList.Add(new WeaponInformation("weapon_battleaxe", 0, WeaponCategory.Melee, 0, 3441901897, false, false, true) { IsRegular = false });
         WeaponsList.Add(new WeaponInformation("weapon_poolcue", 0, WeaponCategory.Melee, 0, 0x94117305, false, false, true));
         WeaponsList.Add(new WeaponInformation("weapon_stone_hatchet", 0, WeaponCategory.Melee, 0, 0x3813FC08, false, false, true) { IsRegular = false });
+
+
+        WeaponsList.Add(new WeaponInformation("weapon_fireextinguisher", 0, WeaponCategory.Melee, 0, 0x060EC506, false, false, true) { SelectorOptions = SelectorOptions.FullAuto | SelectorOptions.Safe, IsRegular = false });
+
     }
     private void DefaultConfig_Pistol()
     {

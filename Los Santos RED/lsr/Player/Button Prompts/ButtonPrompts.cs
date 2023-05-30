@@ -203,6 +203,16 @@ public class ButtonPrompts
             AddPrompt("Search", $"Search {Player.CurrentLookedAtPed.FormattedName}", $"Search {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1);
         }
     }
+    private void PersonTreatingPrompts()
+    {
+        RemovePrompts("InteractableLocation");
+        RemovePrompts("StartScenario");
+        if (!HasPrompt($"Treat {Player.CurrentLookedAtPed.Handle}"))
+        {
+            RemovePrompts("Treat");
+            AttemptAddPrompt("Treat", $"Treat {Player.CurrentLookedAtPed.FormattedName}", $"Treat {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 3);
+        }
+    }
     private void PersonDraggingPrompts()
     {
         RemovePrompts("InteractableLocation");
@@ -210,7 +220,7 @@ public class ButtonPrompts
         if (!HasPrompt($"Drag {Player.CurrentLookedAtPed.Handle}"))
         {
             RemovePrompts("Drag");
-            AddPrompt("Drag", $"Drag {Player.CurrentLookedAtPed.FormattedName}", $"Drag {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 2);
+            AttemptAddPrompt("Drag", $"Drag {Player.CurrentLookedAtPed.FormattedName}", $"Drag {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 2);
         }
     }
     private void PersonGrabPrompts()
@@ -223,17 +233,6 @@ public class ButtonPrompts
             AddPrompt("Grab", $"Grab {Player.CurrentLookedAtPed.FormattedName}", $"Grab {Player.CurrentLookedAtPed.Handle}", (GameControl)Settings.SettingsManager.KeySettings.GrabPedGameControl, 999);
         }
     }
-    //private void PersonHoldUpPrompts()
-    //{
-    //    RemovePrompts("InteractableLocation");
-    //    RemovePrompts("StartScenario");
-    //    if (!HasPrompt($"HoldUp {Player.CurrentLookedAtPed.Handle}"))
-    //    {
-    //        RemovePrompts("HoldUp");
-    //        AddPrompt("HoldUp", $"HoldUp {Player.CurrentLookedAtPed.FormattedName}", $"HoldUp {Player.CurrentLookedAtPed.Handle}", (GameControl)Settings.SettingsManager.KeySettings.GrabPedGameControl, 999);
-    //    }
-    //}
-
     private void LocationInteractingPrompts()
     {
         RemovePrompts("StartConversation");
@@ -242,7 +241,8 @@ public class ButtonPrompts
         RemovePrompts("Search");
         RemovePrompts("Drag");//new
         RemovePrompts("Grab");//new
-        if(!HasPrompt($"{Player.ClosestInteractableLocation.ButtonPromptText}"))
+        RemovePrompts("Treat");//new
+        if (!HasPrompt($"{Player.ClosestInteractableLocation.ButtonPromptText}"))
         {
             RemovePrompts("InteractableLocation");
             AddPrompt("InteractableLocation", $"{Player.ClosestInteractableLocation.ButtonPromptText}", $"{Player.ClosestInteractableLocation.ButtonPromptText}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
@@ -257,6 +257,7 @@ public class ButtonPrompts
         RemovePrompts("Search");
         RemovePrompts("Drag");//new
         RemovePrompts("Grab");//new
+        RemovePrompts("Treat");//new
         if (!HasPrompt($"StartScenario"))
         {
             RemovePrompts("StartScenario");
@@ -380,6 +381,15 @@ public class ButtonPrompts
             else
             {
                 Prompts.RemoveAll(x => x.Group == "Search");
+            }
+            if (Player.ActivityManager.CanReviveLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedReiving)
+            {
+                PersonTreatingPrompts();
+                addedPromptGroup = true;
+            }
+            else
+            {
+                Prompts.RemoveAll(x => x.Group == "Treat");
             }
             if (Player.ActivityManager.CanDragLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowDraggingOtherPeds)
             {

@@ -149,7 +149,7 @@ public class SecurityGuardBrain : PedBrain
         if (SecurityGuard.CurrentTask?.Name != "Investigate")
         {
             // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Investigate", 3);
-            SecurityGuard.CurrentTask = new PoliceGeneralInvestigate(SecurityGuard, SecurityGuard, Player, World, null, PlacesOfInterest, Settings, Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringInvestigate, SecurityGuard);//Cop.CurrentTask = new Investigate(Cop, Player, Settings, World);
+            SecurityGuard.CurrentTask = new PoliceGeneralInvestigate(SecurityGuard, SecurityGuard, Player, World, null, PlacesOfInterest, Settings, Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringInvestigate, SecurityGuard, true);//Cop.CurrentTask = new Investigate(Cop, Player, Settings, World);
             SecurityGuard.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
             SecurityGuard.CurrentTask.Start();

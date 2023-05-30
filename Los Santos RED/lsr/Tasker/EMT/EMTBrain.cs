@@ -121,7 +121,7 @@ public class EMTBrain : PedBrain
         //}
         if (EMT.CurrentTask?.Name != "Investigate")
         {
-            EMT.CurrentTask = new ServiceGeneralInvestigate(EMT, EMT, Player, World, null, PlacesOfInterest, Settings, false, null);//Cop.CurrentTask = new Investigate(Cop, Player, Settings, World);
+            EMT.CurrentTask = new EMSGeneralInvestigate(EMT, EMT, Player, World, null, PlacesOfInterest, Settings, false, null, false);//Cop.CurrentTask = new Investigate(Cop, Player, Settings, World);
             GameFiber.Yield();//TR Added back 4
             EMT.CurrentTask.Start();
         }

@@ -42,7 +42,7 @@ public class DebugMenu : ModUIMenu
     private IModItems ModItems;
     private ICrimes Crimes;
     private INameProvideable Names;
-
+    private IPoliceRespondable PoliceRespondable;
     private IPlateTypes PlateTypes;
     private ModDataFileManager ModDataFileManager;
 
@@ -57,7 +57,7 @@ public class DebugMenu : ModUIMenu
     private bool isHidingHelp;
 
     public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, 
-        IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems, ICrimes crimes, IPlateTypes plateTypes, INameProvideable names, ModDataFileManager modDataFileManager)
+        IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems, ICrimes crimes, IPlateTypes plateTypes, INameProvideable names, ModDataFileManager modDataFileManager, IPoliceRespondable policeRespondable)
     {
         Gangs = gangs;
         Dispatcher = dispatcher;
@@ -76,6 +76,7 @@ public class DebugMenu : ModUIMenu
         PlateTypes = plateTypes;
         Names = names;
         ModDataFileManager = modDataFileManager;
+        PoliceRespondable = policeRespondable;
         Debug = new UIMenu("Debug", "Debug Settings");
         Debug.SetBannerType(EntryPoint.LSRedColor);
         menuPool.Add(Debug);      
@@ -1598,6 +1599,21 @@ new YmapDisabler("manhat01",true),
 
         //VehicleShowcase
 
+
+        UIMenuItem SetNearestPedUnconscious = new UIMenuItem("Set Unconscious", "Set the nearest ped as unconscious.");
+        SetNearestPedUnconscious.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+            PedExt toGet = World.Pedestrians.CivilianList.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            if(toGet == null)
+            {
+                return;
+            }
+            toGet.CurrentHealthState.SetUnconscious(PoliceRespondable);
+        };
+        HelperMenuItem.AddItem(SetNearestPedUnconscious);
+
+
     }
     private void CreateTimeMenu()
     {
@@ -1736,15 +1752,15 @@ new YmapDisabler("manhat01",true),
         UIMenuListScrollerItem<Agency> SpawnAgencyFoot = new UIMenuListScrollerItem<Agency>("Agency Random On-Foot Spawn", "Spawn a random agency ped on foot", Agencies.GetAgencies());
         SpawnAgencyFoot.Activated += (menu, item) =>
         {
-            if (SpawnAgencyFoot.SelectedItem.Classification == Classification.EMS)
+            if (SpawnAgencyFoot.SelectedItem.ResponseType == ResponseType.EMS)
             {
                 Dispatcher.DebugSpawnEMT(SpawnAgencyFoot.SelectedItem.ID, true, false);
             }
-            else if (SpawnAgencyFoot.SelectedItem.Classification == Classification.Fire)
+            else if (SpawnAgencyFoot.SelectedItem.ResponseType == ResponseType.Fire)
             {
                 Dispatcher.DebugSpawnFire(SpawnAgencyFoot.SelectedItem.ID, true, false);
             }
-            else if (SpawnAgencyFoot.SelectedItem.Classification == Classification.Security)
+            else if (SpawnAgencyFoot.SelectedItem.ResponseType == ResponseType.Security)
             {
                 Dispatcher.DebugSpawnSecurityGuard(SpawnAgencyFoot.SelectedItem.ID, true, false);
             }
@@ -1757,15 +1773,15 @@ new YmapDisabler("manhat01",true),
         UIMenuListScrollerItem<Agency> SpawnAgencyVehicle = new UIMenuListScrollerItem<Agency>("Agency Random Vehicle Spawn", "Spawn a random agency ped with a vehicle", Agencies.GetAgencies());
         SpawnAgencyVehicle.Activated += (menu, item) =>
         {
-            if (SpawnAgencyVehicle.SelectedItem.Classification == Classification.EMS)
+            if (SpawnAgencyVehicle.SelectedItem.ResponseType == ResponseType.EMS)
             {
                 Dispatcher.DebugSpawnEMT(SpawnAgencyVehicle.SelectedItem.ID, false, false);
             }
-            else if (SpawnAgencyVehicle.SelectedItem.Classification == Classification.Fire)
+            else if (SpawnAgencyVehicle.SelectedItem.ResponseType == ResponseType.Fire)
             {
                 Dispatcher.DebugSpawnFire(SpawnAgencyVehicle.SelectedItem.ID, false, false);
             }
-            else if (SpawnAgencyVehicle.SelectedItem.Classification == Classification.Security)
+            else if (SpawnAgencyVehicle.SelectedItem.ResponseType == ResponseType.Security)
             {
                 Dispatcher.DebugSpawnSecurityGuard(SpawnAgencyVehicle.SelectedItem.ID, false, false);
             }
@@ -1778,15 +1794,15 @@ new YmapDisabler("manhat01",true),
         UIMenuListScrollerItem<Agency> SpawnEmptyAgencyVehicle = new UIMenuListScrollerItem<Agency>("Agency Random Empty Vehicle Spawn", "Spawn a random agency empty vehicle", Agencies.GetAgencies());
         SpawnEmptyAgencyVehicle.Activated += (menu, item) =>
         {
-            if (SpawnEmptyAgencyVehicle.SelectedItem.Classification == Classification.EMS)
+            if (SpawnEmptyAgencyVehicle.SelectedItem.ResponseType == ResponseType.EMS)
             {
                 Dispatcher.DebugSpawnEMT(SpawnEmptyAgencyVehicle.SelectedItem.ID, false, true);
             }
-            else if (SpawnEmptyAgencyVehicle.SelectedItem.Classification == Classification.Fire)
+            else if (SpawnEmptyAgencyVehicle.SelectedItem.ResponseType == ResponseType.Fire)
             {
                 Dispatcher.DebugSpawnFire(SpawnEmptyAgencyVehicle.SelectedItem.ID, false, true);
             }
-            else if (SpawnAgencyVehicle.SelectedItem.Classification == Classification.Security)
+            else if (SpawnAgencyVehicle.SelectedItem.ResponseType == ResponseType.Security)
             {
                 Dispatcher.DebugSpawnSecurityGuard(SpawnEmptyAgencyVehicle.SelectedItem.ID, false, true);
             }

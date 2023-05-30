@@ -394,7 +394,7 @@ public class Roadblock
                 CreatedRoadblockVehicles.Add(created.Vehicle);
                 created.Vehicle.IsCollisionEnabled = true;
                 created.Vehicle.IsGravityDisabled = false;
-                if (Settings.SettingsManager.PoliceTaskSettings.AllowSettingSirenState)
+                if (Settings.SettingsManager.WorldSettings.AllowSettingSirenState)
                 {
                     created.Vehicle.IsSirenOn = true;
                     created.Vehicle.IsSirenSilent = true;

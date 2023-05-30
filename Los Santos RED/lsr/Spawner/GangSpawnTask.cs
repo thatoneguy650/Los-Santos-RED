@@ -5,6 +5,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Linq;
+using System.Security.Permissions;
 
 public class GangSpawnTask : SpawnTask
 {
@@ -61,95 +62,7 @@ public class GangSpawnTask : SpawnTask
             Cleanup(true);
         }
     }
-    private void AddPassengers()
-    {
-        //EntryPoint.WriteToConsole($"SPAWN TASK: OccupantsToAdd {OccupantsToAdd}");
-        for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
-        {
-            string requiredGroup = "";
-            if (VehicleType != null)
-            {
-                requiredGroup = VehicleType.RequiredPedGroup;
-            }
-            if (Gang != null)
-            {
-                PersonType = Gang.GetRandomPed(World.TotalWantedLevel, requiredGroup);
-            }
-            if (PersonType != null)
-            {
-                PedExt Passenger = CreatePerson();
-                if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)
-                {
-                    PutPedInVehicle(Passenger, OccupantIndex - 1);
-                }
-                else
-                {
-                    Cleanup(false);
-                }
-            }
-            GameFiber.Yield();
-        }
-    }
-    private void AttemptPersonOnlySpawn()
-    {
-        CreatePerson();
-        if (HasGang && AllowBuddySpawn)
-        {
-            int BuddiesToSpawn = RandomItems.MyRand.Next(1, 2 + 1) - 1;
-            for (int BuddyIndex = 1; BuddyIndex <= BuddiesToSpawn; BuddyIndex++)
-            {
-                PersonType = Gang.GetRandomPed(World.TotalWantedLevel, "");
-                if (PersonType != null)
-                {
-                    PedExt Buddy = CreatePerson();
-                    //EntryPoint.WriteToConsole($"SpawnTask: Adding Buddy To Gang Spawn", 5);
-                }
-            }
-        }
-    }
-    private void AttemptVehicleSpawn()
-    {
-        LastCreatedVehicle = CreateVehicle();
-        if (LastCreatedVehicleExists)
-        {
-            if (HasPersonToSpawn)
-            {
-                PedExt Person = CreatePerson();
-                if (Person != null && Person.Pedestrian.Exists() && LastCreatedVehicleExists)
-                {
-                    PutPedInVehicle(Person, -1);
-                    if (WillAddPassengers)
-                    {
-                        AddPassengers();
-                    }
-                }
-                else
-                {
-                    Cleanup(true);
-                }
-            }
-        }
-    }
-    private void Cleanup(bool includePeople)
-    {
-        if (LastCreatedVehicle != null && LastCreatedVehicle.Vehicle.Exists())
-        {
-            LastCreatedVehicle.Vehicle.Delete();
-            EntryPoint.WriteToConsole($"GangSpawn: ERROR DELETED VEHICLE", 0);
-        }
-        if (includePeople)
-        {
-            foreach (PedExt person in CreatedPeople)
-            {
-                if (person != null && person.Pedestrian.Exists())
-                {
-                    person.Pedestrian.Delete();
-                    EntryPoint.WriteToConsole($"GangSpawn: ERROR DELETED PED", 0);
-                }
-            }
-        }
-    }
-    private PedExt CreatePerson()
+    protected override PedExt CreatePerson()
     {
         try
         {
@@ -184,7 +97,7 @@ public class GangSpawnTask : SpawnTask
             return null;
         }
     }
-    private VehicleExt CreateVehicle()
+    protected override VehicleExt CreateVehicle()
     {
         try
         {
@@ -234,13 +147,6 @@ public class GangSpawnTask : SpawnTask
             GameFiber.Yield();
             return null;
         }
-    }
-    private void PutPedInVehicle(PedExt Person, int seat)
-    {
-        Person.Pedestrian.WarpIntoVehicle(LastCreatedVehicle.Vehicle, seat);
-        Person.AssignedVehicle = LastCreatedVehicle;
-        Person.AssignedSeat = seat;
-        Person.UpdateVehicleState();
     }
     private void Setup()
     {
@@ -292,5 +198,12 @@ public class GangSpawnTask : SpawnTask
         ped.MaxHealth = DesiredHealth;
         ped.Health = DesiredHealth;
         ped.Armor = DesiredArmor;
+    }
+    protected override void GetNewPersonType(string requiredGroup)
+    {
+        if (Gang != null)
+        {
+            PersonType = Gang.GetRandomPed(World.TotalWantedLevel, requiredGroup);
+        }
     }
 }

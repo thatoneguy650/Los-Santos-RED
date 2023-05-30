@@ -24,6 +24,7 @@ namespace LosSantosRED.lsr
         private Vector3 prevPlacePoliceShouldSearchForPlayer;
         private Vector3 prevPlacePoliceLastSeenPlayer;
 
+
         public Police(IEntityProvideable world, IPoliceRespondable currentPlayer, IPerceptable perceptable, ISettingsProvideable settings, IItemEquipable itemEquipablePlayer, ITimeReportable time)
         {
             World = world;
@@ -133,7 +134,6 @@ namespace LosSantosRED.lsr
             UpdateWantedItems();
             NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Player.PlacePoliceLastSeenPlayer.X, Player.PlacePoliceLastSeenPlayer.Y, Player.PlacePoliceLastSeenPlayer.Z);
         }
-
         private void RecognitionLoop()
         {
             bool anyPoliceCanSeePlayer = false;
@@ -198,26 +198,37 @@ namespace LosSantosRED.lsr
             //        Player.AnyPoliceRecentlySeenPlayer = true;
             //    }
             //}
-
-            if (Player.CurrentLocation.IsInside && (Player.AnyPoliceRecentlySeenPlayer || Player.SearchMode.IsInActiveMode))
+            HandleInteriorKnowledge();
+            if (Player.AnyPoliceRecentlySeenPlayer || Player.AnyPoliceKnowInteriorLocation)
+            {
+                Player.PoliceLastSeenOnFoot = Player.IsOnFoot;
+            }
+        }
+        private void HandleInteriorKnowledge()
+        {
+            if (Settings.SettingsManager.PoliceSettings.AllowBreachingLogic && Player.CurrentLocation.IsInside && (Player.AnyPoliceRecentlySeenPlayer || Player.SearchMode.IsInActiveMode))
             {
                 Player.AnyPoliceKnowInteriorLocation = true;
             }
-
-            if ((Player.CurrentLocation.TimeOutside >= 10000 && Player.ClosestPoliceDistanceToPlayer >= 100f) || Player.CurrentLocation.TimeOutside >= 25000 || Player.PlacePolicePhysicallyLastSeenPlayer.DistanceTo(Player.Position) >= 200f)
+            if (Player.AnyPoliceKnowInteriorLocation)
             {
-                Player.AnyPoliceKnowInteriorLocation = false;
+                if(Player.CurrentLocation.TimeOutside >= Settings.SettingsManager.PoliceSettings.BreachingExipireTimeOutsideWithMinDistance && Player.ClosestPoliceDistanceToPlayer >= Settings.SettingsManager.PoliceSettings.BreachingExipireDistanceOutsideWithMinDistance)// || Player.CurrentLocation.TimeOutside >= 25000 || Player.PlacePolicePhysicallyLastSeenPlayer.DistanceTo(Player.Position) >= 200f)
+                {
+                    Player.AnyPoliceKnowInteriorLocation = false;
+                }
+                else if(Player.CurrentLocation.TimeOutside >= Settings.SettingsManager.PoliceSettings.BreachingExpireTimeOutsideOnly)
+                {
+                    Player.AnyPoliceKnowInteriorLocation = false;
+                }
+                else if (Player.PlacePolicePhysicallyLastSeenPlayer.DistanceTo(Player.Position) >= Settings.SettingsManager.PoliceSettings.BreachingExpireTimeDistanceOnly)
+                {
+                    Player.AnyPoliceKnowInteriorLocation = false;
+                }
             }
-
             if (PrevAnyPoliceKnowInteriorLocation != Player.AnyPoliceKnowInteriorLocation)
             {
                 //EntryPoint.WriteToConsoleTestLong($"AnyPoliceKnowInteriorLocation changed to {Player.AnyPoliceKnowInteriorLocation}");
                 PrevAnyPoliceKnowInteriorLocation = Player.AnyPoliceKnowInteriorLocation;
-            }
-
-            if (Player.AnyPoliceRecentlySeenPlayer || Player.AnyPoliceKnowInteriorLocation)
-            {
-                Player.PoliceLastSeenOnFoot = Player.IsOnFoot;
             }
         }
         private void UpdateWantedItems()
@@ -269,8 +280,6 @@ namespace LosSantosRED.lsr
                 Player.CurrentVehicle.UpdateDescription();
             }
         }
-
-
         private void DeterimineInterestedLocation()
         {
             if (Player.SearchMode.IsInStartOfSearchMode)

@@ -27,7 +27,6 @@ namespace LosSantosRED.lsr
         private ITimeReportable Time;
         private IEntityProvideable World;
         private HashSet<Crime> GracePeriodCrimes = new HashSet<Crime>();
-
         private enum PoliceState
         {
             Normal = 0,
@@ -42,16 +41,7 @@ namespace LosSantosRED.lsr
         public uint HasBeenAtCurrentWantedLevelFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimeWantedLevelStarted;
         public uint HasBeenNotWantedFor => Player.WantedLevel != 0 || GameTimeLastWantedEnded == 0 ? 0 : Game.GameTime - GameTimeLastWantedEnded;
         public uint HasBeenWantedFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimeWantedStarted;
-
-
-      //  public bool WantedCanResetOnNoViolationSeen => Settings.SettingsManager.PoliceSettings.AllowLosingWantedByKillingBeforeRadio && HasBeenWantedFor <= Settings.SettingsManager.PoliceSettings.RadioInTime;
-
-
         public bool WantedLevelHasBeenRadioedIn { get; private set; } = false;
-
-
-
-
         public bool HasObservedCrimes => CrimesObserved.Any();
         public bool IsDeadlyChase => CurrentPoliceState == PoliceState.DeadlyChase;
         public bool IsWeaponsFree { get; set; }
@@ -641,7 +631,6 @@ namespace LosSantosRED.lsr
             GracePeriodCrimes.Clear();
             //EntryPoint.WriteToConsoleTestLong("ResetGracePeriod");
         }
-
         private void ResetWanted()
         {
             EntryPoint.WriteToConsole("Cops Did Not Radio In, Resetting Wanted");
@@ -672,7 +661,6 @@ namespace LosSantosRED.lsr
                 EntryPoint.WriteToConsole($"STARTING INVESTIGATION {crime.ID}");
             }
         }
-
         public void RadioInWanted()
         {
             WantedLevelHasBeenRadioedIn = true;
