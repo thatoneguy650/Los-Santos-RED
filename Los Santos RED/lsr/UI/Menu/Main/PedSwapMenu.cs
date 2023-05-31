@@ -27,6 +27,7 @@ public class PedSwapMenu : ModUIMenu
     private UIMenuItem BecomeCustomPed2;
     private UIMenuListScrollerItem<Agency> SetAsEMT;
     private UIMenuListScrollerItem<Agency> SetAsFireFighter;
+    private UIMenuListScrollerItem<Agency> SetAsSecurity;
 
     public PedSwapMenu(MenuPool menuPool, UIMenu parentMenu, IPedSwap pedSwap, IGangs gangs, IAgencies agencies)
     {
@@ -117,17 +118,23 @@ public class PedSwapMenu : ModUIMenu
         };
         PedSwapUIMenu.AddItem(SetAsGangMember);
 
-        SetAsCop = new UIMenuListScrollerItem<Agency>("Become Cop", "Become a random ~r~cop~s~ from the selected agency. ~r~WIP~s~ Functionality will be expanded later", Agencies.GetAgencies().Where(x=> x.ResponseType == ResponseType.LawEnforcement));
+        SetAsCop = new UIMenuListScrollerItem<Agency>("Become Cop", "Become a random ~b~Police Officer~s~ from the selected agency. ~r~WIP~s~ Functionality will be expanded later", Agencies.GetAgencies().Where(x=> x.ResponseType == ResponseType.LawEnforcement));
         SetAsCop.Activated += (menu, item) =>
         {
             PedSwap.BecomeCop(SetAsCop.SelectedItem);
             PedSwapUIMenu.Visible = false;
         };
-#if DEBUG
         PedSwapUIMenu.AddItem(SetAsCop);
-#endif
 
-        SetAsEMT = new UIMenuListScrollerItem<Agency>("Become EMT", "Become a random ~r~EMT~s~ from the selected agency. ~r~WIP~s~ Functionality will be expanded later", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.EMS));
+        SetAsSecurity = new UIMenuListScrollerItem<Agency>("Become Security", "Become a random ~y~Security Guard~s~ from the selected agency. ~r~WIP~s~ Functionality will be expanded later", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.Security));
+        SetAsSecurity.Activated += (menu, item) =>
+        {
+            PedSwap.BecomeSecurity(SetAsSecurity.SelectedItem);
+            PedSwapUIMenu.Visible = false;
+        };
+        PedSwapUIMenu.AddItem(SetAsSecurity);
+
+        SetAsEMT = new UIMenuListScrollerItem<Agency>("Become EMT", "Become a random ~w~EMT~s~ from the selected agency. ~r~WIP~s~ Functionality will be expanded later", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.EMS));
         SetAsEMT.Activated += (menu, item) =>
         {
             PedSwap.BecomeEMT(SetAsEMT.SelectedItem);

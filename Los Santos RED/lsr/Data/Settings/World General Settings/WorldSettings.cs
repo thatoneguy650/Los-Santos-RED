@@ -87,6 +87,7 @@ public class WorldSettings : ISettingsDefaultable
 
 
     public uint DeadBodyAlertTimeout { get; set; }
+    public uint UnconsciousBodyAlertTimeout { get; set; }
     public uint GunshotAlertTimeout { get; set; }
 
     public uint HelpCryAlertTimeout { get; set; }
@@ -140,6 +141,7 @@ public class WorldSettings : ISettingsDefaultable
         AllowSettingDistantSirens = true;
         OutOfStateRandomVehiclePlatesPercent = 90f;
         DeadBodyAlertTimeout = 25000;
+        UnconsciousBodyAlertTimeout = 25000;
         GunshotAlertTimeout = 35000;
         HelpCryAlertTimeout = 20000;
 

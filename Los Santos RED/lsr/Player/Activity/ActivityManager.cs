@@ -73,12 +73,25 @@ public class ActivityManager
     public bool CanConverseWithLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && Player.CurrentLookedAtPed.CanConverse && !Player.RelationshipManager.GangRelationships.IsHostile(Player.CurrentLookedAtGangMember?.Gang) && (!Player.CurrentLookedAtPed.IsCop || (Player.IsNotWanted && !Player.Investigation.IsActive)) && CanConverse;
    
     
-   // public bool CanConverseWithPed(PedExt ped) => ped != null && Player.CurrentTargetedPed == null && ped.CanConverse && !Player.RelationshipManager.GangRelationships.IsHostile(Player.CurrentLookedAtGangMember?.Gang) && (!ped.IsCop || (Player.IsNotWanted && !Player.Investigation.IsActive)) && CanConverse;
 
 
+    public bool CanGrabLookedAtPed => Player.CurrentLookedAtPed != null && 
+        Player.CurrentTargetedPed == null && 
+        CanGrabPed && 
+        !Player.CurrentLookedAtPed.IsInVehicle && 
+        !Player.CurrentLookedAtPed.IsUnconscious && 
+        !Player.CurrentLookedAtPed.IsDead && 
+        Player.CurrentLookedAtPed.DistanceToPlayer <= 5.0f && 
+        Player.CurrentLookedAtPed.Pedestrian.Exists() && 
+        Player.CurrentLookedAtPed.Pedestrian.IsThisPedInFrontOf(Player.Character) && 
+        !Player.Character.IsThisPedInFrontOf(Player.CurrentLookedAtPed.Pedestrian);
 
-    public bool CanTakeHostageWithLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && CanTakeHostage && !Player.CurrentLookedAtPed.IsInVehicle && !Player.CurrentLookedAtPed.IsUnconscious && !Player.CurrentLookedAtPed.IsDead && Player.CurrentLookedAtPed.DistanceToPlayer <= 5.0f && Player.CurrentLookedAtPed.Pedestrian.Exists() && Player.CurrentLookedAtPed.Pedestrian.IsThisPedInFrontOf(Player.Character) && !Player.Character.IsThisPedInFrontOf(Player.CurrentLookedAtPed.Pedestrian);
-    public bool CanTakeHostage => !Player.IsCop && !Player.IsInVehicle && !Player.IsIncapacitated && !IsLootingBody && !IsTreatingPed && !IsDancing && !IsHoldingHostage && Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon.CanPistolSuicide;
+    public bool CanGrabPed =>
+        CanPerformActivitiesOnFoot &&
+        !IsPerformingActivity && 
+        (Player.CanBustPeds || Player.WeaponEquipment.CurrentWeapon?.CanPistolSuicide == true);
+
+
     public bool CanHoldUpTargettedPed => Player.CurrentTargetedPed != null && Player.CurrentTargetedPed.CanBeMugged && Player.IsAliveAndFree && !Player.IsIncapacitated && !Player.IsGettingIntoAVehicle && !Player.IsBreakingIntoCar && Player.IsVisiblyArmed && Player.CurrentTargetedPed.DistanceToPlayer <= Settings.SettingsManager.ActivitySettings.HoldUpDistance;
     public bool CanLoot => !Player.IsCop && !Player.IsInVehicle && !Player.IsIncapacitated && !Player.IsMovingDynamically && !IsLootingBody && !IsTreatingPed && !IsHoldingHostage && !IsDraggingBody && !IsConversing && !IsDancing;
     public bool CanLootLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && CanLoot && Player.CurrentLookedAtPed.CanBeLooted && !Player.CurrentLookedAtPed.HasBeenLooted && !Player.CurrentLookedAtPed.IsInVehicle && (Player.CurrentLookedAtPed.IsUnconscious || Player.CurrentLookedAtPed.IsDead);
@@ -194,7 +207,6 @@ public class ActivityManager
         IsPerformingActivity = false;
         ForceCancelAllActivities();
     }
-
     public void AddPausedActivity(DynamicActivity da)
     {
         UpperBodyActivity = null;
@@ -423,7 +435,6 @@ public class ActivityManager
     {
         Gesture(LastGesture);
     }
-
     public void WaveHands()
     {
         if (IsPerformingActivity)
@@ -440,7 +451,6 @@ public class ActivityManager
             UpperBodyActivity.Start();
         }
     }
-
     public void Dance(DanceData danceData)
     {
         if (IsPerformingActivity)
@@ -513,12 +523,20 @@ public class ActivityManager
             Game.DisplayHelp("Cancel existing activity to start");
             return;
         }
-        HumanShield humanShield = new HumanShield(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems);
-        if (humanShield.CanPerform(Actionable))
+        DynamicActivity toPerform;
+        if(Player.CanBustPeds)
+        {
+            toPerform = new PedGrab(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, World);
+        }
+        else
+        {
+            toPerform = new HumanShieldNew(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, World);
+        }
+        if (toPerform.CanPerform(Actionable))
         {
             ForceCancelAllActive();
             IsPerformingActivity = true;
-            LowerBodyActivity = humanShield;
+            LowerBodyActivity = toPerform;
             LowerBodyActivity.Start();
         }
     }
@@ -538,7 +556,6 @@ public class ActivityManager
             LowerBodyActivity.Start();
         }
     }
-
     public void TreatPed()
     {
         if (IsPerformingActivity)
@@ -555,7 +572,6 @@ public class ActivityManager
             LowerBodyActivity.Start();
         }
     }
-
     public void DragPed()
     {
         if (IsPerformingActivity)
@@ -661,13 +677,6 @@ public class ActivityManager
             Player.ButtonPrompts.RemovePrompts("HoldUp");
         }
     }
-    //public void OnTargetHandleChanged()
-    //{   
-    //    if (Settings.SettingsManager.ActivitySettings.AllowPedHoldUps && !IsInteracting && Player.IsOnFoot && CanHoldUpTargettedPed && Player.CurrentTargetedPed != null && Player.CurrentTargetedPed.CanBeMugged && (!Player.IsCop || Player.CurrentTargetedPed.IsNotWanted))//isinvehicle added here
-    //    {
-    //        StartHoldUp();
-    //    }
-    //}
     public void StartTransaction()
     {
         if (!IsInteracting && CanConverseWithLookedAtPed)
@@ -807,7 +816,6 @@ public class ActivityManager
             }
         }
     }
-
     public bool SetDoor(int doorIndex, bool setOpen, bool includeWarning) 
     {
         VehicleExt toToggleDoor = GetInterestedVehicle();
@@ -906,10 +914,6 @@ public class ActivityManager
         }
         return true;
     }
-
-
-
-
     private void WatchVehicleEntry(VehicleExt toEnter)
     {
         if(toEnter == null || !toEnter.Vehicle.Exists())
@@ -1164,7 +1168,6 @@ public class ActivityManager
     {
         ForceCancelAllActivities();
     }
-
     public void PerformItemAnimation(bool isTaking)
     {
         //throw new NotImplementedException();
@@ -1176,8 +1179,6 @@ public class ActivityManager
         string animation = isTaking ? "givetake1_b" : "givetake1_a";
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", animation, 1.0f, -1.0f, 5000, (int)(AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);
     }
-
-
 }
 
 

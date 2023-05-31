@@ -275,11 +275,15 @@ namespace Mod
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
         public bool IsChangingLicensePlates { get; set; }
+
+
+
+
         public bool IsCop { get; set; } = false;
         public bool IsEMT { get; set; } = false;
         public bool IsFireFighter { get; set; } = false;
-
-        public bool CanArrestPeds => IsCop && !IsIncapacitated;
+        public bool IsSecurityGuard { get; set; } = false;
+        public bool CanBustPeds => (IsCop || IsSecurityGuard) && !IsIncapacitated;
         public bool AutoDispatch { get; set; } = true;
         public bool IsCustomizingPed { get; set; }
         public bool IsDangerouslyArmed => WeaponEquipment.IsDangerouslyArmed;
@@ -291,6 +295,7 @@ namespace Mod
         public bool IsDriver { get; private set; }
         public bool IsDuckingInVehicle { get; set; } = false;
         public bool IsGangMember => RelationshipManager.GangRelationships.CurrentGang != null;
+        public Gang CurrentGang => RelationshipManager.GangRelationships.CurrentGang;
         public bool IsGettingIntoAVehicle
         {
             get => isGettingIntoVehicle;
@@ -881,11 +886,13 @@ namespace Mod
                 Cop meAsCop = new Cop(Character, Settings, Character.MaxHealth, toassign, true, Crimes, Weapons, PlayerName, ModelName, World);
                 meAsCop.CanBeTasked = false;
                 meAsCop.CanBeAmbientTasked = false;
+                meAsCop.AutoCallsInUnconsciousPeds = false;
                 World.Pedestrians.AddEntity(meAsCop);
                 AssignedAgency = toassign;
                 IsCop = true;
                 IsEMT = false;
                 IsFireFighter = false;
+                IsSecurityGuard = false;
                 EntryPoint.WriteToConsole($"Assigned Player As Cop {toassign.ShortName}");
             }
             else if (toassign.ResponseType == ResponseType.EMS)
@@ -893,6 +900,7 @@ namespace Mod
                 IsCop = false;
                 IsEMT = true;
                 IsFireFighter = false;
+                IsSecurityGuard = false;
                 EntryPoint.WriteToConsole($"Assigned Player As EMT {toassign.ShortName}");
             }
             else if (toassign.ResponseType == ResponseType.Fire)
@@ -900,7 +908,21 @@ namespace Mod
                 IsCop = false;
                 IsEMT = false;
                 IsFireFighter = true;
+                IsSecurityGuard = false;
                 EntryPoint.WriteToConsole($"Assigned Player As Firefighter {toassign.ShortName}");
+            }
+            else if (toassign.ResponseType == ResponseType.Security)
+            {
+                SecurityGuard meAsSecurity = new SecurityGuard(Character, Settings, Character.MaxHealth, toassign, true, Crimes, Weapons, PlayerName, ModelName, World);
+                meAsSecurity.CanBeTasked = false;
+                meAsSecurity.CanBeAmbientTasked = false;
+                meAsSecurity.AutoCallsInUnconsciousPeds = false;
+                World.Pedestrians.AddEntity(meAsSecurity);
+                IsCop = false;
+                IsEMT = false;
+                IsFireFighter = false;
+                IsSecurityGuard = true;
+                EntryPoint.WriteToConsole($"Assigned Player As Security Guard {toassign.ShortName}");
             }
         }
         public void RemoveAgencyStatus()
@@ -1823,7 +1845,6 @@ namespace Mod
                 prevCurrentLookedAtObjectHandle = 0;
             }
 
-            UpdateCop();
             //GameFiber.Yield();//TR Yield RemovedTest 1
         }
         public void UpdateVehicleData()
@@ -2323,12 +2344,6 @@ namespace Mod
                 TargettingHandle = NativeHelper.GetTargettingHandle();
             }
         }
-        private void UpdateCop()
-        {
-            if(IsCop)
-            {
 
-            }
-        }
     }
 }

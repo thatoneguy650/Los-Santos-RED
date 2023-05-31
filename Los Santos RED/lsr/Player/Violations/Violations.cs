@@ -45,6 +45,9 @@ namespace LosSantosRED.lsr
         public OtherViolations OtherViolations { get; private set; }
         public List<Crime> CivilianReportableCrimesViolating => CrimesViolating.Where(x => x.CanBeReactedToByCivilians).ToList();
         public string LawsViolatingDisplay => string.Join(", ", CrimesViolating.OrderBy(x=>x.Priority).Select(x => x.Name));
+        public bool IsViolatingSeriousCrime => CrimesViolating.Any(x => x.ResultingWantedLevel >= 2);
+        public bool CheckWeaponViolations => !Player.IsCop && !Player.IsSecurityGuard;
+        public bool CanDamageWantedCivilians => Player.IsCop || Player.IsSecurityGuard;
         public void Setup()
         {
             TrafficViolations.Setup();
@@ -58,14 +61,11 @@ namespace LosSantosRED.lsr
             CrimesViolating.RemoveAll(x => !x.IsTrafficViolation);
             if (Player.IsAliveAndFree && Player.ShouldCheckViolations)
             {
-                DamageViolations.Update();
-                //GameFiber.Yield();
                 WeaponViolations.Update();
                 GameFiber.Yield();
                 TheftViolations.Update();
-                //GameFiber.Yield();
                 OtherViolations.Update();
-                //GameFiber.Yield();
+                DamageViolations.Update();
                 AddObservedAndReported();
             }
         }

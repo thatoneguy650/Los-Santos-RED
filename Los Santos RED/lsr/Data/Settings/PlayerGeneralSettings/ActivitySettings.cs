@@ -23,7 +23,7 @@ public class ActivitySettings : ISettingsDefaultable
     [Description("Plays an animation the dragged ped.")]
     public bool PlayDraggingPedAnimation { get; set; }
     [Description("Allow the player to hold a ped hostage at gunpoint.")]
-    public bool AllowTakingOtherPedsHostage { get; set; }
+    public bool AllowGrabbingPeds { get; set; }
     [Description("Allow the player to start random scenarios around the world.")]
     public bool AllowStartingScenarios { get; set; }
     [Description("Allow the player to go into crouch mode.")]
@@ -51,6 +51,13 @@ public class ActivitySettings : ISettingsDefaultable
     public bool DisplayBodyArmor { get; set; }
     public int BodyArmorDefaultDrawableID { get; set; }
     public int BodyArmorDefaultTextureID { get; set; }
+    public float GrabAttachX { get;  set; }
+    public float GrabAttachY { get; set; }
+    public float GrabAttachZ { get; set; }
+
+    public float HumanShieldAttachX { get; set; }
+    public float HumanShieldAttachY { get; set; }
+    public float HumanShieldAttachZ { get; set; }
 
 
     public ActivitySettings()
@@ -64,7 +71,7 @@ public class ActivitySettings : ISettingsDefaultable
         AllowPedLooting = true;
         AllowPedHoldUps = true;
         AllowDraggingOtherPeds = true;
-        AllowTakingOtherPedsHostage = true;
+        AllowGrabbingPeds = true;
         AllowStartingScenarios = false;
         AllowPlayerCrouching = true;
         PlayDraggingPedAnimation = true;
@@ -88,5 +95,16 @@ public class ActivitySettings : ISettingsDefaultable
 #if DEBUG
         DisplayBodyArmor = true;
 #endif  
+
+
+        GrabAttachX = -0.31f;
+        GrabAttachY = 0.35f;
+        GrabAttachZ = 0.04f;
+
+
+        HumanShieldAttachX = -0.31f;
+        HumanShieldAttachY = 0.12f;
+        HumanShieldAttachZ = 0.04f;
+
     }
 }

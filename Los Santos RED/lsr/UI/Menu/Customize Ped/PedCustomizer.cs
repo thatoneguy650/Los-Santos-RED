@@ -329,11 +329,11 @@ public class PedCustomizer
             WorkingVariation = Player.CurrentModelVariation.Copy();
             InitialVariation = Player.CurrentModelVariation.Copy();
         }
-        if(Player.RelationshipManager.GangRelationships.CurrentGang != null)
+        if(Player.CurrentGang != null)
         {
             AssignedGang = Player.RelationshipManager.GangRelationships.CurrentGang;
         }
-        else if(Player.IsCop)
+        else
         {
             AssignedAgency = Player.AssignedAgency;
         }

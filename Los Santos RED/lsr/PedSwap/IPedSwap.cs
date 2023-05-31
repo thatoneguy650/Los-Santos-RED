@@ -30,5 +30,6 @@ namespace LosSantosRED.lsr.Interface
         void BecomeCreatorPed();
         void BecomeEMT(Agency selectedItem);
         void BecomeFireFighter(Agency selectedItem);
+        void BecomeSecurity(Agency selectedItem);
     }
 }

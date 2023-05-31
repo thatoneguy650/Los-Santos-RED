@@ -108,12 +108,8 @@ class GoToAndExtinguishTaskState : TaskState
                 NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, PedGeneral.Pedestrian.CurrentVehicle, 27, 1000);
                 NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, PedGeneral.Pedestrian.CurrentVehicle, 256);
             }
-            NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, FireStandLocation.X, FireStandLocation.Y, FireStandLocation.Z, 100.0f, -1, 5f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
-
-
+            NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, FireStandLocation.X, FireStandLocation.Y, FireStandLocation.Z, 2.0f, -1, 5f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
             NativeFunction.CallByName<bool>("TASK_SHOOT_AT_COORD", 0, FirePosition.X, FirePosition.Y, FirePosition.Z, 4000, (uint)FiringPattern.FullAutomatic);
-
-
             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", PedGeneral.Pedestrian, lol);

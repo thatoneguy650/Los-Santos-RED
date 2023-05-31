@@ -71,7 +71,7 @@ public class GangMember : PedExt, IWeaponIssuable
                     }
                     PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
                     PedPerception.Update();
-                    if (policeRespondable.CanArrestPeds)
+                    if (policeRespondable.CanBustPeds)
                     {
                         CheckPlayerBusted();
                     }

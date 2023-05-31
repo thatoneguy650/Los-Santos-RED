@@ -21,6 +21,7 @@ public class EMT : PedExt
         PedReactions.IncludeUnconsciousAsMundane = false;
         PedBrain = new EMTBrain(this, Settings, world, weapons);
     }
+    public override ePedAlertType PedAlertTypes { get; set; } = ePedAlertType.UnconsciousBody | ePedAlertType.HelpCry;
     public Agency AssignedAgency { get; set; } = new Agency();
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public override bool KnowsDrugAreas => false;
@@ -49,21 +50,16 @@ public class EMT : PedExt
                     {
                         GameFiber.Yield();
                     }
-                    UpdateAlerts(perceptable, policeRespondable, world);
+                    if (Settings.SettingsManager.EMSSettings.AllowAlerts)
+                    {
+                        PedAlerts.Update(policeRespondable, world);
+                    }
                 }
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok 
     }
-    protected override void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
-    {
-        if (Settings.SettingsManager.EMSSettings.AllowEMTsToCallEMTsOnBodies)
-        {
-            PedAlerts.LookForUnconsciousPeds(world);
-        }
-    }
-
     public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip)
     {
         if (!Pedestrian.Exists())

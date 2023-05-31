@@ -115,7 +115,7 @@ public class PoliceSettings : ISettingsDefaultable
     [Description("Force the default weapon animation set on spawned or ambient police. Mostly used for freemode police.")]
     public bool ForceDefaultWeaponAnimations { get; set; }
     [Description("Allows police to be aware of hurt peds in the world. Required for police to call EMS.")]
-    public bool AllowPoliceToCallEMTsOnBodies { get; set; }
+    public bool AllowAlerts { get; set; }
 
 
     [Description("Minimum crime priority reported to trigger a medium response from the police during investigation.")]
@@ -226,7 +226,7 @@ public class PoliceSettings : ISettingsDefaultable
 
 
 
-        AllowPoliceToCallEMTsOnBodies = true;
+        AllowAlerts = true;
 
 
 

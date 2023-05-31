@@ -54,7 +54,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public bool IsIdleTaskable => WasModSpawned || !WasAlreadySetPersistent;
     public bool ShouldUpdateTarget => Game.GameTime - GameTimeLastUpdatedTarget >= Settings.SettingsManager.PoliceTaskSettings.TargetUpdateTime;
     public string ModelName { get; set; }
-
+    public override ePedAlertType PedAlertTypes { get; set; } = ePedAlertType.UnconsciousBody | ePedAlertType.HelpCry | ePedAlertType.DeadBody | ePedAlertType.GunShot;
     public bool CanRadioInWanted => SawPlayerViolating &&!IsUnconscious && !IsDead && !IsInWrithe && !IsBeingHeldAsHostage && !RecentlyRagdolled && GameTimeFirstSawPlayerViolating > 0 && Game.GameTime - GameTimeFirstSawPlayerViolating >= Settings.SettingsManager.PoliceSettings.RadioInTime && Pedestrian.Exists() && Pedestrian.Exists() && !Pedestrian.IsRagdoll;
     public override bool CanPlayRadioInAnimation => WeaponInventory.CanRadioIn;
     public bool SawPlayerViolating { get; private set; }
@@ -67,6 +67,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public override int VehicleShootRate { get; set; } = 20;
     public override int TurretAccuracy { get; set; } = 30;
     public override int TurretShootRate { get; set; } = 1000;
+    public override bool AutoCallsInUnconsciousPeds { get; set; } = true;
     public CopAssistManager AssistManager { get; private set;}
     public CopVoice Voice { get; private set; }
     public WeaponInventory WeaponInventory { get; private set; }
@@ -154,7 +155,11 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                     {
                         ShootingChecker(policeRespondable);
                     }
-                    UpdateAlerts(perceptable, policeRespondable, world);
+                    if (Settings.SettingsManager.PoliceSettings.AllowAlerts)
+                    {
+                        PedAlerts.Update(policeRespondable, world);
+                    }
+                    //UpdateAlerts(perceptable, policeRespondable, world);
                     PlayerViolationChecker(policeRespondable, world);
                 }
                 GameTimeLastUpdated = Game.GameTime;
@@ -162,31 +167,31 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         }
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok 
     }
-    protected override void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
-    {
-        if (Settings.SettingsManager.PoliceSettings.AllowPoliceToCallEMTsOnBodies)
-        {
-            PedAlerts.LookForUnconsciousPeds(world);
-        }
-        if (Settings.SettingsManager.PoliceSettings.AllowReactionsToBodies)//only care in a bubble around the player, nothing to do with the player tho
-        {
-            PedAlerts.LookForBodiesAlert(world);
-        }
-        if (PedAlerts.HasSeenUnconsciousPed)
-        {
-            perceptable.AddMedicalEvent(PedAlerts.PositionLastSeenUnconsciousPed);
-            PedAlerts.HasSeenUnconsciousPed = false;
-        }
-        if (policeRespondable.Violations.WeaponViolations.RecentlyShot && WithinWeaponsAudioRange)
-        {
-            PedAlerts.AddHeardGunfire(policeRespondable.Position);
-        }
-        if(policeRespondable.ActivityManager.IsWavingHands && (DistanceToPlayer <= 75f || CanSeePlayer))
-        {
-            PedAlerts.AddHeardHelpCry(policeRespondable.Position);
-        }
+    //protected override void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
+    //{
+    //    if (Settings.SettingsManager.PoliceSettings.AllowPoliceToCallEMTsOnBodies)
+    //    {
+    //        PedAlerts.LookForUnconsciousPeds(world);
+    //    }
+    //    if (Settings.SettingsManager.PoliceSettings.AllowReactionsToBodies)//only care in a bubble around the player, nothing to do with the player tho
+    //    {
+    //        PedAlerts.LookForBodiesAlert(world);
+    //    }
+    //    if (PedAlerts.HasSeenUnconsciousPed)
+    //    {
+    //        perceptable.AddMedicalEvent(PedAlerts.PositionLastSeenUnconsciousPed);
+    //        PedAlerts.HasSeenUnconsciousPed = false;
+    //    }
+    //    if (policeRespondable.Violations.WeaponViolations.RecentlyShot && WithinWeaponsAudioRange)
+    //    {
+    //        PedAlerts.AddHeardGunfire(policeRespondable.Position);
+    //    }
+    //    if(policeRespondable.ActivityManager.IsWavingHands && (DistanceToPlayer <= 75f || CanSeePlayer))
+    //    {
+    //        PedAlerts.AddHeardHelpCry(policeRespondable.Position);
+    //    }
 
-    }
+    //}
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
         Voice.Speak(currentPlayer);
@@ -345,18 +350,18 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             policeRespondable.PoliceResponse.RadioInWanted();
             EntryPoint.WriteToConsole($"I AM {Handle} AND I RADIOED IN THE WANTED LEVEL");
         }
-        if (Settings.SettingsManager.PoliceSettings.AllowShootingInvestigations)
-        {     
-            if (!SawPlayerViolating)
-            {
-                Cop cop = world.Pedestrians.AllPoliceList.FirstOrDefault(x => NativeHelper.IsNearby(CellX, CellY, x.CellX, x.CellY, 3) && x.IsShooting && x.Pedestrian.Exists());
-                if (cop != null && cop.Pedestrian.Exists())
-                {
-                    PedAlerts.AddHeardGunfire(cop.Pedestrian.Position);
-                }
+        //if (Settings.SettingsManager.PoliceSettings.AllowShootingInvestigations)
+        //{     
+        //    if (!SawPlayerViolating)
+        //    {
+        //        Cop cop = world.Pedestrians.AllPoliceList.FirstOrDefault(x => NativeHelper.IsNearby(CellX, CellY, x.CellX, x.CellY, 3) && x.IsShooting && x.Pedestrian.Exists());
+        //        if (cop != null && cop.Pedestrian.Exists())
+        //        {
+        //            PedAlerts.AddHeardGunfire(cop.Pedestrian.Position);
+        //        }
 
-            }
-        }
+        //    }
+        //}
     }
     private void OnSawPlayerViolating()
     {

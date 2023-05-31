@@ -33,5 +33,6 @@ namespace LosSantosRED.lsr.Interface
         Agency AssignedAgency { get; }
         bool IsFireFighter { get; }
         bool IsEMT { get; }
+        bool IsSecurityGuard { get; }
     }
 }

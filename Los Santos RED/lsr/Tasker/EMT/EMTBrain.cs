@@ -77,22 +77,29 @@ public class EMTBrain : PedBrain
             }
             else
             {
-                PedExt MainTarget = PedToGoTo();
-                if (MainTarget != null)
+                if (PedExt.PedAlerts.IsAlerted)// Cop.BodiesSeen.Any() || )
                 {
-                    SetTreatTask(MainTarget);
+                    SetInvestigate();
                 }
-                else if (PedExt.PedReactions.HasSeenMundaneCrime && PedExt.WillCallPolice)
-                {
-                    SetCalmCallIn();
-                }
-                else if (PedExt.DistanceToPlayer <= 1200f && Player.Investigation.IsActive && Player.Investigation.RequiresFirefighters)
-                {
-                    SetRespondTask();
-                }
-                else if (PedExt.WasModSpawned)
-                {
-                    SetIdle();
+                else
+                { 
+                    PedExt MainTarget = PedToGoTo();
+                    if (MainTarget != null)
+                    {
+                        SetTreatTask(MainTarget);
+                    }
+                    else if (PedExt.PedReactions.HasSeenMundaneCrime && PedExt.WillCallPolice)
+                    {
+                        SetCalmCallIn();
+                    }
+                    else if (PedExt.DistanceToPlayer <= 1200f && Player.Investigation.IsActive && Player.Investigation.RequiresFirefighters)
+                    {
+                        SetRespondTask();
+                    }
+                    else if (PedExt.WasModSpawned)
+                    {
+                        SetIdle();
+                    }
                 }
             }
         }
@@ -126,6 +133,16 @@ public class EMTBrain : PedBrain
             EMT.CurrentTask.Start();
         }
 
+    }
+    private void SetInvestigate()
+    {
+        if (PedExt.CurrentTask?.Name != "Investigate")
+        {
+            // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Investigate", 3);
+            PedExt.CurrentTask = new GeneralInvestigate(PedExt, PedExt, Player, World, null, PlacesOfInterest, Settings, false, null, true);//Cop.CurrentTask = new Investigate(Cop, Player, Settings, World);
+            GameFiber.Yield();//TR Added back 4
+            PedExt.CurrentTask.Start();
+        }
     }
 
     protected override void SetIdle()

@@ -845,22 +845,23 @@ public class AIApprehend : ComplexTask
             if (OtherTarget.IsBusted)
             {
                 IsChasingSlowly = true;
-                if (OtherTarget.Pedestrian.Exists())
-                {
-                    float speed = OtherTarget.Pedestrian.Speed;
-                    if (speed >= 0.25f)
-                    {
-                        RunSpeed = OtherTarget.Pedestrian.Speed;
-                    }
-                    else
-                    {
-                        RunSpeed = 1.0f;// 1.4f;
-                    }
-                }
-                else
-                {
-                    RunSpeed = 1.0f;// 1.4f;
-                }
+                RunSpeed = 0.5f;
+                //if (OtherTarget.Pedestrian.Exists())
+                //{
+                //    float speed = OtherTarget.Pedestrian.Speed;
+                //    if (speed >= 0.25f)
+                //    {
+                //        RunSpeed = OtherTarget.Pedestrian.Speed;
+                //    }
+                //    else
+                //    {
+                //        RunSpeed = 1.0f;// 1.4f;
+                //    }
+                //}
+                //else
+                //{
+                //    RunSpeed = 1.0f;// 1.4f;
+                //}
             }
             else if (OtherTarget.WantedLevel == 1)
             {

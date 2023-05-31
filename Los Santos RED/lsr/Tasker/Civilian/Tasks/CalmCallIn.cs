@@ -52,7 +52,7 @@ public class CalmCallIn : ComplexTask
 
         if (!Ped.Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.AllowCallInIfPedDoesNotExist)
         {
-            if (Settings.SettingsManager.CivilianSettings.AllowCallInIfPedDoesNotExist && Game.GameTime - GameTimeStartedCallIn >= Settings.SettingsManager.CivilianSettings.GameTimeToCallInIfPedDoesNotExist && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.PedAlerts.HasSeenUnconsciousPed))
+            if (Settings.SettingsManager.CivilianSettings.AllowCallInIfPedDoesNotExist && Game.GameTime - GameTimeStartedCallIn >= Settings.SettingsManager.CivilianSettings.GameTimeToCallInIfPedDoesNotExist && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.PedAlerts.HasCrimeToReport))
             {
                 EntryPoint.WriteToConsole("NOT EXISTING PED CALLED IN CRIME");
                 Ped.ReportCrime(Player);
@@ -70,7 +70,7 @@ public class CalmCallIn : ComplexTask
             Ped.PlaySpeech(new List<string>() { "GENERIC_SHOCKED_MED", "GENERIC_FRUSTRATED_HIGH", "GET_OUT_OF_HERE" }, false, false);
             EntryPoint.WriteToConsole($"{Ped.Handle} STARTED PHONE TASK");
         }
-        if (HasStartedPhoneTask && Game.GameTime - GameTimeStartedCallIn >= GameTimeToCallIn + Settings.SettingsManager.CivilianSettings.GameTimeAfterCallInToReportCrime && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.PedAlerts.HasSeenUnconsciousPed))
+        if (HasStartedPhoneTask && Game.GameTime - GameTimeStartedCallIn >= GameTimeToCallIn + Settings.SettingsManager.CivilianSettings.GameTimeAfterCallInToReportCrime && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.PedAlerts.HasCrimeToReport))
         {
             Ped.ReportCrime(Player);
             EntryPoint.WriteToConsole($"{Ped.Handle} CALLED IN CRIME");

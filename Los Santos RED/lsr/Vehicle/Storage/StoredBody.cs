@@ -294,7 +294,10 @@ public class StoredBody
         }
         NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(PedExt.Pedestrian);
         PedExt.Pedestrian.Position = Game.LocalPlayer.Character.GetOffsetPositionFront(-0.5f);
-        NativeFunction.Natives.SET_PED_TO_RAGDOLL(PedExt.Pedestrian, -1, -1, 0, false, false, false);
+        if (PedExt.IsUnconscious)
+        { 
+            NativeFunction.Natives.SET_PED_TO_RAGDOLL(PedExt.Pedestrian, -1, -1, 0, false, false, false);
+        }
         if (Settings.SettingsManager.DragSettings.FadeOut)
         {
             GameFiber.Sleep(1000);

@@ -66,6 +66,9 @@ namespace LosSantosRED.lsr.Interface
         bool IsWanted { get; }
         PedVariation CurrentModelVariation { get; set; }
         OutfitManager OutfitManager { get; }
+        Agency AssignedAgency { get; }
+        Gang CurrentGang { get; }
+
         void DisplayPlayerNotification();
         void SetWantedLevel(int selectedItem, string v1, bool v2);
         void Arrest();

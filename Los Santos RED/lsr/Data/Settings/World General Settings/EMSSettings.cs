@@ -23,7 +23,7 @@ public class EMSSettings : ISettingsDefaultable
     public bool AllowStationSpawning { get; set; }
     [Description("If enabled, hospital ambient spawns ignore the ped and vehicle spawn limits.")]
     public bool StationSpawningIgnoresLimits { get; set; }
-    public bool AllowEMTsToCallEMTsOnBodies { get; set; }
+    public bool AllowAlerts { get; set; }
 
 
 
@@ -100,7 +100,7 @@ public class EMSSettings : ISettingsDefaultable
 #if DEBUG
         ShowSpawnedBlips = true;
 #endif
-        AllowEMTsToCallEMTsOnBodies = true;
+        AllowAlerts = true;
 
 
 

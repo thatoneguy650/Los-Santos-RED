@@ -124,7 +124,7 @@ public class HumanShield : DynamicActivity
     public override bool IsPaused() => false;
     public override bool CanPerform(IActionable player)
     {
-        if(!player.ActivityManager.CanTakeHostageWithLookedAtPed)
+        if(!player.ActivityManager.CanGrabLookedAtPed)
         {
             Game.DisplayHelp($"Cannot take ped hostage");
             return false;

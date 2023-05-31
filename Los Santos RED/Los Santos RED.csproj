@@ -213,11 +213,17 @@
     <Compile Include="lsr\Locations\Places\TaskRequirements.cs" />
     <Compile Include="lsr\Locations\Places\VehicleColorLookup.cs" />
     <Compile Include="lsr\Locations\Menus\PercentageSelectShopMenu.cs" />
+    <Compile Include="lsr\Ped\Alerts\DeadBodyAlert.cs" />
+    <Compile Include="lsr\Ped\Alerts\ePedAlertType.cs" />
+    <Compile Include="lsr\Ped\Alerts\GunshotAlert.cs" />
+    <Compile Include="lsr\Ped\Alerts\HelpCryAlert.cs" />
+    <Compile Include="lsr\Ped\Alerts\PedAlert.cs" />
+    <Compile Include="lsr\Ped\Alerts\UnconsciousBodyAlert.cs" />
     <Compile Include="lsr\Ped\Cop\CanineUnit.cs" />
     <Compile Include="lsr\Ped\DesiredItem.cs" />
     <Compile Include="lsr\Ped\GangMember\GangDog.cs" />
     <Compile Include="lsr\Ped\GangMember\ReputationReport.cs" />
-    <Compile Include="lsr\Ped\PedAlerts.cs" />
+    <Compile Include="lsr\Ped\Alerts\PedAlerts.cs" />
     <Compile Include="lsr\Ped\PedDesires.cs" />
     <Compile Include="lsr\Ped\PedReaction.cs" />
     <Compile Include="lsr\Ped\ReactionTier.cs" />
@@ -252,6 +258,8 @@
     <Compile Include="lsr\Player\Interaction\Conversation\AdvancedConversation.cs" />
     <Compile Include="lsr\Old\FullConversation_Old.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\IAdvancedConversationable.cs" />
+    <Compile Include="lsr\Player\Interaction\PedGrab\HumanShieldNew.cs" />
+    <Compile Include="lsr\Player\Interaction\PedGrab\PedGrab.cs" />
     <Compile Include="lsr\Player\Interaction\TreatmentActivity.cs" />
     <Compile Include="lsr\Player\Interface\IArmorManageable.cs" />
     <Compile Include="lsr\Player\Interface\IClipsetManageable.cs" />
@@ -560,7 +568,7 @@
     <Compile Include="lsr\Player\HumanState\Injuries.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\Conversation.cs" />
     <Compile Include="lsr\Player\Interaction\Drag.cs" />
-    <Compile Include="lsr\Player\Interaction\HumanShield.cs" />
+    <Compile Include="lsr\Player\Interaction\PedGrab\HumanShield.cs" />
     <Compile Include="lsr\Player\Interaction\Loot.cs" />
     <Compile Include="lsr\Player\Interaction\PersonTransaction.cs" />
     <Compile Include="lsr\Player\Interaction\SpeechData.cs" />

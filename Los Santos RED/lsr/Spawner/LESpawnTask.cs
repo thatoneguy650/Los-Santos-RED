@@ -93,22 +93,39 @@ public class LESpawnTask : SpawnTask
         {
             if (HasPersonToSpawn)
             {
-                PedExt Person = CreatePerson();
-                if (Person != null && Person.Pedestrian.Exists() && LastCreatedVehicleExists)
+                if (WillAddDriver)
                 {
-                    PutPedInVehicle(Person, -1);
-                    if (WillAddPassengers)
+                    PedExt Person = CreatePerson();
+                    if (Person != null && Person.Pedestrian.Exists() && LastCreatedVehicleExists)
                     {
-                        AddPassengers();
-                    }
-                    if (AddCanine && VehicleType != null && VehicleType.CaninePossibleSeats.Any())
-                    {
-                        AddCaninePassengers();
+                        PutPedInVehicle(Person, -1);
+                        if (WillAddPassengers)
+                        {
+                            AddPassengers();
+                        }
+                        if (AddCanine && VehicleType != null && VehicleType.CaninePossibleSeats.Any())
+                        {
+                            AddCaninePassengers();
+                        }
                     }
                 }
                 else
                 {
-                    Cleanup(true);
+                    if (LastCreatedVehicleExists)
+                    {
+                        if (WillAddPassengers)
+                        {
+                            AddPassengers();
+                        }
+                        if (AddCanine && VehicleType != null && VehicleType.CaninePossibleSeats.Any())
+                        {
+                            AddCaninePassengers();
+                        }
+                    }
+                    else
+                    {
+                        Cleanup(true);
+                    }
                 }
             }
         }

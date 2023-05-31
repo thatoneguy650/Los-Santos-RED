@@ -391,46 +391,9 @@ public class PopUpMenu
                 //Game.DisplaySubtitle($" X:{(float)mouseState.X} Y:{(float)mouseState.Y} XPercent {XPercent} YPercent {YPercent} ClosestDistance {ClosestDistance} ClosestPositionMap {ClosestPositionMap?.Display} {(float)Game.Resolution.Width}X{(float)Game.Resolution.Height}");
             }
         }
-
-
-
-        //MouseState mouseState = Game.GetMouseState();
-        //if (mouseState != null)
-        //{
-
-        //    //float XPercent = (float)mouseState.X /(float)Game.Resolution.Width;
-        //    //float YPercent = (float)mouseState.Y /(float)Game.Resolution.Height;
-
-
-        //    float XPercent = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorX); //(float)mouseState.X /(float)Game.Resolution.Width;
-        //    float YPercent = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorY); //(float)mouseState.Y /(float)Game.Resolution.Height;
-
-
-        //    //float mouseX = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorX);
-        //    //float mouseY = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorY);
-
-        //    float ClosestDistance = 1.0f;
-        //    ClosestPositionMap = null;
-        //    foreach (PositionMap positionMap2 in PositionMaps)
-        //    {
-        //        float distanceToMouse = (float)Math.Sqrt(Math.Pow(positionMap2.PositionX - XPercent, 2) + Math.Pow(positionMap2.PositionY - YPercent, 2));
-        //        if (distanceToMouse <= ClosestDistance && distanceToMouse <= Settings.SettingsManager.ActionWheelSettings.SelectedItemMinimumDistance)// 0.15f)
-        //        {
-        //            ClosestDistance = distanceToMouse;
-        //            ClosestPositionMap = positionMap2;
-        //        }
-        //    }
-        //    Game.DisplaySubtitle($" X:{(float)mouseState.X} Y:{(float)mouseState.Y} XPercent {XPercent} YPercent {YPercent} ClosestDistance {ClosestDistance} ClosestPositionMap {ClosestPositionMap?.Display} {(float)Game.Resolution.Width}X{(float)Game.Resolution.Height}");
-
-        //}
     }
     private void UpdateSelection()
     {
-        //if(Game.GameTime - GameTimeStartedDisplaying <= 20)
-        //{
-        //    ClosestPositionMap = null;
-        //    return;
-        //}
         if(!UI.IsPressingActionWheelButton && !HasStoppedPressingDisplayKey)
         {
             //EntryPoint.WriteToConsoleTestLong("HAS STOPPED PRESSING ACTION WHEEL SHOW");
@@ -449,15 +412,12 @@ public class PopUpMenu
             }
             if (popUpBox != null && popUpBox.IsCurrentlyValid())
             {
-                
                 if ((popUpBox.Action != null || popUpBox.ChildMenuID != ""))
                 {
                     //EntryPoint.WriteToConsole($"ACTION WHEEL POP UP BOX IS VALID {popUpBox.Description} ChildMenuID: {popUpBox.ChildMenuID} HasAction:{popUpBox.Action != null}");
-                    if ((Game.IsControlJustReleased(0, GameControl.Attack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24)))// && Game.GameTime - GameTimeLastClicked >= 50)//or is disbaled control just released.....//&& Environment.TickCount - GameTimeLastClicked >= 100)//or is disbaled control just released.....
+                    if (PressedSelect())// && Game.GameTime - GameTimeLastClicked >= 50)//or is disbaled control just released.....//&& Environment.TickCount - GameTimeLastClicked >= 100)//or is disbaled control just released.....
                     {
-
                         //EntryPoint.WriteToConsoleTestLong($"ACTION WHEEL PRESSED SELECT 2");
-
                         if (popUpBox.ClosesMenu)
                         {
                             CloseMenu();
@@ -482,8 +442,6 @@ public class PopUpMenu
                                 max = MenuStack.Max(x => x.Item1);
                             }
                             MenuStack.Add(new Tuple<int, string>(max + 1, PrevPopUpBoxGroupID));
-
-
                           //  EntryPoint.WriteToConsole($"ACTION WHEEL: ToMenu:{popUpBox?.ChildMenuID} PrevMenu:{PrevPopUpBoxGroupID}");
                         }
                         //GameTimeLastClicked = Game.GameTime;//Environment.TickCount;
@@ -514,10 +472,9 @@ public class PopUpMenu
             PrevSelectedMenuMap = SelectedMenuMap;
         }
 
-        bool isPressingAim = (Game.IsControlJustPressed(0, GameControl.Aim) || NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25));
+        bool isPressingAim = PressedReturn();
         if (!IsCurrentPopUpBoxGroupDefault && isPressingAim)
         {
-
             if(!MenuStack.Any())
             {
                 UpdateDefaultMapping(true);
@@ -525,7 +482,6 @@ public class PopUpMenu
             else
             {
                 string menuID = MenuStack.OrderByDescending(x => x.Item1).FirstOrDefault()?.Item2;
-
                 if(string.IsNullOrEmpty(menuID))
                 {
                     UpdateDefaultMapping(true);
@@ -536,32 +492,10 @@ public class PopUpMenu
                     CurrentPopUpBoxGroupID = menuID;
                 }
             }
-
-
-           // EntryPoint.WriteToConsole($"ACTION WHEEL PRESSED BACK, GOING TO {PrevPopUpBoxGroupID}");
-            //if(string.IsNullOrEmpty(CurrentPopUpBoxGroupID))
-            //{
-            //    MenuStack.Clear();
-            //    UpdateDefaultMapping(true);
-            //}
-            //else
-            //{
-            //    MenuStack.RemoveAll(x => x.Item2 == PrevPopUpBoxGroupID);
-            //    CurrentPopUpBoxGroupID = PrevPopUpBoxGroupID;
-            //}
-            
-            //UpdateDefaultMapping(true);
             CurrentPage = 0;
             TotalPages = 0;
-
-
             NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0);
-
             GameTimeLastPressedSubMenu = Game.GameTime;
-
-
-
-
         }
         else if(IsCurrentPopUpBoxGroupDefault && !Settings.SettingsManager.ActionWheelSettings.RequireButtonHold && isPressingAim)
         {
@@ -575,6 +509,30 @@ public class PopUpMenu
             NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0);
         }
     }
+
+    private bool PressedSelect()
+    {
+        if (Player.IsInVehicle)
+        {
+            return Game.IsControlJustReleased(0, GameControl.VehicleAttack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 69);
+        }
+        else
+        {
+            return Game.IsControlJustReleased(0, GameControl.Attack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24);
+        }
+    }
+    private bool PressedReturn()
+    {
+        if(Player.IsInVehicle)
+        {
+            return Game.IsControlJustPressed(0, GameControl.VehicleAim) || NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 68);
+        }
+        else
+        {
+            return Game.IsControlJustPressed(0, GameControl.Aim) || NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25);
+        }
+    }
+
     private void ProcessControllerInput()
     {
         if (!NativeFunction.Natives.IS_USING_KEYBOARD_AND_MOUSE<bool>(2))
@@ -606,16 +564,22 @@ public class PopUpMenu
     }
     private void DisableControls()
     {
-        Game.DisableControlAction(0, GameControl.LookLeftRight, true);//false);
-        Game.DisableControlAction(0, GameControl.LookUpDown, true);// false);
-        Game.DisableControlAction(0, GameControl.Attack, true);//false);
-        Game.DisableControlAction(0, GameControl.Attack2, true);// false);
-        Game.DisableControlAction(0, GameControl.MeleeAttack1, true);// false);
-        Game.DisableControlAction(0, GameControl.MeleeAttack2, true);// false);
-        Game.DisableControlAction(0, GameControl.Aim, true);// false);
-        Game.DisableControlAction(0, GameControl.VehicleAim, true);// false);
-        Game.DisableControlAction(0, GameControl.AccurateAim, true);// false);
-        Game.DisableControlAction(0, GameControl.VehiclePassengerAim, true);// false);
+        Game.DisableControlAction(0, GameControl.LookLeftRight, true);
+        Game.DisableControlAction(0, GameControl.LookUpDown, true);
+        Game.DisableControlAction(0, GameControl.Attack, true);
+        Game.DisableControlAction(0, GameControl.Attack2, true);
+        Game.DisableControlAction(0, GameControl.MeleeAttack1, true);
+        Game.DisableControlAction(0, GameControl.MeleeAttack2, true);
+        Game.DisableControlAction(0, GameControl.Aim, true);
+        Game.DisableControlAction(0, GameControl.VehicleAim, true);
+        Game.DisableControlAction(0, GameControl.AccurateAim, true);
+        Game.DisableControlAction(0, GameControl.VehiclePassengerAim, true);
+
+
+
+
+
+
     }
     private void UpdateDefaultMapping(bool force)
     {
@@ -782,17 +746,20 @@ public class PopUpMenu
     }
     private void DrawAffiliation()
     {
-        if (Player.IsCop || Player.IsGangMember)
+        bool display = false;
+        string toDisplay = "Affiliation: ~n~";
+        if (Player.AssignedAgency != null)
         {
-            string toDisplay = "Affiliation: ~n~";
-            if(Player.IsCop)
-            {
-                toDisplay += "~b~LSPD~s~";
-            }
-            else if (Player.IsGangMember)
-            {
-                toDisplay += Player.RelationshipManager.GangRelationships.CurrentGang.ColorInitials;
-            }
+            display = true;
+            toDisplay += Player.AssignedAgency.ColorInitials;
+        }
+        else if (Player.CurrentGang != null)
+        {
+            display = true;
+            toDisplay += Player.CurrentGang.ColorInitials;
+        }
+        if(display)
+        {
             DisplayTextBoxOnScreen(toDisplay, Settings.SettingsManager.ActionWheelSettings.AffiliationCenterX, Settings.SettingsManager.ActionWheelSettings.AffiliationCenterY, Settings.SettingsManager.ActionWheelSettings.TextScale, Color.White, Settings.SettingsManager.ActionWheelSettings.TextFont, 255, false, Color.FromName(Settings.SettingsManager.ActionWheelSettings.ItemColor));
         }
     }

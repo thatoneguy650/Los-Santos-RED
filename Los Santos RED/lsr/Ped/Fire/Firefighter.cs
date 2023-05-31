@@ -20,6 +20,8 @@ public class Firefighter : PedExt, IWeaponIssuable
         WeaponInventory = new WeaponInventory(this, Settings);
         PedBrain = new FirefighterBrain(this, Settings, world, weapons);
     }
+    public override bool AutoCallsInUnconsciousPeds { get; set; } = true;
+    public override ePedAlertType PedAlertTypes { get; set; } = ePedAlertType.UnconsciousBody | ePedAlertType.HelpCry;
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => AssignedAgency.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => AssignedAgency.GetRandomWeapon(v, weapons);
     public Agency AssignedAgency { get; set; } = new Agency();
@@ -54,24 +56,15 @@ public class Firefighter : PedExt, IWeaponIssuable
                     {
                         GameFiber.Yield();
                     }
-                    UpdateAlerts(perceptable, policeRespondable, world);
+                    if (Settings.SettingsManager.FireSettings.AllowAlerts)
+                    {
+                        PedAlerts.Update(policeRespondable, world);
+                    }
                 }
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok 
-    }
-    protected override void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
-    {
-        if (Settings.SettingsManager.FireSettings.AllowToCallEMTsOnBodies)
-        {
-            PedAlerts.LookForUnconsciousPeds(world);
-        }
-        if (PedAlerts.HasSeenUnconsciousPed)
-        {
-            perceptable.AddMedicalEvent(PedAlerts.PositionLastSeenUnconsciousPed);
-            PedAlerts.HasSeenUnconsciousPed = false;
-        }
     }
     public void SetStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons Weapons, bool addBlip)
     {

@@ -40,6 +40,7 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
         Voice = new CopVoice(this, ModelName, Settings);
         PedBrain = new SecurityGuardBrain(this, Settings, world, weapons);
     }
+    public override ePedAlertType PedAlertTypes { get; set; } = ePedAlertType.UnconsciousBody | ePedAlertType.HelpCry | ePedAlertType.DeadBody | ePedAlertType.GunShot;
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => AssignedAgency.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => AssignedAgency.GetRandomWeapon(v, weapons);
     public Agency AssignedAgency { get; set; } = new Agency();
@@ -211,32 +212,36 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
                         GameFiber.Yield();
                     }
                     PedPerception.Update();
-                    UpdateAlerts(perceptable, policeRespondable, world);    
+                    if (Settings.SettingsManager.SecuritySettings.AllowAlerts)
+                    {
+                        PedAlerts.Update(policeRespondable, world);
+                    }
+                    //UpdateAlerts(perceptable, policeRespondable, world);    
                 }
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
     }
-    protected override void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
-    {
-        if (Settings.SettingsManager.SecuritySettings.AllowCallEMTsOnBodies)
-        {
-            PedAlerts.LookForUnconsciousPeds(world);
-        }
-        if (Settings.SettingsManager.SecuritySettings.AllowReactionsToBodies)
-        {
-            PedAlerts.LookForBodiesAlert(world);
-        }
-        if (PedAlerts.HasSeenUnconsciousPed)
-        {
-            perceptable.AddMedicalEvent(PedAlerts.PositionLastSeenUnconsciousPed);
-            PedAlerts.HasSeenUnconsciousPed = false;
-        }
-        if (policeRespondable.Violations.WeaponViolations.RecentlyShot && WithinWeaponsAudioRange)
-        {
-            PedAlerts.AddHeardGunfire(policeRespondable.Position);
-        }
-    }
+    //protected override void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
+    //{
+    //    if (Settings.SettingsManager.SecuritySettings.AllowCallEMTsOnBodies)
+    //    {
+    //        PedAlerts.LookForUnconsciousPeds(world);
+    //    }
+    //    if (Settings.SettingsManager.SecuritySettings.AllowReactionsToBodies)
+    //    {
+    //        PedAlerts.LookForBodiesAlert(world);
+    //    }
+    //    if (PedAlerts.HasSeenUnconsciousPed)
+    //    {
+    //        perceptable.AddMedicalEvent(PedAlerts.PositionLastSeenUnconsciousPed);
+    //        PedAlerts.HasSeenUnconsciousPed = false;
+    //    }
+    //    if (policeRespondable.Violations.WeaponViolations.RecentlyShot && WithinWeaponsAudioRange)
+    //    {
+    //        PedAlerts.AddHeardGunfire(policeRespondable.Position);
+    //    }
+    //}
 
 }

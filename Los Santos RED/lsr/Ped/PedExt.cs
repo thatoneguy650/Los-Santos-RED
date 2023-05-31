@@ -44,6 +44,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         Crimes = crimes;
         CurrentHealthState = new HealthState(this, settings, false);
         Settings = settings;
+
+
+
+
         PedViolations = new PedViolations(this, crimes, settings, weapons, world);
         PedPerception = new PedPerception(this, crimes, settings, weapons, world);
         PlayerPerception = new PlayerPerception(this, null, settings);
@@ -197,6 +201,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public uint GameTimeLastUpdated { get; set; }
     public uint GameTimeLastUpdatedTask { get; set; }
     public uint Handle { get; private set; }
+
+    public virtual ePedAlertType PedAlertTypes { get; set; } = ePedAlertType.UnconsciousBody;
+
     public bool HasBeenCarJackedByPlayer { get; set; } = false;
     public bool HasBeenHurtByPlayer { get; set; } = false;
     public bool WasKilledByPlayer { get; set; } = false;
@@ -239,6 +246,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsStill { get; private set; }
     public bool IsSuicidal { get; set; } = false;
     public bool IsUnconscious { get; set; }
+    public virtual bool AutoCallsInUnconsciousPeds { get; set; } = false;
     public bool IsLocationSpawned { get; set; } = false;
     public bool IsSuspicious { get; set; } = false;
     public bool IsWanted => PedViolations.IsWanted;
@@ -430,11 +438,15 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                         PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
                     }
                     PedPerception.Update();
-                    if (policeRespondable.CanArrestPeds)
+                    if (policeRespondable.CanBustPeds)
                     {
                         CheckPlayerBusted();
                     }
-                    UpdateAlerts(perceptable, policeRespondable, world);           
+                    if (Settings.SettingsManager.CivilianSettings.AllowAlerts)
+                    {
+                        PedAlerts.Update(policeRespondable, world);
+                    }
+                    //UpdateAlerts(perceptable, policeRespondable, world);           
                 }
                 GameTimeLastUpdated = Game.GameTime;
             }
@@ -442,13 +454,13 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
         
     }
-    protected virtual void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
-    {
-        if (Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallEMTsOnBodies)
-        {
-            PedAlerts.LookForUnconsciousPeds(world);
-        }
-    }
+    //protected virtual void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
+    //{
+    //    if (Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallEMTsOnBodies)
+    //    {
+    //        PedAlerts.LookForUnconsciousPeds(world);
+    //    }
+    //}
     public virtual void OnBecameWanted()
     {
         if (Pedestrian.Exists())
@@ -865,10 +877,11 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             {
                 AddOtherCrimesWitnessed(Player);
             }
-            else if (PedAlerts.HasSeenUnconsciousPed)
-            {
-                AddMedicalEventWitnessed(Player);
-            }
+            PedAlerts.OnReportedCrime(PlayerToCheck);
+            //else if (PedAlerts.HasSeenUnconsciousPed)
+            //{
+            //    AddMedicalEventWitnessed(Player);
+            //}
         }
         else if (!Pedestrian.Exists())
         {
@@ -880,10 +893,11 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             {
                 AddOtherCrimesWitnessed(Player);
             }
-            else if (PedAlerts.HasSeenUnconsciousPed)
-            {
-                AddMedicalEventWitnessed(Player);
-            }
+            PedAlerts.OnReportedCrime(PlayerToCheck);
+            //else if (PedAlerts.HasSeenUnconsciousPed)
+            //{
+            //    AddMedicalEventWitnessed(Player);
+            //}
         }
 
     }
@@ -961,11 +975,21 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
         OtherCrimesWitnessed.Clear();
     }
-    private void AddMedicalEventWitnessed(ITargetable Player)
-    {
-        Player.AddMedicalEvent(PedAlerts.PositionLastSeenUnconsciousPed);
-        PedAlerts.HasSeenUnconsciousPed = false;
-    }
+
+
+
+    //private void AddMedicalEventWitnessed(ITargetable Player)
+    //{
+    //    Player.AddMedicalEvent(PedAlerts.PositionLastSeenUnconsciousPed);
+    //    PedAlerts.HasSeenUnconsciousPed = false;
+    //}
+
+    //public virtual void AddMedicalEventWitnessed(IPoliceRespondable Player, Vector3 position)
+    //{
+    //    Player.AddMedicalEvent(position);
+    //    PedAlerts.HasSeenUnconsciousPed = false;
+    //}
+
     private float CivilianCallPercentage()
     {
         if (EntryPoint.FocusZone != null)
@@ -1104,6 +1128,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         {
             Pedestrian.IsRagdoll = false;
             IsUnconscious = false;
+            HasBeenSeenUnconscious = false;
             CanBeAmbientTasked = true;
             CanBeTasked = true;
             PlaySpeech("GENERIC_THANKS", false);

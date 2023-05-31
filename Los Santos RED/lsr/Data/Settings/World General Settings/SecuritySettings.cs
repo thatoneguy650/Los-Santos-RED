@@ -74,7 +74,7 @@ public class SecuritySettings : ISettingsDefaultable
 
     public bool AllowReactionsToBodies { get; set; }
     public bool AllowShootingInvestigations { get; set; }
-    public bool AllowCallEMTsOnBodies { get; set; }
+    public bool AllowAlerts { get; set; }
     public SecuritySettings()
     {
         SetDefault();
@@ -113,6 +113,6 @@ public class SecuritySettings : ISettingsDefaultable
         RemoveAmbientSecurity = true;
         AllowReactionsToBodies = true;
         AllowShootingInvestigations = true;
-        AllowCallEMTsOnBodies = true;
+        AllowAlerts = true;
     }
 }

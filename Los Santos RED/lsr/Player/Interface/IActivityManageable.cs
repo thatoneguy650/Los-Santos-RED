@@ -50,6 +50,7 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentLookedAtVehicle { get; }
         bool IsMoveControlPressed { get; }
         bool IsEMT { get; }
+        bool CanBustPeds { get; }
 
         void PlaySpeech(string v1, bool v2);
     }

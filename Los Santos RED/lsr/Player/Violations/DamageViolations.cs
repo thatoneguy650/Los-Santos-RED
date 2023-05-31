@@ -68,21 +68,21 @@ public class DamageViolations
     }
     public void Update()
     {
-        if (RecentlyKilledCivilian || NearCivilianMurderVictim)
-        {
-            Violations.AddViolating(StaticStrings.KillingCiviliansCrimeID);
-        }
-        if (CountNearCivilianMurderVictim >= 3 || CountRecentCivilianMurderVictim >= 4)
-        {
-            Violations.AddViolating(StaticStrings.TerroristActivityCrimeID);
-        }
-        if(NearPoliceMurderVictim)
+        if (RecentlyKilledCop || (NearPoliceMurderVictim && Violations.IsViolatingSeriousCrime))
         {
             Violations.AddViolating(StaticStrings.KillingPoliceCrimeID);
         }
         if (RecentlyHurtCivilian)
         {
             Violations.AddViolating(StaticStrings.HurtingCiviliansCrimeID);
+        }
+        if (RecentlyKilledCivilian || (NearCivilianMurderVictim && Violations.IsViolatingSeriousCrime))
+        {
+            Violations.AddViolating(StaticStrings.KillingCiviliansCrimeID);
+        }
+        if ((CountNearCivilianMurderVictim >= 3 && Violations.IsViolatingSeriousCrime) || CountRecentCivilianMurderVictim >= 4)
+        {
+            Violations.AddViolating(StaticStrings.TerroristActivityCrimeID);
         }
     }
     public void AddInjured(PedExt myPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle)
@@ -96,7 +96,11 @@ public class DamageViolations
         else
         {
             myPed.OnInjuredByPlayer(Player, Zones, GangTerritories);
-            GameTimeLastHurtCivilian = Game.GameTime;
+            if (Violations.CanDamageWantedCivilians && myPed.PedViolations.IsViolatingWanted)
+            {
+                return;
+            }
+            GameTimeLastHurtCivilian = Game.GameTime; 
         }
        // EntryPoint.WriteToConsole($"VIOLATIONS: Hurting WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
     }
@@ -114,11 +118,15 @@ public class DamageViolations
         }
         else
         {
-            myPed.OnKilledByPlayer(Player, Zones, GangTerritories);
-            PlayerKilledCivilians.Add(myPed);
+            myPed.OnKilledByPlayer(Player, Zones, GangTerritories);    
             Player.OnKilledCivilian();
+            if (Violations.CanDamageWantedCivilians && myPed.PedViolations.IsViolatingWanted)
+            {
+                return;
+            }
+            PlayerKilledCivilians.Add(myPed);
             GameTimeLastKilledCivilian = Game.GameTime;
-            GameTimeLastHurtCivilian = Game.GameTime;
+            GameTimeLastHurtCivilian = Game.GameTime;       
         }
        // EntryPoint.WriteToConsole($"VIOLATIONS: Killing WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
     }

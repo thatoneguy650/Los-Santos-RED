@@ -414,7 +414,17 @@ public class Civilians
         }
 
 
-        World.PoliceBackupPoint = PoliceInterestPoint;
+
+        if(PoliceRespondable.IsCop && !Settings.SettingsManager.PoliceTaskSettings.AutoDispatchWhenCop && PoliceRespondable.ClosestPoliceDistanceToPlayer >= 100f)
+        {
+            World.PoliceBackupPoint = Vector3.Zero;
+        }
+        else
+        {
+            World.PoliceBackupPoint = PoliceInterestPoint;
+        }
+        
+
 
 
         if (worstPed != null)
@@ -436,7 +446,7 @@ public class Civilians
         }
         if (Settings.SettingsManager.PoliceTaskSettings.AllowRespondingWithoutCallIn)
         {
-            if (World.CitizenWantedLevel > 0 && World.PoliceBackupPoint != Vector3.Zero && (!PoliceRespondable.IsCop || Settings.SettingsManager.PoliceTaskSettings.AutoDispatchWhenCop))
+            if (World.CitizenWantedLevel > 0 && World.PoliceBackupPoint != Vector3.Zero)
             {
                 AssignCops();
                 GameFiber.Yield();

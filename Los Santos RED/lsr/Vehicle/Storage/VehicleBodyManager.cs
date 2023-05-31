@@ -50,17 +50,13 @@ public class VehicleBodyManager
             {
                 continue;
             }
-            if (pedExtOnSeat.IsDead || pedExtOnSeat.IsUnconscious)
+            if (pedExtOnSeat.IsDead || pedExtOnSeat.IsUnconscious || pedExtOnSeat.IsBusted)
             {
                 StoredBody storedBody = new StoredBody(pedExtOnSeat, vdsd, VehicleExt, Settings);
                 EntryPoint.WriteToConsole("Added Existng Stored Body to the data set");
                 StoredBodies.Add(storedBody);
             }
         }
-
-
-
-
     }
     public bool LoadBody(PedExt pedExt, VehicleDoorSeatData bone)
     {
@@ -100,28 +96,6 @@ public class VehicleBodyManager
         StoredBodies.RemoveAll(x => x.WasEjected);
     }
   
-    //public void UnloadBody(PedExt pedExt)
-    //{
-    //    if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
-    //    {
-    //        return;
-    //    }
-    //    if (pedExt == null || !pedExt.Pedestrian.Exists())
-    //    {
-    //        return;
-    //    }
-    //    StoredBodies.RemoveAll(x => x.PedExt == null || !x.PedExt.Pedestrian.Exists());
-    //    StoredBody storedBody = StoredBodies.FirstOrDefault(x=> x.PedExt.Handle == pedExt.Handle);
-    //    if(storedBody == null)
-    //    {
-    //        return;
-    //    }
-    //    if(storedBody.Unload())
-    //    {
-    //        StoredBodies.Remove(storedBody);
-    //    }
-    //}
-
     public void CreateInteractionMenu(MenuPool menuPool, UIMenu VehicleInteractMenu, IVehicleSeatAndDoorLookup vehicleSeatDoorData, IEntityProvideable world)
     {
         Update(vehicleSeatDoorData, world);
@@ -129,8 +103,8 @@ public class VehicleBodyManager
         {
             return;
         }
-        UIMenu UnloadBodiesSubMenu = menuPool.AddSubMenu(VehicleInteractMenu, "Unload Bodies");
-        VehicleInteractMenu.MenuItems[VehicleInteractMenu.MenuItems.Count() - 1].Description = "Unload bodies from the vehicle.";
+        UIMenu UnloadBodiesSubMenu = menuPool.AddSubMenu(VehicleInteractMenu, "Unload Peds");
+        VehicleInteractMenu.MenuItems[VehicleInteractMenu.MenuItems.Count() - 1].Description = "Unload peds from the vehicle.";
         UnloadBodiesSubMenu.SetBannerType(EntryPoint.LSRedColor);
 
         foreach (StoredBody storedBody in VehicleExt.VehicleBodyManager.StoredBodies)

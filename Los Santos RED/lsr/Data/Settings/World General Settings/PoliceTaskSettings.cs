@@ -212,7 +212,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
         RecklessVehicleChaseWantedLevelRequirement = 4;//3;
         AllowVeryRecklessVehicleChaseWithLethalForce = true;
         UseLegacyLocateTasking = false;
-        AutoDispatchWhenCop = true;
+        AutoDispatchWhenCop = false;
         StopWeaponFiringWhenDropped = false;
     }
 }

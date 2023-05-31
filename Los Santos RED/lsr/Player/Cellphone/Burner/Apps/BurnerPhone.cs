@@ -238,6 +238,31 @@ public class BurnerPhone
         Game.DisableControlAction(3, GameControl.CellphoneRight, true);
         Game.DisableControlAction(3, GameControl.CellphoneSelect, true);
         Game.DisableControlAction(3, GameControl.CellphoneCancel, true);
+
+
+        Game.DisableControlAction(0, GameControl.Attack, true);
+        Game.DisableControlAction(0, GameControl.Attack2, true);
+        Game.DisableControlAction(0, GameControl.VehicleAttack, true);
+        Game.DisableControlAction(0, GameControl.VehicleAttack2, true);
+
+        if (Player.IsInVehicle)
+        {
+            Game.DisableControlAction(0, GameControl.VehicleDuck, true);
+            Game.DisableControlAction(0, GameControl.VehicleCinCam, true);
+            Game.DisableControlAction(0, GameControl.VehicleSelectNextWeapon, true);
+            Game.DisableControlAction(0, GameControl.VehicleSelectPrevWeapon, true);
+
+            Game.DisableControlAction(0, GameControl.VehicleHeadlight, true);
+        }
+        else
+        {
+            Game.DisableControlAction(0, GameControl.Sprint, true);
+            Game.DisableControlAction(0, GameControl.Jump, true);
+
+        }
+
+
+
     }
     private void UpdateSelectedIndex()
     {

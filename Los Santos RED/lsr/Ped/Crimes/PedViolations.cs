@@ -74,6 +74,9 @@ public class PedViolations
     public bool CanPoliceSee { get; private set; }
     public bool CanPoliceHear { get; private set; }
     public bool IsDeadlyChase => CrimesObserved.Any(x => x.ResultsInLethalForce);
+
+    public bool IsViolatingWanted => IsWanted || CurrentlyViolatingWantedLevel > 0;
+
     public int CurrentlyViolatingWantedLevel => CrimesViolating.Any() ? CrimesViolating.Max(x => x.ResultingWantedLevel) : 0;
     public string CurrentlyViolatingWantedLevelReason => CrimesViolating.OrderBy(x=> x.Priority).FirstOrDefault()?.Name;
     public List<Crime> CrimesCurrentlyViolating => CrimesViolating;
@@ -106,7 +109,7 @@ public class PedViolations
                 {
                     GameFiber.Yield();//TR TEST 28
                     CheckPoliceSight();
-                    if (player.IsCop)
+                    if (player.CanBustPeds)
                     {
                         CheckPlayerSight(player);
                     }

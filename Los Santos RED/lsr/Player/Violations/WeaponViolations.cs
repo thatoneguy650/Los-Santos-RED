@@ -43,6 +43,10 @@ public class WeaponViolations
     }
     public void Update()
     {
+        if (!Violations.CheckWeaponViolations)
+        {
+            return;
+        }
 
         if (Player.RecentlyShot)
         {

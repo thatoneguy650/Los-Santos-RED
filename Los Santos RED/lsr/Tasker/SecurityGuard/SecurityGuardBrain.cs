@@ -170,7 +170,7 @@ public class SecurityGuardBrain : PedBrain
     }
     private void HandleCrimeReports()
     {
-        if (GameTimeLastSeenCrime == 0 && (PedExt.PlayerCrimesWitnessed.Any() || PedExt.OtherCrimesWitnessed.Any() || PedExt.PedAlerts.HasSeenUnconsciousPed))
+        if (GameTimeLastSeenCrime == 0 && (PedExt.PlayerCrimesWitnessed.Any() || PedExt.OtherCrimesWitnessed.Any() || PedExt.PedAlerts.HasCrimeToReport))
         {
             GameTimeLastSeenCrime = Game.GameTime;
             //EntryPoint.WriteToConsole("SECURITY SEEN FIRST CRIME", debugLevel);

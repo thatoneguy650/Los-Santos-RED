@@ -401,7 +401,7 @@ public class ButtonPrompts
                 Prompts.RemoveAll(x => x.Group == "Drag");
             }
         }
-        if (Settings.SettingsManager.KeySettings.GrabPedGameControl >= 0 && !Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.ActivityManager.CanTakeHostageWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowTakingOtherPedsHostage )
+        if (Settings.SettingsManager.KeySettings.GrabPedGameControl >= 0 && !Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.ActivityManager.CanGrabLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowGrabbingPeds)
         {
             PersonGrabPrompts();
             addedPromptGroup = true;

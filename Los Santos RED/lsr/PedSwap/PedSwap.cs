@@ -281,6 +281,71 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
+
+
+
+    public void BecomeSecurity(Agency agency)
+    {
+        try
+        {
+            if (agency == null)
+            {
+                return;
+            }
+            DispatchablePerson toBecome = agency.Personnel.PickRandom();//?.Copy();
+            if (toBecome == null)
+            {
+                return;
+            }
+            Game.FadeScreenOut(500, true);
+            ResetOffsetForCurrentModel();
+            Ped TargetPed = new Ped(toBecome.ModelName, Player.Character.Position.Around2D(15f), Game.LocalPlayer.Character.Heading);
+            EntryPoint.SpawnedEntities.Add(TargetPed);
+            GameFiber.Yield();
+            if (!TargetPed.Exists())
+            {
+                Game.FadeScreenIn(0);
+                return;
+            }
+            TargetPed.RandomizeVariation();
+            StoreTargetPedData(TargetPed);
+            NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
+            HandlePreviousPed(false, TargetPed);
+            PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0, "");
+            if (toBecome != null)
+            {
+                Player.CurrentModelVariation = toBecome.SetPedVariation(Game.LocalPlayer.Character, agency.PossibleHeads, false);
+            }
+            Player.SetAgencyStatus(agency);
+            IssueWeapons(agency.GetRandomMeleeWeapon(Weapons), agency.GetRandomWeapon(true, Weapons), agency.GetRandomWeapon(false, Weapons));
+            if (RandomItems.RandomPercent(100f))
+            {
+                SpawnLocation vehicleSpawn = new SpawnLocation(Player.Position);
+                vehicleSpawn.GetClosestStreet(false);
+                if (vehicleSpawn.HasSpawns)
+                {
+                    SpawnTask carSpawn = new SecurityGuardSpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true, "", Settings)?.Copy(), toBecome, false, Settings, Weapons, Names, true, World, Crimes, ModItems);
+                    carSpawn.AllowAnySpawn = true;
+                    carSpawn.WillAddDriver = false;
+                    carSpawn.AttemptSpawn();
+                    carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Security));
+                    VehicleExt createdVehicle = carSpawn.CreatedVehicles.FirstOrDefault();
+                    if (createdVehicle != null && createdVehicle.Vehicle.Exists())
+                    {
+                        Player.Character.WarpIntoVehicle(createdVehicle.Vehicle, -1);
+                        Player.VehicleOwnership.TakeOwnershipOfVehicle(createdVehicle, false);
+                    }
+                }
+            }
+            GameFiber.Sleep(500);
+            Game.FadeScreenIn(500, true);
+            GiveHistory(true);
+        }
+        catch (Exception e3)
+        {
+            EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
+        }
+    }
     public void BecomeCop(Agency agency)
     {
         try
@@ -316,8 +381,6 @@ public class PedSwap : IPedSwap
             {
                 Player.CurrentModelVariation = toBecome.SetPedVariation(Game.LocalPlayer.Character, agency.PossibleHeads, false);
             }
-            // Player.GangRelationships.SetGang(agency, false);
-            //Player.SetCopStatus(true, agency);
             Player.SetAgencyStatus(agency);
             IssueWeapons(agency.GetRandomMeleeWeapon(Weapons), agency.GetRandomWeapon(true, Weapons),agency.GetRandomWeapon(false, Weapons));
             if (RandomItems.RandomPercent(100f))
@@ -326,11 +389,11 @@ public class PedSwap : IPedSwap
                 vehicleSpawn.GetClosestStreet(false);
                 if (vehicleSpawn.HasSpawns)
                 {
-                    SpawnTask carSpawn = new LESpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true, "", Settings)?.Copy(), toBecome, false, Settings, Weapons, Names, false, World, ModItems, false);
+                    SpawnTask carSpawn = new LESpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true, "", Settings)?.Copy(), toBecome, false, Settings, Weapons, Names, true, World, ModItems, false);
                     carSpawn.AllowAnySpawn = true;
                     carSpawn.WillAddDriver = false;
                     carSpawn.AttemptSpawn();
-                    carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+                    carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
                     VehicleExt createdVehicle = carSpawn.CreatedVehicles.FirstOrDefault();
                     if (createdVehicle != null && createdVehicle.Vehicle.Exists())
                     {
@@ -389,7 +452,7 @@ public class PedSwap : IPedSwap
                 vehicleSpawn.GetClosestStreet(false);
                 if (vehicleSpawn.HasSpawns)
                 {
-                    SpawnTask carSpawn = new GangSpawnTask(gang, vehicleSpawn, gang.GetRandomVehicle(0, false, false, true,"", Settings), toBecome, false, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World, ModItems, false, false, false);
+                    SpawnTask carSpawn = new GangSpawnTask(gang, vehicleSpawn, gang.GetRandomVehicle(0, false, false, true,"", Settings), toBecome, false, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, World, ModItems, false, false, false);
                     carSpawn.AllowAnySpawn = true;
                     carSpawn.WillAddDriver = false;
                     carSpawn.AttemptSpawn();
@@ -411,8 +474,6 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
-
-
     public void BecomeEMT(Agency agency)
     {
         try
@@ -450,11 +511,11 @@ public class PedSwap : IPedSwap
             vehicleSpawn.GetClosestStreet(false);
             if (vehicleSpawn.HasSpawns)
             {
-                SpawnTask carSpawn = new EMTSpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true, "", Settings), toBecome, false, Settings, Weapons, Names, false, World, ModItems);
+                SpawnTask carSpawn = new EMTSpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true, "", Settings), toBecome, false, Settings, Weapons, Names, true, World, ModItems);
                 carSpawn.AllowAnySpawn = true;
                 carSpawn.WillAddDriver = false;
                 carSpawn.AttemptSpawn();
-                carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+                carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.EMS));
                 VehicleExt createdVehicle = carSpawn.CreatedVehicles.FirstOrDefault();
                 if (createdVehicle != null && createdVehicle.Vehicle.Exists())
                 {
@@ -509,11 +570,11 @@ public class PedSwap : IPedSwap
             vehicleSpawn.GetClosestStreet(false);
             if (vehicleSpawn.HasSpawns)
             {
-                SpawnTask carSpawn = new FireFighterSpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true, "", Settings), toBecome, false, Settings, Weapons, Names, false, World, ModItems, ShopMenus);
+                SpawnTask carSpawn = new FireFighterSpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true, "", Settings), toBecome, false, Settings, Weapons, Names, true, World, ModItems, ShopMenus);
                 carSpawn.AllowAnySpawn = true;
                 carSpawn.WillAddDriver = false;
                 carSpawn.AttemptSpawn();
-                carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+                carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Fire));
                 VehicleExt createdVehicle = carSpawn.CreatedVehicles.FirstOrDefault();
                 if (createdVehicle != null && createdVehicle.Vehicle.Exists())
                 {
@@ -530,6 +591,7 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
+
 
     public void BecomeSamePed(string modelName, string fullName, int money, PedVariation variation)
     {

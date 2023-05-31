@@ -43,7 +43,7 @@ public class CivilianSettings : ISettingsDefaultable
 
 
     [Description("Allows civilians to be aware of hurt peds in the world. Required for civilians to call EMS.")]
-    public bool AllowCivilinsToCallEMTsOnBodies { get; set; }
+    public bool AllowAlerts { get; set; }
 
 
     [Description("Percentage of civilians that will have illicit items to buy and sell in the rich zones (See Zones.xml). Maximum value of 100.")]
@@ -160,7 +160,7 @@ public class CivilianSettings : ISettingsDefaultable
         MinimumTimeBetweenRandomCrimes = 1200000;
         CheckCivilianCrimes = true;
         AllowCivilinsToCallPoliceOnOtherCivilians = true;
-        AllowCivilinsToCallEMTsOnBodies = true;
+        AllowAlerts = true;
         ShowRandomCriminalBlips = false;
 
         DrugDealerPercentageRichZones = 5f;// 1f;

@@ -22,7 +22,7 @@ namespace LosSantosRED.lsr.Data
         {
 
         }
-        public GameSave(string playerName, int money, string modelName,bool isMale, PedVariation currentModelVariation, List<StoredWeapon> weaponInventory, List<VehicleSaveStatus> vehicleVariations)
+        public GameSave(string playerName, int money, string modelName, bool isMale, PedVariation currentModelVariation, List<StoredWeapon> weaponInventory, List<VehicleSaveStatus> vehicleVariations)
         {
             PlayerName = playerName;
             Money = money;
@@ -55,6 +55,7 @@ namespace LosSantosRED.lsr.Data
         public bool IsCop { get; set; }
         public bool IsEMT { get; set; }
         public bool IsFireFighter { get; set; }
+        public bool IsSecurityGuard {get;set;}
         public string AssignedAgencyID { get; set; }
         public string VoiceName { get; set; }
         public int Health { get; set; }
@@ -255,6 +256,7 @@ namespace LosSantosRED.lsr.Data
             IsCop = player.IsCop;
             IsEMT = player.IsEMT;
             IsFireFighter = player.IsFireFighter;
+            IsSecurityGuard = player.IsSecurityGuard;
             AssignedAgencyID = player.AssignedAgency?.ID;
             VoiceName = player.FreeModeVoice;
             CellPhoneSave = new CellPhoneSave(player.CellPhone.CustomRingtone,player.CellPhone.CustomTextTone,player.CellPhone.CustomTheme,player.CellPhone.CustomBackground,player.CellPhone.CustomVolume,player.CellPhone.SleepMode, player.CellPhone.CustomPhoneType,player.CellPhone.CustomPhoneOS);
@@ -293,7 +295,7 @@ namespace LosSantosRED.lsr.Data
         }
         private void LoadAgencies(IAgencies agencies, IInventoryable player)
         {
-            if (IsCop || IsEMT || IsFireFighter)
+            if (IsCop || IsEMT || IsFireFighter || IsSecurityGuard)
             {
                 player.SetAgencyStatus(agencies.GetAgency(AssignedAgencyID));
             }
@@ -638,6 +640,7 @@ namespace LosSantosRED.lsr.Data
             toreturn.Add(Tuple.Create("Police Officer:", IsCop ? "Yes" : "No"));//store agency here
             toreturn.Add(Tuple.Create("EMT:", IsEMT ? "Yes" : "No"));//store agency here
             toreturn.Add(Tuple.Create("Fire Fighter:", IsFireFighter ? "Yes" : "No"));//store agency here
+            toreturn.Add(Tuple.Create("Security Guard:", IsSecurityGuard ? "Yes" : "No"));//store agency here
             GangRepSave memberSave = GangReputationsSave.Where(x => x.IsMember).FirstOrDefault();
             if(memberSave != null)
             {

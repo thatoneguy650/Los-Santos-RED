@@ -46,10 +46,6 @@ public class OtherViolations
         {
             Violations.AddViolating(StaticStrings.TrespessingOnGovtPropertyCrimeID);
         }
-
-
-
-
         if (Player.Investigation.IsSuspicious)//when near investigation blip with description
         {
             Violations.AddViolating(StaticStrings.SuspiciousActivityCrimeID);
@@ -58,9 +54,6 @@ public class OtherViolations
         {
             Violations.AddViolating(StaticStrings.SuspiciousActivityCrimeID);
         }
-
-
-
         if (Player.IsWanted && !Player.Surrendering.HandsAreUp)
         {
             if (Player.IsInVehicle)
@@ -140,7 +133,7 @@ public class OtherViolations
         {
             Violations.AddViolating(StaticStrings.PublicVagrancyCrimeID);
         }
-        if (Player.ActivityManager.IsLootingBody)
+        if (Player.ActivityManager.IsLootingBody && !Player.IsEMT)
         {
             Violations.AddViolating(StaticStrings.MuggingCrimeID);
         }

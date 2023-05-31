@@ -20,7 +20,7 @@ public class FireSettings : ISettingsDefaultable
     public bool AllowStationSpawning { get; set; }
     [Description("If enabled, hospital ambient spawns ignore the ped and vehicle spawn limits.")]
     public bool StationSpawningIgnoresLimits { get; set; }
-    public bool AllowToCallEMTsOnBodies { get; set; }
+    public bool AllowAlerts { get; set; }
 
 
 
@@ -97,7 +97,7 @@ public class FireSettings : ISettingsDefaultable
         StationSpawningIgnoresLimits = true;
 
 
-        AllowToCallEMTsOnBodies = true;
+        AllowAlerts = true;
 
 
 

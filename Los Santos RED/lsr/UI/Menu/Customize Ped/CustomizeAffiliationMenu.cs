@@ -33,6 +33,7 @@ public class CustomizeAffiliationMenu
     private UIMenuItem CurrentValueMenu;
     private UIMenuListScrollerItem<Agency> EMSMenu;
     private UIMenuListScrollerItem<Agency> FireMenu;
+    private UIMenuListScrollerItem<Agency> SecurityMenu;
 
     public CustomizeAffiliationMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, PedCustomizerMenu pedCustomizerMenu, IGangs gangs, IAgencies agencies)
     {
@@ -97,11 +98,16 @@ public class CustomizeAffiliationMenu
             PedCustomizer.AssignedAgency = LEMenu.SelectedItem;
             SetCurrent();
         };
-        LEMenu.Enabled = false;
-#if DEBUG
-        LEMenu.Enabled = true;
-#endif
         AffiliationSubMenu.AddItem(LEMenu);
+
+        SecurityMenu = new UIMenuListScrollerItem<Agency>("Set Security", "Join a security agency. ~r~WIP~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.Security));
+        SecurityMenu.Activated += (sender, selectedItem) =>
+        {
+            PedCustomizer.AssignedGang = null;
+            PedCustomizer.AssignedAgency = SecurityMenu.SelectedItem;
+            SetCurrent();
+        };
+        AffiliationSubMenu.AddItem(SecurityMenu);
 
 
         EMSMenu = new UIMenuListScrollerItem<Agency>("Set EMS", "Join an EMS agency. ~r~WIP~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.EMS));
@@ -132,18 +138,28 @@ public class CustomizeAffiliationMenu
                 FireMenu.SelectedItem = FireMenu.Items.Where(x => PedCustomizer.AssignedAgency.ID == x.ID).FirstOrDefault();
                 LEMenu.SelectedItem = LEMenu.Items[0];
                 EMSMenu.SelectedItem = EMSMenu.Items[0];
+                SecurityMenu.SelectedItem = SecurityMenu.Items[0];
             }
             else if (PedCustomizer.AssignedAgency.ResponseType == ResponseType.EMS)
             {
                 EMSMenu.SelectedItem = EMSMenu.Items.Where(x => PedCustomizer.AssignedAgency.ID == x.ID).FirstOrDefault();
                 FireMenu.SelectedItem = FireMenu.Items[0];
                 LEMenu.SelectedItem = LEMenu.Items[0];
+                SecurityMenu.SelectedItem = SecurityMenu.Items[0];
             }
             else if (PedCustomizer.AssignedAgency.ResponseType == ResponseType.LawEnforcement)
             {
                 LEMenu.SelectedItem = LEMenu.Items.Where(x => PedCustomizer.AssignedAgency.ID == x.ID).FirstOrDefault();
                 FireMenu.SelectedItem = FireMenu.Items[0];
                 EMSMenu.SelectedItem = EMSMenu.Items[0];
+                SecurityMenu.SelectedItem = SecurityMenu.Items[0];
+            }
+            else if (PedCustomizer.AssignedAgency.ResponseType == ResponseType.Security)
+            {
+                SecurityMenu.SelectedItem = SecurityMenu.Items.Where(x => PedCustomizer.AssignedAgency.ID == x.ID).FirstOrDefault();
+                FireMenu.SelectedItem = FireMenu.Items[0];
+                EMSMenu.SelectedItem = EMSMenu.Items[0];
+                LEMenu.SelectedItem = LEMenu.Items[0];
             }
         }
         else
@@ -151,6 +167,7 @@ public class CustomizeAffiliationMenu
             FireMenu.SelectedItem = FireMenu.Items[0];
             LEMenu.SelectedItem = LEMenu.Items[0];
             EMSMenu.SelectedItem = EMSMenu.Items[0];
+            SecurityMenu.SelectedItem = SecurityMenu.Items[0];
         }
 
         if (PedCustomizer.AssignedGang != null)

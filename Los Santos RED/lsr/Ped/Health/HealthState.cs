@@ -263,7 +263,7 @@ public class HealthState
         }
         else
         {
-            if (!Settings.SettingsManager.ViolationSettings.TreatAsCop && !CurrentPlayer.IsCop && !MyPed.HasBeenHurtByPlayer && MyPed.CheckHurtBy(CurrentPlayer.Character,false))
+            if (!Settings.SettingsManager.ViolationSettings.TreatAsCop && !MyPed.HasBeenHurtByPlayer && MyPed.CheckHurtBy(CurrentPlayer.Character,false))
             {
                 if (Health - CurrentHealth + Armor - CurrentArmor > 5)
                 {
