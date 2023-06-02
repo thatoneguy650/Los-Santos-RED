@@ -188,34 +188,34 @@ public class GangDispatcher
     public bool Dispatch()
     {      
         HasDispatchedThisTick = false;
-        if (Settings.SettingsManager.GangSettings.ManageDispatching)
+        if(!Settings.SettingsManager.GangSettings.ManageDispatching)
         {
-            HandleAmbientSpawns();
+            return false;
         }
-
-        if(Settings.SettingsManager.GangSettings.AllowHitSquads)
-        {
-            if(IsTimeToDispatchHitSquad)
-            {
-
-                Gang EnemyGang;
-                if(Settings.SettingsManager.GangSettings.AllowHitSquadsOnlyEnemy)
-                {
-                    EnemyGang = Player.RelationshipManager.GangRelationships.EnemyGangs?.PickRandom();
-                }
-                else
-                {
-                    EnemyGang = Player.RelationshipManager.GangRelationships.HitSquadGangs?.PickRandom();
-                }
-                DispatchHitSquad(EnemyGang);
-                TimeBetweenHitSquads = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.MinTimeBetweenHitSquads, Settings.SettingsManager.GangSettings.MaxTimeBetweenHitSquads);
-                GameTimeLastDispatchedHitSquad = Game.GameTime;
-                HasDispatchedThisTick = true;
-            }
-        }
-        
+        HandleAmbientSpawns();
+        HandleHitSquadSpawns();
        // EntryPoint.WriteToConsole($"GANG DISPATCHER IsTimeToDispatch:{IsTimeToDispatch} GameTimeSinceDispatch:{Game.GameTime - GameTimeAttemptedDispatch} HasNeedToDispatch:{HasNeedToDispatch} TotalGangMembers:{World.Pedestrians.TotalSpawnedGangMembers} AmbientMemberLimitForZoneType:{AmbientMemberLimitForZoneType} TimeBetweenSpawn:{TimeBetweenSpawn} HasNeedToDispatchToDens:{HasNeedToDispatchToDens} PercentageOfAmbientSpawn:{PercentageOfAmbientSpawn}");
         return HasDispatchedThisTick;
+    }
+    private void HandleHitSquadSpawns()
+    {
+        if (!Settings.SettingsManager.GangSettings.AllowHitSquads || !IsTimeToDispatchHitSquad)
+        {
+            return;
+        }
+        Gang EnemyGang;
+        if (Settings.SettingsManager.GangSettings.AllowHitSquadsOnlyEnemy)
+        {
+            EnemyGang = Player.RelationshipManager.GangRelationships.EnemyGangs?.PickRandom();
+        }
+        else
+        {
+            EnemyGang = Player.RelationshipManager.GangRelationships.HitSquadGangs?.PickRandom();
+        }
+        DispatchHitSquad(EnemyGang);
+        TimeBetweenHitSquads = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.MinTimeBetweenHitSquads, Settings.SettingsManager.GangSettings.MaxTimeBetweenHitSquads);
+        GameTimeLastDispatchedHitSquad = Game.GameTime;
+        HasDispatchedThisTick = true;
     }
 
     private void DispatchHitSquad(Gang enemyGang)
@@ -284,17 +284,19 @@ public class GangDispatcher
     private void RunAmbientDispatch()
     {
         //EntryPoint.WriteToConsoleTestLong($"AMBIENT GANG SPAWN RunAmbientDispatch ShouldRunAmbientDispatch{ShouldRunAmbientDispatch}: %{PercentageOfAmbientSpawn} TimeBetween:{TimeBetweenSpawn} AmbLimit:{AmbientMemberLimitForZoneType}");
-        if (GetSpawnLocation() && GetSpawnTypes())
+
+        if(!GetSpawnLocation() || !GetSpawnTypes())
         {
-            GameTimeAttemptedDispatch = Game.GameTime;
-            GameFiber.Yield();
-            //EntryPoint.WriteToConsoleTestLong($"AMBIENT GANG CALLED SPAWN TASK");
-            if (CallSpawnTask(false, true, false, false, TaskRequirements.None, false))
-            {
-                ShouldRunAmbientDispatch = false;
-                //GameTimeAttemptedDispatch = Game.GameTime;
-            }
+            return;
         }
+        GameTimeAttemptedDispatch = Game.GameTime;
+        GameFiber.Yield();
+        //EntryPoint.WriteToConsoleTestLong($"AMBIENT GANG CALLED SPAWN TASK");
+        if (CallSpawnTask(false, true, false, false, TaskRequirements.None, false))
+        {
+            ShouldRunAmbientDispatch = false;
+            //GameTimeAttemptedDispatch = Game.GameTime;
+        }    
     }
     private bool GetSpawnLocation()
     {

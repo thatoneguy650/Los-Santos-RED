@@ -63,6 +63,10 @@ public class ConditionalLocation
     public string RequiredVehicleGroup { get; set; }
     public bool IsEmpty { get; set; } = true;
     public string GroupID { get; set; } = "";
+
+    public bool AllowAirVehicle { get; set; } = false;
+    public bool AllowBoat { get; set; } = false;
+
     public TaskRequirements TaskRequirements { get; set; } = TaskRequirements.None;
     public List<string> ForcedScenarios { get; set; }
     public float OverrideNightPercentage { get; set; } = -1.0f;

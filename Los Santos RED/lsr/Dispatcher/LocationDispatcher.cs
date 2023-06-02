@@ -90,9 +90,13 @@ public class LocationDispatcher
             {
                 foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)
                 {
+                    EntryPoint.WriteToConsole($"ATTEMPTING VEHICLE SPAWN AT {ps.Name} FOR {cl.GroupID}");
+
+
                     bool hasStuff = ForcedGroups.Contains(cl.GroupID);
                     //EntryPoint.WriteToConsoleTestLong($"CHECKED FORCE GROUP {cl.GroupID} FORCING:{hasStuff}");
                     cl.AttemptSpawn(Player, false, hasStuff, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems);
+                    
                     if (cl.AttemptedSpawn && !string.IsNullOrEmpty(cl.GroupID))
                     {
                         //EntryPoint.WriteToConsoleTestLong($"ADDED FORCED GROUP {cl.GroupID}");

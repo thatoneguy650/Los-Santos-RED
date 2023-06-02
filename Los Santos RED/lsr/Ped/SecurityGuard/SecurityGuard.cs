@@ -223,6 +223,17 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
         }
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
     }
+
+    protected override string GetPedInfoForDisplay()
+    {
+        string ExtraItems = base.GetPedInfoForDisplay();
+        if (AssignedAgency != null)
+        {
+            ExtraItems += $"~n~Security Guard: {AssignedAgency.ShortName}";
+        }
+        return ExtraItems;
+    }
+
     //protected override void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
     //{
     //    if (Settings.SettingsManager.SecuritySettings.AllowCallEMTsOnBodies)

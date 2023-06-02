@@ -110,7 +110,7 @@ public class GangConditionalLocation : ConditionalLocation
         }
         if (!IsPerson)
         {
-            DispatchableVehicle = Gang.GetRandomVehicle(World.TotalWantedLevel, false, false, true, RequiredVehicleGroup, Settings);
+            DispatchableVehicle = Gang.GetRandomVehicle(World.TotalWantedLevel, AllowAirVehicle, AllowBoat, true, RequiredVehicleGroup, Settings);
             if (!IsEmpty && DispatchableVehicle != null)
             {
                 DispatchablePerson = Gang.GetRandomPed(World.TotalWantedLevel, DispatchableVehicle.RequiredPedGroup);

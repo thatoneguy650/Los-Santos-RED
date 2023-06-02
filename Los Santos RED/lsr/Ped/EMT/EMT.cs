@@ -71,4 +71,13 @@ public class EMT : PedExt
             AddBlip();
         }
     }
+    protected override string GetPedInfoForDisplay()
+    {
+        string ExtraItems = base.GetPedInfoForDisplay();
+        if (AssignedAgency != null)
+        {
+            ExtraItems += $"~n~EMT: {AssignedAgency.ShortName}";
+        }
+        return ExtraItems;
+    }
 }

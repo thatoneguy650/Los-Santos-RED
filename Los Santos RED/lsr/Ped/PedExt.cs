@@ -1148,4 +1148,49 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     {
         
     }
+
+    public virtual void ShowCustomDisplay(uint headshotID,string Title, string Description)
+    {
+        string pic1 = "CHAR_BLANK_ENTRY";
+        string pic2 = "CHAR_BLANK_ENTRY";
+        if (NativeFunction.Natives.IsPedheadshotReady<bool>(headshotID))
+        {
+            string str = NativeFunction.Natives.GetPedheadshotTxdString<string>(headshotID);
+            pic1 = str;
+            pic2 = str;
+        }
+        Game.DisplayNotification(pic1, pic2, Title, $"~y~{Name}", Description);
+    }
+    public virtual void ShowInfoDisplay(uint headshotID)
+    {
+        string pic1 = "CHAR_BLANK_ENTRY";
+        string pic2 = "CHAR_BLANK_ENTRY";
+        if (NativeFunction.Natives.IsPedheadshotReady<bool>(headshotID))
+        {
+            string str = NativeFunction.Natives.GetPedheadshotTxdString<string>(headshotID);
+            pic1 = str;
+            pic2 = str;
+        }
+        string Description = "";
+        Game.DisplayNotification(pic1, pic2, "~o~Information", $"~y~{Name}", GetPedInfoForDisplay());
+    }
+    protected virtual string GetPedInfoForDisplay()
+    {
+        string Output = "";
+        string Status = "Normal";
+        if(IsDead)
+        {
+            Status = "Dead";
+        }
+        else if(IsUnconscious)
+        {
+            Status = "Unconscious";
+        }
+        Output = $"Status: {Status}";
+        if (HasMenu)
+        {
+            Output += $"~n~Can Transact";
+        }
+        return Output;
+    }
 }

@@ -13,7 +13,7 @@ public class ActivitySettings : ISettingsDefaultable
     [Description("Allow the player to start converstaions with random peds.")]
     public bool AllowPedConversations { get; set; }
     [Description("Allow the player to loot dead or unconscious peds.")]
-    public bool AllowPedLooting { get; set; }
+    public bool AllowPedInspecting { get; set; }
     [Description("Allow the player to hold up peds.")]
     public bool AllowPedHoldUps { get; set; }
     [Description("Maximum distance in meters that you can hold up a ped.")]
@@ -68,7 +68,7 @@ public class ActivitySettings : ISettingsDefaultable
     {
         TeleportWhenSitting = false;
         AllowPedConversations = true;
-        AllowPedLooting = true;
+        AllowPedInspecting = true;
         AllowPedHoldUps = true;
         AllowDraggingOtherPeds = true;
         AllowGrabbingPeds = true;

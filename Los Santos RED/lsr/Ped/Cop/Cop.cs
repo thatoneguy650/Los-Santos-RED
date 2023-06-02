@@ -405,7 +405,15 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         }
     }
 
-
+    protected override string GetPedInfoForDisplay()
+    {
+        string ExtraItems = base.GetPedInfoForDisplay();
+        if (AssignedAgency != null)
+        {
+            ExtraItems += $"~n~Cop: {AssignedAgency.ShortName}";
+        }
+        return ExtraItems;
+    }
     public override void OnDeath(IPoliceRespondable policeRespondable)
     {
         AddPossibleMIA(policeRespondable);

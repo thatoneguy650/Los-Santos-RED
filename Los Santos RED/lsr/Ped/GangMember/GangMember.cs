@@ -359,6 +359,14 @@ public class GangMember : PedExt, IWeaponIssuable
     //    Player.RelationshipManager.GangRelationships.ChangeReputation(Gang, RepToRemove, true);
     //    Player.RelationshipManager.GangRelationships.AddAttacked(Gang);
     //}
-
+    protected override string GetPedInfoForDisplay()
+    {
+        string ExtraItems = base.GetPedInfoForDisplay();
+        if(Gang != null)
+        {
+            ExtraItems += $"~n~Gang: {Gang.ShortName}";
+        }
+        return ExtraItems;
+    }
 
 }

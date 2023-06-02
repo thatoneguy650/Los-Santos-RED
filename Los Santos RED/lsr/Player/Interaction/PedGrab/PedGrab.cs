@@ -162,7 +162,6 @@ public class PedGrab : DynamicActivity
         {
             EntryPoint.WriteToConsole("ERROR GRAB SHIELD COULD NOT LOAD ANIMATION DICTIONARY 1");
         }
-
         SetupSpecific();
     }
     protected virtual void SetupSpecific()
@@ -173,8 +172,6 @@ public class PedGrab : DynamicActivity
 
         PedIdleDictionary = "mp_arresting";
         PedIdleAnimation = "idle";
-
-
         //PedIdleDictionary = "anim@gangops@hostage@";
         //PedIdleAnimation = "victim_idle";
         PlayerIdleFlags = 2 | 8 | 16 | 32;//maybe 8?
@@ -453,7 +450,6 @@ public class PedGrab : DynamicActivity
         }
         return false;
     }
-
     private bool LoadPed()
     {
         if (!Ped.Pedestrian.Exists())

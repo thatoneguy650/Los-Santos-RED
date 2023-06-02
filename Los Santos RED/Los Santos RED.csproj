@@ -258,9 +258,10 @@
     <Compile Include="lsr\Player\Interaction\Conversation\AdvancedConversation.cs" />
     <Compile Include="lsr\Old\FullConversation_Old.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\IAdvancedConversationable.cs" />
-    <Compile Include="lsr\Player\Interaction\PedGrab\HumanShieldNew.cs" />
+    <Compile Include="lsr\Player\Interaction\PedGrab\HumanShield.cs" />
     <Compile Include="lsr\Player\Interaction\PedGrab\PedGrab.cs" />
-    <Compile Include="lsr\Player\Interaction\TreatmentActivity.cs" />
+    <Compile Include="lsr\Player\Interaction\PedInspect\PedInspect.cs" />
+    <Compile Include="lsr\Old\TreatmentActivity_Old.cs" />
     <Compile Include="lsr\Player\Interface\IArmorManageable.cs" />
     <Compile Include="lsr\Player\Interface\IClipsetManageable.cs" />
     <Compile Include="lsr\Player\Interface\IOutfitManageable.cs" />
@@ -568,8 +569,8 @@
     <Compile Include="lsr\Player\HumanState\Injuries.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\Conversation.cs" />
     <Compile Include="lsr\Player\Interaction\Drag.cs" />
-    <Compile Include="lsr\Player\Interaction\PedGrab\HumanShield.cs" />
-    <Compile Include="lsr\Player\Interaction\Loot.cs" />
+    <Compile Include="lsr\Old\HumanShield_Old.cs" />
+    <Compile Include="lsr\Old\Loot_Old.cs" />
     <Compile Include="lsr\Player\Interaction\PersonTransaction.cs" />
     <Compile Include="lsr\Player\Interaction\SpeechData.cs" />
     <Compile Include="lsr\Player\Interface\IActivityManageable.cs" />

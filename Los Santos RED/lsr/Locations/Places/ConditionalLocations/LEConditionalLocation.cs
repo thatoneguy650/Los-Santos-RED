@@ -78,6 +78,7 @@ public class LEConditionalLocation : ConditionalLocation
             }
             Agency = Jurisdictions.GetRandomAgency(CurrentZone?.InternalGameName, 0, ResponseType.LawEnforcement);
         }
+        //EntryPoint.WriteToConsole($"LECONDITIONAL GetDispatchableGenerator: {Agency?.FullName}");
     }
     public override void GenerateSpawnTypes()
     {
@@ -91,11 +92,12 @@ public class LEConditionalLocation : ConditionalLocation
         }
         if(!IsPerson)
         {
-            DispatchableVehicle = Agency.GetRandomVehicle(World.TotalWantedLevel, false, false, true, RequiredVehicleGroup, Settings);
+            DispatchableVehicle = Agency.GetRandomVehicle(World.TotalWantedLevel, AllowAirVehicle, AllowBoat, true, RequiredVehicleGroup, Settings);
             if(!IsEmpty && DispatchableVehicle != null)
             {
                 DispatchablePerson = Agency.GetRandomPed(World.TotalWantedLevel, DispatchableVehicle.RequiredPedGroup);
             }
         }
+        //EntryPoint.WriteToConsole($"LECONDITIONAL IsPerson:{IsPerson} IsEmpty:{IsEmpty} GenerateSpawnTypes: {DispatchableVehicle?.ModelName} AllowAirVehicle:{AllowAirVehicle}");
     }
 }

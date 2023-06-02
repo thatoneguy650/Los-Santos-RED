@@ -87,4 +87,13 @@ public class Firefighter : PedExt, IWeaponIssuable
             AddBlip();
         }
     }
+    protected override string GetPedInfoForDisplay()
+    {
+        string ExtraItems = base.GetPedInfoForDisplay();
+        if (AssignedAgency != null)
+        {
+            ExtraItems += $"~n~Firefighter: {AssignedAgency.ShortName}";
+        }
+        return ExtraItems;
+    }
 }

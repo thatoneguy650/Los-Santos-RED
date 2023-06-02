@@ -186,12 +186,12 @@ namespace LosSantosRED.lsr
             }
             else if (Player.ButtonPrompts.IsGroupPressed("Search"))//Player.ButtonPromptList.Any(x => x.Group == "Search" && x.IsPressedNow))//string for now...
             {
-                Player.ActivityManager.LootPed();
+                Player.ActivityManager.InspectPed();
             }
-            else if (Player.ButtonPrompts.IsGroupPressed("Treat"))//Player.ButtonPromptList.Any(x => x.Group == "Search" && x.IsPressedNow))//string for now...
-            {
-                Player.ActivityManager.TreatPed();
-            }
+            //else if (Player.ButtonPrompts.IsGroupPressed("Treat"))//Player.ButtonPromptList.Any(x => x.Group == "Search" && x.IsPressedNow))//string for now...
+            //{
+            //    Player.ActivityManager.TreatPed();
+            //}
             else if (Player.ButtonPrompts.IsGroupPressed("Drag"))//Player.ButtonPromptList.Any(x => x.Group == "Drag" && x.IsPressedNow))//string for now...
             {
                 Player.ActivityManager.DragPed();

@@ -2040,6 +2040,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new LEConditionalLocation(new Vector3(446.3985f, -1026.087f, 28.92508f), 185f,20f),
                     new LEConditionalLocation(new Vector3(496.3687f, -996.015f, 28.3387f), 178.4318f,20f),
                     new LEConditionalLocation(new Vector3(496.3721f, -1016.798f, 28.687f), 178.4318f,20f),
+
+                     new LEConditionalLocation(new Vector3(449.7793f, -981.5451f, 43.69165f), 83.32257f,100f) { AllowAirVehicle = true,AssociationID = "LSPD-ASD" },
+
+
                 } },
 
             new PoliceStation(new Vector3(815.8774f, -1290.531f, 26.28391f), 74.91704f, "La Mesa Police Station","Obey and Survive") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {

@@ -193,7 +193,7 @@ public class ButtonPrompts
             AddPrompt("StartConversation", promptText, $"Talk {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1);
         }
     }
-    private void PersonLootingPrompts()
+    private void PersonInspectingPrompts()
     {
         RemovePrompts("InteractableLocation");
         RemovePrompts("StartScenario");
@@ -373,24 +373,24 @@ public class ButtonPrompts
         }
         if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && !addedPromptGroup)
         {
-            if (Player.ActivityManager.CanLootLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedLooting)
+            if (Player.ActivityManager.CanInspectLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedInspecting)
             {
-                PersonLootingPrompts();
+                PersonInspectingPrompts();
                 addedPromptGroup = true;
             }
             else
             {
                 Prompts.RemoveAll(x => x.Group == "Search");
             }
-            if (Player.ActivityManager.CanReviveLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedReiving)
-            {
-                PersonTreatingPrompts();
-                addedPromptGroup = true;
-            }
-            else
-            {
-                Prompts.RemoveAll(x => x.Group == "Treat");
-            }
+            //if (Player.ActivityManager.CanReviveLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedReiving)
+            //{
+            //    PersonTreatingPrompts();
+            //    addedPromptGroup = true;
+            //}
+            //else
+            //{
+            //    Prompts.RemoveAll(x => x.Group == "Treat");
+            //}
             if (Player.ActivityManager.CanDragLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowDraggingOtherPeds)
             {
                 PersonDraggingPrompts();
