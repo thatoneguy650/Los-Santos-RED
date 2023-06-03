@@ -1,18 +1,25 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
+using Mod;
 using Rage;
+using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Drawing;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class PoliceStation : InteractableLocation, ILocationRespawnable, ILicensePlatePreviewable
+public class PoliceStation : InteractableLocation, ILocationRespawnable, ILicensePlatePreviewable, ILocationImpoundable, ILocationAreaRestrictable
 {
     private ShopMenu agencyMenu;
+    private bool isInRestrictedArea;
+    private UIMenu ImpoundSubMenu;
 
     public PoliceStation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -29,6 +36,13 @@ public class PoliceStation : InteractableLocation, ILocationRespawnable, ILicens
     public float RespawnHeading { get; set; }
     public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
     public float ItemPreviewHeading { get; set; } = 0f;
+
+
+    public bool IsPlayerInRestrictedArea => isInRestrictedArea;
+    public void SetRestrictedArea(bool isInside) => isInRestrictedArea = isInside;
+
+    public VehicleImpoundLot VehicleImpoundLot { get; set; }
+    public bool HasImpoundLot => VehicleImpoundLot != null;
     public List<SpawnPlace> ItemDeliveryLocations { get; set; } = new List<SpawnPlace>();
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
@@ -38,6 +52,7 @@ public class PoliceStation : InteractableLocation, ILocationRespawnable, ILicens
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world)
     {
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world);
+        VehicleImpoundLot?.Setup(this);
         if (AssignedAgency == null)
         {
             AssignedAgency = zones.GetZone(EntrancePosition)?.AssignedLEAgency;
@@ -60,11 +75,6 @@ public class PoliceStation : InteractableLocation, ILocationRespawnable, ILicens
 
             return;        
         }
-        if(!Player.IsCop)
-        {
-            Game.DisplayHelp("Police Personnel Only.~r~WIP~s~");
-            return;
-        }
         if(AssignedAgency == null)
         {
             Game.DisplayHelp("No Agency Assigned");
@@ -78,39 +88,21 @@ public class PoliceStation : InteractableLocation, ILocationRespawnable, ILicens
             try
             {
                 StoreCamera = new LocationCamera(this, Player);
-
                 StoreCamera.ItemPreviewPosition = ItemPreviewPosition;
                 StoreCamera.ItemPreviewHeading = ItemPreviewHeading;
-
-                StoreCamera.Setup();
-
-                GenerateMenu();
-
+                StoreCamera.Setup();         
                 CreateInteractionMenu();
-                Transaction = new Transaction(MenuPool, InteractionMenu, agencyMenu, this);
-                Transaction.LicensePlatePreviewable = this;
-                Transaction.ItemDeliveryLocations = ItemDeliveryLocations;
-
-                Transaction.ItemPreviewPosition = ItemPreviewPosition;
-                Transaction.ItemPreviewHeading = ItemPreviewHeading;
-
-                Transaction.IsFreeItems = true;
-                Transaction.IsFreeWeapons = true;
-                Transaction.IsFreeVehicles = true;
-
-                Transaction.IsPurchasing = false;
-
-                Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-
-                InteractionMenu.Visible = true;
-                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                Transaction.ProcessTransactionMenu();
-
-                Transaction.DisposeTransactionMenu();
+                if(Player.IsCop)
+                {
+                    GenerateMenu();
+                    InteractAsCop(modItems,world,settings,weapons,time);
+                }
+                else
+                {
+                    InteractAsOther();
+                }
                 DisposeInteractionMenu();
-
                 StoreCamera.Dispose();
-
                 Player.ActivityManager.IsInteractingWithLocation = false;
                 Player.IsTransacting = false;
                 CanInteract = true;
@@ -121,6 +113,44 @@ public class PoliceStation : InteractableLocation, ILocationRespawnable, ILicens
                 EntryPoint.ModController.CrashUnload();
             }
         }, "PoliceStationInteract");
+    }
+
+    private void InteractAsCop(IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
+    {
+        Transaction = new Transaction(MenuPool, InteractionMenu, agencyMenu, this);
+        Transaction.LicensePlatePreviewable = this;
+        Transaction.ItemDeliveryLocations = ItemDeliveryLocations;
+        Transaction.ItemPreviewPosition = ItemPreviewPosition;
+        Transaction.ItemPreviewHeading = ItemPreviewHeading;
+        Transaction.IsFreeItems = true;
+        Transaction.IsFreeWeapons = true;
+        Transaction.IsFreeVehicles = true;
+        Transaction.IsPurchasing = false;
+        Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
+
+        InteractionMenu.Visible = true;
+        InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+        Transaction.ProcessTransactionMenu();
+
+        Transaction.DisposeTransactionMenu();
+    }
+    private void InteractAsOther()
+    {
+        if(HasImpoundLot)
+        {
+            ImpoundSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Impounded Vehicles");
+            foreach(VehicleExt impoundedVehicle in Player.VehicleOwnership.OwnedVehicles.Where(x=> x.IsImpounded && x.Vehicle.Exists()))
+            {
+                EntryPoint.WriteToConsole("ADDING VEHICLE TO IMPOUND MENU");
+                impoundedVehicle.AddToImpoundMenu(this,ImpoundSubMenu, Player);
+            }
+        }
+        
+        InteractionMenu.Visible = true;
+        InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+
+        ProcessInteractionMenu();
+
     }
     private void GenerateMenu()
     {
@@ -187,7 +217,33 @@ public class PoliceStation : InteractableLocation, ILocationRespawnable, ILicens
         {
             RespawnLocation += offsetToAdd;
         }
+        VehicleImpoundLot?.AddDistanceOffset(offsetToAdd);
         base.AddDistanceOffset(offsetToAdd);
+    }
+
+
+    protected override void ExtraUpdate()
+    {
+        if (IsNearby)
+        {
+            VehicleImpoundLot?.Update(World.Player);
+        }
+        else
+        {
+            SetRestrictedArea(false);
+        }
+        base.ExtraUpdate();
+    }
+
+    public void RemoveRestriction()
+    {
+        VehicleImpoundLot?.RemoveRestriction();
+    }
+    public override void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
+    {
+        
+        base.Activate(interiors, settings, crimes, weapons, time, world);
+        VehicleImpoundLot?.Acivate();
     }
 }
 

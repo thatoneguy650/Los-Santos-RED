@@ -38,73 +38,16 @@ public class OtherViolations
     }
     public void Update()
     {
-        if (Player.ActivityManager.IsCommitingSuicide)
-        {
-            Violations.AddViolating(StaticStrings.AttemptingSuicideCrimeID);
-        }
-        if (Player.IsWanted && Player.CurrentLocation != null && Player.CurrentLocation.CurrentZone != null && Player.CurrentLocation.CurrentZone.IsRestrictedDuringWanted && Player.CurrentLocation.GameTimeInZone >= 15000 && (Player.WantedLevel >= 3 || Player.PoliceResponse.IsDeadlyChase))
-        {
-            Violations.AddViolating(StaticStrings.TrespessingOnGovtPropertyCrimeID);
-        }
-        if (Player.Investigation.IsSuspicious)//when near investigation blip with description
-        {
-            Violations.AddViolating(StaticStrings.SuspiciousActivityCrimeID);
-        }
-        if (Player.IsDoingSuspiciousActivity)
-        {
-            Violations.AddViolating(StaticStrings.SuspiciousActivityCrimeID);
-        }
-        if (Player.IsWanted && !Player.Surrendering.HandsAreUp)
-        {
-            if (Player.IsInVehicle)
-            {
-                if (Player.VehicleSpeedMPH >= 65f)
-                {
-                    if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestFastTriggerTime)//kept going or took off
-                    {
-                        Violations.AddViolating(StaticStrings.ResistingArrestCrimeID);
-                    }
-                }
-                else if (Player.HasBeenMovingFast)
-                {
-                    if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestMediumTriggerTime)
-                    {
-                        Violations.AddViolating(StaticStrings.ResistingArrestCrimeID);
-                    }
-                }
-                else
-                {
-                    if (Player.HasBeenMoving && Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestSlowTriggerTime)
-                    {
-                        Violations.AddViolating(StaticStrings.ResistingArrestCrimeID);
-                    }
-                }
-            }
-            else
-            {
-                if (Player.Character.Exists() && Player.HasBeenMovingFast)
-                {
-                    if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestFastTriggerTime)//kept going or took off
-                    {
-                        Violations.AddViolating(StaticStrings.ResistingArrestCrimeID);
-                    }
-                }
-                else
-                {
-                    if (Player.Character.Exists() && Player.HasBeenMoving)
-                    {
-                        if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestSlowTriggerTime)
-                        {
-                            Violations.AddViolating(StaticStrings.ResistingArrestCrimeID);
-                        }
-                    }
-                }
-            }
-        }
-        if (Player.RecentlyResistedArrest)
-        {
-            Violations.AddViolating(StaticStrings.ResistingArrestCrimeID);
-        }
+        ViolentUpdate();
+        TrespassingUpdate();
+        SuspiciousUpdate();
+        ResistingArrestUpdate();
+        DealingUpdate();
+        NonViolentUpdate();
+    }
+
+    private void NonViolentUpdate()
+    {
         if (Player.Intoxication.IsIntoxicated && Player.Intoxication.CurrentIntensity >= 2.0f && !Player.IsInVehicle)
         {
             Violations.AddViolating(StaticStrings.PublicIntoxicationCrimeID);
@@ -112,18 +55,6 @@ public class OtherViolations
         if (Player.RecentlyFedUpCop)
         {
             Violations.AddViolating(StaticStrings.InsultingOfficerCrimeID);
-        }
-        if (Player.IsDealingDrugs)
-        {
-            Violations.AddViolating(StaticStrings.DealingDrugsCrimeID);
-        }
-        if (Player.IsDealingIllegalGuns)
-        {
-            Violations.AddViolating(StaticStrings.DealingGunsCrimeID);
-        }
-        if (Player.ActivityManager.IsHoldingHostage)
-        {
-            Violations.AddViolating(StaticStrings.KidnappingCrimeID);
         }
         if (Player.IsBeingANuisance)
         {
@@ -133,12 +64,112 @@ public class OtherViolations
         {
             Violations.AddViolating(StaticStrings.PublicVagrancyCrimeID);
         }
-        if (Player.ActivityManager.IsLootingBody && !Player.IsEMT)
+        if (!Violations.CanBodyInteract && Player.ActivityManager.IsLootingBody)
         {
             Violations.AddViolating(StaticStrings.MuggingCrimeID);
         }
     }
+    private void DealingUpdate()
+    {
+        if (Player.IsDealingDrugs)
+        {
+            Violations.AddViolating(StaticStrings.DealingDrugsCrimeID);
+        }
+        if (Player.IsDealingIllegalGuns)
+        {
+            Violations.AddViolating(StaticStrings.DealingGunsCrimeID);
+        }
+    }
+    private void ResistingArrestUpdate()
+    {
+        if (Player.IsNotWanted || Player.Surrendering.HandsAreUp)
+        {
+            return;
+        }
+        if (Player.RecentlyResistedArrest)
+        {
+            Violations.AddViolating(StaticStrings.ResistingArrestCrimeID);
+            return;
+        }
+        if (Player.IsInVehicle)
+        {
+            ResistingArrestVehicleUpdate();
+        }
+        else
+        {
+            ResistingArrestOnFootUpdate();
+        }    
+    }
+    private void ResistingArrestVehicleUpdate()
+    {
+        bool isResistingArrest;
+        if (Player.VehicleSpeedMPH >= 65f)
+        {
+            isResistingArrest = Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestFastTriggerTime;//kept going or took off
+        }
+        else if (Player.HasBeenMovingFast)
+        {
+            isResistingArrest = Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestMediumTriggerTime;
+        }
+        else
+        {
+            isResistingArrest = Player.HasBeenMoving && Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestSlowTriggerTime;
+        }
+        if(isResistingArrest)
+        {
+            Violations.AddViolating(StaticStrings.ResistingArrestCrimeID);
+        }
+    }
+    private void ResistingArrestOnFootUpdate()
+    {
+        bool isResistingArrest;
+        if(!Player.Character.Exists())
+        {
+            return;
+        }
+        if (Player.HasBeenMovingFast)
+        {
+            isResistingArrest = Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestFastTriggerTime;//kept going or took off
+        }
+        else
+        {
+            isResistingArrest = Player.HasBeenMoving && Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestSlowTriggerTime;
+        }    
+        if (isResistingArrest)
+        {
+            Violations.AddViolating(StaticStrings.ResistingArrestCrimeID);
+        }
+    }
+    private void SuspiciousUpdate()
+    {
+        if (Player.Investigation.IsSuspicious || Player.IsDoingSuspiciousActivity)//when near investigation blip with description
+        {
+            Violations.AddViolating(StaticStrings.SuspiciousActivityCrimeID);
+        }
+    }
+    private void ViolentUpdate()
+    {
+        if (Player.ActivityManager.IsCommitingSuicide)
+        {
+            Violations.AddViolating(StaticStrings.AttemptingSuicideCrimeID);
+        }
+        if (Player.ActivityManager.IsHoldingHostage)
+        {
+            Violations.AddViolating(StaticStrings.KidnappingCrimeID);
+        }
+    }
 
+    private void TrespassingUpdate()
+    {
+        if (Player.IsWanted && Player.CurrentLocation != null && Player.CurrentLocation.CurrentZone != null && Player.CurrentLocation.CurrentZone.IsRestrictedDuringWanted && Player.CurrentLocation.GameTimeInZone >= 15000 && (Player.WantedLevel >= 3 || Player.PoliceResponse.IsDeadlyChase))
+        {
+            Violations.AddViolating(StaticStrings.TrespessingOnGovtPropertyCrimeID);
+        }
+        if(Player.RestrictedArea != null && !Violations.CanEnterRestrictedAreas)
+        {
+            Violations.AddViolating(StaticStrings.TrespessingCrimeID);
+        }
+    }
     public bool AddFoundIllegalItem()
     {
         Violations.AddViolatingAndObserved(StaticStrings.DealingDrugsCrimeID);

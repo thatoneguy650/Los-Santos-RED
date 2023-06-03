@@ -1,6 +1,7 @@
 ﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
@@ -51,7 +52,7 @@ public class Crimes : ICrimes
     private Crime PublicNuisance;
     private Crime PublicVagrancy;
     private Crime OfficersNeeded;
-
+    private Crime Trespassing;
 
 
 
@@ -126,8 +127,11 @@ public class Crimes : ICrimes
         DealingDrugs = new Crime(StaticStrings.DealingDrugsCrimeID, "Dealing Drugs", 2, false, 23, true, false, false) { MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~dealing illegal drugs~s~~n~Avoid dealing in public" };
         DealingGuns = new Crime(StaticStrings.DealingGunsCrimeID, "Illegal Weapons Dealing", 2, false, 24, true, false, false) { MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~dealing illegal guns~s~~n~Avoid dealing in public" };
 
-       
-        
+
+        Trespassing = new Crime(StaticStrings.TrespessingCrimeID, "Trespassing", 2, false, 27, true, false, false);
+
+
+
         HitCarWithCar = new Crime(StaticStrings.HitCarWithCarCrimeID, "Hit and Run", 1, false, 30, false, false, false) { CanReleaseOnTalkItOut = true, CanReleaseOnCite = true, IsTrafficViolation = true, ShowsWarning = true, WarningMessage = "You ~r~crashed your vehicle~s~~n~Avoid tickets by following traffic laws" };
 
        
@@ -175,6 +179,7 @@ public class Crimes : ICrimes
              HurtingPolice,
              BrandishingHeavyWeapon,
              TrespessingOnGovtProperty,
+             Trespassing,
              GotInAirVehicleDuringChase,
              FiringWeapon,
              FiringSilencedWeapon,
@@ -232,6 +237,7 @@ public class Crimes : ICrimes
              AimingWeaponAtPolice,
              HurtingPolice,
              BrandishingHeavyWeapon,
+             Trespassing,
              TrespessingOnGovtProperty,
              GotInAirVehicleDuringChase,
              FiringWeapon,

@@ -246,7 +246,9 @@ public class PedInspect : DynamicActivity
     }
     private void UpdateMenuItems()
     {
-        LootPedMenuItem.Enabled = Ped.CanBeLooted && !Ped.HasBeenLooted;     
+        LootPedMenuItem.Enabled = Ped.CanBeLooted && !Ped.HasBeenLooted;
+        KillPedMenuItem.Enabled = !Ped.IsDead;
+        RevivePedMenuItem.Enabled = Ped.IsUnconscious && !Ped.IsDead;
     }
     private void AttemptRevivePed()
     {

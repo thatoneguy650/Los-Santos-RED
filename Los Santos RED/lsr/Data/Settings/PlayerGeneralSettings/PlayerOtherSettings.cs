@@ -92,6 +92,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public bool AllowSetCharacterClipsets { get; set; }
     [Description("Not fully implemented.")]
     public bool AutoSetClipsets { get; set; }
+    public float SeeBehindDistanceVehicle { get; set; }
     public float SeeBehindDistanceStealth { get; set; }
     public float SeeBehindDistanceRegular { get; set; }
 
@@ -146,6 +147,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         MaxRandomWeaponsToGet = 2;
         PercentageToGetRandomWeaponVariation = 35f;
         PercentageToGetComponentInRandomVariation = 35f;
+        SeeBehindDistanceVehicle = 20f;
         SeeBehindDistanceStealth = 1.5f;
         SeeBehindDistanceRegular = 1.5f;
     }

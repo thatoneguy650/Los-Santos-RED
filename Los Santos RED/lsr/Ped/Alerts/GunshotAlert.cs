@@ -35,8 +35,7 @@ public class GunshotAlert : PedAlert
         {
             EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I JUST HEARD GUNFIRE FROM ANOTHER COP");
             AddAlert(cop.Pedestrian.Position);
-        }
-        
+        }  
         base.Update(policeRespondable, world);
     }
 }

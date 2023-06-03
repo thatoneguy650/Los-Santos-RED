@@ -2,6 +2,7 @@
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -50,6 +51,8 @@ public class Respawning// : IRespawning
     private uint GameTimeLastPlacedAtLocation;
     private IPoliceRespondable PoliceRespondable;
     private ISeatAssignable SeatAssignable;
+    private GTANotification ImpoundNotification;
+
     public Respawning(ITimeControllable time, IEntityProvideable world, IRespawnable currentPlayer, IWeapons weapons, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable, ISeatAssignable seatAssignable, IModItems modItems)
     {
         Time = time;
@@ -162,6 +165,7 @@ public class Respawning// : IRespawning
         GameTimeLastPaidFine = Game.GameTime;
         CurrentPlayer.Scanner.OnPaidFine();
     }
+
     public void GetBooked(ILocationRespawnable respawnableLocation)
     {
         CalculateBail();
@@ -219,6 +223,7 @@ public class Respawning// : IRespawning
             }
         }, "Booking");
     }
+
     public void AskAboutCrimes()
     {
         List<string> AttemptTalkOut = new List<string>()
@@ -236,7 +241,6 @@ public class Respawning// : IRespawning
         Game.DisplaySubtitle("~g~Cop: ~s~" + string.Format(TalkOutResponsePositive.PickRandom(), CrimeDisplay));
         GameFiber.Sleep(4000);
     }
-
     public bool TalkOutOfTicket(ModUIMenu menu)
     {
         TimesTalked++;
@@ -323,20 +327,29 @@ public class Respawning// : IRespawning
             GameTimeLastUndied = Game.GameTime;
         }
     }
+
+
+
+
     public void RespawnAtHospital(ILocationRespawnable respawnableLocation)
     {
         FadeOut();
+        if (respawnableLocation == null)
+        {
+            respawnableLocation = PlacesOfInterest.HospitalRespawnLocations().ToList().OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
+        }
         if (Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnDeath)
         {
             CheckWeapons();
         }
         CalculateHospitalStay();
+        if(CurrentPlayer.IsWanted)
+        {
+            ImpoundNotification = ImpoundVehicles();
+        }
         Respawn(true, true, true, false, true, false, true, false, false, false, false, false, true,true, false, true, true);//we are already removing the weapons above, done need to do it twice with the old bug
         CurrentPlayer.PlayerTasks.OnStandardRespawn();
-        if (respawnableLocation == null)
-        {
-            respawnableLocation = PlacesOfInterest.PossibleLocations.Hospitals.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
-        }
+
         SetPlayerAtLocation(respawnableLocation);
         if (Settings.SettingsManager.RespawnSettings.ClearIllicitInventoryOnDeath)
         {
@@ -350,26 +363,24 @@ public class Respawning// : IRespawning
         {
             SetHospitalFee(respawnableLocation.Name);
         }
+        ShowImpoundDisplay();
         GameTimeLastDischargedFromHospital = Game.GameTime;
     }
     public void SurrenderToPolice(ILocationRespawnable respawnableLocation)
     {
         FadeOut();
+        if (respawnableLocation == null)
+        {
+            respawnableLocation = PlacesOfInterest.BustedRespawnLocations().ToList().OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
+        }
         if (Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnSurrender)
         {
             CheckWeapons();
         }
         CalculateBail();
-        //CurrentPlayer.Surrendering.RaiseHands();
+        ImpoundNotification = ImpoundVehicles();
         ResetPlayer(true, true, false, false, true, false, true,false, false, false, false, false,true, true, false, true, true);//if you pass clear weapons here it will just remover everything anwyays
         CurrentPlayer.PlayerTasks.OnStandardRespawn();
-        if (respawnableLocation == null)
-        {
-            List<ILocationRespawnable> PossibleLocations = new List<ILocationRespawnable>();
-            PossibleLocations.AddRange(PlacesOfInterest.PossibleLocations.PoliceStations);
-            PossibleLocations.AddRange(PlacesOfInterest.PossibleLocations.Prisons);
-            respawnableLocation = PossibleLocations.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
-        }
         SetPlayerAtLocation(respawnableLocation);
         if (Settings.SettingsManager.RespawnSettings.ClearIllicitInventoryOnSurrender)
         {
@@ -383,8 +394,46 @@ public class Respawning// : IRespawning
         {
             SetBailFee(respawnableLocation.Name, BailFee);
         }
+        ShowImpoundDisplay();
         GameTimeLastSurrenderedToPolice = Game.GameTime;
     }
+
+    private void ShowImpoundDisplay()
+    {
+        if(ImpoundNotification == null)
+        {
+            return;
+        }
+        ImpoundNotification.Display();
+    }
+
+    private GTANotification ImpoundVehicles()
+    {
+        if (!Settings.SettingsManager.RespawnSettings.ImpoundVehicles)
+        {
+            EntryPoint.WriteToConsole("IMPOUND VEHICLE FAIL NO SETTING");
+            return null;
+        }
+        ILocationImpoundable impoundLocation = PlacesOfInterest.VehicleImpoundLocations().Where(x=> x.HasImpoundLot).ToList().OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();     
+        if(impoundLocation == null || impoundLocation.VehicleImpoundLot == null)
+        {
+            EntryPoint.WriteToConsole("IMPOUND VEHICLE FAIL NO LOCATION 1");
+            return null;
+        }
+        VehicleExt vehicleToImpound = CurrentPlayer.VehicleOwnership.OwnedVehicles.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(CurrentPlayer.Character)).FirstOrDefault();  
+        if(!vehicleToImpound.Vehicle.Exists() || vehicleToImpound.Vehicle.DistanceTo2D(CurrentPlayer.Character) >= 50f)
+        {
+            EntryPoint.WriteToConsole("IMPOUND VEHICLE FAIL NO VEHICLE TO IMPOUND");
+            return null;
+        }
+        if(impoundLocation.VehicleImpoundLot.ImpoundVehicle(vehicleToImpound, Time))
+        {
+            return new GTANotification(impoundLocation.Name, "~o~Vehicle Impounded~s~",vehicleToImpound.GetRegularDescription(true));
+        }
+        EntryPoint.WriteToConsole("IMPOUND VEHICLE FAIL CAN NOT IMPOUND");
+        return null;
+    }
+
     public void GetSearched()
     {
         //Check Items
@@ -435,10 +484,7 @@ public class Respawning// : IRespawning
         int DaysToStay = RandomItems.GetRandomNumberInt(Settings.SettingsManager.RespawnSettings.HospitalStayMinDays, Settings.SettingsManager.RespawnSettings.HospitalStayMaxDays);
         HospitalFee = Settings.SettingsManager.RespawnSettings.HospitalStayDailyFee * DaysToStay;
         HospitalDischargeDate = Time.CurrentDateTime.AddDays(DaysToStay);
-
         HospitalStayReport = $"~s~Hospitalized Days: ~g~{DaysToStay}~s~~n~Released: {HospitalDischargeDate:g}~s~";
-
-
         //EntryPoint.WriteToConsoleTestLong($"CalculateHospitalStay(): HighestWantedLevel {HighestWantedLevel} HospitalFee {HospitalFee} HospitalDischargeDate {HospitalDischargeDate:g}");
     }
     private void CalculateBail()
@@ -453,7 +499,6 @@ public class Respawning// : IRespawning
         BailFee += PoliceInjured * Settings.SettingsManager.RespawnSettings.PoliceBailPoliceInjuredMultiplier;
         BailFee += CiviliansKilled * Settings.SettingsManager.RespawnSettings.PoliceBailCiviliansKilledMultiplier;
 
-
         BailDuration = HighestWantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBailDurationWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
         BailDuration += PoliceKilled * Settings.SettingsManager.RespawnSettings.PoliceBailDurationPoliceKilledMultiplier;
         BailDuration += PoliceInjured * Settings.SettingsManager.RespawnSettings.PoliceBailDurationPoliceInjuredMultiplier;
@@ -463,9 +508,6 @@ public class Respawning// : IRespawning
         BailPostingTime = new DateTime(BailPostingTime.Year, BailPostingTime.Month, BailPostingTime.Day, 9, 0, 0);
 
         BailReport = $"~s~Incarcerated Days: ~r~{BailDuration}~s~~n~Released: {BailPostingTime:g}~s~";
-
-
-
         //EntryPoint.WriteToConsoleTestLong($"CalculateBail(): HighestWantedLevel {HighestWantedLevel} PoliceKilled {PoliceKilled} PoliceInjured {PoliceInjured} CiviliansKilled {CiviliansKilled} BailFee {BailFee} BailDuration {BailDuration} BailPostingTime {BailPostingTime:g}");
     }
     public void CalculateBribe()
@@ -624,58 +666,7 @@ public class Respawning// : IRespawning
     {
         CalculateBribe();
     }
-    //public bool ConsentToSearch()
-    //{
-    //    bool foundAnything = false;
-    //    List<string> foundWeaponResponse = new List<string>()
-    //            {
-    //                $"Got enough weapons on you?",
-    //                $"Seems you are starting a little weapon collection.",
-    //                $"Might need to add this to my drop gun collection.",
-    //            };
-    //    List<WeaponInformation> IllegalWeapons = CurrentPlayer.WeaponEquipment.GetIllegalWeapons(CurrentPlayer.Licenses.HasValidCCWLicense(Time));
-    //    WeaponInformation worstWeapon = IllegalWeapons.OrderByDescending(x=> x.WeaponLevel).FirstOrDefault();
-    //    if(worstWeapon != null && CurrentPlayer.Violations.WeaponViolations.AddFoundWeapon(worstWeapon))
-    //    {
-    //        foundAnything = true;
-    //        CurrentPlayer.WeaponEquipment.RemoveIllegalWeapons(CurrentPlayer.Licenses.HasValidCCWLicense(Time));
-    //        Game.DisplayHelp("Illegal Weapons Found");
-    //        Game.DisplaySubtitle("~g~Cop: ~s~" + foundWeaponResponse.PickRandom());
-    //        GameFiber.Sleep(4000);
-    //    }
-    //    List<string> foundItemResponse = new List<string>()
-    //            {
-    //                $"I don't think these are legal.",
-    //                $"Seems you've got some illegal items here.",
-    //                $"Guess you didn't want us to find that.",
-    //            };
-    //    List<ModItem> IllegalItems = CurrentPlayer.Inventory.GetIllicitItems();
-    //    if (IllegalItems != null && IllegalItems.Any() && CurrentPlayer.Violations.OtherViolations.AddFoundIllegalItem())
-    //    {
-    //        foundAnything = true;
-    //        CurrentPlayer.Inventory.RemoveIllicitInventoryItems();
-    //        Game.DisplayHelp("Illegal Items Found");
-    //        Game.DisplaySubtitle("~g~Cop: ~s~" + foundItemResponse.PickRandom());
-    //        GameFiber.Sleep(4000);
-    //    }
-    //    List<string> foundNothingResponse = new List<string>()
-    //            {
-    //                $"I guess you are clean. Don't hang around.",
-    //                $"You're clean. Get lost.",
-    //                $"Nothing? Really? Beat your feet.",
-    //                $"Keep your nose clean. Get outta here.",
-    //            };
-    //    if (!foundAnything)
-    //    {
-    //        Game.DisplaySubtitle("~g~Cop: ~s~" + foundNothingResponse.PickRandom());
-    //        GameFiber.Sleep(4000);
-    //        ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
-    //        CurrentPlayer.Scanner.OnTalkedOutOfTicket();
-    //        return true;
-    //    }
-    //    return false;
-    //}
-    public void ConsentToSearchNew(ModUIMenu menu)
+    public void ConsentToSearch(ModUIMenu menu)
     {
 
         SearchActivity searchActivity = new SearchActivity(CurrentPlayer, World, PoliceRespondable, SeatAssignable, Settings, Time, ModItems);

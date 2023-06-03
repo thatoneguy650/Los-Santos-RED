@@ -135,6 +135,7 @@ namespace LosSantosRED.lsr
         private Dispatch ThreateningOfficerWithFirearm;
         private ITimeReportable Time;
         private Dispatch TrespassingOnGovernmentProperty;
+        private Dispatch Trespassing;
         private List<AudioSet> UnitEnRouteSet;
         private Dispatch VehicleCrashed;
         private Dispatch VehicleHitAndRun;
@@ -1678,7 +1679,10 @@ namespace LosSantosRED.lsr
             new CrimeDispatch("Mugging",Mugging),
             new CrimeDispatch("NonRoadworthyVehicle",SuspiciousVehicle),
             new CrimeDispatch("ResistingArrest",ResistingArrest),
-            new CrimeDispatch("TrespessingOnGovtProperty",TrespassingOnGovernmentProperty),
+            new CrimeDispatch(StaticStrings.TrespessingOnGovtPropertyCrimeID,TrespassingOnGovernmentProperty),
+
+            new CrimeDispatch(StaticStrings.TrespessingCrimeID,Trespassing),
+
             new CrimeDispatch("DrivingStolenVehicle",DrivingAtStolenVehicle),
             new CrimeDispatch("TerroristActivity",TerroristActivity),
             new CrimeDispatch("BrandishingCloseCombatWeapon",CarryingWeapon),
@@ -1707,6 +1711,7 @@ namespace LosSantosRED.lsr
             ,AssaultingOfficer
             ,ThreateningOfficerWithFirearm
             ,TrespassingOnGovernmentProperty
+            ,Trespassing
             ,StealingAirVehicle
             ,ShotsFired
             ,CarryingWeapon
@@ -2197,6 +2202,22 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_trespassing_on_government_property.Trespassingongovernmentproperty.FileName },"trespassing on government property"),
             },
             };
+
+
+            Trespassing = new Dispatch()
+            {
+                Name = "Trespassing",
+                ResultsInLethalForce = false,
+                CanBeReportedMultipleTimes = false,
+                LocationDescription = LocationSpecificity.Zone,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_trespassing.Trespassing.FileName },"trespassing"),
+            },
+            };
+
+
+
             StealingAirVehicle = new Dispatch()
             {
                 Name = "Stolen Air Vehicle",

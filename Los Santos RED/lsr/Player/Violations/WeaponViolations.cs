@@ -43,11 +43,10 @@ public class WeaponViolations
     }
     public void Update()
     {
-        if (!Violations.CheckWeaponViolations)
+        if (Violations.CanCarryAndFireWeapons)
         {
             return;
         }
-
         if (Player.RecentlyShot)
         {
             if (Player.WeaponEquipment.CurrentWeapon != null && !(Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Melee || Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Throwable)) //if (!(Player.Character.IsCurrentWeaponSilenced || Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Melee || Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Throwable))

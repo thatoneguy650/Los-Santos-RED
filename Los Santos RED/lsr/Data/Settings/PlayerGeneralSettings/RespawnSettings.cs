@@ -81,7 +81,7 @@ public class RespawnSettings : ISettingsDefaultable
     public float OffsetX { get; set; }
     [Description("CURRENTLY DISABLED")]
     public float OffsetY { get; set; }
-
+    public bool ImpoundVehicles { get; set; }
 
     public RespawnSettings()
     {
@@ -136,7 +136,7 @@ public class RespawnSettings : ISettingsDefaultable
 
         ShowRequiredBribeAmount = false;
         ShowRequiredBribeAmountControllerOnly = true;
-
+        ImpoundVehicles = true;
 
     }
 }

@@ -167,31 +167,6 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         }
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok 
     }
-    //protected override void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
-    //{
-    //    if (Settings.SettingsManager.PoliceSettings.AllowPoliceToCallEMTsOnBodies)
-    //    {
-    //        PedAlerts.LookForUnconsciousPeds(world);
-    //    }
-    //    if (Settings.SettingsManager.PoliceSettings.AllowReactionsToBodies)//only care in a bubble around the player, nothing to do with the player tho
-    //    {
-    //        PedAlerts.LookForBodiesAlert(world);
-    //    }
-    //    if (PedAlerts.HasSeenUnconsciousPed)
-    //    {
-    //        perceptable.AddMedicalEvent(PedAlerts.PositionLastSeenUnconsciousPed);
-    //        PedAlerts.HasSeenUnconsciousPed = false;
-    //    }
-    //    if (policeRespondable.Violations.WeaponViolations.RecentlyShot && WithinWeaponsAudioRange)
-    //    {
-    //        PedAlerts.AddHeardGunfire(policeRespondable.Position);
-    //    }
-    //    if(policeRespondable.ActivityManager.IsWavingHands && (DistanceToPlayer <= 75f || CanSeePlayer))
-    //    {
-    //        PedAlerts.AddHeardHelpCry(policeRespondable.Position);
-    //    }
-
-    //}
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
         Voice.Speak(currentPlayer);
@@ -350,18 +325,6 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             policeRespondable.PoliceResponse.RadioInWanted();
             EntryPoint.WriteToConsole($"I AM {Handle} AND I RADIOED IN THE WANTED LEVEL");
         }
-        //if (Settings.SettingsManager.PoliceSettings.AllowShootingInvestigations)
-        //{     
-        //    if (!SawPlayerViolating)
-        //    {
-        //        Cop cop = world.Pedestrians.AllPoliceList.FirstOrDefault(x => NativeHelper.IsNearby(CellX, CellY, x.CellX, x.CellY, 3) && x.IsShooting && x.Pedestrian.Exists());
-        //        if (cop != null && cop.Pedestrian.Exists())
-        //        {
-        //            PedAlerts.AddHeardGunfire(cop.Pedestrian.Position);
-        //        }
-
-        //    }
-        //}
     }
     private void OnSawPlayerViolating()
     {
@@ -383,7 +346,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                     uint GameTimeLastShot = 0;
                     while (Pedestrian.Exists() && !IsDead && !IsUnconscious && IsShootingCheckerActive && EntryPoint.ModController?.IsRunning == true)// && !policeRespondable.PoliceResponse.WantedLevelHasBeenRadioedIn)// && CarryingWeapon && IsShootingCheckerActive && ObservedWantedLevel < 3)
                     {
-                        if (Pedestrian.IsShooting)
+                        if (Pedestrian.IsShooting && (uint)Pedestrian.Inventory.EquippedWeapon?.Hash != 911657153)
                         {
                             IsShooting = true;
                             GameTimeLastShot = Game.GameTime;

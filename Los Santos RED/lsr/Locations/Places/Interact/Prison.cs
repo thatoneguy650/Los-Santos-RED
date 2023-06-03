@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Prison : InteractableLocation, ILocationRespawnable
+public class Prison : InteractableLocation, ILocationRespawnable, ILocationAreaRestrictable
 {
+    private bool isInRestrictedArea;
     public Prison(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -22,6 +24,13 @@ public class Prison : InteractableLocation, ILocationRespawnable
     public override int MapIcon { get; set; } = 188;
     public Vector3 RespawnLocation { get; set; }
     public float RespawnHeading { get; set; }
+
+
+
+    public bool IsPlayerInRestrictedArea => isInRestrictedArea;
+    public void SetRestrictedArea(bool isInside) => isInRestrictedArea = isInside;
+
+
     public void StoreData(IAgencies agencies)
     {
         if (AssignedAssociationID != null)
@@ -58,6 +67,11 @@ public class Prison : InteractableLocation, ILocationRespawnable
             RespawnLocation += offsetToAdd;
         }
         base.AddDistanceOffset(offsetToAdd);
+    }
+
+    public void RemoveRestriction()
+    {
+
     }
 }
 

@@ -276,7 +276,7 @@ namespace Mod
         public bool IsCarJacking { get; set; }
         public bool IsChangingLicensePlates { get; set; }
 
-
+       // public IRestrictedArea RestrictedArea { get; set; }
 
 
         public bool IsCop { get; set; } = false;
@@ -387,7 +387,7 @@ namespace Mod
         public Vector3 StreetPlacePoliceShouldSearchForPlayer { get; set; }
         public Vector3 StreetPlacePoliceLastSeenPlayer { get; set; }
 
-        public bool IsTrafficLawImmune => (IsCop || IsEMT || IsFireFighter) && IsSirenOn;
+        public bool IsGeneralTrafficLawImmune => (IsCop || IsEMT || IsFireFighter) && IsSirenOn;
         public string PlayerName { get; set; }
         public Vector3 Position => position;
         public VehicleExt PreviousVehicle { get; private set; }
@@ -452,6 +452,7 @@ namespace Mod
         public bool IsUsingController { get; set; }
         public bool IsShowingActionWheel { get; set; }
         public bool IsInPoliceVehicle { get; private set; }
+        public ILocationAreaRestrictable RestrictedArea { get; private set; }
 
         //Required
         public void Setup()
@@ -1709,11 +1710,15 @@ namespace Mod
             }
             //GameFiber.Yield();//TR Yield RemovedTest 1
             GameFiber.Yield();
-
-
-
-
-
+            ILocationAreaRestrictable ra = PlacesOfInterest.RestrictedAreaLocations().Where(x => x.IsPlayerInRestrictedArea).FirstOrDefault(); 
+            if (ra != null)
+            {
+                RestrictedArea = ra;
+            }
+            else
+            {
+                RestrictedArea = null;
+            }
 
             Stance.Update();
 

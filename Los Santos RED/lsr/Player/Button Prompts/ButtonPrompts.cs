@@ -200,19 +200,10 @@ public class ButtonPrompts
         if (!HasPrompt($"Search {Player.CurrentLookedAtPed.Handle}"))
         {
             RemovePrompts("Search");
-            AddPrompt("Search", $"Search {Player.CurrentLookedAtPed.FormattedName}", $"Search {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1);
+            AddPrompt("Search", $"Inspect {Player.CurrentLookedAtPed.FormattedName}", $"Search {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1);
         }
     }
-    private void PersonTreatingPrompts()
-    {
-        RemovePrompts("InteractableLocation");
-        RemovePrompts("StartScenario");
-        if (!HasPrompt($"Treat {Player.CurrentLookedAtPed.Handle}"))
-        {
-            RemovePrompts("Treat");
-            AttemptAddPrompt("Treat", $"Treat {Player.CurrentLookedAtPed.FormattedName}", $"Treat {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 3);
-        }
-    }
+
     private void PersonDraggingPrompts()
     {
         RemovePrompts("InteractableLocation");

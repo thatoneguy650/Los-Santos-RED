@@ -75,9 +75,7 @@ public class Debug
     private bool Test;
     private bool OnOff1;
     private bool IsOn = true;
-
-
-
+    private bool isDoorLocked;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Mod.Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, WeatherReporting weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
@@ -449,13 +447,13 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        K9Test();
+        //K9Test();
         // Player.CellPhone.OpenBurner();
         // GameFiber.Sleep(1000);
 
         // return;
 
-        //// StuffTwo();
+         StuffTwo();
 
 
         //VehicleExt myCar = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, true, 100f);
@@ -735,10 +733,29 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        PhoneTest();
+
+        Game.DisplaySubtitle($"DOOR LOCK SET TO {isDoorLocked} ");
+
+        Vector3 Pos1 = new Vector3(413.364f, -1620.034f, 28.34158f);
+        //Vector3 Pos2 = new Vector3(410.4831f, -1617.619f, 28.34158f);
+
+        if (isDoorLocked)
+        {
+            
+            NativeFunction.Natives.x9B12F9A24FABEDB0(2811495845, Pos1.X, Pos1.Y, Pos1.Z, true, 1.0f);
+        }
+        else
+        {
+            NativeFunction.Natives.x9B12F9A24FABEDB0(2811495845, Pos1.X, Pos1.Y, Pos1.Z, false, 0, 1.0f);
+        }
+        isDoorLocked = !isDoorLocked;    
+        GameFiber.Sleep(1000);
+        
+
+        //PhoneTest();
         //ShuffleTest();
         //OffsetGarbage();
-        
+
         //AnimationTester();
 
         //return;
@@ -2944,7 +2961,7 @@ public class Debug
                         {
                             string Text = $"Object Name: {Target.Model.Name} Hash: {Target.Model.Hash} new Vector3({Target.Position.X}f,{Target.Position.Y}f,{Target.Position.Z}f), {Target.Heading}f";
                             Game.DisplayNotification(Text);
-                            //EntryPoint.WriteToConsoleTestLong(Text);
+                            EntryPoint.WriteToConsole(Text);
 
                             GameFiber.StartNew(delegate
                             {
@@ -2956,6 +2973,7 @@ public class Debug
                                 }
                                
                             }, "Run Debug Logic");
+
 
 
 
@@ -2974,7 +2992,7 @@ public class Debug
                             string description = "Literally";
                             string Text = $"Object Name: {Target.Model.Name} Hash: {Target.Model.Hash} new Vector3({Target.Position.X}f,{Target.Position.Y}f,{Target.Position.Z}f), {Target.Heading}f, ";
 
-                            //EntryPoint.WriteToConsoleTestLong(Text);
+                            EntryPoint.WriteToConsole(Text);
 
                             string Text2 = $"new DeadDrop(new Vector3({Target.Position.X}f,{Target.Position.Y}f,{Target.Position.Z}f), {Target.Heading}f, \"{name}\", \"{text1}\" )";// { OpenTime = 0, CloseTime = 24, IsEnabled = false },";
                             Text2 += " { OpenTime = 0,CloseTime = 24, IsEnabled = false },";

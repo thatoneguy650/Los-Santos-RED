@@ -207,7 +207,7 @@ public class BustedMenu : ModUIMenu
         ConsentToSearch.Activated += (sender, selectedItem) =>
         {
             Menu.Visible = false;
-            Respawning.Respawning.ConsentToSearchNew(this);
+            Respawning.Respawning.ConsentToSearch(this);
         };
         Menu.AddItem(ConsentToSearch);
     }

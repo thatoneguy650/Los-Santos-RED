@@ -12,12 +12,16 @@ namespace LosSantosRED.lsr.Interface
         PossibleLocations PossibleLocations { get; }
         List<InteractableLocation> InteractableLocations();
         List<InteractableLocation> AllLocations();
-        List<ILocationDispatchable> PoliceDispatchLocations();
+      //  List<ILocationDispatchable> PoliceDispatchLocations();
         List<ILocationRespawnable> BustedRespawnLocations();
+        List<ILocationImpoundable> VehicleImpoundLocations();
+        List<ILocationRespawnable> HospitalRespawnLocations();
         List<ILocationGangAssignable> GangAssignableLocations();
+
         List<ILocationSetupable> LocationsToSetup();
-        List<ILocationDispatchable> EMSDispatchLocations();
+       // List<ILocationDispatchable> EMSDispatchLocations();
         DeadDrop GetUsableDeadDrop(bool IsOnMPMap);
         GangDen GetMainDen(string iD, bool isMPMapLoaded);
+        List<ILocationAreaRestrictable> RestrictedAreaLocations();
     }
 }

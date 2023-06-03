@@ -20,6 +20,7 @@ namespace Mod
         private IZones Zones;
         private IJurisdictions Jurisdictions;
         private ISettingsProvideable Settings;
+
         private ICrimes Crimes;
         private IWeapons Weapons;     
         private ITimeReportable Time;
@@ -58,7 +59,7 @@ namespace Mod
         public Vehicles Vehicles { get; private set; }
         public Pedestrians Pedestrians { get; private set; }
         public Places Places { get; private set; }
-
+        public ILocationInteractable Player { get; private set; }
 
         public int CitizenWantedLevel { get; set; }
         public int TotalWantedLevel { get; set; } = 0;
@@ -303,6 +304,11 @@ namespace Mod
         private void OnTotalWantedLevelAdded()
         {
             //EntryPoint.WriteToConsoleTestLong($"OnTotalWantedLevelAdded {TotalWantedLevel}");
+        }
+
+        public void AddPlayer(ILocationInteractable player)
+        {
+            Player = player;
         }
     }
 }

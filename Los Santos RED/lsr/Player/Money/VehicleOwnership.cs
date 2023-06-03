@@ -152,34 +152,11 @@ public class VehicleOwnership
     private string GetVehicleNotificationText(VehicleExt toDescribe)
     {
         string NotifcationText = "~s~Vehicle: None";
-        bool usingOwned = true;
         if(toDescribe == null)
         {
             return NotifcationText;
         }
-        NotifcationText = "";
-        string VehicleName = toDescribe.FullName(false);
-        if (usingOwned)
-        {
-            NotifcationText += $"Vehicle: ~p~{VehicleName}~n~~s~Status: ~p~Owned~s~";
-        }
-        else if (!toDescribe.IsStolen)
-        {
-            NotifcationText += $"Vehicle: ~p~{VehicleName}~n~~s~Status: ~p~Unknown~s~";
-        }
-        else
-        {
-            NotifcationText += $"Vehicle: ~r~{VehicleName}~n~~s~Status: ~r~Stolen~s~";
-        }
-        if (toDescribe.CarPlate != null && toDescribe.CarPlate.IsWanted)
-        {
-            NotifcationText += $"~n~Plate: ~r~{toDescribe.CarPlate.PlateNumber} ~r~(Wanted)~s~";
-        }
-        else
-        {
-            NotifcationText += $"~n~Plate: ~p~{toDescribe.CarPlate.PlateNumber} ~s~";
-        }   
-        return NotifcationText;
+        return toDescribe.GetRegularDescription(true); 
     }
 }
 

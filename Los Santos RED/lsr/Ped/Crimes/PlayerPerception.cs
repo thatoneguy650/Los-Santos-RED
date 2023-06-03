@@ -20,6 +20,7 @@ public class PlayerPerception
     private PedExt Originator;
     private ISettingsProvideable Settings;
     private IPerceptable Target;
+    private float DistanceToTargetInVehicle => Settings.SettingsManager.PlayerOtherSettings.SeeBehindDistanceVehicle;
     private float DistanceToTargetOnFoot => Target.Stance.IsBeingStealthy ? Settings.SettingsManager.PlayerOtherSettings.SeeBehindDistanceStealth : Settings.SettingsManager.PlayerOtherSettings.SeeBehindDistanceRegular; //0.25f : 4f;
     public PlayerPerception(PedExt originator, IPerceptable target, ISettingsProvideable settings)
     {
@@ -216,7 +217,7 @@ public class PlayerPerception
                 }
                 else
                 {
-                    if(!isInFront && ((TargetInVehicle && DistanceToTarget <= 20f) || (!TargetInVehicle && DistanceToTarget <= DistanceToTargetOnFoot)))
+                    if(!isInFront && ((TargetInVehicle && DistanceToTarget <= DistanceToTargetInVehicle) || (!TargetInVehicle && DistanceToTarget <= DistanceToTargetOnFoot)))
                     {
                         if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Originator.Pedestrian, ToCheck, 17))
                         {
@@ -279,7 +280,7 @@ public class PlayerPerception
                 }
                 else
                 {
-                    if (!isInFront && ((TargetInVehicle && DistanceToTarget <= 20f) || (!TargetInVehicle && DistanceToTarget <= DistanceToTargetOnFoot)))
+                    if (!isInFront && ((TargetInVehicle && DistanceToTarget <= DistanceToTargetInVehicle) || (!TargetInVehicle && DistanceToTarget <= DistanceToTargetOnFoot)))
                     {
                         if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Originator.Pedestrian, ToCheck, 17))
                         {
@@ -321,25 +322,26 @@ public class PlayerPerception
     }
     public void UpdateWitnessedCrimes()
     {
-        if (Originator.Pedestrian.Exists() && !Originator.IsUnconscious)
+        if(!Originator.Pedestrian.Exists() || Originator.IsUnconscious)
         {
-            foreach (Crime committing in Target.Violations.CivilianReportableCrimesViolating)
-            {
-                if (DistanceToTarget <= committing.MaxReportingDistance)
-                {
-                    if (CanRecognizeTarget && !committing.CanReportBySound)
-                    {
-                        AddWitnessedCrime(committing, Originator.Pedestrian.Position);
-                    }
-                    else if (WithinWeaponsAudioRange && committing.CanReportBySound && DistanceToTarget <= committing.MaxHearingDistance)
-                    {
-                        AddWitnessedCrime(committing, Originator.Pedestrian.Position);
-                    }
-                }
-            }
+            return;
         }
+        foreach (Crime committing in Target.Violations.CivilianReportableCrimesViolating)
+        {
+            if(DistanceToTarget > committing.MaxReportingDistance)
+            {
+                continue;
+            }
+            if (CanRecognizeTarget)
+            {
+                AddWitnessedCrime(committing, Originator.Pedestrian.Position);
+            }
+            else if (WithinWeaponsAudioRange && committing.CanReportBySound && DistanceToTarget <= committing.MaxHearingDistance)
+            {
+                AddWitnessedCrime(committing, Originator.Pedestrian.Position);
+            }         
+        }     
     }
-
     public void Reset()
     {
         SetTargetUnseen();

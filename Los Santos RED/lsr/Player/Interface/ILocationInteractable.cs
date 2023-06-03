@@ -50,6 +50,7 @@ namespace LosSantosRED.lsr.Interface
         OutfitManager OutfitManager { get; }
         bool IsCop { get; }
 
+
         void ChangeName(string newName);
         void SetWantedLevel(int v1, string v2, bool v3);
     }

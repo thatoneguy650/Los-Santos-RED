@@ -101,25 +101,44 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(InteractableLocations());
         return AllLocations;
     }
-    public List<ILocationDispatchable> PoliceDispatchLocations()
-    {
-        List<ILocationDispatchable> AllLocations = new List<ILocationDispatchable>();
-        AllLocations.AddRange(PossibleLocations.PoliceStations);
-        AllLocations.AddRange(PossibleLocations.Prisons);
-        return AllLocations;
-    }
-    public List<ILocationDispatchable> EMSDispatchLocations()
-    {
-        List<ILocationDispatchable> AllLocations = new List<ILocationDispatchable>();
-        AllLocations.AddRange(PossibleLocations.Hospitals);
-        AllLocations.AddRange(PossibleLocations.Morgues);
-        return AllLocations;
-    }
+    //public List<ILocationDispatchable> PoliceDispatchLocations()
+    //{
+    //    List<ILocationDispatchable> AllLocations = new List<ILocationDispatchable>();
+    //    AllLocations.AddRange(PossibleLocations.PoliceStations);
+    //    AllLocations.AddRange(PossibleLocations.Prisons);
+    //    return AllLocations;
+    //}
+    //public List<ILocationDispatchable> EMSDispatchLocations()
+    //{
+    //    List<ILocationDispatchable> AllLocations = new List<ILocationDispatchable>();
+    //    AllLocations.AddRange(PossibleLocations.Hospitals);
+    //    AllLocations.AddRange(PossibleLocations.Morgues);
+    //    return AllLocations;
+    //}
     public List<ILocationRespawnable> BustedRespawnLocations()
     {
         List<ILocationRespawnable> AllLocations = new List<ILocationRespawnable>();
         AllLocations.AddRange(PossibleLocations.PoliceStations);
         AllLocations.AddRange(PossibleLocations.Prisons);
+        return AllLocations;
+    }
+    public List<ILocationAreaRestrictable> RestrictedAreaLocations()
+    {
+        List<ILocationAreaRestrictable> AllLocations = new List<ILocationAreaRestrictable>();
+        AllLocations.AddRange(PossibleLocations.PoliceStations);
+        AllLocations.AddRange(PossibleLocations.Prisons);
+        return AllLocations;
+    }
+    public List<ILocationImpoundable> VehicleImpoundLocations()
+    {
+        List<ILocationImpoundable> AllLocations = new List<ILocationImpoundable>();
+        AllLocations.AddRange(PossibleLocations.PoliceStations);
+        return AllLocations;
+    }
+    public List<ILocationRespawnable> HospitalRespawnLocations()
+    {
+        List<ILocationRespawnable> AllLocations = new List<ILocationRespawnable>();
+        AllLocations.AddRange(PossibleLocations.Hospitals);
         return AllLocations;
     }
     public List<ILocationGangAssignable> GangAssignableLocations()
@@ -1984,7 +2003,25 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new LEConditionalLocation(new Vector3(392.7548f, -1608.376f, 29.21355f), 50f,50f),
                     new LEConditionalLocation(new Vector3(399.393f, -1621.396f, 29.20119f), 50f,50f),
                     new LEConditionalLocation(new Vector3(351.3006f, -1556.711f, 29.24393f), 230f,50f),
-                }
+                },
+                VehicleImpoundLot = new VehicleImpoundLot("Impound Lot 1",new List<SpawnPlace>()
+                {
+                    new SpawnPlace(new Vector3(404.3888f, -1649.421f, 28.82277f), 321.7852f),
+                    new SpawnPlace(new Vector3(408.3622f, -1654.027f, 28.8215f), 322.5292f),
+                    new SpawnPlace(new Vector3(420.4157f, -1639.205f, 28.82125f), 272.8717f),
+                    new SpawnPlace(new Vector3(418.0018f, -1645.961f, 28.82127f), 230.7471f),
+                    new SpawnPlace(new Vector3(419.366f, -1629.477f, 28.82145f), 319.8078f),
+                },
+                new Vector2[]
+                {
+                    new Vector2 { X = 409.3969f, Y = -1616.724f },
+                    new Vector2 { X = 423.1207f, Y = -1628.206f },
+                    new Vector2 { X = 423.9051f, Y = -1634.224f },
+                    new Vector2 { X = 423.3925f, Y = -1645.131f },
+                    new Vector2 { X = 410.9243f, Y = -1660.619f },
+                    new Vector2 { X = 409.476f, Y = -1660.212f },
+                    new Vector2 { X = 388.094f, Y = -1641.983f },
+                }) { Gates = new List<InteriorDoor>() { new InteriorDoor(2811495845, new Vector3(413.364f, -1620.034f, 28.34158f)), new InteriorDoor(2811495845,new Vector3(418.291f, -1651.395f, 28.29171f)) } },
                 },
             new PoliceStation(new Vector3(1858.19f, 3679.873f, 33.75724f), 218.3256f,  "Sandy Shores Sheriff's Station","A Tradition of Suppression") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
                 new LEConditionalLocation(new Vector3(1851.615f, 3679.759f, 34.26711f), 167.1253f, 50f),

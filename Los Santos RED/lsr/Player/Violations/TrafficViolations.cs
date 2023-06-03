@@ -22,22 +22,15 @@ public class TrafficViolations
     private uint GameTimeStartedDrivingAgainstTraffic;
     private uint GameTimeStartedDrivingOnPavement;
     private uint GameTimeLastRanRed;
-    // private bool IsRunningRedLight;
-
     private uint GameTimeStartedSpeeding;
     private uint GameTimeStartedFelonySpeeding;
-
-
-
     private int TimeSincePlayerHitPed;
     private int TimeSincePlayerHitVehicle;
-   // private bool TreatAsCop;
     private bool VehicleIsSuspicious;
- 
-
     private bool SentRecentCrash = false;
     private bool isRegularSpeeding;
     private bool isFelonySpeeding;
+    private bool isDrivingSuspiciously;
 
     public TrafficViolations(IViolateable player, Violations violations, ISettingsProvideable settings, ITimeReportable time, IEntityProvideable world)
     {
@@ -46,7 +39,6 @@ public class TrafficViolations
         Settings = settings;
         Time = time;
         World = world;
-
     }
     public bool IsRunningRedLight => GameTimeLastRanRed != 0 && Game.GameTime - GameTimeLastRanRed <= Settings.SettingsManager.ViolationSettings.RecentlyRanRedLightTime;
     public bool IsFelonySpeeding { get; set; }
@@ -54,19 +46,11 @@ public class TrafficViolations
     public bool IsViolatingAnyTrafficLaws => HasBeenDrivingAgainstTraffic || HasBeenDrivingOnPavement || IsRunningRedLight || HasBeenSpeeding || HasBeenFelonySpeeding || VehicleIsSuspicious;
     private bool HasBeenDrivingAgainstTraffic => GameTimeStartedDrivingAgainstTraffic != 0 && Game.GameTime - GameTimeStartedDrivingAgainstTraffic >= Settings.SettingsManager.ViolationSettings.RecentlyDrivingAgainstTrafficTime;
     private bool HasBeenDrivingOnPavement => GameTimeStartedDrivingOnPavement != 0 && Game.GameTime - GameTimeStartedDrivingOnPavement >= Settings.SettingsManager.ViolationSettings.RecentlyDrivingOnPavementTime;
-
-
-
-
     private bool HasBeenSpeeding => GameTimeStartedSpeeding != 0 && Game.GameTime - GameTimeStartedSpeeding >= Settings.SettingsManager.ViolationSettings.RecentlySpeedingTime;
     private bool HasBeenFelonySpeeding => GameTimeStartedFelonySpeeding != 0 && Game.GameTime - GameTimeStartedFelonySpeeding >= Settings.SettingsManager.ViolationSettings.RecentlySpeedingTime;
-
-
-
-
     private bool RecentlyHitPed => TimeSincePlayerHitPed > 0 && TimeSincePlayerHitPed <= Settings.SettingsManager.ViolationSettings.RecentlyHitPedTime;
     private bool RecentlyHitVehicle => TimeSincePlayerHitVehicle > 0 && TimeSincePlayerHitVehicle <= Settings.SettingsManager.ViolationSettings.RecentlyHitVehicleTime;
-    private bool ShouldCheckTrafficViolations => Player.IsInVehicle && (Player.IsInAutomobile || Player.IsOnMotorcycle) && !Player.RecentlyStartedPlaying && World.TotalWantedLevel <= 2 ;
+    private bool ShouldCheckTrafficViolations => !Violations.CanIgnoreAllTrafficLaws && Player.IsInVehicle && (Player.IsInAutomobile || Player.IsOnMotorcycle) && !Player.RecentlyStartedPlaying && World.TotalWantedLevel <= 2 ;
     private bool IsFastEnoughToCheckViolations => Player.VehicleSpeedMPH >= Settings.SettingsManager.ViolationSettings.MinTrafficViolationSpeed;
     public void Setup()
     {
@@ -81,7 +65,6 @@ public class TrafficViolations
         IsRegularSpeeding = false;
         VehicleIsSuspicious = false;
         GameTimeLastRanRed = 0;
-        //IsRunningRedLight = false;
         TimeSincePlayerHitPed = 0;
         TimeSincePlayerHitVehicle = 0;
         Violations.CrimesViolating.RemoveAll(x => x.IsTrafficViolation);
@@ -90,32 +73,71 @@ public class TrafficViolations
     {
         Violations.CrimesViolating.RemoveAll(x => x.IsTrafficViolation);
         VehicleIsSuspicious = false;
-        //TreatAsCop = false;
         IsFelonySpeeding = false;
         IsRegularSpeeding = false;
-        //IsRunningRedLight = false;
-        if (Player.IsAliveAndFree && Player.ShouldCheckViolations && ShouldCheckTrafficViolations)
+        if(!Player.IsAliveAndFree || !Player.ShouldCheckViolations || !ShouldCheckTrafficViolations)
         {
-            CheckTrafficViolations();
-
+            return;
         }
-        //Player.DebugString = $"RedLight {IsRunningRedLight} Speed {IsFelonySpeeding} Sus {VehicleIsSuspicious} Against {HasBeenDrivingAgainstTraffic} Pave {HasBeenDrivingOnPavement}";
+        CheckTrafficViolations(); 
     }
     private void CheckTrafficViolations()
     {
-        bool isDrivingSuspiciously = false;
+        isDrivingSuspiciously = false;
         UpdateTrafficStats();
+        UpdateVehicleCollisionsViolations();
+        UpdateGeneralViolations();
+    }
+    private void UpdateGeneralViolations()
+    {
+        if(Player.IsInPoliceVehicle || Player.IsGeneralTrafficLawImmune)
+        {
+            return;
+        }
+        if ((HasBeenDrivingAgainstTraffic || Game.LocalPlayer.IsDrivingAgainstTraffic) && IsFastEnoughToCheckViolations)
+        {
+            isDrivingSuspiciously = true;
+            Violations.AddViolating(StaticStrings.DrivingAgainstTrafficCrimeID);
+        }
+        if ((HasBeenDrivingOnPavement || Game.LocalPlayer.IsDrivingOnPavement) && IsFastEnoughToCheckViolations)
+        {
+            isDrivingSuspiciously = true;
+            Violations.AddViolating(StaticStrings.DrivingOnPavementCrimeID);
+        }
+        if (VehicleIsSuspicious)
+        {
+            isDrivingSuspiciously = true;
+            Violations.AddViolating(StaticStrings.NonRoadworthyVehicleCrimeID);
+        }
+        if (HasBeenFelonySpeeding)// IsFelonySpeeding)
+        {
+            isDrivingSuspiciously = true;
+            Violations.AddViolating(StaticStrings.FelonySpeedingCrimeID);
+        }
+        if (HasBeenSpeeding && IsFastEnoughToCheckViolations) //if (IsRegularSpeeding && IsFastEnoughToCheckViolations)
+        {
+            Violations.AddViolating(StaticStrings.SpeedingCrimeID);
+        }
+        if (IsRunningRedLight && IsFastEnoughToCheckViolations)
+        {
+            isDrivingSuspiciously = true;
+            Violations.AddViolating(StaticStrings.RunningARedLightCrimeID);
+        }
+        if (Player.Intoxication.IsIntoxicated && isDrivingSuspiciously)// DrivingAgainstTraffic.IsCurrentlyViolating || DrivingOnPavement.IsCurrentlyViolating || FelonySpeeding.IsCurrentlyViolating || RunningARedLight.IsCurrentlyViolating || HitPedWithCar.IsCurrentlyViolating || HitCarWithCar.IsCurrentlyViolating))
+        {
+            Violations.AddViolating(StaticStrings.DrunkDrivingCrimeID);
+        }
+    }
+    private void UpdateVehicleCollisionsViolations()
+    {
         if (RecentlyHitPed && IsFastEnoughToCheckViolations)
         {
             isDrivingSuspiciously = true;
             Violations.AddViolating(StaticStrings.HitPedWithCarCrimeID);
-            //EntryPoint.WriteToConsoleTestLong("Violations HitPedWithCar");
-            //GameFiber.Yield();
         }
         if (RecentlyHitVehicle && IsFastEnoughToCheckViolations)
         {
             isDrivingSuspiciously = true;
-
             if (!SentRecentCrash)
             {
                 SentRecentCrash = true;
@@ -127,143 +149,96 @@ public class TrafficViolations
         {
             SentRecentCrash = false;
         }
-        if (!Player.IsInPoliceVehicle && !Player.IsTrafficLawImmune)
-        {
-           // GameFiber.Yield();
-            if ((HasBeenDrivingAgainstTraffic || Game.LocalPlayer.IsDrivingAgainstTraffic) && IsFastEnoughToCheckViolations)
-            {
-                isDrivingSuspiciously = true;
-                Violations.AddViolating(StaticStrings.DrivingAgainstTrafficCrimeID);
-            }
-            if ((HasBeenDrivingOnPavement || Game.LocalPlayer.IsDrivingOnPavement) && IsFastEnoughToCheckViolations)
-            {
-                isDrivingSuspiciously = true;
-                Violations.AddViolating(StaticStrings.DrivingOnPavementCrimeID);
-            }
-            if (VehicleIsSuspicious)
-            {
-                isDrivingSuspiciously = true;
-                Violations.AddViolating(StaticStrings.NonRoadworthyVehicleCrimeID);
-            }
-            if (HasBeenFelonySpeeding)// IsFelonySpeeding)
-            {
-                isDrivingSuspiciously = true;
-                Violations.AddViolating(StaticStrings.FelonySpeedingCrimeID);
-            }
-            if (HasBeenSpeeding && IsFastEnoughToCheckViolations) //if (IsRegularSpeeding && IsFastEnoughToCheckViolations)
-            {
-                Violations.AddViolating(StaticStrings.SpeedingCrimeID);
-            }
-            if (IsRunningRedLight && IsFastEnoughToCheckViolations)
-            {
-                isDrivingSuspiciously = true;
-                Violations.AddViolating(StaticStrings.RunningARedLightCrimeID);
-            }
-        }
-        if (Player.Intoxication.IsIntoxicated && isDrivingSuspiciously)// DrivingAgainstTraffic.IsCurrentlyViolating || DrivingOnPavement.IsCurrentlyViolating || FelonySpeeding.IsCurrentlyViolating || RunningARedLight.IsCurrentlyViolating || HitPedWithCar.IsCurrentlyViolating || HitCarWithCar.IsCurrentlyViolating))
-        {
-            Violations.AddViolating(StaticStrings.DrunkDrivingCrimeID);
-        }
     }
     private void UpdateTrafficStats()
     {
-
         VehicleIsSuspicious = false;
         IsFelonySpeeding = false;
-        if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.IsDriver)
+        if(Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists() || !Player.IsDriver)
         {
-            if (!IsRoadWorthy(Player.CurrentVehicle) || IsDamaged(Player.CurrentVehicle))
+            return;
+        }
+        VehicleStatusUpdate();
+        RunningRedUpdate();
+        RecklessDrivingUpdate();
+        SpeedingUpdate();
+    }
+    private void SpeedingUpdate()
+    {
+        float SpeedLimit = 60f;
+        if (Player.CurrentLocation.CurrentStreet != null)
+        {
+            SpeedLimit = Player.CurrentLocation.CurrentStreet.SpeedLimitMPH;
+        }
+        IsFelonySpeeding = Player.VehicleSpeedMPH > SpeedLimit + Settings.SettingsManager.ViolationSettings.OverLimitFelonySpeedingAmount;
+        IsRegularSpeeding = Player.VehicleSpeedMPH > SpeedLimit + Settings.SettingsManager.ViolationSettings.OverLimitSpeedingAmount;
+        if (isRegularSpeeding != IsRegularSpeeding)
+        {
+            if (IsRegularSpeeding)
             {
-                VehicleIsSuspicious = true;
-            }
-            if (Player.CurrentVehicle?.Indicators.LeftBlinkerOn == true || Player.CurrentVehicle?.Indicators.RightBlinkerOn == true)
-            {
-
-            }
-            else
-            {
-
-                if (NativeFunction.Natives.GET_IS_PLAYER_DRIVING_WRECKLESS<bool>(Game.LocalPlayer, 1))
-                {
-                    GameTimeLastRanRed = Game.GameTime;
-                }
-
-                //foreach (PedExt Civilian in World.Pedestrians.Citizens.Where(x => x.Pedestrian.Exists() && x.IsWaitingAtTrafficLight).OrderBy(x => x.DistanceToPlayer))
-                //{
-                //    if (Civilian.DistanceToPlayer <= 100f && Civilian.IsInVehicle)
-                //    {
-                //        if (Civilian.Pedestrian.IsInAnyVehicle(false) && Civilian.Pedestrian.CurrentVehicle != null)
-                //        {
-                //            float HeadingDiff = Math.Abs(Extensions.GetHeadingDifference(Game.LocalPlayer.Character.Heading, Civilian.Pedestrian.Heading));
-                //            if ((HeadingDiff <= 35f) && Game.LocalPlayer.Character.IsThisPedInFrontOf(Civilian.Pedestrian) && Civilian.DistanceToPlayer <= 20f && Game.LocalPlayer.Character.Speed >= 3f)
-                //            {
-                //                GameTimeLastRanRed = Game.GameTime;
-                //                //IsRunningRedLight = true;
-                //            }
-                //            //EntryPoint.WriteToConsole($"{Civilian.DistanceToPlayer} HeadingDiff {HeadingDiff} IsRunningRedLight {IsRunningRedLight}");
-                //        }
-                //    }
-                //}
-            }
-
-            if (Game.LocalPlayer.IsDrivingOnPavement && GameTimeStartedDrivingOnPavement == 0)
-            {
-                GameTimeStartedDrivingOnPavement = Game.GameTime;
+                GameTimeStartedSpeeding = Game.GameTime;
+                //EntryPoint.WriteToConsole("STARTED REGULAR SPEEDING");
             }
             else
             {
-                GameTimeStartedDrivingOnPavement = 0;
+                GameTimeStartedSpeeding = 0;
+                //EntryPoint.WriteToConsole("ENDED REGULAR SPEEDING");
             }
-            if (Game.LocalPlayer.IsDrivingAgainstTraffic && GameTimeStartedDrivingAgainstTraffic == 0)
+            isRegularSpeeding = IsRegularSpeeding;
+        }
+
+        if (isFelonySpeeding != IsFelonySpeeding)
+        {
+            if (IsFelonySpeeding)
             {
-                GameTimeStartedDrivingAgainstTraffic = Game.GameTime;
+                GameTimeStartedFelonySpeeding = Game.GameTime;
+                //EntryPoint.WriteToConsole("STARTED FELONY SPEEDING");
             }
             else
             {
-                GameTimeStartedDrivingAgainstTraffic = 0;
+                GameTimeStartedFelonySpeeding = 0;
+                //EntryPoint.WriteToConsole("ENDED FELONY SPEEDING");
             }
-            TimeSincePlayerHitPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
-            TimeSincePlayerHitVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
-
-            float SpeedLimit = 60f;
-            if (Player.CurrentLocation.CurrentStreet != null)
-            {
-                SpeedLimit = Player.CurrentLocation.CurrentStreet.SpeedLimitMPH;
-            }
-
-            IsFelonySpeeding = Player.VehicleSpeedMPH > SpeedLimit + Settings.SettingsManager.ViolationSettings.OverLimitFelonySpeedingAmount;
-            IsRegularSpeeding = Player.VehicleSpeedMPH > SpeedLimit + Settings.SettingsManager.ViolationSettings.OverLimitSpeedingAmount;
-
-            if(isRegularSpeeding != IsRegularSpeeding)
-            {
-
-                if(IsRegularSpeeding)
-                {
-                    GameTimeStartedSpeeding = Game.GameTime;
-                    //EntryPoint.WriteToConsole("STARTED REGULAR SPEEDING");
-                }
-                else
-                {
-                    GameTimeStartedSpeeding = 0;
-                    //EntryPoint.WriteToConsole("ENDED REGULAR SPEEDING");
-                }
-                isRegularSpeeding = IsRegularSpeeding;
-            }
-
-            if (isFelonySpeeding != IsFelonySpeeding)
-            {
-                if (IsFelonySpeeding)
-                {
-                    GameTimeStartedFelonySpeeding = Game.GameTime;
-                    //EntryPoint.WriteToConsole("STARTED FELONY SPEEDING");
-                }
-                else
-                {
-                    GameTimeStartedFelonySpeeding = 0;
-                    //EntryPoint.WriteToConsole("ENDED FELONY SPEEDING");
-                }
-                isFelonySpeeding = IsFelonySpeeding;
-            }
+            isFelonySpeeding = IsFelonySpeeding;
+        }
+    }
+    private void RecklessDrivingUpdate()
+    {
+        if (Game.LocalPlayer.IsDrivingOnPavement && GameTimeStartedDrivingOnPavement == 0)
+        {
+            GameTimeStartedDrivingOnPavement = Game.GameTime;
+        }
+        else
+        {
+            GameTimeStartedDrivingOnPavement = 0;
+        }
+        if (Game.LocalPlayer.IsDrivingAgainstTraffic && GameTimeStartedDrivingAgainstTraffic == 0)
+        {
+            GameTimeStartedDrivingAgainstTraffic = Game.GameTime;
+        }
+        else
+        {
+            GameTimeStartedDrivingAgainstTraffic = 0;
+        }
+        TimeSincePlayerHitPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
+        TimeSincePlayerHitVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
+    }
+    private void RunningRedUpdate()
+    {
+        if (Player.CurrentVehicle?.Indicators.LeftBlinkerOn == true || Player.CurrentVehicle?.Indicators.RightBlinkerOn == true)
+        {
+            return;
+        }
+        if (NativeFunction.Natives.GET_IS_PLAYER_DRIVING_WRECKLESS<bool>(Game.LocalPlayer, 1))
+        {
+            GameTimeLastRanRed = Game.GameTime;
+        }       
+    }
+    private void VehicleStatusUpdate()
+    {
+        if (!IsRoadWorthy(Player.CurrentVehicle) || IsDamaged(Player.CurrentVehicle))
+        {
+            VehicleIsSuspicious = true;
         }
     }
     private bool IsDamaged(VehicleExt myCar)
@@ -356,6 +331,5 @@ public class TrafficViolations
         }
         return true;
     }
-
 }
 

@@ -73,6 +73,9 @@ namespace LosSantosRED.lsr
                 ModDataFileManager.ModItems, ModDataFileManager.Intoxicants, ModDataFileManager.Gangs, ModDataFileManager.Jurisdictions, ModDataFileManager.GangTerritories, ModDataFileManager.GameSaves, ModDataFileManager.Names, ModDataFileManager.ShopMenus, 
                 ModDataFileManager.RelationshipGroups, ModDataFileManager.DanceList, ModDataFileManager.SpeechList, ModDataFileManager.Seats, ModDataFileManager.Agencies, ModDataFileManager.SavedOutfits, ModDataFileManager.VehicleSeatDoorData);
             Player.Setup();
+
+            World.AddPlayer(Player);
+
             GameFiber.Yield();
             Police = new Police(World, Player, Player, ModDataFileManager.Settings, Player, Time);
             GameFiber.Yield();
@@ -108,8 +111,8 @@ namespace LosSantosRED.lsr
                 ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, ModDataFileManager.Gangs, Input, ModDataFileManager.ShopMenus, ModDataFileManager);
             Debug.Setup();
             GameFiber.Yield();
-            World.Setup();
-            GameFiber.Yield();
+            //World.Setup();
+            //GameFiber.Yield();
             PedSwap.Setup();
             GameFiber.Yield();
             SetTaskGroups();

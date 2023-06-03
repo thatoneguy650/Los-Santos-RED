@@ -293,12 +293,18 @@ public class BasicLocation
                 UpdateBlip(time);
                 GameTimeLastCheckedDistance = Game.GameTime;
             }
+            
         }
         else
         {
             distanceToPlayer = 999f;
             GameTimeLastCheckedDistance = Game.GameTime;
         }
+        ExtraUpdate();
+    }
+    protected virtual void ExtraUpdate()
+    {
+
     }
     public void UpdateBlip(ITimeReportable time)
     {

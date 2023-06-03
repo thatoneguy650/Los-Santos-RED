@@ -42,7 +42,29 @@ namespace LosSantosRED.lsr.Helper
             NativeFunction.Natives.START_NEW_SCRIPT(scriptName, buffer);
             NativeFunction.Natives.SET_SCRIPT_AS_NO_LONGER_NEEDED(scriptName);
         }
-
+        public static bool IsPointInPolygon(Vector2 point, Vector2[] polygon)
+        {
+            int polygonLength = polygon.Length, i = 0;
+            bool inside = false;
+            // x, y for tested point.
+            float pointX = point.X, pointY = point.Y;
+            // start / end point for the current polygon segment.
+            float startX, startY, endX, endY;
+            Vector2 endPoint = polygon[polygonLength - 1];
+            endX = endPoint.X;
+            endY = endPoint.Y;
+            while (i < polygonLength)
+            {
+                startX = endX; startY = endY;
+                endPoint = polygon[i++];
+                endX = endPoint.X; endY = endPoint.Y;
+                //
+                inside ^= (endY > pointY ^ startY > pointY) /* ? pointY inside [startY;endY] segment ? */
+                          && /* if so, test if it is under the segment */
+                          ((pointX - endX) < (pointY - endY) * (startX - endX) / (startY - endY));
+            }
+            return inside;
+        }
 
 
         public static bool IsStringHash(string value, out uint hash)

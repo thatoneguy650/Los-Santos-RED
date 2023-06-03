@@ -43,6 +43,14 @@ namespace LSR.Vehicles
         public Blip AttachedBlip { get; set; }
         public bool IsHotWireLocked { get; set; } = false;
         public bool IsDisabled { get; set; } = false;
+
+
+
+        public bool IsImpounded { get; set; }
+        public DateTime DateTimeImpounded { get; set; }
+
+
+
         public Vehicle Vehicle { get; set; } = null;
         public Vector3 PlaceOriginallyEntered { get; set; }
         public Radio Radio { get; set; }
@@ -474,6 +482,40 @@ namespace LSR.Vehicles
             }
             return description;
         }
+
+
+        public string GetRegularDescription(bool isOwned)
+        {
+            string vehicleString = "";
+            string VehicleName = FullName(false);
+            if(isOwned && IsImpounded)
+            {
+                vehicleString += $"Vehicle: ~p~{VehicleName}~n~~s~Status: ~r~Impounded~s~";
+            }
+            else if (isOwned)
+            {
+                vehicleString += $"Vehicle: ~p~{VehicleName}~n~~s~Status: ~p~Owned~s~";
+            }
+            else if (!IsStolen)
+            {
+                vehicleString += $"Vehicle: ~p~{VehicleName}~n~~s~Status: ~p~Unknown~s~";
+            }
+            else
+            {
+                vehicleString += $"Vehicle: ~r~{VehicleName}~n~~s~Status: ~r~Stolen~s~";
+            }
+            if (CarPlate != null && CarPlate.IsWanted)
+            {
+                vehicleString += $"~n~Plate: ~r~{CarPlate.PlateNumber} ~r~(Wanted)~s~";
+            }
+            else
+            {
+                vehicleString += $"~n~Plate: ~p~{CarPlate.PlateNumber} ~s~";
+            }
+            return vehicleString;
+        }
+
+
         public void Update(IDriveable driver)
         {
             if (Vehicle.Exists())
@@ -1067,5 +1109,36 @@ namespace LSR.Vehicles
             }
             HasAddedRandomWeapons = true;
         }
+
+        public void SetImpounded(ITimeReportable time)
+        {
+            IsImpounded = true;
+            DateTimeImpounded = time.CurrentDateTime;
+        }
+        private void UnSetImpounded()
+        {
+            IsImpounded = false;
+        }
+        public void AddToImpoundMenu(ILocationAreaRestrictable location, UIMenu impoundSubMenu, ILocationInteractable player)
+        {
+            int fee = 1000;
+            UIMenuItem impoundMenuItem = new UIMenuItem(FullName(true), "Pay the fee and be granted your vehicle.") { RightLabel = $"${fee}" };
+            impoundMenuItem.Activated += (sender, selectedItem) =>
+            {
+                if(player.BankAccounts.Money <= fee)
+                {
+                    new GTANotification(location.Name, "Impound Lot", "You do not have the required amount.").Display();
+                    return;
+                }
+                player.BankAccounts.GiveMoney(-1 * fee);
+                UnSetImpounded();
+                new GTANotification(location.Name, "Impound Lot", "You have paid off your vehicle. Please collect it from the lot.").Display();
+                location.RemoveRestriction();
+                sender.Visible = false;
+            };
+            impoundSubMenu.AddItem(impoundMenuItem);
+        }
+
+  
     }
 }

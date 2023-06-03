@@ -46,8 +46,14 @@ namespace LosSantosRED.lsr
         public List<Crime> CivilianReportableCrimesViolating => CrimesViolating.Where(x => x.CanBeReactedToByCivilians).ToList();
         public string LawsViolatingDisplay => string.Join(", ", CrimesViolating.OrderBy(x=>x.Priority).Select(x => x.Name));
         public bool IsViolatingSeriousCrime => CrimesViolating.Any(x => x.ResultingWantedLevel >= 2);
-        public bool CheckWeaponViolations => !Player.IsCop && !Player.IsSecurityGuard;
+        public bool CanCarryAndFireWeapons => Player.IsCop || Player.IsSecurityGuard;
         public bool CanDamageWantedCivilians => Player.IsCop || Player.IsSecurityGuard;
+        public bool CanBodyInteract => Player.IsEMT;
+        public bool CanDriveRecklesslyWithSiren => Player.IsCop || Player.IsEMT || Player.IsFireFighter;
+        public bool CanIgnoreAllTrafficLaws => Player.IsCop;
+
+        public bool CanEnterRestrictedAreas => Player.IsCop;
+
         public void Setup()
         {
             TrafficViolations.Setup();

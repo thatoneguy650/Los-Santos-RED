@@ -41,7 +41,7 @@ public class Zones : IZones
         string zoneName = "UNK";
 
 
-        ListResult = ZoneList.Where(x => x.Boundaries != null && IsPointInPolygon(new Vector2(ZonePosition.X, ZonePosition.Y), x.Boundaries)).FirstOrDefault();
+        ListResult = ZoneList.Where(x => x.Boundaries != null && NativeHelper.IsPointInPolygon(new Vector2(ZonePosition.X, ZonePosition.Y), x.Boundaries)).FirstOrDefault();
 
 
         if (ListResult == null)
@@ -337,29 +337,29 @@ public class Zones : IZones
             };
         Serialization.SerializeParams(LibertyCityZones, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Zones_LibertyCity.xml");
     }
-    private bool IsPointInPolygon(Vector2 point, Vector2[] polygon)
-    {
-        int polygonLength = polygon.Length, i = 0;
-        bool inside = false;
-        // x, y for tested point.
-        float pointX = point.X, pointY = point.Y;
-        // start / end point for the current polygon segment.
-        float startX, startY, endX, endY;
-        Vector2 endPoint = polygon[polygonLength - 1];
-        endX = endPoint.X;
-        endY = endPoint.Y;
-        while (i < polygonLength)
-        {
-            startX = endX; startY = endY;
-            endPoint = polygon[i++];
-            endX = endPoint.X; endY = endPoint.Y;
-            //
-            inside ^= (endY > pointY ^ startY > pointY) /* ? pointY inside [startY;endY] segment ? */
-                      && /* if so, test if it is under the segment */
-                      ((pointX - endX) < (pointY - endY) * (startX - endX) / (startY - endY));
-        }
-        return inside;
-    }
+    //private bool IsPointInPolygon(Vector2 point, Vector2[] polygon)
+    //{
+    //    int polygonLength = polygon.Length, i = 0;
+    //    bool inside = false;
+    //    // x, y for tested point.
+    //    float pointX = point.X, pointY = point.Y;
+    //    // start / end point for the current polygon segment.
+    //    float startX, startY, endX, endY;
+    //    Vector2 endPoint = polygon[polygonLength - 1];
+    //    endX = endPoint.X;
+    //    endY = endPoint.Y;
+    //    while (i < polygonLength)
+    //    {
+    //        startX = endX; startY = endY;
+    //        endPoint = polygon[i++];
+    //        endX = endPoint.X; endY = endPoint.Y;
+    //        //
+    //        inside ^= (endY > pointY ^ startY > pointY) /* ? pointY inside [startY;endY] segment ? */
+    //                  && /* if so, test if it is under the segment */
+    //                  ((pointX - endX) < (pointY - endY) * (startX - endX) / (startY - endY));
+    //    }
+    //    return inside;
+    //}
 
     public void Setup(ILocationTypes locationTypes)
     {
