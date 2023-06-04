@@ -1131,143 +1131,156 @@ public class Debug
     private void DebugNumpad6()
     {
 
-        List<string> CoolStuff = new List<string>() {
-
-        "manhat09_stream7",
-"manhat09_stream6",
-"manhat09_stream5",
-"manhat09_stream4",
-"manhat09_stream3",
-"manhat09_stream2",
-"manhat09_stream1",
-"manhat09_stream0",
-"manhat09_strbig0",
-"manhat09_lod",
-"manhat09",
-
-        };
+        string AliveSeatAnimationDictionaryName = "veh@std@ps@enter_exit";
+        string AliveSeatAnimationName = "dead_fall_out";
 
 
+        AliveSeatAnimationDictionaryName = NativeHelper.GetKeyboardInput("random@crash_rescue@car_death@std_car");
+        AliveSeatAnimationName = NativeHelper.GetKeyboardInput("loop");
 
-        if (IsOn)
-        {
-            foreach (string ipl in CoolStuff)
-            {
-                NativeFunction.Natives.REMOVE_IPL(ipl);
-            }
-            Game.DisplaySubtitle("IPLS REMOVED");
-        }
-        else
-        {
-            foreach (string ipl in CoolStuff)
-            {
-                NativeFunction.Natives.REQUEST_IPL(ipl);
-            }
-            Game.DisplaySubtitle("IPLS REQUESTED");
-        }
-        IsOn = !IsOn;
-        //Vector3 position = Game.LocalPlayer.Character.Position;
-        //bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, out Vector3 outPos, 0, 3.0f, 0f);
-        //Vector3 ClosestNode = outPos;
+
+        AnimationDictionary.RequestAnimationDictionayResult(AliveSeatAnimationDictionaryName);
+
+        NativeFunction.Natives.TASK_PLAY_ANIM(Game.LocalPlayer.Character, AliveSeatAnimationDictionaryName, AliveSeatAnimationName, 8.0f, -8.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_NOT_INTERRUPTABLE | eAnimationFlags.AF_UPPERBODY | eAnimationFlags.AF_SECONDARY), 0, false, false, false);
+       // NativeFunction.Natives.SET_ANIM_RATE(Game.LocalPlayer.Character, 0.0f, 2, false);
+
+        //        List<string> CoolStuff = new List<string>() {
+
+        //        "manhat09_stream7",
+        //"manhat09_stream6",
+        //"manhat09_stream5",
+        //"manhat09_stream4",
+        //"manhat09_stream3",
+        //"manhat09_stream2",
+        //"manhat09_stream1",
+        //"manhat09_stream0",
+        //"manhat09_strbig0",
+        //"manhat09_lod",
+        //"manhat09",
+
+        //        };
 
 
 
-
-        //int StreetHash = 0;
-        //int CrossingHash = 0;
-        //string CurrentStreetName;
-        //unsafe
-        //{
-        //    NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", ClosestNode.X, ClosestNode.Y, ClosestNode.Z, &StreetHash, &CrossingHash);
-        //}
-        //string StreetName = string.Empty;
-        //if (StreetHash != 0)
-        //{
-        //    unsafe
-        //    {
-        //        IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
-        //        StreetName = Marshal.PtrToStringAnsi(ptr);
-        //    }
-        //    CurrentStreetName = StreetName;
-        //    GameFiber.Yield();
-        //}
-        //else
-        //{
-        //    CurrentStreetName = "";
-        //}
-
-
-        //Game.DisplaySubtitle($"StreetHash {StreetHash} CurrentStreetName {CurrentStreetName} StreetName {StreetName}");
-        GameFiber.Sleep(200);
+        //        if (IsOn)
+        //        {
+        //            foreach (string ipl in CoolStuff)
+        //            {
+        //                NativeFunction.Natives.REMOVE_IPL(ipl);
+        //            }
+        //            Game.DisplaySubtitle("IPLS REMOVED");
+        //        }
+        //        else
+        //        {
+        //            foreach (string ipl in CoolStuff)
+        //            {
+        //                NativeFunction.Natives.REQUEST_IPL(ipl);
+        //            }
+        //            Game.DisplaySubtitle("IPLS REQUESTED");
+        //        }
+        //        IsOn = !IsOn;
+        //        //Vector3 position = Game.LocalPlayer.Character.Position;
+        //        //bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, out Vector3 outPos, 0, 3.0f, 0f);
+        //        //Vector3 ClosestNode = outPos;
 
 
 
-        //Game.DisplaySubtitle("Disabling LS");
-        //LSMapDisabler lSMapDisabler = new LSMapDisabler();
-        //lSMapDisabler.DisableLS();
-        //GameFiber.Sleep(500);
-        //Game.DisplaySubtitle("LS Disabled");
-        //ShockTest();
-        //DateTime currentOffsetDateTime = new DateTime(2020, Time.CurrentDateTime.Month, Time.CurrentDateTime.Day, Time.CurrentDateTime.Hour, Time.CurrentDateTime.Minute, Time.CurrentDateTime.Second);
-        //WeatherForecast closestForecast = ModDataFileManager.WeatherForecasts.WeatherForecastList.OrderBy(x => Math.Abs(x.DateTime.Ticks - currentOffsetDateTime.Ticks)).ThenBy(x => x.DateTime).FirstOrDefault();//WeatherForecasts.WeatherForecastList.OrderBy(x => (x.DateTime - currentOffsetDateTime).Duration()).ThenBy(y=>y.DateTime).FirstOrDefault();
-        //if (closestForecast != null)
-        //{
-        //    Game.DisplaySubtitle($"DEBUG Time is {Time.CurrentDateTime} and the closest forcast is {closestForecast.DateTime} {closestForecast.AirTemperature} F {closestForecast.Description} ");
-        //}
+
+        //        //int StreetHash = 0;
+        //        //int CrossingHash = 0;
+        //        //string CurrentStreetName;
+        //        //unsafe
+        //        //{
+        //        //    NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", ClosestNode.X, ClosestNode.Y, ClosestNode.Z, &StreetHash, &CrossingHash);
+        //        //}
+        //        //string StreetName = string.Empty;
+        //        //if (StreetHash != 0)
+        //        //{
+        //        //    unsafe
+        //        //    {
+        //        //        IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
+        //        //        StreetName = Marshal.PtrToStringAnsi(ptr);
+        //        //    }
+        //        //    CurrentStreetName = StreetName;
+        //        //    GameFiber.Yield();
+        //        //}
+        //        //else
+        //        //{
+        //        //    CurrentStreetName = "";
+        //        //}
 
 
-        //Player.Scanner.DebugPlayDispatch();
-
-        //SpawnWithQuat();
-        //HighlightProp();
-        //SetFlags();
-        //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
-        //{
-        //    BusRide MyBusRide = new BusRide(Player, Player.CurrentVehicle.Vehicle, World, PlacesOfInterest, Settings);
-        //    MyBusRide.Start();
-        //}
-
-
-        //ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
-        //Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
-        //GameFiber.Sleep(500);
+        //        //Game.DisplaySubtitle($"StreetHash {StreetHash} CurrentStreetName {CurrentStreetName} StreetName {StreetName}");
+        //        GameFiber.Sleep(200);
 
 
 
-        //int TotalEntities = 0;
-        //EntryPoint.WriteToConsole($"SPAWNED ENTITIES ===============================", 2);
-        //foreach (Entity ent in EntryPoint.SpawnedEntities)
-        //{
-        //    if (ent.Exists())
-        //    {
-        //        TotalEntities++;
-        //        EntryPoint.WriteToConsole($"SPAWNED ENTITY STILL EXISTS {ent.Handle} {ent.GetType()} {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 2);
-        //    }
-        //}
-        //EntryPoint.WriteToConsole($"SPAWNED ENTITIES =============================== TOTAL: {TotalEntities}", 2);
+        //        //Game.DisplaySubtitle("Disabling LS");
+        //        //LSMapDisabler lSMapDisabler = new LSMapDisabler();
+        //        //lSMapDisabler.DisableLS();
+        //        //GameFiber.Sleep(500);
+        //        //Game.DisplaySubtitle("LS Disabled");
+        //        //ShockTest();
+        //        //DateTime currentOffsetDateTime = new DateTime(2020, Time.CurrentDateTime.Month, Time.CurrentDateTime.Day, Time.CurrentDateTime.Hour, Time.CurrentDateTime.Minute, Time.CurrentDateTime.Second);
+        //        //WeatherForecast closestForecast = ModDataFileManager.WeatherForecasts.WeatherForecastList.OrderBy(x => Math.Abs(x.DateTime.Ticks - currentOffsetDateTime.Ticks)).ThenBy(x => x.DateTime).FirstOrDefault();//WeatherForecasts.WeatherForecastList.OrderBy(x => (x.DateTime - currentOffsetDateTime).Duration()).ThenBy(y=>y.DateTime).FirstOrDefault();
+        //        //if (closestForecast != null)
+        //        //{
+        //        //    Game.DisplaySubtitle($"DEBUG Time is {Time.CurrentDateTime} and the closest forcast is {closestForecast.DateTime} {closestForecast.AirTemperature} F {closestForecast.Description} ");
+        //        //}
 
-        //TotalEntities = 0;
 
-        //List<Entity> AllEntities = Rage.World.GetAllEntities().ToList();
-        //EntryPoint.WriteToConsole($"PERSISTENT ENTITIES ===============================", 2);
-        //foreach (Entity ent in AllEntities)
-        //{
-        //    if (ent.Exists() && ent.IsPersistent)
-        //    {
-        //        TotalEntities++;
-        //        EntryPoint.WriteToConsole($"PERSISTENT ENTITY STILL EXISTS {ent.Handle} {ent.GetType()}  {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 2);
-        //    }
-        //}
-        //EntryPoint.WriteToConsole($"PERSISTENT ENTITIES =============================== TOTAL: {TotalEntities}", 2);
+        //        //Player.Scanner.DebugPlayDispatch();
 
-        //WriteCopState();
+        //        //SpawnWithQuat();
+        //        //HighlightProp();
+        //        //SetFlags();
+        //        //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        //        //{
+        //        //    BusRide MyBusRide = new BusRide(Player, Player.CurrentVehicle.Vehicle, World, PlacesOfInterest, Settings);
+        //        //    MyBusRide.Start();
+        //        //}
 
-        //SpawnModelChecker();
-        //Vector3 pos = Game.LocalPlayer.Character.Position;
-        //float Heading = Game.LocalPlayer.Character.Heading;
-        //string text1 = NativeHelper.GetKeyboardInput("");
-        //string text2 = NativeHelper.GetKeyboardInput("");
-        //WriteToLogLocations($"new GameLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f,new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, LocationType.{text1}, \"{text2}\", \"{text2}\"),");
+
+        //        //ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
+        //        //Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
+        //        //GameFiber.Sleep(500);
+
+
+
+        //        //int TotalEntities = 0;
+        //        //EntryPoint.WriteToConsole($"SPAWNED ENTITIES ===============================", 2);
+        //        //foreach (Entity ent in EntryPoint.SpawnedEntities)
+        //        //{
+        //        //    if (ent.Exists())
+        //        //    {
+        //        //        TotalEntities++;
+        //        //        EntryPoint.WriteToConsole($"SPAWNED ENTITY STILL EXISTS {ent.Handle} {ent.GetType()} {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 2);
+        //        //    }
+        //        //}
+        //        //EntryPoint.WriteToConsole($"SPAWNED ENTITIES =============================== TOTAL: {TotalEntities}", 2);
+
+        //        //TotalEntities = 0;
+
+        //        //List<Entity> AllEntities = Rage.World.GetAllEntities().ToList();
+        //        //EntryPoint.WriteToConsole($"PERSISTENT ENTITIES ===============================", 2);
+        //        //foreach (Entity ent in AllEntities)
+        //        //{
+        //        //    if (ent.Exists() && ent.IsPersistent)
+        //        //    {
+        //        //        TotalEntities++;
+        //        //        EntryPoint.WriteToConsole($"PERSISTENT ENTITY STILL EXISTS {ent.Handle} {ent.GetType()}  {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 2);
+        //        //    }
+        //        //}
+        //        //EntryPoint.WriteToConsole($"PERSISTENT ENTITIES =============================== TOTAL: {TotalEntities}", 2);
+
+        //        //WriteCopState();
+
+        //        //SpawnModelChecker();
+        //        //Vector3 pos = Game.LocalPlayer.Character.Position;
+        //        //float Heading = Game.LocalPlayer.Character.Heading;
+        //        //string text1 = NativeHelper.GetKeyboardInput("");
+        //        //string text2 = NativeHelper.GetKeyboardInput("");
+        //        //WriteToLogLocations($"new GameLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f,new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, LocationType.{text1}, \"{text2}\", \"{text2}\"),");
     }
 
 
@@ -3934,6 +3947,9 @@ public class Debug
     }
     private void WriteCivilianAndCopState()
     {
+
+        EntryPoint.WriteToConsole($"PLAYER EVENT: INVESTIGATION START Police:{Player.Investigation.RequiresPolice} EMS;{Player.Investigation.RequiresEMS} Fire:{Player.Investigation.RequiresFirefighters}");
+
         EntryPoint.WriteToConsole($"============================================ PLAYER HANDLE {Game.LocalPlayer.Character.Handle} {Game.LocalPlayer.Character.Model.Name} RG: {Game.LocalPlayer.Character.RelationshipGroup.Name} DRG: {RelationshipGroup.Player.Name}", 5);
         //EntryPoint.WriteToConsole($"============================================ VEHICLES START", 5);
         //foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character)))
@@ -4002,7 +4018,7 @@ public class Debug
         }
         EntryPoint.WriteToConsole($"============================================ SECURITY END", 5);
         EntryPoint.WriteToConsole($"============================================ EMT START", 5);
-        foreach (PedExt ped in World.Pedestrians.EMTList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
+        foreach (EMT ped in World.Pedestrians.EMTList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
         {
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
@@ -4019,7 +4035,7 @@ public class Debug
                 $"PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} " +
                 $"IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} " +
                 $"Stunned {ped.Pedestrian.IsStunned} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} WasModSpawned:{ped.WasModSpawned} CanBeTasked:{ped.CanBeTasked} CanBeAmbientTasked:{ped.CanBeAmbientTasked} " +
-                $"NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}";
+                $"NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG} IsRespondingToInvestigation {ped.IsRespondingToInvestigation}";
             if (ped.CurrentTask?.OtherTarget?.Pedestrian.Exists() == true)
             {
                 Text +=$" TASK Target:{ped.CurrentTask.OtherTarget.Pedestrian.Handle}";
@@ -4034,7 +4050,7 @@ public class Debug
         EntryPoint.WriteToConsole($"============================================ EMT END", 5);
 
         EntryPoint.WriteToConsole($"============================================ FIRE START", 5);
-        foreach (PedExt ped in World.Pedestrians.FirefighterList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
+        foreach (Firefighter ped in World.Pedestrians.FirefighterList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
         {
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
@@ -4051,7 +4067,7 @@ public class Debug
                 $"PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} " +
                 $"IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} " +
                 $"Stunned {ped.Pedestrian.IsStunned} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} WasModSpawned:{ped.WasModSpawned} CanBeTasked:{ped.CanBeTasked} CanBeAmbientTasked:{ped.CanBeAmbientTasked} " +
-                $"NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}";
+                $"NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG} IsRespondingToInvestigation {ped.IsRespondingToInvestigation}";
 
             if (ped.CurrentTask?.OtherTarget?.Pedestrian.Exists() == true)
             {

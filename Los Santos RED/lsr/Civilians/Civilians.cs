@@ -348,10 +348,6 @@ public class Civilians
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-                //if (Settings.SettingsManager.SecuritySettings.ManageLoadout)
-                //{
-                //    ped.WeaponInventory.UpdateLoadout(PoliceRespondable, World., Settings.SettingsManager.SecuritySettings.OverrideAccuracy);
-                //}
                 if (Settings.SettingsManager.PoliceSpeechSettings.AllowAmbientSpeech)
                 {
                     ped.UpdateSpeech(PoliceRespondable);
@@ -415,7 +411,7 @@ public class Civilians
 
 
 
-        if(PoliceRespondable.IsCop && !Settings.SettingsManager.PoliceTaskSettings.AutoDispatchWhenCop && PoliceRespondable.ClosestPoliceDistanceToPlayer >= 100f)
+        if(PoliceRespondable.IsCop && PoliceRespondable.ClosestPoliceDistanceToPlayer >= 150f && !PoliceRespondable.IsSetAutoCallBackup)
         {
             World.PoliceBackupPoint = Vector3.Zero;
         }
@@ -423,7 +419,13 @@ public class Civilians
         {
             World.PoliceBackupPoint = PoliceInterestPoint;
         }
+
+
         
+
+
+
+
 
 
 

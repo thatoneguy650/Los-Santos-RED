@@ -85,7 +85,7 @@ public class VehicleImpoundLot
         toImpound.Vehicle.Heading = ParkingSpot.Heading;
 
 
-        toImpound.SetImpounded(time);
+        toImpound.SetImpounded(time, Location.Name);
         return true;
 
        // string ImpoundedNotification = $"Vehicle: {toImpound.FullName(true)}~n~Plate #:{toImpound?.CarPlate.ToString()}";

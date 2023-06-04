@@ -82,6 +82,10 @@ public class Investigation
     public bool RequiresPolice { get; set; }
     public bool RequiresEMS { get; set; }
     public bool RequiresFirefighters { get; set; }
+
+
+    public int RespondingEMS { get; private set; }
+    public int RespondingFirefighters { get; private set; }
     public int RespondingPolice { get; private set; }
 
     private bool IsTimedOut => GameTimeStartedInvestigation != 0 && Game.GameTime - GameTimeStartedInvestigation >= Settings.SettingsManager.InvestigationSettings.TimeLimit;//60000;//short for testing was 180000
@@ -89,7 +93,17 @@ public class Investigation
     private bool IsMinTimedOut => GameTimeStartedInvestigation != 0 && Game.GameTime - GameTimeStartedInvestigation >= Settings.SettingsManager.InvestigationSettings.MinTimeLimit;//60000;//short for testing was 180000
 
     public bool IsNearPosition { get; private set; }
+
+
     public int CurrentRespondingPoliceCount { get; private set; }
+
+    public int CurrentRespondingEMTsCount { get; private set; }
+
+    public int CurrentRespondingFireFightersCount { get; private set; }
+
+
+    public int CurrentRespondingCount => CurrentRespondingPoliceCount + CurrentRespondingEMTsCount + CurrentRespondingFireFightersCount;
+
 
     public void Dispose()
     {
@@ -120,6 +134,8 @@ public class Investigation
             cop.IsRespondingToInvestigation = false;
         }
         CurrentRespondingPoliceCount = 0;
+        CurrentRespondingEMTsCount = 0;
+        CurrentRespondingFireFightersCount = 0;
         InvestigationWantedLevel = 0;
         if (InvestigationBlip.Exists())
         {
@@ -178,7 +194,7 @@ public class Investigation
         IsOutsideInvestigationRange = Position == Vector3.Zero || Game.LocalPlayer.Character.DistanceTo2D(Position) > Settings.SettingsManager.InvestigationSettings.MaxDistance;
         if (IsActive && Player.IsNotWanted)
         {
-            AssignCops();
+            AssignResponders();
             GameFiber.Yield();
             CheckExpired();
             if (IsSuspicious && Player.AnyPoliceCanRecognizePlayer && Player.PoliceResponse.HasBeenNotWantedFor >= 5000)
@@ -299,6 +315,83 @@ public class Investigation
         }
         return CanPoliceExpire && CanFireExpire && CanEMSExpire;
     }
+    private void AssignResponders()
+    {
+        AssignCops();
+        AssignEMS();
+        AssignFire();
+    }
+
+    private void AssignFire()
+    {
+        if(RequiresFirefighters)
+        {
+            RespondingFirefighters = 2;
+            int tasked = 0;
+            foreach (Firefighter firefighter in World.Pedestrians.FirefighterList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.Pedestrian.DistanceTo2D(Position)))
+            {
+                if (!firefighter.IsInVehicle && firefighter.Pedestrian.DistanceTo2D(Position) >= 150f)
+                {
+                    firefighter.IsRespondingToInvestigation = false;
+                }
+                else if (!firefighter.IsDead && !firefighter.IsUnconscious && tasked < RespondingFirefighters)
+                {
+                    firefighter.IsRespondingToInvestigation = true;
+                    tasked++;
+                    EntryPoint.WriteToConsole($"{firefighter.Handle} IsRespondingToInvestigation!");
+                }
+                else
+                {
+                    firefighter.IsRespondingToInvestigation = false;
+                }
+            }
+            CurrentRespondingFireFightersCount = tasked;
+        }   
+        else
+        {
+            foreach (Firefighter firefighter in World.Pedestrians.FirefighterList.Where(x => x.IsRespondingToInvestigation))
+            {
+                firefighter.IsRespondingToInvestigation = false;
+            }
+            CurrentRespondingFireFightersCount = 0;
+        }
+    }
+
+    private void AssignEMS()
+    {
+        if (RequiresEMS)
+        {
+            RespondingEMS = 2;
+            int tasked = 0;
+            foreach (EMT emt in World.Pedestrians.EMTList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.Pedestrian.DistanceTo2D(Position)))
+            {
+                if (!emt.IsInVehicle && emt.Pedestrian.DistanceTo2D(Position) >= 150f)
+                {
+                    emt.IsRespondingToInvestigation = false;
+                }
+                else if (!emt.IsDead && !emt.IsUnconscious && tasked < RespondingEMS)
+                {
+                    emt.IsRespondingToInvestigation = true;
+                    tasked++;
+                    EntryPoint.WriteToConsole($"{emt.Handle} IsRespondingToInvestigation!");
+                }
+                else
+                {
+                    emt.IsRespondingToInvestigation = false;
+                }
+            }
+            CurrentRespondingEMTsCount = tasked;
+        }
+        else
+        {
+            foreach (EMT emt in World.Pedestrians.EMTList.Where(x => x.IsRespondingToInvestigation))
+            {
+                emt.IsRespondingToInvestigation = false;
+            }
+            CurrentRespondingEMTsCount = 0;
+        }
+    }
+
     private void AssignCops()
     {
         if (RequiresPolice)

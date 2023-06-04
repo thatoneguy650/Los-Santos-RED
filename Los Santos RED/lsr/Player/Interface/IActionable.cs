@@ -68,6 +68,7 @@ namespace LosSantosRED.lsr.Interface
         OutfitManager OutfitManager { get; }
         Agency AssignedAgency { get; }
         Gang CurrentGang { get; }
+        bool IsServicePed { get; }
 
         void DisplayPlayerNotification();
         void SetWantedLevel(int selectedItem, string v1, bool v2);
@@ -76,5 +77,6 @@ namespace LosSantosRED.lsr.Interface
         void ToggleCopTaskable();
         void ShowVehicleInteractMenu();
         void PlaySpeech(string v1, bool v2);
+        void ToggleAutoBackup();
     }
 }

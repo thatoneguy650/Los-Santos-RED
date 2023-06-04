@@ -203,6 +203,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public uint Handle { get; private set; }
 
     public virtual ePedAlertType PedAlertTypes { get; set; } = ePedAlertType.UnconsciousBody;
+    public virtual bool GenerateUnconsciousAlerts { get; set; } = true;
 
     public bool HasBeenCarJackedByPlayer { get; set; } = false;
     public bool HasBeenHurtByPlayer { get; set; } = false;
@@ -395,13 +396,24 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public uint GameTimeLastInjured { get; set; }
     public bool RecentlyInjured => GameTimeLastInjured != 0 && Game.GameTime - GameTimeLastInjured <= 3000;
     public bool HasBeenSeenUnconscious { get; set; } = false;
+
+    public bool HasBeenSeenDead { get; set; } = false;
+
+
+
+
     public bool HasStartedEMTTreatment { get; set; } = false;
+
+    public bool WasSeenInDistressByServicePed { get; set; } = false;
+
+
     public bool HasBeenLooted { get; set; } = false;
     public bool IsDead { get; set; } = false;
     public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
     public bool WasModSpawned { get; set; } = false;
     public Vector3 SpawnPosition { get; set; }
     public float SpawnHeading { get; set; }
+    public bool IsPlayerControlled { get; set; } = false;
     public LocationTaskRequirements LocationTaskRequirements { get; set; } = new LocationTaskRequirements();
     public virtual bool KnowsDrugAreas => HasMenu || HasDrugAreaKnowledge;
     public virtual bool KnowsGangAreas => HasMenu || HasGangAreaKnowledge;
@@ -412,6 +424,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual bool CanPlayRadioInAnimation => false;
     public bool AlwaysHasLongGun { get; set; } = false;
     public bool IsBeingHeldAsHostage { get; set; } = false;
+
+
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
@@ -1192,5 +1206,15 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             Output += $"~n~Can Transact";
         }
         return Output;
+    }
+
+    public virtual void SetSeenBody(PedExt deadBody)
+    {
+
+    }
+
+    public virtual void SetSeenUnconscious(PedExt distressedPed)
+    {
+
     }
 }

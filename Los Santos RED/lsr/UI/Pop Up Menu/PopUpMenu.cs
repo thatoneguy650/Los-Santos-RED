@@ -25,7 +25,7 @@ public class PopUpMenu
     private readonly string WeaponsSubMenuName = "WeaponsSubMenu";
     private readonly string ActionsSubMenuName = "ActionsSubMenu";
     private readonly string VehicleActionsSubMenuName = "VehicleActionsSubMenu";
-
+    private readonly string AffilitationSubMenuName = "AffilitationSubMenu";
 
     private IActionable Player;
     private ISettingsProvideable Settings;
@@ -1053,6 +1053,17 @@ public class PopUpMenu
             IsCurrentlyValid = new Func<bool>(() => true)
         };
 
+
+
+        PopUpBox AffiliationActionBox = new PopUpBox(7, "Affilitation", AffilitationSubMenuName, "Open the Affiliation Sub Menu")
+        {
+            ClosesMenu = false,
+            IsCurrentlyValid = new Func<bool>(() => true)
+        };
+
+
+
+
         List<PopUpBox> OnFootMenuMaps = new List<PopUpBox>()
         {
             InfoBox,
@@ -1065,6 +1076,7 @@ public class PopUpMenu
             InventoryBox,
             GroupBox,
             VehicleActionBox,
+            //AffiliationActionBox,
         };
         List<PopUpBox> InVehicleMenuMaps = new List<PopUpBox>()
         {
@@ -1077,7 +1089,15 @@ public class PopUpMenu
                 IconNameInvalid = "vehicle_black.png" },
             InventoryBox,
             GroupBox,
+            //AffiliationActionBox,
         };
+
+        if(Player.IsServicePed)
+        {
+            OnFootMenuMaps.Add(AffiliationActionBox);
+            InVehicleMenuMaps.Add(AffiliationActionBox);
+        }
+
         List<PopUpBox> InfoSubMenu = new List<PopUpBox>()
         {
             new PopUpBox(0, "Player Info", UI.PlayerInfoMenu.Toggle,"Display the Player Info Menu") {
@@ -1123,6 +1143,12 @@ public class PopUpMenu
             new PopUpBox(2,"Enter Vehicle (By Seat)", "EnterSeatSubMenu","Enter vehicle you are looking at and sit on the specific seat") { ClosesMenu = false },
             new PopUpBox(3,"Toggle Door", "OpenDoorSubMenu","Toggle the door of the vehicle you are looking at") { ClosesMenu = false },
             new PopUpBox(4,"Menu",Player.ShowVehicleInteractMenu,"Show Vehicle Interaction Menu"),
+        };
+
+
+        List<PopUpBox> AffiliationSubMenu = new List<PopUpBox>()
+        {
+            new PopUpBox(0,"Toggle Auto Backup",new Action(() => Player.ToggleAutoBackup()),"Toggle automatic backup being called."),
         };
 
 
@@ -1233,6 +1259,10 @@ public class PopUpMenu
         PopUpMenuGroups.Add(new PopUpBoxGroup("InfoSubMenu", InfoSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup(ActionsSubMenuName, ActionsSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup(VehicleActionsSubMenuName, VehicleActionsSubMenu) { IsChild = true });
+        PopUpMenuGroups.Add(new PopUpBoxGroup(AffiliationSubMenuName, AffiliationSubMenu) { IsChild = true });
+
+
+
         PopUpMenuGroups.Add(new PopUpBoxGroup(WeaponsSubMenuName, WeaponsSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("StancesSubMenu", StanceSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("VehicleSubMenu", VehicleSubMenu) { IsChild = true });

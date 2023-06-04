@@ -53,15 +53,15 @@ public class PoliceGeneralInvestigate : GeneralInvestigate
     }
     protected override void GetLocations()
     {
-        if (Player.Investigation.IsActive)
-        {
-            PlaceToDriveTo = Player.Investigation.Position;
-            PlaceToWalkTo = Player.Investigation.Position;
-        }
-        else if (Ped.PedAlerts.IsAlerted)
+        if (Ped.PedAlerts.IsAlerted)
         {
             PlaceToDriveTo = Ped.PedAlerts.AlertedPoint;
             PlaceToWalkTo = Ped.PedAlerts.AlertedPoint;
+        }
+        else if (Player.Investigation.IsActive)
+        {
+            PlaceToDriveTo = Player.Investigation.Position;
+            PlaceToWalkTo = Player.Investigation.Position;
         }
         else
         {

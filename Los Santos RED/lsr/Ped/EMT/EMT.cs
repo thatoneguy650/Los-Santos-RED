@@ -29,6 +29,8 @@ public class EMT : PedExt
     public override bool WillCallPolice { get; set; } = true;
     public override bool WillCallPoliceIntense { get; set; } = true;
     public override Color BlipColor => AssignedAgency != null ? AssignedAgency.Color : base.BlipColor;
+    public override bool GenerateUnconsciousAlerts { get; set; } = false;
+    public bool IsRespondingToInvestigation { get; set; }
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
@@ -80,4 +82,5 @@ public class EMT : PedExt
         }
         return ExtraItems;
     }
+
 }

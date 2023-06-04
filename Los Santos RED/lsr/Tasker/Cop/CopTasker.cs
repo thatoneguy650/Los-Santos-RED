@@ -130,6 +130,12 @@ public class CopTasker
                         }
                     }
                 }
+
+                else if (Cop.PedAlerts.IsAlerted)// Cop.BodiesSeen.Any() || )
+                {
+                    SetInvestigate(Cop);
+                }
+
                 else if (Player.Investigation.IsActive && Player.Investigation.RequiresPolice && Cop.IsRespondingToInvestigation)// && Cop.IsIdleTaskable)
                 {
                     SetInvestigate(Cop);
@@ -138,10 +144,7 @@ public class CopTasker
                 {
                     SetInvestigate(Cop);
                 }
-                else if (Cop.PedAlerts.IsAlerted)// Cop.BodiesSeen.Any() || )
-                {
-                    SetInvestigate(Cop);
-                }
+                
                 else
                 {
                     SetIdle(Cop);

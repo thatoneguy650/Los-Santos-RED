@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 public class OfficerMIA
 {
+    private uint TimeToCallIn;
     private ISettingsProvideable Settings;
     public OfficerMIA(Cop cop, Vector3 positionLastReported, ISettingsProvideable settings)
     {
@@ -16,6 +17,7 @@ public class OfficerMIA
         PositionLastReported = positionLastReported;
         GameTimeLastReported = Game.GameTime;
         Settings = settings;
+        TimeToCallIn = RandomItems.GetRandomNumber(Settings.SettingsManager.WorldSettings.OfficerMIACallInTimeMin, Settings.SettingsManager.WorldSettings.OfficerMIACallInTimeMax);
     }
 
     public Cop Cop { get; set; }
@@ -38,7 +40,7 @@ public class OfficerMIA
             EntryPoint.WriteToConsole($"OfficerMIA EXPIRED 2");
             return;
         }
-        if (Game.GameTime - GameTimeLastReported >= Settings.SettingsManager.WorldSettings.OfficerMIACallInTime && distanceToPlayer <= Settings.SettingsManager.WorldSettings.OfficerMIACallInDistance)
+        if (Game.GameTime - GameTimeLastReported >= TimeToCallIn && distanceToPlayer <= Settings.SettingsManager.WorldSettings.OfficerMIACallInDistance)
         {
             player.AddOfficerMIACall(PositionLastReported);
             HasBeenReportedIn = true;

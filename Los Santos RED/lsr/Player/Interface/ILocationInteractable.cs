@@ -49,7 +49,7 @@ namespace LosSantosRED.lsr.Interface
         PedVariation CurrentModelVariation { get; set; }
         OutfitManager OutfitManager { get; }
         bool IsCop { get; }
-
+        Respawning Respawning { get; }
 
         void ChangeName(string newName);
         void SetWantedLevel(int v1, string v2, bool v3);

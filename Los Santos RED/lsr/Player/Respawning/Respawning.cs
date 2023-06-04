@@ -74,6 +74,14 @@ public class Respawning// : IRespawning
     public int TimesDied { get; private set; }
     public int TimesTalked { get; private set; }
     public int RequiredBribeAmount { get; private set; }
+
+    public int PastDueBailFees => BailFeePastDue;
+
+
+    public void PayPastDueBail()
+    {
+        BailFeePastDue = 0;
+    }
     public void Reset()
     {
         TimesDied = 0;

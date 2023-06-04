@@ -94,7 +94,11 @@ public class WorldSettings : ISettingsDefaultable
 
     public float OfficerMIACallInExpireDistance { get; set; }
     public float OfficerMIACallInDistance { get; set; }
-    public uint OfficerMIACallInTime { get; set; }
+    public uint OfficerMIACallInTimeMin { get; set; }
+
+
+    public uint OfficerMIACallInTimeMax { get; set; }
+
     public bool AllowOfficerMIACallIn { get; set; }
     public float OfficerMIAStartPercentage_Alterted { get; set; }
     public float OfficerMIAStartPercentage_Regular { get; set; }
@@ -145,10 +149,13 @@ public class WorldSettings : ISettingsDefaultable
         GunshotAlertTimeout = 35000;
         HelpCryAlertTimeout = 20000;
 
-        OfficerMIACallInExpireDistance = 200f;
+        OfficerMIACallInExpireDistance = 250f;
 
         OfficerMIACallInDistance = 150f;
-        OfficerMIACallInTime = 45000;
+        OfficerMIACallInTimeMin = 90000;
+        OfficerMIACallInTimeMax = 150000;
+
+
         AllowOfficerMIACallIn = true;
         AllowSettingSirenState = true;
         OfficerMIAStartPercentage_Alterted = 80f;

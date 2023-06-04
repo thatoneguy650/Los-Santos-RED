@@ -82,7 +82,7 @@ public class EMTBrain : PedBrain
                     SetInvestigate();
                 }
                 else
-                { 
+                {
                     PedExt MainTarget = PedToGoTo();
                     if (MainTarget != null)
                     {
@@ -92,7 +92,7 @@ public class EMTBrain : PedBrain
                     {
                         SetCalmCallIn();
                     }
-                    else if (PedExt.DistanceToPlayer <= 1200f && Player.Investigation.IsActive && Player.Investigation.RequiresFirefighters)
+                    else if (Player.Investigation.IsActive && Player.Investigation.RequiresEMS && EMT.IsRespondingToInvestigation)
                     {
                         SetRespondTask();
                     }
@@ -103,7 +103,7 @@ public class EMTBrain : PedBrain
                 }
             }
         }
-        else if (EMT.DistanceToPlayer <= 1200f && Player.Investigation.IsActive && Player.Investigation.RequiresEMS)
+        else if (EMT.DistanceToPlayer <= 1200f && Player.Investigation.IsActive && Player.Investigation.RequiresEMS && EMT.IsRespondingToInvestigation)
         {
             SetRespondTask();
         }

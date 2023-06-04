@@ -136,13 +136,47 @@ public class PoliceStation : InteractableLocation, ILocationRespawnable, ILicens
     }
     private void InteractAsOther()
     {
-        if(HasImpoundLot)
+        UIMenuItem addComplaintMenu = new UIMenuItem("File Complaint","File a complaint about the conduct of the officers. After all, you pay their salary!");
+        addComplaintMenu.Activated += (sender,selectedItem) =>
+        {      
+            InteractionMenu.Visible = false;
+            Game.DisplaySubtitle("Go Fuck Yourself Prick.");
+            Player.SetAngeredCop();
+        };
+        InteractionMenu.AddItem(addComplaintMenu);
+
+
+        UIMenuItem PayBailFees = new UIMenuItem("Pay Bail Fees", "Pay your outstanding bail fees.") { RightLabel = $"${Player.Respawning.PastDueBailFees}" };
+        PayBailFees.Activated += (sender, selectedItem) =>
         {
+            if (Player.BankAccounts.Money <= Player.Respawning.PastDueBailFees)
+            {
+                new GTANotification(Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transaction.").Display();
+                NativeHelper.PlayErrorSound();
+                return;
+            }
+            Player.BankAccounts.GiveMoney(-1 * Player.Respawning.PastDueBailFees);
+            new GTANotification(Name, "~g~Accepted", $"Your bail fees have been paid.").Display();
+            Player.Respawning.PayPastDueBail();
+            PayBailFees.Enabled = Player.Respawning.PastDueBailFees > 0;
+        };
+        PayBailFees.Enabled = Player.Respawning.PastDueBailFees > 0;
+        InteractionMenu.AddItem(PayBailFees);
+
+
+
+        List<VehicleExt> ImpoundedVehicles = Player.VehicleOwnership.OwnedVehicles.Where(x => x.IsImpounded && x.Vehicle.Exists() && x.Vehicle.DistanceTo2D(EntrancePosition) <= 300f).ToList();
+        if (HasImpoundLot && ImpoundedVehicles.Any())
+        {       
             ImpoundSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Impounded Vehicles");
-            foreach(VehicleExt impoundedVehicle in Player.VehicleOwnership.OwnedVehicles.Where(x=> x.IsImpounded && x.Vehicle.Exists()))
+            if (HasBannerImage)
+            {
+                ImpoundSubMenu.SetBannerType(BannerImage);
+            }
+            foreach (VehicleExt impoundedVehicle in ImpoundedVehicles)
             {
                 EntryPoint.WriteToConsole("ADDING VEHICLE TO IMPOUND MENU");
-                impoundedVehicle.AddToImpoundMenu(this,ImpoundSubMenu, Player);
+                impoundedVehicle.AddToImpoundMenu(this,ImpoundSubMenu, Player, Time);
             }
         }
         
@@ -152,6 +186,8 @@ public class PoliceStation : InteractableLocation, ILocationRespawnable, ILicens
         ProcessInteractionMenu();
 
     }
+
+
     private void GenerateMenu()
     {
         List<MenuItem> menuItems = new List<MenuItem>();

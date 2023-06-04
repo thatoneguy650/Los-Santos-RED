@@ -65,7 +65,15 @@ namespace LosSantosRED.lsr.Helper
             }
             return inside;
         }
-
+        public static void PlayErrorSound()
+        {
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "ERROR", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+        }
+        public static void PlaySuccessSound()
+        {
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+            //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
+        }
 
         public static bool IsStringHash(string value, out uint hash)
         {

@@ -109,23 +109,12 @@ namespace LosSantosRED.lsr.Data
             {
                 if (car.Vehicle.Exists())
                 {
-                    //uint modelHash;
-                    //var hex = car.VehicleModelName.ToLower();
-                    //if (hex.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase) || hex.StartsWith("&H", StringComparison.CurrentCultureIgnoreCase))
-                    //{
-                    //    hex = hex.Substring(2);
-                    //}
-                    //bool parsedSuccessfully = uint.TryParse(hex, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out modelHash);
-                   // bool isstringhash = NativeHelper.IsStringHash(car.VehicleModelName, out uint modelHash1);
-                   // bool hashEqualsModel = car.VehicleModelName.ToLower() == car.Vehicle.Model.Hash.ToString().ToLower();
-                    //EntryPoint.WriteToConsole($"car.VehicleModelName:{car.VehicleModelName} isstringhash:{isstringhash} modelHash1:{modelHash1} hashEqualsModel:{hashEqualsModel} First:{car.VehicleModelName.ToLower()} Second:{car.Vehicle.Model.Hash.ToString().ToLower()}");
-
-
                     VehicleSaveStatus vss;
                     vss = new VehicleSaveStatus(car.Vehicle.Model.Hash, car.Vehicle.Position, car.Vehicle.Heading);
-
-
-
+                    vss.IsImpounded = car.IsImpounded;
+                    vss.DateTimeImpounded = car.DateTimeImpounded;
+                    vss.TimesImpounded = car.TimesImpounded;
+                    vss.ImpoundedLocation = car.ImpoundedLocation;
                     if (car.WeaponStorage != null)
                     {
                         vss.WeaponInventory = new List<StoredWeapon>();
@@ -142,36 +131,8 @@ namespace LosSantosRED.lsr.Data
                             vss.InventoryItems.Add(new InventorySave(ii.ModItem?.Name, ii.RemainingPercent));
                         }
                     }
-
-
-
-
-
-
-                    //if (NativeHelper.IsStringHash(car.VehicleModelName, out uint modelHash) && car.VehicleModelName.ToLower() == car.Vehicle.Model.Hash.ToString().ToLower())//uint.TryParse(car.VehicleModelName.ToLower().Replace("0x",""), out uint modelHash))
-                    //{
-                    //    vss = new VehicleSaveStatus(modelHash, car.Vehicle.Position, car.Vehicle.Heading);
-                    //}
-                    //else
-                    //{
-                    //    vss = new VehicleSaveStatus(car.VehicleModelName, car.Vehicle.Position, car.Vehicle.Heading);
-                    //}
                     vss.VehicleVariation = NativeHelper.GetVehicleVariation(car.Vehicle);
-
-
-
-
-
-
                     OwnedVehicleVariations.Add(vss);
-
-
-
-
-
-
-
-
                 }
             }
             GangReputationsSave = new List<GangRepSave>();
@@ -271,7 +232,7 @@ namespace LosSantosRED.lsr.Data
                 pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation, SpeechSkill, VoiceName);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
                 LoadWeapons(weapons);
                 LoadInventory(player, modItems);
-                LoadVehicles(player, world,settings, modItems);
+                LoadVehicles(player, world,settings, modItems, placesOfInterest, time);
                 LoadPosition(player);
                 LoadRelationships(player, gangs);
                 LoadContacts(player, gangs);
@@ -383,92 +344,60 @@ namespace LosSantosRED.lsr.Data
                 //}
             }
         }
-        private void LoadVehicles(IInventoryable player, IEntityProvideable World, ISettingsProvideable settings, IModItems modItems)
+        private void LoadVehicles(IInventoryable player, IEntityProvideable World, ISettingsProvideable settings, IModItems modItems,IPlacesOfInterest placesOfInterest, ITimeReportable time)
         {
             player.VehicleOwnership.ClearVehicleOwnership();
             foreach (VehicleSaveStatus OwnedVehicleVariation in OwnedVehicleVariations)
             {
-                NativeHelper.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position, out Vector3 SpawnPos, out float Heading, false);
-                if (SpawnPos != Vector3.Zero)
+                if(OwnedVehicleVariation.LastPosition == Vector3.Zero)
                 {
-                    Vehicle NewVehicle = null;
-                    if (OwnedVehicleVariation.ModelName != "")
+                    continue;
+                }
+                Vehicle NewVehicle = null;
+                if (OwnedVehicleVariation.ModelName != "")
+                {
+                    NewVehicle = new Vehicle(OwnedVehicleVariation.ModelName, OwnedVehicleVariation.LastPosition, OwnedVehicleVariation.LastHeading);
+                }
+                else if (OwnedVehicleVariation.ModelHash != 0)
+                {
+                    NewVehicle = new Vehicle(OwnedVehicleVariation.ModelHash, OwnedVehicleVariation.LastPosition, OwnedVehicleVariation.LastHeading);
+                }
+                if (!NewVehicle.Exists())
+                {
+                    continue;
+                }
+                NewVehicle.Wash();
+                VehicleExt MyVeh = World.Vehicles.GetVehicleExt(NewVehicle.Handle);
+                if (MyVeh == null)
+                {
+                    MyVeh = new VehicleExt(NewVehicle, settings);
+                    MyVeh.Setup();
+                    MyVeh.HasUpdatedPlateType = true;
+                    MyVeh.CanHaveRandomItems = false;
+                    World.Vehicles.AddEntity(MyVeh, ResponseType.None);
+                    OwnedVehicleVariation.VehicleVariation?.Apply(MyVeh);
+                }
+                foreach (StoredWeapon storedWeap in OwnedVehicleVariation.WeaponInventory)
+                {
+                    MyVeh.WeaponStorage.StoredWeapons.Add(storedWeap.Copy());
+                }
+                foreach (InventorySave stest in OwnedVehicleVariation.InventoryItems)
+                {
+                    MyVeh.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
+                }
+                player.VehicleOwnership.TakeOwnershipOfVehicle(MyVeh, false);
+                if (OwnedVehicleVariation.LastPosition != Vector3.Zero)
+                {
+                    NewVehicle.Position = OwnedVehicleVariation.LastPosition;
+                    NewVehicle.Heading = OwnedVehicleVariation.LastHeading;
+                }   
+                if(OwnedVehicleVariation.IsImpounded)
+                {
+                    ILocationImpoundable locationImpoundable = placesOfInterest.VehicleImpoundLocations().Where(x => x.Name == OwnedVehicleVariation.ImpoundedLocation).FirstOrDefault();
+                    if(locationImpoundable != null && locationImpoundable.HasImpoundLot && locationImpoundable.VehicleImpoundLot.ImpoundVehicle(MyVeh, time))
                     {
-                        NewVehicle = new Vehicle(OwnedVehicleVariation.ModelName, SpawnPos, Heading);
-                    }
-                    else if (OwnedVehicleVariation.ModelHash != 0)
-                    {
-                        NewVehicle = new Vehicle(OwnedVehicleVariation.ModelHash, SpawnPos, Heading);
-                    }
-                    if (NewVehicle.Exists())
-                    {
-                        NewVehicle.Wash();
-                        VehicleExt MyVeh = World.Vehicles.GetVehicleExt(NewVehicle.Handle);
-                        if (MyVeh == null)
-                        {
-                            EntryPoint.WriteToConsole("MY VEH IS NULL");
-                            MyVeh = new VehicleExt(NewVehicle, settings);
-                            MyVeh.Setup();
-                            MyVeh.HasUpdatedPlateType = true;
-                            MyVeh.CanHaveRandomItems = false;
-                            //if(MyVeh == null)
-                            //{
-                            //    EntryPoint.WriteToConsole("VEH IS NULL");
-                            //}
-                            //if (World == null)
-                            //{
-                            //    EntryPoint.WriteToConsole("World IS NULL");
-                            //}
-                            //if (World.Vehicles == null)
-                            //{
-                            //    EntryPoint.WriteToConsole("World.Vehicles IS NULL");
-                            //}
-                            
-                            //EntryPoint.WriteToConsole($"TEST LIST COUNT {World.Vehicles.CivilianVehicleList.Count()}");
-
-                            World.Vehicles.AddEntity(MyVeh, ResponseType.None);
-                            OwnedVehicleVariation.VehicleVariation?.Apply(MyVeh);
-                        }
-                        if(MyVeh.WeaponStorage == null)
-                        {
-                            EntryPoint.WriteToConsole("MyVeh.WeaponStorage == null");
-                        }
-                        if (MyVeh.WeaponStorage.StoredWeapons == null)
-                        {
-                            EntryPoint.WriteToConsole("MyVeh.WeaponStorage.StoredWeapons == null");
-                        }
-                        if (MyVeh.SimpleInventory == null)
-                        {
-                            EntryPoint.WriteToConsole("MyVeh.SimpleInventory == null");
-                        }
-                        if (MyVeh.SimpleInventory.ItemsList == null)
-                        {
-                            EntryPoint.WriteToConsole("MyVeh.SimpleInventory.ItemsList == null");
-                        }
-                        if (OwnedVehicleVariation.WeaponInventory == null)
-                        {
-                            EntryPoint.WriteToConsole("OwnedVehicleVariation.WeaponInventory == null");
-                        }
-                        if (OwnedVehicleVariation.InventoryItems == null)
-                        {
-                            EntryPoint.WriteToConsole("OwnedVehicleVariation.InventoryItems == null");
-                        }
-                        foreach (StoredWeapon storedWeap in OwnedVehicleVariation.WeaponInventory)
-                        {
-                            MyVeh.WeaponStorage.StoredWeapons.Add(storedWeap.Copy());
-                        }
-                        foreach (InventorySave stest in OwnedVehicleVariation.InventoryItems)
-                        {
-                            MyVeh.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
-                        }
-
-
-                        player.VehicleOwnership.TakeOwnershipOfVehicle(MyVeh, false);
-                        if (OwnedVehicleVariation.LastPosition != Vector3.Zero)
-                        {
-                            NewVehicle.Position = OwnedVehicleVariation.LastPosition;
-                            NewVehicle.Heading = OwnedVehicleVariation.LastHeading;
-                        }
+                        MyVeh.TimesImpounded = OwnedVehicleVariation.TimesImpounded;
+                        MyVeh.DateTimeImpounded = OwnedVehicleVariation.DateTimeImpounded;
                     }
                 }
             }

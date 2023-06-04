@@ -47,7 +47,7 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
     public override Color BlipColor => AssignedAgency != null ? AssignedAgency.Color : base.BlipColor;
     public string CopDebugString => WeaponInventory.DebugWeaponState;
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
-    public bool ShouldDetainPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && HeightToPlayer <= 2.5f && !IsUnconscious && !IsInWrithe && DistanceToPlayer <= Settings.SettingsManager.SecuritySettings.DetainDistance && Pedestrian.Exists() && !Pedestrian.IsRagdoll;
+    public bool ShouldDetainPlayer => !!IsPlayerControlled && !IsInVehicle && DistanceToPlayer > 0.1f && HeightToPlayer <= 2.5f && !IsUnconscious && !IsInWrithe && DistanceToPlayer <= Settings.SettingsManager.SecuritySettings.DetainDistance && Pedestrian.Exists() && !Pedestrian.IsRagdoll;
     public bool IsIdleTaskable => WasModSpawned || !WasAlreadySetPersistent;
     public bool ShouldUpdateTarget => Game.GameTime - GameTimeLastUpdatedTarget >= Settings.SettingsManager.PoliceTaskSettings.TargetUpdateTime;
     public string ModelName { get; set; }

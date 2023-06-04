@@ -11,9 +11,13 @@ public abstract class PedAlert
     protected bool IsPositionAlert = false;
     protected bool IsPedAlert = false;
     protected uint TimeOutTime = 20000;
+    protected uint PostPositionTimeout = 10000;
     protected ISettingsProvideable Settings;
     protected PedExt PedExt;
     protected ePedAlertType PedAlertType;
+    protected uint GameTimeReachedPosition;
+    protected bool HasReachedPosition;
+   
 
     protected PedAlert(PedExt pedExt,ISettingsProvideable settings, ePedAlertType pedAlertType)
     {
@@ -29,18 +33,21 @@ public abstract class PedAlert
     public bool CanPositionAlert => Position != Vector3.Zero;
     public bool CanPedAlert => AlertTarget != null && AlertTarget.Pedestrian.Exists();
 
-
     public virtual void Update()
     {
 
     }
     public virtual void AddAlert(Vector3 positon)
     {
+
         if (positon == Vector3.Zero)
         {
             return;
         }
+        HasReachedPosition = false;
+        GameTimeReachedPosition = 0;
         Position = positon;
+        AlertTarget = null;
         GameTimeLastAlerted = Game.GameTime;
     }
     public virtual void AddAlert(PedExt pedExt)
@@ -49,13 +56,44 @@ public abstract class PedAlert
         {
             return;
         }
+        HasReachedPosition = false;
+        GameTimeReachedPosition = 0;
         Position = pedExt.Pedestrian.Position;
         AlertTarget = pedExt;
         GameTimeLastAlerted = Game.GameTime;
     }
     public virtual void Update(IPoliceRespondable policeRespondable, IEntityProvideable world)
     {
-
+        if(IsActive && PedExt.Pedestrian.Exists())
+        {
+            if(!HasReachedPosition)
+            {
+                float distance = PedExt.Pedestrian.DistanceTo2D(Position);
+                if (distance <= 5f)
+                {
+                    HasReachedPosition = true;
+                    GameTimeReachedPosition = Game.GameTime;
+                    EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I REACHED MY ALERT POSITION");
+                }
+            }
+            else
+            {
+                if(Game.GameTime - GameTimeReachedPosition >= PostPositionTimeout)
+                {
+                    HasReachedPosition = false;
+                    GameTimeReachedPosition = 0;
+                    GameTimeLastAlerted = 0;
+                    AlertTarget = null;
+                    Position = Vector3.Zero;
+                    EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I HAVE POSITION TIMEOUT MY ALERT");
+                }
+            }
+        }
+        else
+        {
+            HasReachedPosition = false;
+            GameTimeReachedPosition = 0;
+        }
     }
 
     public virtual void OnReportedCrime(IPoliceRespondable policeRespondable)

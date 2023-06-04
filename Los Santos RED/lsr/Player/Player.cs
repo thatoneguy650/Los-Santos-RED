@@ -276,15 +276,21 @@ namespace Mod
         public bool IsCarJacking { get; set; }
         public bool IsChangingLicensePlates { get; set; }
 
-       // public IRestrictedArea RestrictedArea { get; set; }
+        // public IRestrictedArea RestrictedArea { get; set; }
 
-
+        public bool IsSetAutoCallBackup { get; set; } = false;
         public bool IsCop { get; set; } = false;
+
+
+
+
         public bool IsEMT { get; set; } = false;
         public bool IsFireFighter { get; set; } = false;
         public bool IsSecurityGuard { get; set; } = false;
         public bool CanBustPeds => (IsCop || IsSecurityGuard) && !IsIncapacitated;
-        public bool AutoDispatch { get; set; } = true;
+
+        public bool IsServicePed => IsCop || IsEMT || IsFireFighter;
+        public bool AutoDispatch { get; set; } = false;
         public bool IsCustomizingPed { get; set; }
         public bool IsDangerouslyArmed => WeaponEquipment.IsDangerouslyArmed;
         public bool IsDead { get; private set; }
@@ -888,6 +894,7 @@ namespace Mod
                 meAsCop.CanBeTasked = false;
                 meAsCop.CanBeAmbientTasked = false;
                 meAsCop.AutoCallsInUnconsciousPeds = false;
+                meAsCop.IsPlayerControlled = true;
                 World.Pedestrians.AddEntity(meAsCop);
                 AssignedAgency = toassign;
                 IsCop = true;
@@ -918,6 +925,7 @@ namespace Mod
                 meAsSecurity.CanBeTasked = false;
                 meAsSecurity.CanBeAmbientTasked = false;
                 meAsSecurity.AutoCallsInUnconsciousPeds = false;
+                meAsSecurity.IsPlayerControlled = true;
                 World.Pedestrians.AddEntity(meAsSecurity);
                 IsCop = false;
                 IsEMT = false;
@@ -2350,5 +2358,10 @@ namespace Mod
             }
         }
 
+        public void ToggleAutoBackup()
+        {
+            AutoDispatch = !AutoDispatch;
+            Game.DisplayHelp($"AutoDispatch {(AutoDispatch ? "Enabled" : "Disabled")}");
+        }
     }
 }

@@ -13,14 +13,16 @@ using System.Threading.Tasks;
 
 public class UnconsciousBodyAlert : PedAlert
 {
+    public List<PedExt> UnconsciousPedsSeen { get; private set; } = new List<PedExt>();
     public bool HasSeenUnconsciousPed { get; set; } = false;
     public bool CanCallInUnconsciousPeds { get; set; } = false;
+
     public UnconsciousBodyAlert(PedExt pedExt, ISettingsProvideable settings) : base(pedExt, settings, ePedAlertType.UnconsciousBody)
     {
         Priority = 2;
         IsPositionAlert = false;
         IsPedAlert = true;
-        TimeOutTime = Settings.SettingsManager.WorldSettings.DeadBodyAlertTimeout;
+        TimeOutTime = Settings.SettingsManager.WorldSettings.UnconsciousBodyAlertTimeout;
     }
     public override void Update(IPoliceRespondable policeRespondable, IEntityProvideable world)
     {
@@ -32,18 +34,36 @@ public class UnconsciousBodyAlert : PedAlert
         {
             return;
         }
-        foreach (PedExt distressedPed in world.Pedestrians.PedExts.Where(x => (x.IsUnconscious || x.IsInWrithe) && !x.HasStartedEMTTreatment && !x.HasBeenTreatedByEMTs && NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, x.CellX, x.CellY, 4) && x.Pedestrian.Exists()))
+        foreach (PedExt unconsciousPed in world.Pedestrians.PedExts.Where(x => !x.IsDead && (x.IsUnconscious || x.IsInWrithe) && !x.HasStartedEMTTreatment && !x.HasBeenTreatedByEMTs && !UnconsciousPedsSeen.Any(y => y.Handle == x.Handle) && NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, x.CellX, x.CellY, 4) && x.Pedestrian.Exists()))
         {
-            float distanceToBody = PedExt.Pedestrian.DistanceTo2D(distressedPed.Pedestrian);
-            if (distanceToBody <= 15f || (distanceToBody <= 45f && distressedPed.Pedestrian.IsThisPedInFrontOf(PedExt.Pedestrian) && (distressedPed.HasBeenSeenUnconscious || NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", PedExt.Pedestrian, distressedPed.Pedestrian))))//if someone saw it assume ANYONE close saw it, only performance reason
+            float distanceToBody = PedExt.Pedestrian.DistanceTo2D(unconsciousPed.Pedestrian);
+            bool CanSeeBody = false;
+            if (distanceToBody <= 15f)
             {
-                EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I JUST SAW AN Unconscious BODY {distressedPed.Handle}");
-                HasSeenUnconsciousPed = true;
-                AddAlert(distressedPed);
-                distressedPed.HasBeenSeenUnconscious = true;
-                if(PedExt.AutoCallsInUnconsciousPeds)
+                CanSeeBody = true;
+            }
+            else if (distanceToBody <= 45f && world.TotalWantedLevel >= 3)
+            {
+                CanSeeBody = true;
+            }
+            else if (distanceToBody <= 45f && unconsciousPed.Pedestrian.IsThisPedInFrontOf(PedExt.Pedestrian) && (unconsciousPed.HasBeenSeenUnconscious || NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", PedExt.Pedestrian, unconsciousPed.Pedestrian)))
+            {
+                CanSeeBody = true;
+            }
+            if(CanSeeBody)
+            {
+                EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I JUST SAW AN Unconscious BODY {unconsciousPed.Handle} GenerateUnconsciousAlerts{PedExt.GenerateUnconsciousAlerts}");
+                HasSeenUnconsciousPed = true;        
+                PedExt.SetSeenUnconscious(unconsciousPed);
+                unconsciousPed.HasBeenSeenUnconscious = true;
+                UnconsciousPedsSeen.Add(unconsciousPed);
+                if (PedExt.GenerateUnconsciousAlerts)
                 {
-                    policeRespondable.AddMedicalEvent(distressedPed.Position);
+                    AddAlert(unconsciousPed);
+                }
+                if (PedExt.AutoCallsInUnconsciousPeds)
+                {
+                    policeRespondable.AddMedicalEvent(unconsciousPed.Position);
                 }
                 break;
             }

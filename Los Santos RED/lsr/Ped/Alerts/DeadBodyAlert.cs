@@ -39,13 +39,19 @@ public class DeadBodyAlert : PedAlert
             {
                 CanSeeBody = true;
             }
-            else if (distanceToBody <= 45f && (world.TotalWantedLevel >= 3 || (deadBody.Pedestrian.IsThisPedInFrontOf(PedExt.Pedestrian) && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", PedExt.Pedestrian, deadBody.Pedestrian))))
+            else if (distanceToBody <= 45f && world.TotalWantedLevel >= 3)
+            {
+                CanSeeBody = true;
+            }
+            else if (distanceToBody <= 45f && deadBody.Pedestrian.IsThisPedInFrontOf(PedExt.Pedestrian) && (deadBody.HasBeenSeenDead || NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", PedExt.Pedestrian, deadBody.Pedestrian)))
             {
                 CanSeeBody = true;
                 GameFiber.Yield();
             }
             if (CanSeeBody)
             {
+                deadBody.HasBeenSeenDead = true;
+                PedExt.SetSeenBody(deadBody);
                 BodiesSeen.Add(deadBody);
                 EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I JUST SAW A DEAD BODY {deadBody.Handle}");
                 AddAlert(deadBody);

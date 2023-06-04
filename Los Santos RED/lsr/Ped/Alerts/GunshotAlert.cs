@@ -11,8 +11,6 @@ using System.Threading.Tasks;
 
 public class GunshotAlert : PedAlert
 {
-    public bool CheckPlayer { get; set; } = true;
-    public bool CheckOtherPolice { get; set; } = false;
     public GunshotAlert(PedExt pedExt, ISettingsProvideable settings) : base(pedExt,settings, ePedAlertType.GunShot)
     {
         Priority = 0;

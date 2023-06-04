@@ -50,7 +50,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public override Color BlipColor => AssignedAgency != null ? AssignedAgency.Color : base.BlipColor;
     public string CopDebugString => WeaponInventory.DebugWeaponState;
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
-    public virtual bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && HeightToPlayer <= 2.5f && !IsUnconscious && !IsInWrithe && DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.BustDistance && Pedestrian.Exists() && !Pedestrian.IsRagdoll;
+    public virtual bool ShouldBustPlayer => !IsPlayerControlled && !IsInVehicle && DistanceToPlayer > 0.1f && HeightToPlayer <= 2.5f && !IsUnconscious && !IsInWrithe && DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.BustDistance && Pedestrian.Exists() && !Pedestrian.IsRagdoll;
     public bool IsIdleTaskable => WasModSpawned || !WasAlreadySetPersistent;
     public bool ShouldUpdateTarget => Game.GameTime - GameTimeLastUpdatedTarget >= Settings.SettingsManager.PoliceTaskSettings.TargetUpdateTime;
     public string ModelName { get; set; }
@@ -410,6 +410,11 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         policeRespondable.OfficerMIAWatcher.AddMIA(this, Position);
         EntryPoint.WriteToConsole($"AddPossibleMIA {Handle} IsAlerted{PedAlerts.IsAlerted}");
     }
+
+
+
+
+
     //public void AddDivision(string forceGroupName)
     //{
     //    if (AssignedAgency.Division != -1)

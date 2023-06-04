@@ -90,7 +90,7 @@ public class FirefighterBrain : PedBrain
                     {
                         SetCalmCallIn();
                     }
-                    else if (PedExt.DistanceToPlayer <= 1200f && Player.Investigation.IsActive && Player.Investigation.RequiresFirefighters)
+                    else if (Player.Investigation.IsActive && Player.Investigation.RequiresFirefighters && Firefighter.IsRespondingToInvestigation)
                     {
                         SetRespondTask();
                     }
@@ -101,7 +101,7 @@ public class FirefighterBrain : PedBrain
                 }
             }
         }
-        else if (PedExt.DistanceToPlayer <= 1200f && Player.Investigation.IsActive && Player.Investigation.RequiresFirefighters)
+        else if (PedExt.DistanceToPlayer <= 1200f && Player.Investigation.IsActive && Player.Investigation.RequiresFirefighters && Firefighter.IsRespondingToInvestigation)
         {
             SetRespondTask();
         }

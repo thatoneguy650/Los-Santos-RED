@@ -34,7 +34,7 @@ public class Firefighter : PedExt, IWeaponIssuable
     public WeaponInventory WeaponInventory { get; private set; }
     public bool HasTaser { get; set; } = false;
     public bool IsUsingMountedWeapon { get; set; } = false;
-
+    public bool IsRespondingToInvestigation { get; set; }
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
@@ -96,4 +96,5 @@ public class Firefighter : PedExt, IWeaponIssuable
         }
         return ExtraItems;
     }
+
 }

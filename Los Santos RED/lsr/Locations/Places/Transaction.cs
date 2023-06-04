@@ -378,7 +378,7 @@ public class Transaction
     {
         PlayErrorSound();
         Game.RemoveNotification(NotificationHandle);
-        NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store?.Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transation.");
+        NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store?.Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transaction.");
     }
     public void DisplayItemSoldMessage(ModItem modItem, int TotalItems)
     {

@@ -93,19 +93,19 @@ class SearchLocationOnFootTaskState : TaskState
                 NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, PedGeneral.Pedestrian.CurrentVehicle, 27, 1000);
                 NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, PedGeneral.Pedestrian.CurrentVehicle, 256);
             }
-            if (ShouldSearchArea)
-            {
-                Vector3 RandomPlaceOnFoot = PlaceToWalkTo.Around2D(5f);//15f
-                Vector3 RandomPlaceOnFoot2 = PlaceToWalkTo.Around2D(5f);//15f
-                //Vector3 RandomPlaceOnFoot3 = RandomPlaceOnFoot2.Around2D(10f);//15f
-                NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot.X, RandomPlaceOnFoot.Y, RandomPlaceOnFoot.Z, 2.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
-                NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot2.X, RandomPlaceOnFoot2.Y, RandomPlaceOnFoot2.Z, 2.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
-                //NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot3.X, RandomPlaceOnFoot3.Y, RandomPlaceOnFoot3.Z, 100.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
-            }
-            else
-            {
+            //if (ShouldSearchArea)
+            //{
+            //    Vector3 RandomPlaceOnFoot = PlaceToWalkTo.Around2D(5f);//15f
+            //    Vector3 RandomPlaceOnFoot2 = PlaceToWalkTo.Around2D(5f);//15f
+            //    //Vector3 RandomPlaceOnFoot3 = RandomPlaceOnFoot2.Around2D(10f);//15f
+            //    NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot.X, RandomPlaceOnFoot.Y, RandomPlaceOnFoot.Z, 2.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
+            //    NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot2.X, RandomPlaceOnFoot2.Y, RandomPlaceOnFoot2.Z, 2.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
+            //    //NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot3.X, RandomPlaceOnFoot3.Y, RandomPlaceOnFoot3.Z, 100.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
+            //}
+            //else
+            //{
                 NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, PlaceToWalkTo.X, PlaceToWalkTo.Y, PlaceToWalkTo.Z, 2.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
-            }
+            //}
             NativeFunction.CallByName<bool>("TASK_WANDER_STANDARD", 0, 0, 0);
             //NativeFunction.CallByName<bool>("TASK_WANDER_IN_AREA", 0, RandomPlaceOnFoot.X, RandomPlaceOnFoot.Y, RandomPlaceOnFoot.Z, 250f, 0.0f, 0.0f);//DONT REALLY WNADER MOST TIMES....
             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);

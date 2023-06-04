@@ -27,12 +27,15 @@ public class PedAlerts
     public Vector3 AlertedPoint => IsAlerted ? CurrentPrirorityAlert.Position : Vector3.Zero;
     public PedExt AlertedPed => CurrentPrirorityAlert.AlertTarget;
     public bool HasCrimeToReport => UnconsciousBodyAlert.HasSeenUnconsciousPed;
+
+
+
     public PedAlerts(PedExt pedExt, ISettingsProvideable settings)
     {
         PedExt = pedExt;
         Settings = settings;
-        GunshotAlert = new GunshotAlert(PedExt, Settings);    
-        UnconsciousBodyAlert = new UnconsciousBodyAlert(PedExt, Settings);   
+        GunshotAlert = new GunshotAlert(PedExt, Settings);
+        UnconsciousBodyAlert = new UnconsciousBodyAlert(PedExt, Settings); 
         DeadBodyAlert = new DeadBodyAlert(PedExt, Settings);
         HelpCryAlert = new HelpCryAlert(PedExt, Settings);
         PedAlertList.Add(GunshotAlert);

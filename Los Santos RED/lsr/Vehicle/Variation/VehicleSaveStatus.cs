@@ -35,6 +35,9 @@ public class VehicleSaveStatus
     public List<StoredWeapon> WeaponInventory { get; set; } = new List<StoredWeapon>();
     public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
 
-
+    public bool IsImpounded { get; set; }
+    public DateTime DateTimeImpounded { get; set; }
+    public int TimesImpounded { get; set; }
+    public string ImpoundedLocation { get; set; }
 }
 

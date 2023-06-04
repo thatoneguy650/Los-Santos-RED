@@ -1986,7 +1986,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 #endif
         PoliceStations = new List<PoliceStation>()
         {
-            new PoliceStation(new Vector3(358.9726f, -1582.881f, 29.29195f), 323.5287f, "Davis Sheriff's Station","A Tradition of Suppression") {OpenTime = 0,CloseTime = 24,
+            new PoliceStation(new Vector3(361.1365f, -1584.821f, 29.29195f), 48.07573f, "Davis Sheriff's Station","A Tradition of Suppression") { RespawnLocation = new Vector3(358.9726f, -1582.881f, 29.29195f), RespawnHeading = 323.5287f, BannerImagePath = "lssddavis.png", OpenTime = 0,CloseTime = 24,
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     //new LEConditionalLocation(new Vector3(343.7892f, -1602.402f, 29.29194f), 336.6382f, DavisPercentage),
                     new LEConditionalLocation(new Vector3(373.5635f, -1612.563f, 29.29194f), 229.7581f, DavisPercentage),
@@ -2023,7 +2023,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new Vector2 { X = 388.094f, Y = -1641.983f },
                 }) { Gates = new List<InteriorDoor>() { new InteriorDoor(2811495845, new Vector3(413.364f, -1620.034f, 28.34158f)), new InteriorDoor(2811495845,new Vector3(418.291f, -1651.395f, 28.29171f)) } },
                 },
-            new PoliceStation(new Vector3(1858.19f, 3679.873f, 33.75724f), 218.3256f,  "Sandy Shores Sheriff's Station","A Tradition of Suppression") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(1858.19f, 3679.873f, 33.75724f), 218.3256f,  "Sandy Shores Sheriff's Station","A Tradition of Suppression") { BannerImagePath = "lssdmain.png",OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
                 new LEConditionalLocation(new Vector3(1851.615f, 3679.759f, 34.26711f), 167.1253f, 50f),
                 new LEConditionalLocation(new Vector3(1866.224f, 3684.685f, 33.78798f), 229.2713f, 50f),
             },PossibleVehicleSpawns = new List<ConditionalLocation>() {
@@ -2032,7 +2032,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new LEConditionalLocation(new Vector3(1847.131f, 3672.587f, 33.92607f), 32f,50f),
             } },
 
-            new PoliceStation(new Vector3(-437.973f, 6021.403f, 31.49011f), 316.3756f, "Paleto Bay Sheriff's Office","A Tradition of Suppression") {OpenTime = 0,CloseTime = 24 ,InteriorID = 3842, ScannerFilePath = "01_specific_location\\0x0E94FE38.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(-437.973f, 6021.403f, 31.49011f), 316.3756f, "Paleto Bay Sheriff's Office","A Tradition of Suppression") {BannerImagePath = "lssdmain.png", OpenTime = 0,CloseTime = 24 ,InteriorID = 3842, ScannerFilePath = "01_specific_location\\0x0E94FE38.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
                 new LEConditionalLocation(new Vector3(-438.606f, 6021.66f, 31.49011f), 358.9023f, 30f),
                 new LEConditionalLocation(new Vector3(-448.8453f, 6011.864f, 31.71639f), 310.0714f, 30f),
                 new LEConditionalLocation(new Vector3(-444.1118f, 6011.967f, 31.71639f), 359.0966f, 30f),
@@ -2053,6 +2053,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ScannerFilePath = "01_specific_location\\0x0A45FA8A.wav", 
                 ItemPreviewPosition = new Vector3(439.3361f, -1017.903f, 28.2705f), 
                 ItemPreviewHeading = 89.54115f,
+                BannerImagePath = "lspdmain.png",
                 CameraPosition = new Vector3(434.2917f, -1023.771f, 29.87288f), 
                 CameraDirection = new Vector3(0.6072524f, 0.7701081f, -0.1953922f), 
                 CameraRotation = new Rotator(-11.26764f, 1.262302E-05f, -38.25679f),
@@ -2083,7 +2084,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 
                 } },
 
-            new PoliceStation(new Vector3(815.8774f, -1290.531f, 26.28391f), 74.91704f, "La Mesa Police Station","Obey and Survive") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(815.8774f, -1290.531f, 26.28391f), 74.91704f, "La Mesa Police Station","Obey and Survive") { BannerImagePath = "lspdlamesa.png",OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
                 new LEConditionalLocation(new Vector3(823.9117f, -1288.765f, 28.24066f), 74.91795f, 30f),
                 new LEConditionalLocation(new Vector3(823.3896f, -1291.954f, 28.24066f), 102.1528f, 30f),
                 new LEConditionalLocation(new Vector3(821.5445f, -1275.796f, 26.38955f), 61.38755f, 30f),
@@ -2111,7 +2112,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new LEConditionalLocation(new Vector3(854.2248f, -1398.952f, 26.21234f), 216f,20f),
             } },
 
-            new PoliceStation(new Vector3(642.1356f, -3.134667f, 82.78872f), 215.299f,"Vinewood Police Station","Obey and Survive") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(642.1356f, -3.134667f, 82.78872f), 215.299f,"Vinewood Police Station","Obey and Survive") {BannerImagePath = "lspdmain.png",OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
                 new LEConditionalLocation(new Vector3(641.4031f, 0.478787f, 82.78651f), 235.3406f, 50f),
                 new LEConditionalLocation(new Vector3(647.2952f, -11.50604f, 82.60114f), 223.3047f, 50f),
                 new LEConditionalLocation(new Vector3(624.8208f, 20.23717f, 87.97021f), 345.2158f, 50f),
@@ -2125,7 +2126,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new LEConditionalLocation(new Vector3(580.8351f, 38.85468f, 92.82274f), 193f,20f),
             } },
 
-            new PoliceStation(new Vector3(-557.0687f, -134.7315f, 38.20231f), 214.5968f, "Rockford Hills Police Station","Obey and Survive") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(-557.0687f, -134.7315f, 38.20231f), 214.5968f, "Rockford Hills Police Station","Obey and Survive") {BannerImagePath = "lspdmain.png",OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
                 new LEConditionalLocation(new Vector3(-560.6538f, -134.251f, 38.11069f), 180.7514f, 50f),
                 new LEConditionalLocation(new Vector3(-563.0671f, -141.727f, 38.32593f), 192.5406f, 50f),
                 new LEConditionalLocation(new Vector3(-541.8491f, -134.7859f, 38.55503f), 208.2207f, 50f),
@@ -2138,7 +2139,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new LEConditionalLocation(new Vector3(-551.0397f, -144.0132f, 38.65663f), 58f,20f),
             } },
 
-            new PoliceStation(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, "Vespucci Police Station","Obey and Survive") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, "Vespucci Police Station","Obey and Survive") {BannerImagePath = "lspdmain.png",OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
                 new LEConditionalLocation(new Vector3(-1114.355f, -822.5755f, 19.3168f), 14.61082f, 50f),
                 new LEConditionalLocation(new Vector3(-1135.939f, -847.7239f, 19.34725f), 31.25465f, 50f),
                 new LEConditionalLocation(new Vector3(-1056.813f, -820.9451f, 19.23504f), 300.4652f, 50f),
@@ -2159,7 +2160,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new LEConditionalLocation(new Vector3(-1138.613f, -845.7916f, 13.98058f), 220f,20f),
             } },
 
-            new PoliceStation(new Vector3(-1633.314f, -1010.025f, 13.08503f), 351.7007f, "Del Perro Police Station","Obey and Survive") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(-1633.314f, -1010.025f, 13.08503f), 351.7007f, "Del Perro Police Station","Obey and Survive") {BannerImagePath = "lspdmain.png",OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
                 new LEConditionalLocation(new Vector3(-1629.069f, -1013.071f, 13.11924f), 298.982f, 50f),
                 new LEConditionalLocation(new Vector3(-1639.286f, -1011.673f, 13.12066f), 24.4451f, 50f),
 
@@ -2167,7 +2168,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new LEConditionalLocation(new Vector3(-1625.343f, -1013.629f, 13.89048f), 0f,50f),
             } },
 
-            new PoliceStation(new Vector3(-1311.877f, -1528.808f, 4.410581f), 233.9121f, "Vespucci Beach Police Station","Obey and Survive") {OpenTime = 0,CloseTime = 24, ScannerFilePath = "01_specific_location\\0x13CBAB64.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(-1311.877f, -1528.808f, 4.410581f), 233.9121f, "Vespucci Beach Police Station","Obey and Survive") {BannerImagePath = "lspdmain.png",OpenTime = 0,CloseTime = 24, ScannerFilePath = "01_specific_location\\0x13CBAB64.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
                 new LEConditionalLocation(new Vector3(-1314.879f, -1532.083f, 4.423616f), 190.5698f, 50f),
                 new LEConditionalLocation(new Vector3(-1307.496f, -1526.527f, 4.359179f), 244.9207f, 50f),
 
@@ -3011,9 +3012,9 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         GangDens.Add(BallasDen1);
         GangDens.Add(BallasDen2);
-        GangDens.Add(BallasDen3);
-        GangDens.Add(BallasDen4);
-        GangDens.Add(BallasDen5);
+        //GangDens.Add(BallasDen3);
+        //GangDens.Add(BallasDen4);
+        //GangDens.Add(BallasDen5);
     }
     private void DefaultConfig_GangDens_Families()
     {
@@ -3241,10 +3242,10 @@ public class PlacesOfInterest : IPlacesOfInterest
             CloseTime = 24,
         };
         GangDens.Add(FamiliesDen1);
-        GangDens.Add(FamiliesDen2);
-        GangDens.Add(FamiliesDen3);
-        GangDens.Add(FamiliesDen4);
-        GangDens.Add(FamiliesDen5);
+        //GangDens.Add(FamiliesDen2);
+        //GangDens.Add(FamiliesDen3);
+        //GangDens.Add(FamiliesDen4);
+        //GangDens.Add(FamiliesDen5);
     }
     private void DefaultConfig_GangDens_Lost()
     {
@@ -3679,11 +3680,11 @@ public class PlacesOfInterest : IPlacesOfInterest
 
         GangDens.Add(VagosMainDen);
         GangDens.Add(VagosHangout1);
-        GangDens.Add(VagosHangout2);
-        GangDens.Add(VagosHangout3);
-        GangDens.Add(VagosHangout4);
-        GangDens.Add(VagosHangout5);
-        GangDens.Add(VagosHangout6);
+        //GangDens.Add(VagosHangout2);
+        //GangDens.Add(VagosHangout3);
+        //GangDens.Add(VagosHangout4);
+        //GangDens.Add(VagosHangout5);
+        //GangDens.Add(VagosHangout6);
     }
     private void DefaultConfig_ScrapYards()
     {

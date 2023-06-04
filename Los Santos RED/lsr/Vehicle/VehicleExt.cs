@@ -48,8 +48,8 @@ namespace LSR.Vehicles
 
         public bool IsImpounded { get; set; }
         public DateTime DateTimeImpounded { get; set; }
-
-
+        public int TimesImpounded { get; set; }
+        public string ImpoundedLocation { get; set; }
 
         public Vehicle Vehicle { get; set; } = null;
         public Vector3 PlaceOriginallyEntered { get; set; }
@@ -1048,6 +1048,28 @@ namespace LSR.Vehicles
                 }
             }
         }
+
+        public void OpenDoorLoose(int doorID, bool wait)
+        {
+            if (!Vehicle.Exists())
+            {
+                return;
+            }
+            if (!Vehicle.Doors[doorID].IsValid())
+            {
+                return;
+            }
+            if (!Vehicle.Doors[doorID].IsFullyOpen)
+            {
+                Vehicle.Doors[doorID].Open(false, false);
+                if (wait)
+                {
+                    GameFiber.Wait(750);
+                }
+                Vehicle.Doors[doorID].Open(true, false);
+            }
+        }
+
         public void CloseDoor(int doorID)
         {
             if (!Vehicle.Exists())
@@ -1110,30 +1132,43 @@ namespace LSR.Vehicles
             HasAddedRandomWeapons = true;
         }
 
-        public void SetImpounded(ITimeReportable time)
+        public void SetImpounded(ITimeReportable time, string locationName)
         {
             IsImpounded = true;
             DateTimeImpounded = time.CurrentDateTime;
+            TimesImpounded++;
+            ImpoundedLocation = locationName;
         }
         private void UnSetImpounded()
         {
             IsImpounded = false;
+            TimesImpounded = 0;
+            ImpoundedLocation = "";
         }
-        public void AddToImpoundMenu(ILocationAreaRestrictable location, UIMenu impoundSubMenu, ILocationInteractable player)
+        public void AddToImpoundMenu(ILocationAreaRestrictable location, UIMenu impoundSubMenu, ILocationInteractable player, ITimeReportable time)
         {
-            int fee = 1000;
-            UIMenuItem impoundMenuItem = new UIMenuItem(FullName(true), "Pay the fee and be granted your vehicle.") { RightLabel = $"${fee}" };
+            int DaysImpounded = (time.CurrentDateTime - DateTimeImpounded).Days;
+            int DailyFee = Settings.SettingsManager.RespawnSettings.ImpoundVehiclesDailyFee;
+            int StolenExtraFee = Settings.SettingsManager.RespawnSettings.ImpoundVehiclesStolenPenalty;
+            int TimeStolen = TimesImpounded - 1;
+            int ExtraFee = TimeStolen * StolenExtraFee;
+            int fee = DaysImpounded * DailyFee;
+            fee += ExtraFee;
+            string vehicleName = FullName(false);
+            UIMenuItem impoundMenuItem = new UIMenuItem(vehicleName, $"Pay the impound fee and be granted your {vehicleName}.~n~Date Impounded: ~p~{DateTimeImpounded}~s~~n~Impounded Days: ~y~{DaysImpounded}~s~~n~Daily Fee: ~r~${DailyFee}~s~~n~Extra Fee: ~r~${ExtraFee}~s~~n~Total: ~r~${fee}~s~.") { RightLabel = $"${fee}" };
             impoundMenuItem.Activated += (sender, selectedItem) =>
             {
                 if(player.BankAccounts.Money <= fee)
                 {
-                    new GTANotification(location.Name, "Impound Lot", "You do not have the required amount.").Display();
+                    new GTANotification(location.Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transaction.").Display();
+                    NativeHelper.PlayErrorSound();
                     return;
                 }
                 player.BankAccounts.GiveMoney(-1 * fee);
                 UnSetImpounded();
-                new GTANotification(location.Name, "Impound Lot", "You have paid off your vehicle. Please collect it from the lot.").Display();
+                new GTANotification(location.Name, "~g~Payment Accepted", $"Please collect your vehicle from the lot.").Display();
                 location.RemoveRestriction();
+                NativeHelper.PlaySuccessSound();
                 sender.Visible = false;
             };
             impoundSubMenu.AddItem(impoundMenuItem);

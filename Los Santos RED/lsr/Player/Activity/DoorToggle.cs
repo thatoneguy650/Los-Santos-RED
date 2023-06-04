@@ -25,6 +25,7 @@ public class DoorToggle : DynamicActivity
 
 
     private bool IsDoorAlreadyOpen = false;
+    private bool openedDoor;
 
     public DoorToggle(IActionable player, ISettingsProvideable settings, IEntityProvideable world, VehicleExt vehicleExt, int doorID, bool forceDoorState, bool doorForcedState)
     {
@@ -148,7 +149,8 @@ public class DoorToggle : DynamicActivity
                     GameFiber.Yield();
                 }
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                Player.ActivityManager.IsPerformingActivity = false;
+                Player.ActivityManager.IsPerformingActivity = false;             
+
                 //EntryPoint.WriteToConsoleTestLong($"DOOR TOGGLE: FINISHED ANIM");
             }
             catch (Exception e)
@@ -210,7 +212,7 @@ public class DoorToggle : DynamicActivity
         bool StopDriver = false;
         EntryPoint.WriteToConsole($"DOOR TOGGLE: STARTED MOVE TO POSITION");
         NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", Player.Character, DoorTogglePosition.X, DoorTogglePosition.Y, DoorTogglePosition.Z, DoorToggleHeading, -1);
-        while (!(Player.Character.DistanceTo2D(DoorTogglePosition) <= 0.25f && FloatIsWithin(Player.Character.Heading, DoorToggleHeading - 5f, DoorToggleHeading + 5f)))//while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && FloatIsWithin(PedToMove.Heading, DesiredHeading - 5f, DesiredHeading + 5f)))
+        while (!(Player.Character.DistanceTo2D(DoorTogglePosition) <= 0.5f && FloatIsWithin(Player.Character.Heading, DoorToggleHeading - 5f, DoorToggleHeading + 5f)))//while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && FloatIsWithin(PedToMove.Heading, DesiredHeading - 5f, DesiredHeading + 5f)))
         {
             GameFiber.Yield();
             if (Player.IsMoveControlPressed)
@@ -246,81 +248,28 @@ public class DoorToggle : DynamicActivity
         else
         {
             TargetVehicle.Vehicle.Doors[DoorID].Open(false, false);
+            GameFiber.Wait(750);
+            if (TargetVehicle.Vehicle.Exists())
+            {
+                TargetVehicle.Vehicle.Doors[DoorID].Open(true, false);
+            }
         }
     }
     private bool Setup()
     {
         EntryPoint.WriteToConsole($"DOOR TOGGLE SETUP ForceDoorState{ForceDoorState} DoorForcedState{DoorForcedState} DoorID{DoorID}");
         IsDoorAlreadyOpen = false;
-        isDriverSide = DoorID == 0 || DoorID == 2;
         if (TargetVehicle == null || !TargetVehicle.Vehicle.Exists())
         {
             return false;
         }
-        if (DoorID == 5)//is trunk
-        {
-            //Vector3 BumperPosition = TargetVehicle.Vehicle.GetBonePosition("bumper_r");
-            //Vector3 BootPosition = TargetVehicle.Vehicle.GetBonePosition("boot");
-            //float Difference = Math.Abs(BumperPosition.Y - BootPosition.Y);
-
-            //DoorTogglePosition = BootPosition;
-            //DoorTogglePosition = NativeHelper.GetOffsetPosition(DoorTogglePosition, TargetVehicle.Vehicle.Heading + Settings.SettingsManager.DebugSettings.DoorToggle_TrunkHeading, Settings.SettingsManager.DebugSettings.DoorToggle_TrunkOffset - Difference);
-            //DoorToggleHeading = TargetVehicle.Vehicle.Heading;
-
-
-
-            float length = TargetVehicle.Vehicle.Model.Dimensions.Y;
-            DoorTogglePosition = TargetVehicle.Vehicle.Position;
-            DoorTogglePosition = NativeHelper.GetOffsetPosition(DoorTogglePosition, TargetVehicle.Vehicle.Heading + Settings.SettingsManager.DoorToggleSettings.TrunkHeading, (-1 * length / 2) + Settings.SettingsManager.DoorToggleSettings.TrunkOffset);
-            DoorToggleHeading = TargetVehicle.Vehicle.Heading;
-
-
-
-
-
-        }
-        else if (DoorID == 4)//is hood
-        {
-            float length = TargetVehicle.Vehicle.Model.Dimensions.Y;
-            DoorTogglePosition = TargetVehicle.Vehicle.Position;
-            DoorTogglePosition = NativeHelper.GetOffsetPosition(DoorTogglePosition, TargetVehicle.Vehicle.Heading + Settings.SettingsManager.DoorToggleSettings.HoodHeading, (length / 2) + Settings.SettingsManager.DoorToggleSettings.HoodOffset);
-            DoorToggleHeading = TargetVehicle.Vehicle.Heading - 180f;
-
-
-
-            //Vector3 BumperPosition = TargetVehicle.Vehicle.GetBonePosition("bumper_f");
-            //Vector3 BonnetPosition = TargetVehicle.Vehicle.GetBonePosition("bonnet");
-            //float Difference = Math.Abs(BumperPosition.Y - BonnetPosition.Y);
-            //DoorTogglePosition = BonnetPosition;
-            //DoorTogglePosition = NativeHelper.GetOffsetPosition(DoorTogglePosition, TargetVehicle.Vehicle.Heading + Settings.SettingsManager.DebugSettings.DoorToggle_HoodHeading, Settings.SettingsManager.DebugSettings.DoorToggle_HoodOffset + Difference);
-            //DoorToggleHeading = TargetVehicle.Vehicle.Heading-180f;
-        }
-        else
-        {
-            DoorTogglePosition = NativeFunction.Natives.GET_ENTRY_POINT_POSITION<Vector3>(TargetVehicle.Vehicle, DoorID);
-            if(isDriverSide)
-            {
-                //EntryPoint.WriteToConsoleTestLong("DRIVER SIDE");
-                DoorToggleHeading = TargetVehicle.Vehicle.Heading - 90f;
-            }
-            else
-            {
-                //EntryPoint.WriteToConsoleTestLong("PASSENGER SIDE");
-                DoorToggleHeading = TargetVehicle.Vehicle.Heading + 90f;
-            }            
-        }
-        if(DoorToggleHeading >= 360f)
-        {
-            //EntryPoint.WriteToConsoleTestLong("TOO LARGE< LOWERING");
-            DoorToggleHeading = DoorToggleHeading - 360f;
-        }
-
+        VehicleDoorSeatData vdsd = new VehicleDoorSeatData("unknow", "unknow", DoorID, -1);
+        DoorTogglePosition = vdsd.GetDoorOffset(TargetVehicle.Vehicle, Settings);
+        DoorToggleHeading = vdsd.GetDoorHeading(TargetVehicle.Vehicle, Settings);
         if (TargetVehicle.Vehicle.Doors[DoorID].IsValid())
         {
             IsDoorAlreadyOpen = TargetVehicle.Vehicle.Doors[DoorID].IsOpen;
         }
-
-
         //EntryPoint.WriteToConsoleTestLong($"DOOR TOGGLE: FINISHED SETUP");
         return true;
     }
