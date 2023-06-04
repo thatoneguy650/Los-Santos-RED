@@ -59,7 +59,7 @@ public class UnconsciousBodyAlert : PedAlert
                 UnconsciousPedsSeen.Add(unconsciousPed);
                 if (PedExt.GenerateUnconsciousAlerts)
                 {
-                    AddAlert(unconsciousPed);
+                    AddAlert(unconsciousPed); 
                 }
                 if (PedExt.AutoCallsInUnconsciousPeds)
                 {
