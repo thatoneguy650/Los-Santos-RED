@@ -155,11 +155,11 @@ public class PlayerPerception
             return false;
         }
         Vector3 PositionToCheck = posToCheck;
-        DistanceToTarget = Originator.Pedestrian.DistanceTo2D(PositionToCheck);
+        DistanceToTarget = Originator.Pedestrian.DistanceTo(PositionToCheck);//TR 2D CHANGE
         HeightToTarget = Math.Abs(Originator.Pedestrian.Position.Z - PositionToCheck.Z);//is new
         if (Originator.IsCop && Originator.Pedestrian.Exists())
         {
-            DistanceToTargetLastSeen = Originator.Pedestrian.DistanceTo2D(placeLastSeen);
+            DistanceToTargetLastSeen = Originator.Pedestrian.DistanceTo(placeLastSeen);//TR 2D CHANGE
         }
         if (DistanceToTarget <= 0.1f)
         {

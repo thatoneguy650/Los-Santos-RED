@@ -110,8 +110,9 @@ public class Interior
                 }
                 foreach (InteriorDoor door in Doors)
                 {
-                    NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, 0, 50.0f);//NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, door.Rotation.Pitch, door.Rotation.Roll, door.Rotation.Yaw);
-                    door.IsLocked = false;
+                    door.UnLockDoor();
+                    //NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, 0, 50.0f);//NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, door.Rotation.Pitch, door.Rotation.Roll, door.Rotation.Yaw);
+                    //door.IsLocked = false;
                 }
 
 
@@ -167,8 +168,9 @@ public class Interior
                     }
                     foreach (InteriorDoor door in Doors)
                     {
-                        NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, true, 0.0f, 50.0f); //NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, true, door.Rotation.Pitch, door.Rotation.Roll, door.Rotation.Yaw);
-                        door.IsLocked = true;
+                        door.LockDoor();
+                        //NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, true, 0.0f, 50.0f); //NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, true, door.Rotation.Pitch, door.Rotation.Roll, door.Rotation.Yaw);
+                        //door.IsLocked = true;
                         GameFiber.Yield();
                     }
                     if (DisabledInteriorCoords != Vector3.Zero)

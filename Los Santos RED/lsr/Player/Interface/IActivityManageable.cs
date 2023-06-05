@@ -41,7 +41,7 @@ namespace LosSantosRED.lsr.Interface
         bool CharacterModelIsFreeMode { get; }
         string FreeModeVoice { get; }
         GroupManager GroupManager { get; }
-        InteractableLocation ClosestInteractableLocation { get; }
+        GameLocation ClosestInteractableLocation { get; }
         string ModelName { get; }
         bool IsMale { get; }
        // List<LicensePlate> SpareLicensePlates { get; }

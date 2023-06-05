@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Residence : InteractableLocation, ILocationSetupable
+public class Residence : GameLocation, ILocationSetupable
 {
     private UIMenu OfferSubMenu;
     private UIMenuNumericScrollerItem<int> RestMenuItem;
@@ -42,14 +42,10 @@ public class Residence : InteractableLocation, ILocationSetupable
     public DateTime DateRentalPaymentDue { get; set; }
     [XmlIgnore]
     public DateTime DateRentalPaymentPaid { get; set; }
-
-
     [XmlIgnore]
     public SimpleInventory SimpleInventory { get; set; }
     [XmlIgnore]
     public WeaponStorage WeaponStorage { get; set; }
-
-
     public bool CanRent => !IsOwned && !IsRented && RentalFee > 0;
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
     public bool IsOwnedOrRented => IsOwned || IsRented;
@@ -57,7 +53,6 @@ public class Residence : InteractableLocation, ILocationSetupable
     public int RentalFee { get; set; }
     public int PurchasePrice { get; set; }
     public override string TypeName => IsOwnedOrRented ? "Residence" : "For Sale/Rental";
-
     public override int MapIcon { get; set; } = (int)BlipSprite.PropertyForSale;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
@@ -77,10 +72,6 @@ public class Residence : InteractableLocation, ILocationSetupable
         Settings = settings;
         Weapons = weapons;
         Time = time;
-
-
-
-
         if (IsLocationClosed())
         {
             return;
@@ -237,17 +228,14 @@ public class Residence : InteractableLocation, ILocationSetupable
         UpdateInventory();
         UpdateStoredWeapons();
     }
-
     private void UpdateStoredWeapons()
     {
         WeaponStorage.CreateInteractionMenu(Player,MenuPool, InteractionMenu, Weapons, ModItems, false);
     }
-
     private void UpdateInventory()
     {
         SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, false);
     }
-
     private void OfferMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if(selectedItem == RentResidenceMenuItem)
@@ -278,9 +266,6 @@ public class Residence : InteractableLocation, ILocationSetupable
             outfitsSubMenu.AddItem(uIMenuItem);
         }
     }
-
-
-
     private bool Rent()
     {
         if(CanRent && Player.BankAccounts.Money >= RentalFee)
@@ -450,19 +435,16 @@ public class Residence : InteractableLocation, ILocationSetupable
         return BaseList;
     }
 
-    public void Setup(ICrimes crimes, INameProvideable names, ISettingsProvideable settings)
+    public void Setup()
     {
         if (SimpleInventory == null)
         {
-            SimpleInventory = new SimpleInventory(settings);
+            SimpleInventory = new SimpleInventory(Settings);
         }
         if (WeaponStorage == null)
         {
-            WeaponStorage = new WeaponStorage(settings);
+            WeaponStorage = new WeaponStorage(Settings);
         }
     }
-    public void PlayerSetup(ILocationInteractable player)
-    {
-        Player = player;
-    }
+
 }

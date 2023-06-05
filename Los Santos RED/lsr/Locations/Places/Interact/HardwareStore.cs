@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class HardwareStore : InteractableLocation
+public class HardwareStore : GameLocation
 {
     public HardwareStore() : base()
     {

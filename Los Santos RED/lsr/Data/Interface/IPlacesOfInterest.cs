@@ -10,8 +10,8 @@ namespace LosSantosRED.lsr.Interface
     public interface IPlacesOfInterest
     {
         PossibleLocations PossibleLocations { get; }
-        List<InteractableLocation> InteractableLocations();
-        List<InteractableLocation> AllLocations();
+        List<GameLocation> InteractableLocations();
+        List<GameLocation> AllLocations();
       //  List<ILocationDispatchable> PoliceDispatchLocations();
         List<ILocationRespawnable> BustedRespawnLocations();
         List<ILocationImpoundable> VehicleImpoundLocations();

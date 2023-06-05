@@ -1289,22 +1289,37 @@ public class Debug
     private void DebugNumpad7()
     {
 
-        PedExt closestPed = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-        if(closestPed == null || !closestPed.Pedestrian.Exists())
+        //GET_CLOSEST_OBJECT_OF_TYPE
+
+        //prop_cctv_pole_04, X: 411.6299 Y: -1619.302 Z: 28.30813,, 574160586
+
+
+        Vector3 Coordinates = new Vector3(411.6299f, -1619.302f, 28.30813f);
+        Rage.Object myObject = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Coordinates.X, Coordinates.Y, Coordinates.Z,10f,Game.GetHashKey("prop_cctv_pole_04"),false,false,false);
+
+        if(myObject.Exists())
         {
-            EntryPoint.WriteToConsole("ERROR DEBUG7d");
-            return;
+            Game.DisplaySubtitle($"{myObject.Handle} {myObject.Health} {myObject.MaxHealth}");
         }
 
-        //DEFAULT,BASE,COP,EMPTY,GANG,FAMILY,PLAYER,Security, MEDIC,FIREMAN
-        string descisionMakerName = NativeHelper.GetKeyboardInput("DEFAULT");
-        if(!string.IsNullOrEmpty(descisionMakerName))
-        {
-            NativeFunction.Natives.SET_DECISION_MAKER(closestPed.Pedestrian, Game.GetHashKey(descisionMakerName));
-            Game.DisplaySubtitle($"SET_DECISION_MAKER {descisionMakerName}");
-        }
 
-        
+
+        //PedExt closestPed = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        //if(closestPed == null || !closestPed.Pedestrian.Exists())
+        //{
+        //    EntryPoint.WriteToConsole("ERROR DEBUG7d");
+        //    return;
+        //}
+
+        ////DEFAULT,BASE,COP,EMPTY,GANG,FAMILY,PLAYER,Security, MEDIC,FIREMAN
+        //string descisionMakerName = NativeHelper.GetKeyboardInput("DEFAULT");
+        //if(!string.IsNullOrEmpty(descisionMakerName))
+        //{
+        //    NativeFunction.Natives.SET_DECISION_MAKER(closestPed.Pedestrian, Game.GetHashKey(descisionMakerName));
+        //    Game.DisplaySubtitle($"SET_DECISION_MAKER {descisionMakerName}");
+        //}
+
+
 
 
 
@@ -1637,6 +1652,8 @@ public class Debug
             Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching = false;
             Settings.SettingsManager.EMSSettings.ManageDispatching = false;
             Settings.SettingsManager.GangSettings.ManageDispatching = false;
+            Settings.SettingsManager.FireSettings.ManageDispatching = false;
+            Settings.SettingsManager.SecuritySettings.ManageDispatching = false;
             Game.DisplaySubtitle("Dispatching Disabled");
         }
         else
@@ -1644,6 +1661,8 @@ public class Debug
             Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching = true;
             Settings.SettingsManager.EMSSettings.ManageDispatching = true;
             Settings.SettingsManager.GangSettings.ManageDispatching = true;
+            Settings.SettingsManager.FireSettings.ManageDispatching = true;
+            Settings.SettingsManager.SecuritySettings.ManageDispatching = true;
             Dispatcher.DebugResetLocations();
             Game.DisplaySubtitle("Dispatching Enabled");
         }
@@ -1916,8 +1935,9 @@ public class Debug
         }
         foreach (InteriorDoor door in int1.Doors)
         {
-            NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, 0.0f, 50.0f);
-            door.IsLocked = false;
+            door.UnLockDoor();
+            //NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, 0.0f, 50.0f);
+            //door.IsLocked = false;
         }
     }
     private void SpawnAttachedRagdoll()

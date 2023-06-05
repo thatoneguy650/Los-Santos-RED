@@ -21,20 +21,9 @@ using static RAGENativeUI.Elements.UIMenuStatsPanel;
 
 [XmlInclude(typeof(YanktonAiport))]
 [XmlInclude(typeof(CayoPericoAirport))]
-public class Airport : InteractableLocation, ILocationSetupable
+public class Airport : GameLocation, ILocationSetupable
 {
-    private protected ICrimes Crimes;
-    private protected INameProvideable Names;
-
     private protected List<Carrier> Carriers = new List<Carrier>();
-
-    //private LocationCamera StoreCamera;
-    //private protected ILocationInteractable Player;
-    //private IModItems ModItems;
-    //private protected IEntityProvideable World;
-    //private protected ISettingsProvideable Settings;
-    //private protected IWeapons Weapons;
-    //private ITimeControllable Time;
     private protected IPlacesOfInterest PlacesOfInterest;
     private bool IsFlyingToLocation;
    
@@ -45,27 +34,17 @@ public class Airport : InteractableLocation, ILocationSetupable
     public override string TypeName { get; set; } = "Airport";
     public override int MapIcon { get; set; } = (int)BlipSprite.Airport;
     public override string ButtonPromptText { get; set; }
-
-
-    
-
     public string AirportID { get; set; }
     public Vector3 ArrivalPosition { get; set; }
     public float ArrivalHeading { get; set; }
-
-
-
     public Vector3 AirArrivalPosition { get; set; }
     public float AirArrivalHeading { get; set; }
-
     public List<string> RequestIPLs { get; set; }
     public List<string> RemoveIPLs { get; set; }
     public List<AirportFlight> CommercialFlights { get; set; } = new List<AirportFlight>();
     public HashSet<RoadToggler> RoadToggels { get; set; } = new HashSet<RoadToggler>();
     public HashSet<string> ZonesToEnable { get; set; } = new HashSet<string>();
-
     public int FuelPrice { get; set; } = 6;
-
     public Airport(string airportID, Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         AirportID = airportID;
@@ -129,7 +108,6 @@ public class Airport : InteractableLocation, ILocationSetupable
             }, "HotelInteract");
         }
     }
-
     public void OnSetDestination(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
@@ -140,7 +118,6 @@ public class Airport : InteractableLocation, ILocationSetupable
         Time = time;
         PlacesOfInterest = placesOfInterest;
     }
-
     private void SetupMenu()
     {
         InteractionMenu.SubtitleText = "Pick an Option";
@@ -453,11 +430,8 @@ public class Airport : InteractableLocation, ILocationSetupable
             }
         }, "DestinationGoTo");
     }
-    public void Setup(ICrimes crimes, INameProvideable names, ISettingsProvideable settings)
+    public void Setup()//ICrimes crimes, INameProvideable names, ISettingsProvideable settings)
     {
-        Crimes = crimes;
-        Names = names;
-        Settings = settings;
         Carriers = new List<Carrier>()
         {
             new Carrier(StaticStrings.AirHerlerCarrierID,"Air Herler", "For the utmost in luxury"),
@@ -467,10 +441,6 @@ public class Airport : InteractableLocation, ILocationSetupable
             new Carrier(StaticStrings.FlyUSCarrierID,"FlyUS", "Live A Little, Fly With US"),
             new Carrier(StaticStrings.AdiosAirlinesCarrierID,"Adios Airlines", "Say your goodbyes!"),
         };
-    }
-    public void PlayerSetup(ILocationInteractable player)
-    {
-        Player = player;
     }
     public override void AddDistanceOffset(Vector3 offsetToAdd)
     {

@@ -55,22 +55,17 @@ public class StaticPlaces
     }
     public void Setup()
     {
-        //need to combine these
-        foreach (BasicLocation basicLocation in PlacesOfInterest.AllLocations())
+        foreach (GameLocation tl in PlacesOfInterest.InteractableLocations())
         {
-            basicLocation.StoreData(Zones, Streets, LocationTypes);
-        }
-        foreach (InteractableLocation tl in PlacesOfInterest.InteractableLocations())
-        {
-            tl.StoreData(ShopMenus, Agencies, Gangs,Zones, Jurisdictions, GangTerritories, Names, Crimes, PedGroups, World);
+            tl.StoreData(ShopMenus, Agencies, Gangs,Zones, Jurisdictions, GangTerritories, Names, Crimes, PedGroups, World, Streets, LocationTypes, Settings);
         }
         foreach (ILocationGangAssignable tl in PlacesOfInterest.GangAssignableLocations())
         {
-            tl.StoreData(Gangs, ShopMenus);
+            tl.StoreData(Gangs);
         }
         foreach (ILocationSetupable ps in PlacesOfInterest.LocationsToSetup())
         {
-            ps.Setup(Crimes,Names, Settings);
+            ps.Setup();
         }
     }
     public void ActivateLocations()
@@ -80,7 +75,7 @@ public class StaticPlaces
         {
             return;
         }
-        foreach (BasicLocation gl in PlacesOfInterest.AllLocations())
+        foreach (GameLocation gl in PlacesOfInterest.AllLocations())
         {
             gl.CheckActivation(World, Interiors,Settings,Crimes,Weapons,Time);
             LocationsCalculated++;
@@ -102,7 +97,7 @@ public class StaticPlaces
             return;
         }
         int updated = 0;
-        foreach (BasicLocation gl in Places.ActiveLocations.ToList())
+        foreach (GameLocation gl in Places.ActiveLocations.ToList())
         {
             gl.Update(Time);
             updated++;
@@ -119,11 +114,11 @@ public class StaticPlaces
     }
     public void Dispose()
     {
-        foreach (BasicLocation loc in Places.ActiveLocations.ToList())
+        foreach (GameLocation loc in Places.ActiveLocations.ToList())
         {
             loc.Deactivate(true);
         }
-        foreach (BasicLocation gl in PlacesOfInterest.AllLocations())
+        foreach (GameLocation gl in PlacesOfInterest.AllLocations())
         {
             gl.DeactivateBlip();
         }
@@ -156,7 +151,7 @@ public class StaticPlaces
     }
     public void AddAllBlips()
     {
-        foreach (BasicLocation basicLocation in PlacesOfInterest.AllLocations())
+        foreach (GameLocation basicLocation in PlacesOfInterest.AllLocations())
         {
             if(!basicLocation.IsActivated && basicLocation.IsEnabled)
             {

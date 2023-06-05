@@ -51,9 +51,9 @@ public class PossibleLocations
   //  public List<InteractableLocation> AllLocationsList { get; private set; } = new List<InteractableLocation>();
 
 
-    public List<InteractableLocation> InteractableLocations()
+    public List<GameLocation> InteractableLocations()
     {
-        List<InteractableLocation> AllLocations = new List<InteractableLocation>();
+        List<GameLocation> AllLocations = new List<GameLocation>();
         AllLocations.AddRange(PoliceStations);
         AllLocations.AddRange(Hospitals);
         AllLocations.AddRange(FireStations);
@@ -93,8 +93,6 @@ public class PossibleLocations
         AllLocations.AddRange(BlankLocations);
         return AllLocations;
     }
-
-
 
 }
 

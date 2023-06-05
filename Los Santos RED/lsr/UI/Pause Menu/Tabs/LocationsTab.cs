@@ -65,11 +65,11 @@ public class LocationsTab
     private List<TabItem> GetDirectoryLocations()
     {
         List<TabItem> items = new List<TabItem>();
-        List<InteractableLocation> DirectoryLocations = PlacesOfInterest.AllLocations().Where(x => (x.ShowsOnDirectory || Settings.SettingsManager.WorldSettings.ShowAllLocationsOnDirectory) && x.IsEnabled && (FilterString == "" || x.Name.ToLower().Contains(FilterString.ToLower()))).ToList();
+        List<GameLocation> DirectoryLocations = PlacesOfInterest.AllLocations().Where(x => (x.ShowsOnDirectory || Settings.SettingsManager.WorldSettings.ShowAllLocationsOnDirectory) && x.IsEnabled && (FilterString == "" || x.Name.ToLower().Contains(FilterString.ToLower()))).ToList();
         foreach (string typeName in DirectoryLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
         {
             List<MissionInformation> missionInfoList = new List<MissionInformation>();
-            foreach (BasicLocation bl in DirectoryLocations.Where(x => x.TypeName == typeName).OrderBy(x=> x.SortOrder).ThenBy(x => Player.Character.DistanceTo2D(x.EntrancePosition)))
+            foreach (GameLocation bl in DirectoryLocations.Where(x => x.TypeName == typeName).OrderBy(x=> x.SortOrder).ThenBy(x => Player.Character.DistanceTo2D(x.EntrancePosition)))
             {
                 MissionInformation locationInfo = new MissionInformation(bl.Name, "", bl.DirectoryInfo(Time.CurrentHour, Player.Character.DistanceTo2D(bl.EntrancePosition)));
                 if (bl.HasBannerImage)
@@ -84,7 +84,7 @@ public class LocationsTab
                 if (selectedItem != null)
                 {
                     string streetAddress = selectedItem.ValueList.FirstOrDefault(x => x.Item1 == "Address:")?.Item2;
-                    BasicLocation toGPS = DirectoryLocations.FirstOrDefault(x => x.Name == selectedItem.Name && x.StreetAddress == streetAddress);
+                    GameLocation toGPS = DirectoryLocations.FirstOrDefault(x => x.Name == selectedItem.Name && x.StreetAddress == streetAddress);
                     if (toGPS != null)
                     {
                         Player.GPSManager.AddGPSRoute(toGPS.Name, toGPS.EntrancePosition);

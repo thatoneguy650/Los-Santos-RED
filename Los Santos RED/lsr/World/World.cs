@@ -59,7 +59,7 @@ namespace Mod
         public Vehicles Vehicles { get; private set; }
         public Pedestrians Pedestrians { get; private set; }
         public Places Places { get; private set; }
-        public ILocationInteractable Player { get; private set; }
+
 
         public int CitizenWantedLevel { get; set; }
         public int TotalWantedLevel { get; set; } = 0;
@@ -306,9 +306,6 @@ namespace Mod
             //EntryPoint.WriteToConsoleTestLong($"OnTotalWantedLevelAdded {TotalWantedLevel}");
         }
 
-        public void AddPlayer(ILocationInteractable player)
-        {
-            Player = player;
-        }
+
     }
 }

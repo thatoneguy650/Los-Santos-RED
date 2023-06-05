@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Morgue : InteractableLocation
+public class Morgue : GameLocation
 {
     public Morgue() : base()
     {

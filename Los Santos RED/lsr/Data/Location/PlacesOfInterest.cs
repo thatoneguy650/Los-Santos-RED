@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -84,7 +85,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             DefaultConfig();
         }
     }
-    public List<InteractableLocation> InteractableLocations()
+    public List<GameLocation> InteractableLocations()
     {
         return PossibleLocations.InteractableLocations();
     }
@@ -95,9 +96,9 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.Residences);
         return AllLocations;
     }
-    public List<InteractableLocation> AllLocations()
+    public List<GameLocation> AllLocations()
     {
-        List<InteractableLocation> AllLocations = new List<InteractableLocation>();
+        List<GameLocation> AllLocations = new List<GameLocation>();
         AllLocations.AddRange(InteractableLocations());
         return AllLocations;
     }
@@ -1984,9 +1985,43 @@ public class PlacesOfInterest : IPlacesOfInterest
 #if DEBUG
         DavisPercentage = 100f;
 #endif
+
+        Vector2[] davisImpoundLot = new Vector2[]
+                {
+                    new Vector2 { X = 409.3969f, Y = -1616.724f },
+                    new Vector2 { X = 423.1207f, Y = -1628.206f },
+                    new Vector2 { X = 423.9051f, Y = -1634.224f },
+                    new Vector2 { X = 423.3925f, Y = -1645.131f },
+                    new Vector2 { X = 410.9243f, Y = -1660.619f },
+                    new Vector2 { X = 409.476f, Y = -1660.212f },
+                    new Vector2 { X = 388.094f, Y = -1641.983f },
+                };
+        List<InteriorDoor> davisImpoundGates = new List<InteriorDoor>() { new InteriorDoor(2811495845, new Vector3(413.364f, -1620.034f, 28.34158f)), new InteriorDoor(2811495845, new Vector3(418.291f, -1651.395f, 28.29171f)) };
+
+
+        Vector2[] davisPoliceLot = new Vector2[]
+        {
+                    new Vector2 { X = 391.2724f, Y = -1602.033f },
+                    new Vector2 { X = 408.1592f, Y = -1616.15f },
+                    new Vector2 { X = 387.218f, Y = -1641.259f },
+
+                    new Vector2 { X = 344.405f, Y = -1605.337f },
+                    new Vector2 { X = 346.1739f, Y = -1616.41f },
+                    new Vector2 { X = 361.7633f, Y = -1616.41f },
+                    new Vector2 { X = 370.0233f, Y = -1606.763f },
+
+                    new Vector2 { X = 373.6666f, Y = -1605.761f },
+                    new Vector2 { X = 382.7977f, Y = -1612.137f },
+        };
+        List<InteriorDoor> davisPoliceGate = new List<InteriorDoor>() { new InteriorDoor(1286535678, new Vector3(397.8851f, -1607.386f, 28.34166f)) };
         PoliceStations = new List<PoliceStation>()
         {
-            new PoliceStation(new Vector3(361.1365f, -1584.821f, 29.29195f), 48.07573f, "Davis Sheriff's Station","A Tradition of Suppression") { RespawnLocation = new Vector3(358.9726f, -1582.881f, 29.29195f), RespawnHeading = 323.5287f, BannerImagePath = "lssddavis.png", OpenTime = 0,CloseTime = 24,
+            new PoliceStation(new Vector3(361.1365f, -1584.821f, 29.29195f), 48.07573f, "Davis Sheriff's Station","A Tradition of Suppression") { 
+                RespawnLocation = new Vector3(358.9726f, -1582.881f, 29.29195f), 
+                RespawnHeading = 323.5287f, 
+                BannerImagePath = "lssddavis.png", 
+                OpenTime = 0,
+                CloseTime = 24,
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     //new LEConditionalLocation(new Vector3(343.7892f, -1602.402f, 29.29194f), 336.6382f, DavisPercentage),
                     new LEConditionalLocation(new Vector3(373.5635f, -1612.563f, 29.29194f), 229.7581f, DavisPercentage),
@@ -1994,10 +2029,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new LEConditionalLocation(new Vector3(358.3576f, -1581.505f, 29.29195f), 321.0721f, DavisPercentage),
                     new LEConditionalLocation(new Vector3(370.2834f, -1579.717f, 29.29238f), 303.5159f, DavisPercentage),
                     new LEConditionalLocation(new Vector3(363.9216f, -1575.142f, 29.27452f), 350.0409f, DavisPercentage),
-
                     new LEConditionalLocation(new Vector3(337.8395f, -1596.521f, 29.31022f), 48.88332f, DavisPercentage),
-
-
                 },PossibleVehicleSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(388.9854f, -1612.977f, 29.21355f), 50f,20f),
                     new LEConditionalLocation(new Vector3(392.7548f, -1608.376f, 29.21355f), 50f,50f),
@@ -2010,19 +2042,21 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(408.3622f, -1654.027f, 28.8215f), 322.5292f),
                     new SpawnPlace(new Vector3(420.4157f, -1639.205f, 28.82125f), 272.8717f),
                     new SpawnPlace(new Vector3(418.0018f, -1645.961f, 28.82127f), 230.7471f),
-                    new SpawnPlace(new Vector3(419.366f, -1629.477f, 28.82145f), 319.8078f),
-                },
-                new Vector2[]
+                    new SpawnPlace(new Vector3(419.366f, -1629.477f, 28.82145f), 319.8078f), }),
+                RestrictedAreas = new RestrictedAreas() 
                 {
-                    new Vector2 { X = 409.3969f, Y = -1616.724f },
-                    new Vector2 { X = 423.1207f, Y = -1628.206f },
-                    new Vector2 { X = 423.9051f, Y = -1634.224f },
-                    new Vector2 { X = 423.3925f, Y = -1645.131f },
-                    new Vector2 { X = 410.9243f, Y = -1660.619f },
-                    new Vector2 { X = 409.476f, Y = -1660.212f },
-                    new Vector2 { X = 388.094f, Y = -1641.983f },
-                }) { Gates = new List<InteriorDoor>() { new InteriorDoor(2811495845, new Vector3(413.364f, -1620.034f, 28.34158f)), new InteriorDoor(2811495845,new Vector3(418.291f, -1651.395f, 28.29171f)) } },
-                },
+                    RestrictedAreasList = new List<RestrictedArea>() 
+                    {
+                        new RestrictedArea("Vehicle Impound Lot", davisImpoundLot,davisImpoundGates, RestrictedAreaType.ImpoundLot) { 
+                            SecurityCameras = new List<SecurityCamera>() { 
+                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(411.6299f, -1619.302f, 28.30813f)) { Name = "Security Cam 1" },
+                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(409.8848f,-1660.358f,28.25814f)) { Name = "Security Cam 2" },
+                            } },
+                        new RestrictedArea("Police Parking Lot",davisPoliceLot,davisPoliceGate,RestrictedAreaType.PoliceLot),
+
+                    }
+                }
+            },
             new PoliceStation(new Vector3(1858.19f, 3679.873f, 33.75724f), 218.3256f,  "Sandy Shores Sheriff's Station","A Tradition of Suppression") { BannerImagePath = "lssdmain.png",OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
                 new LEConditionalLocation(new Vector3(1851.615f, 3679.759f, 34.26711f), 167.1253f, 50f),
                 new LEConditionalLocation(new Vector3(1866.224f, 3684.685f, 33.78798f), 229.2713f, 50f),
@@ -3761,7 +3795,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     }
     public void Setup()
     {
-        foreach (BasicLocation bl in AllLocations())
+        foreach (GameLocation bl in AllLocations())
         {
             if (bl.HasBannerImage)
             {

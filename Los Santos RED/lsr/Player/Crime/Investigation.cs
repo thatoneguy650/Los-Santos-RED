@@ -338,7 +338,7 @@ public class Investigation
                 {
                     firefighter.IsRespondingToInvestigation = true;
                     tasked++;
-                    EntryPoint.WriteToConsole($"{firefighter.Handle} IsRespondingToInvestigation!");
+                    //EntryPoint.WriteToConsole($"{firefighter.Handle} IsRespondingToInvestigation!");
                 }
                 else
                 {
@@ -373,7 +373,7 @@ public class Investigation
                 {
                     emt.IsRespondingToInvestigation = true;
                     tasked++;
-                    EntryPoint.WriteToConsole($"{emt.Handle} IsRespondingToInvestigation!");
+                    //EntryPoint.WriteToConsole($"{emt.Handle} IsRespondingToInvestigation!");
                 }
                 else
                 {

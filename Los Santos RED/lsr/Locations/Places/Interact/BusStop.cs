@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class BusStop : InteractableLocation
+public class BusStop : GameLocation
 {
     public BusStop() : base()
     {

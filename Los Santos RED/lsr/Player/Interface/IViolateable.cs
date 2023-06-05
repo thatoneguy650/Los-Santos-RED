@@ -66,7 +66,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsSecurityGuard { get; }
         bool IsEMT { get; }
         bool IsFireFighter { get; }
-        ILocationAreaRestrictable RestrictedArea { get; }
+        RestrictedArea RestrictedArea { get; }
 
         //  bool IsLootingBody { get; }
 

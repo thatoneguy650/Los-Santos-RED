@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Bar : InteractableLocation
+public class Bar : GameLocation
 {
     public Bar() : base()
     {

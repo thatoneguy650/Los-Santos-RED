@@ -621,12 +621,20 @@ namespace LSR.Vehicles
             {
                 return;
             }
-            Vehicle.LicensePlate = AssignedAgency.LicensePlatePrefix + RandomItems.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);
+            string newPlate = AssignedAgency.LicensePlatePrefix + RandomItems.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);
+            Vehicle.LicensePlate = newPlate;
+            CarPlate.PlateNumber = newPlate;
             //if (MyVehicle == null || MyVehicle.RequiredLiveries == null || !MyVehicle.RequiredLiveries.Any())
             //{
             //    return;
             //}
             //NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", Vehicle, MyVehicle.RequiredLiveries.PickRandom());
+        }
+        public void SetRandomPlate()
+        {
+            string randomPlate = RandomItems.RandomString(8);
+            Vehicle.LicensePlate = randomPlate;
+            CarPlate.PlateNumber = randomPlate;
         }
         public void SetDriverWindow(bool RollDown)
         {
@@ -1155,7 +1163,7 @@ namespace LSR.Vehicles
             int fee = DaysImpounded * DailyFee;
             fee += ExtraFee;
             string vehicleName = FullName(false);
-            UIMenuItem impoundMenuItem = new UIMenuItem(vehicleName, $"Pay the impound fee and be granted your {vehicleName}.~n~Date Impounded: ~p~{DateTimeImpounded}~s~~n~Impounded Days: ~y~{DaysImpounded}~s~~n~Daily Fee: ~r~${DailyFee}~s~~n~Extra Fee: ~r~${ExtraFee}~s~~n~Total: ~r~${fee}~s~.") { RightLabel = $"${fee}" };
+            UIMenuItem impoundMenuItem = new UIMenuItem(vehicleName, $"Pay the impound fee and be granted your {vehicleName}.~n~Date Impounded: ~p~{DateTimeImpounded}~s~~n~Impounded Days: ~y~{DaysImpounded}~s~~n~Daily Fee: ~r~${DailyFee}~s~~n~Extra Fee: ~r~${ExtraFee}~s~~n~Total: ~r~${fee}~s~") { RightLabel = $"${fee}" };
             impoundMenuItem.Activated += (sender, selectedItem) =>
             {
                 if(player.BankAccounts.Money <= fee)
@@ -1167,7 +1175,7 @@ namespace LSR.Vehicles
                 player.BankAccounts.GiveMoney(-1 * fee);
                 UnSetImpounded();
                 new GTANotification(location.Name, "~g~Payment Accepted", $"Please collect your vehicle from the lot.").Display();
-                location.RemoveRestriction();
+                location.RestrictedAreas?.RemoveImpoundRestrictions();
                 NativeHelper.PlaySuccessSound();
                 sender.Visible = false;
             };

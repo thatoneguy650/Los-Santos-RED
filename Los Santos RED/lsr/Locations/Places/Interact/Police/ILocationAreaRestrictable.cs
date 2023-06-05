@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 public interface ILocationAreaRestrictable
 {
     string Name { get; }
-    bool IsPlayerInRestrictedArea { get;  }
-    void SetRestrictedArea(bool isInside);
-    void RemoveRestriction();
+    RestrictedAreas RestrictedAreas { get; }
+    //bool IsPlayerInRestrictedArea { get;  }
+    //void SetRestrictedArea(bool isInside);
+    //void RemoveRestriction();
 }
 

@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 public class LocationTeleporter
 {
     private ILocationInteractable Player;
-    private InteractableLocation InteractableLocation;
+    private GameLocation InteractableLocation;
     private ISettingsProvideable Settings;
     public bool IsInside { get; private set; }
-    public LocationTeleporter(ILocationInteractable player, InteractableLocation interactableLocation, ISettingsProvideable settings)
+    public LocationTeleporter(ILocationInteractable player, GameLocation interactableLocation, ISettingsProvideable settings)
     {
         Player = player;
         InteractableLocation = interactableLocation;

@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Hospital : InteractableLocation, ILocationRespawnable
+public class Hospital : GameLocation, ILocationRespawnable
 {
     private List<MedicalTreatment> MedicalTreatments;
     public Hospital(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)

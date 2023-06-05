@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class GangDen : InteractableLocation, ILocationGangAssignable
+public class GangDen : GameLocation, ILocationGangAssignable
 {
     private UIMenuItem dropoffCash;
     private UIMenuItem dropoffItem;
@@ -285,9 +285,9 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
         ExpectedItem = null;
         ExpectedItemAmount = 0;
     }
-    public void StoreData(IGangs gangs,IShopMenus shopMenus)
+    public void StoreData(IGangs gangs)
     {
-        Menu = shopMenus.GetSpecificMenu(MenuID);
+        Menu = ShopMenus.GetSpecificMenu(MenuID);
         AssociatedGang = gangs.GetGang(AssignedAssociationID);
         ButtonPromptText = $"Enter {AssociatedGang?.ShortName} {AssociatedGang?.DenName}";
     }

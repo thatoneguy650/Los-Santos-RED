@@ -20,7 +20,7 @@ public class Transaction
     public PurchaseMenu PurchaseMenu { get; private set; }
     public SellMenu SellMenu { get; private set; }
     public ShopMenu ShopMenu { get; set; }
-    public InteractableLocation Store { get; private set; }
+    public GameLocation Store { get; private set; }
     public MenuPool MenuPool { get; private set; }
     public bool HasCustomItemPostion => ItemPreviewPosition != Vector3.Zero;
     public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
@@ -45,7 +45,7 @@ public class Transaction
     public ILicensePlatePreviewable LicensePlatePreviewable { get; set; }
     public bool IsPurchasing { get; set; } = true;
 
-    public Transaction(MenuPool menuPool, UIMenu parentMenu, ShopMenu menu, InteractableLocation store)
+    public Transaction(MenuPool menuPool, UIMenu parentMenu, ShopMenu menu, GameLocation store)
     {
         MenuPool = menuPool;
         ParentMenu = parentMenu;

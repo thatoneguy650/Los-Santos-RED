@@ -737,7 +737,7 @@ public class ActivityManager
             Merchant merchant = World.Pedestrians.Merchants.FirstOrDefault(x => x.Handle == Player.CurrentLookedAtPed.Handle);
             try
             {
-                InteractableLocation associatedStore = null;
+                GameLocation associatedStore = null;
                 if (merchant != null)
                 {
                     associatedStore = merchant.AssociatedStore;
@@ -762,7 +762,7 @@ public class ActivityManager
             Merchant merchant = World.Pedestrians.Merchants.FirstOrDefault(x => x.Handle == pedExt.Handle);
             try
             {
-                InteractableLocation associatedStore = null;
+                GameLocation associatedStore = null;
                 if (merchant != null)
                 {
                     associatedStore = merchant.AssociatedStore;

@@ -31,7 +31,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private bool WitnessIsMale;
         private string WitnessName;
         private bool WitnessIsAtHome;
-        private BasicLocation WitnessLocation;
+        private GameLocation WitnessLocation;
         private Vector3 WitnessSpawnPosition;
         private float WitnessSpawnHeading;
         private readonly List<string> FemaleWitnessPossibleModels = new List<string>() { "a_f_o_ktown_01", "a_f_o_soucent_01","a_f_o_genstreet_01", "a_f_o_soucent_02", "a_f_y_bevhills_01", "a_f_y_bevhills_02","a_f_y_business_01", "a_f_y_business_02", "a_f_y_business_03", "a_f_y_business_04", 
@@ -134,7 +134,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             else
             {
-                List<BasicLocation> PossibleSpots = new List<BasicLocation>();
+                List<GameLocation> PossibleSpots = new List<GameLocation>();
 
                 PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Banks);
                 PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Bars);

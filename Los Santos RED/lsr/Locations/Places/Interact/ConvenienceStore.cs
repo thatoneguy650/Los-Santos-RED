@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class ConvenienceStore : InteractableLocation
+public class ConvenienceStore : GameLocation
 {
     public ConvenienceStore() : base()
     {

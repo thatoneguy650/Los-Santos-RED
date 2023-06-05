@@ -12,7 +12,7 @@ using System.Xml.Linq;
 
 public class Refueling
 {
-    private InteractableLocation Shop;
+    private GameLocation Shop;
     private ILocationInteractable Player;
     private ISettingsProvideable Settings;
     private int PricePerUnit;
@@ -20,7 +20,7 @@ public class Refueling
     private VehicleExt VehicleExt;
     private bool IsCancelled = false;
     private string Name;
-    public Refueling(ILocationInteractable player, string name, int pricePerUnit, VehicleExt vehicleExt, ISettingsProvideable settings, InteractableLocation shop)
+    public Refueling(ILocationInteractable player, string name, int pricePerUnit, VehicleExt vehicleExt, ISettingsProvideable settings, GameLocation shop)
     {
         Player = player;
         PricePerUnit = pricePerUnit;

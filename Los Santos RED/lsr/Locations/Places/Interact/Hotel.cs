@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Hotel : InteractableLocation
+public class Hotel : GameLocation
 {
     private bool KeepInteractionGoing = false;
     public Hotel() : base()

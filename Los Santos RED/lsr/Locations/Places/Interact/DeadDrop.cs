@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class DeadDrop : InteractableLocation
+public class DeadDrop : GameLocation
 {
     private bool IsCancelled;
 

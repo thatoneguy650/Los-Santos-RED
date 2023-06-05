@@ -57,7 +57,7 @@ public class LocationDispatcher
 
     public void Dispatch()
     {
-        foreach (InteractableLocation ps in World.Places.ActiveInteractableLocations.ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= x.ActivateDistance && x.IsNearby && !x.IsDispatchFilled && (x.PossibleGroupSpawns != null || x.PossiblePedSpawns != null || x.PossibleVehicleSpawns != null)).ToList())
+        foreach (GameLocation ps in World.Places.ActiveLocations.ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= x.ActivateDistance && x.IsNearby && !x.IsDispatchFilled && (x.PossibleGroupSpawns != null || x.PossiblePedSpawns != null || x.PossibleVehicleSpawns != null)).ToList())
         {
             if (ps.PossibleGroupSpawns != null)
             {
@@ -109,7 +109,7 @@ public class LocationDispatcher
             GameFiber.Yield();
         }
     
-        foreach (InteractableLocation ps in PlacesOfInterest.InteractableLocations().Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled).ToList())
+        foreach (GameLocation ps in PlacesOfInterest.InteractableLocations().Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled).ToList())
         {
             //EntryPoint.WriteToConsole($"Location Dispatcher, CLEARED AT {ps.Name}");
             ps.IsDispatchFilled = false;
@@ -117,7 +117,7 @@ public class LocationDispatcher
     }
     public void Reset()
     {
-        foreach (InteractableLocation ps in PlacesOfInterest.InteractableLocations().Where(x => x.IsDispatchFilled).ToList())
+        foreach (GameLocation ps in PlacesOfInterest.InteractableLocations().Where(x => x.IsDispatchFilled).ToList())
         {
             ps.IsDispatchFilled = false;
         }

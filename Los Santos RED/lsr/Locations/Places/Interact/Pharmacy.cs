@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Pharmacy : InteractableLocation
+public class Pharmacy : GameLocation
 {
     public Pharmacy() : base()
     {

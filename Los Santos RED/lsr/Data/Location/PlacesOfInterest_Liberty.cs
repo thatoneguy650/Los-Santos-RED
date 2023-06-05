@@ -15,7 +15,7 @@ public class PlacesOfInterest_Liberty
         LibertyCityLocations = new PossibleLocations();
         //These are for centered above, remove 200 from height
         DefaultConfig_Other();
-        foreach (InteractableLocation bl in LibertyCityLocations.InteractableLocations())
+        foreach (GameLocation bl in LibertyCityLocations.InteractableLocations())
         {
             bl.AddDistanceOffset(new Vector3(0f, 0f, -200f));
         }
@@ -26,7 +26,7 @@ public class PlacesOfInterest_Liberty
         DefaultConfig_GangDens();
         Serialization.SerializeParam(LibertyCityLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Locations_LibertyCity.xml");
         PossibleLocations centeredAbove = LibertyCityLocations.Copy();
-        foreach (InteractableLocation bl in centeredAbove.InteractableLocations())//for centered above we want to add 200 of height
+        foreach (GameLocation bl in centeredAbove.InteractableLocations())//for centered above we want to add 200 of height
         {
             bl.AddDistanceOffset(new Vector3(0f, 0f, 200f));
         }

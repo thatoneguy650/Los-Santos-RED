@@ -321,7 +321,7 @@ namespace LosSantosRED.lsr
                     Dispatch toPlay = DispatchList.Where(x => x.IsAmbientAllowed).PickRandom();
                     if (toPlay != null)
                     {
-                        BasicLocation basicLocation = PlacesOfInterest.AllLocations().PickRandom();
+                        GameLocation basicLocation = PlacesOfInterest.AllLocations().PickRandom();
                         if(basicLocation != null)
                         {
                             CrimeSceneDescription csd = new CrimeSceneDescription(RandomItems.RandomPercent(45), RandomItems.RandomPercent(45), basicLocation.EntrancePosition, false);
@@ -952,7 +952,7 @@ namespace LosSantosRED.lsr
         }
         private void AddLocationDescription(DispatchEvent dispatchEvent, LocationSpecificity locationSpecificity)
         {
-            BasicLocation NearbyLocation = World.Places.ActiveLocations.Where(x => !string.IsNullOrEmpty(x.ScannerFilePath) && x.DistanceToPlayer <= 100f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            GameLocation NearbyLocation = World.Places.ActiveLocations.Where(x => !string.IsNullOrEmpty(x.ScannerFilePath) && x.DistanceToPlayer <= 100f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
 
             if (NearbyLocation != null && !RecentlyMentionedLocation)
             {
@@ -1389,7 +1389,7 @@ namespace LosSantosRED.lsr
                 ReportedWeaponsFree = true;
             }
         }
-        private void AddLocation(DispatchEvent dispatchEvent, BasicLocation location)
+        private void AddLocation(DispatchEvent dispatchEvent, GameLocation location)
         {
             if (RecentlyMentionedLocation)
             {

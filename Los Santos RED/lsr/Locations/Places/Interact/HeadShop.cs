@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class HeadShop : InteractableLocation
+public class HeadShop : GameLocation
 {
     public HeadShop() : base()
     {

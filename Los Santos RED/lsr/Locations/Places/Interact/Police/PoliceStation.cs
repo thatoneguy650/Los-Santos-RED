@@ -15,12 +15,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class PoliceStation : InteractableLocation, ILocationRespawnable, ILicensePlatePreviewable, ILocationImpoundable, ILocationAreaRestrictable
+public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePreviewable, ILocationImpoundable, ILocationAreaRestrictable
 {
     private ShopMenu agencyMenu;
-    private bool isInRestrictedArea;
     private UIMenu ImpoundSubMenu;
-
     public PoliceStation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -36,11 +34,6 @@ public class PoliceStation : InteractableLocation, ILocationRespawnable, ILicens
     public float RespawnHeading { get; set; }
     public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
     public float ItemPreviewHeading { get; set; } = 0f;
-
-
-    public bool IsPlayerInRestrictedArea => isInRestrictedArea;
-    public void SetRestrictedArea(bool isInside) => isInRestrictedArea = isInside;
-
     public VehicleImpoundLot VehicleImpoundLot { get; set; }
     public bool HasImpoundLot => VehicleImpoundLot != null;
     public List<SpawnPlace> ItemDeliveryLocations { get; set; } = new List<SpawnPlace>();
@@ -49,9 +42,10 @@ public class PoliceStation : InteractableLocation, ILocationRespawnable, ILicens
         ButtonPromptText = $"Enter {Name}";
         return true;
     }
-    public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world)
+    public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world, 
+        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings)
     {
-        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world);
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets,locationTypes, settings);
         VehicleImpoundLot?.Setup(this);
         if (AssignedAgency == null)
         {
@@ -163,9 +157,7 @@ public class PoliceStation : InteractableLocation, ILocationRespawnable, ILicens
         PayBailFees.Enabled = Player.Respawning.PastDueBailFees > 0;
         InteractionMenu.AddItem(PayBailFees);
 
-
-
-        List<VehicleExt> ImpoundedVehicles = Player.VehicleOwnership.OwnedVehicles.Where(x => x.IsImpounded && x.Vehicle.Exists() && x.Vehicle.DistanceTo2D(EntrancePosition) <= 300f).ToList();
+        List<VehicleExt> ImpoundedVehicles = Player.VehicleOwnership.OwnedVehicles.Where(x => x.IsImpounded && x.Vehicle.Exists() && x.ImpoundedLocation == Name).ToList();// x.Vehicle.DistanceTo2D(EntrancePosition) <= 300f).ToList();
         if (HasImpoundLot && ImpoundedVehicles.Any())
         {       
             ImpoundSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Impounded Vehicles");
@@ -179,15 +171,11 @@ public class PoliceStation : InteractableLocation, ILocationRespawnable, ILicens
                 impoundedVehicle.AddToImpoundMenu(this,ImpoundSubMenu, Player, Time);
             }
         }
-        
+       
         InteractionMenu.Visible = true;
         InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-
         ProcessInteractionMenu();
-
     }
-
-
     private void GenerateMenu()
     {
         List<MenuItem> menuItems = new List<MenuItem>();
@@ -255,31 +243,6 @@ public class PoliceStation : InteractableLocation, ILocationRespawnable, ILicens
         }
         VehicleImpoundLot?.AddDistanceOffset(offsetToAdd);
         base.AddDistanceOffset(offsetToAdd);
-    }
-
-
-    protected override void ExtraUpdate()
-    {
-        if (IsNearby)
-        {
-            VehicleImpoundLot?.Update(World.Player);
-        }
-        else
-        {
-            SetRestrictedArea(false);
-        }
-        base.ExtraUpdate();
-    }
-
-    public void RemoveRestriction()
-    {
-        VehicleImpoundLot?.RemoveRestriction();
-    }
-    public override void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
-    {
-        
-        base.Activate(interiors, settings, crimes, weapons, time, world);
-        VehicleImpoundLot?.Acivate();
     }
 }
 

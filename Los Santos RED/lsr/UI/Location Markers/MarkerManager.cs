@@ -37,7 +37,7 @@ public class MarkerManager
         {
             return;
         }
-        foreach (InteractableLocation bl in World.Places.ActiveInteractableLocations)
+        foreach (GameLocation bl in World.Places.ActiveLocations)
         {
             if(!bl.IsActivated || bl.DistanceToPlayer > 100f || bl.IsTemporarilyClosed || !bl.ShowsMarker || !bl.IsOpen(Time.CurrentHour))
             {

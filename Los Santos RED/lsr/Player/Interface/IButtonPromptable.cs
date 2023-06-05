@@ -16,7 +16,7 @@ namespace LosSantosRED.lsr.Interface
         //bool CanConverseWithLookedAtPed { get; }
        // bool IsInteracting { get; }
      //   bool IsInteractingWithLocation { get; }
-        InteractableLocation ClosestInteractableLocation { get; }
+        GameLocation ClosestInteractableLocation { get; }
       //  bool CanExitCurrentInterior { get; }
       //  bool CanPerformActivities { get; }
         bool IsNearScenario { get; }

@@ -211,6 +211,10 @@
     <Compile Include="lsr\Locations\Places\Interact\BlankLocation.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Police\ILocationAreaRestrictable.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Police\VehicleImpoundLot.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\RestrictedAreas\RestrictedArea.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\RestrictedAreas\RestrictedAreas.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\RestrictedAreas\RestrictedAreaType.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\RestrictedAreas\SecurityCamera.cs" />
     <Compile Include="lsr\Locations\Places\PurchaseMenu.cs" />
     <Compile Include="lsr\Locations\Places\SellMenu.cs" />
     <Compile Include="lsr\Locations\Places\TaskRequirements.cs" />
@@ -235,6 +239,7 @@
     <Compile Include="lsr\Ped\Tasking\LocationTaskRequirements.cs" />
     <Compile Include="lsr\Ped\Variation\AppliedOverlay.cs" />
     <Compile Include="lsr\Ped\Variation\SavedOutfit.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\Gang\GangGetCarOutOfImpoundTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangProveWorthTask.cs" />
     <Compile Include="lsr\Player\Activity\DoorToggle.cs" />
     <Compile Include="lsr\Player\Activity\ItemDroppingActivity.cs" />
@@ -482,7 +487,7 @@
     <Compile Include="lsr\Locations\Places\Interact\HardwareStore.cs" />
     <Compile Include="lsr\Locations\Places\Interact\HeadShop.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Hotel.cs" />
-    <Compile Include="lsr\Locations\Places\InteractableLocation.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocation.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Police\PoliceStation.cs" />
     <Compile Include="lsr\Locations\Places\Interact\LiquorStore.cs" />
     <Compile Include="lsr\Locations\Places\Interact\PawnShop.cs" />
@@ -912,7 +917,6 @@
     <Compile Include="lsr\Dispatcher\DispatchablePerson.cs" />
     <Compile Include="lsr\Dispatcher\DispatchableVehicle.cs" />
     <Compile Include="lsr\Locations\CountyJurisdiction.cs" />
-    <Compile Include="lsr\Locations\Places\GameLocation.cs" />
     <Compile Include="lsr\Locations\LocationType.cs" />
     <Compile Include="lsr\Locations\Street.cs" />
     <Compile Include="lsr\Locations\ZoneJurisdiction.cs" />

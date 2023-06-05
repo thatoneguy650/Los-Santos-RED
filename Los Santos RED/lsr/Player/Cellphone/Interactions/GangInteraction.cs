@@ -41,6 +41,7 @@ public class GangInteraction : IContactMenuInteraction
     private UIMenuItem LeaveGangMenu;
     private ISettingsProvideable Settings;
     private UIMenuItem GangJoinMenu;
+    private UIMenuItem GangImpoundTheft;
 
     public GangInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, GangContact gangContact, IEntityProvideable world, ISettingsProvideable settings)
     {
@@ -159,6 +160,14 @@ public class GangInteraction : IContactMenuInteraction
                 Player.PlayerTasks.GangTasks.StartGangWheelman(ActiveGang);
                 sender.Visible = false;
             };
+
+            GangImpoundTheft = new UIMenuItem("Impound Theft", "Steal a gang car out of the impound lot at the police station. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.ImpoundTheftPaymentMin:C0}-{ActiveGang.ImpoundTheftPaymentMax:C0}~s~" };
+            GangImpoundTheft.Activated += (sender, selectedItem) =>
+            {
+                Player.PlayerTasks.GangTasks.StartImpoundTheft(ActiveGang);
+                sender.Visible = false;
+            };
+
             GangPizza = new UIMenuItem("Pizza Man", "Pizza Time.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{100:C0}-{250:C0}~s~" };
             GangPizza.Activated += (sender, selectedItem) =>
             {
@@ -170,6 +179,7 @@ public class GangInteraction : IContactMenuInteraction
             GangMenu.AddItem(GangTheft);
             GangMenu.AddItem(GangDelivery);
             GangMenu.AddItem(GangWheelman);
+            GangMenu.AddItem(GangImpoundTheft);
             if (ActiveGang.GangClassification == GangClassification.Mafia)// == "Gambetti" || ActiveGang.ShortName == "Pavano" || ActiveGang.ShortName == "Lupisella" || ActiveGang.ShortName == "Messina" || ActiveGang.ShortName == "Ancelotti")
             {
                 GangMenu.AddItem(GangPizza);

@@ -86,6 +86,7 @@ namespace Mod
         private UIMenu VehicleInteractMenu;
         private bool disableAutoEngineStart;
         private bool IsSirenOn;
+        private uint GameTimeLastReportedCamera;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -215,7 +216,7 @@ namespace Mod
         public bool CharacterModelIsPrimaryCharacter => ModelName.ToLower() == "player_zero" || ModelName.ToLower() == "player_one" || ModelName.ToLower() == "player_two";
         public Cop ClosestCopToPlayer { get; set; }
         public Agency AssignedAgency { get; set; }
-        public InteractableLocation ClosestInteractableLocation { get; private set; }
+        public GameLocation ClosestInteractableLocation { get; private set; }
         public float ClosestPoliceDistanceToPlayer { get; set; }
         public Scenario ClosestScenario { get; private set; }
         public GangMember CurrentLookedAtGangMember { get; private set; }
@@ -458,7 +459,7 @@ namespace Mod
         public bool IsUsingController { get; set; }
         public bool IsShowingActionWheel { get; set; }
         public bool IsInPoliceVehicle { get; private set; }
-        public ILocationAreaRestrictable RestrictedArea { get; private set; }
+        public RestrictedArea RestrictedArea { get; private set; }
 
         //Required
         public void Setup()
@@ -556,12 +557,15 @@ namespace Mod
             SpeechSkill = RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max);
 
 
-            foreach(ILocationSetupable locationSetupable in PlacesOfInterest.LocationsToSetup())
-            {
-                locationSetupable.PlayerSetup(this);
-            }
 
             Update();
+
+            foreach(GameLocation bl in PlacesOfInterest.PossibleLocations.InteractableLocations())
+            {
+                bl.SetupPlayer(this);
+            }
+
+
         }
         public void Update()
         {
@@ -880,8 +884,6 @@ namespace Mod
         {
             GameTimeLastShot = Game.GameTime;
         }
-
-
         public void SetAgencyStatus(Agency toassign)
         {
             if(toassign == null)
@@ -944,7 +946,6 @@ namespace Mod
             IsFireFighter = false;
             EntryPoint.WriteToConsole($"Removed Player as Agency");
         }
-
         public void ToggleCopTaskable()
         {
             Cop meCop = World.Pedestrians.Police.FirstOrDefault(x => x.Handle == Handle);
@@ -1184,9 +1185,6 @@ namespace Mod
             isGettingIntoVehicle = IsGettingIntoAVehicle;
             //EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicleChanged to {IsGettingIntoAVehicle}, HoldingEnter {IsNotHoldingEnter}");
         }
-
-
-
         private void HandleVehicleEntry()
         {
             if(CurrentVehicle == null)
@@ -1550,6 +1548,17 @@ namespace Mod
             Investigation.Start(position, false, true, false, false);
             Scanner.OnOfficerMIA();
         }
+
+        public void OnSeenInRestrictedAreaOnCamera(Vector3 position)
+        {
+            Crime crimeObserved = Crimes.GetCrime(StaticStrings.TrespessingCrimeID);
+            CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, false, position, true);
+            PoliceResponse.AddCrime(crimeObserved, description, false);
+            Investigation.Start(position, true, true, false, false);
+            Scanner.AnnounceCrime(crimeObserved, description);
+            EntryPoint.WriteToConsole("OnSeenInRestrictedAreaOnCamera");
+        }
+
         public void Arrest()
         {
             BeingArrested = true;
@@ -1698,7 +1707,7 @@ namespace Mod
                 float ClosestDistance = 999f;
                 ClosestInteractableLocation = null;
                 ClosestDistance = 999f;
-                foreach (InteractableLocation gl in World.Places.ActiveInteractableLocations)// PlacesOfInterest.GetAllStores())
+                foreach (GameLocation gl in World.Places.ActiveLocations)// PlacesOfInterest.GetAllStores())
                 {
                     if (gl.DistanceToPlayer <= 5.0f && gl.CanInteract && !ActivityManager.IsInteractingWithLocation && gl.CanCurrentlyInteract(this))
                     //if (gl.IsOpen(TimeControllable.CurrentHour) && gl.DistanceToPlayer <= 3.0f && gl.CanInteract && !ActivityManager.IsInteractingWithLocation && gl.CanCurrentlyInteract(this))
@@ -1718,15 +1727,26 @@ namespace Mod
             }
             //GameFiber.Yield();//TR Yield RemovedTest 1
             GameFiber.Yield();
-            ILocationAreaRestrictable ra = PlacesOfInterest.RestrictedAreaLocations().Where(x => x.IsPlayerInRestrictedArea).FirstOrDefault(); 
-            if (ra != null)
+
+            //meh
+
+            GameLocation restrictedLocation = World.Places.ActiveLocations.Where(x => x.RestrictedAreas != null && x.RestrictedAreas.IsPlayerViolating()).FirstOrDefault();
+            if(restrictedLocation != null)
             {
-                RestrictedArea = ra;
+                RestrictedArea = restrictedLocation.RestrictedAreas.RestrictedAreasList.Where(x => x.IsPlayerViolating).FirstOrDefault();
+                if (RestrictedArea?.CanSeeOnCameras == true && Game.GameTime - GameTimeLastReportedCamera >= 20000)
+                {
+                    OnSeenInRestrictedAreaOnCamera(Position);
+                    GameTimeLastReportedCamera = Game.GameTime;
+                }
             }
             else
             {
                 RestrictedArea = null;
             }
+
+
+
 
             Stance.Update();
 
@@ -2357,7 +2377,6 @@ namespace Mod
                 TargettingHandle = NativeHelper.GetTargettingHandle();
             }
         }
-
         public void ToggleAutoBackup()
         {
             AutoDispatch = !AutoDispatch;

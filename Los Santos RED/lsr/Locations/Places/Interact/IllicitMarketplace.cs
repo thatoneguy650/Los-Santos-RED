@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class IllicitMarketplace : InteractableLocation
+public class IllicitMarketplace : GameLocation
 {
     public IllicitMarketplace() : base()
     {

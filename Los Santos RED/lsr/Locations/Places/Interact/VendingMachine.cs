@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class VendingMachine : InteractableLocation
+public class VendingMachine : GameLocation
 {
     private UIMenuItem completeTask;
     private Vector3 PropEntryPosition;

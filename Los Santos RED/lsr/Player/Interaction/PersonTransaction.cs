@@ -42,7 +42,7 @@ public class PersonTransaction : Interaction
     private bool PedCanBeAmbientTasked;
     private uint NotificationHandle;
     private bool IsCancelled = false;
-    public InteractableLocation AssociatedStore { get; set; }
+    public GameLocation AssociatedStore { get; set; }
     public PedExt TransactionPed => Ped;
     private bool CanContinueConversation => Player.IsAliveAndFree && Ped.CanConverse && Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 15f;// && Ped.Pedestrian.Speed <= 3.0f;// ((AssociatedStore != null && AssociatedStore.HasVendor && Player.Character.DistanceTo2D(AssociatedStore.VendorPosition) <= 6f) && (Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 6f)) && Player.CanConverse && Ped.CanConverse;
     public override string DebugString => "";

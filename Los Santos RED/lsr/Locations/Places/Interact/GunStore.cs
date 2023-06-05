@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class GunStore : InteractableLocation
+public class GunStore : GameLocation
 {
     private UIMenuItem completeTask;
     public GunStore() : base()

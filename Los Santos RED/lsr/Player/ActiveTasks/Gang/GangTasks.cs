@@ -36,7 +36,7 @@ public class GangTasks
     private List<GangWheelmanTask> GangWheelmanTasks = new List<GangWheelmanTask>();
     private List<GangPizzaDeliveryTask> GangPizzaDeliveryTasks = new List<GangPizzaDeliveryTask>();
     private List<GangProveWorthTask> GangProveWorthTasks = new List<GangProveWorthTask>();
-
+    private List<GangGetCarOutOfImpoundTask> GangGetCarOutOfImpoundTasks = new List<GangGetCarOutOfImpoundTask>();
     public GangTasks(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems, IShopMenus shopMenus, IWeapons weapons, INameProvideable names, IPedGroups pedGroups)
     {
         Player = player;
@@ -68,6 +68,7 @@ public class GangTasks
         GangWheelmanTasks.ForEach(x => x.Dispose());
         GangPizzaDeliveryTasks.ForEach(x => x.Dispose());
         GangProveWorthTasks.ForEach(x => x.Dispose());
+        GangGetCarOutOfImpoundTasks.ForEach(x => x.Dispose());
 
         RivalGangHits.Clear();
         PayoffGangTasks.Clear();
@@ -77,6 +78,7 @@ public class GangTasks
         GangWheelmanTasks.Clear();
         GangPizzaDeliveryTasks.Clear();
         GangProveWorthTasks.Clear();
+        GangGetCarOutOfImpoundTasks.Clear();
     }
     public void StartGangProveWorth(Gang gang, int killRequirement)
     {
@@ -130,6 +132,15 @@ public class GangTasks
         newTask.Setup();
         newTask.Start(gang);
     }
+
+    public void StartImpoundTheft(Gang gang)
+    {
+        GangGetCarOutOfImpoundTask newTask = new GangGetCarOutOfImpoundTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, Settings, World, Crimes, Weapons, Names, PedGroups, ShopMenus, ModItems);
+        GangGetCarOutOfImpoundTasks.Add(newTask);
+        newTask.Setup();
+        newTask.Start(gang);
+    }
+
     public void StartGangPizza(Gang gang)
     {
         GangPizzaDeliveryTask newDelivery = new GangPizzaDeliveryTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, ShopMenus);

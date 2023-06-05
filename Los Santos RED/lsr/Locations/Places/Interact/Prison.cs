@@ -9,9 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Prison : InteractableLocation, ILocationRespawnable, ILocationAreaRestrictable
+public class Prison : GameLocation, ILocationRespawnable, ILocationAreaRestrictable
 {
-    private bool isInRestrictedArea;
     public Prison(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -24,13 +23,6 @@ public class Prison : InteractableLocation, ILocationRespawnable, ILocationAreaR
     public override int MapIcon { get; set; } = 188;
     public Vector3 RespawnLocation { get; set; }
     public float RespawnHeading { get; set; }
-
-
-
-    public bool IsPlayerInRestrictedArea => isInRestrictedArea;
-    public void SetRestrictedArea(bool isInside) => isInRestrictedArea = isInside;
-
-
     public void StoreData(IAgencies agencies)
     {
         if (AssignedAssociationID != null)
@@ -67,11 +59,6 @@ public class Prison : InteractableLocation, ILocationRespawnable, ILocationAreaR
             RespawnLocation += offsetToAdd;
         }
         base.AddDistanceOffset(offsetToAdd);
-    }
-
-    public void RemoveRestriction()
-    {
-
     }
 }
 

@@ -128,7 +128,7 @@ public class Crimes : ICrimes
         DealingGuns = new Crime(StaticStrings.DealingGunsCrimeID, "Illegal Weapons Dealing", 2, false, 24, true, false, false) { MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~dealing illegal guns~s~~n~Avoid dealing in public" };
 
 
-        Trespassing = new Crime(StaticStrings.TrespessingCrimeID, "Trespassing", 2, false, 27, true, false, false);
+        Trespassing = new Crime(StaticStrings.TrespessingCrimeID, "Trespassing", 2, false, 27, true, false, false) { ShowsWarning = true, WarningMessage = "You are ~r~trespassing~s~~n~Leave the area or avoid being spotted" };
 
 
 

@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class DriveThru : InteractableLocation
+public class DriveThru : GameLocation
 {
     public DriveThru() : base()
     {

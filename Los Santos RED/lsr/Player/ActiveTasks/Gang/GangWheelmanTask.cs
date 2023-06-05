@@ -31,7 +31,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private IShopMenus ShopMenus;
         private Gang HiringGang;
         private GangDen HiringGangDen;
-        private BasicLocation RobberyLocation;
+        private GameLocation RobberyLocation;
         private PlayerTask CurrentTask;
         private int GameTimeToWaitBeforeComplications;
         private int MoneyToRecieve;
@@ -559,8 +559,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             //EntryPoint.WriteToConsoleTestLong("Gang Wheelman FAILED");
             //CleanupRobbers();
-
-            foreach(GangMember gm in SpawnedRobbers)
+            if (RobberyLocation != null)
+            {
+                RobberyLocation.IsPlayerInterestedInLocation = false;
+            }
+            foreach (GangMember gm in SpawnedRobbers)
             {
                 if(gm.IsBusted)
                 {
@@ -575,6 +578,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void SetCompleted()
         {
+            if (RobberyLocation != null)
+            {
+                RobberyLocation.IsPlayerInterestedInLocation = false;
+            }
             //EntryPoint.WriteToConsoleTestLong("Gang Wheelman COMPLETED");
             CleanupRobbers();
             //GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 15000));
@@ -618,7 +625,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetRobberyInformation()
         {
-            List<BasicLocation> PossibleSpots = new List<BasicLocation>();
+            List<GameLocation> PossibleSpots = new List<GameLocation>();
             //PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Banks);
             //PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.BeautyShops);
             PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.ConvenienceStores);
@@ -632,15 +639,15 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             //PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Restaurants);
             //RobberyLocation = PossibleSpots.Where(x=> x..PickRandom();
 
-            List<BasicLocation> AvailableSpots = new List<BasicLocation>();
+            List<GameLocation> AvailableSpots = new List<GameLocation>();
 
-            foreach (BasicLocation possibleSpot in PossibleSpots)
+            foreach (GameLocation possibleSpot in PossibleSpots)
             {
                 bool isNear = false;
 
 
 
-                foreach(BasicLocation policeStation in PlacesOfInterest.PossibleLocations.PoliceStations)//do not want to do robberies outside the police stations.....
+                foreach(GameLocation policeStation in PlacesOfInterest.PossibleLocations.PoliceStations)//do not want to do robberies outside the police stations.....
                 {
                     if(possibleSpot.CheckIsNearby(policeStation.CellX,policeStation.CellY,2))
                     {

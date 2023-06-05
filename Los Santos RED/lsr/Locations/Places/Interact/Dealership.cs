@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Dealership : InteractableLocation, ILicensePlatePreviewable
+public class Dealership : GameLocation, ILicensePlatePreviewable
 {
 
     public Dealership() : base()

@@ -20,7 +20,7 @@ namespace LosSantosRED.lsr.Interface
         Vector3 PoliceBackupPoint { get; set; }
         int CitizenWantedLevel { get; set; }
         bool AnyFiresNearPlayer { get; }
-        ILocationInteractable Player { get; }
+
 
         void LoadMPMap();
         void LoadSPMap();

@@ -906,13 +906,13 @@ new YmapDisabler("manhat01",true),
         LocationItemsMenu.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Teleport to various locations";
         LocationItemsMenu.Width = 0.6f;
-        List<InteractableLocation> DirectoryLocations = PlacesOfInterest.AllLocations().ToList();
+        List<GameLocation> DirectoryLocations = PlacesOfInterest.AllLocations().ToList();
         foreach (string typeName in DirectoryLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
         {
-            UIMenuListScrollerItem<BasicLocation> myLocationType = new UIMenuListScrollerItem<BasicLocation>($"{typeName}", "Teleports to A POI on the Map", DirectoryLocations.Where(x => x.TypeName == typeName));
+            UIMenuListScrollerItem<GameLocation> myLocationType = new UIMenuListScrollerItem<GameLocation>($"{typeName}", "Teleports to A POI on the Map", DirectoryLocations.Where(x => x.TypeName == typeName));
             myLocationType.Activated += (menu, item) =>
             {
-                BasicLocation toTele = myLocationType.SelectedItem;
+                GameLocation toTele = myLocationType.SelectedItem;
                 if (toTele != null)
                 {
                     Game.LocalPlayer.Character.Position = toTele.EntrancePosition;
@@ -2636,7 +2636,7 @@ new YmapDisabler("manhat01",true),
         {
             WriteToClassCreator($"List<{locationType}> {locationType}List_{Number} = new List<{locationType}>()", 0, "Locations");
             WriteToClassCreator($"{{", 0, "Locations");
-            foreach (InteractableLocation location2 in ModDataFileManager.PlacesOfInterest.PossibleLocations.InteractableLocations().Where(x=> x.GetType().ToString() == locationType))
+            foreach (GameLocation location2 in ModDataFileManager.PlacesOfInterest.PossibleLocations.InteractableLocations().Where(x=> x.GetType().ToString() == locationType))
             {
                 string type = location2.GetType().ToString();
                 WriteToClassCreator($"new {type}() {{", 0, "Locations");

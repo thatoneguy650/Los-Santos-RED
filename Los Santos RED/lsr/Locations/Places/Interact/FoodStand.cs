@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class FoodStand : InteractableLocation
+public class FoodStand : GameLocation
 {
     public FoodStand() : base()
     {

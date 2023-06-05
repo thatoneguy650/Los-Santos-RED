@@ -21,7 +21,7 @@ public class LocationCamera
     private float EgressCamFOV = 55f;
     private float EntityCamFOV = 55f;
     private bool IsCancelled;
-    private InteractableLocation Store;
+    private GameLocation Store;
     private bool isHighlightingLocation = false;
     private float PlayerHeading = 0f;
     private Vector3 PlayerPosition;
@@ -34,7 +34,7 @@ public class LocationCamera
     public Camera StoreCam { get; private set; }
     public Camera CurrentCamera { get; private set; }
     public bool SayGreeting { get; set; } = true;
-    public LocationCamera(InteractableLocation store, ILocationInteractable player)
+    public LocationCamera(GameLocation store, ILocationInteractable player)
     {
         Store = store;
         Player = player;

@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class CarCrusher : InteractableLocation
+public class CarCrusher : GameLocation
 {
     private UIMenu CrusherSubMenu;
     private readonly float VehiclePickupDistance = 25f;

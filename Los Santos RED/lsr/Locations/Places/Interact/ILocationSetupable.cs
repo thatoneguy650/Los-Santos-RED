@@ -2,6 +2,5 @@
 
 public interface ILocationSetupable
 {
-    void Setup(ICrimes crimes, INameProvideable names, ISettingsProvideable settings);
-    void PlayerSetup(ILocationInteractable player);
+    void Setup();
 }

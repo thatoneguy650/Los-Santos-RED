@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class ScrapYard : InteractableLocation
+public class ScrapYard : GameLocation
 {
     private UIMenu ScrapSubMenu;
     private readonly float VehiclePickupDistance = 25f;

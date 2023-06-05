@@ -13,6 +13,6 @@ public interface ILocationGangAssignable
     string ButtonPromptText { get; set; }
     string MenuID { get; }
    // string GangID { get; }
-    void StoreData(IGangs gangs, IShopMenus shopMenus);
+    void StoreData(IGangs gangs);
 }
 

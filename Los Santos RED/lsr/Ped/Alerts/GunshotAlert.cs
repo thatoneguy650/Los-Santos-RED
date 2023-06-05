@@ -25,13 +25,18 @@ public class GunshotAlert : PedAlert
         }
         if (policeRespondable.Violations.WeaponViolations.RecentlyShot && PedExt.WithinWeaponsAudioRange)
         {
-            EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I JUST HEARD GUNFIRE FROM THE PLAYER");
+            //EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I JUST HEARD GUNFIRE FROM THE PLAYER");
+            AddAlert(policeRespondable.Position);
+        }
+        else if (policeRespondable.Violations.WeaponViolations.RecentlyShotSuppressed && PedExt.DistanceToPlayer <= 10f)
+        {
+            //EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I JUST HEARD GUNFIRE FROM THE PLAYER");
             AddAlert(policeRespondable.Position);
         }
         Cop cop = world.Pedestrians.AllPoliceList.FirstOrDefault(x => NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, x.CellX, x.CellY, 3) && x.IsShooting && x.Pedestrian.Exists());
         if (cop != null && cop.Pedestrian.Exists())
         {
-            EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I JUST HEARD GUNFIRE FROM ANOTHER COP");
+            //EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I JUST HEARD GUNFIRE FROM ANOTHER COP");
             AddAlert(cop.Pedestrian.Position);
         }  
         base.Update(policeRespondable, world);

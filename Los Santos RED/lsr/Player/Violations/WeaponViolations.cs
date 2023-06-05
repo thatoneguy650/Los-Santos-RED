@@ -18,7 +18,9 @@ public class WeaponViolations
     private ISettingsProvideable Settings;
     private ITimeReportable Time;
     private uint GameTimeLastViolatedShooting;
-  //  private uint GameTimeLastViolatedShootingAtCops;
+    private uint GameTimeLastViolatedShootingSuppressed;
+
+    //  private uint GameTimeLastViolatedShootingAtCops;
 
     public WeaponViolations(IViolateable player, Violations violations, ISettingsProvideable settings, ITimeReportable time)
     {
@@ -28,6 +30,7 @@ public class WeaponViolations
         Time = time;
     }
     public bool RecentlyShot => GameTimeLastViolatedShooting > 0 && Game.GameTime - GameTimeLastViolatedShooting <= 5000;
+    public bool RecentlyShotSuppressed => GameTimeLastViolatedShootingSuppressed > 0 && Game.GameTime - GameTimeLastViolatedShootingSuppressed <= 5000;
     //public bool RecentlyShotNearCops => GameTimeLastViolatedShootingAtCops > 0 && Game.GameTime - GameTimeLastViolatedShootingAtCops <= 5000;
     public void Setup()
     {
@@ -53,13 +56,15 @@ public class WeaponViolations
             {
                 if (Player.Character.IsCurrentWeaponSilenced)
                 {
+                    GameTimeLastViolatedShootingSuppressed = Game.GameTime;
                     Violations.AddViolating(StaticStrings.FiringSilencedWeaponCrimeID);
                 }
                 else
-                {   
+                {
+                    GameTimeLastViolatedShooting = Game.GameTime;
                     Violations.AddViolating(StaticStrings.FiringWeaponCrimeID);
                 }
-                GameTimeLastViolatedShooting = Game.GameTime;
+                
                 if (Player.AnyPoliceCanSeePlayer)
                 {
                     Violations.AddViolating(StaticStrings.FiringWeaponNearPoliceCrimeID);
