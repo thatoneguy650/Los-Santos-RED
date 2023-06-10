@@ -1182,6 +1182,30 @@ namespace LSR.Vehicles
             impoundSubMenu.AddItem(impoundMenuItem);
         }
 
-  
+        public void AddRegularBlip()
+        {
+            if (AttachedBlip.Exists() || !Vehicle.Exists())
+            {
+                return;
+            }
+            AttachedBlip = Vehicle.AttachBlip();
+            AttachedBlip.Scale = 0.5f;
+            AttachedBlip.Color = Color.Red;
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: AddOwnershipBlip", 5);
+        }
+        public void FullyDelete()
+        {
+            if(!Vehicle.Exists())
+            {
+                return;
+            }
+            if (AttachedBlip.Exists())
+            {
+                AttachedBlip.Delete();
+                AttachedBlip = null;
+            }
+            Vehicle.Delete();
+        }
+
     }
 }

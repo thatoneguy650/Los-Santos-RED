@@ -59,11 +59,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private Vector3 EgressCamPosition;
         private float EgressCamFOV;
         private bool hasAddedButtonPrompt;
-        private GangContact Contact;
+        private PhoneContact PhoneContact;
+        private GangTasks GangTasks;
 
         private string ButtonPromptIdentifier => "RobberyStart" + RobberyLocation?.Name + HiringGang?.ID;
         private bool HasLocations => RobberyLocation != null && HiringGangDen != null;
-        public GangWheelmanTask(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus, IModItems modItems)
+        public GangWheelmanTask(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes,
+            IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus, IModItems modItems, PhoneContact phoneContact, GangTasks gangTasks)
         {
             Player = player;
             Time = time;
@@ -79,6 +81,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             PedGroups = pedGroups;
             ShopMenus = shopMenus;
             ModItems = modItems;
+            PhoneContact = phoneContact;
+            GangTasks = gangTasks;
         }
         public void Setup()
         {
@@ -96,7 +100,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         public void Start(Gang ActiveGang)
         {
             HiringGang = ActiveGang;
-            Contact = new GangContact(HiringGang.ContactName, HiringGang.ContactIcon);
             if (PlayerTasks.CanStartNewTask(ActiveGang?.ContactName))
             {
                 GetRobberyInformation();
@@ -121,7 +124,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 else
                 {
-                    SendTaskAbortMessage();
+                    GangTasks.SendGenericAbortMessage(PhoneContact);
                 }
             }
         }
@@ -571,9 +574,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     gm.CanBeAmbientTasked = true;
                 }
             }
-
-
-            SendFailMessage();
+            GangTasks.SendGenericFailMessage(PhoneContact);
             PlayerTasks.FailTask(HiringGang.ContactName);
         }
         private void SetCompleted()
@@ -748,31 +749,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 $"{HiringGangDen.FullStreetAddress} for ${MoneyToRecieve}",
                                 $"Heard you were done, see you at the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. We owe you ${MoneyToRecieve}",
                                 };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1);
-        }
-        private void SendFailMessage()
-        {
-            List<string> Replies = new List<string>() {
-                        $"You fucked that up pretty bad.",
-                        $"Do you enjoy pissing me off? The whole job is ruined.",
-                        $"You completely fucked up the job",
-                        $"The job is fucked.",
-                        $"How did you fuck this up so badly?",
-                        $"You just cost me a lot with this fuckup.",
-                        };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1);
-        }
-        private void SendTaskAbortMessage()
-        {
-            List<string> Replies = new List<string>() {
-                    "Nothing yet, I'll let you know",
-                    "I've got nothing for you yet",
-                    "Give me a few days",
-                    "Not a lot to be done right now",
-                    "We will let you know when you can do something for us",
-                    "Check back later.",
-                    };
-            Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, Replies.PickRandom());
+            Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(), 1);
         }
     }
 }

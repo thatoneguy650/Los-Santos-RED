@@ -159,7 +159,7 @@ public class CityHall : GameLocation
         }
         else
         {
-            if (Player.Licenses.HasCCWLicense)
+            if (Player.Licenses.HasPilotsLicense)
             {
                 PilotsLicenseDescription = $"Renew your expired ~p~Pilots License~s~ ~n~Issue Date: {Player.Licenses.PilotsLicense.IssueDate:d}~n~Expiration Date: ~r~{Player.Licenses.PilotsLicense.ExpirationDate:d}~s~";
             }

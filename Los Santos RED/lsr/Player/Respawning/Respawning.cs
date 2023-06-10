@@ -429,7 +429,7 @@ public class Respawning// : IRespawning
             return null;
         }
         VehicleExt vehicleToImpound = CurrentPlayer.VehicleOwnership.OwnedVehicles.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(CurrentPlayer.Character)).FirstOrDefault();  
-        if(!vehicleToImpound.Vehicle.Exists() || vehicleToImpound.Vehicle.DistanceTo2D(CurrentPlayer.Character) >= 50f)
+        if(vehicleToImpound == null || !vehicleToImpound.Vehicle.Exists() || vehicleToImpound.Vehicle.DistanceTo2D(CurrentPlayer.Character) >= 50f)
         {
             EntryPoint.WriteToConsole("IMPOUND VEHICLE FAIL NO VEHICLE TO IMPOUND");
             return null;

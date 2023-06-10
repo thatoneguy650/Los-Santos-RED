@@ -242,8 +242,8 @@ public class VehicleItem : ModItem
             string PurchaseWarningDescription = $"Are you sure you want to purchase this vehicle for ${menuItem.PurchasePrice}";
             if (!Transaction.IsPurchasing)
             {
-                PurchaseHeader = "Take";
-                PurchaseDescription = $"Are you sure you want to take possession of this vehicle";
+                PurchaseWarningHeader = "Take";
+                PurchaseWarningDescription = $"Are you sure you want to take possession of this vehicle";
             }
             SimpleWarning popUpWarning = new SimpleWarning(PurchaseWarningHeader, PurchaseWarningDescription, "", player.ButtonPrompts, settings);
             popUpWarning.Show();
@@ -401,10 +401,6 @@ public class VehicleItem : ModItem
         if(Car.IsBoat)
         {
             Transaction.RotatePreview = false;
-        }
-        else
-        {
-            Transaction.RotatePreview = true;
         }
         Car.WasModSpawned = true;
         Car.WasSpawnedEmpty = true;

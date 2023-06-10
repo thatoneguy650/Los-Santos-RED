@@ -4,8 +4,10 @@ using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
+using System.ArrayExtensions;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,14 +34,16 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private bool HasAddedComplications;
         private bool WillAddComplications;
         private int KilledMembersAtStart;
-        private GangContact Contact;
+        private PhoneContact PhoneContact;
         private bool hasExploded = false;
+        private GangTasks GangTasks;
         public int KillRequirement { get; set; } = 1;
         private bool HasTargetGangAndHiringDen => TargetGang != null && HiringGangDen != null && TargetGangDen != null;
 
         public bool JoinGangOnComplete { get; set; } = false;
 
-        public GangProveWorthTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes)
+        public GangProveWorthTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, 
+            PhoneContact phoneContact, GangTasks gangTasks)
         {
             Player = player;
             Time = time;
@@ -50,6 +54,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Settings = settings;
             World = world;
             Crimes = crimes;
+            PhoneContact = phoneContact;
+            GangTasks = gangTasks;
         }
         public void Setup()
         {
@@ -62,7 +68,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         public void Start(Gang ActiveGang)
         {
             HiringGang = ActiveGang;
-            Contact = new GangContact(HiringGang.ContactName, HiringGang.ContactIcon);
             if (PlayerTasks.CanStartNewTask(ActiveGang?.ContactName))
             {
                 GetTargetGang();
@@ -88,7 +93,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 else
                 {
-                    SendTaskAbortMessage();
+                    GangTasks.SendGenericAbortMessage(PhoneContact);
                 }
             }
         }
@@ -129,6 +134,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 Dispose();
             }
+            Rage.World.GetAllBlips().ToList().ForEach(x=> x?.Delete());
         }
         private void GetTargetGang()
         {
@@ -169,19 +175,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 $"Need to send a message to {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~. Get to the {TargetGang.DenName} on {TargetGangDen.FullStreetAddress} and send them an explosive surprise. Make sure its right outside the {TargetGang.DenName}. Be sure to also get rid of {KillRequirement} members for good measure.",
                     };
             Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom());
-        }
-
-        private void SendTaskAbortMessage()
-        {
-            List<string> Replies = new List<string>() {
-                    "Nothing yet, I'll let you know",
-                    "I've got nothing for you yet",
-                    "Give me a few days",
-                    "Not a lot to be done right now",
-                    "We will let you know when you can do something for us",
-                    "Check back later.",
-                    };
-            Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, Replies.PickRandom());
         }
     }
 }

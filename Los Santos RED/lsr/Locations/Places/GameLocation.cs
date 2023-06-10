@@ -234,7 +234,7 @@ public class GameLocation : ILocationDispatchable
             World.Places.ActiveLocations.Add(this);
         }
         world.AddBlip(Blip);
-        RestrictedAreas?.Activate();
+        RestrictedAreas?.Activate(world);
     }
     public virtual void Deactivate(bool deleteBlip)
     {
@@ -344,7 +344,7 @@ public class GameLocation : ILocationDispatchable
                     InteractionMenu.Visible = true;
                     InteractionMenu.OnItemSelect += (selnder, selectedItem, index) =>
                     {
-                        if (selectedItem.Text == "Buy")
+                        if (selectedItem.Text == "Buy" || selectedItem.Text == "Take")
                         {
                             Transaction?.SellMenu?.Dispose();
                             Transaction?.PurchaseMenu?.Show();
@@ -508,7 +508,7 @@ public class GameLocation : ILocationDispatchable
                 UpdateBlip(time);
                 GameTimeLastCheckedDistance = Game.GameTime;
             }
-            RestrictedAreas?.Update(Player);
+            //RestrictedAreas?.Update(Player);
         }
         else
         {

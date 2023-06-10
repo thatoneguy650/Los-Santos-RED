@@ -52,6 +52,7 @@ public abstract class SpawnTask
     public bool ClearArea { get; set; } = false;
     public bool PlacePedOnGround { get; set; } = false;
     public bool WillAddDriver { get; set; } = true;
+    public bool AddEmptyVehicleBlip { get; set; } = false;
     public TaskRequirements SpawnRequirement { get; set; }
     public bool SpawnWithAllWeapons { get; set; } = false;
     public Vector3 Position
@@ -133,6 +134,10 @@ public abstract class SpawnTask
                         Cleanup(true);
                     }
                 }
+            }
+            else if(AddEmptyVehicleBlip)
+            {
+                LastCreatedVehicle.AddRegularBlip();
             }
         }
     }

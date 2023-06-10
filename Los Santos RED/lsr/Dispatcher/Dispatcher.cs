@@ -80,12 +80,12 @@ public class Dispatcher
         }
         if(Player.RecentlyStartedPlaying)
         {
-            EntryPoint.WriteToConsole("RECENTLY STARTED PLAYING NO DISPTACH");
+            //EntryPoint.WriteToConsole("RECENTLY STARTED PLAYING NO DISPTACH");
             return;
         }
         if(Game.GameTime - GameTimeStartedDispatch <= 10000)
         {
-            EntryPoint.WriteToConsole("RECENTLY STARTED PLAYING222 NO DISPTACH");
+            //EntryPoint.WriteToConsole("RECENTLY STARTED PLAYING222 NO DISPTACH");
             return;
         }
         if (EntryPoint.ModController.IsRunning && !LEDispatcher.Dispatch())

@@ -97,6 +97,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
         {
             try
             {
+
                 while (MenuPool.IsAnyMenuOpen())
                 {
                     GameFiber.Yield();

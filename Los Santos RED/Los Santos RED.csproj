@@ -261,6 +261,7 @@
     <Compile Include="lsr\Player\Cellphone\Burner\Other\BurnerPhoneSettingsIcon.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\KillerContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Interactions\KillerInteraction.cs" />
+    <Compile Include="lsr\Player\Crime\RestrictedAreaManager.cs" />
     <Compile Include="lsr\Player\Crime\WantedLevel.cs" />
     <Compile Include="lsr\Player\Equipment\ClipsetManager.cs" />
     <Compile Include="lsr\Player\HumanState\ArmorManager.cs" />
@@ -274,6 +275,7 @@
     <Compile Include="lsr\Player\Interface\IArmorManageable.cs" />
     <Compile Include="lsr\Player\Interface\IClipsetManageable.cs" />
     <Compile Include="lsr\Player\Interface\IOutfitManageable.cs" />
+    <Compile Include="lsr\Player\Interface\IRestrictedAreaManagable.cs" />
     <Compile Include="lsr\Player\Inventory\Items\BodyArmorItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\EquipmentItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\ValuableItem.cs" />

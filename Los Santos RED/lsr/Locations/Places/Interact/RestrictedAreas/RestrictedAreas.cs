@@ -13,14 +13,15 @@ public class RestrictedAreas
 
     public RestrictedAreas()
     {
+
     }
 
     public List<RestrictedArea> RestrictedAreasList { get; set; } = new List<RestrictedArea>();
-    public void Activate()
+    public void Activate(IEntityProvideable world)
     {
         foreach (RestrictedArea restrictedArea in RestrictedAreasList)
         {
-            restrictedArea.Activate();
+            restrictedArea.Activate(world);
         }
     }
     public void Deactivate()
@@ -30,11 +31,11 @@ public class RestrictedAreas
             restrictedArea.Deactivate();
         }
     }
-    public void Update(ILocationInteractable player)
+    public void Update(ILocationInteractable player, IEntityProvideable world)
     {
         foreach(RestrictedArea restrictedArea in RestrictedAreasList)
         {
-            restrictedArea.Update(player);
+            restrictedArea.Update(player, world);
         }
     }
     public void RemoveImpoundRestrictions()

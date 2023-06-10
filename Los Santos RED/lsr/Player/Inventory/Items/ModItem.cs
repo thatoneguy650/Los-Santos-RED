@@ -398,7 +398,7 @@ public class ModItem
             }
 
 
-            Transaction.RotatePreview = true;
+           // Transaction.RotatePreview = true;
 
             Vector3 Position = Vector3.Zero;
             if (StoreCam.Exists())

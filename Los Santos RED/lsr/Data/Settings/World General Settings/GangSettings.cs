@@ -104,7 +104,7 @@ public class GangSettings : ISettingsDefaultable
 
     [Description("Maximum gang helicopters that can be spawned.")]
     public int HeliSpawnLimit_Default { get; set; }
-
+    public bool SendHitSquadText { get; set; }
 
     public GangSettings()
     {
@@ -203,6 +203,7 @@ public class GangSettings : ISettingsDefaultable
 
        // BoatSpawnLimit_Default = 1;
         HeliSpawnLimit_Default = 1;
+        SendHitSquadText = true;
     }
 
 }

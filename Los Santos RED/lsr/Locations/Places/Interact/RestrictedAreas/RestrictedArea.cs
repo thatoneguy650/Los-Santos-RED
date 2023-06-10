@@ -44,16 +44,17 @@ public class RestrictedArea
     {
         Location = location;
     }
-    public void Activate()
+    public void Activate(IEntityProvideable world)
     {
         IsFreeToEnter = false;
         LockGates();
-        SecurityCameras?.ForEach(x => x.Reset());
+        SecurityCameras?.ForEach(x => x.Activate(world));
     }
     public void Deactivate()
     {
         IsFreeToEnter = false;
         UnLockGates();
+        SecurityCameras?.ForEach(x => x.Deactivate());
     }
     public void AddDistanceOffset(Vector3 offsetToAdd)
     {
@@ -67,8 +68,9 @@ public class RestrictedArea
             }
         }
     }
-    public void Update(ILocationInteractable Player)
+    public void Update(ILocationInteractable Player, IEntityProvideable world)
     {
+        CheckSecurityCameras(Player);
         if (Boundaries == null || !Boundaries.Any() || IsFreeToEnter)
         {
             isPlayerViolating = false;
@@ -84,7 +86,14 @@ public class RestrictedArea
                 UnLockGates();
             }
             return;
-        }        
+        }
+        else
+        {
+            if(!IsLocked)
+            {
+                LockGates();
+            }
+        }
         isPlayerViolating = NativeHelper.IsPointInPolygon(new Vector2(Player.Position.X, Player.Position.Y), Boundaries);
         if(previsPlayerViolating != isPlayerViolating)
         {
@@ -101,11 +110,10 @@ public class RestrictedArea
             previsPlayerViolating = isPlayerViolating;
             EntryPoint.WriteToConsole($"Player Changed Violating Restricted area {Name} at {Location?.Name} IsViolating {isPlayerViolating}");
         }
-        if(isPlayerViolating && IsLocked)
+        if((isPlayerViolating || Player.IsWanted) && IsLocked)
         {
             UnLockGates();
-        }
-        CheckSecurityCameras(Player);
+        }   
     }
 
     private void CheckSecurityCameras(ILocationInteractable Player)

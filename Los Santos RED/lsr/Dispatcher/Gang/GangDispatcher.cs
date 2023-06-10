@@ -229,7 +229,10 @@ public class GangDispatcher
         if(GetFarVehicleSpawnLocation() && GetHitSquadSpawnTypes(enemyGang))
         {
             EntryPoint.WriteToConsole($"DispatchHitSquad Disptaching HitSquad from {enemyGang.ShortName}");
-            CallSpawnTask(false, true, false, false, TaskRequirements.None, true);
+            if(CallSpawnTask(false, true, false, false, TaskRequirements.None, true) && Settings.SettingsManager.GangSettings.SendHitSquadText)
+            {
+                Player.OnHitSquadDispatched(enemyGang);
+            }
         }
     }
 

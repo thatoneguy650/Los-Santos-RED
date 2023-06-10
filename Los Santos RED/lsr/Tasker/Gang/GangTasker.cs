@@ -194,10 +194,6 @@ public class GangTasker
                         WillFleeFromPlayer = true;
                     }
                 }
-                //if (SeenPlayerReactiveCrime)
-                //{
-                //    WillFleeFromPlayer = true;
-                //}
             }
             if (WillAttackPlayer)
             {
@@ -220,9 +216,13 @@ public class GangTasker
             }
             else
             {
-                if(GangMember.IsHitSquad && GangMember.CurrentTask == null && !GangMember.PlayerPerception.EverSeenTarget && GangMember.ClosestDistanceToPlayer >= 20f)
+                if(GangMember.IsHitSquad && !GangMember.PlayerPerception.EverSeenTarget && GangMember.ClosestDistanceToPlayer >= 20f)
                 {
                     SetLocate(GangMember);
+                }
+                else if (GangMember.IsHitSquad && GangMember.PlayerPerception.EverSeenTarget && GangMember.DistanceToPlayer <= 200f)
+                {
+                    SetFight(GangMember, null);
                 }
                 else if (GangMember.WasModSpawned && GangMember.CurrentTask == null)
                 {
@@ -230,7 +230,6 @@ public class GangTasker
                 }
             }
         }
-
         GangMember.GameTimeLastUpdatedTask = Game.GameTime;
     }
     private void SetFlee(GangMember GangMember, WitnessedCrime HighestPriority)

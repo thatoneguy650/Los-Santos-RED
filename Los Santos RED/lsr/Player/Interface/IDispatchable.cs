@@ -28,6 +28,7 @@ namespace LosSantosRED.lsr.Interface
         bool RecentlyStartedPlaying { get; }
         RelationshipManager RelationshipManager { get; }
 
+        void OnHitSquadDispatched(Gang enemyGang);
         void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType);
     }
 }

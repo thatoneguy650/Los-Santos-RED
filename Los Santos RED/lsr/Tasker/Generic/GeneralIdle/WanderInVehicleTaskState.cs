@@ -138,7 +138,7 @@ class WanderInVehicleTaskState : TaskState
             }
 
         }
-        EntryPoint.WriteToConsole($"{PedGeneral?.Handle} VEHICLE GUARD IsNearSpawnPosition:{PedGeneral.IsNearSpawnPosition} canGuard{canGuard} canPatrol{canPatrol}");
+        //EntryPoint.WriteToConsole($"{PedGeneral?.Handle} VEHICLE GUARD IsNearSpawnPosition:{PedGeneral.IsNearSpawnPosition} canGuard{canGuard} canPatrol{canPatrol}");
     }
     private void VehiclePatrol()
     {
@@ -179,7 +179,7 @@ class WanderInVehicleTaskState : TaskState
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
         }
-        EntryPoint.WriteToConsole($"{PedGeneral?.Handle} VEHICLE PATROL IsNearSpawnPosition:{PedGeneral.IsNearSpawnPosition} canGuard{canGuard} canPatrol{canPatrol}");
+        //EntryPoint.WriteToConsole($"{PedGeneral?.Handle} VEHICLE PATROL IsNearSpawnPosition:{PedGeneral.IsNearSpawnPosition} canGuard{canGuard} canPatrol{canPatrol}");
     }
 }
 

@@ -80,73 +80,129 @@ public class GangTasks
         GangProveWorthTasks.Clear();
         GangGetCarOutOfImpoundTasks.Clear();
     }
-    public void StartGangProveWorth(Gang gang, int killRequirement)
+    public void StartGangProveWorth(Gang gang, int killRequirement, GangContact gangContact)
     {
-        GangProveWorthTask newTask = new GangProveWorthTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        GangProveWorthTask newTask = new GangProveWorthTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this);
         newTask.KillRequirement = killRequirement;
         newTask.JoinGangOnComplete = true;
         GangProveWorthTasks.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);
     }
-    public void StartGangHit(Gang gang, int killRequirement)
+    public void StartGangHit(Gang gang, int killRequirement, GangContact gangContact)
     {
-        RivalGangHitTask newTask = new RivalGangHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        RivalGangHitTask newTask = new RivalGangHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this);
         newTask.KillRequirement = killRequirement;
         RivalGangHits.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);
     }
-    public void StartPayoffGang(Gang gang)
+    public void StartPayoffGang(Gang gang, GangContact gangContact)
     {
-        PayoffGangTask newTask = new PayoffGangTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        PayoffGangTask newTask = new PayoffGangTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this);
         PayoffGangTasks.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);
     }
-    public void StartGangTheft(Gang gang)
+    public void StartGangTheft(Gang gang, GangContact gangContact)
     {
-        RivalGangTheftTask newTask = new RivalGangTheftTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        RivalGangTheftTask newTask = new RivalGangTheftTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this);
         RivalGangTheftTasks.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);
     }
-    public void StartGangPickup(Gang gang)
+    public void StartGangPickup(Gang gang, GangContact gangContact)
     {
-        GangPickupTask newTask = new GangPickupTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        GangPickupTask newTask = new GangPickupTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this);
         GangPickupTasks.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);
     }
-    public void StartGangDelivery(Gang gang)
+    public void StartGangDelivery(Gang gang, GangContact gangContact)
     {
-        GangDeliveryTask newTask = new GangDeliveryTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, ShopMenus);
+        GangDeliveryTask newTask = new GangDeliveryTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, ShopMenus, gangContact, this);
         GangDeliveryTasks.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);
     }
-    public void StartGangWheelman(Gang gang)
+    public void StartGangWheelman(Gang gang, GangContact gangContact)
     {
-        GangWheelmanTask newTask = new GangWheelmanTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Weapons, Names, PedGroups, ShopMenus, ModItems);
+        GangWheelmanTask newTask = new GangWheelmanTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Weapons, Names, PedGroups, ShopMenus, ModItems, gangContact, this);
         GangWheelmanTasks.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);
     }
 
-    public void StartImpoundTheft(Gang gang)
+    public void StartImpoundTheft(Gang gang, GangContact gangContact)
     {
-        GangGetCarOutOfImpoundTask newTask = new GangGetCarOutOfImpoundTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, Settings, World, Crimes, Weapons, Names, PedGroups, ShopMenus, ModItems);
+        GangGetCarOutOfImpoundTask newTask = new GangGetCarOutOfImpoundTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, Settings, World, Crimes, Weapons, Names, PedGroups, ShopMenus, ModItems, this, gangContact);
         GangGetCarOutOfImpoundTasks.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);
     }
 
-    public void StartGangPizza(Gang gang)
+    public void StartGangPizza(Gang gang, GangContact gangContact)
     {
-        GangPizzaDeliveryTask newDelivery = new GangPizzaDeliveryTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, ShopMenus);
+        GangPizzaDeliveryTask newDelivery = new GangPizzaDeliveryTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, ShopMenus, gangContact, this);
         GangPizzaDeliveryTasks.Add(newDelivery);
         newDelivery.Setup();
         newDelivery.Start(gang);
+    }
+    public string GetGeneircTaskAbortMessage()
+    {
+        List<string> Replies = new List<string>() {
+                    "Nothing yet, I'll let you know",
+                    "I've got nothing for you yet",
+                    "Give me a few days",
+                    "Not a lot to be done right now",
+                    "We will let you know when you can do something for us",
+                    "Check back later.",
+                    };
+        return Replies.PickRandom();
+    }
+    public string GetGenericFailMessage()
+    {
+        List<string> Replies = new List<string>() {
+                        $"You fucked that up pretty bad.",
+                        $"Do you enjoy pissing me off? The whole job is ruined.",
+                        $"You completely fucked up the job",
+                        $"The job is fucked.",
+                        $"How did you fuck this up so badly?",
+                        $"You just cost me a lot with this fuckup.",
+                        };
+        return Replies.PickRandom();
+    }
+    public void SendGenericAbortMessage(PhoneContact contact)
+    {
+        Player.CellPhone.AddPhoneResponse(contact.Name, GetGeneircTaskAbortMessage());
+    }
+    public void SendGenericFailMessage(PhoneContact contact)
+    {
+        Player.CellPhone.AddScheduledText(contact, GetGenericFailMessage(), 1);
+    }
+
+    public void SendGenericPickupMoneyMessage(PhoneContact contact,string placetypeName, GameLocation gameLocation, int MoneyToRecieve)
+    {
+        List<string> Replies = new List<string>() {
+                                $"Seems like that thing we discussed is done? Come by the {placetypeName} on {gameLocation.FullStreetAddress} to collect the ${MoneyToRecieve}",
+                                $"Word got around that you are done with that thing for us, Come back to the {placetypeName} on {gameLocation.FullStreetAddress} for your payment of ${MoneyToRecieve}",
+                                $"Get back to the {placetypeName} on {gameLocation.FullStreetAddress} for your payment of ${MoneyToRecieve}",
+                                $"{gameLocation.FullStreetAddress} for ${MoneyToRecieve}",
+                                $"Heard you were done, see you at the {placetypeName} on {gameLocation.FullStreetAddress}. We owe you ${MoneyToRecieve}",
+                                };
+        Player.CellPhone.AddScheduledText(contact, Replies.PickRandom(), 1);
+    }
+
+    public void SendHitSquadMessage(PhoneContact contact)
+    {
+        List<string> Replies = new List<string>() {
+                                $"I got some guys out there looking for you. Where you at?",
+                                $"You hiding from us? Not for long.",
+                                $"See you VERY soon.",
+                                $"We will be seeing each other shortly.",
+                                $"Going to get real very soon.",
+                                };
+        Player.CellPhone.AddScheduledText(contact, Replies.PickRandom(), 1);
     }
 }
 

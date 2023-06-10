@@ -58,7 +58,12 @@ public class PurchaseMenu : ModUIMenu
         StoreCam = Camera.RenderingCamera;
         if (ParentMenu != null)
         {
-            purchaseMenu = MenuPool.AddSubMenu(ParentMenu, "Buy");
+            string HeaderText = "Buy";
+            if(!Transaction.IsPurchasing)
+            {
+                HeaderText = "Take";
+            }
+            purchaseMenu = MenuPool.AddSubMenu(ParentMenu, HeaderText);
             if (Transaction.HasBannerImage)
             {
                 purchaseMenu.SetBannerType(Transaction.BannerImage);

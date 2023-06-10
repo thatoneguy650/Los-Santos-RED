@@ -76,6 +76,7 @@ public class Debug
     private bool OnOff1;
     private bool IsOn = true;
     private bool isDoorLocked;
+    private bool DoOne;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Mod.Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, WeatherReporting weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
@@ -1293,16 +1294,31 @@ public class Debug
 
         //prop_cctv_pole_04, X: 411.6299 Y: -1619.302 Z: 28.30813,, 574160586
 
+        Vector3 Coordinates = Vector3.Zero;
 
-        Vector3 Coordinates = new Vector3(411.6299f, -1619.302f, 28.30813f);
+
+        if(DoOne)
+        {
+            Coordinates = new Vector3(411.6299f, -1619.302f, 28.30813f);
+        }
+        else
+        {
+            Coordinates = new Vector3(409.8848f, -1660.358f, 28.25814f);
+        }
+        
+
+
+
+
+
         Rage.Object myObject = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Coordinates.X, Coordinates.Y, Coordinates.Z,10f,Game.GetHashKey("prop_cctv_pole_04"),false,false,false);
 
         if(myObject.Exists())
         {
-            Game.DisplaySubtitle($"{myObject.Handle} {myObject.Health} {myObject.MaxHealth}");
+            Game.DisplaySubtitle($"{(DoOne ? 1 : 2)}  {myObject.Handle} {myObject.Health} {myObject.MaxHealth}");
         }
 
-
+        DoOne = !DoOne;
 
         //PedExt closestPed = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
         //if(closestPed == null || !closestPed.Pedestrian.Exists())

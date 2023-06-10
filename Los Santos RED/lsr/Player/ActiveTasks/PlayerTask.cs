@@ -51,7 +51,6 @@ public class PlayerTask
         {
             return;
         }
-
         if (helpText == "")
         {
             Game.DisplayHelp($"{ContactName} Ready for Payment");
@@ -62,5 +61,10 @@ public class PlayerTask
         }       
     }
     public void OnReadyForPayment(bool displayHelp) => OnReadyForPayment(displayHelp, "");
+
+    public virtual void OnCompleted()
+    {
+
+    }
 }
 

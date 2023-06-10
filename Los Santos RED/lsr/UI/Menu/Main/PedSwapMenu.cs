@@ -110,7 +110,7 @@ public class PedSwapMenu : ModUIMenu
         PedSwapUIMenu.AddItem(BecomeRandomPed);
 
 
-        SetAsGangMember = new UIMenuListScrollerItem<Gang>("Become Gang Member", "Become a random ~r~gang member~s~ of the selected gang", Gangs.GetAllGangs());
+        SetAsGangMember = new UIMenuListScrollerItem<Gang>("Become Gang Member", "Become a random ~r~gang member~s~ of the selected gang. When you join, you join for life.", Gangs.GetAllGangs());
         SetAsGangMember.Activated += (menu, item) =>
         {
             PedSwap.BecomeGangMember(SetAsGangMember.SelectedItem);
@@ -118,7 +118,7 @@ public class PedSwapMenu : ModUIMenu
         };
         PedSwapUIMenu.AddItem(SetAsGangMember);
 
-        SetAsCop = new UIMenuListScrollerItem<Agency>("Become Cop", "Become a random ~b~Police Officer~s~ from the selected agency. ~r~WIP~s~ Functionality will be expanded later", Agencies.GetAgencies().Where(x=> x.ResponseType == ResponseType.LawEnforcement));
+        SetAsCop = new UIMenuListScrollerItem<Agency>("Become Cop", "Become a random ~b~Police Officer~s~ from the selected agency. Become part of the REAL biggest gang around. Use your police powers to enrich yourself and terrorize your enemies. Be on the lookout for nosey civilians and so-called 'good' cops when you make your moves. ~r~WIP~s~", Agencies.GetAgencies().Where(x=> x.ResponseType == ResponseType.LawEnforcement));
         SetAsCop.Activated += (menu, item) =>
         {
             PedSwap.BecomeCop(SetAsCop.SelectedItem);
@@ -126,7 +126,7 @@ public class PedSwapMenu : ModUIMenu
         };
         PedSwapUIMenu.AddItem(SetAsCop);
 
-        SetAsSecurity = new UIMenuListScrollerItem<Agency>("Become Security", "Become a random ~y~Security Guard~s~ from the selected agency. ~r~WIP~s~ Functionality will be expanded later", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.Security));
+        SetAsSecurity = new UIMenuListScrollerItem<Agency>("Become Security", "Become a random ~y~Security Guard~s~ from the selected agency. Want to walk around with a gun without questions? Not accepted by the real police? Join a security agency and become the king of your small castle.~r~WIP~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.Security));
         SetAsSecurity.Activated += (menu, item) =>
         {
             PedSwap.BecomeSecurity(SetAsSecurity.SelectedItem);
@@ -134,7 +134,7 @@ public class PedSwapMenu : ModUIMenu
         };
         PedSwapUIMenu.AddItem(SetAsSecurity);
 
-        SetAsEMT = new UIMenuListScrollerItem<Agency>("Become EMT", "Become a random ~w~EMT~s~ from the selected agency. ~r~WIP~s~ Functionality will be expanded later", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.EMS));
+        SetAsEMT = new UIMenuListScrollerItem<Agency>("Become EMT", "Become a random ~w~EMT~s~ from the selected agency. Treat the unwashed masses, or don't. Got sticky fingers? They won't miss it if they are dead. ~r~WIP~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.EMS));
         SetAsEMT.Activated += (menu, item) =>
         {
             PedSwap.BecomeEMT(SetAsEMT.SelectedItem);
@@ -142,7 +142,7 @@ public class PedSwapMenu : ModUIMenu
         };
         PedSwapUIMenu.AddItem(SetAsEMT);
 
-        SetAsFireFighter = new UIMenuListScrollerItem<Agency>("Become FireFighter", "Become a random ~r~Firefighter~s~ from the selected agency. ~r~WIP~s~ Functionality will be expanded later", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.Fire));
+        SetAsFireFighter = new UIMenuListScrollerItem<Agency>("Become FireFighter", "Become a random ~r~Firefighter~s~ from the selected agency. You've seen Backdraft right? ~r~WIP~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.Fire));
         SetAsFireFighter.Activated += (menu, item) =>
         {
             PedSwap.BecomeFireFighter(SetAsFireFighter.SelectedItem);

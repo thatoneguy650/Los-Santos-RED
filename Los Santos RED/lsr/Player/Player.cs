@@ -19,8 +19,9 @@ namespace Mod
 {
     public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable,
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherAnnounceable,
-                          IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable, ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable,
-                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable, IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable
+                          IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable, 
+                          ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable, IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable, 
+                          IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable, IRestrictedAreaManagable
     {
         public int UpdateState = 0;
         private float CurrentVehicleRoll;
@@ -155,6 +156,7 @@ namespace Mod
             ClipsetManager = new ClipsetManager(this, Settings);
             OutfitManager = new OutfitManager(this, savedOutfits);
             OfficerMIAWatcher = new OfficerMIAWatcher(World, this, this, Settings, TimeControllable);
+            RestrictedAreaManager = new RestrictedAreaManager(this, this, World, Settings);
         }
         public RelationshipManager RelationshipManager { get; private set; }
         public GPSManager GPSManager { get; private set; }
@@ -192,6 +194,9 @@ namespace Mod
         public ClipsetManager ClipsetManager { get; private set; }
         public OutfitManager OutfitManager { get; private set; }
         public OfficerMIAWatcher OfficerMIAWatcher { get; private set; }
+
+        public RestrictedAreaManager RestrictedAreaManager { get; private set; }
+
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
@@ -459,7 +464,7 @@ namespace Mod
         public bool IsUsingController { get; set; }
         public bool IsShowingActionWheel { get; set; }
         public bool IsInPoliceVehicle { get; private set; }
-        public RestrictedArea RestrictedArea { get; private set; }
+        //public RestrictedArea RestrictedArea { get; private set; }
 
         //Required
         public void Setup()
@@ -488,6 +493,7 @@ namespace Mod
             ActivityManager.Setup();
             HealthState.Setup();
             OfficerMIAWatcher.Setup();
+            RestrictedAreaManager.Setup();
             ModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
             FreeModeVoice = Game.LocalPlayer.Character.IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
@@ -595,6 +601,9 @@ namespace Mod
             PlayerVoice.Update();
             ActivityManager.Update();
             OfficerMIAWatcher.Update();
+
+            RestrictedAreaManager.Update();//yields in here
+
         }
         public void SetNotBusted()
         {
@@ -743,6 +752,7 @@ namespace Mod
             ClipsetManager.Dispose();
             OutfitManager.Dispose();
             OfficerMIAWatcher.Dispose();
+            RestrictedAreaManager.Dispose();
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
 
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
@@ -1549,12 +1559,16 @@ namespace Mod
             Scanner.OnOfficerMIA();
         }
 
-        public void OnSeenInRestrictedAreaOnCamera(Vector3 position)
+        public void OnSeenInRestrictedAreaOnCamera()
         {
+            if(Violations.CanEnterRestrictedAreas)
+            {
+                return;
+            }
             Crime crimeObserved = Crimes.GetCrime(StaticStrings.TrespessingCrimeID);
-            CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, false, position, true);
+            CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, false, Position, true);
             PoliceResponse.AddCrime(crimeObserved, description, false);
-            Investigation.Start(position, true, true, false, false);
+            Investigation.Start(Position, true, true, false, false);
             Scanner.AnnounceCrime(crimeObserved, description);
             EntryPoint.WriteToConsole("OnSeenInRestrictedAreaOnCamera");
         }
@@ -1729,22 +1743,6 @@ namespace Mod
             GameFiber.Yield();
 
             //meh
-
-            GameLocation restrictedLocation = World.Places.ActiveLocations.Where(x => x.RestrictedAreas != null && x.RestrictedAreas.IsPlayerViolating()).FirstOrDefault();
-            if(restrictedLocation != null)
-            {
-                RestrictedArea = restrictedLocation.RestrictedAreas.RestrictedAreasList.Where(x => x.IsPlayerViolating).FirstOrDefault();
-                if (RestrictedArea?.CanSeeOnCameras == true && Game.GameTime - GameTimeLastReportedCamera >= 20000)
-                {
-                    OnSeenInRestrictedAreaOnCamera(Position);
-                    GameTimeLastReportedCamera = Game.GameTime;
-                }
-            }
-            else
-            {
-                RestrictedArea = null;
-            }
-
 
 
 
@@ -2381,6 +2379,17 @@ namespace Mod
         {
             AutoDispatch = !AutoDispatch;
             Game.DisplayHelp($"AutoDispatch {(AutoDispatch ? "Enabled" : "Disabled")}");
+        }
+
+        public void OnHitSquadDispatched(Gang enemyGang)
+        {
+            PhoneContact gangcontact = CellPhone.ContactList.Where(x => x.Name == enemyGang.ContactName).FirstOrDefault();
+            if(gangcontact == null)
+            {
+                return;
+            }
+            PlayerTasks.GangTasks.SendHitSquadMessage(gangcontact);
+
         }
     }
 }

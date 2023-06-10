@@ -161,11 +161,11 @@ public class OtherViolations
 
     private void TrespassingUpdate()
     {
-        if (Player.IsWanted && Player.CurrentLocation != null && Player.CurrentLocation.CurrentZone != null && Player.CurrentLocation.CurrentZone.IsRestrictedDuringWanted && Player.CurrentLocation.GameTimeInZone >= 15000 && (Player.WantedLevel >= 3 || Player.PoliceResponse.IsDeadlyChase))
+        if (!Violations.CanEnterRestrictedAreas && Player.IsWanted && Player.CurrentLocation != null && Player.CurrentLocation.CurrentZone != null && Player.CurrentLocation.CurrentZone.IsRestrictedDuringWanted && Player.CurrentLocation.GameTimeInZone >= 15000 && (Player.WantedLevel >= 3 || Player.PoliceResponse.IsDeadlyChase))
         {
             Violations.AddViolating(StaticStrings.TrespessingOnGovtPropertyCrimeID);
         }
-        if(Player.RestrictedArea != null && !Violations.CanEnterRestrictedAreas)
+        if(Player.RestrictedAreaManager.CurrentRestrictedArea != null && !Violations.CanEnterRestrictedAreas)
         {
             Violations.AddViolating(StaticStrings.TrespessingCrimeID);
         }

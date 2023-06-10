@@ -78,6 +78,10 @@ public class PlayerTasks
     }
     public void Dispose()
     {
+        foreach (PlayerTask pt in PlayerTaskList.ToList())
+        {
+            pt.IsActive = false;
+        }
         PlayerTaskList.Clear();
         GangTasks.Dispose();
         CorruptCopTasks.Dispose();
@@ -108,6 +112,7 @@ public class PlayerTasks
             {
                 Player.BankAccounts.GiveMoney(myTask.PaymentAmountOnCompletion);
             }
+            myTask.OnCompleted();
             myTask.IsActive = false;
             myTask.IsReadyForPayment = false;
             myTask.WasCompleted = true;

@@ -30,13 +30,15 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private bool HasAddedComplications;
         private bool WillAddComplications;
         private int KilledMembersAtStart;
-        private GangContact Contact;
+        private PhoneContact PhoneContact;
+        private GangTasks GangTasks;
         public int KillRequirement { get; set; } = 1;
         private bool HasTargetGangAndHiringDen => TargetGang != null && HiringGangDen != null;
 
         public bool JoinGangOnComplete { get; set; } = false;
 
-        public RivalGangHitTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes)
+        public RivalGangHitTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes
+            ,PhoneContact phoneContact, GangTasks gangTasks)
         {
             Player = player;
             Time = time;
@@ -47,6 +49,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Settings = settings;
             World = world;
             Crimes = crimes;
+            PhoneContact = phoneContact;
+            GangTasks = gangTasks;
         }
         public void Setup()
         {
@@ -59,7 +63,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         public void Start(Gang ActiveGang)
         {
             HiringGang = ActiveGang;
-            Contact = new GangContact(HiringGang.ContactName, HiringGang.ContactIcon);
             if (PlayerTasks.CanStartNewTask(ActiveGang?.ContactName))
             {
                 GetTargetGang();
@@ -85,7 +88,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 else
                 {
-                    SendTaskAbortMessage();
+                    GangTasks.SendGenericAbortMessage(PhoneContact);
                 }
             }
         }
@@ -96,15 +99,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 CurrentTask = PlayerTasks.GetTask(HiringGang.ContactName);
                 if (CurrentTask == null || !CurrentTask.IsActive)
                 {
-                    //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {HiringGang.ContactName}");
                     break;
                 }
                 if (Player.RelationshipManager.GangRelationships.GetReputation(TargetGang)?.MembersKilled >= KilledMembersAtStart + KillRequirement)
                 {
                     CurrentTask.OnReadyForPayment(true);
-                    //CurrentTask.IsReadyForPayment = true;
-                    //EntryPoint.WriteToConsoleTestLong($"You killed a member so it is now ready for payment!");
-                    //Game.DisplayHelp($"{HiringGang.ContactName} Money Picked Up");
                     break;
                 }
                 GameFiber.Sleep(1000);
@@ -153,7 +152,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             WillAddComplications = false;// RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.RivalGangHitComplicationsPercentage);
             GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(TargetGang);
             KilledMembersAtStart = gr.MembersKilled;
-            //EntryPoint.WriteToConsoleTestLong($"You are hired to kill {TargetGang.ShortName} starting kill = {CurrentKilledMembers}!");
             PlayerTasks.AddTask(HiringGang.ContactName, MoneyToRecieve, 2000, 0, -500, 7, "Rival Gang Hit");
         }
         private void SendInitialInstructionsMessage()
@@ -174,19 +172,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 $"{HiringGangDen.FullStreetAddress} for ${MoneyToRecieve}",
                                 $"Heard you were done, see you at the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. We owe you ${MoneyToRecieve}",
                                 };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1);
-        }
-        private void SendTaskAbortMessage()
-        {
-            List<string> Replies = new List<string>() {
-                    "Nothing yet, I'll let you know",
-                    "I've got nothing for you yet",
-                    "Give me a few days",
-                    "Not a lot to be done right now",
-                    "We will let you know when you can do something for us",
-                    "Check back later.",
-                    };
-            Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, Replies.PickRandom());
+            Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(), 1);
         }
     }
 }

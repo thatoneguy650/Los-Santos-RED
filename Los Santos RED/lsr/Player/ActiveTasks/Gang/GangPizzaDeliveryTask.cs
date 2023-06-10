@@ -35,10 +35,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private ModItem ItemToDeliver;
         private Restaurant ClosestPlace;
         private int NumberOfItemsToDeliver;
-
+        private PhoneContact PhoneContact;
+        private GangTasks GangTasks;
         private bool HasDen => HiringGangDen != null;
 
-        public GangPizzaDeliveryTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems, IShopMenus shopMenus)
+        public GangPizzaDeliveryTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, 
+            IModItems modItems, IShopMenus shopMenus, PhoneContact phoneContact, GangTasks gangTasks)
         {
             Player = player;
             Time = time;
@@ -51,6 +53,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Crimes = crimes;
             ModItems = modItems;
             ShopMenus = shopMenus;
+            PhoneContact = phoneContact;
+            GangTasks = gangTasks;
         }
         public void Setup()
         {
@@ -77,7 +81,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 else
                 {
-                    SendTaskAbortMessage();
+                    GangTasks.SendGenericAbortMessage(PhoneContact);
                 }
             }
         }
@@ -146,18 +150,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 reply += $" You should be able to get it at {ClosestPlace.Name}.";
             }
             Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, reply);
-        }
-        private void SendTaskAbortMessage()
-        {
-            List<string> Replies = new List<string>() {
-                    "Nothing yet, I'll let you know",
-                    "I've got nothing for you yet",
-                    "Give me a few days",
-                    "Not a lot to be done right now",
-                    "We will let you know when you can do something for us",
-                    "Check back later.",
-                    };
-            Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, Replies.PickRandom());
         }
     }
 }

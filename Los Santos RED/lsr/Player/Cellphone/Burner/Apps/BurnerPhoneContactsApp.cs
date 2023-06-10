@@ -83,7 +83,7 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
         {
             CurrentRow = TotalContacts - 1;
         }
-        if (NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(3, 177))//CLOSE
+        if (NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(3, 177) && !IsDisplayingCall)//CLOSE
         {
             BurnerPhone.PlayBackSound();
             if (IsDisplayingCall)

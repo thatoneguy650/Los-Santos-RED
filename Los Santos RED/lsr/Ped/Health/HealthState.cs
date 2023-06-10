@@ -455,7 +455,7 @@ public class HealthState
             MyPed.Pedestrian.Health = Health;
             Armor = (Armor - NewArmorDamage).Clamp(0, 99999);
             MyPed.Pedestrian.Armor = Armor;
-            EntryPoint.WriteToConsole($"Player Damage Modify: Health{Health} NewHealthDamage{NewHealthDamage} Armor{Armor} NewArmorDamage{NewArmorDamage} CurrentHealth{CurrentHealth} CurrentArmor{CurrentArmor}");
+            //EntryPoint.WriteToConsole($"Player Damage Modify: Health{Health} NewHealthDamage{NewHealthDamage} Armor{Armor} NewArmorDamage{NewArmorDamage} CurrentHealth{CurrentHealth} CurrentArmor{CurrentArmor}");
 
 
         }

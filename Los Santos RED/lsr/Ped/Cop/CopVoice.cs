@@ -233,7 +233,9 @@ public class CopVoice
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
         }
+        Cop.CurrentTask = null;
         SpeakToPlayer(currentPlayer);
+        //Cop.ClearTasks(true);
     }
 }
 

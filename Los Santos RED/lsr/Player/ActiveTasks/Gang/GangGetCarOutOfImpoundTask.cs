@@ -28,18 +28,22 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private IPedGroups PedGroups;
         private IShopMenus ShopMenus;
         private IModItems ModItems;
-
+        private GangTasks GangTasks;
         private Gang HiringGang;
         private GangDen HiringGangDen;
         private PlayerTask CurrentTask;
-        private GangContact Contact;
+        private PhoneContact PhoneContact;
         private int MoneyToRecieve;
         private PoliceStation ImpoundLocation;
         private VehicleExt ImpoundedVehicle;
+        private bool HasEnteredVehicle;
+        private int startingHealth;
+        private float startingEngineHealth;
+        private uint GameTimeShownHealthWarning;
 
         private bool HasTaskData => HiringGangDen != null && ImpoundLocation != null && SpawnedVehicle;
         public GangGetCarOutOfImpoundTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world, 
-            ICrimes crimes,IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus, IModItems modItems)
+            ICrimes crimes,IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus, IModItems modItems, GangTasks gangTasks, PhoneContact phoneContact)
         {
             Player = player;
             Time = time;
@@ -54,6 +58,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             PedGroups = pedGroups;
             ShopMenus = shopMenus;
             ModItems = modItems;
+            GangTasks = gangTasks;
+            PhoneContact = phoneContact;
         }
         public void Setup()
         {
@@ -70,7 +76,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         public void Start(Gang ActiveGang)
         {
             HiringGang = ActiveGang;
-            Contact = new GangContact(HiringGang.ContactName, HiringGang.ContactIcon);
+            //Contact = new GangContact(HiringGang.ContactName, HiringGang.ContactIcon);
             if(!PlayerTasks.CanStartNewTask(ActiveGang?.ContactName))
             {
                 return;
@@ -78,7 +84,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             GetTaskData();
             if (!HasTaskData)
             {
-                SendTaskAbortMessage();
+                GangTasks.SendGenericAbortMessage(PhoneContact);
+                return;
             }
             GetPayment();
             SendInitialInstructionsMessage();
@@ -111,19 +118,52 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     EntryPoint.WriteToConsole("Impound Theft Task: Vehicle Does Not Exist.");
                     break;
                 }
-                if (ImpoundedVehicle.Vehicle.Speed <= 0.5f && ImpoundedVehicle.Vehicle.DistanceTo2D(HiringGangDen.EntrancePosition) <= 70f)//Player.RelationshipManager.GangRelationships.GetReputation(TargetGang)?.MembersKilled >= KilledMembersAtStart + KillRequirement && hasExploded)
+                if (ImpoundedVehicle.Vehicle.Speed <= 0.5f && ImpoundedVehicle.Vehicle.DistanceTo2D(HiringGangDen.EntrancePosition) <= 70f && HiringGangDen.DistanceToPlayer <= 70f)//Player.RelationshipManager.GangRelationships.GetReputation(TargetGang)?.MembersKilled >= KilledMembersAtStart + KillRequirement && hasExploded)
                 {
-                    CurrentTask.OnReadyForPayment(true);
-                    break;
+                    if(CheckVehicleHealth())
+                    {
+                        CurrentTask.OnReadyForPayment(true);
+                        break;
+                    }
+                    else if (Game.GameTime - GameTimeShownHealthWarning >= 30000)
+                    {
+                        Game.DisplayHelp("The vehicle is ~r~damaged~s~!~n~Get it fixed and return!");
+                        GameTimeShownHealthWarning = Game.GameTime;
+                    }
+                }
+                if(!HasEnteredVehicle && ImpoundedVehicle != null && ImpoundedVehicle.Vehicle.Exists() && Player.CurrentVehicle != null && Player.CurrentVehicle.Handle == ImpoundedVehicle.Handle)
+                { 
+                    OnEnteredImpoundedVehicle();
                 }
                 GameFiber.Sleep(1000);
             }
+        }
+        private bool CheckVehicleHealth()
+        {
+            if(ImpoundedVehicle == null || !ImpoundedVehicle.Vehicle.Exists())
+            {
+                return false;
+            }
+            if(ImpoundedVehicle.Vehicle.Health <= startingHealth - 200)
+            {
+                return false;
+            }
+            if (ImpoundedVehicle.Vehicle.EngineHealth <= startingEngineHealth - 200)
+            {
+                return false;
+            }
+            return true;
+        }
+        private void OnEnteredImpoundedVehicle()
+        {
+            HasEnteredVehicle = true;
+            SendReturnToBaseMessage();
         }
         private void FinishTask()
         {
             if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
             {
-                SetCompleted();
+                SetReadyToPickupMoney();
             }
             else if (CurrentTask != null && CurrentTask.IsActive)
             {
@@ -134,14 +174,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 Dispose();
             }
         }
-        private void SetCompleted()
+        private void SetReadyToPickupMoney()
         {
             Cleanup();
             if (ImpoundLocation != null)
             {
                 ImpoundLocation.IsPlayerInterestedInLocation = false;
             }
-            PlayerTasks.CompleteTask(HiringGang.ContactName, true);
         }
         private void SetFailed()
         {
@@ -150,7 +189,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 ImpoundLocation.IsPlayerInterestedInLocation = false;
             }
-            SendFailMessage();
+            GangTasks.SendGenericFailMessage(PhoneContact);
             PlayerTasks.FailTask(HiringGang.ContactName);
         }
         private void GetTaskData()
@@ -162,7 +201,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 SpawnedVehicle = true;
             }
         }
-
         private void GetPayment()
         {
             MoneyToRecieve = RandomItems.GetRandomNumberInt(HiringGang.ImpoundTheftPaymentMin, HiringGang.ImpoundTheftPaymentMax).Round(500);
@@ -182,30 +220,20 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendInitialInstructionsMessage()
         {
             List<string> Replies = new List<string>() {
-                $"Need you to get my {ImpoundedVehicle.FullName(false)} Plate # {ImpoundedVehicle.CarPlate.PlateNumber} out of the impound lot at ~p~{ImpoundLocation.Name}~s~ and bring it back to {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} for your payment of ${MoneyToRecieve}.",
+                $"Need you to get my {ImpoundedVehicle.FullName(false)} Plate # {ImpoundedVehicle.CarPlate.PlateNumber} out of the impound lot at " +
+                $"~p~{ImpoundLocation.Name}~s~ and bring it back to {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} " +
+                $"for your payment of ${MoneyToRecieve}. " +
+                $"Better be in great shape.",
                     };
             Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom());
         }
-        private void SendTaskAbortMessage()
+        private void SendReturnToBaseMessage()
         {
             List<string> Replies = new List<string>() {
-                    "Nothing yet, I'll let you know",
-                    "I've got nothing for you yet",
-                    "Give me a few days",
-                    "Not a lot to be done right now",
-                    "We will let you know when you can do something for us",
-                    "Check back later.",
+                $"Heard that thing was moving along. Bring it back to {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} and make sure it is pristine!"
                     };
-            Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, Replies.PickRandom());
+            Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(),1);
         }
-        private void SendFailMessage()
-        {
-            List<string> Replies = new List<string>() {
-                        $"You fucked that up pretty bad.",
-                        };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1);
-        }
-
         private bool SpawnCar()
         {
             DispatchableVehicle dispatchableVehicle = HiringGang.GetRandomVehicle(0, false, false, true, "", Settings);
@@ -223,6 +251,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             GangSpawnTask gmSpawn = new GangSpawnTask(HiringGang, toSpawn, dispatchableVehicle, null, false, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World, ModItems, false, false, false);
             gmSpawn.AllowAnySpawn = true;
             gmSpawn.AllowBuddySpawn = false;
+            gmSpawn.AddEmptyVehicleBlip = true;
             gmSpawn.AttemptSpawn();
             ImpoundedVehicle = gmSpawn.CreatedVehicles.FirstOrDefault();
             if(ImpoundedVehicle == null || !ImpoundedVehicle.Vehicle.Exists())
@@ -233,11 +262,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             ImpoundedVehicle.SetRandomPlate();
             ImpoundedVehicle.WasModSpawned = true;
             ImpoundedVehicle.WasSpawnedEmpty = true;
+            startingHealth = ImpoundedVehicle.Vehicle.Health;
+            startingEngineHealth = ImpoundedVehicle.Vehicle.EngineHealth;
             if(!ImpoundLocation.VehicleImpoundLot.ImpoundVehicle(ImpoundedVehicle, Time))
             {
                 return false;
             }
-            return true;
+            return ImpoundedVehicle != null && ImpoundedVehicle.Vehicle.Exists();
         }
         private void Cleanup()
         {
@@ -245,11 +276,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 return;
             }
-            if (ImpoundedVehicle != null && ImpoundedVehicle.Vehicle.Exists())
-            {
-                ImpoundedVehicle.WasSpawnedEmpty = false;
-                ImpoundedVehicle.Vehicle.IsPersistent = false;
-            }
+            ImpoundedVehicle.WasSpawnedEmpty = false;
+            ImpoundedVehicle.Vehicle.LockStatus = (VehicleLockStatus)10;
+            //ImpoundedVehicle.Vehicle.IsPersistent = false;
         }
         private void Delete()
         {
@@ -257,11 +286,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 return;
             }
-            if (ImpoundedVehicle != null && ImpoundedVehicle.Vehicle.Exists())
-            {
-                ImpoundedVehicle.WasSpawnedEmpty = false;
-                ImpoundedVehicle.Vehicle.IsPersistent = false;
-            }
+            ImpoundedVehicle.WasSpawnedEmpty = false;
+            ImpoundedVehicle.Vehicle.IsPersistent = false;        
         }
     }
 }

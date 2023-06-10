@@ -84,6 +84,11 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
                 StoreCamera = new LocationCamera(this, Player);
                 StoreCamera.ItemPreviewPosition = ItemPreviewPosition;
                 StoreCamera.ItemPreviewHeading = ItemPreviewHeading;
+
+                if (!Player.IsCop)
+                {
+                    StoreCamera.ForceRegularCamera = true;
+                }
                 StoreCamera.Setup();         
                 CreateInteractionMenu();
                 if(Player.IsCop)
@@ -113,13 +118,30 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
     {
         Transaction = new Transaction(MenuPool, InteractionMenu, agencyMenu, this);
         Transaction.LicensePlatePreviewable = this;
-        Transaction.ItemDeliveryLocations = ItemDeliveryLocations;
+
+
+        if((ItemDeliveryLocations == null || !ItemDeliveryLocations.Any()) && PossibleVehicleSpawns?.Any() == true)
+        {
+            List<SpawnPlace> places = new List<SpawnPlace>();
+            foreach(ConditionalLocation place in PossibleVehicleSpawns)
+            {
+                places.Add(new SpawnPlace(place.Location, place.Heading));
+            }
+            Transaction.ItemDeliveryLocations = places;
+        }
+        else
+        {
+            Transaction.ItemDeliveryLocations = ItemDeliveryLocations;
+        }
+
+        
         Transaction.ItemPreviewPosition = ItemPreviewPosition;
         Transaction.ItemPreviewHeading = ItemPreviewHeading;
         Transaction.IsFreeItems = true;
         Transaction.IsFreeWeapons = true;
         Transaction.IsFreeVehicles = true;
         Transaction.IsPurchasing = false;
+        Transaction.RotatePreview = false;
         Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
 
         InteractionMenu.Visible = true;
@@ -224,7 +246,7 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if (selectedItem.Text == "Buy")
+        if (selectedItem.Text == "Buy" || selectedItem.Text == "Take")
         {
             Transaction?.SellMenu?.Dispose();
             Transaction?.PurchaseMenu?.Show();

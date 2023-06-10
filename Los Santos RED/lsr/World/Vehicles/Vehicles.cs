@@ -135,7 +135,7 @@ public class Vehicles
                             {
                                 EntryPoint.PersistentVehiclesDeleted++;
                             }
-                            PoliceCar.Vehicle.Delete();
+                            PoliceCar.FullyDelete();
                             GameFiber.Yield();
                         }
                         GameFiber.Yield();
@@ -168,7 +168,7 @@ public class Vehicles
                         EntryPoint.PersistentVehiclesDeleted++;
                     }
                     //EntryPoint.WriteToConsole($"Remove Abandoned Non Police {civilianCar.Vehicle.Handle}", 5);
-                    civilianCar.Vehicle.Delete();
+                    civilianCar.FullyDelete();
                 }
                 GameFiber.Yield();
             }
@@ -285,10 +285,10 @@ public class Vehicles
     {
         ClearPolice();
         foreach (VehicleExt vehicleExt in EMSVehicles)
-        {
+        {     
             if (vehicleExt.Vehicle.Exists())
             {
-                vehicleExt.Vehicle.Delete();
+                vehicleExt.FullyDelete();
                 EntryPoint.PersistentVehiclesDeleted++;
             }
         }
@@ -297,7 +297,7 @@ public class Vehicles
         {
             if (vehicleExt.Vehicle.Exists())
             {
-                vehicleExt.Vehicle.Delete();
+                vehicleExt.FullyDelete();
                 EntryPoint.PersistentVehiclesDeleted++;
             }
         }
@@ -308,7 +308,7 @@ public class Vehicles
             {
                 if (vehicleExt.Vehicle.Exists())
                 {
-                    vehicleExt.Vehicle.Delete();
+                    vehicleExt.FullyDelete();
                     EntryPoint.PersistentVehiclesDeleted++;
                 }
             }

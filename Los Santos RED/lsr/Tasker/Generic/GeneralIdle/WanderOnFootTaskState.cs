@@ -107,7 +107,7 @@ class WanderOnFootTaskState : TaskState
         {
             IsPatrolling = true;
         }
-        EntryPoint.WriteToConsole($"PED {PedGeneral.Pedestrian.Handle} IsGuarding {IsGuarding} IsPatrolling {IsPatrolling} canGuard {canGuard} canPatrol {canPatrol} HasSpawnRequirements {HasSpawnRequirements} {PedGeneral.LocationTaskRequirements.TaskRequirements}");   
+        //EntryPoint.WriteToConsole($"PED {PedGeneral.Pedestrian.Handle} IsGuarding {IsGuarding} IsPatrolling {IsPatrolling} canGuard {canGuard} canPatrol {canPatrol} HasSpawnRequirements {HasSpawnRequirements} {PedGeneral.LocationTaskRequirements.TaskRequirements}");   
         SetTasking();
     }
     public void Stop()
@@ -150,7 +150,7 @@ class WanderOnFootTaskState : TaskState
                 IsGuarding = false;
                 IsPatrolling = true;
                 SetTasking();
-                EntryPoint.WriteToConsole($"PED {PedGeneral.Handle} TRANSITIONED FROM GUARDING TO PATROLLING");
+                //EntryPoint.WriteToConsole($"PED {PedGeneral.Handle} TRANSITIONED FROM GUARDING TO PATROLLING");
             }
             GameTimeLastStartedScenario = Game.GameTime;
         }
@@ -256,7 +256,7 @@ class WanderOnFootTaskState : TaskState
                 IsGuarding = true;
                 IsPatrolling = false;
                 SetTasking();
-                EntryPoint.WriteToConsole($"PED {PedGeneral.Handle} TRANSITIONED FROM PATROLLING TO GUARDING");
+               // EntryPoint.WriteToConsole($"PED {PedGeneral.Handle} TRANSITIONED FROM PATROLLING TO GUARDING");
             }
             GameTimeLastStartedFootPatrol = Game.GameTime;
         }    

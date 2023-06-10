@@ -46,13 +46,13 @@ namespace LosSantosRED.lsr
         public List<Crime> CivilianReportableCrimesViolating => CrimesViolating.Where(x => x.CanBeReactedToByCivilians).ToList();
         public string LawsViolatingDisplay => string.Join(", ", CrimesViolating.OrderBy(x=>x.Priority).Select(x => x.Name));
         public bool IsViolatingSeriousCrime => CrimesViolating.Any(x => x.ResultingWantedLevel >= 2);
-        public bool CanCarryAndFireWeapons => Player.IsCop || Player.IsSecurityGuard;
-        public bool CanDamageWantedCivilians => Player.IsCop || Player.IsSecurityGuard;
+        public bool CanCarryAndFireWeapons => Player.IsCop || Player.IsSecurityGuard || Settings.SettingsManager.ViolationSettings.TreatAsCop;
+        public bool CanDamageWantedCivilians => Player.IsCop || Player.IsSecurityGuard || Settings.SettingsManager.ViolationSettings.TreatAsCop;
         public bool CanBodyInteract => Player.IsEMT;
-        public bool CanDriveRecklesslyWithSiren => Player.IsCop || Player.IsEMT || Player.IsFireFighter;
-        public bool CanIgnoreAllTrafficLaws => Player.IsCop;
+        public bool CanDriveRecklesslyWithSiren => Player.IsCop || Player.IsEMT || Player.IsFireFighter || Settings.SettingsManager.ViolationSettings.TreatAsCop;
+        public bool CanIgnoreAllTrafficLaws => Player.IsCop || Settings.SettingsManager.ViolationSettings.TreatAsCop;
 
-        public bool CanEnterRestrictedAreas => Player.IsCop;
+        public bool CanEnterRestrictedAreas => Player.IsCop || Settings.SettingsManager.ViolationSettings.TreatAsCop;
 
         public void Setup()
         {

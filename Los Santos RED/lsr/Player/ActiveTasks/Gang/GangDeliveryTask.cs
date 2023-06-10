@@ -34,10 +34,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private GangDen HiringGangDen;
         private ModItem ItemToDeliver;
         private int NumberOfItemsToDeliver;
-
+        private PhoneContact PhoneContact;
+        private GangTasks GangTasks;
         private bool HasDen => HiringGangDen != null;
 
-        public GangDeliveryTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems, IShopMenus shopMenus)
+        public GangDeliveryTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems, 
+            IShopMenus shopMenus, PhoneContact phoneContact, GangTasks gangTasks)
         {
             Player = player;
             Time = time;
@@ -50,6 +52,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Crimes = crimes;
             ModItems = modItems;
             ShopMenus = shopMenus;
+            PhoneContact = phoneContact;
+            GangTasks = gangTasks;
         }
         public void Setup()
         {
@@ -76,7 +80,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 else
                 {
-                    SendTaskAbortMessage();
+                    GangTasks.SendGenericAbortMessage(PhoneContact);
                 }
             }
         }
@@ -137,18 +141,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     $"We need you to find {NumberOfItemsToDeliver} {ItemToDeliver.MeasurementName}(s) of {ItemToDeliver.Name}. We can't wait all week. Take it to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. You'll get ${MoneyToRecieve} when I get my item.",
                     };
             Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom());
-        }
-        private void SendTaskAbortMessage()
-        {
-            List<string> Replies = new List<string>() {
-                    "Nothing yet, I'll let you know",
-                    "I've got nothing for you yet",
-                    "Give me a few days",
-                    "Not a lot to be done right now",
-                    "We will let you know when you can do something for us",
-                    "Check back later.",
-                    };
-            Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, Replies.PickRandom());
         }
     }
 }

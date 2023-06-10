@@ -330,7 +330,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     {
         GameTimeFirstSawPlayerViolating = Game.GameTime;
         SawPlayerViolating = true;
-        EntryPoint.WriteToConsole($"I AM {Handle} AND I SAW PLAYER VIOLATING");
+        //EntryPoint.WriteToConsole($"I AM {Handle} AND I SAW PLAYER VIOLATING");
     }
     private void ShootingChecker(IPoliceRespondable policeRespondable)
     {

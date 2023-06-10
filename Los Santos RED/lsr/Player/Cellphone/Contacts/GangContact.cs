@@ -19,17 +19,13 @@ public class GangContact : PhoneContact
     }
     public override void OnAnswered(IContactInteractable player, CellPhone cellPhone, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IJurisdictions jurisdictions, ICrimes crimes, IEntityProvideable world)
     {
-        //EntryPoint.WriteToConsoleTestLong("GangContact OnAnswered");
         Gang myGang = gangs.GetAllGangs().FirstOrDefault(x => x.ContactName == Name);
-        if (myGang != null)
+        if (myGang == null)
         {
-            MenuInteraction = new GangInteraction(player, gangs, placesOfInterest, this, world, settings);
-            MenuInteraction.Start(this);
+            return;
         }
-        else
-        {
-            //EntryPoint.WriteToConsoleTestLong("NO GANG FOUND :(");
-        }
+        MenuInteraction = new GangInteraction(player, gangs, placesOfInterest, this, world, settings);
+        MenuInteraction.Start(this);
     }
 
 }

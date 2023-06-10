@@ -41,7 +41,7 @@ public class Transaction
     public int MoneySpent { get; set; } = 0;
     public bool IsStealing { get; set; }
     public bool IsShowingConfirmDialog { get; set; } = false;
-    public bool RotatePreview { get; set; }
+    public bool RotatePreview { get; set; } = true;
     public ILicensePlatePreviewable LicensePlatePreviewable { get; set; }
     public bool IsPurchasing { get; set; } = true;
 

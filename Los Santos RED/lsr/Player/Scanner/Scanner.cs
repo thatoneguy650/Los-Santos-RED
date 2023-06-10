@@ -413,7 +413,7 @@ namespace LosSantosRED.lsr
         private void CleanQueue()
         {
 
-            if (Player.IsWanted && !Player.PoliceResponse.WantedLevelHasBeenRadioedIn)
+            if (Player.IsNotWanted || !Player.PoliceResponse.WantedLevelHasBeenRadioedIn)
             {
                 DispatchQueue.RemoveAll(x => x.LatestInformation.SeenByOfficers || x.IsPoliceStatus);
             }

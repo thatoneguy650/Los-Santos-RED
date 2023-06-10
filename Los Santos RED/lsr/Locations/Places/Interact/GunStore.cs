@@ -94,7 +94,7 @@ public class GunStore : GameLocation
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if (selectedItem.Text == "Buy")
+        if (selectedItem.Text == "Buy" || selectedItem.Text == "Take")
         {
             Transaction?.SellMenu?.Dispose();
             Transaction?.PurchaseMenu?.Show();

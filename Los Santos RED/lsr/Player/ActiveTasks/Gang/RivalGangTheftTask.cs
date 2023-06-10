@@ -26,19 +26,17 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private GangDen HiringGangDen;
         private Gang TargetGang;
         private PlayerTask CurrentTask;
-        private int GameTimeToWaitBeforeComplications;
         private int MoneyToRecieve;
-        private bool HasAddedComplications;
-        private bool WillAddComplications;
-        private int? CurrentKilledMembers;
         private DispatchableVehicle VehicleToSteal;
         private string VehicleToStealMakeName;
         private string VehicleToStealModelName;
-        private GangContact Contact;
+        private PhoneContact PhoneContact;
+        private GangTasks GangTasks;
 
         private bool HasTargetGangVehicleAndHiringDen => TargetGang != null && HiringGangDen != null && VehicleToSteal != null;
         private bool IsInStolenGangCar => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.Model.Name.ToLower() == VehicleToSteal.ModelName.ToLower() && Player.CurrentVehicle.WasModSpawned && Player.CurrentVehicle.AssociatedGang != null && Player.CurrentVehicle.AssociatedGang.ID == TargetGang.ID;
-        public RivalGangTheftTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes)
+        public RivalGangTheftTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes,
+            PhoneContact phoneContact, GangTasks gangTasks)
         {
             Player = player;
             Time = time;
@@ -49,6 +47,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Settings = settings;
             World = world;
             Crimes = crimes;
+            PhoneContact = phoneContact;
+            GangTasks = gangTasks;
         }
         public void Setup()
         {
@@ -61,7 +61,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         public void Start(Gang ActiveGang)
         {
             HiringGang = ActiveGang;
-            Contact = new GangContact(HiringGang.ContactName, HiringGang.ContactIcon);
             if (PlayerTasks.CanStartNewTask(ActiveGang?.ContactName))
             {
                 GetTargetGang();
@@ -87,7 +86,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 else
                 {
-                    SendTaskAbortMessage();
+                    GangTasks.SendGenericAbortMessage(PhoneContact);
                 }
             }
         }
@@ -98,13 +97,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 CurrentTask = PlayerTasks.GetTask(HiringGang.ContactName);
                 if (CurrentTask == null || !CurrentTask.IsActive)
                 {
-                    //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {HiringGang.ContactName}");
                     break;
                 }
                 if (IsInStolenGangCar)
                 {
                     CurrentTask.OnReadyForPayment(true);
-                    //EntryPoint.WriteToConsoleTestLong($"You stole a car so it is now ready for payment!");
                     break;
                 }
                 GameFiber.Sleep(1000);
@@ -115,7 +112,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
             {
                 GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 15000));
-                SendMoneyPickupMessage();
+                GangTasks.SendGenericPickupMoneyMessage(PhoneContact, HiringGang.DenName, HiringGangDen, MoneyToRecieve);
             }
             else
             {
@@ -160,10 +157,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void AddTask()
         {
-            GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);
-            HasAddedComplications = false;
-            WillAddComplications = false;// RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.RivalGangHitComplicationsPercentage);
-            //EntryPoint.WriteToConsoleTestLong($"You are hired to steal car from {TargetGang.ShortName} {VehicleToSteal.ModelName}");
             PlayerTasks.AddTask(HiringGang.ContactName, MoneyToRecieve, 1000, 0, -500, 5, "Auto Theft for Gang");
         }
         private void SendInitialInstructionsMessage()
@@ -173,29 +166,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     $"Go get me a ~p~{VehicleToStealMakeName} {VehicleToStealModelName}~s~ with {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ gang colors. Bring it back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. Payment ${MoneyToRecieve}",
                     };
             Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom());
-        }
-        private void SendMoneyPickupMessage()
-        {
-            List<string> Replies = new List<string>() {
-                                $"Seems like that thing we discussed is done? Come by the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} to collect the ${MoneyToRecieve}",
-                                $"Word got around that you are done with that thing for us, Come back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} for your payment of ${MoneyToRecieve}",
-                                $"Get back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} for your payment of ${MoneyToRecieve}",
-                                $"{HiringGangDen.FullStreetAddress} for ${MoneyToRecieve}",
-                                $"Heard you were done, see you at the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. We owe you ${MoneyToRecieve}",
-                                };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1);
-        }
-        private void SendTaskAbortMessage()
-        {
-            List<string> Replies = new List<string>() {
-                    "Nothing yet, I'll let you know",
-                    "I've got nothing for you yet",
-                    "Give me a few days",
-                    "Not a lot to be done right now",
-                    "We will let you know when you can do something for us",
-                    "Check back later.",
-                    };
-            Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, Replies.PickRandom());
         }
     }
 }

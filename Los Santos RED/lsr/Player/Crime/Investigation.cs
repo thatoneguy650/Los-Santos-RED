@@ -160,7 +160,10 @@ public class Investigation
         {
             RequiresFirefighters = true;
         }
-        Position = NativeHelper.GetStreetPosition(postionToInvestigate, true);
+       // Position = NativeHelper.GetStreetPosition(postionToInvestigate, true);
+
+
+        Position = postionToInvestigate;
         GameFiber.Yield();
         if (havePlayerDescription)
         {

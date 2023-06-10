@@ -30,11 +30,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private int RepToNextLevel;
         private bool HasAddedComplications;
         private bool WillAddComplications;
-        private GangContact Contact;
+        private PhoneContact PhoneContact;
+        private GangTasks GangTasks;
 
         private bool HasDeadDrop => DeadDrop != null;
 
-        public PayoffGangTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes)
+        public PayoffGangTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, 
+            ICrimes crimes, PhoneContact phoneContact, GangTasks gangTasks)
         {
             Player = player;
             Time = time;
@@ -45,6 +47,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Settings = settings;
             World = world;
             Crimes = crimes;
+            PhoneContact = phoneContact;
+            GangTasks = gangTasks;
         }
         public void Setup()
         {
@@ -59,7 +63,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         public void Start(Gang ActiveGang)
         {
             HiringGang = ActiveGang;
-            Contact = new GangContact(HiringGang.ContactName, HiringGang.ContactIcon);
             if (PlayerTasks.CanStartNewTask(HiringGang?.ContactName))
             {
                 GetDeadDrop();
@@ -84,7 +87,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 else
                 {
-                    SendTaskAbortMessage();
+                    GangTasks.SendGenericAbortMessage(PhoneContact);
                 }
             }
         }
@@ -195,7 +198,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 "Ah you got me my favorite thing! I owe you a thing or two",
                                 };
             }
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(), 0);
         }
         private void SendInitialInstructionsMessage()
         {
@@ -205,18 +208,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 $"Drop off ${CostToPayoff} to {DeadDrop.Description} on {DeadDrop.FullStreetAddress}. Once you drop the cash off, get out of the area.",
                 };
             Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom());
-        }
-        private void SendTaskAbortMessage()
-        {
-            List<string> Replies = new List<string>() {
-                    "Nothing yet, I'll let you know",
-                    "I've got nothing for you yet",
-                    "Give me a few days",
-                    "Not a lot to be done right now",
-                    "We will let you know when you can do something for us",
-                    "Check back later.",
-                    };
-            Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, Replies.PickRandom());
         }
     }
 }
