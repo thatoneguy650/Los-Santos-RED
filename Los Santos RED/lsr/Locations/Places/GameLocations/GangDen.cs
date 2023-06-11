@@ -28,9 +28,24 @@ public class GangDen : GameLocation, ILocationGangAssignable
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
     public override string AssociationID => AssignedAssociationID;
-    public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
-    public float ItemPreviewHeading { get; set; } = 0f;
-    public List<SpawnPlace> ItemDeliveryLocations { get; set; } = new List<SpawnPlace>();
+
+
+
+
+
+    //public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
+    //public float ItemPreviewHeading { get; set; } = 0f;
+
+
+    //public SpawnPlace VehiclePreviewLocation { get; set; }
+
+
+    public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
+
+
+
+
+
     public bool IsPrimaryGangDen { get; set; } = false;
     public bool HasVanillaGangSpawnedAroundToBeBlocked { get; set; } = false;
     public override bool IsBlipEnabled { get; set; } = false;
@@ -84,11 +99,8 @@ public class GangDen : GameLocation, ILocationGangAssignable
             {
                 try
                 {
-                    StoreCamera = new LocationCamera(this, Player);
+                    StoreCamera = new LocationCamera(this, Player, Settings);
                     StoreCamera.SayGreeting = false;
-
-                    StoreCamera.ItemPreviewHeading = ItemPreviewHeading;
-                    StoreCamera.ItemPreviewPosition = ItemPreviewPosition;
 
                     StoreCamera.Setup();
 
@@ -126,9 +138,8 @@ public class GangDen : GameLocation, ILocationGangAssignable
 
                         Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
 
-                        Transaction.ItemDeliveryLocations = ItemDeliveryLocations;
-                        Transaction.ItemPreviewPosition = ItemPreviewPosition;
-                        Transaction.ItemPreviewHeading = ItemPreviewHeading;
+                        Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
+                        Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
 
                         PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
                         if (ExpectedMoney > 0 && pt.IsReadyForPayment)
@@ -187,7 +198,7 @@ public class GangDen : GameLocation, ILocationGangAssignable
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if (selectedItem.Text == "Buy" || selectedItem.Text == "Take")
+        if (selectedItem.Text == "Buy" || selectedItem.Text == "Select")
         {
             Transaction?.SellMenu?.Dispose();
             Transaction?.PurchaseMenu?.Show();
@@ -361,14 +372,11 @@ public class GangDen : GameLocation, ILocationGangAssignable
     }
     public override void AddDistanceOffset(Vector3 offsetToAdd)
     {
-        foreach (SpawnPlace sp in ItemDeliveryLocations)
+        foreach (SpawnPlace sp in VehicleDeliveryLocations)
         {
             sp.AddDistanceOffset(offsetToAdd);
         }
-        if (ItemPreviewPosition != Vector3.Zero)
-        {
-            ItemPreviewPosition += offsetToAdd;
-        }
+        VehiclePreviewLocation?.AddDistanceOffset(offsetToAdd);
         base.AddDistanceOffset(offsetToAdd);
     }
 }

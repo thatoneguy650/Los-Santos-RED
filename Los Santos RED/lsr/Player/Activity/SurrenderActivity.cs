@@ -16,7 +16,7 @@ public class SurrenderActivity : DynamicActivity
 
 
     private bool IsSurrendering = false;
-
+    private uint GameTimeLastRaiseHandsEmote;
 
     public SurrenderActivity(IInputable currentPlayer, IEntityProvideable world, ISettingsProvideable settings)
     {
@@ -337,4 +337,22 @@ public class SurrenderActivity : DynamicActivity
         }
     }
 
+    public void Update()
+    {
+        if (HandsAreUp)
+        {
+            if (Game.GameTime - GameTimeLastRaiseHandsEmote >= 10000)
+            {
+                if (RandomItems.RandomPercent(50))
+                {
+                    Player.PlaySpeech("GENERIC_FRIGHTENED_MED", false);
+                }
+                else
+                {
+                    Player.PlaySpeech("GUN_BEG", false);
+                }
+                GameTimeLastRaiseHandsEmote = Game.GameTime;
+            }
+        }
+    }
 }

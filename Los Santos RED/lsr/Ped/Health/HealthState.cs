@@ -164,6 +164,11 @@ public class HealthState
     }
     public void UpdatePlayer(IPoliceRespondable CurrentPlayer)
     {
+
+
+
+
+
         if (Game.GameTime - GameTimeLastCheckedDamage >= 300 && MyPed.Pedestrian.Exists())
         {
             GameTimeLastCheckedDamage = Game.GameTime;

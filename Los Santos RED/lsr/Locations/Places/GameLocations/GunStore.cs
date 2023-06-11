@@ -1,6 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
-using Rage.Native;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
@@ -10,22 +9,29 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class DriveThru : GameLocation
+public class GunStore : GameLocation
 {
-    public DriveThru() : base()
+    private UIMenuItem completeTask;
+    public GunStore() : base()
     {
 
     }
-    public override string TypeName { get; set; } = "Drive-Thru";
-    public override int MapIcon { get; set; } = 523;
+
+    public List<SpawnPlace> ParkingSpaces = new List<SpawnPlace>();
+    public override bool ShowsOnDirectory { get; set; } = false;
+    public override string TypeName { get; set; } = "Gun Store";
+    public override int MapIcon { get; set; } = (int)BlipSprite.AmmuNation;
     public override string ButtonPromptText { get; set; }
-    public DriveThru(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
+    public int MoneyToUnlock { get; set; } = 0;
+    public string ContactName { get; set; } = "";
+
+    public GunStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
+        ButtonPromptText = $"Shop at {Name}";
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
-        ButtonPromptText = $"Shop At {Name}";
         return true;
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
@@ -51,24 +57,28 @@ public class DriveThru : GameLocation
             {
                 try
                 {
-
-                    NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, -1, 2000, 2000);
+                    StoreCamera = new LocationCamera(this, Player, Settings);
+                    StoreCamera.SayGreeting = false;
+                    StoreCamera.Setup();
 
                     CreateInteractionMenu();
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-
-                    Transaction.PreviewItems = false;
-
                     Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
 
                     InteractionMenu.Visible = true;
                     InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
                     Transaction.ProcessTransactionMenu();
 
+                    if (ContactName == StaticStrings.UndergroundGunsContactName)
+                    {
+                        Player.RelationshipManager.GunDealerRelationship.AddMoneySpent(Transaction.MoneySpent);
+                        player.RelationshipManager.GunDealerRelationship.SetReputation((Transaction.MoneySpent) / 5, false);
+                    }
+
                     Transaction.DisposeTransactionMenu();
                     DisposeInteractionMenu();
 
-                    NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
+                    StoreCamera.Dispose();
 
                     Player.ActivityManager.IsInteractingWithLocation = false;
                     Player.IsTransacting = false;
@@ -79,12 +89,12 @@ public class DriveThru : GameLocation
                     EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
                     EntryPoint.ModController.CrashUnload();
                 }
-            }, "DriveThruInteract");
+            }, "GangDenInteract");
         }
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if (selectedItem.Text == "Buy" || selectedItem.Text == "Take")
+        if (selectedItem.Text == "Buy" || selectedItem.Text == "Select")
         {
             Transaction?.SellMenu?.Dispose();
             Transaction?.PurchaseMenu?.Show();

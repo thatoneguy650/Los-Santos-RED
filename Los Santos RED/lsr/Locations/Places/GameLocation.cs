@@ -142,6 +142,8 @@ public class GameLocation : ILocationDispatchable
     public List<ConditionalLocation> PossiblePedSpawns { get; set; }
     public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
 
+    public SpawnPlace VehiclePreviewLocation { get; set; }
+
     [XmlIgnore]
     public bool IsActivated { get; set; } = false;
     [XmlIgnore]
@@ -334,7 +336,7 @@ public class GameLocation : ILocationDispatchable
             {
                 try
                 {
-                    StoreCamera = new LocationCamera(this, Player);
+                    StoreCamera = new LocationCamera(this, Player, Settings);
                     StoreCamera.Setup();
 
                     CreateInteractionMenu();
@@ -344,7 +346,7 @@ public class GameLocation : ILocationDispatchable
                     InteractionMenu.Visible = true;
                     InteractionMenu.OnItemSelect += (selnder, selectedItem, index) =>
                     {
-                        if (selectedItem.Text == "Buy" || selectedItem.Text == "Take")
+                        if (selectedItem.Text == "Buy" || selectedItem.Text == "Select")
                         {
                             Transaction?.SellMenu?.Dispose();
                             Transaction?.PurchaseMenu?.Show();
@@ -806,6 +808,24 @@ public class GameLocation : ILocationDispatchable
             return true;
         }
         return false;
+    }
+
+    public virtual void HighlightVehicle()
+    {
+        if (StoreCamera == null || VehiclePreviewLocation == null)
+        {
+            return;
+        }
+        StoreCamera.HighlightPosition(VehiclePreviewLocation.Position, VehiclePreviewLocation.Heading);
+    }
+
+    public virtual void ReHighlightStore()
+    {
+        if (StoreCamera == null || VehiclePreviewLocation == null)
+        {
+            return;
+        }
+        StoreCamera.HighlightHome();
     }
 }
 

@@ -165,7 +165,7 @@ public class OtherViolations
         {
             Violations.AddViolating(StaticStrings.TrespessingOnGovtPropertyCrimeID);
         }
-        if(Player.RestrictedAreaManager.CurrentRestrictedArea != null && !Violations.CanEnterRestrictedAreas)
+        if(Player.RestrictedAreaManager.IsTrespassing && !Violations.CanEnterRestrictedAreas)
         {
             Violations.AddViolating(StaticStrings.TrespessingCrimeID);
         }

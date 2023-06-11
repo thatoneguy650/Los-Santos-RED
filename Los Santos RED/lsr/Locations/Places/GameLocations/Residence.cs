@@ -86,7 +86,7 @@ public class Residence : GameLocation, ILocationSetupable
         {
             try
             {
-                StoreCamera = new LocationCamera(this, Player);
+                StoreCamera = new LocationCamera(this, Player, Settings);
                 StoreCamera.SayGreeting = false;
                 StoreCamera.Setup();
                 CreateInteractionMenu();

@@ -81,7 +81,7 @@ public class Airport : GameLocation, ILocationSetupable
                 try
                 {
                     IsFlyingToLocation = false;
-                    StoreCamera = new LocationCamera(this, Player);
+                    StoreCamera = new LocationCamera(this, Player, Settings);
                     StoreCamera.Setup();
                     CreateInteractionMenu();
                     InteractionMenu.Visible = true;

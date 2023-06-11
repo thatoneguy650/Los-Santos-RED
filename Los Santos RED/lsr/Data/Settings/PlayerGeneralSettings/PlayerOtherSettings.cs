@@ -95,9 +95,9 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public float SeeBehindDistanceVehicle { get; set; }
     public float SeeBehindDistanceStealth { get; set; }
     public float SeeBehindDistanceRegular { get; set; }
-
-
-
+    public float VehicleAutoCameraXDistance { get; set; }
+    public float VehicleAutoCameraYDistance { get; set; }
+    public float VehicleAutoCameraZDistance { get; set; }
 
     public PlayerOtherSettings()
     {
@@ -150,6 +150,10 @@ public class PlayerOtherSettings : ISettingsDefaultable
         SeeBehindDistanceVehicle = 20f;
         SeeBehindDistanceStealth = 1.5f;
         SeeBehindDistanceRegular = 1.5f;
+
+        VehicleAutoCameraXDistance = 5f;
+        VehicleAutoCameraYDistance = 8f;
+        VehicleAutoCameraZDistance = 2f;
     }
 
 }

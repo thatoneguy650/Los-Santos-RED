@@ -31,7 +31,7 @@
     public bool IsOnActionWheel { get; set; } = false;
     public bool SetRepeat { get; set; } = false;
     public bool IsWholeBody { get; set; } = false;
-
+    public string Category { get; set; } = "Gesture";
     public override string ToString()
     {
         return Name;

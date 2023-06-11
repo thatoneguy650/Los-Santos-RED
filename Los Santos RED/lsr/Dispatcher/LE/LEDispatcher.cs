@@ -896,6 +896,7 @@ public class LEDispatcher
         }
         Agency = GetRandomAgency(SpawnLocation);
         GameFiber.Yield();
+        bool isAmbientPedSpawn = false;
         if (Agency == null)
         {
             return false;
@@ -904,12 +905,20 @@ public class LEDispatcher
         {
             VehicleType = Agency.GetRandomWaterVehicle(World.TotalWantedLevel, "", Settings);
         }
-        else
+        else 
         {
-            VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, HasNeedToSpawnHeli, false, true, "", Settings);
+            if(SpawnLocation.HasSidewalk && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.FootPatrolSpawnPercentage) && Jurisdictions.CanSpawnAmbientPedestrians(Zones.GetZone(SpawnLocation.SidewalkPosition)?.InternalGameName, Agency))
+            {
+                isAmbientPedSpawn = true;
+                EntryPoint.WriteToConsole("LE Dispatcher IS FOOT SPAWN");
+            }          
+            else
+            {
+                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, HasNeedToSpawnHeli, false, true, "", Settings);
+            }
         }
         GameFiber.Yield();
-        if (VehicleType == null)
+        if (VehicleType == null && !isAmbientPedSpawn)
         {
             return false;
         }

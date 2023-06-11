@@ -46,7 +46,7 @@ public class BusStop : GameLocation
 
             GameFiber.StartNew(delegate
             {
-                StoreCamera = new LocationCamera(this, Player);
+                StoreCamera = new LocationCamera(this, Player, Settings);
                 StoreCamera.Setup();
                 CreateInteractionMenu();
                 InteractionMenu.Visible = true;

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 public class ZoneJurisdiction 
 {
     public string ZoneInternalGameName { get; set; } = "";
-    public string AgencyInitials { get; set; } = "";
+    public string AgencyID { get; set; } = "";
     public int Priority { get; set; } = 99;
     public int AmbientSpawnChance { get; set; } = 0;
     public int WantedSpawnChance { get; set; } = 0;
@@ -18,9 +18,9 @@ public class ZoneJurisdiction
     {
 
     }
-    public ZoneJurisdiction(string agencyInitials, string zoneInternalName, int priority, int ambientSpawnChance, int wantedSpawnChance)
+    public ZoneJurisdiction(string agencyID, string zoneInternalName, int priority, int ambientSpawnChance, int wantedSpawnChance)
     {
-        AgencyInitials = agencyInitials;
+        AgencyID = agencyID;
         ZoneInternalGameName = zoneInternalName;
         Priority = priority;
         AmbientSpawnChance = ambientSpawnChance;

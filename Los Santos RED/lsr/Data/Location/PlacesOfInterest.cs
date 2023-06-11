@@ -555,13 +555,17 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         Dealerships = new List<Dealership>()
         {
-            new Dealership(new Vector3(-69.16984f, 63.42498f, 71.89044f), 150.3918f, "Benefactor/Gallivanter", "Take control","BenefactorGallavanterMenu") { BannerImagePath = "benefactorgallivanter.png",
-                CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f), LicensePlatePreviewText = "BENE GALA",
+            new Dealership(new Vector3(-69.16984f, 63.42498f, 71.89044f), 150.3918f, "Benefactor/Gallivanter", "Take control","BenefactorGallavanterMenu") { 
+                BannerImagePath = "benefactorgallivanter.png",
+               // CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), 
+               // CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), 
+                //CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f), 
+                LicensePlatePreviewText = "BENE GALA",
                 AssignedAssociationID = "BOBCAT",
                 PossiblePedSpawns = new List<ConditionalLocation>() { new ConditionalLocation(new Vector3(-72.16306f, 64.89938f, 71.84079f), 150.1162f, 100f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" } },
                 PossibleVehicleSpawns = new List<ConditionalLocation>() { new ConditionalLocation(new Vector3(-97.9782f, 84.38512f, 71.20057f), 149.9098f, 75f), },
-                ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
-                ItemDeliveryLocations = new List<SpawnPlace>() {
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(226.205f, -992.613f, -98.99996f), 177.2006f),
+                VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-83.40893f, 80.80059f, 71.08399f),150.8571f),
                     new SpawnPlace(new Vector3(-91.7436f, 80.85535f, 70.77888f), 332.7139f),
                     new SpawnPlace(new Vector3(-85.95417f, 92.15825f, 71.52161f), 335.7605f),
@@ -575,22 +579,28 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(-76.91218f, 94.65022f, 72.13159f), 249.3525f),
                     new SpawnPlace(new Vector3(-62.50578f, 88.61669f, 72.6437f), 247.8105f),
                 } },
-
-
-
-            new Dealership(new Vector3(-176.7741f, -1158.648f, 23.81366f), 359.6327f, "Vapid of Los Santos", "Low quality mass produced vehicles","VapidMenu") { BannerImagePath = "vapid.png"
-                ,CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),LicensePlatePreviewText = "VAPID LS",
-                ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
-                ItemDeliveryLocations = new List<SpawnPlace>() {
+            new Dealership(new Vector3(-176.7741f, -1158.648f, 23.81366f), 359.6327f, "Vapid of Los Santos", "Low quality mass produced vehicles","VapidMenu") { 
+                BannerImagePath = "vapid.png",
+               // CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), 
+               // CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), 
+               //CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
+                LicensePlatePreviewText = "VAPID LS",
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(226.205f, -992.613f, -98.99996f), 177.2006f),
+                VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-223.3041f, -1166.967f, 22.99067f), 347.7626f),
                     new SpawnPlace(new Vector3(-237.1176f, -1176.55f, 22.12655f), 322.7791f),
                     new SpawnPlace(new Vector3(-237.2399f, -1165.014f, 22.14342f), 272.7086f),
                     new SpawnPlace(new Vector3(-224.3428f, -1177.964f, 22.16829f), 13.04972f),
                 } },
-            new Dealership(new Vector3(286.8117f, -1148.615f, 29.29189f), 0.5211872f,"Sanders Motorcycles", "Feeling Old? Buy a Bike!","SandersMenu") { BannerImagePath = "sanders.png", ScannerFilePath = "01_specific_location\\0x16677E71.wav"
-                ,CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f), LicensePlatePreviewText = "MOTO4YOU",
-                ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
-                ItemDeliveryLocations = new List<SpawnPlace>() {
+            new Dealership(new Vector3(286.8117f, -1148.615f, 29.29189f), 0.5211872f,"Sanders Motorcycles", "Feeling Old? Buy a Bike!","SandersMenu") { 
+                BannerImagePath = "sanders.png", 
+                ScannerFilePath = "01_specific_location\\0x16677E71.wav",
+               // CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), 
+              //  CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), 
+               // CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f), 
+                LicensePlatePreviewText = "MOTO4YOU",
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(226.205f, -992.613f, -98.99996f), 177.2006f),
+                VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(259.3008f, -1150.141f, 29.29169f), 358.0416f),
                     new SpawnPlace(new Vector3(262.3277f, -1161.748f, 28.36098f), 177.7536f),
                     new SpawnPlace(new Vector3(262.2397f, -1149.571f, 28.46074f), 180.2331f),
@@ -600,10 +610,15 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(250.2824f, -1150.506f, 28.44035f), 177.726f),
                     new SpawnPlace(new Vector3(247.0185f, -1162.408f, 28.32439f), 175.2579f),
                 } },
-            new Dealership(new Vector3(-247.2263f, 6213.266f, 31.93902f), 143.0866f, "Helmut's European Autos", "Only the best eurotrash","HelmutMenu") { BannerImagePath = "helmut.png"
-                ,CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
-                ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,LicensePlatePreviewText = "HELMUTEU", IsOnMPMap = false,
-                ItemDeliveryLocations = new List<SpawnPlace>() {
+            new Dealership(new Vector3(-247.2263f, 6213.266f, 31.93902f), 143.0866f, "Helmut's European Autos", "Only the best eurotrash","HelmutMenu") { 
+                BannerImagePath = "helmut.png",
+              //  CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), 
+              //  CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), 
+              //  CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(226.205f, -992.613f, -98.99996f), 177.2006f),
+                LicensePlatePreviewText = "HELMUTEU", 
+                IsOnMPMap = false,
+                VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-214.548f, 6195.725f, 31.48873f), 314.937f),
                     new SpawnPlace(new Vector3(-229.8454f, 6197.135f, 30.65802f), 312.3795f),
                     new SpawnPlace(new Vector3(-240.5559f, 6199.209f, 30.65911f), 320.0063f),
@@ -611,10 +626,16 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(-247.8804f, 6205.941f, 30.65889f), 317.6494f),
                     new SpawnPlace(new Vector3(-204.6075f, 6204.576f, 30.65833f), 312.9748f),
                 } },
-            new Dealership(new Vector3(-38.83289f, -1108.61f, 26.46652f), 158.283f, "Premium Deluxe Motorsport", "Let's make a deal","PremiumDeluxeMenu") { BannerImagePath = "pdx.png", ScannerFilePath = "01_specific_location\\0x122B5EFF.wav",
-                CameraPosition = new Vector3(-46.13059f, -1103.091f, 27.9145f), CameraDirection = new Vector3(0.3461686f, 0.9154226f, -0.2053503f), CameraRotation = new Rotator(-11.85001f, -8.374705E-05f, -20.7142f),
-                ItemPreviewPosition = new Vector3(-43.94203f, -1096.923f, 26.44f), ItemPreviewHeading = 165.1469f,InteriorID = 7170,LicensePlatePreviewText = "PDXMOTORS",
-                ItemDeliveryLocations = new List<SpawnPlace>() {
+            new Dealership(new Vector3(-38.83289f, -1108.61f, 26.46652f), 158.283f, "Premium Deluxe Motorsport", "Let's make a deal","PremiumDeluxeMenu") { 
+                BannerImagePath = "pdx.png", 
+                ScannerFilePath = "01_specific_location\\0x122B5EFF.wav",
+                CameraPosition = new Vector3(-46.13059f, -1103.091f, 27.9145f), 
+                CameraDirection = new Vector3(0.3461686f, 0.9154226f, -0.2053503f), 
+                CameraRotation = new Rotator(-11.85001f, -8.374705E-05f, -20.7142f),
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-43.94203f, -1096.923f, 26.44f), 165.1469f),
+                InteriorID = 7170,
+                LicensePlatePreviewText = "PDXMOTORS",
+                VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-56.35966f, -1116.532f, 26.4349f), 2.403779f),
                     new SpawnPlace(new Vector3(-57.66466f, -1107.103f, 25.60543f), 65.5113f),
                     new SpawnPlace(new Vector3(-47.87741f, -1115.788f, 25.60351f), 3.64787f),
@@ -624,9 +645,13 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(-48.28887f, -1078.742f, 25.9386f), 260.1963f),
                     new SpawnPlace(new Vector3(-15.29717f, -1094.516f, 25.84302f), 173.1287f),
                 } },
-            new Dealership(new Vector3(-802.8875f, -223.7307f, 37.21824f), 117.6851f, "Luxury Autos", "You sure you can afford this?","LuxuryAutosMenu") {BannerImagePath = "luxuryautos.png",
-                CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
-                ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,LicensePlatePreviewText = "LUX AUTO",
+            new Dealership(new Vector3(-802.8875f, -223.7307f, 37.21824f), 117.6851f, "Luxury Autos", "You sure you can afford this?","LuxuryAutosMenu") {
+                BannerImagePath = "luxuryautos.png",
+               // CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), 
+               // CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), 
+               // CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(226.205f, -992.613f, -98.99996f), 177.2006f),
+                LicensePlatePreviewText = "LUX AUTO",
                 AssignedAssociationID = "MERRY",
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new ConditionalLocation(new Vector3(-802.0759f, -227.486f, 37.19593f), 120.1107f, 75f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
@@ -636,21 +661,21 @@ public class PlacesOfInterest : IPlacesOfInterest
                 { 
                     new ConditionalLocation(new Vector3(-811.8248f, -220.6809f, 36.87595f), 27.60655f, 65f) { },
                     new ConditionalLocation(new Vector3(-804.566f, -235.1782f, 36.70311f), 29.39835f, 35f) {IsEmpty = false, RequiredPedGroup = "UnarmedSecurity" }, },
-
-                ItemDeliveryLocations = new List<SpawnPlace>() {
+                VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-768.5347f, -245.1849f, 37.2452f), 197.8712f),
-
                     new SpawnPlace(new Vector3(-811.3596f, -221.3954f, 36.38088f), 30.76537f),
                     new SpawnPlace(new Vector3(-803.5298f, -234.8655f, 36.26606f), 29.17092f),
                     new SpawnPlace(new Vector3(-755.7492f, -242.3515f, 36.36629f), 281.1064f),
                     new SpawnPlace(new Vector3(-760.1515f, -232.0841f, 36.45313f), 204.9191f),
                 } },
-            new Dealership(new Vector3(1224.667f, 2728.353f, 38.00491f), 181.2344f, "Larry's RV Sales", "Need to disappear for a while?", "LarrysRVMenu"){BannerImagePath = "larrysrv.png",
-                CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
-                ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,LicensePlatePreviewText = "LARRYSRV",
-                //CameraPosition = new Vector3(1224.612f, 2711.322f, 39.84733f), CameraDirection = new Vector3(0.03426333f, 0.9912365f, -0.1275782f), CameraRotation = new Rotator(-7.329671f, 2.152019E-07f, -1.979712f),
-                //ItemPreviewPosition = new Vector3(1224.737f, 2720.088f, 37.65635f), ItemPreviewHeading = 90.58456f,
-                ItemDeliveryLocations = new List<SpawnPlace>() {
+            new Dealership(new Vector3(1224.667f, 2728.353f, 38.00491f), 181.2344f, "Larry's RV Sales", "Need to disappear for a while?", "LarrysRVMenu"){
+                BannerImagePath = "larrysrv.png",
+               // CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), 
+               // CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), 
+               // CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(226.205f, -992.613f, -98.99996f), 177.2006f),
+                LicensePlatePreviewText = "LARRYSRV",
+                VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(1236.887f, 2709.858f, 38.00579f), 201.5402f),
                     new SpawnPlace(new Vector3(1246.11f, 2712.359f, 37.17435f), 200.71f),
                     new SpawnPlace(new Vector3(1232.931f, 2699.977f, 37.18208f), 94.271f),
@@ -658,17 +683,21 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(1254.536f, 2692.278f, 36.79386f), 224.2466f),
                 } },
             new Dealership(new Vector3(-703.8819f, -1398.048f, 5.495286f), 137.6665f, "Elitás Travel", "There's first class and then there's Elital","ElitasMenu") {
-                CameraPosition = new Vector3(-702.0489f, -1431.725f, 9.647567f), CameraDirection = new Vector3(-0.9063408f, -0.336776f, -0.2552025f), CameraRotation = new Rotator(-14.78558f, -0.03792449f, 110.3839f),
-                ItemPreviewPosition = new Vector3(-714.89f, -1435.682f, 5.102043f), ItemPreviewHeading = 227.1837f,
-                ItemDeliveryLocations = new List<SpawnPlace>() {
+                CameraPosition = new Vector3(-702.0489f, -1431.725f, 9.647567f), 
+                CameraDirection = new Vector3(-0.9063408f, -0.336776f, -0.2552025f), 
+                CameraRotation = new Rotator(-14.78558f, -0.03792449f, 110.3839f),
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-714.89f, -1435.682f, 5.102043f), 227.1837f),
+                VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-1015.187f, -3401.692f, 13.8351f), 327.5063f),
                     new SpawnPlace(new Vector3(-1066.172f, -3397.097f, 14.54819f), 330.6479f),
                     new SpawnPlace(new Vector3(-1091.473f, -3384.792f, 14.54814f), 330.6455f),
                 } },
             new Dealership(new Vector3(396.8023f, -1170.86f, 29.39787f), 359.2079f, "Get Aweigh", "We can help you Get Aweigh!","GetAweighMenu") {
-                CameraPosition = new Vector3(-759.6039f, -1370.657f, 3.687305f), CameraDirection = new Vector3(0.4598052f, 0.8650874f, -0.2005067f), CameraRotation = new Rotator(-11.56659f, 2.701561E-05f, -27.99123f),
-                ItemPreviewPosition = new Vector3(-755.6831f, -1361.648f, -0.0738305f), ItemPreviewHeading = 229.675f,
-                ItemDeliveryLocations = new List<SpawnPlace>() {
+                CameraPosition = new Vector3(-759.6039f, -1370.657f, 3.687305f), 
+                CameraDirection = new Vector3(0.4598052f, 0.8650874f, -0.2005067f), 
+                CameraRotation = new Rotator(-11.56659f, 2.701561E-05f, -27.99123f),
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-755.6831f, -1361.648f, -0.0738305f),229.675f),
+                VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-884.1031f, -1460.032f, 0.1196398f), 198.8394f),
                     new SpawnPlace(new Vector3(-892.0487f, -1464.138f, 0.1223292f), 200.6151f),
                     new SpawnPlace(new Vector3(-901.3271f, -1465.705f, 0.1061458f), 200.2641f),
@@ -678,30 +707,26 @@ public class PlacesOfInterest : IPlacesOfInterest
             //From discord
             new Dealership(new Vector3(1130.419f, -776.9326f, 57.60993f), 357.4348f, "Outlaw Motors", "Ride like an outlaw","OutlawMotorMenu") {
                 OpenTime = 6, CloseTime = 20,BannerImagePath = "outlaw.png",
-                CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
-                ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,LicensePlatePreviewText = "OUTLAWMC",
-                ItemDeliveryLocations = new List<SpawnPlace>() {
+               // CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), 
+               // CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), 
+               // CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(226.205f, -992.613f, -98.99996f), 177.2006f),
+                LicensePlatePreviewText = "OUTLAWMC",
+                VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(1122.58f, 784.47f, 57.68f), 91.32f),
                     new SpawnPlace(new Vector3(1121.96f, -773.24f, 57.75f), 359.68f),
                 } },
             new Dealership(new Vector3(-41.04f, -1675.14f, 29.45f), 139.44f, "Albany", "From Liberty City with Love","AlbanyMenu") {
                 OpenTime = 6, CloseTime = 20,BannerImagePath = "albany.png",
-                CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
-                ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,LicensePlatePreviewText = "ALBANY",
-                ItemDeliveryLocations = new List<SpawnPlace>() {
+                //CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), 
+               // CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), 
+               // CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(226.205f, -992.613f, -98.99996f), 177.2006f),
+                LicensePlatePreviewText = "ALBANY",
+                VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-45.12f, -1690.65f, 29.39f), 22.31f),
                     new SpawnPlace(new Vector3(-40.71f, -1687.56f, 29.39f), 20.33f),
                 } },
-
-            //new Dealership(new Vector3(-205.69f, -1308.52f, 31.29f), 0.65f, "Lazy Lenny's Lowriders", "All my friends know the low rider","LowriderMenu") {
-            //    OpenTime = 6, CloseTime = 20,
-            //    CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
-            //    ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
-            //    ItemDeliveryLocations = new List<SpawnPlace>() {
-            //        new SpawnPlace(new Vector3(-209.46f, -1302.07f, 31.30f), 86.83f),
-            //        new SpawnPlace(new Vector3(-199.34f, -1306.15f, 31.34f), 356.98f),
-            //    } },//not putting bennys here, too close to underground guns and it doesnt look like a dealership
-
         };
     }
     private void DefaultConfig_illicitMarketplaces()
@@ -2017,11 +2042,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 BannerImagePath = "lssddavis.png",
                 OpenTime = 0,
                 CloseTime = 24,
-                ItemPreviewPosition = new Vector3(383.6079f, -1623.259f, 29.29195f), 
-                ItemPreviewHeading = 314.9681f,
-                CameraPosition = new Vector3(384.024f, -1617.086f, 31.70451f), 
-                CameraDirection = new Vector3(-0.115703f, -0.9545547f, -0.2746601f), 
-                CameraRotation = new Rotator(-15.94176f, -6.659415E-07f, 173.0888f),
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(383.6079f, -1623.259f, 29.29195f), 314.9681f),
+                //CameraPosition = new Vector3(384.024f, -1617.086f, 31.70451f), 
+               // CameraDirection = new Vector3(-0.115703f, -0.9545547f, -0.2746601f), 
+                //CameraRotation = new Rotator(-15.94176f, -6.659415E-07f, 173.0888f),
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     //new LEConditionalLocation(new Vector3(343.7892f, -1602.402f, 29.29194f), 336.6382f, DavisPercentage),
                     new LEConditionalLocation(new Vector3(373.5635f, -1612.563f, 29.29194f), 229.7581f, DavisPercentage),
@@ -2064,11 +2088,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24,
                 RespawnLocation = new Vector3(1858.19f, 3679.873f, 33.75724f),
                 RespawnHeading = 218.3256f,
-                CameraPosition = new Vector3(1880.906f, 3686.685f, 36.28576f),
-                CameraDirection = new Vector3(-0.8681535f, 0.4227323f, -0.2600135f),
-                CameraRotation = new Rotator(-15.07086f, 3.53674E-06f, 64.03703f),
-                ItemPreviewPosition = new Vector3(1873.62f, 3690.187f, 33.55123f),
-                ItemPreviewHeading = 199.1265f,
+               // CameraPosition = new Vector3(1880.906f, 3686.685f, 36.28576f),
+              //  CameraDirection = new Vector3(-0.8681535f, 0.4227323f, -0.2600135f),
+               // CameraRotation = new Rotator(-15.07086f, 3.53674E-06f, 64.03703f),
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(1873.62f, 3690.187f, 33.55123f), 199.1265f),
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(1851.615f, 3679.759f, 34.26711f), 167.1253f, 50f),
                     new LEConditionalLocation(new Vector3(1866.224f, 3684.685f, 33.78798f), 229.2713f, 50f),
@@ -2085,11 +2108,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 InteriorID = 3842, 
                 RespawnLocation = new Vector3(-438.0854f, 6021.318f, 31.49011f),
                 RespawnHeading = 310.0719f,
-                ItemPreviewPosition = new Vector3(-468.9866f, 6019.28f, 31.34055f),
-                ItemPreviewHeading = 306.1413f,
-                CameraPosition = new Vector3(-468.4744f, 6024.704f, 33.34053f), 
-                CameraDirection = new Vector3(-0.1096192f, -0.9549786f, -0.2756799f), 
-                CameraRotation = new Rotator(-16.00254f, -3.330718E-07f, 173.4518f),
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-468.9866f, 6019.28f, 31.34055f), 306.1413f),
+              //  CameraPosition = new Vector3(-468.4744f, 6024.704f, 33.34053f), 
+               // CameraDirection = new Vector3(-0.1096192f, -0.9549786f, -0.2756799f), 
+               // CameraRotation = new Rotator(-16.00254f, -3.330718E-07f, 173.4518f),
                 ScannerFilePath = "01_specific_location\\0x0E94FE38.wav", 
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(-438.606f, 6021.66f, 31.49011f), 358.9023f, 30f),
@@ -2110,13 +2132,12 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24, 
                 RespawnLocation = new Vector3(440.0835f, -982.3911f, 30.68966f),
                 RespawnHeading = 47.88088f,
-                ScannerFilePath = "01_specific_location\\0x0A45FA8A.wav", 
-                ItemPreviewPosition = new Vector3(439.3361f, -1017.903f, 28.2705f), 
-                ItemPreviewHeading = 89.54115f,
+                ScannerFilePath = "01_specific_location\\0x0A45FA8A.wav",
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(439.3361f, -1017.903f, 28.2705f), 89.54115f),
                 BannerImagePath = "lspdmain.png",
-                CameraPosition = new Vector3(434.2917f, -1023.771f, 29.87288f), 
-                CameraDirection = new Vector3(0.6072524f, 0.7701081f, -0.1953922f), 
-                CameraRotation = new Rotator(-11.26764f, 1.262302E-05f, -38.25679f),
+                //CameraPosition = new Vector3(434.2917f, -1023.771f, 29.87288f), 
+               // CameraDirection = new Vector3(0.6072524f, 0.7701081f, -0.1953922f), 
+               // CameraRotation = new Rotator(-11.26764f, 1.262302E-05f, -38.25679f),
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(427.7032f, -982.3438f, 30.7101f), 46.43887f, 80f),
                     new LEConditionalLocation(new Vector3(432.3652f, -973.1894f, 30.71074f), 60.75554f, 80f),
@@ -2145,11 +2166,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24, 
                 RespawnLocation = new Vector3(815.8774f, -1290.531f, 26.28391f),
                 RespawnHeading = 74.91704f,
-                ItemPreviewPosition = new Vector3(860.3976f, -1349.983f, 26.06512f),
-                ItemPreviewHeading = 79.33445f,
-                CameraPosition = new Vector3(852.6959f, -1356.233f, 29.07957f), 
-                CameraDirection = new Vector3(0.7865043f, 0.5654681f, -0.2483079f), 
-                CameraRotation = new Rotator(-14.37741f, 1.806823E-05f, -54.28523f),
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(860.3976f, -1349.983f, 26.06512f),79.33445f),
+               // CameraPosition = new Vector3(852.6959f, -1356.233f, 29.07957f), 
+               // CameraDirection = new Vector3(0.7865043f, 0.5654681f, -0.2483079f), 
+               // CameraRotation = new Rotator(-14.37741f, 1.806823E-05f, -54.28523f),
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(823.9117f, -1288.765f, 28.24066f), 74.91795f, 30f),
                     new LEConditionalLocation(new Vector3(823.3896f, -1291.954f, 28.24066f), 102.1528f, 30f),
@@ -2183,11 +2203,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24,
                 RespawnLocation = new Vector3(644.8676f, -5.218857f, 82.7738f),
                 RespawnHeading = 222.2603f,
-                CameraPosition = new Vector3(543.0516f, -41.45242f, 72.72662f), 
-                CameraDirection = new Vector3(-0.8347768f, 0.4947414f, -0.2416167f), 
-                CameraRotation = new Rotator(-13.98198f, 4.399209E-06f, 59.34634f),
-                ItemPreviewPosition = new Vector3(536.6809f, -38.35585f, 70.72294f),
-                ItemPreviewHeading = 210.4488f,
+                //CameraPosition = new Vector3(543.0516f, -41.45242f, 72.72662f), 
+                //CameraDirection = new Vector3(-0.8347768f, 0.4947414f, -0.2416167f), 
+               // CameraRotation = new Rotator(-13.98198f, 4.399209E-06f, 59.34634f),
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(536.6809f, -38.35585f, 70.72294f), 210.4488f),
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(641.4031f, 0.478787f, 82.78651f), 235.3406f, 50f),
                     new LEConditionalLocation(new Vector3(647.2952f, -11.50604f, 82.60114f), 223.3047f, 50f),
@@ -2588,12 +2607,11 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new GangConditionalLocation(new Vector3(-597.8096f, -1791.076f, 22.92511f), 300.9409f, 50f),
                 new GangConditionalLocation(new Vector3(-607.3063f, -1788.965f, 22.9275f), 162.6913f, 50f),
             },
-            CameraPosition = new Vector3(-589.6008f, -1798.514f, 25.45085f),
-            CameraDirection = new Vector3(0.586422f, 0.7246112f, -0.3620054f),
-            CameraRotation = new Rotator(-21.2234f, -7.327146E-06f, -38.98296f),
-            ItemPreviewPosition = new Vector3(-585.7418f, -1792.97f, 22.85472f),
-            ItemPreviewHeading = 53.11781f,
-            ItemDeliveryLocations = new List<SpawnPlace>() 
+           // CameraPosition = new Vector3(-589.6008f, -1798.514f, 25.45085f),
+            //CameraDirection = new Vector3(0.586422f, 0.7246112f, -0.3620054f),
+            //CameraRotation = new Rotator(-21.2234f, -7.327146E-06f, -38.98296f),
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(-585.7418f, -1792.97f, 22.85472f), 53.11781f),
+            VehicleDeliveryLocations = new List<SpawnPlace>() 
             {
                 new SpawnPlace(new Vector3(-581.0074f, -1797.569f, 22.8803f), 322.0219f),
                 new SpawnPlace(new Vector3(-584.7271f, -1780.009f, 22.66464f), 144.9928f),
@@ -3016,8 +3034,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             MapIconScale = 1f,
             ButtonPromptText = "Enter Ballas Hangout",
             AssignedAssociationID = "AMBIENT_GANG_BALLAS",
-            ItemPreviewPosition = new Vector3(0f, 0f, 0),
-            ItemPreviewHeading = 0f,
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(0f, 0f, 0), 0f),
             ExpectedMoney = 0,
             ExpectedItemAmount = 0,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -3378,12 +3395,11 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new GangConditionalLocation(new Vector3(972.7709f, -142.4676f, 73.60614f), 239.6191f, 55f),
                 new GangConditionalLocation(new Vector3(972.8246f, -155.1686f, 72.8443f), 52.89192f, 55f),
             },
-            CameraPosition = new Vector3(961.1312f, -131.4942f, 76.40847f),
-            CameraDirection = new Vector3(-0.7768034f, 0.5811784f, -0.2425037f),
-            CameraRotation = new Rotator(-14.03436f, 4.840233E-06f, 53.19739f),
-            ItemPreviewPosition = new Vector3(955.3662f, -127.888f, 74.37495f),
-            ItemPreviewHeading = 150.3339f,
-            ItemDeliveryLocations = new List<SpawnPlace>() {
+            //CameraPosition = new Vector3(961.1312f, -131.4942f, 76.40847f),
+           // CameraDirection = new Vector3(-0.7768034f, 0.5811784f, -0.2425037f),
+           // CameraRotation = new Rotator(-14.03436f, 4.840233E-06f, 53.19739f),
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(955.3662f, -127.888f, 74.37495f), 150.3339f),
+            VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(955.2133f, -133.7419f, 74.44804f),239.5793f),
                     new SpawnPlace(new Vector3(967.6667f, -141.4849f, 74.39858f), 239.8698f),
                     new SpawnPlace(new Vector3(986.6042f, -138.3367f, 73.09078f), 59.13091f),
@@ -3416,12 +3432,11 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new GangConditionalLocation(new Vector3(58.89564f, 3698.918f, 39.75497f), 319.3528f, 45f),
                 new GangConditionalLocation(new Vector3(57.78175f, 3699.333f, 39.75499f), 307.2412f, 45f),
             },
-            CameraPosition = new Vector3(88.20795f, 3694.343f, 40.96601f),
-            CameraDirection = new Vector3(-0.2029471f, 0.9696398f, -0.1364228f),
-            CameraRotation = new Rotator(-7.840899f, 0f, 11.82144f),
-            ItemPreviewPosition = new Vector3(86.68027f, 3702.844f, 39.09414f),
-            ItemPreviewHeading = 150.3339f,
-            ItemDeliveryLocations = new List<SpawnPlace>() {
+           // CameraPosition = new Vector3(88.20795f, 3694.343f, 40.96601f),
+           // CameraDirection = new Vector3(-0.2029471f, 0.9696398f, -0.1364228f),
+           // CameraRotation = new Rotator(-7.840899f, 0f, 11.82144f),
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(86.68027f, 3702.844f, 39.09414f), 150.3339f),
+            VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(86.68027f, 3702.844f, 39.09414f), 168.2432f),
                 }
         };

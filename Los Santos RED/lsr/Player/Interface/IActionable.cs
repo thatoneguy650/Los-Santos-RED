@@ -69,6 +69,7 @@ namespace LosSantosRED.lsr.Interface
         Agency AssignedAgency { get; }
         Gang CurrentGang { get; }
         bool IsServicePed { get; }
+        bool HasScrewdriverInHand { get; set; }
 
         void DisplayPlayerNotification();
         void SetWantedLevel(int selectedItem, string v1, bool v2);

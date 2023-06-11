@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 public class DeadBodyAlert : PedAlert
 {
-    public List<PedExt> BodiesSeen { get; private set; } = new List<PedExt>();
+    public List<BodyWatcher> BodiesSeen { get; private set; } = new List<BodyWatcher>();
     public DeadBodyAlert(PedExt pedExt, ISettingsProvideable settings) : base(pedExt, settings, ePedAlertType.DeadBody)
     {
         Priority = 1;
@@ -31,7 +31,7 @@ public class DeadBodyAlert : PedAlert
         {
             return;
         }
-        foreach (PedExt deadBody in world.Pedestrians.DeadPeds.Where(x => !BodiesSeen.Any(y => y.Handle == x.Handle) && x.Pedestrian.Exists() && PedExt.Pedestrian.Exists()))
+        foreach (PedExt deadBody in world.Pedestrians.DeadPeds.Where(x => !BodiesSeen.Any(y => y.PedBody?.Handle == x.Handle) && x.Pedestrian.Exists() && PedExt.Pedestrian.Exists()))
         {
             float distanceToBody = PedExt.Pedestrian.DistanceTo2D(deadBody.Pedestrian);
             bool CanSeeBody = false;
@@ -50,15 +50,24 @@ public class DeadBodyAlert : PedAlert
             }
             if (CanSeeBody)
             {
+                deadBody.SetWasSeenDead();
                 deadBody.HasBeenSeenDead = true;
-                PedExt.SetSeenBody(deadBody);
-                BodiesSeen.Add(deadBody);
+                PedExt.SetSeenDead(deadBody);
+                BodiesSeen.Add(new BodyWatcher(deadBody));
                 EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I JUST SAW A DEAD BODY {deadBody.Handle}");
-                AddAlert(deadBody);
+                if (deadBody.GeneratesBodyAlerts)
+                {
+                    AddAlert(deadBody);
+                }
             }
         }
-        BodiesSeen.RemoveAll(x => !x.Pedestrian.Exists());
+        BodiesSeen.RemoveAll(x => x.PedBody == null || !x.PedBody.Pedestrian.Exists());
+        //BodiesSeen.ForEach(x => x.CheckReports());
         base.Update(policeRespondable, world);
+        if(HasReachedPosition)
+        {
+            BodiesSeen.ForEach(x => x.DisableAlerts());
+        }
     }
 }
 

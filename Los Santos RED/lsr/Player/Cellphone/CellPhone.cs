@@ -16,6 +16,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 
 public class CellPhone
 {
+    private bool IsDisposed = false;
     private ICellPhoneable Player;
     private int ContactIndex = 40;
     private int BurnerContactIndex = 0;
@@ -103,6 +104,7 @@ public class CellPhone
     }
     public void Setup()
     {
+        IsDisposed = false;
         AddContact(new EmergencyServicesContact(StaticStrings.EmergencyServicesContactName, "CHAR_CALL911"), false);
         BurnerPhone.Setup();
         phoneAudioPlayer.Setup();
@@ -127,7 +129,7 @@ public class CellPhone
     {
         PhoneResponses.Remove(phoneResponse);
     }
-    public void Update()
+    private void Update()
     {
         CheckScheduledItems();
         MenuPool.ProcessMenus();
@@ -170,10 +172,9 @@ public class CellPhone
         {
             BurnerPhone.ClosePhone();
         }
-
-
-            NativeHelper.StartScript("cellphone_flashhand", 1424);
-            NativeHelper.StartScript("cellphone_controller", 1424);
+        NativeHelper.StartScript("cellphone_flashhand", 1424);
+        NativeHelper.StartScript("cellphone_controller", 1424);
+        IsDisposed = true;
         //}
     }
     public void Close(int time)
@@ -477,11 +478,49 @@ public class CellPhone
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Hang_Up", "Phone_SoundSet_Default", 0);
     }
 
-
-
-
-
-
+    public void Start()
+    {
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                while (!IsDisposed)
+                {
+                    Update();
+                    GameFiber.Yield();
+                }
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "CellPhone");
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                while (!IsDisposed)
+                {
+                    if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone)
+                    {
+                        BurnerPhone.Update();
+                    }
+                    GameFiber.Yield();
+                }
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "BurnerPhone");
+        if (Settings.SettingsManager.CellphoneSettings.TerminateVanillaCellphone)
+        {
+            NativeFunction.Natives.TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("cellphone_flashhand");
+            NativeFunction.Natives.TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("cellphone_controller");
+        }
+    }
 
     private class ScheduledContact
     {

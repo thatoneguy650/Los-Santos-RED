@@ -32,11 +32,10 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
     public override int MapIcon { get; set; } = (int)BlipSprite.PoliceStation;
     public Vector3 RespawnLocation { get; set; }
     public float RespawnHeading { get; set; }
-    public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
-    public float ItemPreviewHeading { get; set; } = 0f;
+   // public SpawnPlace VehiclePreviewLocation { get; set; }
     public VehicleImpoundLot VehicleImpoundLot { get; set; }
     public bool HasImpoundLot => VehicleImpoundLot != null;
-    public List<SpawnPlace> ItemDeliveryLocations { get; set; } = new List<SpawnPlace>();
+    public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Enter {Name}";
@@ -81,14 +80,7 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
         {
             try
             {
-                StoreCamera = new LocationCamera(this, Player);
-                StoreCamera.ItemPreviewPosition = ItemPreviewPosition;
-                StoreCamera.ItemPreviewHeading = ItemPreviewHeading;
-
-                if (!Player.IsCop)
-                {
-                    StoreCamera.ForceRegularCamera = true;
-                }
+                StoreCamera = new LocationCamera(this, Player, Settings);
                 StoreCamera.Setup();         
                 CreateInteractionMenu();
                 if(Player.IsCop)
@@ -113,35 +105,36 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
             }
         }, "PoliceStationInteract");
     }
-
     private void InteractAsCop(IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         Transaction = new Transaction(MenuPool, InteractionMenu, agencyMenu, this);
         Transaction.LicensePlatePreviewable = this;
 
 
-        if((ItemDeliveryLocations == null || !ItemDeliveryLocations.Any()) && PossibleVehicleSpawns?.Any() == true)
+        if((VehicleDeliveryLocations == null || !VehicleDeliveryLocations.Any()) && PossibleVehicleSpawns?.Any() == true)
         {
             List<SpawnPlace> places = new List<SpawnPlace>();
             foreach(ConditionalLocation place in PossibleVehicleSpawns)
             {
                 places.Add(new SpawnPlace(place.Location, place.Heading));
             }
-            Transaction.ItemDeliveryLocations = places;
+            Transaction.VehicleDeliveryLocations = places;
         }
         else
         {
-            Transaction.ItemDeliveryLocations = ItemDeliveryLocations;
+            Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
         }
 
-        
-        Transaction.ItemPreviewPosition = ItemPreviewPosition;
-        Transaction.ItemPreviewHeading = ItemPreviewHeading;
+
+        //Transaction.ItemPreviewPosition = ItemPreviewPosition;
+        //Transaction.ItemPreviewHeading = ItemPreviewHeading;
+        Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
+
         Transaction.IsFreeItems = true;
         Transaction.IsFreeWeapons = true;
         Transaction.IsFreeVehicles = true;
         Transaction.IsPurchasing = false;
-        Transaction.RotatePreview = false;
+        Transaction.RotateVehiclePreview = false;
         Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
 
         InteractionMenu.Visible = true;
@@ -246,7 +239,7 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if (selectedItem.Text == "Buy" || selectedItem.Text == "Take")
+        if (selectedItem.Text == "Buy" || selectedItem.Text == "Select")
         {
             Transaction?.SellMenu?.Dispose();
             Transaction?.PurchaseMenu?.Show();
@@ -264,6 +257,7 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
             RespawnLocation += offsetToAdd;
         }
         VehicleImpoundLot?.AddDistanceOffset(offsetToAdd);
+        VehiclePreviewLocation?.AddDistanceOffset(offsetToAdd);
         base.AddDistanceOffset(offsetToAdd);
     }
 }

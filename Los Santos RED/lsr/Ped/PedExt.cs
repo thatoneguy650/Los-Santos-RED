@@ -29,6 +29,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     private bool HasDrugAreaKnowledge;
     private bool HasGangAreaKnowledge;
     private ICrimes Crimes;
+    private uint GameTimeFirstSeenDead;
+    private uint GameTimeFirstSeenUnconscious;
 
     private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
     private bool CanYell => !IsYellingTimeOut;
@@ -406,7 +408,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
 
     public bool WasSeenInDistressByServicePed { get; set; } = false;
 
-
+    public uint GameTimeSeenDead => Game.GameTime - GameTimeFirstSeenDead;
+    public uint GameTimeSeenUnconscious => Game.GameTime - GameTimeFirstSeenUnconscious;
     public bool HasBeenLooted { get; set; } = false;
     public bool IsDead { get; set; } = false;
     public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
@@ -424,7 +427,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual bool CanPlayRadioInAnimation => false;
     public bool AlwaysHasLongGun { get; set; } = false;
     public bool IsBeingHeldAsHostage { get; set; } = false;
-
+    public bool GeneratesBodyAlerts { get; set; } = true;
 
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
@@ -779,7 +782,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                 PlaySpeech("GENERIC_FRIGHTENED_HIGH", false);
                 //EntryPoint.WriteToConsoleTestLong($"CRY SPEECH FOR PAIN {Pedestrian.Handle}");
             }
-
             GameTimeLastYelled = Game.GameTime;
         }
     }
@@ -1208,13 +1210,34 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         return Output;
     }
 
-    public virtual void SetSeenBody(PedExt deadBody)
+    public virtual void SetSeenDead(PedExt deadBody)
     {
-
+        //if (GameTimeLastSeenDead != 0)
+        //{
+        //    GameTimeLastSeenDead = Game.GameTime;
+        //}
     }
 
     public virtual void SetSeenUnconscious(PedExt distressedPed)
     {
+        //GameTimeLastSeenUnconscious = Game.GameTime;
+    }
 
+    public void SetWasSeenDead()
+    {
+        if(GameTimeFirstSeenDead != 0)
+        {
+            return;
+        }
+        GameTimeFirstSeenDead = Game.GameTime;
+    }
+    public void SetWasSeenUnconscious()
+    {
+        if (GameTimeFirstSeenUnconscious != 0)
+        {
+            return;
+        }
+        GameTimeFirstSeenUnconscious = Game.GameTime;
+        EntryPoint.WriteToConsole($"{Handle} first time seen unconscious");
     }
 }

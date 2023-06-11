@@ -73,7 +73,7 @@ public class SellMenu : ModUIMenu
             return;
         }
         sellMenuRNUI.Clear();
-        CreateCategories2();
+        CreateCategories();
         foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Sellable).OrderBy(x => x.SalesPrice).ThenBy(x => x.ModItemName))
         {
             //EntryPoint.WriteToConsoleTestLong($"SELL MENU ADD ITEM {cii.ModItemName} Sellable:{cii.Sellable} SalesPrice {cii.SalesPrice} NumberOfItemsToSellToPlayer:{cii.NumberOfItemsToSellToPlayer} NumberOfItemsToPurchaseFromPlayer:{cii.NumberOfItemsToPurchaseFromPlayer}");
@@ -118,45 +118,6 @@ public class SellMenu : ModUIMenu
     }
     private void CreateCategories()
     {
-        //if (ShopMenu.Items.Where(x => x.Sellable).Count() < 7)
-        //{
-        //    return;
-        //}
-        List<string> Categories = new List<string>();
-        foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Sellable))
-        {
-            if (!Categories.Contains(cii.ModItem.MenuCategory))
-            {
-                Categories.Add(cii.ModItem.MenuCategory);
-            }
-        }
-        foreach (string category in Categories)
-        {
-            UIMenu categoryMenu = MenuPool.AddSubMenu(sellMenuRNUI, category);
-            if (Transaction.HasBannerImage)
-            {
-                categoryMenu.SetBannerType(Transaction.BannerImage);
-            }
-            else if (Transaction.RemoveBanner)
-            {
-                categoryMenu.RemoveBanner();
-            }
-            categoryMenu.OnIndexChange += (sender, newIndex) =>
-            {
-                GeneratePreview(categoryMenu, newIndex);
-            };
-            categoryMenu.OnMenuOpen += (sender) =>
-            {
-                GeneratePreview(categoryMenu, categoryMenu.CurrentSelection);
-            };
-            categoryMenu.OnMenuClose += (sender) =>
-            {
-                Transaction.ClearPreviews();
-            };
-        }
-    }
-    private void CreateCategories2()
-    {
         List<MenuItem> WeaponItems = ShopMenu.Items.Where(x => x.Sellable && x.ModItem?.ModelItem?.Type == ePhysicalItemType.Weapon).ToList();
         List<MenuItem> VehicleItems = ShopMenu.Items.Where(x => x.Sellable && x.ModItem?.ModelItem?.Type == ePhysicalItemType.Vehicle).ToList();
         List<MenuItem> OtherItems = ShopMenu.Items.Where(x => x.Sellable && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Vehicle && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Weapon).ToList();
@@ -173,7 +134,7 @@ public class SellMenu : ModUIMenu
         if (VehicleItems.Any())
         {
             UIMenu headerMenu = MenuPool.AddSubMenu(sellMenuRNUI, "Vehicles");
-            SetupCategoryMenu(headerMenu);
+            SetupVehicleCategoryMenu(headerMenu);
             foreach (string category in VehicleItems.Select(x => x.ModItem.MenuCategory).Distinct().OrderBy(x => x))
             {
                 UIMenu categoryMenu = MenuPool.AddSubMenu(headerMenu, category);
@@ -214,6 +175,31 @@ public class SellMenu : ModUIMenu
         };
         categoryMenu.OnMenuClose += (sender) =>
         {
+            Transaction.ClearPreviews();
+        };
+    }
+    private void SetupVehicleCategoryMenu(UIMenu categoryMenu)
+    {
+        if (Transaction.HasBannerImage)
+        {
+            categoryMenu.SetBannerType(Transaction.BannerImage);
+        }
+        else if (Transaction.RemoveBanner)
+        {
+            categoryMenu.RemoveBanner();
+        }
+        categoryMenu.OnIndexChange += (sender, newIndex) =>
+        {
+            GeneratePreview(categoryMenu, newIndex);
+        };
+        categoryMenu.OnMenuOpen += (sender) =>
+        {
+            Transaction.Store?.HighlightVehicle();
+            GeneratePreview(categoryMenu, categoryMenu.CurrentSelection);
+        };
+        categoryMenu.OnMenuClose += (sender) =>
+        {
+            Transaction.Store?.ReHighlightStore();
             Transaction.ClearPreviews();
         };
     }

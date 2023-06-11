@@ -46,7 +46,7 @@ public class GangTerritories : IGangTerritories
         {
             foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).OrderBy(x => x.Priority))
             {
-                Gang Agency = GangProvider.GetGang(zoneJurisdiction.AgencyInitials);
+                Gang Agency = GangProvider.GetGang(zoneJurisdiction.AgencyID);
                 if (Agency != null)
                 {
                     return Agency;
@@ -62,7 +62,7 @@ public class GangTerritories : IGangTerritories
         {
             foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).Skip(itemNumber - 1).OrderBy(x => x.Priority))
             {
-                Gang Gang = GangProvider.GetGang(zoneJurisdiction.AgencyInitials);
+                Gang Gang = GangProvider.GetGang(zoneJurisdiction.AgencyID);
                 if (Gang != null)
                 {
                     return Gang;
@@ -79,7 +79,7 @@ public class GangTerritories : IGangTerritories
             List<ZoneJurisdiction> ToPickFrom = new List<ZoneJurisdiction>();
             foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()))
             {
-                Gang Gang = GangProvider.GetGang(zoneJurisdiction.AgencyInitials);
+                Gang Gang = GangProvider.GetGang(zoneJurisdiction.AgencyID);
                 if (Gang != null && Gang.CanSpawn(WantedLevel))
                 {
                     ToPickFrom.Add(zoneJurisdiction);
@@ -92,7 +92,7 @@ public class GangTerritories : IGangTerritories
                 int SpawnChance = MyJurisdiction.CurrentSpawnChance(WantedLevel);
                 if (RandomPick < SpawnChance)
                 {
-                    return GangProvider.GetGang(MyJurisdiction.AgencyInitials);
+                    return GangProvider.GetGang(MyJurisdiction.AgencyID);
                 }
                 RandomPick -= SpawnChance;
             }
@@ -106,7 +106,7 @@ public class GangTerritories : IGangTerritories
             List<Gang> ToReturn = new List<Gang>();
             foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == zoneName.ToLower()).OrderBy(k => k.CurrentSpawnChance(wantedLevel)))
             {
-                Gang Gang = GangProvider.GetGang(zoneJurisdiction.AgencyInitials);
+                Gang Gang = GangProvider.GetGang(zoneJurisdiction.AgencyID);
                 if (Gang != null && Gang.CanSpawn(wantedLevel))
                 {
                     ToReturn.Add(Gang);
@@ -127,7 +127,7 @@ public class GangTerritories : IGangTerritories
     {
         if (ZoneJurisdictionsList.Any())
         {
-            List<ZoneJurisdiction> ToReturn = ZoneJurisdictionsList.Where(x => x.AgencyInitials.ToLower() == gangID.ToLower()).ToList();
+            List<ZoneJurisdiction> ToReturn = ZoneJurisdictionsList.Where(x => x.AgencyID.ToLower() == gangID.ToLower()).ToList();
             //foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.AgencyInitials.ToLower() == gangID.ToLower()))
             //{
             //    Gang Gang = GangProvider.GetGang(zoneJurisdiction.AgencyInitials);

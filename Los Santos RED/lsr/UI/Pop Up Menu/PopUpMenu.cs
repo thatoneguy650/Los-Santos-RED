@@ -278,20 +278,10 @@ public class PopUpMenu
                 ItemID = 0;
                 foreach (InventoryItem ii in Player.Inventory.ItemsList.Where(x => x.ModItem != null && x.ModItem.ItemType == mi && x.ModItem.ItemSubType == itemSubType))
                 {
-                    //EntryPoint.WriteToConsole($"{mi}-{itemSubType} {ii.ModItem?.Name}");
                     LowLevelList.Add(new PopUpBox(ItemID, ii.ModItem.DisplayName, $"{ii.ModItem.Name}SubMenu", ii.Description) { ClosesMenu = false });
                     List<PopUpBox> InventoryActionSubMenu = new List<PopUpBox>();
-
-
-
-
-
-
                     InventoryActionSubMenu.Add(new PopUpBox(0, "Use", new Action(() => Player.ActivityManager.UseInventoryItem(ii.ModItem, true)), $"Use {ii.ModItem.DisplayName}"));
                     InventoryActionSubMenu.Add(new PopUpBox(1, "Discard", $"Discard{ii.ModItem.Name}SubMenu", $"Discard {ii.ModItem.DisplayName}") { ClosesMenu = false });
-
-
-
                     List<PopUpBox> InventoryDiscardSubMenu = new List<PopUpBox>();
                     InventoryDiscardSubMenu.Add(new PopUpBox(0, "Discard All", new Action(() => Player.ActivityManager.DropInventoryItem(ii.ModItem, ii.Amount)), $"Discard All {ii.ModItem.DisplayName} ({ii.Amount})"));
                     InventoryDiscardSubMenu.Add(new PopUpBox(1, "Discard One", new Action(() => Player.ActivityManager.DropInventoryItem(ii.ModItem, 1)), $"Discard {ii.ModItem.DisplayName}"));
@@ -299,10 +289,8 @@ public class PopUpMenu
                     {
                         InventoryDiscardSubMenu.Add(new PopUpBox(2, "Discard Five", new Action(() => Player.ActivityManager.DropInventoryItem(ii.ModItem, 5)), $"Discard {ii.ModItem.DisplayName} ({5})"));
                     }
+
                     PopUpMenuGroups.Add(new PopUpBoxGroup($"Discard{ii.ModItem.Name}SubMenu", InventoryDiscardSubMenu) { IsChild = true, Group = "Inventory" });
-
-
-
                     PopUpMenuGroups.Add(new PopUpBoxGroup($"{ii.ModItem.Name}SubMenu", InventoryActionSubMenu) { IsChild = true, Group = "Inventory" });
                     ItemID++;
                 }
@@ -314,6 +302,31 @@ public class PopUpMenu
         }
         PopUpMenuGroups.Add(new PopUpBoxGroup(InventoryCategoriesSubMenuName, TopLevelList) { IsChild = true, Group = "Inventory" });
     }
+
+
+    private void AddGestureMenuGroup()
+    {
+        PopUpMenuGroups.RemoveAll(x => x.Group == "Gesture");
+        int CategoryID = 0;
+        int GestureID = 0;
+        List<PopUpBox> TopLevelList = new List<PopUpBox>();
+        foreach (string mi in Gestures.GestureLookups.Where(x => x.IsOnActionWheel).GroupBy(x => x.Category).Select(x => x.Key).Distinct().OrderBy(x => x))
+        {
+            PopUpBox gestureCategorySubTypeBox = new PopUpBox(CategoryID, mi, $"{mi}SubMenu", $"Open the {mi} Sub Menu") { ClosesMenu = false };
+            TopLevelList.Add(gestureCategorySubTypeBox);
+            List<PopUpBox> MiddleLevelList = new List<PopUpBox>();
+            GestureID = 0;
+            foreach (GestureData gd in Gestures.GestureLookups.Where(x => x.Category == mi && x.IsOnActionWheel))
+            {
+                MiddleLevelList.Add(new PopUpBox(GestureID, rgx.Replace(gd.Name, " "), new Action(() => Player.ActivityManager.Gesture(gd)), rgx.Replace(gd.Name, " ")));
+                GestureID++;
+            }
+            PopUpMenuGroups.Add(new PopUpBoxGroup($"{mi}SubMenu", MiddleLevelList) { IsChild = true, Group = "Gesture" });
+            CategoryID++;
+        }
+        PopUpMenuGroups.Add(new PopUpBoxGroup("Gesture", TopLevelList) { IsChild = true, Group = "Gesture" });
+    }
+
     private void UpdateGroupMenuGroups()
     {
         PopUpMenuGroups.RemoveAll(x => x.Group == "Group");
@@ -1120,20 +1133,10 @@ public class PopUpMenu
             new PopUpBox(2,"Suicide",Player.ActivityManager.CommitSuicide,"Commit suicide"),
             new PopUpBox(3,"Sitting", "SitSubMenu","Open Sitting Sub Menu") { ClosesMenu = false },
             new PopUpBox(4,"Sleep", new Action(() => Player.ActivityManager.StartSleeping()),"Start sleeping here"),
-            
-           // new PopUpBox(5,"Remove Plate",new Action(() => Player.ActivityManager.RemovePlate()),"Remove the license plate from the nearest vehicle."),
             new PopUpBox(5,"Stop Activities",new Action(() => Player.ActivityManager.ForceCancelAllActivities()),"Stops all active and paused activites"),
             new PopUpBox(6,"Surrender",new Action(() => Player.Surrendering.ToggleSurrender()),"Toggle surrendering"),
-
-           // new PopUpBox(8,"Enter Vehicle (Passenger)", new Action(() => Player.ActivityManager.EnterVehicleAsPassenger(false)),"Enter vehicle you are looking at as passenger"),
-           // new PopUpBox(9,"Enter Vehicle (By Seat)", "EnterSeatSubMenu","Enter vehicle you are looking at and sit on the specific seat") { ClosesMenu = false },
-           // new PopUpBox(10,"Toggle Door", "OpenDoorSubMenu","Toggle the door of the vehicle you are looking at") { ClosesMenu = false },
-
-
             new PopUpBox(7,"BodyArmor","BodyArmorSubMenu","Open Body Armor Menu") { ClosesMenu = false },
             new PopUpBox(8,"Wave Hands",new Action(() => Player.ActivityManager.WaveHands()),"Get Nearby Attention"),
-
-
         };
 
         List<PopUpBox> VehicleActionsSubMenu = new List<PopUpBox>()
@@ -1164,8 +1167,6 @@ public class PopUpMenu
         List<PopUpBox> BodyArmorSubMenu = new List<PopUpBox>()
         {
             new PopUpBox(0,"Remove Armor", new Action(() => Player.ArmorManager.RemoveArmor()),"Remove any armor you have on"),
-            //new PopUpBox(1,"Change Drawable", new Action(() => Player.ArmorManager.ChangeArmorVisual()),"Sit here facing forwards"),
-            //new PopUpBox(2,"Change Texture", new Action(() => Player.ArmorManager.StartSittingDown(false,false)),"Sit here facing forwards"),
         };
 
 
@@ -1220,16 +1221,50 @@ public class PopUpMenu
             new PopUpBox(1,"Right Indicator",Player.ActivityManager.ToggleRightIndicator,"Toggle right vehicle indicator"),
             new PopUpBox(2,"Left Indicator",Player.ActivityManager.ToggleLeftIndicator,"Toggle the left vehicle indicator"),
         };
-        List<PopUpBox> GestureMenuMaps = new List<PopUpBox>() { new PopUpBox(0, rgx.Replace(Player.ActivityManager.LastGesture.Name, " "), new Action(() => Player.ActivityManager.Gesture(Player.ActivityManager.LastGesture)), rgx.Replace(Player.ActivityManager.LastGesture.Name, " ")) };
+
+
+
+
+
+        //List<PopUpBox> GestureMenuMaps = new List<PopUpBox>();
+        //int CatID = 0;
         int ID = 1;
-        foreach (GestureData gd in Gestures.GestureLookups.Where(x => x.IsOnActionWheel).Take(30))
-        {
-            GestureMenuMaps.Add(new PopUpBox(ID, rgx.Replace(gd.Name, " "), new Action(() => Player.ActivityManager.Gesture(gd)), rgx.Replace(gd.Name, " ")));
-            ID++;
-        }
+        //foreach (string mi in Gestures.GestureLookups.Where(x => x.IsOnActionWheel).GroupBy(x => x.Category).Select(x => x.Key).Distinct().OrderBy(x => x))
+        //{
+
+        //    PopUpBox gestureCategorySubTypeBox = new PopUpBox(CatID, mi, $"{mi}{mi}SubMenu", $"Open the {mi} Sub Menu") { ClosesMenu = false };
+        //    GestureMenuMaps.Add(gestureCategorySubTypeBox);
+
+        //    List<PopUpBox> MiddleLevelList = new List<PopUpBox>();
+
+
+        //    ID = 1;
+        //    foreach (GestureData gd in Gestures.GestureLookups.Where(x => x.Category == mi && x.IsOnActionWheel))
+        //    {
+        //        MiddleLevelList.Add(new PopUpBox(ID, rgx.Replace(gd.Name, " "), new Action(() => Player.ActivityManager.Gesture(gd)), rgx.Replace(gd.Name, " ")));
+        //        ID++;
+        //    }
+        //    CatID++;
+        //}
+
+
+
+
+
+
+
+
+
+        AddGestureMenuGroup();
+
+
+
+
+
+
         List<PopUpBox> DancesMenuMaps = new List<PopUpBox>() { new PopUpBox(0, rgx.Replace(Player.ActivityManager.LastDance.Name, " "), new Action(() => Player.ActivityManager.Dance(Player.ActivityManager.LastDance)), rgx.Replace(Player.ActivityManager.LastDance.Name, " ")) };
         ID = 1;
-        foreach (DanceData gd in Dances.DanceLookups.Where(x => x.IsOnActionWheel).Take(30))
+        foreach (DanceData gd in Dances.DanceLookups.Where(x => x.IsOnActionWheel))
         {
             DancesMenuMaps.Add(new PopUpBox(ID, rgx.Replace(gd.Name, " "), new Action(() => Player.ActivityManager.Dance(gd)), rgx.Replace(gd.Name, " ")));
             ID++;
@@ -1254,7 +1289,7 @@ public class PopUpMenu
 
         PopUpMenuGroups.Add(new PopUpBoxGroup(DefaultOnFootGroupName, OnFootMenuMaps));
         PopUpMenuGroups.Add(new PopUpBoxGroup(DefaultInVehicleName, InVehicleMenuMaps));
-        PopUpMenuGroups.Add(new PopUpBoxGroup("Gesture", GestureMenuMaps) { IsChild = true });
+       // PopUpMenuGroups.Add(new PopUpBoxGroup("Gesture", GestureMenuMaps) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("Dance", DancesMenuMaps) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("InfoSubMenu", InfoSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup(ActionsSubMenuName, ActionsSubMenu) { IsChild = true });

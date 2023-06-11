@@ -54,6 +54,7 @@ namespace LosSantosRED.lsr.Player
                     Setup();
                     meleeWeaponAlias = new MeleeWeaponAlias(Player, Settings, ScrewdriverItem);
                     meleeWeaponAlias.Start();
+                    Player.HasScrewdriverInHand = true;
                     while (!IsCancelled)
                     {
                         meleeWeaponAlias.Update();
@@ -92,6 +93,7 @@ namespace LosSantosRED.lsr.Player
             IsCancelled = true;
             Player.ActivityManager.IsPerformingActivity = false;
             meleeWeaponAlias?.Dispose();
+            Player.HasScrewdriverInHand = false;
         }
     }
 }

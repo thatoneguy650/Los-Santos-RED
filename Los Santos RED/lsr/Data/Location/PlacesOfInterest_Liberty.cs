@@ -1109,11 +1109,10 @@ public class PlacesOfInterest_Liberty
                 OpenTime = 6,
                 CloseTime = 20,
                 LicensePlatePreviewText = "PAULIE",
-                ItemPreviewPosition = new Vector3(-1440.71f, 443.88f, 207.56f),
-                ItemPreviewHeading = 186.5f,
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-1440.71f, 443.88f, 207.56f), 186.5f),
                 CameraPosition = new Vector3(-1437.71f, 436.88f, 209.06f),
                 CameraDirection = new Vector3(0.3461686f, 0.9154226f, -0.2053503f),
-                ItemDeliveryLocations = new List<SpawnPlace>() {
+                VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-1417.26f, 496.72f, 209.71f), 132.01f),
                 },
                 StateID = StaticStrings.AlderneyStateID,

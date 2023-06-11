@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
@@ -9,29 +10,39 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class GunStore : GameLocation
+public class Dealership : GameLocation, ILicensePlatePreviewable
 {
-    private UIMenuItem completeTask;
-    public GunStore() : base()
+
+    public Dealership() : base()
     {
 
     }
-
-    public List<SpawnPlace> ParkingSpaces = new List<SpawnPlace>();
-    public override bool ShowsOnDirectory { get; set; } = false;
-    public override string TypeName { get; set; } = "Gun Store";
-    public override int MapIcon { get; set; } = (int)BlipSprite.AmmuNation;
+    public override string TypeName { get; set; } = "Dealership";
+    public override int MapIcon { get; set; } = (int)BlipSprite.GangVehicle;
     public override string ButtonPromptText { get; set; }
-    public int MoneyToUnlock { get; set; } = 0;
-    public string ContactName { get; set; } = "";
+    public string LicensePlatePreviewText { get; set; } = "BUYMENOW";
 
-    public GunStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
+
+
+
+
+    //public Vector3 VehiclePreviewPosition { get; set; } = Vector3.Zero;
+    //public float VehiclePreviewHeading { get; set; } = 0f;
+
+   // public SpawnPlace VehiclePreviewLocation { get; set; } 
+
+    public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
+
+
+
+
+    public Dealership(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
-        ButtonPromptText = $"Shop at {Name}";
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
+        ButtonPromptText = $"Shop At {Name}";
         return true;
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
@@ -42,6 +53,7 @@ public class GunStore : GameLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
+
 
         if (IsLocationClosed())
         {
@@ -57,23 +69,23 @@ public class GunStore : GameLocation
             {
                 try
                 {
-                    StoreCamera = new LocationCamera(this, Player);
-                    StoreCamera.SayGreeting = false;
+                    StoreCamera = new LocationCamera(this, Player, Settings);
+
+                    //StoreCamera.ItemPreviewPosition = VehiclePreviewPosition;
+                    //StoreCamera.ItemPreviewHeading = VehiclePreviewHeading;
+
                     StoreCamera.Setup();
 
                     CreateInteractionMenu();
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+                    Transaction.LicensePlatePreviewable = this;
+                    Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
+                    Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
                     Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
 
                     InteractionMenu.Visible = true;
                     InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
                     Transaction.ProcessTransactionMenu();
-
-                    if (ContactName == StaticStrings.UndergroundGunsContactName)
-                    {
-                        Player.RelationshipManager.GunDealerRelationship.AddMoneySpent(Transaction.MoneySpent);
-                        player.RelationshipManager.GunDealerRelationship.SetReputation((Transaction.MoneySpent) / 5, false);
-                    }
 
                     Transaction.DisposeTransactionMenu();
                     DisposeInteractionMenu();
@@ -89,12 +101,12 @@ public class GunStore : GameLocation
                     EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
                     EntryPoint.ModController.CrashUnload();
                 }
-            }, "GangDenInteract");
+            }, "CarDealershipInteract");
         }
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if (selectedItem.Text == "Buy" || selectedItem.Text == "Take")
+        if (selectedItem.Text == "Buy" || selectedItem.Text == "Select")
         {
             Transaction?.SellMenu?.Dispose();
             Transaction?.PurchaseMenu?.Show();
@@ -105,6 +117,14 @@ public class GunStore : GameLocation
             Transaction?.SellMenu?.Show();
         }
     }
-
+    public override void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        foreach(SpawnPlace sp in VehicleDeliveryLocations)
+        {
+            sp.AddDistanceOffset(offsetToAdd);
+        }
+        VehiclePreviewLocation?.AddDistanceOffset(offsetToAdd);
+        base.AddDistanceOffset(offsetToAdd);
+    }
 }
 

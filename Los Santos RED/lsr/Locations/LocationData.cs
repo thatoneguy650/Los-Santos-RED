@@ -337,6 +337,14 @@ namespace LosSantosRED.lsr.Locations
                 }
             }
         }
+
+        public void UpdatePlayer()
+        {
+            if (EntityToLocate.Exists() && EntityToLocate.Handle != Game.LocalPlayer.Character.Handle)
+            {
+                EntityToLocate = Game.LocalPlayer.Character;
+            }
+        }
     }
 }
 

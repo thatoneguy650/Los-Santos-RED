@@ -77,7 +77,7 @@ public class Jurisdictions : IJurisdictions
             //}
             foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).OrderBy(x=>x.Priority))
             {
-                Agency Agency = AgencyProvider.GetAgency(zoneJurisdiction.AgencyInitials);
+                Agency Agency = AgencyProvider.GetAgency(zoneJurisdiction.AgencyID);
                 if (Agency != null && Agency.ResponseType == responseType)
                 {
                     return Agency;
@@ -93,7 +93,7 @@ public class Jurisdictions : IJurisdictions
         {
             foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).Skip(itemNumber - 1).OrderBy(x => x.Priority))
             {
-                Agency Agency = AgencyProvider.GetAgency(zoneJurisdiction.AgencyInitials);
+                Agency Agency = AgencyProvider.GetAgency(zoneJurisdiction.AgencyID);
                 if (Agency != null && Agency.ResponseType == responseType)
                 {
                     return Agency;
@@ -110,7 +110,7 @@ public class Jurisdictions : IJurisdictions
             List<ZoneJurisdiction> ToPickFrom = new List<ZoneJurisdiction>();
             foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()))
             {
-                Agency Agency = AgencyProvider.GetAgency(zoneJurisdiction.AgencyInitials);
+                Agency Agency = AgencyProvider.GetAgency(zoneJurisdiction.AgencyID);
                 if (Agency != null && Agency.CanSpawn(WantedLevel) && Agency.ResponseType == responseType)
                 {
                     ToPickFrom.Add(zoneJurisdiction);
@@ -123,7 +123,7 @@ public class Jurisdictions : IJurisdictions
                 int SpawnChance = MyJurisdiction.CurrentSpawnChance(WantedLevel);
                 if (RandomPick < SpawnChance)
                 {
-                    return AgencyProvider.GetAgency(MyJurisdiction.AgencyInitials);
+                    return AgencyProvider.GetAgency(MyJurisdiction.AgencyID);
                 }
                 RandomPick -= SpawnChance;
             }
@@ -161,7 +161,7 @@ public class Jurisdictions : IJurisdictions
             List<Agency> ToReturn = new List<Agency>();
             foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == zoneName.ToLower()).OrderBy(k => k.CurrentSpawnChance(wantedLevel)))
             {
-                Agency Agency = AgencyProvider.GetAgency(zoneJurisdiction.AgencyInitials);
+                Agency Agency = AgencyProvider.GetAgency(zoneJurisdiction.AgencyID);
                 if (Agency != null && Agency.CanSpawn(wantedLevel) && Agency.ResponseType == responseType)
                 {
                     ToReturn.Add(Agency);
@@ -178,10 +178,14 @@ public class Jurisdictions : IJurisdictions
             return null;
         }
     }
-    //public bool CanSpawnPedestrianAtZone(string zoneName, string agencyInitials)
-    //{
-    //    return ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == zoneName.ToLower() && x.AgencyInitials == agencyInitials).FirstOrDefault()?.CanSpawnPedestrianOfficers == true;
-    //}
+    public bool CanSpawnAmbientPedestrians(string zoneInternalGameName, Agency agency)
+    {
+        if(agency == null || string.IsNullOrEmpty(zoneInternalGameName))
+        {
+            return false;
+        }
+        return ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == zoneInternalGameName.ToLower() && x.AgencyID == agency.ID && x.CanSpawnPedestrianOfficers).Any();
+    }
     public string TestString()
     {
         return "OH YEAH!";

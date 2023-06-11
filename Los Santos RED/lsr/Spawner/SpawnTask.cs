@@ -100,46 +100,47 @@ public abstract class SpawnTask
     protected virtual void AttemptVehicleSpawn()
     {
         LastCreatedVehicle = CreateVehicle();
-        if (LastCreatedVehicleExists)
+        if (!LastCreatedVehicleExists)
         {
-            if (HasPersonToSpawn)
+            return;
+        }
+        if (HasPersonToSpawn)
+        {
+            if (WillAddDriver)
             {
-                if (WillAddDriver)
+                PedExt Person = CreatePerson();
+                if (Person != null && Person.Pedestrian.Exists() && LastCreatedVehicleExists)
                 {
-                    PedExt Person = CreatePerson();
-                    if (Person != null && Person.Pedestrian.Exists() && LastCreatedVehicleExists)
+                    PutPedInVehicle(Person, -1);
+                    if (WillAddPassengers)
                     {
-                        PutPedInVehicle(Person, -1);
-                        if (WillAddPassengers)
-                        {
-                            AddPassengers();
-                        }
-                    }
-                    else
-                    {
-                        Cleanup(true);
+                        AddPassengers();
                     }
                 }
                 else
                 {
-                    if (LastCreatedVehicleExists)
-                    {
-                        if (WillAddPassengers)
-                        {
-                            AddPassengers();
-                        }
-                    }
-                    else
-                    {
-                        Cleanup(true);
-                    }
+                    Cleanup(true);
                 }
             }
-            else if(AddEmptyVehicleBlip)
+            else
             {
-                LastCreatedVehicle.AddRegularBlip();
+                if (LastCreatedVehicleExists)
+                {
+                    if (WillAddPassengers)
+                    {
+                        AddPassengers();
+                    }
+                }
+                else
+                {
+                    Cleanup(true);
+                }
             }
         }
+        else if(AddEmptyVehicleBlip)
+        {
+            LastCreatedVehicle.AddRegularBlip();
+        }    
     }
     protected virtual void Cleanup(bool includePeople) 
     {
@@ -188,20 +189,21 @@ public abstract class SpawnTask
     protected virtual void AttemptPersonOnlySpawn()
     {
         CreatePerson();
-        if (AllowBuddySpawn)
+        if (!AllowBuddySpawn)
         {
-            int BuddiesToSpawn = RandomItems.MyRand.Next(1, 2 + 1) - 1;
-            for (int BuddyIndex = 1; BuddyIndex <= BuddiesToSpawn; BuddyIndex++)
-            {
-                GetNewPersonType("");
-                if (PersonType != null)
-                {
-                    SpawnLocation.InitialPosition = Position.Around2D(1f);
-                    SpawnLocation.SidewalkPosition = Vector3.Zero;
-                    PedExt Buddy = CreatePerson();
-                }
-            }
+            return;
         }
+        int BuddiesToSpawn = RandomItems.MyRand.Next(1, 2 + 1) - 1;
+        for (int BuddyIndex = 1; BuddyIndex <= BuddiesToSpawn; BuddyIndex++)
+        {
+            GetNewPersonType("");
+            if (PersonType != null)
+            {
+                SpawnLocation.InitialPosition = Position.Around2D(1f);
+                SpawnLocation.SidewalkPosition = Vector3.Zero;
+                CreatePerson();
+            }
+        }    
     }
     protected virtual PedExt CreatePerson()
     {

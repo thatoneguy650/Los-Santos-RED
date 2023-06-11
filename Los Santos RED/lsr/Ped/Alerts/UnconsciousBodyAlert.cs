@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 public class UnconsciousBodyAlert : PedAlert
 {
-    public List<PedExt> UnconsciousPedsSeen { get; private set; } = new List<PedExt>();
+    public List<BodyWatcher> UnconsciousPedsSeen { get; private set; } = new List<BodyWatcher>();
     public bool HasSeenUnconsciousPed { get; set; } = false;
     public bool CanCallInUnconsciousPeds { get; set; } = false;
 
@@ -30,11 +30,19 @@ public class UnconsciousBodyAlert : PedAlert
         {
             return;
         }
-        if (!PedExt.Pedestrian.Exists() || PedExt.IsUnconscious || HasSeenUnconsciousPed || PedExt.PlayerPerception.DistanceToTarget > 150f)//only care in a bubble around the player, nothing to do with the player tho
+        if (!PedExt.Pedestrian.Exists() || PedExt.IsUnconscious || PedExt.PlayerPerception.DistanceToTarget > 150f)//only care in a bubble around the player, nothing to do with the player tho
         {
             return;
         }
-        foreach (PedExt unconsciousPed in world.Pedestrians.PedExts.Where(x => !x.IsDead && (x.IsUnconscious || x.IsInWrithe) && !x.HasStartedEMTTreatment && !x.HasBeenTreatedByEMTs && !UnconsciousPedsSeen.Any(y => y.Handle == x.Handle) && NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, x.CellX, x.CellY, 4) && x.Pedestrian.Exists()))
+        if (HasReachedPosition)
+        {
+            UnconsciousPedsSeen.ForEach(x => x.DisableAlerts());
+        }
+        if (HasSeenUnconsciousPed)
+        {
+            return;
+        }
+        foreach (PedExt unconsciousPed in world.Pedestrians.PedExts.Where(x => !x.IsDead && (x.IsUnconscious || x.IsInWrithe) && !x.HasStartedEMTTreatment && !x.HasBeenTreatedByEMTs && !UnconsciousPedsSeen.Any(y => y.PedBody?.Handle == x.Handle) && NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, x.CellX, x.CellY, 4) && x.Pedestrian.Exists()))
         {
             float distanceToBody = PedExt.Pedestrian.DistanceTo2D(unconsciousPed.Pedestrian);
             bool CanSeeBody = false;
@@ -52,12 +60,12 @@ public class UnconsciousBodyAlert : PedAlert
             }
             if(CanSeeBody)
             {
-                EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I JUST SAW AN Unconscious BODY {unconsciousPed.Handle} GenerateUnconsciousAlerts{PedExt.GenerateUnconsciousAlerts}");
+                EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I JUST SAW AN Unconscious BODY {unconsciousPed.Handle} GenerateUnconsciousAlerts{PedExt.GenerateUnconsciousAlerts} GeneratesBodyAlerts:{unconsciousPed.GeneratesBodyAlerts}");
                 HasSeenUnconsciousPed = true;        
                 PedExt.SetSeenUnconscious(unconsciousPed);
                 unconsciousPed.HasBeenSeenUnconscious = true;
-                UnconsciousPedsSeen.Add(unconsciousPed);
-                if (PedExt.GenerateUnconsciousAlerts)
+                UnconsciousPedsSeen.Add(new BodyWatcher(unconsciousPed));
+                if (PedExt.GenerateUnconsciousAlerts && unconsciousPed.GeneratesBodyAlerts)
                 {
                     AddAlert(unconsciousPed); 
                 }
@@ -69,6 +77,7 @@ public class UnconsciousBodyAlert : PedAlert
             }
         }
         base.Update(policeRespondable, world);
+
     }
     public override void OnReportedCrime(IPoliceRespondable policeRespondable)
     {

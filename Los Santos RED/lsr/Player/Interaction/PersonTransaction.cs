@@ -303,7 +303,7 @@ public class PersonTransaction : Interaction
     }
     private void InteractionMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if(selectedItem.Text == "Buy" || selectedItem.Text == "Take")
+        if(selectedItem.Text == "Buy" || selectedItem.Text == "Select")
         {
             Transaction?.SellMenu?.Dispose();
             Transaction?.PurchaseMenu?.Show();

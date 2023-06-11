@@ -100,6 +100,26 @@ public class Gestures : IGestures
             new GestureData("You (Hard)","gesture_you_hard") { IsOnActionWheel = true },
             new GestureData("You (Soft)","gesture_you_soft"),
             new GestureData("Its Mine","getsure_its_mine") { IsOnActionWheel = true },
+
+
+            //Idles
+
+            new GestureData("Hair Touch","amb@code_human_wander_idles@female@idle_a","idle_a_hairtouch") { IsOnActionWheel = true, Category = "Idles" },
+            new GestureData("Sneeze","amb@code_human_wander_idles@female@idle_a","idle_b_sneeze") { IsOnActionWheel = true, Category = "Idles" },
+            new GestureData("Look Around","amb@code_human_wander_idles@female@idle_a","idle_c_lookaround") { IsOnActionWheel = true, Category = "Idles" },
+            new GestureData("Trip","amb@code_human_wander_idles@female@idle_b","idle_d_trip") { IsOnActionWheel = true, Category = "Idles" },
+            new GestureData("Wipe Forehead","amb@code_human_wander_idles@female@idle_b","idle_e_wipeforehead") { IsOnActionWheel = true, Category = "Idles" },
+            new GestureData("Check Watch","amb@code_human_wander_idles@female@idle_b","idle_f_checkwatch") { IsOnActionWheel = true, Category = "Idles" },
+
+
+            new GestureData("Wrist Watch","amb@code_human_wander_idles@female@idle_a","idle_a_wristwatch") { IsOnActionWheel = true, Category = "Idles" },
+            new GestureData("Rub Nose","amb@code_human_wander_idles@female@idle_a","idle_b_rubnose") { IsOnActionWheel = true, Category = "Idles" },
+            new GestureData("Back Scratch","amb@code_human_wander_idles@female@idle_a","idle_c_backscratch") { IsOnActionWheel = true, Category = "Idles" },
+            new GestureData("Eye Rub","amb@code_human_wander_idles@male@idle_b","idle_d_eyerub") { IsOnActionWheel = true, Category = "Idles" },
+            new GestureData("Look Around","amb@code_human_wander_idles@male@idle_b","idle_e_lookaround") { IsOnActionWheel = true, Category = "Idles" },
+            new GestureData("Knuckle Crack","amb@code_human_wander_idles@male@idle_b","idle_f_knucklecrack") { IsOnActionWheel = true, Category = "Idles" },
+
+
         };
         Serialization.SerializeParams(GestureLookups, ConfigFileName);
     }

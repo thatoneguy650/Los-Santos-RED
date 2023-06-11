@@ -133,9 +133,7 @@ public class Pedestrians : ITaskerReportable
     public int TotalSpawnedAmbientPoliceCanines => PoliceCanines.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedEMTs => EMTs.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedAmbientEMTs => EMTs.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
-
     public int TotalSpawnedAmbientFirefighterss => Firefighters.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
-
     public int TotalSpawnedGangMembers => GangMembers.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedAmbientGangMembers => GangMembers.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedFirefighters => Firefighters.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
@@ -168,14 +166,10 @@ public class Pedestrians : ITaskerReportable
             RelationshipGroup.Cop.SetRelationshipWith(thisGangGroup, Relationship.Neutral);//was like
         }
         NativeFunction.Natives.SET_AMBIENT_PEDS_DROP_MONEY(false);
-
-
         formerPlayer = new RelationshipGroup("FORMERPLAYER");
         criminalsRG = new RelationshipGroup("CRIMINALS");
         hatesPlayerRG = new RelationshipGroup("HATES_PLAYER");
         norelationshipRG = new RelationshipGroup("NO_RELATIONSHIP");
-
-
     }
     public void Dispose()
     {

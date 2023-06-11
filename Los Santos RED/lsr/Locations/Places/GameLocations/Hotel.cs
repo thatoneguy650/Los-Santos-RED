@@ -54,7 +54,7 @@ public class Hotel : GameLocation
             {
                 try
                 {
-                    StoreCamera = new LocationCamera(this, Player);
+                    StoreCamera = new LocationCamera(this, Player, Settings);
                     StoreCamera.Setup();
                     CreateInteractionMenu();
                     InteractionMenu.Visible = true;

@@ -292,6 +292,7 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public float DistanceToRecallOnFoot_NotWanted { get; set; }
     [Description("Distance required from the player (in meters) to be forcibly despawned when in on foot and there is any wanted level active.")]
     public float DistanceToRecallOnFoot_Wanted { get; set; }
+    public float FootPatrolSpawnPercentage { get; set; }
 
     public PoliceSpawnSettings()
     {
@@ -310,7 +311,7 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         PedSpawnLimit_Default_Rural = 3;
         PedSpawnLimit_Default_Suburb = 4;
         PedSpawnLimit_Default_Industrial = 5;
-        PedSpawnLimit_Default_Downtown = 7;
+        PedSpawnLimit_Default_Downtown = 6;
 
 
         PedSpawnLimit_Investigation = 6;
@@ -328,14 +329,14 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
 
 
-        VehicleSpawnLimit_Default = 6;
+        VehicleSpawnLimit_Default = 5;
         VehicleSpawnLimit_Default_Wilderness = 2;
         VehicleSpawnLimit_Default_Rural = 3;
         VehicleSpawnLimit_Default_Suburb = 3;
         VehicleSpawnLimit_Default_Industrial = 4;
-        VehicleSpawnLimit_Default_Downtown = 9;
+        VehicleSpawnLimit_Default_Downtown = 5;
 
-        VehicleSpawnLimit_Investigation = 7;
+        VehicleSpawnLimit_Investigation = 6;
         VehicleSpawnLimit_Wanted1 = 8;
         VehicleSpawnLimit_Wanted2 = 9;
         VehicleSpawnLimit_Wanted3 = 13;
@@ -481,6 +482,9 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         DistanceToRecallInVehicle_Wanted = 850f;
         DistanceToRecallOnFoot_NotWanted = 300f;
         DistanceToRecallOnFoot_Wanted = 125f;
+
+
+        FootPatrolSpawnPercentage = 55f;
 
     }
 }

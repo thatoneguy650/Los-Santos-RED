@@ -219,7 +219,7 @@ public class VehicleItem : ModItem
 
         if(!Transaction.IsPurchasing)
         {
-            PurchaseHeader = "Take";
+            PurchaseHeader = "Acquire";
             PurchaseDescription = "Select to take possession of this vehicle";
         }
         UIMenuItem Purchase = new UIMenuItem(PurchaseHeader, PurchaseDescription) { RightLabel = formattedPurchasePrice };
@@ -242,7 +242,7 @@ public class VehicleItem : ModItem
             string PurchaseWarningDescription = $"Are you sure you want to purchase this vehicle for ${menuItem.PurchasePrice}";
             if (!Transaction.IsPurchasing)
             {
-                PurchaseWarningHeader = "Take";
+                PurchaseWarningHeader = "Acquire";
                 PurchaseWarningDescription = $"Are you sure you want to take possession of this vehicle";
             }
             SimpleWarning popUpWarning = new SimpleWarning(PurchaseWarningHeader, PurchaseWarningDescription, "", player.ButtonPrompts, settings);
@@ -329,7 +329,7 @@ public class VehicleItem : ModItem
     {
         bool ItemInDeliveryBay = true;
         SpawnPlace ChosenSpawn = null;
-        foreach (SpawnPlace sp in transaction.ItemDeliveryLocations.OrderBy(x => RandomItems.GetRandomNumber(0f, 1f)))
+        foreach (SpawnPlace sp in transaction.VehicleDeliveryLocations.OrderBy(x => RandomItems.GetRandomNumber(0f, 1f)))
         {
             ItemInDeliveryBay = Rage.World.GetEntities(sp.Position, 7f, GetEntitiesFlags.ConsiderAllVehicles).Any();
             if (!ItemInDeliveryBay)
@@ -388,8 +388,8 @@ public class VehicleItem : ModItem
     {
         if (ModelItem != null && NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(ModelItem.ModelName)))
         {
-            NativeFunction.Natives.CLEAR_AREA(Transaction.ItemPreviewPosition.X, Transaction.ItemPreviewPosition.Y, Transaction.ItemPreviewPosition.Z, 4f, true, false, false, false);
-            Transaction.SellingVehicle = new Vehicle(ModelItem.ModelName, Transaction.ItemPreviewPosition, Transaction.ItemPreviewHeading);
+            NativeFunction.Natives.CLEAR_AREA(Transaction.VehiclePreviewPosition.Position.X, Transaction.VehiclePreviewPosition.Position.Y, Transaction.VehiclePreviewPosition.Position.Z, 4f, true, false, false, false);
+            Transaction.SellingVehicle = new Vehicle(ModelItem.ModelName, Transaction.VehiclePreviewPosition.Position, Transaction.VehiclePreviewPosition.Heading);
         }
         if (!Transaction.SellingVehicle.Exists())
         {

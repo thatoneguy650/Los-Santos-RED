@@ -186,25 +186,25 @@ namespace ExtensionsMethods
         {
             if (ToLock.LockStatus == DesiredLockStatus)
             {
-                //EntryPoint.WriteToConsoleTestLong($"SetLock ALREADY DESIRED STATUS {DesiredLockStatus}");
+                EntryPoint.WriteToConsole($"SetLock ALREADY DESIRED STATUS {DesiredLockStatus}");
                 return true;
             }
             foreach (VehicleDoor myDoor in ToLock.GetDoors())
             {
                 if (!myDoor.IsValid() || myDoor.IsOpen)
                 {
-                    //EntryPoint.WriteToConsoleTestLong("SetLock DOOR OR WINDOW OPEN, NOT LOCKING");
+                    EntryPoint.WriteToConsole("SetLock DOOR OR WINDOW OPEN, NOT LOCKING");
                     return false;//invalid doors make the car not locked
                 }
             }
             if (!NativeFunction.Natives.ARE_ALL_VEHICLE_WINDOWS_INTACT<bool>(ToLock))
             {
-                //EntryPoint.WriteToConsoleTestLong("SetLock WINDOW BROKEN, NOT LOCKING");
+                EntryPoint.WriteToConsole("SetLock WINDOW BROKEN, NOT LOCKING");
                 return false;//broken windows == not locked
             }
             if (ToLock.IsConvertible && ToLock.ConvertibleRoofState == VehicleConvertibleRoofState.Lowered)
             {
-                //EntryPoint.WriteToConsoleTestLong($"SetLock IS CONVERTIBLE AND LOWERED IsConvertible:{ToLock.IsConvertible} ConvertibleRoofState:{ToLock.ConvertibleRoofState}");
+                EntryPoint.WriteToConsole($"SetLock IS CONVERTIBLE AND LOWERED IsConvertible:{ToLock.IsConvertible} ConvertibleRoofState:{ToLock.ConvertibleRoofState}");
                 return false;
             }
             //if(!NativeFunction.Natives.IS_VEHICLE_A_CONVERTIBLE<bool>(ToLock, false) && NativeFunction.Natives.IS_VEHICLE_A_CONVERTIBLE<bool>(ToLock,true))
@@ -214,7 +214,7 @@ namespace ExtensionsMethods
             //}
             if (ToLock.IsBike || ToLock.IsPlane || ToLock.IsHelicopter)
             {
-                //EntryPoint.WriteToConsoleTestLong("SetLock IS BIKE PLANE OR HELICOPTER");
+                EntryPoint.WriteToConsole("SetLock IS BIKE PLANE OR HELICOPTER");
                 return false;
             }
             ToLock.LockStatus = DesiredLockStatus;

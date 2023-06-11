@@ -95,7 +95,7 @@ class SearchLocationOnFootTaskState : TaskState
             }
             //if (ShouldSearchArea)
             //{
-                Vector3 RandomPlaceOnFoot = PlaceToWalkTo.Around2D(3f);//15f
+                Vector3 RandomPlaceOnFoot = PlaceToWalkTo.Around2D(5f);//15f
             //    Vector3 RandomPlaceOnFoot2 = PlaceToWalkTo.Around2D(5f);//15f
             //    //Vector3 RandomPlaceOnFoot3 = RandomPlaceOnFoot2.Around2D(10f);//15f
             //    NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot.X, RandomPlaceOnFoot.Y, RandomPlaceOnFoot.Z, 2.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);

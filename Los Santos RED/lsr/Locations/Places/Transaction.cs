@@ -22,10 +22,8 @@ public class Transaction
     public ShopMenu ShopMenu { get; set; }
     public GameLocation Store { get; private set; }
     public MenuPool MenuPool { get; private set; }
-    public bool HasCustomItemPostion => ItemPreviewPosition != Vector3.Zero;
-    public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
-    public float ItemPreviewHeading { get; set; } = 0f;
-    public List<SpawnPlace> ItemDeliveryLocations { get; set; } = new List<SpawnPlace>();
+    public SpawnPlace VehiclePreviewPosition { get; set; }
+    public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
     public bool PreviewItems { get; set; } = true;
     public PersonTransaction PersonTransaction { get; set; }
     public bool IsFreeVehicles { get; set; } = false;
@@ -42,6 +40,7 @@ public class Transaction
     public bool IsStealing { get; set; }
     public bool IsShowingConfirmDialog { get; set; } = false;
     public bool RotatePreview { get; set; } = true;
+    public bool RotateVehiclePreview { get; set; } = true;
     public ILicensePlatePreviewable LicensePlatePreviewable { get; set; }
     public bool IsPurchasing { get; set; } = true;
 
@@ -312,7 +311,7 @@ public class Transaction
                 {
                     SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw + 1f);
                 }
-                if (SellingVehicle.Exists())
+                if (SellingVehicle.Exists() && RotateVehiclePreview)
                 {
                     SellingVehicle.SetRotationYaw(SellingVehicle.Rotation.Yaw + 1f);
                 }
@@ -426,7 +425,6 @@ public class Transaction
     public void PlaySuccessSound()
     {
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-        //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
     }
     public void DisplayMessage(string header, string message)
     {
@@ -440,6 +438,4 @@ public class Transaction
             NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store?.Name, header, message);
         }
     }
-
-
 }

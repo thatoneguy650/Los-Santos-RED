@@ -36,17 +36,13 @@ public class Vehicles
     public List<VehicleExt> CivilianVehicleList => CivilianVehicles;
     public List<VehicleExt> FireVehicleList => FireVehicles;
     public List<VehicleExt> EMSVehicleList => EMSVehicles;
-
     public List<VehicleExt> GangVehicles => CivilianVehicleList.Where(x => x.AssociatedGang != null).ToList();
     public int SpawnedPoliceVehiclesCount => PoliceVehicles.Where(x=> x.WasModSpawned).Count();
     public int SpawnedAmbientPoliceVehiclesCount => PoliceVehicles.Where(x => x.WasModSpawned && !x.WasSpawnedEmpty).Count();
     public int PoliceHelicoptersCount => PoliceVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsHelicopter);
     public int PoliceBoatsCount => PoliceVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsBoat);
-
     public int GangHelicoptersCount => GangVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsHelicopter);
     public int GangBoatsCount => GangVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsBoat);
-
-
     public void Setup()
     {
 
@@ -355,7 +351,6 @@ public class Vehicles
             return null;
         }
     }
-
     public VehicleExt GetVehicleExt(Vehicle vehicle)
     {
         VehicleExt ToReturn = null;

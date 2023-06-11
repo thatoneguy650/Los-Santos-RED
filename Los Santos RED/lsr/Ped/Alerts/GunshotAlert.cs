@@ -40,6 +40,10 @@ public class GunshotAlert : PedAlert
             AddAlert(cop.Pedestrian.Position);
         }  
         base.Update(policeRespondable, world);
+
+
+
+
     }
 }
 

@@ -61,7 +61,7 @@ public class PurchaseMenu : ModUIMenu
             string HeaderText = "Buy";
             if(!Transaction.IsPurchasing)
             {
-                HeaderText = "Take";
+                HeaderText = "Select";
             }
             purchaseMenu = MenuPool.AddSubMenu(ParentMenu, HeaderText);
             if (Transaction.HasBannerImage)
@@ -90,7 +90,7 @@ public class PurchaseMenu : ModUIMenu
             return;
         }
         purchaseMenu.Clear();
-        CreateCategories2();
+        CreateCategories();
         foreach (MenuItem cii in ShopMenu.Items.Where(x=> x.Purchaseable).OrderByDescending(x=> x.PurchasePrice).ThenBy(x=> x.ModItemName))
         {
             //EntryPoint.WriteToConsoleTestLong($"PURCHASE MENU ADD ITEM {cii.ModItemName} Purchaseable:{cii.Purchaseable} PurchasePrice {cii.PurchasePrice} NumberOfItemsToSellToPlayer:{cii.NumberOfItemsToSellToPlayer} NumberOfItemsToPurchaseFromPlayer:{cii.NumberOfItemsToPurchaseFromPlayer}");
@@ -117,61 +117,26 @@ public class PurchaseMenu : ModUIMenu
     }
     private void CreateCategories()
     {
-        List<string> Categories = new List<string>();
-        foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Purchaseable))
-        {
-            if (!Categories.Contains(cii.ModItem.MenuCategory))
-            {
-                Categories.Add(cii.ModItem.MenuCategory);
-            }
-        }
-        foreach(string category in Categories)
-        {
-            UIMenu categoryMenu = MenuPool.AddSubMenu(purchaseMenu, category);
-            if (Transaction.HasBannerImage)
-            {
-                categoryMenu.SetBannerType(Transaction.BannerImage);
-            }
-            else if (Transaction.RemoveBanner)
-            {
-                categoryMenu.RemoveBanner();
-            }
-            categoryMenu.OnIndexChange += (sender, newIndex) =>
-            {
-                GeneratePreview(categoryMenu, newIndex);                
-            };
-            categoryMenu.OnMenuOpen += (sender) =>
-            {
-                GeneratePreview(categoryMenu, categoryMenu.CurrentSelection);
-            };
-            categoryMenu.OnMenuClose += (sender) =>
-            {
-                Transaction.ClearPreviews();
-            };
-        }
-    }
-    private void CreateCategories2()
-    {
-        List<MenuItem> WeaponItems = ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type == ePhysicalItemType.Weapon  ).ToList();
+        List<MenuItem> WeaponItems = ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type == ePhysicalItemType.Weapon).ToList();
         List<MenuItem> VehicleItems = ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type == ePhysicalItemType.Vehicle && (Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesInStores || !x.ModItem.IsDLC)).ToList();
         List<MenuItem> OtherItems = ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Vehicle && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Weapon).ToList();
         if (WeaponItems.Any())
         {
-            UIMenu headerMenu = MenuPool.AddSubMenu(purchaseMenu, "Weapons");
-            SetupCategoryMenu(headerMenu);
+            UIMenu weaponCategoryMenu = MenuPool.AddSubMenu(purchaseMenu, "Weapons");
+            SetupCategoryMenu(weaponCategoryMenu);
             foreach (string category in WeaponItems.Select(x=> x.ModItem.MenuCategory).Distinct().OrderBy(x => x))
             {
-                UIMenu categoryMenu = MenuPool.AddSubMenu(headerMenu, category);
+                UIMenu categoryMenu = MenuPool.AddSubMenu(weaponCategoryMenu, category);
                 SetupCategoryMenu(categoryMenu);
             }
         }
         if (VehicleItems.Any())
         {
-            UIMenu headerMenu = MenuPool.AddSubMenu(purchaseMenu, "Vehicles");
-            SetupCategoryMenu(headerMenu);
+            UIMenu vehicleCategoryMenu = MenuPool.AddSubMenu(purchaseMenu, "Vehicles");
+            SetupVehicleCategoryMenu(vehicleCategoryMenu);
             foreach (string category in VehicleItems.Select(x => x.ModItem.MenuCategory).Distinct().OrderBy(x=> x))
             {
-                UIMenu categoryMenu = MenuPool.AddSubMenu(headerMenu, category);
+                UIMenu categoryMenu = MenuPool.AddSubMenu(vehicleCategoryMenu, category);
                 SetupCategoryMenu(categoryMenu);
             }
         }
@@ -189,6 +154,7 @@ public class PurchaseMenu : ModUIMenu
             SetupCategoryMenu(categoryMenu);
         }
     }
+
     private void SetupCategoryMenu(UIMenu categoryMenu)
     {
         if (Transaction.HasBannerImage)
@@ -209,6 +175,31 @@ public class PurchaseMenu : ModUIMenu
         };
         categoryMenu.OnMenuClose += (sender) =>
         {
+            Transaction.ClearPreviews();
+        };
+    }
+    private void SetupVehicleCategoryMenu(UIMenu categoryMenu)
+    {
+        if (Transaction.HasBannerImage)
+        {
+            categoryMenu.SetBannerType(Transaction.BannerImage);
+        }
+        else if (Transaction.RemoveBanner)
+        {
+            categoryMenu.RemoveBanner();
+        }
+        categoryMenu.OnIndexChange += (sender, newIndex) =>
+        {
+            GeneratePreview(categoryMenu, newIndex);
+        };
+        categoryMenu.OnMenuOpen += (sender) =>
+        {
+            Transaction.Store?.HighlightVehicle();
+            GeneratePreview(categoryMenu, categoryMenu.CurrentSelection);
+        };
+        categoryMenu.OnMenuClose += (sender) =>
+        {
+            Transaction.Store?.ReHighlightStore();
             Transaction.ClearPreviews();
         };
     }

@@ -85,6 +85,9 @@ public abstract class PedAlert
                     GameTimeLastAlerted = 0;
                     AlertTarget = null;
                     Position = Vector3.Zero;
+
+
+
                     //EntryPoint.WriteToConsole($"I AM PED {PedExt.Handle} AND I HAVE POSITION TIMEOUT MY ALERT");
                 }
             }
