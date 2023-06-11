@@ -282,6 +282,9 @@ namespace Mod
         public bool IsEMT { get; set; } = false;
         public bool IsFireFighter { get; set; } = false;
         public bool IsSecurityGuard { get; set; } = false;
+
+        public bool HasBustPowers => IsCop || IsSecurityGuard;
+
         public bool CanBustPeds => (IsCop || IsSecurityGuard) && !IsIncapacitated;
         public bool IsServicePed => IsCop || IsEMT || IsFireFighter;
         public bool AutoDispatch { get; set; } = false;
@@ -1013,7 +1016,7 @@ namespace Mod
                 {
                     Scanner.OnVehicleCrashed();
                 }
-               // CurrentVehicle?.VehicleBodyManager.OnVehicleCrashed();
+                CurrentVehicle?.VehicleBodyManager.OnVehicleCrashed();
                 GameTimeLastCrashedVehicle = Game.GameTime;
             }
             //EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleEngineHealthDecreased {amount} {isCollision}");
@@ -1027,10 +1030,7 @@ namespace Mod
                 {
                     Scanner.OnVehicleCrashed();
                 }
-                if (amount >= 50)
-                {
-                    CurrentVehicle?.VehicleBodyManager.OnVehicleCrashed();
-                }
+                CurrentVehicle?.VehicleBodyManager.OnVehicleCrashed();
                 GameTimeLastCrashedVehicle = Game.GameTime;
             }
             //EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleHealthDecreased {amount} {isCollision}");

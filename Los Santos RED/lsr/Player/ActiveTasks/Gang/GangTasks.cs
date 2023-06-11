@@ -37,6 +37,10 @@ public class GangTasks
     private List<GangPizzaDeliveryTask> GangPizzaDeliveryTasks = new List<GangPizzaDeliveryTask>();
     private List<GangProveWorthTask> GangProveWorthTasks = new List<GangProveWorthTask>();
     private List<GangGetCarOutOfImpoundTask> GangGetCarOutOfImpoundTasks = new List<GangGetCarOutOfImpoundTask>();
+
+
+    private List<GangTask> AllGenericGangTasks = new List<GangTask>();
+
     public GangTasks(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems, IShopMenus shopMenus, IWeapons weapons, INameProvideable names, IPedGroups pedGroups)
     {
         Player = player;
@@ -70,6 +74,9 @@ public class GangTasks
         GangProveWorthTasks.ForEach(x => x.Dispose());
         GangGetCarOutOfImpoundTasks.ForEach(x => x.Dispose());
 
+
+        AllGenericGangTasks.ForEach(x => x.Dispose());
+
         RivalGangHits.Clear();
         PayoffGangTasks.Clear();
         RivalGangTheftTasks.Clear();
@@ -79,6 +86,8 @@ public class GangTasks
         GangPizzaDeliveryTasks.Clear();
         GangProveWorthTasks.Clear();
         GangGetCarOutOfImpoundTasks.Clear();
+
+        AllGenericGangTasks.Clear();
     }
     public void StartGangProveWorth(Gang gang, int killRequirement, GangContact gangContact)
     {
@@ -148,6 +157,16 @@ public class GangTasks
         newDelivery.Setup();
         newDelivery.Start(gang);
     }
+
+
+    public void StartGangBodyDisposal(Gang gang, GangContact gangContact)
+    {
+        GangBodyDisposalTask newTask = new GangBodyDisposalTask(Player, Time, Gangs, PlacesOfInterest, Settings, World, Crimes, Weapons, Names, PedGroups, ShopMenus, ModItems,PlayerTasks,this, gangContact, gang);
+        AllGenericGangTasks.Add(newTask);
+        newTask.Setup();
+        newTask.Start();
+    }
+
     public string GetGeneircTaskAbortMessage()
     {
         List<string> Replies = new List<string>() {

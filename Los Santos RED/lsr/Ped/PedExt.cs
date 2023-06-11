@@ -428,6 +428,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool AlwaysHasLongGun { get; set; } = false;
     public bool IsBeingHeldAsHostage { get; set; } = false;
     public bool GeneratesBodyAlerts { get; set; } = true;
+    public bool WasCrushed { get; set; }
 
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
@@ -471,13 +472,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
         
     }
-    //protected virtual void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
-    //{
-    //    if (Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallEMTsOnBodies)
-    //    {
-    //        PedAlerts.LookForUnconsciousPeds(world);
-    //    }
-    //}
     public virtual void OnBecameWanted()
     {
         if (Pedestrian.Exists())

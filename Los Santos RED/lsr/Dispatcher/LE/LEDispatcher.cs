@@ -907,7 +907,7 @@ public class LEDispatcher
         }
         else 
         {
-            if(SpawnLocation.HasSidewalk && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.FootPatrolSpawnPercentage) && Jurisdictions.CanSpawnAmbientPedestrians(Zones.GetZone(SpawnLocation.SidewalkPosition)?.InternalGameName, Agency))
+            if(World.TotalWantedLevel == 0 &&  SpawnLocation.HasSidewalk && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.FootPatrolSpawnPercentage) && Jurisdictions.CanSpawnAmbientPedestrians(Zones.GetZone(SpawnLocation.SidewalkPosition)?.InternalGameName, Agency))
             {
                 isAmbientPedSpawn = true;
                 EntryPoint.WriteToConsole("LE Dispatcher IS FOOT SPAWN");

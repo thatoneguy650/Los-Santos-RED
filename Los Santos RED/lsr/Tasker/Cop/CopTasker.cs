@@ -59,8 +59,8 @@ public class CopTasker
                             }
                             if (cop.CurrentTask != null && cop.CurrentTask.ShouldUpdate)//used to just be an IF
                             {
-                                GameFiber.Yield();
-                                if (1==1 || cop.ShouldUpdateTarget)
+                                //GameFiber.Yield();
+                                if (cop.ShouldUpdateTarget)
                                 {
                                     PedExt otherTarget = PedToAttack(cop);
                                     cop.CurrentTarget = otherTarget;

@@ -37,10 +37,9 @@ public class ButtonPrompts
     {
         addedPromptGroup = false;
         IsUsingKeyboard = NativeFunction.Natives.IS_USING_KEYBOARD_AND_MOUSE<bool>(2);
-        AttemptAddInteractionPrompts();
+        AttemptAddConversationPrompts();
         AttemptAddAdvancedInteractionPrompts();
         AttemptAddVehiclePrompts();
-        //GameFiber.Yield();
         AttemptAddLocationPrompts();
         AttemptAddActivityPrompts();
         AttemptRemoveMenuPrompts();
@@ -182,7 +181,7 @@ public class ButtonPrompts
     {
         return Prompts.Any(x => x.Group == group && x.IsPressedNow);
     }
-    private void PersonInteractingPrompts()
+    private void PersonConversationPrompts()
     {
         RemovePrompts("InteractableLocation");
         RemovePrompts("StartScenario");
@@ -322,11 +321,11 @@ public class ButtonPrompts
             RemovePrompts("MenuShowBusted");
         }
     }
-    private void AttemptAddInteractionPrompts()
+    private void AttemptAddConversationPrompts()
     {
         if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && !addedPromptGroup && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanConverseWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedConversations)
         {
-            PersonInteractingPrompts();
+            PersonConversationPrompts();
             addedPromptGroup = true;
         }
         else
@@ -373,15 +372,6 @@ public class ButtonPrompts
             {
                 Prompts.RemoveAll(x => x.Group == "Search");
             }
-            //if (Player.ActivityManager.CanReviveLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedReiving)
-            //{
-            //    PersonTreatingPrompts();
-            //    addedPromptGroup = true;
-            //}
-            //else
-            //{
-            //    Prompts.RemoveAll(x => x.Group == "Treat");
-            //}
             if (Player.ActivityManager.CanDragLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowDraggingOtherPeds)
             {
                 PersonDraggingPrompts();

@@ -244,7 +244,7 @@ public class ScrapYard : GameLocation
     }
     private bool IsValidForScrapping(VehicleExt toScrap)
     {
-        if(toScrap.Vehicle.Exists() && toScrap.Vehicle.DistanceTo2D(EntrancePosition) <= VehiclePickupDistance && !toScrap.Vehicle.HasOccupants)
+        if(toScrap.Vehicle.Exists() && toScrap.Vehicle.DistanceTo2D(EntrancePosition) <= VehiclePickupDistance && !toScrap.Vehicle.HasOccupants && !toScrap.VehicleBodyManager.StoredBodies.Any())
         {
             return true;
         }

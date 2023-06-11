@@ -34,6 +34,7 @@ namespace LosSantosRED.lsr.Interface
         Stance Stance { get; }
         bool IsShowingActionWheel { get; }
         bool IsEMT { get; }
+        bool IsCop { get; }
 
         void PlaySpeech(string v1, bool v2);
         void SetAngeredCop();

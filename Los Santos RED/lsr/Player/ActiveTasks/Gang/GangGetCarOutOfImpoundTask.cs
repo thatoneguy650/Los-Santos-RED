@@ -253,11 +253,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             gmSpawn.AllowBuddySpawn = false;
             gmSpawn.AddEmptyVehicleBlip = true;
             gmSpawn.AttemptSpawn();
+            gmSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
             ImpoundedVehicle = gmSpawn.CreatedVehicles.FirstOrDefault();
             if(ImpoundedVehicle == null || !ImpoundedVehicle.Vehicle.Exists())
             {
                 return false;
             }
+
             ImpoundedVehicle.Vehicle.IsPersistent = true;
             ImpoundedVehicle.SetRandomPlate();
             ImpoundedVehicle.WasModSpawned = true;

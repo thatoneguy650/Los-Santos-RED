@@ -23,6 +23,10 @@ public class GetArrested : ComplexTask
     private int SeatTaskedToEnter;
     private bool NeedsUpdates;
     private Task CurrentTask = Task.Wait;
+
+
+
+    private bool ShouldStayStanding => Player.HasBustPowers && Ped.DistanceToPlayer <= 50f;
     private enum Task
     {
         GetInCar,
@@ -34,7 +38,7 @@ public class GetArrested : ComplexTask
     {
         get
         {
-            if(!PlayedArrestAnimation)
+            if(!PlayedArrestAnimation || ShouldStayStanding)
             {
                 return Task.SetArrested;
             }

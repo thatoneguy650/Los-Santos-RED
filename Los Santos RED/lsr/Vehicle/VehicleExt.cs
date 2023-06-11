@@ -663,7 +663,7 @@ namespace LSR.Vehicles
         public bool WasSpawnedEmpty { get; set; } = false;
         public bool OwnedByPlayer { get; internal set; }
         public bool AllowVanityPlates { get; set; } = true;
- 
+        public bool WasCrushed { get; set; }
 
         private int ClosestColor(List<Color> colors, Color target)
         {
@@ -1188,8 +1188,8 @@ namespace LSR.Vehicles
                 return;
             }
             AttachedBlip = Vehicle.AttachBlip();
-            AttachedBlip.Scale = 0.5f;
-            AttachedBlip.Color = Color.Red;
+            AttachedBlip.Scale = 0.25f;
+            AttachedBlip.Color = Color.Blue;
             //EntryPoint.WriteToConsole($"PLAYER EVENT: AddOwnershipBlip", 5);
         }
         public void FullyDelete()

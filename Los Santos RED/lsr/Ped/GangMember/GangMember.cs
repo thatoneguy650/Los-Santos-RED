@@ -84,25 +84,23 @@ public class GangMember : PedExt, IWeaponIssuable
     }
     public override void OnBecameWanted()
     {
-        if (Pedestrian.Exists())
+        if (!Pedestrian.Exists() || Gang == null)
         {
-            if (Gang != null)
-            {
-                RelationshipGroup.Cop.SetRelationshipWith(Pedestrian.RelationshipGroup, Relationship.Hate);
-                Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
-                Gang.HasWantedMembers = true;
-                //EntryPoint.WriteToConsoleTestLong($"{Pedestrian.Handle} BECAME WANTED (GANG MEMBER) SET {Gang.ID} TO HATES COPS");
-            }
-            //EntryPoint.WriteToConsoleTestLong($"{Pedestrian.Handle} BECAME WANTED (GANG MEMBER)");
+            return;
         }
+        RelationshipGroup.Cop.SetRelationshipWith(Pedestrian.RelationshipGroup, Relationship.Hate);
+        Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
+        Gang.HasWantedMembers = true;
+        //EntryPoint.WriteToConsoleTestLong($"{Pedestrian.Handle} BECAME WANTED (GANG MEMBER) SET {Gang.ID} TO HATES COPS");
     }
     public override void OnLostWanted()
     {
-        if(Pedestrian.Exists())
+        if(!Pedestrian.Exists())
         {
-            PedViolations.Reset();
-            //EntryPoint.WriteToConsoleTestLong($"{Pedestrian.Handle} LOST WANTED (GANG MEMBER)");
+            return;
         }
+        PedViolations.Reset();
+        //EntryPoint.WriteToConsoleTestLong($"{Pedestrian.Handle} LOST WANTED (GANG MEMBER)");
     }
     public void SetStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons weapons, bool addBlip, bool forceMelee, bool forceSidearm, bool forceLongGun)
     {

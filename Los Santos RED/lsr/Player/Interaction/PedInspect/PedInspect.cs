@@ -166,21 +166,31 @@ public class PedInspect : DynamicActivity
         PedInspectMenu = new UIMenu("Inspect", "Select an Option");
         PedInspectMenu.RemoveBanner();
         MenuPool.Add(PedInspectMenu);
+        AddGeneralItems();
+        AddEMTItems();
+    }
 
-
+    private void AddGeneralItems()
+    {
         InspectPedMenuItem = new UIMenuItem("Inspect Ped", "Get info about the current ped.");
         InspectPedMenuItem.Activated += (menu, item) =>
         {
             Ped.ShowInfoDisplay(pedHeadshotHandle);
         };
         PedInspectMenu.AddItem(InspectPedMenuItem);
-
+        string LootHeader = "Loot";
         string lootDescription = "Loot the current ped. Make sure there are no prying eyes around.";
-        if(Player.IsEMT)
+        if (Player.IsEMT)
         {
-            lootDescription = "Loot the current ped free from suspicion. You are just helping them out right?";
+            LootHeader = "Search";
+            lootDescription = "Search the current ped and store all items free from suspicion. You are just helping them out right?";
         }
-        LootPedMenuItem = new UIMenuItem("Loot Ped", lootDescription);
+        else if (Player.IsCop)
+        {
+            LootHeader = "Search";
+            lootDescription = "Search the ped and collect all evidence free from suspicion. You will be sure to turn in all those illegal items right?";
+        }
+        LootPedMenuItem = new UIMenuItem(LootHeader, lootDescription);
         LootPedMenuItem.Activated += (menu, item) =>
         {
             PedInspectMenu.Visible = false;
@@ -197,9 +207,9 @@ public class PedInspect : DynamicActivity
             Player.ActivityManager.IsLootingBody = false;
         };
         PedInspectMenu.AddItem(LootPedMenuItem);
-
-
-
+    }
+    private void AddEMTItems()
+    {
         RevivePedMenuItem = new UIMenuItem("Treat Ped", "Attempt to revive the current ped, not always successful. Less often when you've been drinking.");
         RevivePedMenuItem.Activated += (menu, item) =>
         {
@@ -217,8 +227,6 @@ public class PedInspect : DynamicActivity
                 IsCancelled = true;
             }
         };
-
-
         KillPedMenuItem = new UIMenuItem("Kill Ped", "Make sure you fail in your treatment of the current ped. Who would suspect the helpful EMT?");
         KillPedMenuItem.Activated += (menu, item) =>
         {
@@ -236,14 +244,13 @@ public class PedInspect : DynamicActivity
                 IsCancelled = true;
             }
         };
-
-
         if (Player.IsEMT)
         {
             PedInspectMenu.AddItem(RevivePedMenuItem);
             PedInspectMenu.AddItem(KillPedMenuItem);
         }
     }
+
     private void UpdateMenuItems()
     {
         LootPedMenuItem.Enabled = Ped.CanBeLooted && !Ped.HasBeenLooted;

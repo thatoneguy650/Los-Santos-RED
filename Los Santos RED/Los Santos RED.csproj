@@ -242,6 +242,8 @@
     <Compile Include="lsr\Ped\Variation\SavedOutfit.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangGetCarOutOfImpoundTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangProveWorthTask.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\Gang\Generic\GangBodyDisposalTask.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\Gang\Generic\GangTask.cs" />
     <Compile Include="lsr\Player\Activity\DoorToggle.cs" />
     <Compile Include="lsr\Player\Activity\ItemDroppingActivity.cs" />
     <Compile Include="lsr\Player\Activity\Vehicle\VehicleDoorAnimation.cs" />
@@ -269,6 +271,7 @@
     <Compile Include="lsr\Player\Interaction\Conversation\AdvancedConversation.cs" />
     <Compile Include="lsr\Old\FullConversation_Old.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\IAdvancedConversationable.cs" />
+    <Compile Include="lsr\Player\Interaction\PedGrab\PedCuff.cs" />
     <Compile Include="lsr\Player\Interaction\PedGrab\HumanShield.cs" />
     <Compile Include="lsr\Player\Interaction\PedGrab\PedGrab.cs" />
     <Compile Include="lsr\Player\Interaction\PedInspect\PedInspect.cs" />

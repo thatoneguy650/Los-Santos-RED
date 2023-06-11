@@ -125,7 +125,7 @@ public class Drag : DynamicActivity
                 Cancel();
                 if (LoadBody)
                 {
-                    if(ClosestVehicle.VehicleBodyManager.LoadBody(Ped, VehicleDoorSeatData))
+                    if(ClosestVehicle.VehicleBodyManager.LoadBody(Ped, VehicleDoorSeatData, true))
                     {
                         Player.ActivityManager.SetDoor(VehicleDoorSeatData.DoorID, false, false);
                     }

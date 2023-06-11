@@ -58,7 +58,7 @@ public class VehicleBodyManager
             }
         }
     }
-    public bool LoadBody(PedExt pedExt, VehicleDoorSeatData bone)
+    public bool LoadBody(PedExt pedExt, VehicleDoorSeatData bone, bool withFade)
     {
         //EntryPoint.WriteToConsoleTestLong($"VehicleBodyManager LoadBody {bone}");
         if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
@@ -76,7 +76,7 @@ public class VehicleBodyManager
             return false;
         }
         StoredBody storedBody = new StoredBody(pedExt, bone, VehicleExt, Settings);
-        if (storedBody.Load())
+        if (storedBody.Load(withFade))
         {
             //EntryPoint.WriteToConsoleTestLong($"VehicleBodyManager LoadBody {bone} FINISHED SUCCESSFULLY");
             if (storedBody.IsAttachedToVehicle)

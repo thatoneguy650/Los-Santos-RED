@@ -34,9 +34,9 @@ public class StoredBody
     public VehicleExt VehicleExt { get; private set; }
     public VehicleDoorSeatData VehicleDoorSeatData { get; private set; }
     public bool WasEjected { get; private set; }
-    public bool Load()
+    public bool Load(bool withFade)
     {
-        if(VehicleDoorSeatData == null)
+        if (VehicleDoorSeatData == null)
         {
             return false;
         }
@@ -48,7 +48,10 @@ public class StoredBody
         {
             return false;
         }
-        VehicleExt.OpenDoorLoose(VehicleDoorSeatData.DoorID, true);
+        if (withFade)
+        {
+            VehicleExt.OpenDoorLoose(VehicleDoorSeatData.DoorID, true);
+        }
         if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
         {
             return false;
@@ -57,7 +60,7 @@ public class StoredBody
         {
             return false;
         }
-        if(Settings.SettingsManager.DragSettings.FadeOut && !Game.IsScreenFadedOut)
+        if(withFade && Settings.SettingsManager.DragSettings.FadeOut && !Game.IsScreenFadedOut)
         {
             Game.FadeScreenOut(500, true);
         }
@@ -76,7 +79,7 @@ public class StoredBody
             ResetPed();
         }
         CleanupPed();
-        if (Settings.SettingsManager.DragSettings.FadeOut)
+        if (withFade && Settings.SettingsManager.DragSettings.FadeOut)
         {
             GameFiber.Sleep(500);
             Game.FadeScreenIn(500, true);
@@ -89,7 +92,7 @@ public class StoredBody
         {
             return false;
         }
-        //EntryPoint.WriteToConsoleTestLong("EJECTING BODY FROM TRUNK");
+        EntryPoint.WriteToConsole("EJECTING BODY FROM TRUNK");
         VehicleExt.OpenDoor(VehicleDoorSeatData.DoorID, false);
         PedExt.Pedestrian.Detach();
         ResetPed();
@@ -216,7 +219,7 @@ public class StoredBody
         {
             return false;
         }
-        NativeFunction.Natives.TASK_PLAY_ANIM(PedExt.Pedestrian, TrunkAnimationDictionaryName, TrunkAnimationName, 1000.0f, -1000.0f, -1, 2 | 8, 0, false, false, false);
+        NativeFunction.Natives.TASK_PLAY_ANIM(PedExt.Pedestrian, TrunkAnimationDictionaryName, TrunkAnimationName, 1000.0f, -1000.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_FORCE_START | eAnimationFlags.AF_NOT_INTERRUPTABLE), 0, false, false, false);
         NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(PedExt.Pedestrian, TrunkAnimationDictionaryName, TrunkAnimationName, 1.0f);
         return true;
     }

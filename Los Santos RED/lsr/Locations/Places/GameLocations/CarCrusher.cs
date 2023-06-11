@@ -116,6 +116,11 @@ public class CarCrusher : GameLocation
                 //{
                 //    CarDescription += $"~n~Metal Value: ~g~${ScrapPrice}~s~";
                 //}
+
+                int StoredBodies = veh.VehicleBodyManager.StoredBodies.Count();
+                int BodiesFee = 2000 * StoredBodies;
+                CrushPrice += BodiesFee;
+
                 if (MakeName != "")
                 {
                     CarDescription += $"~n~Manufacturer: ~b~{MakeName}~s~";
@@ -128,10 +133,14 @@ public class CarCrusher : GameLocation
                 {
                     CarDescription += $"~n~Class: ~p~{ClassName}~s~";
                 }
+                if(StoredBodies > 0)
+                {
+                    CarDescription += $"~n~~n~EXTRA Disposal Fee: ~r~${BodiesFee}~s~";
+                }
                 UIMenuItem vehicleCrusherItem = new UIMenuItem(CarName, CarDescription) { RightLabel = CrushPrice.ToString("C0") };
                 vehicleCrusherItem.Activated += (sender, e) =>
                 {
-                    CrushVehicle(veh, -500);
+                    CrushVehicle(veh, -1 * CrushPrice);
                 };
                 CrusherSubMenu.AddItem(vehicleCrusherItem);
                 Added = true;
@@ -185,6 +194,22 @@ public class CarCrusher : GameLocation
         string MakeName = NativeHelper.VehicleMakeName(carToScrap.Vehicle.Model.Hash);
         string ModelName = NativeHelper.VehicleModelName(carToScrap.Vehicle.Model.Hash);
         string CarName = (MakeName + " " + ModelName).Trim();
+        foreach (StoredBody sb in carToScrap.VehicleBodyManager.StoredBodies)
+        {
+            if(sb.PedExt != null && sb.PedExt.Pedestrian.Exists())
+            {
+                sb.PedExt.WasCrushed = true;
+                sb.PedExt.Pedestrian.Delete();
+            }
+        }
+        foreach(Ped otherPed in carToScrap.Vehicle.Occupants)
+        {
+            if(otherPed.Exists())
+            {
+                otherPed.Delete();
+            }
+        }
+        carToScrap.WasCrushed = true;
         carToScrap.Vehicle.Delete();
         CrusherSubMenu.MenuItems.RemoveAll(x => x.Text == CarName);
         CrusherSubMenu.RefreshIndex();
@@ -214,7 +239,7 @@ public class CarCrusher : GameLocation
     }
     private bool IsValidForCrushing(VehicleExt toScrap)
     {
-        if (toScrap.Vehicle.Exists() && toScrap.Vehicle.DistanceTo2D(EntrancePosition) <= VehiclePickupDistance && !toScrap.Vehicle.HasOccupants)
+        if (toScrap.Vehicle.Exists() && toScrap.Vehicle.DistanceTo2D(EntrancePosition) <= VehiclePickupDistance)
         {
             return true;
         }

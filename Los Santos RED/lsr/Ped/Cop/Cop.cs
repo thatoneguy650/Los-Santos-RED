@@ -346,7 +346,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                     uint GameTimeLastShot = 0;
                     while (Pedestrian.Exists() && !IsDead && !IsUnconscious && IsShootingCheckerActive && EntryPoint.ModController?.IsRunning == true)// && !policeRespondable.PoliceResponse.WantedLevelHasBeenRadioedIn)// && CarryingWeapon && IsShootingCheckerActive && ObservedWantedLevel < 3)
                     {
-                        if (Pedestrian.IsShooting && (uint)Pedestrian.Inventory.EquippedWeapon?.Hash != 911657153)
+                        if (Pedestrian.IsShooting && Pedestrian.Inventory.EquippedWeapon != null && (uint)Pedestrian.Inventory.EquippedWeapon.Hash != 911657153)
                         {
                             IsShooting = true;
                             GameTimeLastShot = Game.GameTime;

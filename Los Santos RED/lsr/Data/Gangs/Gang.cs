@@ -102,6 +102,11 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public int ImpoundTheftPaymentMax { get; set; } = 7000;
 
 
+    public int BodyDisposalPaymentMin { get; set; } = 4500;
+    public int BodyDisposalPaymentMax { get; set; } = 6500;
+
+
+
     public float FightPercentage { get; set; } = 90f;
     public float FightPolicePercentage { get; set; } = 50f;
     public float DrugDealerPercentage { get; set; } = 40f;

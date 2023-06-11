@@ -706,27 +706,28 @@ public class AIApprehend : ComplexTask
     }
     private void FootChaseAttacking()
     {
-        if (Ped.Pedestrian.Exists() && OtherTarget.Pedestrian.Exists())
+        if (!Ped.Pedestrian.Exists() && !OtherTarget.Pedestrian.Exists())
         {
-            Ped combatTarget = Ped.Pedestrian.CombatTarget;
-            bool IsTargettingPlayer = combatTarget.Exists() && Game.LocalPlayer.Character.Exists() && combatTarget.Handle == Game.LocalPlayer.Character.Handle;//OtherTarget.Pedestrian.Handle;
-            if (CurrentSubTask != SubTask.Fight || IsTargettingPlayer)//    SubTaskName != "Fighting" || ISSTUPIDSHIT)
-            {
-                SubTaskName = "Fight";
-                CurrentSubTask = SubTask.Fight;
-                NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
-                NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Ped.Pedestrian, true);
-                //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanChaseTargetOnFoot, false);
-                NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
-                NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanUseCover, true);
-                if (!UseWantedLevel)
-                {
-                    Cop.WeaponInventory.SetDeadly(false);
-                }
-                // NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(Ped.Pedestrian, 300f, 0);
-                NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, OtherTarget.Pedestrian, 0, 16);
-            }
+            return;
         }
+        Ped combatTarget = Ped.Pedestrian.CombatTarget;
+        bool IsTargettingPlayer = combatTarget.Exists() && Game.LocalPlayer.Character.Exists() && combatTarget.Handle == Game.LocalPlayer.Character.Handle;//OtherTarget.Pedestrian.Handle;
+        if (CurrentSubTask != SubTask.Fight || IsTargettingPlayer)//    SubTaskName != "Fighting" || ISSTUPIDSHIT)
+        {
+            SubTaskName = "Fight";
+            CurrentSubTask = SubTask.Fight;
+            NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+            NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Ped.Pedestrian, true);
+            //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanChaseTargetOnFoot, false);
+            NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
+            NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanUseCover, true);
+            if (!UseWantedLevel)
+            {
+                Cop.WeaponInventory.SetDeadly(false);
+            }
+            // NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(Ped.Pedestrian, 300f, 0);
+            NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, OtherTarget.Pedestrian, 0, 16);
+        }   
     }
     private void FootChaseArresting()
     {
