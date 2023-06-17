@@ -49,6 +49,12 @@ public class TheftViolations
         {
             Violations.AddViolating(StaticStrings.DrivingStolenVehicleCrimeID);//.IsCurrentlyViolating = true;
         }
+
+        if (Player.CurrentVehicle != null && Player.CurrentVehicle.IsImpounded && Player.AnyPoliceCanRecognizePlayer && Player.IsInVehicle && Player.IsDriver)
+        {
+            Violations.AddViolating(StaticStrings.DrivingStolenVehicleCrimeID);//.IsCurrentlyViolating = true;
+        }
+
         if (Player.IsInVehicle && Player.IsDriver && Player.CurrentVehicle != null && Player.AnyPoliceCanRecognizePlayer && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.IsPoliceVehicle)
         {
             Violations.AddViolating(StaticStrings.DrivingStolenVehicleCrimeID);//.IsCurrentlyViolating = true;

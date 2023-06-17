@@ -24,9 +24,6 @@ public class RespawnSettings : ISettingsDefaultable
     public bool PermanentDeathMode { get; set; }
     [Description("Deduct the money without granting the bribe if the amount is too low.")]
     public bool DeductMoneyOnFailedBribe { get; set; }
-
-
-
     [Description("Minimum bribe amount required.")]
     public int PoliceBribeBase { get; set; }
     [Description("Additional bribe amount for each wanted level. Ex. a value of 500 would require $1500 bribe at 3 stars.")]
@@ -81,8 +78,11 @@ public class RespawnSettings : ISettingsDefaultable
     public float OffsetX { get; set; }
     [Description("CURRENTLY DISABLED")]
     public float OffsetY { get; set; }
+    [Description("If enabled, vehicles will be impounded when arrested")]
     public bool ImpoundVehicles { get; set; }
+    [Description("Daily fee applied for impounded vehicles")]
     public int ImpoundVehiclesDailyFee { get; set; }
+    [Description("Extra fee applied for impounded vehicles that are stolen. Applied for each theft.")]
     public int ImpoundVehiclesStolenPenalty { get; set; }
 
     public RespawnSettings()

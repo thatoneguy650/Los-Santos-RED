@@ -13,11 +13,8 @@ public class RecoilSettings : ISettingsDefaultable
     public bool ApplyRecoilInVehicle { get; set; }
     [Description("Enable or disable the recoil system when on foot only.")]
     public bool ApplyRecoilOnFoot { get; set; }
-
-
     [Description("Enable or disable the recoil system when using a controller.")]
     public bool ApplyRecoilWithController { get; set; }
-
     [Description("Global vertical recoil adjuster. Multiplier for the vertical intensity of the recoil. 1.0 is default, 2.0f would be double the felt recoil, 0.5 would be 1/2 of the felt recoil")]
     public float VerticalRecoilAdjuster { get; set; }
     [Description("Global vertical recoil adjuster. Multiplier for the horizontal intensity of the recoil. 1.0 is default, 2.0f would be double the felt recoil, 0.5 would be 1/2 of the felt recoil")]
@@ -37,7 +34,6 @@ public class RecoilSettings : ISettingsDefaultable
     [Description("Global vertical recoil adjuster. Multiplier for the horizontal intensity of the recoil. 1.0 is default, 2.0f would be double the felt recoil, 0.5 would be 1/2 of the felt recoil")]
     public float HorizontalFirstPersonRecoilAdjuster { get; set; }
     public bool ApplyRecoilToSnipers { get; set; }
-    //public bool UseAlternateCalculation { get; set; }
     public float SmoothRate { get; set; }
 
     public RecoilSettings()
@@ -60,12 +56,10 @@ public class RecoilSettings : ISettingsDefaultable
         VerticalFirstPersonRecoilAdjuster = 1.0f;
         HorizontalFirstPersonRecoilAdjuster = 1.0f;
 
-#if DEBUG
-        ApplyRecoilInFirstPerson = true;
-        //ApplyRecoilInVehicle = true;
-#endif
+//#if DEBUG
+//        ApplyRecoilInFirstPerson = true;
+//#endif
         ApplyRecoilToSnipers = true;
-        //UseAlternateCalculation = false;
         ApplyRecoilWithController = false;
         SmoothRate = 1.0f;
     }

@@ -25,11 +25,6 @@ public class TimeSettings : ISettingsDefaultable
         FastForwardMultiplier = 25;//300
         FastForwardInterval = 10;
         SetRealTime = false;
-
-//#if DEBUG
-//        ScaleTime = false;
-//        SetRealTime = true;
-//#endif
     }
 
 }

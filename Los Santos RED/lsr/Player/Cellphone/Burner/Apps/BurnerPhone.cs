@@ -402,12 +402,6 @@ public class BurnerPhone
     {
         CurrentBurnerApp = PhoneApps.FirstOrDefault(x => x.Index == Index);
         CurrentBurnerApp?.Open(true);
-//#if DEBUG
-//        if(CurrentBurnerApp != null)
-//        {
-//            Game.DisplaySubtitle($"{CurrentBurnerApp.Name} APP OPENED");
-//        }
-//#endif
     }
     public void NavigateMenu(int index)
     {

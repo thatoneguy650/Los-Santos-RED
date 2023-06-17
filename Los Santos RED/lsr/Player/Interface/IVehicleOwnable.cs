@@ -13,5 +13,6 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentVehicle { get; }
         Ped Character { get; }
         string PlayerName { get; }
+        bool IsCop { get; }
     }
 }

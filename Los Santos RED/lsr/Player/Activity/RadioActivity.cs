@@ -332,18 +332,6 @@ namespace LosSantosRED.lsr.Player
                     Player.ButtonPrompts.AddPrompt("Radio", "Raise", "RadioRaise", GameControl.Attack, 15);
                 }
             }
-
-//#if DEBUG
-
-//            if (IsAttachedToHand && !IsRaised)
-//            {
-//                Player.ButtonPrompts.AddPrompt("Radio", "Attach", "RadioAttach", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 12);
-//            }
-//            else if(IsAttachedToBelt)
-//            {
-//                Player.ButtonPrompts.AddPrompt("Radio", "Detach", "RadioDetach", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 12);
-//            }
-//#endif
         }
         private void RemovePrompts()
         {

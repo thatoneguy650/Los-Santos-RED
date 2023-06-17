@@ -21,7 +21,6 @@ public class NeedsSettings : ISettingsDefaultable
     public bool ApplySleep { get; set; }
     [Description("Change the intensity of the drain and recovery for sleep. Default 1.0")]
     public float SleepChangeScalar { get; set; }
-
     [Description("Changes the amount of digits seen on the hunger ui")]
     public int HungerDisplayDigits { get; set; }
     [Description("Changes the amount of digits seen on the thirst ui")]
@@ -34,7 +33,6 @@ public class NeedsSettings : ISettingsDefaultable
     public bool AllowHealthDrain { get; set; }
     [Description("Interval between adding health when all needs are met.")]
     public uint HealthRegenInterval { get; set; }
-
     [Description("Interval between draining health when you have pressing needs.")]
     public uint HealthDrainInterval { get; set; }
     [Description("Amount of health added each interval when all needs are met.")]

@@ -664,6 +664,7 @@ namespace LSR.Vehicles
         public bool OwnedByPlayer { get; internal set; }
         public bool AllowVanityPlates { get; set; } = true;
         public bool WasCrushed { get; set; }
+        public bool IsAlwaysOpenForPlayer { get; set; } = false;
 
         private int ClosestColor(List<Color> colors, Color target)
         {
@@ -1145,6 +1146,8 @@ namespace LSR.Vehicles
             DateTimeImpounded = time.CurrentDateTime;
             TimesImpounded++;
             ImpoundedLocation = locationName;
+            SimpleInventory.OnImpounded();
+            WeaponStorage.OnImpounded();
         }
         private void UnSetImpounded()
         {
@@ -1189,6 +1192,7 @@ namespace LSR.Vehicles
             }
             AttachedBlip = Vehicle.AttachBlip();
             AttachedBlip.Scale = 0.25f;
+            AttachedBlip.Sprite = (BlipSprite)225;
             AttachedBlip.Color = Color.Blue;
             //EntryPoint.WriteToConsole($"PLAYER EVENT: AddOwnershipBlip", 5);
         }

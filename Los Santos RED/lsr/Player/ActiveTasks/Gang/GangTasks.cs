@@ -191,10 +191,11 @@ public class GangTasks
                         };
         return Replies.PickRandom();
     }
-    public void SendGenericAbortMessage(PhoneContact contact)
+    public void SendGenericTooSoonMessage(PhoneContact contact)
     {
         Player.CellPhone.AddPhoneResponse(contact.Name, GetGeneircTaskAbortMessage());
     }
+
     public void SendGenericFailMessage(PhoneContact contact)
     {
         Player.CellPhone.AddScheduledText(contact, GetGenericFailMessage(), 1);

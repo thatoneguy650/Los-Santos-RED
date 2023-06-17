@@ -373,49 +373,6 @@ namespace LosSantosRED.lsr.Player
             }
             else
             {
-                //NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, SeatEntryPosition.X, SeatEntryPosition.Y, SeatEntryPosition.Z, 1.0f, -1, SeatEntryHeading, 0.2f);
-                //                uint GameTimeStartedSitting = Game.GameTime;
-                //                float heading = Game.LocalPlayer.Character.Heading;
-                //                bool IsFacingDirection = false;
-                //                bool IsCloseEnough = false;
-                //                while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsCloseEnough && !IsCancelled)
-                //                {
-                //                    if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
-                //                    {
-                //                        NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, true);
-                //                    }
-                //                    if (Player.IsMoveControlPressed)
-                //                    {
-                //                        IsCancelled = true;
-                //                    }
-                //                    IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(SeatEntryPosition) < 0.2f;
-                ////#if DEBUG
-                ////                    Rage.Debug.DrawArrowDebug(SeatEntryPosition + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
-                ////#endif
-                //                    GameFiber.Yield();
-                //                }
-                //                GameFiber.Sleep(250);
-                //                GameTimeStartedSitting = Game.GameTime;
-                //                while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsFacingDirection && !IsCancelled)
-                //                {
-                //                    if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
-                //                    {
-                //                        NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, true);
-                //                    }
-                //                    heading = Game.LocalPlayer.Character.Heading;
-                //                    if (Math.Abs(Extensions.GetHeadingDifference(heading, SeatEntryHeading)) <= 0.5f)//0.5f)
-                //                    {
-                //                        IsFacingDirection = true;
-                //                    }
-                //                    if (Player.IsMoveControlPressed)
-                //                    {
-                //                        IsCancelled = true;
-                //                    }
-                ////#if DEBUG
-                ////                    Rage.Debug.DrawArrowDebug(SeatEntryPosition + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
-                ////#endif
-                //                    GameFiber.Yield();
-                //                }
                 bool IsFacingDirection = false;
                 bool IsCloseEnough = false;
                 NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, SeatEntryPosition.X, SeatEntryPosition.Y, SeatEntryPosition.Z, 1.0f, -1, SeatEntryHeading, Settings.SettingsManager.ActivitySettings.SittingSlideDistance);
@@ -428,8 +385,6 @@ namespace LosSantosRED.lsr.Player
                 }
                 //EntryPoint.WriteToConsoleTestLong($"SeatOffset {SeatOffset} SeatHash {SeatHash} SeatName {SeatName}");
                 uint GameTimeGotClose = 0;
-
-
                 SetCollisionDisabled();
 
                 while (!IsCancelled)
@@ -460,10 +415,10 @@ namespace LosSantosRED.lsr.Player
                     
 
 
-#if DEBUG
-                    Game.DisplaySubtitle($"SeatOffset {SeatOffset} SeatHash {SeatHash} SeatName {SeatName} SeatDistance {SeatDistance} HeadingDifference {HeadingDifference} ");
-                    Rage.Debug.DrawArrowDebug(SeatEntryPosition, Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
-#endif
+//#if DEBUG
+//                    Game.DisplaySubtitle($"SeatOffset {SeatOffset} SeatHash {SeatHash} SeatName {SeatName} SeatDistance {SeatDistance} HeadingDifference {HeadingDifference} ");
+//                    Rage.Debug.DrawArrowDebug(SeatEntryPosition, Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+//#endif
                     GameFiber.Yield();
                 }
                 GameFiber.Sleep(250);

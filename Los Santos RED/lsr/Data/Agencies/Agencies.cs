@@ -157,16 +157,7 @@ public class Agencies : IAgencies
 
 
         LCPD = new Agency("~b~", "LCPD", "LCPD", "Liberty City Police Department", "Blue", Classification.Police, "StandardCops", "LCPDVehicles", "LC ", "Tasers", "AllSidearms", "AllLongGuns", "LCPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1 };
-
-
-
         UNK = new Agency("~s~", "UNK", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "", null, null, null, "Officer") { MaxWantedLevelSpawn = 0 };
-
-//#if DEBUG
-//        SASPA.PersonnelID = "OtherPeds";
-//#endif
-
-
     }
 
     private void DefaultConfig()

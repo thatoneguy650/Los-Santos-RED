@@ -94,5 +94,28 @@ public class PossibleLocations
         return AllLocations;
     }
 
+    public List<GameLocation> GenericTaskLocations()
+    {
+        List<GameLocation> AllLocations = new List<GameLocation>();
+        AllLocations.AddRange(Banks);
+        AllLocations.AddRange(BeautyShops);
+        AllLocations.AddRange(Hotels);
+        AllLocations.AddRange(Residences);
+        AllLocations.AddRange(Restaurants);
+        AllLocations.AddRange(Pharmacies);
+        AllLocations.AddRange(Dispensaries);
+        AllLocations.AddRange(HeadShops);
+        AllLocations.AddRange(HardwareStores);
+        AllLocations.AddRange(PawnShops);
+        AllLocations.AddRange(ConvenienceStores);
+        AllLocations.AddRange(LiquorStores);
+        AllLocations.AddRange(GasStations);
+        AllLocations.AddRange(Bars);
+        AllLocations.AddRange(SportingGoodsStores);
+        return AllLocations;
+    }
+
+
+
 }
 

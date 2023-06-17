@@ -51,43 +51,26 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public bool AllowAttackingFriendlyPeds { get; set; }
     [Description("If enabled, DLC vehicles will appear in the stores. You will need a trainer to stop the rockstar security measure that despawns DLC cars in SP.")]
     public bool AllowDLCVehiclesInStores { get; set; }
-
     [Description("If enabled, vehicles marked RequiresDLC will be allowed to dispatch. You will need a trainer to stop the rockstar security measure that despawns DLC cars in SP.")]
     public bool AllowDLCVehiclesToDispatch { get; set; }
-
-
-
     [Description("Minimum Possible value for player speech skill. Speech skill is used to talk your way out of tickets and other things. Possible Values are from 0 (Low Skill) to 100 (Full Skill).")]
     public int PlayerSpeechSkill_Min { get; set; }
     [Description("Maximum Possible value for player speech skill. Speech skill is used to talk your way out of tickets and other things. Possible Values are from 0 (Low Skill) to 100 (Full Skill).")]
     public int PlayerSpeechSkill_Max { get; set; }
-
-
-
     [Description("Percentage of time you will get random items when looting a random ped or vehicle")]
     public float PercentageToGetRandomItems { get; set; }
     [Description("Max number of random items to get when looting a random ped or vehicle. Requires PercentageToGetRandomItems > 0")]
     public int MaxRandomItemsToGet { get; set; }
     [Description("Max amount to get for each random item when looting a random ped or vehicle. Requires PercentageToGetRandomItems > 0")]
     public int MaxRandomItemsAmount { get; set; }
-
-
-
     [Description("Percentage of time you will get random weapons when looting a vehicle")]
     public float PercentageToGetRandomWeapons { get; set; }
-
     [Description("Max number of random weapons to get when looting a vehicle. Requires PercentageToGetRandomItems > 0")]
     public int MaxRandomWeaponsToGet { get; set; }
-
     [Description("Percentage of time you will get a random variation on a weapon when looting a vehicle")]
     public float PercentageToGetRandomWeaponVariation { get; set; }
-
     [Description("Percentage of time you will get a random component in the variation on a weapon when looting a vehicle")]
     public float PercentageToGetComponentInRandomVariation { get; set; }
-
-
-
-
     [Description("Not fully implemented.")]
     public bool AllowSetCharacterClipsets { get; set; }
     [Description("Not fully implemented.")]
@@ -134,10 +117,10 @@ public class PlayerOtherSettings : ISettingsDefaultable
         AllowSetCharacterClipsets = false;
         AutoSetClipsets = false;
 
-#if DEBUG
-        AllowSetCharacterClipsets = false;
-        AutoSetClipsets = false;
-#endif
+//#if DEBUG
+//        AllowSetCharacterClipsets = false;
+//        AutoSetClipsets = false;
+//#endif
 
         PercentageToGetRandomItems = 80f;
         MaxRandomItemsToGet = 6;

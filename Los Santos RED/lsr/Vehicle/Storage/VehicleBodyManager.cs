@@ -15,7 +15,10 @@ public class VehicleBodyManager
 {
     private VehicleExt VehicleExt;
     private ISettingsProvideable Settings;
+    private uint GameTimeLastEjectedBody;
     public List<StoredBody> StoredBodies { get; private set; } = new List<StoredBody>();
+
+    public bool RecentlyEjectedBody => GameTimeLastEjectedBody != 0 && Game.GameTime - GameTimeLastEjectedBody <= 5000;
 
     public VehicleBodyManager(VehicleExt vehicleExt, ISettingsProvideable settings)
     {
@@ -122,6 +125,11 @@ public class VehicleBodyManager
             };
             UnloadBodiesSubMenu.AddItem(unloadBody);
         }
+    }
+
+    public void OnEjectedBody()
+    {
+        GameTimeLastEjectedBody = Game.GameTime;
     }
 }
 

@@ -429,7 +429,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsBeingHeldAsHostage { get; set; } = false;
     public bool GeneratesBodyAlerts { get; set; } = true;
     public bool WasCrushed { get; set; }
-
+    public bool IsManuallyDeleted { get; set; } = false;
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;

@@ -181,10 +181,7 @@ public class GangDispatcher
     }
     public int LikelyHoodOfAnySpawn => Settings.SettingsManager.GangSettings.PercentSpawnOutsideTerritory;
     public int LikelyHoodOfDenSpawnWhenNear => Settings.SettingsManager.GangSettings.PercentageSpawnNearDen;
-
     private bool HasNeedToSpawnHeli => World.Vehicles.GangHelicoptersCount < Settings.SettingsManager.GangSettings.HeliSpawnLimit_Default;
-   // private bool HasNeedToSpawnBoat => (Player.CurrentVehicle?.IsBoat == true || Player.IsSwimming) && World.Vehicles.GangBoatsCount < Settings.SettingsManager.GangSettings.BoatSpawnLimit_Default;
-
     public bool Dispatch()
     {      
         HasDispatchedThisTick = false;
@@ -217,7 +214,6 @@ public class GangDispatcher
         GameTimeLastDispatchedHitSquad = Game.GameTime;
         HasDispatchedThisTick = true;
     }
-
     private void DispatchHitSquad(Gang enemyGang)
     {
         if(enemyGang == null)
@@ -235,7 +231,6 @@ public class GangDispatcher
             }
         }
     }
-
     public void Dispose()
     {
 
@@ -344,7 +339,6 @@ public class GangDispatcher
         while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
         return isValidSpawn && SpawnLocation.HasSpawns;
     }
-
     private bool GetFarVehicleSpawnLocation()
     {
         int timesTried = 0;
@@ -365,7 +359,6 @@ public class GangDispatcher
         while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
         return isValidSpawn && SpawnLocation.HasSpawns;
     }
-
     private bool GetSpawnTypes()
     {
         Gang = null;
@@ -406,7 +399,6 @@ public class GangDispatcher
         }         
         return false;
     }
-
     private bool GetHitSquadSpawnTypes(Gang gang)
     {
         Gang = gang;
@@ -435,7 +427,6 @@ public class GangDispatcher
         }
         return false;
     }
-
     private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement, bool isHitSquad)
     {
         try
@@ -469,7 +460,11 @@ public class GangDispatcher
         {
             return false;
         }
-        if (gangMember.IsInVehicle)
+        else if(gangMember.IsManuallyDeleted)
+        {
+            return false;
+        }
+        else if (gangMember.IsInVehicle)
         {
             return gangMember.DistanceToPlayer >= DistanceToDeleteInVehicle;
         }

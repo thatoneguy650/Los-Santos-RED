@@ -200,17 +200,6 @@ public class CivilianSettings : ISettingsDefaultable
         PercentageTrustingOfPlayer = 85f;
 
 
-
-//#if DEBUG
-//        DrugDealerPercentageRichZones = 25f;
-//        DrugDealerPercentageMiddleZones = 25f;
-//        DrugDealerPercentagePoorZones = 25f;
-
-//        DrugCustomerPercentageRichZones = 50f;
-//        DrugCustomerPercentageMiddleZones = 50f;
-//        DrugCustomerPercentagePoorZones = 50f;
-
-//#endif
         PercentageKnowsAnyGangTerritory = 45f;
         PercentageKnowsAnyDrugTerritory = 45f;
 

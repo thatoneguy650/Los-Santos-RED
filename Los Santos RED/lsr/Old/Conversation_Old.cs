@@ -337,9 +337,6 @@
 //                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Ped Info", $"~y~{Ped.Name}", Description);
 //            }
 
-//#if DEBUG
-//            ConversationMenu.Visible = true;
-//#endif
 
 //        }
 

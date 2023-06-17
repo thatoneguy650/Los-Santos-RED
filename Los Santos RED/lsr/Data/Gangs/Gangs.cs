@@ -387,10 +387,6 @@ public class Gangs : IGangs
         };//heroin
         float pistolPercentage = 55f;
         float longGunPercentage = 2f;
-//#if DEBUG
-//        pistolPercentage = 100f;
-//        longGunPercentage = 100f;
-//#endif
         Gambetti = new Gang("~g~", "AMBIENT_GANG_GAMBETTI", "Gambetti Crime Family", "Gambetti", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Gambetti", "CHAR_BLANK_ENTRY", "Gambetti Associate")
         {
             DenName = "Safehouse",

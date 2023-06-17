@@ -1142,8 +1142,8 @@ public class Debug
 
         AnimationDictionary.RequestAnimationDictionayResult(AliveSeatAnimationDictionaryName);
 
-        NativeFunction.Natives.TASK_PLAY_ANIM(Game.LocalPlayer.Character, AliveSeatAnimationDictionaryName, AliveSeatAnimationName, 8.0f, -8.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_NOT_INTERRUPTABLE | eAnimationFlags.AF_UPPERBODY | eAnimationFlags.AF_SECONDARY), 0, false, false, false);
-       // NativeFunction.Natives.SET_ANIM_RATE(Game.LocalPlayer.Character, 0.0f, 2, false);
+        NativeFunction.Natives.TASK_PLAY_ANIM(Game.LocalPlayer.Character, AliveSeatAnimationDictionaryName, AliveSeatAnimationName, 1000.0f, -1000.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_NOT_INTERRUPTABLE | eAnimationFlags.AF_UPPERBODY | eAnimationFlags.AF_SECONDARY), 0, false, false, false);
+        NativeFunction.Natives.SET_ANIM_RATE(Game.LocalPlayer.Character, 0.0f, 2, false);
 
         //        List<string> CoolStuff = new List<string>() {
 

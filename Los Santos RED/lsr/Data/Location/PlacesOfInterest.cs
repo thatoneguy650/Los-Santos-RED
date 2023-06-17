@@ -741,9 +741,6 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
 
         float defaultSpawnPercentage = 55f;
-#if DEBUG
-        defaultSpawnPercentage = 100f;
-#endif
         BlankLocationPlaces = new List<BlankLocation>() {
 
             //Speed Traps

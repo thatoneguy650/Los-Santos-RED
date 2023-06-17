@@ -16,7 +16,6 @@ public class ViolationSettings : ISettingsDefaultable
     public bool ShowCrimeWarnings { get; set; }
     [Description("Distance the cops will consider you guilty if you killed the target and stand around them. Don't stand near people you murdered (common sense?)")]
     public float MurderDistance { get; set; }
-
     [Description("Additional time peds will react to you hurting a civilian. Used for when they only see you directly after you hurt a ped.")]
     public uint RecentlyHurtCivilianTime { get; set; }
     [Description("Additional time peds will react to you hurting a cop. Used for when they only see you directly after you hurt a ped.")]
@@ -35,9 +34,6 @@ public class ViolationSettings : ISettingsDefaultable
     public uint RecentlyHitVehicleTime { get; set; }
     [Description("Additional time peds will react to you running a red light. Used for when they only see you directly after you ran the light.")]
     public uint RecentlyRanRedLightTime { get; set; }
-
-
-
     [Description("Time resisting arrest will trigger when you are moving fast.")]
     public uint ResistingArrestFastTriggerTime { get; set; }
     [Description("Time resisting arrest will trigger when you are moving at a medium pace.")]
@@ -52,8 +48,6 @@ public class ViolationSettings : ISettingsDefaultable
     public float OverLimitFelonySpeedingAmount { get; set; }
     [Description("Speed required (MPH) over the speed limit to trigger speeding")]
     public float OverLimitSpeedingAmount { get; set; }
-
-
     public ViolationSettings()
     {
         SetDefault();

@@ -91,7 +91,11 @@ public class Drag : DynamicActivity
         {
             leftHandObject.Delete();
         }
-        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character); 
+        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+        //if(Ped.WasKilledByPlayer || Ped.HasBeenHurtByPlayer)
+        //{
+
+        //}
         Player.ActivityManager.IsDraggingBody = false;
         Player.ActivityManager.IsPerformingActivity = false;
     }

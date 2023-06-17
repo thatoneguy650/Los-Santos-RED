@@ -71,9 +71,14 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public virtual void Start()
         {
-            if(!CanStartNewTask() || !GetTaskData())
+            if(!CanStartNewTask())
             {
-                GangTasks.SendGenericAbortMessage(HiringContact);
+                GangTasks.SendGenericTooSoonMessage(HiringContact);
+                return;
+            }
+            if (!GetTaskData())
+            {
+                Game.DisplayHelp($"Error Setting Up Task for {HiringContact.Name}.");
                 return;
             }
             GetPayment();

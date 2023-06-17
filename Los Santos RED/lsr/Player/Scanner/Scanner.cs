@@ -1683,6 +1683,10 @@ namespace LosSantosRED.lsr
 
             new CrimeDispatch(StaticStrings.TrespessingCrimeID,Trespassing),
 
+
+
+            new CrimeDispatch(StaticStrings.SuspiciousVehicleCrimeID,SuspiciousActivity),
+
             new CrimeDispatch("DrivingStolenVehicle",DrivingAtStolenVehicle),
             new CrimeDispatch("TerroristActivity",TerroristActivity),
             new CrimeDispatch("BrandishingCloseCombatWeapon",CarryingWeapon),
@@ -1775,16 +1779,13 @@ namespace LosSantosRED.lsr
             ,TamperingWithVehicle
             ,VehicleCrashed
             ,VehicleStartedFire
-
             ,ArmedRobbery
-
             ,MedicalServicesRequired
-        ,FirefightingServicesRequired
-        ,PublicNuisance
-
-        ,CivilianReportUpdate
-        ,ShotsFiredStatus
-    };
+            ,FirefightingServicesRequired
+            ,PublicNuisance
+            ,CivilianReportUpdate
+            ,ShotsFiredStatus
+        };
         }
         private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)
         {

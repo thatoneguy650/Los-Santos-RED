@@ -166,14 +166,8 @@ public class ActivityManager
     public bool HasCurrentActivity => UpperBodyActivity != null || LowerBodyActivity != null;
 
 
-
-
     public bool IsResting => IsSitting || IsLayingDown;
     public bool IsPerformingActivity { get; set; }
-
-
-
-
 
 
     public bool IsSitting { get; set; }

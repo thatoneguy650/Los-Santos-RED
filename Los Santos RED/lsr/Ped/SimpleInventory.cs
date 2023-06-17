@@ -172,5 +172,20 @@ public class SimpleInventory
     {
         ItemsList.Clear();
     }
+
+    public void OnImpounded()
+    {
+        RemoveIllegalItems();
+    }
+    private void RemoveIllegalItems()
+    {
+        foreach (InventoryItem inventoryItem in ItemsList.ToList())
+        {
+            if (inventoryItem.ModItem == null || inventoryItem.ModItem.IsPossessionIllicit)
+            {
+                Remove(inventoryItem.ModItem, inventoryItem.Amount);
+            }
+        }
+    }
 }
 

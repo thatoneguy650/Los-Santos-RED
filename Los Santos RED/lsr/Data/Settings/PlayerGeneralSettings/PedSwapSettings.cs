@@ -36,10 +36,15 @@ public class PedSwapSettings : ISettingsDefaultable
     [Description("Percentage of time you will get a randomized phone when taking over a random ped. 0 is never 100 is always.")]
     public float PercentageToGetRandomPhone { get; set; }
 
+    [Description("X Position of Name display when customizeing ped. 0.0-1.0")]
     public float NamePositionX { get; set; }
+    [Description("Y Position of Name display when customizeing ped. 0.0-1.0")]
     public float NamePositionY { get; set; }
+    [Description("Scale of Name display when customizeing ped. 0.0-1.0")]
     public float NameScale { get; set; }
+    [Description("Color of Name display when customizeing ped. .net standard color names are valid")]
     public string NameColor { get; set; }
+    [Description("Font ID Name display when customizeing ped. GTA Font Enum")]
     public int NameFont { get; set; }
     public int NameJustificationID { get; set; }
 

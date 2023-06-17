@@ -80,7 +80,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 else
                 {
-                    GangTasks.SendGenericAbortMessage(PhoneContact);
+                    GangTasks.SendGenericTooSoonMessage(PhoneContact);
                 }
             }
         }

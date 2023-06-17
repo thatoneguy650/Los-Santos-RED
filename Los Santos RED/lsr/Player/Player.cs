@@ -1133,12 +1133,13 @@ namespace Mod
                 return;
             }
             VehicleGettingInto = CurrentVehicle;
-            if(IsFreeToEnter())
+            bool isFreeToEnter = IsFreeToEnter();
+            if (IsFreeToEnter())
             {
                 EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicle Vehicle is Free to Enter, Ending", 3);
-                return;
+                //return;
             }
-            if (!(CurrentVehicle.HasBeenEnteredByPlayer || (CurrentVehicle.IsService && IsServicePed)))
+            if (!(isFreeToEnter || (CurrentVehicle.IsService && IsServicePed)))
             {
                 CurrentVehicle.AttemptToLock();
             }
@@ -1166,6 +1167,12 @@ namespace Mod
         }
         private bool IsFreeToEnter()
         {
+            if(CurrentVehicle.HasBeenEnteredByPlayer || CurrentVehicle.IsAlwaysOpenForPlayer)
+            {
+                CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                CurrentVehicle.Vehicle.MustBeHotwired = false;
+                return true;
+            }
             if (CurrentVehicle.Vehicle.Exists() && NativeFunction.Natives.IS_TURRET_SEAT<bool>(VehicleTryingToEnter, SeatTryingToEnter))
             {
                 EntryPoint.WriteToConsole($"YOU ARE GETTING INTO A TURRENT, NOT DOING LOCKPICK SeatTryingToEnter {SeatTryingToEnter}");
@@ -1640,6 +1647,10 @@ namespace Mod
             {
                 isJacking = false;
             }
+            else if (CurrentVehicle != null && CurrentVehicle.IsAlwaysOpenForPlayer)
+            {
+                isJacking = false;
+            }
             else
             {
                 isJacking = Character.IsJacking;
@@ -1674,6 +1685,10 @@ namespace Mod
                     CurrentVehicleIsRolledOver = false;
                 }
                 CurrentVehicleIsInAir = NativeFunction.Natives.IS_ENTITY_IN_AIR<bool>(CurrentVehicle.Vehicle);
+                if (!CurrentVehicle.HasBeenEnteredByPlayer)
+                {
+                    CurrentVehicle.SetAsEntered();
+                }
             }
             else
             {

@@ -44,19 +44,29 @@ public class ActivitySettings : ISettingsDefaultable
     public float SittingSlideDistance { get; set; }
     [Description("Will add an exclamation point to the prompt if the ped wants to buy an item you have")]
     public bool ShowInPromptWhenPedsWantToBuyItemsYouHave { get; set; }
+    [Description("Extended DIstance added when changing plates")]
     public float PlateTheftFloat { get; set; }
+    [Description("Time Between sips when drinking")]
     public uint DrinkTimeBetween { get; set; }
+    [Description("Does the base animation play when drinking")]
     public bool DrinkStartsBase { get; set; }
-    public bool AllowPedReiving { get; set; }
+    [Description("Show body armor on player when using the freemode characters. NOT FULLY IMPLEMENTED")]
     public bool DisplayBodyArmor { get; set; }
+    [Description("NOT FULLY IMPLEMENTED")]
     public int BodyArmorDefaultDrawableID { get; set; }
+    [Description("NOT FULLY IMPLEMENTED")]
     public int BodyArmorDefaultTextureID { get; set; }
+    [Description("Grab Attach Extra X Distance")]
     public float GrabAttachX { get;  set; }
+    [Description("Grab Attach Extra Y Distance")]
     public float GrabAttachY { get; set; }
+    [Description("Grab Attach Extra Z Distance")]
     public float GrabAttachZ { get; set; }
-
+    [Description("Human Shield Attach Extra X Distance")]
     public float HumanShieldAttachX { get; set; }
+    [Description("Human Shield Attach Extra Y Distance")]
     public float HumanShieldAttachY { get; set; }
+    [Description("Human Shield Attach Extra Z Distance")]
     public float HumanShieldAttachZ { get; set; }
 
 
@@ -87,14 +97,13 @@ public class ActivitySettings : ISettingsDefaultable
         PlateTheftFloat = 1.0f;
         DrinkTimeBetween = 0;
         DrinkStartsBase = false;
-        AllowPedReiving = true;
         DisplayBodyArmor = false;
         BodyArmorDefaultDrawableID = 11;
         BodyArmorDefaultTextureID = 1;
 
-#if DEBUG
-        DisplayBodyArmor = true;
-#endif  
+//#if DEBUG
+//        DisplayBodyArmor = true;
+//#endif  
 
 
         GrabAttachX = -0.31f;

@@ -169,13 +169,6 @@ public class SettingsManager
             UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings, NeedsSettings, RoadblockSettings, PoliceSpawnSettings,PoliceTaskSettings,PoliceSpeechSettings,PlayerSpeechSettings,FlashlightSettings, SecuritySettings,DragSettings,BinocularSettings,DoorToggleSettings,ShovelSettings
 
         };
-
-
-//#if DEBUG
-//        PoliceSettings.ManageDispatching = false;
-//        EMSSettings.ManageDispatching = false;
-//        GangSettings.ManageDispatching = false;
-//#endif
     }
     public void SetDefault()
     {

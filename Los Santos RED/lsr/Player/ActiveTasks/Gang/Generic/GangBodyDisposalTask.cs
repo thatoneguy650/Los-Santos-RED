@@ -5,6 +5,7 @@ using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,7 +21,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
         public VehicleExt DeadBodyVehicle { get; private set; }
 
-        public GangBodyDisposalTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world, 
+        public GangBodyDisposalTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world,
             ICrimes crimes, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus, IModItems modItems, PlayerTasks playerTasks, GangTasks gangTasks, PhoneContact hiringContact, Gang hiringGang) : base(player, time, gangs, placesOfInterest, settings, world, crimes, weapons, names, pedGroups, shopMenus, modItems, playerTasks, gangTasks, hiringContact, hiringGang)
         {
             DebugName = "Body Disposal";
@@ -28,6 +29,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             DebtOnFail = 0;
             RepOnFail = -500;
             DaysToComplete = 2;
+        }
+        public override void Dispose()
+        {
+            Delete();
+            base.Dispose();
         }
         protected override void GetPayment()
         {
@@ -42,7 +48,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             List<string> Replies = new List<string>() {
                 $"I got a {DeadBodyVehicle.FullName(false)} Plate #{DeadBodyVehicle.CarPlate.PlateNumber} with some unwanted guests. Pickup near ~p~{SpawnLocation.Name}~s~ on ~y~{SpawnLocation.FullStreetAddress}~s~ and take it to ~p~{CrusherLocation.Name}~s~ on ~y~{CrusherLocation.FullStreetAddress}~s~. ${PaymentAmount}"
                 };
-            Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom());        
+            Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom());
         }
         protected override bool GetTaskData()
         {
@@ -56,7 +62,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 return false;
             }
-            SpawnLocation = PlacesOfInterest.PossibleLocations.InteractableLocations().PickRandom();
+            SpawnLocation = PlacesOfInterest.PossibleLocations.GenericTaskLocations().PickRandom();
             if (SpawnLocation == null)
             {
                 return false;
@@ -82,7 +88,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     break;
                 }
-                if(DeadBody == null || DeadBodyVehicle == null)
+                if (DeadBody == null || DeadBodyVehicle == null)
                 {
                     break;
                 }
@@ -108,7 +114,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 GameFiber.Sleep(1000);
             }
         }
-
         private void OnEnteredImpoundedVehicle()
         {
             HasEnteredVehicle = true;
@@ -123,8 +128,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private bool SpawnCar()
         {
-            string CarModel = new List<string>() { "stanier","buffalo", "voodoo2" }.PickRandom();
-            DispatchableVehicle dispatchableVehicle = new DispatchableVehicle(CarModel, 1,1); //HiringGang.GetRandomVehicle(0, false, false, false, "", Settings);
+            string CarModel = new List<string>() { "stanier", "buffalo", "voodoo2" }.PickRandom();
+            DispatchableVehicle dispatchableVehicle = new DispatchableVehicle(CarModel, 1, 1); //HiringGang.GetRandomVehicle(0, false, false, false, "", Settings);
             if (dispatchableVehicle == null)
             {
                 return false;
@@ -132,9 +137,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             SpawnLocation toSpawn = new SpawnLocation(SpawnLocation.EntrancePosition);
             toSpawn.Heading = Player.Character.Heading;
             toSpawn.GetClosestStreet(false);
+            toSpawn.GetClosestSideOfRoad();
             GangSpawnTask gmSpawn = new GangSpawnTask(HiringGang, toSpawn, dispatchableVehicle, null, false, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World, ModItems, false, false, false);
             gmSpawn.AllowAnySpawn = true;
             gmSpawn.AddEmptyVehicleBlip = true;
+
             gmSpawn.AttemptSpawn();
             gmSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
             DeadBodyVehicle = gmSpawn.CreatedVehicles.FirstOrDefault();
@@ -146,11 +153,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             DeadBodyVehicle.SetRandomPlate();
             DeadBodyVehicle.WasModSpawned = true;
             DeadBodyVehicle.WasSpawnedEmpty = true;
+            DeadBodyVehicle.IsAlwaysOpenForPlayer = true;
             return DeadBodyVehicle != null && DeadBodyVehicle.Vehicle.Exists();
         }
         private bool SpawnAndLoadBody()
         {
-            if(DeadBodyVehicle == null || !DeadBodyVehicle.Vehicle.Exists())
+            if (DeadBodyVehicle == null || !DeadBodyVehicle.Vehicle.Exists())
             {
                 return false;
             }
@@ -171,14 +179,20 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             gangSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); });
             DeadBody = gangSpawnTask.CreatedPeople.FirstOrDefault();
-            if(DeadBody == null || !DeadBody.Pedestrian.Exists())
+            if (DeadBody == null || !DeadBody.Pedestrian.Exists())
             {
                 return false;
             }
+            DeadBody.Pedestrian.IsPersistent = true;
             DeadBody.IsDead = true;
             DeadBody.CanBeTasked = false;
             DeadBody.CanBeAmbientTasked = false;
-            if(!DeadBodyVehicle.VehicleBodyManager.LoadBody(DeadBody, new VehicleDoorSeatData("Trunk", "boot", 5, -2),false))
+            DeadBody.WasKilledByPlayer = true;
+            DeadBody.HasBeenHurtByPlayer = true;
+            DeadBody.IsManuallyDeleted = true;
+
+            Player.Violations.DamageViolations.AddFakeKilled(DeadBody);
+            if (!DeadBodyVehicle.VehicleBodyManager.LoadBody(DeadBody, new VehicleDoorSeatData("Trunk", "boot", 5, -2), false))
             {
                 return false;
             }
@@ -190,13 +204,35 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             CleanupCar();
             CrusherLocation.IsPlayerInterestedInLocation = false;
         }
+        private void Delete()
+        {
+            DeleteCar();
+            DeleteBody();
+        }
+        private void DeleteCar()
+        {
+            if (DeadBodyVehicle != null && DeadBodyVehicle.Vehicle.Exists())
+            {
+                DeadBodyVehicle.FullyDelete();
+            }
+        }
+        private void DeleteBody()
+        {
+            if (DeadBody != null && DeadBody.Pedestrian.Exists())
+            {
+                DeadBody.IsManuallyDeleted = false;
+                DeadBody.DeleteBlip();
+                DeadBody.Pedestrian.Delete();
+            }
+        }
         private void CleanupPed()
         {
             if (DeadBody == null || !DeadBody.Pedestrian.Exists())
             {
                 return;
             }
-            DeadBody.Pedestrian.Delete();
+            DeadBody.Pedestrian.IsPersistent = false;
+            DeadBody.IsManuallyDeleted = false;
         }
         private void CleanupCar()
         {

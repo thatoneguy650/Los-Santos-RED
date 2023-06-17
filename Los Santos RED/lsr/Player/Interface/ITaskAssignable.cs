@@ -28,6 +28,7 @@ namespace LosSantosRED.lsr.Interface
         bool RecentlyShot { get; }
         int WantedLevel { get; }
         GroupManager GroupManager { get; }
+        Violations Violations { get; }
 
         void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer);
     }

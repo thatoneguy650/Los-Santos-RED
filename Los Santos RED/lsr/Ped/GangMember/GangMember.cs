@@ -48,6 +48,8 @@ public class GangMember : PedExt, IWeaponIssuable
     public override bool KnowsDrugAreas => true;
     public override bool KnowsGangAreas => true;
     public override bool IsGangMember { get; set; } = true;
+
+
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;

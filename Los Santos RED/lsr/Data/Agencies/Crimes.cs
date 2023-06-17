@@ -36,6 +36,7 @@ public class Crimes : ICrimes
     private Crime AssaultingCivilians;
     private Crime DealingDrugs;
     private Crime DealingGuns;
+    private Crime SuspiciousVehicle;
     private Crime HitCarWithCar;
     private Crime PublicIntoxication;
     private Crime ChangingPlates;
@@ -128,7 +129,13 @@ public class Crimes : ICrimes
         DealingGuns = new Crime(StaticStrings.DealingGunsCrimeID, "Illegal Weapons Dealing", 2, false, 24, true, false, false) { MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~dealing illegal guns~s~~n~Avoid dealing in public" };
 
 
+        SuspiciousVehicle = new Crime(StaticStrings.SuspiciousVehicleCrimeID, "Suspicious Vehicle", 2, false, 26, true, false, false) { MaxObservingDistance = 30f, MaxReportingDistance = 15f, ShowsWarning = true, WarningMessage = "This vehicle is ~r~suspicious~s~~n~Remove offending items." };
+
         Trespassing = new Crime(StaticStrings.TrespessingCrimeID, "Trespassing", 2, false, 27, true, false, false) { ShowsWarning = true, WarningMessage = "You are ~r~trespassing~s~~n~Leave the area or avoid being spotted" };
+
+
+
+
 
 
 
@@ -180,6 +187,7 @@ public class Crimes : ICrimes
              BrandishingHeavyWeapon,
              TrespessingOnGovtProperty,
              Trespassing,
+             SuspiciousVehicle,
              GotInAirVehicleDuringChase,
              FiringWeapon,
              FiringSilencedWeapon,
@@ -236,6 +244,7 @@ public class Crimes : ICrimes
              FiringWeaponNearPolice,
              AimingWeaponAtPolice,
              HurtingPolice,
+             SuspiciousVehicle,
              BrandishingHeavyWeapon,
              Trespassing,
              TrespessingOnGovtProperty,

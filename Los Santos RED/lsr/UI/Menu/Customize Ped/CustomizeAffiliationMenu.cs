@@ -91,7 +91,7 @@ public class CustomizeAffiliationMenu
         AffiliationSubMenu.AddItem(GangsMenu);
 
 
-        LEMenu = new UIMenuListScrollerItem<Agency>("Set LE", "Join a law enforcement agency. ~r~WIP~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.LawEnforcement));
+        LEMenu = new UIMenuListScrollerItem<Agency>("Set LE", "Join a law enforcement agency. ~r~WIP Most Features TBD~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.LawEnforcement));
         LEMenu.Activated += (sender, selectedItem) =>
         {
             PedCustomizer.AssignedGang = null;
@@ -100,7 +100,7 @@ public class CustomizeAffiliationMenu
         };
         AffiliationSubMenu.AddItem(LEMenu);
 
-        SecurityMenu = new UIMenuListScrollerItem<Agency>("Set Security", "Join a security agency. ~r~WIP~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.Security));
+        SecurityMenu = new UIMenuListScrollerItem<Agency>("Set Security", "Join a security agency. ~r~WIP Most Features TBD~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.Security));
         SecurityMenu.Activated += (sender, selectedItem) =>
         {
             PedCustomizer.AssignedGang = null;
@@ -110,7 +110,7 @@ public class CustomizeAffiliationMenu
         AffiliationSubMenu.AddItem(SecurityMenu);
 
 
-        EMSMenu = new UIMenuListScrollerItem<Agency>("Set EMS", "Join an EMS agency. ~r~WIP~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.EMS));
+        EMSMenu = new UIMenuListScrollerItem<Agency>("Set EMS", "Join an EMS agency. ~r~WIP Most Features TBD~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.EMS));
         EMSMenu.Activated += (sender, selectedItem) =>
         {
             PedCustomizer.AssignedAgency = EMSMenu.SelectedItem;
@@ -118,7 +118,7 @@ public class CustomizeAffiliationMenu
         };
         AffiliationSubMenu.AddItem(EMSMenu);
 
-        FireMenu = new UIMenuListScrollerItem<Agency>("Set Fire", "Join a fire fighting agency. ~r~WIP~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.Fire));
+        FireMenu = new UIMenuListScrollerItem<Agency>("Set Fire", "Join a fire fighting agency. ~r~WIP Most Features TBD~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.Fire));
         FireMenu.Activated += (sender, selectedItem) =>
         {
             PedCustomizer.AssignedAgency = FireMenu.SelectedItem;

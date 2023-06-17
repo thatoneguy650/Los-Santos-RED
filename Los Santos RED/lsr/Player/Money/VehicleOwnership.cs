@@ -97,9 +97,10 @@ public class VehicleOwnership
         else
         {
             bool allowPolice = false;
-#if DEBUG
-            allowPolice = true;
-#endif
+            if(Player.IsCop)
+            {
+                allowPolice = true;
+            }
             toTakeOwnershipOf = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, allowPolice, 10f);
         }
         if (toTakeOwnershipOf == null || !toTakeOwnershipOf.Vehicle.Exists())

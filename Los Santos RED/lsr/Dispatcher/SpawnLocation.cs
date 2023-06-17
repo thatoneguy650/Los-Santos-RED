@@ -27,6 +27,10 @@ public class SpawnLocation
     public bool HasSidewalk => SidewalkPosition != Vector3.Zero;
     public bool IsWater { get; private set; } = false;
     public Vector3 FinalPosition => IsWater || !HasStreetPosition ? InitialPosition : StreetPosition;
+
+    public bool HasSideOfRoadPosition { get; set; }
+    public Vector3 SideOfRoadPosition { get; set; }
+
     public void GetWaterHeight()
     {
         if (IsWater = NativeFunction.Natives.GET_WATER_HEIGHT_NO_WAVES<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out float height))
@@ -65,6 +69,15 @@ public class SpawnLocation
       
         StreetPosition = streetPosition;
         Heading = streetHeading;
+    }
+    public void GetClosestSideOfRoad()
+    {
+        Vector3 sideOfRoad = Vector3.Zero;
+        if(NativeFunction.Natives.GET_POSITION_BY_SIDE_OF_ROAD<bool>(StreetPosition.X, StreetPosition.Y, StreetPosition.Z,-1,out sideOfRoad))
+        {
+            HasStreetPosition = true;
+            StreetPosition = sideOfRoad;
+        }
     }
     public void GetClosestSidewalk()
     {

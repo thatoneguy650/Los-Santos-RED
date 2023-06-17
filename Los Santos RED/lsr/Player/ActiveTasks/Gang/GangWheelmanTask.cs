@@ -124,7 +124,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 else
                 {
-                    GangTasks.SendGenericAbortMessage(PhoneContact);
+                    GangTasks.SendGenericTooSoonMessage(PhoneContact);
                 }
             }
         }
@@ -674,13 +674,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded);
             HoursToRobbery = RandomItems.GetRandomNumberInt(8, 12);
             RobberyTime = Time.CurrentDateTime.AddHours(HoursToRobbery);
-
-
-//#if DEBUG
-//            RobbersToSpawn = RandomItems.GetRandomNumberInt(2, 3);
-//#else
             RobbersToSpawn = RandomItems.GetRandomNumberInt(1, 3);
-//#endif
         }
         private void GetPayment()
         {

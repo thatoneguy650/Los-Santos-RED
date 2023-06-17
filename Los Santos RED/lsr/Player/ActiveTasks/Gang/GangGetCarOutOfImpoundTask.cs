@@ -79,12 +79,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             //Contact = new GangContact(HiringGang.ContactName, HiringGang.ContactIcon);
             if(!PlayerTasks.CanStartNewTask(ActiveGang?.ContactName))
             {
+                GangTasks.SendGenericTooSoonMessage(PhoneContact);
                 return;
             }
             GetTaskData();
             if (!HasTaskData)
             {
-                GangTasks.SendGenericAbortMessage(PhoneContact);
+                Game.DisplayHelp($"Error Setting Up Task for {PhoneContact.Name}.");
                 return;
             }
             GetPayment();
@@ -264,6 +265,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             ImpoundedVehicle.SetRandomPlate();
             ImpoundedVehicle.WasModSpawned = true;
             ImpoundedVehicle.WasSpawnedEmpty = true;
+            ImpoundedVehicle.IsAlwaysOpenForPlayer = true;
             startingHealth = ImpoundedVehicle.Vehicle.Health;
             startingEngineHealth = ImpoundedVehicle.Vehicle.EngineHealth;
             if(!ImpoundLocation.VehicleImpoundLot.ImpoundVehicle(ImpoundedVehicle, Time))

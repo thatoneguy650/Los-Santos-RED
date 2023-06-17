@@ -45,6 +45,8 @@ public class Crime
     public bool CanBeReactedToByCivilians { get; set; } = true;
     public float MaxReportingDistance { get; set; } = 999f;
 
+    public float MaxObservingDistance { get; set; } = 999f;
+
     public float MaxHearingDistance { get; set; } = 999f;
 
     public bool CanReleaseOnCite { get; set; } = false;

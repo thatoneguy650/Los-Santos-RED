@@ -38,8 +38,6 @@ public class SwaySettings : ISettingsDefaultable
     public bool ApplySwayToSnipers { get; set; }
     [Description("Frames to wait after recoil to apply sway. DEBUG SETTING")]
     public int FramesBetweenRecoil { get; set; }
-    //[Description("If enabled, the alternate pitch and heading calulation will be used. DEBUG SETTING")]
-    //public bool UseAlternateCalculation { get; set; }
     public float SmoothRate { get; set; }
     public float ExcessivePitch { get; set; }
 
@@ -61,9 +59,9 @@ public class SwaySettings : ISettingsDefaultable
         ApplySwayInFirstPerson = false;
         VeritcalFirstPersonSwayAdjuster = 1.0f;
         HorizontalFirstPersonSwayAdjuster = 1.0f;
-#if DEBUG
-        ApplySwayInFirstPerson = true;
-#endif
+//#if DEBUG
+//        ApplySwayInFirstPerson = true;
+//#endif
         ApplySwayToSnipers = false;
         FramesBetweenRecoil = 30;
         ApplySwayWithController = false;

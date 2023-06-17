@@ -68,7 +68,7 @@ public class DamageViolations
     }
     public void Update()
     {
-        if (RecentlyKilledCop || (NearPoliceMurderVictim && Violations.IsViolatingSeriousCrime))
+        if (RecentlyKilledCop || (NearPoliceMurderVictim && (Violations.IsViolatingSeriousCrime || Player.ActivityManager.IsDraggingBody)))
         {
             Violations.AddViolating(StaticStrings.KillingPoliceCrimeID);
         }
@@ -76,7 +76,7 @@ public class DamageViolations
         {
             Violations.AddViolating(StaticStrings.HurtingCiviliansCrimeID);
         }
-        if (RecentlyKilledCivilian || (NearCivilianMurderVictim && Violations.IsViolatingSeriousCrime))
+        if (RecentlyKilledCivilian || (NearCivilianMurderVictim && (Violations.IsViolatingSeriousCrime || Player.ActivityManager.IsDraggingBody)))
         {
             Violations.AddViolating(StaticStrings.KillingCiviliansCrimeID);
         }
@@ -129,6 +129,22 @@ public class DamageViolations
             GameTimeLastHurtCivilian = Game.GameTime;       
         }
        // EntryPoint.WriteToConsole($"VIOLATIONS: Killing WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
+    }
+    public void AddFakeKilled(PedExt myPed)
+    {
+        myPed.GameTimeKilled = Game.GameTime;
+        if (myPed.IsCop)
+        {
+            PlayerKilledCops.Add(myPed);
+        }
+        else
+        {
+            if (Violations.CanDamageWantedCivilians && myPed.PedViolations.IsViolatingWanted)
+            {
+                return;
+            }
+            PlayerKilledCivilians.Add(myPed);
+        }
     }
 }
 

@@ -45,7 +45,7 @@ public static class StaticStrings
     public static readonly string HurtingPoliceCrimeID = "HurtingPolice";
     public static readonly string BrandishingHeavyWeaponCrimeID = "BrandishingHeavyWeapon";
     public static readonly string TrespessingOnGovtPropertyCrimeID = "TrespessingOnGovtProperty";
-    public static readonly string TrespessingCrimeID = "Trespessing";
+    public static readonly string TrespessingCrimeID = "Trespassing";
     public static readonly string GotInAirVehicleDuringChaseCrimeID = "GotInAirVehicleDuringChase";
     public static readonly string FiringWeaponCrimeID = "FiringWeapon";
     public static readonly string FiringSilencedWeaponCrimeID = "FiringSilencedWeapon";
@@ -81,6 +81,8 @@ public static class StaticStrings
     public static readonly string PublicNuisanceCrimeID = "PublicNuisance";
     public static readonly string PublicVagrancyCrimeID = "PublicVagrancy";
     public static readonly string OfficersNeededCrimeID = "OfficersNeeded";
+    public static readonly string SuspiciousVehicleCrimeID = "CarryingBody";
+
 
     //Air Carriers
     public static readonly string AirHerlerCarrierID = "AirHerler";

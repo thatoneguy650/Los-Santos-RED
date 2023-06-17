@@ -23,11 +23,6 @@ public class VehicleSettings : ISettingsDefaultable
     public string AutoTuneRadioStation { get; set; }
     [Description("Disable the character automatically turning over the engine on entry. Used with the ignition hot key (Shift + Z Default)")]
     public bool DisableAutoEngineStart { get; set; }
-
-
-
-
-
     [Description("Set a random amount of fuel on each vehicle and calculates consumption rates on use.")]
     public bool UseCustomFuelSystem { get; set; }
     [Description("Minimum fuel in cars. 0 is minimum")]
@@ -36,12 +31,6 @@ public class VehicleSettings : ISettingsDefaultable
     public float CustomFuelSystemFuelMax { get; set; }
     [Description("Scalar amount for the custom fuel system. Default is 1.0. A Value of 2.0 would consume fuel twice as fast as default. A Value of 0.5 would consume fuel half as fast as default.")]
     public float CustomFuelSystemFuelConsumptionScalar { get; set; }
-
-
-
-
-
-
     [Description("Allow the mod to set the engine as enabled or disabled to work with the ignition and fuel systems")]
     public bool AllowSetEngineState { get; set; }
     [Description("Allow the mod to set the engine as enabled or disabled to work with the ignition and fuel systems, but only for cars (requires AllowSetEngineState)")]
@@ -62,8 +51,6 @@ public class VehicleSettings : ISettingsDefaultable
     public bool RequireScrewdriverForLockPickEntry { get; set; }
     [Description("Require the screwdriver item to be in your inventory before you can hotwire any vehicles.")]
     public bool RequireScrewdriverForHotwire { get; set; }
-
-
     [Description("Allows vehicles to be locked by the game automatically.")]
     public bool AllowLockVehicles { get; set; }
     [Description("Percentage of available vehicles that will be locked by LSR. Maximum 100")]
@@ -79,7 +66,6 @@ public class VehicleSettings : ISettingsDefaultable
     public bool UseBetterLightStateOnAI { get; set; }
     [Description("If enabled, the player will not be able to fly aircraft until they have a pilots license.")]
     public bool DisableAircraftWithoutLicense { get; set; }
-
     [Description("Limit of vehicle health before the vehicle is considered damaged/non-roadworthy.")]
     public int NonRoadworthyVehicleHealthLimit { get; set; }
     [Description("Limit of vehicle engine health before the vehicle is considered damaged/non-roadworthy.")]
@@ -97,8 +83,6 @@ public class VehicleSettings : ISettingsDefaultable
     [Description("If enabled, not having a license plate will mark the vehicle as non-roadworthy.")]
     public bool NonRoadworthyVehicleCheckNoPlate { get; set; }
     public bool AttachOwnedVehicleBlips { get; set; }
-
-
     public VehicleSettings()
     {
         SetDefault();

@@ -146,6 +146,49 @@ public class OtherViolations
         {
             Violations.AddViolating(StaticStrings.SuspiciousActivityCrimeID);
         }
+        if(Player.IsInVehicle && Player.CurrentVehicle != null && Player.IsDriver)
+        {
+            SuspiciousBodyUpdate();
+        }
+    }
+
+    private void SuspiciousBodyUpdate()
+    {
+        if(!Player.IsInVehicle || Player.CurrentVehicle == null || !Player.IsDriver)
+        {
+            return;
+        }
+        if(Player.CurrentVehicle.VehicleBodyManager.RecentlyEjectedBody)
+        {
+            Violations.AddViolating(StaticStrings.SuspiciousVehicleCrimeID);
+            return;
+        }
+        if(!Player.CurrentVehicle.VehicleBodyManager.StoredBodies.Any())
+        {
+            return;
+        }
+        if(Player.CurrentVehicle.VehicleBodyManager.StoredBodies.Any(x=> x.VehicleDoorSeatData.SeatID != -2))
+        {
+            Violations.AddViolating(StaticStrings.SuspiciousVehicleCrimeID);
+            return;
+        }
+        if(!Player.CurrentVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        if(!Player.CurrentVehicle.VehicleBodyManager.StoredBodies.Any(x=> x.VehicleDoorSeatData.SeatID == -2))
+        {
+            return;
+        }
+        if (!Player.CurrentVehicle.Vehicle.Doors[5].IsValid())
+        {
+            return;
+        }
+        if(Player.CurrentVehicle.Vehicle.Doors[5].AngleRatio >= 0.1f || Player.CurrentVehicle.Vehicle.Doors[5].IsDamaged)
+        {
+            Violations.AddViolating(StaticStrings.SuspiciousVehicleCrimeID);
+            return;
+        }
     }
     private void ViolentUpdate()
     {

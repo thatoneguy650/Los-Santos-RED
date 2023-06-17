@@ -79,7 +79,7 @@ public class EMSSettings : ISettingsDefaultable
 
 
     public bool AllowStationSpawningWhenPlayerWanted { get; set; }
-    [Description("Max wanted level that dens will spawn gang peds.")]
+    [Description("Max wanted level that locations will spawn peds.")]
     public int StationSpawningWhenPlayerWantedMaxWanted { get; set; }
 
 

@@ -78,9 +78,9 @@ public class DragSettings : ISettingsDefaultable
         AllowRagdolling = false;
         FadeOut = true;
 
-#if DEBUG
-        AllowRagdolling = true;
-#endif
+//#if DEBUG
+//        AllowRagdolling = true;
+//#endif
 
     }
 }
