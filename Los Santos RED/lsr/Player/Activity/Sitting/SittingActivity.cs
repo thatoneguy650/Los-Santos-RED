@@ -145,6 +145,10 @@ namespace LosSantosRED.lsr.Player
         private void Idle()
         {
             //EntryPoint.WriteToConsoleTestLong("Sitting Activity Idle Start");
+
+            Player.ActivityManager.IsPerformingActivity = false;
+
+
             StartNewBaseScene();
             float AnimationTime;
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)

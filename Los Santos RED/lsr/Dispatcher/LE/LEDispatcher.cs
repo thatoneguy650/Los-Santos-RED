@@ -1040,8 +1040,14 @@ public class LEDispatcher
     }
     private Agency GetRandomAgency(SpawnLocation spawnLocation)
     {
-        Agency agency;
+        Agency agency = null;
         List<Agency> PossibleAgencies = GetAgencies(spawnLocation.FinalPosition, World.TotalWantedLevel);
+
+        if(PossibleAgencies == null)
+        {
+            return agency;
+        }
+
         agency = PossibleAgencies.Where(x=>x.Personnel.Any(y =>y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
         if (agency == null)
         {

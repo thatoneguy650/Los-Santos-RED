@@ -445,8 +445,11 @@ public class PedGrab : DynamicActivity
         }
         if (Player.ButtonPrompts.IsPressed("Load"))
         {
-            Player.ButtonPrompts.RemovePrompts("Hostage");
-            return LoadPed();
+            if(LoadPed())
+            {
+                Player.ButtonPrompts.RemovePrompts("Hostage");
+                return true;
+            }
         }
         return false;
     }

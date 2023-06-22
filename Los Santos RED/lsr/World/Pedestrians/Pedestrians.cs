@@ -532,7 +532,7 @@ public class Pedestrians : ITaskerReportable
     }
     private void PruneGangMembers()
     {
-        foreach (GangMember GangMember in GangMembers.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
+        foreach (GangMember GangMember in GangMembers.Where(x => x.Pedestrian.Exists() && !x.IsManuallyDeleted && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             GangMember.DeleteBlip();
             GangMember.Pedestrian.IsPersistent = false;

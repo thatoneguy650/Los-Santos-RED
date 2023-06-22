@@ -173,11 +173,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             gangSpawnTask.AllowAnySpawn = true;
             gangSpawnTask.AllowBuddySpawn = false;
             gangSpawnTask.AttemptSpawn();
-            foreach (PedExt created in gangSpawnTask.CreatedPeople)
-            {
-                World.Pedestrians.AddEntity(created);
-            }
-            gangSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); });
+            //foreach (PedExt created in gangSpawnTask.CreatedPeople)
+            //{
+            //    World.Pedestrians.DeadPeds.Add(created);
+            //}
+            //gangSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); });
             DeadBody = gangSpawnTask.CreatedPeople.FirstOrDefault();
             if (DeadBody == null || !DeadBody.Pedestrian.Exists())
             {

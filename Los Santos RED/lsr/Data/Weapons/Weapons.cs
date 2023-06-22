@@ -624,6 +624,17 @@ public class Weapons : IWeapons
 
         WeaponsList.Add(new WeaponInformation("weapon_raycarbine", 32, WeaponCategory.SMG, 2, 0x476BF155, true, false, false, 0.9f, 1.2f, 0.5f, 0.7f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { IsRegular = false });
 
+
+        List<WeaponComponent> TecPistolComponenets = new List<WeaponComponent>
+        {
+            new WeaponComponent("Default Clip", 0x383664EE,ComponentSlot.Magazine),
+            new WeaponComponent("Extended Clip", 0x1286198E,ComponentSlot.Magazine),
+            new WeaponComponent("Scope", 0x9D2FBF29, ComponentSlot.Optic),
+            new WeaponComponent("Suppressor", 0xA73D4664,ComponentSlot.Muzzle)
+        };
+        WeaponsList.Add(new WeaponInformation("weapon_tecpistol", 90, WeaponCategory.SMG, 2, 350597077, true, false, false, 0.9f, 1.2f, 0.5f, 0.7f, 1.0f, 1.5f, 1.0f, 1.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto | SelectorOptions.FullAuto) { PossibleComponents = TecPistolComponenets, CanPistolSuicide = true });
+
+        //350597077
     }
     private void DefaultConfig_AR()
     {

@@ -138,15 +138,24 @@ public static class EntryPoint
         int Character = 1;
         foreach (char c in webVersionString)
         {
-            if (webVersionString.Length == Character)
+            if(Character <= 2)
             {
                 fixedString += c;
             }
-            else if (c != '.')
+            else if (webVersionString.Length == Character)
+            {
+                fixedString += c;
+            }
+            else if (c != '.' && Character <= 4)
             { 
                 fixedString += c + ".";
             }
+            else
+            {
+                fixedString += c;
+            }
             Character++;
+          // EntryPoint.WriteToConsole(fixedString);
         }
         return fixedString;
     }

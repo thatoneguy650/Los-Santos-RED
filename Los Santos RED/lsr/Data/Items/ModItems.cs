@@ -2694,6 +2694,12 @@ public class ModItems : IModItems
             new WeaponItem("Coil PXM","Who said personal weaponry couldn't be worthy of military personnel? Thanks to our lobbyists, not Congress. Integral suppressor.", false, ItemType.Weapons) { ModelName = "weapon_combatpdw",PoliceFindDuringPlayerSearchPercentage = 100},
             new WeaponItem("Vom Feuer KEK-9","This fully automatic is the snare drum to your twin-engine V8 bass: no drive-by sounds quite right without it.", false, ItemType.Weapons) { ModelName = "weapon_machinepistol",PoliceFindDuringPlayerSearchPercentage = 55, FindPercentage = 5},
             new WeaponItem("Hawk & Little Millipede","Increasingly popular since the marketing team looked beyond spec ops units and started caring about the little guys in low income areas.", false, ItemType.Weapons) { ModelName = "weapon_minismg",PoliceFindDuringPlayerSearchPercentage = 55, FindPercentage = 5},
+            
+            
+            new WeaponItem("Vom Feuer PMP","The european answer to the drive-by question.", true, ItemType.Weapons) { ModelName = "weapon_tecpistol",PoliceFindDuringPlayerSearchPercentage = 55, FindPercentage = 5},
+            
+
+
 
             //AR
             new WeaponItem("Shrewsbury A7-4K","This standard assault rifle boasts a large capacity magazine and long distance accuracy.", false, ItemType.Weapons) { ModelName = "weapon_assaultrifle",PoliceFindDuringPlayerSearchPercentage = 100 },

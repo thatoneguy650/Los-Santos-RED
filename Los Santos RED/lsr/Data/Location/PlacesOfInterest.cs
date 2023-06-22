@@ -629,10 +629,17 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Dealership(new Vector3(-38.83289f, -1108.61f, 26.46652f), 158.283f, "Premium Deluxe Motorsport", "Let's make a deal","PremiumDeluxeMenu") { 
                 BannerImagePath = "pdx.png", 
                 ScannerFilePath = "01_specific_location\\0x122B5EFF.wav",
-                CameraPosition = new Vector3(-46.13059f, -1103.091f, 27.9145f), 
-                CameraDirection = new Vector3(0.3461686f, 0.9154226f, -0.2053503f), 
-                CameraRotation = new Rotator(-11.85001f, -8.374705E-05f, -20.7142f),
+
+                CameraPosition = new Vector3(-73.69526f, -1125.221f, 33.51564f), 
+                CameraDirection = new Vector3(0.834101f, 0.5192783f, -0.1860794f), 
+                CameraRotation = new Rotator(-10.72407f, -1.7379E-06f, -58.09524f),
+                VehiclePreviewCameraPosition = new Vector3(-46.13059f, -1103.091f, 27.9145f),
+                VehiclePreviewCameraDirection = new Vector3(0.3461686f, 0.9154226f, -0.2053503f),
+                VehiclePreviewCameraRotation = new Rotator(-11.85001f, -8.374705E-05f, -20.7142f),
+
+
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(-43.94203f, -1096.923f, 26.44f), 165.1469f),
+                
                 InteriorID = 7170,
                 LicensePlatePreviewText = "PDXMOTORS",
                 VehicleDeliveryLocations = new List<SpawnPlace>() {
@@ -682,10 +689,15 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(1210.044f, 2706.118f, 37.17501f), 173.5784f),
                     new SpawnPlace(new Vector3(1254.536f, 2692.278f, 36.79386f), 224.2466f),
                 } },
-            new Dealership(new Vector3(-703.8819f, -1398.048f, 5.495286f), 137.6665f, "Elitás Travel", "There's first class and then there's Elital","ElitasMenu") {
-                CameraPosition = new Vector3(-702.0489f, -1431.725f, 9.647567f), 
-                CameraDirection = new Vector3(-0.9063408f, -0.336776f, -0.2552025f), 
-                CameraRotation = new Rotator(-14.78558f, -0.03792449f, 110.3839f),
+            new Dealership(new Vector3(-703.8819f, -1398.048f, 5.495286f), 137.6665f, "Elitás Travel", "There's first class and then there's Elitas","ElitasMenu") {
+
+
+
+                CameraPosition = new Vector3(-722.9339f, -1401.834f, 11.11265f), CameraDirection = new Vector3(0.956533f, 0.1323426f, -0.2598656f), CameraRotation = new Rotator(-15.06209f, -2.453513E-05f, -82.12276f),
+
+                VehiclePreviewCameraPosition = new Vector3(-702.0489f, -1431.725f, 9.647567f),
+                VehiclePreviewCameraDirection = new Vector3(-0.9063408f, -0.336776f, -0.2552025f),
+                VehiclePreviewCameraRotation = new Rotator(-14.78558f, -0.03792449f, 110.3839f),
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(-714.89f, -1435.682f, 5.102043f), 227.1837f),
                 VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-1015.187f, -3401.692f, 13.8351f), 327.5063f),
@@ -693,9 +705,9 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(-1091.473f, -3384.792f, 14.54814f), 330.6455f),
                 } },
             new Dealership(new Vector3(396.8023f, -1170.86f, 29.39787f), 359.2079f, "Get Aweigh", "We can help you Get Aweigh!","GetAweighMenu") {
-                CameraPosition = new Vector3(-759.6039f, -1370.657f, 3.687305f), 
-                CameraDirection = new Vector3(0.4598052f, 0.8650874f, -0.2005067f), 
-                CameraRotation = new Rotator(-11.56659f, 2.701561E-05f, -27.99123f),
+                VehiclePreviewCameraPosition = new Vector3(-759.6039f, -1370.657f, 3.687305f),
+                VehiclePreviewCameraDirection = new Vector3(0.4598052f, 0.8650874f, -0.2005067f),
+                VehiclePreviewCameraRotation = new Rotator(-11.56659f, 2.701561E-05f, -27.99123f),
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(-755.6831f, -1361.648f, -0.0738305f),229.675f),
                 VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-884.1031f, -1460.032f, 0.1196398f), 198.8394f),

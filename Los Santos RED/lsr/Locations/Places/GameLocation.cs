@@ -142,6 +142,11 @@ public class GameLocation : ILocationDispatchable
     public List<ConditionalLocation> PossiblePedSpawns { get; set; }
     public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
 
+
+
+    public Vector3 VehiclePreviewCameraPosition { get; set; } = Vector3.Zero;
+    public Vector3 VehiclePreviewCameraDirection { get; set; } = Vector3.Zero;
+    public Rotator VehiclePreviewCameraRotation { get; set; }
     public SpawnPlace VehiclePreviewLocation { get; set; }
 
     [XmlIgnore]
@@ -191,6 +196,7 @@ public class GameLocation : ILocationDispatchable
 
     public bool IsAnyMenuVisible => MenuPool.IsAnyMenuOpen();
     public bool HasCustomCamera => CameraPosition != Vector3.Zero;
+    public bool HasCustomVehicleCamera => VehiclePreviewCameraPosition != Vector3.Zero;
     public float DistanceToPlayer => distanceToPlayer;
     public Blip Blip => createdBlip;
     public bool ShouldAlwaysHaveBlip => false;
@@ -816,7 +822,8 @@ public class GameLocation : ILocationDispatchable
         {
             return;
         }
-        StoreCamera.HighlightPosition(VehiclePreviewLocation.Position, VehiclePreviewLocation.Heading);
+        StoreCamera.HighlightVehicle();
+        //StoreCamera.HighlightPosition(VehiclePreviewLocation.Position, VehiclePreviewLocation.Heading);
     }
 
     public virtual void ReHighlightStore()

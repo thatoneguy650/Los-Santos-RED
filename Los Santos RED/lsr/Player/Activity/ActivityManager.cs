@@ -163,7 +163,7 @@ public class ActivityManager
     public bool CanCancelCurrentActivity => UpperBodyActivity?.CanCancel == true || LowerBodyActivity?.CanCancel == true;
     public bool CanPauseCurrentActivity => UpperBodyActivity?.CanPause == true || LowerBodyActivity?.CanPause == true;
     public bool IsCurrentActivityPaused => UpperBodyActivity?.IsPaused() == true || LowerBodyActivity?.IsPaused() == true;
-    public bool HasCurrentActivity => UpperBodyActivity != null || LowerBodyActivity != null;
+   // public bool HasCurrentActivity => UpperBodyActivity != null || LowerBodyActivity != null;
 
 
     public bool IsResting => IsSitting || IsLayingDown;

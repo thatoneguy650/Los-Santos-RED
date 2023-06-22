@@ -4337,6 +4337,17 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Extended Clip", 120),
                     new MenuItemExtra("Drum Magazine", 550),
                     new MenuItemExtra("Suppressor", 1945) } },
+
+                new MenuItem("Vom Feuer PMP",600, 250) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 200),
+                    new MenuItemExtra("Scope", 550),
+                    new MenuItemExtra("Suppressor", 700) } },
+
+                //"Vom Feuer PMP"
+
+
+
                 new MenuItem("Hawk & Little Millipede",450, 250) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 120), } },

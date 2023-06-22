@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -654,6 +655,12 @@ namespace LosSantosRED.lsr.Data
         }
         public string Title => $"{SaveNumber.ToString("D2")} - {PlayerName} ({Money.ToString("C0")}) - {CurrentDateTime.ToString("MM/dd/yyyy HH:mm")}";
         public string RightLabel => SaveDateTime.ToString("MM/dd/yyyy HH:mm");
+
+        //[OnDeserializing]
+        //internal void OnDeserializedMethod(StreamingContext context)
+        //{
+        //    Health = 1;
+        //}
 
     }
 

@@ -515,6 +515,99 @@ public class LocationCamera
             SetCamAt(focusPosition, focusHeading);  
         }
     }
+    public void HighlightVehicle()
+    {
+        Vector3 CurrentPosition = Vector3.Zero;
+        if (StoreCam.Exists())
+        {
+            CurrentPosition = StoreCam.Position;
+        }
+        if(Store.HasCustomVehicleCamera)
+        {
+            EntryPoint.WriteToConsole("STORE CAM HAS CUSTOM VEHICLE CAMERA");
+            if (CurrentPosition.DistanceTo(Store.VehiclePreviewCameraPosition) <= 300f)
+            {
+                TransitionToVehicleCamera();
+            }
+            else
+            {
+                SetCamAtVehiclePosition();
+            }
+        }
+        else
+        {
+            EntryPoint.WriteToConsole("STORE CAM NO CUSTOM VEHICLE CAMERA!!!");
+            HighlightPosition(Store.VehiclePreviewLocation.Position, Store.VehiclePreviewLocation.Heading);
+        }
+    }
+
+
+    private void TransitionToVehicleCamera()
+    {
+        if (CurrentFocusPosition == Store.VehiclePreviewCameraPosition)
+        {
+            return;
+        }
+        if (!StoreCam.Exists())
+        {
+            StoreCam = new Camera(false);
+        }
+        isHighlightingLocation = true;
+
+
+        StoreCam.Position = Store.VehiclePreviewCameraPosition;
+        StoreCam.Rotation = Store.VehiclePreviewCameraRotation;
+        StoreCam.Direction = Store.VehiclePreviewCameraDirection;
+
+
+        if (!CameraTo.Exists())
+        {
+            CameraTo = new Camera(false);
+        }
+        if (Camera.RenderingCamera != null)
+        {
+            CameraTo.Position = Camera.RenderingCamera.Position;
+            CameraTo.FOV = Camera.RenderingCamera.FOV;
+            CameraTo.Rotation = Camera.RenderingCamera.Rotation;
+        }
+        else
+        {
+            CameraTo.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+            CameraTo.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+            Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+            CameraTo.Rotation = new Rotator(r.X, r.Y, r.Z);
+            CameraTo.Active = true;
+        }
+        CameraTo.Active = true;
+        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(StoreCam, CameraTo, 1500, true, true);
+        GameFiber.Sleep(1500);
+        CurrentFocusPosition = Store.VehiclePreviewCameraPosition;
+    }
+
+    private void SetCamAtVehiclePosition()
+    {
+        if (CurrentFocusPosition == Store.VehiclePreviewCameraPosition)
+        {
+            return;
+        }
+        if (!StoreCam.Exists())
+        {
+            StoreCam = new Camera(false);
+        }
+        Game.FadeScreenOut(500, true);
+        StoreCam.Position = Store.VehiclePreviewCameraPosition;
+        StoreCam.Rotation = Store.VehiclePreviewCameraRotation;
+        StoreCam.Direction = Store.VehiclePreviewCameraDirection;
+        NativeFunction.Natives.SET_FOCUS_POS_AND_VEL(Store.VehiclePreviewCameraPosition.X, Store.VehiclePreviewCameraPosition.Y, Store.VehiclePreviewCameraPosition.Z, 0f, 0f, 0f);
+        StoreCam.Active = true;
+        isHighlightingLocation = true;
+        GameFiber.Sleep(500);
+        Game.FadeScreenIn(500, true);
+        CurrentFocusPosition = Store.VehiclePreviewCameraPosition;
+    }
+
+
+
 
     private void SetCamHome()
     {
@@ -640,20 +733,18 @@ public class LocationCamera
     private void SetCamAutoPosition(Vector3 focusPosition, float focusHeading)
     {
         float distanceX = Settings.SettingsManager.PlayerOtherSettings.VehicleAutoCameraXDistance;// 5f;
-
         float distanceAway = Settings.SettingsManager.PlayerOtherSettings.VehicleAutoCameraYDistance;// 5f;
         float distanceAbove = Settings.SettingsManager.PlayerOtherSettings.VehicleAutoCameraZDistance;// 3f;
         Vector3 InitialCameraPosition = NativeHelper.GetOffsetPosition(focusPosition, focusHeading + 90f, distanceAway);
-
-
         InitialCameraPosition = NativeHelper.GetOffsetPosition(InitialCameraPosition, focusHeading, distanceX);
-
-
         InitialCameraPosition = new Vector3(InitialCameraPosition.X, InitialCameraPosition.Y, InitialCameraPosition.Z + distanceAbove);
         StoreCam.Position = InitialCameraPosition;
         Vector3 ToLookAt1 = new Vector3(focusPosition.X, focusPosition.Y, focusPosition.Z);
         _direction = (ToLookAt1 - InitialCameraPosition).ToNormalized();
         StoreCam.Direction = _direction;
     }
+
+
+
 }
 
