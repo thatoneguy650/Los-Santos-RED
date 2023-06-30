@@ -54,7 +54,11 @@ public class SellMenu : ModUIMenu
             {
                 sellMenuRNUI.RemoveBanner();
             }
-
+            sellMenuRNUI.OnItemSelect += (selnder, selectedItem, index) =>
+            {
+                Transaction?.PurchaseMenu?.Dispose();
+                Transaction?.SellMenu?.Show();         
+            };
             sellMenuRNUI.OnIndexChange += (sender, newIndex) =>
             {
                 GeneratePreview(sellMenuRNUI, newIndex);

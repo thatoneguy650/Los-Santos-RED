@@ -70,28 +70,18 @@ public class Dealership : GameLocation, ILicensePlatePreviewable
                 try
                 {
                     StoreCamera = new LocationCamera(this, Player, Settings);
-
-                    //StoreCamera.ItemPreviewPosition = VehiclePreviewPosition;
-                    //StoreCamera.ItemPreviewHeading = VehiclePreviewHeading;
-
                     StoreCamera.Setup();
-
                     CreateInteractionMenu();
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
                     Transaction.LicensePlatePreviewable = this;
                     Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
                     Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
                     Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-
                     InteractionMenu.Visible = true;
-                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
                     Transaction.ProcessTransactionMenu();
-
                     Transaction.DisposeTransactionMenu();
                     DisposeInteractionMenu();
-
                     StoreCamera.Dispose();
-
                     Player.ActivityManager.IsInteractingWithLocation = false;
                     Player.IsTransacting = false;
                     CanInteract = true;
@@ -102,19 +92,6 @@ public class Dealership : GameLocation, ILicensePlatePreviewable
                     EntryPoint.ModController.CrashUnload();
                 }
             }, "CarDealershipInteract");
-        }
-    }
-    private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        if (selectedItem.Text == "Buy" || selectedItem.Text == "Select")
-        {
-            Transaction?.SellMenu?.Dispose();
-            Transaction?.PurchaseMenu?.Show();
-        }
-        else if (selectedItem.Text == "Sell")
-        {
-            Transaction?.PurchaseMenu?.Dispose();
-            Transaction?.SellMenu?.Show();
         }
     }
     public override void AddDistanceOffset(Vector3 offsetToAdd)

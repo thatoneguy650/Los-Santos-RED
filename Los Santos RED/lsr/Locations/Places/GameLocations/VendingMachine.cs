@@ -73,26 +73,15 @@ public class VendingMachine : GameLocation
                         //EntryPoint.WriteToConsole("Transaction: TOP LEVE DISPOSE AFTER NO MOVE FUCKER");
                         FullDispose();
                     }
-
                     CreateInteractionMenu();
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-
                     Transaction.PreviewItems = false;
-
                     Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-
                     InteractionMenu.Visible = true;
-                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
                     Transaction.ProcessTransactionMenu();
-
-
                     Transaction.DisposeTransactionMenu();
                     DisposeInteractionMenu();
                     FullDispose();
-
-                    //NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
-                    //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-
                     Player.ActivityManager.IsInteractingWithLocation = false;
                     Player.IsTransacting = false;
                     CanInteract = true;
@@ -111,19 +100,6 @@ public class VendingMachine : GameLocation
         StartMachineBuyAnimation(modItem, false);
         base.OnItemPurchased(modItem, menuItem, totalItems);
         Transaction.PurchaseMenu?.Show();
-    }
-    private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        if (selectedItem.Text == "Buy" || selectedItem.Text == "Select")
-        {
-            Transaction?.SellMenu?.Dispose();
-            Transaction?.PurchaseMenu?.Show();
-        }
-        else if (selectedItem.Text == "Sell")
-        {
-            Transaction?.PurchaseMenu?.Dispose();
-            Transaction?.SellMenu?.Show();
-        }
     }
     private void FullDispose()
     {
@@ -154,8 +130,6 @@ public class VendingMachine : GameLocation
         {
             return false;
         }
-
-
         NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, PropEntryPosition.X, PropEntryPosition.Y, PropEntryPosition.Z, 1.0f, -1, PropEntryHeading, 0.2f);
         uint GameTimeStartedSitting = Game.GameTime;
         float heading = Game.LocalPlayer.Character.Heading;
@@ -200,7 +174,6 @@ public class VendingMachine : GameLocation
     }
     private void StartMachineBuyAnimation(ModItem item, bool isIllicit)
     {
-
         if (MoveToMachine())
         {
             if (UseMachine(item))
@@ -231,18 +204,12 @@ public class VendingMachine : GameLocation
             modelName = item.ModelItem.ModelName;
             HasProp = true;
         }
-        
-
-
         PlayingDict = "mini@sprunk";
         PlayingAnim = "plyr_buy_drink_pt1";
         AnimationDictionary.RequestAnimationDictionay(PlayingDict);
-
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -4.0f, -1, 0, 0, false, false, false);//-1
        // EntryPoint.WriteToConsole($"Vending Activity Playing {PlayingDict} {PlayingAnim}");
         bool IsCompleted = false;
-
-
         string HandBoneName = "BONETAG_R_PH_HAND";
         Vector3 HandOffset = Vector3.Zero;
         Rotator HandRotator = Rotator.Zero;

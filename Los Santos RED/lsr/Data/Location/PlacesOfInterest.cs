@@ -1885,11 +1885,24 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         FireStations = new List<FireStation>()
         {
-            new FireStation(new Vector3(1185.842f, -1464.118f, 34.90073f), 356.2903f, "LSCFD Fire Station 7", "") {OpenTime = 0,CloseTime = 24, InteriorID = 81666, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-                new FireConditionalLocation(new Vector3(1187.994f, -1462.141f, 34.8952f), 343.8326f, 50f),
-                new FireConditionalLocation(new Vector3(1209.001f, -1461.391f, 34.8434f), 25.58578f, 50f),
-            } },
+            new FireStation(new Vector3(1185.842f, -1464.118f, 34.90073f), 356.2903f, "LSCFD Fire Station 7", "") {
+                OpenTime = 0,
+                CloseTime = 24, 
+                InteriorID = 81666,
+                CameraPosition = new Vector3(1187.331f, -1441.786f, 41.12492f), 
+                CameraDirection = new Vector3(0.3904384f, -0.8945707f, -0.2174881f), 
+                CameraRotation = new Rotator(-12.56154f, -9.621827E-06f, -156.421f),
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+                    new FireConditionalLocation(new Vector3(1187.994f, -1462.141f, 34.8952f), 343.8326f, 50f),
+                    new FireConditionalLocation(new Vector3(1209.001f, -1461.391f, 34.8434f), 25.58578f, 50f), },
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(1201.047f, -1493.796f, 34.69257f), 176.5458f),
+                VehicleDeliveryLocations = new List<SpawnPlace>(){ 
+                    new SpawnPlace(new Vector3(1217.432f, -1515.697f, 34.69826f), 81.51995f),
+                    new SpawnPlace(new Vector3(1191.577f, -1506.463f, 34.69253f), 92.352f)},
+                VehiclePreviewCameraPosition = new Vector3(1206.029f, -1499.845f, 37.40165f), 
+                VehiclePreviewCameraDirection = new Vector3(-0.5793664f, 0.757318f, -0.3013371f), 
+                VehiclePreviewCameraRotation = new Rotator(-17.53793f, 3.581574E-06f, 37.41686f),
+            },
             new FireStation(new Vector3(213.8019f, -1640.523f, 29.68287f), 319.3789f, "Davis Fire Station", "") {OpenTime = 0,CloseTime = 24, ScannerFilePath = "01_specific_location\\0x0AC416A0.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new FireConditionalLocation(new Vector3(220.1501f, -1643.144f, 29.59396f), 342.0382f, 50f),

@@ -193,6 +193,7 @@ public class ActivityManager
     public bool CanHearScanner => !Settings.SettingsManager.ScannerSettings.DisableScannerWithoutRadioItem || Player.Inventory.Has(typeof(RadioItem));
     public List<DynamicActivity> PausedActivites { get; set; } = new List<DynamicActivity>();
     public bool IsWavingHands { get; set; }
+    public bool IsBuryingBody { get; set; }
 
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
@@ -530,7 +531,7 @@ public class ActivityManager
                 Game.DisplayHelp("Cancel existing activity to start");
                 return;
             }
-            modItem.UseItem(Actionable, Settings, World, CameraControllable, Intoxicants);
+            modItem.UseItem(Actionable, Settings, World, CameraControllable, Intoxicants, Time);
         }
     }
     public void DropInventoryItem(ModItem modItem, int amount)

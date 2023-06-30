@@ -64,22 +64,16 @@ public class GunStore : GameLocation
                     CreateInteractionMenu();
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
                     Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-
                     InteractionMenu.Visible = true;
-                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
                     Transaction.ProcessTransactionMenu();
-
                     if (ContactName == StaticStrings.UndergroundGunsContactName)
                     {
                         Player.RelationshipManager.GunDealerRelationship.AddMoneySpent(Transaction.MoneySpent);
                         player.RelationshipManager.GunDealerRelationship.SetReputation((Transaction.MoneySpent) / 5, false);
                     }
-
                     Transaction.DisposeTransactionMenu();
                     DisposeInteractionMenu();
-
                     StoreCamera.Dispose();
-
                     Player.ActivityManager.IsInteractingWithLocation = false;
                     Player.IsTransacting = false;
                     CanInteract = true;
@@ -92,19 +86,5 @@ public class GunStore : GameLocation
             }, "GangDenInteract");
         }
     }
-    private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        if (selectedItem.Text == "Buy" || selectedItem.Text == "Select")
-        {
-            Transaction?.SellMenu?.Dispose();
-            Transaction?.PurchaseMenu?.Show();
-        }
-        else if (selectedItem.Text == "Sell")
-        {
-            Transaction?.PurchaseMenu?.Dispose();
-            Transaction?.SellMenu?.Show();
-        }
-    }
-
 }
 

@@ -19,7 +19,7 @@ public class LighterItem : ModItem
     {
 
     }
-    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
+    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
         LighterActivity activity = new LighterActivity(actionable, this);
         if (activity.CanPerform(actionable))

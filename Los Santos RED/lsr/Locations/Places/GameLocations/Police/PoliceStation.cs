@@ -32,7 +32,6 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
     public override int MapIcon { get; set; } = (int)BlipSprite.PoliceStation;
     public Vector3 RespawnLocation { get; set; }
     public float RespawnHeading { get; set; }
-   // public SpawnPlace VehiclePreviewLocation { get; set; }
     public VehicleImpoundLot VehicleImpoundLot { get; set; }
     public bool HasImpoundLot => VehicleImpoundLot != null;
     public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
@@ -65,7 +64,6 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
         }
         if (!CanInteract)
         {
-
             return;        
         }
         if(AssignedAgency == null)
@@ -85,7 +83,6 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
                 CreateInteractionMenu();
                 if(Player.IsCop)
                 {
-                    GenerateMenu();
                     InteractAsCop(modItems,world,settings,weapons,time);
                 }
                 else
@@ -107,10 +104,9 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
     }
     private void InteractAsCop(IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
+        agencyMenu = AssignedAgency.GenerateMenu(ModItems);
         Transaction = new Transaction(MenuPool, InteractionMenu, agencyMenu, this);
         Transaction.LicensePlatePreviewable = this;
-
-
         if((VehicleDeliveryLocations == null || !VehicleDeliveryLocations.Any()) && PossibleVehicleSpawns?.Any() == true)
         {
             List<SpawnPlace> places = new List<SpawnPlace>();
@@ -124,23 +120,15 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
         {
             Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
         }
-
-
-        //Transaction.ItemPreviewPosition = ItemPreviewPosition;
-        //Transaction.ItemPreviewHeading = ItemPreviewHeading;
         Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
-
         Transaction.IsFreeItems = true;
         Transaction.IsFreeWeapons = true;
         Transaction.IsFreeVehicles = true;
         Transaction.IsPurchasing = false;
         Transaction.RotateVehiclePreview = false;
         Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-
         InteractionMenu.Visible = true;
-        InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
         Transaction.ProcessTransactionMenu();
-
         Transaction.DisposeTransactionMenu();
     }
     private void InteractAsOther()
@@ -153,8 +141,6 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
             Player.SetAngeredCop();
         };
         InteractionMenu.AddItem(addComplaintMenu);
-
-
         UIMenuItem PayBailFees = new UIMenuItem("Pay Bail Fees", "Pay your outstanding bail fees.") { RightLabel = $"${Player.Respawning.PastDueBailFees}" };
         PayBailFees.Activated += (sender, selectedItem) =>
         {
@@ -185,70 +171,9 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
                 EntryPoint.WriteToConsole("ADDING VEHICLE TO IMPOUND MENU");
                 impoundedVehicle.AddToImpoundMenu(this,ImpoundSubMenu, Player, Time);
             }
-        }
-       
+        }  
         InteractionMenu.Visible = true;
-        InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
         ProcessInteractionMenu();
-    }
-    private void GenerateMenu()
-    {
-        List<MenuItem> menuItems = new List<MenuItem>();
-        //Convert Dispatchable Vehicles to ShopMenu
-        foreach (DispatchableVehicle dv in AssignedAgency.Vehicles)
-        {
-            VehicleItem vehicleItem = ModItems.GetVehicle(dv.ModelName);
-            if (vehicleItem == null)
-            {
-                continue;
-            }
-            EntryPoint.WriteToConsole($"ADDED {dv.ModelName} TO MENU");
-            MenuItem existingMenuItem = new MenuItem(vehicleItem.Name, 0, -1) { ModItem = vehicleItem };
-            existingMenuItem.SetFree();
-            menuItems.Add(existingMenuItem);
-        }
-        //Convert Issuable Weapons to ShopMenu
-        List<IssuableWeapon> AllWeapons = new List<IssuableWeapon>();
-        AllWeapons.AddRange(AssignedAgency.LessLethalWeapons);
-        AllWeapons.AddRange(AssignedAgency.SideArms);
-        AllWeapons.AddRange(AssignedAgency.LongGuns);
-        foreach (IssuableWeapon issuableWeapon in AllWeapons)
-        {
-            WeaponItem weaponItem = ModItems.GetWeapon(issuableWeapon.ModelName);
-            if(weaponItem == null)
-            {
-                continue;
-            }
-            MenuItem existingMenuItem = menuItems.FirstOrDefault(x => x.ModItemName == weaponItem.Name);
-            if (existingMenuItem == null)
-            {
-                existingMenuItem = new MenuItem(weaponItem.Name, 0, -1) { SubPrice = 0, ModItem = weaponItem };
-                existingMenuItem.SetFree();
-                menuItems.Add(existingMenuItem);
-            }
-            foreach(WeaponComponent stuff in issuableWeapon.Variation?.Components)
-            {
-                if(!existingMenuItem.Extras.Any(x=> x.ExtraName == stuff.Name))
-                {
-                    existingMenuItem.Extras.Add(new MenuItemExtra(stuff.Name, 0));
-                }
-            }
-            EntryPoint.WriteToConsole($"ADDED {issuableWeapon.ModelName} TO MENU");
-        }
-        agencyMenu = new ShopMenu(AssignedAgency.ID + "Menu", AssignedAgency.ID + "Menu", menuItems);
-    }
-    private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        if (selectedItem.Text == "Buy" || selectedItem.Text == "Select")
-        {
-            Transaction?.SellMenu?.Dispose();
-            Transaction?.PurchaseMenu?.Show();
-        }
-        else if (selectedItem.Text == "Sell")
-        {
-            Transaction?.PurchaseMenu?.Dispose();
-            Transaction?.SellMenu?.Show();
-        }
     }
     public override void AddDistanceOffset(Vector3 offsetToAdd)
     {

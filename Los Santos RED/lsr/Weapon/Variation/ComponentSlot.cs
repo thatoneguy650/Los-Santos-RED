@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 public enum ComponentSlot
 {
+    Other,
     Magazine,
     Light,
     Optic,

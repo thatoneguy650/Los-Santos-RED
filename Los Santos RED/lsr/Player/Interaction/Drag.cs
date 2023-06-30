@@ -31,6 +31,7 @@ public class Drag : DynamicActivity
     private bool IsAttached;
     private bool PedCanBeTasked;
     private bool PedCanBeAmbientTasked;
+    private bool PedWasPersistent;
     private IEntityProvideable World;
     private bool PedWasDead;
     private VehicleExt ClosestVehicle;
@@ -79,6 +80,10 @@ public class Drag : DynamicActivity
         {
             Ped.CanBeAmbientTasked = true;
         }
+        //if(PedWasPersistent && Ped.Pedestrian.Exists())
+        //{
+        //    Ped.Pedestrian.IsPersistent = true;
+        //}
         //if (!LoadBody)
         //{
         //    DetachPeds();
@@ -164,10 +169,11 @@ public class Drag : DynamicActivity
     {
         PedCanBeTasked = Ped.CanBeTasked;
         PedCanBeAmbientTasked = Ped.CanBeAmbientTasked;
-        //PedWasPersistent = Ped.Pedestrian.IsPersistent;
+       // PedWasPersistent = Ped.Pedestrian.IsPersistent;
         NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
         Ped.CanBeTasked = false;
         Ped.CanBeAmbientTasked = false;
+      //  Ped.Pedestrian.IsPersistent = false;
         Ped.Pedestrian.BlockPermanentEvents = true;
         Ped.Pedestrian.KeepTasks = true;
         LoadBody = false;
@@ -274,12 +280,22 @@ public class Drag : DynamicActivity
         {
             return;
         }
-        if(Ped.IsDead)
+        if (Ped.IsDead)
         {
-            Ped.CurrentHealthState.ResurrectPed();
+           Ped.CurrentHealthState.ResurrectPed();
+            Ped.Pedestrian.BlockPermanentEvents = true;
+            Ped.Pedestrian.KeepTasks = true;
+            //GameFiber.Sleep(100);
+            if (!Ped.Pedestrian.Exists())
+            {
+                return;
+            }
+            NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
+        }
+
             NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
             NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Ped.Pedestrian);
-        }
+        
         NativeFunction.Natives.SET_ENTITY_COLLISION(Ped.Pedestrian, true, true);
         Ped.Pedestrian.BlockPermanentEvents = true;
         Ped.Pedestrian.KeepTasks = true;
@@ -349,8 +365,12 @@ public class Drag : DynamicActivity
     {
         AttachPeds();
         GameFiber.Yield();
+
+        //GameFiber.Sleep(500);
+
         if (Ped.Pedestrian.Exists() && Settings.SettingsManager.ActivitySettings.PlayDraggingPedAnimation)
         {
+            EntryPoint.WriteToConsole("PLAYING DRAGGING ANIM START FOR PED");
             NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped", 2.0f, -2.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME |  eAnimationFlags.AF_NOT_INTERRUPTABLE | eAnimationFlags.AF_FORCE_START), 0, false, false, false);
         }
         if (PlayPlayerLoopingAnimation("combat@drag_ped@", "injured_pickup_back_plyr", false, 2, false, true))
@@ -432,19 +452,49 @@ public class Drag : DynamicActivity
             }
             else
             {
-                if(forcePedIntroAnim)
+                if(forcePedIntroAnim && Ped.Pedestrian.Exists())
                 {
-                    if (Ped.Pedestrian.Exists())
+                    float introPedAnimTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped");
+                    //EntryPoint.WriteToConsole($"CURRENT INTRO AnimTime {introPedAnimTime} Player Anim Time {AnimationTime}");
+                    if (!AnimationWatcher.IsAnimationRunning(introPedAnimTime) || introPedAnimTime == 0.0f)
                     {
-                        if (!AnimationWatcher.IsAnimationRunning(NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped")))
-                        {
-                            NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped", 2.0f, -2.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_NOT_INTERRUPTABLE | eAnimationFlags.AF_FORCE_START), 0, false, false, false);
-                            NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped", AnimationTime);
-                            
-                        }
+
+                        //NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+                        //NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Ped.Pedestrian);
+
+                        NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped", 2.0f, -2.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_NOT_INTERRUPTABLE), 0, false, false, false);
+                       NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped", AnimationTime);
+                        EntryPoint.WriteToConsole("FORCING AS NO ANIM IS PLAYING");
                     }
                 }
+
+
+                //if(Ped.Pedestrian.Exists() && Game.IsKeyDownRightNow(Keys.N))
+                //{
+                //    Ped.CanBeAmbientTasked = false;
+                //    Ped.CanBeTasked = false;
+                //    NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped", 2.0f, -2.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_NOT_INTERRUPTABLE), 0, false, false, false);
+                //    Game.DisplaySubtitle("STARTED");
+                //}
+
+                //if (Ped.Pedestrian.Exists())
+                //{
+                //    float ANimTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped");
+                //    EntryPoint.WriteToConsole($"ANimTime {ANimTime}");
+                //}
             }
+
+
+
+            //if (Ped.Pedestrian.Exists() && Game.IsKeyDownRightNow(Keys.N))
+            //{
+            //    Ped.CanBeAmbientTasked = false;
+            //    Ped.CanBeTasked = false;
+            //    NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped", 2.0f, -2.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_NOT_INTERRUPTABLE), 0, false, false, false);
+            //    Game.DisplaySubtitle("STARTED");
+            //}
+
+
             GameFiber.Yield();
         }
         //EntryPoint.WriteToConsoleTestLong($"PlayPlayerLoopingAnimation END {animation} repeat {repeat}");

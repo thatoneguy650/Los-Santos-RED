@@ -21,12 +21,12 @@ public class DrinkItem : ConsumableItem
     {
 
     }
-    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
+    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
         DrinkingActivity activity = new DrinkingActivity(actionable, settings, this, intoxicants);
         if (activity.CanPerform(actionable))
         {
-            base.UseItem(actionable, settings, world, cameraControllable, intoxicants);
+            base.UseItem(actionable, settings, world, cameraControllable, intoxicants, time);
             actionable.ActivityManager.StartUpperBodyActivity(activity);
             return true;
         }

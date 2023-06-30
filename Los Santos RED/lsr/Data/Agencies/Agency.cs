@@ -292,4 +292,65 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
         }
         return null;
     }
+
+
+
+    public ShopMenu GenerateMenu(IModItems modItems)
+    {
+        List<MenuItem> menuItems = new List<MenuItem>();
+        //Convert Dispatchable Vehicles to ShopMenu
+        if (Vehicles != null)
+        {
+            foreach (DispatchableVehicle dv in Vehicles)
+            {
+                VehicleItem vehicleItem = modItems.GetVehicle(dv.ModelName);
+                if (vehicleItem == null)
+                {
+                    continue;
+                }
+                EntryPoint.WriteToConsole($"ADDED {dv.ModelName} TO MENU");
+                MenuItem existingMenuItem = new MenuItem(vehicleItem.Name, 0, -1) { ModItem = vehicleItem };
+                existingMenuItem.SetFree();
+                menuItems.Add(existingMenuItem);
+            }
+        }
+        //Convert Issuable Weapons to ShopMenu
+        List<IssuableWeapon> AllWeapons = new List<IssuableWeapon>();
+        if (LessLethalWeapons != null)
+        {
+            AllWeapons.AddRange(LessLethalWeapons);
+        }
+        if (SideArms != null)
+        {
+            AllWeapons.AddRange(SideArms);
+        }
+        if (LongGuns != null)
+        {
+            AllWeapons.AddRange(LongGuns);
+        }
+        foreach (IssuableWeapon issuableWeapon in AllWeapons)
+        {
+            WeaponItem weaponItem = modItems.GetWeapon(issuableWeapon.ModelName);
+            if (weaponItem == null)
+            {
+                continue;
+            }
+            MenuItem existingMenuItem = menuItems.FirstOrDefault(x => x.ModItemName == weaponItem.Name);
+            if (existingMenuItem == null)
+            {
+                existingMenuItem = new MenuItem(weaponItem.Name, 0, -1) { SubPrice = 0, ModItem = weaponItem };
+                existingMenuItem.SetFree();
+                menuItems.Add(existingMenuItem);
+            }
+            foreach (WeaponComponent stuff in issuableWeapon.Variation?.Components)
+            {
+                if (!existingMenuItem.Extras.Any(x => x.ExtraName == stuff.Name))
+                {
+                    existingMenuItem.Extras.Add(new MenuItemExtra(stuff.Name, 0));
+                }
+            }
+            EntryPoint.WriteToConsole($"ADDED {issuableWeapon.ModelName} TO MENU");
+        }
+        return new ShopMenu(ID + "Menu", ID + "Menu", menuItems);    
+    }
 }

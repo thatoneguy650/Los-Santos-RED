@@ -70,6 +70,7 @@ namespace LosSantosRED.lsr.Interface
         Gang CurrentGang { get; }
         bool IsServicePed { get; }
         bool HasScrewdriverInHand { get; set; }
+        PedExt CurrentLookedAtPed { get; }
 
         void DisplayPlayerNotification();
         void SetWantedLevel(int selectedItem, string v1, bool v2);

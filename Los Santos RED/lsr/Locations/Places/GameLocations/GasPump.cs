@@ -110,11 +110,6 @@ public class GasPump : GameLocation
     private void SetupGeneral()
     {
         VehicleToFill = World.Vehicles.GetClosestVehicleExt(EntrancePosition, true, 6f);
-
-
-
-
-
         if (AssociatedStation != null)
         {
             pricePerUnit = AssociatedStation.PricePerGallon;
@@ -182,7 +177,6 @@ public class GasPump : GameLocation
     {
         if(selectedItem == FillMenuItem && VehicleToFill != null && VehicleToFill.Vehicle.Exists())
         {
-            //KeepInteractionGoing = true;
             IsFueling = true;
             InteractionMenu.Visible = false;
             sender.Visible = false;
@@ -190,7 +184,6 @@ public class GasPump : GameLocation
         }
         else if (selectedItem == AddSomeMenuItem && VehicleToFill != null && VehicleToFill.Vehicle.Exists())
         {
-            //KeepInteractionGoing = true;
             IsFueling = true;
             InteractionMenu.Visible = false;
             sender.Visible = false;

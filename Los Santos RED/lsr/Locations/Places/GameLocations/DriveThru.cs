@@ -36,12 +36,10 @@ public class DriveThru : GameLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
-
         if (IsLocationClosed())
         {
             return;
         }
-
         if (CanInteract)
         {
             Player.ActivityManager.IsInteractingWithLocation = true;
@@ -51,25 +49,16 @@ public class DriveThru : GameLocation
             {
                 try
                 {
-
                     NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, -1, 2000, 2000);
-
                     CreateInteractionMenu();
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-
                     Transaction.PreviewItems = false;
-
                     Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-
                     InteractionMenu.Visible = true;
-                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
                     Transaction.ProcessTransactionMenu();
-
                     Transaction.DisposeTransactionMenu();
                     DisposeInteractionMenu();
-
                     NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
-
                     Player.ActivityManager.IsInteractingWithLocation = false;
                     Player.IsTransacting = false;
                     CanInteract = true;
@@ -82,19 +71,5 @@ public class DriveThru : GameLocation
             }, "DriveThruInteract");
         }
     }
-    private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        if (selectedItem.Text == "Buy" || selectedItem.Text == "Select")
-        {
-            Transaction?.SellMenu?.Dispose();
-            Transaction?.PurchaseMenu?.Show();
-        }
-        else if (selectedItem.Text == "Sell")
-        {
-            Transaction?.PurchaseMenu?.Dispose();
-            Transaction?.SellMenu?.Show();
-        }
-    }
-
 }
 

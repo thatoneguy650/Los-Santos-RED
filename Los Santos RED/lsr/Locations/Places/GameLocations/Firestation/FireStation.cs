@@ -1,7 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
-using Rage.Native;
-using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
@@ -11,23 +10,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreviewable
+public class FireStation : GameLocation, ILicensePlatePreviewable
 {
     private ShopMenu agencyMenu;
-    private List<MedicalTreatment> MedicalTreatments;
-    public Hospital(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
+    public FireStation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
     }
-    public Hospital() : base()
+    public FireStation() : base()
     {
 
     }
+    public override string TypeName { get; set; } = "Fire Station";
+    public override int MapIcon { get; set; } = 436;
     public string LicensePlatePreviewText { get; set; } = "UNIT1";
-    public override string TypeName { get; set; } = "Hospital";
-    public override int MapIcon { get; set; } = (int)BlipSprite.Hospital;
-    public Vector3 RespawnLocation { get; set; }
-    public float RespawnHeading { get; set; }
     public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world,
         IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings)
@@ -35,16 +31,8 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings);
         if (AssignedAgency == null)
         {
-            AssignedAgency = zones.GetZone(EntrancePosition)?.AssignedEMSAgency;
+            AssignedAgency = zones.GetZone(EntrancePosition)?.AssignedFireAgency;
         }
-    }
-    public override void AddDistanceOffset(Vector3 offsetToAdd)
-    {
-        if (RespawnLocation != Vector3.Zero)
-        {
-            RespawnLocation += offsetToAdd;
-        }
-        base.AddDistanceOffset(offsetToAdd);
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
@@ -82,14 +70,14 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
                 StoreCamera = new LocationCamera(this, Player, Settings);
                 StoreCamera.Setup();
                 CreateInteractionMenu();
-                if (Player.IsEMT)
-                {            
-                    InteractAsEMT(modItems, world, settings, weapons, time);
+                if (Player.IsFireFighter)
+                {
+                    InteractAsFireFighter(modItems, world, settings, weapons, time);
                 }
                 else
                 {
                     InteractAsOther();
-                }    
+                }
                 DisposeInteractionMenu();
                 StoreCamera.Dispose();
                 Player.IsTransacting = false;
@@ -101,10 +89,10 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
                 EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
                 EntryPoint.ModController.CrashUnload();
             }
-        }, "BarInteract");    
+        }, "BarInteract");
+        
     }
-
-    private void InteractAsEMT(IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
+    private void InteractAsFireFighter(IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         agencyMenu = AssignedAgency.GenerateMenu(ModItems);
         Transaction = new Transaction(MenuPool, InteractionMenu, agencyMenu, this);
@@ -135,36 +123,15 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
     }
     private void InteractAsOther()
     {
-        UIMenu treatmentOptionsSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Treatment Options");
-        treatmentOptionsSubMenu.SubtitleText = "Pick a Treatment";
-        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Pick one of our state of the art treatment options!";
-        MedicalTreatments = new List<MedicalTreatment>()
+        UIMenuItem addComplaintMenu = new UIMenuItem("Learn About Fire Safety", "Learn about fire safety from one of our most boring teachers!");
+        addComplaintMenu.Activated += (sender, selectedItem) =>
         {
-            new MedicalTreatment("Medical Student Once-Over","Have one of our newest medical students attempt to fix your issues",5,500),
-            new MedicalTreatment("Short Nurse Visit","Have an overworked nurse briefly ask you a question.",25,2000),
-            new MedicalTreatment("Regular Doctor Visit","One of our less qualified doctors will surely be able to help you out.",50,3500),
-            new MedicalTreatment("Decent Doctor Visit","Look at Mr. Rockefeller, shelling out for a ~r~real~s~ doctor.",75,4400),
-            new MedicalTreatment("Full Body Treatment","Our crack team will scan, poke, and prod you until you are like new!",100,5500),
+            InteractionMenu.Visible = false;
+            Game.DisplaySubtitle("You feel smarter");
         };
-        if (MedicalTreatments != null && MedicalTreatments.Any())
-        {
-            foreach (MedicalTreatment medicalTreatment in MedicalTreatments)
-            {
-                medicalTreatment.AddToMenu(this, treatmentOptionsSubMenu,Player);
-            }
-        }
+        InteractionMenu.AddItem(addComplaintMenu);
         InteractionMenu.Visible = true;
         ProcessInteractionMenu();
-    }
-    public void DisplayInsufficientFundsMessage()
-    {
-        PlayErrorSound();
-        DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation.");
-    }
-    public void DisplayPurchaseMessage()
-    {
-        PlaySuccessSound();
-        DisplayMessage("~g~Purchase", $"Thank you for your purchase.");
     }
 }
 

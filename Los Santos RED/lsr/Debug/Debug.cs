@@ -16,6 +16,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
+using System.Security.Principal;
 using System.Text;
 using System.Windows.Forms;
 //using System.Windows.Media;
@@ -1289,36 +1291,71 @@ public class Debug
 
     private void DebugNumpad7()
     {
+        Vector3 source = Game.LocalPlayer.Character.Position;
+        Vector3 target = new Vector3(source.X, source.Y, source.Z + 1.0f);
+        if (!NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(source.X, source.Y, source.Z, out float GroundZ, true, false))
+        {
+            return;
+            //position = new Vector3(position.X, position.Y, GroundZ);
+        }
+        target = new Vector3(source.X, source.Y, GroundZ - 1.0f);
+        int ShapeTestResultID = NativeFunction.Natives.START_SHAPE_TEST_CAPSULE<int>(source.X, source.Y, source.Z, target.X, target.Y, target.Z, 1.0f, 1, Game.LocalPlayer.Character, 7);
+        if(ShapeTestResultID == 0)
+        {
+            return;
+        }
+        Vector3 hitPositionArg;
+        bool hitSomethingArg;
+        int materialHashArg;
+        int entityHandleArg;
+        Vector3 surfaceNormalArg;
+        int Result = 0;
+        unsafe
+        {
+            Result = NativeFunction.CallByName<int>("GET_SHAPE_TEST_RESULT_INCLUDING_MATERIAL", ShapeTestResultID, &hitSomethingArg, &hitPositionArg, &surfaceNormalArg, &materialHashArg, &entityHandleArg);
+        }
+        if(Result == 0)
+        { 
+            return;
+        }
+
+        bool DidHit = hitSomethingArg;
+        Vector3 HitPosition = hitPositionArg;
+        Vector3 SurfaceNormal = surfaceNormalArg;
+        int MaterialHash = materialHashArg;
+        Game.DisplaySubtitle($"{DidHit} {HitPosition} {SurfaceNormal} {(MaterialHash)MaterialHash}");
+        EntryPoint.WriteToConsole($"{DidHit} {HitPosition} {SurfaceNormal} {MaterialHash} {(MaterialHash)MaterialHash}");
+
 
         //GET_CLOSEST_OBJECT_OF_TYPE
 
         //prop_cctv_pole_04, X: 411.6299 Y: -1619.302 Z: 28.30813,, 574160586
 
-        Vector3 Coordinates = Vector3.Zero;
+        //Vector3 Coordinates = Vector3.Zero;
 
 
-        if(DoOne)
-        {
-            Coordinates = new Vector3(411.6299f, -1619.302f, 28.30813f);
-        }
-        else
-        {
-            Coordinates = new Vector3(409.8848f, -1660.358f, 28.25814f);
-        }
-        
-
-
+        //if(DoOne)
+        //{
+        //    Coordinates = new Vector3(411.6299f, -1619.302f, 28.30813f);
+        //}
+        //else
+        //{
+        //    Coordinates = new Vector3(409.8848f, -1660.358f, 28.25814f);
+        //}
 
 
 
-        Rage.Object myObject = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Coordinates.X, Coordinates.Y, Coordinates.Z,10f,Game.GetHashKey("prop_cctv_pole_04"),false,false,false);
 
-        if(myObject.Exists())
-        {
-            Game.DisplaySubtitle($"{(DoOne ? 1 : 2)}  {myObject.Handle} {myObject.Health} {myObject.MaxHealth}");
-        }
 
-        DoOne = !DoOne;
+
+        //Rage.Object myObject = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Coordinates.X, Coordinates.Y, Coordinates.Z,10f,Game.GetHashKey("prop_cctv_pole_04"),false,false,false);
+
+        //if(myObject.Exists())
+        //{
+        //    Game.DisplaySubtitle($"{(DoOne ? 1 : 2)}  {myObject.Handle} {myObject.Health} {myObject.MaxHealth}");
+        //}
+
+        //DoOne = !DoOne;
 
         //PedExt closestPed = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
         //if(closestPed == null || !closestPed.Pedestrian.Exists())

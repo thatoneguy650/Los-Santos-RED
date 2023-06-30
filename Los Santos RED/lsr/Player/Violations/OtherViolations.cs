@@ -200,6 +200,10 @@ public class OtherViolations
         {
             Violations.AddViolating(StaticStrings.KidnappingCrimeID);
         }
+        if (Player.ActivityManager.IsBuryingBody)
+        {
+            Violations.AddViolating(StaticStrings.KillingCiviliansCrimeID);
+        }
     }
 
     private void TrespassingUpdate()

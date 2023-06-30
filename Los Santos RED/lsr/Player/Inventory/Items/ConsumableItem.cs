@@ -43,7 +43,7 @@ public abstract class ConsumableItem : ModItem
     public string ThirstChangeDescription => ChangesThirst ? $"{(ThirstChangeAmount > 0.0f ? "~g~+" : "~r~") + ThirstChangeAmount.ToString() + "~s~ Thirst"}" : "";
     public bool ChangesSleep => SleepChangeAmount != 0.0f;
     public string SleepChangeDescription => ChangesSleep ? $"{(SleepChangeAmount > 0.0f ? "~g~+" : "~r~") + SleepChangeAmount.ToString() + "~s~ Sleep"}" : "";
-    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
+    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
         actionable.Inventory.Use(this);
         return true;

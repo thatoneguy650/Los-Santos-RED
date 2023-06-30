@@ -19,7 +19,7 @@ public class ScrewdriverItem : ModItem
     {
 
     }
-    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
+    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
         ScrewdriverActivity activity = new ScrewdriverActivity(actionable, settings, this);
         if (activity.CanPerform(actionable))

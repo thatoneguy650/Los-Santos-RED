@@ -303,17 +303,20 @@ public class PersonTransaction : Interaction
     }
     private void InteractionMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if(selectedItem.Text == "Buy" || selectedItem.Text == "Select")
-        {
-            Transaction?.SellMenu?.Dispose();
-            Transaction?.PurchaseMenu?.Show();
-        }
-        else if (selectedItem.Text == "Sell")
-        {
-            Transaction?.PurchaseMenu?.Dispose();
-            Transaction?.SellMenu?.Show();
-        }
-        else if (selectedItem == GetInCar)
+        //if(selectedItem.Text == "Buy" || selectedItem.Text == "Select")
+        //{
+        //    Transaction?.SellMenu?.Dispose();
+        //    Transaction?.PurchaseMenu?.Show();
+        //}
+        //else if (selectedItem.Text == "Sell")
+        //{
+        //    Transaction?.PurchaseMenu?.Dispose();
+        //    Transaction?.SellMenu?.Show();
+        //}
+        //else 
+        
+        
+        if (selectedItem == GetInCar)
         {
             PlayerGetInCar();
         }

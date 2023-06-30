@@ -60,6 +60,13 @@ public class Zone
     public Gang AssignedGang { get; set; }
 
 
+
+    [XmlIgnore]
+    public Agency AssignedEMSAgency { get; set; }
+    [XmlIgnore]
+    public Agency AssignedFireAgency { get; set; }
+
+
     [XmlIgnore]
     public GameCounty GameCounty { get; set; }
     [XmlIgnore]
@@ -122,6 +129,11 @@ public class Zone
         {
             AssignedSecondLEAgeny = null;
         }
+
+        AssignedEMSAgency = jurisdictions.GetMainAgency(InternalGameName, ResponseType.EMS);
+        AssignedFireAgency = jurisdictions.GetMainAgency(InternalGameName, ResponseType.Fire);
+
+
         DealerMenus = shopMenus.GetSpecificGroupContainer(DealerMenuContainerID);
         CustomerMenus = shopMenus.GetSpecificGroupContainer(CustomerMenuContainerID);
     }

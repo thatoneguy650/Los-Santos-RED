@@ -324,14 +324,10 @@ public class GameLocation : ILocationDispatchable
         Settings = settings;
         Weapons = weapons;
         Time = time;
-
         if (IsLocationClosed())
         {
             return;
         }
-
-
-
         if (CanInteract)
         {
             Player.ActivityManager.IsInteractingWithLocation = true;
@@ -344,30 +340,13 @@ public class GameLocation : ILocationDispatchable
                 {
                     StoreCamera = new LocationCamera(this, Player, Settings);
                     StoreCamera.Setup();
-
                     CreateInteractionMenu();
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
                     Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-
                     InteractionMenu.Visible = true;
-                    InteractionMenu.OnItemSelect += (selnder, selectedItem, index) =>
-                    {
-                        if (selectedItem.Text == "Buy" || selectedItem.Text == "Select")
-                        {
-                            Transaction?.SellMenu?.Dispose();
-                            Transaction?.PurchaseMenu?.Show();
-                        }
-                        else if (selectedItem.Text == "Sell")
-                        {
-                            Transaction?.PurchaseMenu?.Dispose();
-                            Transaction?.SellMenu?.Show();
-                        }
-                    };
                     Transaction.ProcessTransactionMenu();
-
                     Transaction.DisposeTransactionMenu();
                     DisposeInteractionMenu();
-
                     StoreCamera.Dispose();
                     Player.IsTransacting = false;
                     Player.ActivityManager.IsInteractingWithLocation = false;
@@ -699,6 +678,10 @@ public class GameLocation : ILocationDispatchable
         //InteractionMenu.OnItemSelect += OnItemSelect;
         MenuPool.Add(InteractionMenu);
         CanInteract = false;
+
+
+
+
     }
     public void DisposeInteractionMenu()
     {
@@ -723,11 +706,13 @@ public class GameLocation : ILocationDispatchable
     }
     public void PlayErrorSound()
     {
-        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "ERROR", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+        NativeHelper.PlayErrorSound();
+        //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "ERROR", "HUD_LIQUOR_STORE_SOUNDSET", 0);
     }
     public void PlaySuccessSound()
     {
-        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+        NativeHelper.PlaySuccessSound();
+        //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
         //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
     }
     protected void SpawnVendor(ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, bool addMenu)

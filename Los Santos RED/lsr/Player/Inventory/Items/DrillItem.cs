@@ -19,7 +19,7 @@ public class DrillItem : ModItem
     {
 
     }
-    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
+    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
         DrillActivity activity = new DrillActivity(actionable, settings, this);
         if (activity.CanPerform(actionable))

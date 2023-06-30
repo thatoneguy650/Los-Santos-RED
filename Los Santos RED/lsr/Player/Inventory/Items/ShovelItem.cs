@@ -19,9 +19,9 @@ public class ShovelItem : ModItem
     {
 
     }
-    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
+    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
-        ShovelActivity activity = new ShovelActivity(actionable, settings, cameraControllable, this);
+        ShovelActivity activity = new ShovelActivity(actionable, settings, cameraControllable, this, world, time);
         if (activity.CanPerform(actionable))
         {
             actionable.ActivityManager.StartUpperBodyActivity(activity);

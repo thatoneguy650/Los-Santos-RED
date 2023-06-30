@@ -72,6 +72,11 @@ public class PurchaseMenu : ModUIMenu
             {
                 purchaseMenu.RemoveBanner();
             }
+            purchaseMenu.OnItemSelect += (selnder, selectedItem, index) =>
+            {
+                Transaction?.SellMenu?.Dispose();
+                Transaction?.PurchaseMenu?.Show();             
+            };
             purchaseMenu.OnIndexChange += (sender, newIndex) =>
             {
                 GeneratePreview(purchaseMenu, newIndex);

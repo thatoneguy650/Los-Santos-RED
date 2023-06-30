@@ -18,7 +18,7 @@ public class UmbrellaItem : ModItem
     {
 
     }
-    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
+    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
         UmbrellaActivity activity = new UmbrellaActivity(actionable, this);
         if (activity.CanPerform(actionable))

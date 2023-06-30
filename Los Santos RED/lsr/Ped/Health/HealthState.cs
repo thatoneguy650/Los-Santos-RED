@@ -225,13 +225,14 @@ public class HealthState
         {
             return;
         }
-        MyPed.Pedestrian.Health = MyPed.Pedestrian.MaxHealth;
-        MyPed.Pedestrian.Resurrect();
-        MyPed.Pedestrian.Health = MyPed.Pedestrian.MaxHealth;
+        //MyPed.Pedestrian.Health = MyPed.Pedestrian.MaxHealth;
+        //MyPed.Pedestrian.Resurrect();
+        //MyPed.Pedestrian.Health = MyPed.Pedestrian.MaxHealth;
         NativeFunction.Natives.RESURRECT_PED(MyPed.Pedestrian);
-        MyPed.Pedestrian.Health = MyPed.Pedestrian.MaxHealth;
+       // MyPed.Pedestrian.Health = MyPed.Pedestrian.MaxHealth;
         NativeFunction.Natives.REVIVE_INJURED_PED(MyPed.Pedestrian);
-        MyPed.Pedestrian.Health = MyPed.Pedestrian.MaxHealth;
+       // MyPed.Pedestrian.Health = MyPed.Pedestrian.MaxHealth;
+        NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(MyPed.Pedestrian);
     }
 
 

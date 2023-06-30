@@ -475,7 +475,7 @@
     <Compile Include="lsr\Old\BasicLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\BeautyShop.cs" />
-    <Compile Include="lsr\Locations\Places\GameLocations\FireStation.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Firestation\FireStation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Hospital\Hospital.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Landmark.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bar.cs" />

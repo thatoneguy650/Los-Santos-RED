@@ -19,7 +19,7 @@ public class HammerItem : ModItem
     {
 
     }
-    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
+    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
         HammerActivity activity = new HammerActivity(actionable, settings, cameraControllable, this);
         if (activity.CanPerform(actionable))

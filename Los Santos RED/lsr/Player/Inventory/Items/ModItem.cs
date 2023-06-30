@@ -109,7 +109,7 @@ public class ModItem
             + GetExtendedDescription(Settings)
             + (MeasurementName != "Item" ? " " + MeasurementName + "(s)" : "");      
     }
-    public virtual bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
+    public virtual bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
         return false;
     }

@@ -19,7 +19,7 @@ public class BongItem : ModItem
     {
 
     }
-    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
+    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
         //EntryPoint.WriteToConsoleTestLong("I AM IN BongItem ACTIVITY!!!!!!!!!!");
         Game.DisplayHelp($"Item: {Name} is currently unused");

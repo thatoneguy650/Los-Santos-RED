@@ -23,7 +23,7 @@ public class SmokeItem : ConsumableItem
     {
 
     }
-    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
+    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
         SmokingActivity activity = new SmokingActivity(actionable, settings, this, intoxicants);
         if (activity.CanPerform(actionable))
@@ -41,7 +41,7 @@ public class SmokeItem : ConsumableItem
 
 
 
-            base.UseItem(actionable, settings, world, cameraControllable, intoxicants);
+            base.UseItem(actionable, settings, world, cameraControllable, intoxicants, time);
             actionable.ActivityManager.StartUpperBodyActivity(activity);
             return true;
         }

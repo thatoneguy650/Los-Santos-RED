@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
@@ -9,6 +10,9 @@ namespace LosSantosRED.lsr.Player
 {
     public class ShovelActivity : DynamicActivity
     {
+        private PedExt ToBuryPed;
+        private IEntityProvideable World;
+        private ITimeControllable Time;
         private bool IsCancelled;
         private IActionable Player;
         private uint GameTimeStartedHolding;
@@ -50,13 +54,15 @@ namespace LosSantosRED.lsr.Player
         private Rotator WeaponHandRotator;
         private MeleeWeaponAlias meleeWeaponAlias;
 
-        public ShovelActivity(IActionable player, ISettingsProvideable settings, ICameraControllable cameraControllable, ShovelItem shovelItem) : base()
+        public ShovelActivity(IActionable player, ISettingsProvideable settings, ICameraControllable cameraControllable, ShovelItem shovelItem, IEntityProvideable world, ITimeControllable time) : base()
         {
             Player = player;
             ModItem = shovelItem;
             Settings = settings;
             CameraControllable = cameraControllable;
             ShovelItem = shovelItem;
+            World = world;
+            Time = time;
         }
 
         public override ModItem ModItem { get; set; }
@@ -92,14 +98,25 @@ namespace LosSantosRED.lsr.Player
                     Setup();
                     meleeWeaponAlias = new MeleeWeaponAlias(Player, Settings, ShovelItem);
                     meleeWeaponAlias.Start();
-                    Player.ButtonPrompts.AddPrompt("Shovel", "Dig Here", "ShovelDig", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 12);
+                    
                     while (!IsCancelled)
                     {
+                        if(Player.CurrentLookedAtPed != null && Player.CurrentLookedAtPed.Pedestrian.Exists() && Player.CurrentLookedAtPed.CanBeBuried)
+                        {
+                            Player.ButtonPrompts.AddPrompt("Shovel", "Bury Body", "ShovelDig", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 12);
+                        }
+                        else
+                        {
+                            Player.ButtonPrompts.RemovePrompts("Shovel");
+                        }
                         if (Player.ButtonPrompts.IsPressed("ShovelDig"))
                         {
-                            meleeWeaponAlias.IsCancelled = true;
-                            meleeWeaponAlias.Dispose();
-                            StartShovelling();
+                            if(CanDigAtLocation())
+                            {
+                                meleeWeaponAlias.IsCancelled = true;
+                                meleeWeaponAlias.Dispose();
+                                StartShovelling();
+                            }
                         }
                         meleeWeaponAlias.Update();
                         if (meleeWeaponAlias.IsCancelled)
@@ -118,6 +135,41 @@ namespace LosSantosRED.lsr.Player
                 }
             }, "ShovelActivity");
         }
+
+        private bool CanDigAtLocation()
+        {
+            GetHoleLocations();
+            GameFiber.Sleep(100);
+            if(!hasGroundAtHole)
+            {
+                Game.DisplayHelp("Cannot Dig at Location");
+                return false;
+            }
+            if (World.Places.ActiveLocations.Any(x => x.DistanceToPlayer <= 150))
+            {
+                Game.DisplayHelp("Not Rural Enough");
+                return false;
+            }
+            if (Player.CurrentLookedAtPed == null || !Player.CurrentLookedAtPed.Pedestrian.Exists() || !Player.CurrentLookedAtPed.CanBeBuried)
+            {
+                Game.DisplayHelp("No Body To Bury");
+                return false;
+            }
+            ToBuryPed = Player.CurrentLookedAtPed;
+            MaterialHash materialHash = NativeHelper.GroundMaterialAtPosition(new Vector3(HoleLocation.X,HoleLocation.Y,HoleLocation.Z + 1.0f), Game.LocalPlayer.Character);
+            if(materialHash == MaterialHash.Marsh || materialHash == MaterialHash.SandLoose || materialHash == MaterialHash.SnowLoose || materialHash == MaterialHash.SnowCompact || materialHash == MaterialHash.SnowDeep || materialHash == MaterialHash.MudSoft 
+                || materialHash == MaterialHash.MarshDeep || materialHash == MaterialHash.Soil || materialHash == MaterialHash.ClaySoft || materialHash == MaterialHash.Hay || materialHash == MaterialHash.Bushes || materialHash == MaterialHash.Twigs 
+                || materialHash == MaterialHash.Leaves || materialHash == MaterialHash.Woodchips || materialHash == MaterialHash.GrassLong || materialHash == MaterialHash.Grass || materialHash == MaterialHash.GrassShort)
+            {
+                return true;
+            }
+            else
+            {
+                Game.DisplayHelp($"Cannot Dig In Material {materialHash}");
+            }
+            return false;
+        }
+
         public override bool CanPerform(IActionable player)
         {
             if (player.IsOnFoot && player.ActivityManager.CanPerformActivitesBase)
@@ -151,10 +203,21 @@ namespace LosSantosRED.lsr.Player
         {
             // Game.FadeScreenOut(500, true);
             Player.ButtonPrompts.RemovePrompts("Shovel");
-            if(Settings.SettingsManager.ShovelSettings.FadeOut)
+
+            Player.ActivityManager.IsBuryingBody = true;
+
+
+            if (Settings.SettingsManager.ShovelSettings.FadeOut)
             {
                 Game.FadeScreenOut(500, true);
             }
+
+            if(ToBuryPed != null && ToBuryPed.Pedestrian.Exists())
+            {
+                ToBuryPed.DeleteBlip();
+                ToBuryPed.Pedestrian.Delete();
+            }
+
             if (Settings.SettingsManager.ShovelSettings.UseAltCamera)
             {
                 CameraControl = new CameraControl(CameraControllable);
@@ -166,6 +229,7 @@ namespace LosSantosRED.lsr.Player
             AttachShovelToHand(false);
             GetHoleLocations();
             CreateDirt();
+            Time.SetDateTime(Time.CurrentDateTime.AddHours(4));
             if (animEnter != "")
             {
                 GameTimeStartedHolding = Game.GameTime;
@@ -216,19 +280,12 @@ namespace LosSantosRED.lsr.Player
             {
                 StartDiggingPosition = new Vector3(StartDiggingPosition.X, StartDiggingPosition.Y, StartDiggingGroundZ);
             }
-
-
             HoleLocation = Player.Character.GetOffsetPosition(new Vector3(Settings.SettingsManager.ShovelSettings.HoleOffsetX, Settings.SettingsManager.ShovelSettings.HoleOffsetY, 0.5f));
             float HoleGroundZ;
             hasGroundAtHole = NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(HoleLocation.X, HoleLocation.Y, HoleLocation.Z, out HoleGroundZ, true, false);
             if (hasGroundAtHole)
             {
                 HoleLocation = new Vector3(HoleLocation.X, HoleLocation.Y, HoleGroundZ);
-
-
-
-
-
             }
         }
         private void Idle()
@@ -261,6 +318,9 @@ namespace LosSantosRED.lsr.Player
             }
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             Player.ActivityManager.IsPerformingActivity = false;
+            Player.ActivityManager.IsBuryingBody = false;
+
+
             meleeWeaponAlias?.Dispose();
         }
 
