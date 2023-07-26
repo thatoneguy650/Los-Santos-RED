@@ -198,8 +198,8 @@ namespace LosSantosRED.lsr
                 }),
                 new ModTaskGroup("RG4:Dispatch", new List<ModTask>()
                 {
-                    new ModTask(1000, "Dispatcher.Recall", Dispatcher.Recall, 0),//1500
-                    new ModTask(1000, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),//1500//1000
+                    new ModTask(500, "Dispatcher.Recall", Dispatcher.Recall, 0),//1500
+                    new ModTask(500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),//1500//1000
                 }),
                 new ModTaskGroup("RG5:Police Update", new List<ModTask>()
                 {

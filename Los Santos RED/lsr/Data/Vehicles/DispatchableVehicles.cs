@@ -155,7 +155,8 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("polmav", 1,100) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 } };
         SheriffHeliVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("buzzard2", 1,50) { MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 }, //};
-            new DispatchableVehicle("valkyrie2", 1,50) { MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 } };
+            //new DispatchableVehicle("valkyrie2", 1,50) { MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 },
+        };
         ArmyVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("crusader", 85,25) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             new DispatchableVehicle("barracks", 15,75) { MaxRandomDirtLevel = 15.0f,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
@@ -17525,8 +17526,10 @@ Output = -1,
             new DispatchableVehicle("dinghy", 0, 25),
             new DispatchableVehicle("seashark2", 25, 25) { MaxOccupants = 1 },};
         List<DispatchableVehicle> ParkRangerVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sheriff", 50, 50) { MaxRandomDirtLevel = 15.0f, RequiredLiveries = new List<int>() { 20 } },
-            new DispatchableVehicle("sheriff2", 50, 50) { MaxRandomDirtLevel = 15.0f,RequiredLiveries = new List<int>() { 20 } }, };
+            new DispatchableVehicle("sheriff", 40, 40) { MaxRandomDirtLevel = 15.0f, RequiredLiveries = new List<int>() { 20 } },
+            new DispatchableVehicle("sheriff2", 20, 20) { MaxRandomDirtLevel = 15.0f,RequiredLiveries = new List<int>() { 20 } },
+            new DispatchableVehicle("policeold2", 40, 40) { MaxRandomDirtLevel = 15.0f,RequiredLiveries = new List<int>() { 8 } },
+        };
         List<DispatchableVehicle> FIBVehicles_FEJ = new List<DispatchableVehicle>() {
             new DispatchableVehicle("fbi", 30, 30){ MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3 },
             new DispatchableVehicle("fbi2", 30, 30) { MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3 },
@@ -17561,6 +17564,7 @@ Output = -1,
             new DispatchableVehicle("sheriff2", 15, 12){ CaninePossibleSeats = new List<int>{ 1 }, RequiredLiveries = new List<int>() { 1 } },
             new DispatchableVehicle("pranger", 10,5){ RequiredLiveries = new List<int>() { 1 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, true, 100), new DispatchableVehicleExtra(10, false, 100), new DispatchableVehicleExtra(12, false, 100) } },
             new DispatchableVehicle("police4", 1,1),
+            new DispatchableVehicle("policeold2", 10, 10)  {RequiredLiveries = new List<int>() { 1 }, },
             new DispatchableVehicle("policet", 0, 25) { MinOccupants = 3, MaxOccupants = 4,MinWantedLevelSpawn = 3},
             new DispatchableVehicle("policeb", 15, 10) {GroupName = "Motorcycle", MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 0 } }, };
         List<DispatchableVehicle> EastLSPDVehicles_FEJ = new List<DispatchableVehicle>() {
@@ -17570,6 +17574,7 @@ Output = -1,
             new DispatchableVehicle("police3", 10, 10){RequiredLiveries = new List<int>() { 3 } },
             new DispatchableVehicle("sheriff", 10, 10){RequiredLiveries = new List<int>() { 3 } },
             new DispatchableVehicle("sheriff2", 25, 25){RequiredLiveries = new List<int>() { 3 } },
+            new DispatchableVehicle("policeold2", 10, 10)  {RequiredLiveries = new List<int>() { 3 }, },
             new DispatchableVehicle("pranger", 1,1){ RequiredLiveries = new List<int>() { 3 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, true, 100), new DispatchableVehicleExtra(10, false, 100), new DispatchableVehicleExtra(12, false, 100) } },
             new DispatchableVehicle("policeb", 15, 5) { GroupName = "Motorcycle",MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 0 } },};
         List<DispatchableVehicle> VWPDVehicles_FEJ = new List<DispatchableVehicle>() {
@@ -17579,6 +17584,7 @@ Output = -1,
             new DispatchableVehicle("police3", 50, 50){RequiredLiveries = new List<int>() { 2 } },
             new DispatchableVehicle("sheriff", 50, 50){RequiredLiveries = new List<int>() { 2 } },
             new DispatchableVehicle("sheriff2", 25, 25){RequiredLiveries = new List<int>() { 2 } },
+            new DispatchableVehicle("policeold2", 10, 10)  {RequiredLiveries = new List<int>() { 2 }, },
             new DispatchableVehicle("pranger", 5,5){ RequiredLiveries = new List<int>() { 2 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, true, 100), new DispatchableVehicleExtra(10, false, 100), new DispatchableVehicleExtra(12, false, 100) } },
             new DispatchableVehicle("policeb", 20, 10) {GroupName = "Motorcycle", MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 0 } },};
 
@@ -17608,6 +17614,7 @@ Output = -1,
             new DispatchableVehicle("police3", 10, 10) {RequiredLiveries = new List<int>() {0 } },
             new DispatchableVehicle("sheriff", 25, 25) {RequiredLiveries = new List<int>() {0 } },
             new DispatchableVehicle("sheriff2", 25, 25) {RequiredLiveries = new List<int>() {0 } },
+            new DispatchableVehicle("policeold2", 10, 10)  {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 0 }, },
             new DispatchableVehicle("pranger", 2,2){ RequiredLiveries = new List<int>() { 0 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, true, 100), new DispatchableVehicleExtra(10, false, 100), new DispatchableVehicleExtra(12, false, 100) } },
             new DispatchableVehicle("policeb", 10, 10) {GroupName = "Motorcycle", MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 2 } },};
 
@@ -17617,6 +17624,7 @@ Output = -1,
             new DispatchableVehicle("police2", 50, 50) {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 7 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
             new DispatchableVehicle("police3", 50, 50) {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 7 } },
             new DispatchableVehicle("sheriff", 50, 50) {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 7 } },
+            new DispatchableVehicle("policeold2", 10, 10)  {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 4 }, },
             new DispatchableVehicle("sheriff2", 50, 50) { CaninePossibleSeats = new List<int>{ 1 },MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() {7 } },
             new DispatchableVehicle("pranger", 2,2){ MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 7 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, true, 100), new DispatchableVehicleExtra(10, false, 100), new DispatchableVehicleExtra(12, false, 100) } },
             new DispatchableVehicle("policeb", 20, 10) { GroupName = "Motorcycle",MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 3 } },};     
@@ -17627,6 +17635,7 @@ Output = -1,
             new DispatchableVehicle("police3", 25, 25) {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 8 } },
             new DispatchableVehicle("sheriff", 25, 25) {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 8 } },
             new DispatchableVehicle("sheriff2", 50, 50) {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 8 } },
+            new DispatchableVehicle("policeold2", 10, 10)  {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 5 }, },
             new DispatchableVehicle("pranger", 1,1){ MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 8 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, true, 100), new DispatchableVehicleExtra(10, false, 100), new DispatchableVehicleExtra(12, false, 100) } },
             new DispatchableVehicle("policeb", 20, 10) { GroupName = "Motorcycle",MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 3 } },};
         List<DispatchableVehicle> VWHillsLSSDVehicles_FEJ = new List<DispatchableVehicle>() {
@@ -17636,6 +17645,7 @@ Output = -1,
             new DispatchableVehicle("police3", 25, 25) {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 9 } },
             new DispatchableVehicle("sheriff", 25, 25) {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 9 } },
             new DispatchableVehicle("sheriff2", 50, 50)  {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 9 } },
+            new DispatchableVehicle("policeold2", 10, 10)  {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 6 }, },
             new DispatchableVehicle("pranger", 5,5){ MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 9 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, true, 100), new DispatchableVehicleExtra(10, false, 100), new DispatchableVehicleExtra(12, false, 100) } },
             new DispatchableVehicle("policeb", 20, 10) { GroupName = "Motorcycle",MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 3 } },};
         List<DispatchableVehicle> DavisLSSDVehicles_FEJ = new List<DispatchableVehicle>() {
@@ -17645,6 +17655,7 @@ Output = -1,
             new DispatchableVehicle("police3", 25, 25)  {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 10 } },
             new DispatchableVehicle("sheriff", 25, 25)  {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 10 } },
             new DispatchableVehicle("sheriff2", 50, 50)  {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 10 }, },
+            new DispatchableVehicle("policeold2", 10, 10)  {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 7 }, },
             new DispatchableVehicle("pranger", 1,1){ MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 10 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, true, 100), new DispatchableVehicleExtra(10, false, 100), new DispatchableVehicleExtra(12, false, 100) } },
             new DispatchableVehicle("policeb", 20, 10) {GroupName = "Motorcycle", MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 3 } },};
 
@@ -17692,7 +17703,8 @@ Output = -1,
             new DispatchableVehicle("police2", 10, 10){MaxRandomDirtLevel = 15.0f,RequiredLiveries = new List<int>() { 16 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
             new DispatchableVehicle("police3", 10, 10){MaxRandomDirtLevel = 15.0f,RequiredLiveries = new List<int>() { 16 } },
             new DispatchableVehicle("sheriff", 10, 10){ MaxRandomDirtLevel = 15.0f,RequiredLiveries = new List<int>() { 16 } },
-            new DispatchableVehicle("sheriff2", 25, 25){ MaxRandomDirtLevel = 15.0f,RequiredLiveries = new List<int>() { 16 } },           };
+            new DispatchableVehicle("sheriff2", 25, 25){ MaxRandomDirtLevel = 15.0f,RequiredLiveries = new List<int>() { 16 } },
+            new DispatchableVehicle("policeold2", 25, 25){ MaxRandomDirtLevel = 15.0f,RequiredLiveries = new List<int>() { 9 } },  };
         List<DispatchableVehicle> LCPDVehicles_FEJ = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police", 20,15){ RequiredLiveries = new List<int>() { 15 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("policeold1", 20,15){ RequiredLiveries = new List<int>() { 15 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
@@ -17702,7 +17714,8 @@ Output = -1,
             new DispatchableVehicle("sheriff2", 15, 12){ RequiredLiveries = new List<int>() { 15 } },
             new DispatchableVehicle("police4", 1,1),
             new DispatchableVehicle("fbi2", 1,1),
-            new DispatchableVehicle("policeb", 15, 10) { GroupName = "Motorcycle",MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 5 } },};
+            new DispatchableVehicle("policeb", 15, 10) { GroupName = "Motorcycle",MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 5 } },
+        };
 
 
         List<DispatchableVehicle> BorderPatrolVehicles_FEJ = new List<DispatchableVehicle>()
@@ -17713,6 +17726,7 @@ Output = -1,
             new DispatchableVehicle("sheriff", 35, 35){MaxRandomDirtLevel = 15.0f,RequiredLiveries = new List<int>() { 19 } },
             new DispatchableVehicle("sheriff2", 35, 35){MaxRandomDirtLevel = 15.0f,RequiredLiveries = new List<int>() { 19 } },
             new DispatchableVehicle("policeold1", 10,10){MaxRandomDirtLevel = 15.0f, RequiredLiveries = new List<int>() { 19 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("policeold2", 35, 35){MaxRandomDirtLevel = 15.0f,RequiredLiveries = new List<int>() { 12 } },
         };
 
         List<DispatchableVehicle> NOOSEPIAVehicles_FEJ = new List<DispatchableVehicle>()
@@ -17723,7 +17737,7 @@ Output = -1,
             new DispatchableVehicle("sheriff", 70, 70){ MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3, RequiredLiveries = new List<int>() { 17 }, },
             new DispatchableVehicle("sheriff2", 30, 30) { MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3, RequiredLiveries = new List<int>() { 17 }, },
             new DispatchableVehicle("policeold1", 10,10){ MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3, RequiredLiveries = new List<int>() { 17 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-
+            new DispatchableVehicle("policeold2", 10, 10) { MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3, RequiredLiveries = new List<int>() { 10 }, },
 
             new DispatchableVehicle("police2", 35, 35) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 17 }, VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) }, },
             new DispatchableVehicle("riot", 0, 25) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 3, MaxOccupants = 4 },
@@ -17740,7 +17754,7 @@ Output = -1,
             new DispatchableVehicle("sheriff", 70, 70){ MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3, RequiredLiveries = new List<int>() { 18 }, },
             new DispatchableVehicle("sheriff2", 30, 30) { MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3, RequiredLiveries = new List<int>() { 18 }, },
             new DispatchableVehicle("policeold1", 10,10){ MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3, RequiredLiveries = new List<int>() { 18 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-
+            new DispatchableVehicle("policeold2", 10, 10) { MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3, RequiredLiveries = new List<int>() { 11 }, },
 
             new DispatchableVehicle("police2", 35, 35) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 18 }, VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) }, },
             new DispatchableVehicle("riot", 0, 25) { CaninePossibleSeats = new List<int>{ 1,2 },MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 3, MaxOccupants = 4 },
