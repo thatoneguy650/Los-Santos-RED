@@ -262,10 +262,10 @@ namespace LosSantosRED.lsr.Locations
 
             if (CurrentStreet != null)
             {
-                streetName = $"~HUD_COLOUR_YELLOWLIGHT~{CurrentStreet.Name}~s~";
+                streetName = $"~HUD_COLOUR_YELLOWLIGHT~{CurrentStreet.ProperStreetName}~s~";
                 if (CurrentCrossStreet != null)
                 {
-                    streetName += " at ~HUD_COLOUR_YELLOWLIGHT~" + CurrentCrossStreet.Name + "~s~ ";
+                    streetName += " at ~HUD_COLOUR_YELLOWLIGHT~" + CurrentCrossStreet.ProperStreetName + "~s~ ";
                 }
                 else
                 {

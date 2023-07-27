@@ -332,10 +332,10 @@ public class LowerRightDisplay
             {
                 StreetDisplay += "~y~";
             }
-            StreetDisplay += $" {DisplayablePlayer.CurrentLocation.CurrentStreet.Name}{UI.CurrentDefaultTextColor}";
+            StreetDisplay += $" {DisplayablePlayer.CurrentLocation.CurrentStreet.ProperStreetName}{UI.CurrentDefaultTextColor}";
             if (DisplayablePlayer.CurrentLocation.CurrentCrossStreet != null)
             {
-                StreetDisplay += $" at {UI.CurrentDefaultTextColor}{DisplayablePlayer.CurrentLocation.CurrentCrossStreet.Name} {UI.CurrentDefaultTextColor}";
+                StreetDisplay += $" at {UI.CurrentDefaultTextColor}{DisplayablePlayer.CurrentLocation.CurrentCrossStreet.ProperStreetName} {UI.CurrentDefaultTextColor}";
             }
         }
         

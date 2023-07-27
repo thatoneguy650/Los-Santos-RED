@@ -11,6 +11,10 @@ public class Street
     public float SpeedLimit { get; set; } = 50f;
     private string SpeedLimitUnits { get; set; } = "MPH";
     public bool IsHighway { get; set; } = false;
+    public string DisplayName { get; set; }
+
+    public string ProperStreetName => string.IsNullOrEmpty(DisplayName) ? Name : DisplayName;
+
     public float SpeedLimitKMH => SpeedLimitUnits == "KM/H" ? SpeedLimit : SpeedLimit * 1.60933f;
     public float SpeedLimitMPH => SpeedLimitUnits == "MPH" ? SpeedLimit : SpeedLimit * 0.621371f;
     public Street()

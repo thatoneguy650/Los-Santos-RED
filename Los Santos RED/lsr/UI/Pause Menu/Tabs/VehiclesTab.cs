@@ -75,10 +75,10 @@ public class VehiclesTab
                 string StreetText = "";
                 if (myData.CurrentStreet != null)
                 {
-                    StreetText += $"~y~{myData.CurrentStreet.Name}~s~";
+                    StreetText += $"~y~{myData.CurrentStreet.ProperStreetName}~s~";
                     if (myData.CurrentCrossStreet != null)
                     {
-                        StreetText += $" at ~y~{myData.CurrentCrossStreet.Name}~s~";
+                        StreetText += $" at ~y~{myData.CurrentCrossStreet.ProperStreetName}~s~";
                     }
                 }
                 string ZoneText = "";

@@ -45,24 +45,24 @@ public class Streets : IStreets
         Street crossStreet = StreetsList.Where(x => x.Name == CrossStreetName).FirstOrDefault();
         if(street != null)
         {
-            if(crossStreet != null && withCross)
+            if (crossStreet != null && withCross)
             {
-                return $"~y~{street?.Name}~s~ at ~y~{crossStreet?.Name}~s~".Trim();
+                return $"~y~{street.ProperStreetName}~s~ at ~y~{crossStreet.ProperStreetName}~s~".Trim();
             }
             else
             {
-                return $"~y~{street?.Name}~s~".Trim();
+                return $"~y~{street.ProperStreetName}~s~".Trim();
             }
         }
         return $"";
     }
-    public void GetStreets(Vector3 Position, out Street Street, out Street CrossStreet)
-    {
-        string StreetName = GetStreetName(Position);
-        Street = StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
-        string CrossStreetName = GetCrossStreetName(Position);
-        CrossStreet = StreetsList.Where(x => x.Name == CrossStreetName).FirstOrDefault();
-    }
+    //public void GetStreets(Vector3 Position, out Street Street, out Street CrossStreet)
+    //{
+    //    string StreetName = GetStreetName(Position);
+    //    Street = StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
+    //    string CrossStreetName = GetCrossStreetName(Position);
+    //    CrossStreet = StreetsList.Where(x => x.Name == CrossStreetName).FirstOrDefault();
+    //}
     public Street GetStreet(string StreetName)
     {
         return StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
@@ -105,7 +105,7 @@ public class Streets : IStreets
         StreetsList = new List<Street>
         {
             new Street("Joshua Rd", 50f, "MPH"),
-            new Street("East Joshua Road", 50f, "MPH"),
+            new Street("East Joshua Road", 50f, "MPH") { DisplayName = "E Joshua Rd" },
             new Street("Marina Dr", 35f, "MPH"),
             new Street("Alhambra Dr", 35f, "MPH"),
             new Street("Niland Ave", 35f, "MPH"),
