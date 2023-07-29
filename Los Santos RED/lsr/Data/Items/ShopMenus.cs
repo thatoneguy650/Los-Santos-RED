@@ -145,6 +145,7 @@ public class ShopMenus : IShopMenus
         SpecificConvenienceStores();
         SpecificHotels();
         SpecificDealerships();
+        SpecificVehicleExporters();
         SpecificWeaponsShops();
         DrugDealerMenus();
         DenList();
@@ -1266,9 +1267,6 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Karin Previon",39000,34500),
                 new MenuItem("Karin Everon",44000,35000),
                 new MenuItem("Karin Kuruma",45000,36000),
-
-
-                //new MenuItem("Vapid Dominator",55000,33000),
             }),
             new ShopMenu("AlbanyMenu","Albany",new List<MenuItem>() {
                 new MenuItem("Albany Alpha",45000,27500),
@@ -1285,41 +1283,12 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Albany V-STR",130000,65000),
                 new MenuItem("Albany Washington",48000,19000),
             }),
-            //new ShopMenu("AlbanyMenu","Albany",new List<MenuItem>() {
-            //    new MenuItem("Albany Alpha",80000),
-            //    new MenuItem("Albany Roosevelt",70000),
-            //    new MenuItem("Albany Fränken Stange",70000),
-            //    new MenuItem("Albany Roosevelt Valor",70000),
-            //    new MenuItem("Albany Buccaneer",29000),
-            //    new MenuItem("Albany Buccaneer Custom",150000),
-            //    new MenuItem("Albany Cavalcade",50000),
-            //    new MenuItem("Albany Cavalcade 2",50000),
-            //    new MenuItem("Albany Emperor",25000),
-            //    new MenuItem("Albany Emperor 2",25000),
-            //    new MenuItem("Albany Emperor 3",25000),
-            //    new MenuItem("Albany Hermes",25000),
-            //    new MenuItem("Albany Lurcher",150000),
-            //    new MenuItem("Albany Manana",25000),
-            //    new MenuItem("Albany Manana Custom",25000),
-            //    new MenuItem("Albany Primo",35000),
-            //    new MenuItem("Albany Primo Custom",35000),
-            //    new MenuItem("Albany Virgo",150000),
-            //    new MenuItem("Albany V-STR",150000),
-            //    new MenuItem("Albany Washington",35000),
-            //}),
             new ShopMenu("LarrysRVMenu","Larry's RV",new List<MenuItem>() {
                 new MenuItem("Zirconium Journey",25000, 15000),
                 new MenuItem("Declasse Burrito",35000, 25000),
                 new MenuItem("BF Surfer",65000, 45000),
                 new MenuItem("Brute Camper",145000, 95000),
-
-                //new MenuItem("Police Stanier",500, 200),
-                //new MenuItem("Police Buffalo",500, 200),
-                //new MenuItem("Police Interceptor",500, 200),
             }),
-
-
-
             new ShopMenu("GetAweighMenu","Get Aweigh",new List<MenuItem>() {
 
                 //Boat
@@ -1340,7 +1309,6 @@ public class ShopMenus : IShopMenus
                 //new MenuItem("Speedophile Seashark 2",6000),
                 new MenuItem("Speedophile Seashark 3",7000),
             }),
-
             new ShopMenu("ElitasMenu","PlaneMan",new List<MenuItem>() {
 
                 //Heli
@@ -1372,9 +1340,6 @@ public class ShopMenus : IShopMenus
                 new MenuItem("JoBuilt Mammatus",320000),
                 new MenuItem("JoBuilt Velum",550000),
             }),
-
-
-
             new ShopMenu("LowriderMenu","Benny's Motorworks Menu",new List<MenuItem>() {
                 new MenuItem("Albany Buccaneer Custom",55000, 25000),
                 new MenuItem("Albany Manana Custom",45000, 27000),
@@ -1384,7 +1349,6 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Dundreary Virgo Classic Custom",55000, 25000),
                 new MenuItem("Vapid Chino Custom",45000, 20000),
             }),
-
             new ShopMenu("OutlawMotorMenu","Outlaw Motors Menu",new List<MenuItem>() {
                 new MenuItem("Western Bagger",25000, 12500),
                 new MenuItem("LCC Hexer",37000, 23000),
@@ -1394,7 +1358,35 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Western Daemon",26000, 19000),
                 new MenuItem("Vapid Chino Custom",45000, 20000),
             }),
+        });
+    }
+    private void SpecificVehicleExporters()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
+        new ShopMenu("SunshineMenu", "Sunshine", new List<MenuItem>() {
+                new MenuItem("Vapid Dominator",55000,10000),
 
+                new MenuItem("Albany Alpha",0,8500),
+                new MenuItem("Albany Cavalcade",0,9500),
+                new MenuItem("Albany Cavalcade 2",0,9000),
+                new MenuItem("Albany Washington",0,5000),
+
+                new MenuItem("Bravado Buffalo",0,7000),
+                new MenuItem("Bravado Buffalo S",0,7900),
+                new MenuItem("Bravado Banshee",0,25000),
+                new MenuItem("Bravado Banshee 900R",0,30000),
+                new MenuItem("Karin BeeJay XL",0,5500),
+                new MenuItem("Karin Kuruma",0,12000),
+
+                new MenuItem("Gallivanter Baller",0,17000),
+
+                new MenuItem("Enus Cognoscenti",0,55000),
+
+                new MenuItem("Pfister Comet",0,27000),
+
+                new MenuItem("Pfister Neon",0,57000),
+                new MenuItem("Pfister 811",0,34000),
+            }),
         });
     }
     private void SpecificVendingMachines()

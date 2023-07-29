@@ -194,6 +194,8 @@
     <Compile Include="lsr\Locations\Places\ConditionalLocations\LEConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\IGeneratesDispatchables.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\SecurityConditionalLocation.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Forger\Forger.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\VehicleExporter\VehicleExporter.cs" />
     <Compile Include="lsr\Locations\Places\ILicensePlatePreviewable.cs" />
     <Compile Include="lsr\Locations\Places\ILocationImpoundable.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Airport\Airport.cs" />

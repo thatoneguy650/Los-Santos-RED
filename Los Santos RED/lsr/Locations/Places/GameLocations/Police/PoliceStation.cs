@@ -41,9 +41,9 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
         return true;
     }
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world, 
-        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings)
+        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes)
     {
-        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets,locationTypes, settings);
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets,locationTypes, settings, plateTypes);
         VehicleImpoundLot?.Setup(this);
         if (AssignedAgency == null)
         {

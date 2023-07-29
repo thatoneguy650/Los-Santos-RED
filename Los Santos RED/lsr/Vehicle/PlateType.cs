@@ -72,5 +72,9 @@ public class PlateType
         }
 
     }
+    public override string ToString()
+    {
+        return Description;
+    }
 }
 

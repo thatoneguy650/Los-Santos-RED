@@ -402,7 +402,6 @@ public class Pedestrians : ITaskerReportable
         }
         Zombies.Clear();
         ClearGangMembers();
-
         foreach (SecurityGuard securityGuard in SecurityGuards)
         {
             if (securityGuard.Pedestrian.Exists() && securityGuard.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
@@ -419,8 +418,6 @@ public class Pedestrians : ITaskerReportable
             }
         }
         DeadPeds.Clear();
-        
-
     }
     public void ClearGangMembers()
     {

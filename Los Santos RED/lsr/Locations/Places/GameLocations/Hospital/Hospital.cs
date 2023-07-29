@@ -30,9 +30,9 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
     public float RespawnHeading { get; set; }
     public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world,
-        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings)
+        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes)
     {
-        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings);
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes);
         if (AssignedAgency == null)
         {
             AssignedAgency = zones.GetZone(EntrancePosition)?.AssignedEMSAgency;

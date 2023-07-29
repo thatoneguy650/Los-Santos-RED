@@ -28,6 +28,7 @@ public class GameLocation : ILocationDispatchable
     protected ICrimes Crimes;
     protected INameProvideable Names;
     protected IShopMenus ShopMenus;
+    protected IPlateTypes PlateTypes;
     protected Transaction Transaction;
     protected uint NotificationHandle;
     protected readonly List<string> FallBackVendorModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
@@ -288,13 +289,14 @@ public class GameLocation : ILocationDispatchable
 
     }
     public virtual void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups,
-        IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings)
+        IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes)
     {
         ShopMenus = shopMenus;
         World = world;
         Crimes = crimes;
         Names = names;
         Settings = settings;
+        PlateTypes = plateTypes;
         StoreBasicData(zones, streets, locationTypes);
         if (AssignedAssociationID != null)
         {

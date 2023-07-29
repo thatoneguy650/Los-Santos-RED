@@ -514,6 +514,41 @@ namespace LSR.Vehicles
             }
             return vehicleString;
         }
+        public string GetCarName()
+        {
+            if (!Vehicle.Exists())
+            {
+                return "";
+            }
+            string MakeName = NativeHelper.VehicleMakeName(Vehicle.Model.Hash);
+            string ModelName = NativeHelper.VehicleModelName(Vehicle.Model.Hash);
+            string CarName = (MakeName + " " + ModelName).Trim();
+            return CarName;
+        }
+        public string GetCarDescription()
+        {
+            if(!Vehicle.Exists())
+            {
+                return "";
+            }
+            string MakeName = NativeHelper.VehicleMakeName(Vehicle.Model.Hash);
+            string ModelName = NativeHelper.VehicleModelName(Vehicle.Model.Hash);
+            string ClassName = NativeHelper.VehicleClassName(Vehicle.Model.Hash);
+            string CarDescription = "";
+            if (MakeName != "")
+            {
+                CarDescription += $"~n~Manufacturer: ~b~{MakeName}~s~";
+            }
+            if (ModelName != "")
+            {
+                CarDescription += $"~n~Model: ~g~{ModelName}~s~";
+            }
+            if (ClassName != "")
+            {
+                CarDescription += $"~n~Class: ~p~{ClassName}~s~";
+            }
+            return CarDescription;
+        }
 
 
         public void Update(IDriveable driver)

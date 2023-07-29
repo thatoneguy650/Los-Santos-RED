@@ -36,6 +36,8 @@ public class PossibleLocations
     public List<LiquorStore> LiquorStores { get; private set; } = new List<LiquorStore>();
     public List<FoodStand> FoodStands { get; private set; } = new List<FoodStand>();
     public List<Dealership> CarDealerships { get; private set; } = new List<Dealership>();
+    public List<VehicleExporter> VehicleExporters { get; private set; } = new List<VehicleExporter>();
+    public List<Forger> Forgers { get; private set; } = new List<Forger>();
     public List<Bar> Bars { get; private set; } = new List<Bar>();
     public List<DriveThru> DriveThrus { get; private set; } = new List<DriveThru>();
     public List<ClothingShop> ClothingShops { get; private set; } = new List<ClothingShop>();
@@ -83,6 +85,8 @@ public class PossibleLocations
         AllLocations.AddRange(Bars);
         AllLocations.AddRange(FoodStands);
         AllLocations.AddRange(CarDealerships);
+        AllLocations.AddRange(VehicleExporters);
+        AllLocations.AddRange(Forgers);
         AllLocations.AddRange(DriveThrus);
         AllLocations.AddRange(ClothingShops);
         AllLocations.AddRange(BusStops);

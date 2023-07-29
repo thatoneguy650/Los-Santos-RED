@@ -55,7 +55,8 @@ public class BankAccounts
     }
     public void Setup()
     {
-
+        money = Money;
+        currentMoney = Money;
     }
     public void Dispose()
     {

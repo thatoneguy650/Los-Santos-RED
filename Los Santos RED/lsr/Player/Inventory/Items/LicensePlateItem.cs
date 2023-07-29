@@ -22,6 +22,7 @@ public class LicensePlateItem : ModItem
     }
     public LSR.Vehicles.LicensePlate LicensePlate { get; set; }
     public override string DisplayName => LicensePlate == null ? Name : LicensePlate.ToString();
+    public override string DisplayDescription => LicensePlate == null ? Description : LicensePlate.GenerateDescription();
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
         PlateTheft plateTheft = new PlateTheft(actionable, this, settings, world);

@@ -90,6 +90,7 @@ public class ModItem
     public int PoliceFindDuringPlayerSearchPercentage { get; set; } = 85;
     public virtual bool IsDLC => false;
     public virtual string DisplayName => Name;
+    public virtual string DisplayDescription => Description;
     public virtual void Setup(PhysicalItems physicalItems, IWeapons weapons)
     {
         if (ModelItemID != "")

@@ -48,8 +48,10 @@ public class PlacesOfInterest : IPlacesOfInterest
     private List<GasStation> GasStations;
     private List<Bar> Bars;
     private List<FoodStand> FoodStands;
+    private List<Forger> Forgers;
     private List<IllicitMarketplace> illicitMarketplaces;
     private List<Dealership> Dealerships;
+    private List<VehicleExporter> VehicleExporters;
     private List<DriveThru> DriveThrus;
     private List<ClothingShop> ClothingShops;
     private List<BusStop> BusStops;
@@ -102,20 +104,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(InteractableLocations());
         return AllLocations;
     }
-    //public List<ILocationDispatchable> PoliceDispatchLocations()
-    //{
-    //    List<ILocationDispatchable> AllLocations = new List<ILocationDispatchable>();
-    //    AllLocations.AddRange(PossibleLocations.PoliceStations);
-    //    AllLocations.AddRange(PossibleLocations.Prisons);
-    //    return AllLocations;
-    //}
-    //public List<ILocationDispatchable> EMSDispatchLocations()
-    //{
-    //    List<ILocationDispatchable> AllLocations = new List<ILocationDispatchable>();
-    //    AllLocations.AddRange(PossibleLocations.Hospitals);
-    //    AllLocations.AddRange(PossibleLocations.Morgues);
-    //    return AllLocations;
-    //}
     public List<ILocationRespawnable> BustedRespawnLocations()
     {
         List<ILocationRespawnable> AllLocations = new List<ILocationRespawnable>();
@@ -195,6 +183,8 @@ public class PlacesOfInterest : IPlacesOfInterest
         DefaultConfig_illicitMarketplaces();
         DefaultConfig_BlankLocations();
         DefaultConfig_Dealerships();
+        DefaultConfig_VehicleExporters();
+        DefaultConfig_Forgers();
 
         DefaultConfig_DriveThrus();
         DefaultConfig_ClothingShops();
@@ -228,6 +218,8 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.Bars.AddRange(Bars);
         PossibleLocations.FoodStands.AddRange(FoodStands);
         PossibleLocations.CarDealerships.AddRange(Dealerships);
+        PossibleLocations.VehicleExporters.AddRange(VehicleExporters);
+        PossibleLocations.Forgers.AddRange(Forgers);
         PossibleLocations.DriveThrus.AddRange(DriveThrus);
         PossibleLocations.ClothingShops.AddRange(ClothingShops);
         PossibleLocations.BusStops.AddRange(BusStops);
@@ -740,6 +732,29 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(-40.71f, -1687.56f, 29.39f), 20.33f),
                 } },
         };
+    }
+
+    private void DefaultConfig_VehicleExporters()
+    {
+        VehicleExporters = new List<VehicleExporter>()
+        {
+            new VehicleExporter(new Vector3(89.00745f,-2564.649f,6.004591f), 1.725455f, "Pacfic Bait Exports", "Take our Bait!","SunshineMenu") 
+            {
+
+            },
+        };
+    }
+    private void DefaultConfig_Forgers()
+    {
+        Forgers = new List<Forger>()
+        {
+            new Forger(new Vector3(1480.319f, 3678.905f, 34.28013f), 198.993f, "Bell's Forgeries", "Is anything really original these days?")
+            {
+
+            },
+        };
+
+        
     }
     private void DefaultConfig_illicitMarketplaces()
     {
