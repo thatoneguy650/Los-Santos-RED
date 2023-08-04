@@ -1378,6 +1378,11 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Karin BeeJay XL",0,5500),
                 new MenuItem("Karin Kuruma",0,12000),
 
+                new MenuItem("Benefactor Surano",0,9500),
+                new MenuItem("Benefactor Serrano",0,4500),
+                new MenuItem("Benefactor Dubsta",0,21000),
+                new MenuItem("Benefactor Dubsta 2",0,23000),
+
                 new MenuItem("Gallivanter Baller",0,17000),
 
                 new MenuItem("Enus Cognoscenti",0,55000),
@@ -1386,7 +1391,71 @@ public class ShopMenus : IShopMenus
 
                 new MenuItem("Pfister Neon",0,57000),
                 new MenuItem("Pfister 811",0,34000),
+
+                new MenuItem("Pegassi Osiris",0,18000),
+                new MenuItem("Pegassi FCR 1000",0,2300),
+                new MenuItem("Pegassi Reaper",0,17500),
+                new MenuItem("Pegassi Tempesta",0,220000),
+                new MenuItem("Pegassi Tezeract",0,230000),
             }),
+
+        new ShopMenu("NationalMenu", "National", new List<MenuItem>() {
+                new MenuItem("Karin Sultan",0,5600),
+                new MenuItem("Karin Sultan RS",0,6700),
+
+                new MenuItem("Bravado Gauntlet",0,8600),
+                new MenuItem("Bravado Buffalo",0,10500),
+                new MenuItem("Bravado Buffalo S",0,12500),
+                new MenuItem("Bravado Banshee",0,22000),
+
+                new MenuItem("Vapid Dominator ASP",0,14000),
+                new MenuItem("Vapid Dominator GTT",0,19000),
+                new MenuItem("Vapid Dominator GTX",0,26000),
+                new MenuItem("Vapid Flash GT",0,12000),
+                new MenuItem("Vapid FMJ",0,15000),
+                new MenuItem("Vapid Bullet",0,43000),
+
+                new MenuItem("Gallivanter Baller",0,16000),
+                new MenuItem("Gallivanter Baller 2",0,1900),
+                new MenuItem("Gallivanter Baller LE",0,22000),
+                new MenuItem("Gallivanter Baller LE LWB",0,23000),
+
+
+                new MenuItem("Benefactor Schafter",0,6800),
+                new MenuItem("Benefactor Schafter V12",0,21500),
+                new MenuItem("Benefactor Feltzer",0,19000),
+                new MenuItem("Benefactor Schwartzer",0,5000),
+
+
+
+
+                new MenuItem("Benefactor Streiter",0,35000),
+                new MenuItem("Benefactor Schlagen GT",0,120000),
+                new MenuItem("Benefactor Krieger",0,156000),
+
+                new MenuItem("Enus Huntley S",0,21000),
+                new MenuItem("Enus Cognoscenti Cabrio",0,46000),
+                new MenuItem("Enus Super Diamond",0,50000),
+                new MenuItem("Enus Cognoscenti 55",0,34000),
+                new MenuItem("Enus Cognoscenti",0,23000),
+                new MenuItem("Enus Paragon R",0,13000),
+                new MenuItem("Enus Windsor",0,180000),
+                new MenuItem("Enus Windsor Drop",0,170000),
+
+                new MenuItem("Pegassi Bati 801",0,2500),
+                new MenuItem("Pegassi Bati 801RR",0,2000),
+                new MenuItem("Pegassi Esskey",0,1500),
+                new MenuItem("Pegassi Infernus",0,67000),
+                new MenuItem("Pegassi Zentorno",0,145000),
+
+                new MenuItem("Pegassi Toros",0,12000),
+                new MenuItem("Pegassi Zentorno",0,200000),
+                new MenuItem("Pegassi Zorrusso",0,250000),
+
+            }),
+
+
+
         });
     }
     private void SpecificVendingMachines()

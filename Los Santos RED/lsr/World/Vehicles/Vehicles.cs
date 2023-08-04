@@ -5,6 +5,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 
 public class Vehicles
@@ -37,6 +38,19 @@ public class Vehicles
     public List<VehicleExt> FireVehicleList => FireVehicles;
     public List<VehicleExt> EMSVehicleList => EMSVehicles;
     public List<VehicleExt> GangVehicles => CivilianVehicleList.Where(x => x.AssociatedGang != null).ToList();
+
+    public List<VehicleExt> AllVehicleList 
+    {
+        get
+        {
+            List<VehicleExt> myList = new List<VehicleExt>();
+            myList.AddRange(PoliceVehicleList);
+            myList.AddRange(CivilianVehicleList);
+            myList.AddRange(FireVehicleList);
+            myList.AddRange(EMSVehicleList);
+            return myList;
+        }
+    }
     public int SpawnedPoliceVehiclesCount => PoliceVehicles.Where(x=> x.WasModSpawned).Count();
     public int SpawnedAmbientPoliceVehiclesCount => PoliceVehicles.Where(x => x.WasModSpawned && !x.WasSpawnedEmpty).Count();
     public int PoliceHelicoptersCount => PoliceVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsHelicopter);

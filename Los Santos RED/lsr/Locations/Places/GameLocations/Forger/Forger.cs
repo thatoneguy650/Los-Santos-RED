@@ -18,6 +18,7 @@ public class Forger : GameLocation
 {
     private UIMenu PlateSubMenu;
     private UIMenu CustomPlateSubMenu;
+    private UIMenu SellPlateSubMenu;
 
     public Forger(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -32,6 +33,8 @@ public class Forger : GameLocation
     public override bool ShowsOnDirectory => false;
     public int RandomPlateCost { get; set; } = 1000;
     public int CustomPlateCost { get; set; } = 1500;
+    public int WantedPlateSalesPrice { get; set; } = 50;
+    public int CleanPlateSalesPrice { get; set; } = 200;
     public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world,
         IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes)
@@ -87,18 +90,44 @@ public class Forger : GameLocation
     }
     private void Interact()
     {
+        AddLicensePlateItems();
+    }
+    private void AddLicensePlateItems()
+    {
         PlateSubMenu = MenuPool.AddSubMenu(InteractionMenu, "License Plates");
-        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Buy a clean plate.";
+        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Buy/Sell a license plate.";
         if (HasBannerImage)
         {
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
             PlateSubMenu.SetBannerType(BannerImage);
         }
-        UIMenuItem randomPlateMenuItem = new UIMenuItem("Random Plate", "Buy a clean random Plate.") { RightLabel = RandomPlateCost.ToString("C0") };
-        PlateSubMenu.AddItem(randomPlateMenuItem);
-        randomPlateMenuItem.Activated += (sender, e) => 
+        AddPlateSale();
+        AddRandomPlateBuy();
+        AddCustomPlateBuy();
+    }
+    private void AddPlateSale()
+    {
+        SellPlateSubMenu = MenuPool.AddSubMenu(PlateSubMenu, "Sell Plates");
+        string sellRightLabel = WantedPlateSalesPrice.ToString("C0") + " - " + CleanPlateSalesPrice.ToString("C0");
+        PlateSubMenu.MenuItems[PlateSubMenu.MenuItems.Count() - 1].Description = "Sell stolen plates.";
+        PlateSubMenu.MenuItems[PlateSubMenu.MenuItems.Count() - 1].RightLabel = sellRightLabel;
+        if (HasBannerImage)
         {
-            if(Player.BankAccounts.Money <= RandomPlateCost)
+            BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
+            SellPlateSubMenu.SetBannerType(BannerImage);
+        }
+        foreach (InventoryItem lpi in Player.Inventory.ItemsList.Where(x => x.ModItem != null && x.ModItem.ItemType == ItemType.LicensePlates))
+        {
+            lpi.ModItem.CreateSimpleSellMenu(Player, SellPlateSubMenu, this, CleanPlateSalesPrice, WantedPlateSalesPrice);
+        }
+    }
+    private void AddRandomPlateBuy()
+    {
+        UIMenuItem randomPlateMenuItem = new UIMenuItem("Buy Random Plate", "Buy a clean random Plate.") { RightLabel = RandomPlateCost.ToString("C0") };
+        PlateSubMenu.AddItem(randomPlateMenuItem);
+        randomPlateMenuItem.Activated += (sender, e) =>
+        {
+            if (Player.BankAccounts.Money <= RandomPlateCost)
             {
                 PlayErrorSound();
                 DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation.");
@@ -112,9 +141,13 @@ public class Forger : GameLocation
             PlaySuccessSound();
             DisplayMessage("~g~Purchased", $"Thank you for your purchase. Plate added to inventory.");
         };
-
-        CustomPlateSubMenu = MenuPool.AddSubMenu(PlateSubMenu, "Custom Plates");
-        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Buy a clean custom plate.";
+    }
+    private void AddCustomPlateBuy()
+    {
+        string CustomPlateRightLabe = CustomPlateCost.ToString("C0");
+        CustomPlateSubMenu = MenuPool.AddSubMenu(PlateSubMenu, "Buy Custom Plates");
+        PlateSubMenu.MenuItems[PlateSubMenu.MenuItems.Count() - 1].Description = "Buy a clean custom plate.";
+        PlateSubMenu.MenuItems[PlateSubMenu.MenuItems.Count() - 1].RightLabel = CustomPlateRightLabe;
         if (HasBannerImage)
         {
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
@@ -126,15 +159,15 @@ public class Forger : GameLocation
         customPlateTextMenuItem.Activated += (sender, e) =>
         {
             string newplateText = NativeHelper.GetKeyboardInput(customPlateTextMenuItem.RightLabel);
-            if(string.IsNullOrEmpty(newplateText))
+            if (string.IsNullOrEmpty(newplateText))
             {
                 return;
             }
             customPlateTextMenuItem.RightLabel = newplateText.Left(8);
         };
-        UIMenuListScrollerItem<PlateType> customPlateTypeMenuItem = new UIMenuListScrollerItem<PlateType>("Plate Type", "Current chosen plate type.",PlateTypes.PlateTypeManager.PlateTypeList) {  };
+        UIMenuListScrollerItem<PlateType> customPlateTypeMenuItem = new UIMenuListScrollerItem<PlateType>("Plate Type", "Current chosen plate type.", PlateTypes.PlateTypeManager.PlateTypeList) { };
         CustomPlateSubMenu.AddItem(customPlateTypeMenuItem);
-        UIMenuItem buyCustomPlateMenuItem = new UIMenuItem("Purchase", "Buy a the customized plate.") { RightLabel = 1500.ToString("C0") };
+        UIMenuItem buyCustomPlateMenuItem = new UIMenuItem("Purchase", "Buy a the customized plate.") { RightLabel = CustomPlateRightLabe };
         CustomPlateSubMenu.AddItem(buyCustomPlateMenuItem);
         buyCustomPlateMenuItem.Activated += (sender, e) =>
         {

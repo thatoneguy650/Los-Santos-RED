@@ -304,6 +304,10 @@ public class PedCustomizer
         {
             WorkingVariation = new PedVariation();
             InitialVariation = new PedVariation();
+            if(PedModelIsFreeMode)
+            {
+                WorkingVariation.HeadBlendData = new HeadBlendData(0, 0, 0, 0, 0, 0, 1.0f, 0.0f, 0.0f);
+            }
         }
         if (ModelPed.Exists())
         {
@@ -315,6 +319,9 @@ public class PedCustomizer
         }
         WorkingMoney = 5000;
         SetupAsNewPlayer = true;
+
+
+
     }
     public void SetAsNewPlayer()
     {

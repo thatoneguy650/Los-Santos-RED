@@ -19,17 +19,18 @@ public class VehicleExporter : GameLocation
 {
     private UIMenu ExportSubMenu;
     private UIMenu ExportListSubMenu;
-    private readonly float VehiclePickupDistance = 25f;
-
     public VehicleExporter() : base()
     {
 
     }
     public override string TypeName { get; set; } = "Vehicle Exporter";
-    public override int MapIcon { get; set; } = (int)BlipSprite.CriminalCarsteal;
+    public override int MapIcon { get; set; } = (int)123;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
     public override bool ShowsOnDirectory => false;
+    public float VehiclePickupDistance { get; set; } = 25f;
+    public int BodyDamageLimit { get; set; } = 200;
+    public int EngineDamageLimit { get; set; } = 200;
     public VehicleExporter(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string _Menu) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = _Menu;
@@ -47,17 +48,14 @@ public class VehicleExporter : GameLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
-
         if (IsLocationClosed())
         {
             return;
         }
-
         if (CanInteract)
         {
             Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
-
             GameFiber.StartNew(delegate
             {
                 try
@@ -80,13 +78,13 @@ public class VehicleExporter : GameLocation
                     EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
                     EntryPoint.ModController.CrashUnload();
                 }
-            }, "HotelInteract");
+            }, "VehicleExporterInteract");
         }
     }
     private void GenerateExportMenu()
     {
         ExportListSubMenu = MenuPool.AddSubMenu(InteractionMenu, "List Exportable Vehicles");
-        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Get a list of exportable vehicles.";
+        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Get a list of exportable vehicles. Exported vehicles need to be near mint condition.";
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Car;
         if (HasBannerImage)
         {
@@ -99,7 +97,6 @@ public class VehicleExporter : GameLocation
             {
                 continue;
             }
-            //EntryPoint.WriteToConsole($"{menuItem1.ModItem.DisplayName}");
             UIMenuItem vehicleToExportItem = new UIMenuItem(menuItem1.ModItem.DisplayName, menuItem1.ModItem.DisplayDescription) { RightLabel = menuItem1.SalesPrice.ToString("C0") };
             ExportListSubMenu.AddItem(vehicleToExportItem);
         }
@@ -114,7 +111,7 @@ public class VehicleExporter : GameLocation
         ExportSubMenu.OnIndexChange += ExportSubMenu_OnIndexChange;
         ExportSubMenu.OnMenuOpen += ExportSubMenu_OnMenuOpen;
         ExportSubMenu.OnMenuClose += ExportSubMenu_OnMenuClose;
-        foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList)
+        foreach (VehicleExt veh in World.Vehicles.AllVehicleList)
         {
             if (!IsValidForExporting(veh))
             {
@@ -135,7 +132,7 @@ public class VehicleExporter : GameLocation
                 CanExport = true;
                 ExportAmount = menuItem.SalesPrice;
             }
-            if(veh.Vehicle.Health <= veh.Vehicle.MaxHealth - 200 || veh.Vehicle.EngineHealth <= veh.Vehicle.EngineHealth - 200)
+            if(veh.Vehicle.Health <= veh.Vehicle.MaxHealth - BodyDamageLimit || veh.Vehicle.EngineHealth <= veh.Vehicle.EngineHealth - EngineDamageLimit)
             {
                 IsDamaged = true;
                 CanExport = false;
@@ -189,9 +186,7 @@ public class VehicleExporter : GameLocation
             return;
         }
         Game.FadeScreenOut(1000, true);
-        string MakeName = NativeHelper.VehicleMakeName(carToScrap.Vehicle.Model.Hash);
-        string ModelName = NativeHelper.VehicleModelName(carToScrap.Vehicle.Model.Hash);
-        string CarName = (MakeName + " " + ModelName).Trim();
+        string CarName = carToScrap.GetCarName();
         carToScrap.WasCrushed = true;
         carToScrap.Vehicle.Delete();
         ExportSubMenu.MenuItems.RemoveAll(x => x.Text == CarName);
@@ -205,24 +200,24 @@ public class VehicleExporter : GameLocation
     private VehicleExt GetVehicle(string menuEntry)
     {
         VehicleExt carToExport = null;
-        foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList)
+        foreach (VehicleExt veh in World.Vehicles.AllVehicleList)
         {
-            if (IsValidForExporting(veh))
+            if (!IsValidForExporting(veh))
             {
-                string MakeName = NativeHelper.VehicleMakeName(veh.Vehicle.Model.Hash);
-                string ModelName = NativeHelper.VehicleModelName(veh.Vehicle.Model.Hash);
-                string CarName = (MakeName + " " + ModelName).Trim();
-                if (menuEntry == CarName)
-                {
-                    carToExport = veh;
-                }
+                continue;
             }
+            string CarName = veh.GetCarName();
+            if (menuEntry == CarName)
+            {
+                carToExport = veh;
+            }
+            
         }
         return carToExport;
     }
     private bool IsValidForExporting(VehicleExt toScrap)
     {
-        if (!toScrap.Vehicle.Exists() || toScrap.Vehicle.DistanceTo2D(EntrancePosition) > VehiclePickupDistance)
+        if (!toScrap.Vehicle.Exists() || toScrap.Vehicle.DistanceTo2D(EntrancePosition) > VehiclePickupDistance || toScrap.VehicleBodyManager.StoredBodies.Any() || toScrap.Vehicle.HasOccupants)
         {
             return false;
         }

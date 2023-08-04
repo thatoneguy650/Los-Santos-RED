@@ -16,13 +16,6 @@ namespace LosSantosRED.lsr.Player
         private ISettingsProvideable Settings;
         private IModItems ModItems;
         public List<InventoryItem> ItemsList { get; set; } = new List<InventoryItem>();
-
-     //   public List<LicensePlateInventoryItem> LicensePlateItems { get; set; } = new List<LicensePlateInventoryItem>();
-
-
-
-
-        // public List<InventoryItem> Items => ItemsList;
         public Inventory()
         {
 

@@ -39,7 +39,7 @@ public class PedGrab : DynamicActivity
     protected string PedIdleDictionary;
     protected string PedIdleAnimation;
     protected IEntityProvideable World;
-
+    protected AnimationWatcher AnimationWatcher;
 
     protected virtual bool IsPedValid => Ped.Pedestrian.Exists() && Ped.Pedestrian.IsAlive && !Ped.IsUnconscious && !Ped.Pedestrian.IsRagdoll && !Ped.Pedestrian.IsGettingUp;
     protected virtual bool IsPlayerValid => Player.IsAliveAndFree && !Player.IsIncapacitated && Player.WeaponEquipment.CurrentWeapon == null;// && Player.WeaponEquipment.CurrentWeapon.CanPistolSuicide;
@@ -220,6 +220,8 @@ public class PedGrab : DynamicActivity
     {
         PlayInitialAnimation();
         SetupPrompts();
+        AnimationWatcher = new AnimationWatcher();
+        AnimationWatcher.TimeBetweenCheck = 0;
         while (IsPedValid && IsPlayerValid && !IsCancelled)
         {
             Ped.Pedestrian.CollisionIgnoredEntity = Game.LocalPlayer.Character;
@@ -274,6 +276,18 @@ public class PedGrab : DynamicActivity
                 IsMovingForward = false;
                 isAnimationPaused = false;
                 SetupPrompts();
+            }
+            else 
+            {
+                if(!AnimationWatcher.IsAnimationRunning(NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayerIdleDictionary, PlayerIdleAnimation)))
+                {
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayerIdleDictionary, PlayerIdleAnimation, 8.0f, -8.0f, -1, PlayerIdleFlags, 0, false, false, false);
+                    IsBackingUp = false;
+                    IsMovingForward = false;
+                    isAnimationPaused = false;
+                    EntryPoint.WriteToConsole("GRAB RESTARTING ANIMATION");
+                }
+
             }
         }
     }

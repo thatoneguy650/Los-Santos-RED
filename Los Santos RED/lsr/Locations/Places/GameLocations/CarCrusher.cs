@@ -16,16 +16,18 @@ using System.Xml.Serialization;
 public class CarCrusher : GameLocation
 {
     private UIMenu CrusherSubMenu;
-    private readonly float VehiclePickupDistance = 25f;
 
     public CarCrusher() : base()
     {
 
     }
     public override string TypeName { get; set; } = "Car Crusher";
-    public override int MapIcon { get; set; } = (int)BlipSprite.CriminalCarsteal;
+    public override int MapIcon { get; set; } = (int)527;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
+    public float VehiclePickupDistance { get; set; } = 15f;
+    public int StandardCrushPrice { get; set; } = 500;
+    public int PerBodyCrushFee { get; set; } = 2000;
     public CarCrusher(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -82,10 +84,8 @@ public class CarCrusher : GameLocation
     private void GenerateCrusherMenu()
     {
         CrusherSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Crush a Vehicle");
-
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Select a vehicle to crush. We don't ask questions";
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Car;
-
         if (HasBannerImage)
         {
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
@@ -95,56 +95,29 @@ public class CarCrusher : GameLocation
         CrusherSubMenu.OnMenuOpen += ScrapSubMenu_OnMenuOpen;
         CrusherSubMenu.OnMenuClose += ScrapSubMenu_OnMenuClose;
         bool Added = false;
-        foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList)
+        foreach (VehicleExt veh in World.Vehicles.AllVehicleList)
         {
-            if (IsValidForCrushing(veh))
+            if (!IsValidForCrushing(veh))
             {
-                string MakeName = NativeHelper.VehicleMakeName(veh.Vehicle.Model.Hash);
-                string ModelName = NativeHelper.VehicleModelName(veh.Vehicle.Model.Hash);
-                string ClassName = NativeHelper.VehicleClassName(veh.Vehicle.Model.Hash);
-                string CarName = (MakeName + " " + ModelName).Trim();
-                string CarDescription = "";
-
-                int CrushPrice = 500;
-                //float volume = GetVolume(veh);
-                //int ScrapPrice = GetScrapPrice(veh);
-                //if (volume != 0f)
-                //{
-                //    CarDescription += $"~n~Metal Volume: ~y~{Math.Round(volume, 2)}~s~ meters cubed~s~";
-                //}
-                //if (ScrapPrice != 0)
-                //{
-                //    CarDescription += $"~n~Metal Value: ~g~${ScrapPrice}~s~";
-                //}
-
-                int StoredBodies = veh.VehicleBodyManager.StoredBodies.Count();
-                int BodiesFee = 2000 * StoredBodies;
-                CrushPrice += BodiesFee;
-
-                if (MakeName != "")
-                {
-                    CarDescription += $"~n~Manufacturer: ~b~{MakeName}~s~";
-                }
-                if (ModelName != "")
-                {
-                    CarDescription += $"~n~Model: ~g~{ModelName}~s~";
-                }
-                if (ClassName != "")
-                {
-                    CarDescription += $"~n~Class: ~p~{ClassName}~s~";
-                }
-                if(StoredBodies > 0)
-                {
-                    CarDescription += $"~n~~n~EXTRA Disposal Fee: ~r~${BodiesFee}~s~";
-                }
-                UIMenuItem vehicleCrusherItem = new UIMenuItem(CarName, CarDescription) { RightLabel = CrushPrice.ToString("C0") };
-                vehicleCrusherItem.Activated += (sender, e) =>
-                {
-                    CrushVehicle(veh, -1 * CrushPrice);
-                };
-                CrusherSubMenu.AddItem(vehicleCrusherItem);
-                Added = true;
+                continue;
             }
+            string CarName = veh.GetCarName();
+            string CarDescription = veh.GetCarDescription();
+            int CrushPrice = StandardCrushPrice;
+            int StoredBodies = veh.VehicleBodyManager.StoredBodies.Count();
+            int BodiesFee = PerBodyCrushFee * StoredBodies;
+            CrushPrice += BodiesFee;
+            if(StoredBodies > 0)
+            {
+                CarDescription += $"~n~~n~EXTRA Disposal Fee: ~r~${BodiesFee}~s~";
+            }
+            UIMenuItem vehicleCrusherItem = new UIMenuItem(CarName, CarDescription) { RightLabel = CrushPrice.ToString("C0") };
+            vehicleCrusherItem.Activated += (sender, e) =>
+            {
+                CrushVehicle(veh, -1 * CrushPrice);
+            };
+            CrusherSubMenu.AddItem(vehicleCrusherItem);
+            Added = true;      
         }
         if (!Added)
         {
@@ -191,9 +164,7 @@ public class CarCrusher : GameLocation
             return;
         }
         Game.FadeScreenOut(1000, true);
-        string MakeName = NativeHelper.VehicleMakeName(carToScrap.Vehicle.Model.Hash);
-        string ModelName = NativeHelper.VehicleModelName(carToScrap.Vehicle.Model.Hash);
-        string CarName = (MakeName + " " + ModelName).Trim();
+        string CarName = carToScrap.GetCarName();
         foreach (StoredBody sb in carToScrap.VehicleBodyManager.StoredBodies)
         {
             if(sb.PedExt != null && sb.PedExt.Pedestrian.Exists())
@@ -222,24 +193,24 @@ public class CarCrusher : GameLocation
     private VehicleExt GetVehicle(string menuEntry)
     {
         VehicleExt carToScrap = null;
-        foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList)
+        foreach (VehicleExt veh in World.Vehicles.AllVehicleList)
         {
-            if (IsValidForCrushing(veh))
+            if (!IsValidForCrushing(veh))
             {
-                string MakeName = NativeHelper.VehicleMakeName(veh.Vehicle.Model.Hash);
-                string ModelName = NativeHelper.VehicleModelName(veh.Vehicle.Model.Hash);
-                string CarName = (MakeName + " " + ModelName).Trim();
-                if (menuEntry == CarName)
-                {
-                    carToScrap = veh;
-                }
+                continue;
             }
+            string CarName = veh.GetCarName();
+            if (menuEntry == CarName)
+            {
+                carToScrap = veh;
+            }
+            
         }
         return carToScrap;
     }
-    private bool IsValidForCrushing(VehicleExt toScrap)
+    private bool IsValidForCrushing(VehicleExt toCrush)
     {
-        if (toScrap.Vehicle.Exists() && toScrap.Vehicle.DistanceTo2D(EntrancePosition) <= VehiclePickupDistance)
+        if (toCrush.Vehicle.Exists() && toCrush.Vehicle.DistanceTo2D(EntrancePosition) <= VehiclePickupDistance && toCrush.HasBeenEnteredByPlayer)
         {
             return true;
         }

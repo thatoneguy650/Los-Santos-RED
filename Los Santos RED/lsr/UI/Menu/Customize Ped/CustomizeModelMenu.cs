@@ -26,6 +26,7 @@ public class CustomizeModelMenu
     private UIMenu ModelSearchSubMenu;
     private string FilterString = "";
     private UIMenuListScrollerItem<string> FilteredModels;
+    private UIMenuListScrollerItem<string> SelectSimpleModel;
 
     public CustomizeModelMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, PedCustomizerMenu pedCustomizerMenu)
     {
@@ -64,12 +65,68 @@ public class CustomizeModelMenu
         };
         ModelSubMenu.AddItem(InputModel);
 
-        SelectModel = new UIMenuListScrollerItem<string>("Model List", "Select the model name from a list. Only default models are included. Add on models must have the full model name entered in 'Input Model Name'.", Rage.Model.PedModels.Select(x => x.Name).OrderBy(x=> uint.TryParse(x, out uint nothing) ? 999 : 0).ThenBy(x=> x));
+        List<string> pedModelList = new List<string>
+        {
+            "mp_m_freemode_01",
+            "mp_f_freemode_01",
+            
+
+
+            "player_zero",
+            "player_one",
+            "player_two",
+            "ig_tonyprince",
+            "ig_tracydisanto",
+            "ig_amandatownley",
+            "ig_andreas",
+            "ig_ashley",
+            "ig_barry",
+
+
+
+            "ig_brad",
+            "ig_davenorton",
+            "ig_devin",
+            "ig_denise",
+            "ig_clay",
+            "ig_drfriedlander",
+            "ig_fabien",
+            "ig_floyd",
+
+            "ig_jimmydisanto",
+            "ig_karen_daniels",
+            "ig_lamardavis",
+            "ig_lazlow",
+            "ig_lestercrest",
+            "ig_michelle",
+            "ig_nervousron",
+            "ig_taocheng",
+            "ig_brucie2",
+        };
+
+        SelectSimpleModel = new UIMenuListScrollerItem<string>("Simple Model List", "Select the model name from a list of most used models. Only default models are included. Add on models must have the full model name entered in 'Input Model Name'.",
+            pedModelList);
+        SelectSimpleModel.Activated += (sender, selectedItem) =>
+        {
+            SetModelFromString(SelectSimpleModel.SelectedItem);
+        };
+        ModelSubMenu.AddItem(SelectSimpleModel);
+
+
+
+
+
+
+        SelectModel = new UIMenuListScrollerItem<string>("Full Model List", "Select the model name from a list. Only default models are included. Add on models must have the full model name entered in 'Input Model Name'.", 
+            Rage.Model.PedModels.Select(x => x.Name));
         SelectModel.Activated += (sender, selectedItem) =>
         {
             SetModelFromString(SelectModel.SelectedItem);
         };
         ModelSubMenu.AddItem(SelectModel);
+
+
+
 
 
         ModelSearchSubMenu = MenuPool.AddSubMenu(ModelSubMenu, "Search For Model");

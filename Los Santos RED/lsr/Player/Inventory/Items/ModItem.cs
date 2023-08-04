@@ -557,5 +557,26 @@ public class ModItem
         inventoryItemSubMenuItem.RightLabel = $"{storedItems} Stored";
         inventoryItemSubMenuItem.Description = descriptionToUse;
     }
+
+    public virtual void CreateSimpleSellMenu(ILocationInteractable player, UIMenu sellPlateSubMenu,GameLocation gameLocation, int defaultPrice, int altPrice)
+    {
+        UIMenuItem MenuItem = new UIMenuItem(Name,Description);
+        MenuItem.Activated += (sender, e) =>
+        {
+            if (!player.Inventory.Remove(this, 1))
+            {
+                return;
+            }
+            player.BankAccounts.GiveMoney(defaultPrice);
+            MenuItem.Enabled = false;
+            if (gameLocation == null)
+            {
+                return;
+            }
+            gameLocation.PlaySuccessSound();
+            gameLocation.DisplayMessage("~g~Sale", $"You have sold your {ItemSubType}.");
+        };
+        sellPlateSubMenu.AddItem(MenuItem);
+    }
 }
 

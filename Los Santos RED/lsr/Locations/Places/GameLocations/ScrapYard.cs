@@ -16,7 +16,6 @@ using System.Xml.Serialization;
 public class ScrapYard : GameLocation
 {
     private UIMenu ScrapSubMenu;
-    private readonly float VehiclePickupDistance = 25f;
 
     public ScrapYard() : base()
     {
@@ -26,6 +25,8 @@ public class ScrapYard : GameLocation
     public override int MapIcon { get; set; } = (int)BlipSprite.CriminalCarsteal;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
+    public float VehiclePickupDistance { get; set; } = 25f;
+    public int ScrapValuePerVolume { get; set; } = 100;
     public ScrapYard(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -43,17 +44,14 @@ public class ScrapYard : GameLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
-
         if (IsLocationClosed())
         {
             return;
         }
-
         if (CanInteract)
         {
             Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
-
             GameFiber.StartNew(delegate
             {
                 try
@@ -63,9 +61,7 @@ public class ScrapYard : GameLocation
                     CreateInteractionMenu();
                     InteractionMenu.Visible = true;
                     InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-
                     GenerateScrapYardMenu();
-
                     ProcessInteractionMenu();
                     DisposeInteractionMenu();
                     StoreCamera.Dispose();
@@ -83,10 +79,8 @@ public class ScrapYard : GameLocation
     private void GenerateScrapYardMenu()
     {
         ScrapSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Scrap a Vehicle");
-
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Select a vehicle to scrap for money. The bigger the better";
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Car;
-
         if (HasBannerImage)
         {
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
@@ -97,40 +91,26 @@ public class ScrapYard : GameLocation
         ScrapSubMenu.OnMenuOpen += ScrapSubMenu_OnMenuOpen;
         ScrapSubMenu.OnMenuClose += ScrapSubMenu_OnMenuClose;
         bool Added = false;
-        foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList)
+        foreach (VehicleExt veh in World.Vehicles.AllVehicleList)
         {
-            if (IsValidForScrapping(veh))
+            if (!IsValidForScrapping(veh))
             {
-                string MakeName = NativeHelper.VehicleMakeName(veh.Vehicle.Model.Hash);
-                string ModelName = NativeHelper.VehicleModelName(veh.Vehicle.Model.Hash);
-                string ClassName = NativeHelper.VehicleClassName(veh.Vehicle.Model.Hash);
-                string CarName = (MakeName + " " + ModelName).Trim();
-                string CarDescription = "";
-                float volume = GetVolume(veh);
-                int ScrapPrice = GetScrapPrice(veh);
-                if (volume != 0f)
-                {
-                    CarDescription += $"~n~Metal Volume: ~y~{Math.Round(volume, 2)}~s~ meters cubed~s~";
-                }
-                if (ScrapPrice != 0)
-                {
-                    CarDescription += $"~n~Metal Value: ~g~${ScrapPrice}~s~";
-                }
-                if (MakeName != "")
-                {
-                    CarDescription += $"~n~Manufacturer: ~b~{MakeName}~s~";
-                }
-                if (ModelName != "")
-                {
-                    CarDescription += $"~n~Model: ~g~{ModelName}~s~";
-                }
-                if (ClassName != "")
-                {
-                    CarDescription += $"~n~Class: ~p~{ClassName}~s~";
-                }
-                ScrapSubMenu.AddItem(new UIMenuItem(CarName, CarDescription) { RightLabel = ScrapPrice.ToString("C0") });
-                Added = true;
+                continue;
             }
+            string CarName = veh.GetCarName();
+            string CarDescription = veh.GetCarDescription();
+            float volume = GetVolume(veh);
+            int ScrapPrice = GetScrapPrice(veh);
+            if (volume != 0f)
+            {
+                CarDescription += $"~n~Metal Volume: ~y~{Math.Round(volume, 2)}~s~ meters cubed~s~";
+            }
+            if (ScrapPrice != 0)
+            {
+                CarDescription += $"~n~Metal Value: ~g~${ScrapPrice}~s~";
+            }
+            ScrapSubMenu.AddItem(new UIMenuItem(CarName, CarDescription) { RightLabel = ScrapPrice.ToString("C0") });
+            Added = true;    
         }
         if(!Added)
         {
@@ -161,7 +141,6 @@ public class ScrapYard : GameLocation
                 }
             }
         }
-
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -175,10 +154,8 @@ public class ScrapYard : GameLocation
     {
         if(carToScrap != null && carToScrap.Vehicle.Exists())
         {
-            Game.FadeScreenOut(1000, true);     
-            string MakeName = NativeHelper.VehicleMakeName(carToScrap.Vehicle.Model.Hash);
-            string ModelName = NativeHelper.VehicleModelName(carToScrap.Vehicle.Model.Hash);
-            string CarName = (MakeName + " " + ModelName).Trim();
+            Game.FadeScreenOut(1000, true);
+            string CarName = carToScrap.GetCarName();
             carToScrap.Vehicle.Delete();
             ScrapSubMenu.MenuItems.RemoveAll(x => x.Text == CarName);
             ScrapSubMenu.RefreshIndex();
@@ -202,7 +179,7 @@ public class ScrapYard : GameLocation
         }
         if(toScrap.Vehicle.Exists())
         {
-            return ((int)(GetVolume(toScrap) * 100)).Round(100);
+            return ((int)(GetVolume(toScrap) * ScrapValuePerVolume)).Round(100);
         }
         else
         {
@@ -227,18 +204,17 @@ public class ScrapYard : GameLocation
     private VehicleExt GetVehicle(string menuEntry)
     {
         VehicleExt carToScrap = null;
-        foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList)
+        foreach (VehicleExt veh in World.Vehicles.AllVehicleList)
         {
-            if (IsValidForScrapping(veh))
+            if (!IsValidForScrapping(veh))
             {
-                string MakeName = NativeHelper.VehicleMakeName(veh.Vehicle.Model.Hash);
-                string ModelName = NativeHelper.VehicleModelName(veh.Vehicle.Model.Hash);
-                string CarName = (MakeName + " " + ModelName).Trim();
-                if (menuEntry == CarName)
-                {
-                    carToScrap = veh;
-                }
+                continue;
             }
+            string CarName = veh.GetCarName();
+            if (menuEntry == CarName)
+            {
+                carToScrap = veh;
+            }    
         }
         return carToScrap;
     }

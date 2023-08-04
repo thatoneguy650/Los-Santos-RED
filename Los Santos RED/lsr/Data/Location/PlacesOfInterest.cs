@@ -740,6 +740,10 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             new VehicleExporter(new Vector3(89.00745f,-2564.649f,6.004591f), 1.725455f, "Pacfic Bait Exports", "Take our Bait!","SunshineMenu") 
             {
+                 
+            },
+            new VehicleExporter(new Vector3(845.3537f, -951.5338f, 26.52109f), 270.8987f, "National Transport", "When you need to get it OUT of the country!","NationalMenu")
+            {
 
             },
         };
@@ -750,7 +754,17 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             new Forger(new Vector3(1480.319f, 3678.905f, 34.28013f), 198.993f, "Bell's Forgeries", "Is anything really original these days?")
             {
-
+                CleanPlateSalesPrice = 200,
+                WantedPlateSalesPrice = 50,
+                CustomPlateCost = 1500,
+                RandomPlateCost = 1000,
+            },
+            new Forger(new Vector3(-41.79562f, 6637.322f, 31.08751f), 216.5384f,"Zancone The Forger","Not a murmur to anyone!")
+            {
+                CleanPlateSalesPrice = 400,
+                WantedPlateSalesPrice = 200,
+                CustomPlateCost = 1700,
+                RandomPlateCost = 1200,
             },
         };
 

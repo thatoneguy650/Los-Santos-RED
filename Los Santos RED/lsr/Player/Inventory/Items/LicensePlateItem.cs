@@ -1,4 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
+using RAGENativeUI;
+using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +46,27 @@ public class LicensePlateItem : ModItem
         {
             modItems.PossibleItems.LicensePlateItems.Add(this);
         }
+    }
+    public override void CreateSimpleSellMenu(ILocationInteractable player, UIMenu sellPlateSubMenu, GameLocation gameLocation, int cleanPlateCost, int wantedPlateCost)
+    {
+        int price = LicensePlate == null ? cleanPlateCost : LicensePlate.IsWanted ? wantedPlateCost : cleanPlateCost;
+        UIMenuItem MenuItem = new UIMenuItem(DisplayName, DisplayDescription) { RightLabel = price.ToString("C0") };
+        MenuItem.Activated += (sender, e) =>
+        {
+            if (!player.Inventory.Remove(this, 1))
+            {
+                return;
+            }
+            player.BankAccounts.GiveMoney(price);
+            MenuItem.Enabled = false;
+            if(gameLocation == null)
+            {
+                return;
+            }
+            gameLocation.PlaySuccessSound();
+            gameLocation.DisplayMessage("~g~Sale", $"You have sold your license plate.");
+        };
+        sellPlateSubMenu.AddItem(MenuItem);
     }
 
 }

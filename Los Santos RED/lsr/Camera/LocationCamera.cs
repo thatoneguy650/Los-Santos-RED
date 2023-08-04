@@ -169,11 +169,11 @@ public class LocationCamera
             Vector3 InitialCameraPosition;
             if (width >= 5f || length >= 5f || height >= 5f)
             {
-                InitialCameraPosition = toHighlight.GetOffsetPosition(new Vector3(12f, 12f, 2f));
+                InitialCameraPosition = toHighlight.GetOffsetPosition(new Vector3(8f, 8f, 2f));
             }
             else
             {
-                InitialCameraPosition = toHighlight.GetOffsetPosition(new Vector3(7f, 7f, 2f));
+                InitialCameraPosition = toHighlight.GetOffsetPosition(new Vector3(5f, 5f, 2f));
             }
             
             StoreCam.Position = InitialCameraPosition;
