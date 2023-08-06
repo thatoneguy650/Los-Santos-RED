@@ -664,11 +664,27 @@ namespace LSR.Vehicles
             //}
             //NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", Vehicle, MyVehicle.RequiredLiveries.PickRandom());
         }
+        //public void SetRandomPlate()
+        //{
+        //    string randomPlate = RandomItems.RandomString(8);
+        //    Vehicle.LicensePlate = randomPlate;
+        //    CarPlate.PlateNumber = randomPlate;
+        //}
         public void SetRandomPlate()
         {
             string randomPlate = RandomItems.RandomString(8);
+            LicensePlate licensePlate = new LicensePlate(randomPlate, 0, false);
+            OriginalLicensePlate = licensePlate;
+            CarPlate = licensePlate;
             Vehicle.LicensePlate = randomPlate;
-            CarPlate.PlateNumber = randomPlate;
+            NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX<int>(Vehicle, 0);
+        }
+        public void SetRandomColor()
+        {
+            List<int> PossibleColors = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 49, 50, 51, 52, 53, 54, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 88, 89,
+                90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 111, 112, 125, 137, 141, 142, 143, 145, 146, 150, };
+            int color = PossibleColors.PickRandom();
+            NativeFunction.Natives.SET_VEHICLE_COLOURS(Vehicle, color, color);
         }
         public void SetDriverWindow(bool RollDown)
         {

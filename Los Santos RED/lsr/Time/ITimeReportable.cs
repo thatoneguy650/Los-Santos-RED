@@ -15,5 +15,6 @@ namespace LosSantosRED.lsr.Interface
         string CurrentTime { get; }
         int CurrentDay { get; }
         DateTime CurrentDateTime { get; }
+        bool ForceShowClock { get; set; }
     }
 }

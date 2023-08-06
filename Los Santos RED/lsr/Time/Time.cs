@@ -48,6 +48,7 @@ namespace Mod
         public int CurrentMonth { get; private set; } = 1;
         public bool IsNight { get; private set; } = false;
         public bool IsFastForwarding { get; private set; } = false;
+        public bool ForceShowClock { get; set; } = false;
         public void Dispose()
         {
             NativeFunction.CallByName<int>("PAUSE_CLOCK", false);

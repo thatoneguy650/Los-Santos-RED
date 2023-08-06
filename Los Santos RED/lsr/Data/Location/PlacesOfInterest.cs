@@ -49,6 +49,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     private List<Bar> Bars;
     private List<FoodStand> FoodStands;
     private List<Forger> Forgers;
+    private List<RepairGarage> RepairGarages;
     private List<IllicitMarketplace> illicitMarketplaces;
     private List<Dealership> Dealerships;
     private List<VehicleExporter> VehicleExporters;
@@ -185,6 +186,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         DefaultConfig_Dealerships();
         DefaultConfig_VehicleExporters();
         DefaultConfig_Forgers();
+        DefaultConfig_PayNSprays();
 
         DefaultConfig_DriveThrus();
         DefaultConfig_ClothingShops();
@@ -220,6 +222,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.CarDealerships.AddRange(Dealerships);
         PossibleLocations.VehicleExporters.AddRange(VehicleExporters);
         PossibleLocations.Forgers.AddRange(Forgers);
+        PossibleLocations.RepairGarages.AddRange(RepairGarages);
         PossibleLocations.DriveThrus.AddRange(DriveThrus);
         PossibleLocations.ClothingShops.AddRange(ClothingShops);
         PossibleLocations.BusStops.AddRange(BusStops);
@@ -769,6 +772,40 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
 
         
+    }
+    private void DefaultConfig_PayNSprays()
+    {
+        RepairGarages = new List<RepairGarage>()
+        {
+            new RepairGarage(new Vector3(-1358.503f, -756.4457f, 22.30451f), 301.2179f, "Vespucci Pay N Spray", "The Vespucci Treat!") { 
+                GarageDoors = new List<InteriorDoor>() { new InteriorDoor(3082692265,new Vector3(-1355.819f,-754.4543f,23.49588f)) },
+                CameraPosition = new Vector3(-1344.593f, -752.1688f, 24.59984f), 
+                CameraDirection = new Vector3(-0.953465f, -0.2256246f, -0.1999952f), 
+                CameraRotation = new Rotator(-11.53668f, 1.61205E-05f, 103.3134f)
+            },
+            new RepairGarage(new Vector3(517.7049f, 169.9352f, 99.36998f), 249.3513f, "Vinewood Pay N Spray", "Helpfully located in Downtown Vinewood") {
+                GarageDoors = new List<InteriorDoor>() { new InteriorDoor(1991494706,new Vector3(523.8579f,167.7482f,100.5352f)) { NeedsDefaultUnlock = true} },
+                CameraPosition = new Vector3(536.9068f, 157.7742f, 103.5797f), 
+                CameraDirection = new Vector3(-0.7981344f, 0.5672539f, -0.2029887f), 
+                CameraRotation = new Rotator(-11.71179f, -1.30789E-06f, 54.59765f),
+                
+            },
+            new RepairGarage(new Vector3(964.051f, -1856.824f, 31.19692f), 82.4654f, "El Burro Pay N Spray", "Be sure to lock your doors!") {
+                GarageDoors = new List<InteriorDoor>() { new InteriorDoor(4104186511,new Vector3(958.9808f,-1855.851f,32.78582f)) },
+                CameraPosition = new Vector3(945.6613f, -1849.031f, 36.08583f), 
+                CameraDirection = new Vector3(0.8777003f, -0.4318189f, -0.2077849f), 
+                CameraRotation = new Rotator(-11.99257f, -1.309235E-05f, -116.1967f),
+
+            },
+            new RepairGarage(new Vector3(-440.179f, -2180.787f, 10.32189f), 0.8532715f, "LSX Pay N Spray", "Need to get away?") {
+                GarageDoors = new List<InteriorDoor>() {  
+                    new InteriorDoor(4104186511,new Vector3(-445.3054f,-2171.816f,11.4126f)),
+                    new InteriorDoor(4104186511,new Vector3(-445.3054f,-2171.778f,11.80559f)) },
+                CameraPosition = new Vector3(-433.9502f, -2157.46f, 13.05093f), 
+                CameraDirection = new Vector3(-0.365413f, -0.9212855f, -0.1330653f),
+                CameraRotation = new Rotator(-7.646759f, 1.292151E-06f, 158.3651f),
+            },
+        };
     }
     private void DefaultConfig_illicitMarketplaces()
     {

@@ -53,7 +53,7 @@ public class GameLocation : ILocationDispatchable
             {
                 return 5000;
             }
-            else if (DistanceToPlayer >= 20)
+            else if (DistanceToPlayer >= 35)//20)
             {
                 return 2000;
             }
@@ -136,7 +136,7 @@ public class GameLocation : ILocationDispatchable
     public Vector3 CameraPosition { get; set; } = Vector3.Zero;
     public Vector3 CameraDirection { get; set; } = Vector3.Zero;
     public Rotator CameraRotation { get; set; }
-    public bool CanInteractWhenWanted { get; set; } = false;
+    public virtual bool CanInteractWhenWanted { get; set; } = false;
     public virtual bool ShowsMarker { get; set; } = true;
     public virtual float ActivateDistance { get; set; } = 225;
     public List<ConditionalGroup> PossibleGroupSpawns { get; set; }

@@ -108,7 +108,54 @@ public class CityHall : GameLocation
         InteractionMenu.AddItem(DriversLicenseMenu);
         InteractionMenu.AddItem(CCWLicenseMenu);
         InteractionMenu.AddItem(PilotsLicenseMenu);
+
+
+        GenerateTests();
     }
+
+    private void GenerateTests()
+    {
+        //List<LicenseQuestion> Questions = new List<LicenseQuestion>
+        //{
+        //    new LicenseQuestion("If you want to get off from a freeway, but you missed your exit, you should:", 1, 
+        //        new List<LicenseAnswer>() {
+        //            new LicenseAnswer("Go to the next exit, and get off the freeway there", true),
+        //            new LicenseAnswer("Make a U-turn through the median", false),
+        //            new LicenseAnswer("Pull onto the shoulder and back your car to the exit", false),
+        //            new LicenseAnswer("Flag down a police officer for an escort back to your exit", false), 
+        //        }),
+
+
+        //    new LicenseQuestion("Minimum speed signs are designed to", 1,
+        //        new List<LicenseAnswer>() {               
+        //            new LicenseAnswer("Show current local road conditions", false),
+        //            new LicenseAnswer("Test future traffic signal needs", false),
+        //            new LicenseAnswer("Keep traffic flowing smoothly", true),
+        //            new LicenseAnswer("Assure pedestrian safety", false),
+        //        }),
+
+        //    new LicenseQuestion("A double solid yellow line means:", 1,
+        //        new List<LicenseAnswer>() {       
+        //            new LicenseAnswer("You may cross over the lines to pass slower traffic on the right.", false),
+        //            new LicenseAnswer("You may not turn across the line to enter or exit a roadway.", false),
+        //            new LicenseAnswer("You may turn across the line to enter or exit a roadway.", true),
+        //        }),
+        //    new LicenseQuestion("If using your high beams, you must dim your lights when oncoming traffic is within:", 1,
+        //        new List<LicenseAnswer>() {
+        //            new LicenseAnswer("500 feet.", true),
+        //            new LicenseAnswer("450 feet.", false),
+        //            new LicenseAnswer("400 feet", false),
+        //            new LicenseAnswer("200 feet", false),
+        //        }),
+        //};
+            
+
+
+        //LicenseTest lt = new LicenseTest("Drivers Test", Questions);
+
+        //lt.StartTest(DriversLicenseMenu);
+    }
+
     private string DriversLicenseDescription()
     {
         string DriversLicenseDescription;

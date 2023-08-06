@@ -26,7 +26,7 @@ public class IllicitMarketplace : GameLocation
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
-        ButtonPromptText = $"Discreetly shop At {Name}";
+        ButtonPromptText = $"Discretly shop At {Name}";
         return true;
     }
 }

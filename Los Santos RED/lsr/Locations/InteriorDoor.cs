@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 public class InteriorDoor
 {
     private bool isLocked = true;
+
+    //private bool lockState;
+    //private float openRatio;
+
     public InteriorDoor()
     {
 
@@ -23,6 +27,10 @@ public class InteriorDoor
     public Vector3 Position { get; set; } = Vector3.Zero;
     public bool IsLocked => isLocked;
     public Rotator Rotation { get; set; } = new Rotator(0f, 0f, 0f);
+
+    public bool NeedsDefaultUnlock { get; set; } = false;
+    //public bool LockState => LockState; 
+    //public float OpenRatio => openRatio;
     public void LockDoor()
     {
         NativeFunction.Natives.x9B12F9A24FABEDB0(ModelHash, Position.X, Position.Y, Position.Z, true, 1.0f);
@@ -33,5 +41,37 @@ public class InteriorDoor
         NativeFunction.Natives.x9B12F9A24FABEDB0(ModelHash, Position.X, Position.Y, Position.Z, false, 1.0f);
         isLocked = false;
     }
+
+    public void Activate()
+    {
+        if(NeedsDefaultUnlock)
+        {
+            UnLockDoor();
+        }
+    }
+
+    //public void GetState()
+    //{
+    //    bool _lockState;
+    //    float _openRatio;
+    //    unsafe
+    //    {
+    //        NativeFunction.CallByName<bool>("GET_STATE_OF_CLOSEST_DOOR_OF_TYPE", ModelHash, Position.X, Position.Y, Position.Z, &_lockState, &_openRatio);
+    //    }
+    //    lockState = _lockState;
+    //    openRatio = _openRatio;
+    //}
+
+
+    //public void LockGate()
+    //{
+    //    NativeFunction.Natives.x9B12F9A24FABEDB0(ModelHash, Position.X, Position.Y, Position.Z, true, 1.0f);
+    //    isLocked = true;
+    //}
+    //public void UnLockGate()
+    //{
+    //    NativeFunction.Natives.x9B12F9A24FABEDB0(ModelHash, Position.X, Position.Y, Position.Z, false, 1.0f);
+    //    isLocked = false;
+    //}
 }
 

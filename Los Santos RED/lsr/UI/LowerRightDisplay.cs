@@ -288,7 +288,7 @@ public class LowerRightDisplay
 
 
 
-        if ((DisplayablePlayer.IsNotWanted && Settings.SettingsManager.LSRHUDSettings.PlayerStatusIncludeTime) || (Settings.SettingsManager.LSRHUDSettings.PlayerStatusShowWhenSleeping && DisplayablePlayer.IsSleeping))
+        if ((DisplayablePlayer.IsNotWanted && Settings.SettingsManager.LSRHUDSettings.PlayerStatusIncludeTime) || (Settings.SettingsManager.LSRHUDSettings.PlayerStatusShowWhenSleeping && DisplayablePlayer.IsSleeping) || Time.ForceShowClock)
         {
             if (PlayerDisplay == "")
             {

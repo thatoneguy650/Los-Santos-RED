@@ -194,7 +194,11 @@
     <Compile Include="lsr\Locations\Places\ConditionalLocations\LEConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\IGeneratesDispatchables.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\SecurityConditionalLocation.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\City Hall\LicenseAnswer.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\City Hall\LicenseQuestion.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\City Hall\LicenseTest.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Forger\Forger.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\PayNSpray\RepairGarage.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleExporter\VehicleExporter.cs" />
     <Compile Include="lsr\Locations\Places\ILicensePlatePreviewable.cs" />
     <Compile Include="lsr\Locations\Places\ILocationImpoundable.cs" />
@@ -482,7 +486,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\Landmark.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bar.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Dealership.cs" />
-    <Compile Include="lsr\Locations\Places\GameLocations\CityHall.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\City Hall\CityHall.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\ConvenienceStore.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\DeadDrop.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Dispensary.cs" />

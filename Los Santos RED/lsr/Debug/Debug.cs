@@ -448,15 +448,58 @@ public class Debug
         WriteCivilianAndCopState();
 
     }
+    public enum DoorState
+    {
+        Unknown = -1,
+        Unlocked = 0,
+        Locked = 1,
+        LockedUntilOutOfArea = 2,
+        UnlockedUntilOutOfArea = 3,
+        LockedThisFrame = 4,
+        OpenThisFrame = 5,
+        ClosedThisFrame = 6
+    }
+
+    public int FindDoor(Vector3 position, ulong model)
+    {
+        int ret;
+        unsafe
+        {
+            NativeFunction.CallByName<bool>("DOOR_SYSTEM_FIND_EXISTING_DOOR", position.X, position.Y, position.Z, model, &ret);
+        }
+        return ret;
+    }
     private void DebugNumpad4()
     {
+        //GarageDoor = new InteriorDoor(3082692265,new Vector3(5.644455f,0.1074037f, 2.158299f)) },
+
+       // int doorID = FindDoor(new Vector3(-1355.819f, -754.4543f, 23.49588f), 3082692265);
+        
+
+
+       // bool isRegistered = NativeFunction.Natives.IS_DOOR_REGISTERED_WITH_SYSTEM<bool>(doorID);
+
+       //// GameFiber.Sleep(500);
+       // bool isClosed = NativeFunction.Natives.IS_DOOR_CLOSED<bool>(doorID);
+
+       // int doorState = NativeFunction.Natives.DOOR_SYSTEM_GET_DOOR_STATE<int>(doorID);
+       // string helpText = $"{doorID} isRegistered{isRegistered} isClosed{isClosed} doorState{doorState}";
+       // Game.DisplayHelp(helpText);
+       // EntryPoint.WriteToConsole(helpText);
+
+
+       // //NativeFunction.Natives.ADD_DOOR_TO_SYSTEM(doorID, 3082692265, new Vector3(-1355.819f, -754.4543f, 23.49588f), true, true, false);
+
+
+       // NativeFunction.Natives.DOOR_SYSTEM_SET_DOOR_STATE(doorID, 0, false, false);
+
         //K9Test();
         // Player.CellPhone.OpenBurner();
         // GameFiber.Sleep(1000);
 
         // return;
 
-         StuffTwo();
+        // StuffTwo();
 
 
         //VehicleExt myCar = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, true, 100f);
@@ -681,7 +724,7 @@ public class Debug
         //SetInRandomInterior();
         //BrowseTimecycles();
 
-       // if (Game.LocalPlayer.Character.CurrentVehicle.Exists()) { NativeFunction.Natives.SET_VEHICLE_LIVERY(Game.LocalPlayer.Character.CurrentVehicle, 17);  }
+        // if (Game.LocalPlayer.Character.CurrentVehicle.Exists()) { NativeFunction.Natives.SET_VEHICLE_LIVERY(Game.LocalPlayer.Character.CurrentVehicle, 17);  }
 
         // Dispatcher.RemoveRoadblock();
         //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
@@ -1134,18 +1177,18 @@ public class Debug
     private void DebugNumpad6()
     {
 
-        string AliveSeatAnimationDictionaryName = "veh@std@ps@enter_exit";
-        string AliveSeatAnimationName = "dead_fall_out";
+        //string AliveSeatAnimationDictionaryName = "veh@std@ps@enter_exit";
+        //string AliveSeatAnimationName = "dead_fall_out";
 
 
-        AliveSeatAnimationDictionaryName = NativeHelper.GetKeyboardInput("random@crash_rescue@car_death@std_car");
-        AliveSeatAnimationName = NativeHelper.GetKeyboardInput("loop");
+        //AliveSeatAnimationDictionaryName = NativeHelper.GetKeyboardInput("random@crash_rescue@car_death@std_car");
+        //AliveSeatAnimationName = NativeHelper.GetKeyboardInput("loop");
 
 
-        AnimationDictionary.RequestAnimationDictionayResult(AliveSeatAnimationDictionaryName);
+        //AnimationDictionary.RequestAnimationDictionayResult(AliveSeatAnimationDictionaryName);
 
-        NativeFunction.Natives.TASK_PLAY_ANIM(Game.LocalPlayer.Character, AliveSeatAnimationDictionaryName, AliveSeatAnimationName, 1000.0f, -1000.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_NOT_INTERRUPTABLE | eAnimationFlags.AF_UPPERBODY | eAnimationFlags.AF_SECONDARY), 0, false, false, false);
-        NativeFunction.Natives.SET_ANIM_RATE(Game.LocalPlayer.Character, 0.0f, 2, false);
+        //NativeFunction.Natives.TASK_PLAY_ANIM(Game.LocalPlayer.Character, AliveSeatAnimationDictionaryName, AliveSeatAnimationName, 1000.0f, -1000.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_NOT_INTERRUPTABLE | eAnimationFlags.AF_UPPERBODY | eAnimationFlags.AF_SECONDARY), 0, false, false, false);
+        //NativeFunction.Natives.SET_ANIM_RATE(Game.LocalPlayer.Character, 0.0f, 2, false);
 
         //        List<string> CoolStuff = new List<string>() {
 
@@ -1235,7 +1278,7 @@ public class Debug
         //        //Player.Scanner.DebugPlayDispatch();
 
         //        //SpawnWithQuat();
-        //        //HighlightProp();
+    HighlightProp();
         //        //SetFlags();
         //        //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         //        //{
@@ -5599,12 +5642,12 @@ public class Debug
     private void HighlightProp()
     {
 
-        Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
+        Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 10f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
         if (ClosestEntity.Exists())
         {
             Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
             EntryPoint.WriteToConsole($"Closest Object = {ClosestEntity.Model.Name} {ClosestEntity.Model.Hash}", 5);
-            EntryPoint.WriteToConsole($"Closest Object X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
+            EntryPoint.WriteToConsole($"Closest Object X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z} new Vector3({ClosestEntity.Position.X}f,{ClosestEntity.Position.Y}f,{ClosestEntity.Position.Z}f)", 5);
             uint GameTimeStartedDisplaying = Game.GameTime;
             while (Game.GameTime - GameTimeStartedDisplaying <= 5000)
             {

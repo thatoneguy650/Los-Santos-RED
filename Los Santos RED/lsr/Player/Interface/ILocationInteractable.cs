@@ -52,6 +52,7 @@ namespace LosSantosRED.lsr.Interface
         Respawning Respawning { get; }
         Violations Violations { get; }
         bool IsFireFighter { get; }
+        Investigation Investigation { get; }
 
         void ChangeName(string newName);
         void SetWantedLevel(int v1, string v2, bool v3);

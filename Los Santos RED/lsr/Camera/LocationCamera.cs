@@ -39,6 +39,9 @@ public class LocationCamera
     public Camera CurrentCamera { get; private set; }
     public bool SayGreeting { get; set; } = true;
     public bool ForceRegularCamera { get; set; } = false;
+
+
+    public bool StaysInVehicle { get; set; } = false;
     public LocationCamera(GameLocation store, ILocationInteractable player, ISettingsProvideable settings)
     {
         Store = store;
@@ -67,31 +70,13 @@ public class LocationCamera
     {
         DisableControl();
         DoEntryCam();
-
-
-
         HighlightStoreWithCamera();
 
 
-        //if (ForceRegularCamera)
-        //{
-        //    HighlightStoreWithCamera();
-        //}
-        //else if(ItemPreviewPosition != Vector3.Zero)
-        //{
-        //    isHighlightingLocation = true;
-        //    HighlightLocationWithCamera();
-        //}
-        //else
-        //{
-        //    HighlightStoreWithCamera();
-        //}
-
-
-
-
-
-
+        if(StaysInVehicle)
+        {
+            return;
+        }
         Game.LocalPlayer.Character.IsVisible = false;
         PlayerPosition = Player.Position;
         PlayerHeading = Player.Character.Heading;
@@ -127,8 +112,16 @@ public class LocationCamera
         {
             EntranceCam.Delete();
         }
+        if(StaysInVehicle)
+        {
+            NativeFunction.Natives.CLEAR_FOCUS();
+            return;
+        }
         Game.LocalPlayer.Character.Tasks.Clear();
     }
+
+
+
 
     public void StopImmediately()
     {
@@ -244,6 +237,10 @@ public class LocationCamera
     }
     private void DoEntryCam()
     {
+        if(StaysInVehicle)
+        {
+            return;
+        }
         Vector3 ToLookAtPos = NativeHelper.GetOffsetPosition(Store.EntrancePosition, Store.EntranceHeading + 90f, 2f);
         EgressCamPosition = NativeHelper.GetOffsetPosition(ToLookAtPos, Store.EntranceHeading, 1f);
         EgressCamPosition += new Vector3(0f, 0f, 0.4f);
@@ -294,6 +291,10 @@ public class LocationCamera
     }
     private void DoExitCam()
     {
+        if (StaysInVehicle)
+        {
+            return;
+        }
         Vector3 ToLookAtPos = NativeHelper.GetOffsetPosition(Store.EntrancePosition, Store.EntranceHeading + 90f, 2f);
         EgressCamPosition = NativeHelper.GetOffsetPosition(ToLookAtPos, Store.EntranceHeading, 1f);
         EgressCamPosition += new Vector3(0f, 0f, 0.4f);
@@ -459,6 +460,11 @@ public class LocationCamera
     }
     private void ReturnToGameplay()
     {
+        if(StaysInVehicle)
+        {
+            return;
+        }
+
         if (!CameraTo.Exists())
         {
             CameraTo = new Camera(false);

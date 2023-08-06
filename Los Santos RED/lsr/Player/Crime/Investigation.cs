@@ -244,7 +244,10 @@ public class Investigation
         HasFireArrived = true;
         EntryPoint.WriteToConsole("Investigation OnFireFightersArrived");
     }
-
+    public void ClearPlayerDescription()
+    {
+        HavePlayerDescription = false;
+    }
     private void CheckExpired()
     {
         if(IsOutsideInvestigationRange)

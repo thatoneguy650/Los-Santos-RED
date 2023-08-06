@@ -131,7 +131,7 @@ public class Zones : IZones
             new Zone("LAGO", "Lago Zancudo", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
             new Zone("MTJOSE", "Mount Josiah", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
             new Zone("NCHU", "North Chumash", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Middle, eLocationType.Rural),
-            new Zone("SLAB", "Slab City", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Rural) { DealerMenuContainerID = StaticStrings.ToiletCleanerAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.ToiletCleanerAreaDrugCustomerMenuGroupID },
+            new Zone("SLAB", "Stab City", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Rural) { DealerMenuContainerID = StaticStrings.ToiletCleanerAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.ToiletCleanerAreaDrugCustomerMenuGroupID },
             new Zone("ZANCUDO", "Zancudo River", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Poor, eLocationType.Wilderness),
 
             //Vespucci
