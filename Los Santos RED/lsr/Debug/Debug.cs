@@ -22,6 +22,7 @@ using System.Text;
 using System.Windows.Forms;
 //using System.Windows.Media;
 //using System.Windows.Media;
+//using System.Windows.Media;
 using static DispatchScannerFiles;
 using static RAGENativeUI.Elements.UIMenuStatsPanel;
 
@@ -1177,6 +1178,16 @@ public class Debug
     private void DebugNumpad6()
     {
 
+        PedExt chosen = World.Pedestrians.Civilians.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        if(chosen == null || !chosen.Pedestrian.Exists())
+        {
+            return;
+        }
+
+        int pedHeadshotHandle = NativeFunction.Natives.REGISTER_PEDHEADSHOT<int>(chosen.Pedestrian);
+        GameFiber.Sleep(2000);
+        string str = NativeFunction.Natives.GET_PEDHEADSHOT_TXD_STRING<string>(pedHeadshotHandle);
+        NativeHelper.DisplayNotificationCustom(str, str, "Test", "~g~Text Received~s~", "Test 1", NotificationIconTypes.ChatBox, false);
         //string AliveSeatAnimationDictionaryName = "veh@std@ps@enter_exit";
         //string AliveSeatAnimationName = "dead_fall_out";
 
@@ -1278,7 +1289,7 @@ public class Debug
         //        //Player.Scanner.DebugPlayDispatch();
 
         //        //SpawnWithQuat();
-    HighlightProp();
+        //HighlightProp();
         //        //SetFlags();
         //        //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         //        //{

@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Player;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,6 @@ namespace LosSantosRED.lsr.Interface
         WeaponEquipment WeaponEquipment { get; }
         void ShootAt(Vector3 targetCoordinate);
         Ped Character { get; }
+        Inventory Inventory { get; }
     }
 }

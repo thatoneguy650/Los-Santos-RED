@@ -25,6 +25,8 @@ public class Residence : GameLocation, ILocationSetupable
     private bool KeepInteractionGoing;
     private UIMenu outfitsSubMenu;
     private IActivityPerformable ActivityPerformable;
+    private UIMenuItem RentStopItem;
+    private UIMenuItem SellHouseItem;
 
     private string IsRentedDescription => $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~";
     private string IsRentedRightLabel => Time == null ? $"Due Date: {DateRentalPaymentDue}" : "Remaining Days: " + Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0).ToString();
@@ -52,6 +54,7 @@ public class Residence : GameLocation, ILocationSetupable
     public int RentalDays { get; set; }
     public int RentalFee { get; set; }
     public int PurchasePrice { get; set; }
+    public int SalesPrice { get; set; }
     public override string TypeName => IsOwnedOrRented ? "Residence" : "For Sale/Rental";
     public override int MapIcon { get; set; } = (int)BlipSprite.PropertyForSale;
     public override float MapIconScale { get; set; } = 1.0f;
@@ -191,16 +194,29 @@ public class Residence : GameLocation, ILocationSetupable
                     BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
                     OfferSubMenu.SetBannerType(BannerImage);
                 }
-                OfferSubMenu.OnItemSelect += OfferMenu_OnItemSelect;
 
                 PurchaseResidenceMenuItem = new UIMenuItem("Purchase", "Select to purchase this residence") { RightLabel = CanPurchaseRightLabel };
                 if (CanBuy)
                 {
+                    PurchaseResidenceMenuItem.Activated += (sender, e) =>
+                    {
+                        if (Purchase())
+                        {
+                            MenuPool.CloseAllMenus();
+                        }
+                    };
                     OfferSubMenu.AddItem(PurchaseResidenceMenuItem);
                 }
                 RentResidenceMenuItem = new UIMenuItem("Rent", $"Select to rent this residence for {RentalDays} days") { RightLabel = CanRentRightLabel };
                 if (CanRent)
                 {
+                    RentResidenceMenuItem.Activated += (sender, e) =>
+                    {
+                        if (Rent())
+                        {
+                            MenuPool.CloseAllMenus();
+                        }
+                    };
                     OfferSubMenu.AddItem(RentResidenceMenuItem);
                 }
             }
@@ -217,16 +233,44 @@ public class Residence : GameLocation, ILocationSetupable
         {
             RentDisplayItem = new UIMenuItem("Rental Period", IsRentedDescription) { RightLabel = IsRentedRightLabel };
             InteractionMenu.AddItem(RentDisplayItem);
+
+            RentStopItem = new UIMenuItem("Stop Renting", "Stop renting the current location.");
+            RentStopItem.Activated += (sender, e) =>
+            {
+                StopRenting();
+            };
+            InteractionMenu.AddItem(RentStopItem);
+
         }
+        if(IsOwned)
+        {
+            SellHouseItem = new UIMenuItem("Sell House", "Sell the current house.") { RightLabel = SalesPrice.ToString("C0") };
+            SellHouseItem.Activated += (sender, e) =>
+            {
+                SellHouse();
+            };
+            InteractionMenu.AddItem(SellHouseItem);
+        }
+
         RestMenuItem = new UIMenuNumericScrollerItem<int>("Rest", "Rest at your residence to recover health. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
         InteractionMenu.AddItem(RestMenuItem);
-       // InventoryMenu = new InventoryMenu(MenuPool, InteractionMenu, Player, ModItems, true);
-
         outfitsSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Outfits");
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Set an outfit.";
         UpdateOutfits();
         UpdateInventory();
         UpdateStoredWeapons();
+    }
+
+    private void SellHouse()
+    {
+        OnSold();
+        MenuPool.CloseAllMenus();
+    }
+
+    private void StopRenting()
+    {
+        OnStopRenting();
+        MenuPool.CloseAllMenus();
     }
     private void UpdateStoredWeapons()
     {
@@ -235,23 +279,6 @@ public class Residence : GameLocation, ILocationSetupable
     private void UpdateInventory()
     {
         SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, false);
-    }
-    private void OfferMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        if(selectedItem == RentResidenceMenuItem)
-        {
-            if (Rent())
-            {
-                MenuPool.CloseAllMenus();
-            }
-        }
-        else if (selectedItem == PurchaseResidenceMenuItem)
-        {
-            if(Purchase())
-            {
-                MenuPool.CloseAllMenus();
-            }
-        }
     }
     private void UpdateOutfits()
     {
@@ -359,6 +386,21 @@ public class Residence : GameLocation, ILocationSetupable
         PlaySuccessSound();
         DisplayMessage("~g~Purchased", $"Thank you for purchasing {Name}");
     }
+    private void OnStopRenting()
+    {
+        Reset();
+        Player.Properties.RemoveResidence(this);
+        PlaySuccessSound();
+        DisplayMessage("~y~Rental", $"You have stopped renting {Name}");
+    }
+    private void OnSold()
+    {
+        Reset();
+        Player.Properties.RemoveResidence(this);
+        Player.BankAccounts.GiveMoney(SalesPrice);
+        PlaySuccessSound();
+        DisplayMessage("~g~Sold", $"You have sold {Name} for {SalesPrice.ToString("C0")}");
+    }
     private void UpdateStoredData()
     {
         ButtonPromptText = GetButtonPromptText();
@@ -434,7 +476,6 @@ public class Residence : GameLocation, ILocationSetupable
         }
         return BaseList;
     }
-
     public void Setup()
     {
         if (SimpleInventory == null)

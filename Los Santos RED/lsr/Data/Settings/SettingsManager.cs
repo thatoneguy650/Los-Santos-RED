@@ -87,7 +87,9 @@ public class SettingsManager
     [Category("Player")]
     [Description("Door Toggle Settings")]
     public DoorToggleSettings DoorToggleSettings { get; set; } = new DoorToggleSettings();
-
+    [Category("Player")]
+    [Description("Contact Task Settings")]
+    public TaskSettings TaskSettings { get; set; } = new TaskSettings();
 
     [Category("World")]
     [Description("Police General Settings")]
@@ -122,9 +124,7 @@ public class SettingsManager
     [Category("World")]
     [Description("World General Settings")]
     public WorldSettings WorldSettings { get; set; } = new WorldSettings();
-    [Category("World")]
-    [Description("Tasking Settings")]
-    public TaskSettings TaskSettings { get; set; } = new TaskSettings();
+
     [Category("World")]
     [Description("Time Settings")]
     public TimeSettings TimeSettings { get; set; } = new TimeSettings();

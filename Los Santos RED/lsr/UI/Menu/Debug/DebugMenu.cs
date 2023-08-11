@@ -1192,11 +1192,17 @@ new YmapDisabler("manhat01",true),
             Player.CellPhone.AddContact(new GunDealerContact(StaticStrings.UndergroundGunsContactName), false);
             menu.Visible = false;
         };
-        
+        UIMenuItem AddVehicleExporter = new UIMenuItem("Add Vehicle Exporter", "Add vehicle exporter contact");
+        AddVehicleExporter.Activated += (menu, item) =>
+        {
+            Player.CellPhone.AddContact(new VehicleExporterContact(StaticStrings.VehicleExporter), false);
+            menu.Visible = false;
+        };
+
         PlayerStateItemsMenu.AddItem(AddOfficerFriendly);
         PlayerStateItemsMenu.AddItem(AddUndergroundGuns);
 
-
+        PlayerStateItemsMenu.AddItem(AddVehicleExporter);
 
 
     }

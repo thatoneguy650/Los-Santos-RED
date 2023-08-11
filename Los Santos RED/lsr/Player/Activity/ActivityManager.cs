@@ -436,6 +436,14 @@ public class ActivityManager
         PlateTheft plateTheft = new PlateTheft(Actionable, Settings, World);
         if(plateTheft.CanPerform(Actionable))
         {
+            ModItem li = Player.Inventory.Get(typeof(ScrewdriverItem))?.ModItem;
+            if (li == null)
+            {
+                Game.DisplayHelp($"Need a ~r~Screwdriver~s~ to remove plates.");
+                return;
+            }
+
+
             ForceCancelAllActive();
             IsPerformingActivity = true;
             LowerBodyActivity = plateTheft;

@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 [XmlInclude(typeof(EmergencyServicesContact))]
 [XmlInclude(typeof(CorruptCopContact))]
 [XmlInclude(typeof(KillerContact))]
+[XmlInclude(typeof(VehicleExporterContact))]
 public class PhoneContact
 {
     public string Name { get; set; } = "Unknown"; 
@@ -35,7 +36,7 @@ public class PhoneContact
     {
 
     }
-    public virtual void OnAnswered(IContactInteractable player, CellPhone cellPhone, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IJurisdictions jurisdictions, ICrimes crimes, IEntityProvideable world)
+    public virtual void OnAnswered(IContactInteractable player, CellPhone cellPhone, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IJurisdictions jurisdictions, ICrimes crimes, IEntityProvideable world, IModItems modItems)
     {
         cellPhone.Close(0);
     }

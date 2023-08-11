@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
@@ -30,6 +31,12 @@ public class LicensePlateItem : ModItem
         PlateTheft plateTheft = new PlateTheft(actionable, this, settings, world);
         if(plateTheft.CanPerform(actionable))
         {
+            ModItem li = actionable.Inventory.Get(typeof(ScrewdriverItem))?.ModItem;
+            if (li == null)
+            {
+                Game.DisplayHelp($"Need a ~r~Screwdriver~s~ to change plates.");
+                return false;
+            }
             actionable.ActivityManager.StartLowerBodyActivity(plateTheft);
             return true;
         }

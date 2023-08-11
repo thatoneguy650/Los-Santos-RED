@@ -190,29 +190,67 @@ public class CarLockPick
         //EntryPoint.WriteToConsoleTestLong($"LOCK PICK ENTRY: LockPickAnimation FINISH TRUE");
         return true;
     }
+    //private Rage.Object AttachScrewdriverToPed(Ped Pedestrian)
+    //{
+    //    Rage.Object Screwdriver = null;
+    //    try
+    //    {
+    //        Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+    //    }
+    //    if (!Screwdriver.Exists())
+    //    {
+    //        return null;
+    //    }
+    //    int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
+    //    Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));
+    //    return Screwdriver;
+    //}
+
+
     private Rage.Object AttachScrewdriverToPed(Ped Pedestrian)
     {
-        //Vector3 position = Pedestrian.GetOffsetPositionUp(50f);
-        //Model modelToCreate = new Model(Game.GetHashKey("prop_tool_screwdvr01"));
-        //modelToCreate.LoadAndWait();
-        //Rage.Object Screwdriver = NativeFunction.Natives.CREATE_OBJECT<Rage.Object>(Game.GetHashKey("prop_tool_screwdvr01"), position.X, position.Y, position.Z, 0f);//
         Rage.Object Screwdriver = null;
         try
         {
-            Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
+            ModItem li = Player.Inventory.Get(typeof(ScrewdriverItem))?.ModItem;
+            if (li == null)
+            {
+                Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
+                if (Screwdriver.Exists())
+                {
+                    int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
+                    Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));
+                }
+            }
+            else
+            {
+                Screwdriver = new Rage.Object(li.ModelItem.ModelName, Pedestrian.GetOffsetPositionUp(50f));
+                if (Screwdriver.Exists())
+                {
+                    PropAttachment pa = li.ModelItem.Attachments.FirstOrDefault(x => x.Name == "RightHand");
+                    if (pa != null)
+                    {
+                        Screwdriver.AttachTo(Pedestrian, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Pedestrian, pa.BoneName), pa.Attachment, pa.Rotation);
+                    }
+                    else
+                    {
+                        Screwdriver.Delete();
+                    }
+                }
+            }
+            return Screwdriver;
         }
         catch (Exception ex)
         {
-            //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+            return Screwdriver;
         }
-        if (!Screwdriver.Exists())
-        {
-            return null;
-        }
-        int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
-        Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));
-        return Screwdriver;
     }
+
+
     private bool FinishLockPick()
     {
         //Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);

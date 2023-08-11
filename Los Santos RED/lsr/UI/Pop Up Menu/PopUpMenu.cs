@@ -278,7 +278,9 @@ public class PopUpMenu
                 ItemID = 0;
                 foreach (InventoryItem ii in Player.Inventory.ItemsList.Where(x => x.ModItem != null && x.ModItem.ItemType == mi && x.ModItem.ItemSubType == itemSubType))
                 {
-                    LowLevelList.Add(new PopUpBox(ItemID, ii.ModItem.DisplayName, $"{ii.ModItem.Name}SubMenu", ii.ModItem.DisplayDescription) { ClosesMenu = false });
+                    LowLevelList.Add(new PopUpBox(ItemID, ii.ModItem.DisplayName, $"{ii.ModItem.Name}SubMenu", ii.Description) { ClosesMenu = false });
+
+                    //LowLevelList.Add(new PopUpBox(ItemID, ii.ModItem.DisplayName, $"{ii.ModItem.Name}SubMenu", ii.ModItem.DisplayDescription) { ClosesMenu = false });
                     List<PopUpBox> InventoryActionSubMenu = new List<PopUpBox>();
                     InventoryActionSubMenu.Add(new PopUpBox(0, "Use", new Action(() => Player.ActivityManager.UseInventoryItem(ii.ModItem, true)), $"Use {ii.ModItem.DisplayName}"));
                     InventoryActionSubMenu.Add(new PopUpBox(1, "Discard", $"Discard{ii.ModItem.Name}SubMenu", $"Discard {ii.ModItem.DisplayName}") { ClosesMenu = false });

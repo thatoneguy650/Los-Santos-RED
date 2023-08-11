@@ -53,6 +53,14 @@ public class Properties
             Residences.Add(toAdd);
         }
     }
+    public void RemoveResidence(Residence toAdd)
+    {
+        if (!Residences.Any(x => x.Name == toAdd.Name))
+        {
+            toAdd.Reset();
+            Residences.Remove(toAdd);
+        }
+    }
 
 }
 

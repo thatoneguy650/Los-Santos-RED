@@ -259,7 +259,15 @@ namespace LosSantosRED.lsr.Data
         {
             if (IsCop || IsEMT || IsFireFighter || IsSecurityGuard)
             {
-                player.SetAgencyStatus(agencies.GetAgency(AssignedAgencyID));
+                EntryPoint.WriteToConsole($" LoadAgencies {AssignedAgencyID}");
+
+                Agency toAssign = agencies.GetAgency(AssignedAgencyID);
+                if(toAssign == null)
+                {
+                    EntryPoint.WriteToConsole($" LoadAgencies NO AGENCY FOUND");
+                    return;
+                }
+                player.SetAgencyStatus(toAssign);
             }
             else
             {
@@ -438,7 +446,7 @@ namespace LosSantosRED.lsr.Data
             }
             foreach (SavedTextMessage ifc in TextMessages)
             {
-                player.CellPhone.AddText(ifc.Name, ifc.IconName, ifc.Message, ifc.HourSent, ifc.MinuteSent, ifc.IsRead);
+                player.CellPhone.AddText(ifc.Name, ifc.IconName, ifc.Message, ifc.HourSent, ifc.MinuteSent, ifc.IsRead, null);
             }
         }
         private void LoadLicenses(IInventoryable player)

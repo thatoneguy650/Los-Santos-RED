@@ -289,7 +289,7 @@ public class Gangs : IGangs
             PercentageWithSidearms = 20f,
             PercentageWithLongGuns = 5f,
             MemberKickUpAmount = 2700,
-            DrugDealerPercentage = 60f,
+            DrugDealerPercentage = 65f,
             GangClassification = GangClassification.Street,
         };//crack
         Triads = new Gang("~r~", "AMBIENT_GANG_WEICHENG", "Triads", "Triads", "Red", "TriadsPeds", "TriadVehicles", "", "MeleeWeapons", "TriadsSidearms", "TriadsLongGuns", "Triads", "CHAR_BLANK_ENTRY", "Triad Member")
@@ -320,7 +320,7 @@ public class Gangs : IGangs
             PercentageWithSidearms = 20f,
             PercentageWithLongGuns = 2f,
             MemberKickUpAmount = 3000,
-            DrugDealerPercentage = 40f,
+            DrugDealerPercentage = 45f,
             GangClassification = GangClassification.Cartel,
         };//heroin
         Redneck = new Gang("~b~", "AMBIENT_GANG_HILLBILLY", "Rednecks", "Rednecks", "Black", "RedneckPeds", "RedneckVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Rednecks", "CHAR_BLANK_ENTRY", "Redneck")
@@ -351,7 +351,7 @@ public class Gangs : IGangs
             PercentageWithSidearms = 50f,
             PercentageWithLongGuns = 20f,
             MemberKickUpAmount = 1500,
-            DrugDealerPercentage = 40f,
+            DrugDealerPercentage = 45f,
             GangClassification = GangClassification.Generic,
         };//TOILET CLEANER
         Korean = new Gang("~q~", "AMBIENT_GANG_KKANGPAE", "Kkangpae", "Kkangpae", "Pink", "KoreanPeds", "KoreanVehicles", "", "MeleeWeapons", "KkangpaeSidearms", "KkangpaeLongGuns", "Kkangpae", "CHAR_BLANK_ENTRY", "Kkangpae Member")
@@ -382,7 +382,7 @@ public class Gangs : IGangs
             PercentageWithSidearms = 20f,
             PercentageWithLongGuns = 2f,
             MemberKickUpAmount = 3200,
-            DrugDealerPercentage = 40f,
+            DrugDealerPercentage = 45f,
             GangClassification = GangClassification.Street,
         };//heroin
         float pistolPercentage = 55f;
@@ -416,7 +416,7 @@ public class Gangs : IGangs
             PercentageWithSidearms = pistolPercentage,
             PercentageWithLongGuns = longGunPercentage,
             MemberKickUpAmount = 6000,
-            DrugDealerPercentage = 35f,
+            DrugDealerPercentage = 45f,
             GangClassification = GangClassification.Mafia,
         };//cocaine
         Pavano = new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family", "Pavano", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Pavano", "CHAR_BLANK_ENTRY", "Pavano Assocaite")
@@ -448,7 +448,7 @@ public class Gangs : IGangs
             PercentageWithSidearms = 35f,
             PercentageWithLongGuns = 2f,
             MemberKickUpAmount = 5500,
-            DrugDealerPercentage = 35f,
+            DrugDealerPercentage = 45f,
             GangClassification = GangClassification.Mafia,
         };//cocaine
         Lupisella = new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family", "Lupisella", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Lupisella", "CHAR_BLANK_ENTRY", "Lupisella Assocaite")
@@ -480,7 +480,7 @@ public class Gangs : IGangs
             PercentageWithSidearms = 35f,
             PercentageWithLongGuns = 2f,
             MemberKickUpAmount = 5700,
-            DrugDealerPercentage = 35f,
+            DrugDealerPercentage = 45f,
             GangClassification = GangClassification.Mafia,
         };//cocaine
         Messina = new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family", "Messina", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Messina", "CHAR_BLANK_ENTRY", "Messina Assocaite")
@@ -512,7 +512,7 @@ public class Gangs : IGangs
             PercentageWithSidearms = 35f,
             PercentageWithLongGuns = 2f,
             MemberKickUpAmount = 5200,
-            DrugDealerPercentage = 35f,
+            DrugDealerPercentage = 45f,
             GangClassification = GangClassification.Mafia,
         };//cocaine
         Ancelotti = new Gang("~g~", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Crime Family", "Ancelotti", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Ancelotti", "CHAR_BLANK_ENTRY", "Ancelotti Associate")
@@ -544,7 +544,7 @@ public class Gangs : IGangs
             PercentageWithSidearms = 35f,
             PercentageWithLongGuns = 2f,
             MemberKickUpAmount = 5500,
-            DrugDealerPercentage = 35f,
+            DrugDealerPercentage = 45f,
             GangClassification = GangClassification.Mafia,
         };//cocaine
         Cartel = new Gang("~r~", "AMBIENT_GANG_MADRAZO", "Madrazo Cartel", "Cartel", "Red", "CartelPeds", "CartelVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Cartel", "CHAR_BLANK_ENTRY", "Cartel Member")

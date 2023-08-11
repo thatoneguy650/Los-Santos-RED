@@ -77,6 +77,10 @@ public class Agencies : IAgencies
     }
     public Agency GetAgency(string AgencyInitials)
     {
+        if(string.IsNullOrEmpty(AgencyInitials))
+        {
+            return null;
+        }
         return AgenciesList.Where(x => x.ID.ToLower() == AgencyInitials.ToLower()).FirstOrDefault();
     }
     public Agency GetRandomMilitaryAgency()

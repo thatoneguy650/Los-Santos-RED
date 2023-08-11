@@ -74,12 +74,32 @@ public class GunDealerRelationship
     public void AddMoneySpent(int Amount)
     {
         TotalMoneySpentAtShops += Amount;
+
+        int TextToSend = 0;
+        bool sendGroupText = false;
+
+        List<string> GroupReplies = new List<string>()
+                {
+                    $"Thanks for the business, call us up for directions to the other stores",
+                    $"We have multiple stores available, give us a call to get directions to the other stores.",
+                    $"Got some other stores as well, hit us up for directions.",
+                };
+
+        TextToSend = PlacesOfInterest.PossibleLocations.GunStores.Where(gs => gs.ContactName == StaticStrings.UndergroundGunsContactName && !gs.IsEnabled && TotalMoneySpentAtShops >= gs.MoneyToUnlock).Count();
+        if(TextToSend > 1)
+        {
+            sendGroupText = true;
+            Player.CellPhone.AddScheduledText(new GunDealerContact(StaticStrings.UndergroundGunsContactName), GroupReplies.PickRandom());
+        }
         foreach (GunStore gs in PlacesOfInterest.PossibleLocations.GunStores)
         {
             if (gs.ContactName == StaticStrings.UndergroundGunsContactName && !gs.IsEnabled && TotalMoneySpentAtShops >= gs.MoneyToUnlock)
             {
                 gs.IsEnabled = true;
-
+                if(sendGroupText)
+                {
+                    continue;
+                }
                 List<string> Replies = new List<string>()
                 {
                     $"Thanks for the business, come check out our other store on {gs.FullStreetAddress}",
@@ -93,7 +113,6 @@ public class GunDealerRelationship
                     $"Need some extra hardware? {gs.FullStreetAddress}",
                     $"Got some other things at the shop on {gs.FullStreetAddress}",
                 };
-
                 Player.CellPhone.AddScheduledText(new GunDealerContact(StaticStrings.UndergroundGunsContactName), Replies.PickRandom());
                 //EntryPoint.WriteToConsoleTestLong($"{gs.Name} is now enabled");
             }
@@ -101,8 +120,6 @@ public class GunDealerRelationship
         if(TotalMoneySpentAtShops >= 2000)
         {
             Player.CellPhone.AddContact(new GunDealerContact(StaticStrings.UndergroundGunsContactName), true);
-
-            //Player.CellPhone.AddGunDealerContact(true);
         }
         //EntryPoint.WriteToConsoleTestLong($"You spent {Amount} for a total of {TotalMoneySpentAtShops}");
     }

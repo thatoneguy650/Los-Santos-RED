@@ -60,7 +60,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private CorruptCopContact Contact;
 
         private bool IsPlayerFarFromWitness => Witness != null && Witness.Pedestrian.Exists() && Witness.Pedestrian.DistanceTo2D(Player.Character) >= 850f;
-        private bool IsPlayerNearWitnessSpawn => SpawnPositionCellX != -1 && SpawnPositionCellY != -1 && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, SpawnPositionCellX, SpawnPositionCellY, 5);
+        private bool IsPlayerNearWitnessSpawn => SpawnPositionCellX != -1 && SpawnPositionCellY != -1 && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, SpawnPositionCellX, SpawnPositionCellY, 6);
         public WitnessEliminationTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names,IWeapons weapons, IShopMenus shopMenus)
         {
             Player = player;
@@ -84,13 +84,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             if(Witness != null && Witness.Pedestrian.Exists())
             {
-                Blip attachedBlip = Witness.Pedestrian.GetAttachedBlip();
-                if (attachedBlip.Exists())
-                {
-                    attachedBlip.Delete();
-                }
+                Witness.DeleteBlip();
                 Witness.Pedestrian.IsPersistent = false;
                 Witness.Pedestrian.Delete();
+            }
+            if (WitnessLocation != null)
+            {
+                WitnessLocation.IsPlayerInterestedInLocation = false;
             }
         }
         public void Start()
@@ -136,9 +136,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 List<GameLocation> PossibleSpots = new List<GameLocation>();
 
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Banks);
+                //PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Banks);
                 PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Bars);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.BeautyShops);
+                //PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.BeautyShops);
                 PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.CarDealerships);
                 PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.CityHalls);
                 PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.ConvenienceStores);
@@ -152,7 +152,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.PawnShops);
                 PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Pharmacies);
                 PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Restaurants);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.ScrapYards);
+                //PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.ScrapYards);
                 PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Landmarks);
 
                 WitnessLocation = PossibleSpots.PickRandom();
@@ -161,11 +161,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             WitnessVariation = null;
             if (WitnessIsMale)
             {
-                WitnessModel = MaleWitnessPossibleModels.PickRandom();
+                WitnessModel = MaleWitnessPossibleModels.Where(x => Player.ModelName.ToLower() != x.ToLower()).PickRandom();
             }
             else
             {
-                WitnessModel = FemaleWitnessPossibleModels.PickRandom();
+                WitnessModel = FemaleWitnessPossibleModels.Where(x => Player.ModelName.ToLower() != x.ToLower()).PickRandom();
             }
             if (WitnessLocation != null)
             {
@@ -173,6 +173,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 WitnessSpawnHeading = WitnessLocation.EntranceHeading;
                 SpawnPositionCellX = (int)(WitnessSpawnPosition.X / EntryPoint.CellSize);
                 SpawnPositionCellY = (int)(WitnessSpawnPosition.Y / EntryPoint.CellSize);
+
             }
             else
             {
@@ -201,18 +202,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     {
                         //EntryPoint.WriteToConsoleTestLong("Witness Elimination WITNESS FLED");
                         Game.DisplayHelp($"{StaticStrings.OfficerFriendlyContactName} The witness fled");
-                        //Game.DisplayHelp($"The witness fled");
                         break;
                     }
                 }
                 else if(IsWitnessSpawned && Witness != null && Witness.Pedestrian.Exists() && Witness.Pedestrian.IsDead)
                 {
                     Witness.Pedestrian.IsPersistent = false;
-                    Blip attachedBlip = Witness.Pedestrian.GetAttachedBlip();
-                    if (attachedBlip.Exists())
-                    {
-                        attachedBlip.Delete();
-                    }
+                    Witness.DeleteBlip();
                     //EntryPoint.WriteToConsoleTestLong("Witness Elimination WITNESS WAS KILLED");
                     CurrentTask.OnReadyForPayment(true);
                     break;
@@ -226,15 +222,19 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void FinishTask()
         {
+            if (WitnessLocation != null)
+            {
+                WitnessLocation.IsPlayerInterestedInLocation = false;
+            }
             if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
             {
-                GameFiber.Sleep(RandomItems.GetRandomNumberInt(10000, 25000));
+                GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 10000));
+                
                 StartDeadDropPayment();//sets u teh whole dead drop thingamajic
-                //SetCompleted();//quickly gives money
             }
             else if (CurrentTask != null && CurrentTask.IsActive)
             {
-                GameFiber.Sleep(RandomItems.GetRandomNumberInt(10000, 25000));
+                GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 10000));
                 SetFailed();
             }
             else
@@ -297,7 +297,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);
             HasAddedComplications = false;
             WillAddComplications = RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationComplicationsPercentage);
-
             WillFlee = false;
             WillFight = false;
             if(WillAddComplications)
@@ -311,7 +310,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     WillFight = true;
                 }
             }
-
             WitnessWeapon = null;
             if (RandomItems.RandomPercent(40))
             {
@@ -335,7 +333,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     }
                 }
             }
-
             WitnessShopMenu = null;
             WitnessIsCustomer = RandomItems.RandomPercent(30f);
             if (WitnessIsCustomer)
@@ -343,7 +340,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 WitnessShopMenu = ShopMenus.GetRandomDrugCustomerMenu();
             }
 
-
+            if(WitnessLocation != null)
+            {
+                WitnessLocation.IsPlayerInterestedInLocation = true;
+            }
         }
         private bool SpawnWitness()
         {
@@ -353,18 +353,16 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 GameFiber.Yield();
                 if (ped.Exists())
                 {
-                    if (Settings.SettingsManager.TaskSettings.ShowEntityBlips)
-                    {
-                        Blip myBlip = ped.AttachBlip();
-                        myBlip.Color = Color.DarkRed;
-                        myBlip.Scale = 0.3f;
-                    }
                     string GroupName = "Man";
                     if(!WitnessIsMale)
                     {
                         GroupName = "Woman";
                     }  
-                    Witness = new PedExt(ped, Settings, Crimes, null, WitnessName, GroupName, World);
+                    Witness = new PedExt(ped, Settings, Crimes, Weapons, WitnessName, GroupName, World);
+                    if (Settings.SettingsManager.TaskSettings.ShowEntityBlips)
+                    {
+                        Witness.AddBlip();
+                    }
                     World.Pedestrians.AddEntity(Witness);
                     Witness.WasEverSetPersistent = true;
                     Witness.CanBeAmbientTasked = true;
@@ -379,15 +377,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     {
                         WitnessVariation.ApplyToPed(Witness.Pedestrian);
                     }
-                    pedHeadshotHandle = NativeFunction.Natives.RegisterPedheadshot<uint>(ped);
+                    pedHeadshotHandle = NativeFunction.Natives.REGISTER_PEDHEADSHOT<int>(ped);
                     if (WitnessIsCustomer)
                     {
-                        //Witness.ShopMenu = WitnessShopMenu;
-
                         Witness.SetupTransactionItems(WitnessShopMenu);
                     }
-
-
                     if(WillAddComplications)
                     {
                         ped.RelationshipGroup = RelationshipGroup.HatesPlayer;
@@ -419,7 +413,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         }
                         //they either know and flee, or know and fight     
                     }
-                    //EntryPoint.WriteToConsoleTestLong("Witness Elimination SPAWNED WITNESS");
                     GameFiber.Sleep(1000);
                     SendWitnessSpawnedMessage();
                     return true;
@@ -439,14 +432,14 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     LookingForItem = myMenuItem.ModItemName;
                 }
             }
-            if (1==0 && NativeFunction.Natives.IsPedheadshotReady<bool>(pedHeadshotHandle))
+            if (NativeFunction.Natives.IsPedheadshotReady<bool>(pedHeadshotHandle))
             {
                 Replies = new List<string>() {
-                    $"Picture of ~y~{WitnessName}~s~ attached. I heard they were still around ~p~{WitnessLocation.Name}~s~.",
-                    $"Sent you a picture of ~y~{WitnessName}~s~. They should still be around ~p~{WitnessLocation.Name}~s~.",
-                    $"~y~{WitnessName}~s~. They are still around ~p~{WitnessLocation.Name}~s~.",
-                    $"The name is ~y~{WitnessName}~s~, pic attached. They are loitering around ~p~{WitnessLocation.Name}~s~.",
-                    $"Remember, ~y~{WitnessName}~s~ is the name. I also sent a picture. I got word they are still around ~p~{WitnessLocation.Name}~s~.",
+                    $"Picture of ~y~{WitnessName}~s~ attached. I heard they were still around ~p~{WitnessLocation.Name} {WitnessLocation.FullStreetAddress}~s~.",
+                    $"Sent you a picture of ~y~{WitnessName}~s~. They should still be around ~p~{WitnessLocation.Name} {WitnessLocation.FullStreetAddress}~s~.",
+                    $"~y~{WitnessName}~s~. They are still around ~p~{WitnessLocation.Name} {WitnessLocation.FullStreetAddress}~s~.",
+                    $"The name is ~y~{WitnessName}~s~, pic attached. They are loitering around ~p~{WitnessLocation.Name} {WitnessLocation.FullStreetAddress}~s~.",
+                    $"Remember, ~y~{WitnessName}~s~ is the name. I also sent a picture. I got word they are still around ~p~{WitnessLocation.Name} {WitnessLocation.FullStreetAddress}~s~.",
                      };
                 string PickedReply = Replies.PickRandom();
                 if(WitnessIsCustomer && LookingForItem != "")
@@ -465,18 +458,18 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     PickedReply += " The target might have gotten wind, be careful.";
                 }
-
-                string str = NativeFunction.Natives.GetPedheadshotTxdString<string>(pedHeadshotHandle);
-                Player.CellPhone.AddScheduledText(Contact, PickedReply, 0);
+                string str = NativeFunction.Natives.GET_PEDHEADSHOT_TXD_STRING<string>(pedHeadshotHandle);
+                EntryPoint.WriteToConsole($"WITNESS ELIM SENT PICTURE MESSAGE {str}");
+                Player.CellPhone.AddCustomScheduledText(Contact, PickedReply, Time.CurrentDateTime, str, true);
             }
             else
             {
                 Replies = new List<string>() {
-                    $"~y~{WitnessName}~s~. I heard they were still around ~p~{WitnessLocation.Name}~s~.",
-                    $"~y~{WitnessName}~s~. They should still be around ~p~{WitnessLocation.Name}~s~.",
-                    $"~y~{WitnessName}~s~. They are still around ~p~{WitnessLocation.Name}~s~.",
-                    $"The name is ~y~{WitnessName}~s~. They are loitering around ~p~{WitnessLocation.Name}~s~.",
-                    $"Remember, ~y~{WitnessName}~s~ is the name. I got word they are still around ~p~{WitnessLocation.Name}~s~.",
+                    $"~y~{WitnessName}~s~. I heard they were still around ~p~{WitnessLocation.Name} {WitnessLocation.FullStreetAddress}~s~.",
+                    $"~y~{WitnessName}~s~. They should still be around ~p~{WitnessLocation.Name} {WitnessLocation.FullStreetAddress}~s~.",
+                    $"~y~{WitnessName}~s~. They are still around ~p~{WitnessLocation.Name} {WitnessLocation.FullStreetAddress}~s~.",
+                    $"The name is ~y~{WitnessName}~s~. They are loitering around ~p~{WitnessLocation.Name} {WitnessLocation.FullStreetAddress}~s~.",
+                    $"Remember, ~y~{WitnessName}~s~ is the name. I got word they are still around ~p~{WitnessLocation.Name} {WitnessLocation.FullStreetAddress}~s~.",
                      };
                 string PickedReply = Replies.PickRandom();
                 if (WitnessIsCustomer && LookingForItem != "")
@@ -495,14 +488,15 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     PickedReply += " The target might have gotten wind, be careful.";
                 }
-
-                Player.CellPhone.AddScheduledText(Contact, PickedReply, 0);
+                EntryPoint.WriteToConsole("WITNESS ELIM SENT REGULAR MESSAGE");
+                Player.CellPhone.AddCustomScheduledText(Contact, PickedReply, Time.CurrentDateTime,null, true);
             }
         }
         private void DespawnWitness()
         {
             if (Witness != null && Witness.Pedestrian.Exists())
             {
+                Witness.DeleteBlip();
                 Witness.Pedestrian.Delete();
                 //EntryPoint.WriteToConsoleTestLong("Witness Elimination DESPAWNED WITNESS");
             }
@@ -563,7 +557,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Sending ${MoneyToRecieve}",
                             $"Heard you were done. We owe you ${MoneyToRecieve}",
                             };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom());
         }
         private void SendDeadDropStartMessage()
         {
@@ -572,7 +566,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Go get your payment of ${MoneyToRecieve} from {myDrop.Description}, address is {myDrop.FullStreetAddress}.",
                             };
 
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom());
         }
         private void SendCompletedMessage()
         {
@@ -583,7 +577,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"Sending ${MoneyToRecieve}",
                         $"Heard you were done. We owe you ${MoneyToRecieve}",
                         };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom());
         }
         private void SendFailMessage()
         {
@@ -594,7 +588,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"How did you fuck this up so bad, they are squealing everything",
                         $"Since you fucked that up, they went right to the cops.",
                         };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom());
         }
     }
 

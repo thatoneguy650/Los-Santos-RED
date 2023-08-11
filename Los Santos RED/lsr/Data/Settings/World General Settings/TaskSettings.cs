@@ -82,7 +82,7 @@ public class TaskSettings : ISettingsDefaultable
         UndergroundGunsGunPickupPaymentMax = 10000;
         UndergroundGunsGunPickupComplicationsPercentage = 15f;
 
-        ShowEntityBlips = false;
+        ShowEntityBlips = true;
         DisplayHelpPrompts = true;
 
 

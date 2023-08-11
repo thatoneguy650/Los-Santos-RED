@@ -16,7 +16,7 @@ public class KillerContact : PhoneContact
     {
     }
 
-    public override void OnAnswered(IContactInteractable player, CellPhone cellPhone, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IJurisdictions jurisdictions, ICrimes crimes, IEntityProvideable world)
+    public override void OnAnswered(IContactInteractable player, CellPhone cellPhone, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IJurisdictions jurisdictions, ICrimes crimes, IEntityProvideable world, IModItems modItems)
     {
         MenuInteraction = new KillerInteraction(player, gangs, placesOfInterest, settings);
         MenuInteraction.Start(this);

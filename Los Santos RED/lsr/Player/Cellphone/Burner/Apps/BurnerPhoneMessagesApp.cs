@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Security.Policy;
+using LosSantosRED.lsr.Helper;
 
 public class BurnerPhoneMessagesApp : BurnerPhoneApp
 {
@@ -138,11 +140,13 @@ public class BurnerPhoneMessagesApp : BurnerPhoneApp
         {
             NativeFunction.Natives.xC3D0841A0CC546A6(33);
         }
+
+
         NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
         NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.ContactName);
         NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
         NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
-        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.Message);
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.CleanMessage());
         NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
     }
@@ -160,11 +164,15 @@ public class BurnerPhoneMessagesApp : BurnerPhoneApp
             NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
 
             NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.Message);       //UI::_ADD_TEXT_COMPONENT_APP_TITLE
+            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.CleanMessage());       //UI::_ADD_TEXT_COMPONENT_APP_TITLE
             NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
 
+            //NativeFunction.Natives.BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");
+            //NativeHelper.AddLongString(text.CleanMessage());
+            //NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
+
             NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("CHAR_BLANK_ENTRY");       //UI::_ADD_TEXT_COMPONENT_APP_TITLE
+            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(!string.IsNullOrEmpty(text.CustomPicture) ? text.CustomPicture : "CHAR_BLANK_ENTRY");       //UI::_ADD_TEXT_COMPONENT_APP_TITLE
             NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
 
             NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();

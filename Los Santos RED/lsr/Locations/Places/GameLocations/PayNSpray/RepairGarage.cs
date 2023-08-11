@@ -34,6 +34,7 @@ public class RepairGarage : GameLocation
     public int ResprayCost { get; set; } = 1500;
     public int RepairHours { get; set; } = 3;
 
+
     public RepairGarage(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -108,8 +109,6 @@ public class RepairGarage : GameLocation
             }
         } 
         GameFiber.Sleep(1000);
-        //GarageDoor.GetState();
-        //Game.DisplaySubtitle($"LockState: {GarageDoor.LockState} OpenRatio:{GarageDoor.OpenRatio}");
     }
     private void DisposeDoor()
     {
@@ -125,8 +124,6 @@ public class RepairGarage : GameLocation
             }
         }
         GameFiber.Sleep(1000);
-        //GarageDoor.GetState();
-        //Game.DisplaySubtitle($"LockState: {GarageDoor.LockState} OpenRatio:{GarageDoor.OpenRatio}");
     }
     private void GeneratePayNSprayMenu()
     {   
@@ -138,11 +135,7 @@ public class RepairGarage : GameLocation
         int CurrentHealth = Player.CurrentVehicle.Vehicle.Health;
         int MaxHealth = Player.CurrentVehicle.Vehicle.MaxHealth;
         float healthPercentage = (float)CurrentHealth / (float)MaxHealth;
-        if(CurrentHealth == MaxHealth)
-        {      
-            Game.DisplaySubtitle("Vehicle is Full Health");
-            return;
-        }
+        bool isFullHealth = CurrentHealth == MaxHealth;
         FinalRepairCost = (int)Math.Ceiling((1.0f - healthPercentage) * MaxRepairCost);
         FinalRepairCost.Round(100);
         UIMenuItem repairVehicle = new UIMenuItem("Repair Vehicle", $"Repair the current vehicle.~n~~g~Vehicle Health: {CurrentHealth}/{MaxHealth}") { RightLabel = FinalRepairCost.ToString("C0") };
@@ -150,35 +143,17 @@ public class RepairGarage : GameLocation
         {
             RepairVehicle(false);
         };
-        InteractionMenu.AddItem(repairVehicle);
-        UIMenuItem resprayVehicle = new UIMenuItem("Respray Vehicle", $"Repair and respray the current vehicle. Change the color and get a clean plate. Cops won't recognize you.~n~Respray Fee: {ResprayCost}~n~~g~Vehicle Health: {CurrentHealth}/{MaxHealth}") { RightLabel = (ResprayCost + FinalRepairCost).ToString("C0") };
+        if (!isFullHealth)
+        {
+            InteractionMenu.AddItem(repairVehicle);
+        }
+        UIMenuItem resprayVehicle = new UIMenuItem("Respray Vehicle", $"Repair and respray the current vehicle. Change the color and get a clean plate. Cops won't recognize you.~n~Respray Fee: ~r~{ResprayCost.ToString("C0")}~s~~n~~g~Vehicle Health: {CurrentHealth}/{MaxHealth}") { RightLabel = (ResprayCost + FinalRepairCost).ToString("C0") };
         resprayVehicle.Activated += (sender, e) =>
         {
             RepairVehicle(true);
         };
         InteractionMenu.AddItem(resprayVehicle);
         InteractionMenu.Visible = true;
-        //UIMenuItem closeGarage = new UIMenuItem("Close Door","Close the Garage Door");
-        //closeGarage.Activated += (sender, e) =>
-        //{
-        //    if (!GarageDoor.IsLocked)
-        //    {
-        //        GarageDoor.LockDoor();
-        //        GameFiber.Sleep(1500);
-        //    }
-        //};
-        //InteractionMenu.AddItem(closeGarage);
-
-        //UIMenuItem openGarage = new UIMenuItem("Open Door", "Open the Garage Door");
-        //openGarage.Activated += (sender, e) =>
-        //{
-        //    if (GarageDoor.IsLocked)
-        //    {
-        //        GarageDoor.UnLockDoor();
-        //        GameFiber.Sleep(1500);
-        //    }
-        //};
-        //InteractionMenu.AddItem(openGarage);
     }
     private void RepairVehicle(bool withRespray)
     {
@@ -196,35 +171,37 @@ public class RepairGarage : GameLocation
             PlayErrorSound();
             DisplayMessage("~r~Repair Failed", "Insufficient funds!");
             return;
-        }
-        
-        Player.CurrentVehicle.Vehicle.Repair();
-        Player.CurrentVehicle.Vehicle.Wash();
-        if (withRespray)
-        {
-            ResprayVehicle();
-            if(Player.IsWanted)
-            {
-                Player.SetWantedLevel(0, "Resprayed", true);
-            }
-            if(Player.Investigation.IsActive)
-            {
-                Player.Investigation.ClearPlayerDescription();
-            }
-        }
+        }   
         GameFiber.Sleep(500);
-        //Time.SetDateTime(Time.CurrentDateTime.AddHours(RepairHours));
-
         Time.FastForward(Time.CurrentDateTime.AddHours(RepairHours));
         Time.ForceShowClock = true;
+        DateTime timestartedRepair = Time.CurrentDateTime;
+        DateTime timeToDoItems = Time.CurrentDateTime.AddHours(1);
+        bool hasFixedVehicle = false;
         while (Time.IsFastForwarding)
         {
+            if(!hasFixedVehicle && DateTime.Compare(timeToDoItems, timestartedRepair) < 0)
+            {
+                Player.CurrentVehicle.Vehicle.Repair();
+                Player.CurrentVehicle.Vehicle.Wash();
+                if (withRespray)
+                {
+                    ResprayVehicle();
+                    if (Player.IsWanted)
+                    {
+                        Player.SetWantedLevel(0, "Resprayed", true);
+                    }
+                    if (Player.Investigation.IsActive)
+                    {
+                        Player.Investigation.Expire();
+                    }
+                }
+                hasFixedVehicle = true;
+            }
             GameFiber.Yield();
         }
         Time.ForceShowClock = false;
-
         Player.BankAccounts.GiveMoney(-1 * totalRepairCost);
-
         PlaySuccessSound();
         if(withRespray)
         {

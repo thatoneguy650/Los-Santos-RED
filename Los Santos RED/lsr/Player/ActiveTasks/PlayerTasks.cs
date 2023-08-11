@@ -69,7 +69,7 @@ public class PlayerTasks
     }
     public void Reset()
     {
-        Clear();
+        Dispose();//Clear();
     }
     public void Clear()
     {

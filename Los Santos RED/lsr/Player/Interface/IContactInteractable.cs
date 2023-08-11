@@ -27,6 +27,8 @@ namespace LosSantosRED.lsr.Interface
         Vector3 Position { get; }
         bool IsCop { get; }
         ButtonPrompts ButtonPrompts { get; }
+        VehicleExt CurrentVehicle { get; }
+        VehicleExt CurrentLookedAtVehicle { get; }
 
         void AddCrime(Crime toCallIn, bool v1, Vector3 placeSeen, VehicleExt vehicleSeen, WeaponInformation weaponSeen, bool v2, bool v3, bool v4);
         void SetWantedLevel(int v1, string v2, bool v3);

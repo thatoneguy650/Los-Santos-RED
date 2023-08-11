@@ -15,6 +15,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private ITaskAssignable Player;
         private ITimeReportable Time;
         private IGangs Gangs;
+        private IWeapons Weapons;
         private PlayerTasks PlayerTasks;
         private IPlacesOfInterest PlacesOfInterest;
         private List<DeadDrop> ActiveDrops = new List<DeadDrop>();
@@ -51,7 +52,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
         private bool IsPlayerFarFromTargetCop => TargetCop != null && TargetCop.Pedestrian.Exists() && TargetCop.Pedestrian.DistanceTo2D(Player.Character) >= 850f;
         private bool IsPlayerNearTargetCopSpawn => SpawnPositionCellX != -1 && SpawnPositionCellY != -1 && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, SpawnPositionCellX, SpawnPositionCellY, 5);
-        public CopHitTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names)
+        public CopHitTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names, IWeapons weapons)
         {
             Player = player;
             Time = time;
@@ -63,6 +64,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             World = world;
             Crimes = crimes;
             Names = names;
+            Weapons = weapons;
         }
         public void Setup()
         {
@@ -253,7 +255,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     {
                         GroupName = "Woman";
                     }
-                    TargetCop = new PedExt(ped, Settings, Crimes, null, TargetCopName, GroupName, World);
+                    TargetCop = new PedExt(ped, Settings, Crimes, Weapons, TargetCopName, GroupName, World);
                     World.Pedestrians.AddEntity(TargetCop);
                     TargetCop.WasEverSetPersistent = true;
                     TargetCop.CanBeAmbientTasked = true;

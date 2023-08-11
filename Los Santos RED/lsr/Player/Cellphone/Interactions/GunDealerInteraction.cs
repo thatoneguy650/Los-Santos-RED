@@ -37,7 +37,7 @@ public class GunDealerInteraction : IContactMenuInteraction
         GunDealerMenu = new UIMenu("", "Select an Option");
         GunDealerMenu.RemoveBanner();
         MenuPool.Add(GunDealerMenu);
-        UIMenuItem GunPickup = new UIMenuItem("Gun Pickup", "Pickup some guns and bring them to a shop. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMax:C0}~s~" };
+        UIMenuItem GunPickup = new UIMenuItem("Gun Pickup", "Pickup some guns and bring them to a shop.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMax:C0}~s~" };
         GunPickup.Activated += (sender, selectedItem) =>
         {
             Player.PlayerTasks.UndergroundGunsTasks.GunPickupTask.Start();

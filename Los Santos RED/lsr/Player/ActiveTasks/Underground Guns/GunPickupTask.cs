@@ -349,7 +349,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"The guns are loaded in the Dark Blue ~p~Burrito Van~s~, plate number is {SpawnedVehicle.LicensePlate}. Keys should be in it.",
                         $"Take the Dark Blue ~p~Burrito Van~s~. It is already loaded and ready to go.",
                         };
-            Player.CellPhone.AddScheduledText(Contact, PickupMessage.PickRandom(), 1);
+            Player.CellPhone.AddScheduledText(Contact, PickupMessage.PickRandom());
         }
         private void SendInitialInstructionsMessage()
         {
@@ -369,7 +369,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"Sending ${MoneyToRecieve}",
                         $"Heard you were done. We owe you ${MoneyToRecieve}",
                         };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom());
         }
         private void SendTaskAbortMessage()
         {
@@ -397,7 +397,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                         $"Did you think you could keep this from us? Would be unfortunate to get caught with all those guns.",
                                         $"Enjoy your time in Bolingbroke SHU",
                                             };
-            Player.CellPhone.AddScheduledText(new GangContact(gang.ContactName, gang.ContactIcon), Replies2.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(new GangContact(gang.ContactName, gang.ContactIcon), Replies2.PickRandom());
         }
     }
 }

@@ -119,7 +119,7 @@ public class GangTasker
         }
         else if (GangMember.IsWanted && GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)
         {
-            if (GangMember.WillFightPolice)
+            if (GangMember.WillFightPolice && isNearHomeTerritory)
             {
                 SetFight(GangMember, null);
             }
@@ -136,6 +136,8 @@ public class GangTasker
             bool WillFleeFromPlayer = false;
             bool SeenPlayerReactiveCrime = GangMember.PlayerCrimesWitnessed.Any(x => (x.Crime.ScaresCivilians || x.Crime.AngersCivilians) && x.Crime.CanBeReactedToByCivilians);
             bool SeenOtherReactiveCrime = GangMember.OtherCrimesWitnessed.Any(x => (x.Crime.ScaresCivilians || x.Crime.AngersCivilians) && x.Crime.CanBeReactedToByCivilians);
+
+
             WitnessedCrime HighestPriorityOtherCrime = GangMember.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
             int PlayerCrimePriority = 99;
             foreach (WitnessedCrime playerCrime in GangMember.PlayerCrimesWitnessed.Where(x => x.Crime.CanBeReactedToByCivilians))
@@ -201,7 +203,7 @@ public class GangTasker
             }
             else if (SeenOtherReactiveCrime)
             {
-                if (Settings.SettingsManager.GangSettings.AllowFightingOtherCriminals && GangMember.WillFight && !arePoliceNearby && Player.IsNotWanted && !Player.Investigation.IsActive)
+                if (Settings.SettingsManager.GangSettings.AllowFightingOtherCriminals && World.TotalWantedLevel == 0 && GangMember.WillFight && isNearHomeTerritory && !arePoliceNearby && Player.IsNotWanted && !Player.Investigation.IsActive)
                 {
                     SetFight(GangMember, HighestPriorityOtherCrime);
                 }

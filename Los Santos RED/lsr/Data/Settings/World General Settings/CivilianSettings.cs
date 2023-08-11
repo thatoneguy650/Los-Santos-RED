@@ -163,22 +163,22 @@ public class CivilianSettings : ISettingsDefaultable
         AllowAlerts = true;
         ShowRandomCriminalBlips = false;
 
-        DrugDealerPercentageRichZones = 5f;// 1f;
-        DrugDealerPercentageMiddleZones = 7f;// 2f;
-        DrugDealerPercentagePoorZones = 10f;//5f;
+        DrugDealerPercentageRichZones = 7f;// 1f;
+        DrugDealerPercentageMiddleZones = 10f;// 2f;
+        DrugDealerPercentagePoorZones = 12f;//5f;
 
-        DrugCustomerPercentageRichZones = 10f;// 5f;
-        DrugCustomerPercentageMiddleZones = 15f;// 7f;
-        DrugCustomerPercentagePoorZones = 10f;// 10f;
+        DrugCustomerPercentageRichZones = 12f;// 5f;
+        DrugCustomerPercentageMiddleZones = 17f;// 7f;
+        DrugCustomerPercentagePoorZones = 19f;// 10f;
 
-        CallPolicePercentageRichZones = 45f;// 50f;
-        CallPolicePercentageMiddleZones = 25f;// 30f;
-        CallPolicePercentagePoorZones = 10f;// 20f;
+        CallPolicePercentageRichZones = 35f;// 50f;
+        CallPolicePercentageMiddleZones = 20f;// 30f;
+        CallPolicePercentagePoorZones = 7f;// 20f;
 
 
-        CallPoliceForSeriousCrimesPercentageRichZones = 80f;// 80f;
-        CallPoliceForSeriousCrimesPercentageMiddleZones = 65f;// 70f;
-        CallPoliceForSeriousCrimesPercentagePoorZones = 45f;// 50f;
+        CallPoliceForSeriousCrimesPercentageRichZones = 60f;// 80f;
+        CallPoliceForSeriousCrimesPercentageMiddleZones = 45f;// 70f;
+        CallPoliceForSeriousCrimesPercentagePoorZones = 35f;// 50f;
 
 
 

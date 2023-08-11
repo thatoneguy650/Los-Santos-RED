@@ -6,6 +6,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Drawing;
+using System.Linq;
 
 public class PlateTheft : DynamicActivity
 {
@@ -105,8 +106,6 @@ public class PlateTheft : DynamicActivity
         Game.DisplayHelp($"Cannot Change Plate");
         return false;
     }
-
-
     private Rage.Object AttachLicensePlateToPed(Ped Pedestrian)
     {
         Rage.Object LicensePlate = null;
@@ -129,17 +128,38 @@ public class PlateTheft : DynamicActivity
         Rage.Object Screwdriver = null;
         try
         {
-           Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
+            ModItem li = Player.Inventory.Get(typeof(ScrewdriverItem))?.ModItem;
+            if (li == null)
+            {
+                Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
+                if (Screwdriver.Exists())
+                {
+                    int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
+                    Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));
+                }
+            }
+            else
+            {
+                Screwdriver = new Rage.Object(li.ModelItem.ModelName, Pedestrian.GetOffsetPositionUp(50f));
+                if (Screwdriver.Exists())
+                {
+                    PropAttachment pa = li.ModelItem.Attachments.FirstOrDefault(x => x.Name == "RightHand");
+                    if(pa != null)
+                    {
+                        Screwdriver.AttachTo(Pedestrian, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Pedestrian, pa.BoneName), pa.Attachment, pa.Rotation);
+                    }
+                    else
+                    {
+                        Screwdriver.Delete();
+                    }
+                }
+            }
+            return Screwdriver;
         }
         catch (Exception ex)
         {
-            //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+            return Screwdriver;
         }
-        if (!Screwdriver.Exists())
-            return null;
-        int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
-        Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));
-        return Screwdriver;
     }
     private void Enter()
     {
@@ -219,17 +239,16 @@ public class PlateTheft : DynamicActivity
         if (VehicleToChange.HasBone("numberplate"))
         {
             float HeadingRotation = -90f;
-
-            //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: numberplate");
+            EntryPoint.WriteToConsole("PLATE THEFT BONE: numberplate");
             Position = VehicleToChange.GetBonePosition("numberplate");
-
             if(Position.DistanceTo2D(VehicleToChange.GetOffsetPositionFront(2f)) < Position.DistanceTo2D(VehicleToChange.GetOffsetPositionFront(-2f)))
             {
-                //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: numberplate IS FRONT PLATE");
+                EntryPoint.WriteToConsole("PLATE THEFT BONE: numberplate IS FRONT PLATE");
                 HeadingRotation = 90f;
             }
-            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading + HeadingRotation, 1.0f);
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading + HeadingRotation, 1.5f);
             return SpawnPosition;
+
             VehicleToChange.GetBoneAxes("numberplate", out Right, out Forward, out Up);//GetBoneAxes no longer works as of 2022-12-23
             return Vector3.Add(Forward * -1.0f, Position);
         }
@@ -244,15 +263,21 @@ public class PlateTheft : DynamicActivity
         //}
         else if (VehicleToChange.IsBike)
         {
-            //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: IS BIKE");
+            EntryPoint.WriteToConsole("PLATE THEFT BONE: IS BIKE");
             return VehicleToChange.GetOffsetPositionFront(-1.5f);
         }
         else if (VehicleToChange.HasBone("bumper_r"))
         {
-            //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: bumper_r");
+            EntryPoint.WriteToConsole("PLATE THEFT BONE: bumper_r");
             Position = VehicleToChange.GetBonePosition("bumper_r");
-            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, 1.0f);
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, 1.5f);
+
+            
+            SpawnPosition = NativeHelper.GetOffsetPosition(SpawnPosition, VehicleToChange.Heading, VehicleToChange.Model.Dimensions.X / 2);
+
             return SpawnPosition;
+
+
             VehicleToChange.GetBoneAxes("bumper_r", out Right, out Forward, out Up);//GetBoneAxes no longer works as of 2022-12-23
             Position = Vector3.Add(Forward * -1.0f, Position);
             return Vector3.Add(Right * 0.25f, Position);

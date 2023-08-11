@@ -269,7 +269,9 @@
     <Compile Include="lsr\Player\Cellphone\Burner\Other\BurnerPhoneAppIcon.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Other\BurnerPhoneSettingsIcon.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\KillerContact.cs" />
+    <Compile Include="lsr\Player\Cellphone\Contacts\VehicleExporterContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Interactions\KillerInteraction.cs" />
+    <Compile Include="lsr\Player\Cellphone\Interactions\VehicleExporterInteraction.cs" />
     <Compile Include="lsr\Player\Crime\RestrictedAreaManager.cs" />
     <Compile Include="lsr\Player\Crime\WantedLevel.cs" />
     <Compile Include="lsr\Player\Equipment\ClipsetManager.cs" />

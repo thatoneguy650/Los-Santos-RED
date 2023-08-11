@@ -123,6 +123,9 @@ public class Settings : ISettingsProvideable
         SettingsManager.WeatherSettings.ReportWeather = false;
         SettingsManager.WeatherSettings.ShowWeatherNotifications = false;
 
+
+        SettingsManager.TaskSettings.ShowEntityBlips = false;
+        SettingsManager.TaskSettings.DisplayHelpPrompts = false;
         
 
 
@@ -274,7 +277,8 @@ public class Settings : ISettingsProvideable
         SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedSeen = 500f;
         SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedUnseen = 300f;
 
-
+        SettingsManager.TaskSettings.ShowEntityBlips = false;
+        SettingsManager.TaskSettings.DisplayHelpPrompts = false;
 
 
 

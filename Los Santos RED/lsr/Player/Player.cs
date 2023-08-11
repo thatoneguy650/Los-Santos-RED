@@ -854,6 +854,7 @@ namespace Mod
                 IsEMT = true;
                 IsFireFighter = false;
                 IsSecurityGuard = false;
+                AssignedAgency = toassign;
                 EntryPoint.WriteToConsole($"Assigned Player As EMT {toassign.ShortName}");
             }
             else if (toassign.ResponseType == ResponseType.Fire)
@@ -862,6 +863,7 @@ namespace Mod
                 IsEMT = false;
                 IsFireFighter = true;
                 IsSecurityGuard = false;
+                AssignedAgency = toassign;
                 EntryPoint.WriteToConsole($"Assigned Player As Firefighter {toassign.ShortName}");
             }
             else if (toassign.ResponseType == ResponseType.Security)
@@ -876,6 +878,7 @@ namespace Mod
                 IsEMT = false;
                 IsFireFighter = false;
                 IsSecurityGuard = true;
+                AssignedAgency = toassign;
                 EntryPoint.WriteToConsole($"Assigned Player As Security Guard {toassign.ShortName}");
             }
         }

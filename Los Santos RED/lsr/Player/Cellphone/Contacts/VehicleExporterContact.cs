@@ -6,21 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class EmergencyServicesContact : PhoneContact
+public class VehicleExporterContact : PhoneContact
 {
-    public EmergencyServicesContact()
+    public VehicleExporterContact()
     {
-
     }
 
-    public EmergencyServicesContact(string name, string iconName) : base(name, iconName)
+    public VehicleExporterContact(string name) : base(name)
     {
-
     }
 
     public override void OnAnswered(IContactInteractable player, CellPhone cellPhone, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IJurisdictions jurisdictions, ICrimes crimes, IEntityProvideable world, IModItems modItems)
     {
-        MenuInteraction = new EmergencyServicesInteraction(player, gangs, placesOfInterest, settings, jurisdictions, crimes, world);
+        MenuInteraction = new VehicleExporterInteraction(player, gangs, placesOfInterest, settings, modItems);
         MenuInteraction.Start(this);
     }
 

@@ -8,6 +8,7 @@ using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -49,6 +50,7 @@ public class CellPhone
 
     private IEntityProvideable World;
     private ICrimes Crimes;
+    private IModItems ModItems;
     private uint GameTimeLastCheckedScheduledItems;
     private uint GameTimeBetweenCheckScheduledItems = 15000;
     private NAudioPlayer phoneAudioPlayer;
@@ -82,7 +84,8 @@ public class CellPhone
     public List<PhoneText> TextList => AddedTexts;
     public List<PhoneContact> ContactList => AddedContacts;
     public List<PhoneResponse> PhoneResponseList => PhoneResponses;
-    public CellPhone(ICellPhoneable player, IContactInteractable gangInteractable, IJurisdictions jurisdictions, ISettingsProvideable settings, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, IZones zones, IStreets streets, IGangTerritories gangTerritories, ICrimes crimes, IEntityProvideable world, IModItems modItems)
+    public CellPhone(ICellPhoneable player, IContactInteractable gangInteractable, IJurisdictions jurisdictions, ISettingsProvideable settings, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, IZones zones, IStreets streets,
+        IGangTerritories gangTerritories, ICrimes crimes, IEntityProvideable world, IModItems modItems)
     {
         Player = player;
         MenuPool = new MenuPool();
@@ -92,6 +95,7 @@ public class CellPhone
         Gangs = gangs;
         Zones = zones;
         Streets = streets;
+        ModItems = modItems;
         ContactIndex = 0;
         PlacesOfInterest = placesOfInterest;
         GangTerritories = gangTerritories;
@@ -119,7 +123,7 @@ public class CellPhone
         {
             isRunningForcedMobileTask = false;
         }
-        contact.OnAnswered(ContactInteractable, this, Gangs, PlacesOfInterest, Settings, Jurisdictions, Crimes, World);
+        contact.OnAnswered(ContactInteractable, this, Gangs, PlacesOfInterest, Settings, Jurisdictions, Crimes, World, ModItems);
     }
     public void DeleteText(PhoneText text)
     {
@@ -263,7 +267,7 @@ public class CellPhone
             {
                 CheckScheduledContacts();
             }
-            GameTimeBetweenCheckScheduledItems = RandomItems.GetRandomNumber(5000, 12000);
+            GameTimeBetweenCheckScheduledItems = RandomItems.GetRandomNumber(5000, 7000);
             GameTimeLastCheckedScheduledItems = Game.GameTime;
         }
     }
@@ -272,12 +276,21 @@ public class CellPhone
         for (int i = ScheduledTexts.Count - 1; i >= 0; i--)
         {
             ScheduledText sc = ScheduledTexts[i];
-            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0 && Game.GameTime - sc.GameTimeSent >= 10000)
+            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0  && (sc.SendImmediately || Game.GameTime - sc.GameTimeSent >= 10000))
             {
                 if (!AddedTexts.Any(x => x.ContactName == sc.ContactName && x.Message == sc.Message))
                 {
-                    AddText(sc.ContactName, sc.IconName, sc.Message, Time.CurrentHour, Time.CurrentMinute, false);
-                    NativeHelper.DisplayNotificationCustom(sc.IconName, sc.IconName, sc.ContactName, "~g~Text Received~s~", sc.Message, NotificationIconTypes.ChatBox, false);
+                    AddText(sc.ContactName, sc.IconName, sc.Message, Time.CurrentHour, Time.CurrentMinute, false, sc.CustomPicture);
+
+                    if(!string.IsNullOrEmpty(sc.CustomPicture))
+                    {
+                        EntryPoint.WriteToConsole($"CUSTOM PICTURE SENT {sc.CustomPicture}");
+                        NativeHelper.DisplayNotificationCustom(sc.CustomPicture, sc.CustomPicture, sc.ContactName, "~g~Text Received~s~", sc.Message, NotificationIconTypes.ChatBox, false);
+                    }
+                    else
+                    {
+                        NativeHelper.DisplayNotificationCustom(sc.IconName, sc.IconName, sc.ContactName, "~g~Text Received~s~", sc.Message, NotificationIconTypes.ChatBox, false);
+                    }
                     PlayTexttone();
                     AddContact(sc.PhoneContact, true);
                 }
@@ -333,6 +346,7 @@ public class CellPhone
     {
         AddScheduledText(phoneContact, MessageToSend, 0);
     }
+
     public void AddScheduledText(PhoneContact phoneContact, string MessageToSend, DateTime timeToAdd)
     {
         if (!AddedTexts.Any(x => x.ContactName == phoneContact.Name && x.Message == MessageToSend))
@@ -340,11 +354,21 @@ public class CellPhone
             ScheduledTexts.Add(new ScheduledText(timeToAdd, phoneContact, MessageToSend));
         }
     }
-    public void AddText(string Name, string IconName, string message, int hourSent, int minuteSent, bool isRead)
+
+    public void AddCustomScheduledText(PhoneContact phoneContact, string MessageToSend, DateTime timeToAdd, string customPicture, bool sendImmediately)
+    {
+        if (!AddedTexts.Any(x => x.ContactName == phoneContact.Name && x.Message == MessageToSend))
+        {
+            EntryPoint.WriteToConsole($"CUSTOM PICTURE SENT {customPicture}");
+            ScheduledTexts.Add(new ScheduledText(timeToAdd, phoneContact, MessageToSend) { CustomPicture = customPicture, SendImmediately = sendImmediately });
+        }
+    }
+
+    public void AddText(string Name, string IconName, string message, int hourSent, int minuteSent, bool isRead, string customPicture)
     {
         if (!AddedTexts.Any(x => x.ContactName == Name && x.Message == message && x.HourSent == hourSent && x.MinuteSent == minuteSent))
         {
-            PhoneText textA = new PhoneText(Name, TextIndex, message, hourSent, minuteSent);
+            PhoneText textA = new PhoneText(Name, TextIndex, message, hourSent, minuteSent) { CustomPicture = customPicture };
             textA.IconName = IconName;
             textA.IsRead = isRead;
             textA.TimeReceived = Time.CurrentDateTime;
@@ -557,6 +581,8 @@ public class CellPhone
         public string IconName { get; set; } = "CHAR_BLANK_ENTRY";
         public uint GameTimeSent { get; set; }
         public PhoneContact PhoneContact { get; set; }
+        public string CustomPicture { get; set; }
+        public bool SendImmediately { get; set; } = false;
     }
 
 }

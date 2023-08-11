@@ -310,6 +310,7 @@ public class PedSwap : IPedSwap
             TargetPed.RandomizeVariation();
             StoreTargetPedData(TargetPed);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
+            Player.RemoveAgencyStatus();
             HandlePreviousPed(false, TargetPed);
             PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0, "");
             if (toBecome != null)
@@ -373,7 +374,7 @@ public class PedSwap : IPedSwap
             TargetPed.RandomizeVariation();
             StoreTargetPedData(TargetPed);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
-                    
+            Player.RemoveAgencyStatus();
             HandlePreviousPed(false, TargetPed);
             PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0, "");
 
@@ -440,6 +441,7 @@ public class PedSwap : IPedSwap
             Player.RemoveAgencyStatus();
             HandlePreviousPed(false, TargetPed);
             PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0, "");
+
             if (toBecome != null)
             {
                 Player.CurrentModelVariation = toBecome.SetPedVariation(Game.LocalPlayer.Character, gang.PossibleHeads, false);
@@ -500,9 +502,12 @@ public class PedSwap : IPedSwap
             TargetPed.RandomizeVariation();
             StoreTargetPedData(TargetPed);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
-            Player.SetAgencyStatus(agency);
+            Player.RemoveAgencyStatus();
             HandlePreviousPed(false, TargetPed);
             PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0, "");
+
+            Player.SetAgencyStatus(agency);
+
             if (toBecome != null)
             {
                 Player.CurrentModelVariation = toBecome.SetPedVariation(Game.LocalPlayer.Character, agency.PossibleHeads, false);
@@ -558,9 +563,11 @@ public class PedSwap : IPedSwap
             TargetPed.RandomizeVariation();
             StoreTargetPedData(TargetPed);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
-            Player.SetAgencyStatus(agency);
+            //Player.SetAgencyStatus(agency);
+            Player.RemoveAgencyStatus();
             HandlePreviousPed(false, TargetPed);
             PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0, "");
+            Player.SetAgencyStatus(agency);
             if (toBecome != null)
             {
                 Player.CurrentModelVariation = toBecome.SetPedVariation(Game.LocalPlayer.Character, agency.PossibleHeads, false);

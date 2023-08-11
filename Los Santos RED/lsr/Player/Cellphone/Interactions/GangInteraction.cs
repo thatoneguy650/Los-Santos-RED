@@ -182,7 +182,7 @@ public class GangInteraction : IContactMenuInteraction
             Player.PlayerTasks.GangTasks.StartGangPickup(ActiveGang, GangContact);
             sender.Visible = false;
         };
-        GangTheft = new UIMenuItem("Theft", "Steal an item for the gang. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.TheftPaymentMin:C0}-{ActiveGang.TheftPaymentMax:C0}~s~" };
+        GangTheft = new UIMenuItem("Theft", "Steal an item for the gang.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.TheftPaymentMin:C0}-{ActiveGang.TheftPaymentMax:C0}~s~" };
         GangTheft.Activated += (sender, selectedItem) =>
         {
             Player.PlayerTasks.GangTasks.StartGangTheft(ActiveGang, GangContact);
@@ -194,12 +194,13 @@ public class GangInteraction : IContactMenuInteraction
             Player.PlayerTasks.GangTasks.StartGangDelivery(ActiveGang, GangContact);
             sender.Visible = false;
         };
-        GangWheelman = new UIMenuItem("Wheelman", "Be a wheelman for the gang. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.WheelmanPaymentMin:C0}-{ActiveGang.WheelmanPaymentMax:C0}~s~" };
+        GangWheelman = new UIMenuItem("Wheelman", "Be a wheelman for the gang.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.WheelmanPaymentMin:C0}-{ActiveGang.WheelmanPaymentMax:C0}~s~" };
         GangWheelman.Activated += (sender, selectedItem) =>
         {
             Player.PlayerTasks.GangTasks.StartGangWheelman(ActiveGang, GangContact);
             sender.Visible = false;
         };
+
 
         GangImpoundTheft = new UIMenuItem("Impound Theft", "Steal a gang car out of the impound lot. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.ImpoundTheftPaymentMin:C0}-{ActiveGang.ImpoundTheftPaymentMax:C0}~s~" };
         GangImpoundTheft.Activated += (sender, selectedItem) =>
@@ -207,16 +208,12 @@ public class GangInteraction : IContactMenuInteraction
             Player.PlayerTasks.GangTasks.StartImpoundTheft(ActiveGang, GangContact);
             sender.Visible = false;
         };
-
-
-
         GangBodyDisposal = new UIMenuItem("Vehicle Disposal", "Get rid of a dirty car. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.BodyDisposalPaymentMin:C0}-{ActiveGang.BodyDisposalPaymentMax:C0}~s~" };
         GangBodyDisposal.Activated += (sender, selectedItem) =>
         {
             Player.PlayerTasks.GangTasks.StartGangBodyDisposal(ActiveGang, GangContact);
             sender.Visible = false;
         };
-
 
         GangPizza = new UIMenuItem("Pizza Man", "Pizza Time.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{100:C0}-{250:C0}~s~" };
         GangPizza.Activated += (sender, selectedItem) =>
