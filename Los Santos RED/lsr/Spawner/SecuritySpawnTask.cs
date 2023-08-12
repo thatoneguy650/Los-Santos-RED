@@ -104,6 +104,7 @@ public class SecurityGuardSpawnTask : SpawnTask
             {
                 CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
                 CreatedVehicle.Setup();
+                CreatedVehicle.AssociatedAgency = Agency;
             }
             CreatedVehicle.WasModSpawned = true;
             if (Agency != null)

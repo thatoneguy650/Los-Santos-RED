@@ -352,6 +352,11 @@ public class FireDispatcher
                 }
                 if (firefighter.Pedestrian.Exists() && firefighter.Pedestrian.CurrentVehicle.Exists() && firefighter.Pedestrian.CurrentVehicle != null)
                 {
+                    Blip carBlip = firefighter.Pedestrian.CurrentVehicle.GetAttachedBlip();
+                    if (carBlip.Exists())
+                    {
+                        carBlip.Delete();
+                    }
                     firefighter.Pedestrian.CurrentVehicle.Delete();
                     EntryPoint.PersistentVehiclesDeleted++;
                 }

@@ -1175,12 +1175,12 @@ public class PopUpMenu
 
         List<PopUpBox> EnterSeatSubMenu = new List<PopUpBox>()
         {
-            new PopUpBox(0,"Driver", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,-1)),"Sit in the drivers seat"),
-            new PopUpBox(1,"Passenger", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,0)),"Sit in the passenger seat"),
-            new PopUpBox(2,"Left Rear", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,1)),"Sit in the left rear seat"),
-            new PopUpBox(3,"Right Rear", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,2)),"Sit in the right rear seat"),
-            new PopUpBox(4,"Seat Extra 1", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,3)),"Sit in the first extra seat"),
-            new PopUpBox(5,"Seat Extra 2", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,4)),"Sit in the second extra seat"),
+            new PopUpBox(0,"Driver", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,-1, false)),"Sit in the drivers seat"),
+            new PopUpBox(1,"Passenger", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,0, false)),"Sit in the passenger seat"),
+            new PopUpBox(2,"Left Rear", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,1, false)),"Sit in the left rear seat"),
+            new PopUpBox(3,"Right Rear", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,2, false)),"Sit in the right rear seat"),
+            new PopUpBox(4,"Seat Extra 1", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,3, false)),"Sit in the first extra seat"),
+            new PopUpBox(5,"Seat Extra 2", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,4, false)),"Sit in the second extra seat"),
         };
 
 

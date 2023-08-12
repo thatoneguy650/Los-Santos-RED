@@ -73,13 +73,12 @@ public class VehicleExporterInteraction : IContactMenuInteraction
             string Response = $"{vehicleItem.Name}~n~";
             foreach (VehicleExporter gl in PlacesOfInterest.PossibleLocations.VehicleExporters.Where(x=> x.ContactName == AnsweredContact.Name))
             {
-                MenuItem mi = gl.Menu.Items.FirstOrDefault(x => x.ModItemName == vehicleItem.Name);
-                if (mi == null)
+                string TextToShow = gl.GenerateTextItem(vehicleItem);
+                if (!string.IsNullOrEmpty(TextToShow))
                 {
-                    continue;
+                    foundMenuItem = true;
                 }
-                foundMenuItem = true;
-                Response += $"{gl.Name} - {mi.SalesPrice.ToString("C0")}~n~";
+                Response += TextToShow;
             }
             if(!foundMenuItem)
             {

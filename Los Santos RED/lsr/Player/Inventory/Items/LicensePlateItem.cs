@@ -28,7 +28,7 @@ public class LicensePlateItem : ModItem
     public override string DisplayDescription => LicensePlate == null ? Description : LicensePlate.GenerateDescription();
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
-        PlateTheft plateTheft = new PlateTheft(actionable, this, settings, world);
+        PlateTheft plateTheft = new PlateTheft(actionable, this, settings, world, actionable.ActivityManager.CurrentScrewdriver);
         if(plateTheft.CanPerform(actionable))
         {
             ModItem li = actionable.Inventory.Get(typeof(ScrewdriverItem))?.ModItem;

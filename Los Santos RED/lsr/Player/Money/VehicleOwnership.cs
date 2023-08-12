@@ -47,7 +47,7 @@ public class VehicleOwnership
         {
             car.ResetItems();
             car.RemoveOwnership();
-            car.RemoveOwnershipBlip();       
+            car.RemoveBlip();       
         }
         OwnedVehicles.Clear();
         //EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLEs CLEARED");
@@ -84,7 +84,7 @@ public class VehicleOwnership
             OwnedVehicles.Remove(toOwn);
         }
         toOwn.RemoveOwnership();
-        toOwn.RemoveOwnershipBlip();
+        toOwn.RemoveBlip();
         UpdateOwnedBlips();     
     }
     public void TakeOwnershipOfNearestCar()
@@ -138,7 +138,7 @@ public class VehicleOwnership
 
             if (Player.CurrentVehicle?.Handle == car.Handle || !Settings.SettingsManager.VehicleSettings.AttachOwnedVehicleBlips)
             {
-                car.RemoveOwnershipBlip();
+                car.RemoveBlip();
             }
             else if (Settings.SettingsManager.VehicleSettings.AttachOwnedVehicleBlips)
             {

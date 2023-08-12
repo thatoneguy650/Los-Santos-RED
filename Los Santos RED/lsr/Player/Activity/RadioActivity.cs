@@ -87,24 +87,18 @@ namespace LosSantosRED.lsr.Player
         {
             IsCancelled = true;
             Player.ActivityManager.IsPerformingActivity = false;
+            Player.ActivityManager.HasScannerOut = false;
         }
         public override void Pause()
         {
             Player.ActivityManager.IsPerformingActivity = false;
             Player.ActivityManager.AddPausedActivity(this);
             RemovePrompts();
-
-
-
-
             if(IsRaised)
             {
                 LowerRadio(false);
             }
             PutAwayItem();
-
-
-
             AttachItemToBelt();
             Dispose(false);
             isPaused = true;
@@ -279,7 +273,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void AttachItemToHand()
         {
-            CreateBinoculars();
+            CreateRadio();
             if (rageObject.Exists())
             {         
                 rageObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
@@ -291,7 +285,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void AttachItemToBelt()
         {
-            CreateBinoculars();
+            CreateRadio();
             if (rageObject.Exists())
             {
                 rageObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, BeltBoneName), BeltOffset, BeltRotator);
@@ -301,7 +295,7 @@ namespace LosSantosRED.lsr.Player
 
             }
         }
-        private void CreateBinoculars()
+        private void CreateRadio()
         {
             if (!rageObject.Exists() && PropModelName != "")
             {
@@ -379,11 +373,13 @@ namespace LosSantosRED.lsr.Player
             RemovePrompts();
             if (rageObject.Exists() && deleteObject)
             {
+                Player.ActivityManager.HasScannerOut = false;
                 rageObject.Delete();
             }
             //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.ActivityManager.IsPerformingActivity = false;
+            
         }
 
 
@@ -410,6 +406,7 @@ namespace LosSantosRED.lsr.Player
                     GameFiber.Yield();
                 }
                 Player.Scanner.ScannerBoostLevel = 1;
+                Player.ActivityManager.HasScannerOut = true;
                 //EntryPoint.WriteToConsoleTestLong("Take Out Radio End");
             }
         }

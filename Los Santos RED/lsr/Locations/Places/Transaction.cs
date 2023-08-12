@@ -26,6 +26,9 @@ public class Transaction
     public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
     public bool PreviewItems { get; set; } = true;
     public PersonTransaction PersonTransaction { get; set; }
+
+
+    public ItemDesires ItemDesires => PersonTransaction?.TransactionPed?.ItemDesires;// PersonTransaction?.TransactionPed?.ItemDesires != null ? PersonTransaction?.TransactionPed?.ItemDesires : Store.ItemDesires;
     public bool IsFreeVehicles { get; set; } = false;
     public bool IsFreeWeapons { get; set; } = false;
     public bool IsFreeItems { get; set; } = false;

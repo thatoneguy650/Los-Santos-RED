@@ -63,6 +63,11 @@ namespace LSR.Vehicles
         public LicensePlate CarPlate { get; set; }
         public LicensePlate OriginalLicensePlate { get; set; }
         public Gang AssociatedGang { get; set; }
+        public Agency AssociatedAgency { get; set; }
+
+        public virtual Color BlipColor => AssociatedAgency != null ? AssociatedAgency.Color : AssociatedGang != null ? AssociatedGang.Color : Color.White;
+        public virtual float BlipSize => AssociatedAgency != null ? 0.6f : 0.25f;
+
         public uint HasExistedFor => Game.GameTime - GameTimeSpawned;
         public uint HasBeenEmptyFor => Game.GameTime - GameTimeBecameEmpty;
         public uint GameTimeSpawned { get; set; }
@@ -968,7 +973,7 @@ namespace LSR.Vehicles
             IsMotorcycle = !isModelBicycle && isModelBike;
             GetOwnedBlipID();
         }
-        public void RemoveOwnershipBlip()
+        public void RemoveBlip()
         {
             if (!AttachedBlip.Exists() || !Vehicle.Exists())
             {
@@ -976,16 +981,6 @@ namespace LSR.Vehicles
             }
             AttachedBlip.Delete();
             AttachedBlip = null;
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: RemoveOwnershipBlip", 5);
-            //Blip attachedBlip = car.Vehicle.GetAttachedBlip();
-            //if (attachedBlip.Exists())
-            //{
-            //    attachedBlip.Delete();
-            //}
-            //if (car.AttachedBlip.Exists())
-            //{
-            //    car.AttachedBlip.Delete();
-            //}
         }
         public void AddOwnershipBlip()
         {
@@ -1247,6 +1242,19 @@ namespace LSR.Vehicles
             AttachedBlip.Color = Color.Blue;
             //EntryPoint.WriteToConsole($"PLAYER EVENT: AddOwnershipBlip", 5);
         }
+
+
+        public void AddBlip()
+        {
+            if (AttachedBlip.Exists() || !Vehicle.Exists())
+            {
+                return;
+            }
+            AttachedBlip = Vehicle.AttachBlip();
+            AttachedBlip.Scale = BlipSize;
+            AttachedBlip.Color = BlipColor;
+        }
+
         public void FullyDelete()
         {
             if(!Vehicle.Exists())

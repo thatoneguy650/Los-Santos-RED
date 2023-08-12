@@ -69,7 +69,6 @@ namespace LosSantosRED.lsr.Interface
         Agency AssignedAgency { get; }
         Gang CurrentGang { get; }
         bool IsServicePed { get; }
-        bool HasScrewdriverInHand { get; set; }
         PedExt CurrentLookedAtPed { get; }
 
         void DisplayPlayerNotification();

@@ -150,6 +150,7 @@ public class GameLocation : ILocationDispatchable
     public Rotator VehiclePreviewCameraRotation { get; set; }
     public SpawnPlace VehiclePreviewLocation { get; set; }
 
+
     [XmlIgnore]
     public bool IsActivated { get; set; } = false;
     [XmlIgnore]
@@ -205,7 +206,6 @@ public class GameLocation : ILocationDispatchable
     public bool HasInterior => InteriorID != -1;
     public bool HasBannerImage => BannerImagePath != "";
     public Interior Interior => interior;
-
     public virtual void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
         World = world;
@@ -303,6 +303,7 @@ public class GameLocation : ILocationDispatchable
             AssignedAgency = agencies.GetAgency(AssignedAssociationID);
         }
         Menu = shopMenus.GetSpecificMenu(MenuID);
+
         if (PossiblePedSpawns != null)
         {
             foreach (ConditionalLocation cl in PossiblePedSpawns)
@@ -364,7 +365,7 @@ public class GameLocation : ILocationDispatchable
     }
     public virtual void OnItemSold(ModItem modItem, MenuItem menuItem, int totalItems)
     {
-
+        //ItemDesires.OnItemsBoughtFromPlayer(modItem, totalItems);
     }
     public virtual bool CanCurrentlyInteract(ILocationInteractable player)
     {
@@ -373,7 +374,7 @@ public class GameLocation : ILocationDispatchable
     }
     public virtual void OnItemPurchased(ModItem modItem, MenuItem menuItem, int totalItems)
     {
-
+        //ItemDesires.OnItemsSoldToPlayer(modItem, totalItems);
     }
     public virtual void AddDistanceOffset(Vector3 offsetToAdd)
     {
@@ -802,7 +803,6 @@ public class GameLocation : ILocationDispatchable
         }
         return false;
     }
-
     public virtual void HighlightVehicle()
     {
         if (StoreCamera == null || VehiclePreviewLocation == null)
@@ -812,7 +812,6 @@ public class GameLocation : ILocationDispatchable
         StoreCamera.HighlightVehicle();
         //StoreCamera.HighlightPosition(VehiclePreviewLocation.Position, VehiclePreviewLocation.Heading);
     }
-
     public virtual void ReHighlightStore()
     {
         if (StoreCamera == null || VehiclePreviewLocation == null)

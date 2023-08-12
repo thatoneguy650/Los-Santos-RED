@@ -47,16 +47,67 @@ public class Settings : ISettingsProvideable
         IsBackendChanged = true;
         SettingsManager.SetDefault();
 
+        SettingsManager.VehicleSettings.InjureOnWindowBreak = false;
+
+
+        SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry = false;
+        SettingsManager.VehicleSettings.RequireScrewdriverForHotwire = false;
+
         SettingsManager.GangSettings.ShowSpawnedBlip = true;
         SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips = true;
         SettingsManager.EMSSettings.ShowSpawnedBlips = true;
 
         SettingsManager.GangSettings.ShowAmbientBlips = true;
+
+
+        SettingsManager.CriminalHistorySettings.RealTimeExpireWantedMultiplier = 500000;
+        SettingsManager.CriminalHistorySettings.CalendarTimeExpireWantedMultiplier = 8;
+
+
+
         SettingsManager.PoliceSettings.TalkFailFineAmount = 100;
 
         SettingsManager.RespawnSettings.ShowRequiredBribeAmount = true;
 
+        SettingsManager.RecoilSettings.ApplyRecoil = false;
+        SettingsManager.SwaySettings.ApplySway = false;
 
+        SettingsManager.RespawnSettings.RemoveWeaponsOnSurrender = false;
+
+
+        SettingsManager.RespawnSettings.HospitalStayDailyFee = 1000;
+        SettingsManager.RespawnSettings.HospitalStayMinDays = 1;
+        SettingsManager.RespawnSettings.HospitalStayMaxDays = 2;
+
+
+        SettingsManager.RespawnSettings.RemoveWeaponsOnDeath = false;
+
+
+        SettingsManager.RespawnSettings.DeductMoneyOnFailedBribe = false;
+        SettingsManager.RespawnSettings.PoliceBribeBase = 100;
+        SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale = 500;
+        SettingsManager.RespawnSettings.PoliceBribePoliceKilledMultiplier = 5000;
+        SettingsManager.RespawnSettings.PoliceBribePoliceInjuredMultiplier = 200;
+        SettingsManager.RespawnSettings.PoliceBailWantedLevelScale = 500;
+        SettingsManager.RespawnSettings.PoliceBailPoliceKilledMultiplier = 300;
+        SettingsManager.RespawnSettings.PoliceBailPoliceInjuredMultiplier = 150;
+        SettingsManager.RespawnSettings.PoliceBailCiviliansKilledMultiplier = 500;
+
+
+        SettingsManager.RespawnSettings.PoliceBailDurationPoliceKilledMultiplier = 2;
+        SettingsManager.RespawnSettings.PoliceBailDurationCiviliansKilledMultiplier = 1;
+        SettingsManager.RespawnSettings.ClearIllicitInventoryOnDeath = false;
+        SettingsManager.RespawnSettings.ClearIllicitInventoryOnSurrender = false;
+        SettingsManager.RespawnSettings.ShowRequiredBribeAmount = true;
+        SettingsManager.RespawnSettings.ImpoundVehicles = false;
+
+        SettingsManager.VehicleSettings.ForceFirstPersonOnVehicleDuck = false;
+        SettingsManager.VehicleSettings.UseCustomFuelSystem = false;
+        SettingsManager.VehicleSettings.LockVehiclePercentage = 30f;
+        SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckNoHeadlights = false;
+        SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedHeadlights = false;
+        SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedDoors = false;
+        SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedWindows = false;
 
 
 

@@ -57,6 +57,7 @@ public class VehicleItem : ModItem
     public override void Setup(PhysicalItems physicalItems, IWeapons weapons)
     {
         //ModelItem = new PhysicalItem(ModelItemID, Game.GetHashKey(ModelItemID), ePhysicalItemType.Vehicle);
+        ModelHash = ModelHash == 0 ? Game.GetHashKey(ModelName) : ModelHash;
         ModelItem = new PhysicalItem(ModelName, ModelHash == 0 ? Game.GetHashKey(ModelName) : ModelHash, ePhysicalItemType.Vehicle);
         MenuCategory = NativeHelper.VehicleClassName(Game.GetHashKey(ModelItem.ModelName));
     }

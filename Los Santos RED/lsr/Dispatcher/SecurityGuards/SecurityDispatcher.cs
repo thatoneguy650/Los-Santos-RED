@@ -185,6 +185,11 @@ public class SecurityDispatcher
                 }
                 if (pedExt.Pedestrian.Exists() && pedExt.Pedestrian.CurrentVehicle.Exists() && pedExt.Pedestrian.CurrentVehicle != null)
                 {
+                    Blip carBlip = pedExt.Pedestrian.CurrentVehicle.GetAttachedBlip();
+                    if (carBlip.Exists())
+                    {
+                        carBlip.Delete();
+                    }
                     pedExt.Pedestrian.CurrentVehicle.Delete();
                     EntryPoint.PersistentVehiclesDeleted++;
                 }

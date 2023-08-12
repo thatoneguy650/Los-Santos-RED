@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Forms;
 
 public class ActivityManager
 {
@@ -48,12 +48,21 @@ public class ActivityManager
     private DynamicActivity UpperBodyActivity;
     private ICameraControllable CameraControllable;
 
+    private bool canSeePoliceBlips = false;
+
 
 
     private MenuPool MenuPool;
     private UIMenu continueActivityMenu;
+    private uint GameTimeLastSetBlips;
 
     public bool IsUsingToolAsWeapon { get; set; }
+
+
+
+    public bool HasScrewdriverInHand { get; set; }
+    public ScrewdriverItem CurrentScrewdriver { get; set; }
+
 
 
     //DO I NEED ALL 3?
@@ -190,10 +199,19 @@ public class ActivityManager
     public DanceData LastDance { get; set; }
     public Interaction Interaction { get; private set; }
     public DynamicActivity Activity => UpperBodyActivity != null ? UpperBodyActivity : LowerBodyActivity;
-    public bool CanHearScanner => !Settings.SettingsManager.ScannerSettings.DisableScannerWithoutRadioItem || Player.Inventory.Has(typeof(RadioItem));
+
+
     public List<DynamicActivity> PausedActivites { get; set; } = new List<DynamicActivity>();
     public bool IsWavingHands { get; set; }
     public bool IsBuryingBody { get; set; }
+
+
+
+    public bool HasScannerOut { get; set; }
+    public bool CanHearScanner => !Settings.SettingsManager.ScannerSettings.DisableScannerWithoutRadioItem || Player.Inventory.Has(typeof(RadioItem));
+    public bool CanSeePoliceBlips => Settings.SettingsManager.ScannerSettings.ShowPoliceVehicleBlipsWithScanner && Player.Inventory.Has(typeof(RadioItem)) && (Player.IsInVehicle || HasScannerOut);
+
+
 
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
@@ -244,6 +262,25 @@ public class ActivityManager
     }
     public void Update()
     {
+
+        if(canSeePoliceBlips != CanSeePoliceBlips)
+        {
+            World.Vehicles.TogglePoliceVehicleBlips(CanSeePoliceBlips);
+
+
+
+            EntryPoint.WriteToConsole($"CanSeePoliceBlips changed to {CanSeePoliceBlips}");
+            canSeePoliceBlips = CanSeePoliceBlips;
+
+            
+        }
+
+
+        if(CanSeePoliceBlips && Game.GameTime - GameTimeLastSetBlips >= 1000)
+        {
+            World.Vehicles.TogglePoliceVehicleBlips(CanSeePoliceBlips);
+            GameTimeLastSetBlips = Game.GameTime;
+        }
 
     }
     public void Reset()
@@ -433,7 +470,7 @@ public class ActivityManager
             Game.DisplayHelp("Cancel existing activity to start");
             return;
         }
-        PlateTheft plateTheft = new PlateTheft(Actionable, Settings, World);
+        PlateTheft plateTheft = new PlateTheft(Actionable, Settings, World, CurrentScrewdriver);
         if(plateTheft.CanPerform(Actionable))
         {
             ModItem li = Player.Inventory.Get(typeof(ScrewdriverItem))?.ModItem;
@@ -442,8 +479,6 @@ public class ActivityManager
                 Game.DisplayHelp($"Need a ~r~Screwdriver~s~ to remove plates.");
                 return;
             }
-
-
             ForceCancelAllActive();
             IsPerformingActivity = true;
             LowerBodyActivity = plateTheft;
@@ -808,7 +843,7 @@ public class ActivityManager
         NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, toEnter.Vehicle, -1, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);
         WatchVehicleEntry(toEnter);
     }
-    public void EnterVehicleInSpecificSeat(bool withBlocking, int seatIndex)
+    public void EnterVehicleInSpecificSeat(bool withBlocking, int seatIndex, bool addFriendly)
     {
         VehicleExt toEnter = GetInterestedVehicle();
         if (toEnter == null || !toEnter.Vehicle.Exists() || !toEnter.Vehicle.IsSeatFree(seatIndex))
@@ -827,7 +862,10 @@ public class ActivityManager
                 }
             }
         }
-        Player.LastFriendlyVehicle = toEnter.Vehicle;
+        if (addFriendly)
+        {
+            Player.LastFriendlyVehicle = toEnter.Vehicle;
+        }
         NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, toEnter.Vehicle, -1, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);
         WatchVehicleEntry(toEnter);
     }
@@ -1230,6 +1268,49 @@ public class ActivityManager
         AnimationDictionary.RequestAnimationDictionay("mp_common");
         string animation = isTaking ? "givetake1_b" : "givetake1_a";
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", animation, 1.0f, -1.0f, 5000, (int)(AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);
+    }
+
+
+
+
+    public Rage.Object AttachScrewdriverToPed(ModItem screwdriverItem, bool allowGeneric)
+    {
+        Rage.Object Screwdriver = null;
+        try
+        {
+            ModItem ScrewDriverItem = screwdriverItem;
+            if(ScrewDriverItem == null)
+            {
+                ScrewDriverItem = Player.Inventory.Get(typeof(ScrewdriverItem))?.ModItem;
+            }
+            if (ScrewDriverItem == null && allowGeneric)
+            {
+                ScrewDriverItem = ModItems.PossibleItems.ScrewdriverItems.FirstOrDefault();
+            }
+            Screwdriver = new Rage.Object(ScrewDriverItem.ModelItem.ModelName, Player.Character.GetOffsetPositionUp(50f));
+            if (Screwdriver.Exists())
+            {
+                PropAttachment pa = ScrewDriverItem.ModelItem.Attachments.FirstOrDefault(x => x.Name == "RightHand");
+                if (pa != null)
+                {
+                    Screwdriver.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, pa.BoneName), pa.Attachment, pa.Rotation);
+                }
+                else
+                {
+                    Screwdriver.Delete();
+                }
+            }
+            return Screwdriver;
+        }
+        catch (Exception ex)
+        {
+            return Screwdriver;
+        }
+    }
+
+    public void EnterVehicleGeneric()
+    {
+        NativeFunction.Natives.SET_CONTROL_VALUE_NEXT_FRAME<bool>(0, (int)GameControl.Enter, 1.0f);
     }
 }
 

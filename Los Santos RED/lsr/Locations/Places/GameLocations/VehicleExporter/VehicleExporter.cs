@@ -13,14 +13,17 @@ using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Xml.Serialization;
+using static System.Net.Mime.MediaTypeNames;
 
 public class VehicleExporter : GameLocation
 {
     private UIMenu ExportSubMenu;
     private bool HasExported;
     private UIMenu ExportListSubMenu;
-    private List<Tuple<UIMenuItem, VehicleExt>> MenuLookups = new List<Tuple<UIMenuItem, VehicleExt>>();
+    private List<MenuVehicleMap> MenuLookups = new List<MenuVehicleMap>();
+    private List<ExportedVehicle> ExportedVehicles = new List<ExportedVehicle>();
     public VehicleExporter() : base()
     {
 
@@ -34,6 +37,7 @@ public class VehicleExporter : GameLocation
     public int BodyDamageLimit { get; set; } = 200;
     public int EngineDamageLimit { get; set; } = 200;
     public string ContactName { get; set; } = "";
+    public int HoursBetweenExports { get; set; } = 3;
     public VehicleExporter(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string _Menu) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = _Menu;
@@ -72,9 +76,9 @@ public class VehicleExporter : GameLocation
 
                     ProcessInteractionMenu();
 
-                    if (HasExported && ContactName == StaticStrings.VehicleExporter)
+                    if (HasExported)
                     {
-                        Player.CellPhone.AddContact(new VehicleExporterContact(StaticStrings.VehicleExporter), true);
+                        Player.CellPhone.AddContact(new VehicleExporterContact(ContactName), true);
                     }
 
                     DisposeInteractionMenu();
@@ -114,12 +118,7 @@ public class VehicleExporter : GameLocation
             ExportListSubMenu.SetBannerType(BannerImage);
         }
         AddPriceListItems(ExportListSubMenu);
-
-
-
         MenuLookups.Clear();
-
-
         ExportSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Export A Vehicle");
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Select a vehicle to export.";
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Car;
@@ -128,13 +127,9 @@ public class VehicleExporter : GameLocation
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
             ExportSubMenu.SetBannerType(BannerImage);
         }
-
-
         ExportSubMenu.OnIndexChange += ExportSubMenu_OnIndexChange;
         ExportSubMenu.OnMenuOpen += ExportSubMenu_OnMenuOpen;
         ExportSubMenu.OnMenuClose += ExportSubMenu_OnMenuClose;
-
-
         foreach (VehicleExt veh in World.Vehicles.AllVehicleList)
         {
             if (!IsValidForExporting(veh))
@@ -142,6 +137,10 @@ public class VehicleExporter : GameLocation
                 continue;
             }
             VehicleItem vehicleItem = ModItems.GetVehicle(veh.Vehicle.Model.Name);
+            if (vehicleItem == null)
+            {
+                vehicleItem = ModItems.GetVehicle(veh.Vehicle.Model.Hash);
+            }
             if (vehicleItem == null)
             {
                 continue;
@@ -156,17 +155,29 @@ public class VehicleExporter : GameLocation
                 CanExport = true;
                 ExportAmount = menuItem.SalesPrice;
             }
+
+
+            ExportedVehicle exportedStats = ExportedVehicles.FirstOrDefault(x => x.MenuItem.ModItemName == menuItem.ModItemName);
+            string TimeBeforeExportAllowed = "";
+            bool hasTimeRestriction = false; 
+            if(exportedStats != null)
+            {
+                TimeBeforeExportAllowed = exportedStats.TimeLastExported.AddHours(HoursBetweenExports).ToString("dd MMM yyyy hh:mm tt");
+                if (DateTime.Compare(Time.CurrentDateTime,exportedStats.TimeLastExported.AddHours(HoursBetweenExports)) < 0)//DateTime.Compare(Time.CurrentDateTime, residence.DateRentalPaymentDue) >= 0
+                {
+                    CanExport = false;
+                }
+                hasTimeRestriction = true;    
+            }
+
+
             if(veh.Vehicle.Health <= veh.Vehicle.MaxHealth - BodyDamageLimit || veh.Vehicle.EngineHealth <= veh.Vehicle.EngineHealth - EngineDamageLimit)
             {
                 IsDamaged = true;
                 CanExport = false;
             }
             UIMenuItem vehicleCrusherItem = new UIMenuItem(CarName, veh.GetCarDescription()) { RightLabel = ExportAmount.ToString("C0") };
-
-
-            MenuLookups.Add(new Tuple<UIMenuItem,VehicleExt>(vehicleCrusherItem, veh));
-
-
+            MenuLookups.Add(new MenuVehicleMap(menuItem,vehicleCrusherItem, veh));
             if (!CanExport)
             {
                 vehicleCrusherItem.Enabled = false;
@@ -176,9 +187,13 @@ public class VehicleExporter : GameLocation
             {
                 vehicleCrusherItem.Description += "~n~~r~TOO DAMAGED TO EXPORT~s~";
             }
+            if(hasTimeRestriction && !CanExport)
+            {
+                vehicleCrusherItem.Description += $"~n~Next Available Drop Off: {TimeBeforeExportAllowed}";
+            }
             vehicleCrusherItem.Activated += (sender, e) =>
             {
-                ExportVehicle(veh, 1 * ExportAmount);
+                ExportVehicle(veh, 1 * ExportAmount, menuItem, vehicleCrusherItem);
             };
 
             ExportSubMenu.AddItem(vehicleCrusherItem);
@@ -199,35 +214,14 @@ public class VehicleExporter : GameLocation
             return;
         }
         UIMenuItem coolmen = sender.MenuItems[newIndex];
-        Tuple<UIMenuItem,VehicleExt> lookupTuple = MenuLookups.FirstOrDefault(x=> x.Item1 == coolmen);
-        if(lookupTuple == null || lookupTuple.Item2 == null || !lookupTuple.Item2.Vehicle.Exists())
+        MenuVehicleMap lookupTuple = MenuLookups.FirstOrDefault(x=> x.UIMenuItem == coolmen);
+        if(lookupTuple == null || lookupTuple.VehicleExt == null || !lookupTuple.VehicleExt.Vehicle.Exists())
         {
             return;
         }
-        StoreCamera.HighlightEntity(lookupTuple.Item2.Vehicle);        
+        StoreCamera.HighlightEntity(lookupTuple.VehicleExt.Vehicle);        
     }
-
-
-    //private VehicleExt GetVehicle(string menuEntry)
-    //{
-    //    VehicleExt carToExport = null;
-    //    foreach (VehicleExt veh in World.Vehicles.AllVehicleList)
-    //    {
-    //        if (!IsValidForExporting(veh))
-    //        {
-    //            continue;
-    //        }
-    //        string CarName = veh.GetCarName();
-    //        if (menuEntry == CarName)
-    //        {
-    //            carToExport = veh;
-    //        }
-
-    //    }
-    //    return carToExport;
-    //}
-
-    private void ExportVehicle(VehicleExt toExport, int Price)
+    private void ExportVehicle(VehicleExt toExport, int Price, MenuItem menuItem, UIMenuItem vehicleCrusherItem)
     {
         if (toExport == null || !toExport.Vehicle.Exists() || toExport.VehicleBodyManager.StoredBodies.Any() || toExport.Vehicle.HasOccupants || !toExport.HasBeenEnteredByPlayer)
         {
@@ -237,18 +231,33 @@ public class VehicleExporter : GameLocation
         }
         Game.FadeScreenOut(1000, true);
         string CarName = toExport.GetCarName();
-        toExport.WasCrushed = true;
+       // toExport.WasCrushed = true;
         toExport.Vehicle.Delete();
-        ExportSubMenu.MenuItems.RemoveAll(x => x.Text == CarName);
+        ExportSubMenu.MenuItems.Remove(vehicleCrusherItem);
         ExportSubMenu.RefreshIndex();
         ExportSubMenu.Close(true);
         Game.FadeScreenIn(1000, true);
         Player.BankAccounts.GiveMoney(Price);
         PlaySuccessSound();
-        DisplayMessage("~g~Exported", $"Thank you for exporting a ~p~{CarName}~s~ at ~y~{Name}~s~");
+        DisplayMessage("~g~Exported", $"Thank you for exporting ~p~{CarName}~s~ at ~y~{Name}~s~");
         HasExported = true;
+        AddToExportedList(menuItem);
+        UpdateMenuRestrictions();
     }
-
+    private void AddToExportedList(MenuItem menuItem)
+    {
+        ExportedVehicle current = ExportedVehicles.Where(x => x.MenuItem.ModItemName == menuItem.ModItemName).FirstOrDefault();
+        if(current == null)
+        {
+            current = new ExportedVehicle(menuItem, 1, Time.CurrentDateTime);
+            ExportedVehicles.Add(current);
+        }
+        else
+        {
+            current.TimeLastExported = Time.CurrentDateTime;
+            current.TotalExports++;
+        }
+    }
     private bool IsValidForExporting(VehicleExt toExport)
     {
         if (!toExport.Vehicle.Exists() || toExport.Vehicle.DistanceTo2D(EntrancePosition) > VehiclePickupDistance || toExport.VehicleBodyManager.StoredBodies.Any() || toExport.Vehicle.HasOccupants || !toExport.HasBeenEnteredByPlayer)
@@ -256,6 +265,48 @@ public class VehicleExporter : GameLocation
             return false;
         }
         return true;
+    }
+    private void UpdateMenuRestrictions()
+    {
+        foreach(MenuVehicleMap test in MenuLookups)
+        {
+            bool CanExport = true;
+            ExportedVehicle exportedStats = ExportedVehicles.FirstOrDefault(x => x.MenuItem.ModItemName == test.MenuItem.ModItemName);
+            string TimeBeforeExportAllowed = exportedStats.TimeLastExported.AddHours(HoursBetweenExports).ToString("dd MMM yyyy hh:mm tt");
+            if (exportedStats != null && DateTime.Compare(Time.CurrentDateTime, exportedStats.TimeLastExported.AddHours(HoursBetweenExports)) < 0)
+            {
+                CanExport = false;
+            }
+            if (!CanExport && test.UIMenuItem.Enabled)
+            {
+                test.UIMenuItem.Enabled = false;
+                test.UIMenuItem.Description += $"~n~Next Export Time: {TimeBeforeExportAllowed}";
+            }
+        }
+    }
+
+    public string GenerateTextItem(VehicleItem vehicleItem)
+    {
+        MenuItem mi = Menu.Items.FirstOrDefault(x => x.ModItemName == vehicleItem.Name);
+        if (mi == null)
+        {
+            return "";
+        }
+        bool CanExport = true;
+        ExportedVehicle exportedStats = ExportedVehicles.FirstOrDefault(x => x.MenuItem.ModItemName == vehicleItem.Name);
+        string TimeBeforeExportAllowed = "";
+        if (exportedStats != null && DateTime.Compare(Time.CurrentDateTime, exportedStats.TimeLastExported.AddHours(HoursBetweenExports)) < 0)
+        {
+            CanExport = false;
+            TimeBeforeExportAllowed = exportedStats.TimeLastExported.AddHours(HoursBetweenExports).ToString("hh:mm tt");
+        } 
+        string finalString = $"{Name} - {mi.SalesPrice.ToString("C0")}";
+        if(!CanExport)
+        {
+            finalString += $" - ~r~Next Export Time: {TimeBeforeExportAllowed}~s~";
+        }
+        finalString += "~n~";
+        return finalString;
     }
 }
 

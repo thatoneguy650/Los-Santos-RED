@@ -19,8 +19,8 @@ namespace Mod
 {
     public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable,
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherAnnounceable,
-                          IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable, 
-                          ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable, IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable, 
+                          IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable,
+                          ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable, IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable,
                           IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable, IRestrictedAreaManagable
     {
         public int UpdateState = 0;
@@ -90,7 +90,7 @@ namespace Mod
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
-            , IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats, IAgencies agencies,ISavedOutfits savedOutfits, IVehicleSeatAndDoorLookup vehicleSeatDoorData)
+            , IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats, IAgencies agencies, ISavedOutfits savedOutfits, IVehicleSeatAndDoorLookup vehicleSeatDoorData)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -112,7 +112,7 @@ namespace Mod
             Names = names;
             Seats = seats;
             Agencies = agencies;
-            VehicleSeatDoorData= vehicleSeatDoorData;
+            VehicleSeatDoorData = vehicleSeatDoorData;
             Scanner = new Scanner(provider, this, audio, secondaryAudio, Settings, TimeControllable, PlacesOfInterest);
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName, "Person", World), Settings, true);
             if (CharacterModelIsFreeMode)
@@ -144,9 +144,9 @@ namespace Mod
             Stance = new Stance(this, Settings);
             WeaponEquipment = new WeaponEquipment(this, this, Weapons, Settings, this, this, this);
             GPSManager = new GPSManager(this, World);
-            VehicleOwnership = new VehicleOwnership(this,World, Settings);
+            VehicleOwnership = new VehicleOwnership(this, World, Settings);
             BankAccounts = new BankAccounts(this, Settings);
-            ActivityManager = new ActivityManager(this,settings,this,this,this, this, this,TimeControllable,RadioStations,Crimes,ModItems,Dances,World,Intoxicants,this,Speeches,Seats,Weapons, PlacesOfInterest, Zones, shopMenus, gangs, gangTerritories, VehicleSeatDoorData);
+            ActivityManager = new ActivityManager(this, settings, this, this, this, this, this, TimeControllable, RadioStations, Crimes, ModItems, Dances, World, Intoxicants, this, Speeches, Seats, Weapons, PlacesOfInterest, Zones, shopMenus, gangs, gangTerritories, VehicleSeatDoorData);
             HealthManager = new HealthManager(this, Settings);
             ArmorManager = new ArmorManager(this, settings);
             GroupManager = new GroupManager(this, this, Settings, World, gangs, Weapons);
@@ -375,7 +375,7 @@ namespace Mod
         public Vehicle LastFriendlyVehicle { get; set; }
         public int LastSeatIndex => -1;
         public string ModelName { get; set; }
-        public bool HasScrewdriverInHand { get; set; }
+
         public Ped Pedestrian => Game.LocalPlayer.Character;
         public bool PoliceLastSeenOnFoot { get; set; }
         public Vector3 PlacePolicePhysicallyLastSeenPlayer { get; set; }
@@ -1147,10 +1147,10 @@ namespace Mod
                 CurrentVehicle.AttemptToLock();
             }
             HandleScrewdriver();
-            if ((IsNotHoldingEnter || HasScrewdriverInHand) && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && (!Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry || currentlyHasScrewdriver))//no driver && Unlocked
+            if ((IsNotHoldingEnter || ActivityManager.HasScrewdriverInHand) && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && (!Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry || currentlyHasScrewdriver))//no driver && Unlocked
             {
                 EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick Start", 3);
-                CarLockPick MyLockPick = new CarLockPick(this, VehicleTryingToEnter, SeatTryingToEnter);
+                CarLockPick MyLockPick = new CarLockPick(this, VehicleTryingToEnter, SeatTryingToEnter, ActivityManager.CurrentScrewdriver);
                 MyLockPick.PickLock();
             }
             else if (IsNotHoldingEnter && SeatTryingToEnter == -1 && VehicleTryingToEnter.Driver != null && VehicleTryingToEnter.Driver.IsAlive) //Driver
@@ -1183,40 +1183,34 @@ namespace Mod
             }
             else if (!Settings.SettingsManager.VehicleSettings.AllowLockVehicles)
             {
-                //EntryPoint.WriteToConsole($"IsFreeToEnter: Disallow Lock");
                 CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
                 return true;
             }
             else if (VehicleOwnership.OwnedVehicles.Any(x => CurrentVehicle.Vehicle.Exists() && x.Handle == CurrentVehicle.Handle))
             {
-                //EntryPoint.WriteToConsole($"IsFreeToEnter: Owned Vehicle");
                 CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
                 return true;
             }
             else if (CurrentVehicle.Vehicle.Exists() && LastFriendlyVehicle.Exists() && CurrentVehicle.Vehicle.Handle == LastFriendlyVehicle.Handle)
             {
-                //EntryPoint.WriteToConsole($"IsFreeToEnter: Last Friendly");
                 CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
                 return true;
             }
             else if (CurrentVehicle.WasModSpawned && (CurrentVehicle.IsService || CurrentVehicle.IsGang) && CurrentVehicle.Vehicle.Exists())//maybe unlock friendly gang vehicles?maybe not
             {
-                EntryPoint.WriteToConsole($"IsFreeToEnter: FALSE SERVICE OR GANG, SET LOCKED");
                 return false;
             }
             else if (!CurrentVehicle.WasModSpawned && !Settings.SettingsManager.VehicleSettings.AllowLockMissionVehicles && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent)
             {
-                //EntryPoint.WriteToConsole($"IsFreeToEnter: Mission Lock");
                 CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
                 return true;
             }
-            else if (CurrentVehicle.Vehicle.Exists() && !CurrentVehicle.IsRandomlyLocked)// RandomItems.RandomPercent(Settings.SettingsManager.VehicleSettings.LockVehiclePercentage))
+            else if (CurrentVehicle.Vehicle.Exists() && !CurrentVehicle.IsRandomlyLocked)
             {
-                //EntryPoint.WriteToConsole($"IsFreeToEnter: Percentage Unlock");
                 CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
                 return true;
@@ -1225,8 +1219,7 @@ namespace Mod
         }
         private void HandleScrewdriver()
         {
-            currentlyHasScrewdriver = Inventory.Has(typeof(ScrewdriverItem)); //Inventory.HasTool(ToolTypes.Screwdriver);
-
+            currentlyHasScrewdriver = ActivityManager.HasScrewdriverInHand || Inventory.Has(typeof(ScrewdriverItem)); //Inventory.HasTool(ToolTypes.Screwdriver);
             if (Settings.SettingsManager.VehicleSettings.RequireScrewdriverForHotwire)
             {
                 if (CurrentVehicle.Vehicle.MustBeHotwired)
@@ -1240,7 +1233,6 @@ namespace Mod
                     CurrentVehicle.Vehicle.MustBeHotwired = true;
                 }
             }
-
             if (Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry && !currentlyHasScrewdriver && IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)
             {
                 Game.DisplayHelp("Screwdriver required to lockpick");

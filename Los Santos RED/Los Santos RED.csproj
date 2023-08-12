@@ -199,6 +199,8 @@
     <Compile Include="lsr\Locations\Places\GameLocations\City Hall\LicenseTest.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Forger\Forger.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\PayNSpray\RepairGarage.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\VehicleExporter\ExportedVehicle.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\VehicleExporter\MenuVehicleMap.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleExporter\VehicleExporter.cs" />
     <Compile Include="lsr\Locations\Places\ILicensePlatePreviewable.cs" />
     <Compile Include="lsr\Locations\Places\ILocationImpoundable.cs" />
@@ -239,7 +241,7 @@
     <Compile Include="lsr\Ped\GangMember\GangDog.cs" />
     <Compile Include="lsr\Ped\GangMember\ReputationReport.cs" />
     <Compile Include="lsr\Ped\Alerts\PedAlerts.cs" />
-    <Compile Include="lsr\Ped\PedDesires.cs" />
+    <Compile Include="lsr\Ped\ItemDesires.cs" />
     <Compile Include="lsr\Ped\PedReaction.cs" />
     <Compile Include="lsr\Ped\ReactionTier.cs" />
     <Compile Include="lsr\Ped\SecurityGuard\SecurityDog.cs" />

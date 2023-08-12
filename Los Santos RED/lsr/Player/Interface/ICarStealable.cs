@@ -20,5 +20,6 @@ namespace LosSantosRED.lsr.Interface
         void ShootAt(Vector3 targetCoordinate);
         Ped Character { get; }
         Inventory Inventory { get; }
+        ActivityManager ActivityManager { get; }
     }
 }

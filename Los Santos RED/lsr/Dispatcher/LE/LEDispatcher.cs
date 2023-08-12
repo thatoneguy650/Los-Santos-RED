@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices.ComTypes;
 
 public class LEDispatcher
 {
@@ -957,6 +958,11 @@ public class LEDispatcher
                 }
                 if (Cop.Pedestrian.Exists() && Cop.Pedestrian.CurrentVehicle.Exists() && Cop.Pedestrian.CurrentVehicle != null)
                 {
+                    Blip carBlip = Cop.Pedestrian.CurrentVehicle.GetAttachedBlip();
+                    if (carBlip.Exists())
+                    {
+                        carBlip.Delete();
+                    }
                     Cop.Pedestrian.CurrentVehicle.Delete();
                     EntryPoint.PersistentVehiclesDeleted++;
                     GameFiber.Yield();

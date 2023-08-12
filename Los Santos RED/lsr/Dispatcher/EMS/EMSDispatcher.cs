@@ -358,6 +358,11 @@ public class EMSDispatcher
                 }
                 if (emt.Pedestrian.Exists() && emt.Pedestrian.CurrentVehicle.Exists() && emt.Pedestrian.CurrentVehicle != null)
                 {
+                    Blip carBlip = emt.Pedestrian.CurrentVehicle.GetAttachedBlip();
+                    if (carBlip.Exists())
+                    {
+                        carBlip.Delete();
+                    }
                     emt.Pedestrian.CurrentVehicle.Delete();
                     EntryPoint.PersistentVehiclesDeleted++;
                 }

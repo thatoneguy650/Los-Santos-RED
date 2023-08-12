@@ -6,16 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class PedDesires
+public class ItemDesires
 {
-    private PedExt PedExt;
-    private ISettingsProvideable Settings;
-
     public List<DesiredItem> DesiredItems { get; set; } = new List<DesiredItem>();
-    public PedDesires(PedExt pedExt, ISettingsProvideable settings)
+    public ItemDesires()
     {
-        PedExt = pedExt;
-        Settings = settings;
+
     }
     public void AddDesiredItem(ShopMenu shopMenu)
     {

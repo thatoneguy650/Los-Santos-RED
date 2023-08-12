@@ -2,6 +2,7 @@
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
+using Mod;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -9,6 +10,7 @@ using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Xml.Linq;
 
 public class PurchaseMenu : ModUIMenu
@@ -96,6 +98,13 @@ public class PurchaseMenu : ModUIMenu
         }
         purchaseMenu.Clear();
         CreateCategories();
+
+        foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Purchaseable).OrderByDescending(x => x.PurchasePrice).ThenBy(x => x.ModItemName))
+        {
+            cii.ModItem.ClearPurchaseItems();
+        }
+
+
         foreach (MenuItem cii in ShopMenu.Items.Where(x=> x.Purchaseable).OrderByDescending(x=> x.PurchasePrice).ThenBy(x=> x.ModItemName))
         {
             //EntryPoint.WriteToConsoleTestLong($"PURCHASE MENU ADD ITEM {cii.ModItemName} Purchaseable:{cii.Purchaseable} PurchasePrice {cii.PurchasePrice} NumberOfItemsToSellToPlayer:{cii.NumberOfItemsToSellToPlayer} NumberOfItemsToPurchaseFromPlayer:{cii.NumberOfItemsToPurchaseFromPlayer}");
@@ -257,6 +266,10 @@ public class PurchaseMenu : ModUIMenu
     }
     public void OnItemSold(MenuItem menuItem)
     {
-        menuItem.ModItem.UpdatePurchaseMenuItem(Transaction, menuItem, Settings, Player, Transaction.IsStealing);
+        foreach (MenuItem menuToUpdate in menuItem.ModItem.menusToUpdate)
+        {
+            menuItem.ModItem.UpdatePurchaseMenuItem(Transaction, menuToUpdate, Settings, Player, Transaction.IsStealing);
+        }
+        //menuItem.ModItem.UpdatePurchaseMenuItem(Transaction, menuItem, Settings, Player, Transaction.IsStealing);
     }
 }

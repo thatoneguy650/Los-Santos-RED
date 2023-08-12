@@ -13,6 +13,7 @@ using System.Runtime;
 using static DispatchScannerFiles;
 using LosSantosRED.lsr.Player;
 using System.ComponentModel;
+using System.Collections.Generic;
 
 [Serializable()]
 [XmlInclude(typeof(ClothingItem))]
@@ -44,7 +45,11 @@ using System.ComponentModel;
 public class ModItem
 {
     private UIMenuNumericScrollerItem<int> sellScroller;
-    private UIMenuNumericScrollerItem<int> purchaseScroller;
+    // private UIMenuNumericScrollerItem<int> purchaseScroller;
+
+
+
+    public List<MenuItem> menusToUpdate { get; private set; } = new List<MenuItem>();
     private UIMenuNumericScrollerItem<int> takeScroller;
     private UIMenu inventoryItemSubMenu;
     private UIMenuItem inventoryItemSubMenuItem;
@@ -173,7 +178,7 @@ public class ModItem
         int itemsBoughtFromPlayer = 0;
         if (menuItem.NumberOfItemsToPurchaseFromPlayer != -1)
         {
-            DesiredItem di = Transaction.PersonTransaction?.TransactionPed?.PedDesires.Get(this);
+            DesiredItem di = Transaction.ItemDesires?.Get(this);
             if(di != null)
             {
                 itemsBoughtFromPlayer = di.ItemsBoughtFromPlayer;
@@ -253,26 +258,35 @@ public class ModItem
         {
             maxscroller = 1;
         }
-        purchaseScroller = new UIMenuNumericScrollerItem<int>(menuItem.ModItemName, "", 1, maxscroller, 1)
+
+        maxscroller = menuItem.MaximumPurchaseAmount;
+
+        UIMenuNumericScrollerItem<int>  purchaseScroller = new UIMenuNumericScrollerItem<int>(menuItem.ModItemName, "", menuItem.MinimumPurchaseAmount, maxscroller, menuItem.PurchaseIncrement)
         {
             Formatter = v => $"{(v == 1 && MeasurementName == "Item" ? "" : v.ToString() + " ")}" +
             $"{(MeasurementName != "Item" || v > 1 ? MeasurementName : "")}" +
             $"{(v > 1 ? "(s)" : "")}" +
             $"{(MeasurementName != "Item" || v > 1 ? " - " : "")}" +
             $"{(menuItem.PurchasePrice == 0 ? "" : $"${(v * menuItem.PurchasePrice)}")}",
-            Value = 1
+            Value = menuItem.MinimumPurchaseAmount
         };
+        menuItem.PurchaseScroller = purchaseScroller;
+
+        menusToUpdate.Add(menuItem);
+
         UpdatePurchaseMenuItem(Transaction, menuItem, settings, player, isStealing);
         purchaseScroller.Activated += (sender,selectedItem) =>
         {
             PurchaseItem(Transaction, player, menuItem, purchaseScroller.Value, isStealing);
-            UpdatePurchaseMenuItem(Transaction, menuItem, settings, player, isStealing);
+            foreach (MenuItem menuToUpdate in menusToUpdate)
+            {
+                UpdatePurchaseMenuItem(Transaction, menuToUpdate, settings, player, isStealing);
+            }
         };
         UIMenu CategoryMenu = purchaseMenu.Children.Where(x => x.Value.SubtitleText == MenuCategory).FirstOrDefault().Value;
         if (CategoryMenu != null)
         {
             CategoryMenu.AddItem(purchaseScroller);
-
         }
         else
         {
@@ -281,7 +295,7 @@ public class ModItem
     }
     public void UpdatePurchaseMenuItem(Transaction Transaction, MenuItem menuItem, ISettingsProvideable settings, ILocationInteractable player, bool isStealing)
     {
-        if (menuItem != null && purchaseScroller != null)
+        if (menuItem != null && menuItem.PurchaseScroller != null)
         {
             InventoryItem PlayerInventoryItem = player.Inventory.ItemsList.Where(x => x.ModItem.Name == menuItem.ModItemName).FirstOrDefault();
             int PlayerItems = 0;
@@ -314,12 +328,12 @@ public class ModItem
             description += PurchaseMenuDescription(settings);
 
             bool enabled = true;
-            int RemainingToBuy = 10;
+            int RemainingToBuy = menuItem.MaximumPurchaseAmount;// 10;
             int MaxBuy = 10;
             int itemsSoldToPlayer = 0;
             if (menuItem.NumberOfItemsToSellToPlayer != -1)
             {
-                DesiredItem di = Transaction.PersonTransaction?.TransactionPed?.PedDesires.Get(this);
+                DesiredItem di = Transaction.ItemDesires?.Get(this);
                 if (di != null)
                 {
                     itemsSoldToPlayer = di.ItemsSoldToPlayer;
@@ -345,13 +359,13 @@ public class ModItem
             { 
                 description += $"~n~Player Inventory: {PlayerItems}~s~ {MeasurementName}(s)";
             }
-            if (purchaseScroller == null)
+            if (menuItem.PurchaseScroller == null)
             {
                 return;
             }
-            purchaseScroller.Maximum = RemainingToBuy;
-            purchaseScroller.Enabled = enabled;
-            purchaseScroller.Description = description;
+            menuItem.PurchaseScroller.Maximum = RemainingToBuy;
+            menuItem.PurchaseScroller.Enabled = enabled;
+            menuItem.PurchaseScroller.Description = description;
             //EntryPoint.WriteToConsoleTestLong($"PURCHASE Item: {Name} formattedPurchasePrice {formattedPurchasePrice} NumberOfItemsToSellToPlayer: {menuItem.NumberOfItemsToSellToPlayer} ItemsSoldToPlayer {itemsSoldToPlayer}");
         }
     }
@@ -577,6 +591,11 @@ public class ModItem
             gameLocation.DisplayMessage("~g~Sale", $"You have sold your {ItemSubType}.");
         };
         sellPlateSubMenu.AddItem(MenuItem);
+    }
+
+    public void ClearPurchaseItems()
+    {
+        menusToUpdate.Clear();
     }
 }
 

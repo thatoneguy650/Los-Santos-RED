@@ -27,6 +27,7 @@ public class LocationCamera
     private float PlayerHeading = 0f;
     private Vector3 PlayerPosition;
     private ISettingsProvideable Settings;
+    private Entity currentHighlightedEntity;
 
     private Vector3 CurrentFocusPosition;
 
@@ -151,6 +152,12 @@ public class LocationCamera
     {
         if (toHighlight.Exists())//will freeze on the second camera movement
         {
+            //if(currentHighlightedEntity.Exists() && toHighlight.Handle == currentHighlightedEntity.Handle)
+            //{
+
+            //}
+
+
             if (!StoreCam.Exists())
             {
                 StoreCam = new Camera(false);

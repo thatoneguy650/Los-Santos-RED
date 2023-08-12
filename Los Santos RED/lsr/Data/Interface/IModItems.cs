@@ -18,5 +18,6 @@ namespace LosSantosRED.lsr.Interface
         void WriteToFile();
         WeaponItem GetRandomWeapon(bool allowIllegal);
         VehicleItem GetVehicle(string modelName);
+        VehicleItem GetVehicle(uint modelHash);
     }
 }

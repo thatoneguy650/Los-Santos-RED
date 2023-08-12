@@ -56,7 +56,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         PedReactions = new PedReactions(this);
         PedInventory = new SimpleInventory(Settings);
         PedBrain = new PedBrain(this, settings, world, weapons);
-        PedDesires = new PedDesires(this, settings);
+        ItemDesires = new ItemDesires();
         PedAlerts = new PedAlerts(this,settings);
         //PedKnowledge = new PedKnowledge(this, settings);
         IsTrustingOfPlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageTrustingOfPlayer);
@@ -71,7 +71,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public PedReactions PedReactions { get; set; }
     public SimpleInventory PedInventory { get; private set; }
     public PedBrain PedBrain { get; set; }
-    public PedDesires PedDesires { get; private set; }
+    public ItemDesires ItemDesires { get; private set; }
     public PedAlerts PedAlerts { get; private set; }
     public uint ArrestingPedHandle { get; set; } = 0;
     public List<Cop> AssignedCops { get; set; } = new List<Cop>();
@@ -842,11 +842,11 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public virtual void OnItemPurchased(ILocationInteractable player, ModItem modItem, int numberPurchased, int moneySpent)
     {
-        PedDesires.OnItemsSoldToPlayer(modItem, numberPurchased);
+        ItemDesires.OnItemsSoldToPlayer(modItem, numberPurchased);
     }
     public virtual void OnItemSold(ILocationInteractable player, ModItem modItem, int numberPurchased, int moneySpent)
     {
-        PedDesires.OnItemsBoughtFromPlayer(modItem, numberPurchased);
+        ItemDesires.OnItemsBoughtFromPlayer(modItem, numberPurchased);
     }
     public virtual void SetupTransactionItems(ShopMenu shopMenu)
     {
@@ -863,7 +863,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                 PedInventory.Add(menuItem.ModItem, menuItem.NumberOfItemsToSellToPlayer);
             }
         }
-        PedDesires.AddDesiredItem(shopMenu);
+        ItemDesires.AddDesiredItem(shopMenu);
         //EntryPoint.WriteToConsole("SetupTransactionItems END");
     }
     public string LootInventory(IInteractionable player)

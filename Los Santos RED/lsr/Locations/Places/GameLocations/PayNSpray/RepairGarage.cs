@@ -180,7 +180,7 @@ public class RepairGarage : GameLocation
         bool hasFixedVehicle = false;
         while (Time.IsFastForwarding)
         {
-            if(!hasFixedVehicle && DateTime.Compare(timeToDoItems, timestartedRepair) < 0)
+            if(!hasFixedVehicle && DateTime.Compare(timeToDoItems, timestartedRepair) >= 0)
             {
                 Player.CurrentVehicle.Vehicle.Repair();
                 Player.CurrentVehicle.Vehicle.Wash();

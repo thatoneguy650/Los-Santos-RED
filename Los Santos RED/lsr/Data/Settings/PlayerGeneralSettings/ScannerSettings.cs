@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 public class ScannerSettings : ISettingsDefaultable
 {
@@ -46,10 +43,19 @@ public class ScannerSettings : ISettingsDefaultable
     [Description("Maximum time between ambient dispatches (if enabled).")]
     public uint AmbientDispatchesMaxTimeBetween { get; set; }
 
+    public bool ShowPoliceVehicleBlipsWithScanner { get; set; }
+
     public ScannerSettings()
     {
         SetDefault();
     }
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        ShowPoliceVehicleBlipsWithScanner = true;
+    }
+
     public void SetDefault()
     {
         IsEnabled = true;
@@ -69,6 +75,7 @@ public class ScannerSettings : ISettingsDefaultable
         AllowAmbientDispatches = false;
         AmbientDispatchesMinTimeBetween = 150000;
         AmbientDispatchesMaxTimeBetween = 800000;
+        ShowPoliceVehicleBlipsWithScanner = true;
     }
 
 }

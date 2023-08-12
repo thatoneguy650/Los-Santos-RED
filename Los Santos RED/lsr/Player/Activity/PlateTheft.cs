@@ -20,13 +20,15 @@ public class PlateTheft : DynamicActivity
     private ISettingsProvideable Settings;
     private VehicleExt TargetVehicle;
     private IEntityProvideable World;
-    public PlateTheft(IActionable player, ISettingsProvideable settings, IEntityProvideable world)
+    private ScrewdriverItem ScrewdriverItem;
+    public PlateTheft(IActionable player, ISettingsProvideable settings, IEntityProvideable world, ScrewdriverItem screwdriverItem)
     {
         Player = player;
         Settings = settings;
         World = world;
+        ScrewdriverItem = screwdriverItem;
     }
-    public PlateTheft(IActionable player, LicensePlateItem plateToChange, ISettingsProvideable settings, IEntityProvideable world) : this(player, settings, world)
+    public PlateTheft(IActionable player, LicensePlateItem plateToChange, ISettingsProvideable settings, IEntityProvideable world, ScrewdriverItem screwdriverItem) : this(player, settings, world, screwdriverItem)
     {
         PlateToAdd = plateToChange;
     }
@@ -115,51 +117,16 @@ public class PlateTheft : DynamicActivity
         }
         catch (Exception ex)
         {
-            //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+            if (LicensePlate != null && LicensePlate.Exists())
+            {
+                LicensePlate.Delete();
+            }
         }
         LicensePlate.IsVisible = true;
         int BoneIndexLeftHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, 18905);
         LicensePlate.AttachTo(Player.Character, BoneIndexLeftHand, new Vector3(0.19f, 0.08f, 0.0f), new Rotator(-57.2f, 90f, -173f));
 
         return LicensePlate;
-    }
-    private Rage.Object AttachScrewdriverToPed(Ped Pedestrian)
-    {
-        Rage.Object Screwdriver = null;
-        try
-        {
-            ModItem li = Player.Inventory.Get(typeof(ScrewdriverItem))?.ModItem;
-            if (li == null)
-            {
-                Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
-                if (Screwdriver.Exists())
-                {
-                    int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
-                    Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));
-                }
-            }
-            else
-            {
-                Screwdriver = new Rage.Object(li.ModelItem.ModelName, Pedestrian.GetOffsetPositionUp(50f));
-                if (Screwdriver.Exists())
-                {
-                    PropAttachment pa = li.ModelItem.Attachments.FirstOrDefault(x => x.Name == "RightHand");
-                    if(pa != null)
-                    {
-                        Screwdriver.AttachTo(Pedestrian, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Pedestrian, pa.BoneName), pa.Attachment, pa.Rotation);
-                    }
-                    else
-                    {
-                        Screwdriver.Delete();
-                    }
-                }
-            }
-            return Screwdriver;
-        }
-        catch (Exception ex)
-        {
-            return Screwdriver;
-        }
     }
     private void Enter()
     {
@@ -172,7 +139,7 @@ public class PlateTheft : DynamicActivity
                 return;
             }
             Player.IsChangingLicensePlates = true;
-            ScrewdriverModel = AttachScrewdriverToPed(Player.Character);
+            ScrewdriverModel = Player.ActivityManager.AttachScrewdriverToPed(ScrewdriverItem, true);
             if (IsChangingPlate)
             {
                 LicensePlateModel = AttachLicensePlateToPed(Player.Character);
@@ -184,17 +151,14 @@ public class PlateTheft : DynamicActivity
             {
                 GameFiber.Yield();
             }
-
             if (!Player.IsMoveControlPressed && CarPosition.DistanceTo2D(TargetVehicle.Vehicle.Position) <= 1f && Player.Character.DistanceTo2D(ChangeSpot) <= 2f && Player.Character.IsAlive)
             {
                 UpdateModelPlates();
             }
             else
             {
-                //Player.Character.Tasks.Clear();
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             }
-
             if (LicensePlateModel != null && LicensePlateModel.Exists())
             {
                 LicensePlateModel.Delete();
@@ -204,7 +168,6 @@ public class PlateTheft : DynamicActivity
             {
                 ScrewdriverModel.Delete();
             }
-
             LicensePlateModel = null;
             ScrewdriverModel = null;
             Player.IsChangingLicensePlates = false;
@@ -213,10 +176,13 @@ public class PlateTheft : DynamicActivity
         catch (Exception e)
         {
             if (LicensePlateModel != null && LicensePlateModel.Exists())
+            {
                 LicensePlateModel.Delete();
+            }
             if (ScrewdriverModel != null && ScrewdriverModel.Exists())
+            {
                 ScrewdriverModel.Delete();
-
+            }
             LicensePlateModel = null;
             ScrewdriverModel = null;
             Player.IsChangingLicensePlates = false;

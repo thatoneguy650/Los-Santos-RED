@@ -420,4 +420,21 @@ public class Vehicles
         }
         return ToReturn;
     }
+    public void TogglePoliceVehicleBlips(bool setBlipped)
+    {
+        foreach(VehicleExt copCar in PoliceVehicleList)
+        {
+            if (copCar.Vehicle.Exists())
+            {
+                if (setBlipped)
+                {
+                    copCar.AddBlip();
+                }
+                else
+                {
+                    copCar.RemoveBlip();
+                }
+            }
+        }
+    }
 }

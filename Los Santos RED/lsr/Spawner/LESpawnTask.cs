@@ -212,6 +212,7 @@ public class LESpawnTask : SpawnTask
             {
                 CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
                 CreatedVehicle.Setup();
+                CreatedVehicle.AssociatedAgency = Agency;
             }
             CreatedVehicle.IsPolice = true;
             CreatedVehicle.WasModSpawned = true;

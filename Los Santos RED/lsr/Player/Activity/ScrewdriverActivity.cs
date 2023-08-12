@@ -54,10 +54,12 @@ namespace LosSantosRED.lsr.Player
                     Setup();
                     meleeWeaponAlias = new MeleeWeaponAlias(Player, Settings, ScrewdriverItem);
                     meleeWeaponAlias.Start();
-                    Player.HasScrewdriverInHand = true;
+                    Player.ActivityManager.HasScrewdriverInHand = true;
+                    Player.ActivityManager.CurrentScrewdriver = ScrewdriverItem;
                     while (!IsCancelled)
                     {
                         meleeWeaponAlias.Update();
+                        AddVehiclePrompts();
                         if (meleeWeaponAlias.IsCancelled)
                         {
                             meleeWeaponAlias.Dispose();
@@ -74,6 +76,28 @@ namespace LosSantosRED.lsr.Player
                 }
             }, "ScrewdriverActivity");
         }
+
+        private void AddVehiclePrompts()
+        {
+            if(Player.IsInVehicle || Player.CurrentLookedAtVehicle == null || !Player.CurrentLookedAtVehicle.Vehicle.Exists())
+            {
+                Player.ButtonPrompts.RemovePrompts("Screwdriver");
+                return;
+            }
+            Player.ButtonPrompts.AddPrompt("Screwdriver", "Pick Lock", "PickLock", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 12);
+            Player.ButtonPrompts.AddPrompt("Screwdriver", "Remove Plate", "RemovePlate", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 13);
+            if (Player.ButtonPrompts.IsPressed("PickLock"))
+            {
+                Dispose();
+                Player.ActivityManager.EnterVehicleGeneric();
+            }
+            if (Player.ButtonPrompts.IsPressed("RemovePlate"))
+            {
+                Dispose();
+                Player.ActivityManager.RemovePlate();
+            }
+        }
+
         public override bool CanPerform(IActionable player)
         {
             if (player.IsOnFoot && player.ActivityManager.CanPerformActivitesBase)
@@ -93,7 +117,9 @@ namespace LosSantosRED.lsr.Player
             IsCancelled = true;
             Player.ActivityManager.IsPerformingActivity = false;
             meleeWeaponAlias?.Dispose();
-            Player.HasScrewdriverInHand = false;
+            Player.ActivityManager.HasScrewdriverInHand = false;
+            Player.ActivityManager.CurrentScrewdriver = null;
+            Player.ButtonPrompts.RemovePrompts("Screwdriver");
         }
     }
 }
