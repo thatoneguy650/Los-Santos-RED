@@ -10,7 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-public class UndergroundGunsTasks
+public class UndergroundGunsTasks : IPlayerTaskGroup
 {
 
     private ITaskAssignable Player;

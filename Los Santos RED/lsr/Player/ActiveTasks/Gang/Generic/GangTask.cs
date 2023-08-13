@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Player.ActiveTasks
 {
-    public class GangTask
+    public class GangTask : IPlayerTask
     {
         protected ITaskAssignable Player;
 

@@ -38,9 +38,15 @@ public class VehicleExporter : GameLocation
     public int EngineDamageLimit { get; set; } = 200;
     public string ContactName { get; set; } = "";
     public int HoursBetweenExports { get; set; } = 3;
+    public List<SpawnPlace> ParkingSpaces = new List<SpawnPlace>();
     public VehicleExporter(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string _Menu) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = _Menu;
+        ExportedVehicles = new List<ExportedVehicle>();
+    }
+    public override void Reset()
+    {
+        base.Reset();
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
@@ -150,14 +156,13 @@ public class VehicleExporter : GameLocation
             bool IsDamaged = false;
             int ExportAmount = 0;
             MenuItem menuItem = Menu.Items.FirstOrDefault(x => x.ModItemName == vehicleItem.Name);
-            if(menuItem != null)
+            ExportedVehicle exportedStats = null;
+            if (menuItem != null)
             {
                 CanExport = true;
                 ExportAmount = menuItem.SalesPrice;
-            }
-
-
-            ExportedVehicle exportedStats = ExportedVehicles.FirstOrDefault(x => x.MenuItem.ModItemName == menuItem.ModItemName);
+                ExportedVehicles?.FirstOrDefault(x => x.MenuItem?.ModItemName == menuItem?.ModItemName);
+            }    
             string TimeBeforeExportAllowed = "";
             bool hasTimeRestriction = false; 
             if(exportedStats != null)
@@ -169,9 +174,7 @@ public class VehicleExporter : GameLocation
                 }
                 hasTimeRestriction = true;    
             }
-
-
-            if(veh.Vehicle.Health <= veh.Vehicle.MaxHealth - BodyDamageLimit || veh.Vehicle.EngineHealth <= veh.Vehicle.EngineHealth - EngineDamageLimit)
+            if(veh.IsDamaged(BodyDamageLimit, EngineDamageLimit))
             {
                 IsDamaged = true;
                 CanExport = false;
@@ -260,7 +263,7 @@ public class VehicleExporter : GameLocation
     }
     private bool IsValidForExporting(VehicleExt toExport)
     {
-        if (!toExport.Vehicle.Exists() || toExport.Vehicle.DistanceTo2D(EntrancePosition) > VehiclePickupDistance || toExport.VehicleBodyManager.StoredBodies.Any() || toExport.Vehicle.HasOccupants || !toExport.HasBeenEnteredByPlayer)
+        if (!toExport.Vehicle.Exists() || toExport.Vehicle.DistanceTo2D(EntrancePosition) > VehiclePickupDistance || toExport.VehicleBodyManager.StoredBodies.Any() || toExport.Vehicle.HasOccupants || !toExport.HasBeenEnteredByPlayer || !toExport.CanBeExported)
         {
             return false;
         }

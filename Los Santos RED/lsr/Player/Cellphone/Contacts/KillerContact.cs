@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class KillerContact : PhoneContact
+public class KillerContact : PhoneContact, IPhoneContact
 {
     public KillerContact()
     {

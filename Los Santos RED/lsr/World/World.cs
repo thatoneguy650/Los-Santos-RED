@@ -51,7 +51,7 @@ namespace Mod
             GangTerritories = gangTerritories;
             Streets = streets;
             Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus, Gangs, GangTerritories, this);
-            Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes, modItems);
+            Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes, modItems, this);
             Places = new Places(this,zones,jurisdictions,settings,placesOfInterest,weapons,crimes,time,shopMenus,interiors,gangs,gangTerritories,streets, agencies, names, pedGroups, locationTypes, plateTypes);
         }
         public bool IsMPMapLoaded { get; private set; }

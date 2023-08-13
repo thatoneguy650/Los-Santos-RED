@@ -236,100 +236,11 @@ public class TrafficViolations
     }
     private void VehicleStatusUpdate()
     {
-        if (!IsRoadWorthy(Player.CurrentVehicle) || IsDamaged(Player.CurrentVehicle))
+        if (!Player.CurrentVehicle.IsRoadWorthy(Time) || Player.CurrentVehicle.IsVisiblyDamaged(Time))
         {
             VehicleIsSuspicious = true;
         }
     }
-    private bool IsDamaged(VehicleExt myCar)
-    {
-        if (!myCar.Vehicle.Exists())
-        {
-            return false;
-        }
-
-        if (myCar.Vehicle.Health <= Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleHealthLimit || (myCar.Vehicle.EngineHealth <= Settings.SettingsManager.VehicleSettings.NonRoadworthyEngineHealthLimit && myCar.Engine.IsRunning))//can only see smoke and shit if its running
-        {
-            return true;
-        }
-        if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedWindows && !NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", myCar.Vehicle))
-        {
-            return true;
-        }
-        if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedDoors)
-        {
-            foreach (VehicleDoor myDoor in myCar.Vehicle.GetDoors())
-            {
-                if (myDoor.IsDamaged)
-                {
-                    return true;
-                }
-            }
-        }
-        if (Time.IsNight && Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedHeadlights)
-        {
-            if (myCar.IsCar && NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar.Vehicle) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar.Vehicle))
-            {
-                return true;
-            }
-        }
-        if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedTires)
-        {
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 0, false))
-            {
-                return true;
-            }
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 1, false))
-            {
-                return true;
-            }
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 2, false))
-            {
-                return true;
-            }
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 3, false))
-            {
-                return true;
-            }
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 4, false))
-            {
-                return true;
-            }
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 5, false))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    private bool IsRoadWorthy(VehicleExt myCar)
-    {
-        bool LightsOn;
-        bool HighbeamsOn;
-        if (Time.IsNight && myCar.Engine.IsRunning)
-        {
-            unsafe
-            {
-                NativeFunction.CallByName<bool>("GET_VEHICLE_LIGHTS_STATE", myCar.Vehicle, &LightsOn, &HighbeamsOn);
-            }
-            if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckNoHeadlights && !LightsOn)
-            {
-                return false;
-            }
-            //if (HighbeamsOn)
-            //{
-            //    return false;
-            //}
-            if (myCar.IsCar && Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedHeadlights && NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar.Vehicle) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar.Vehicle))
-            {
-                return false;
-            }
-        }
-        if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckNoPlate && myCar.Vehicle.LicensePlate == "        ")
-        {
-            return false;
-        }
-        return true;
-    }
+ 
 }
 

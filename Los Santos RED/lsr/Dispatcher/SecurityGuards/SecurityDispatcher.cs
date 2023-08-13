@@ -190,7 +190,15 @@ public class SecurityDispatcher
                     {
                         carBlip.Delete();
                     }
-                    pedExt.Pedestrian.CurrentVehicle.Delete();
+                    VehicleExt vehicleExt = World.Vehicles.GetVehicleExt(pedExt.Pedestrian.CurrentVehicle);
+                    if (vehicleExt != null)
+                    {
+                        vehicleExt.FullyDelete();
+                    }
+                    else
+                    {
+                        pedExt.Pedestrian.CurrentVehicle.Delete();
+                    }
                     EntryPoint.PersistentVehiclesDeleted++;
                 }
             }

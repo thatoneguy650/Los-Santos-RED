@@ -71,7 +71,24 @@ public class TheftViolations
         {
             Violations.AddViolating(StaticStrings.ChangingPlatesCrimeID);//.IsCurrentlyViolating = true;
         }
+
+        CheckStolenVehicles();
+
     }
+
+    private void CheckStolenVehicles()
+    {
+        foreach(VehicleExt stolenCar in Player.TrackedVehicles.Where(x => x.NeedsToBeReportedStolen))
+        {
+            stolenCar.WasReportedStolen = true;
+            if(stolenCar.CarPlate != null && stolenCar.OriginalLicensePlate != null && stolenCar.CarPlate.PlateNumber == stolenCar.OriginalLicensePlate.PlateNumber)
+            {
+                stolenCar.CarPlate.IsWanted = true;
+            }
+            Game.DisplayHelp("Vehicle Reported Stolen");
+        }
+    }
+
     public void AddCarJacked(PedExt myPed)
     {
         if(myPed == null)

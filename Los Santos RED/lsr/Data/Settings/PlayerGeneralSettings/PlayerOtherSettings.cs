@@ -105,8 +105,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
         MeleeDamageModifier = 1.0f;
         CorruptCopInvestigationClearCost = 2000;
         CorruptCopWantedClearCostScalar = 5000;
-        HoursBetweenTasksWhenCompleted = 6;
-        HoursBetweenTasksWhenFailed = 24;
+        HoursBetweenTasksWhenCompleted = 3;
+        HoursBetweenTasksWhenFailed = 12;
         AllowMobileRadioOnFoot = false;
         DisableVanillaGangHassling = true;
         AllowAttackingFriendlyPeds = false;

@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class GangTasks
+public class GangTasks : IPlayerTaskGroup
 {
 
     private ITaskAssignable Player;

@@ -21,8 +21,9 @@ public class Vehicles
     private ISettingsProvideable Settings;
     private IModItems ModItems;
     private Entity[] RageVehicles;
+    private IEntityProvideable World;
     private uint GameTimeLastCreatedVehicles;
-    public Vehicles(IAgencies agencies,IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes, IModItems modItems)
+    public Vehicles(IAgencies agencies,IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes, IModItems modItems, IEntityProvideable world)
     {
         Zones = zones;
         Agencies = agencies;
@@ -30,6 +31,7 @@ public class Vehicles
         Jurisdictions = jurisdictions;
         Settings = settings;
         ModItems = modItems;
+        World = world;
         PlateController = new PlateController(this, Zones, PlateTypes, Settings);
     }
     public PlateController PlateController { get; private set; }
@@ -283,9 +285,9 @@ public class Vehicles
     {
         foreach (VehicleExt vehicleExt in PoliceVehicles)
         {
+            vehicleExt.FullyDelete();
             if (vehicleExt.Vehicle.Exists())
             {
-                vehicleExt.Vehicle.Delete();
                 EntryPoint.PersistentVehiclesDeleted++;
             }
         }
@@ -295,19 +297,19 @@ public class Vehicles
     {
         ClearPolice();
         foreach (VehicleExt vehicleExt in EMSVehicles)
-        {     
+        {
+            vehicleExt.FullyDelete();
             if (vehicleExt.Vehicle.Exists())
             {
-                vehicleExt.FullyDelete();
                 EntryPoint.PersistentVehiclesDeleted++;
             }
         }
         EMSVehicles.Clear();
         foreach (VehicleExt vehicleExt in FireVehicles)
         {
+            vehicleExt.FullyDelete();
             if (vehicleExt.Vehicle.Exists())
             {
-                vehicleExt.FullyDelete();
                 EntryPoint.PersistentVehiclesDeleted++;
             }
         }
@@ -316,9 +318,9 @@ public class Vehicles
         {
             foreach (VehicleExt vehicleExt in CivilianVehicles.Where(x => x.WasModSpawned))
             {
+                vehicleExt.FullyDelete();
                 if (vehicleExt.Vehicle.Exists())
                 {
-                    vehicleExt.FullyDelete();
                     EntryPoint.PersistentVehiclesDeleted++;
                 }
             }
@@ -420,7 +422,7 @@ public class Vehicles
         }
         return ToReturn;
     }
-    public void TogglePoliceVehicleBlips(bool setBlipped)
+    public void UpdatePoliceSonarBlips(bool setBlipped)
     {
         foreach(VehicleExt copCar in PoliceVehicleList)
         {
@@ -428,11 +430,11 @@ public class Vehicles
             {
                 if (setBlipped)
                 {
-                    copCar.AddBlip();
+                    copCar.SonarBlip.Update(World);
                 }
                 else
                 {
-                    copCar.RemoveBlip();
+                    copCar.SonarBlip.Dispose();
                 }
             }
         }

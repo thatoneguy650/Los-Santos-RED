@@ -44,6 +44,7 @@ public class ScannerSettings : ISettingsDefaultable
     public uint AmbientDispatchesMaxTimeBetween { get; set; }
 
     public bool ShowPoliceVehicleBlipsWithScanner { get; set; }
+    public uint PoliceBlipUpdateTime { get; set; }
 
     public ScannerSettings()
     {
@@ -54,6 +55,7 @@ public class ScannerSettings : ISettingsDefaultable
     private void SetValuesOnDeserialized(StreamingContext context)
     {
         ShowPoliceVehicleBlipsWithScanner = true;
+        PoliceBlipUpdateTime = 10000;
     }
 
     public void SetDefault()
@@ -76,6 +78,7 @@ public class ScannerSettings : ISettingsDefaultable
         AmbientDispatchesMinTimeBetween = 150000;
         AmbientDispatchesMaxTimeBetween = 800000;
         ShowPoliceVehicleBlipsWithScanner = true;
+        PoliceBlipUpdateTime = 10000;
     }
 
 }

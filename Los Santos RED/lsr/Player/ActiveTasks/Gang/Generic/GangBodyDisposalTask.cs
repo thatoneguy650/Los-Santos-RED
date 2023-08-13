@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Player.ActiveTasks
 {
-    public class GangBodyDisposalTask : GangTask
+    public class GangBodyDisposalTask : GangTask, IPlayerTask
     {
         private GangDen HiringGangDen;
         private PedExt DeadBody;

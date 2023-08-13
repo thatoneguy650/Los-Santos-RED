@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class VehicleExporterContact : PhoneContact
+public class VehicleExporterContact : PhoneContact, IPhoneContact
 {
     public VehicleExporterContact()
     {
@@ -18,7 +18,7 @@ public class VehicleExporterContact : PhoneContact
 
     public override void OnAnswered(IContactInteractable player, CellPhone cellPhone, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IJurisdictions jurisdictions, ICrimes crimes, IEntityProvideable world, IModItems modItems)
     {
-        MenuInteraction = new VehicleExporterInteraction(player, gangs, placesOfInterest, settings, modItems);
+        MenuInteraction = new VehicleExporterInteraction(player, gangs, placesOfInterest, settings, modItems, this);
         MenuInteraction.Start(this);
     }
 

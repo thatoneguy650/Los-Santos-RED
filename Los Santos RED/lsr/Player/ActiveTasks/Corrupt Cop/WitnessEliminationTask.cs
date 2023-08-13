@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace LosSantosRED.lsr.Player.ActiveTasks
 {
-    public class WitnessEliminationTask
+    public class WitnessEliminationTask : IPlayerTask
     {
         private ITaskAssignable Player;
         private ITimeReportable Time;

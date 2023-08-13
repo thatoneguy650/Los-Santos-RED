@@ -209,7 +209,7 @@ public class ActivityManager
 
     public bool HasScannerOut { get; set; }
     public bool CanHearScanner => !Settings.SettingsManager.ScannerSettings.DisableScannerWithoutRadioItem || Player.Inventory.Has(typeof(RadioItem));
-    public bool CanSeePoliceBlips => Settings.SettingsManager.ScannerSettings.ShowPoliceVehicleBlipsWithScanner && Player.Inventory.Has(typeof(RadioItem)) && (Player.IsInVehicle || HasScannerOut);
+    public bool CanSeePoliceBlips => !Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips && Settings.SettingsManager.ScannerSettings.ShowPoliceVehicleBlipsWithScanner && Player.Inventory.Has(typeof(RadioItem)) && (Player.IsInVehicle || HasScannerOut);
 
 
 
@@ -262,24 +262,18 @@ public class ActivityManager
     }
     public void Update()
     {
-
-        if(canSeePoliceBlips != CanSeePoliceBlips)
+        if (CanSeePoliceBlips)
         {
-            World.Vehicles.TogglePoliceVehicleBlips(CanSeePoliceBlips);
-
-
-
+            World.Vehicles.UpdatePoliceSonarBlips(true);
+        }
+        if (canSeePoliceBlips != CanSeePoliceBlips)
+        {
+            if(!CanSeePoliceBlips)
+            {
+                World.Vehicles.UpdatePoliceSonarBlips(false);
+            }
             EntryPoint.WriteToConsole($"CanSeePoliceBlips changed to {CanSeePoliceBlips}");
             canSeePoliceBlips = CanSeePoliceBlips;
-
-            
-        }
-
-
-        if(CanSeePoliceBlips && Game.GameTime - GameTimeLastSetBlips >= 1000)
-        {
-            World.Vehicles.TogglePoliceVehicleBlips(CanSeePoliceBlips);
-            GameTimeLastSetBlips = Game.GameTime;
         }
 
     }

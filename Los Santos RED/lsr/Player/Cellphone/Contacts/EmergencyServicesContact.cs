@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class EmergencyServicesContact : PhoneContact
+public class EmergencyServicesContact : PhoneContact, IPhoneContact
 {
     public EmergencyServicesContact()
     {

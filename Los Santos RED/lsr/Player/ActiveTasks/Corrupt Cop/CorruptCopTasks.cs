@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class CorruptCopTasks
+public class CorruptCopTasks : IPlayerTaskGroup
 {
 
     private ITaskAssignable Player;

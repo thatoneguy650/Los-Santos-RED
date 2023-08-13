@@ -55,6 +55,7 @@ public class DebugMenu : ModUIMenu
     private List<string> MovementClipsetsList;
     private UIMenu outfitsSubMenu;
     private bool isHidingHelp;
+    private bool IsBigMapActive;
 
     public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, 
         IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems, ICrimes crimes, IPlateTypes plateTypes, INameProvideable names, ModDataFileManager modDataFileManager, IPoliceRespondable policeRespondable)
@@ -672,7 +673,25 @@ new YmapDisabler("manhat01",true),
         CreateLiveryMenuItem();
         CreateExtraMenuItem();
         CreateColorMenuItem();
+        CreateInfoMenuItem();
     }
+
+    private void CreateInfoMenuItem()
+    {
+        UIMenuItem vehInfoMenu = new UIMenuItem("Get Info", "Print info");
+        vehInfoMenu.Activated += (menu, item) =>
+        {
+            if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+            {
+                string toDisplay = $"PlateNumber:{Player.CurrentVehicle.CarPlate.PlateNumber} PlateType:{Player.CurrentVehicle.CarPlate.PlateType} IsWanted:{Player.CurrentVehicle.CarPlate.IsWanted} " +
+                $"PlateNumber2:{Player.CurrentVehicle.OriginalLicensePlate.PlateNumber} PlateType2:{Player.CurrentVehicle.OriginalLicensePlate.PlateType} IsWanted2:{Player.CurrentVehicle.OriginalLicensePlate.IsWanted}";
+                Game.DisplaySubtitle(toDisplay);
+                EntryPoint.WriteToConsole(toDisplay);
+            }
+        };
+        vehicleItemsMenu.AddItem(vehInfoMenu);
+    }
+
     private void CreateVehicleMenu()
     {
         vehicleItemsMenu = MenuPool.AddSubMenu(Debug, "Vehicle Menu");
@@ -1477,6 +1496,18 @@ new YmapDisabler("manhat01",true),
         UIMenu HelperMenuItem = MenuPool.AddSubMenu(Debug, "Helper Menu");
         HelperMenuItem.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Various helper items";
+
+        UIMenuItem SetBigMap = new UIMenuItem("Toggle Big MiniMap", "Toggles the big GTAO style mini map");
+        SetBigMap.Activated += (menu, item) =>
+        {
+            IsBigMapActive = !IsBigMapActive;
+            NativeFunction.Natives.SET_BIGMAP_ACTIVE(IsBigMapActive, false);
+            //Game.DisplaySubtitle($"IsBigMapActive:{IsBigMapActive}"); 
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(SetBigMap);
+
+
 
 
 

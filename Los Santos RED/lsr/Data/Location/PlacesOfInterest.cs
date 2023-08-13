@@ -744,10 +744,44 @@ public class PlacesOfInterest : IPlacesOfInterest
             new VehicleExporter(new Vector3(89.00745f,-2564.649f,6.004591f), 1.725455f, "Pacfic Bait Exports", "Take our Bait!","SunshineMenu")
             {
                 ContactName = StaticStrings.VehicleExporter,
+                ParkingSpaces = new List<SpawnPlace>()
+                 {
+                    new SpawnPlace(new Vector3(70.56293f, -2559.652f, 6.000013f), 177.7919f),
+                    new SpawnPlace(new Vector3(73.9108f, -2559.785f, 6.000012f), 178.2656f),
+                    new SpawnPlace(new Vector3(77.10069f, -2560.043f, 6.000011f), 177.6563f),
+                    new SpawnPlace(new Vector3(80.26527f, -2560.101f, 6.000011f), 179.8577f),
+                    new SpawnPlace(new Vector3(83.70882f, -2560.141f, 6.000011f), 180.1441f),
+                 },
+                OpenTime = 0,
+                CloseTime = 24,
             },
             new VehicleExporter(new Vector3(845.3537f, -951.5338f, 26.52109f), 270.8987f, "National Transport", "When it needs to disappear!","NationalMenu")
             {
                  ContactName = StaticStrings.VehicleExporter,
+                 ParkingSpaces = new List<SpawnPlace>()
+                 {
+                    new SpawnPlace(new Vector3(853.4166f, -905.9677f, 25.3178f), 88.12348f),
+                    new SpawnPlace(new Vector3(853.4921f, -902.6026f, 25.32147f), 90.01858f),
+                    new SpawnPlace(new Vector3(853.5576f, -899.2606f, 25.32503f), 89.40579f),
+                    new SpawnPlace(new Vector3(853.313f, -895.832f, 25.31771f), 84.42482f),
+                    new SpawnPlace(new Vector3(853.5083f, -892.3186f, 25.32238f), 88.35712f),
+                 },
+                OpenTime = 0,
+                CloseTime = 24,
+            },
+            new VehicleExporter(new Vector3(44.4949f, 6461.12f, 31.4253f), 226.2354f,"Paleto Exports","Turn Cars to CASH!","PaletoExportMenu")
+            {
+                 ContactName = StaticStrings.VehicleExporter,
+                 ParkingSpaces = new List<SpawnPlace>()
+                 {
+                    new SpawnPlace(new Vector3(29.69258f, 6438.792f, 31.42538f), 91.18743f),
+                    new SpawnPlace(new Vector3(61.85519f, 6470.358f, 31.42395f), 349.3379f),
+                    new SpawnPlace(new Vector3(68.2027f, 6471.051f, 31.2645f), 356.7883f),
+                    new SpawnPlace(new Vector3(56.72287f, 6464.54f, 31.41228f), 137.1895f),
+                    new SpawnPlace(new Vector3(39.3842f, 6447.123f, 31.40866f), 135.2603f),
+                 },
+                OpenTime = 0,
+                CloseTime = 24,
             },
         };
     }
@@ -761,6 +795,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 WantedPlateSalesPrice = 50,
                 CustomPlateCost = 1500,
                 RandomPlateCost = 1000,
+                OpenTime = 0,
+                CloseTime = 24,
             },
             new Forger(new Vector3(-41.79562f, 6637.322f, 31.08751f), 216.5384f,"Zancone The Forger","Not a murmur to anyone!")
             {
@@ -768,6 +804,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 WantedPlateSalesPrice = 200,
                 CustomPlateCost = 1700,
                 RandomPlateCost = 1200,
+                OpenTime = 0,
+                CloseTime = 24,
             },
         };
 
@@ -781,30 +819,71 @@ public class PlacesOfInterest : IPlacesOfInterest
                 GarageDoors = new List<InteriorDoor>() { new InteriorDoor(3082692265,new Vector3(-1355.819f,-754.4543f,23.49588f)) },
                 CameraPosition = new Vector3(-1344.593f, -752.1688f, 24.59984f), 
                 CameraDirection = new Vector3(-0.953465f, -0.2256246f, -0.1999952f), 
-                CameraRotation = new Rotator(-11.53668f, 1.61205E-05f, 103.3134f)
+                CameraRotation = new Rotator(-11.53668f, 1.61205E-05f, 103.3134f),
+                OpenTime = 0,
+                CloseTime = 24,
             },
             new RepairGarage(new Vector3(517.7049f, 169.9352f, 99.36998f), 249.3513f, "Pay 'n' Spray", "Helpfully located in Downtown Vinewood") {
                 GarageDoors = new List<InteriorDoor>() { new InteriorDoor(1991494706,new Vector3(523.8579f,167.7482f,100.5352f)) { NeedsDefaultUnlock = true} },
                 CameraPosition = new Vector3(536.9068f, 157.7742f, 103.5797f), 
                 CameraDirection = new Vector3(-0.7981344f, 0.5672539f, -0.2029887f), 
                 CameraRotation = new Rotator(-11.71179f, -1.30789E-06f, 54.59765f),
-                
+                OpenTime = 0,
+                CloseTime = 24,
             },
             new RepairGarage(new Vector3(964.051f, -1856.824f, 31.19692f), 82.4654f, "Pay 'n' Spray", "Be sure to lock your doors!") {
                 GarageDoors = new List<InteriorDoor>() { new InteriorDoor(4104186511,new Vector3(958.9808f,-1855.851f,32.78582f)) },
                 CameraPosition = new Vector3(945.6613f, -1849.031f, 36.08583f), 
                 CameraDirection = new Vector3(0.8777003f, -0.4318189f, -0.2077849f), 
                 CameraRotation = new Rotator(-11.99257f, -1.309235E-05f, -116.1967f),
-
+                OpenTime = 0,
+                CloseTime = 24,
             },
             new RepairGarage(new Vector3(-440.179f, -2180.787f, 10.32189f), 0.8532715f, "Pay 'n' Spray", "Need to get away?") {
                 GarageDoors = new List<InteriorDoor>() {  
-                    new InteriorDoor(4104186511,new Vector3(-445.3054f,-2171.816f,11.4126f)),
-                    new InteriorDoor(4104186511,new Vector3(-445.3054f,-2171.778f,11.80559f)) },
+                    new InteriorDoor(4104186511,new Vector3(-440.0605f,-2171.847f,12.2417f)),
+                    new InteriorDoor(4104186511,new Vector3(-445.3054f,-2171.818f,11.40392f)) },
                 CameraPosition = new Vector3(-433.9502f, -2157.46f, 13.05093f), 
                 CameraDirection = new Vector3(-0.365413f, -0.9212855f, -0.1330653f),
                 CameraRotation = new Rotator(-7.646759f, 1.292151E-06f, 158.3651f),
+                OpenTime = 0,
+                CloseTime = 24,
             },
+
+            new RepairGarage(new Vector3(258.2158f, 2590.954f, 44.4838f), 189.6097f, "Pay 'n' Spray", "In Beautiful Harmony") {
+                GarageDoors = new List<InteriorDoor>() {
+                    new InteriorDoor(4104186511,new Vector3(257.5422f,2596.084f,47.27481f)),
+                },
+                CameraPosition = new Vector3(258.9244f, 2608.994f, 48.34476f), 
+                CameraDirection = new Vector3(-0.1198255f, -0.9714963f, -0.2045401f), 
+                CameraRotation = new Rotator(-11.80258f, -6.541603E-06f, 172.9686f),
+                OpenTime = 0,
+                CloseTime = 24,
+            },
+
+
+            new RepairGarage(new Vector3(147.3954f, 320.8767f, 111.6681f), 293.5303f, "Pay 'n' Spray", "Serving Downtown Vinewood") {
+                GarageDoors = new List<InteriorDoor>() {
+                    new InteriorDoor(3379875310,new Vector3(143.4703f,319.201f,113.5349f)),
+                },
+                CameraPosition = new Vector3(136.044f, 306.7173f, 116.2294f), 
+                CameraDirection = new Vector3(0.6137977f, 0.779637f, -0.124171f), 
+                CameraRotation = new Rotator(-7.132885f, -4.302163E-06f, -38.21288f),
+                OpenTime = 0,
+                CloseTime = 24,
+            },
+
+            new RepairGarage(new Vector3(135.8826f, -1049.596f, 29.15182f), 338.5946f, "Pay 'n' Spray", "Serving Pillbox Hill") {
+                GarageDoors = new List<InteriorDoor>() {
+                    new InteriorDoor(3312435724,new Vector3(134.1454f,-1054.235f,31.3015f)),
+                },
+                CameraPosition = new Vector3(135.4085f, -1069.955f, 34.32735f), 
+                CameraDirection = new Vector3(-0.06820366f, 0.9694805f, -0.2354905f), 
+                CameraRotation = new Rotator(-13.62054f, -8.784793E-07f, 4.024169f),
+                OpenTime = 0,
+                CloseTime = 24,
+            },
+
         };
     }
     private void DefaultConfig_illicitMarketplaces()

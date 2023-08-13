@@ -171,7 +171,8 @@ public class RepairGarage : GameLocation
             PlayErrorSound();
             DisplayMessage("~r~Repair Failed", "Insufficient funds!");
             return;
-        }   
+        }
+        Player.CurrentVehicle.Engine.Toggle(false);
         GameFiber.Sleep(500);
         Time.FastForward(Time.CurrentDateTime.AddHours(RepairHours));
         Time.ForceShowClock = true;
@@ -180,21 +181,13 @@ public class RepairGarage : GameLocation
         bool hasFixedVehicle = false;
         while (Time.IsFastForwarding)
         {
-            if(!hasFixedVehicle && DateTime.Compare(timeToDoItems, timestartedRepair) >= 0)
+            if(!hasFixedVehicle && DateTime.Compare(Time.CurrentDateTime, timeToDoItems) >= 0)
             {
-                Player.CurrentVehicle.Vehicle.Repair();
-                Player.CurrentVehicle.Vehicle.Wash();
+                RepairVehicle();
                 if (withRespray)
                 {
                     ResprayVehicle();
-                    if (Player.IsWanted)
-                    {
-                        Player.SetWantedLevel(0, "Resprayed", true);
-                    }
-                    if (Player.Investigation.IsActive)
-                    {
-                        Player.Investigation.Expire();
-                    }
+                    RemoveWanted();
                 }
                 hasFixedVehicle = true;
             }
@@ -221,6 +214,28 @@ public class RepairGarage : GameLocation
         }
         Player.CurrentVehicle.SetRandomColor();
         Player.CurrentVehicle.SetRandomPlate();
+    }
+    private void RepairVehicle()
+    {
+        if (!Player.IsInVehicle || Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        Player.CurrentVehicle.Vehicle.Repair();
+        Player.CurrentVehicle.Vehicle.Wash();
+        Player.CurrentVehicle.Vehicle.FuelLevel = Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax;
+
+    }
+    private void RemoveWanted()
+    {
+        if (Player.IsWanted)
+        {
+            Player.SetWantedLevel(0, "Resprayed", true);
+        }
+        if (Player.Investigation.IsActive)
+        {
+            Player.Investigation.Expire();
+        }
     }
     public override void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {

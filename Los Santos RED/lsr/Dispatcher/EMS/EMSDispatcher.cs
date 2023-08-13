@@ -363,7 +363,15 @@ public class EMSDispatcher
                     {
                         carBlip.Delete();
                     }
-                    emt.Pedestrian.CurrentVehicle.Delete();
+                    VehicleExt vehicleExt = World.Vehicles.GetVehicleExt(emt.Pedestrian.CurrentVehicle);
+                    if (vehicleExt != null)
+                    {
+                        vehicleExt.FullyDelete();
+                    }
+                    else
+                    {
+                        emt.Pedestrian.CurrentVehicle.Delete();
+                    }
                     EntryPoint.PersistentVehiclesDeleted++;
                 }
             }

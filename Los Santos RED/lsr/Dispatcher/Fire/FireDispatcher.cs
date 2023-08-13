@@ -357,7 +357,15 @@ public class FireDispatcher
                     {
                         carBlip.Delete();
                     }
-                    firefighter.Pedestrian.CurrentVehicle.Delete();
+                    VehicleExt vehicleExt = World.Vehicles.GetVehicleExt(firefighter.Pedestrian.CurrentVehicle);
+                    if (vehicleExt != null)
+                    {
+                        vehicleExt.FullyDelete();
+                    }
+                    else
+                    {
+                        firefighter.Pedestrian.CurrentVehicle.Delete();
+                    }
                     EntryPoint.PersistentVehiclesDeleted++;
                 }
             }

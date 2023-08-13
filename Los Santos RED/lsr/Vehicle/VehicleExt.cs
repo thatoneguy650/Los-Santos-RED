@@ -30,6 +30,7 @@ namespace LSR.Vehicles
         private uint GameTimeBecameEmpty;
         private bool HasAddedRandomItems = false;
         private bool HasAddedRandomWeapons = false;
+        private uint GameTimeLastAddedSonarBlip;
         public VehicleInteractionMenu VehicleInteractionMenu { get; private set; }
         public SimpleInventory SimpleInventory { get; private set; }
         public VehicleClass VehicleClass => vehicleClass;
@@ -41,6 +42,7 @@ namespace LSR.Vehicles
         public bool IsGang { get; set; } = false;
         public bool IsService => IsPolice || IsEMT || IsFire;
         public Blip AttachedBlip { get; set; }
+       // public Blip SonarBlip { get; set; }
         public bool IsHotWireLocked { get; set; } = false;
         public bool IsDisabled { get; set; } = false;
 
@@ -64,10 +66,10 @@ namespace LSR.Vehicles
         public LicensePlate OriginalLicensePlate { get; set; }
         public Gang AssociatedGang { get; set; }
         public Agency AssociatedAgency { get; set; }
+        public SonarBlip SonarBlip { get; set; }
 
         public virtual Color BlipColor => AssociatedAgency != null ? AssociatedAgency.Color : AssociatedGang != null ? AssociatedGang.Color : Color.White;
         public virtual float BlipSize => AssociatedAgency != null ? 0.6f : 0.25f;
-
         public uint HasExistedFor => Game.GameTime - GameTimeSpawned;
         public uint HasBeenEmptyFor => Game.GameTime - GameTimeBecameEmpty;
         public uint GameTimeSpawned { get; set; }
@@ -83,6 +85,8 @@ namespace LSR.Vehicles
         public uint Handle { get; private set; }
         public int FuelTankCapacity { get; private set; } = 20;
         public bool AddedToReportedStolenQueue { get; set; }
+        public bool CanBeExported { get; set; } = true;
+        public bool CanHavePlateRandomlyUpdated { get; set; } = true;
         public bool NeedsToBeReportedStolen
         {
             get
@@ -115,7 +119,7 @@ namespace LSR.Vehicles
                     {
                         return true;
                     }
-                    //else if (WasReportedStolen && ColorMatchesDescription)//turned off for now, if you have this you need to chnage the license plate AND the color (maybe good for hard mode, more realistic)
+                    //else if (WasReportedStolen && ColorMatchesDescription)//turned off for now, if you have this you need to change the license plate AND the color (maybe good for hard mode, more realistic)
                     //{
                     //    return true;
                     //}
@@ -303,6 +307,7 @@ namespace LSR.Vehicles
             VehicleInteractionMenu = new VehicleInteractionMenu(this);
             WeaponStorage = new WeaponStorage(Settings);
             SimpleInventory = new SimpleInventory(Settings);
+            SonarBlip = new SonarBlip(this, Settings);
         }
         public void SetAsEntered()
         {
@@ -669,20 +674,19 @@ namespace LSR.Vehicles
             //}
             //NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", Vehicle, MyVehicle.RequiredLiveries.PickRandom());
         }
-        //public void SetRandomPlate()
-        //{
-        //    string randomPlate = RandomItems.RandomString(8);
-        //    Vehicle.LicensePlate = randomPlate;
-        //    CarPlate.PlateNumber = randomPlate;
-        //}
         public void SetRandomPlate()
         {
             string randomPlate = RandomItems.RandomString(8);
-            LicensePlate licensePlate = new LicensePlate(randomPlate, 0, false);
-            OriginalLicensePlate = licensePlate;
-            CarPlate = licensePlate;
+            OriginalLicensePlate = new LicensePlate(randomPlate, 0, false);
+            CarPlate = new LicensePlate(randomPlate, 0, false);
+            EntryPoint.WriteToConsole($"SET PLATE {randomPlate}");
+            if(!Vehicle.Exists())
+            { 
+                return; 
+            }
             Vehicle.LicensePlate = randomPlate;
             NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX<int>(Vehicle, 0);
+            EntryPoint.WriteToConsole($"SET PLATE FINISH {randomPlate}");
         }
         public void SetRandomColor()
         {
@@ -721,7 +725,6 @@ namespace LSR.Vehicles
         public bool AllowVanityPlates { get; set; } = true;
         public bool WasCrushed { get; set; }
         public bool IsAlwaysOpenForPlayer { get; set; } = false;
-
         private int ClosestColor(List<Color> colors, Color target)
         {
             var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
@@ -894,13 +897,13 @@ namespace LSR.Vehicles
             {
                 NewType = PlateTypes.GetRandomPlateType();
             }
-            else if (CurrentZone != null && CurrentZone.StateID != StaticStrings.SanAndreasStateID && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.OutOfStateRandomVehiclePlatesPercent))//change the plates based on state
+            else if (CanHavePlateRandomlyUpdated && CurrentZone != null && CurrentZone.StateID != StaticStrings.SanAndreasStateID && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.OutOfStateRandomVehiclePlatesPercent))//change the plates based on state
             {
                 NewType = PlateTypes.GetPlateType(CurrentZone.StateID);
             }
             else
             {
-                if (RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehiclePlatesPercent) && CurrentType != null && CurrentType.CanOverwrite && CanUpdatePlate)
+                if (CanHavePlateRandomlyUpdated && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehiclePlatesPercent) && CurrentType != null && CurrentType.CanOverwrite && CanUpdatePlate)
                 {
                     NewType = PlateTypes.GetRandomPlateType();
                 }
@@ -1082,7 +1085,6 @@ namespace LSR.Vehicles
             extralight_3 = 16,
             extralight_4 = 17
         }
-
         public void OpenDoor(int doorID, bool wait)
         {
             if (!Vehicle.Exists())
@@ -1102,7 +1104,6 @@ namespace LSR.Vehicles
                 }
             }
         }
-
         public void OpenDoorLoose(int doorID, bool wait)
         {
             if (!Vehicle.Exists())
@@ -1123,7 +1124,6 @@ namespace LSR.Vehicles
                 Vehicle.Doors[doorID].Open(true, false);
             }
         }
-
         public void CloseDoor(int doorID)
         {
             if (!Vehicle.Exists())
@@ -1136,18 +1136,15 @@ namespace LSR.Vehicles
             }
             Vehicle.Doors[doorID].Close(false);
         }
-
         public void CreateDoorMenu(MenuPool menuPool, UIMenu vehicleInteractMenu)
         {
 
         }
-
         public void ResetItems()
         {
             SimpleInventory.Reset();
             WeaponStorage.Reset();
         }
-
         public void HandleRandomItems(IModItems modItems)
         {
             if(HasAddedRandomItems)
@@ -1185,7 +1182,6 @@ namespace LSR.Vehicles
             }
             HasAddedRandomWeapons = true;
         }
-
         public void SetImpounded(ITimeReportable time, string locationName)
         {
             IsImpounded = true;
@@ -1229,7 +1225,6 @@ namespace LSR.Vehicles
             };
             impoundSubMenu.AddItem(impoundMenuItem);
         }
-
         public void AddRegularBlip()
         {
             if (AttachedBlip.Exists() || !Vehicle.Exists())
@@ -1242,8 +1237,6 @@ namespace LSR.Vehicles
             AttachedBlip.Color = Color.Blue;
             //EntryPoint.WriteToConsole($"PLAYER EVENT: AddOwnershipBlip", 5);
         }
-
-
         public void AddBlip()
         {
             if (AttachedBlip.Exists() || !Vehicle.Exists())
@@ -1254,20 +1247,167 @@ namespace LSR.Vehicles
             AttachedBlip.Scale = BlipSize;
             AttachedBlip.Color = BlipColor;
         }
-
+        //public void UpdateSonarBlip()
+        //{
+        //    SonarBlip.Update();
+        //}
         public void FullyDelete()
         {
-            if(!Vehicle.Exists())
-            {
-                return;
-            }
+            SonarBlip.Dispose();
             if (AttachedBlip.Exists())
             {
                 AttachedBlip.Delete();
                 AttachedBlip = null;
             }
+            if (!Vehicle.Exists())
+            {
+                return;
+            }
             Vehicle.Delete();
         }
+        public bool IsDamaged()
+        {
+            return IsDamaged(100, 100);
+        }
+        public bool IsDamaged(int BodyDamageLimit, int EngineDamageLimit)
+        {
+            if (!Vehicle.Exists())
+            {
+                return false;
+            }
+            if (Vehicle.Health <= BodyDamageLimit || Vehicle.EngineHealth <= EngineDamageLimit)//can only see smoke and shit if its running
+            {
+                return true;
+            }
+            if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", Vehicle))
+            {
+                return true;
+            }
+            foreach (VehicleDoor myDoor in Vehicle.GetDoors())
+            {
+                if (myDoor.IsDamaged)
+                {
+                    return true;
+                }
+            }
+            if (IsCar && NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", Vehicle) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", Vehicle))
+            {
+                return true;
+            }
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 0, false))
+            {
+                return true;
+            }
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 1, false))
+            {
+                return true;
+            }
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 2, false))
+            {
+                return true;
+            }
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 3, false))
+            {
+                return true;
+            }
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 4, false))
+            {
+                return true;
+            }
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 5, false))
+            {
+                return true;
+            }  
+            return false;
+        }
+
+
+        public bool IsVisiblyDamaged(ITimeReportable Time)
+        {
+            if (!Vehicle.Exists())
+            {
+                return false;
+            }
+            if (Vehicle.Health <= Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleHealthLimit || (Vehicle.EngineHealth <= Settings.SettingsManager.VehicleSettings.NonRoadworthyEngineHealthLimit && Engine.IsRunning))//can only see smoke and shit if its running
+            {
+                return true;
+            }
+            if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedWindows && !NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", Vehicle))
+            {
+                return true;
+            }
+            if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedDoors)
+            {
+                foreach (VehicleDoor myDoor in Vehicle.GetDoors())
+                {
+                    if (myDoor.IsDamaged)
+                    {
+                        return true;
+                    }
+                }
+            }
+            if (Time.IsNight && Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedHeadlights)
+            {
+                if (IsCar && NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", Vehicle) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", Vehicle))
+                {
+                    return true;
+                }
+            }
+            if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedTires)
+            {
+                if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 0, false))
+                {
+                    return true;
+                }
+                if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 1, false))
+                {
+                    return true;
+                }
+                if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 2, false))
+                {
+                    return true;
+                }
+                if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 3, false))
+                {
+                    return true;
+                }
+                if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 4, false))
+                {
+                    return true;
+                }
+                if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 5, false))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool IsRoadWorthy(ITimeReportable Time)
+        {
+            bool LightsOn;
+            bool HighbeamsOn;
+            if (Time.IsNight && Engine.IsRunning)
+            {
+                unsafe
+                {
+                    NativeFunction.CallByName<bool>("GET_VEHICLE_LIGHTS_STATE", Vehicle, &LightsOn, &HighbeamsOn);
+                }
+                if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckNoHeadlights && !LightsOn)
+                {
+                    return false;
+                }
+                if (IsCar && Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedHeadlights && NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", Vehicle) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", Vehicle))
+                {
+                    return false;
+                }
+            }
+            if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckNoPlate && Vehicle.LicensePlate == "        ")
+            {
+                return false;
+            }
+            return true;
+        }
+
 
     }
 }

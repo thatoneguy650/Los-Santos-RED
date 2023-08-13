@@ -248,10 +248,14 @@
     <Compile Include="lsr\Ped\Tasking\LocationTaskRequirements.cs" />
     <Compile Include="lsr\Ped\Variation\AppliedOverlay.cs" />
     <Compile Include="lsr\Ped\Variation\SavedOutfit.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\Exporter\TansferStolenCar.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\Exporter\VehicleExporterTasks.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangGetCarOutOfImpoundTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangProveWorthTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\Generic\GangBodyDisposalTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\Generic\GangTask.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\IPlayerTask.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\IPlayerTaskGroup.cs" />
     <Compile Include="lsr\Player\Activity\DoorToggle.cs" />
     <Compile Include="lsr\Player\Activity\ItemDroppingActivity.cs" />
     <Compile Include="lsr\Player\Activity\Vehicle\VehicleDoorAnimation.cs" />
@@ -270,6 +274,7 @@
     <Compile Include="lsr\Player\Cellphone\Burner\Apps\Settings\BurnerPhoneSettingTracker.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Other\BurnerPhoneAppIcon.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Other\BurnerPhoneSettingsIcon.cs" />
+    <Compile Include="lsr\Player\Cellphone\Contacts\IPhoneContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\KillerContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\VehicleExporterContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Interactions\KillerInteraction.cs" />
@@ -424,6 +429,7 @@
     <Compile Include="lsr\Vehicle\Menu\VehicleInteractionMenu.cs" />
     <Compile Include="lsr\Vehicle\PoliceVehicleExt.cs" />
     <Compile Include="lsr\Vehicle\SecurityVehicleExt.cs" />
+    <Compile Include="lsr\Vehicle\SonarBlip.cs" />
     <Compile Include="lsr\Vehicle\Storage\StoredBody.cs" />
     <Compile Include="lsr\Vehicle\Storage\VehicleBodyManager.cs" />
     <Compile Include="lsr\Vehicle\Storage\VehicleDoorSeatData.cs" />

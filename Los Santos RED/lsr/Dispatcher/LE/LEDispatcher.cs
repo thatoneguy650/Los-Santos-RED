@@ -1,6 +1,7 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -963,7 +964,15 @@ public class LEDispatcher
                     {
                         carBlip.Delete();
                     }
-                    Cop.Pedestrian.CurrentVehicle.Delete();
+                    VehicleExt vehicleExt =  World.Vehicles.GetVehicleExt(Cop.Pedestrian.CurrentVehicle);
+                    if (vehicleExt != null)
+                    {
+                        vehicleExt.FullyDelete();
+                    }
+                    else
+                    {
+                        Cop.Pedestrian.CurrentVehicle.Delete();
+                    }
                     EntryPoint.PersistentVehiclesDeleted++;
                     GameFiber.Yield();
                 }

@@ -6,6 +6,7 @@ using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
+using System.ArrayExtensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -178,6 +179,7 @@ public class Pedestrians : ITaskerReportable
     }
     public void CreateNew()
     {
+        
         WorldPeds = Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
         GameFiber.Yield();
         int updated = 0;

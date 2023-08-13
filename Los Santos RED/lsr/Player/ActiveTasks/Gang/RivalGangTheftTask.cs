@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Player.ActiveTasks
 {
-    public class RivalGangTheftTask
+    public class RivalGangTheftTask : IPlayerTask
     {
 
         private ITaskAssignable Player;

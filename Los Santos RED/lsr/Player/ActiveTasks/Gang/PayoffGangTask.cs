@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Player.ActiveTasks
 {
-    public class PayoffGangTask
+    public class PayoffGangTask : IPlayerTask
     {
         private ITaskAssignable Player;
         private ITimeReportable Time;

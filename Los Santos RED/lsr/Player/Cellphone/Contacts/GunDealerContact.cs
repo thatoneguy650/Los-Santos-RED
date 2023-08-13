@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class GunDealerContact : PhoneContact
+public class GunDealerContact : PhoneContact, IPhoneContact
 {
     public GunDealerContact()
     {

@@ -102,7 +102,6 @@ public class Settings : ISettingsProvideable
         SettingsManager.RespawnSettings.ImpoundVehicles = false;
 
         SettingsManager.VehicleSettings.ForceFirstPersonOnVehicleDuck = false;
-        SettingsManager.VehicleSettings.UseCustomFuelSystem = false;
         SettingsManager.VehicleSettings.LockVehiclePercentage = 30f;
         SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckNoHeadlights = false;
         SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedHeadlights = false;

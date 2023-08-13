@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Player.ActiveTasks
 {
-    public class GangGetCarOutOfImpoundTask
+    public class GangGetCarOutOfImpoundTask : IPlayerTask
     {
         private bool SpawnedVehicle = false;
         private ITaskAssignable Player;

@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -473,16 +474,16 @@ public class GangDispatcher
             return gangMember.DistanceToPlayer >= DistanceToDeleteOnFoot;
         }
     }
-    private void Delete(PedExt emt)
+    private void Delete(PedExt ganegMember)
     {
-        if (emt != null && emt.Pedestrian.Exists())
+        if (ganegMember != null && ganegMember.Pedestrian.Exists())
         {
             //EntryPoint.WriteToConsole($"Attempting to Delete {Cop.Pedestrian.Handle}");
-            if (emt.Pedestrian.IsInAnyVehicle(false))
+            if (ganegMember.Pedestrian.IsInAnyVehicle(false))
             {
-                if (emt.Pedestrian.CurrentVehicle.HasPassengers)
+                if (ganegMember.Pedestrian.CurrentVehicle.HasPassengers)
                 {
-                    foreach (Ped Passenger in emt.Pedestrian.CurrentVehicle.Passengers)
+                    foreach (Ped Passenger in ganegMember.Pedestrian.CurrentVehicle.Passengers)
                     {
                         if (Passenger.Handle != Game.LocalPlayer.Character.Handle)
                         {
@@ -492,22 +493,30 @@ public class GangDispatcher
                         }
                     }
                 }
-                if (emt.Pedestrian.Exists() && emt.Pedestrian.CurrentVehicle.Exists() && emt.Pedestrian.CurrentVehicle != null)
+                if (ganegMember.Pedestrian.Exists() && ganegMember.Pedestrian.CurrentVehicle.Exists() && ganegMember.Pedestrian.CurrentVehicle != null)
                 {
-                    Blip carBlip = emt.Pedestrian.CurrentVehicle.GetAttachedBlip();
+                    Blip carBlip = ganegMember.Pedestrian.CurrentVehicle.GetAttachedBlip();
                     if (carBlip.Exists())
                     {
                         carBlip.Delete();
                     }
-                    emt.Pedestrian.CurrentVehicle.Delete();
+                    VehicleExt vehicleExt = World.Vehicles.GetVehicleExt(ganegMember.Pedestrian.CurrentVehicle);
+                    if (vehicleExt != null)
+                    {
+                        vehicleExt.FullyDelete();
+                    }
+                    else
+                    {
+                        ganegMember.Pedestrian.CurrentVehicle.Delete();
+                    }
                     EntryPoint.PersistentVehiclesDeleted++;
                 }
             }
-            RemoveBlip(emt.Pedestrian);
-            if (emt.Pedestrian.Exists())
+            RemoveBlip(ganegMember.Pedestrian);
+            if (ganegMember.Pedestrian.Exists())
             {
                 //EntryPoint.WriteToConsole(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
-                emt.Pedestrian.Delete();
+                ganegMember.Pedestrian.Delete();
                 EntryPoint.PersistentPedsDeleted++;
             }
         }

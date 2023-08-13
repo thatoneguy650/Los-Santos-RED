@@ -24,9 +24,12 @@ public class PlayerTasks
     private List<DeadDrop> ActiveDrops = new List<DeadDrop>();
     private ISettingsProvideable Settings;
     private List<PlayerTask> LastContactTask = new List<PlayerTask>();
+
+    private List<IPlayerTaskGroup> PlayerTaskGroups = new List<IPlayerTaskGroup>();
     public GangTasks GangTasks { get; private set; }
     public CorruptCopTasks CorruptCopTasks { get; private set; }
     public UndergroundGunsTasks UndergroundGunsTasks { get; private set; }
+    public VehicleExporterTasks VehicleExporterTasks { get; private set; }
     public List<PlayerTask> PlayerTaskList { get; set; } = new List<PlayerTask>();
     public PlayerTasks(ITaskAssignable player, ITimeControllable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names, IWeapons weapons, IShopMenus shopMenus, IModItems modItems, IPedGroups pedGroups)
     {
@@ -44,12 +47,21 @@ public class PlayerTasks
         GangTasks = new GangTasks(Player,Time,Gangs,this,PlacesOfInterest, ActiveDrops, Settings,World,Crimes, modItems, ShopMenus, Weapons,Names,PedGroups);
         CorruptCopTasks = new CorruptCopTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Names, Weapons, ShopMenus);
         UndergroundGunsTasks = new UndergroundGunsTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        VehicleExporterTasks = new VehicleExporterTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        PlayerTaskGroups = new List<IPlayerTaskGroup>
+        {
+            GangTasks,
+            CorruptCopTasks,
+            UndergroundGunsTasks,
+            VehicleExporterTasks
+        };
     }
     public void Setup()
     {
-        GangTasks.Setup();
-        CorruptCopTasks.Setup();
-        UndergroundGunsTasks.Setup();
+        foreach(IPlayerTaskGroup playerTaskGroup in PlayerTaskGroups)
+        {
+            playerTaskGroup.Setup();
+        }
     }
     public void Update()
     {
@@ -83,9 +95,11 @@ public class PlayerTasks
             pt.IsActive = false;
         }
         PlayerTaskList.Clear();
-        GangTasks.Dispose();
-        CorruptCopTasks.Dispose();
-        UndergroundGunsTasks.Dispose();
+        foreach (IPlayerTaskGroup playerTaskGroup in PlayerTaskGroups)
+        {
+            playerTaskGroup.Dispose();
+        }
+
         LastContactTask.Clear();
     }
     public void OnStandardRespawn()

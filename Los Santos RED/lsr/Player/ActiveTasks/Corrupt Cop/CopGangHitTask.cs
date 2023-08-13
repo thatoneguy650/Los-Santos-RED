@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace LosSantosRED.lsr.Player.ActiveTasks
 {
-    public class CopGangHitTask
+    public class CopGangHitTask : IPlayerTask
     {
         private ITaskAssignable Player;
         private ITimeReportable Time;

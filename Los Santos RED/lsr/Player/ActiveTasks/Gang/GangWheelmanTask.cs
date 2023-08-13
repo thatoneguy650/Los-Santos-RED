@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Player.ActiveTasks
 {
-    public class GangWheelmanTask
+    public class GangWheelmanTask : IPlayerTask
     {
         private ITaskAssignable Player;
         private ITimeControllable Time;

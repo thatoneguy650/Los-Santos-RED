@@ -1,6 +1,7 @@
 ﻿using LosSantosRED.lsr.Locations;
 using LSR.Vehicles;
 using Rage;
+using System.Collections.Generic;
 
 namespace LosSantosRED.lsr.Interface
 {
@@ -67,6 +68,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsEMT { get; }
         bool IsFireFighter { get; }
         RestrictedAreaManager RestrictedAreaManager { get; }
+        List<VehicleExt> TrackedVehicles { get; }
 
         //  bool IsLootingBody { get; }
 

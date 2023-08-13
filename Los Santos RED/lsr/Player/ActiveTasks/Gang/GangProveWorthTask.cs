@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Player.ActiveTasks
 {
-    public class GangProveWorthTask
+    public class GangProveWorthTask : IPlayerTask
     {
         private ITaskAssignable Player;
         private ITimeReportable Time;

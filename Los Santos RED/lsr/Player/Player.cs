@@ -627,6 +627,7 @@ namespace Mod
             if (resetProperties)
             {
                 Properties.Reset();
+                World.Places.Reset();
             }
             if (resetHealth)
             {
@@ -1255,7 +1256,11 @@ namespace Mod
                     CurrentVehicle.HasAutoSetRadio = false;
                 }
 
-
+                if(CurrentVehicle != null && CurrentVehicle.IsImpounded && CurrentVehicle.ImpoundedLocation != "")
+                {
+                    CurrentVehicle.ImpoundedLocation = "";
+                    EntryPoint.WriteToConsole("REMOVING IMPOUNDED LOCATION FROM VEHICLE");
+                }
 
 
 

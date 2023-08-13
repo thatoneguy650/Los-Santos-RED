@@ -161,5 +161,13 @@ public class StaticPlaces
             }
         }
     }
+
+    public void Reset()
+    {
+        foreach (GameLocation basicLocation in PlacesOfInterest.AllLocations())
+        {
+            basicLocation.Reset();
+        }
+    }
 }
 

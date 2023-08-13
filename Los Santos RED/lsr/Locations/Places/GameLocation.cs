@@ -411,6 +411,10 @@ public class GameLocation : ILocationDispatchable
         Game.RemoveNotification(NotificationHandle);
         NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, header, message);
     }
+    public virtual void Reset()
+    {
+
+    }
     public bool IsSameState(GameState state)
     {
         return state == null || GameState == null || state.StateID == GameState.StateID || state.IsSisterState(GameState);

@@ -19,59 +19,69 @@ public class VehicleExporterInteraction : IContactMenuInteraction
     private MenuPool MenuPool;
     private IGangs Gangs;
     private IPlacesOfInterest PlacesOfInterest;
-    private PhoneContact AnsweredContact;
+    //private PhoneContact AnsweredContact;
     private ISettingsProvideable Settings;
     private IModItems ModItems;
     private UIMenu LocationsSubMenu;
+    private UIMenu JobsSubMenu;
+    private VehicleExporterContact VehicleExporterContact;
 
-    public VehicleExporterInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IModItems modItems)
+    public VehicleExporterInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IModItems modItems, VehicleExporterContact vehicleExporterContact)
     {
         Player = player;
         Gangs = gangs;
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
         ModItems = modItems;
+        VehicleExporterContact = vehicleExporterContact;
         MenuPool = new MenuPool();
     }
     public void Start(PhoneContact contact)
     {
-        AnsweredContact = contact;
-        if (contact == null)
+        //AnsweredContact = contact;
+        if (VehicleExporterContact == null)
         {
             return;
         }
         VehicleExporterMenu = new UIMenu("", "Select an Option");
         VehicleExporterMenu.RemoveBanner();
         MenuPool.Add(VehicleExporterMenu);
-
-
+        AddJobItems();
+        AddQuestionItems();
+        LocationsSubMenu = MenuPool.AddSubMenu(VehicleExporterMenu, "Locations");
+        LocationsSubMenu.RemoveBanner();
+        AddLocationItems();  
+        VehicleExporterMenu.Visible = true;
+        InteractionLoop();
+    }
+    private void AddQuestionItems()
+    {
         UIMenuItem currentVehicleQuestion = new UIMenuItem("Current Vehicle", "Ask if the current vehicle is exportable");
         currentVehicleQuestion.Activated += (sender, selectedItem) =>
         {
             VehicleExt vehicleToQuestion = null;
-            if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+            if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
             {
                 vehicleToQuestion = Player.CurrentVehicle;
             }
-            else if (Player.CurrentLookedAtVehicle != null & Player.CurrentLookedAtVehicle.Vehicle.Exists())
+            else if (Player.CurrentLookedAtVehicle != null && Player.CurrentLookedAtVehicle.Vehicle.Exists())
             {
                 vehicleToQuestion = Player.CurrentLookedAtVehicle;
             }
-
             if (vehicleToQuestion == null || !vehicleToQuestion.Vehicle.Exists())
             {
                 Game.DisplaySubtitle("No Vehicle Detected");
                 return;
             }
             VehicleItem vehicleItem = ModItems.GetVehicle(vehicleToQuestion.Vehicle.Model.Name);
-            if(vehicleItem == null)
+            if (vehicleItem == null)
             {
                 Game.DisplaySubtitle("Vehicle Not Found");
                 return;
             }
             bool foundMenuItem = false;
             string Response = $"{vehicleItem.Name}~n~";
-            foreach (VehicleExporter gl in PlacesOfInterest.PossibleLocations.VehicleExporters.Where(x=> x.ContactName == AnsweredContact.Name))
+            foreach (VehicleExporter gl in PlacesOfInterest.PossibleLocations.VehicleExporters.Where(x => x.ContactName == VehicleExporterContact.Name))
             {
                 string TextToShow = gl.GenerateTextItem(vehicleItem);
                 if (!string.IsNullOrEmpty(TextToShow))
@@ -80,21 +90,18 @@ public class VehicleExporterInteraction : IContactMenuInteraction
                 }
                 Response += TextToShow;
             }
-            if(!foundMenuItem)
+            if (!foundMenuItem)
             {
                 Response = "Vehicle not available for export.";
             }
-            Player.CellPhone.AddPhoneResponse(AnsweredContact.Name, AnsweredContact.IconName, Response);
+            Player.CellPhone.AddPhoneResponse(VehicleExporterContact.Name, VehicleExporterContact.IconName, Response);
             //sender.Visible = false;
         };
         VehicleExporterMenu.AddItem(currentVehicleQuestion);
-
-
-
-        LocationsSubMenu = MenuPool.AddSubMenu(VehicleExporterMenu, "Locations");
-        LocationsSubMenu.RemoveBanner();
-
-        foreach (VehicleExporter gl in PlacesOfInterest.PossibleLocations.VehicleExporters.Where(x => x.ContactName == AnsweredContact.Name))
+    }
+    private void AddLocationItems()
+    {
+        foreach (VehicleExporter gl in PlacesOfInterest.PossibleLocations.VehicleExporters.Where(x => x.ContactName == VehicleExporterContact.Name))
         {
             if (!gl.IsEnabled)
             {
@@ -115,9 +122,8 @@ public class VehicleExporterInteraction : IContactMenuInteraction
             locationListsubMenu.RemoveBanner();
             gl.AddPriceListItems(locationListsubMenu);
         }
-        VehicleExporterMenu.Visible = true;
-        InteractionLoop();
     }
+
     private void InteractionLoop()
     {
         GameFiber.StartNew(delegate
@@ -156,8 +162,34 @@ public class VehicleExporterInteraction : IContactMenuInteraction
                     $"The shop? It's on {exporter.FullStreetAddress}.",
 
                     };
-            Player.CellPhone.AddPhoneResponse(AnsweredContact.Name, AnsweredContact.IconName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(VehicleExporterContact.Name, VehicleExporterContact.IconName, Replies.PickRandom());
         }
     }
+
+    private void AddJobItems()
+    {
+        JobsSubMenu = MenuPool.AddSubMenu(VehicleExporterMenu, "Jobs");
+        JobsSubMenu.RemoveBanner();
+
+        UIMenuItem TaskCancel = new UIMenuItem("Cancel Task", "Tell the gun dealer you can't complete the task.") { RightLabel = "~o~$?~s~" };
+        TaskCancel.Activated += (sender, selectedItem) =>
+        {
+            Player.PlayerTasks.CancelTask(VehicleExporterContact.Name);
+            sender.Visible = false;
+        };
+        if (Player.PlayerTasks.HasTask(VehicleExporterContact.Name))
+        {
+            JobsSubMenu.AddItem(TaskCancel);
+            return;
+        }
+        UIMenuItem TransferCars = new UIMenuItem("Transfer", "Transfer some hot vehicles.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.VehicleExporterTransferPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.VehicleExporterTransferPaymentMax:C0}~s~" };
+        TransferCars.Activated += (sender, selectedItem) =>
+        {
+            Player.PlayerTasks.VehicleExporterTasks.TansferStolenCar.Start(VehicleExporterContact);
+            sender.Visible = false;
+        };
+        JobsSubMenu.AddItem(TransferCars);
+    }
+
 }
 

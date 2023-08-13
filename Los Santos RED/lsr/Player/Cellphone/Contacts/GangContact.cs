@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class GangContact : PhoneContact
+public class GangContact : PhoneContact, IPhoneContact
 {
     public GangContact()
     {

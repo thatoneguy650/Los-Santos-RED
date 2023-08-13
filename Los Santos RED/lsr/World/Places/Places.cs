@@ -73,4 +73,8 @@ public class Places
     {
         StaticPlaces.Update();
     }
+    public void Reset()
+    {
+        StaticPlaces.Reset();
+    }
 }

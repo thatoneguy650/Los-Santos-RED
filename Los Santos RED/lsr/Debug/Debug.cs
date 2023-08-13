@@ -80,6 +80,7 @@ public class Debug
     private bool IsOn = true;
     private bool isDoorLocked;
     private bool DoOne;
+    private bool IsBigMapActive = false;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Mod.Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, WeatherReporting weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
@@ -472,27 +473,34 @@ public class Debug
     }
     private void DebugNumpad4()
     {
+
+
+        NativeFunction.Natives.SET_BIGMAP_ACTIVE(!IsBigMapActive, false);
+        Game.DisplaySubtitle($"IsBigMapActive:{IsBigMapActive}");
+        GameFiber.Sleep(1000);
+        IsBigMapActive = !IsBigMapActive;
+
         //GarageDoor = new InteriorDoor(3082692265,new Vector3(5.644455f,0.1074037f, 2.158299f)) },
 
-       // int doorID = FindDoor(new Vector3(-1355.819f, -754.4543f, 23.49588f), 3082692265);
-        
+        // int doorID = FindDoor(new Vector3(-1355.819f, -754.4543f, 23.49588f), 3082692265);
 
 
-       // bool isRegistered = NativeFunction.Natives.IS_DOOR_REGISTERED_WITH_SYSTEM<bool>(doorID);
 
-       //// GameFiber.Sleep(500);
-       // bool isClosed = NativeFunction.Natives.IS_DOOR_CLOSED<bool>(doorID);
+        // bool isRegistered = NativeFunction.Natives.IS_DOOR_REGISTERED_WITH_SYSTEM<bool>(doorID);
 
-       // int doorState = NativeFunction.Natives.DOOR_SYSTEM_GET_DOOR_STATE<int>(doorID);
-       // string helpText = $"{doorID} isRegistered{isRegistered} isClosed{isClosed} doorState{doorState}";
-       // Game.DisplayHelp(helpText);
-       // EntryPoint.WriteToConsole(helpText);
+        //// GameFiber.Sleep(500);
+        // bool isClosed = NativeFunction.Natives.IS_DOOR_CLOSED<bool>(doorID);
 
-
-       // //NativeFunction.Natives.ADD_DOOR_TO_SYSTEM(doorID, 3082692265, new Vector3(-1355.819f, -754.4543f, 23.49588f), true, true, false);
+        // int doorState = NativeFunction.Natives.DOOR_SYSTEM_GET_DOOR_STATE<int>(doorID);
+        // string helpText = $"{doorID} isRegistered{isRegistered} isClosed{isClosed} doorState{doorState}";
+        // Game.DisplayHelp(helpText);
+        // EntryPoint.WriteToConsole(helpText);
 
 
-       // NativeFunction.Natives.DOOR_SYSTEM_SET_DOOR_STATE(doorID, 0, false, false);
+        // //NativeFunction.Natives.ADD_DOOR_TO_SYSTEM(doorID, 3082692265, new Vector3(-1355.819f, -754.4543f, 23.49588f), true, true, false);
+
+
+        // NativeFunction.Natives.DOOR_SYSTEM_SET_DOOR_STATE(doorID, 0, false, false);
 
         //K9Test();
         // Player.CellPhone.OpenBurner();
@@ -1178,16 +1186,16 @@ public class Debug
     private void DebugNumpad6()
     {
 
-        PedExt chosen = World.Pedestrians.Civilians.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-        if(chosen == null || !chosen.Pedestrian.Exists())
-        {
-            return;
-        }
+        //PedExt chosen = World.Pedestrians.Civilians.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        //if(chosen == null || !chosen.Pedestrian.Exists())
+        //{
+        //    return;
+        //}
 
-        int pedHeadshotHandle = NativeFunction.Natives.REGISTER_PEDHEADSHOT<int>(chosen.Pedestrian);
-        GameFiber.Sleep(2000);
-        string str = NativeFunction.Natives.GET_PEDHEADSHOT_TXD_STRING<string>(pedHeadshotHandle);
-        NativeHelper.DisplayNotificationCustom(str, str, "Test", "~g~Text Received~s~", "Test 1", NotificationIconTypes.ChatBox, false);
+        //int pedHeadshotHandle = NativeFunction.Natives.REGISTER_PEDHEADSHOT<int>(chosen.Pedestrian);
+        //GameFiber.Sleep(2000);
+        //string str = NativeFunction.Natives.GET_PEDHEADSHOT_TXD_STRING<string>(pedHeadshotHandle);
+        //NativeHelper.DisplayNotificationCustom(str, str, "Test", "~g~Text Received~s~", "Test 1", NotificationIconTypes.ChatBox, false);
         //string AliveSeatAnimationDictionaryName = "veh@std@ps@enter_exit";
         //string AliveSeatAnimationName = "dead_fall_out";
 
@@ -1289,7 +1297,7 @@ public class Debug
         //        //Player.Scanner.DebugPlayDispatch();
 
         //        //SpawnWithQuat();
-        //HighlightProp();
+        HighlightProp();
         //        //SetFlags();
         //        //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         //        //{

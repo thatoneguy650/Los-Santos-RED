@@ -1390,7 +1390,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Pfister Comet",0,27000),
 
                 new MenuItem("Pfister Neon",0,57000),
-                new MenuItem("Pfister 811",0,34000),
+                //new MenuItem("Pfister 811",0,34000),
 
                 new MenuItem("Pegassi Osiris",0,18000),
                 new MenuItem("Pegassi FCR 1000",0,2300),
@@ -1454,7 +1454,27 @@ public class ShopMenus : IShopMenus
 
             }),
 
+        new ShopMenu("PaletoExportMenu", "Paleto Exports", new List<MenuItem>() {
+                new MenuItem("Bravado Youga",0, 5000),
+                new MenuItem("Bravado Gresley",0, 5500),
+                new MenuItem("Bravado Bison",0, 6500),
+                new MenuItem("Bravado Gauntlet",0,7800),
+                new MenuItem("Bravado Buffalo S",0,8900),
 
+
+                new MenuItem("Karin Futo",0,2000),
+                new MenuItem("Karin Rebel",0,5600),
+                new MenuItem("Karin BeeJay XL",0,2800),
+                new MenuItem("Karin Dilettante",0,2400),
+                new MenuItem("Karin Asterope",0,3400),
+                new MenuItem("Vapid Stanier",0, 3400),
+                new MenuItem("Vapid Minivan",0, 2500),
+
+                new MenuItem("Benefactor Schwartzer",0,4000),
+
+                new MenuItem("BF Surfer",0, 1500),
+                new MenuItem("BF Injection",0,2000),
+            }),
 
         });
     }

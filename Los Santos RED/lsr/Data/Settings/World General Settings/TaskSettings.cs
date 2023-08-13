@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -59,6 +60,9 @@ public class TaskSettings : ISettingsDefaultable
     public bool ShowEntityBlips { get; set; }
     [Description("Show help text pop ups on task status changes.")]
     public bool DisplayHelpPrompts { get; set; }
+    public int VehicleExporterTransferPaymentMin { get; set; }
+    public int VehicleExporterTransferPaymentMax { get; set; }
+    public float VehicleExporterTransferComplicationsPercentage { get; set; }
 
     public TaskSettings()
     {
@@ -85,9 +89,18 @@ public class TaskSettings : ISettingsDefaultable
         ShowEntityBlips = true;
         DisplayHelpPrompts = true;
 
+        VehicleExporterTransferPaymentMin = 2000;
+        VehicleExporterTransferPaymentMax = 5000;
+        VehicleExporterTransferComplicationsPercentage = 25f;
 
 
-
+    }
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        VehicleExporterTransferPaymentMin = 2000;
+        VehicleExporterTransferPaymentMax = 5000;
+        VehicleExporterTransferComplicationsPercentage = 25f;
     }
 
 }
