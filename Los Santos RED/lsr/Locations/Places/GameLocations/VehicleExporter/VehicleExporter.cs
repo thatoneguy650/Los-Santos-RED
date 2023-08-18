@@ -100,11 +100,16 @@ public class VehicleExporter : GameLocation
             }, "VehicleExporterInteract");
         }
     }
-    public void AddPriceListItems(UIMenu toAdd)
+    public void AddPriceListItems(UIMenu toAdd, IModItems modItems)
     {
         foreach (MenuItem menuItem1 in Menu.Items.OrderBy(x => x.SalesPrice))
         {
             if (menuItem1.ModItem == null)
+            {
+                continue;
+            }
+            VehicleItem vehicleItem = modItems.PossibleItems.VehicleItems.Where(x => x.Name == menuItem1.ModItem?.Name).FirstOrDefault();
+            if (vehicleItem != null && vehicleItem.IsDLC && !Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesInStores)
             {
                 continue;
             }
@@ -123,7 +128,8 @@ public class VehicleExporter : GameLocation
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
             ExportListSubMenu.SetBannerType(BannerImage);
         }
-        AddPriceListItems(ExportListSubMenu);
+
+        AddPriceListItems(ExportListSubMenu, ModItems);
         MenuLookups.Clear();
         ExportSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Export A Vehicle");
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Select a vehicle to export.";
@@ -309,7 +315,7 @@ public class VehicleExporter : GameLocation
         }
         EntryPoint.WriteToConsole($"GenerateTextItem menuItem:{mi.ModItemName}");
         bool CanExport = true;
-        ExportedVehicle exportedStats = ExportedVehicles.FirstOrDefault(x => x.MenuItem.ModItemName == vehicleItem.Name);
+        ExportedVehicle exportedStats = ExportedVehicles.FirstOrDefault(x => x.MenuItem?.ModItemName == vehicleItem?.Name);
         string TimeBeforeExportAllowed = "";
         if (exportedStats != null && DateTime.Compare(Time.CurrentDateTime, exportedStats.TimeLastExported.AddHours(HoursBetweenExports)) < 0)
         {

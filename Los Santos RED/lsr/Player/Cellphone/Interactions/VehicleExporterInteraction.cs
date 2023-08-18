@@ -120,7 +120,7 @@ public class VehicleExporterInteraction : IContactMenuInteraction
 
             UIMenu locationListsubMenu = MenuPool.AddSubMenu(locationsubMenu, "Vehicle List");
             locationListsubMenu.RemoveBanner();
-            gl.AddPriceListItems(locationListsubMenu);
+            gl.AddPriceListItems(locationListsubMenu, ModItems);
         }
     }
 

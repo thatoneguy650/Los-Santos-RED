@@ -1568,51 +1568,51 @@ public class ShopMenus : IShopMenus
         ShopMenuGroup MarijuanaDealerMenuGroup = new ShopMenuGroup(StaticStrings.MarijuanaDealerMenuGroupID, "Marijuana Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
         {
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 1",  new List<MenuItem>() {
-                    new MenuItem("Marijuana",20, 12) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 20, NumberOfItemsToSellToPlayer = 20  }}),10),
+                    new MenuItem("Marijuana",20, 12) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 30, NumberOfItemsToSellToPlayer = 30  }}),10),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 2", new List<MenuItem>() {
-                    new MenuItem("Marijuana", 19, 11) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 5 } }),10),
+                    new MenuItem("Marijuana", 19, 11) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 25, NumberOfItemsToSellToPlayer = 25 } }),10),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 3", new List<MenuItem>() {
-                    new MenuItem("Marijuana", 18, 10) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 18, NumberOfItemsToSellToPlayer = 7 } }),10),
+                    new MenuItem("Marijuana", 18, 10) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 28, NumberOfItemsToSellToPlayer = 27 } }),10),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 4", new List<MenuItem>() {
-                    new MenuItem("Marijuana", 17, 12) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 9 } }),10),
+                    new MenuItem("Marijuana", 17, 12) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 25, NumberOfItemsToSellToPlayer = 29 } }),10),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 5", new List<MenuItem>() {
-                    new MenuItem("Marijuana", 16, 11) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 15 } }),10),
+                    new MenuItem("Marijuana", 16, 11) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 22, NumberOfItemsToSellToPlayer = 25 } }),10),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 6", new List<MenuItem>() {
-                    new MenuItem("Marijuana",15, 10) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 16 } }),10),
+                    new MenuItem("Marijuana",15, 10) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 26 } }),10),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 7", new List<MenuItem>() {
-                    new MenuItem("Marijuana",14, 12) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 19, NumberOfItemsToSellToPlayer = 15 } }),10),
+                    new MenuItem("Marijuana",14, 12) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 25, NumberOfItemsToSellToPlayer = 25 } }),10),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 8", new List<MenuItem>() {
-                    new MenuItem("Marijuana",13, 11) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 22, NumberOfItemsToSellToPlayer = 15 } }),10),
+                    new MenuItem("Marijuana",13, 11) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 28, NumberOfItemsToSellToPlayer = 25 } }),10),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 9", new List<MenuItem>() {
-                    new MenuItem("Marijuana",20, 10) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 34, NumberOfItemsToSellToPlayer = 22 } }),10),
+                    new MenuItem("Marijuana",20, 10) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 34, NumberOfItemsToSellToPlayer = 32 } }),10),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 10", new List<MenuItem>() {
-                    new MenuItem("Marijuana",19, 12) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 9 } }),10),
+                    new MenuItem("Marijuana",19, 12) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 18, NumberOfItemsToSellToPlayer = 29 } }),10),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 11", new List<MenuItem>() {
-                    new MenuItem("Marijuana",18, 11) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 13 } }),10),
+                    new MenuItem("Marijuana",18, 11) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 19, NumberOfItemsToSellToPlayer = 23 } }),10),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 12", new List<MenuItem>() {
-                    new MenuItem("Marijuana",17, 10) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 12 } }),10),
+                    new MenuItem("Marijuana",17, 10) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 22, NumberOfItemsToSellToPlayer = 22 } }),10),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 13", new List<MenuItem>() {
-                    new MenuItem("Marijuana",16, 12) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 19 } }),10),
+                    new MenuItem("Marijuana",16, 12) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 17, NumberOfItemsToSellToPlayer = 29 } }),10),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 14", new List<MenuItem>() {
-                    new MenuItem("Marijuana",15, 11) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 11, NumberOfItemsToSellToPlayer = 11 }}),10),
+                    new MenuItem("Marijuana",15, 11) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 18, NumberOfItemsToSellToPlayer = 21 }}),10),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 15", new List<MenuItem>() {
-                    new MenuItem("Marijuana",14, 10) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 13 }}),10),
+                    new MenuItem("Marijuana",14, 10) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 19, NumberOfItemsToSellToPlayer = 23 }}),10),
          });
         PossibleShopMenus.ShopMenuGroupList.Add(MarijuanaDealerMenuGroup);
 
         ShopMenuGroup ToiletCleanerDealerMenuGroup = new ShopMenuGroup(StaticStrings.ToiletCleanerDealerMenuGroupID, "Toilet Cleaner Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
         {
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Toilet Dealer 1", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",27, 17) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 12 } }),30),
+                    new MenuItem("Toilet Cleaner",27, 17) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 22 } }),30),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Toilet Dealer 2", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",26, 18) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 2, NumberOfItemsToSellToPlayer = 15 } }),30),
+                    new MenuItem("Toilet Cleaner",26, 18) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 25 } }),30),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Toilet Dealer 3", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",25, 16) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 11 },
+                    new MenuItem("Toilet Cleaner",25, 16) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 21 },
                     new MenuItem("Shrewsbury Luzi",956) { IsIllicilt = true }, }),10),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Toilet Dealer 4", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",24, 16) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 4, NumberOfItemsToSellToPlayer = 16 },}),20),
+                    new MenuItem("Toilet Cleaner",24, 16) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 14, NumberOfItemsToSellToPlayer = 26 },}),20),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Toilet Dealer 53", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",23, 18) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 7 },
+                    new MenuItem("Toilet Cleaner",23, 18) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 17 },
                     new MenuItem("Shrewsbury Defender",1200) { IsIllicilt = true },}),10),
         });
         PossibleShopMenus.ShopMenuGroupList.Add(ToiletCleanerDealerMenuGroup);
@@ -1620,19 +1620,19 @@ public class ShopMenus : IShopMenus
         ShopMenuGroup SpankDealerMenuGroup = new ShopMenuGroup(StaticStrings.SPANKDealerMenuGroupID, "SPANK Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
         {
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "SPANK Dealer 1", new List<MenuItem>() {
-                    new MenuItem("SPANK", 55, 25) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 8, NumberOfItemsToSellToPlayer = 13 } }),1),
+                    new MenuItem("SPANK", 55, 25) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 18, NumberOfItemsToSellToPlayer = 23 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "SPANK Dealer 2", new List<MenuItem>() {
-                    new MenuItem("SPANK", 52, 25) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 14 } }),1),
+                    new MenuItem("SPANK", 52, 25) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 24 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "SPANK Dealer 3", new List<MenuItem>() {
-                    new MenuItem("SPANK", 51, 20) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 6, NumberOfItemsToSellToPlayer = 15 },
+                    new MenuItem("SPANK", 51, 20) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 16, NumberOfItemsToSellToPlayer = 25 },
                     new MenuItem("Toto 12 Guage Sawed-Off",430) { IsIllicilt = true },
                     new MenuItem("Combat Knife",120) { IsIllicilt = true },
                     new MenuItem("Hawk & Little Desert Slug",950) { IsIllicilt = true },}),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "SPANK Dealer 4", new List<MenuItem>() {
-                    new MenuItem("SPANK", 50, 25) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 8, NumberOfItemsToSellToPlayer = 9 },
+                    new MenuItem("SPANK", 50, 25) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 18, NumberOfItemsToSellToPlayer = 19 },
                     new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "SPANK Dealer 5", new List<MenuItem>() {
-                    new MenuItem("SPANK", 48, 20) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 12 },
+                    new MenuItem("SPANK", 48, 20) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 22 },
                     new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }),1),
         });
         PossibleShopMenus.ShopMenuGroupList.Add(SpankDealerMenuGroup);
@@ -1641,18 +1641,18 @@ public class ShopMenus : IShopMenus
         ShopMenuGroup MethDealerMenuGroup = new ShopMenuGroup(StaticStrings.MethamphetamineDealerMenuGroupID, "Meth Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
         {
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Meth Dealer 1", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 65, 40) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 12 } }),1),
+                    new MenuItem("Methamphetamine", 65, 40) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 22 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Meth Dealer 2", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 55, 38) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 13 } }),1),
+                    new MenuItem("Methamphetamine", 55, 38) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 23 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Meth Dealer 3", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 60, 36) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 12 },
+                    new MenuItem("Methamphetamine", 60, 36) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 22 },
                     new MenuItem("Hawk & Little PTF092F",200) { IsIllicilt = true },
                     new MenuItem("Switchblade",300) { IsIllicilt = true },}),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Meth Dealer 4", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 64, 35) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 20 },
+                    new MenuItem("Methamphetamine", 64, 35) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 30 },
                     new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Meth Dealer 5", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 62, 36) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 20, NumberOfItemsToSellToPlayer = 13 },
+                    new MenuItem("Methamphetamine", 62, 36) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 25, NumberOfItemsToSellToPlayer = 23 },
                     new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }),1),
         });
         PossibleShopMenus.ShopMenuGroupList.Add(MethDealerMenuGroup);
@@ -1660,18 +1660,18 @@ public class ShopMenus : IShopMenus
         ShopMenuGroup HeroinDealerMenuGroup = new ShopMenuGroup(StaticStrings.HeroinDealerMenuGroupID, "Heroin Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
         {
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Heroin Dealer 1", new List<MenuItem>() {
-                    new MenuItem("Heroin", 150, 110) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 6, NumberOfItemsToSellToPlayer = 12 } }, StaticStrings.HeroinDealerMenuGroupID),1),
+                    new MenuItem("Heroin", 150, 110) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 16, NumberOfItemsToSellToPlayer = 22 } }, StaticStrings.HeroinDealerMenuGroupID),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Heroin Dealer 2", new List<MenuItem>() {
-                    new MenuItem("Heroin", 156, 108) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 7, NumberOfItemsToSellToPlayer = 8 } }, StaticStrings.HeroinDealerMenuGroupID),1),
+                    new MenuItem("Heroin", 156, 108) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 17, NumberOfItemsToSellToPlayer = 21 } }, StaticStrings.HeroinDealerMenuGroupID),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Heroin Dealer 3", new List<MenuItem>() {
-                    new MenuItem("Heroin", 160, 101) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 9, NumberOfItemsToSellToPlayer = 14 },
+                    new MenuItem("Heroin", 160, 101) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 19, NumberOfItemsToSellToPlayer = 24 },
                     new MenuItem("Combat Knife",120) { IsIllicilt = true },
                     new MenuItem("Switchblade",300) { IsIllicilt = true },}, StaticStrings.HeroinDealerMenuGroupID),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Heroin Dealer 4", new List<MenuItem>() {
-                    new MenuItem("Heroin", 158, 99) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 11, NumberOfItemsToSellToPlayer = 16 },
+                    new MenuItem("Heroin", 158, 99) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 21, NumberOfItemsToSellToPlayer = 26 },
                     new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}, StaticStrings.HeroinDealerMenuGroupID),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Heroin Dealer 5", new List<MenuItem>() {
-                    new MenuItem("Heroin", 155, 105) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 7, NumberOfItemsToSellToPlayer = 7 }, }, StaticStrings.HeroinDealerMenuGroupID),1),
+                    new MenuItem("Heroin", 155, 105) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 17, NumberOfItemsToSellToPlayer = 22 }, }, StaticStrings.HeroinDealerMenuGroupID),1),
         });
         PossibleShopMenus.ShopMenuGroupList.Add(HeroinDealerMenuGroup);
 
@@ -1679,19 +1679,19 @@ public class ShopMenus : IShopMenus
         ShopMenuGroup CrackDealerMenuGroup = new ShopMenuGroup(StaticStrings.CrackDealerMenuGroupID, "Crack Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
         {
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Crack Dealer 1", new List<MenuItem>() {
-                    new MenuItem("Crack", 58, 40) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 9, NumberOfItemsToSellToPlayer = 15 } }, StaticStrings.CrackDealerMenuGroupID),1),
+                    new MenuItem("Crack", 58, 40) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 19, NumberOfItemsToSellToPlayer = 15 } }, StaticStrings.CrackDealerMenuGroupID),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Crack Dealer 2", new List<MenuItem>() {
-                    new MenuItem("Crack", 48, 38) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 7, NumberOfItemsToSellToPlayer = 20 } }, StaticStrings.CrackDealerMenuGroupID),1),
+                    new MenuItem("Crack", 48, 38) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 17, NumberOfItemsToSellToPlayer = 20 } }, StaticStrings.CrackDealerMenuGroupID),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Crack Dealer 3", new List<MenuItem>() {
-                    new MenuItem("Crack", 52, 36) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 11 },
+                    new MenuItem("Crack", 52, 36) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 22, NumberOfItemsToSellToPlayer = 11 },
                     new MenuItem("Toto 12 Guage Sawed-Off",430) { IsIllicilt = true },
                     new MenuItem("Combat Knife",120) { IsIllicilt = true },
                     new MenuItem("Hawk & Little Desert Slug",950) { IsIllicilt = true },}, StaticStrings.CrackDealerMenuGroupID),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "SPANK Dealer 4", new List<MenuItem>() {
-                    new MenuItem("Crack", 53, 38) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 15 },
+                    new MenuItem("Crack", 53, 38) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 20, NumberOfItemsToSellToPlayer = 15 },
                     new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}, StaticStrings.CrackDealerMenuGroupID),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "SPANK Dealer 5", new List<MenuItem>() {
-                    new MenuItem("Crack", 50, 32) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 6, NumberOfItemsToSellToPlayer = 12 },
+                    new MenuItem("Crack", 50, 32) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 16, NumberOfItemsToSellToPlayer = 12 },
                     new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }, StaticStrings.CrackDealerMenuGroupID),1),
         });
         PossibleShopMenus.ShopMenuGroupList.Add(CrackDealerMenuGroup);
@@ -1699,19 +1699,19 @@ public class ShopMenus : IShopMenus
         ShopMenuGroup CocaineDealerMenuGroup = new ShopMenuGroup(StaticStrings.CokeDealerMenuGroupID, "Cocaine Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
         {
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Coke Dealer 1", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 180, 130) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 6, NumberOfItemsToSellToPlayer = 12 } }, StaticStrings.CokeDealerMenuGroupID),1),
+                    new MenuItem("Cocaine", 180, 130) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 16, NumberOfItemsToSellToPlayer = 22 } }, StaticStrings.CokeDealerMenuGroupID),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Coke Dealer 2", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 175, 126) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 8, NumberOfItemsToSellToPlayer = 15 } }, StaticStrings.CokeDealerMenuGroupID),1),
+                    new MenuItem("Cocaine", 175, 126) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 18, NumberOfItemsToSellToPlayer = 25 } }, StaticStrings.CokeDealerMenuGroupID),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Coke Dealer 3", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 170, 125) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 9, NumberOfItemsToSellToPlayer = 16 },
+                    new MenuItem("Cocaine", 170, 125) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 19, NumberOfItemsToSellToPlayer = 26 },
                     new MenuItem("Toto 12 Guage Sawed-Off",430) { IsIllicilt = true },
                     new MenuItem("Combat Knife",120) { IsIllicilt = true },
                     new MenuItem("Switchblade",300) { IsIllicilt = true },}, StaticStrings.CokeDealerMenuGroupID),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Coke Dealer 4", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 160, 120) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 8 },
+                    new MenuItem("Cocaine", 160, 120) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 22, NumberOfItemsToSellToPlayer = 18 },
                     new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}, StaticStrings.CokeDealerMenuGroupID),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Coke Dealer 5", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 172, 128) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 10 },
+                    new MenuItem("Cocaine", 172, 128) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 20, NumberOfItemsToSellToPlayer = 210 },
                     new MenuItem("Hawk & Little PTF092F",250) { IsIllicilt = true } }, StaticStrings.CokeDealerMenuGroupID),1),
         });
         PossibleShopMenus.ShopMenuGroupList.Add(CocaineDealerMenuGroup);
@@ -1720,17 +1720,17 @@ public class ShopMenus : IShopMenus
         ShopMenuGroup MarijuanaCustomerMenuGroup = new ShopMenuGroup(StaticStrings.MarijuanaCustomerMenuGroupID, "Marijuana Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
         {
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Marijuana Customer 1", new List<MenuItem>() {
-                    new MenuItem("Marijuana",0, 35) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 3 }}),1),
+                    new MenuItem("Marijuana",0, 35) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15 }}),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Marijuana Customer 2", new List<MenuItem>() {
-                    new MenuItem("Marijuana",0, 32) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 4 }}),1),
+                    new MenuItem("Marijuana",0, 32) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 13 }}),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Marijuana Customer 3", new List<MenuItem>() {
-                    new MenuItem("Marijuana",0, 30) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 4 }}),1),
+                    new MenuItem("Marijuana",0, 30) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 12 }}),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Marijuana Customer 4", new List<MenuItem>() {
-                    new MenuItem("Marijuana",0, 34) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 }}),1),
+                    new MenuItem("Marijuana",0, 34) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 16 }}),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Marijuana Customer 5", new List<MenuItem>() {
-                    new MenuItem("Marijuana",0, 33) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 },}),1),
+                    new MenuItem("Marijuana",0, 33) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 20 },}),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Marijuana Customer 6", new List<MenuItem>() {
-                    new MenuItem("Marijuana",0, 31) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 5 },}),1),
+                    new MenuItem("Marijuana",0, 31) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 25 },}),1),
         });
         PossibleShopMenus.ShopMenuGroupList.Add(MarijuanaCustomerMenuGroup);
 
@@ -1738,13 +1738,13 @@ public class ShopMenus : IShopMenus
         ShopMenuGroup ToiletCleanerCustomerMenuGroup = new ShopMenuGroup(StaticStrings.ToiletCleanerCustomerMenuGroupID, "Toilet Cleaner Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
         {
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Toilet Customer 1", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",0, 45) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),1),
+                    new MenuItem("Toilet Cleaner",0, 45) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 13 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Toilet Customer 2", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",0, 42) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 } }),1),
+                    new MenuItem("Toilet Cleaner",0, 42) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 12 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Toilet Customer 3", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",0, 38) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 1 } }),1),
+                    new MenuItem("Toilet Cleaner",0, 38) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 11 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Toilet Customer 4", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",0, 39) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),1),
+                    new MenuItem("Toilet Cleaner",0, 39) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 13 } }),1),
         });
         PossibleShopMenus.ShopMenuGroupList.Add(ToiletCleanerCustomerMenuGroup);
 
@@ -1752,13 +1752,13 @@ public class ShopMenus : IShopMenus
         ShopMenuGroup SPANKCustomerMenuGroup = new ShopMenuGroup(StaticStrings.SPANKCustomerMenuGroupID, "SPANK Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
         {
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "SPANK Customer 1", new List<MenuItem>() {
-                    new MenuItem("SPANK", 0, 62) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 4 } }),1),
+                    new MenuItem("SPANK", 0, 62) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 14 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "SPANK Customer 2", new List<MenuItem>() {
-                    new MenuItem("SPANK", 0, 67) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),1),
+                    new MenuItem("SPANK", 0, 67) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 13 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "SPANK Customer 3", new List<MenuItem>() {
-                    new MenuItem("SPANK", 0, 65) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 } }),1),
+                    new MenuItem("SPANK", 0, 65) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 12 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "SPANK Customer 4", new List<MenuItem>() {
-                    new MenuItem("SPANK", 0, 70) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 1 } }),1),
+                    new MenuItem("SPANK", 0, 70) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 11 } }),1),
         });
         PossibleShopMenus.ShopMenuGroupList.Add(SPANKCustomerMenuGroup);
 
@@ -1766,13 +1766,13 @@ public class ShopMenus : IShopMenus
         ShopMenuGroup MethCustomerMenuGroup = new ShopMenuGroup(StaticStrings.MethamphetamineCustomerMenuGroupID, "Meth Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
         {
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Meth Customer 1", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 0, 85) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),1),
+                    new MenuItem("Methamphetamine", 0, 85) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 13 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Meth Customer 2", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 0, 80) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 } }),1),
+                    new MenuItem("Methamphetamine", 0, 80) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 12 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Meth Customer 3", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 0, 75) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),1),
+                    new MenuItem("Methamphetamine", 0, 75) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 13 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Meth Customer 4", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 0, 77) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 5} }),1),
+                    new MenuItem("Methamphetamine", 0, 77) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 15} }),1),
         });
         PossibleShopMenus.ShopMenuGroupList.Add(MethCustomerMenuGroup);
 
@@ -1780,13 +1780,13 @@ public class ShopMenus : IShopMenus
         ShopMenuGroup CrackCustomerMenuGroup = new ShopMenuGroup(StaticStrings.CrackCustomerMenuGroupID, "Crack Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
         {
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Crack Customer 1", new List<MenuItem>() {
-                    new MenuItem("Crack", 0, 70) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 4 } }),1),
+                    new MenuItem("Crack", 0, 70) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 14 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Crack Customer 2", new List<MenuItem>() {
-                    new MenuItem("Crack", 0, 68) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 1 } }),1),
+                    new MenuItem("Crack", 0, 68) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 11 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Crack Customer 3", new List<MenuItem>() {
-                    new MenuItem("Crack", 0, 65) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),1),
+                    new MenuItem("Crack", 0, 65) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 13 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Crack Customer 4", new List<MenuItem>() {
-                    new MenuItem("Crack", 0, 66) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 5 } }),1),
+                    new MenuItem("Crack", 0, 66) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 15 } }),1),
         });
         PossibleShopMenus.ShopMenuGroupList.Add(CrackCustomerMenuGroup);
 
@@ -1794,13 +1794,13 @@ public class ShopMenus : IShopMenus
         ShopMenuGroup CocaineCustomerMenuGroup = new ShopMenuGroup(StaticStrings.CokeCustomerMenuGroupID, "Cocaine Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
         {
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Coke Customer 1", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 0, 210) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),1),
+                    new MenuItem("Cocaine", 0, 210) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 13 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Coke Customer 2", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 0, 202) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 } }),1),
+                    new MenuItem("Cocaine", 0, 202) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 12 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Coke Customer 3", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 0, 199) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),1),
+                    new MenuItem("Cocaine", 0, 199) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 13 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Coke Customer 4", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 0, 208) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 4 } }),1),
+                    new MenuItem("Cocaine", 0, 208) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 14 } }),1),
         });
         PossibleShopMenus.ShopMenuGroupList.Add(CocaineCustomerMenuGroup);
 
@@ -1808,13 +1808,13 @@ public class ShopMenus : IShopMenus
         ShopMenuGroup HeroinCustomerMenuGroup = new ShopMenuGroup(StaticStrings.HeroinCustomerMenuGroupID, "Heroin Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
         {
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Heroin Customer 1", new List<MenuItem>() {
-                    new MenuItem("Heroin", 0, 180) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),1),
+                    new MenuItem("Heroin", 0, 180) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 13 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Heroin Customer 2", new List<MenuItem>() {
-                    new MenuItem("Heroin", 0, 178) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 1 } }),1),
+                    new MenuItem("Heroin", 0, 178) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 11 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Heroin Customer 3", new List<MenuItem>() {
-                    new MenuItem("Heroin", 0, 175) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),1),
+                    new MenuItem("Heroin", 0, 175) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 13 } }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Heroin Customer 4", new List<MenuItem>() {
-                    new MenuItem("Heroin", 0, 168) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 } }),1),
+                    new MenuItem("Heroin", 0, 168) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 12 } }),1),
         });
         PossibleShopMenus.ShopMenuGroupList.Add(HeroinCustomerMenuGroup);
 

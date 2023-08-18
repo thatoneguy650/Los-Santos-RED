@@ -72,6 +72,10 @@ public class Settings : ISettingsProvideable
         SettingsManager.RecoilSettings.ApplyRecoil = false;
         SettingsManager.SwaySettings.ApplySway = false;
 
+
+        SettingsManager.DamageSettings.AllowInjuryEffects = false;
+        SettingsManager.DamageSettings.ModifyPlayerDamage = false;
+
         SettingsManager.RespawnSettings.RemoveWeaponsOnSurrender = false;
 
 
@@ -108,8 +112,6 @@ public class Settings : ISettingsProvideable
         SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedDoors = false;
         SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedWindows = false;
 
-
-
     }
     public void SetDefault()
     {
@@ -121,12 +123,10 @@ public class Settings : ISettingsProvideable
         IsBackendChanged = true;
         SettingsManager.SetDefault();
 
-
         SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry = true;
         SettingsManager.VehicleSettings.RequireScrewdriverForHotwire = true;
 
         SettingsManager.VehicleSettings.DisableAircraftWithoutLicense = true;
-
 
         SettingsManager.WorldSettings.AirportsRequireLicenseForPrivateFlights = true;
 
@@ -144,41 +144,28 @@ public class Settings : ISettingsProvideable
         SettingsManager.PlayerOtherSettings.Recognize_BaseTime = 1500;
         SettingsManager.PlayerOtherSettings.Recognize_NightPenalty = 1500;
 
-       // SettingsManager.RecoilSettings.ApplyRecoilInVehicle = true;
-
-
-       // SettingsManager.SwaySettings.ApplySwayInVehicle = true;
-
-
         SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency = false;
 
         SettingsManager.UIGeneralSettings.AlwaysShowRadar = false;
         SettingsManager.UIGeneralSettings.NeverShowRadar = false;
         SettingsManager.UIGeneralSettings.ShowRadarInVehicleOnly = false;
         SettingsManager.UIGeneralSettings.ShowRadarOnFootWhenCellPhoneActiveOnly = false;
-
-
         SettingsManager.UIGeneralSettings.HideLSRUIUnlessActionWheelActive = true;
         SettingsManager.UIGeneralSettings.HideRadarUnlessActionWheelActive = true;
 
 
         SettingsManager.ScannerSettings.EnableNotifications = false;
 
-
         SettingsManager.ActionWheelSettings.MessagesToShow = 5;
-
 
         SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
         SettingsManager.VehicleSettings.KeepRadioAutoTuned = false;
         SettingsManager.WeatherSettings.ReportWeather = false;
         SettingsManager.WeatherSettings.ShowWeatherNotifications = false;
 
-
         SettingsManager.TaskSettings.ShowEntityBlips = false;
         SettingsManager.TaskSettings.DisplayHelpPrompts = false;
         
-
-
     }
     public void SetLC()
     {
@@ -226,15 +213,8 @@ public class Settings : ISettingsProvideable
         SettingsManager.PlayerOtherSettings.CorruptCopWantedClearCostScalar = 10000;
         SettingsManager.PoliceSettings.SearchTimeMultiplier = 60000;
 
-
-
-
         SettingsManager.PlayerOtherSettings.Recognize_BaseTime = 1500;
         SettingsManager.PlayerOtherSettings.Recognize_NightPenalty = 1500;
-
-       // SettingsManager.RecoilSettings.ApplyRecoilInVehicle = true;
-
-
 
         SettingsManager.RecoilSettings.VerticalRecoilAdjuster = 1.5f;
         SettingsManager.RecoilSettings.HorizontalRecoilAdjuster = 1.5f;
@@ -253,9 +233,6 @@ public class Settings : ISettingsProvideable
         SettingsManager.SwaySettings.VeritcalInVehicleSwayAdjuster = 1.5f;
         SettingsManager.SwaySettings.HorizontalInVehicleSwayAdjuster = 1.5f;
 
-       // SettingsManager.SwaySettings.ApplySwayInVehicle = true;
-
-
         SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency = false;
 
         SettingsManager.UIGeneralSettings.AlwaysShowRadar = false;
@@ -266,9 +243,6 @@ public class Settings : ISettingsProvideable
 
         SettingsManager.UIGeneralSettings.HideLSRUIUnlessActionWheelActive = true;
         SettingsManager.UIGeneralSettings.HideRadarUnlessActionWheelActive = true;
-
-
-
 
         SettingsManager.ViolationSettings.RecentlyHurtCivilianTime = 10000;
         SettingsManager.ViolationSettings.RecentlyHurtPoliceTime = 10000;
@@ -282,8 +256,6 @@ public class Settings : ISettingsProvideable
         SettingsManager.ViolationSettings.ResistingArrestFastTriggerTime = 2000;
         SettingsManager.ViolationSettings.ResistingArrestMediumTriggerTime = 5000;
         SettingsManager.ViolationSettings.ResistingArrestSlowTriggerTime = 15000;
-
-
 
         SettingsManager.DamageSettings.Armor_NormalDamageModifierPlayer = 1.5f;
         SettingsManager.DamageSettings.Armor_GrazeDamageModifierPlayer = 0.5f;
@@ -299,18 +271,11 @@ public class Settings : ISettingsProvideable
         SettingsManager.DamageSettings.CriticalDamagePercentPlayer = 20f;
         SettingsManager.DamageSettings.FatalDamagePercentPlayer = 8f;
 
-
-
-
         SettingsManager.DamageSettings.AllowInjuryEffects = true;
         SettingsManager.DamageSettings.InjuryEffectHealthLostStart = 30;
 
-
-
-
         SettingsManager.PoliceSettings.GeneralFineAmount = 1000;
         SettingsManager.PoliceSettings.DrivingWithoutLicenseFineAmount = 2000;
-
 
         SettingsManager.PoliceSettings.RecentlySeenTime = 10000;
         SettingsManager.PoliceSettings.KillLimit_Wanted4 = 3;

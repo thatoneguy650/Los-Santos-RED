@@ -52,6 +52,7 @@ public class VehicleVariation
     public int InteriorColor { get; set; }
     public int DashboardColor { get; set; }
     public int XenonLightColor { get; set; }
+    public dynamic CanTiresBurst { get; set; }
 
     public void Apply(VehicleExt vehicleExt)
     {
@@ -131,7 +132,7 @@ public class VehicleVariation
         }
         NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(vehicleExt.Vehicle, DirtLevel.Clamp(0.0f,15.0f));
         vehicleExt.Vehicle.FuelLevel = FuelLevel;        
-        NativeFunction.Natives.GET_VEHICLE_TYRES_CAN_BURST(vehicleExt.Vehicle, HasInvicibleTires);
+        NativeFunction.Natives.SET_VEHICLE_TYRES_CAN_BURST(vehicleExt.Vehicle, !HasInvicibleTires);
 
         if(IsTireSmokeColorCustom)
         {

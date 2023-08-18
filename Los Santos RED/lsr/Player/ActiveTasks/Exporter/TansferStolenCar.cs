@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Media.Animation;
 
 namespace LosSantosRED.lsr.Player.ActiveTasks
@@ -23,6 +24,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private ISettingsProvideable Settings;
         private IEntityProvideable World;
         private ICrimes Crimes;
+        private IModItems ModItems;
         private PlayerTask CurrentTask;
         private bool hasGottenInCar;
         private uint GameTimeGotInCar;
@@ -44,7 +46,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private bool IsPlayerDrivingSpawnedVehicle => SpawnedVehicle.Exists() && SpawnedVehicle.Driver?.Handle == Player.Character.Handle;
         private bool IsPlayerFarAwayFromSpawnedVehicle => SpawnedVehicle.Exists() && SpawnedVehicle.DistanceTo2D(Player.Character) >= 850f;
         private bool IsPlayerNearbyPickupStore => NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, PickUpStore.CellX, PickUpStore.CellY, 5);
-        public TansferStolenCar(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes)
+        public TansferStolenCar(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems)
         {
             Player = player;
             Time = time;
@@ -55,6 +57,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Settings = settings;
             World = world;
             Crimes = crimes;
+            ModItems = modItems;
         }
         public void Setup()
         {
@@ -286,12 +289,21 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 return false;
             }
 
-            MenuItem vehicleMenuItem = PickUpStore.Menu.Items.PickRandom();
-            if(vehicleMenuItem == null || vehicleMenuItem.ModItem == null || vehicleMenuItem.ModItem.ModelItem == null)
+            List<VehicleItem> PossibleVehicleItems = new List<VehicleItem>();
+            foreach(ModItem modint in PickUpStore.Menu.Items.Where(x=> x.ModItem != null).Select(x=>x.ModItem))
+            {
+                VehicleItem vi = ModItems.PossibleItems.VehicleItems.FirstOrDefault(x => modint.Name == x.Name);
+                if(vi != null && (!vi.IsDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesInStores))
+                {
+                    PossibleVehicleItems.Add(vi);
+                }
+            }
+            VehicleItem selectedItem = PossibleVehicleItems.PickRandom();
+            if (selectedItem == null || selectedItem.ModelItem == null)
             {
                 return false;
             }
-            uint modelHash = vehicleMenuItem.ModItem.ModelItem.ModelHash;
+            uint modelHash = selectedItem.ModelItem.ModelHash;
             SpawnedVehicle = new Vehicle(modelHash, SpawnLocation.StreetPosition, SpawnLocation.Heading);
             GameFiber.Yield();
             if (!SpawnedVehicle.Exists())

@@ -21,7 +21,7 @@ public class VehicleExporterTasks : IPlayerTaskGroup
     private ICrimes Crimes;
     public TansferStolenCar TansferStolenCar { get; private set; }
     private List<IPlayerTask> PlayerTaskList = new List<IPlayerTask>();
-    public VehicleExporterTasks(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes)
+    public VehicleExporterTasks(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems)
     {
         Player = player;
         Time = time;
@@ -32,7 +32,7 @@ public class VehicleExporterTasks : IPlayerTaskGroup
         Settings = settings;
         World = world;
         Crimes = crimes;
-        TansferStolenCar = new TansferStolenCar(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        TansferStolenCar = new TansferStolenCar(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, modItems);
         PlayerTaskList = new List<IPlayerTask>
         {
             TansferStolenCar

@@ -163,22 +163,22 @@ public class CivilianSettings : ISettingsDefaultable
         AllowAlerts = true;
         ShowRandomCriminalBlips = false;
 
-        DrugDealerPercentageRichZones = 7f;// 1f;
-        DrugDealerPercentageMiddleZones = 10f;// 2f;
-        DrugDealerPercentagePoorZones = 12f;//5f;
+        DrugDealerPercentageRichZones = 12f;// 1f;
+        DrugDealerPercentageMiddleZones = 15f;// 2f;
+        DrugDealerPercentagePoorZones = 25f;//5f;
 
-        DrugCustomerPercentageRichZones = 12f;// 5f;
-        DrugCustomerPercentageMiddleZones = 17f;// 7f;
-        DrugCustomerPercentagePoorZones = 19f;// 10f;
+        DrugCustomerPercentageRichZones = 20f;// 5f;
+        DrugCustomerPercentageMiddleZones = 35f;// 7f;
+        DrugCustomerPercentagePoorZones = 40f;// 10f;
 
-        CallPolicePercentageRichZones = 35f;// 50f;
-        CallPolicePercentageMiddleZones = 20f;// 30f;
-        CallPolicePercentagePoorZones = 7f;// 20f;
+        CallPolicePercentageRichZones = 25f;// 50f;
+        CallPolicePercentageMiddleZones = 10f;// 30f;
+        CallPolicePercentagePoorZones = 5f;// 20f;
 
 
-        CallPoliceForSeriousCrimesPercentageRichZones = 60f;// 80f;
-        CallPoliceForSeriousCrimesPercentageMiddleZones = 45f;// 70f;
-        CallPoliceForSeriousCrimesPercentagePoorZones = 35f;// 50f;
+        CallPoliceForSeriousCrimesPercentageRichZones = 45f;// 80f;
+        CallPoliceForSeriousCrimesPercentageMiddleZones = 35f;// 70f;
+        CallPoliceForSeriousCrimesPercentagePoorZones = 30f;// 50f;
 
 
 
@@ -200,8 +200,8 @@ public class CivilianSettings : ISettingsDefaultable
         PercentageTrustingOfPlayer = 85f;
 
 
-        PercentageKnowsAnyGangTerritory = 45f;
-        PercentageKnowsAnyDrugTerritory = 45f;
+        PercentageKnowsAnyGangTerritory = 65f;
+        PercentageKnowsAnyDrugTerritory = 65f;
 
         AllowCallInIfPedDoesNotExist = true;
         GameTimeToCallInIfPedDoesNotExist = 4000;

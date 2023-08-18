@@ -1258,6 +1258,7 @@ namespace Mod
 
                 if(CurrentVehicle != null && CurrentVehicle.IsImpounded && CurrentVehicle.ImpoundedLocation != "")
                 {
+                    CurrentVehicle.IsImpounded = false;
                     CurrentVehicle.ImpoundedLocation = "";
                     EntryPoint.WriteToConsole("REMOVING IMPOUNDED LOCATION FROM VEHICLE");
                 }

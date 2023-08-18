@@ -17547,7 +17547,7 @@ Output = -1,
         List<DispatchableVehicle> ParkRangerVehicles_FEJ = new List<DispatchableVehicle>() {
             new DispatchableVehicle(PoliceGresley, 40, 40) { MaxRandomDirtLevel = 15.0f, RequiredLiveries = new List<int>() { 20 } },
             new DispatchableVehicle(PoliceGranger, 20, 20) { MaxRandomDirtLevel = 15.0f,RequiredLiveries = new List<int>() { 20 } },
-            new DispatchableVehicle(PoliceBison, 40, 40) { MaxRandomDirtLevel = 15.0f,RequiredLiveries = new List<int>() { 8 } },
+            new DispatchableVehicle(PoliceBison, 40, 40) { MaxRandomDirtLevel = 15.0f,RequiredLiveries = new List<int>() { 15 } },
         };
         List<DispatchableVehicle> FIBVehicles_FEJ = new List<DispatchableVehicle>() {
             new DispatchableVehicle(BuffaloUnmarked, 30, 30){ MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3 },
