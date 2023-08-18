@@ -33,8 +33,8 @@ public class RepairGarage : GameLocation
     public int MaxRepairCost { get; set; } = 10000;
     public int ResprayCost { get; set; } = 1500;
     public int RepairHours { get; set; } = 3;
-
-
+    public int WashHours { get; set; } = 1;
+    public int WashCost { get; set; } = 10;
     public RepairGarage(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -138,24 +138,69 @@ public class RepairGarage : GameLocation
         bool isFullHealth = CurrentHealth == MaxHealth;
         FinalRepairCost = (int)Math.Ceiling((1.0f - healthPercentage) * MaxRepairCost);
         FinalRepairCost.Round(100);
-        UIMenuItem repairVehicle = new UIMenuItem("Repair Vehicle", $"Repair the current vehicle.~n~~g~Vehicle Health: {CurrentHealth}/{MaxHealth}") { RightLabel = FinalRepairCost.ToString("C0") };
+        UIMenuItem repairVehicle = new UIMenuItem("Repair Vehicle", $"Repair the current vehicle.~n~~g~Vehicle Health: {CurrentHealth}/{MaxHealth}") { RightLabel = "~r~" + FinalRepairCost.ToString("C0") + "~s~" };
         repairVehicle.Activated += (sender, e) =>
         {
-            RepairVehicle(false);
+            DoRepairItems(false);
+        };
+        UIMenuItem washVehicle = new UIMenuItem("Wash Vehicle", $"Wash the current vehicle.") { RightLabel = "~r~" + WashCost.ToString("C0") + "~s~" };
+        washVehicle.Activated += (sender, e) =>
+        {
+            DoWashItems();
         };
         if (!isFullHealth)
         {
             InteractionMenu.AddItem(repairVehicle);
         }
-        UIMenuItem resprayVehicle = new UIMenuItem("Respray Vehicle", $"Repair and respray the current vehicle. Change the color and get a clean plate. Cops won't recognize you.~n~Respray Fee: ~r~{ResprayCost.ToString("C0")}~s~~n~~g~Vehicle Health: {CurrentHealth}/{MaxHealth}") { RightLabel = (ResprayCost + FinalRepairCost).ToString("C0") };
+        else
+        {
+            InteractionMenu.AddItem(washVehicle);
+        }
+        UIMenuItem resprayVehicle = new UIMenuItem("Respray Vehicle", $"Repair and respray the current vehicle. Change the color and get a clean plate. Cops won't recognize you.~n~Respray Fee: ~r~{ResprayCost.ToString("C0")}~s~~n~~g~Vehicle Health: {CurrentHealth}/{MaxHealth}") {  RightLabel = "~r~" + (ResprayCost + FinalRepairCost).ToString("C0") + "~s~" };
         resprayVehicle.Activated += (sender, e) =>
         {
-            RepairVehicle(true);
+            DoRepairItems(true);
         };
         InteractionMenu.AddItem(resprayVehicle);
         InteractionMenu.Visible = true;
     }
-    private void RepairVehicle(bool withRespray)
+
+    private void WashVehicle()
+    {
+        if (!Player.IsInVehicle || Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        Player.CurrentVehicle.Vehicle.Wash();
+    }
+    private void DoWashItems()
+    {
+        if (!Player.IsInVehicle || Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        if (Player.BankAccounts.Money <= WashCost)
+        {
+            PlayErrorSound();
+            DisplayMessage("~r~Washing Failed", "Insufficient funds!");
+            return;
+        }
+        Player.CurrentVehicle.Engine.Toggle(false);
+        GameFiber.Sleep(500);
+        Time.FastForward(Time.CurrentDateTime.AddHours(WashHours));
+        Time.ForceShowClock = true;
+        WashVehicle();
+        while (Time.IsFastForwarding)
+        {
+            GameFiber.Yield();
+        }
+        Time.ForceShowClock = false;
+        Player.BankAccounts.GiveMoney(-1 * WashCost);
+        PlaySuccessSound();
+        DisplayMessage("~g~Washed", $"Thank you for washing your vehicle at ~y~{Name}~s~");      
+        InteractionMenu.Visible = false;
+    }
+    private void DoRepairItems(bool withRespray)
     {
         int totalRepairCost = FinalRepairCost;
         if(withRespray)
@@ -251,6 +296,17 @@ public class RepairGarage : GameLocation
             }
         }
         base.Activate(interiors, settings, crimes, weapons, time, world);
+    }
+    public override void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        if (GarageDoors != null)
+        {
+            foreach (InteriorDoor id in GarageDoors)
+            {
+                id.AddDistanceOffset(offsetToAdd);
+            }
+        }
+        base.AddDistanceOffset(offsetToAdd);
     }
 }
 

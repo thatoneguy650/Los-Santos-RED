@@ -86,5 +86,13 @@ public class GunStore : GameLocation
             }, "GangDenInteract");
         }
     }
+    public override void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        foreach (SpawnPlace sp in ParkingSpaces)
+        {
+            sp.AddDistanceOffset(offsetToAdd);
+        }
+        base.AddDistanceOffset(offsetToAdd);
+    }
 }
 

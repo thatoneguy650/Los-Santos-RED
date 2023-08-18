@@ -31,11 +31,10 @@ public class Forger : GameLocation
     public override string TypeName { get; set; } = "Forger";
     public override int MapIcon { get; set; } = 438;//402 = car repair
     public override bool ShowsOnDirectory => false;
-    public int RandomPlateCost { get; set; } = 1000;
-    public int CustomPlateCost { get; set; } = 1500;
+    public int RandomPlateCost { get; set; } = 300;
+    public int CustomPlateCost { get; set; } = 500;
     public int WantedPlateSalesPrice { get; set; } = 50;
     public int CleanPlateSalesPrice { get; set; } = 200;
-    public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world,
         IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes)
     {

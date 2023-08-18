@@ -38,7 +38,7 @@ public class VehicleExporter : GameLocation
     public int EngineDamageLimit { get; set; } = 200;
     public string ContactName { get; set; } = "";
     public int HoursBetweenExports { get; set; } = 3;
-    public List<SpawnPlace> ParkingSpaces = new List<SpawnPlace>();
+    public List<SpawnPlace> ParkingSpaces { get; set; } = new List<SpawnPlace>();
     public VehicleExporter(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string _Menu) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = _Menu;
@@ -274,7 +274,7 @@ public class VehicleExporter : GameLocation
         foreach(MenuVehicleMap test in MenuLookups)
         {
             bool CanExport = true;
-            ExportedVehicle exportedStats = ExportedVehicles.FirstOrDefault(x => x.MenuItem.ModItemName == test.MenuItem.ModItemName);
+            ExportedVehicle exportedStats = ExportedVehicles?.FirstOrDefault(x => x.MenuItem?.ModItemName == test.MenuItem?.ModItemName);
             string TimeBeforeExportAllowed = exportedStats.TimeLastExported.AddHours(HoursBetweenExports).ToString("dd MMM yyyy hh:mm tt");
             if (exportedStats != null && DateTime.Compare(Time.CurrentDateTime, exportedStats.TimeLastExported.AddHours(HoursBetweenExports)) < 0)
             {
@@ -287,14 +287,27 @@ public class VehicleExporter : GameLocation
             }
         }
     }
-
+    public override void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        foreach (SpawnPlace sp in ParkingSpaces)
+        {
+            sp.AddDistanceOffset(offsetToAdd);
+        }
+        base.AddDistanceOffset(offsetToAdd);
+    }
     public string GenerateTextItem(VehicleItem vehicleItem)
     {
+        if(vehicleItem == null)
+        {
+            return "";
+        }
+        EntryPoint.WriteToConsole($"GenerateTextItem vehicleItem.Name:{vehicleItem.Name}");
         MenuItem mi = Menu.Items.FirstOrDefault(x => x.ModItemName == vehicleItem.Name);
         if (mi == null)
         {
             return "";
         }
+        EntryPoint.WriteToConsole($"GenerateTextItem menuItem:{mi.ModItemName}");
         bool CanExport = true;
         ExportedVehicle exportedStats = ExportedVehicles.FirstOrDefault(x => x.MenuItem.ModItemName == vehicleItem.Name);
         string TimeBeforeExportAllowed = "";

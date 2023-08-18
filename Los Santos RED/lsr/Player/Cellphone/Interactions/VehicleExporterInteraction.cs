@@ -73,7 +73,7 @@ public class VehicleExporterInteraction : IContactMenuInteraction
                 Game.DisplaySubtitle("No Vehicle Detected");
                 return;
             }
-            VehicleItem vehicleItem = ModItems.GetVehicle(vehicleToQuestion.Vehicle.Model.Name);
+            VehicleItem vehicleItem = ModItems.GetVehicle(vehicleToQuestion.Vehicle.Model.Hash);
             if (vehicleItem == null)
             {
                 Game.DisplaySubtitle("Vehicle Not Found");

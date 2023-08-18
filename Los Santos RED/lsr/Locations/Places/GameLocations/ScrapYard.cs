@@ -109,7 +109,7 @@ public class ScrapYard : GameLocation
             {
                 CarDescription += $"~n~Metal Value: ~g~${ScrapPrice}~s~";
             }
-            ScrapSubMenu.AddItem(new UIMenuItem(CarName, CarDescription) { RightLabel = ScrapPrice.ToString("C0") });
+            ScrapSubMenu.AddItem(new UIMenuItem(CarName, CarDescription) {  RightLabel = "~g~" + ScrapPrice.ToString("C0") + "~s~" });
             Added = true;    
         }
         if(!Added)

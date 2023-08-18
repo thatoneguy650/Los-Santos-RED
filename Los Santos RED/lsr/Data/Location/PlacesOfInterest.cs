@@ -793,17 +793,17 @@ public class PlacesOfInterest : IPlacesOfInterest
             {
                 CleanPlateSalesPrice = 200,
                 WantedPlateSalesPrice = 50,
-                CustomPlateCost = 1500,
-                RandomPlateCost = 1000,
+                CustomPlateCost = 550,
+                RandomPlateCost = 300,
                 OpenTime = 0,
                 CloseTime = 24,
             },
             new Forger(new Vector3(-41.79562f, 6637.322f, 31.08751f), 216.5384f,"Zancone The Forger","Not a murmur to anyone!")
             {
-                CleanPlateSalesPrice = 400,
-                WantedPlateSalesPrice = 200,
-                CustomPlateCost = 1700,
-                RandomPlateCost = 1200,
+                CleanPlateSalesPrice = 300,
+                WantedPlateSalesPrice = 150,
+                CustomPlateCost = 650,
+                RandomPlateCost = 350,
                 OpenTime = 0,
                 CloseTime = 24,
             },
@@ -822,6 +822,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-11.53668f, 1.61205E-05f, 103.3134f),
                 OpenTime = 0,
                 CloseTime = 24,
+                CanInteractWhenWanted = true,
             },
             new RepairGarage(new Vector3(517.7049f, 169.9352f, 99.36998f), 249.3513f, "Pay 'n' Spray", "Helpfully located in Downtown Vinewood") {
                 GarageDoors = new List<InteriorDoor>() { new InteriorDoor(1991494706,new Vector3(523.8579f,167.7482f,100.5352f)) { NeedsDefaultUnlock = true} },
@@ -830,6 +831,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-11.71179f, -1.30789E-06f, 54.59765f),
                 OpenTime = 0,
                 CloseTime = 24,
+                CanInteractWhenWanted = true,
             },
             new RepairGarage(new Vector3(964.051f, -1856.824f, 31.19692f), 82.4654f, "Pay 'n' Spray", "Be sure to lock your doors!") {
                 GarageDoors = new List<InteriorDoor>() { new InteriorDoor(4104186511,new Vector3(958.9808f,-1855.851f,32.78582f)) },
@@ -838,6 +840,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-11.99257f, -1.309235E-05f, -116.1967f),
                 OpenTime = 0,
                 CloseTime = 24,
+                CanInteractWhenWanted = true,
             },
             new RepairGarage(new Vector3(-440.179f, -2180.787f, 10.32189f), 0.8532715f, "Pay 'n' Spray", "Need to get away?") {
                 GarageDoors = new List<InteriorDoor>() {  
@@ -848,6 +851,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-7.646759f, 1.292151E-06f, 158.3651f),
                 OpenTime = 0,
                 CloseTime = 24,
+                CanInteractWhenWanted = true,
             },
 
             new RepairGarage(new Vector3(258.2158f, 2590.954f, 44.4838f), 189.6097f, "Pay 'n' Spray", "In Beautiful Harmony") {
@@ -859,6 +863,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-11.80258f, -6.541603E-06f, 172.9686f),
                 OpenTime = 0,
                 CloseTime = 24,
+                CanInteractWhenWanted = true,
             },
 
 
@@ -871,6 +876,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-7.132885f, -4.302163E-06f, -38.21288f),
                 OpenTime = 0,
                 CloseTime = 24,
+                CanInteractWhenWanted = true,
             },
 
             new RepairGarage(new Vector3(135.8826f, -1049.596f, 29.15182f), 338.5946f, "Pay 'n' Spray", "Serving Pillbox Hill") {
@@ -882,6 +888,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-13.62054f, -8.784793E-07f, 4.024169f),
                 OpenTime = 0,
                 CloseTime = 24,
+                CanInteractWhenWanted = true,
             },
 
         };

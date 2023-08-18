@@ -592,15 +592,6 @@ new YmapDisabler("manhat01",true),
             uIMenuItem.Activated += (sender, e) =>
             {
                 Player.OutfitManager.SetOutfit(so);
-                //if (so.PedVariation == null)
-                //{
-                //    Game.DisplaySubtitle("No Variation to Set");
-                //    return;
-                //}
-                //PedVariation newVariation = so.PedVariation.Copy();
-                //Player.CurrentModelVariation = newVariation;
-                //Player.CurrentModelVariation.ApplyToPed(Player.Character);
-                //Game.DisplayHelp($"Applied Outfit {so.Name}");
             };
             outfitsSubMenu.AddItem(uIMenuItem);
         }
@@ -2745,7 +2736,7 @@ new YmapDisabler("manhat01",true),
                     WriteToClassCreator($"{property.Name} = {property.GetValue(dv).ToString().ToLower()},", 0, fileName);
                 }
             }
-            else if (property.PropertyType == typeof(VehicleVariation) || property.PropertyType == typeof(LicensePlate))
+            else if (property.PropertyType == typeof(VehicleVariation) || property.PropertyType == typeof(LicensePlate) || property.PropertyType == typeof(SpawnPlace))
             {
                 WriteToClassCreator($"{property.Name} = new {property.PropertyType}() {{", 0, fileName);
                 PrintClass(property.GetValue(dv), AllowedProperties, fileName);

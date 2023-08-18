@@ -111,10 +111,10 @@ public class CarCrusher : GameLocation
             {
                 CarDescription += $"~n~~n~EXTRA Disposal Fee: ~r~${BodiesFee}~s~";
             }
-            UIMenuItem vehicleCrusherItem = new UIMenuItem(CarName, CarDescription) { RightLabel = CrushPrice.ToString("C0") };
+            UIMenuItem vehicleCrusherItem = new UIMenuItem(CarName, CarDescription) { RightLabel = "~r~" + CrushPrice.ToString("C0") + "~s~" };
             vehicleCrusherItem.Activated += (sender, e) =>
             {
-                CrushVehicle(veh, -1 * CrushPrice);
+                CrushVehicle(veh, CrushPrice);
             };
             CrusherSubMenu.AddItem(vehicleCrusherItem);
             Added = true;      
@@ -186,7 +186,7 @@ public class CarCrusher : GameLocation
         CrusherSubMenu.RefreshIndex();
         CrusherSubMenu.Close(true);
         Game.FadeScreenIn(1000, true);
-        Player.BankAccounts.GiveMoney(Price);
+        Player.BankAccounts.GiveMoney(-1 * Price);
         PlaySuccessSound();
         DisplayMessage("~g~Crushed", $"Thank you for crushing your ~p~{CarName}~s~ at ~y~{Name}~s~");
     }

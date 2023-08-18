@@ -130,8 +130,6 @@ public class GangTasker
         }
         else if (GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)//50f
         {
-            //GangMember.PedReactions.Update(); need a version for this?
-
             bool WillAttackPlayer = false;
             bool WillFleeFromPlayer = false;
             bool SeenPlayerReactiveCrime = GangMember.PlayerCrimesWitnessed.Any(x => (x.Crime.ScaresCivilians || x.Crime.AngersCivilians) && x.Crime.CanBeReactedToByCivilians);

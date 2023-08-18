@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,8 @@ public class OutfitManager
             Game.DisplaySubtitle("No Variation to Set");
             return;
         }
+        Player.Character.ResetVariation();
+        NativeFunction.Natives.CLEAR_ALL_PED_PROPS(Player.Character);
         PedVariation newVariation = savedOutfit.PedVariation.Copy();
         Player.CurrentModelVariation = newVariation;
         Player.CurrentModelVariation.ApplyToPed(Player.Character);

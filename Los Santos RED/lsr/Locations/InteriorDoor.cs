@@ -50,6 +50,11 @@ public class InteriorDoor
         }
     }
 
+    public void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        Position += offsetToAdd;
+    }
+
     //public void GetState()
     //{
     //    bool _lockState;
