@@ -473,12 +473,15 @@ public class Debug
     }
     private void DebugNumpad4()
     {
+        foreach(VehicleExt veh in Player.VehicleOwnership.OwnedVehicles.Where(x=>x.Vehicle.Exists()))
+        {
+            EntryPoint.WriteToConsole($"{veh.Vehicle.Model.Name} {veh.IsImpounded} {veh.ImpoundedLocation} {veh.TimesImpounded} {veh.DateTimeImpounded}");
+        }
 
-
-        NativeFunction.Natives.SET_BIGMAP_ACTIVE(!IsBigMapActive, false);
-        Game.DisplaySubtitle($"IsBigMapActive:{IsBigMapActive}");
-        GameFiber.Sleep(1000);
-        IsBigMapActive = !IsBigMapActive;
+        //NativeFunction.Natives.SET_BIGMAP_ACTIVE(!IsBigMapActive, false);
+        //Game.DisplaySubtitle($"IsBigMapActive:{IsBigMapActive}");
+        //GameFiber.Sleep(1000);
+        //IsBigMapActive = !IsBigMapActive;
 
         //GarageDoor = new InteriorDoor(3082692265,new Vector3(5.644455f,0.1074037f, 2.158299f)) },
 

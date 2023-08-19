@@ -1255,18 +1255,6 @@ namespace Mod
                 {
                     CurrentVehicle.HasAutoSetRadio = false;
                 }
-
-                if(CurrentVehicle != null && CurrentVehicle.IsImpounded && CurrentVehicle.ImpoundedLocation != "")
-                {
-                    CurrentVehicle.IsImpounded = false;
-                    CurrentVehicle.ImpoundedLocation = "";
-                    EntryPoint.WriteToConsole("REMOVING IMPOUNDED LOCATION FROM VEHICLE");
-                }
-
-
-
-
-
             }
             else
             {
@@ -1283,9 +1271,6 @@ namespace Mod
                     IsMobileRadioEnabled = false;
                     NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
                 }
-
-
-
             }
             //UpdateOwnedBlips();
             //EntryPoint.WriteToConsole($"PLAYER EVENT: IsInVehicle to {IsInVehicle}");
@@ -1974,6 +1959,11 @@ namespace Mod
                         if (IsInVehicle && !existingVehicleExt.HasBeenEnteredByPlayer)
                         {
                             existingVehicleExt.SetAsEntered();
+                        }
+                        if(IsInVehicle && existingVehicleExt.IsImpounded && existingVehicleExt.ImpoundedLocation != "")
+                        {
+                            existingVehicleExt.ImpoundedLocation = "";
+                            EntryPoint.WriteToConsole("REMOVING IMPOUNDED FROM VEHICLE");
                         }
                         if(existingVehicleExt.IsAircraft)
                         {

@@ -49,7 +49,7 @@ public class VehicleImpoundLot
         SpawnPlace ParkingSpot = null;
         foreach (SpawnPlace sp in ParkingSpots)
         {
-            if (!Rage.World.GetEntities(sp.Position, 7f, GetEntitiesFlags.ConsiderAllVehicles).Any())
+            if (!Rage.World.GetEntities(sp.Position, 5f, GetEntitiesFlags.ConsiderAllVehicles).Any())
             {
                 ParkingSpot = sp;
                 break;

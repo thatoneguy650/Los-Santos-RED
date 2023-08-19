@@ -48,7 +48,11 @@ public class VehicleBodyManager
             }
 
             PedExt pedExtOnSeat = world.Pedestrians.GetPedExt(pedOnSeat.Handle);
-            VehicleDoorSeatData vdsd = vehicleSeatDoorData.VehicleDoorSeatDataList.Where(x => x.SeatID == seatindex).FirstOrDefault();
+            if(vehicleSeatDoorData == null)
+            {
+                continue;
+            }
+            VehicleDoorSeatData vdsd = vehicleSeatDoorData?.VehicleDoorSeatDataList?.Where(x => x.SeatID == seatindex).FirstOrDefault();
             if(vdsd == null)
             {
                 continue;

@@ -402,11 +402,14 @@ namespace LosSantosRED.lsr.Data
                 }   
                 if(OwnedVehicleVariation.IsImpounded)
                 {
+                    MyVeh.IsImpounded = OwnedVehicleVariation.IsImpounded;
+                    MyVeh.TimesImpounded = OwnedVehicleVariation.TimesImpounded;
+                    MyVeh.DateTimeImpounded = OwnedVehicleVariation.DateTimeImpounded;
                     ILocationImpoundable locationImpoundable = placesOfInterest.VehicleImpoundLocations().Where(x => x.Name == OwnedVehicleVariation.ImpoundedLocation).FirstOrDefault();
                     if(locationImpoundable != null && locationImpoundable.HasImpoundLot && locationImpoundable.VehicleImpoundLot.ImpoundVehicle(MyVeh, time))
                     {
-                        MyVeh.TimesImpounded = OwnedVehicleVariation.TimesImpounded;
-                        MyVeh.DateTimeImpounded = OwnedVehicleVariation.DateTimeImpounded;
+                        //MyVeh.TimesImpounded = OwnedVehicleVariation.TimesImpounded;
+                        //MyVeh.DateTimeImpounded = OwnedVehicleVariation.DateTimeImpounded;
                     }
                 }
             }

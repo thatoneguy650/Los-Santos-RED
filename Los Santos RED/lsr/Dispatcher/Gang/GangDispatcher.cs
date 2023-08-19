@@ -311,7 +311,7 @@ public class GangDispatcher
             {
                 GangDen = PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.IsNearby).PickRandom();
             }
-            if(GangDen != null && GangDen.DistanceToPlayer >= 90f)
+            if(GangDen != null && GangDen.DistanceToPlayer >= 90f && GangDen.AssociatedGang != null)
             {
                 Gang = GangDen.AssociatedGang;
                 IsPedestrianOnlySpawn = RandomItems.RandomPercent(Gang.PedestrianSpawnPercentageAroundDen);
