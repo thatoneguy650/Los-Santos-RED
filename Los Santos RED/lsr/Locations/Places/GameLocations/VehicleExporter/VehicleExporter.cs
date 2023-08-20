@@ -46,6 +46,7 @@ public class VehicleExporter : GameLocation
     }
     public override void Reset()
     {
+        ExportedVehicles.Clear();
         base.Reset();
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
@@ -167,7 +168,7 @@ public class VehicleExporter : GameLocation
             {
                 CanExport = true;
                 ExportAmount = menuItem.SalesPrice;
-                ExportedVehicles?.FirstOrDefault(x => x.MenuItem?.ModItemName == menuItem?.ModItemName);
+                exportedStats = ExportedVehicles?.FirstOrDefault(x => x.MenuItem?.ModItemName == menuItem?.ModItemName);
             }    
             string TimeBeforeExportAllowed = "";
             bool hasTimeRestriction = false; 

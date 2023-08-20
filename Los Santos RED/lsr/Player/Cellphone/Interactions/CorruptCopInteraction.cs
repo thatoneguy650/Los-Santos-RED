@@ -27,12 +27,14 @@ public class CorruptCopInteraction : IContactMenuInteraction
     private UIMenuItem TaskCancel;
     private UIMenuItem WitnessElimination;
     private UIMenuItem CopHit;
+    private UIMenu JobsSubMenu;
+    private UIMenu ServicesSubMenu;
 
     private int CostToClearWanted
     {
         get
         {
-            return Player.WantedLevel * Settings.SettingsManager.PlayerOtherSettings.CorruptCopWantedClearCostScalar;
+            return Player.WantedLevel == 0 ? Settings.SettingsManager.PlayerOtherSettings.CorruptCopWantedClearCostScalar : Player.WantedLevel * Settings.SettingsManager.PlayerOtherSettings.CorruptCopWantedClearCostScalar;
         }
     }
     private int CostToClearInvestigation
@@ -55,49 +57,14 @@ public class CorruptCopInteraction : IContactMenuInteraction
         CopMenu = new UIMenu("", "Select an Option");
         CopMenu.RemoveBanner();
         MenuPool.Add(CopMenu);
-        CopMenu.OnItemSelect += OnCopItemSelect;
         LastAnsweredContact = contact;
-
-
-        PayoffCops = new UIMenuItem("Clear Wanted", "Ask your contact to have the cops forget about you") { RightLabel = "~r~" + CostToClearWanted.ToString("C0") + "~s~" };
-        PayoffCopsInvestigation = new UIMenuItem("Stop Investigation", "Ask your contact to have the cops forget about the current investigation") { RightLabel = "~r~" + CostToClearInvestigation.ToString("C0") + "~s~" };
-
-        GangHit = new UIMenuItem("Gang Hit", "Do a hit on a gang for the cops.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax:C0}~s~" };
-        WitnessElimination = new UIMenuItem("Witness Elimination", "Probably some major federal indictment of somebody who majorly does not want to get indicted.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMax:C0}~s~" };
-        CopHit = new UIMenuItem("Cop Hit", "Force the retirement of some of the LSPDs finest. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMax:C0}~s~" };
-
-        if (Player.PlayerTasks.HasTask(StaticStrings.OfficerFriendlyContactName))
-        {
-            TaskCancel = new UIMenuItem("Cancel Task", "Tell the officer you can't complete the task.") { RightLabel = "~o~$?~s~" };
-            CopMenu.AddItem(TaskCancel);
-        }
-
-
-        if (Player.IsWanted)
-        {
-            CopMenu.AddItem(PayoffCops);
-        }
-        else if (Player.Investigation.IsActive)
-        {
-            CopMenu.AddItem(PayoffCopsInvestigation);
-        }
-        else if (Player.IsNotWanted)
-        {
-            CopMenu.AddItem(GangHit);
-            CopMenu.AddItem(WitnessElimination);
-            //CopMenu.AddItem(CopHit);
-        }
-        else
-        {
-            //CustomiFruit.Close();
-            return;
-        }
+        AddJobs();
+        AddServices();    
         CopMenu.Visible = true;
         GameFiber.StartNew(delegate
         {
             try
             {
-
                 while (MenuPool.IsAnyMenuOpen())
                 {
                     GameFiber.Yield();
@@ -111,46 +78,73 @@ public class CorruptCopInteraction : IContactMenuInteraction
             }
         }, "CellPhone");
     }
+
+    private void AddServices()
+    {
+        ServicesSubMenu = MenuPool.AddSubMenu(CopMenu, "Services");
+        ServicesSubMenu.RemoveBanner();
+        PayoffCops = new UIMenuItem("Clear Wanted", "Ask your contact to have the cops forget about you") { RightLabel = "~r~" + CostToClearWanted.ToString("C0") + "~s~" };
+        PayoffCops.Activated += (sender,e) =>
+        {
+            PayoffCop(LastAnsweredContact);
+            sender.Visible = false;
+        };
+        PayoffCopsInvestigation = new UIMenuItem("Stop Investigation", "Ask your contact to have the cops forget about the current investigation") { RightLabel = "~r~" + CostToClearInvestigation.ToString("C0") + "~s~" };
+        PayoffCopsInvestigation.Activated += (sender, e) =>
+        {
+            PayoffCopInvestigation(LastAnsweredContact);
+            sender.Visible = false;
+        };
+        ServicesSubMenu.AddItem(PayoffCops);
+        ServicesSubMenu.AddItem(PayoffCopsInvestigation);
+        PayoffCops.Enabled = Player.IsWanted;
+        PayoffCopsInvestigation.Enabled = Player.Investigation.IsActive;
+    }
+
+    private void AddJobs()
+    {
+        JobsSubMenu = MenuPool.AddSubMenu(CopMenu, "Jobs");
+        JobsSubMenu.RemoveBanner();
+        if (Player.PlayerTasks.HasTask(StaticStrings.OfficerFriendlyContactName))
+        {
+            TaskCancel = new UIMenuItem("Cancel Task", "Tell the officer you can't complete the task.") { RightLabel = "~o~$?~s~" };
+            TaskCancel.Activated += (sender, e) =>
+            {
+                Player.PlayerTasks.CancelTask(StaticStrings.OfficerFriendlyContactName);
+                sender.Visible = false;
+            };
+            JobsSubMenu.AddItem(TaskCancel);
+            return;
+        }
+        GangHit = new UIMenuItem("Gang Hit", "Do a hit on a gang for the cops.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax:C0}~s~" };
+        GangHit.Activated += (sender, e) =>
+        {
+            Player.PlayerTasks.CorruptCopTasks.CopGangHitTask.Start();
+            sender.Visible = false;
+        };
+        WitnessElimination = new UIMenuItem("Witness Elimination", "Probably some major federal indictment of somebody who majorly does not want to get indicted.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMax:C0}~s~" };
+        WitnessElimination.Activated += (sender, e) =>
+        {
+            Player.PlayerTasks.CorruptCopTasks.WitnessEliminationTask.Start();
+            sender.Visible = false;
+        };
+        CopHit = new UIMenuItem("Cop Hit", "Force the retirement of some of the LSPDs finest. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMax:C0}~s~" };
+        CopHit.Activated += (sender, e) =>
+        {
+            Player.PlayerTasks.CorruptCopTasks.CopHitTask.Start();
+            sender.Visible = false;
+        };
+        JobsSubMenu.AddItem(GangHit);
+        JobsSubMenu.AddItem(WitnessElimination);
+        //CopMenu.AddItem(CopHit);
+    }
+
     public void Update()
     {
         MenuPool.ProcessMenus();
     }
-    private void OnCopItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        if (selectedItem == PayoffCops)
-        {
-            PayoffCop(LastAnsweredContact);
-            CopMenu.Visible = false;
-        }
-        if (selectedItem == PayoffCopsInvestigation)
-        {
-            PayoffCopInvestigation(LastAnsweredContact);
-            CopMenu.Visible = false;
-        }
-        else if (selectedItem == TaskCancel)
-        {
-            Player.PlayerTasks.CancelTask(StaticStrings.OfficerFriendlyContactName);
-            sender.Visible = false;
-        }
-        else if (selectedItem == GangHit)
-        {
-            Player.PlayerTasks.CorruptCopTasks.CopGangHitTask.Start();
-            sender.Visible = false;
-        }
-        else if (selectedItem == WitnessElimination)
-        {
-            Player.PlayerTasks.CorruptCopTasks.WitnessEliminationTask.Start();
-            sender.Visible = false;
-        }
-        else if (selectedItem == CopHit)
-        {
-            Player.PlayerTasks.CorruptCopTasks.CopHitTask.Start();
-            sender.Visible = false;
-        }
-    }
     private void PayoffCop(PhoneContact contact)
     {
-
         //EntryPoint.WriteToConsoleTestLong($"Player.Money {Player.BankAccounts.Money} CostToClearWanted {CostToClearWanted}");
         if (Player.WantedLevel > 4)
         {

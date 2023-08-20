@@ -48,8 +48,6 @@ public class VehicleExporterInteraction : IContactMenuInteraction
         MenuPool.Add(VehicleExporterMenu);
         AddJobItems();
         AddQuestionItems();
-        LocationsSubMenu = MenuPool.AddSubMenu(VehicleExporterMenu, "Locations");
-        LocationsSubMenu.RemoveBanner();
         AddLocationItems();  
         VehicleExporterMenu.Visible = true;
         InteractionLoop();
@@ -101,6 +99,9 @@ public class VehicleExporterInteraction : IContactMenuInteraction
     }
     private void AddLocationItems()
     {
+        LocationsSubMenu = MenuPool.AddSubMenu(VehicleExporterMenu, "Locations");
+        LocationsSubMenu.RemoveBanner();
+
         foreach (VehicleExporter gl in PlacesOfInterest.PossibleLocations.VehicleExporters.Where(x => x.ContactName == VehicleExporterContact.Name))
         {
             if (!gl.IsEnabled)

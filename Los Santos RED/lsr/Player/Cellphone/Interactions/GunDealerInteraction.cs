@@ -19,6 +19,9 @@ public class GunDealerInteraction : IContactMenuInteraction
     private IPlacesOfInterest PlacesOfInterest;
     private PhoneContact AnsweredContact;
     private ISettingsProvideable Settings;
+    private UIMenu LocationsSubMenu;
+    private UIMenu JobsSubMenu;
+
     public GunDealerInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
     {
         Player = player;
@@ -37,41 +40,11 @@ public class GunDealerInteraction : IContactMenuInteraction
         GunDealerMenu = new UIMenu("", "Select an Option");
         GunDealerMenu.RemoveBanner();
         MenuPool.Add(GunDealerMenu);
-        UIMenuItem GunPickup = new UIMenuItem("Gun Pickup", "Pickup some guns and bring them to a shop.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMax:C0}~s~" };
-        GunPickup.Activated += (sender, selectedItem) =>
-        {
-            Player.PlayerTasks.UndergroundGunsTasks.GunPickupTask.Start();
-            sender.Visible = false;
-        };
-        UIMenuItem TaskCancel = new UIMenuItem("Cancel Task", "Tell the gun dealer you can't complete the task.") { RightLabel = "~o~$?~s~" };
-        TaskCancel.Activated += (sender, selectedItem) =>
-        {
-            Player.PlayerTasks.CancelTask(AnsweredContact.Name);
-            sender.Visible = false;
-        };
-        if (Player.PlayerTasks.HasTask(AnsweredContact.Name))
-        {
-            GunDealerMenu.AddItem(TaskCancel);
-        }
-        else
-        {
-            GunDealerMenu.AddItem(GunPickup);
-        }
 
-        foreach (GunStore gl in PlacesOfInterest.PossibleLocations.GunStores)
-        {
-            if(!gl.IsEnabled || gl.ContactName != AnsweredContact.Name)
-            {
-                continue;
-            }
-            UIMenuItem storeAddressRequest = new UIMenuItem(gl.Name, gl.Description + "~n~Address: " + gl.FullStreetAddress);
-            storeAddressRequest.Activated += (sender, selectedItem) =>
-            {
-                RequestLocations(selectedItem.Text);
-                sender.Visible = false;
-            };
-            GunDealerMenu.AddItem(storeAddressRequest);        
-        }
+
+        AddJobItems();
+        AddLocationItems();
+
         GunDealerMenu.Visible = true;
         InteractionLoop();
     }
@@ -98,9 +71,56 @@ public class GunDealerInteraction : IContactMenuInteraction
     {
         MenuPool.ProcessMenus();
     }
-    private void RequestLocations(string name)
+
+    private void AddLocationItems()
     {
-        GunStore gunStore = PlacesOfInterest.PossibleLocations.GunStores.FirstOrDefault(x => x.Name.ToLower() == name.ToLower());
+        LocationsSubMenu = MenuPool.AddSubMenu(GunDealerMenu, "Locations");
+        LocationsSubMenu.RemoveBanner();
+        foreach (GunStore gl in PlacesOfInterest.PossibleLocations.GunStores.Where(x => x.ContactName == AnsweredContact.Name))
+        {
+            if (!gl.IsEnabled)
+            {
+                continue;
+            }
+            UIMenu locationsubMenu = MenuPool.AddSubMenu(LocationsSubMenu, gl.Name);
+            locationsubMenu.RemoveBanner();
+
+            UIMenuItem storeAddressRequest = new UIMenuItem("Request Directions", gl.Name + "~n~" + gl.Description + "~n~Address: " + gl.FullStreetAddress);
+            storeAddressRequest.Activated += (sender, selectedItem) =>
+            {
+                RequestLocations(gl);
+                sender.Visible = false;
+            };
+            locationsubMenu.AddItem(storeAddressRequest);
+        }
+    }
+
+    private void AddJobItems()
+    {
+        JobsSubMenu = MenuPool.AddSubMenu(GunDealerMenu, "Jobs");
+        JobsSubMenu.RemoveBanner();
+
+        UIMenuItem TaskCancel = new UIMenuItem("Cancel Task", "Tell the gun dealer you can't complete the task.") { RightLabel = "~o~$?~s~" };
+        TaskCancel.Activated += (sender, selectedItem) =>
+        {
+            Player.PlayerTasks.CancelTask(AnsweredContact.Name);
+            sender.Visible = false;
+        };
+        if (Player.PlayerTasks.HasTask(AnsweredContact.Name))
+        {
+            JobsSubMenu.AddItem(TaskCancel);
+            return;
+        }
+        UIMenuItem GunPickup = new UIMenuItem("Gun Pickup", "Pickup some guns and bring them to a shop.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMax:C0}~s~" };
+        GunPickup.Activated += (sender, selectedItem) =>
+        {
+            Player.PlayerTasks.UndergroundGunsTasks.GunPickupTask.Start();
+            sender.Visible = false;
+        };
+        JobsSubMenu.AddItem(GunPickup);
+    }
+    private void RequestLocations(GunStore gunStore)
+    {
         if (gunStore != null)
         {
             Player.GPSManager.AddGPSRoute(gunStore.Name, gunStore.EntrancePosition);

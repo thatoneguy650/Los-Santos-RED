@@ -1677,6 +1677,7 @@ public class PlacesOfInterest_Liberty
                 RandomPlateCost = 300,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.Forgers.AddRange(ForgerList_95);
@@ -1692,6 +1693,7 @@ public class PlacesOfInterest_Liberty
                 OpenTime = 0,
                 CloseTime = 24,
                 CanInteractWhenWanted = true,
+                StateID = StaticStrings.LibertyStateID,
             },
 
             new RepairGarage(new Vector3(-69.7f,2042.61f,220.27f), 0f, "Auto Cowboys", "Servicing Holland since 1979")
@@ -1701,6 +1703,7 @@ public class PlacesOfInterest_Liberty
                 OpenTime = 0,
                 CloseTime = 24,
                 CanInteractWhenWanted = true,
+                StateID = StaticStrings.LibertyStateID,
             },
             new RepairGarage(new Vector3(-275.82f,868.98f,206.63f), 0f, "Auto Limbo", "Where all the Union Drive accidents go")
             {
@@ -1709,6 +1712,7 @@ public class PlacesOfInterest_Liberty
                 OpenTime = 0,
                 CloseTime = 24,
                 CanInteractWhenWanted = true,
+                StateID = StaticStrings.LibertyStateID,
             },
             new RepairGarage(new Vector3(948.62f,1998.77f,214.84f), 0f, "Muscle Mary's", "We service imports too")
             {
@@ -1717,6 +1721,7 @@ public class PlacesOfInterest_Liberty
                 OpenTime = 0,
                 CloseTime = 24,
                 CanInteractWhenWanted = true,
+                StateID = StaticStrings.LibertyStateID,
             },
             new RepairGarage(new Vector3(-887.16f,1679.61f,217.16f), 0f, "Axel's Pay'n'Spray", "Franchising car repairs")
             {
@@ -1725,6 +1730,7 @@ public class PlacesOfInterest_Liberty
                 OpenTime = 0,
                 CloseTime = 24,
                 CanInteractWhenWanted = true,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new RepairGarage(new Vector3(-1063.54f,766.97f,210.8f), 0f, "Axel's Pay'n'Spray", "Franchising car repairs")
             {
@@ -1733,6 +1739,7 @@ public class PlacesOfInterest_Liberty
                 OpenTime = 0,
                 CloseTime = 24,
                 CanInteractWhenWanted = true,
+                StateID = StaticStrings.AlderneyStateID,
             },
 
         };

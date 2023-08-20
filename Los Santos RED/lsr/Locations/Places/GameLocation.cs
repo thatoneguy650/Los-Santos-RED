@@ -421,6 +421,8 @@ public class GameLocation : ILocationDispatchable
     }
     private void StoreBasicData(IZones zones, IStreets streets, ILocationTypes locationTypes)
     {
+        CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
+        CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
         Zone placeZone = zones.GetZone(EntrancePosition);
         string betweener = "";
         string zoneString = "";
@@ -453,16 +455,11 @@ public class GameLocation : ILocationDispatchable
         FullStreetAddress = LocationName;
         StreetAddress = ShortLocationName;
         ZoneName = zoneString;
-
         if (string.IsNullOrEmpty(StateID))
         {
             StateID = StaticStrings.SanAndreasStateID;
         }
-
         GameState = locationTypes.GetState(StateID);
-
-        CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
-        CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
     }
     public bool IsOpen(int currentHour)
     {
