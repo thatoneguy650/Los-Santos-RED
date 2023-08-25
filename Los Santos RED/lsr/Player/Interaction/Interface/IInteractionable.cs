@@ -36,6 +36,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsEMT { get; }
         bool IsCop { get; }
 
+
         void PlaySpeech(string v1, bool v2);
         void SetAngeredCop();
     }

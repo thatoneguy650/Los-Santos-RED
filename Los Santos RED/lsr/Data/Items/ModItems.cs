@@ -2636,6 +2636,23 @@ public class ModItems : IModItems
             new VehicleItem("BF Weevil Custom", ItemType.Vehicles) { ModelName = "weevil2",RequiresDLC = true, },
             new VehicleItem("Vapid Youga Custom", ItemType.Vehicles) { ModelName = "youga4",RequiresDLC = true, },
             new VehicleItem("Overflod Zeno", ItemType.Vehicles) { ModelName = "zeno",RequiresDLC = true, },
+
+            //NEW DLC 2     
+            new VehicleItem("Albany Brigham", ItemType.Vehicles) { ModelName = "brigham",RequiresDLC = true, },
+            new VehicleItem("Bravado Hotring Hellfire", ItemType.Vehicles) { ModelName = "gauntlet6",RequiresDLC = true, },
+            new VehicleItem("Mammoth F-160 Raiju", ItemType.Vehicles) { ModelName = "raiju",RequiresDLC = true, },
+            new VehicleItem("Grotti Itali GTO Stinger TT", ItemType.Vehicles) { ModelName = "stingertt",RequiresDLC = true, },
+            new VehicleItem("Vapid Clique Wagon", ItemType.Vehicles) { ModelName = "clique2",RequiresDLC = true, },
+            new VehicleItem("Maibatsu MonstroCiti", ItemType.Vehicles) { ModelName = "monstrociti",RequiresDLC = true, },
+            new VehicleItem("Vapid Ratel", ItemType.Vehicles) { ModelName = "ratel",RequiresDLC = true, },
+            new VehicleItem("Declasse Walton L35", ItemType.Vehicles) { ModelName = "l35",RequiresDLC = true, },
+            new VehicleItem("Mammoth Streamer216", ItemType.Vehicles) { ModelName = "streamer216",RequiresDLC = true, },
+            new VehicleItem("Bravado Buffalo EVX", ItemType.Vehicles) { ModelName = "buffalo5",RequiresDLC = true, },
+            new VehicleItem("Penaud La Coureuse", ItemType.Vehicles) { ModelName = "coureur",RequiresDLC = true, },
+            new VehicleItem("Coil Inductor", ItemType.Vehicles) { ModelName = "inductor",RequiresDLC = true, },
+            new VehicleItem("Coil Junk Energy Inductor", ItemType.Vehicles) { ModelName = "inductor2",RequiresDLC = true, },
+            new VehicleItem("Buckingham Weaponized Conada", ItemType.Vehicles) { ModelName = "conada2",RequiresDLC = true, },
+
         });
     }
     private void DefaultConfig_Weapons()

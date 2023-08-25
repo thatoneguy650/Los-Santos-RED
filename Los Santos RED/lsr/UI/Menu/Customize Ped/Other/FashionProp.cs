@@ -158,7 +158,7 @@ public class FashionProp
             {
                 isValid = false;
                 HashSet<FashionItemLookup> possibleDrawables = PedCustomizer.ClothesNames.GetItemsFast(true, PropID, DrawableNumber, PedCustomizer.PedModelGender);
-                if (filterString == "")
+                if (string.IsNullOrEmpty(filterString) || filterString == "")
                 {
                     isValid = true;
                 }

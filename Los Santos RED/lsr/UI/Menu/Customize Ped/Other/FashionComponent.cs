@@ -144,7 +144,7 @@ public class FashionComponent
             {
                 isValid = false;
                 HashSet<FashionItemLookup> possibleDrawables = PedCustomizer.ClothesNames.GetItemsFast(false, ComponentID, DrawableNumber, PedCustomizer.PedModelGender);
-                if (filterString == "")
+                if (string.IsNullOrEmpty(filterString) || filterString == "")
                 {
                     isValid = true;
                 }

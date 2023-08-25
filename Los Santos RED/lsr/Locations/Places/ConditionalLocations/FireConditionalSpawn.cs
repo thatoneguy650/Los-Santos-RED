@@ -51,7 +51,7 @@ public class FireConditionalLocation : ConditionalLocation
             fireFighterSpawnTask.AllowBuddySpawn = false;
             fireFighterSpawnTask.SpawnRequirement = TaskRequirements;
             fireFighterSpawnTask.ClearArea = true;
-            fireFighterSpawnTask.PlacePedOnGround = true;
+            fireFighterSpawnTask.PlacePedOnGround = DispatchableVehicle == null;// true;
             fireFighterSpawnTask.AttemptSpawn();
             fireFighterSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
             fireFighterSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Fire));

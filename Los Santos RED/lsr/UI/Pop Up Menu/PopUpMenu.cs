@@ -1213,8 +1213,8 @@ public class PopUpMenu
         {
             new PopUpBox(0,"Engine",Player.ActivityManager.ToggleVehicleEngine,"Toggle vehicle engine") { IsCurrentlyValid = new Func<bool>(() => Player.CurrentVehicle?.Engine.CanToggle == true)},
             new PopUpBox(1,"Indicators","IndicatorsSubMenu","Open Indicators Sub Menu") { ClosesMenu = false },
-            new PopUpBox(2,"Driver Window",Player.ActivityManager.ToggleDriverWindow,"Toggle driver window"),
-            new PopUpBox(3,"Driver Door",Player.ActivityManager.CloseDriverDoor,"Close driver door"),
+            new PopUpBox(2,"Driver Window",Player.ActivityManager.ToggleDriverWindow,"Toggle driver window. Access other windows in the menu."),
+            new PopUpBox(3,"Driver Door",Player.ActivityManager.CloseDriverDoor,"Close driver door. Access other doors in the menu when outside the vehicle"),
             new PopUpBox(4,"Menu",Player.ShowVehicleInteractMenu,"Show Vehicle Interaction Menu"),
         };
         List<PopUpBox> IndicatorsSubMenu = new List<PopUpBox>()

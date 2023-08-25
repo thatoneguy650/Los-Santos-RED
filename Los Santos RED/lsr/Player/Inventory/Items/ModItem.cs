@@ -49,7 +49,7 @@ public class ModItem
 
 
 
-    public List<MenuItem> menusToUpdate { get; private set; } = new List<MenuItem>();
+
     private UIMenuNumericScrollerItem<int> takeScroller;
     private UIMenu inventoryItemSubMenu;
     private UIMenuItem inventoryItemSubMenuItem;
@@ -71,8 +71,8 @@ public class ModItem
         Description = description;
         ItemType = itemType;
     }
-
-
+    [XmlIgnore]
+    public List<MenuItem> menusToUpdate { get; private set; } = new List<MenuItem>();
     [XmlIgnore]
     public string MenuCategory { get; set; }
     [XmlIgnore]

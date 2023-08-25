@@ -79,6 +79,12 @@ public class VehicleDoorSeatData
             //EntryPoint.WriteToConsoleTestLong("TOO LARGE< LOWERING");
             DoorToggleHeading = DoorToggleHeading - 360f;
         }
+
+        if(DoorToggleHeading < 0f)
+        {
+            DoorToggleHeading = 360f + DoorToggleHeading;
+        }
+
         return DoorToggleHeading;
     }
 }

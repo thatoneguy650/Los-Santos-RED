@@ -57,6 +57,8 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentVehicle { get; }
         VehicleExt InterestedVehicle { get; }
         bool IsShowingFrontEndMenus { get; }
+  
+        VehicleOwnership VehicleOwnership { get; }
         // bool IsSitting { get; }
         //  bool IsConversing { get; }
         //GameLocation ClosestTeleportEntrance { get; }

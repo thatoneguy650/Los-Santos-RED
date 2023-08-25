@@ -92,7 +92,7 @@ class WanderInVehicleTaskState : TaskState
             VehiclePatrol();
         }
 
-        //EntryPoint.WriteToConsoleTestLong($"{PedGeneral?.Handle} START WANDER IsNearSpawnPosition:{PedGeneral?.IsNearSpawnPosition} canGuard{canGuard} canPatrol{canPatrol}");
+        EntryPoint.WriteToConsole($"{PedGeneral?.Handle} START WANDER IsNearSpawnPosition:{PedGeneral?.IsNearSpawnPosition} hasGuardFlag:{PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.Guard)} canGuard{canGuard} canPatrol{canPatrol} IsGuarding{IsGuarding} IsPatrolling{IsPatrolling}");
         //VehiclePatrol();
     }
     public void Stop()

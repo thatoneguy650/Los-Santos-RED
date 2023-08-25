@@ -115,6 +115,6 @@ public class UIGeneralSettings : ISettingsDefaultable
 
         CustomWantedLevelStarsRedColorLimit = 6;
         ShowVehicleInteractionPrompt = true;
-        ShowVehicleInteractionPromptInVehicle = false;
+        ShowVehicleInteractionPromptInVehicle = true;
     }
 }

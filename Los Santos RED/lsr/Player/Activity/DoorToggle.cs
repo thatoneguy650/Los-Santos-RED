@@ -211,8 +211,11 @@ public class DoorToggle : DynamicActivity
         bool Continue = true;
         bool StopDriver = false;
         EntryPoint.WriteToConsole($"DOOR TOGGLE: STARTED MOVE TO POSITION");
-        NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", Player.Character, DoorTogglePosition.X, DoorTogglePosition.Y, DoorTogglePosition.Z, DoorToggleHeading, -1);
-        while (!(Player.Character.DistanceTo2D(DoorTogglePosition) <= 0.5f && FloatIsWithin(Player.Character.Heading, DoorToggleHeading - 5f, DoorToggleHeading + 5f)))//while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && FloatIsWithin(PedToMove.Heading, DesiredHeading - 5f, DesiredHeading + 5f)))
+        //NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", Player.Character, DoorTogglePosition.X, DoorTogglePosition.Y, DoorTogglePosition.Z, DoorToggleHeading, -1);
+
+        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, DoorTogglePosition.X, DoorTogglePosition.Y, DoorTogglePosition.Z, 1.0f, -1, 0.5f, 0, DoorToggleHeading);
+        uint GameTimeStartedMoving = Game.GameTime;
+        while (!(Player.Character.DistanceTo2D(DoorTogglePosition) <= 0.5f && FloatIsWithin(Player.Character.Heading, DoorToggleHeading - 5f, DoorToggleHeading + 5f)) && Game.GameTime - GameTimeStartedMoving <= 5000)//while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && FloatIsWithin(PedToMove.Heading, DesiredHeading - 5f, DesiredHeading + 5f)))
         {
             GameFiber.Yield();
             if (Player.IsMoveControlPressed)
@@ -230,7 +233,14 @@ public class DoorToggle : DynamicActivity
                 Game.DisplaySubtitle($"DesiredHeading: {DoorToggleHeading} Current:{Math.Round(Player.Character.Heading, 2)}");
             }
 
+
         }
+
+        if (!(Player.Character.DistanceTo2D(DoorTogglePosition) <= 0.75f && FloatIsWithin(Player.Character.Heading, DoorToggleHeading - 10f, DoorToggleHeading + 10f)))
+        {
+            Continue = false;
+        }
+
         EntryPoint.WriteToConsole($"DOOR TOGGLE: END MOVE TO POSITION Continue{Continue}");
         if (!Continue)
         {

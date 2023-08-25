@@ -43,7 +43,7 @@ public class LEConditionalLocation : ConditionalLocation
             spawnTask.AllowBuddySpawn = false;
             spawnTask.ClearArea = true;
             spawnTask.SpawnRequirement = TaskRequirements;
-            spawnTask.PlacePedOnGround = true;
+            spawnTask.PlacePedOnGround = DispatchableVehicle == null;// true;
             spawnTask.AttemptSpawn();
             GameFiber.Yield();
             spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });

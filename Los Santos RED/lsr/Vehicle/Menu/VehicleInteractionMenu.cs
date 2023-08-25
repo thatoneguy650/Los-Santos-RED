@@ -52,6 +52,20 @@ public class VehicleInteractionMenu
         };
 
 
+        if (Player.IsInVehicle)
+        {
+            UIMenu WindowAccessHeaderMenu = MenuPool.AddSubMenu(VehicleInteractMenu, "Windows");
+            VehicleInteractMenu.MenuItems[VehicleInteractMenu.MenuItems.Count() - 1].Description = "Open/Close various windows";
+            WindowAccessHeaderMenu.SetBannerType(EntryPoint.LSRedColor);
+            VehicleExt.CreateWindowInteractionMenu(player, MenuPool, WindowAccessHeaderMenu, vehicleSeatDoorData);
+        }
+        else
+        {
+            UIMenu DoorAccessHeaderMenu = MenuPool.AddSubMenu(VehicleInteractMenu, "Doors");
+            VehicleInteractMenu.MenuItems[VehicleInteractMenu.MenuItems.Count() - 1].Description = "Open/Close various doors";
+            DoorAccessHeaderMenu.SetBannerType(EntryPoint.LSRedColor);
+            VehicleExt.CreateDoorInteractionMenu(player, MenuPool, DoorAccessHeaderMenu, vehicleSeatDoorData);
+        }
 
 
         VehicleExt.HandleRandomItems(modItems);
@@ -63,10 +77,6 @@ public class VehicleInteractionMenu
         Player.ButtonPrompts.RemovePrompts("VehicleInteract");
         ProcessMenu();
     }
-
-
-
-
     private void CreateInteractionMenu()
     {
         MenuPool = new MenuPool();

@@ -719,6 +719,31 @@ namespace LSR.Vehicles
                 }
             }
         }
+
+        public void SetWindow(int windowID, bool RollDown)
+        {
+            if(!Vehicle.Exists())
+            {
+                return;
+            }
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Vehicle, windowID))
+            {
+                if (RollDown)
+                {
+                    NativeFunction.CallByName<bool>("ROLL_DOWN_WINDOW", Vehicle, windowID);
+                }
+                else
+                {
+                    NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Vehicle, windowID);
+                }
+            }
+            else if (!RollDown)
+            {
+                NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Vehicle, windowID);             
+            }
+        }
+
+
         public void SetRadioStation(string stationName) => Radio.SetRadioStation(stationName);
         public bool WasSpawnedEmpty { get; set; } = false;
         public bool OwnedByPlayer { get; internal set; }
@@ -1408,6 +1433,50 @@ namespace LSR.Vehicles
             return true;
         }
 
-
+        public void CreateDoorInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu doorAccessHeaderMenu, IVehicleSeatAndDoorLookup vehicleSeatDoorData)
+        {
+            List<VehicleDoorSeatData> stuff = vehicleSeatDoorData.VehicleDoorSeatDataList.ToList();
+            stuff.Add(new VehicleDoorSeatData("Hood (Bonnet)","",4,2));
+            stuff.Add(new VehicleDoorSeatData("Other", "", 6, 2));
+            foreach (VehicleDoorSeatData door in stuff)
+            {
+                UIMenuListScrollerItem<string> uIMenuListScrollerItem = new UIMenuListScrollerItem<string>(door.SeatName, $"Open or close {door.SeatName}",new List<string>() { "Open","Close" });
+                uIMenuListScrollerItem.Activated += (sender, e) =>
+                {
+                    if (door == null || player.IsInVehicle)
+                    {
+                        return;
+                    }
+                    player.ActivityManager.SetDoor(door.DoorID, uIMenuListScrollerItem.SelectedItem == "Open" ? true : false, false);
+                };
+                doorAccessHeaderMenu.AddItem(uIMenuListScrollerItem);
+            }
+        }
+        public void CreateWindowInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu windowAccessHeaderMenu, IVehicleSeatAndDoorLookup vehicleSeatDoorData)
+        {
+            List<Tuple<int, string>> stuff = new List<Tuple<int, string>>() { 
+                new Tuple<int, string>(0, "Driver"),
+                new Tuple<int, string>(1, "Passenger"),
+                new Tuple<int, string>(2, "Rear Driver"),
+                new Tuple<int, string>(3, "Rear Passenger"),
+                new Tuple<int, string>(4, "Middle Driver"),
+                new Tuple<int, string>(5, "Middle Passenger"),
+                new Tuple<int, string>(6, "Front Windshield"),
+                new Tuple<int, string>(7, "Rear Windshield"),
+                };
+            foreach (Tuple<int, string> window in stuff)
+            {
+                UIMenuListScrollerItem<string> uIMenuListScrollerItem = new UIMenuListScrollerItem<string>(window.Item2, $"Open or close {window.Item2}", new List<string>() { "Roll Down", "Roll Up" });
+                uIMenuListScrollerItem.Activated += (sender, e) =>
+                {
+                    if (window == null || !player.IsInVehicle)
+                    {
+                        return;
+                    }
+                    SetWindow(window.Item1, uIMenuListScrollerItem.SelectedItem == "Roll Down" ? true : false);
+                };
+                windowAccessHeaderMenu.AddItem(uIMenuListScrollerItem);
+            }
+        }
     }
 }

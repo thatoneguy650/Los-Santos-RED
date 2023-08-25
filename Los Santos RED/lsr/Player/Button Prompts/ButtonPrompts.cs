@@ -59,7 +59,8 @@ public class ButtonPrompts
             (!Settings.SettingsManager.UIGeneralSettings.ShowVehicleInteractionPromptInVehicle && Player.IsInVehicle) ||
 
             !toConsider.Vehicle.Exists() || 
-            !toConsider.HasBeenEnteredByPlayer || 
+            (!toConsider.HasBeenEnteredByPlayer && !Player.VehicleOwnership.OwnedVehicles.Any(x => x.Handle == toConsider.Handle)) || 
+            
             toConsider.VehicleInteractionMenu.IsShowingMenu || 
             toConsider.Vehicle.Speed >= 0.5f || Player.ActivityManager.IsPerformingActivity)
         {

@@ -19,6 +19,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Media;
+using System.Xml.Serialization;
 
 public class DebugMenu : ModUIMenu
 {
@@ -2710,13 +2711,24 @@ new YmapDisabler("manhat01",true),
 
             if (!property.CanWrite)
             {
+                EntryPoint.WriteToConsole($"{property.Name} CANT WRITE");
+                continue;
+            }
+            if(property.GetSetMethod(false) == null)
+            {
+                EntryPoint.WriteToConsole($"{property.Name} GETSETMETHOD IS NULL");
+                continue;
+            }
+            if(property.GetCustomAttributes(false).Any(a => a is XmlIgnoreAttribute))
+            {
+                EntryPoint.WriteToConsole($"{property.Name} XmlIgnoreAttribute");
                 continue;
             }
             else if(AllowedProperties != null && !AllowedProperties.Any(x=> x == property.Name))
             {
                 continue;
             }
-            else if(property.PropertyType == typeof(string) || property.PropertyType == typeof(System.Drawing.Color))
+            else if(property.PropertyType == typeof(String) || property.PropertyType == typeof(string) || property.PropertyType == typeof(System.Drawing.Color))
             {
                 WriteToClassCreator($"{property.Name} = \"{property.GetValue(dv)}\",",0, fileName);
             }
@@ -2742,57 +2754,16 @@ new YmapDisabler("manhat01",true),
                 PrintClass(property.GetValue(dv), AllowedProperties, fileName);
                 WriteToClassCreator($"}},", 0, fileName);
             }
-
+            //else
+            //{
+            //    WriteToClassCreator($"{property.Name} = new {property.PropertyType}() {{", 0, fileName);
+            //    PrintClass(property.GetValue(dv), AllowedProperties, fileName);
+            //    WriteToClassCreator($"}},", 0, fileName);
+            //}
             if (itemType1 != null)
             {
                 EntryPoint.WriteToConsole($"IS LIST {property.Name} {itemType1.Name}");
                 DoListItem(property, dv, $"List<{itemType1.Name}>", AllowedProperties, fileName);
-            }
-
-
-            //else if(property is IEnumerable)
-            //{
-                
-            //    Type type = property.PropertyType;
-            //    Type itemType = type.GetGenericArguments()[0];
-
-
-            //    EntryPoint.WriteToConsole($"IS GENERIC LIST {property.Name} {itemType}");
-
-            //    DoListItem(property, dv, $"List<{itemType}>", AllowedProperties, fileName);
-            //}
-            //else if (property.PropertyType == typeof(List<int>))
-            //{
-            //    DoListItem(property, dv, "List<int>", AllowedProperties, fileName);
-            //}
-            //else if (property.PropertyType == typeof(List<SpawnPlace>))
-            //{
-            //    DoListItem(property, dv, "List<SpawnPlace>", AllowedProperties, fileName);
-            //}
-            //else if (property.PropertyType == typeof(List<ConditionalLocation>))
-            //{
-            //    DoListItem(property, dv, "List<ConditionalLocation>", AllowedProperties, fileName);
-            //}
-            ////
-            //else if (property.PropertyType == typeof(List<VehicleExtra>))
-            //{
-            //    DoListItem(property, dv, "List<VehicleExtra>", AllowedProperties, fileName);
-            //}
-            //else if (property.PropertyType == typeof(List<DispatchableVehicleExtra>))
-            //{
-            //    DoListItem(property, dv, "List<DispatchableVehicleExtra>", AllowedProperties, fileName);
-            //}
-            //else if (property.PropertyType == typeof(List<VehicleToggle>))
-            //{
-            //    DoListItem(property, dv, "List<VehicleToggle>", AllowedProperties, fileName);
-            //}
-            //else if (property.PropertyType == typeof(List<VehicleMod>))
-            //{
-            //    DoListItem(property, dv, "List<VehicleMod>", AllowedProperties, fileName);
-            //}
-            else
-            {
-                //WriteToClassCreator($"{property.Name} {property.PropertyType}", 0);
             }
         }
     }
@@ -2800,11 +2771,22 @@ new YmapDisabler("manhat01",true),
     {
         WriteToClassCreator($"{property.Name} = new {ListType}() {{", 0, fileName);
         var collection = (IEnumerable)property.GetValue(dv, null);
+
+
         foreach (object obj in collection)
         {
-            WriteToClassCreator($"new {obj.GetType()}() {{", 0, fileName);
-            PrintClass(obj, null, fileName);
-            WriteToClassCreator($"}},", 0, fileName);
+
+            if (obj.GetType() == typeof(string) || obj.GetType() == typeof(String))
+            {
+                EntryPoint.WriteToConsole($"LIST ITEM IS STRING");
+                WriteToClassCreator($@"""{obj}"",", 0, fileName);
+            }
+            else
+            {
+                WriteToClassCreator($"new {obj.GetType()}() {{", 0, fileName);
+                PrintClass(obj, null, fileName);
+                WriteToClassCreator($"}},", 0, fileName);
+            }
         }
         WriteToClassCreator($"}},", 0, fileName);
     }

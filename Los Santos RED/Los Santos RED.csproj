@@ -152,8 +152,9 @@
     <Compile Include="lsr\Data\Interface\IWantedLevels.cs" />
     <Compile Include="lsr\Data\Interface\IWeatherForecasts.cs" />
     <Compile Include="lsr\Data\Items\Intoxicants.cs" />
+    <Compile Include="lsr\Data\Location\Custom Locations\BlankLocationsData.cs" />
     <Compile Include="lsr\Data\Location\LocationTypeManager.cs" />
-    <Compile Include="lsr\Data\Location\PlacesOfInterest_Liberty.cs" />
+    <Compile Include="lsr\Data\Location\Custom Locations\PlacesOfInterest_Liberty.cs" />
     <Compile Include="lsr\Data\Other\LanguageString.cs" />
     <Compile Include="lsr\Data\Other\LanguageStrings.cs" />
     <Compile Include="lsr\Data\Peds\CombatAttributeToSet.cs" />

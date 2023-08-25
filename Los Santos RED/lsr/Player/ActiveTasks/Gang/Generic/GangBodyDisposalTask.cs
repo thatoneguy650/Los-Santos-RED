@@ -76,6 +76,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         protected override void AddTask()
         {
             CrusherLocation.IsPlayerInterestedInLocation = true;
+            SpawnLocation.IsPlayerInterestedInLocation = true;
             base.AddTask();
         }
         protected override void Loop()
@@ -173,11 +174,14 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             gangSpawnTask.AllowAnySpawn = true;
             gangSpawnTask.AllowBuddySpawn = false;
             gangSpawnTask.AttemptSpawn();
-            //foreach (PedExt created in gangSpawnTask.CreatedPeople)
-            //{
-            //    World.Pedestrians.DeadPeds.Add(created);
-            //}
-            //gangSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); });
+
+
+
+
+           //gangSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); });
+
+
+
             DeadBody = gangSpawnTask.CreatedPeople.FirstOrDefault();
             if (DeadBody == null || !DeadBody.Pedestrian.Exists())
             {
@@ -191,6 +195,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             DeadBody.HasBeenHurtByPlayer = true;
             DeadBody.IsManuallyDeleted = true;
 
+            foreach (PedExt created in gangSpawnTask.CreatedPeople)
+            {
+                World.Pedestrians.DeadPeds.Add(created);
+            }
             Player.Violations.DamageViolations.AddFakeKilled(DeadBody);
             if (!DeadBodyVehicle.VehicleBodyManager.LoadBody(DeadBody, new VehicleDoorSeatData("Trunk", "boot", 5, -2), false))
             {
@@ -203,6 +211,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             CleanupPed();
             CleanupCar();
             CrusherLocation.IsPlayerInterestedInLocation = false;
+            SpawnLocation.IsPlayerInterestedInLocation = false;
         }
         private void Delete()
         {

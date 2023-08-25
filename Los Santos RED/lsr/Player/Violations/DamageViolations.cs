@@ -76,7 +76,7 @@ public class DamageViolations
         {
             Violations.AddViolating(StaticStrings.HurtingCiviliansCrimeID);
         }
-        if (RecentlyKilledCivilian || (NearCivilianMurderVictim && (Violations.IsViolatingSeriousCrime || Player.ActivityManager.IsDraggingBody)))
+        if (RecentlyKilledCivilian || (NearCivilianMurderVictim && !Player.IsInVehicle && (Violations.IsViolatingSeriousCrime || Player.ActivityManager.IsDraggingBody)))
         {
             Violations.AddViolating(StaticStrings.KillingCiviliansCrimeID);
         }

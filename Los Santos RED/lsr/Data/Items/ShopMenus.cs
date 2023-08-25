@@ -1136,7 +1136,6 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Maibatsu Manchez Scout",9600,4500),
                 new MenuItem("Shitzu PCJ 600",9000,3900),
                 new MenuItem("Shitzu Vader",9500,4200),
-                new MenuItem("Shitzu Hakuchou",45000,22340),
                 new MenuItem("Shitzu Defiler",34000,15340),
                 new MenuItem("Shitzu Hakuchou",19000,11200),
                 new MenuItem("Shitzu Hakuchou Drag",25000,12500),

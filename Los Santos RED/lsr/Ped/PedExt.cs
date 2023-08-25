@@ -243,7 +243,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsInWrithe { get; set; } = false;
     public virtual bool IsMerchant { get; set; } = false;
     public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
-    public bool IsNearSpawnPosition => Pedestrian.Exists() && Pedestrian.DistanceTo2D(SpawnPosition) <= 5f;////15f;//15f
+    public bool IsNearSpawnPosition => Pedestrian.Exists() && Pedestrian.DistanceTo2D(SpawnPosition) <= 10f;////15f;//15f
     public bool IsOnBike { get; private set; } = false;
     public bool IsRunningOwnFiber { get; set; } = false;
     public bool IsStill { get; private set; }

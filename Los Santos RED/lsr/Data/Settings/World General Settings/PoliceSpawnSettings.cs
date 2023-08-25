@@ -467,7 +467,7 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         LikelyHoodOfCountySpawn_Wanted10 = 20;
 
         RemoveNonSpawnedPolice = false;
-        RemoveAmbientPolice = false;
+        RemoveAmbientPolice = true;
 #if DEBUG
         ShowSpawnedBlips = true;
 
