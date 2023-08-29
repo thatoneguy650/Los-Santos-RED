@@ -6,25 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class GangContact : PhoneContact, IPhoneContact
+public class TaxiServiceContact : PhoneContact, IPhoneContact
 {
-    public GangContact()
+    public TaxiServiceContact()
     {
-
     }
 
-    public GangContact(string name, string iconName) : base(name, iconName)
+    public TaxiServiceContact(string name) : base(name)
     {
-
     }
+
     public override void OnAnswered(IContactInteractable player, CellPhone cellPhone, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IJurisdictions jurisdictions, ICrimes crimes, IEntityProvideable world, IModItems modItems, IWeapons weapons, INameProvideable names, IShopMenus shopMenus)
     {
-        Gang myGang = gangs.GetAllGangs().FirstOrDefault(x => x.ContactName == Name);
-        if (myGang == null)
-        {
-            return;
-        }
-        MenuInteraction = new GangInteraction(player, gangs, placesOfInterest, this, world, settings);
+        MenuInteraction = new TaxiServiceInteraction(player, gangs, placesOfInterest, settings, modItems, this,crimes,weapons,names,shopMenus,world);
         MenuInteraction.Start(this);
     }
 

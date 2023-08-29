@@ -18,7 +18,7 @@ public class EmergencyServicesContact : PhoneContact, IPhoneContact
 
     }
 
-    public override void OnAnswered(IContactInteractable player, CellPhone cellPhone, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IJurisdictions jurisdictions, ICrimes crimes, IEntityProvideable world, IModItems modItems)
+    public override void OnAnswered(IContactInteractable player, CellPhone cellPhone, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IJurisdictions jurisdictions, ICrimes crimes, IEntityProvideable world, IModItems modItems, IWeapons weapons, INameProvideable names, IShopMenus shopMenus)
     {
         MenuInteraction = new EmergencyServicesInteraction(player, gangs, placesOfInterest, settings, jurisdictions, crimes, world);
         MenuInteraction.Start(this);

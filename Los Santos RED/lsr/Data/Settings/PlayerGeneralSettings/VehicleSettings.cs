@@ -100,7 +100,7 @@ public class VehicleSettings : ISettingsDefaultable
         UseCustomFuelSystem = true;
         CustomFuelSystemFuelMin = 10f;
         CustomFuelSystemFuelMax = 65f;
-        CustomFuelSystemFuelConsumptionScalar = 1.0f;
+        CustomFuelSystemFuelConsumptionScalar = 3.0f;
         AllowSetEngineState = true;
         AllowSetEngineStateOnlyCars = false;
         ScaleEngineDamage = true;

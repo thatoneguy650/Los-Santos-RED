@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 
 public class PlacesOfInterest : IPlacesOfInterest
@@ -742,7 +743,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             new VehicleExporter(new Vector3(89.00745f,-2564.649f,6.004591f), 1.725455f, "Pacfic Bait Exports", "Take our Bait!","SunshineMenu")
             {
-                ContactName = StaticStrings.VehicleExporter,
+                ContactName = StaticStrings.VehicleExporterContactName,
                 ParkingSpaces = new List<SpawnPlace>()
                  {
                     new SpawnPlace(new Vector3(70.56293f, -2559.652f, 6.000013f), 177.7919f),
@@ -756,7 +757,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             },
             new VehicleExporter(new Vector3(845.3537f, -951.5338f, 26.52109f), 270.8987f, "National Transport", "When it needs to disappear!","NationalMenu")
             {
-                 ContactName = StaticStrings.VehicleExporter,
+                 ContactName = StaticStrings.VehicleExporterContactName,
                  ParkingSpaces = new List<SpawnPlace>()
                  {
                     new SpawnPlace(new Vector3(853.4166f, -905.9677f, 25.3178f), 88.12348f),
@@ -770,7 +771,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             },
             new VehicleExporter(new Vector3(44.4949f, 6461.12f, 31.4253f), 226.2354f,"Paleto Exports","Turn Cars to CASH!","PaletoExportMenu")
             {
-                 ContactName = StaticStrings.VehicleExporter,
+                 ContactName = StaticStrings.VehicleExporterContactName,
                  ParkingSpaces = new List<SpawnPlace>()
                  {
                     new SpawnPlace(new Vector3(29.69258f, 6438.792f, 31.42538f), 91.18743f),
@@ -1247,8 +1248,39 @@ public class PlacesOfInterest : IPlacesOfInterest
     private void DefaultConfig_SportingGoodsStores()
     {
         SportingGoodsStores = new List<SportingGoodsStore>() {
-            new SportingGoodsStore(new Vector3(-945.9442f, -1191.532f, 4.956469f), 168.678f, "Vespucci Sports", "Our rent is so high, we must have quality items!","SportingGoodsMenu") { BannerImagePath = "vespuccisports.png" },
+            new SportingGoodsStore(new Vector3(-945.9442f, -1191.532f, 4.956469f), 168.678f, "Vespucci Sports", "Our rent is so high, we must have quality items!","VespucciSportsMenu") {
+                BannerImagePath = "vespuccisports.png",
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-956.9415f, -1185.061f, 4.22743f), 25.39798f),
+                VehiclePreviewCameraPosition = new Vector3(-962.8305f, -1185.232f, 5.732603f), 
+                VehiclePreviewCameraDirection = new Vector3(0.9816672f, 0.008348566f, -0.1904202f), 
+                VehiclePreviewCameraRotation = new Rotator(-10.97731f, -3.336064E-06f, -89.51274f),
+                VehicleDeliveryLocations = new List<SpawnPlace>()
+                {
+                    new SpawnPlace(new Vector3(-911.3941f, -1165.663f, 4.903689f), 31.58475f),
+                    new SpawnPlace(new Vector3(-913.2894f, -1167.775f, 4.873601f), 209.063f),
+                    new SpawnPlace(new Vector3(-914.4749f, -1160.993f, 4.809005f), 19.54775f),
+                    new SpawnPlace(new Vector3(-918.4772f, -1160.179f, 4.782866f), 206.1096f),
+                    new SpawnPlace(new Vector3(-921.7528f, -1158.282f, 4.754968f), 283.2098f),
+                }
+            },
 
+            new SportingGoodsStore(new Vector3(-500.4163f, -19.29782f, 45.12749f), 38.92741f, "Bourgeois Bicycles", "Monocles Optional!","BourgeoisBicyclesMenu") {
+                CameraPosition = new Vector3(-501.9579f, -10.62078f, 49.61808f), 
+                CameraDirection = new Vector3(0.1908819f, -0.929588f, -0.3153257f), 
+                CameraRotation = new Rotator(-18.38048f, 1.574425E-06f, -168.3962f),
+
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-499.8291f, -14.4307f, 44.84824f), 262.8628f),
+                VehiclePreviewCameraPosition = new Vector3(-497.8142f, -9.641495f, 47.0248f),
+                VehiclePreviewCameraDirection = new Vector3(-0.3421925f, -0.8653485f, -0.3661644f),
+                VehiclePreviewCameraRotation = new Rotator(-21.47926f, -4.587467E-07f, 158.4242f),
+
+                VehicleDeliveryLocations = new List<SpawnPlace>() { 
+                    new SpawnPlace(new Vector3(-528.1365f, -34.8563f, 44.51523f), 176.1417f),
+                    new SpawnPlace(new Vector3(-524.8844f, -35.83997f, 44.517f), 176.0726f),
+                    new SpawnPlace(new Vector3(-527.8739f, -28.25564f, 44.51612f), 36.77939f),
+                    new SpawnPlace(new Vector3(-535.4172f, -32.23565f, 44.35883f), 152.8177f),
+                    new SpawnPlace(new Vector3(-543.1857f, -36.58912f, 43.24746f), 42.25189f), }
+            },
         };
     }
     private void DefaultConfig_HeadShops()

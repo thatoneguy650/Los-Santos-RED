@@ -144,6 +144,7 @@ public class ShopMenus : IShopMenus
         SpecificRestaurants();
         SpecificConvenienceStores();
         SpecificHotels();
+        SpecificSportingGoods();
         SpecificDealerships();
         SpecificVehicleExporters();
         SpecificWeaponsShops();
@@ -1067,6 +1068,44 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Grande Ocean View King", 647),
                 new MenuItem("Empire Suite", 994),
                 new MenuItem("Monarch Suite", 5000), }),
+        });
+    }
+    private void SpecificSportingGoods()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
+            new ShopMenu("VespucciSportsMenu", "VespucciSports", new List<MenuItem>() {
+                    new MenuItem("GASH Black Umbrella", 25),
+                    new MenuItem("GASH Blue Umbrella", 30),
+
+                    new MenuItem("TAG-HARD Flashlight", 85),
+                    new MenuItem("Flint Handle Flashlight", 60),
+
+                    new MenuItem("G.E.S. Baseball Bat", 95),
+                    new MenuItem("ProLaps Five Iron Golf Club", 85),
+                    new MenuItem("Schmidt & Priss TL6 Scanner", 400),
+
+
+                    new MenuItem("SCHEISS BS Binoculars", 150),
+                    new MenuItem("SCHEISS AS Binoculars", 350),
+                    new MenuItem("SCHEISS DS Binoculars", 500),
+                    new MenuItem("SCHEISS RP Binoculars", 650),
+
+                    //Bikes!
+                    new MenuItem("BMX", 650),
+                    new MenuItem("Cruiser", 1000),
+                    new MenuItem("Scorcher", 1400),
+                }),
+            new ShopMenu("BourgeoisBicyclesMenu", "Bourgeois Bicycles", new List<MenuItem>() {
+                    //Bikes!
+                    new MenuItem("Cruiser", 1100),
+                    new MenuItem("Fixter", 1200),
+                    new MenuItem("Scorcher", 1500),
+                    new MenuItem("Whippet Race Bike", 5100),
+                    new MenuItem("Endurex Race Bike", 5200),
+                    new MenuItem("Tri-Cycles Race Bike", 5300),
+                    new MenuItem("Coil Inductor", 5900),
+                    new MenuItem("Junk Energy Coil Inductor", 6500),
+                }),
         });
     }
     private void SpecificDealerships()

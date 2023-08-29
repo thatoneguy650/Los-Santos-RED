@@ -94,6 +94,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="NAudio">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\NAudio.dll</HintPath>
       <Private>False</Private>
@@ -277,8 +278,11 @@
     <Compile Include="lsr\Player\Cellphone\Burner\Other\BurnerPhoneSettingsIcon.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\IPhoneContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\KillerContact.cs" />
+    <Compile Include="lsr\Player\Cellphone\Contacts\TaxiServiceContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\VehicleExporterContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Interactions\KillerInteraction.cs" />
+    <Compile Include="lsr\Player\Cellphone\Interactions\TaxiServiceInteraction.cs" />
+    <Compile Include="lsr\Player\Cellphone\Interactions\Taxi\AmbientSpawner.cs" />
     <Compile Include="lsr\Player\Cellphone\Interactions\VehicleExporterInteraction.cs" />
     <Compile Include="lsr\Player\Crime\RestrictedAreaManager.cs" />
     <Compile Include="lsr\Player\Crime\WantedLevel.cs" />
@@ -1011,6 +1015,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="lsr\Crimes\" />
+    <Folder Include="lsr\Dispatcher\Civilian\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

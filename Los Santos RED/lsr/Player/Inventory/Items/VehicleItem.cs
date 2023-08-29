@@ -387,7 +387,7 @@ public class VehicleItem : ModItem
     }
     public override void CreatePreview(Transaction Transaction, Camera StoreCam, bool isPurchase, IEntityProvideable world, ISettingsProvideable settings)
     {
-        if (ModelItem != null && NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(ModelItem.ModelName)))
+        if (ModelItem != null && Transaction.VehiclePreviewPosition != null && Transaction.VehiclePreviewPosition.Position != Vector3.Zero && NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(ModelItem.ModelName)))
         {
             NativeFunction.Natives.CLEAR_AREA(Transaction.VehiclePreviewPosition.Position.X, Transaction.VehiclePreviewPosition.Position.Y, Transaction.VehiclePreviewPosition.Position.Z, 4f, true, false, false, false);
             Transaction.SellingVehicle = new Vehicle(ModelItem.ModelName, Transaction.VehiclePreviewPosition.Position, Transaction.VehiclePreviewPosition.Heading);

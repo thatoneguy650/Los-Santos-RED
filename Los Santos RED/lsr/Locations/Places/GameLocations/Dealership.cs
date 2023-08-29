@@ -31,7 +31,7 @@ public class Dealership : GameLocation, ILicensePlatePreviewable
 
    // public SpawnPlace VehiclePreviewLocation { get; set; } 
 
-    public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
+  //  public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
 
 
 

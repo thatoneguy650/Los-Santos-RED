@@ -503,7 +503,7 @@ public class LocationCamera
         {
             CurrentPosition = StoreCam.Position;
         }
-        if (CurrentPosition.DistanceTo(Store.EntrancePosition) <= 300f)
+        if (CurrentPosition.DistanceTo(Store.EntrancePosition) <= 100f)
         {
             TransitionFromLocation();
         }
@@ -519,7 +519,7 @@ public class LocationCamera
         {
             CurrentPosition = StoreCam.Position;
         }
-        if(CurrentPosition.DistanceTo(focusPosition) <= 300f)
+        if(CurrentPosition.DistanceTo(focusPosition) <= 100f)//300f)
         {
             TransitionToLocation(focusPosition, focusHeading);
         }

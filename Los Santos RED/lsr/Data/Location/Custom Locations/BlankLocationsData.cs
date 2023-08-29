@@ -407,7 +407,8 @@ public class BlankLocationsData
                             GroupID = "",
                             AllowAirVehicle = false,
                             AllowBoat = false,
-                            ForcedScenarios = new List < String > ()
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<string>()
                             {},
                             OverrideNightPercentage = 55f,
                             OverrideDayPercentage = -1f,
@@ -451,7 +452,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 3,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
                                     {
@@ -465,7 +466,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_AA_COFFEE",
                                                 "WORLD_HUMAN_COP_IDLES",
@@ -494,7 +496,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_AA_COFFEE",
                                                 "WORLD_HUMAN_CLIPBOARD",
@@ -513,7 +516,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
                                 {
@@ -527,7 +530,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -573,7 +576,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 3,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
                                 {
@@ -587,7 +590,8 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        TaskRequirements = TaskRequirements.Guard,
+                                        ForcedScenarios = new List<string>()
                                         {
                                             "WORLD_HUMAN_AA_COFFEE",
                                             "WORLD_HUMAN_CLIPBOARD",
@@ -605,7 +609,7 @@ public class BlankLocationsData
                                         ForceLongGun = false,
                                 },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
                                 {
@@ -619,7 +623,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -650,14 +654,14 @@ public class BlankLocationsData
                         Percentage = 75f,
                             MinHourSpawn = 12,
                             MaxHourSpawn = 20,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
                                         Location = new Vector3(-2576.103f, 2334.192f, 33.06499f),
                                             Heading = -111.3623f,
                                             TaskRequirements = TaskRequirements.Guard,
-                                            ForcedScenarios = new List < string > ()
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -669,7 +673,7 @@ public class BlankLocationsData
                                         Location = new Vector3(-2575.808f, 2333.149f, 33.06003f),
                                             Heading = 0.1772228f,
                                             TaskRequirements = TaskRequirements.Guard,
-                                            ForcedScenarios = new List < string > ()
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_TOURIST_MAP",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -677,7 +681,7 @@ public class BlankLocationsData
                                             },
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -722,7 +726,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -736,7 +740,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -765,7 +770,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING",
@@ -783,7 +789,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -797,8 +803,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
-                                        {},
+                                        ForcedScenarios = new List<string>() {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
                                         OverridePoorWeatherPercentage = -1f,
@@ -842,7 +847,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -856,7 +861,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -885,7 +891,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                             },
@@ -902,7 +909,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -916,7 +923,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -961,7 +968,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -975,7 +982,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                             },
@@ -1003,7 +1011,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_STAND_IMPATIENT",
                                             },
@@ -1031,7 +1040,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_GUARD_STAND_CASINO",
                                             },
@@ -1048,7 +1058,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -1062,7 +1072,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -1107,7 +1117,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -1121,7 +1131,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_AA_SMOKE",
                                                 "WORLD_HUMAN_STAND_MOBILE",
@@ -1150,7 +1161,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_AA_COFFEE",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -1168,7 +1180,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {},
                     },
                 },
@@ -1203,7 +1215,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 3,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -1217,7 +1229,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -1247,7 +1260,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -1277,7 +1291,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -1307,7 +1322,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -1326,7 +1342,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -1340,7 +1356,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -1366,7 +1382,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -1414,7 +1430,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 3,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -1428,7 +1444,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -1458,7 +1475,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_SMOKING_POT",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -1488,7 +1506,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_STAND_MOBILE",
@@ -1518,7 +1537,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_STAND_IMPATIENT",
@@ -1548,7 +1568,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -1567,7 +1588,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -1581,7 +1602,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -1607,7 +1628,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -1633,7 +1654,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -1678,7 +1699,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 3,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -1692,7 +1713,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING",
@@ -1721,7 +1743,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -1739,7 +1762,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -1753,7 +1776,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -1779,7 +1802,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -1824,7 +1847,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 3,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -1838,7 +1861,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -1868,7 +1892,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_CLIPBOARD",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -1887,7 +1912,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -1901,7 +1926,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -1949,7 +1974,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 3,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -1963,7 +1988,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_DRUG_DEALER_HARD",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -1993,7 +2019,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_PARTYING",
                                                 "WORLD_HUMAN_STAND_MOBILE",
@@ -2023,7 +2050,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_DRINKING",
                                                 "WORLD_HUMAN_PARTYING",
@@ -2053,7 +2081,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -2083,7 +2112,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_DRUG_DEALER_HARD",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -2113,7 +2143,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_PARTYING",
                                                 "WORLD_HUMAN_DRUG_DEALER",
@@ -2143,7 +2174,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -2173,7 +2205,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_DRUG_DEALER_HARD",
@@ -2203,7 +2236,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_DRINKING",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -2233,7 +2267,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -2252,7 +2287,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -2266,7 +2301,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -2292,7 +2327,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -2318,7 +2353,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -2344,7 +2379,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -2389,7 +2424,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 3,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -2404,7 +2439,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_DRUG_DEALER_HARD",
@@ -2435,7 +2471,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_DRUG_DEALER",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -2466,7 +2503,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_STAND_MOBILE",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -2497,7 +2535,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_PARTYING",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -2516,7 +2555,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -2531,7 +2570,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -2550,6 +2589,95 @@ public class BlankLocationsData
                 },
         };
         BlankLocationPlaces.Add(DiablosUnderBridge);
+        BlankLocation DiablosAutopia = new BlankLocation()
+        {
+            ActivateDistance = 400f,
+            Name = "DiablosAutopia",
+            FullName = "",
+            Description = "3 Diablo members 1 vehicle,located Autopia Parkway",
+            MapIcon = 355,
+            EntrancePosition = new Vector3(-338.4319f, -2187.327f, 9.565862f),
+            EntranceHeading = 95.96698f,
+            OpenTime = 0,
+            CloseTime = 24,
+
+            ActivateCells = 8,
+            AssignedAssociationID = "AMBIENT_GANG_DIABLOS",
+            MenuID = "",
+            VendorModels = new List<String>() { },
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+            {
+                new ConditionalGroup()
+                {
+                    Name = "",
+                    Percentage = 100f,
+                    PossiblePedSpawns = new List<ConditionalLocation>()
+                    {
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(-338.0668f, -2190.645f, 9.617875f),
+                            Heading = -10.54824f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>()
+                            {
+                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                "WORLD_HUMAN_DRINKING",
+                            },
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(-337.0664f, -2189.442f, 9.700167f),
+                            Heading = 152.0498f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>()
+                            {
+                                "WORLD_HUMAN_DRUG_DEALER",
+                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                "WORLD_HUMAN_DRINKING",
+                            },
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(-338.441f, -2189.338f, 9.714742f),
+                            Heading = -141.2649f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>()
+                            {
+                                "WORLD_HUMAN_STAND_MOBILE",
+                                "WORLD_HUMAN_SMOKING_POT",
+                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                            },
+                        },
+                    },
+                    PossibleVehicleSpawns = new List<ConditionalLocation>()
+                    {
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(-338.4319f, -2187.327f, 9.565862f),
+                            Heading = 95.96698f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            ForcedScenarios = new List<String>() {  },
+                        },
+                    },
+                },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>() { },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() { },
+            VehiclePreviewLocation = new SpawnPlace() { },
+        };
+        BlankLocationPlaces.Add(DiablosAutopia);
     }
     private void GambettiGang()
     {
@@ -2578,7 +2706,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -2592,7 +2720,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_GUARD_STAND_CASINO",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -2621,7 +2750,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_STAND_MOBILE",
@@ -2639,7 +2769,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {},
                     },
                 },
@@ -2670,7 +2800,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -2684,7 +2814,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_AA_SMOKE",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -2713,7 +2844,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_STAND_MOBILE",
                                                 "WORLD_HUMAN_AA_SMOKE",
@@ -2731,7 +2863,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -2745,7 +2877,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -2789,7 +2921,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -2803,7 +2935,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_SMOKING",
                                                 "WORLD_HUMAN_STAND_IMPATIENT",
@@ -2832,7 +2965,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_SMOKING",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -2850,7 +2984,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -2864,7 +2998,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -2908,7 +3042,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -2922,7 +3056,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_SMOKING",
                                                 "WORLD_HUMAN_STAND_IMPATIENT",
@@ -2951,7 +3086,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_SMOKING",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -2969,7 +3105,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -2983,7 +3119,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -3027,7 +3163,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -3042,7 +3178,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_GUARD_STAND_CASINO",
                                             },
@@ -3071,7 +3208,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_STAND_MOBILE",
                                             },
@@ -3100,7 +3238,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_AA_SMOKE",
                                             },
@@ -3117,7 +3256,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -3132,7 +3271,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -3159,7 +3298,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -3206,7 +3345,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 3,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -3220,7 +3359,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -3250,7 +3390,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -3280,7 +3421,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -3309,7 +3451,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -3339,7 +3482,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -3369,7 +3513,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -3399,7 +3544,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -3429,7 +3575,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -3448,7 +3595,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -3462,7 +3609,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -3488,7 +3635,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -3514,7 +3661,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -3558,7 +3705,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 3,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -3573,7 +3720,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_STAND_MOBILE",
@@ -3603,7 +3751,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_AA_COFFEE",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -3633,7 +3782,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_SMOKING",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -3663,7 +3813,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_STAND_MOBILE",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -3681,7 +3832,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -3696,7 +3847,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -3723,7 +3874,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -3750,7 +3901,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -3794,7 +3945,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 3,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -3809,7 +3960,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -3840,7 +3992,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -3871,7 +4024,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -3902,7 +4056,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -3921,7 +4076,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -3936,7 +4091,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -3963,7 +4118,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -4010,7 +4165,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -4024,7 +4179,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING",
@@ -4053,7 +4209,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -4071,7 +4228,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -4085,7 +4242,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -4129,7 +4286,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -4143,7 +4300,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                             },
@@ -4171,7 +4329,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING",
@@ -4189,7 +4348,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -4203,7 +4362,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -4229,7 +4388,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -4273,7 +4432,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -4287,7 +4446,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -4316,7 +4476,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -4345,7 +4506,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -4363,7 +4525,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -4377,7 +4539,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -4421,7 +4583,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -4435,7 +4597,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING",
@@ -4464,7 +4627,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -4482,7 +4646,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -4496,7 +4660,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -4540,7 +4704,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -4554,7 +4718,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING",
@@ -4583,7 +4748,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -4601,7 +4767,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -4615,7 +4781,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -4663,7 +4829,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -4677,7 +4843,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                             },
@@ -4705,7 +4872,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_STAND_MOBILE",
                                             },
@@ -4733,7 +4901,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_DRINKING",
                                             },
@@ -4761,7 +4930,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_DRUG_DEALER_HARD",
                                             },
@@ -4789,7 +4959,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                             },
@@ -4817,7 +4988,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_SMOKING_POT",
                                             },
@@ -4845,7 +5017,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                             },
@@ -4862,7 +5035,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -4876,7 +5049,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -4902,7 +5075,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -4928,7 +5101,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -4947,6 +5120,288 @@ public class BlankLocationsData
                 },
         };
         BlankLocationPlaces.Add(MarabunteCov);
+        BlankLocation MarabunteElRancho = new BlankLocation()
+        {
+            ActivateDistance = 400f,
+            Name = "MarabunteElRancho",
+            FullName = "",
+            Description = "3 Marabunte on El Rancho blvd",
+            MapIcon = 78,
+            EntrancePosition = new Vector3(1384.687f, -1724.289f, 65.41503f),
+            EntranceHeading = -161.0745f,
+            OpenTime = 0,
+            CloseTime = 24,
+            
+            ActivateCells = 8,
+            AssignedAssociationID = "AMBIENT_GANG_MARABUNTE",
+            MenuID = "",
+            VendorModels = new List<String>() { },
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+            {
+                new ConditionalGroup()
+                {
+                    Name = "",
+                    Percentage = 75f,
+                    MaxWantedLevelSpawn = 6,
+                    PossiblePedSpawns = new List<ConditionalLocation>()
+                    {
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(1384.687f, -1724.289f, 65.41503f),
+                            Heading = -161.0745f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_DRUG_DEALER_HARD", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(1383.464f, -1725.513f, 65.42934f),
+                            Heading = -130.6673f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_HANG_OUT_STREET", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(1383.361f, -1726.442f, 65.44674f),
+                            Heading = -74.39036f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_GUARD_STAND_CASINO", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                    },
+                    PossibleVehicleSpawns = new List<ConditionalLocation>() {  },
+                },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>() { },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() { },
+            VehiclePreviewLocation = new SpawnPlace() { },
+        };
+        BlankLocationPlaces.Add(MarabunteElRancho);
+        BlankLocation MarabunteGasStation = new BlankLocation()
+        {
+            ActivateDistance = 400f,
+            Name = "MarabunteGasStation",
+            FullName = "",
+            Description = "2 Marabunte at a Gas Station",
+            MapIcon = 78,
+            EntrancePosition = new Vector3(1218.259f, -1387.44f, 34.87067f),
+            EntranceHeading = -0.6632997f,
+            OpenTime = 0,
+            CloseTime = 24,
+            
+            ActivateCells = 8,
+            AssignedAssociationID = "AMBIENT_GANG_MARABUNTE",
+            MenuID = "",
+            VendorModels = new List<String>() { },
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+            {
+                new ConditionalGroup()
+                {
+                    Name = "",
+                    Percentage = 75f,
+                    MinHourSpawn = 8,
+                    MaxHourSpawn = 20,
+                    MaxWantedLevelSpawn = 6,
+                    PossiblePedSpawns = new List<ConditionalLocation>()
+                    {
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(1214.634f, -1388.464f, 35.37428f),
+                            Heading = -104.529f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_SMOKING_POT", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(1215.164f, -1387.683f, 35.36345f),
+                            Heading = 175.8869f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_HANG_OUT_STREET", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                    },
+                    PossibleVehicleSpawns = new List<ConditionalLocation>()
+                    {
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(1218.259f, -1387.44f, 34.87067f),
+                            Heading = -0.6632997f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            ForcedScenarios = new List<String>() {  },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                    },
+                },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>() { },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() { },
+            VehiclePreviewLocation = new SpawnPlace() { },
+        };
+        BlankLocationPlaces.Add(MarabunteGasStation);
+        BlankLocation MarabunteLsTattoo = new BlankLocation()
+        {
+            ActivateDistance = 400f,
+            Name = "MarabunteLsTattoo",
+            FullName = "",
+            Description = "2 Marabunte outside Los Santos Tattoos",
+            MapIcon = 78,
+            EntrancePosition = new Vector3(1326.727f, -1645.607f, 52.14602f),
+            EntranceHeading = 39.81541f,
+            OpenTime = 0,
+            CloseTime = 24,
+            
+            ActivateCells = 8,
+            AssignedAssociationID = "AMBIENT_GANG_MARABUNTE",
+            MenuID = "",
+            VendorModels = new List<String>() { },
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+            {
+                new ConditionalGroup()
+                {
+                    Name = "",
+                    Percentage = 75f,
+                    MinHourSpawn = 8,
+                    MaxHourSpawn = 20,
+                    MaxWantedLevelSpawn = 6,
+                    PossiblePedSpawns = new List<ConditionalLocation>()
+                    {
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(1326.727f, -1645.607f, 52.14602f),
+                            Heading = 39.81541f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>()
+                            {
+                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                            },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(1325.66f, -1646.106f, 52.14637f),
+                            Heading = 10.92023f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_HANG_OUT_STREET", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                    },
+                    PossibleVehicleSpawns = new List<ConditionalLocation>() {  },
+                },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>() { },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() { },
+            VehiclePreviewLocation = new SpawnPlace() { },
+        };
+        BlankLocationPlaces.Add(MarabunteLsTattoo);
+        BlankLocation MarabunteTaco = new BlankLocation()
+        {
+            ActivateDistance = 400f,
+            Name = "MarabunteTaco",
+            FullName = "",
+            Description = "3 Marabunte at Moms Taco",
+            MapIcon = 78,
+            EntrancePosition = new Vector3(1117.474f, -971.5587f, 46.27171f),
+            EntranceHeading = -141.6932f,
+            OpenTime = 0,
+            CloseTime = 24,
+            
+            ActivateCells = 8,
+            AssignedAssociationID = "AMBIENT_GANG_MARABUNTE",
+            MenuID = "",
+            VendorModels = new List<String>() { },
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+            {
+                new ConditionalGroup()
+                {
+                    Name = "",
+                    Percentage = 75f,
+                    MinHourSpawn = 8,
+                    MaxHourSpawn = 20,
+                    MaxWantedLevelSpawn = 6,
+                    PossiblePedSpawns = new List<ConditionalLocation>()
+                    {
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(1121.75f, -969.1599f, 46.69672f),
+                            Heading = 101.8158f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>()
+                            {
+                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                            },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(1121.109f, -968.1682f, 46.7372f),
+                            Heading = 131.3832f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_HANG_OUT_STREET", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(1119.432f, -969.8031f, 46.64055f),
+                            Heading = -62.19331f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_SMOKING_POT", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                    },
+                    PossibleVehicleSpawns = new List<ConditionalLocation>()
+                    {
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(1117.3f, -970.8827f, 46.29099f),
+                            Heading = -135.015f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            ForcedScenarios = new List<String>() {  },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                    },
+                },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>() { },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() { },
+            VehiclePreviewLocation = new SpawnPlace() { },
+        };
+        BlankLocationPlaces.Add(MarabunteTaco);
     }
     private void MessinaGang()
     {
@@ -4976,7 +5431,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -4990,7 +5445,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -5019,7 +5475,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                             },
@@ -5036,7 +5493,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -5050,7 +5507,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -5095,7 +5552,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -5109,7 +5566,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
@@ -5138,7 +5596,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_STAND_IMPATIENT",
                                                 "WORLD_HUMAN_AA_SMOKE",
@@ -5156,7 +5615,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -5170,7 +5629,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -5215,7 +5674,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -5229,7 +5688,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING",
@@ -5258,7 +5718,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_STAND_IMPATIENT",
                                                 "WORLD_HUMAN_STAND_MOBILE",
@@ -5276,7 +5737,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {},
                     },
                 },
@@ -5308,7 +5769,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -5322,7 +5783,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                             },
@@ -5350,7 +5812,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_STAND_MOBILE",
                                             },
@@ -5367,7 +5830,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -5381,7 +5844,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -5428,7 +5891,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -5442,7 +5905,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_STAND_MOBILE",
                                             },
@@ -5470,7 +5934,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_SMOKING",
                                             },
@@ -5487,7 +5952,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -5501,7 +5966,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -5545,7 +6010,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -5559,7 +6024,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_GUARD_STAND_CASINO",
                                             },
@@ -5587,7 +6053,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_SMOKING",
                                             },
@@ -5604,7 +6071,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -5618,7 +6085,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -5637,6 +6104,412 @@ public class BlankLocationsData
                 },
         };
         BlankLocationPlaces.Add(PavanoUnionGrain);
+        BlankLocation PavanoAirport = new BlankLocation()
+        {
+            ActivateDistance = 400f,
+            Name = "PavanoAirport",
+            FullName = "",
+            Description = "Pavano group at the Grapeseed Airport",
+            MapIcon = 267,
+            EntrancePosition = new Vector3(2153.416f, 4795.97f, 40.86898f),
+            EntranceHeading = -142.5477f,
+            OpenTime = 0,
+            CloseTime = 24,
+            
+            ActivateCells = 8,
+            AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+            MenuID = "",
+            VendorModels = new List<String>() { },
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+            {
+                new ConditionalGroup()
+                {
+                    Name = "",
+                    Percentage = 75f,
+                    MinHourSpawn = 18,
+                    MaxHourSpawn = 4,
+                    MaxWantedLevelSpawn = 6,
+                    PossiblePedSpawns = new List<ConditionalLocation>()
+                    {
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2155.05f, 4796.923f, 41.18592f),
+                            Heading = -98.30238f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_STAND_IMPATIENT", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2147.093f, 4801.103f, 41.07898f),
+                            Heading = 78.20504f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_STAND_IMPATIENT", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2156.818f, 4796.323f, 41.18224f),
+                            Heading = 54.83329f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_CLIPBOARD", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2146.332f, 4802.325f, 41.13522f),
+                            Heading = 109.8892f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_BINOCULARS", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2155.904f, 4797.563f, 41.17632f),
+                            Heading = -160.9346f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_SMOKING", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2154.087f, 4801.979f, 41.06139f),
+                            Heading = 22.90802f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_GUARD_STAND", },
+                            MaxWantedLevelSpawn = 6,
+                            ForceSidearm = true,
+                            ForceLongGun = true,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2144.564f, 4796.351f, 41.09901f),
+                            Heading = 12.6271f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_GUARD_STAND", },
+                            MaxWantedLevelSpawn = 6,
+                            ForceSidearm = true,
+                            ForceLongGun = true,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2156.143f, 4795.569f, 41.17105f),
+                            Heading = 25.26263f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_GUARD_STAND", },
+                            MaxWantedLevelSpawn = 6,
+                            ForceSidearm = true,
+                            ForceLongGun = true,
+                        },
+                    },
+                    PossibleVehicleSpawns = new List<ConditionalLocation>()
+                    {
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2158.846f, 4810.209f, 40.89357f),
+                            Heading = -113.571f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            IsEmpty = false,
+                            ForcedScenarios = new List<String>() {  },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2153.421f, 4795.948f, 40.86859f),
+                            Heading = -142.5614f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            ForcedScenarios = new List<String>() {  },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2147.887f, 4798.083f, 40.79086f),
+                            Heading = 140.454f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            ForcedScenarios = new List<String>() {  },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                    },
+                },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>() { },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() { },
+            VehiclePreviewLocation = new SpawnPlace() { },
+        };
+        BlankLocationPlaces.Add(PavanoAirport);
+        BlankLocation PavanoFarmEggs = new BlankLocation()
+        {
+            ActivateDistance = 400f,
+            Name = "PavanoFarmEggs",
+            FullName = "",
+            Description = "5 Pavano outside derelict Farm Eggs building",
+            MapIcon = 267,
+            EntrancePosition = new Vector3(2552.402f, 4673.885f, 33.6469f),
+            EntranceHeading = 19.66658f,
+            OpenTime = 0,
+            CloseTime = 24,
+            
+            ActivateCells = 8,
+            AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+            MenuID = "",
+            VendorModels = new List<String>() { },
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+            {
+                new ConditionalGroup()
+                {
+                    Name = "",
+                    Percentage = 75f,
+                    MinHourSpawn = 18,
+                    MaxHourSpawn = 4,
+                    MaxWantedLevelSpawn = 6,
+                    PossiblePedSpawns = new List<ConditionalLocation>()
+                    {
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2555.109f, 4652.64f, 34.07679f),
+                            Heading = 114.9075f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_GUARD_STAND_CASINO", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2551.27f, 4668.713f, 34.07679f),
+                            Heading = -173.3012f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_SMOKING", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2551.574f, 4667.034f, 34.07679f),
+                            Heading = 27.89994f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>()
+                            {
+                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                            },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2548.861f, 4657.532f, 34.07679f),
+                            Heading = 32.28136f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_STAND_MOBILE", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2550.346f, 4668.052f, 34.07679f),
+                            Heading = -125.7162f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_SMOKING", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                    },
+                    PossibleVehicleSpawns = new List<ConditionalLocation>()
+                    {
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2552.402f, 4673.885f, 33.6469f),
+                            Heading = 19.66658f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            IsEmpty = false,
+                            ForcedScenarios = new List<String>() {  },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2551.396f, 4655.577f, 33.77676f),
+                            Heading = -127.3213f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            ForcedScenarios = new List<String>() {  },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(2552.898f, 4649.568f, 33.77676f),
+                            Heading = -108.6875f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            ForcedScenarios = new List<String>() {  },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                    },
+                },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>() { },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() { },
+            VehiclePreviewLocation = new SpawnPlace() { },
+        };
+        BlankLocationPlaces.Add(PavanoFarmEggs);
+        BlankLocation PavanoGasStation = new BlankLocation()
+        {
+            ActivateDistance = 400f,
+            Name = "PavanoGasStation",
+            FullName = "",
+            Description = "2 Pavano members outside Old Gas Station",
+            MapIcon = 267,
+            EntrancePosition = new Vector3(1695.865f, 4925.759f, 42.23172f),
+            EntranceHeading = 77.33406f,
+            OpenTime = 0,
+            CloseTime = 24,
+            
+            ActivateCells = 8,
+            AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+            MenuID = "",
+            VendorModels = new List<String>() { },
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+            {
+                new ConditionalGroup()
+                {
+                    Name = "",
+                    Percentage = 75f,
+                    MinHourSpawn = 18,
+                    MaxHourSpawn = 4,
+                    MaxWantedLevelSpawn = 6,
+                    PossiblePedSpawns = new List<ConditionalLocation>()
+                    {
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(1695.865f, 4925.759f, 42.23172f),
+                            Heading = 77.33406f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_SMOKING", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(1695.47f, 4924.892f, 42.23172f),
+                            Heading = 19.46928f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_STAND_MOBILE", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                    },
+                    PossibleVehicleSpawns = new List<ConditionalLocation>() {  },
+                },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>() { },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() { },
+            VehiclePreviewLocation = new SpawnPlace() { },
+        };
+        BlankLocationPlaces.Add(PavanoGasStation);
+        BlankLocation PavanoStore = new BlankLocation()
+        {
+            ActivateDistance = 400f,
+            Name = "PavanoStore",
+            FullName = "",
+            Description = "2 Pavano members outside an old Store",
+            MapIcon = 267,
+            EntrancePosition = new Vector3(1655.66f, 4873.412f, 42.03714f),
+            EntranceHeading = -29.68659f,
+            OpenTime = 0,
+            CloseTime = 24,
+            
+            ActivateCells = 8,
+            AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+            MenuID = "",
+            VendorModels = new List<String>() { },
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+            {
+                new ConditionalGroup()
+                {
+                    Name = "",
+                    Percentage = 75f,
+                    MinHourSpawn = 8,
+                    MaxHourSpawn = 18,
+                    MaxWantedLevelSpawn = 6,
+                    PossiblePedSpawns = new List<ConditionalLocation>()
+                    {
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(1655.66f, 4873.412f, 42.03714f),
+                            Heading = -29.68659f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_SMOKING", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(1655.326f, 4874.587f, 42.03675f),
+                            Heading = -89.606f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>() { "WORLD_HUMAN_STAND_MOBILE", },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                    },
+                    PossibleVehicleSpawns = new List<ConditionalLocation>() {  },
+                },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>() { },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() { },
+            VehiclePreviewLocation = new SpawnPlace() { },
+        };
+        BlankLocationPlaces.Add(PavanoStore);
     }
     private void TriadGang()
     {
@@ -5665,7 +6538,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 3,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -5679,7 +6552,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                             },
@@ -5707,7 +6581,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_STAND_IMPATIENT",
@@ -5736,7 +6611,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_STAND_MOBILE",
@@ -5754,7 +6630,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -5768,7 +6644,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -5794,7 +6670,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -5838,7 +6714,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 3,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -5852,7 +6728,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_STAND_IMPATIENT",
@@ -5882,7 +6759,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -5912,7 +6790,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_STAND_MOBILE",
@@ -5942,7 +6821,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
@@ -5972,7 +6852,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_STAND_MOBILE",
@@ -6001,7 +6882,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_STAND_IMPATIENT",
@@ -6019,7 +6901,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -6033,7 +6915,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -6059,7 +6941,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -6085,7 +6967,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -6132,7 +7014,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -6146,7 +7028,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6175,7 +7058,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6204,7 +7088,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6233,7 +7118,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6262,7 +7148,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6280,7 +7167,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -6294,7 +7181,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -6320,7 +7207,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -6364,7 +7251,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -6378,7 +7265,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                             },
@@ -6406,7 +7294,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_STAND_IMPATIENT",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6435,7 +7324,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6464,7 +7354,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6493,7 +7384,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6511,7 +7403,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -6525,7 +7417,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -6551,7 +7443,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -6577,7 +7469,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -6621,7 +7513,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -6635,7 +7527,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6664,7 +7557,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6682,7 +7576,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -6696,7 +7590,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -6740,7 +7634,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -6754,7 +7648,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6783,7 +7678,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6812,7 +7708,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6841,7 +7738,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6870,7 +7768,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6888,7 +7787,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -6902,7 +7801,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -6946,7 +7845,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -6960,7 +7859,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -6989,7 +7889,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7018,7 +7919,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_STAND_IMPATIENT",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7036,7 +7938,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -7050,7 +7952,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -7094,7 +7996,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -7108,7 +8010,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_DRUG_DEALER",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7137,7 +8040,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                             },
@@ -7165,7 +8069,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7194,7 +8099,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7212,7 +8118,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -7226,7 +8132,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -7252,7 +8158,7 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            ForcedScenarios = new List<string>()
                                             {},
                                             OverrideNightPercentage = -1f,
                                             OverrideDayPercentage = -1f,
@@ -7296,7 +8202,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -7310,7 +8216,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7339,7 +8246,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7368,7 +8276,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7386,7 +8295,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {},
                     },
                 },
@@ -7417,7 +8326,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -7431,7 +8340,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7460,7 +8370,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_STAND_IMPATIENT",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7478,7 +8389,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                 {
@@ -7492,7 +8403,7 @@ public class BlankLocationsData
                                         GroupID = "",
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
-                                        ForcedScenarios = new List < String > ()
+                                        ForcedScenarios = new List<string>()
                                         {},
                                         OverrideNightPercentage = -1f,
                                         OverrideDayPercentage = -1f,
@@ -7536,7 +8447,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -7550,7 +8461,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7579,7 +8491,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7608,7 +8521,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7626,7 +8540,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {},
                     },
                 },
@@ -7657,7 +8571,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -7671,7 +8585,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7700,7 +8615,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7729,7 +8645,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7747,7 +8664,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {},
                     },
                 },
@@ -7778,7 +8695,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 4,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -7792,7 +8709,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7821,7 +8739,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7850,7 +8769,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7868,7 +8788,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {},
                     },
                 },
@@ -7899,7 +8819,7 @@ public class BlankLocationsData
                             MaxHourSpawn = 20,
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                            PossiblePedSpawns = new List < ConditionalLocation > ()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new GangConditionalLocation()
                                     {
@@ -7913,7 +8833,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7942,7 +8863,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_DRINKING",
@@ -7971,7 +8893,8 @@ public class BlankLocationsData
                                             GroupID = "",
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
-                                            ForcedScenarios = new List < String > ()
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_SMOKING_POT",
@@ -7989,7 +8912,7 @@ public class BlankLocationsData
                                             ForceLongGun = false,
                                     },
                             },
-                            PossibleVehicleSpawns = new List < ConditionalLocation > ()
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
                             {},
                     },
                 },

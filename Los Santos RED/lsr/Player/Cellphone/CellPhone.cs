@@ -54,6 +54,9 @@ public class CellPhone
     private uint GameTimeLastCheckedScheduledItems;
     private uint GameTimeBetweenCheckScheduledItems = 15000;
     private NAudioPlayer phoneAudioPlayer;
+    private IWeapons Weapons;
+    private INameProvideable Names;
+    private IShopMenus ShopMenus;
 
 
     public BurnerPhone BurnerPhone { get; private set; }
@@ -85,7 +88,7 @@ public class CellPhone
     public List<PhoneContact> ContactList => AddedContacts;
     public List<PhoneResponse> PhoneResponseList => PhoneResponses;
     public CellPhone(ICellPhoneable player, IContactInteractable gangInteractable, IJurisdictions jurisdictions, ISettingsProvideable settings, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, IZones zones, IStreets streets,
-        IGangTerritories gangTerritories, ICrimes crimes, IEntityProvideable world, IModItems modItems)
+        IGangTerritories gangTerritories, ICrimes crimes, IEntityProvideable world, IModItems modItems, IWeapons weapons, INameProvideable names, IShopMenus shopMenus)
     {
         Player = player;
         MenuPool = new MenuPool();
@@ -102,6 +105,9 @@ public class CellPhone
         ContactInteractable = gangInteractable;
         Crimes = crimes;
         World = world;
+        Weapons = weapons;
+        Names = names;
+        ShopMenus = shopMenus;
         BurnerPhone = new BurnerPhone(Player, Time, Settings, modItems);
         //BurnerPhone = new BurnerPhone_Old(Player, Time, Settings, modItems);
         phoneAudioPlayer = new NAudioPlayer(Settings);
@@ -123,7 +129,7 @@ public class CellPhone
         {
             isRunningForcedMobileTask = false;
         }
-        contact.OnAnswered(ContactInteractable, this, Gangs, PlacesOfInterest, Settings, Jurisdictions, Crimes, World, ModItems);
+        contact.OnAnswered(ContactInteractable, this, Gangs, PlacesOfInterest, Settings, Jurisdictions, Crimes, World, ModItems, Weapons, Names, ShopMenus);
     }
     public void DeleteText(PhoneText text)
     {

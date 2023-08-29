@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player.Activity;
 using LSR.Vehicles;
+using Microsoft.VisualBasic.CompilerServices;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -1206,7 +1207,14 @@ new YmapDisabler("manhat01",true),
         UIMenuItem AddVehicleExporter = new UIMenuItem("Add Vehicle Exporter", "Add vehicle exporter contact");
         AddVehicleExporter.Activated += (menu, item) =>
         {
-            Player.CellPhone.AddContact(new VehicleExporterContact(StaticStrings.VehicleExporter), false);
+            Player.CellPhone.AddContact(new VehicleExporterContact(StaticStrings.VehicleExporterContactName), false);
+            menu.Visible = false;
+        };
+
+        UIMenuItem AddTaxiService = new UIMenuItem("Add Taxi Service", "Add taxi service contact");
+        AddTaxiService.Activated += (menu, item) =>
+        {
+            Player.CellPhone.AddContact(new TaxiServiceContact(StaticStrings.TaxiServiceContactName) { IconName = "CHAR_TAXI" }, false);
             menu.Visible = false;
         };
 
@@ -1214,7 +1222,7 @@ new YmapDisabler("manhat01",true),
         PlayerStateItemsMenu.AddItem(AddUndergroundGuns);
 
         PlayerStateItemsMenu.AddItem(AddVehicleExporter);
-
+        PlayerStateItemsMenu.AddItem(AddTaxiService);
 
     }
     public void Setup()
@@ -2695,6 +2703,11 @@ new YmapDisabler("manhat01",true),
             return;
         }
         PropertyInfo[] properties = dv.GetType().GetProperties();
+
+
+
+        object dvBase = Activator.CreateInstance(dv.GetType());
+
         foreach (PropertyInfo property in properties)
         {
 
@@ -2728,24 +2741,44 @@ new YmapDisabler("manhat01",true),
             {
                 continue;
             }
-            else if(property.PropertyType == typeof(String) || property.PropertyType == typeof(string) || property.PropertyType == typeof(System.Drawing.Color))
+            else if(property.PropertyType == typeof(String) || property.PropertyType == typeof(string) || property.PropertyType == typeof(System.Drawing.Color) || property.PropertyType.IsEnum)
             {
-                WriteToClassCreator($"{property.Name} = \"{property.GetValue(dv)}\",",0, fileName);
+                object main = property.GetValue(dv);
+                object secondary = property.GetValue(dvBase);
+                if (main == null || secondary == null || !main.Equals(secondary))
+                {
+                    WriteToClassCreator($"{property.Name} = \"{property.GetValue(dv)}\",", 0, fileName);
+                }
             }
             else if (property.PropertyType == typeof(float))
             {
-                WriteToClassCreator($"{property.Name} = {property.GetValue(dv)}f,", 0, fileName);
+                object main = property.GetValue(dv);
+                object secondary = property.GetValue(dvBase);
+                if (main == null || secondary == null || !main.Equals(secondary))
+                {
+                    WriteToClassCreator($"{property.Name} = {property.GetValue(dv)}f,", 0, fileName);
+                }
             }
             else if (property.PropertyType == typeof(Vector3))
             {
-                Vector3 propertyValue = (Vector3)property.GetValue(dv);
-                WriteToClassCreator($"{property.Name} = new Vector3({propertyValue.X}f,{propertyValue.Y}f,{propertyValue.Z}f),", 0, fileName);
+                object main = property.GetValue(dv);
+                object secondary = property.GetValue(dvBase);
+                if (main == null || secondary == null || !main.Equals(secondary))
+                {
+                    Vector3 propertyValue = (Vector3)property.GetValue(dv);
+                    WriteToClassCreator($"{property.Name} = new Vector3({propertyValue.X}f,{propertyValue.Y}f,{propertyValue.Z}f),", 0, fileName);
+                }
             }
             else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(bool))
             {
-                if (property.CanWrite)
+                object main = property.GetValue(dv);
+                object secondary = property.GetValue(dvBase);
+                if (main == null || secondary == null || !main.Equals(secondary))
                 {
-                    WriteToClassCreator($"{property.Name} = {property.GetValue(dv).ToString().ToLower()},", 0, fileName);
+                    if (property.CanWrite)
+                    {
+                        WriteToClassCreator($"{property.Name} = {property.GetValue(dv).ToString().ToLower()},", 0, fileName);
+                    }
                 }
             }
             else if (property.PropertyType == typeof(VehicleVariation) || property.PropertyType == typeof(LicensePlate) || property.PropertyType == typeof(SpawnPlace))

@@ -280,13 +280,18 @@ public class VehicleExporter : GameLocation
     {
         foreach(MenuVehicleMap test in MenuLookups)
         {
+            string TimeBeforeExportAllowed = "";
             bool CanExport = true;
             ExportedVehicle exportedStats = ExportedVehicles?.FirstOrDefault(x => x.MenuItem?.ModItemName == test.MenuItem?.ModItemName);
-            string TimeBeforeExportAllowed = exportedStats.TimeLastExported.AddHours(HoursBetweenExports).ToString("dd MMM yyyy hh:mm tt");
-            if (exportedStats != null && DateTime.Compare(Time.CurrentDateTime, exportedStats.TimeLastExported.AddHours(HoursBetweenExports)) < 0)
+            if(exportedStats != null)
             {
-                CanExport = false;
+                TimeBeforeExportAllowed = exportedStats.TimeLastExported.AddHours(HoursBetweenExports).ToString("dd MMM yyyy hh:mm tt");
+                if (DateTime.Compare(Time.CurrentDateTime, exportedStats.TimeLastExported.AddHours(HoursBetweenExports)) < 0)
+                {
+                    CanExport = false;
+                }
             }
+
             if (!CanExport && test.UIMenuItem.Enabled)
             {
                 test.UIMenuItem.Enabled = false;

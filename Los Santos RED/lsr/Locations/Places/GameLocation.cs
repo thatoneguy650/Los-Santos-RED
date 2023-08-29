@@ -149,7 +149,7 @@ public class GameLocation : ILocationDispatchable
     public Vector3 VehiclePreviewCameraDirection { get; set; } = Vector3.Zero;
     public Rotator VehiclePreviewCameraRotation { get; set; }
     public SpawnPlace VehiclePreviewLocation { get; set; }
-
+    public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
 
     [XmlIgnore]
     public bool IsActivated { get; set; } = false;
@@ -345,6 +345,11 @@ public class GameLocation : ILocationDispatchable
                     StoreCamera.Setup();
                     CreateInteractionMenu();
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+
+
+                    Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
+                    Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
+
                     Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
                     InteractionMenu.Visible = true;
                     Transaction.ProcessTransactionMenu();

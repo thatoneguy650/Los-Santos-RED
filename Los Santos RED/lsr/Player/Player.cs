@@ -132,7 +132,7 @@ namespace Mod
             Intoxication = new Intoxication(this);
             Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings, this, this, ModItems);
             RelationshipManager = new RelationshipManager(gangs, Settings, PlacesOfInterest, TimeControllable, this, this);
-            CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories, Crimes, World, ModItems);
+            CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories, Crimes, World, ModItems, Weapons, Names, shopMenus);
             PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes, names, Weapons, shopMenus, ModItems, pedGroups);
             Licenses = new Licenses(this);
             Properties = new Properties(this, PlacesOfInterest, TimeControllable);
