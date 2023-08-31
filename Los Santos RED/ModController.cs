@@ -65,7 +65,8 @@ namespace LosSantosRED.lsr
             Time.Setup();
             GameFiber.Yield();
             World = new Mod.World(ModDataFileManager.Agencies, ModDataFileManager.Zones, ModDataFileManager.Jurisdictions, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest, ModDataFileManager.PlateTypes, ModDataFileManager.Names, ModDataFileManager.RelationshipGroups, ModDataFileManager.Weapons, 
-                ModDataFileManager.Crimes, Time, ModDataFileManager.ShopMenus, ModDataFileManager.Interiors, NAudioPlayer, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Streets, ModDataFileManager.ModItems, ModDataFileManager.RelationshipGroups, ModDataFileManager.LocationTypes);
+                ModDataFileManager.Crimes, Time, ModDataFileManager.ShopMenus, ModDataFileManager.Interiors, NAudioPlayer, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Streets, ModDataFileManager.ModItems, ModDataFileManager.RelationshipGroups, 
+                ModDataFileManager.LocationTypes, ModDataFileManager.Associations);
             World.Setup();
             GameFiber.Yield();
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, ModDataFileManager.Names.GetRandomName(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale), World, Time, ModDataFileManager.Streets, 
@@ -191,7 +192,7 @@ namespace LosSantosRED.lsr
                     new ModTask(500, "World.CreateNewPedestrians", World.Pedestrians.CreateNew, 1), //this is the freezer, what the fucko
                     new ModTask(1000, "World.PruneVehicles", World.Vehicles.Prune, 2),//500
                     new ModTask(500, "World.CreateNewVehicles", World.Vehicles.CreateNew, 3),//1000 //very bad performance   
-                    new ModTask(1000, "World.CleanUpVehicles", World.Vehicles.CleanUp, 4),
+                    //new ModTask(1000, "World.CleanUpVehicles", World.Vehicles.CleanUp, 4),
                     new ModTask(1000, "World.UpdateVehiclePlates", World.Vehicles.PlateController.UpdatePlates, 5),
                     new ModTask(1500, "Player.ScannerUpdate", Player.Scanner.Update, 6),
                     new ModTask(1000, "World.Pedestrians.UpdateDead", World.Pedestrians.UpdateDead, 7),

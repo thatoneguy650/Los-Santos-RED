@@ -28,11 +28,10 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
     public override int MapIcon { get; set; } = (int)BlipSprite.Hospital;
     public Vector3 RespawnLocation { get; set; }
     public float RespawnHeading { get; set; }
-    public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world,
-        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes)
+        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IAssociations associations)
     {
-        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes);
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations);
         if (AssignedAgency == null)
         {
             AssignedAgency = zones.GetZone(EntrancePosition)?.AssignedEMSAgency;

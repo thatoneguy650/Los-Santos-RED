@@ -1189,18 +1189,20 @@ new YmapDisabler("manhat01",true),
         UIMenuItem AddOfficerFriendly = new UIMenuItem("Add Officer Friendly", "Add officer friendly contact and set relationship to friendly");
         AddOfficerFriendly.Activated += (menu, item) =>
         {
-            Player.RelationshipManager.OfficerFriendlyRelationship.Reset(false);
-            Player.RelationshipManager.OfficerFriendlyRelationship.SetReputation(Player.RelationshipManager.OfficerFriendlyRelationship.RepMaximum,false);
-            Player.RelationshipManager.OfficerFriendlyRelationship.SetMoneySpent(90000,false);
+            Player.RelationshipManager.Add(new OfficerFriendlyRelationship(StaticStrings.OfficerFriendlyContactName));
+            Player.RelationshipManager.ResetRelationship(StaticStrings.OfficerFriendlyContactName, false);
+            Player.RelationshipManager.SetMaxReputation(StaticStrings.OfficerFriendlyContactName, false);
+            Player.RelationshipManager.SetMoneySpent(StaticStrings.OfficerFriendlyContactName, 90000, false);
             Player.CellPhone.AddContact(new CorruptCopContact(StaticStrings.OfficerFriendlyContactName), false);
             menu.Visible = false;
         };
         UIMenuItem AddUndergroundGuns = new UIMenuItem("Add Underground Guns", "Add underground guns contact and set relationship to friendly");
         AddUndergroundGuns.Activated += (menu, item) =>
         {
-            Player.RelationshipManager.GunDealerRelationship.Reset(false);
-            Player.RelationshipManager.GunDealerRelationship.SetReputation(Player.RelationshipManager.GunDealerRelationship.RepMaximum, false);
-            Player.RelationshipManager.GunDealerRelationship.SetMoneySpent(90000, false);
+            Player.RelationshipManager.Add(new GunDealerRelationship(StaticStrings.UndergroundGunsContactName));
+            Player.RelationshipManager.ResetRelationship(StaticStrings.UndergroundGunsContactName, false);
+            Player.RelationshipManager.SetMaxReputation(StaticStrings.UndergroundGunsContactName, false);
+            Player.RelationshipManager.SetMoneySpent(StaticStrings.UndergroundGunsContactName, 90000, false);
             Player.CellPhone.AddContact(new GunDealerContact(StaticStrings.UndergroundGunsContactName), false);
             menu.Visible = false;
         };
@@ -1214,6 +1216,7 @@ new YmapDisabler("manhat01",true),
         UIMenuItem AddTaxiService = new UIMenuItem("Add Taxi Service", "Add taxi service contact");
         AddTaxiService.Activated += (menu, item) =>
         {
+            ModDataFileManager.Associations.GetAssociations();
             Player.CellPhone.AddContact(new TaxiServiceContact(StaticStrings.TaxiServiceContactName) { IconName = "CHAR_TAXI" }, false);
             menu.Visible = false;
         };

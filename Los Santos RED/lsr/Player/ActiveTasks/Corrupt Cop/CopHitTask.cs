@@ -68,7 +68,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public void Setup()
         {
-            Contact = new CorruptCopContact(StaticStrings.OfficerFriendlyContactName);
+            Contact = new CorruptCopContact(Contact.Name);
         }
         public void Dispose()
         {
@@ -83,9 +83,14 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 TargetCop.Pedestrian.Delete();
             }
         }
-        public void Start()
+        public void Start(CorruptCopContact contact)
         {
-            if (PlayerTasks.CanStartNewTask(StaticStrings.OfficerFriendlyContactName))
+            Contact = contact;
+            if (Contact == null)
+            {
+                return;
+            }
+            if (PlayerTasks.CanStartNewTask(Contact.Name))
             {
                 GetPedInformation();
                 if (HasSpawnPosition)
@@ -151,7 +156,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 if (CurrentTask == null || !CurrentTask.IsActive)
                 {
-                    //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
+                    //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {Contact.Name}");
                     break;
                 }
                 if (!IsTargetCopSpawned && IsPlayerNearTargetCopSpawn)
@@ -190,7 +195,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             //EntryPoint.WriteToConsoleTestLong("Witness Elimination COMPLETED");
             SendCompletedMessage();
-            PlayerTasks.CompleteTask(StaticStrings.OfficerFriendlyContactName, true);
+            PlayerTasks.CompleteTask(Contact.Name, true);
         }
         private void StartDeadDropPayment()
         {
@@ -204,33 +209,33 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     if (CurrentTask == null || !CurrentTask.IsActive)
                     {
-                        //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
+                        //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {Contact.Name}");
                         break;
                     }
                     if (myDrop.InteractionComplete)
                     {
-                        Game.DisplayHelp($"{StaticStrings.OfficerFriendlyContactName} Money Picked Up");
-                        //EntryPoint.WriteToConsoleTestLong($"Picked up money for Gang Hit for {StaticStrings.OfficerFriendlyContactName}");
+                        Game.DisplayHelp($"{Contact.Name} Money Picked Up");
+                        //EntryPoint.WriteToConsoleTestLong($"Picked up money for Gang Hit for {Contact.Name}");
                         break;
                     }
                     GameFiber.Sleep(1000);
                 }
                 if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
                 {
-                    PlayerTasks.CompleteTask(StaticStrings.OfficerFriendlyContactName, true);
+                    PlayerTasks.CompleteTask(Contact.Name, true);
                 }
             }
             else
             {
                 SendQuickPaymentMessage();
-                PlayerTasks.CompleteTask(StaticStrings.OfficerFriendlyContactName, true);
+                PlayerTasks.CompleteTask(Contact.Name, true);
             }
         }
         private void AddTask()
         {
             //EntryPoint.WriteToConsoleTestLong($"You are hired to kill a witness!");
-            PlayerTasks.AddTask(StaticStrings.OfficerFriendlyContactName, MoneyToRecieve, 2000, 0, -500, 7, "Witness Elimination");
-            CurrentTask = PlayerTasks.GetTask(StaticStrings.OfficerFriendlyContactName);
+            PlayerTasks.AddTask(Contact.Name, MoneyToRecieve, 2000, 0, -500, 7, "Witness Elimination");
+            CurrentTask = PlayerTasks.GetTask(Contact.Name);
             IsTargetCopSpawned = false;
 
             GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);

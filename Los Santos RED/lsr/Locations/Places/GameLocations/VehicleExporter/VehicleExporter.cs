@@ -78,16 +78,19 @@ public class VehicleExporter : GameLocation
                     StoreCamera.Setup();
                     CreateInteractionMenu();
                     InteractionMenu.Visible = true;
-
                     GenerateExportMenu();
-
                     ProcessInteractionMenu();
-
                     if (HasExported)
                     {
-                        Player.CellPhone.AddContact(new VehicleExporterContact(ContactName), true);
+                        Association Association = Associations.GetAssociationByContact(ContactName);
+                        EntryPoint.WriteToConsole($"ContactName {ContactName} NO Association FOUND: {Association == null}");
+                        if (Association != null && Association.PhoneContact != null)
+                        {
+                            EntryPoint.WriteToConsole($"Association.PhoneContact.Name: {Association.PhoneContact.Name}");
+                            Player.CellPhone.AddContact(Association.PhoneContact, true);
+                        }
+                        //Player.CellPhone.AddContact(new VehicleExporterContact(ContactName), true);
                     }
-
                     DisposeInteractionMenu();
                     StoreCamera.Dispose();
                     Player.ActivityManager.IsInteractingWithLocation = false;

@@ -22,7 +22,9 @@ public class UndergroundGunsTasks : IPlayerTaskGroup
     private ISettingsProvideable Settings;
     private IEntityProvideable World;
     private ICrimes Crimes;
-    public GunPickupTask GunPickupTask { get; private set; }
+
+    private List<IPlayerTask> AllTasks = new List<IPlayerTask>();
+
     public UndergroundGunsTasks(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes)
     {
         Player = player;
@@ -34,15 +36,21 @@ public class UndergroundGunsTasks : IPlayerTaskGroup
         Settings = settings;
         World = world;
         Crimes = crimes;
-        GunPickupTask = new GunPickupTask(Player, Time,Gangs,PlayerTasks,PlacesOfInterest, ActiveDrops,Settings,World,Crimes);
     }
     public void Setup()
     {
-        GunPickupTask.Setup();
+
     }
     public void Dispose()
     {
-        GunPickupTask.Dispose();
+        AllTasks.ForEach(x => x.Dispose());
+        AllTasks.Clear();
     }
-   
+   public void StartGunPickup(GunDealerContact contact)
+    {
+        GunPickupTask gunPickupTask = new GunPickupTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, contact);
+        AllTasks.Add(gunPickupTask);
+        gunPickupTask.Setup();
+        gunPickupTask.Start();
+    }
 }

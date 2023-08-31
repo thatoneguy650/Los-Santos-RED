@@ -34,16 +34,15 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
     public float RespawnHeading { get; set; }
     public VehicleImpoundLot VehicleImpoundLot { get; set; }
     public bool HasImpoundLot => VehicleImpoundLot != null;
-    public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Enter {Name}";
         return true;
     }
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world, 
-        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes)
+        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IAssociations associations)
     {
-        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets,locationTypes, settings, plateTypes);
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets,locationTypes, settings, plateTypes, associations);
         VehicleImpoundLot?.Setup(this);
         if (AssignedAgency == null)
         {

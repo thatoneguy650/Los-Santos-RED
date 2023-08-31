@@ -23,17 +23,19 @@ public class Prison : GameLocation, ILocationRespawnable, ILocationAreaRestricta
     public override int MapIcon { get; set; } = 188;
     public Vector3 RespawnLocation { get; set; }
     public float RespawnHeading { get; set; }
-    public void StoreData(IAgencies agencies)
-    {
-        if (AssignedAssociationID != null)
-        {
-            AssignedAgency = agencies.GetAgency(AssignedAssociationID);
-        }
-    }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Enter {Name}";
         return true;
+    }
+    public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups, IEntityProvideable world,
+        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IAssociations associations)
+    {
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations);
+        if (AssignedAgency == null)
+        {
+            AssignedAgency = zones.GetZone(EntrancePosition)?.AssignedLEAgency;
+        }
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {

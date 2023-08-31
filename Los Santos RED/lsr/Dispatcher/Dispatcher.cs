@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -141,6 +142,37 @@ public class Dispatcher
         }
         GameFiber.Yield();
         GangDispatcher.Recall();
+        RecallCivilians();
+    }
+    private void RecallCivilians()
+    {
+        if (!Settings.SettingsManager.WorldSettings.CleanupVehicles)
+        {
+            return;
+        }
+        try
+        {
+            foreach (VehicleExt civilianCar in World.Vehicles.CivilianVehicleList.Where(x => !x.OwnedByPlayer && x.WasModSpawned && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000 && x.Vehicle.Exists() && x.Vehicle.IsPersistent).ToList())
+            {
+                if (!civilianCar.Vehicle.Exists() || civilianCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
+                {
+                    continue;
+                }
+                if (civilianCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
+                {
+                    if (civilianCar.Vehicle.IsPersistent)
+                    {
+                        EntryPoint.PersistentVehiclesDeleted++;
+                    }
+                    civilianCar.FullyDelete();
+                }
+                GameFiber.Yield();
+            }
+        }
+        catch (InvalidOperationException ex)
+        {
+            EntryPoint.WriteToConsole($"Remove Abandoned Vehicles, Collection Modified Error: {ex.Message} {ex.StackTrace}", 0);
+        }
     }
     public void Dispose()
     {
@@ -189,7 +221,6 @@ public class Dispatcher
     {
         FireDispatcher.DebugSpawnFire(agencyID, onFoot, isEmpty);
     }
-
     public void DebugSpawnSecurityGuard(string agencyID, bool onFoot, bool isEmpty)
     {
         SecurityDispatcher.DebugSpawnSecurity(agencyID, onFoot, isEmpty);

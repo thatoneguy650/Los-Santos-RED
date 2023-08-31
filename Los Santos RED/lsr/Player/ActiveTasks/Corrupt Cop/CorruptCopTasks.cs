@@ -25,9 +25,10 @@ public class CorruptCopTasks : IPlayerTaskGroup
     private ICrimes Crimes;
     private IWeapons Weapons;
     private IShopMenus ShopMenus;
-    public WitnessEliminationTask WitnessEliminationTask { get; private set; }
-    public CopGangHitTask CopGangHitTask { get; private set; }
-    public CopHitTask CopHitTask { get; private set; }
+    private INameProvideable Names;
+
+    private List<IPlayerTask> AllTasks = new List<IPlayerTask>();
+
     public CorruptCopTasks(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names, IWeapons weapons, IShopMenus shopMenus)
     {
         Player = player;
@@ -41,22 +42,37 @@ public class CorruptCopTasks : IPlayerTaskGroup
         Crimes = crimes;
         Weapons = weapons;
         ShopMenus = shopMenus;
-        WitnessEliminationTask = new WitnessEliminationTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, names, Weapons, ShopMenus);
-        CopGangHitTask = new CopGangHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
-        CopHitTask = new CopHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, names, Weapons);
+        Names = names;
     }
     public void Setup()
     {
-        WitnessEliminationTask.Setup();
-        CopGangHitTask.Setup();
-        CopHitTask.Setup();
+
     }
     public void Dispose()
     {
-        WitnessEliminationTask.Dispose();
-        CopGangHitTask.Dispose();
-        CopHitTask.Dispose();
+        AllTasks.ForEach(x => x.Dispose());
+        AllTasks.Clear();
     }
-
+    public void StartWitnessEliminationTask(CorruptCopContact contact)
+    {
+        WitnessEliminationTask WitnessEliminationTask = new WitnessEliminationTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Names, Weapons, ShopMenus);
+        AllTasks.Add(WitnessEliminationTask);
+        WitnessEliminationTask.Setup();
+        WitnessEliminationTask.Start(contact);
+    }
+    public void StartCopHitTask(CorruptCopContact contact)
+    {
+        CopHitTask CopHitTask = new CopHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Names, Weapons);
+        AllTasks.Add(CopHitTask);
+        CopHitTask.Setup();
+        CopHitTask.Start(contact);
+    }
+    public void StartCopGangHitTask(CorruptCopContact contact)
+    {
+        CopGangHitTask CopGangHitTask = new CopGangHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        AllTasks.Add(CopGangHitTask);
+        CopGangHitTask.Setup();
+        CopGangHitTask.Start(contact);
+    }
 }
 

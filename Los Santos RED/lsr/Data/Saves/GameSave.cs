@@ -67,6 +67,9 @@ namespace LosSantosRED.lsr.Data
         public PilotsLicense PilotsLicense { get; set; }
         public List<SavedTextMessage> TextMessages { get; set; } = new List<SavedTextMessage>();
         public List<PhoneContact> Contacts { get; set; } = new List<PhoneContact>();
+
+        public List<ContactRelationship> ContactRelationships { get; set; } = new List<ContactRelationship>();
+
         public List<GangRepSave> GangReputationsSave { get; set; } = new List<GangRepSave>();
         public GangKickSave GangKickSave { get; set; }
         public List<StoredWeapon> WeaponInventory { get; set; } = new List<StoredWeapon>();
@@ -158,12 +161,29 @@ namespace LosSantosRED.lsr.Data
                 TextMessages.Add(new SavedTextMessage(ifc.ContactName, ifc.Message, ifc.HourSent, ifc.MinuteSent, ifc.IsRead, ifc.Index, ifc.IconName));
             }
             CurrentDateTime = time.CurrentDateTime;
-            UndergroundGunsMoneySpent = player.RelationshipManager.GunDealerRelationship.TotalMoneySpentAtShops;
-            UndergroundGunsDebt = player.RelationshipManager.GunDealerRelationship.PlayerDebt;
-            UndergroundGunsReputation = player.RelationshipManager.GunDealerRelationship.ReputationLevel;
-            OfficerFriendlyMoneySpent = player.RelationshipManager.OfficerFriendlyRelationship.TotalMoneySpentOnBribes;
-            OfficerFriendlyDebt = player.RelationshipManager.OfficerFriendlyRelationship.PlayerDebt;
-            OfficerFriendlyReputation = player.RelationshipManager.OfficerFriendlyRelationship.ReputationLevel;
+
+
+            ContactRelationships = new List<ContactRelationship>();
+            foreach (ContactRelationship test in player.RelationshipManager.ContactRelationships)
+            {
+                ContactRelationships.Add(test);
+            }
+
+
+            //UndergroundGunsMoneySpent = player.RelationshipManager.GunDealerRelationship.TotalMoneySpentAtShops;
+            //UndergroundGunsDebt = player.RelationshipManager.GunDealerRelationship.PlayerDebt;
+            //UndergroundGunsReputation = player.RelationshipManager.GunDealerRelationship.ReputationLevel;
+
+            //OfficerFriendlyMoneySpent = player.RelationshipManager.OfficerFriendlyRelationship.TotalMoneySpentOnBribes;
+            //OfficerFriendlyDebt = player.RelationshipManager.OfficerFriendlyRelationship.PlayerDebt;
+            //OfficerFriendlyReputation = player.RelationshipManager.OfficerFriendlyRelationship.ReputationLevel;
+
+
+
+
+
+
+
             PlayerPosition = player.Character.Position;
             PlayerHeading = player.Character.Heading;
 
@@ -434,12 +454,17 @@ namespace LosSantosRED.lsr.Data
                     }
                 }
             }
-            player.RelationshipManager.GunDealerRelationship.SetMoneySpent(UndergroundGunsMoneySpent, false);
-            player.RelationshipManager.GunDealerRelationship.SetDebt(UndergroundGunsDebt);
-            player.RelationshipManager.GunDealerRelationship.SetReputation(UndergroundGunsReputation, false);
-            player.RelationshipManager.OfficerFriendlyRelationship.SetMoneySpent(OfficerFriendlyMoneySpent, false);
-            player.RelationshipManager.OfficerFriendlyRelationship.SetDebt(OfficerFriendlyDebt);
-            player.RelationshipManager.OfficerFriendlyRelationship.SetReputation(OfficerFriendlyReputation, false);
+            ContactRelationships = new List<ContactRelationship>();
+            foreach (ContactRelationship test in player.RelationshipManager.ContactRelationships)
+            {
+                player.RelationshipManager.Add(test);
+            }
+            //player.RelationshipManager.GunDealerRelationship.SetMoneySpent(UndergroundGunsMoneySpent, false);
+            //player.RelationshipManager.GunDealerRelationship.SetDebt(UndergroundGunsDebt);
+            //player.RelationshipManager.GunDealerRelationship.SetReputation(UndergroundGunsReputation, false);
+            //player.RelationshipManager.OfficerFriendlyRelationship.SetMoneySpent(OfficerFriendlyMoneySpent, false);
+            //player.RelationshipManager.OfficerFriendlyRelationship.SetDebt(OfficerFriendlyDebt);
+            //player.RelationshipManager.OfficerFriendlyRelationship.SetReputation(OfficerFriendlyReputation, false);
         }
         private void LoadContacts(IInventoryable player, IGangs gangs)
         {

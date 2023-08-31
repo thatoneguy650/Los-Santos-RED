@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IGunDealerRelateable
+    public interface IAssociations
     {
-        CellPhone CellPhone { get; }
+        Association GetAssociationByContact(string contactName);
     }
 }

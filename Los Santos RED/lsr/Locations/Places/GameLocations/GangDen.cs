@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class GangDen : GameLocation, ILocationGangAssignable
+public class GangDen : GameLocation//, ILocationGangAssignable
 {
     private UIMenuItem dropoffCash;
     private UIMenuItem dropoffItem;
@@ -28,24 +28,6 @@ public class GangDen : GameLocation, ILocationGangAssignable
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
     public override string AssociationID => AssignedAssociationID;
-
-
-
-
-
-    //public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
-    //public float ItemPreviewHeading { get; set; } = 0f;
-
-
-    //public SpawnPlace VehiclePreviewLocation { get; set; }
-
-
-    public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
-
-
-
-
-
     public bool IsPrimaryGangDen { get; set; } = false;
     public bool HasVanillaGangSpawnedAroundToBeBlocked { get; set; } = false;
     public override bool IsBlipEnabled { get; set; } = false;
@@ -290,15 +272,16 @@ public class GangDen : GameLocation, ILocationGangAssignable
             
         }
     }
-    public void Reset()
+    public void ResetItems()
     {
-        //IsEnabled = false;
         ExpectedMoney = 0;
         ExpectedItem = null;
         ExpectedItemAmount = 0;
     }
-    public void StoreData(IGangs gangs)
+    public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups, IEntityProvideable world, 
+        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IAssociations associations)
     {
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations);
         Menu = ShopMenus.GetSpecificMenu(MenuID);
         AssociatedGang = gangs.GetGang(AssignedAssociationID);
         ButtonPromptText = $"Enter {AssociatedGang?.ShortName} {AssociatedGang?.DenName}";
@@ -358,14 +341,6 @@ public class GangDen : GameLocation, ILocationGangAssignable
             //RemoveLayLow();
         }, "LayLowWatcher");
     }
-    //private void RemoveLayLow()
-    //{
-    //    if (InteractionMenu.MenuItems.IndexOf(LayLowMenuItem) >= 0)
-    //    {
-    //        InteractionMenu.RemoveItemAt(InteractionMenu.MenuItems.IndexOf(LayLowMenuItem));
-    //        InteractionMenu.RefreshIndex();
-    //    }
-    //}
     public override void DisplayMessage(string header, string message)
     {
         Game.RemoveNotification(NotificationHandle);

@@ -17,22 +17,22 @@ public class GunDealerInteraction : IContactMenuInteraction
     private MenuPool MenuPool;
     private IGangs Gangs;
     private IPlacesOfInterest PlacesOfInterest;
-    private PhoneContact AnsweredContact;
+    private GunDealerContact AnsweredContact;
     private ISettingsProvideable Settings;
     private UIMenu LocationsSubMenu;
     private UIMenu JobsSubMenu;
 
-    public GunDealerInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
+    public GunDealerInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, GunDealerContact contact)
     {
         Player = player;
         Gangs = gangs;
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
+        AnsweredContact = contact;
         MenuPool = new MenuPool();
     }
     public void Start(PhoneContact contact)
     {
-        AnsweredContact = contact;
         if(contact == null)
         {
             return;
@@ -114,7 +114,7 @@ public class GunDealerInteraction : IContactMenuInteraction
         UIMenuItem GunPickup = new UIMenuItem("Gun Pickup", "Pickup some guns and bring them to a shop.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMax:C0}~s~" };
         GunPickup.Activated += (sender, selectedItem) =>
         {
-            Player.PlayerTasks.UndergroundGunsTasks.GunPickupTask.Start();
+            Player.PlayerTasks.UndergroundGunsTasks.StartGunPickup(AnsweredContact);
             sender.Visible = false;
         };
         JobsSubMenu.AddItem(GunPickup);

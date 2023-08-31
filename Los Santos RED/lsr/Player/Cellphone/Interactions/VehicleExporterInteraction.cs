@@ -186,7 +186,7 @@ public class VehicleExporterInteraction : IContactMenuInteraction
         UIMenuItem TransferCars = new UIMenuItem("Transfer", "Transfer some hot vehicles.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.VehicleExporterTransferPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.VehicleExporterTransferPaymentMax:C0}~s~" };
         TransferCars.Activated += (sender, selectedItem) =>
         {
-            Player.PlayerTasks.VehicleExporterTasks.TansferStolenCar.Start(VehicleExporterContact);
+            Player.PlayerTasks.VehicleExporterTasks.StartTansferStolenCarTask(VehicleExporterContact);
             sender.Visible = false;
         };
         JobsSubMenu.AddItem(TransferCars);

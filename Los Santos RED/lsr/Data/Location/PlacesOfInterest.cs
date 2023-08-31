@@ -132,12 +132,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.Hospitals);
         return AllLocations;
     }
-    public List<ILocationGangAssignable> GangAssignableLocations()
-    {
-        List<ILocationGangAssignable> AllLocations = new List<ILocationGangAssignable>();
-        AllLocations.AddRange(PossibleLocations.GangDens);
-        return AllLocations;
-    }
     public DeadDrop GetUsableDeadDrop(bool IsMPMap)
     {
         return PossibleLocations.DeadDrops.Where(x => x.CanUse && x.IsCorrectMap(IsMPMap)).PickRandom();// IsMPMap == x.IsOnMPMap).PickRandom();
@@ -771,7 +765,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             },
             new VehicleExporter(new Vector3(44.4949f, 6461.12f, 31.4253f), 226.2354f,"Paleto Exports","Turn Cars to CASH!","PaletoExportMenu")
             {
-                 ContactName = StaticStrings.VehicleExporterContactName,
+                 ContactName = "Exportotopia",//StaticStrings.VehicleExporterContactName,
                  ParkingSpaces = new List<SpawnPlace>()
                  {
                     new SpawnPlace(new Vector3(29.69258f, 6438.792f, 31.42538f), 91.18743f),
@@ -783,6 +777,23 @@ public class PlacesOfInterest : IPlacesOfInterest
                 OpenTime = 0,
                 CloseTime = 24,
             },
+
+
+            new VehicleExporter(new Vector3(848.3537f, -952.5338f, 26.52109f), 270.8987f, "National Transport 2", "When it needs to disappear!","NationalMenu")
+            {
+                 ContactName = "Exportotopia",//StaticStrings.VehicleExporterContactName,
+                 ParkingSpaces = new List<SpawnPlace>()
+                 {
+                    new SpawnPlace(new Vector3(853.4166f, -905.9677f, 25.3178f), 88.12348f),
+                    new SpawnPlace(new Vector3(853.4921f, -902.6026f, 25.32147f), 90.01858f),
+                    new SpawnPlace(new Vector3(853.5576f, -899.2606f, 25.32503f), 89.40579f),
+                    new SpawnPlace(new Vector3(853.313f, -895.832f, 25.31771f), 84.42482f),
+                    new SpawnPlace(new Vector3(853.5083f, -892.3186f, 25.32238f), 88.35712f),
+                 },
+                OpenTime = 0,
+                CloseTime = 24,
+            },
+
         };
     }
     private void DefaultConfig_Forgers()
@@ -2148,14 +2159,25 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(318.4567f, -2005.651f, 21.25648f), 205.8739f),
                     new SpawnPlace(new Vector3(308.2981f, -1978.542f, 21.6238f), 141.6945f),
             } },
-            new GunStore(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, "Guns #4", "Specializes in ~o~Assault Rifles~s~","GunShop4") { IsEnabled = false, MoneyToUnlock = 15000, ContactName = StaticStrings.UndergroundGunsContactName,
+
+
+
+
+            new GunStore(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, "Guns #4", "Specializes in ~o~Assault Rifles~s~","GunShop4") { IsEnabled = true, 
+                //MoneyToUnlock = 15000, ContactName = StaticStrings.UndergroundGunsContactName,
+                ContactName = "LSR Gun Dealer",
+
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-258.1833f, 6250.695f, 31.48922f),25.17568f),
                     new SpawnPlace(new Vector3(-256.5694f, 6265.761f, 30.58578f), 317.2921f),
                     new SpawnPlace(new Vector3(-267.765f, 6251.046f, 30.61459f), 312.4225f),
                     new SpawnPlace(new Vector3(-269.5155f, 6274.559f, 30.46577f), 136.3388f),
                 } },
-            new GunStore(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, "Guns #5", "Specializes in ~o~Heavy Weapons~s~","GunShop2") { IsEnabled = false, MoneyToUnlock = 25000, ContactName = StaticStrings.UndergroundGunsContactName,
+            new GunStore(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, "Guns #5", "Specializes in ~o~Heavy Weapons~s~","GunShop2") { IsEnabled = false, 
+                //MoneyToUnlock = 25000, ContactName = StaticStrings.UndergroundGunsContactName,
+                MoneyToUnlock = 2500, ContactName = "LSR Gun Dealer",
+
+
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(1661.471f, 4951.514f, 42.07043f),217.9459f),
                     new SpawnPlace(new Vector3(1659.542f, 4946.245f, 41.20879f), 224.609f),

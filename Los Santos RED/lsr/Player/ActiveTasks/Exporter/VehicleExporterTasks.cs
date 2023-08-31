@@ -19,8 +19,9 @@ public class VehicleExporterTasks : IPlayerTaskGroup
     private ISettingsProvideable Settings;
     private IEntityProvideable World;
     private ICrimes Crimes;
-    public TansferStolenCar TansferStolenCar { get; private set; }
-    private List<IPlayerTask> PlayerTaskList = new List<IPlayerTask>();
+    private IModItems ModItems;
+
+    private List<IPlayerTask> AllTasks = new List<IPlayerTask>();
     public VehicleExporterTasks(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems)
     {
         Player = player;
@@ -32,25 +33,23 @@ public class VehicleExporterTasks : IPlayerTaskGroup
         Settings = settings;
         World = world;
         Crimes = crimes;
-        TansferStolenCar = new TansferStolenCar(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, modItems);
-        PlayerTaskList = new List<IPlayerTask>
-        {
-            TansferStolenCar
-        };
+        ModItems = modItems;
     }
     public void Setup()
     {
-        foreach(IPlayerTask playerTask in PlayerTaskList)
-        {
-            playerTask.Setup();
-        }
+
     }
     public void Dispose()
     {
-        foreach (IPlayerTask playerTask in PlayerTaskList)
-        {
-            playerTask.Dispose();
-        }
+        AllTasks.ForEach(x => x.Dispose());
+        AllTasks.Clear();
+    }
+    public void StartTansferStolenCarTask(VehicleExporterContact contact)
+    {
+        TansferStolenCar tansferStolenCar = new TansferStolenCar(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, contact);
+        AllTasks.Add(tansferStolenCar);
+        tansferStolenCar.Setup();
+        tansferStolenCar.Start();
     }
 
 }

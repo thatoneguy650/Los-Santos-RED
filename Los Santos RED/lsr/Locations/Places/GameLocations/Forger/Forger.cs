@@ -35,11 +35,6 @@ public class Forger : GameLocation
     public int CustomPlateCost { get; set; } = 500;
     public int WantedPlateSalesPrice { get; set; } = 50;
     public int CleanPlateSalesPrice { get; set; } = 200;
-    public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world,
-        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes)
-    {
-        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes);
-    }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Enter {Name}";

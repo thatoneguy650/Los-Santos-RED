@@ -125,11 +125,14 @@
     <Compile Include="lsr\Camera\CameraControl.cs" />
     <Compile Include="lsr\Data\Agencies\IPlatePrefixable.cs" />
     <Compile Include="lsr\Data\Agencies\WantedLevels.cs" />
+    <Compile Include="lsr\Data\Associations\Association.cs" />
+    <Compile Include="lsr\Data\Associations\Associations.cs" />
     <Compile Include="lsr\Data\Gangs\GangClassification.cs" />
     <Compile Include="lsr\Data\Gangs\Gang.cs" />
     <Compile Include="lsr\Data\Gangs\GangRelationship.cs" />
     <Compile Include="lsr\Data\Gangs\Gangs.cs" />
     <Compile Include="lsr\Data\Gangs\GangTerritories.cs" />
+    <Compile Include="lsr\Data\Interface\IAssociations.cs" />
     <Compile Include="lsr\Data\Interface\IClothesNames.cs" />
     <Compile Include="lsr\Data\Interface\ILocationTypes.cs" />
     <Compile Include="lsr\Data\Interface\IDances.cs" />
@@ -303,6 +306,7 @@
     <Compile Include="lsr\Player\Inventory\Items\BodyArmorItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\EquipmentItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\ValuableItem.cs" />
+    <Compile Include="lsr\Player\Relationships\ContactRelationship.cs" />
     <Compile Include="lsr\Player\Respawning\SearchActivity.cs" />
     <Compile Include="lsr\Player\SecurityResponse.cs" />
     <Compile Include="lsr\Player\Variation\OutfitManager.cs" />
@@ -615,7 +619,7 @@
     <Compile Include="lsr\Player\Interface\IContactInteractable.cs" />
     <Compile Include="lsr\Player\Interface\IDestinateable.cs" />
     <Compile Include="lsr\Player\Interface\IGroupManageable.cs" />
-    <Compile Include="lsr\Player\Interface\IGunDealerRelateable.cs" />
+    <Compile Include="lsr\Player\Interface\IContactRelateable.cs" />
     <Compile Include="lsr\Player\Interface\IHealthManageable.cs" />
     <Compile Include="lsr\Player\Interface\IHumanStateable.cs" />
     <Compile Include="lsr\Player\Interface\IItemEquipable.cs" />

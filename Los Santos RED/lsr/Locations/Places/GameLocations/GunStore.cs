@@ -66,11 +66,10 @@ public class GunStore : GameLocation
                     Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
                     InteractionMenu.Visible = true;
                     Transaction.ProcessTransactionMenu();
-                    if (ContactName == StaticStrings.UndergroundGunsContactName)
-                    {
-                        Player.RelationshipManager.GunDealerRelationship.AddMoneySpent(Transaction.MoneySpent);
-                        player.RelationshipManager.GunDealerRelationship.SetReputation((Transaction.MoneySpent) / 5, false);
-                    }
+
+                    Player.RelationshipManager.Add(new GunDealerRelationship(ContactName));
+                    Player.RelationshipManager.OnInteracted(ContactName, Transaction.MoneySpent, (Transaction.MoneySpent) / 5);
+
                     Transaction.DisposeTransactionMenu();
                     DisposeInteractionMenu();
                     StoreCamera.Dispose();

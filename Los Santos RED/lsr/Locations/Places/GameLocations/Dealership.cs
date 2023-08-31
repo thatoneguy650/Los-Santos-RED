@@ -21,21 +21,6 @@ public class Dealership : GameLocation, ILicensePlatePreviewable
     public override int MapIcon { get; set; } = (int)BlipSprite.GangVehicle;
     public override string ButtonPromptText { get; set; }
     public string LicensePlatePreviewText { get; set; } = "BUYMENOW";
-
-
-
-
-
-    //public Vector3 VehiclePreviewPosition { get; set; } = Vector3.Zero;
-    //public float VehiclePreviewHeading { get; set; } = 0f;
-
-   // public SpawnPlace VehiclePreviewLocation { get; set; } 
-
-  //  public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
-
-
-
-
     public Dealership(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;

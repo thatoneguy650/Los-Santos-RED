@@ -88,7 +88,6 @@ public class Vehicles
             {
                 NativeFunction.Natives.SET_VEHICLE_USE_PLAYER_LIGHT_SETTINGS(vehicle, true);
             }
-
             if (AddEntity(vehicle))
             {   
                 GameFiber.Yield();
@@ -107,110 +106,6 @@ public class Vehicles
         }
         GameTimeLastCreatedVehicles = Game.GameTime;
     }
-    public void CleanUp()
-    {
-        if (Settings.SettingsManager.WorldSettings.CleanupVehicles)
-        {
-            RemoveAbandonedPoliceVehicles();
-            FixDamagedPoliceVehicles();
-        }
-    }
-    private void RemoveAbandonedPoliceVehicles()
-    {
-        try
-        {
-            int TotalPoliceCars = SpawnedPoliceVehiclesCount;
-            int updated = 0;
-            foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => !x.OwnedByPlayer && x.Vehicle.Exists() && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000).ToList())
-            {
-                if (PoliceCar.Vehicle.Exists())
-                {
-                    if (!PoliceCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
-                    {
-                        PoliceCar.SetBecameEmpty();
-                        float distanceTo = PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character);
-                        if(TotalPoliceCars >= 15 && PoliceCar.HasBeenEmptyFor >= 60000 && PoliceCar.Vehicle.Exists() && !PoliceCar.Vehicle.IsOnScreen)
-                        {
-                            PoliceCar.Vehicle.IsPersistent = false;
-                            //EntryPoint.WriteToConsoleTestLong("MARKED POLICE CAR NON PERSIST 1");
-                            GameFiber.Yield();
-                        }
-                        else if (TotalPoliceCars >= 10 && distanceTo >= 50f && PoliceCar.HasBeenEmptyFor >= 35000 && PoliceCar.Vehicle.IsPersistent)
-                        {
-                            PoliceCar.Vehicle.IsPersistent = false;
-                            //EntryPoint.WriteToConsoleTestLong("MARKED POLICE CAR NON PERSIST 2");
-                            GameFiber.Yield();
-                        }
-                        else if (distanceTo >= 250f)
-                        {
-                            if (PoliceCar.Vehicle.IsPersistent)
-                            {
-                                EntryPoint.PersistentVehiclesDeleted++;
-                            }
-                            PoliceCar.FullyDelete();
-                            GameFiber.Yield();
-                        }
-                        GameFiber.Yield();
-                    }
-                    else
-                    {
-                        PoliceCar.ResetBecameEmpty();
-
-                    }
-                    //GameFiber.Yield();//TR 29
-                }
-                if(updated > 10)
-                {
-                    GameFiber.Yield();
-                    updated = 0;
-                }
-            }
-            GameFiber.Yield();//TR 29
-            updated = 0;
-            foreach (VehicleExt civilianCar in CivilianVehicles.Where(x => !x.OwnedByPlayer && x.WasModSpawned && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000 && x.Vehicle.Exists() && x.Vehicle.IsPersistent ).ToList())
-            {
-                if(!civilianCar.Vehicle.Exists() || civilianCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
-                {
-                    continue;
-                }
-                if (civilianCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
-                {
-                    if (civilianCar.Vehicle.IsPersistent)
-                    {
-                        EntryPoint.PersistentVehiclesDeleted++;
-                    }
-                    //EntryPoint.WriteToConsole($"Remove Abandoned Non Police {civilianCar.Vehicle.Handle}", 5);
-                    civilianCar.FullyDelete();
-                }
-                GameFiber.Yield();
-            }
-        }
-        catch(InvalidOperationException ex)
-        {
-            EntryPoint.WriteToConsole($"Remove Abandoned Vehicles, Collection Modified Error: {ex.Message} {ex.StackTrace}", 0);
-        }
-    }
-    private void FixDamagedPoliceVehicles()
-    {
-        int updated = 0;
-        foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => !x.OwnedByPlayer && x.Vehicle.Exists() && x.WasModSpawned && x.HasExistedFor >= 15000).ToList())
-        {
-            if (PoliceCar.Vehicle.Exists())
-            {
-                if (PoliceCar.Vehicle.HasOccupants && (PoliceCar.Vehicle.Health < PoliceCar.Vehicle.MaxHealth - 500 || PoliceCar.Vehicle.EngineHealth < 200f) && PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 25f && !PoliceCar.Vehicle.IsOnScreen)
-                {
-                    PoliceCar.Vehicle.Repair();
-                    GameFiber.Yield();
-                }
-               // GameFiber.Yield();//TR 29
-            }
-            if (updated > 10)
-            {
-                GameFiber.Yield();
-                updated = 0;
-            }
-        }
-    }
     public bool AddEntity(Vehicle vehicle)
     {
         if (vehicle.Exists())
@@ -223,7 +118,6 @@ public class Vehicles
                     VehicleExt Car = new VehicleExt(vehicle, Settings);
                     Car.Setup();
                     Car.IsPolice = true;
-                    //Car.SimpleInventory.AddRandomItems(ModItems,6,2,false);
                     Car.CanRandomlyHaveIllegalItems = false;
                     PoliceVehicles.Add(Car);
                     return true;
@@ -236,7 +130,6 @@ public class Vehicles
                     VehicleExt Car = new VehicleExt(vehicle, Settings);
                     Car.Setup();
                     CivilianVehicles.Add(Car);
-                    //Car.SimpleInventory.AddRandomItems(ModItems,Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet,Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount,true);
                     return true;
                 }
             }
@@ -253,7 +146,6 @@ public class Vehicles
                 {
                     vehicleExt.IsPolice = true;
                     PoliceVehicles.Add(vehicleExt);
-
                 }
             }
             else if (responseType == ResponseType.EMS)

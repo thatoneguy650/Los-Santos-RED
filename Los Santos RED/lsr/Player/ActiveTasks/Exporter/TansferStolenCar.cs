@@ -46,7 +46,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private bool IsPlayerDrivingSpawnedVehicle => SpawnedVehicle.Exists() && SpawnedVehicle.Driver?.Handle == Player.Character.Handle;
         private bool IsPlayerFarAwayFromSpawnedVehicle => SpawnedVehicle.Exists() && SpawnedVehicle.DistanceTo2D(Player.Character) >= 850f;
         private bool IsPlayerNearbyPickupStore => NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, PickUpStore.CellX, PickUpStore.CellY, 5);
-        public TansferStolenCar(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems)
+        public TansferStolenCar(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems, VehicleExporterContact contact)
         {
             Player = player;
             Time = time;
@@ -58,6 +58,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             World = world;
             Crimes = crimes;
             ModItems = modItems;
+            Contact = contact;
         }
         public void Setup()
         {
@@ -77,9 +78,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 DropOffStore.IsPlayerInterestedInLocation = false;
             }
         }
-        public void Start(VehicleExporterContact vehicleExporterContact)
+        public void Start()
         {
-            Contact = vehicleExporterContact;
             if (Contact == null || !PlayerTasks.CanStartNewTask(Contact.Name))
             {
                 return;

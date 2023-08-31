@@ -31,9 +31,10 @@ public class StaticPlaces
     private IJurisdictions Jurisdictions;
     private IGangTerritories GangTerritories;
     private ILocationTypes LocationTypes;
+    private IAssociations Associations;
 
     public StaticPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, IZones zones, IStreets streets, IGangs gangs,
-        IAgencies agencies, ITimeReportable time, INameProvideable names, IPedGroups pedGroups, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ILocationTypes locationTypes, IPlateTypes plateTypes)
+        IAgencies agencies, ITimeReportable time, INameProvideable names, IPedGroups pedGroups, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ILocationTypes locationTypes, IPlateTypes plateTypes, IAssociations associations)
     {
         Places = places;
         PlacesOfInterest = placesOfInterest;
@@ -54,16 +55,13 @@ public class StaticPlaces
         GangTerritories = gangTerritories;
         LocationTypes= locationTypes;
         PlateTypes = plateTypes;
+        Associations = associations;
     }
     public void Setup()
     {
         foreach (GameLocation tl in PlacesOfInterest.InteractableLocations())
         {
-            tl.StoreData(ShopMenus, Agencies, Gangs,Zones, Jurisdictions, GangTerritories, Names, Crimes, PedGroups, World, Streets, LocationTypes, Settings, PlateTypes);
-        }
-        foreach (ILocationGangAssignable tl in PlacesOfInterest.GangAssignableLocations())
-        {
-            tl.StoreData(Gangs);
+            tl.StoreData(ShopMenus, Agencies, Gangs,Zones, Jurisdictions, GangTerritories, Names, Crimes, PedGroups, World, Streets, LocationTypes, Settings, PlateTypes, Associations);
         }
         foreach (ILocationSetupable ps in PlacesOfInterest.LocationsToSetup())
         {

@@ -16,10 +16,8 @@ public class CorruptCopInteraction : IContactMenuInteraction
 
     private MenuPool MenuPool;
     private UIMenu CopMenu;
-    private PhoneContact LastAnsweredContact;
     private UIMenuItem PayoffCops;
     private UIMenuItem PayoffCopsInvestigation;
-   // private UIMenuItem RequestCopWork;
     private IGangs Gangs;
     private IPlacesOfInterest PlacesOfInterest;
     private ISettingsProvideable Settings;
@@ -29,6 +27,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
     private UIMenuItem CopHit;
     private UIMenu JobsSubMenu;
     private UIMenu ServicesSubMenu;
+    private CorruptCopContact Contact;
 
     private int CostToClearWanted
     {
@@ -44,12 +43,13 @@ public class CorruptCopInteraction : IContactMenuInteraction
             return Settings.SettingsManager.PlayerOtherSettings.CorruptCopInvestigationClearCost;
         }
     }
-    public CorruptCopInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
+    public CorruptCopInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, CorruptCopContact contact)
     {
         Player = player;
         Gangs = gangs;
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
+        Contact = contact;
         MenuPool = new MenuPool();
     }
     public void Start(PhoneContact contact)
@@ -57,7 +57,6 @@ public class CorruptCopInteraction : IContactMenuInteraction
         CopMenu = new UIMenu("", "Select an Option");
         CopMenu.RemoveBanner();
         MenuPool.Add(CopMenu);
-        LastAnsweredContact = contact;
         AddJobs();
         AddServices();    
         CopMenu.Visible = true;
@@ -86,13 +85,13 @@ public class CorruptCopInteraction : IContactMenuInteraction
         PayoffCops = new UIMenuItem("Clear Wanted", "Ask your contact to have the cops forget about you") { RightLabel = "~r~" + CostToClearWanted.ToString("C0") + "~s~" };
         PayoffCops.Activated += (sender,e) =>
         {
-            PayoffCop(LastAnsweredContact);
+            PayoffCop();
             sender.Visible = false;
         };
         PayoffCopsInvestigation = new UIMenuItem("Stop Investigation", "Ask your contact to have the cops forget about the current investigation") { RightLabel = "~r~" + CostToClearInvestigation.ToString("C0") + "~s~" };
         PayoffCopsInvestigation.Activated += (sender, e) =>
         {
-            PayoffCopInvestigation(LastAnsweredContact);
+            PayoffCopInvestigation();
             sender.Visible = false;
         };
         ServicesSubMenu.AddItem(PayoffCops);
@@ -105,12 +104,12 @@ public class CorruptCopInteraction : IContactMenuInteraction
     {
         JobsSubMenu = MenuPool.AddSubMenu(CopMenu, "Jobs");
         JobsSubMenu.RemoveBanner();
-        if (Player.PlayerTasks.HasTask(StaticStrings.OfficerFriendlyContactName))
+        if (Player.PlayerTasks.HasTask(Contact.Name))
         {
             TaskCancel = new UIMenuItem("Cancel Task", "Tell the officer you can't complete the task.") { RightLabel = "~o~$?~s~" };
             TaskCancel.Activated += (sender, e) =>
             {
-                Player.PlayerTasks.CancelTask(StaticStrings.OfficerFriendlyContactName);
+                Player.PlayerTasks.CancelTask(Contact.Name);
                 sender.Visible = false;
             };
             JobsSubMenu.AddItem(TaskCancel);
@@ -119,31 +118,30 @@ public class CorruptCopInteraction : IContactMenuInteraction
         GangHit = new UIMenuItem("Gang Hit", "Do a hit on a gang for the cops.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax:C0}~s~" };
         GangHit.Activated += (sender, e) =>
         {
-            Player.PlayerTasks.CorruptCopTasks.CopGangHitTask.Start();
+            Player.PlayerTasks.CorruptCopTasks.StartCopGangHitTask(Contact);
             sender.Visible = false;
         };
         WitnessElimination = new UIMenuItem("Witness Elimination", "Probably some major federal indictment of somebody who majorly does not want to get indicted.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMax:C0}~s~" };
         WitnessElimination.Activated += (sender, e) =>
         {
-            Player.PlayerTasks.CorruptCopTasks.WitnessEliminationTask.Start();
+            Player.PlayerTasks.CorruptCopTasks.StartWitnessEliminationTask(Contact);
             sender.Visible = false;
         };
         CopHit = new UIMenuItem("Cop Hit", "Force the retirement of some of the LSPDs finest. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMax:C0}~s~" };
         CopHit.Activated += (sender, e) =>
         {
-            Player.PlayerTasks.CorruptCopTasks.CopHitTask.Start();
+            Player.PlayerTasks.CorruptCopTasks.StartCopHitTask(Contact);
             sender.Visible = false;
         };
         JobsSubMenu.AddItem(GangHit);
         JobsSubMenu.AddItem(WitnessElimination);
         //CopMenu.AddItem(CopHit);
     }
-
     public void Update()
     {
         MenuPool.ProcessMenus();
     }
-    private void PayoffCop(PhoneContact contact)
+    private void PayoffCop()
     {
         //EntryPoint.WriteToConsoleTestLong($"Player.Money {Player.BankAccounts.Money} CostToClearWanted {CostToClearWanted}");
         if (Player.WantedLevel > 4)
@@ -154,7 +152,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
                 $"Too late now, you are on your own",
                 $"Too many eyes on this one, should have let me known earlier",
                 };
-            Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
 
         }
         else if (Player.WantedLevel >= 3 && Player.PoliceResponse.HasHurtPolice)
@@ -164,7 +162,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
                 $"They are out to get you since you fucked with the cops, nothing I can do.",
                 $"Next time don't send so many cops to the hospital and maybe I can help",
                 };
-            Player.CellPhone.AddPhoneResponse(contact.Name,contact.IconName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }
         else if (Player.WantedLevel == 1)
         {
@@ -174,7 +172,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
                 $"The fine is a lot cheaper than me",
                 $"Why not pay the small fine instead of bothering me?",
                 };
-            Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }
         else if (Player.BankAccounts.Money >= CostToClearWanted)
         {
@@ -201,7 +199,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
                 $"Let me make up some bullshit to distract them, wait a few.",
                 $"Sending out an officer down across town, should get them off your tail for a while",
                 };
-            Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }
         else if (Player.BankAccounts.Money < CostToClearWanted)
         {
@@ -209,20 +207,18 @@ public class CorruptCopInteraction : IContactMenuInteraction
                 $"Don't bother me unless you have some money",
                 $"This shit isn't free you know",
                 };
-            Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }
         else
         {
             List<string> Replies = new List<string>() {
                 $"Don't bother me",
                 };
-            Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }
     }
-    private void PayoffCopInvestigation(PhoneContact contact)
+    private void PayoffCopInvestigation()
     {
-
-        //EntryPoint.WriteToConsoleTestLong($"Player.Money {Player.BankAccounts.Money} CostToClearInvestigation {CostToClearInvestigation}");
         if (Player.BankAccounts.Money >= CostToClearInvestigation)
         {
             Player.BankAccounts.GiveMoney(-1 * CostToClearInvestigation);
@@ -249,7 +245,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
                 $"Let me make up some bullshit to distract them, wait a few.",
                 $"Sending out an officer down across town, should get them off your tail for a while",
                 };
-            Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }
         else if (Player.BankAccounts.Money < CostToClearInvestigation)
         {
@@ -257,14 +253,14 @@ public class CorruptCopInteraction : IContactMenuInteraction
                 $"Don't bother me unless you have some money",
                 $"This shit isn't free you know",
                 };
-            Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }
         else
         {
             List<string> Replies = new List<string>() {
                 $"Don't bother me",
                 };
-            Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }
     }
 }

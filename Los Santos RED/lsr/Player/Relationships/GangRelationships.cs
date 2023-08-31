@@ -189,7 +189,7 @@ public class GangRelationships
         }
         foreach (GangDen gd in PlacesOfInterest.PossibleLocations.GangDens)
         {
-            gd.Reset();
+            gd.ResetItems();
         }
         foreach (DeadDrop gd in PlacesOfInterest.PossibleLocations.DeadDrops)
         {

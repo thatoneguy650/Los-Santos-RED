@@ -29,6 +29,7 @@ public class GameLocation : ILocationDispatchable
     protected INameProvideable Names;
     protected IShopMenus ShopMenus;
     protected IPlateTypes PlateTypes;
+    protected IAssociations Associations;
     protected Transaction Transaction;
     protected uint NotificationHandle;
     protected readonly List<string> FallBackVendorModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
@@ -142,15 +143,11 @@ public class GameLocation : ILocationDispatchable
     public List<ConditionalGroup> PossibleGroupSpawns { get; set; }
     public List<ConditionalLocation> PossiblePedSpawns { get; set; }
     public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
-
-
-
     public Vector3 VehiclePreviewCameraPosition { get; set; } = Vector3.Zero;
     public Vector3 VehiclePreviewCameraDirection { get; set; } = Vector3.Zero;
     public Rotator VehiclePreviewCameraRotation { get; set; }
     public SpawnPlace VehiclePreviewLocation { get; set; }
     public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
-
     [XmlIgnore]
     public bool IsActivated { get; set; } = false;
     [XmlIgnore]
@@ -289,7 +286,7 @@ public class GameLocation : ILocationDispatchable
 
     }
     public virtual void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups,
-        IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes)
+        IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IAssociations associations)
     {
         ShopMenus = shopMenus;
         World = world;
@@ -297,6 +294,7 @@ public class GameLocation : ILocationDispatchable
         Names = names;
         Settings = settings;
         PlateTypes = plateTypes;
+        Associations = associations;
         StoreBasicData(zones, streets, locationTypes);
         if (AssignedAssociationID != null)
         {

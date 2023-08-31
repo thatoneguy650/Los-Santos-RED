@@ -765,9 +765,106 @@ public class LEDispatcher
                 Roadblock = null;
                 //EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
             }
+            
             GameTimeAttemptedRecall = Game.GameTime;
         }
+
+        CleanUp();
     }
+
+
+    public void CleanUp()
+    {
+        if (!Settings.SettingsManager.WorldSettings.CleanupVehicles)
+        {
+            return;
+        }
+        RemoveAbandonedPoliceVehicles();
+        FixDamagedPoliceVehicles();     
+    }
+    private void RemoveAbandonedPoliceVehicles()
+    {
+        try
+        {
+            int TotalPoliceCars = World.Vehicles.SpawnedPoliceVehiclesCount;
+            int PossibleSpawnedPoliceCars = SpawnedCopVehicleLimit;
+
+            bool isNearLimit = PossibleSpawnedPoliceCars - TotalPoliceCars <= 3 && TotalPoliceCars >= 10;
+            int updated = 0;
+            foreach (VehicleExt PoliceCar in World.Vehicles.PoliceVehicleList.Where(x => !x.OwnedByPlayer && x.Vehicle.Exists() && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000).ToList())
+            {
+                if (PoliceCar.Vehicle.Exists())
+                {
+                    if (!PoliceCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
+                    {
+                        PoliceCar.SetBecameEmpty();
+                        float distanceTo = PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character);
+                        if (isNearLimit /*TotalPoliceCars >= 15*/ && PoliceCar.HasBeenEmptyFor >= 60000 && PoliceCar.Vehicle.Exists() && !PoliceCar.Vehicle.IsOnScreen)
+                        {
+                            PoliceCar.Vehicle.IsPersistent = false;
+                            EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles 1 NONPERS isNearLimit{isNearLimit} TotalPoliceCars{TotalPoliceCars} PossibleSpawnedPoliceCars{PossibleSpawnedPoliceCars}");
+                            GameFiber.Yield();
+                        }
+                        else if (isNearLimit /*TotalPoliceCars >= 10 */ && distanceTo >= 50f && PoliceCar.HasBeenEmptyFor >= 35000 && PoliceCar.Vehicle.IsPersistent)
+                        {
+                            PoliceCar.Vehicle.IsPersistent = false;
+                            EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles 2 NONPERS isNearLimit{isNearLimit} TotalPoliceCars{TotalPoliceCars} PossibleSpawnedPoliceCars{PossibleSpawnedPoliceCars}");
+                            GameFiber.Yield();
+                        }
+                        else if (distanceTo >= 250f)
+                        {
+                            if (PoliceCar.Vehicle.IsPersistent)
+                            {
+                                EntryPoint.PersistentVehiclesDeleted++;
+                            }
+                            EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles 3 DELETE isNearLimit{isNearLimit} TotalPoliceCars{TotalPoliceCars} PossibleSpawnedPoliceCars{PossibleSpawnedPoliceCars}");
+                            PoliceCar.FullyDelete();
+                            GameFiber.Yield();
+                        }
+                        GameFiber.Yield();
+                    }
+                    else
+                    {
+                        PoliceCar.ResetBecameEmpty();
+                    }
+                }
+                if (updated > 10)
+                {
+                    GameFiber.Yield();
+                    updated = 0;
+                }
+            }
+            GameFiber.Yield();//TR 29
+        }
+        catch (InvalidOperationException ex)
+        {
+            EntryPoint.WriteToConsole($"Remove Abandoned Vehicles, Collection Modified Error: {ex.Message} {ex.StackTrace}", 0);
+        }
+    }
+    private void FixDamagedPoliceVehicles()
+    {
+        int updated = 0;
+        foreach (VehicleExt PoliceCar in World.Vehicles.PoliceVehicleList.Where(x => !x.OwnedByPlayer && x.Vehicle.Exists() && x.WasModSpawned && x.HasExistedFor >= 15000).ToList())
+        {
+            if (PoliceCar.Vehicle.Exists())
+            {
+                if (PoliceCar.Vehicle.HasOccupants && (PoliceCar.Vehicle.Health < PoliceCar.Vehicle.MaxHealth - 500 || PoliceCar.Vehicle.EngineHealth < 200f) && PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 25f && !PoliceCar.Vehicle.IsOnScreen)
+                {
+                    PoliceCar.Vehicle.Repair();
+                    GameFiber.Yield();
+                }
+                // GameFiber.Yield();//TR 29
+            }
+            if (updated > 10)
+            {
+                GameFiber.Yield();
+                updated = 0;
+            }
+        }
+    }
+
+
+
     private void HandleAmbientSpawns()
     {
         if (!IsTimeToAmbientDispatch || !HasNeedToAmbientDispatch)
