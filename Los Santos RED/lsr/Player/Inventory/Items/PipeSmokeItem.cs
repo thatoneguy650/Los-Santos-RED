@@ -25,21 +25,22 @@ public class PipeSmokeItem : ConsumableItem
     }
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
-        PipeSmokingActivity activity = new PipeSmokingActivity(actionable, settings, this, intoxicants);
-        if (activity.CanPerform(actionable))
+        LighterItem lighterItem = actionable.Inventory.ItemsList.Where(x => x.ModItem != null).Select(x => x.ModItem).OfType<LighterItem>().ToList().FirstOrDefault();
+        if (lighterItem == null)
         {
-            ModItem li = actionable.Inventory.Get(typeof(LighterItem))?.ModItem;
-            if (li == null)
-            {
-                Game.DisplayHelp($"Need a ~r~Lighter~s~ to use {Name}");
-                return false;
-            }
-            actionable.Inventory.Use(li);
-            base.UseItem(actionable, settings, world, cameraControllable, intoxicants, time);
-            actionable.ActivityManager.StartUpperBodyActivity(activity);
-            return true;
+            Game.DisplayHelp($"Need a ~r~Lighter~s~ to use {Name}");
+            return false;
         }
-        return false;
+
+        PipeSmokingActivity activity = new PipeSmokingActivity(actionable, settings, this, intoxicants, lighterItem);
+        if (!activity.CanPerform(actionable))
+        {
+            return false;
+        }
+        actionable.Inventory.Use(lighterItem);
+        base.UseItem(actionable, settings, world, cameraControllable, intoxicants, time);
+        actionable.ActivityManager.StartUpperBodyActivity(activity);
+        return true;
     }
 
 }

@@ -25,7 +25,6 @@ namespace LosSantosRED.lsr.Player
         private bool IsEmittingSmoke;
         private bool IsHandByFace;
         private bool isPaused = false;
-        private bool IsPot;
         private bool IsSmokedItemAttachedToMouth;
         private bool IsSmokedItemLit;
         private bool IsSmokedItemNearMouth;
@@ -38,30 +37,31 @@ namespace LosSantosRED.lsr.Player
         private ISettingsProvideable Settings;
         private bool ShouldContinue;
         private LoopedParticle Smoke;
-        private Rage.Object SmokedItem;
-        private Rage.Object LighterItem;
+        private Rage.Object PipeObject;
+        private Rage.Object LighterObject;
         private PipeSmokeItem PipeSmokeItem;
 
         private int LeftHandBoneID = 18905;
-        private Vector3 LighterOffset = new Vector3(0.13f,0.02f,0.02f);
-        private Rotator LighterRotator = new Rotator(-93f,40f,0f);
+        private Vector3 LighterOffset = new Vector3(0.13f, 0.02f, 0.02f);
+        private Rotator LighterRotator = new Rotator(-93f, 40f, 0f);
         private int HandBoneID;
         private int MouthBoneID;
         private ConsumableRefresher ConsumableItemNeedGain;
+        private Vector3 LighterHandOffset;
+        private Rotator LighterHandRotator;
+        private string LighterHandBoneName;
+        private string LighterPropModelName;
 
-        public PipeSmokingActivity(IActionable consumable, bool isPot, ISettingsProvideable settings) : base()
-        {
-            Player = consumable;
-            IsPot = isPot;
-            Settings = settings;
-        }
-        public PipeSmokingActivity(IActionable consumable, ISettingsProvideable settings, PipeSmokeItem modItem, IIntoxicants intoxicants) : base()
+        private LighterItem LighterItem;
+
+        public PipeSmokingActivity(IActionable consumable, ISettingsProvideable settings, PipeSmokeItem pipeSmokeItem, IIntoxicants intoxicants, LighterItem lighterItem) : base()
         {
             Player = consumable;
             Settings = settings;
-            ModItem = modItem;
-            PipeSmokeItem = modItem;
+            ModItem = pipeSmokeItem;
+            PipeSmokeItem = pipeSmokeItem;
             Intoxicants = intoxicants;
+            LighterItem = lighterItem;
         }
         public override string DebugString => $"IsAttachedToMouth: {IsSmokedItemAttachedToMouth} IsLit: {IsSmokedItemLit} HandByFace: {IsHandByFace} H&F: {Math.Round(DistanceBetweenHandAndFace, 3)}, {Math.Round(MinDistanceBetweenHandAndFace, 3)}";
         public override ModItem ModItem { get; set; }
@@ -120,44 +120,36 @@ namespace LosSantosRED.lsr.Player
         private void AttachSmokedItemToHand()
         {
             CreateSmokedItem();
-            if (SmokedItem.Exists())
+            if (PipeObject.Exists())
             {
-                SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Data.HandBoneName), Data.HandOffset, Data.HandRotator);
+                PipeObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Data.HandBoneName), Data.HandOffset, Data.HandRotator);
                 IsSmokedItemAttachedToMouth = false;
-                Player.AttachedProp.Add(SmokedItem);
+                Player.AttachedProp.Add(PipeObject);
             }
-            if(LighterItem.Exists())
+            if(LighterObject.Exists())
             {
-                LighterItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, LeftHandBoneID), LighterOffset, LighterRotator);
-                Player.AttachedProp.Add(LighterItem);
+                LighterObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, LighterHandBoneName), LighterHandOffset, LighterHandRotator); //LighterObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, LeftHandBoneID), LighterOffset, LighterRotator); //LighterObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, LighterHandBoneName), LighterHandOffset, LighterHandRotator);
+                Player.AttachedProp.Add(LighterObject);
             }
         }
         private void CreateSmokedItem()
         {
-            if (!SmokedItem.Exists())
+            if (!PipeObject.Exists())
             {
                 try
                 {
-                    SmokedItem = new Rage.Object(Game.GetHashKey(Data.PropModelName), Player.Character.GetOffsetPositionUp(50f));
+                    PipeObject = new Rage.Object(Game.GetHashKey(Data.PropModelName), Player.Character.GetOffsetPositionUp(50f));
                 }
                 catch (Exception e)
                 {
                     Game.DisplayNotification($"Could Not Spawn Prop {Data.PropModelName}");
                 }
             }
-            if (!LighterItem.Exists())
+            if (!LighterObject.Exists())
             {
                 try
                 {
-                    InventoryItem LighterInventoryItem = Player.Inventory.Get(typeof(LighterItem));//LighterInventoryItem = Player.Inventory.Items.Where(x => x.ModItem?.ToolType == ToolTypes.Lighter).FirstOrDefault();
-                    if (LighterInventoryItem != null)
-                    {
-                        LighterItem = new Rage.Object(Game.GetHashKey(LighterInventoryItem.ModItem.ModelItem?.ModelName), Player.Character.GetOffsetPositionUp(60f));
-                    }
-                    else
-                    {
-                        LighterItem = new Rage.Object(Game.GetHashKey("p_cs_lighter_01"), Player.Character.GetOffsetPositionUp(60f));
-                    }                  
+                    LighterObject = new Rage.Object(Game.GetHashKey(LighterItem.ModelItem?.ModelName), Player.Character.GetOffsetPositionUp(60f));                 
                 }
                 catch (Exception e)
                 {
@@ -173,37 +165,33 @@ namespace LosSantosRED.lsr.Player
         }
         private void Exit()
         {
-           // EntryPoint.WriteToConsole("SmokingActivity Exit Start");
-            if (SmokedItem.Exists())
+            if (PipeObject.Exists())
             {
-                SmokedItem.Detach();
+                PipeObject.Detach();
             }
-            if (LighterItem.Exists())
+            if (LighterObject.Exists())
             {
-                LighterItem.Detach();
+                LighterObject.Detach();
             }
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.ActivityManager.IsPerformingActivity = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
-           // EntryPoint.WriteToConsole("SmokingActivity Exit End");
             GameFiber.Sleep(5000);
-            if (SmokedItem.Exists())
+            if (PipeObject.Exists())
             {
-                SmokedItem.Delete();
+                PipeObject.Delete();
             }
-            if (LighterItem.Exists())
+            if (LighterObject.Exists())
             {
-                LighterItem.Delete();
+                LighterObject.Delete();
             }
         }
         private void Idle()
         {
             ConsumableItemNeedGain = new ConsumableRefresher(Player, PipeSmokeItem, Settings);
             AttachSmokedItemToHand();
-            //EntryPoint.WriteToConsole("SmokingActivity Idle Start");
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
-            //EntryPoint.WriteToConsole($"Smoking Activity Playing {PlayingDict} {PlayingAnim}");
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 4.0f, -4.0f, -1, 50, 0, false, false, false);
             IsActivelySmoking = true;
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && !isPaused)
@@ -220,7 +208,6 @@ namespace LosSantosRED.lsr.Player
                 ConsumableItemNeedGain.Update();
                 GameFiber.Yield();
             }
-            //EntryPoint.WriteToConsole("SmokingActivity Idle End");
             Exit();        
         }
      
@@ -264,10 +251,10 @@ namespace LosSantosRED.lsr.Player
             MouthOffset = new Vector3();
             MouthRotator = new Rotator();
             MouthBoneName = "";
-            if (ModItem != null && ModItem.ModelItem != null)
+            if (PipeSmokeItem != null && PipeSmokeItem.ModelItem != null)
             {
-                PropModelName = ModItem.ModelItem.ModelName;
-                PropAttachment pa = ModItem.ModelItem.Attachments.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+                PropModelName = PipeSmokeItem.ModelItem.ModelName;
+                PropAttachment pa = PipeSmokeItem.ModelItem.Attachments.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
                 if (pa != null)
                 {
                     HandOffset = pa.Attachment;
@@ -275,15 +262,27 @@ namespace LosSantosRED.lsr.Player
                     HandBoneName = pa.BoneName;
                 }
             }
-
-
-
-
-            if (ModItem != null && PipeSmokeItem.IsIntoxicating)
+            if (LighterItem != null && LighterItem.ModelItem != null)
             {
-                CurrentIntoxicant = Intoxicants.Get(PipeSmokeItem.IntoxicantName);
+                LighterPropModelName = LighterItem.ModelItem.ModelName;
+                PropAttachment pa = LighterItem.ModelItem.Attachments.FirstOrDefault(x => x.Name == "LeftHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+                if (pa != null)
+                {
+                    LighterHandOffset = pa.Attachment;
+                    LighterHandRotator = pa.Rotation;
+                    LighterHandBoneName = pa.BoneName;
+                }
+            }
+
+
+
+            if (PipeSmokeItem != null && PipeSmokeItem.IsIntoxicating && PipeSmokeItem.Intoxicant != null)
+            {
+                CurrentIntoxicant = PipeSmokeItem.Intoxicant;
                 Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
+
+
             AnimationDictionary.RequestAnimationDictionay(AnimBaseDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
@@ -297,15 +296,15 @@ namespace LosSantosRED.lsr.Player
             {
                 MinDistanceBetweenHandAndFace = DistanceBetweenHandAndFace;
             }
-            if (SmokedItem.Exists())
+            if (PipeObject.Exists())
             {
-                DistanceBetweenSmokedItemAndFace = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, MouthBoneID)).DistanceTo(SmokedItem);
+                DistanceBetweenSmokedItemAndFace = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, MouthBoneID)).DistanceTo(PipeObject);
                 if (DistanceBetweenSmokedItemAndFace <= MinDistanceBetweenSmokedItemAndFace)
                 {
                     MinDistanceBetweenSmokedItemAndFace = DistanceBetweenSmokedItemAndFace;
                 }
             }
-            if (DistanceBetweenSmokedItemAndFace <= 0.77f && SmokedItem.Exists())
+            if (DistanceBetweenSmokedItemAndFace <= 0.77f && PipeObject.Exists())
             {
                 IsSmokedItemNearMouth = true;
             }
@@ -328,7 +327,7 @@ namespace LosSantosRED.lsr.Player
             {
                 if (IsSmokedItemNearMouth && !IsEmittingSmoke)
                 {
-                    Smoke = new LoopedParticle("core", "ent_anim_cig_smoke", SmokedItem, new Vector3(0.0f, 0.0f, 0f), Rotator.Zero, 1.5f);
+                    Smoke = new LoopedParticle("core", "ent_anim_cig_smoke", PipeObject, new Vector3(0.0f, 0.0f, 0f), Rotator.Zero, 1.5f);
                     IsEmittingSmoke = true;
                 }
                 if (!IsSmokedItemNearMouth && IsEmittingSmoke && Smoke != null)

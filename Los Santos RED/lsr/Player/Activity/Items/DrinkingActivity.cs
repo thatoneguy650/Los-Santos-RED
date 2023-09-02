@@ -322,11 +322,14 @@ namespace LosSantosRED.lsr.Player
                 }
             }
 
-            if (ModItem != null && DrinkItem.IsIntoxicating)
+
+
+            if (DrinkItem != null && DrinkItem.IsIntoxicating && DrinkItem.Intoxicant != null)
             {
-                CurrentIntoxicant = Intoxicants.Get(DrinkItem.IntoxicantName);
+                CurrentIntoxicant = DrinkItem.Intoxicant;
                 Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
+
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);

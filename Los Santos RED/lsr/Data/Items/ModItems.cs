@@ -112,6 +112,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.PliersItems);
         AllItems.AddRange(PossibleItems.HammerItems);
         AllItems.AddRange(PossibleItems.BongItems);
+        AllItems.AddRange(PossibleItems.RollingPapersItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
         AllItems.AddRange(PossibleItems.RadioItems);
         AllItems.AddRange(PossibleItems.ValuableItems);
@@ -141,6 +142,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.PliersItems);
         AllItems.AddRange(PossibleItems.HammerItems);
         AllItems.AddRange(PossibleItems.BongItems);
+        AllItems.AddRange(PossibleItems.RollingPapersItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
         AllItems.AddRange(PossibleItems.RadioItems);
 
@@ -166,6 +168,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.PliersItems);
         AllItems.AddRange(PossibleItems.HammerItems);
         AllItems.AddRange(PossibleItems.BongItems);
+        AllItems.AddRange(PossibleItems.RollingPapersItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
         AllItems.AddRange(PossibleItems.RadioItems);
         return AllItems.Where(x => x.FindPercentage > 0).ToList();
@@ -196,15 +199,16 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.PliersItems);
         AllItems.AddRange(PossibleItems.HammerItems);
         AllItems.AddRange(PossibleItems.BongItems);
+        AllItems.AddRange(PossibleItems.RollingPapersItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
         AllItems.AddRange(PossibleItems.RadioItems);
         return AllItems;
     }
-    public void Setup(PhysicalItems physicalItems, IWeapons weapons)
+    public void Setup(PhysicalItems physicalItems, IWeapons weapons, IIntoxicants intoxicants)
     {
         foreach(ModItem modItem in AllItems())
         {
-            modItem.Setup(physicalItems, weapons);
+            modItem.Setup(physicalItems, weapons, intoxicants);
         }
     }
     public ModItem GetRandomItem(bool allowIllegal)// List<string> RequiredModels)
@@ -548,7 +552,8 @@ public class ModItems : IModItems
                 ModelItemID = "p_ing_coffeecup_01",
                 HealthChangeAmount = MediumHealthRecover + 7, 
                 SleepChangeAmount = MediumSleepRecover + 7.0f,
-                ThirstChangeAmount = MediumThirstRecover + 7.0f,},//perfecto
+                ThirstChangeAmount = MediumThirstRecover + 7.0f,
+                ItemSubType = ItemSubType.Coffee},//perfecto
             new DrinkItem("Bratte Coffee", "Double shot latte, and 100 pumps of caramel.", ItemType.Drinks){
                 ModelItemID = "p_ing_coffeecup_01",
                 HealthChangeAmount = MediumHealthRecover,
@@ -682,7 +687,7 @@ public class ModItems : IModItems
             //    ModelItemID = "h4_prop_battle_vape_01"), IntoxicantName = "Marijuana", PercentLostOnUse = 0.05f },
             new SmokeItem("Marijuana","Little Jacob Tested, Truth Approved", ItemType.Drugs) {
                 ModelItemID = "p_cs_joint_01"//p_amb_joint_01
-                ,PackageItemID = "sf_prop_sf_bag_weed_01a", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2, HungerChangeAmount = -5.0f, ThirstChangeAmount = -2.0f },
+                ,PackageItemID = "sf_prop_sf_bag_weed_01a", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2, HungerChangeAmount = -5.0f, ThirstChangeAmount = -2.0f, NeedsRollingPapers = true },
             //new SmokeItem("White Widow","Among the most famous strains worldwide is White Widow, a balanced hybrid first bred in the Netherlands by Green House Seeds.", ItemType.Drugs) {
             //    ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2, SubItemName = "Marijuana"},
             //new SmokeItem("OG Kush","OG Kush, also known as 'Premium OG Kush', was first cultivated in Florida in the early '90s when a marijuana strain from Northern California was supposedly crossed with Chemdawg, Lemon Thai and a Hindu Kush plant from Amsterdam.", ItemType.Drugs) {
@@ -1931,8 +1936,13 @@ public class ModItems : IModItems
         });
         PossibleItems.BongItems.AddRange(new List<BongItem>
         {
-            new BongItem("Bong","~r~CURRENTLY UNUSED~s~ Also known as a water pipe") {
-                ModelItemID = "prop_bong_01",ItemSubType = ItemSubType.Tool } ,
+            new BongItem("Bong","Also known as a water pipe") {
+                ModelItemID = "prop_bong_01",ItemSubType = ItemSubType.Paraphernalia, PossibleDrugItems = new List<string>(){ "Marijuana" } } ,
+        });
+        PossibleItems.RollingPapersItems.AddRange(new List<RollingPapersItem>
+        {
+            new RollingPapersItem("Smoke Shop Rolling Papers","Need a quick cheap way to smoke your 'tobacco'?") {
+                ModelItemID = "p_cs_papers_03",ItemSubType = ItemSubType.Paraphernalia, AmountPerPackage = 20, PossibleDrugItems = new List<string>(){ "Marijuana" } } ,
         });
         PossibleItems.FlashlightItems.AddRange(new List<FlashlightItem> {
             new FlashlightItem("iFruit Cellphone","All of the price, none of the features.") {

@@ -54,7 +54,7 @@ public class VehicleItem : ModItem
     {
         RequiresDLC = requiresDLC;
     }
-    public override void Setup(PhysicalItems physicalItems, IWeapons weapons)
+    public override void Setup(PhysicalItems physicalItems, IWeapons weapons, IIntoxicants intoxicants)
     {
         //ModelItem = new PhysicalItem(ModelItemID, Game.GetHashKey(ModelItemID), ePhysicalItemType.Vehicle);
         ModelHash = ModelHash == 0 ? Game.GetHashKey(ModelName) : ModelHash;

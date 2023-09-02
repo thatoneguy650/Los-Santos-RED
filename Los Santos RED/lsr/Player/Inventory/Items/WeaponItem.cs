@@ -30,7 +30,7 @@ public class WeaponItem : ModItem
     {
         RequiresDLC = requiresDLC;
     }
-    public override void Setup(PhysicalItems physicalItems, IWeapons weapons)
+    public override void Setup(PhysicalItems physicalItems, IWeapons weapons, IIntoxicants intoxicants)
     {
         ModelItem = new PhysicalItem(ModelName, ModelHash == 0 ? Game.GetHashKey(ModelName) : ModelHash, ePhysicalItemType.Weapon);
         WeaponInformation = weapons.GetWeapon(ModelItem?.ModelName);

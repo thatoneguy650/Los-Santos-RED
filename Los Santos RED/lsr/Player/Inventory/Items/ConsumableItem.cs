@@ -20,6 +20,10 @@ public abstract class ConsumableItem : ModItem
     {
 
     }
+
+    [XmlIgnore]
+    public Intoxicant Intoxicant { get; set; }
+
     //[XmlIgnore]
     //public ConsumableRefresher ConsumableItemNeedGain { get; set; }
     public string IntoxicantName { get; set; } = "";
@@ -43,6 +47,16 @@ public abstract class ConsumableItem : ModItem
     public string ThirstChangeDescription => ChangesThirst ? $"{(ThirstChangeAmount > 0.0f ? "~g~+" : "~r~") + ThirstChangeAmount.ToString() + "~s~ Thirst"}" : "";
     public bool ChangesSleep => SleepChangeAmount != 0.0f;
     public string SleepChangeDescription => ChangesSleep ? $"{(SleepChangeAmount > 0.0f ? "~g~+" : "~r~") + SleepChangeAmount.ToString() + "~s~ Sleep"}" : "";
+
+    public override void Setup(PhysicalItems physicalItems, IWeapons weapons, IIntoxicants intoxicants)
+    {
+        if(!string.IsNullOrEmpty(IntoxicantName))
+        {
+            Intoxicant = intoxicants.Get(IntoxicantName);
+        }
+        base.Setup(physicalItems, weapons, intoxicants);
+    }
+
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
         actionable.Inventory.Use(this);
@@ -85,7 +99,12 @@ public abstract class ConsumableItem : ModItem
     }
     public override string GetExtendedDescription(ISettingsProvideable settings)
     {
-        return (settings.SettingsManager.NeedsSettings.ApplyNeeds ? (ChangesNeeds ? $"~n~{NeedChangeDescription}" : "") : (ChangesHealth ? $"~n~{HealthChangeDescription}" : "")) + (ChangesArmor ? $"~n~{ArmorChangeDescription}" : "");
+        string toReturn = (settings.SettingsManager.NeedsSettings.ApplyNeeds ? (ChangesNeeds ? $"~n~{NeedChangeDescription}" : "") : (ChangesHealth ? $"~n~{HealthChangeDescription}" : "")) + (ChangesArmor ? $"~n~{ArmorChangeDescription}" : "");
+        if(Intoxicant != null)
+        {
+            toReturn += $"~n~{Intoxicant.Description}";
+        }
+        return toReturn;
     }
     public override string PurchaseMenuDescription(ISettingsProvideable settings)
     {

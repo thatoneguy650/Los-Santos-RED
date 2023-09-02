@@ -96,7 +96,7 @@ public class ModItem
     public virtual bool IsDLC => false;
     public virtual string DisplayName => Name;
     public virtual string DisplayDescription => Description;
-    public virtual void Setup(PhysicalItems physicalItems, IWeapons weapons)
+    public virtual void Setup(PhysicalItems physicalItems, IWeapons weapons, IIntoxicants intoxicants)
     {
         if (ModelItemID != "")
         {

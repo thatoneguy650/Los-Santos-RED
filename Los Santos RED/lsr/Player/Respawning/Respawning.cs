@@ -157,7 +157,7 @@ public class Respawning// : IRespawning
         if (CurrentPlayer.BankAccounts.Money < FineAmount)
         {
             BailFeePastDue += FineAmount;       
-            Game.DisplayNotification(PoliceContactPicture, PoliceContactPicture, StaticStrings.OfficerFriendlyContactName, "~o~Citation", $"Citation of ~r~${FineAmount}~s~ has been added to your debt.");
+            Game.DisplayNotification(PoliceContactPicture, PoliceContactPicture, "Summary", "~o~Citation", $"Citation of ~r~${FineAmount}~s~ has been added to your debt.");
         }
         else
         {
@@ -167,7 +167,7 @@ public class Respawning// : IRespawning
                     $"You have paid the citation amount of ~r~${FineAmount}~s~, now fuck off.",
                     $"Citation of ~r~${FineAmount}~s~ paid. Move along."
                 };
-            Game.DisplayNotification(PoliceContactPicture, PoliceContactPicture, StaticStrings.OfficerFriendlyContactName, "~o~Citation", CitationCopResponses.PickRandom());
+            Game.DisplayNotification(PoliceContactPicture, PoliceContactPicture, "Summary", "~o~Citation", CitationCopResponses.PickRandom());
             CurrentPlayer.BankAccounts.GiveMoney(-1 * FineAmount);
         }
         GameTimeLastPaidFine = Game.GameTime;

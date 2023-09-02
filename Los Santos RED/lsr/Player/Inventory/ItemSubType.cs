@@ -40,4 +40,5 @@ public enum ItemSubType
     BodyArmor,
     HealthPack,
     CellPhone,
+    Paraphernalia,
 }

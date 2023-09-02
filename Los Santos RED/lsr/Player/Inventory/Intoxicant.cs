@@ -1,7 +1,10 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,8 +41,6 @@ public class Intoxicant//THIS IS THE OBJECT, THX, ALOCOHL, ETC
     public float MaxEffectAllowed { get; set; }
     public uint SoberingIntervalTime { get; set; }
     public string OverLayEffect { get; set; } = "";
-    //public bool ChangesWalking { get; set; } = true;
-    //public bool CausesSwerve { get; set; } = true;
     public bool HasOverlay => OverLayEffect != "";
     public float EffectIntoxicationLimit { get; set; } = 0.25f;
     public bool ContinuesWithoutCurrentUse { get; set; } = false;
@@ -48,6 +49,12 @@ public class Intoxicant//THIS IS THE OBJECT, THX, ALOCOHL, ETC
     {
         return Name;
     }
-
+    public string Description
+    {
+        get
+        {
+           return "~n~Has Side Effects~n~";       
+        }
+    }
 }
 

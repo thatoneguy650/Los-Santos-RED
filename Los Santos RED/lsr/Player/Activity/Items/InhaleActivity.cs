@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace LosSantosRED.lsr.Player
 {
-    public class InjectActivity : DynamicActivity
+    public class InhaleActivity : DynamicActivity
     {
         private Intoxicant CurrentIntoxicant;
         private EatingData Data;
@@ -22,15 +22,13 @@ namespace LosSantosRED.lsr.Player
         private string PlayingAnim;
         private string PlayingDict;
         private ISettingsProvideable Settings;
-        private InjectItem InjectItem;
-        private ConsumableRefresher ConsumableItemNeedGain;
-
-        public InjectActivity(IActionable consumable, ISettingsProvideable settings, InjectItem modItem, IIntoxicants intoxicants) : base()
+        private InhaleItem InhaleItem;
+        public InhaleActivity(IActionable consumable, ISettingsProvideable settings, InhaleItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
             Settings = settings;
             ModItem = modItem;
-            InjectItem = modItem;
+            InhaleItem = modItem;
             Intoxicants = intoxicants;
         }
         public override string DebugString => $"";
@@ -38,9 +36,9 @@ namespace LosSantosRED.lsr.Player
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
         public override bool IsUpperBodyOnly { get; set; } = true;
-        public override string PausePrompt { get; set; } = "Pause Shooting Up";
-        public override string CancelPrompt { get; set; } = "Stop Shooting Up";
-        public override string ContinuePrompt { get; set; } = "Continue Shooting Up";
+        public override string PausePrompt { get; set; } = "Pause Inhaling";
+        public override string CancelPrompt { get; set; } = "Stop Inhaling";
+        public override string ContinuePrompt { get; set; } = "Continue Inhaling";
         public override void Cancel()
         {
             IsCancelled = true;
@@ -69,7 +67,7 @@ namespace LosSantosRED.lsr.Player
                     EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
                     EntryPoint.ModController.CrashUnload();
                 }
-            }, "DrinkingWatcher");
+            }, "InhaleActivity");
         }
         public override bool CanPerform(IActionable player)
         {
@@ -80,6 +78,8 @@ namespace LosSantosRED.lsr.Player
             Game.DisplayHelp($"Cannot Start Activity: {ModItem?.Name}");
             return false;
         }
+
+
         private void AttachItemToHand()
         {
             CreateItem();
@@ -120,6 +120,12 @@ namespace LosSantosRED.lsr.Player
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
+
+
+            NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, PlayingDict, PlayingAnim, 0.55f);
+
+
+
             Idle();
         }
         private void Exit()
@@ -128,9 +134,10 @@ namespace LosSantosRED.lsr.Player
             {
                 Item.Detach();
             }
+            //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.ActivityManager.IsPerformingActivity = false;
-            if (CurrentIntoxicant != null && !CurrentIntoxicant.ContinuesWithoutCurrentUse)
+            if (!CurrentIntoxicant.ContinuesWithoutCurrentUse)
             {
                 //EntryPoint.WriteToConsole("IngestActivity Exit, Stopping ingestion");
                 Player.Intoxication.StopIngesting(CurrentIntoxicant);
@@ -143,26 +150,30 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
-            ConsumableItemNeedGain = new ConsumableRefresher(Player, InjectItem, Settings);
-            bool hasStartedIntoxicating = false;
-            uint GameTimeLastGaveHealth = Game.GameTime;
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
-                if (AnimationTime >= 0.35f && !hasStartedIntoxicating)
+                if (AnimationTime >= 0.25f)
                 {
-                    Player.Intoxication.StartIngesting(CurrentIntoxicant);
-                    hasStartedIntoxicating = true;
+                    if (Item.Exists())
+                    {
+                        //Item.Delete();
+                        //if (!hasGainedHP)//get health once you finish it once, but you can still continue drinking, might chnage it to a duration based
+                        //{
+                        //    Player.ChangeHealth(ModItem.MaxHealthChangeAmount);
+                        //    hasGainedHP = true;
+                        //}
+                    }
                 }
-                if (AnimationTime >= 0.7f)
+                if (AnimationTime >= 0.85f)
                 {
-                    ConsumableItemNeedGain.FullyConsume();
                     NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);//NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                     break;
                 }
                 GameFiber.Yield();
             }
+            //GameFiber.Sleep(5000);//wait for it to take effect!
             Exit();
         }
         private void Setup()
@@ -190,13 +201,16 @@ namespace LosSantosRED.lsr.Player
                     HandBoneName = pa.BoneName;
                 }
             }
-            AnimIdleDictionary = "rcmpaparazzo1ig_4";
-            AnimIdle = new List<string>() { "miranda_shooting_up" };
 
-            if (ModItem != null && InjectItem.IsIntoxicating)
+            AnimIdleDictionary = "amb@code_human_in_car_idles@generic@ps@idle_d";
+            AnimIdle = new List<string>() { "idle_j" };
+
+            if (InhaleItem != null && InhaleItem.IsIntoxicating && InhaleItem.Intoxicant != null)
             {
-                CurrentIntoxicant = Intoxicants.Get(InjectItem.IntoxicantName);
+                CurrentIntoxicant = InhaleItem.Intoxicant;
+                Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
+
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             Data = new EatingData("", "", AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneName, HandOffset, HandRotator, PropModel);
         }

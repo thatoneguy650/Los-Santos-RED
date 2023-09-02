@@ -220,11 +220,12 @@ namespace LosSantosRED.lsr.Player
             AnimEnter = "mp_player_int_eat_burger_enter";
             AnimEnterDictionary = "mp_player_inteat@burger";
 
-            if (ModItem != null && FoodItem.IsIntoxicating)
+            if (FoodItem != null && FoodItem.IsIntoxicating && FoodItem.Intoxicant != null)
             {
-                CurrentIntoxicant = Intoxicants.Get(FoodItem.IntoxicantName);
+                CurrentIntoxicant = FoodItem.Intoxicant;
                 Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
+
             AnimationDictionary.RequestAnimationDictionay(AnimBaseDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);

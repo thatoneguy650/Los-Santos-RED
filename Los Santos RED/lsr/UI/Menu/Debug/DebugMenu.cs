@@ -2291,15 +2291,10 @@ new YmapDisabler("manhat01",true),
         {
             Rage.Object SmokedItem = new Rage.Object(Game.GetHashKey(PropName), Player.Character.GetOffsetPositionUp(50f));
             GameFiber.Yield();
-
             string headBoneName = "BONETAG_HEAD";
             string handRBoneName = "BONETAG_R_PH_HAND";
             string handLBoneName = "BONETAG_L_PH_HAND";
-
             string boneName = headBoneName;
-
-
-
             string thighRBoneName = "BONETAG_R_THIGH";
             string thighLBoneName = "BONETAG_L_THIGH";
             string pelvisBoneName = "BONETAG_PELVIS";
@@ -2338,38 +2333,18 @@ new YmapDisabler("manhat01",true),
             {
                 boneName = wantedBone;
             }
-
-
-
             uint GameTimeLastAttached = 0;
             Offset = new Vector3();
             Rotation = new Rotator();
             isPrecise = false;
             if (SmokedItem.Exists())
             {
-                //Specific for umbrella
-
-                //AnimationDictionary.RequestAnimationDictionay("doors@");
-                // NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "doors@", "door_sweep_l_hand_medium", 4.0f, -4.0f, -1, (int)(AnimationFlags.StayInEndFrame | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
-
-                //string dictionary = "amb@world_human_binoculars@male@base";
-                //string animation = "base";
-
-
-
-                string dictionary = NativeHelper.GetKeyboardInput("move_strafe@melee_small_weapon_fps");
-                string animation = NativeHelper.GetKeyboardInput("idle");
-
+                string dictionary = NativeHelper.GetKeyboardInput("mp_safehousebong@");
+                string animation = NativeHelper.GetKeyboardInput("bong_fra");
                 AnimationDictionary.RequestAnimationDictionay(dictionary);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(AnimationFlags.Loop | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
-
-
                 isRunning = true;
-
                 AttachItem(SmokedItem, boneName, new Vector3(0.0f, 0.0f, 0f), new Rotator(0f, 0f, 0f));
-
-
-
                 GameFiber.StartNew(delegate
                 {
                     try
@@ -2381,8 +2356,6 @@ new YmapDisabler("manhat01",true),
                                 AttachItem(SmokedItem, boneName, Offset, Rotation);
                                 GameTimeLastAttached = Game.GameTime;
                             }
-
-
                             if (Game.IsKeyDown(Keys.B))
                             {
                                 //EntryPoint.WriteToConsoleTestLong($"Item {PropName} Attached to  {boneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
@@ -2582,30 +2555,30 @@ new YmapDisabler("manhat01",true),
     private void SetParticleAttachment()
     {
         //shovel replacing baseball bat?
-        string propName = NativeHelper.GetKeyboardInput("p_cs_lighter_01");
+        string propName = NativeHelper.GetKeyboardInput("prop_bong_01");
         string particleGroupName = NativeHelper.GetKeyboardInput("core");
         string particleName = NativeHelper.GetKeyboardInput("ent_anim_cig_smoke");
         Rage.Object weaponObject = null;
         try
         {
             weaponObject = new Rage.Object(propName, Player.Character.GetOffsetPositionUp(50f));
-            string HandBoneName = "BONETAG_L_PH_HAND";
+            string HandBoneName = "BONETAG_R_PH_HAND";
 
             Offset = new Vector3(0.0f, 0.0f, 0.0f);
             Rotation = new Rotator(0f, 0f, 0f);
 
 
-            Vector3 CoolOffset = new Vector3(0.13f, 0.02f, 0.02f);
-            Rotator CoolRotation = new Rotator(-93f, 40f, 0f);
+            Vector3 CoolOffset = new Vector3(0.0f, 0.0f, 0.0f);
+            Rotator CoolRotation = new Rotator(0f, 0f, 0f);
             if (weaponObject.Exists())
             {
-                string dictionary = "anim@amb@casino@hangout@ped_male@stand_withdrink@01a@base";
-                string animation = "base";
+                string dictionary = "safe@michael@ig_4";
+                string animation = "michael_short";
 
                 AnimationDictionary.RequestAnimationDictionay(dictionary);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(AnimationFlags.Loop | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
 
-
+                bool isRunning = true;
 
                 AttachItem(weaponObject, HandBoneName, CoolOffset, CoolRotation);
                 LoopedParticle particle = new LoopedParticle(particleGroupName, particleName, weaponObject, new Vector3(0.0f, 0.0f, 0f), Rotator.Zero, 1.5f);
@@ -2632,8 +2605,16 @@ new YmapDisabler("manhat01",true),
                                 isPrecise = !isPrecise;
                                 GameFiber.Sleep(500);
                             }
+
+                            if (Game.IsKeyDown(Keys.D0))
+                            {
+                                isRunning = !isRunning;
+                                NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, dictionary, animation, isRunning ? 1.0f : 0.0f);
+                                GameFiber.Sleep(500);
+                            }
+
                             Game.DisplaySubtitle($"{Offset.X}f,{Offset.Y}f,{Offset.Z}f -- {Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f");
-                            Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise}");
+                            Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise}~n~Press 0 Pause{isRunning}");
                             GameFiber.Yield();
                         }
                         if (weaponObject.Exists())

@@ -66,9 +66,13 @@ public class ModDataFileManager
         PhysicalItems = new PhysicalItems();
         PhysicalItems.ReadConfig();
         GameFiber.Yield();
+        Intoxicants = new Intoxicants();
+        Intoxicants.ReadConfig();
+        GameFiber.Yield();
+
         ModItems = new ModItems();
         ModItems.ReadConfig();
-        ModItems.Setup(PhysicalItems, Weapons);
+        ModItems.Setup(PhysicalItems, Weapons, Intoxicants);
         GameFiber.Yield();
         ShopMenus = new ShopMenus();
         ShopMenus.ReadConfig();
@@ -137,8 +141,6 @@ public class ModDataFileManager
         GameFiber.Yield();
         Interiors = new Interiors();
         Interiors.ReadConfig();
-        Intoxicants = new Intoxicants();
-        Intoxicants.ReadConfig();
         GameFiber.Yield();
         DanceList = new Dances();
         DanceList.ReadConfig();

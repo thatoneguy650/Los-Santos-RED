@@ -46,12 +46,6 @@ namespace LosSantosRED.lsr.Player
         private SmokeItem SmokeItem;
         private ConsumableRefresher ConsumableItemNeedGain;
 
-        public SmokingActivity(IActionable consumable, bool isPot, ISettingsProvideable settings) : base()
-        {
-            Player = consumable;
-            IsPot = isPot;
-            Settings = settings;
-        }
         public SmokingActivity(IActionable consumable, ISettingsProvideable settings, SmokeItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
@@ -512,13 +506,12 @@ namespace LosSantosRED.lsr.Player
 
 
 
-            if (ModItem != null && SmokeItem.IsIntoxicating)
+
+            if (SmokeItem != null && SmokeItem.IsIntoxicating && SmokeItem.Intoxicant != null)
             {
-                CurrentIntoxicant = Intoxicants.Get(SmokeItem.IntoxicantName);
+                CurrentIntoxicant = SmokeItem.Intoxicant;
                 Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
-
-
 
 
 

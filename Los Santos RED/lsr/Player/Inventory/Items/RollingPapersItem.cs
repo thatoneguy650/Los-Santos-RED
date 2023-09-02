@@ -8,18 +8,18 @@ using System.Linq;
 using System.Xml.Serialization;
 
 [Serializable()]
-public class BongItem : ModItem
+public class RollingPapersItem : ModItem
 {
     public List<string> PossibleDrugItems { get; set; }
-    public BongItem()
+    public RollingPapersItem()
     {
 
     }
-    public BongItem(string name, string description) : base(name, description, ItemType.Equipment)
+    public RollingPapersItem(string name, string description) : base(name, description, ItemType.Equipment)
     {
 
     }
-    public BongItem(string name) : base(name, ItemType.Equipment)
+    public RollingPapersItem(string name) : base(name, ItemType.Equipment)
     {
 
     }
@@ -36,19 +36,19 @@ public class BongItem : ModItem
             Game.DisplayHelp($"No Consumables found for {Name}");
             return false;
         }
-        ConsumableItem consumableItem = actionable.Inventory.ItemsList.Where(x=> x.ModItem != null).Select(x=> x.ModItem).OfType<ConsumableItem>().ToList().Where(x=> PossibleDrugItems.Contains(x.Name)).FirstOrDefault();
-        if (consumableItem == null)
+        SmokeItem smokeItem = actionable.Inventory.ItemsList.Where(x => x.ModItem != null).Select(x => x.ModItem).OfType<SmokeItem>().ToList().Where(x => PossibleDrugItems.Contains(x.Name)).FirstOrDefault();
+        if (smokeItem == null)
         {
             Game.DisplayHelp($"No Consumables found for {Name}");
             return false;
         }
-        BongSmokingActivity activity = new BongSmokingActivity(actionable, settings, this, lighterItem, consumableItem, intoxicants);
+        SmokingActivity activity = new SmokingActivity(actionable, settings, smokeItem, intoxicants);
         if (!activity.CanPerform(actionable))
         {
             return false;
         }
         actionable.Inventory.Use(lighterItem);
-        actionable.Inventory.Use(consumableItem);
+        actionable.Inventory.Use(smokeItem);
         base.UseItem(actionable, settings, world, cameraControllable, intoxicants, time);
         actionable.ActivityManager.StartUpperBodyActivity(activity);
         return true;

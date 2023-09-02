@@ -20,11 +20,10 @@ using System.Security.Policy;
 using System.Security.Principal;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml.Linq;
 //using System.Windows.Media;
 //using System.Windows.Media;
 //using System.Windows.Media;
-using static DispatchScannerFiles;
-using static RAGENativeUI.Elements.UIMenuStatsPanel;
 
 public class Debug
 {
@@ -473,11 +472,21 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        foreach(VehicleExt veh in Player.VehicleOwnership.OwnedVehicles.Where(x=>x.Vehicle.Exists()))
-        {
-            EntryPoint.WriteToConsole($"{veh.Vehicle.Model.Name} {veh.IsImpounded} {veh.ImpoundedLocation} {veh.TimesImpounded} {veh.DateTimeImpounded}");
-        }
+        //foreach(VehicleExt veh in Player.VehicleOwnership.OwnedVehicles.Where(x=>x.Vehicle.Exists()))
+        //{
+        //    EntryPoint.WriteToConsole($"{veh.Vehicle.Model.Name} {veh.IsImpounded} {veh.ImpoundedLocation} {veh.TimesImpounded} {veh.DateTimeImpounded}");
+        //}
 
+        LighterItem lighterItem = Player.Inventory.ItemsList.Where(x=> x.ModItem != null).Select(x=> x.ModItem).OfType<LighterItem>().ToList().FirstOrDefault();
+        if (lighterItem == null)
+        {
+            Game.DisplayHelp($"Need a ~r~Lighter~s~ to use");
+           // return false;
+        }
+        else
+        {
+            Game.DisplayHelp($"FOUND{lighterItem.Name}");
+        }
         //NativeFunction.Natives.SET_BIGMAP_ACTIVE(!IsBigMapActive, false);
         //Game.DisplaySubtitle($"IsBigMapActive:{IsBigMapActive}");
         //GameFiber.Sleep(1000);
@@ -3241,32 +3250,32 @@ public class Debug
     //    _iFruit.Close(5000);
     //}
 
-    private void CreatePointChecker()
-    {
+    //private void CreatePointChecker()
+    //{
 
-        Vector3 CoolPos = Game.LocalPlayer.Character.Position.Around2D(10f);
-        Color coolColor = Color.Yellow;
-        GameFiber.StartNew(delegate
-        {
-            while (!Game.IsKeyDown(Keys.O))
-            {
-                if(Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character,CoolPos))
-                {
-                    coolColor = Color.Red;
-                }
-                else
-                {
-                    coolColor = Color.Yellow;
-                }
-                float Result = Extensions.GetDotVectorResult(Game.LocalPlayer.Character, CoolPos);
-                Game.DisplayHelp($"Press O to Stop GetDotVectorResult {Result}");
-                Rage.Debug.DrawArrowDebug(CoolPos, Vector3.Zero, Rotator.Zero, 1f, coolColor);
+    //    Vector3 CoolPos = Game.LocalPlayer.Character.Position.Around2D(10f);
+    //    Color coolColor = Color.Yellow;
+    //    GameFiber.StartNew(delegate
+    //    {
+    //        while (!Game.IsKeyDown(Keys.O))
+    //        {
+    //            if(Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character,CoolPos))
+    //            {
+    //                coolColor = Color.Red;
+    //            }
+    //            else
+    //            {
+    //                coolColor = Color.Yellow;
+    //            }
+    //            float Result = Extensions.GetDotVectorResult(Game.LocalPlayer.Character, CoolPos);
+    //            Game.DisplayHelp($"Press O to Stop GetDotVectorResult {Result}");
+    //            Rage.Debug.DrawArrowDebug(CoolPos, Vector3.Zero, Rotator.Zero, 1f, coolColor);
 
-                GameFiber.Yield();
-            }
+    //            GameFiber.Yield();
+    //        }
 
-        }, "Run Debug Logic");
-    }
+    //    }, "Run Debug Logic");
+    //}
     private void BrowseTimecycles()
     {
         try
