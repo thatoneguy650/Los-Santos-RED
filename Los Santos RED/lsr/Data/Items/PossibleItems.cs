@@ -23,6 +23,7 @@ public class PossibleItems
     public List<HammerItem> HammerItems { get; private set; } = new List<HammerItem>();
     public List<PliersItem> PliersItems { get; private set; } = new List<PliersItem>();
     public List<BongItem> BongItems { get; private set; } = new List<BongItem>();
+    public List<PipeItem> PipeItems { get; private set; } = new List<PipeItem>();
     public List<RollingPapersItem> RollingPapersItems { get; private set; } = new List<RollingPapersItem>();
     public List<FoodItem> FoodItems { get; private set; } = new List<FoodItem>();
     public List<SmokeItem> SmokeItems { get; private set; } = new List<SmokeItem>();

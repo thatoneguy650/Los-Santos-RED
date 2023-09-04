@@ -1688,18 +1688,21 @@ public class ShopMenus : IShopMenus
         ShopMenuGroup MethDealerMenuGroup = new ShopMenuGroup(StaticStrings.MethamphetamineDealerMenuGroupID, "Meth Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
         {
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Meth Dealer 1", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 65, 40) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 22 } }),1),
+                    new MenuItem("Methamphetamine", 65, 40) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 22 },new MenuItem("Meth Pipe",5) { IsIllicilt = true, NumberOfItemsToSellToPlayer = 5 }, }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Meth Dealer 2", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 55, 38) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 23 } }),1),
+                    new MenuItem("Methamphetamine", 55, 38) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 23 },new MenuItem("Meth Pipe",5) { IsIllicilt = true, NumberOfItemsToSellToPlayer = 5 }, }),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Meth Dealer 3", new List<MenuItem>() {
                     new MenuItem("Methamphetamine", 60, 36) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 22 },
+                    new MenuItem("Meth Pipe",5) { IsIllicilt = true, NumberOfItemsToSellToPlayer = 5 },
                     new MenuItem("Hawk & Little PTF092F",200) { IsIllicilt = true },
                     new MenuItem("Switchblade",300) { IsIllicilt = true },}),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Meth Dealer 4", new List<MenuItem>() {
                     new MenuItem("Methamphetamine", 64, 35) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 30 },
+                    new MenuItem("Meth Pipe",5) { IsIllicilt = true, NumberOfItemsToSellToPlayer = 5 },
                     new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Meth Dealer 5", new List<MenuItem>() {
                     new MenuItem("Methamphetamine", 62, 36) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 25, NumberOfItemsToSellToPlayer = 23 },
+                    new MenuItem("Meth Pipe",5) { IsIllicilt = true, NumberOfItemsToSellToPlayer = 5 },
                     new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }),1),
         });
         PossibleShopMenus.ShopMenuGroupList.Add(MethDealerMenuGroup);
@@ -1726,19 +1729,22 @@ public class ShopMenus : IShopMenus
         ShopMenuGroup CrackDealerMenuGroup = new ShopMenuGroup(StaticStrings.CrackDealerMenuGroupID, "Crack Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
         {
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Crack Dealer 1", new List<MenuItem>() {
-                    new MenuItem("Crack", 58, 40) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 19, NumberOfItemsToSellToPlayer = 15 } }, StaticStrings.CrackDealerMenuGroupID),1),
+                    new MenuItem("Crack", 58, 40) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 19, NumberOfItemsToSellToPlayer = 15 },new MenuItem("Crack Pipe",5) { IsIllicilt = true, NumberOfItemsToSellToPlayer = 5 }, }, StaticStrings.CrackDealerMenuGroupID),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Crack Dealer 2", new List<MenuItem>() {
-                    new MenuItem("Crack", 48, 38) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 17, NumberOfItemsToSellToPlayer = 20 } }, StaticStrings.CrackDealerMenuGroupID),1),
+                    new MenuItem("Crack", 48, 38) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 17, NumberOfItemsToSellToPlayer = 20 },new MenuItem("Crack Pipe",5) { IsIllicilt = true, NumberOfItemsToSellToPlayer = 5 }, }, StaticStrings.CrackDealerMenuGroupID),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Crack Dealer 3", new List<MenuItem>() {
                     new MenuItem("Crack", 52, 36) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 22, NumberOfItemsToSellToPlayer = 11 },
+                    new MenuItem("Crack Pipe",5) { IsIllicilt = true, NumberOfItemsToSellToPlayer = 5 },
                     new MenuItem("Toto 12 Guage Sawed-Off",430) { IsIllicilt = true },
                     new MenuItem("Combat Knife",120) { IsIllicilt = true },
                     new MenuItem("Hawk & Little Desert Slug",950) { IsIllicilt = true },}, StaticStrings.CrackDealerMenuGroupID),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "SPANK Dealer 4", new List<MenuItem>() {
                     new MenuItem("Crack", 53, 38) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 20, NumberOfItemsToSellToPlayer = 15 },
+                    new MenuItem("Crack Pipe",5) { IsIllicilt = true, NumberOfItemsToSellToPlayer = 5 },
                     new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}, StaticStrings.CrackDealerMenuGroupID),1),
             new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "SPANK Dealer 5", new List<MenuItem>() {
                     new MenuItem("Crack", 50, 32) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 16, NumberOfItemsToSellToPlayer = 12 },
+                    new MenuItem("Crack Pipe",5) { IsIllicilt = true, NumberOfItemsToSellToPlayer = 5 },
                     new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }, StaticStrings.CrackDealerMenuGroupID),1),
         });
         PossibleShopMenus.ShopMenuGroupList.Add(CrackDealerMenuGroup);
@@ -1998,6 +2004,7 @@ public class ShopMenus : IShopMenus
                    new MenuItem("Methamphetamine",50, 35),
                    new MenuItem("Methamphetamine",40) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
                    new MenuItem("Methamphetamine",35) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
+                   new MenuItem("Meth Pipe",5),
 
                     new MenuItem("G.E.S. Baseball Bat",45),
                     new MenuItem("Flint Crowbar",30),
@@ -2545,6 +2552,7 @@ public class ShopMenus : IShopMenus
                     new MenuItem("Crack",46, 40),
                     new MenuItem("Crack",42) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
                     new MenuItem("Crack",40) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+                    new MenuItem("Crack Pipe",5),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip",0),
@@ -2603,6 +2611,7 @@ public class ShopMenus : IShopMenus
                     new MenuItem("Crack",45, 40),
                     new MenuItem("Crack",42) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
                     new MenuItem("Crack",40) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+                    new MenuItem("Crack Pipe",5),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip",0),
@@ -3337,6 +3346,7 @@ public class ShopMenus : IShopMenus
 
                     new MenuItem("Methamphetamine",40) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
                     new MenuItem("Methamphetamine",35) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
+                    new MenuItem("Meth Pipe",5),
 
                     new MenuItem("Flint Hatchet",80),
                     new MenuItem("Brass Knuckles",150),
@@ -3984,7 +3994,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Medium Body Armor",1250),
                 new MenuItem("Heavy Body Armor",1500),
                 new MenuItem("Full Body Armor",2000),
-                new MenuItem("Health Pack",550),
+                new MenuItem("Health Pack",1550),
 
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",550,450) { Extras = new List<MenuItemExtra>() {
@@ -4148,7 +4158,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Medium Body Armor",1250),
                 new MenuItem("Heavy Body Armor",1500),
                 new MenuItem("Full Body Armor",2000),
-                new MenuItem("Health Pack",550),
+                new MenuItem("Health Pack",1550),
                 //Pistola
                 new MenuItem("Vom Feuer SCRAMP",990, 770) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
@@ -4401,7 +4411,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Medium Body Armor",1250),
                 new MenuItem("Heavy Body Armor",1500),
                 new MenuItem("Full Body Armor",2000),
-                new MenuItem("Health Pack",550),
+                new MenuItem("Health Pack",1550),
 
                 //Pistola
                 new MenuItem("Hawk & Little Combat Pistol",950, 700) { Extras = new List<MenuItemExtra>() {
@@ -4556,7 +4566,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Medium Body Armor",1250),
                 new MenuItem("Heavy Body Armor",1500),
                 new MenuItem("Full Body Armor",2000),
-                new MenuItem("Health Pack",550),
+                new MenuItem("Health Pack",1550),
 
                 //Pistola
                 
@@ -4803,7 +4813,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Medium Body Armor",1250),
                 new MenuItem("Heavy Body Armor",1500),
                 new MenuItem("Full Body Armor",2000),
-                new MenuItem("Health Pack",550),
+                new MenuItem("Health Pack",1550),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",550,450) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip",0),

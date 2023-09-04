@@ -39,7 +39,7 @@ namespace LosSantosRED.lsr.Player
         private LoopedParticle Smoke;
         private Rage.Object PipeObject;
         private Rage.Object LighterObject;
-        private PipeSmokeItem PipeSmokeItem;
+
 
         private int LeftHandBoneID = 18905;
         private Vector3 LighterOffset = new Vector3(0.13f, 0.02f, 0.02f);
@@ -52,16 +52,19 @@ namespace LosSantosRED.lsr.Player
         private string LighterHandBoneName;
         private string LighterPropModelName;
 
+        private PipeItem PipeItem;
         private LighterItem LighterItem;
+        private ConsumableItem ConsumableItem;
 
-        public PipeSmokingActivity(IActionable consumable, ISettingsProvideable settings, PipeSmokeItem pipeSmokeItem, IIntoxicants intoxicants, LighterItem lighterItem) : base()
+        public PipeSmokingActivity(IActionable consumable, ISettingsProvideable settings, PipeItem pipeItem, LighterItem lighterItem, ConsumableItem consumableItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
             Settings = settings;
-            ModItem = pipeSmokeItem;
-            PipeSmokeItem = pipeSmokeItem;
-            Intoxicants = intoxicants;
+            ModItem = pipeItem;
+            PipeItem = pipeItem;
             LighterItem = lighterItem;
+            ConsumableItem = consumableItem;
+            Intoxicants = intoxicants;
         }
         public override string DebugString => $"IsAttachedToMouth: {IsSmokedItemAttachedToMouth} IsLit: {IsSmokedItemLit} HandByFace: {IsHandByFace} H&F: {Math.Round(DistanceBetweenHandAndFace, 3)}, {Math.Round(MinDistanceBetweenHandAndFace, 3)}";
         public override ModItem ModItem { get; set; }
@@ -94,7 +97,11 @@ namespace LosSantosRED.lsr.Player
         public override void Start()
         {
             isPaused = false;
-            Setup();
+            if (!Setup())
+            {
+                Game.DisplayHelp("Cannot Start Activity");
+                return;
+            }
             GameFiber SmokingWatcher = GameFiber.StartNew(delegate
             {
                 try
@@ -188,7 +195,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
-            ConsumableItemNeedGain = new ConsumableRefresher(Player, PipeSmokeItem, Settings);
+            ConsumableItemNeedGain = new ConsumableRefresher(Player, ConsumableItem, Settings);
             AttachSmokedItemToHand();
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
@@ -211,7 +218,7 @@ namespace LosSantosRED.lsr.Player
             Exit();        
         }
      
-        private void Setup()
+        private bool Setup()
         {
 
             HandBoneID = 57005;
@@ -241,20 +248,24 @@ namespace LosSantosRED.lsr.Player
             AnimEnter = "";
             AnimExitDictionary = "timetable@ron@smoking_meth";
             AnimExit = "";
-            HasLightingAnimation = false;     
+            HasLightingAnimation = false;
 
 
 
+            if (PipeItem == null || LighterItem == null || ConsumableItem == null)
+            {
+                return false;
+            }
             HandOffset = new Vector3();
             HandRotator = new Rotator();
             HandBoneName = "BONETAG_R_PH_HAND";
             MouthOffset = new Vector3();
             MouthRotator = new Rotator();
             MouthBoneName = "";
-            if (PipeSmokeItem != null && PipeSmokeItem.ModelItem != null)
+            if (PipeItem != null && PipeItem.ModelItem != null)
             {
-                PropModelName = PipeSmokeItem.ModelItem.ModelName;
-                PropAttachment pa = PipeSmokeItem.ModelItem.Attachments.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+                PropModelName = PipeItem.ModelItem.ModelName;
+                PropAttachment pa = PipeItem.ModelItem.Attachments.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
                 if (pa != null)
                 {
                     HandOffset = pa.Attachment;
@@ -273,12 +284,9 @@ namespace LosSantosRED.lsr.Player
                     LighterHandBoneName = pa.BoneName;
                 }
             }
-
-
-
-            if (PipeSmokeItem != null && PipeSmokeItem.IsIntoxicating && PipeSmokeItem.Intoxicant != null)
+            if (ConsumableItem != null && ConsumableItem.IsIntoxicating && ConsumableItem.Intoxicant != null)
             {
-                CurrentIntoxicant = PipeSmokeItem.Intoxicant;
+                CurrentIntoxicant = ConsumableItem.Intoxicant;
                 Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
 
@@ -288,6 +296,7 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
             Data = new SmokingData(AnimBase, AnimBaseDictionary, AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneName, HandOffset, HandRotator, MouthBoneName, MouthOffset, MouthRotator, PropModelName);
+            return true;
         }
         private void UpdatePosition()
         {

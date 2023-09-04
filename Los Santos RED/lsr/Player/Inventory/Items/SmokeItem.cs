@@ -12,7 +12,7 @@ public class SmokeItem : ConsumableItem
 {
     public override bool CanConsume { get; set; } = true;
     public bool NeedsRollingPapers { get; set; } = false;
-    public override string FullDescription(ISettingsProvideable Settings) => base.FullDescription(Settings) + $"~n~Requires: ~r~Lighter~s~" + (NeedsRollingPapers ? "~n~Requires: ~r~Rolling Papers~s~" : "");
+    public override string FullDescription(ISettingsProvideable Settings) => base.FullDescription(Settings) + $"~n~Requires: ~r~Lighter~s~" + (NeedsRollingPapers ? " and ~r~Rolling Papers~s~" : "");
     public SmokeItem()
     {
     }

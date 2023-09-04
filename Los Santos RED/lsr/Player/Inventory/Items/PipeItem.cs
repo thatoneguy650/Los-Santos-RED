@@ -8,19 +8,19 @@ using System.Linq;
 using System.Xml.Serialization;
 
 [Serializable()]
-public class BongItem : ModItem
+public class PipeItem : ModItem
 {
     public List<string> PossibleDrugItems { get; set; } = new List<string>();
-    public override string FullDescription(ISettingsProvideable Settings) => base.FullDescription(Settings) + $"~n~Requires: ~r~Lighter~s~ and ~r~{string.Join(",", PossibleDrugItems)}~s~";
-    public BongItem()
+    public override string FullDescription(ISettingsProvideable Settings) => base.FullDescription(Settings) + $"~n~Requires: ~r~Lighter~s~ and ~r~{string.Join(",",PossibleDrugItems)}~s~";
+    public PipeItem()
     {
 
     }
-    public BongItem(string name, string description) : base(name, description, ItemType.Equipment)
+    public PipeItem(string name, string description) : base(name, description, ItemType.Equipment)
     {
 
     }
-    public BongItem(string name) : base(name, ItemType.Equipment)
+    public PipeItem(string name) : base(name, ItemType.Equipment)
     {
 
     }
@@ -37,13 +37,13 @@ public class BongItem : ModItem
             Game.DisplayHelp($"No Consumables found for {Name}");
             return false;
         }
-        ConsumableItem consumableItem = actionable.Inventory.ItemsList.Where(x=> x.ModItem != null).Select(x=> x.ModItem).OfType<ConsumableItem>().ToList()?.Where(x=> PossibleDrugItems.Contains(x.Name)).FirstOrDefault();
+        ConsumableItem consumableItem = actionable.Inventory.ItemsList.Where(x => x.ModItem != null).Select(x => x.ModItem).OfType<ConsumableItem>().ToList()?.Where(x => PossibleDrugItems.Contains(x.Name)).FirstOrDefault();
         if (consumableItem == null)
         {
             Game.DisplayHelp($"No Consumables found for {Name}");
             return false;
         }
-        BongSmokingActivity activity = new BongSmokingActivity(actionable, settings, this, lighterItem, consumableItem, intoxicants);
+        PipeSmokingActivity activity = new PipeSmokingActivity(actionable, settings, this, lighterItem, consumableItem, intoxicants);
         if (!activity.CanPerform(actionable))
         {
             return false;

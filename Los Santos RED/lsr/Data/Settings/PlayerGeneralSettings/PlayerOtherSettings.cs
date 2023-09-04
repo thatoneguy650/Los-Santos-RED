@@ -103,10 +103,16 @@ public class PlayerOtherSettings : ISettingsDefaultable
         FemaleFreeModeVoice = "A_F_M_BEVHILLS_01_WHITE_FULL_01";
         GenerateStoreItemPreviews = true;
         MeleeDamageModifier = 1.0f;
+
+
+
         CorruptCopInvestigationClearCost = 2000;
         CorruptCopWantedClearCostScalar = 5000;
         HoursBetweenTasksWhenCompleted = 3;
         HoursBetweenTasksWhenFailed = 12;
+
+
+
         AllowMobileRadioOnFoot = false;
         DisableVanillaGangHassling = true;
         AllowAttackingFriendlyPeds = false;

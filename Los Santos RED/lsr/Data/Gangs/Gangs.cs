@@ -387,7 +387,7 @@ public class Gangs : IGangs
         };//heroin
         float pistolPercentage = 55f;
         float longGunPercentage = 2f;
-        Gambetti = new Gang("~g~", "AMBIENT_GANG_GAMBETTI", "Gambetti Crime Family", "Gambetti", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Gambetti", "CHAR_BLANK_ENTRY", "Gambetti Associate")
+        Gambetti = new Gang("~g~", "AMBIENT_GANG_GAMBETTI", "Gambetti Crime Family", "Gambetti", "Green", "MafiaPeds", "GambettiVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Gambetti", "CHAR_BLANK_ENTRY", "Gambetti Associate")
         {
             DenName = "Safehouse",
             AmbientMemberMoneyMin = 200,
@@ -419,7 +419,7 @@ public class Gangs : IGangs
             DrugDealerPercentage = 65f,
             GangClassification = GangClassification.Mafia,
         };//cocaine
-        Pavano = new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family", "Pavano", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Pavano", "CHAR_BLANK_ENTRY", "Pavano Assocaite")
+        Pavano = new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family", "Pavano", "Green", "MafiaPeds", "PavanoVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Pavano", "CHAR_BLANK_ENTRY", "Pavano Assocaite")
         {
             DenName = "Safehouse",
             AmbientMemberMoneyMin = 200,
@@ -451,7 +451,7 @@ public class Gangs : IGangs
             DrugDealerPercentage = 65f,
             GangClassification = GangClassification.Mafia,
         };//cocaine
-        Lupisella = new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family", "Lupisella", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Lupisella", "CHAR_BLANK_ENTRY", "Lupisella Assocaite")
+        Lupisella = new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family", "Lupisella", "Green", "MafiaPeds", "LupisellaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Lupisella", "CHAR_BLANK_ENTRY", "Lupisella Assocaite")
         {
             DenName = "Safehouse",
             AmbientMemberMoneyMin = 200,
@@ -483,7 +483,7 @@ public class Gangs : IGangs
             DrugDealerPercentage = 65f,
             GangClassification = GangClassification.Mafia,
         };//cocaine
-        Messina = new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family", "Messina", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Messina", "CHAR_BLANK_ENTRY", "Messina Assocaite")
+        Messina = new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family", "Messina", "Green", "MafiaPeds", "MessinaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Messina", "CHAR_BLANK_ENTRY", "Messina Assocaite")
         {
             DenName = "Safehouse",
             AmbientMemberMoneyMin = 200,
@@ -515,7 +515,7 @@ public class Gangs : IGangs
             DrugDealerPercentage = 65f,
             GangClassification = GangClassification.Mafia,
         };//cocaine
-        Ancelotti = new Gang("~g~", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Crime Family", "Ancelotti", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Ancelotti", "CHAR_BLANK_ENTRY", "Ancelotti Associate")
+        Ancelotti = new Gang("~g~", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Crime Family", "Ancelotti", "Green", "MafiaPeds", "AncelottiVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Ancelotti", "CHAR_BLANK_ENTRY", "Ancelotti Associate")
         {
             DenName = "Safehouse",
             AmbientMemberMoneyMin = 200,

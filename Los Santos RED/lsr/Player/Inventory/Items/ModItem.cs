@@ -113,7 +113,8 @@ public class ModItem
         return $"{Description}~n~" 
             + GetTypeDescription(Settings)
             + GetExtendedDescription(Settings)
-            + (MeasurementName != "Item" ? " " + MeasurementName + "(s)" : "");      
+            //+ (MeasurementName != "Item" ? " " + MeasurementName + "(s)" : "")
+            ;      
     }
     public virtual bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 public class PipeSmokeItem : ConsumableItem
 {
     public override bool CanConsume { get; set; } = true;
-    public override string FullDescription(ISettingsProvideable Settings) => base.FullDescription(Settings) + $"~n~Requires: ~r~Lighter~s~";
+    public override string FullDescription(ISettingsProvideable Settings) => base.FullDescription(Settings) + $"~n~Requires: ~r~Lighter~s~ and ~r~Pipe~s~";
     public PipeSmokeItem()
     {
     }
@@ -31,8 +31,13 @@ public class PipeSmokeItem : ConsumableItem
             Game.DisplayHelp($"Need a ~r~Lighter~s~ to use {Name}");
             return false;
         }
-
-        PipeSmokingActivity activity = new PipeSmokingActivity(actionable, settings, this, intoxicants, lighterItem);
+        PipeItem pipeItem = actionable.Inventory.ItemsList.Where(x => x.ModItem != null).Select(x => x.ModItem).OfType<PipeItem>().ToList()?.Where(x=> x.PossibleDrugItems != null & x.PossibleDrugItems.Contains(Name)).FirstOrDefault();
+        if (pipeItem == null)
+        {
+            Game.DisplayHelp($"Need a ~r~Pipe~s~ to use {Name}");
+            return false;
+        }
+        PipeSmokingActivity activity = new PipeSmokingActivity(actionable, settings, pipeItem, lighterItem, this, intoxicants);
         if (!activity.CanPerform(actionable))
         {
             return false;

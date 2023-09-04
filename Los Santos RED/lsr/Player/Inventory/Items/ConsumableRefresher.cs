@@ -13,8 +13,11 @@ public class ConsumableRefresher
     private ConsumableItem ConsumableItem;
     private ISettingsProvideable Settings;
     private int HealthGiven;
+    private int ArmorGiven;
     private bool GivenFullHealth;
+    private bool GivenFullArmor;
     private uint GameTimeLastGivenHealth;
+    private uint GameTimeLastGivenArmor;
     private uint GameTimeLastGivenNeeds;
     private float HungerGiven;
     private bool GivenFullHunger;
@@ -31,6 +34,7 @@ public class ConsumableRefresher
     }
 
     public bool IsFinished { get; internal set; }
+    public float SpeedMultiplier { get; set; } = 1.0f;
 
     public void Update()
     {
@@ -42,6 +46,7 @@ public class ConsumableRefresher
         if (!IsFinished)
         {
             UpdateHealthGain();
+            UpdateArmorGain();
             UpdateNeeds();
             CheckStatus();
         }
@@ -52,7 +57,11 @@ public class ConsumableRefresher
         {
             Player.HealthManager.ChangeHealth(ConsumableItem.HealthChangeAmount);
         }
-        if(Settings.SettingsManager.NeedsSettings.ApplyNeeds)
+        if (ConsumableItem.ChangesArmor)
+        {
+            Player.ArmorManager.ChangeArmor(ConsumableItem.ArmorChangeAmount);
+        }
+        if (Settings.SettingsManager.NeedsSettings.ApplyNeeds)
         {
             if (ConsumableItem.ChangesHunger)
             {
@@ -72,7 +81,7 @@ public class ConsumableRefresher
     {
         if (Settings.SettingsManager.NeedsSettings.ApplyNeeds)
         {
-            if (GivenFullHunger && GivenFullSleep && GivenFullThirst && (GivenFullHealth || !ConsumableItem.AlwaysChangesHealth))
+            if (GivenFullHunger && GivenFullSleep && GivenFullThirst && (GivenFullHealth || !ConsumableItem.AlwaysChangesHealth) && GivenFullArmor)
             {
                 //EntryPoint.WriteToConsoleTestLong($"Finished CIG1 {ConsumableItem.Name}");
                 IsFinished = true;
@@ -80,7 +89,7 @@ public class ConsumableRefresher
         }
         else
         {
-            if (GivenFullHealth)
+            if (GivenFullHealth && GivenFullArmor)
             {
                 //EntryPoint.WriteToConsoleTestLong($"Finished CIG2 {ConsumableItem.Name}");
                 IsFinished = true;
@@ -89,7 +98,7 @@ public class ConsumableRefresher
     }
     private void UpdateHealthGain()
     {
-        if (Game.GameTime - GameTimeLastGivenHealth >= Settings.SettingsManager.NeedsSettings.TimeBetweenGain)
+        if (Game.GameTime - GameTimeLastGivenHealth >= (Settings.SettingsManager.NeedsSettings.TimeBetweenGain/ SpeedMultiplier))
         {
             if (ConsumableItem.ChangesHealth && (!Settings.SettingsManager.NeedsSettings.ApplyNeeds || ConsumableItem.AlwaysChangesHealth))
             {
@@ -104,17 +113,42 @@ public class ConsumableRefresher
                     Player.HealthManager.ChangeHealth(-1);
                 }
             }
-            if (HealthGiven == ConsumableItem.HealthChangeAmount)
+            if (HealthGiven == ConsumableItem.HealthChangeAmount || Player.HealthManager.IsMaxHealth)
             {
-                //EntryPoint.WriteToConsoleTestLong("GIVEN FULL HEALTH");
+                EntryPoint.WriteToConsole("GIVEN FULL HEALTH");
                 GivenFullHealth = true;
             }
             GameTimeLastGivenHealth = Game.GameTime;
         }
     }
+    private void UpdateArmorGain()
+    {
+        if (Game.GameTime - GameTimeLastGivenArmor >= (Settings.SettingsManager.NeedsSettings.TimeBetweenGain/ SpeedMultiplier))
+        {
+            if (ConsumableItem.ChangesArmor)
+            {
+                if (ConsumableItem.ArmorChangeAmount > 0 && ArmorGiven < ConsumableItem.ArmorChangeAmount)
+                {
+                    ArmorGiven++;
+                    Player.ArmorManager.ChangeArmor(1);
+                }
+                else if (ConsumableItem.ArmorChangeAmount < 0 && ArmorGiven > ConsumableItem.ArmorChangeAmount)
+                {
+                    ArmorGiven--;
+                    Player.ArmorManager.ChangeArmor(-1);
+                }
+            }
+            if (ArmorGiven == ConsumableItem.ArmorChangeAmount)
+            {
+                EntryPoint.WriteToConsole("GIVEN FULL ARMOR");
+                GivenFullArmor = true;
+            }
+            GameTimeLastGivenArmor = Game.GameTime;
+        }
+    }
     private void UpdateNeeds()
     {
-        if (Game.GameTime - GameTimeLastGivenNeeds >= Settings.SettingsManager.NeedsSettings.TimeBetweenGain)
+        if (Game.GameTime - GameTimeLastGivenNeeds >= (Settings.SettingsManager.NeedsSettings.TimeBetweenGain / SpeedMultiplier))
         {
             if (ConsumableItem.ChangesNeeds)
             {

@@ -17,6 +17,9 @@ public class HealthManager
     private bool IsTimeToUpdate => Game.GameTime - GameTimeLastCheckedRegen >= 1000;
     public bool RecentlyRegenedHealth => GameTimeLastRegenedHealth != 0 && Game.GameTime - GameTimeLastRegenedHealth <= 5000;
     public bool RecentlyDrainedHealth => GameTimeLastDrainedHealth != 0 && Game.GameTime - GameTimeLastDrainedHealth <= 5000;
+
+    public bool IsMaxHealth => Player.Character.Exists() && Player.Character.Health == Player.Character.MaxHealth;
+
     public HealthManager(IHealthManageable player, ISettingsProvideable settings)
     {
         Player = player;

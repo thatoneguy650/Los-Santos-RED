@@ -154,6 +154,7 @@ public class PhysicalItems : IPropItems
             new PhysicalItem("prop_syringe_01", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)) }),//inject
             new PhysicalItem("prop_cs_meth_pipe", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) }),//Doesnt attach right
 
+
         });
     }
     private void DefaultConfig_Food()
@@ -212,7 +213,6 @@ public class PhysicalItems : IPropItems
             new PhysicalItem("prop_bong_01", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)) }),
 
             new PhysicalItem("p_cs_papers_03", new List<PropAttachment>() { }),
-
 
 
 

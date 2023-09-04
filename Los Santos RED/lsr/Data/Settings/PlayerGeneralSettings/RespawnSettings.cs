@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,9 +25,9 @@ public class RespawnSettings : ISettingsDefaultable
     public bool PermanentDeathMode { get; set; }
     [Description("Deduct the money without granting the bribe if the amount is too low.")]
     public bool DeductMoneyOnFailedBribe { get; set; }
-    [Description("Minimum bribe amount required.")]
-    public int PoliceBribeBase { get; set; }
-    [Description("Additional bribe amount for each wanted level. Ex. a value of 500 would require $1500 bribe at 3 stars.")]
+    //[Description("Minimum bribe amount required.")]
+    //public int PoliceBribeBase { get; set; }
+    [Description("Bribe amount for each wanted level. Ex. a value of 500 would require $1500 bribe at 3 stars.")]
     public int PoliceBribeWantedLevelScale { get; set; }
     [Description("Additional bribe amount for each police officer killed.")]
     public int PoliceBribePoliceKilledMultiplier { get; set; }
@@ -85,6 +86,14 @@ public class RespawnSettings : ISettingsDefaultable
     [Description("Extra fee applied for impounded vehicles that are stolen. Applied for each theft.")]
     public int ImpoundVehiclesStolenPenalty { get; set; }
 
+    [Description("Percentage of times lester will clear your bail fees. Minimum 0, maximum 100.")]
+    public int LesterBailHelpPercent { get; set; }
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        LesterBailHelpPercent = 1;
+    }
+
     public RespawnSettings()
     {
         SetDefault();
@@ -93,8 +102,8 @@ public class RespawnSettings : ISettingsDefaultable
     {
         RemoveWeaponsOnSurrender = true;
         DeductHospitalFee = true;
-        HospitalStayDailyFee = 10000;
-        HospitalStayMinDays = 4;
+        HospitalStayDailyFee = 5000;
+        HospitalStayMinDays = 7;
         HospitalStayMaxDays = 14;
       
         RemoveWeaponsOnDeath = true;
@@ -108,10 +117,9 @@ public class RespawnSettings : ISettingsDefaultable
 
 
         DeductMoneyOnFailedBribe = true;
-        PoliceBribeBase = 1000;//500;
-        PoliceBribeWantedLevelScale = 2000;//500;
-        PoliceBribePoliceKilledMultiplier = 15000;//10000;
-        PoliceBribePoliceInjuredMultiplier = 5000;//2000;
+        PoliceBribeWantedLevelScale = 2500;
+        PoliceBribePoliceKilledMultiplier = 15000;
+        PoliceBribePoliceInjuredMultiplier = 5000;
 
 
 
@@ -136,10 +144,12 @@ public class RespawnSettings : ISettingsDefaultable
         OffsetY = 0.5f;
 
 
-        ShowRequiredBribeAmount = false;
+        ShowRequiredBribeAmount = true;
         ShowRequiredBribeAmountControllerOnly = true;
         ImpoundVehicles = true;
         ImpoundVehiclesDailyFee = 500;
         ImpoundVehiclesStolenPenalty = 5000;
+
+        LesterBailHelpPercent = 1;
     }
 }

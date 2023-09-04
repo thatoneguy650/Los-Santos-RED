@@ -263,6 +263,7 @@
     <Compile Include="lsr\Player\ActiveTasks\IPlayerTaskGroup.cs" />
     <Compile Include="lsr\Player\Activity\DoorToggle.cs" />
     <Compile Include="lsr\Player\Activity\ItemDroppingActivity.cs" />
+    <Compile Include="lsr\Player\Activity\Items\ApplyEquipmentActivity.cs" />
     <Compile Include="lsr\Player\Activity\Items\BongSmokingActivity.cs" />
     <Compile Include="lsr\Player\Activity\Vehicle\VehicleDoorAnimation.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhone.cs" />
@@ -306,9 +307,11 @@
     <Compile Include="lsr\Player\Interface\IRestrictedAreaManagable.cs" />
     <Compile Include="lsr\Player\Inventory\Items\BodyArmorItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\EquipmentItem.cs" />
+    <Compile Include="lsr\Player\Inventory\Items\PipeItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\RollingPapersItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\ValuableItem.cs" />
     <Compile Include="lsr\Player\Relationships\ContactRelationship.cs" />
+    <Compile Include="lsr\Player\Respawning\PlayerPoliceSearch.cs" />
     <Compile Include="lsr\Player\Respawning\SearchActivity.cs" />
     <Compile Include="lsr\Player\SecurityResponse.cs" />
     <Compile Include="lsr\Player\Variation\OutfitManager.cs" />

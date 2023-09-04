@@ -139,11 +139,9 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Pick one of our state of the art treatment options!";
         MedicalTreatments = new List<MedicalTreatment>()
         {
-            new MedicalTreatment("Medical Student Once-Over","Have one of our newest medical students attempt to fix your issues",5,500),
-            new MedicalTreatment("Short Nurse Visit","Have an overworked nurse briefly ask you a question.",25,2000),
-            new MedicalTreatment("Regular Doctor Visit","One of our less qualified doctors will surely be able to help you out.",50,3500),
-            new MedicalTreatment("Decent Doctor Visit","Look at Mr. Rockefeller, shelling out for a ~r~real~s~ doctor.",75,4400),
-            new MedicalTreatment("Full Body Treatment","Our crack team will scan, poke, and prod you until you are like new!",100,5500),
+            new MedicalTreatment("Regular Doctor Visit","One of our less qualified doctors will surely be able to help you out.",50,500),
+            new MedicalTreatment("Decent Doctor Visit","Look at Mr. Rockefeller, shelling out for a ~r~real~s~ doctor.",75,750),
+            new MedicalTreatment("Full Body Treatment","Our crack team will scan, poke, and prod you until you are like new!",100,1000),
         };
         if (MedicalTreatments != null && MedicalTreatments.Any())
         {

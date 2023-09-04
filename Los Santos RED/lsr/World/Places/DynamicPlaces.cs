@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +77,7 @@ public class DynamicPlaces
             int checkedObjects = 0;
             foreach (Rage.Object obj in Objects)
             {
-                if (obj.Exists())
+                if (obj.Exists() && !NativeFunction.Natives.HAS_OBJECT_BEEN_BROKEN<bool>(obj, false))
                 {
                     string modelName = obj.Model.Name.ToLower();
                     Vector3 position = obj.Position;
@@ -176,7 +177,7 @@ public class DynamicPlaces
         for (int i = ActiveVendingMachines.Count - 1; i >= 0; i--)
         {
             VendingMachine gl = ActiveVendingMachines[i];
-            if (gl.DistanceToPlayer >= 100f || !gl.MachineProp.Exists())
+            if (gl.DistanceToPlayer >= 100f || !gl.MachineProp.Exists() || NativeFunction.Natives.HAS_OBJECT_BEEN_BROKEN<bool>(gl.MachineProp, false))
             {
                 if(gl.IsActivated)
                 {
@@ -195,7 +196,7 @@ public class DynamicPlaces
         for (int i = ActiveGasPumps.Count - 1; i >= 0; i--)
         {
             GasPump gl = ActiveGasPumps[i];
-            if (gl.DistanceToPlayer >= 100f || !gl.PumpProp.Exists())
+            if (gl.DistanceToPlayer >= 100f || !gl.PumpProp.Exists() || NativeFunction.Natives.HAS_OBJECT_BEEN_BROKEN<bool>(gl.PumpProp, false))
             {
                 if(gl.IsActivated)
                 {

@@ -15,9 +15,12 @@ public class DebugSettings : ISettingsDefaultable
     public bool ShowTrafficArrows { get; set; }
     public float CanineRunSpeed { get;  set; }
     public bool SetupCopFully { get; set; }
-    public float BongAnimStart { get; set; }
-    public float BongAnimEnd { get; set; }
-    public float BongAnimBlend { get; set; }
+    //public float BongAnimStart { get; set; }
+    //public float BongAnimEnd { get; set; }
+    //public float BongAnimBlend { get; set; }
+    //public float EquipmentAnimEnd { get; set; }
+    //public float EquipmentAnimStart { get; set; }
+
     public DebugSettings()
     {
         SetDefault();
@@ -32,10 +35,10 @@ public class DebugSettings : ISettingsDefaultable
         SetupCopFully = true;
         //BongAnimStart = 0.15f;
         //BongAnimEnd = 0.5f;
-        BongAnimStart = 0.3f;
-        BongAnimEnd = 0.55f;
-        BongAnimBlend = 2.0f;
-
-
+        //BongAnimStart = 0.3f;
+        //BongAnimEnd = 0.55f;
+        //BongAnimBlend = 2.0f;
+        //EquipmentAnimStart = 0.25f;
+        //EquipmentAnimEnd = 0.75f;
     }
 }

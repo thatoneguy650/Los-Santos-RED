@@ -121,6 +121,10 @@ public abstract class ConsumableItem : ModItem
         {
             description += $"~n~{NeedChangeDescription}";
         }
+        if (Intoxicant != null)
+        {
+            description += $"~n~{Intoxicant.Description}";
+        }
         return description;
     }
     public override string SellMenuDescription(ISettingsProvideable settings)
@@ -137,6 +141,10 @@ public abstract class ConsumableItem : ModItem
         if (ChangesNeeds && settings.SettingsManager.NeedsSettings.ApplyNeeds)
         {
             description += $"~n~{NeedChangeDescription}";
+        }
+        if (Intoxicant != null)
+        {
+            description += $"~n~{Intoxicant.Description}";
         }
         return description;
     }

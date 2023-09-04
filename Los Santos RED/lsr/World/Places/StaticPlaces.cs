@@ -101,7 +101,7 @@ public class StaticPlaces
         {
             gl.Update(Time);
             updated++;
-            if (updated >= 5)
+            if (updated >= 15)//5
             { 
                 GameFiber.Yield();
                 updated = 0;

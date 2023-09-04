@@ -231,6 +231,7 @@ namespace LosSantosRED.lsr.Data
                             myRes.InventoryItems.Add(new InventorySave(ii.ModItem?.Name, ii.RemainingPercent));
                         }
                     }
+                    myRes.StoredCash = res.StoredCash;
                     SavedResidences.Add(myRes);
                 }
             }
@@ -522,6 +523,7 @@ namespace LosSantosRED.lsr.Data
                         {
                             savedPlace.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
                         }
+                        savedPlace.StoredCash = res.StoredCash;
                         savedPlace.RefreshUI();
                     }
                 }

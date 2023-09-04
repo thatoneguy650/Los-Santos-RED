@@ -155,20 +155,14 @@ public class PoliceSettings : ISettingsDefaultable
     {
         GeneralFineAmount = 500;
         TalkFailFineAmount = 500;
-        DrivingWithoutLicenseFineAmount = 1000;
-
-
-
+        DrivingWithoutLicenseFineAmount = 500;
         TakeExclusiveControlOverWantedLevel = true;
         TakeExclusiveControlOverWantedLevelOneStarAndBelow = false;
-
         AttachBlipsToAmbientPeds = false;
         OverrideAccuracy = true;
         AutoRecognizeDistance = 15f;
         AlwaysRecognizeDistance = 7f;
         RecentlySeenTime = 15000;
-  
-
         ManageLoadout = true;
         BustDistance = 4f;//5f;
         OverrideHealth = true;
@@ -189,47 +183,25 @@ public class PoliceSettings : ISettingsDefaultable
         WantedLevelIncreaseTime_FromWanted4 = 360000;//6 minutes
         WantedLevelIncreaseTime_FromWanted5 = 600000;//10 minutes
 
-
         WantedLevelIncreaseTime_FromWanted6 = 600000;//10 minutes
         WantedLevelIncreaseTime_FromWanted7 = 600000;//10 minutes
         WantedLevelIncreaseTime_FromWanted8 = 600000;//10 minutes
         WantedLevelIncreaseTime_FromWanted9 = 600000;//10 minutes
 
-
         SightDistance = 90f;//70f;
         GunshotHearingDistance = 125f;
         SightDistance_Helicopter = 175f;
         SightDistance_Helicopter_AdditionalAtWanted = 100f;
-
-     //   DeadlyChaseRequiresWantedLevel = true;
-
         DeadlyChaseMinimumWantedLevel = 3;
         UnarmedChaseMaxWantedLevel = 3;
-
         MaxWantedLevel = 6;
-
         KnowsShootingSourceLocation = true;
         UseFakeWantedLevelSystem = true;
-
         DropWeaponWhenBusted = false;
-
         ForceDefaultWeaponAnimations = true;
-
-
-
         DropWeaponWhenBusted = true;
-
-
         SearchTimeMultiplier = 20000;
-
-
-
-
-
         AllowAlerts = true;
-
-
-
         MediumResponseInvestigationActiveCrimePriorityRequirement = 8;
         FullResponseWantedLevelRequirement = 4;
         HighResponseWantedLevelRequirement = 2;

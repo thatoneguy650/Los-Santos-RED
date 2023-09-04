@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -27,6 +29,10 @@ public class Residence : GameLocation, ILocationSetupable
     private IActivityPerformable ActivityPerformable;
     private UIMenuItem RentStopItem;
     private UIMenuItem SellHouseItem;
+    private UIMenu cashStorageSubMenu;
+    private UIMenuListScrollerItem<int> incrementScroller;
+    private UIMenuNumericScrollerItem<int> storeCashScroller;
+    private UIMenuNumericScrollerItem<int> removeCashScroller;
 
     private string IsRentedDescription => $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~";
     private string IsRentedRightLabel => Time == null ? $"Due Date: {DateRentalPaymentDue}" : "Remaining Days: " + Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0).ToString();
@@ -48,6 +54,9 @@ public class Residence : GameLocation, ILocationSetupable
     public SimpleInventory SimpleInventory { get; set; }
     [XmlIgnore]
     public WeaponStorage WeaponStorage { get; set; }
+    [XmlIgnore]
+    public int StoredCash { get; set; }
+
     public bool CanRent => !IsOwned && !IsRented && RentalFee > 0;
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
     public bool IsOwnedOrRented => IsOwned || IsRented;
@@ -123,13 +132,14 @@ public class Residence : GameLocation, ILocationSetupable
     {
         UpdateStoredData();
     }
-    public void Reset()
+    public override void Reset()
     {
         IsOwned = false;
         IsRented = false;
         WeaponStorage.Reset();
         SimpleInventory.Reset();
         UpdateStoredData();
+        StoredCash = 0;
     }
     public void ReRent()
     {
@@ -194,7 +204,10 @@ public class Residence : GameLocation, ILocationSetupable
                     BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
                     OfferSubMenu.SetBannerType(BannerImage);
                 }
-
+                if (!HasBannerImage)
+                {
+                    OfferSubMenu.SetBannerType(EntryPoint.LSRedColor);
+                }
                 PurchaseResidenceMenuItem = new UIMenuItem("Purchase", "Select to purchase this residence") { RightLabel = CanPurchaseRightLabel };
                 if (CanBuy)
                 {
@@ -255,18 +268,36 @@ public class Residence : GameLocation, ILocationSetupable
         RestMenuItem = new UIMenuNumericScrollerItem<int>("Rest", "Rest at your residence to recover health. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
         InteractionMenu.AddItem(RestMenuItem);
         outfitsSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Outfits");
+
+
+
+        if (!HasBannerImage)
+        {
+            outfitsSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        }
+
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Set an outfit.";
         UpdateOutfits();
         UpdateInventory();
         UpdateStoredWeapons();
-    }
 
+
+        cashStorageSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Stored Cash");
+        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Manage stored cash.";
+
+        if (!HasBannerImage)
+        {
+            cashStorageSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        }
+
+
+        UpdateStoredCash();
+    }
     private void SellHouse()
     {
         OnSold();
         MenuPool.CloseAllMenus();
     }
-
     private void StopRenting()
     {
         OnStopRenting();
@@ -293,6 +324,61 @@ public class Residence : GameLocation, ILocationSetupable
             outfitsSubMenu.AddItem(uIMenuItem);
         }
     }
+    private void UpdateStoredCash()
+    {
+        cashStorageSubMenu.Clear();
+
+        incrementScroller = new UIMenuListScrollerItem<int>("Increment","Set the scroll increment.",new List<int>() { 1,5,25,100,500,1000,10000,100000 }) { Formatter = v => v.ToString("N0") };
+
+        storeCashScroller = new UIMenuNumericScrollerItem<int>("Store Cash", "Store the selected amount of cash.", 0, Player.BankAccounts.Money, 1) { Value = Player.BankAccounts.Money, Formatter = v => "~r~$" + v + "~s~", };
+        removeCashScroller = new UIMenuNumericScrollerItem<int>("Remove Cash", "Remove the selected amount of cash.", 0, StoredCash, 1) { Value = StoredCash, Formatter = v => "~g~$" + v + "~s~", };
+
+
+
+        incrementScroller.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            storeCashScroller.Step = incrementScroller.SelectedItem;
+            removeCashScroller.Step = incrementScroller.SelectedItem;
+        };
+
+
+        storeCashScroller.Activated += (sender,selectedItem) =>
+        {
+            if(storeCashScroller.Value <= Player.BankAccounts.Money)
+            {
+                Player.BankAccounts.GiveMoney(-1 * storeCashScroller.Value);
+                StoredCash += storeCashScroller.Value;
+
+                
+                storeCashScroller.Maximum = Player.BankAccounts.Money;
+                removeCashScroller.Maximum = StoredCash;
+
+
+                storeCashScroller.Value = Player.BankAccounts.Money;
+                removeCashScroller.Value = StoredCash;
+            }
+        };
+
+        removeCashScroller.Activated += (sender, selectedItem) =>
+        {
+            if (StoredCash >= removeCashScroller.Value)
+            {
+                Player.BankAccounts.GiveMoney(removeCashScroller.Value);
+                StoredCash -= removeCashScroller.Value;
+
+
+                storeCashScroller.Maximum = Player.BankAccounts.Money;
+                removeCashScroller.Maximum = StoredCash;
+
+                storeCashScroller.Value = Player.BankAccounts.Money;
+                removeCashScroller.Value = StoredCash;
+            }
+        };
+        cashStorageSubMenu.AddItem(incrementScroller);
+        cashStorageSubMenu.AddItem(storeCashScroller);
+        cashStorageSubMenu.AddItem(removeCashScroller);
+    }
+
     private bool Rent()
     {
         if(CanRent && Player.BankAccounts.Money >= RentalFee)

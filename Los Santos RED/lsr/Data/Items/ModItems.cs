@@ -112,6 +112,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.PliersItems);
         AllItems.AddRange(PossibleItems.HammerItems);
         AllItems.AddRange(PossibleItems.BongItems);
+        AllItems.AddRange(PossibleItems.PipeItems);
         AllItems.AddRange(PossibleItems.RollingPapersItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
         AllItems.AddRange(PossibleItems.RadioItems);
@@ -142,6 +143,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.PliersItems);
         AllItems.AddRange(PossibleItems.HammerItems);
         AllItems.AddRange(PossibleItems.BongItems);
+        AllItems.AddRange(PossibleItems.PipeItems);
         AllItems.AddRange(PossibleItems.RollingPapersItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
         AllItems.AddRange(PossibleItems.RadioItems);
@@ -168,6 +170,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.PliersItems);
         AllItems.AddRange(PossibleItems.HammerItems);
         AllItems.AddRange(PossibleItems.BongItems);
+        AllItems.AddRange(PossibleItems.PipeItems);
         AllItems.AddRange(PossibleItems.RollingPapersItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
         AllItems.AddRange(PossibleItems.RadioItems);
@@ -199,9 +202,16 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.PliersItems);
         AllItems.AddRange(PossibleItems.HammerItems);
         AllItems.AddRange(PossibleItems.BongItems);
+        AllItems.AddRange(PossibleItems.PipeItems);
         AllItems.AddRange(PossibleItems.RollingPapersItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
         AllItems.AddRange(PossibleItems.RadioItems);
+
+        AllItems.AddRange(PossibleItems.ValuableItems);
+        AllItems.AddRange(PossibleItems.EquipmentItems);
+        AllItems.AddRange(PossibleItems.BodyArmorItems);
+
+
         return AllItems;
     }
     public void Setup(PhysicalItems physicalItems, IWeapons weapons, IIntoxicants intoxicants)
@@ -268,6 +278,7 @@ public class ModItems : IModItems
         DefaultConfig_Drugs();
         DefaultConfig_Weapons();
         DefaultConfig_Armor();
+        DefaultConfig_Paraphernalia();
         DefaultConfig_Tools();
         DefaultConfig_Vehicles();
         DefaultConfig_Services();
@@ -296,7 +307,6 @@ public class ModItems : IModItems
                 ItemSubType = ItemSubType.HealthPack, AlwaysChangesHealth = true, HealthChangeAmount = 75,PackageItemID = "prop_ld_health_pack" },
         });
     }
-
     private void DefaultConfig_Valuables()
     {
         PossibleItems.ValuableItems.AddRange(new List<ValuableItem>
@@ -311,7 +321,6 @@ public class ModItems : IModItems
                 FindPercentage = 5,ItemSubType = ItemSubType.Ring },
         });
     }
-
     private void DefaultConfig_Drinks()
     {
         PossibleItems.DrinkItems.AddRange(new List<DrinkItem> {
@@ -685,54 +694,38 @@ public class ModItems : IModItems
                 PackageItemID = "p_cigar_pack_02_s",AmountPerPackage = 20, HealthChangeAmount = -5,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigar, FindPercentage = 1 },
             //new ModItem("ElectroToke Vape","The Electrotoke uses highly sophisticated micro-molecule atomization technology to make the ingestion of hard drugs healthy, dscreet, pleasurable and, best of all, completely safe.", ItemType.Drugs) {
             //    ModelItemID = "h4_prop_battle_vape_01"), IntoxicantName = "Marijuana", PercentLostOnUse = 0.05f },
+
+
             new SmokeItem("Marijuana","Little Jacob Tested, Truth Approved", ItemType.Drugs) {
                 ModelItemID = "p_cs_joint_01"//p_amb_joint_01
-                ,PackageItemID = "sf_prop_sf_bag_weed_01a", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2, HungerChangeAmount = -5.0f, ThirstChangeAmount = -2.0f, NeedsRollingPapers = true },
-            //new SmokeItem("White Widow","Among the most famous strains worldwide is White Widow, a balanced hybrid first bred in the Netherlands by Green House Seeds.", ItemType.Drugs) {
-            //    ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2, SubItemName = "Marijuana"},
-            //new SmokeItem("OG Kush","OG Kush, also known as 'Premium OG Kush', was first cultivated in Florida in the early '90s when a marijuana strain from Northern California was supposedly crossed with Chemdawg, Lemon Thai and a Hindu Kush plant from Amsterdam.", ItemType.Drugs) {
-            //    ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2, SubItemName = "Marijuana" },
-            //new SmokeItem("Northern Lights","Northern Lights, also known as 'NL', is an indica marijuana strain made by crossing Afghani with Thai.", ItemType.Drugs) {
-            //    ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2, SubItemName = "Marijuana" },
-
+                ,PackageItemID = "sf_prop_sf_bag_weed_01a", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, IsPossessionIllicit = true, FindPercentage = 2, HungerChangeAmount = -5.0f, ThirstChangeAmount = -2.0f, NeedsRollingPapers = true },
         });
         PossibleItems.IngestItems.AddRange(new List<IngestItem>
         {
             new IngestItem("Bull Shark Testosterone","More bite than bush elephant testosterone. Become more aggressive, hornier, and irresistible to women! The ultimate man!", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Bull Shark Testosterone" , AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1,ThirstChangeAmount = -5, HungerChangeAmount = -5, SleepChangeAmount = 20 },
-            
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Bull Shark Testosterone" , AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1,ThirstChangeAmount = -5, HungerChangeAmount = -5, SleepChangeAmount = 20 },     
             new IngestItem("Alco Patch","The Alco Patch. It's the same refreshing feeling of your favorite drink, but delivered transdermally and discreetly. Pick up the Alco Patch at your local pharmacy.", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Alco Patch",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1,ThirstChangeAmount = -5, SleepChangeAmount = -15 },
-            
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Alco Patch",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1,ThirstChangeAmount = -5, SleepChangeAmount = -15 },     
             new IngestItem("Lax to the Max","Lubricated suppositories. Get flowing again!", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Alco Patch",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, HungerChangeAmount = -10, ThirstChangeAmount = -10 },
-            
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Alco Patch",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, HungerChangeAmount = -10, ThirstChangeAmount = -10 },    
             new IngestItem("Mollis","For outstanding erections. Get the performance you've always dreamed of", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Mollis",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 2 },
-            
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Mollis",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 2 },     
             new IngestItem("Chesty","Cough suppressant manufactured by Good Aids Pharmacy. Gives 24-hour relief and is available in honey flavour.", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Chesty", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 10 },
-            
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Chesty", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 10 },    
             new IngestItem("Equanox","Combats dissatisfaction, lethargy, depression, melancholy, sexual dysfunction. May cause nausea, loss of sleep, blurred vision, leakage, kidney problems and breathing irregularities.", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Equanox", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 5 },
-            
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Equanox", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 5 },        
             new IngestItem("Zombix","Painkiller and antidepressant manufactured by O'Deas Pharmacy. ~n~'Go straight for the head.'", ItemType.Drugs) {
                 ModelItemID = "prop_cs_pills",IntoxicantName = "Zombix", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 50 },
-            
+           
             new IngestItem("Wach-Auf Caffeine Pills","When you need to Wach-Auf, but there's no time to delay! Remember, sleep is for the weak!", ItemType.Drugs) { AmountPerPackage = 25,
                 ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Medication,SleepChangeAmount = 35,ThirstChangeAmount = -5,HungerChangeAmount = -5, FindPercentage = 5 },
 
             new IngestItem("Hingmyralgan","For Brain-Ache and other pains!", ItemType.Drugs) { AmountPerPackage = 25,
-                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 20, FindPercentage = 15, AlwaysChangesHealth = true },
-
-
+                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 12, FindPercentage = 15, AlwaysChangesHealth = true },
             new IngestItem("Deludamol","For a Night You'll Never Remember. Extra Strength Painkiller.", ItemType.Drugs) { AmountPerPackage = 25,
-                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 25,ThirstChangeAmount = -1, FindPercentage = 5, AlwaysChangesHealth = true },
-
-
-
+                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 15,ThirstChangeAmount = -1, FindPercentage = 5, AlwaysChangesHealth = true },
             new IngestItem("Delladamol","Extra Strength Painkiller. Extra Legit Packaging.", ItemType.Drugs) { AmountPerPackage = 12,
-                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 15,ThirstChangeAmount = -3, FindPercentage = 5, AlwaysChangesHealth = true },
+                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 10,ThirstChangeAmount = -3, FindPercentage = 5, AlwaysChangesHealth = true },
 
 
 
@@ -759,11 +752,11 @@ public class ModItems : IModItems
         PossibleItems.PipeSmokeItems.AddRange(new List<PipeSmokeItem>
         {
             new PipeSmokeItem("Methamphetamine","Also referred to as Speed, Sabu, Crystal and Meth", ItemType.Drugs) { IsPossessionIllicit = true,
-                ModelItemID = "prop_cs_meth_pipe"
+                ModelItemID = "prop_meth_bag_01"
                 ,PackageItemID = "prop_meth_bag_01"
                 ,IntoxicantName = "Methamphetamine", PercentLostOnUse = 0.25f, MeasurementName = "Gram",  ItemSubType = ItemSubType.Narcotic, FindPercentage = 1, PoliceFindDuringPlayerSearchPercentage = 15 },
             new PipeSmokeItem("Crack", "Too cheap for cocaine? Find out what it means when they say things are 'like crack'", ItemType.Drugs) { IsPossessionIllicit = true,
-                ModelItemID = "prop_cs_crackpipe"
+                ModelItemID = "prop_meth_bag_01"
                 ,PackageItemID = "prop_meth_bag_01"
                 ,IntoxicantName = "Crack", PercentLostOnUse = 0.5f, MeasurementName = "Gram",  ItemSubType = ItemSubType.Narcotic, FindPercentage = 1, PoliceFindDuringPlayerSearchPercentage = 15 },
         });
@@ -1879,9 +1872,28 @@ public class ModItems : IModItems
             //
         });
     }
+    private void DefaultConfig_Paraphernalia()
+    {
+        PossibleItems.BongItems.AddRange(new List<BongItem>
+        {
+            new BongItem("Bong","Also known as a water pipe") {
+                ModelItemID = "prop_bong_01",ItemSubType = ItemSubType.Paraphernalia, PossibleDrugItems = new List<string>(){ "Marijuana" } } ,
+        });
+        PossibleItems.PipeItems.AddRange(new List<PipeItem>
+        {
+            new PipeItem("Crack Pipe","You know what it's for.") {
+                ModelItemID = "prop_cs_crackpipe",ItemSubType = ItemSubType.Paraphernalia, PossibleDrugItems = new List<string>(){ "Crack" } } ,
+            new PipeItem("Meth Pipe","A required part of every meth bender.") {
+                ModelItemID = "prop_cs_meth_pipe",ItemSubType = ItemSubType.Paraphernalia, PossibleDrugItems = new List<string>(){ "Methamphetamine" } } ,
+        });
+        PossibleItems.RollingPapersItems.AddRange(new List<RollingPapersItem>
+        {
+            new RollingPapersItem("Smoke Shop Rolling Papers","Need a quick cheap way to smoke your 'tobacco'?") {
+                ModelItemID = "p_cs_papers_03",ItemSubType = ItemSubType.Paraphernalia, AmountPerPackage = 20, PossibleDrugItems = new List<string>(){ "Marijuana" } } ,
+        });
+    }
     private void DefaultConfig_Tools()
     {
-
         PossibleItems.RadioItems.AddRange(new List<RadioItem>
         {
             new RadioItem("Schmidt & Priss TL6 Scanner","Ever wonder what the LSPD talks about behind your back? Wonder no further.") {
@@ -1934,16 +1946,11 @@ public class ModItems : IModItems
             new HammerItem("Flint Rubber Mallet","Give it a whack") {
                 ModelItemID = "gr_prop_gr_hammer_01",ItemSubType = ItemSubType.Tool  },
         });
-        PossibleItems.BongItems.AddRange(new List<BongItem>
-        {
-            new BongItem("Bong","Also known as a water pipe") {
-                ModelItemID = "prop_bong_01",ItemSubType = ItemSubType.Paraphernalia, PossibleDrugItems = new List<string>(){ "Marijuana" } } ,
-        });
-        PossibleItems.RollingPapersItems.AddRange(new List<RollingPapersItem>
-        {
-            new RollingPapersItem("Smoke Shop Rolling Papers","Need a quick cheap way to smoke your 'tobacco'?") {
-                ModelItemID = "p_cs_papers_03",ItemSubType = ItemSubType.Paraphernalia, AmountPerPackage = 20, PossibleDrugItems = new List<string>(){ "Marijuana" } } ,
-        });
+
+
+
+
+
         PossibleItems.FlashlightItems.AddRange(new List<FlashlightItem> {
             new FlashlightItem("iFruit Cellphone","All of the price, none of the features.") {
                 ModelItemID = "prop_phone_ing",

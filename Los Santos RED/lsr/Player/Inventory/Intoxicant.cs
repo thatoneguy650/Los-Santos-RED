@@ -53,7 +53,11 @@ public class Intoxicant//THIS IS THE OBJECT, THX, ALOCOHL, ETC
     {
         get
         {
-           return "~n~Has Side Effects~n~";       
+            if (HasOverlay || Effects > 0)
+            {
+                return "~r~Has Side Effects~s~";
+            }
+            return "";
         }
     }
 }

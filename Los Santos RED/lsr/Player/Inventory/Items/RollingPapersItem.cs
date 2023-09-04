@@ -10,7 +10,8 @@ using System.Xml.Serialization;
 [Serializable()]
 public class RollingPapersItem : ModItem
 {
-    public List<string> PossibleDrugItems { get; set; }
+    public List<string> PossibleDrugItems { get; set; } = new List<string>();
+    public override string FullDescription(ISettingsProvideable Settings) => base.FullDescription(Settings) + $"~n~Requires: ~r~Lighter~s~ and ~r~{string.Join(",", PossibleDrugItems)}~s~";
     public RollingPapersItem()
     {
 
@@ -36,7 +37,7 @@ public class RollingPapersItem : ModItem
             Game.DisplayHelp($"No Consumables found for {Name}");
             return false;
         }
-        SmokeItem smokeItem = actionable.Inventory.ItemsList.Where(x => x.ModItem != null).Select(x => x.ModItem).OfType<SmokeItem>().ToList().Where(x => PossibleDrugItems.Contains(x.Name)).FirstOrDefault();
+        SmokeItem smokeItem = actionable.Inventory.ItemsList.Where(x => x.ModItem != null).Select(x => x.ModItem).OfType<SmokeItem>().ToList()?.Where(x => PossibleDrugItems.Contains(x.Name)).FirstOrDefault();
         if (smokeItem == null)
         {
             Game.DisplayHelp($"No Consumables found for {Name}");

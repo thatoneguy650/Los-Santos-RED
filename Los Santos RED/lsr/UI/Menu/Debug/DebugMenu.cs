@@ -2642,11 +2642,28 @@ new YmapDisabler("manhat01",true),
     }
     private void PrintVehicleClasses()
     {
+        foreach(Gang gang in Gangs.AllGangs)
+        {
+            if(gang.Vehicles == null)
+            {
+                continue;
+            }
+            WriteToClassCreator($"--{gang.ShortName} {gang.VehiclesID}", 0, "DispatchableVehicles");
+            foreach (DispatchableVehicle dispatchableVehicle in gang.Vehicles)
+            {
+                WriteToClassCreator($"DispatchableVehicle {dispatchableVehicle.DebugName.Replace(" ", String.Empty)} = new DispatchableVehicle() {{", 0, "DispatchableVehicles");
+                PrintClass(dispatchableVehicle, null, "DispatchableVehicles");
+                WriteToClassCreator($"}};", 0, "DispatchableVehicles");
+            }
+        }
+    }
+    private void PrintGangDens()
+    {
         foreach (GangDen gangDen in ModDataFileManager.PlacesOfInterest.PossibleLocations.GangDens)
         {
-            WriteToClassCreator($"GangDen {gangDen.Name.Replace(" ", String.Empty)} = new GangDen() {{", 0, "DispatchableVehicles");
-            PrintClass(gangDen,null, "DispatchableVehicles");
-            WriteToClassCreator($"}};", 0, "DispatchableVehicles");
+            WriteToClassCreator($"GangDen {gangDen.Name.Replace(" ", String.Empty)} = new GangDen() {{", 0, "GangDens");
+            PrintClass(gangDen, null, "GangDens");
+            WriteToClassCreator($"}};", 0, "GangDens");
         }
     }
     private void PrintLocationClasses(List<string> AllowedProperties)

@@ -88,7 +88,7 @@ public class Settings : ISettingsProvideable
 
 
         SettingsManager.RespawnSettings.DeductMoneyOnFailedBribe = false;
-        SettingsManager.RespawnSettings.PoliceBribeBase = 100;
+        //SettingsManager.RespawnSettings.PoliceBribeBase = 100;
         SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale = 500;
         SettingsManager.RespawnSettings.PoliceBribePoliceKilledMultiplier = 5000;
         SettingsManager.RespawnSettings.PoliceBribePoliceInjuredMultiplier = 200;

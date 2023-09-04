@@ -27,7 +27,7 @@ public class SavedResidence
     public List<StoredWeapon> WeaponInventory { get; set; } = new List<StoredWeapon>();
     public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
 
-
+    public int StoredCash { get; set; }
 
 
 }
