@@ -79,6 +79,7 @@ public class GameSaves : IGameSaves
         AddClaude();
         AddLamar();
         AddBrad();
+        //AddNiko();
 //#if DEBUG
 //        AddNicholasClark();
 //        AddDaveNorton();
@@ -448,6 +449,165 @@ public class GameSaves : IGameSaves
         gameSave.SaveNumber = 4;
         GameSaveList.Add(gameSave);
     }
+
+    private void AddNiko()
+    {
+        PedVariation Variation = new PedVariation(new List<PedComponent>()
+        {
+            new PedComponent(0, 0, 0, 0),
+            new PedComponent(1, 0, 0, 0),
+            new PedComponent(2, 48, 0, 0) ,
+            new PedComponent(3, 12, 0, 0) ,
+            new PedComponent(4, 25, 0, 0) ,
+            new PedComponent(5, 0, 0, 0) ,
+            new PedComponent(6, 10, 0, 0) ,
+            new PedComponent(7, 21, 12, 0) ,
+            new PedComponent(8, 31, 0, 0) ,
+            new PedComponent(9, 0, 0, 0) ,
+            new PedComponent(10, 0, 0, 0) ,
+            new PedComponent(11, 31, 0, 0)
+        },
+        new List<PedPropComponent>()
+        {
+
+        },
+        new List<HeadOverlayData>() {
+            new HeadOverlayData(0,"Blemishes") { Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0},
+            new HeadOverlayData(1, "Facial Hair") { ColorType = 1,Index = 10,Opacity = 0.4f, PrimaryColor = 3,SecondaryColor = 3 },
+            new HeadOverlayData(2, "Eyebrows") { ColorType = 1,Index = 12,Opacity = 1.0f, PrimaryColor = 3,SecondaryColor = 3 },
+            new HeadOverlayData(3, "Ageing") {Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(4, "Makeup") { Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(5, "Blush") { ColorType = 2, Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(6, "Complexion"){ Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(7, "Sun Damage"){ Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(8, "Lipstick") { ColorType = 2, Index = 255,Opacity = 0.6f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(9, "Moles/Freckles"){ Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(10, "Chest Hair") { ColorType = 1, Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(11, "Body Blemishes") { Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(12, "Add Body Blemishes"){Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },},
+        new HeadBlendData(26, 43, 0, 26, 43, 0, 1.0f, 0.5f, 0.0f),
+        3,
+        3)
+        { 
+            FaceFeatures = new List<FaceFeature>(){
+
+
+
+                new FaceFeature(6, "Brow Height") { Scale = 0.9f },//DOWN = 1.0 UP = -1.0f
+                new FaceFeature(7, "Brow Width") { Scale = 0.2f },//OUT = 1.0 IN = -1.0f
+
+                new FaceFeature(11, "Eyelids") { Scale = 0.2f },//SQUINT = 1.0, WIDE = -1.0
+
+
+                new FaceFeature(0,"Nose Width") { Scale = -0.1f },//WIDE = 1.0, NARROW = -1.0f
+                new FaceFeature(1, "Nose Height") { Scale = -0.1f },//UP = 1.0, DOWN = -1.0f
+
+                new FaceFeature(2, "Nose Length") { Scale = -0.8f },//Short = 1.0 LONG = -1.0f
+                new FaceFeature(3, "Nose Bridge") { Scale = -0.3f },//CURVED = 1.0, CROOKED = -1.0f
+
+
+                new FaceFeature(4, "Nose Tip") { Scale = 0.1f },//DOWN 1.0, UP -1.0f
+                new FaceFeature(5, "Nose Bridge Shaft") { Scale = 0.0f },//RIGHT 1.0, LEFT -1.0f
+
+
+
+
+
+
+                new FaceFeature(8, "Cheekbone Height") { Scale = 0.3f },//DOWN = 1.0 UP = -1.0f
+                new FaceFeature(9, "Cheekbone Width") { Scale = -0.9f },//OUT = 1.0f, IN = -1.0f
+
+
+                new FaceFeature(10, "Cheek Width") { Scale = 0.9f },//GAUNT = 1.0f, PUFFED = -1.0f
+
+
+                new FaceFeature(12, "Lip Thickness") { Scale = 0.1f },//THIN = 1.0, FAT = -1.0f
+
+                new FaceFeature(13, "Jaw Width") { Scale = -1.0f },//SQUARE = 1.0f, ROUND = -1.0f
+                new FaceFeature(14, "Jaw Height") { Scale = 0.0f },//DOWN = 1.0f, UP = -1.0f
+
+                new FaceFeature(15, "Chin Height") { Scale = 0.8f },//DOWN = 1.0f, UP = -1.0f
+                new FaceFeature(16, "Chin Length") { Scale = 0.1f },//OUT = 1.0f, IN = -1.0f
+
+                new FaceFeature(17, "Chin Width") { Scale = 0.0f },//WIDE = 1.0f, THIN = -1.0f
+                new FaceFeature(18, "Chin Shape") { RangeLow = 0.0f,Scale = 0.0f },//DEEP = 1.0f, NONE = -1.0f
+
+                new FaceFeature(19, "Neck Width") { RangeLow = 0.0f,Scale = 0.0f }, }
+
+
+
+            /*            FaceFeatures = new List<FaceFeature>(){            
+                new FaceFeature(0,"Nose Width") { Scale = 0.5f },
+                new FaceFeature(1, "Nose Peak") { Scale = 0.0f },
+                new FaceFeature(2, "Nose Length") { Scale = 0.8f },
+                new FaceFeature(3, "Nose Bone Curveness") { Scale = -0.3f },
+                new FaceFeature(4, "Nose Tip") { Scale = 0.0f },
+                new FaceFeature(5, "Nose Bone Twist") { Scale = 0.0f },
+                new FaceFeature(6, "Eyebrow Up/Down") { Scale = 1.0f },
+                new FaceFeature(7, "Eyebrow In/Out") { Scale = 0.5f },
+                new FaceFeature(8, "Cheek Bones Up/Down") { Scale = -0.3f },
+                new FaceFeature(9, "Cheek Sideways Bone Size") { Scale = 0.9f },
+                new FaceFeature(10, "Cheek Bones Width") { Scale = 0.0f },
+                new FaceFeature(11, "Eye Opening") { Scale = -0.4f },
+                new FaceFeature(12, "Lip Thickness") { Scale = -0.4f },
+                new FaceFeature(13, "Jaw Bone Width") { Scale = 0.0f },
+                new FaceFeature(14, "Jaw Bone Shape") { Scale = -1.0f },
+                new FaceFeature(15, "Chin Bone") { Scale = -1.0f },
+                new FaceFeature(16, "Chin Bone Length") { Scale = -1.0f },
+                new FaceFeature(17, "Chin Bone Shape") { Scale = 1.0f },
+                new FaceFeature(18, "Chin Hole") { RangeLow = 0.0f,Scale = 0.0f },
+                new FaceFeature(19, "Neck Thickness") { RangeLow = 0.0f,Scale = 0.0f }, }*/
+
+
+
+
+        };
+        List<StoredWeapon> Weapons = new List<StoredWeapon>
+        {
+            new StoredWeapon(0x2B5EF5EC, Vector3.Zero, new WeaponVariation(), 45),
+            new StoredWeapon(2508868239, Vector3.Zero, new WeaponVariation(), 0),
+        };
+        GameSave GameSave = new GameSave("Niko Bellic", 19500, "MP_M_FREEMODE_01", true, Variation, Weapons, new List<VehicleSaveStatus>() {
+            new VehicleSaveStatus("comet2", new Vector3(866.8428f, -1594.666f, 30.80709f), 84.34846f) { VehicleVariation = new VehicleVariation() {
+                PrimaryColor = 38, SecondaryColor = 38, LicensePlate = new LSR.Vehicles.LicensePlate("4YDR8567", 0, false)
+            } }
+                                                                                                                                                                 }); 
+        GameSave.PlayerPosition = new Vector3(860.6456f, -1591.222f, 31.7381f);
+        GameSave.PlayerHeading = 107.1845f;
+        GameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
+        GameSave.Contacts.Add(new GunDealerContact(StaticStrings.UndergroundGunsContactName));
+        GameSave.SavedResidences.Add(new SavedResidence("310S Popular Street", false, true) { RentalPaymentDate = GameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = GameSave.CurrentDateTime });
+        GameSave.GangReputationsSave = new List<GangRepSave>() {
+
+
+
+        new GangRepSave("AMBIENT_GANG_MARABUNTE", 3000, 0, 0, 0, 0, 0, 0, 0, false, false,0),
+        new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false,0),
+        new GangRepSave("AMBIENT_GANG_ARMENIAN", 3000, 0, 0, 0, 0, 0, 0, 0, false, false,0),
+        new GangRepSave("AMBIENT_GANG_YARDIES", -3000, 3, 1, 0, 3, 1, 0, 0, false, false,0),
+        new GangRepSave("AMBIENT_GANG_DIABLOS", -3000, 5, 3, 3, 5, 3, 3, 0, false, false,0),
+
+
+        };
+
+        GameSave.InventoryItems.Add(new InventorySave("TAG-HARD Flashlight", 1.0f));
+        GameSave.InventoryItems.Add(new InventorySave("Flint Flathead Screwdriver", 1.0f));
+        GameSave.InventoryItems.Add(new InventorySave("Flint Pliers", 1.0f));
+        GameSave.InventoryItems.Add(new InventorySave("SCHEISS DS Binoculars", 1.0f));
+        GameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
+
+        GameSave.HungerValue = 85.0f;
+        GameSave.ThirstValue = 85.0f;
+        GameSave.SleepValue = 85.0f;
+        GameSave.SpeechSkill = 0;
+        GameSave.SaveNumber = 5;
+        GameSave.VoiceName = "A_M_M_SKATER_01_WHITE_FULL_01";
+        GameSaveList.Add(GameSave);
+    }
+
+
+
+
     private void AddNicholasClark()
     {
         List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>()

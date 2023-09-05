@@ -34,7 +34,9 @@ public class Conversation : Interaction, IAdvancedConversationable
     private List<string> GreetPedNegativePossibilites;
     private List<string> GreetPedPositivePossibilities;
     private IEntityProvideable World;
-    public Conversation(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, ISpeeches speeches, IEntityProvideable world)
+    private ILocationInteractable LocationInteractable;
+    public Conversation(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories,
+        ISpeeches speeches, IEntityProvideable world, ILocationInteractable locationInteractable)
     {
         Player = player;
         Ped = ped;
@@ -47,6 +49,7 @@ public class Conversation : Interaction, IAdvancedConversationable
         Gangs = gangs;
         GangTerritories = gangTerritories;
         Speeches = speeches;
+        LocationInteractable = locationInteractable;
         GreetPlayerNegativePossibilites = new List<string>() { "PROVOKE_GENERIC", "GENERIC_WHATEVER" };
         GreetPlayerPositivePossibilities = new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" };
         GreetPedNegativePossibilites = new List<string>() { "GENERIC_WHATEVER" };
@@ -385,7 +388,7 @@ public class Conversation : Interaction, IAdvancedConversationable
     }
     private void AskQuestion()
     {
-        AdvancedConversation = new AdvancedConversation(Player, this, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories, Speeches, World);
+        AdvancedConversation = new AdvancedConversation(Player, this, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories, Speeches, World, LocationInteractable);
         AdvancedConversation.Setup();
         AdvancedConversation.Show();
         IsActivelyConversing = true;

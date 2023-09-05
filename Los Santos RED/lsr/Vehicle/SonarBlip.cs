@@ -64,9 +64,14 @@ public class SonarBlip
         {
             return;
         }
+
+        Blip.Sprite = (BlipSprite)672;
+        Blip.Angle = (int)VehicleExt.Vehicle.Heading;
+
         Blip.Scale = VehicleExt.BlipSize;
         Blip.Color = VehicleExt.BlipColor;
         Blip.Alpha = 255;
+
         world.AddBlip(Blip);
         GameTimeLastAddedSonarBlip = Game.GameTime;
     }

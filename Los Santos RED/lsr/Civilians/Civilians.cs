@@ -195,7 +195,7 @@ public class Civilians
         int localRan = 0;
         TotalMerchantsRan = 0;
         TotalMerchantsChecked = 0;
-        foreach (PedExt ped in World.Pedestrians.MerchantList.OrderBy(x => x.GameTimeLastUpdated))
+        foreach (PedExt ped in World.Pedestrians.ServiceWorkers.OrderBy(x => x.GameTimeLastUpdated))
         {
             try
             {

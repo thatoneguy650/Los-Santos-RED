@@ -56,6 +56,7 @@ public class Pedestrians : ITaskerReportable
     public List<SecurityGuard> SecurityGuards { get; private set; } = new List<SecurityGuard>();
     public List<Firefighter> Firefighters { get; private set; } = new List<Firefighter>();
     public List<Merchant> Merchants { get; private set; } = new List<Merchant>();
+    public List<Teller> Tellers { get; private set; } = new List<Teller>();
     public List<Zombie> Zombies { get; private set; } = new List<Zombie>();
     public List<GangMember> GangMembers { get; private set; } = new List<GangMember>();
     public List<PedExt> DeadPeds { get; private set; } = new List<PedExt>();
@@ -68,6 +69,7 @@ public class Pedestrians : ITaskerReportable
     public List<SecurityGuard> SecurityGuardList => SecurityGuards.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Firefighter> FirefighterList => Firefighters.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Merchant> MerchantList => Merchants.Where(x => x.Pedestrian.Exists()).ToList();
+    public List<Teller> TellerList => Tellers.Where(x => x.Pedestrian.Exists()).ToList();
     public List<PedExt> LivingPeople
     {
         get
@@ -76,6 +78,7 @@ public class Pedestrians : ITaskerReportable
             myList.AddRange(CivilianList);
             myList.AddRange(GangMemberList);
             myList.AddRange(MerchantList);
+            myList.AddRange(TellerList);
             myList.AddRange(EMTList);
             myList.AddRange(PoliceList);
             myList.AddRange(FirefighterList);
@@ -91,7 +94,18 @@ public class Pedestrians : ITaskerReportable
             myList.AddRange(CivilianList);
             myList.AddRange(GangMemberList);
             myList.AddRange(MerchantList);
+            myList.AddRange(TellerList);
             myList.AddRange(SecurityGuardList);
+            return myList;
+        }
+    }
+    public List<PedExt> ServiceWorkers
+    {
+        get
+        {
+            List<PedExt> myList = new List<PedExt>();
+            myList.AddRange(MerchantList);
+            myList.AddRange(TellerList);
             return myList;
         }
     }
@@ -113,6 +127,7 @@ public class Pedestrians : ITaskerReportable
             myList.AddRange(CivilianList);
             myList.AddRange(GangMemberList);
             myList.AddRange(MerchantList);
+            myList.AddRange(TellerList);
             myList.AddRange(EMTList);
             myList.AddRange(PoliceList);
             myList.AddRange(FirefighterList);
@@ -123,7 +138,7 @@ public class Pedestrians : ITaskerReportable
         }
     }
     public bool AnyInjuredPeopleNearPlayer => PedExts.Any(x => !x.IsDead && (x.IsUnconscious || x.IsInWrithe) && x.DistanceToPlayer <= 150f);
-    public bool AnyWantedPeopleNearPlayer => CivilianList.Any(x => x.WantedLevel > 0 && !x.IsBusted && x.DistanceToPlayer <= 150f) || GangMemberList.Any(x => x.WantedLevel > 0 && !x.IsBusted && x.DistanceToPlayer <= 150f) || MerchantList.Any(x => x.WantedLevel > 0 && !x.IsBusted && x.DistanceToPlayer <= 150f);
+    public bool AnyWantedPeopleNearPlayer => CivilianList.Any(x => x.WantedLevel > 0 && !x.IsBusted && x.DistanceToPlayer <= 150f) || GangMemberList.Any(x => x.WantedLevel > 0 && !x.IsBusted && x.DistanceToPlayer <= 150f) || MerchantList.Any(x => x.WantedLevel > 0 && !x.IsBusted && x.DistanceToPlayer <= 150f) || TellerList.Any(x => x.WantedLevel > 0 && !x.IsBusted && x.DistanceToPlayer <= 150f);
     public string DebugString { get; set; } = "";
     public bool AnyArmyUnitsSpawned => Police.Any(x => x.AssignedAgency.ID == "ARMY" && x.WasModSpawned);
     public bool AnyHelicopterUnitsSpawned => Police.Any(x => x.IsInHelicopter && x.WasModSpawned);
@@ -245,7 +260,7 @@ public class Pedestrians : ITaskerReportable
                     AddAmbientGangMember(Pedestrian);
                     GameFiber.Yield();
                 }
-                else if (!Civilians.Any(x => x.Handle == localHandle) && !Merchants.Any(x => x.Handle == localHandle) 
+                else if (!Civilians.Any(x => x.Handle == localHandle) && !ServiceWorkers.Any(x => x.Handle == localHandle) 
                     && !Zombies.Any(x => x.Handle == localHandle) && !GangMembers.Any(x => x.Handle == localHandle) 
                     && !Police.Any(x => x.Handle == localHandle) && !EMTs.Any(x => x.Handle == localHandle) && !Firefighters.Any(x => x.Handle == localHandle) && !SecurityGuards.Any(x => x.Handle == localHandle))
                 {
@@ -677,6 +692,13 @@ public class Pedestrians : ITaskerReportable
                 if (!SecurityGuards.Any(x => x.Handle == pedExt.Handle))
                 {
                     SecurityGuards.Add((SecurityGuard)pedExt);
+                }
+            }
+            else if (pedExt.GetType() == typeof(Teller))
+            {
+                if (!Tellers.Any(x => x.Handle == pedExt.Handle))
+                {
+                    Tellers.Add((Teller)pedExt);
                 }
             }
             else

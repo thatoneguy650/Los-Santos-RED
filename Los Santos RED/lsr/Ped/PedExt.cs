@@ -4,6 +4,7 @@ using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
+using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,7 +83,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool CanBeAmbientTasked { get; set; } = true;
     public bool CanBeMugged => !IsCop && Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && !Pedestrian.IsInCombat && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsMerchant || IsGangMember || WasModSpawned);
     public bool CanBeTasked { get; set; } = true;
-    public virtual bool CanConverse => Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember || WasModSpawned);
+    public virtual bool CanConverse => Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll 
+        && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember || WasModSpawned);
     public virtual bool CanFlee => Pedestrian.Exists() && CanBeTasked && CanBeAmbientTasked && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
     public bool CanRecognizePlayer => PlayerPerception.CanRecognizeTarget;
     public bool CanRemove
@@ -988,7 +990,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         OtherCrimesWitnessed.Clear();
     }
 
+    public virtual void AddSpecificInteraction(ILocationInteractable player, MenuPool menuPool, UIMenu headerMenu)
+    {
 
+    }
 
     //private void AddMedicalEventWitnessed(ITargetable Player)
     //{

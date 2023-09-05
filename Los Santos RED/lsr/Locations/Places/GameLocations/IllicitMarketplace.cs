@@ -18,7 +18,7 @@ public class IllicitMarketplace : GameLocation
     }
     public override bool ShowsOnDirectory { get; set; } = false;
     public override string TypeName { get; set; } = "Illicit Marketplace";
-    public override int MapIcon { get; set; } = 441;
+    public override int MapIcon { get; set; } = 514;//441;
     public override string ButtonPromptText { get; set; }
     public IllicitMarketplace(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {

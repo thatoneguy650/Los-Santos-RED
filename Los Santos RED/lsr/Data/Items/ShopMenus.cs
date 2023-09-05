@@ -153,7 +153,22 @@ public class ShopMenus : IShopMenus
         GunShopList();
         MenuGroupList();
         DealerHangouts();
+        SetupTreatments();
         Serialization.SerializeParam(PossibleShopMenus, ConfigFileName);
+    }
+    private void SetupTreatments()
+    {
+        List<MedicalTreatment> DefaultMedicalTreatments = new List<MedicalTreatment>()
+        {
+            new MedicalTreatment("Regular Doctor Visit","One of our less qualified doctors will surely be able to help you out.",50,500),
+            new MedicalTreatment("Decent Doctor Visit","Look at Mr. Rockefeller, shelling out for a ~r~real~s~ doctor.",75,750),
+            new MedicalTreatment("Full Body Treatment","Our crack team will scan, poke, and prod you until you are like new!",100,1000),
+        };
+        PossibleShopMenus.TreatmentOptionsList.Add(new TreatmentOptions("DefaultMedicalTreatments", "DefaultMedicalTreatments", DefaultMedicalTreatments));
+    }
+    public List<MedicalTreatment> GetMedicalTreatments(string treatmentOptionsID)
+    {
+        return PossibleShopMenus.TreatmentOptionsList.Where(x=> x.ID == treatmentOptionsID).FirstOrDefault()?.MedicalTreatments;
     }
     private void SetupPropMenus()
     {

@@ -66,7 +66,6 @@ public class Residence : GameLocation, ILocationSetupable
     public int SalesPrice { get; set; }
     public override string TypeName => IsOwnedOrRented ? "Residence" : "For Sale/Rental";
     public override int MapIcon { get; set; } = (int)BlipSprite.PropertyForSale;
-    public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
     public override int SortOrder => IsOwnedOrRented ? 1 : 999;
 

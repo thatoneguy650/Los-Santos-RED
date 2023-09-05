@@ -25,9 +25,9 @@ public class Places
     private IPlacesOfInterest PlacesOfInterest;
     private IEntityProvideable World;
     private IAgencies Agencies;
-    private IAssociations Associations;
+    private IOrganizations Associations;
     public Places(IEntityProvideable world, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus,
-        IInteriors interiors, IGangs gangs, IGangTerritories gangTerritories, IStreets streets, IAgencies agencies, INameProvideable names, IPedGroups pedGroups, ILocationTypes locationTypes, IPlateTypes plateTypes, IAssociations associations)
+        IInteriors interiors, IGangs gangs, IGangTerritories gangTerritories, IStreets streets, IAgencies agencies, INameProvideable names, IPedGroups pedGroups, ILocationTypes locationTypes, IPlateTypes plateTypes, IOrganizations associations)
     {
         World = world;
         PlacesOfInterest = placesOfInterest;

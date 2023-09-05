@@ -51,11 +51,11 @@ public class CivilianTasker
                 }
             }
             GameFiber.Yield();
-            foreach (Merchant merchant in PedProvider.Pedestrians.MerchantList.Where(x => x.Pedestrian.Exists() && x.HasExistedFor >= 1000))
+            foreach (PedExt serviceWorkers in PedProvider.Pedestrians.ServiceWorkers.Where(x => x.Pedestrian.Exists() && x.HasExistedFor >= 1000))
             {
                 try
                 {
-                    merchant.PedBrain.Update(Player, PlacesOfInterest);          
+                    serviceWorkers.PedBrain.Update(Player, PlacesOfInterest);          
                 }
                 catch (Exception e)
                 {

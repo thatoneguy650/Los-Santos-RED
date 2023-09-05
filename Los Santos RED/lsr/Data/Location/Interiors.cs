@@ -244,6 +244,13 @@ public class Interiors : IInteriors
             //Car Dealer
             new Interior(37890,"Los Santos Customs"),
             new Interior(7170, "Premium Deluxe Motorsport",new List<string>() { "shr_int" },new List<string>() { "fakeint" },new List<string>() { "shutter_open","csr_beforeMission" }),
+
+            //Banks
+            new Interior(71682,"Fleeca Bank"),
+            new Interior(76802,"Fleeca Bank"),
+            new Interior(11266,"Fleeca Bank"),
+            new Interior(20226,"Fleeca Bank"),
+            new Interior(90626,"Fleeca Bank"),
         });
     }
     private void Tunnels()

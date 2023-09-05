@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IAssociations
+    public interface IOrganizations
     {
-        Association GetAssociationByContact(string contactName);
+        Organization GetOrganizationByContact(string contactName);
     }
 }

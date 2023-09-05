@@ -17,7 +17,7 @@ public class DriveThru : GameLocation
 
     }
     public override string TypeName { get; set; } = "Drive-Thru";
-    public override int MapIcon { get; set; } = 523;
+    public override int MapIcon { get; set; } = 524;//523;
     public override string ButtonPromptText { get; set; }
     public DriveThru(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {

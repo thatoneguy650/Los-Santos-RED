@@ -31,10 +31,10 @@ public class StaticPlaces
     private IJurisdictions Jurisdictions;
     private IGangTerritories GangTerritories;
     private ILocationTypes LocationTypes;
-    private IAssociations Associations;
+    private IOrganizations Associations;
 
     public StaticPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, IZones zones, IStreets streets, IGangs gangs,
-        IAgencies agencies, ITimeReportable time, INameProvideable names, IPedGroups pedGroups, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ILocationTypes locationTypes, IPlateTypes plateTypes, IAssociations associations)
+        IAgencies agencies, ITimeReportable time, INameProvideable names, IPedGroups pedGroups, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ILocationTypes locationTypes, IPlateTypes plateTypes, IOrganizations associations)
     {
         Places = places;
         PlacesOfInterest = placesOfInterest;
@@ -135,7 +135,7 @@ public class StaticPlaces
         foreach (GangDen gl in PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.AssociatedGang?.ID == iD))
         {
             gl.IsAvailableForPlayer = setEnabled;
-            gl.IsBlipEnabled = setEnabled;
+           // gl.IsBlipEnabled = setEnabled;
 
             if (setEnabled)
             {

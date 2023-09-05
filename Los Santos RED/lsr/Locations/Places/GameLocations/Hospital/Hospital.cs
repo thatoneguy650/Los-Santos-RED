@@ -28,13 +28,18 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
     public override int MapIcon { get; set; } = (int)BlipSprite.Hospital;
     public Vector3 RespawnLocation { get; set; }
     public float RespawnHeading { get; set; }
+    public string TreatmentOptionsID { get; set; } = "DefaultMedicalTreatments";
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world,
-        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IAssociations associations)
+        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations)
     {
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations);
         if (AssignedAgency == null)
         {
             AssignedAgency = zones.GetZone(EntrancePosition)?.AssignedEMSAgency;
+        }
+        if(string.IsNullOrEmpty(TreatmentOptionsID))
+        {
+            MedicalTreatments = shopMenus.GetMedicalTreatments(TreatmentOptionsID);
         }
     }
     public override void AddDistanceOffset(Vector3 offsetToAdd)
@@ -137,12 +142,6 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
         UIMenu treatmentOptionsSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Treatment Options");
         treatmentOptionsSubMenu.SubtitleText = "Pick a Treatment";
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Pick one of our state of the art treatment options!";
-        MedicalTreatments = new List<MedicalTreatment>()
-        {
-            new MedicalTreatment("Regular Doctor Visit","One of our less qualified doctors will surely be able to help you out.",50,500),
-            new MedicalTreatment("Decent Doctor Visit","Look at Mr. Rockefeller, shelling out for a ~r~real~s~ doctor.",75,750),
-            new MedicalTreatment("Full Body Treatment","Our crack team will scan, poke, and prod you until you are like new!",100,1000),
-        };
         if (MedicalTreatments != null && MedicalTreatments.Any())
         {
             foreach (MedicalTreatment medicalTreatment in MedicalTreatments)

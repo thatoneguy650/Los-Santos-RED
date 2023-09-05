@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Microsoft.VisualBasic.ApplicationServices;
 using Rage;
 using Rage.Native;
 using System;
@@ -26,6 +27,12 @@ public class DynamicPlaces
     private List<GasPump> ActiveGasPumps = new List<GasPump>();
     private List<string> GasPumpsModelNames = new List<string>();
     private List<uint> GasPumpsModelHashes = new List<uint>();
+
+
+    private List<ATMMachine> ActiveATMMachines = new List<ATMMachine>();
+    private List<string> ATMModelNames = new List<string>();
+    private List<uint> ATMModelHashes = new List<uint>();
+
 
     public DynamicPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time)
     {
@@ -63,6 +70,19 @@ public class DynamicPlaces
             0xe469f8b3, //globe old
             0x64ff4c0e ///globe new
         };
+        ATMModelNames = new List<string>() {"prop_atm_01", "prop_fleeca_atm", "prop_atm_02", "prop_atm_03" };
+
+        ATMModelHashes = new List<uint>()
+        {
+            3424098598,//prop_atm_01
+            3168729781, //prop_atm_02
+            2930269768, //prop_atm_03
+            506770882, //prop_fleeca_atm
+        };
+        //prop_fleeca_atm FLEECA
+        //prop_atm_01 standalone ATM
+        //prop_atm_02 LOM BANK
+        //prop_atm_03 generic
     }
     public void Dispose()
     {
@@ -93,6 +113,11 @@ public class DynamicPlaces
                         ActivateGasPump(obj, modelName, position, heading, true);
                         GameFiber.Yield();
                     }
+                    else if (ATMModelNames.Contains(modelName) || ATMModelHashes.Contains(hash))
+                    {
+                        ActivateATMMachine(obj, modelName, position, heading);
+                        GameFiber.Yield();
+                    }
                 }
                 checkedObjects++;
                 if (checkedObjects > 10)
@@ -109,69 +134,84 @@ public class DynamicPlaces
             RemoveInactiveVendingMachines();
             GameFiber.Yield();
             RemoveInactiveGasPumps();
+            GameFiber.Yield();
+            RemoveInactiveATM();
         }
     }
     private void ActivateVendingMachine(Rage.Object obj, string modelName, Vector3 position, float heading)
     {
         float distanceTo = obj.DistanceTo(Game.LocalPlayer.Character.Position);
-        if (distanceTo <= 50f)
+        if (distanceTo > 50f)
         {
-            if (!ActiveVendingMachines.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
-            {
-                ShopMenu vendingMenu = ShopMenus.GetVendingMenu(modelName);
-                Vector3 EntrancePos = obj.GetOffsetPositionFront(0.5f);
-                VendingMachine newVend = new VendingMachine(EntrancePos, heading, vendingMenu.Name, vendingMenu.Name, vendingMenu.ID, obj) { Menu = vendingMenu, OpenTime = 0, CloseTime = 24 };
-                newVend.CanInteractWhenWanted = true;
-                newVend.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
-                ActiveVendingMachines.Add(newVend);
-            }
+            return;
         }
+        if (ActiveVendingMachines.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
+        {
+            return;
+        }
+        ShopMenu vendingMenu = ShopMenus.GetVendingMenu(modelName);
+        Vector3 EntrancePos = obj.GetOffsetPositionFront(0.5f);
+        VendingMachine newVend = new VendingMachine(EntrancePos, heading, vendingMenu.Name, vendingMenu.Name, vendingMenu.ID, obj) { Menu = vendingMenu, OpenTime = 0, CloseTime = 24 };
+        newVend.CanInteractWhenWanted = true;
+        newVend.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
+        ActiveVendingMachines.Add(newVend);
     }
     private void ActivateGasPump(Rage.Object obj, string modelName, Vector3 position, float heading, bool IsDoubleSided)
     {
         float distanceTo = obj.DistanceTo(Game.LocalPlayer.Character.Position);
-        if (distanceTo <= 50f)
+        if (distanceTo > 50f)
         {
-            if (!ActiveGasPumps.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
-            {
-                GasStation ClosestStation = (GasStation)Places.ActiveLocations.Where(x => x.GetType() == typeof(GasStation)).OrderBy(x => x.EntrancePosition.DistanceTo2D(obj)).FirstOrDefault();//maybe store anyothe list of stations?
-                Vector3 EntrancePos = obj.Position;
-                //Vector3 EntrancePos2 = obj.GetOffsetPositionFront(-0.5f);
-
-
-
-                GasPump newGasPump;
-                if (ClosestStation != null)
-                {
-                    newGasPump = new GasPump(EntrancePos, heading, ClosestStation.Name, ClosestStation.Description, "None", obj, ClosestStation) { BannerImagePath = ClosestStation.BannerImagePath, OpenTime = 0, CloseTime = 24 };
-                }
-                else
-                {
-                    newGasPump = new GasPump(EntrancePos, heading, "Gas Pump", "Gas Pump", "None", obj, null) { OpenTime = 0, CloseTime = 24 };
-                }
-                newGasPump.CanInteractWhenWanted = true;
-                newGasPump.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
-                ActiveGasPumps.Add(newGasPump);
-
-                //if (IsDoubleSided)
-                //{
-                //    GasPump newGasPump2;
-                //    if (ClosestStation != null)
-                //    {
-                //        newGasPump2 = new GasPump(EntrancePos2, heading, ClosestStation.Name, ClosestStation.Description, "None", obj, ClosestStation) { BannerImagePath = ClosestStation.BannerImagePath, OpenTime = 0, CloseTime = 24 };
-                //    }
-                //    else
-                //    {
-                //        newGasPump2 = new GasPump(EntrancePos2, heading, "Gas Pump", "Gas Pump", "None", obj, null) { OpenTime = 0, CloseTime = 24 };
-                //    }
-                //    newGasPump2.CanInteractWhenWanted = true;
-                //    newGasPump2.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
-                //    ActiveGasPumps.Add(newGasPump2);
-                //}
-
-            }
+            return;
         }
+        if (ActiveGasPumps.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
+        {
+            return;
+        }
+        GasStation ClosestStation = (GasStation)Places.ActiveLocations.Where(x => x.GetType() == typeof(GasStation)).OrderBy(x => x.EntrancePosition.DistanceTo2D(obj)).FirstOrDefault();//maybe store anyothe list of stations?
+        Vector3 EntrancePos = obj.Position;
+        GasPump newGasPump;
+        if (ClosestStation != null)
+        {
+            newGasPump = new GasPump(EntrancePos, heading, ClosestStation.Name, ClosestStation.Description, "None", obj, ClosestStation) { BannerImagePath = ClosestStation.BannerImagePath, OpenTime = 0, CloseTime = 24 };
+        }
+        else
+        {
+            newGasPump = new GasPump(EntrancePos, heading, "Gas Pump", "Gas Pump", "None", obj, null) { OpenTime = 0, CloseTime = 24 };
+        }
+        newGasPump.CanInteractWhenWanted = true;
+        newGasPump.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
+        ActiveGasPumps.Add(newGasPump);
     }
+
+    private void ActivateATMMachine(Rage.Object obj, string modelName, Vector3 position, float heading)
+    {
+        float distanceTo = obj.DistanceTo(Game.LocalPlayer.Character.Position);
+        if (distanceTo > 50f)
+        {
+            return;
+        }
+        if (ActiveATMMachines.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
+        {
+            return;
+        }
+        Bank closestBank = PlacesOfInterest.PossibleLocations.Banks.Where(x => x.IsEnabled).OrderBy(x => x.EntrancePosition.DistanceTo2D(obj)).FirstOrDefault(); ;// (Bank)Places.ActiveLocations.Where(x => x.GetType() == typeof(Bank)).OrderBy(x => x.EntrancePosition.DistanceTo2D(obj)).FirstOrDefault();//maybe store anyothe list of stations?
+        Vector3 EntrancePos = obj.Position;
+        ATMMachine newATMMachine;
+        if (closestBank != null)
+        {
+            newATMMachine = new ATMMachine(EntrancePos, heading, closestBank.Name, closestBank.Description, "None", obj, closestBank) { BannerImagePath = closestBank.BannerImagePath, OpenTime = 0, CloseTime = 24 };
+        }
+        else
+        {
+            newATMMachine = new ATMMachine(EntrancePos, heading, "ATM", "ATM", "None", obj, null) { OpenTime = 0, CloseTime = 24 };
+        }
+        newATMMachine.CanInteractWhenWanted = true;
+        newATMMachine.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
+        ActiveATMMachines.Add(newATMMachine);
+    }
+
+
+
     private void RemoveInactiveVendingMachines()
     {
         for (int i = ActiveVendingMachines.Count - 1; i >= 0; i--)
@@ -210,7 +250,25 @@ public class DynamicPlaces
             }
         }
     }
-
-
+    private void RemoveInactiveATM()
+    {
+        for (int i = ActiveATMMachines.Count - 1; i >= 0; i--)
+        {
+            ATMMachine gl = ActiveATMMachines[i];
+            if(gl.DistanceToPlayer < 100f && gl.ATMObject.Exists() && !NativeFunction.Natives.HAS_OBJECT_BEEN_BROKEN<bool>(gl.ATMObject, false))
+            {
+                continue;
+            }
+            if (gl.IsActivated)
+            {
+                gl.Deactivate(true);
+                if (ActiveATMMachines.Contains(gl))
+                {
+                    ActiveATMMachines.Remove(gl);
+                }
+                GameFiber.Yield();
+            }      
+        }
+    }
 }
 

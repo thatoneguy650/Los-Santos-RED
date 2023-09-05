@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 public class GameLocation : ILocationDispatchable
 {
@@ -29,7 +30,7 @@ public class GameLocation : ILocationDispatchable
     protected INameProvideable Names;
     protected IShopMenus ShopMenus;
     protected IPlateTypes PlateTypes;
-    protected IAssociations Associations;
+    protected IOrganizations Associations;
     protected Transaction Transaction;
     protected uint NotificationHandle;
     protected readonly List<string> FallBackVendorModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
@@ -109,7 +110,7 @@ public class GameLocation : ILocationDispatchable
     public virtual int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
     public Color MapIconColor => Color.FromName(MapIconColorString);
     public virtual string MapIconColorString { get; set; } = "White";
-    public virtual float MapIconScale { get; set; } = 1.0f;
+    public virtual float MapIconScale { get; set; } = 0.6f;//1.0f;
     public virtual float MapIconRadius { get; set; } = 1.0f;
     public virtual float MapOpenIconAlpha { get; set; } = 1.0f;
     public virtual float MapClosedIconAlpha { get; set; } = 0.25f;
@@ -286,7 +287,7 @@ public class GameLocation : ILocationDispatchable
 
     }
     public virtual void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups,
-        IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IAssociations associations)
+        IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations)
     {
         ShopMenus = shopMenus;
         World = world;
@@ -518,17 +519,14 @@ public class GameLocation : ILocationDispatchable
             return;
         }
 
-        float newAlpha;
+       // float newAlpha;
         Color newColor;
 
-        if (IsOpen(time.CurrentHour))
-        {
-            newAlpha = MapOpenIconAlpha;
-        }
-        else
-        {
-            newAlpha = MapClosedIconAlpha;
-        }
+
+
+        float newAlpha = GetCurrentIconAlpha(time);
+
+
         if (IsPlayerInterestedInLocation)
         {
             newColor = Color.Blue;
@@ -552,16 +550,31 @@ public class GameLocation : ILocationDispatchable
         }
 
     }
+
+    protected virtual float GetCurrentIconAlpha(ITimeReportable time)
+    {
+        float newAlpha;
+        if (IsOpen(time.CurrentHour))
+        {
+            newAlpha = MapOpenIconAlpha;
+        }
+        else
+        {
+            newAlpha = MapClosedIconAlpha;
+        }
+        return newAlpha;
+    }
+
     private Blip CreateBlip(ITimeReportable time, bool isShortRange)
     {
         Blip locationBlip;
         if (MapIconRadius != 1.0f)
         {
-            locationBlip = new Blip(EntrancePosition, MapIconRadius) { Name = Name, Color = MapIconColor };
+            locationBlip = new Blip(EntrancePosition, MapIconRadius) { Name = TypeName, Color = MapIconColor };
         }
         else
         {
-            locationBlip = new Blip(EntrancePosition) { Name = Name };
+            locationBlip = new Blip(EntrancePosition) {  Name = TypeName };
             if ((BlipSprite)MapIcon != BlipSprite.Destination)
             {
                 locationBlip.Sprite = (BlipSprite)MapIcon;
@@ -569,7 +582,7 @@ public class GameLocation : ILocationDispatchable
             locationBlip.Scale = MapIconScale;
         }
 
-        currentblipAlpha = IsOpen(time.CurrentHour) ? MapOpenIconAlpha : MapClosedIconAlpha;
+        currentblipAlpha = GetCurrentIconAlpha(time);// IsOpen(time.CurrentHour) ? MapOpenIconAlpha : MapClosedIconAlpha;
         currentBlipColor = IsPlayerInterestedInLocation ? Color.Blue : MapIconColor;
 
         locationBlip.Color = currentBlipColor;
@@ -579,7 +592,7 @@ public class GameLocation : ILocationDispatchable
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)locationBlip.Handle, true);
         }
         NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(TypeName);
         NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(locationBlip);
         return locationBlip;
 
@@ -734,10 +747,7 @@ public class GameLocation : ILocationDispatchable
         {
             ModelName = FallBackVendorModels.PickRandom();
         }
-
-
         NativeFunction.Natives.CLEAR_AREA(VendorPosition.X, VendorPosition.Y, VendorPosition.Z, 2f, true, false, false, false);
-
         Model modelToCreate = new Model(Game.GetHashKey(ModelName));
         modelToCreate.LoadAndWait();
         ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), VendorPosition.X, VendorPosition.Y, VendorPosition.Z, VendorHeading, false, false);//ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), VendorPosition.X, VendorPosition.Y, VendorPosition.Z + 1f, VendorHeading, false, false);
@@ -746,11 +756,7 @@ public class GameLocation : ILocationDispatchable
         {
             ped.IsPersistent = true;//THIS IS ON FOR NOW!
             ped.RandomizeVariation();
-
-            //
-
             NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", ped, "WORLD_HUMAN_STAND_IMPATIENT", 0, true);
-            //ped.Tasks.StandStill(-1);
             ped.KeepTasks = true;
             EntryPoint.SpawnedEntities.Add(ped);
             GameFiber.Yield();
@@ -759,23 +765,10 @@ public class GameLocation : ILocationDispatchable
                 Vendor = new Merchant(ped, settings, "Vendor", crimes, weapons, World);
                 if (addMenu)
                 {
-                    //Merchant.ShopMenu = Menu;
                     Vendor.SetupTransactionItems(Menu);
                 }
                 Vendor.AssociatedStore = this;
-
                 Vendor.SpawnPosition = VendorPosition;
-                //EntryPoint.WriteToConsole($"MERCHANT SPAWNED? Menu: {Menu == null} HANDLE {ped.Handle}");
-
-
-                //if (1 == 1)//PlacePedOnGround)
-                //{
-                //    float resultArg = ped.Position.Z;
-                //    NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD(ped.Position.X, ped.Position.Y, ped.Position.Z, out resultArg, false);
-                //    ped.Position = new Vector3(ped.Position.X, ped.Position.Y, resultArg);
-                //}
-
-
             }
         }
     }

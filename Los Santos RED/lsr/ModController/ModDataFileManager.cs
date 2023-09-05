@@ -47,7 +47,7 @@ public class ModDataFileManager
     public TattooNames TattooNames;
     public SavedOutfits SavedOutfits;
     public VehicleSeatAndDoorLookup VehicleSeatDoorData;
-    public Associations Associations;
+    public Organizations Associations;
 
     public ModDataFileManager()
     {
@@ -187,7 +187,7 @@ public class ModDataFileManager
         VehicleSeatDoorData.ReadConfig();
         GameFiber.Yield();
 
-        Associations = new Associations();
+        Associations = new Organizations();
         Associations.ReadConfig();
         Associations.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons);
         GameFiber.Yield();

@@ -11,12 +11,12 @@ using System.Linq;
 using System.Xml.Serialization;
 
 [Serializable()]
-public class Association : IPlatePrefixable, IGeneratesDispatchables
+public class Organization : IPlatePrefixable, IGeneratesDispatchables
 {
-    public Association()
+    public Organization()
     {
     }
-    public Association(string _ColorPrefix, string _ID, string _shortName, string _FullName, string _AgencyColorString, string _DispatchablePeropleGroupID, string _DispatchableVehicleGroupID, string _LicensePlatePrefix, string meleeWeaponsID, string sideArmsID, string longGunsID, string groupName)
+    public Organization(string _ColorPrefix, string _ID, string _shortName, string _FullName, string _AgencyColorString, string _DispatchablePeropleGroupID, string _DispatchableVehicleGroupID, string _LicensePlatePrefix, string meleeWeaponsID, string sideArmsID, string longGunsID, string groupName)
     {
         ColorPrefix = _ColorPrefix;
         ID = _ID;

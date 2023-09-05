@@ -22,8 +22,7 @@ public class CarCrusher : GameLocation
 
     }
     public override string TypeName { get; set; } = "Car Crusher";
-    public override int MapIcon { get; set; } = (int)527;
-    public override float MapIconScale { get; set; } = 1.0f;
+    public override int MapIcon { get; set; } = 524;// (int)527;
     public override string ButtonPromptText { get; set; }
     public float VehiclePickupDistance { get; set; } = 15f;
     public int StandardCrushPrice { get; set; } = 500;

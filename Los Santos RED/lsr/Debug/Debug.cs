@@ -202,6 +202,7 @@ public class Debug
             List<PedExt> AllPeds = World.Pedestrians.CivilianList;
             AllPeds.AddRange(World.Pedestrians.GangMemberList);
             AllPeds.AddRange(World.Pedestrians.MerchantList);
+            AllPeds.AddRange(World.Pedestrians.TellerList);
             foreach (PedExt ped in AllPeds.Where(x => x.Pedestrian.Exists()))/// && x.DistanceToPlayer <= 250f))// && NativeHelper.IsNearby(EntryPoint.FocusCellX,EntryPoint.FocusCellY,x.CellX,x.CellY,4)))// x.DistanceToPlayer <= 150f))
             {
                 Color Color3 = Color.Yellow;
@@ -4287,12 +4288,16 @@ public class Debug
         //}
         //EntryPoint.WriteToConsole($"============================================ ZOMBIES END", 5);
         EntryPoint.WriteToConsole($"============================================ MERCHANTS START", 5);
-        foreach (PedExt ped in World.Pedestrians.MerchantList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f).OrderBy(x => x.DistanceToPlayer))
+        foreach (PedExt ped in World.Pedestrians.ServiceWorkers.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f).OrderBy(x => x.DistanceToPlayer))
         {
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
             uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
-            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
+            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} " +
+                $"MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} " +
+                $"WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} " +
+                $"Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} " +
+                $"Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG} WasModSpawned:{ped.WasModSpawned} CanConverse:{ped.CanConverse}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ MERCHANTS END", 5);
         EntryPoint.WriteToConsole($"============================================ DEAD START", 5);
@@ -4450,6 +4455,17 @@ public class Debug
 
         }
         EntryPoint.WriteToConsole($"============================================ K9 END", 5);
+
+
+        EntryPoint.WriteToConsole($"============================================", 5);
+        EntryPoint.WriteToConsole($"============================================", 5);
+        EntryPoint.WriteToConsole($"Player.CurrentLookedAtPed?.Handle: {Player.CurrentLookedAtPed?.Handle}", 5);
+        EntryPoint.WriteToConsole($"Player.CurrentLookedAtPed?.CanConverse: {Player.CurrentLookedAtPed?.CanConverse}", 5);
+        EntryPoint.WriteToConsole($"DisplayablePlayer.CurrentLocation.CurrentInterior?.Name{Player.CurrentLocation?.CurrentInterior?.Name}", 5);
+        EntryPoint.WriteToConsole($"Player.ActivityManager.CanConverseWithLookedAtPed{Player.ActivityManager.CanConverseWithLookedAtPed}", 5);
+        //
+        //DisplayablePlayer.CurrentLocation.CurrentInterior?.Name
+        //Player.CurrentLookedAtPed
     }
     private void WriteCopState()
     {

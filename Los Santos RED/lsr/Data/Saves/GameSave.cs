@@ -36,6 +36,7 @@ namespace LosSantosRED.lsr.Data
         }
         public string PlayerName { get; set; }
         public int Money { get; set; }
+        public int AccountMoney { get; set; }
         public string ModelName { get; set; }
         public Vector3 PlayerPosition { get; set; }
         public float PlayerHeading { get; set; }
@@ -82,6 +83,7 @@ namespace LosSantosRED.lsr.Data
             PlayerName = player.PlayerName;
             ModelName = player.ModelName;
             Money = player.BankAccounts.Money;
+            AccountMoney = player.BankAccounts.AccountMoney;
             IsMale = player.IsMale;
             CurrentModelVariation = player.CurrentModelVariation.Copy();
             WeaponInventory = new List<StoredWeapon>();
@@ -252,6 +254,7 @@ namespace LosSantosRED.lsr.Data
 
                 time.SetDateTime(CurrentDateTime);
                 pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation, SpeechSkill, VoiceName);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
+                player.BankAccounts.AccountMoney = AccountMoney;
                 LoadWeapons(weapons);
                 LoadInventory(player, modItems);
                 LoadVehicles(player, world,settings, modItems, placesOfInterest, time);

@@ -8,9 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
+[Serializable]
 public class MedicalTreatment
 {
+    public MedicalTreatment()
+    {
+
+    }
     public MedicalTreatment(string name, string description, int healthGained, int price)
     {
         Name = name;

@@ -22,8 +22,7 @@ public class ScrapYard : GameLocation
 
     }
     public override string TypeName { get; set; } = "Scrap Yard";
-    public override int MapIcon { get; set; } = (int)BlipSprite.CriminalCarsteal;
-    public override float MapIconScale { get; set; } = 1.0f;
+    public override int MapIcon { get; set; } = 527;// (int)BlipSprite.CriminalCarsteal;
     public override string ButtonPromptText { get; set; }
     public float VehiclePickupDistance { get; set; } = 25f;
     public int ScrapValuePerVolume { get; set; } = 100;

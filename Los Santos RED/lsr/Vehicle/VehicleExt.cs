@@ -258,7 +258,7 @@ namespace LSR.Vehicles
             }
             else if (vehicleClass == VehicleClass.Service)
             {
-                OwnedBlipID = 410; //radar_boat
+                OwnedBlipID = 198; //radar_taxi
             }
             else if (vehicleClass == VehicleClass.Industrial)
             {

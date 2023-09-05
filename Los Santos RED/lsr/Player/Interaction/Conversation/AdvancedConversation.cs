@@ -25,8 +25,10 @@ public class AdvancedConversation
     private ISpeeches Speeches;
     private UIMenu QuestionSubMenu;
     private IEntityProvideable World;
+    private ILocationInteractable LocationInteractable;
     public bool IsShowingMenu => ConversationMenu?.Visible == true;
-    public AdvancedConversation(IInteractionable player, IAdvancedConversationable conversation_Simple, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, ISpeeches speeches, IEntityProvideable world)
+    public AdvancedConversation(IInteractionable player, IAdvancedConversationable conversation_Simple, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, ISpeeches speeches, 
+        IEntityProvideable world, ILocationInteractable locationInteractable)
     {
         Player = player;
         ConversationSimple = conversation_Simple;
@@ -38,6 +40,7 @@ public class AdvancedConversation
         GangTerritories = gangTerritories;
         Speeches = speeches;
         World = world;
+        LocationInteractable = locationInteractable;
     }
     public void Setup()
     {
@@ -70,6 +73,7 @@ public class AdvancedConversation
     {
         ConversationMenu.Visible = false;
         ConversationSimple.OnAdvancedConversationStopped();
+        
     }
     private void CreateMenu()
     {
@@ -90,6 +94,11 @@ public class AdvancedConversation
         {
             ConversationMenu.AddItem(transactionInteract);
         }
+
+
+        ConversationSimple.ConversingPed?.AddSpecificInteraction(LocationInteractable, MenuPool, ConversationMenu);
+
+
         AddAdvancedItems();
         QuestionSubMenu = MenuPool.AddSubMenu(ConversationMenu, "Ask A Question");
         QuestionSubMenu.RemoveBanner();

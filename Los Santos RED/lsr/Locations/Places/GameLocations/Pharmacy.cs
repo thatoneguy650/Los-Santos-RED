@@ -17,7 +17,6 @@ public class Pharmacy : GameLocation
     }
     public override string TypeName { get; set; } = "Pharmacy";
     public override int MapIcon { get; set; } = (int)BlipSprite.CriminalDrugs;
-    public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
     public Pharmacy(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {

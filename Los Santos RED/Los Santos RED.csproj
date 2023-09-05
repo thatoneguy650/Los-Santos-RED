@@ -125,14 +125,14 @@
     <Compile Include="lsr\Camera\CameraControl.cs" />
     <Compile Include="lsr\Data\Agencies\IPlatePrefixable.cs" />
     <Compile Include="lsr\Data\Agencies\WantedLevels.cs" />
-    <Compile Include="lsr\Data\Associations\Association.cs" />
-    <Compile Include="lsr\Data\Associations\Associations.cs" />
+    <Compile Include="lsr\Data\Organizations\Organization.cs" />
+    <Compile Include="lsr\Data\Organizations\Organizations.cs" />
     <Compile Include="lsr\Data\Gangs\GangClassification.cs" />
     <Compile Include="lsr\Data\Gangs\Gang.cs" />
     <Compile Include="lsr\Data\Gangs\GangRelationship.cs" />
     <Compile Include="lsr\Data\Gangs\Gangs.cs" />
     <Compile Include="lsr\Data\Gangs\GangTerritories.cs" />
-    <Compile Include="lsr\Data\Interface\IAssociations.cs" />
+    <Compile Include="lsr\Data\Interface\IOrganizations.cs" />
     <Compile Include="lsr\Data\Interface\IClothesNames.cs" />
     <Compile Include="lsr\Data\Interface\ILocationTypes.cs" />
     <Compile Include="lsr\Data\Interface\IDances.cs" />
@@ -192,6 +192,7 @@
     <Compile Include="lsr\Locations\Menus\ShopMenuTypes.cs" />
     <Compile Include="lsr\Locations\Menus\PropShopMenu.cs" />
     <Compile Include="lsr\Locations\Menus\ShopMenuGroup.cs" />
+    <Compile Include="lsr\Locations\Menus\TreatmentOptions.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\ConditionalGroup.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\EMSConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\FireConditionalSpawn.cs" />
@@ -199,6 +200,8 @@
     <Compile Include="lsr\Locations\Places\ConditionalLocations\LEConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\IGeneratesDispatchables.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\SecurityConditionalLocation.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Bank\ATMMachine.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankInteraction.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\City Hall\LicenseAnswer.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\City Hall\LicenseQuestion.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\City Hall\LicenseTest.cs" />
@@ -247,6 +250,7 @@
     <Compile Include="lsr\Ped\GangMember\ReputationReport.cs" />
     <Compile Include="lsr\Ped\Alerts\PedAlerts.cs" />
     <Compile Include="lsr\Ped\ItemDesires.cs" />
+    <Compile Include="lsr\Ped\Merchant\Teller.cs" />
     <Compile Include="lsr\Ped\PedReaction.cs" />
     <Compile Include="lsr\Ped\ReactionTier.cs" />
     <Compile Include="lsr\Ped\SecurityGuard\SecurityDog.cs" />
@@ -503,7 +507,7 @@
     <Compile Include="lsr\Player\Inventory\MenuItemExtra.cs" />
     <Compile Include="lsr\Locations\InteriorDoor.cs" />
     <Compile Include="lsr\Old\BasicLocation.cs" />
-    <Compile Include="lsr\Locations\Places\GameLocations\Bank.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Bank\Bank.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\BeautyShop.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Firestation\FireStation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Hospital\Hospital.cs" />

@@ -24,13 +24,19 @@ public class GangDen : GameLocation//, ILocationGangAssignable
     }
     public override bool ShowsOnDirectory { get; set; } = false;
     public override string TypeName { get; set; } = "Gang Den";
-    public override int MapIcon { get; set; } = (int)BlipSprite.Snitch;
-    public override float MapIconScale { get; set; } = 1.0f;
+    public override int MapIcon { get; set; } = 378;// (int)BlipSprite.Snitch;
     public override string ButtonPromptText { get; set; }
     public override string AssociationID => AssignedAssociationID;
     public bool IsPrimaryGangDen { get; set; } = false;
     public bool HasVanillaGangSpawnedAroundToBeBlocked { get; set; } = false;
-    public override bool IsBlipEnabled { get; set; } = false;
+    protected override float GetCurrentIconAlpha(ITimeReportable time)
+    {
+        if(!IsAvailableForPlayer)
+        {
+            return MapClosedIconAlpha;
+        }
+        return base.GetCurrentIconAlpha(time);
+    }
     [XmlIgnore]
     public bool IsAvailableForPlayer { get; set; } = false;
     [XmlIgnore]
@@ -114,8 +120,8 @@ public class GangDen : GameLocation//, ILocationGangAssignable
 
                         if (Player.RelationshipManager.GangRelationships.CurrentGang != null && Player.RelationshipManager.GangRelationships.CurrentGang.ID == AssignedAssociationID)
                         {
-                            Transaction.IsFreeVehicles = true;
-                            Transaction.IsFreeWeapons = true;
+                            Transaction.IsFreeVehicles = Player.RelationshipManager.GangRelationships.CurrentGang.MembersGetFreeVehicles;// true;
+                            Transaction.IsFreeWeapons = Player.RelationshipManager.GangRelationships.CurrentGang.MembersGetFreeWeapons; //true;
                         }
 
                         Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
@@ -198,7 +204,8 @@ public class GangDen : GameLocation//, ILocationGangAssignable
                 Player.BankAccounts.GiveMoney(-1*ExpectedMoney);
                 ExpectedMoney = 0;
                 Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName, true);
-                InteractionMenu.Visible = false;
+                //InteractionMenu.Visible = false;
+                dropoffCash.Enabled = false;
                 PlaySuccessSound();
                 DisplayMessage("~g~Reply", "Thanks for the cash. Here's your cut.");
             }
@@ -218,7 +225,8 @@ public class GangDen : GameLocation//, ILocationGangAssignable
                 ExpectedItem = null;
                 ExpectedItemAmount = 0;
                 Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName, true);
-                InteractionMenu.Visible = false;
+                dropoffItem.Enabled = false;
+                //InteractionMenu.Visible = false;
             }
             else
             {
@@ -233,7 +241,8 @@ public class GangDen : GameLocation//, ILocationGangAssignable
             DisplayMessage("~g~Reply", "Thanks for taking care of that thing. Here's your share.");
             ExpectedMoney = 0;
             Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName, true);
-            InteractionMenu.Visible = false;
+            completeTask.Enabled = false;
+            //InteractionMenu.Visible = false;
         }
         else if (selectedItem == RestMenuItem)
         {
@@ -279,7 +288,7 @@ public class GangDen : GameLocation//, ILocationGangAssignable
         ExpectedItemAmount = 0;
     }
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups, IEntityProvideable world, 
-        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IAssociations associations)
+        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations)
     {
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations);
         Menu = ShopMenus.GetSpecificMenu(MenuID);
@@ -355,5 +364,6 @@ public class GangDen : GameLocation//, ILocationGangAssignable
         VehiclePreviewLocation?.AddDistanceOffset(offsetToAdd);
         base.AddDistanceOffset(offsetToAdd);
     }
+
 }
 

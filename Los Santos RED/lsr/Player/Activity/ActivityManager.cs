@@ -730,7 +730,7 @@ public class ActivityManager
             {
                 Interaction.Dispose();
             }
-            Interaction = new Conversation(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories, Speeches, World);
+            Interaction = new Conversation(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories, Speeches, World, LocationInteractable);
             Interaction.Start();  
         }
     }

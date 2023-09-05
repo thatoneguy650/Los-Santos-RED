@@ -36,7 +36,7 @@ namespace Mod
         private bool isSettingDensity;
 
         public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups,
-            IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IAudioPlayable audio, IGangs gangs, IGangTerritories gangTerritories, IStreets streets, IModItems modItems, IPedGroups pedGroups, ILocationTypes locationTypes, IAssociations associations)
+            IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IAudioPlayable audio, IGangs gangs, IGangTerritories gangTerritories, IStreets streets, IModItems modItems, IPedGroups pedGroups, ILocationTypes locationTypes, IOrganizations associations)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;

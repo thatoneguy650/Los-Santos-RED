@@ -29,8 +29,7 @@ public class VehicleExporter : GameLocation
 
     }
     public override string TypeName { get; set; } = "Vehicle Exporter";
-    public override int MapIcon { get; set; } = (int)123;
-    public override float MapIconScale { get; set; } = 1.0f;
+    public override int MapIcon { get; set; } = 794;// (int)123;
     public override string ButtonPromptText { get; set; }
     public override bool ShowsOnDirectory => false;
     public float VehiclePickupDistance { get; set; } = 25f;
@@ -82,7 +81,7 @@ public class VehicleExporter : GameLocation
                     ProcessInteractionMenu();
                     if (HasExported)
                     {
-                        Association Association = Associations.GetAssociationByContact(ContactName);
+                        Organization Association = Associations.GetOrganizationByContact(ContactName);
                         EntryPoint.WriteToConsole($"ContactName {ContactName} NO Association FOUND: {Association == null}");
                         if (Association != null && Association.PhoneContact != null)
                         {

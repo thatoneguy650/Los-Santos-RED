@@ -150,7 +150,8 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("police2", 100, 75){ VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,25) } },
             new DispatchableVehicle("policet", 0, 25) { MinOccupants = 3, MaxOccupants = 4,MinWantedLevelSpawn = 3} };
         DPPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police3", 100, 75) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,75) } },
+            //new DispatchableVehicle("police3", 100, 75) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,75) } },
+            new DispatchableVehicle("police2", 100, 75){ VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,25) } },
             new DispatchableVehicle("policet", 0, 25) { MinOccupants = 3, MaxOccupants = 4,MinWantedLevelSpawn = 3} };
         EastLSPDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police", 100,75) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(2, true, 100) } },
@@ -161,8 +162,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         PoliceHeliVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("polmav", 1,100) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 } };
         SheriffHeliVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("buzzard2", 1,50) { MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 }, //};
-            //new DispatchableVehicle("valkyrie2", 1,50) { MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 },
+            new DispatchableVehicle("buzzard2", 1,50) { MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 },
         };
         ArmyVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("crusader", 85,25) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
@@ -170,7 +170,6 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("rhino", 0, 25) {  MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 1,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             new DispatchableVehicle("valkyrie2", 0,100) { MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1,0,1,2 },MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 }
             };
-
         LCPDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police4", 100, 100)};
         Firetrucks = new List<DispatchableVehicle>() {
@@ -184,51 +183,40 @@ public class DispatchableVehicles : IDispatchableVehicles
         NYSPVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("policeold1", 50, 50) { MaxRandomDirtLevel = 15.0f },
             new DispatchableVehicle("policeold2", 50, 50) { MaxRandomDirtLevel = 15.0f }, };
-
         MerryweatherPatrolVehicles = new List<DispatchableVehicle>()
         { 
             new DispatchableVehicle("dilettante2", 100, 100), 
         };
-
         BobcatSecurityVehicles = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle("police4", 100, 100),
+            new DispatchableVehicle("dilettante", 100, 100),
         };
-
         GroupSechsVehicles = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle("police4", 100, 100),
+            new DispatchableVehicle("blista", 100, 100),
         };
-
         SecuroservVehicles = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle("police4", 100, 100),
+            new DispatchableVehicle("dilettante", 100, 100),
         };
-
-
         BorderPatrolVehicles = new List<DispatchableVehicle>()
         {
             new DispatchableVehicle("fbi2", 100, 100) { MaxRandomDirtLevel = 15.0f },
         };
-
         NOOSEPIAVehicles = new List<DispatchableVehicle>()
         {
             new DispatchableVehicle("fbi", 70, 70),
             new DispatchableVehicle("fbi2", 30, 30),
         };
-
         NOOSESEPVehicles = new List<DispatchableVehicle>()
         {
             new DispatchableVehicle("fbi", 70, 70),
             new DispatchableVehicle("fbi2", 30, 30),
         };
-
         MarshalsServiceVehicles = new List<DispatchableVehicle>()
         {
             new DispatchableVehicle("police4", 100, 100),
         };
-
-
         //Gangs
         GenericGangVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("buccaneer", 15, 15),
@@ -292,8 +280,6 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("cogcabrio", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
             new DispatchableVehicle("huntley", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
         };
-
-
         GambettiVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("sentinel", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
             new DispatchableVehicle("sentinel2", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
@@ -22632,12 +22618,7 @@ Output = -1,
             new DispatchableVehicleGroup("LupisellaVehicles", LupisellaVehicles),
             new DispatchableVehicleGroup("MessinaVehicles", MessinaVehicles),
             new DispatchableVehicleGroup("AncelottiVehicles", AncelottiVehicles),
-
-
-            
-
-
-
+         
             new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles),
             new DispatchableVehicleGroup("CartelVehicles", CartelVehicles),
             new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles),

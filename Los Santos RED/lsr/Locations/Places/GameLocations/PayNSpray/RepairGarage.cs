@@ -23,8 +23,7 @@ public class RepairGarage : GameLocation
 
     }
     public override string TypeName { get; set; } = "Garage";
-    public override int MapIcon { get; set; } = (int)402;
-    public override float MapIconScale { get; set; } = 1.0f;
+    public override int MapIcon { get; set; } = 779;// (int)402;
     public override string ButtonPromptText { get; set; }
    // public float VehiclePickupDistance { get; set; } = 15f;
     public override bool CanInteractWhenWanted { get; set; } = true;

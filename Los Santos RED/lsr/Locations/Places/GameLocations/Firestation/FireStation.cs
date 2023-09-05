@@ -25,7 +25,7 @@ public class FireStation : GameLocation, ILicensePlatePreviewable
     public override int MapIcon { get; set; } = 436;
     public string LicensePlatePreviewText { get; set; } = "UNIT1";
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world,
-        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IAssociations associations)
+        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations)
     {
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations);
         if (AssignedAgency == null)

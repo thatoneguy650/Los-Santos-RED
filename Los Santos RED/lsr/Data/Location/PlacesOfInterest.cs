@@ -765,7 +765,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             },
             new VehicleExporter(new Vector3(44.4949f, 6461.12f, 31.4253f), 226.2354f,"Paleto Exports","Turn Cars to CASH!","PaletoExportMenu")
             {
-                 ContactName = "Exportotopia",//StaticStrings.VehicleExporterContactName,
+                 ContactName = StaticStrings.VehicleExporterContactName,
                  ParkingSpaces = new List<SpawnPlace>()
                  {
                     new SpawnPlace(new Vector3(29.69258f, 6438.792f, 31.42538f), 91.18743f),
@@ -777,23 +777,6 @@ public class PlacesOfInterest : IPlacesOfInterest
                 OpenTime = 0,
                 CloseTime = 24,
             },
-
-
-            new VehicleExporter(new Vector3(848.3537f, -952.5338f, 26.52109f), 270.8987f, "National Transport 2", "When it needs to disappear!","NationalMenu")
-            {
-                 ContactName = "Exportotopia",//StaticStrings.VehicleExporterContactName,
-                 ParkingSpaces = new List<SpawnPlace>()
-                 {
-                    new SpawnPlace(new Vector3(853.4166f, -905.9677f, 25.3178f), 88.12348f),
-                    new SpawnPlace(new Vector3(853.4921f, -902.6026f, 25.32147f), 90.01858f),
-                    new SpawnPlace(new Vector3(853.5576f, -899.2606f, 25.32503f), 89.40579f),
-                    new SpawnPlace(new Vector3(853.313f, -895.832f, 25.31771f), 84.42482f),
-                    new SpawnPlace(new Vector3(853.5083f, -892.3186f, 25.32238f), 88.35712f),
-                 },
-                OpenTime = 0,
-                CloseTime = 24,
-            },
-
         };
     }
     private void DefaultConfig_Forgers()
@@ -1110,14 +1093,52 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         Banks = new List<Bank>()
         {
-            new Bank(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, "Fleeca Bank", "") { IsEnabled = false },
-            new Bank(new Vector3(-350.1604f, -45.84864f, 49.03682f), 337.4063f, "Fleeca Bank", "") { IsEnabled = false },
-            new Bank(new Vector3(-1318f, -831.5065f, 16.97263f), 125.3848f, "Maze Bank", "") { IsEnabled = false },
-            new Bank(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f,  "Fleeca Bank", "") { IsEnabled = false },
-            new Bank(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f,  "Fleeca Bank", "") { IsEnabled = false },
-            new Bank(new Vector3(-3142.849f, 1131.727f, 20.84295f), 247.9002f, "Blaine County Savings", "") { IsEnabled = false },
-            new Bank(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f,  "Fleeca Bank", "") { IsEnabled = false },
-            new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", "") { IsEnabled = false },
+
+            new Bank(new Vector3(-1318f, -831.5065f, 16.97263f), 125.3848f, "Maze Bank", ""){ BannerImagePath = "maze.png",},
+            new Bank(new Vector3(-3142.849f, 1131.727f, 20.84295f), 247.9002f, "Blaine County Savings", ""){ BannerImagePath = "blainecountybank.png",},
+            new Bank(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, "Fleeca Bank", "") { BannerImagePath = "fleeca.png",},
+            new Bank(new Vector3(-350.1604f, -45.84864f, 49.03682f), 337.4063f, "Fleeca Bank", "")             
+            {
+                BannerImagePath = "fleeca.png",
+                InteriorID = 71682,
+                TellerLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(-351.3789f, -51.64762f, 49.03649f), 336.6109f),
+                }
+            },        
+            new Bank(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f,  "Fleeca Bank", "") 
+            { 
+                BannerImagePath = "fleeca.png",
+                InteriorID = 76802,
+                TellerLocations = new List<SpawnPlace>() { 
+                    new SpawnPlace(new Vector3(147.8368f, -1041.57f, 29.36793f), 338.927f),
+                    new SpawnPlace(new Vector3(149.4326f, -1042.337f, 29.368f), 340.193f),
+                } 
+            },
+            new Bank(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f,  "Fleeca Bank", "")             
+            {
+                BannerImagePath = "fleeca.png",
+                InteriorID = 11266,
+                TellerLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(313.6212f, -280.8588f, 54.1647f), 335.8324f),
+                    new SpawnPlace(new Vector3(312.5256f, -280.4068f, 54.1647f), 338.1261f),
+                }
+            },           
+            new Bank(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f,  "Fleeca Bank", "")             
+            {
+                BannerImagePath = "fleeca.png",
+                InteriorID = 20226,
+                TellerLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(-2960.644f, 482.839f, 15.69701f), 81.83675f),
+                }
+            },
+            new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", "")             
+            {
+                BannerImagePath = "fleeca.png",
+                InteriorID = 90626,
+                TellerLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(1175.087f, 2708.431f, 38.08793f), 177.2366f),
+                }
+            },
         };
     }
     private void DefaultConfig_BeautyShops()
@@ -2164,9 +2185,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
             new GunStore(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, "Guns #4", "Specializes in ~o~Assault Rifles~s~","GunShop4") { IsEnabled = true, 
-                //MoneyToUnlock = 15000, ContactName = StaticStrings.UndergroundGunsContactName,
-                ContactName = "LSR Gun Dealer",
-
+                MoneyToUnlock = 15000, ContactName = StaticStrings.UndergroundGunsContactName,
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-258.1833f, 6250.695f, 31.48922f),25.17568f),
                     new SpawnPlace(new Vector3(-256.5694f, 6265.761f, 30.58578f), 317.2921f),
@@ -2174,10 +2193,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(-269.5155f, 6274.559f, 30.46577f), 136.3388f),
                 } },
             new GunStore(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, "Guns #5", "Specializes in ~o~Heavy Weapons~s~","GunShop2") { IsEnabled = false, 
-                //MoneyToUnlock = 25000, ContactName = StaticStrings.UndergroundGunsContactName,
-                MoneyToUnlock = 2500, ContactName = "LSR Gun Dealer",
-
-
+                MoneyToUnlock = 25000, ContactName = StaticStrings.UndergroundGunsContactName,
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(1661.471f, 4951.514f, 42.07043f),217.9459f),
                     new SpawnPlace(new Vector3(1659.542f, 4946.245f, 41.20879f), 224.609f),
@@ -2211,7 +2227,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
-            MapIcon = 78,
+            //MapIcon = 78,
             BannerImagePath = "madrazo.png",
             OpenTime = 0,
             CloseTime = 24,
@@ -2238,7 +2254,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
-            MapIcon = 76,
+            //MapIcon = 76,
             BannerImagePath = "armenian.png",
             OpenTime = 0,
             CloseTime = 24,
@@ -2302,7 +2318,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
-            MapIcon = 355,
+            //MapIcon = 355,
             BannerImagePath = "diablos.png",
             OpenTime = 0,
             CloseTime = 24,
@@ -2356,7 +2372,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
-            MapIcon = 78,
+            //MapIcon = 78,
             BannerImagePath = "marabunta.png",
             OpenTime = 0,
             CloseTime = 24,
@@ -2383,7 +2399,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         { 
             IsPrimaryGangDen = true, 
             CanInteractWhenWanted = true,
-            MapIcon = 76, 
+            //MapIcon = 76, 
             BannerImagePath = "altruist.png", 
             OpenTime = 0, 
             CloseTime = 24, 
@@ -2453,7 +2469,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
-            MapIcon = 267,
+            //MapIcon = 267,
             BannerImagePath = "pavano.png",
             OpenTime = 0,
             CloseTime = 24,
@@ -2476,7 +2492,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
-            MapIcon = 77,
+            //MapIcon = 77,
             BannerImagePath = "lupisella.png",
             OpenTime = 0,
             CloseTime = 24,
@@ -2499,7 +2515,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
-            MapIcon = 78,
+            //MapIcon = 78,
             BannerImagePath = "messina.png",
             OpenTime = 0,
             CloseTime = 24,
@@ -2522,7 +2538,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
-            MapIcon = 76,
+            //MapIcon = 76,
             BannerImagePath = "ancelotti.png",
             OpenTime = 0,
             CloseTime = 24,
@@ -2546,7 +2562,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
-            MapIcon = 541,
+            //MapIcon = 541,
             BannerImagePath = "gambetti.png",
             OpenTime = 0,
             CloseTime = 24,
@@ -2578,7 +2594,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
-            MapIcon = 106,
+            //MapIcon = 106,
             BannerImagePath = "ballas.png",
             OpenTime = 0,
             CloseTime = 24,
@@ -2601,7 +2617,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         };//This is in DAVIS near Grove Street
         GangDen BallasDen2 = new GangDen()
         {
-            MapIcon = 106,
+            //MapIcon = 106,
             AssignedAssociationID = "AMBIENT_GANG_BALLAS",
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
@@ -2628,7 +2644,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         GangDen BallasDen3 = new GangDen()
         {
-            MapIcon = 514,
+            //MapIcon = 514,
             AssignedAssociationID = "AMBIENT_GANG_BALLAS",
             PossiblePedSpawns = new List<ConditionalLocation>() {
                     new GangConditionalLocation() {
@@ -2679,7 +2695,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             ShowsOnDirectory = false,
             TypeName = "Gang Den",
-            MapIcon = 514,
+            //MapIcon = 514,
             MapIconScale = 1f,
             ButtonPromptText = "Enter Ballas Hangout",
             AssignedAssociationID = "AMBIENT_GANG_BALLAS",
@@ -2733,7 +2749,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         GangDen BallasDen5 = new GangDen()
         {
-            MapIcon = 47,
+            //MapIcon = 47,
             AssignedAssociationID = "AMBIENT_GANG_BALLAS",
             PossiblePedSpawns = new List<ConditionalLocation>() {
                     new GangConditionalLocation() {
@@ -2792,7 +2808,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
-            MapIcon = 86,
+            //MapIcon = 86,
             BannerImagePath = "families.png",
             OpenTime = 0,
             CloseTime = 24,
@@ -2817,7 +2833,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         };//This is in Chamberlain Hills
         GangDen FamiliesDen2 = new GangDen()
         {
-            MapIcon = 86,
+            //MapIcon = 86,
             AssignedAssociationID = "AMBIENT_GANG_FAMILY",
             PossiblePedSpawns = new List<ConditionalLocation>() {
             new GangConditionalLocation() {
@@ -2867,7 +2883,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         GangDen FamiliesDen3 = new GangDen()
         {
-            MapIcon = 86,
+            //MapIcon = 86,
             AssignedAssociationID = "AMBIENT_GANG_FAMILY",
             PossiblePedSpawns = new List<ConditionalLocation>() {
             new GangConditionalLocation() {
@@ -2915,7 +2931,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         GangDen FamiliesDen4 = new GangDen()
         {
-            MapIcon = 86,
+            //MapIcon = 86,
             AssignedAssociationID = "AMBIENT_GANG_FAMILY",
             PossiblePedSpawns = new List<ConditionalLocation>() {
             new GangConditionalLocation() {
@@ -2964,7 +2980,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         GangDen FamiliesDen5 = new GangDen()
         {
-            MapIcon = 86,
+            //MapIcon = 86,
             AssignedAssociationID = "AMBIENT_GANG_FAMILY",
             PossiblePedSpawns = new List<ConditionalLocation>() {
             new GangConditionalLocation() {
@@ -3023,7 +3039,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
-            MapIcon = 226,
+            //MapIcon = 226,
             BannerImagePath = "lostmc.png",
             OpenTime = 0,
             CloseTime = 24,
@@ -3058,7 +3074,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         GangDen LostDen2 = new GangDen(new Vector3(84.04226f, 3718.52f, 39.78923f), 50.35764f, "Lost M.C. The Range", "", "LostDenMenu", "AMBIENT_GANG_LOST")
         {
             CanInteractWhenWanted = true,
-            MapIcon = 226,
+            //MapIcon = 226,
             BannerImagePath = "lostmc.png",
             OpenTime = 0,
             CloseTime = 24,
@@ -3146,7 +3162,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         GangDen VagosHangout1 = new GangDen()
         {
-            MapIcon = 47,
+            //MapIcon = 47,
             AssignedAssociationID = "AMBIENT_GANG_MEXICAN",
             PossiblePedSpawns = new List<ConditionalLocation>() {
                 new GangConditionalLocation() {
@@ -3197,7 +3213,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         GangDen VagosHangout2 = new GangDen()
         {
-            MapIcon = 47,
+            //MapIcon = 47,
             AssignedAssociationID = "AMBIENT_GANG_MEXICAN",
             PossiblePedSpawns = new List<ConditionalLocation>() {
                 new GangConditionalLocation() {
@@ -3247,7 +3263,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         GangDen VagosHangout3 = new GangDen()
         {
-            MapIcon = 47,
+            //MapIcon = 47,
             AssignedAssociationID = "AMBIENT_GANG_MEXICAN",
             PossiblePedSpawns = new List<ConditionalLocation>() {
                 new GangConditionalLocation() {
@@ -3297,7 +3313,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         GangDen VagosHangout4 = new GangDen()
         {
-            MapIcon = 47,
+            //MapIcon = 47,
             AssignedAssociationID = "AMBIENT_GANG_MEXICAN",
             PossiblePedSpawns = new List<ConditionalLocation>() {
                 new GangConditionalLocation() {
@@ -3347,7 +3363,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         GangDen VagosHangout5 = new GangDen()
         {
-            MapIcon = 47,
+            //MapIcon = 47,
             AssignedAssociationID = "AMBIENT_GANG_MEXICAN",
             PossiblePedSpawns = new List<ConditionalLocation>() {
                 new GangConditionalLocation() {
@@ -3397,7 +3413,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         GangDen VagosHangout6 = new GangDen()
         {
-            MapIcon = 47,
+            //MapIcon = 47,
             AssignedAssociationID = "AMBIENT_GANG_MEXICAN",
             PossiblePedSpawns = new List<ConditionalLocation>() {
                 new GangConditionalLocation() {

@@ -19,6 +19,7 @@ public class BankAccounts
 
     public int LastChangeMoneyAmount { get; set; }
     public bool RecentlyChangedMoney => GameTimeLastChangedMoney != 0 && Game.GameTime - GameTimeLastChangedMoney <= 7000;
+    public int AccountMoney { get; set; } = 0;
     public int Money
     {
         get
