@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Xml.Serialization;
 
 public class GangDen : GameLocation//, ILocationGangAssignable
 {
+    private Blip TerritoryBlip;
     private UIMenuItem dropoffCash;
     private UIMenuItem dropoffItem;
     private UIMenuItem completeTask;
@@ -36,6 +38,23 @@ public class GangDen : GameLocation//, ILocationGangAssignable
             return MapClosedIconAlpha;
         }
         return base.GetCurrentIconAlpha(time);
+    }
+    public override void ActivateBlip(ITimeReportable time, IEntityProvideable world)
+    {
+        if (!TerritoryBlip.Exists())
+        {
+            TerritoryBlip = CreateGangTerritoryBlip();
+            world.AddBlip(TerritoryBlip);
+        }
+        base.ActivateBlip(time, world);
+    }
+    public override void DeactivateBlip()
+    {
+        if (TerritoryBlip.Exists())
+        {
+            TerritoryBlip.Delete();
+        }
+        base.DeactivateBlip();
     }
     [XmlIgnore]
     public bool IsAvailableForPlayer { get; set; } = false;
@@ -116,7 +135,7 @@ public class GangDen : GameLocation//, ILocationGangAssignable
                         KeepInteractionGoing = false;
                         Player.IsTransacting = true;
                         Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-
+                        Transaction.UseAccounts = false;
 
                         if (Player.RelationshipManager.GangRelationships.CurrentGang != null && Player.RelationshipManager.GangRelationships.CurrentGang.ID == AssignedAssociationID)
                         {
@@ -199,9 +218,9 @@ public class GangDen : GameLocation//, ILocationGangAssignable
         //else 
         if (selectedItem == dropoffCash)
         {
-            if(Player.BankAccounts.Money >= ExpectedMoney)
+            if(Player.BankAccounts.GetMoney(false) >= ExpectedMoney)
             {
-                Player.BankAccounts.GiveMoney(-1*ExpectedMoney);
+                Player.BankAccounts.GiveMoney(-1*ExpectedMoney, false);
                 ExpectedMoney = 0;
                 Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName, true);
                 //InteractionMenu.Visible = false;
@@ -256,11 +275,11 @@ public class GangDen : GameLocation//, ILocationGangAssignable
         {
             if(Player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
             {
-                if(Player.BankAccounts.Money >= Player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount)
+                if(Player.BankAccounts.GetMoney(false) >= Player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount)
                 {
                     if (Player.RelationshipManager.GangRelationships.CurrentGangKickUp.CanPay)
                     {
-                        Player.BankAccounts.GiveMoney(-1 * Player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount);
+                        Player.BankAccounts.GiveMoney(-1 * Player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount, false);
                         Player.RelationshipManager.GangRelationships.CurrentGangKickUp.PayDue();
                         InteractionMenu.Visible = false;
                         PlaySuccessSound();
@@ -363,6 +382,29 @@ public class GangDen : GameLocation//, ILocationGangAssignable
         }
         VehiclePreviewLocation?.AddDistanceOffset(offsetToAdd);
         base.AddDistanceOffset(offsetToAdd);
+    }
+
+
+
+    private Blip CreateGangTerritoryBlip()
+    {
+        if(!Settings.SettingsManager.GangSettings.ShowGangTerritoryBlip || AssociatedGang == null || !IsPrimaryGangDen)
+        {
+            return null;
+        }
+        Blip locationBlip;
+        locationBlip = new Blip(EntrancePosition, Settings.SettingsManager.GangSettings.GangTerritoryBlipSize) 
+        { 
+            Name = AssociatedGang.ID, 
+            Color = AssociatedGang.Color
+        };     
+        locationBlip.Color = AssociatedGang.Color;// currentBlipColor;
+        locationBlip.Alpha = Settings.SettingsManager.GangSettings.GangTerritoryBlipAlpha;/// currentblipAlpha;
+        NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)locationBlip.Handle, true);   
+        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(AssociatedGang.ID);
+        NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(locationBlip);
+        return locationBlip;
     }
 
 }

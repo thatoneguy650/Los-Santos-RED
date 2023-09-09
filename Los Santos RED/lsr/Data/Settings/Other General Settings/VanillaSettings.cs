@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,7 +29,15 @@ public class VanillaSettings : ISettingsDefaultable
     public bool TerminateVanillaBlips { get; set; }
     [Description("Terminates the vanilla character select system (Michael, Franklin, Trevor Wheel). WILL DISABLE THE ROCKSTAR EDITOR WHICH CANNOT BE RE-ENABLED WITHOUT A GAME RESTART.")]
     public bool TerminateSelector { get; set; }
+
+    [Description("Terminates all vanilla vending machines (Soda and ATM). CANNOT BE RE-ENABLED, REQUIRES GAME RESTART.")]
+    public bool TerminateVanillaVendingMachines { get; set; }
     public bool SupressVanillaCopCrimes { get; set; }
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+
+    }
 
     public VanillaSettings()
     {
@@ -55,6 +64,7 @@ public class VanillaSettings : ISettingsDefaultable
         TerminateSelector = false;
 
         SupressVanillaCopCrimes = true;
+        TerminateVanillaVendingMachines = false;
 
     }
 

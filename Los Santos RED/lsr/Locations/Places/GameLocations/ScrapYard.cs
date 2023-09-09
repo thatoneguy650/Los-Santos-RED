@@ -22,7 +22,7 @@ public class ScrapYard : GameLocation
 
     }
     public override string TypeName { get; set; } = "Scrap Yard";
-    public override int MapIcon { get; set; } = 527;// (int)BlipSprite.CriminalCarsteal;
+    public override int MapIcon { get; set; } = 50;// (int)BlipSprite.CriminalCarsteal;
     public override string ButtonPromptText { get; set; }
     public float VehiclePickupDistance { get; set; } = 25f;
     public int ScrapValuePerVolume { get; set; } = 100;
@@ -160,7 +160,7 @@ public class ScrapYard : GameLocation
             ScrapSubMenu.RefreshIndex();
             ScrapSubMenu.Close(true);
             Game.FadeScreenIn(1000, true);
-            Player.BankAccounts.GiveMoney(Price);
+            Player.BankAccounts.GiveMoney(Price, false);
             PlaySuccessSound();
             DisplayMessage("~g~Scrapped", $"Thank you for scrapping your ~p~{CarName}~s~ at ~y~{Name}~s~");
         }

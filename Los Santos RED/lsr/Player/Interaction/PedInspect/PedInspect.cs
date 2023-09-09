@@ -292,7 +292,7 @@ public class PedInspect : DynamicActivity
             hasAddedItem = ItemsFound != "";
             if (Ped.Money > 0)//dead peds already drop it, truned off dropping for now
             {
-                Player.BankAccounts.GiveMoney(Ped.Money);
+                Player.BankAccounts.GiveMoney(Ped.Money, false);
                 CashAdded = Ped.Money;
                 Ped.Money = 0;
                 if (Ped.Pedestrian.Exists())

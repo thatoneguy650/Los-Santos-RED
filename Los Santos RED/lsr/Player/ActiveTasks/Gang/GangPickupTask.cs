@@ -171,7 +171,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 "Drop the money off at the designated place",
                                 "Take the money where it needs to go",
                                 "Bring the stuff back to us. Don't take long.",  };
-            Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(), 0, true);
         }
         private void SendInitialInstructionsMessage()
         {

@@ -743,7 +743,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 $"{HiringGangDen.FullStreetAddress} for ${MoneyToRecieve}",
                                 $"Heard you were done, see you at the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. We owe you ${MoneyToRecieve}",
                                 };
-            Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(), 1);
+            Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(), 1, false);
         }
     }
 }

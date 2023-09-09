@@ -198,7 +198,7 @@ public class GangTasks : IPlayerTaskGroup
 
     public void SendGenericFailMessage(PhoneContact contact)
     {
-        Player.CellPhone.AddScheduledText(contact, GetGenericFailMessage(), 1);
+        Player.CellPhone.AddScheduledText(contact, GetGenericFailMessage(), 1, false);
     }
 
     public void SendGenericPickupMoneyMessage(PhoneContact contact,string placetypeName, GameLocation gameLocation, int MoneyToRecieve)
@@ -210,7 +210,7 @@ public class GangTasks : IPlayerTaskGroup
                                 $"{gameLocation.FullStreetAddress} for ${MoneyToRecieve}",
                                 $"Heard you were done, see you at the {placetypeName} on {gameLocation.FullStreetAddress}. We owe you ${MoneyToRecieve}",
                                 };
-        Player.CellPhone.AddScheduledText(contact, Replies.PickRandom(), 1);
+        Player.CellPhone.AddScheduledText(contact, Replies.PickRandom(), 1, false);
     }
 
     public void SendHitSquadMessage(PhoneContact contact)
@@ -222,7 +222,7 @@ public class GangTasks : IPlayerTaskGroup
                                 $"We will be seeing each other shortly.",
                                 $"Going to get real very soon.",
                                 };
-        Player.CellPhone.AddScheduledText(contact, Replies.PickRandom(), 1);
+        Player.CellPhone.AddScheduledText(contact, Replies.PickRandom(), 1, false);
     }
 }
 

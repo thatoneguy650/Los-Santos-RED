@@ -63,6 +63,7 @@ public class GunStore : GameLocation
 
                     CreateInteractionMenu();
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+                    Transaction.UseAccounts = false;
                     Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
                     InteractionMenu.Visible = true;
                     Transaction.ProcessTransactionMenu();

@@ -46,6 +46,7 @@ public class Transaction
     public bool RotateVehiclePreview { get; set; } = true;
     public ILicensePlatePreviewable LicensePlatePreviewable { get; set; }
     public bool IsPurchasing { get; set; } = true;
+    public bool UseAccounts { get; set; } = true;
 
     public Transaction(MenuPool menuPool, UIMenu parentMenu, ShopMenu menu, GameLocation store)
     {

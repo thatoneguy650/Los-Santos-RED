@@ -233,7 +233,10 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
         }
         return ExtraItems;
     }
-
+    public override string InteractPrompt(IButtonPromptable player)
+    {
+        return $"Talk to {FormattedName}";
+    }
     //protected override void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
     //{
     //    if (Settings.SettingsManager.SecuritySettings.AllowCallEMTsOnBodies)

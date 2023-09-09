@@ -82,5 +82,8 @@ public class EMT : PedExt
         }
         return ExtraItems;
     }
-
+    public override string InteractPrompt(IButtonPromptable player)
+    {
+        return $"Talk to {FormattedName}";
+    }
 }

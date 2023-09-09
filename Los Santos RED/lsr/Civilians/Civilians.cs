@@ -80,6 +80,7 @@ public class Civilians
                     ped.WillFight = false;
                     ped.WillFightPolice = false;
                     ped.WasEverSetPersistent = true;
+                    ped.WillCower = false;
                 }
                 if (yield && localRan == Settings.SettingsManager.PerformanceSettings.CivilianUpdateBatch)//5
                 {

@@ -106,7 +106,7 @@ public class Respawning// : IRespawning
     public bool BribePolice(int Amount, ModUIMenu menu)
     {
         CalculateBribe();
-        if (CurrentPlayer.BankAccounts.Money < Amount)
+        if (CurrentPlayer.BankAccounts.GetMoney(true) < Amount)
         {
             Game.DisplayNotification(BankContactPicture, BankContactPicture, "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", Amount));
             menu?.Show();
@@ -117,7 +117,7 @@ public class Respawning// : IRespawning
             Game.DisplayNotification(BlankContactPicture, BlankContactPicture, StaticStrings.OfficerFriendlyContactName, "Expedited Service Fee", string.Format(BribeFailedResponse, Amount));
             if (Settings.SettingsManager.RespawnSettings.DeductMoneyOnFailedBribe)
             {
-                CurrentPlayer.BankAccounts.GiveMoney(-1 * Amount);
+                CurrentPlayer.BankAccounts.GiveMoney(-1 * Amount, true);
             }
             menu?.Show();
             return false;
@@ -126,7 +126,7 @@ public class Respawning// : IRespawning
         {
             ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
             Game.DisplayNotification(BlankContactPicture, BlankContactPicture, StaticStrings.OfficerFriendlyContactName, "~r~Expedited Service Fee", BribedCopResponses.PickRandom());
-            CurrentPlayer.BankAccounts.GiveMoney(-1 * Amount);
+            CurrentPlayer.BankAccounts.GiveMoney(-1 * Amount, true);
             GameTimeLastBribedPolice = Game.GameTime;
             List<string> OfficerFriendlyResponses = new List<string>() { 
             "Thanks for the donation, give me a call if you are in a jam with the cops.",
@@ -138,7 +138,7 @@ public class Respawning// : IRespawning
             };
             if (!CurrentPlayer.CellPhone.ContactList.Any(x => x.Name == StaticStrings.OfficerFriendlyContactName))
             {
-                CurrentPlayer.CellPhone.AddScheduledText(new CorruptCopContact(StaticStrings.OfficerFriendlyContactName), OfficerFriendlyResponses.PickRandom(), 1);
+                CurrentPlayer.CellPhone.AddScheduledText(new CorruptCopContact(StaticStrings.OfficerFriendlyContactName), OfficerFriendlyResponses.PickRandom(), 1, false);
             }
             //CurrentPlayer.CellPhone.AddScheduledContact(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(2));
             CurrentPlayer.Scanner.OnBribedPolice();
@@ -154,7 +154,7 @@ public class Respawning// : IRespawning
     {
         int FineAmount = CurrentPlayer.FineAmount();
         ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
-        if (CurrentPlayer.BankAccounts.Money < FineAmount)
+        if (CurrentPlayer.BankAccounts.GetMoney(true) < FineAmount)
         {
             BailFeePastDue += FineAmount;       
             Game.DisplayNotification(PoliceContactPicture, PoliceContactPicture, "Summary", "~o~Citation", $"Citation of ~r~${FineAmount}~s~ has been added to your debt.");
@@ -168,7 +168,7 @@ public class Respawning// : IRespawning
                     $"Citation of ~r~${FineAmount}~s~ paid. Move along."
                 };
             Game.DisplayNotification(PoliceContactPicture, PoliceContactPicture, "Summary", "~o~Citation", CitationCopResponses.PickRandom());
-            CurrentPlayer.BankAccounts.GiveMoney(-1 * FineAmount);
+            CurrentPlayer.BankAccounts.GiveMoney(-1 * FineAmount, true);
         }
         GameTimeLastPaidFine = Game.GameTime;
         CurrentPlayer.Scanner.OnPaidFine();
@@ -606,7 +606,7 @@ public class Respawning// : IRespawning
     }
     private void SetHospitalFee(string HospitalName)
     {    
-        int CurrentCash = CurrentPlayer.BankAccounts.Money;
+        int CurrentCash = CurrentPlayer.BankAccounts.GetMoney(true);
         int TotalNeededPayment = HospitalFee + HospitalBillPastDue;
         int TodaysPayment;
         if (TotalNeededPayment > CurrentCash)
@@ -620,7 +620,7 @@ public class Respawning// : IRespawning
             TodaysPayment = TotalNeededPayment;
         }
         Game.DisplayNotification(BankContactPicture, BankContactPicture, HospitalName, "Hospital Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}~s~ ~n~{3}", HospitalFee, TodaysPayment, HospitalBillPastDue, HospitalStayReport));
-        CurrentPlayer.BankAccounts.GiveMoney(-1 * TodaysPayment);
+        CurrentPlayer.BankAccounts.GiveMoney(-1 * TodaysPayment, true);
     }
     private void SetPlayerAtLocation(ILocationRespawnable ToSet)
     {
@@ -648,7 +648,7 @@ public class Respawning// : IRespawning
     }
     private void GenerateTotalBailFee()
     {
-        int CurrentCash = CurrentPlayer.BankAccounts.Money;
+        int CurrentCash = CurrentPlayer.BankAccounts.GetMoney(true);
         int TotalNeededPayment = BailFee + BailFeePastDue;
         TodaysPayment = 0;
         if (TotalNeededPayment > CurrentCash)
@@ -684,7 +684,7 @@ public class Respawning// : IRespawning
         if (!LesterHelp)
         {
             Game.DisplayNotification(BankContactPicture, BankContactPicture, PoliceStationName, "Bail Fees", $"Todays Bill: ~r~${BailFee}~s~~n~Payment Today: ~g~${TodaysPayment}~s~~n~Outstanding: ~r~${BailFeePastDue}~s~ ~n~{BailReport}");// string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}~s~ ~n~{3}", BailFee, TodaysPayment, BailFeePastDue, BailReport));
-            CurrentPlayer.BankAccounts.GiveMoney(-1 * TodaysPayment);
+            CurrentPlayer.BankAccounts.GiveMoney(-1 * TodaysPayment, true);
         }
         else
         {

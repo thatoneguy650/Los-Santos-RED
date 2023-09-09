@@ -227,12 +227,12 @@ public class CityHall : GameLocation
     {
         if(selectedItem == ChangeNameMenu)
         {
-            if(Player.BankAccounts.Money >= NameChangeFee)
+            if(Player.BankAccounts.GetMoney(true) >= NameChangeFee)
             {
                 string NewName = NativeHelper.GetKeyboardInput("");
                 if(NewName != "")
                 {
-                    Player.BankAccounts.GiveMoney(-1 * NameChangeFee);
+                    Player.BankAccounts.GiveMoney(-1 * NameChangeFee, true);
                     Player.ChangeName(NewName);
                     ChangeNameMenu.Description = NameDescription();
                     PlaySuccessSound();
@@ -252,11 +252,11 @@ public class CityHall : GameLocation
         }
         else if (selectedItem == DriversLicenseMenu)
         {
-            if(Player.BankAccounts.Money >= DriversLicenseFee)
+            if(Player.BankAccounts.GetMoney(true) >= DriversLicenseFee)
             {
                 if (Player.Licenses.HasValidDriversLicense(Time))
                 {
-                    Player.BankAccounts.GiveMoney(-1 * DriversLicenseFee);
+                    Player.BankAccounts.GiveMoney(-1 * DriversLicenseFee, true);
                     Player.Licenses.DriversLicense.IssueLicense(Time, 12);
                     DriversLicenseMenu.Description = DriversLicenseDescription();
                     PlaySuccessSound();
@@ -264,7 +264,7 @@ public class CityHall : GameLocation
                 }
                 else
                 {
-                    Player.BankAccounts.GiveMoney(-1 * DriversLicenseFee);
+                    Player.BankAccounts.GiveMoney(-1 * DriversLicenseFee, true);
                     Player.Licenses.DriversLicense = new DriversLicense();
                     Player.Licenses.DriversLicense.IssueLicense(Time, 12);
                     DriversLicenseMenu.Description = DriversLicenseDescription();
@@ -280,11 +280,11 @@ public class CityHall : GameLocation
         }
         else if (selectedItem == CCWLicenseMenu)
         {
-            if (Player.BankAccounts.Money >= CCWLicenseFee)
+            if (Player.BankAccounts.GetMoney(true) >= CCWLicenseFee)
             {
                 if (Player.Licenses.HasCCWLicense && Player.Licenses.CCWLicense.IsValid(Time))
                 {
-                    Player.BankAccounts.GiveMoney(-1 * CCWLicenseFee);
+                    Player.BankAccounts.GiveMoney(-1 * CCWLicenseFee, true);
                     Player.Licenses.CCWLicense.IssueLicense(Time, 12);
                     CCWLicenseMenu.Description = CCWLicenseDescription();
                     PlaySuccessSound();
@@ -292,7 +292,7 @@ public class CityHall : GameLocation
                 }
                 else
                 {
-                    Player.BankAccounts.GiveMoney(-1 * CCWLicenseFee);
+                    Player.BankAccounts.GiveMoney(-1 * CCWLicenseFee, true);
                     Player.Licenses.CCWLicense = new CCWLicense();
                     Player.Licenses.CCWLicense.IssueLicense(Time, 12);
                     CCWLicenseMenu.Description = CCWLicenseDescription();
@@ -308,11 +308,11 @@ public class CityHall : GameLocation
         }
         else if (selectedItem == PilotsLicenseMenu)
         {
-            if (Player.BankAccounts.Money >= PilotsLicenseFee)
+            if (Player.BankAccounts.GetMoney(true) >= PilotsLicenseFee)
             {
                 if (Player.Licenses.HasPilotsLicense && Player.Licenses.PilotsLicense.IsValid(Time))
                 {
-                    Player.BankAccounts.GiveMoney(-1 * PilotsLicenseFee);
+                    Player.BankAccounts.GiveMoney(-1 * PilotsLicenseFee, true);
                     Player.Licenses.PilotsLicense.IssueLicense(Time, 12);
                     PilotsLicenseMenu.Description = PilotsLicenseDescription();
                     PlaySuccessSound();
@@ -320,7 +320,7 @@ public class CityHall : GameLocation
                 }
                 else
                 {
-                    Player.BankAccounts.GiveMoney(-1 * PilotsLicenseFee);
+                    Player.BankAccounts.GiveMoney(-1 * PilotsLicenseFee, true);
                     Player.Licenses.PilotsLicense = new PilotsLicense();
                     Player.Licenses.PilotsLicense.IssueLicense(Time, 12);
                     PilotsLicenseMenu.Description = PilotsLicenseDescription();

@@ -177,9 +177,9 @@ public class Airport : GameLocation, ILocationSetupable
                 UIMenuItem destinationMenu = new UIMenuItem(title, description) { RightLabel = $"{flight.Cost:C0} - {flight.FlightTime} hour(s)", Enabled = canFly };
                 destinationMenu.Activated += (sender, selectedItem) =>
                 {
-                    if (Player.BankAccounts.Money >= flight.Cost)
+                    if (Player.BankAccounts.GetMoney(true) >= flight.Cost)
                     {
-                        Player.BankAccounts.GiveMoney(-1 * flight.Cost);
+                        Player.BankAccounts.GiveMoney(-1 * flight.Cost, true);
                         IsFlyingToLocation = true;
                         Game.FadeScreenOut(1000, true);
                         sender.Visible = false;

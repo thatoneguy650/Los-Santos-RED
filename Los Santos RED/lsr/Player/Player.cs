@@ -1014,30 +1014,32 @@ namespace Mod
         public void OnVehicleEngineHealthDecreased(float amount, bool isCollision)
         {
             GameFiber.Yield();
-            if (IsInVehicle && amount >= 50f && TimeInCurrentVehicle >= 5000)
+            if (IsInVehicle && amount >= 25f && TimeInCurrentVehicle >= 5000)
             {
-                if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer)
+                if (IsWanted && AnyPoliceRecentlySeenPlayer) //if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer)
                 {
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleEngineHealthDecreased SCANNER CALLED");
                     Scanner.OnVehicleCrashed();
                 }
                 CurrentVehicle?.VehicleBodyManager.OnVehicleCrashed();
                 GameTimeLastCrashedVehicle = Game.GameTime;
             }
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleEngineHealthDecreased {amount} {isCollision}");
+            EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleEngineHealthDecreased {amount} {isCollision}");
         }
         public void OnVehicleHealthDecreased(int amount, bool isCollision)
         {
             GameFiber.Yield();
-            if (IsInVehicle && amount >= 50 && TimeInCurrentVehicle >= 5000)
+            if (IsInVehicle && amount >= 25 && TimeInCurrentVehicle >= 5000)
             {
-                if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer)
+                if (IsWanted && AnyPoliceRecentlySeenPlayer) //if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer)
                 {
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleHealthDecreased SCANNER CALLED");
                     Scanner.OnVehicleCrashed();
                 }
                 CurrentVehicle?.VehicleBodyManager.OnVehicleCrashed();
                 GameTimeLastCrashedVehicle = Game.GameTime;
             }
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleHealthDecreased {amount} {isCollision}");
+            EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleHealthDecreased {amount} {isCollision}");
         }
         public void OnVehicleStartedFire()
         {

@@ -206,6 +206,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\City Hall\LicenseQuestion.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\City Hall\LicenseTest.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Forger\Forger.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Machines\MachineInteraction.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\PayNSpray\RepairGarage.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleExporter\ExportedVehicle.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleExporter\MenuVehicleMap.cs" />
@@ -314,6 +315,7 @@
     <Compile Include="lsr\Player\Inventory\Items\PipeItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\RollingPapersItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\ValuableItem.cs" />
+    <Compile Include="lsr\Player\Money\BankAccount.cs" />
     <Compile Include="lsr\Player\Relationships\ContactRelationship.cs" />
     <Compile Include="lsr\Player\Respawning\PlayerPoliceSearch.cs" />
     <Compile Include="lsr\Player\Respawning\SearchActivity.cs" />
@@ -521,7 +523,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\DriveThru.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\FoodStand.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\GangDen.cs" />
-    <Compile Include="lsr\Locations\Places\GameLocations\GasPump.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Machines\GasPump.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\GasStation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\GunStore.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\HardwareStore.cs" />
@@ -539,7 +541,7 @@
     <Compile Include="lsr\Old\SellMenu_Old.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\ScrapYard.cs" />
     <Compile Include="lsr\Locations\Places\Transaction.cs" />
-    <Compile Include="lsr\Locations\Places\GameLocations\VendingMachine.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Machines\VendingMachine.cs" />
     <Compile Include="lsr\Locations\Menus\ShopMenu.cs" />
     <Compile Include="lsr\ModController\ModTaskGroup.cs" />
     <Compile Include="lsr\Other\DependencyChecker.cs" />

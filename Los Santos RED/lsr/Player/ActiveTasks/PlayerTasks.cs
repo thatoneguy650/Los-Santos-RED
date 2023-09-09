@@ -124,7 +124,7 @@ public class PlayerTasks
             Player.RelationshipManager.SetCompleteTask(contactName, myTask.RepAmountOnCompletion, myTask.JoinGangOnComplete);
             if (myTask.PaymentAmountOnCompletion != 0)
             {
-                Player.BankAccounts.GiveMoney(myTask.PaymentAmountOnCompletion);
+                Player.BankAccounts.GiveMoney(myTask.PaymentAmountOnCompletion, false);
             }
             myTask.OnCompleted();
             myTask.IsActive = false;

@@ -31,6 +31,7 @@ public class GasPump : GameLocation
     private GasStation AssociatedStation;
     private bool KeepInteractionGoing;
     private Refueling Refueling;
+    private MachineInteraction MachineInteraction;
 
     public Rage.Object PumpProp { get; private set; } = null;
     public GasPump() : base()
@@ -79,21 +80,21 @@ public class GasPump : GameLocation
             {
                 try
                 {
-                    GetPropEntry();
-                    if (!MoveToMachine())
+
+
+                    MachineInteraction = new MachineInteraction(Player, PumpProp);
+                    if (MachineInteraction.MoveToMachine())
                     {
-                        FullDispose();
+                        CreateInteractionMenu();
+                        InteractionMenu.Visible = true;
+                        SetupGeneral();
+                        while (IsAnyMenuVisible || KeepInteractionGoing || IsFueling)
+                        {
+                            MenuPool.ProcessMenus();
+                            GameFiber.Yield();
+                        }
+                        DisposeInteractionMenu();
                     }
-                    CreateInteractionMenu();
-                    InteractionMenu.Visible = true;
-                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                    SetupGeneral();
-                    while (IsAnyMenuVisible || KeepInteractionGoing || IsFueling)
-                    {
-                        MenuPool.ProcessMenus();
-                        GameFiber.Yield();
-                    }
-                    DisposeInteractionMenu();
                     FullDispose();
                     Player.ActivityManager.IsInteractingWithLocation = false;
                     Player.IsTransacting = false;
@@ -135,13 +136,39 @@ public class GasPump : GameLocation
                 BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
                 GetGasSubMenu.SetBannerType(BannerImage);
             }
-            GetGasSubMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-            GetGasSubMenu.OnMenuOpen += GetGasSubMenu_OnMenuOpen;
-            GetGasSubMenu.OnMenuClose += GetGasSubMenu_OnMenuClose;
+            GetGasSubMenu.OnMenuOpen += (sender) =>
+            {
+                if (VehicleToFill != null && VehicleToFill.Vehicle.Exists())
+                {
+                    NativeFunction.Natives.SET_GAMEPLAY_VEHICLE_HINT(VehicleToFill.Vehicle, 0f, 0f, 0f, true, -1, 2000, 2000);
+                }
+            };
             FillMenuItem = new UIMenuItem("Fill", "Fill the entire tank" + MenuString) { RightLabel = Refueling.UnitsOfFuelNeeded + " Gallons - " + Refueling.AmountToFill.ToString("C0") };
+            FillMenuItem.Activated += (sender, e) =>
+            {
+                if (VehicleToFill != null && VehicleToFill.Vehicle.Exists())
+                {
+                    IsFueling = true;
+                    InteractionMenu.Visible = false;
+                    sender.Visible = false;
+                    Refueling.RefuelSlow(Refueling.UnitsOfFuelNeeded, this);
+                    StartMachineBuyAnimation();
+                }
+            };
             if (Refueling.UnitsOfFuelNeeded > 0)
             {
                 AddSomeMenuItem = new UIMenuNumericScrollerItem<int>("Partial", "Add gasoline by the gallon" + MenuString, 1, Refueling.UnitsOfFuelNeeded, 1) { Formatter = v => v + " Gallons - " + (v * pricePerUnit).ToString("C0") };
+                AddSomeMenuItem.Activated += (sender, e) =>
+                {
+                    if (VehicleToFill != null && VehicleToFill.Vehicle.Exists())
+                    {
+                        IsFueling = true;
+                        InteractionMenu.Visible = false;
+                        sender.Visible = false;
+                        Refueling.RefuelSlow(AddSomeMenuItem.Value, this);
+                        StartMachineBuyAnimation();
+                    }
+                };
                 GetGasSubMenu.AddItem(AddSomeMenuItem);
             }
             GetGasSubMenu.AddItem(FillMenuItem);            
@@ -152,43 +179,12 @@ public class GasPump : GameLocation
             InteractionMenu.Visible = false;
         }
     }
-    private void GetGasSubMenu_OnMenuOpen(UIMenu sender)
-    {
-        if(VehicleToFill != null && VehicleToFill.Vehicle.Exists())
-        {
-            if (VehicleToFill != null && VehicleToFill.Vehicle.Exists())
-            {
-                NativeFunction.Natives.SET_GAMEPLAY_VEHICLE_HINT(VehicleToFill.Vehicle, 0f, 0f, 0f, true, -1, 2000, 2000);
-            }
-        }
-    }
-    private void GetGasSubMenu_OnMenuClose(UIMenu sender)
-    {
-
-    }
     public override void OnItemPurchased(ModItem modItem, MenuItem menuItem, int totalItems)
     {
         MenuPool.CloseAllMenus();
         StartMachineBuyAnimation();
         base.OnItemPurchased(modItem, menuItem, totalItems);
         Transaction.PurchaseMenu?.Show();
-    }
-    private void InteractionMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        if(selectedItem == FillMenuItem && VehicleToFill != null && VehicleToFill.Vehicle.Exists())
-        {
-            IsFueling = true;
-            InteractionMenu.Visible = false;
-            sender.Visible = false;
-            Refueling.RefuelSlow(Refueling.UnitsOfFuelNeeded, this);
-        }
-        else if (selectedItem == AddSomeMenuItem && VehicleToFill != null && VehicleToFill.Vehicle.Exists())
-        {
-            IsFueling = true;
-            InteractionMenu.Visible = false;
-            sender.Visible = false;
-            Refueling.RefuelSlow(AddSomeMenuItem.Value, this);
-        }
     }
     private void FullDispose()
     {
@@ -199,95 +195,38 @@ public class GasPump : GameLocation
         Player.ButtonPrompts.RemovePrompts("Fueling");
         IsFueling = false;
     }
-    private void GetPropEntry()
-    {
-        if (PumpProp != null && PumpProp.Exists())
-        {
-            float DistanceToFront = Player.Position.DistanceTo2D(PumpProp.GetOffsetPositionFront(-1f));
-            float DistanceToRear = Player.Position.DistanceTo2D(PumpProp.GetOffsetPositionFront(1f));
-            if (DistanceToFront <= DistanceToRear)
-            {
-                PropEntryPosition = PumpProp.GetOffsetPositionFront(-1f);
-                PropEntryPosition = new Vector3(PropEntryPosition.X, PropEntryPosition.Y, Game.LocalPlayer.Character.Position.Z);
-                float ObjectHeading = PumpProp.Heading - 180f;
-                if (ObjectHeading >= 180f)
-                {
-                    PropEntryHeading = ObjectHeading - 180f;
-                }
-                else
-                {
-                    PropEntryHeading = ObjectHeading + 180f;
-                }
-            }
-            else
-            {
-                //EntryPoint.WriteToConsoleTestLong("Gas Pump You are Closer to the REAR, using that side");
-                PropEntryPosition = PumpProp.GetOffsetPositionFront(1f);
-                PropEntryPosition = new Vector3(PropEntryPosition.X, PropEntryPosition.Y, Game.LocalPlayer.Character.Position.Z);
-                float ObjectHeading = PumpProp.Heading;
-                if (ObjectHeading >= 180f)
-                {
-                    PropEntryHeading = ObjectHeading - 180f;
-                }
-                else
-                {
-                    PropEntryHeading = ObjectHeading + 180f;
-                }
-            }
-        }
-    }
-    private bool MoveToMachine()
-    {
-        if (PropEntryPosition == Vector3.Zero)
-        {
-            return false;
-        }
-        NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, PropEntryPosition.X, PropEntryPosition.Y, PropEntryPosition.Z, 1.0f, -1, PropEntryHeading, 0.2f);
-        uint GameTimeStartedSitting = Game.GameTime;
-        float heading = Game.LocalPlayer.Character.Heading;
-        bool IsFacingDirection = false;
-        bool IsCloseEnough = false;
-        while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsCloseEnough && !IsCancelled)
-        {
-            if (Player.IsMoveControlPressed)
-            {
-                IsCancelled = true;
-            }
-            IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(PropEntryPosition) < 0.2f;
-            GameFiber.Yield();
-        }
-        GameFiber.Sleep(250);
-        GameTimeStartedSitting = Game.GameTime;
-        while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsFacingDirection && !IsCancelled)
-        {
-            if (Player.IsMoveControlPressed)
-            {
-                IsCancelled = true;
-            }
-            heading = Game.LocalPlayer.Character.Heading;
-            if (Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)) <= 0.5f)//0.5f)
-            {
-                IsFacingDirection = true;
-            }
-            GameFiber.Yield();
-        }
-        GameFiber.Sleep(250);
-        if (IsCloseEnough && IsFacingDirection && !IsCancelled)
-        {
-            return true;
-        }
-        else
-        {
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-            return false;
-        }
-    }
     private void StartMachineBuyAnimation()
     {
-        if (!MoveToMachine())
+        if (!MachineInteraction.MoveToMachine())
         {
             FullDispose();
+            return;
         }
+        //if (UseMachine())
+        //{
+
+        //}
     }
+    //private bool UseMachine()
+    //{
+    //    PlayingDict = "mini@sprunk";
+    //    PlayingAnim = "plyr_buy_drink_pt1";
+    //    AnimationDictionary.RequestAnimationDictionay(PlayingDict);
+    //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -4.0f, -1, 0, 0, false, false, false);//-1
+    //    bool IsCompleted = false;
+    //    while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
+    //    {
+    //        Player.WeaponEquipment.SetUnarmed();
+    //        float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
+    //        if (AnimationTime >= 0.4f)
+    //        {
+    //            IsCompleted = true;
+    //            break;
+    //        }
+    //        GameFiber.Yield();
+    //    }
+    //    NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+    //    return IsCompleted;
+    //}
 }
 

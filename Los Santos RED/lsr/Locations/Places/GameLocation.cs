@@ -108,7 +108,7 @@ public class GameLocation : ILocationDispatchable
     public bool RemoveBanner { get; set; } = false;
     public virtual bool IsBlipEnabled { get; set; } = true;
     public virtual int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
-    public Color MapIconColor => Color.FromName(MapIconColorString);
+    public virtual Color MapIconColor => Color.FromName(MapIconColorString);
     public virtual string MapIconColorString { get; set; } = "White";
     public virtual float MapIconScale { get; set; } = 0.6f;//1.0f;
     public virtual float MapIconRadius { get; set; } = 1.0f;
@@ -193,7 +193,6 @@ public class GameLocation : ILocationDispatchable
     public bool IsDispatchFilled { get; set; } = false;
     [XmlIgnore]
     public float EntranceGroundZ { get; set; } = 0.0f;
-
     public bool IsAnyMenuVisible => MenuPool.IsAnyMenuOpen();
     public bool HasCustomCamera => CameraPosition != Vector3.Zero;
     public bool HasCustomVehicleCamera => VehiclePreviewCameraPosition != Vector3.Zero;
@@ -477,22 +476,6 @@ public class GameLocation : ILocationDispatchable
     {
         return Name;
     }
-    public void ActivateBlip(ITimeReportable time, IEntityProvideable world)
-    {
-        if (!createdBlip.Exists())
-        {
-            createdBlip = CreateBlip(time, true);
-            world.AddBlip(Blip);
-        }
-    }
-    public void DeactivateBlip()
-    {
-        if (createdBlip.Exists())
-        {
-            //EntryPoint.WriteToConsole("DEACTIVATING BLIP 2222222");
-            createdBlip.Delete();
-        }
-    }
     public void Update(ITimeReportable time)
     {
         if (IsNearby)
@@ -510,7 +493,23 @@ public class GameLocation : ILocationDispatchable
             distanceToPlayer = 999f;
             GameTimeLastCheckedDistance = Game.GameTime;
         }
+    }
 
+    public virtual void ActivateBlip(ITimeReportable time, IEntityProvideable world)
+    {
+        if (!createdBlip.Exists())
+        {
+            createdBlip = CreateBlip(time, true);
+            world.AddBlip(Blip);
+        }
+    }
+    public virtual void DeactivateBlip()
+    {
+        if (createdBlip.Exists())
+        {
+            //EntryPoint.WriteToConsole("DEACTIVATING BLIP 2222222");
+            createdBlip.Delete();
+        }
     }
     public void UpdateBlip(ITimeReportable time)
     {
@@ -518,15 +517,8 @@ public class GameLocation : ILocationDispatchable
         {
             return;
         }
-
-       // float newAlpha;
         Color newColor;
-
-
-
         float newAlpha = GetCurrentIconAlpha(time);
-
-
         if (IsPlayerInterestedInLocation)
         {
             newColor = Color.Blue;
@@ -535,7 +527,6 @@ public class GameLocation : ILocationDispatchable
         {
             newColor = MapIconColor;
         }
-
         if (newAlpha != currentblipAlpha)
         {
             Blip.Alpha = newAlpha;
@@ -548,7 +539,6 @@ public class GameLocation : ILocationDispatchable
             currentBlipColor = newColor;
             //EntryPoint.WriteToConsole($"CHANGING BLIP Color {Name} {currentBlipColor}");
         }
-
     }
 
     protected virtual float GetCurrentIconAlpha(ITimeReportable time)
@@ -564,7 +554,6 @@ public class GameLocation : ILocationDispatchable
         }
         return newAlpha;
     }
-
     private Blip CreateBlip(ITimeReportable time, bool isShortRange)
     {
         Blip locationBlip;
@@ -581,10 +570,8 @@ public class GameLocation : ILocationDispatchable
             }
             locationBlip.Scale = MapIconScale;
         }
-
         currentblipAlpha = GetCurrentIconAlpha(time);// IsOpen(time.CurrentHour) ? MapOpenIconAlpha : MapClosedIconAlpha;
         currentBlipColor = IsPlayerInterestedInLocation ? Color.Blue : MapIconColor;
-
         locationBlip.Color = currentBlipColor;
         locationBlip.Alpha = currentblipAlpha;
         if (isShortRange)
@@ -595,8 +582,8 @@ public class GameLocation : ILocationDispatchable
         NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(TypeName);
         NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(locationBlip);
         return locationBlip;
-
     }
+
     public bool CheckIsNearby(int cellX, int cellY, int Distance)
     {
         if (GameTimeLastCheckedNearby == 0 || Game.GameTime - GameTimeLastCheckedNearby >= NearbyUpdateIntervalTime)

@@ -54,7 +54,7 @@ public class LicensePlateItem : ModItem
             modItems.PossibleItems.LicensePlateItems.Add(this);
         }
     }
-    public override void CreateSimpleSellMenu(ILocationInteractable player, UIMenu sellPlateSubMenu, GameLocation gameLocation, int cleanPlateCost, int wantedPlateCost)
+    public override void CreateSimpleSellMenu(ILocationInteractable player, UIMenu sellPlateSubMenu, GameLocation gameLocation, int cleanPlateCost, int wantedPlateCost, bool useAccounts)
     {
         int price = LicensePlate == null ? cleanPlateCost : LicensePlate.IsWanted ? wantedPlateCost : cleanPlateCost;
         UIMenuItem MenuItem = new UIMenuItem(DisplayName, DisplayDescription) { RightLabel = price.ToString("C0") };
@@ -64,7 +64,7 @@ public class LicensePlateItem : ModItem
             {
                 return;
             }
-            player.BankAccounts.GiveMoney(price);
+            player.BankAccounts.GiveMoney(price, useAccounts);
             MenuItem.Enabled = false;
             if(gameLocation == null)
             {

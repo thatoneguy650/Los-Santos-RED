@@ -82,7 +82,7 @@ public class MessagesMenu
     }
     private void UpdateMenu()
     {
-        tabView.MoneySubtitle = Player.BankAccounts.Money.ToString("C0");
+        tabView.MoneySubtitle = Player.BankAccounts.TotalMoney.ToString("C0");
         tabView.Name = Player.PlayerName;
         tabView.Money = Time.CurrentTime;
         tabView.Tabs.Clear();

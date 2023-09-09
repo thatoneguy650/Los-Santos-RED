@@ -37,6 +37,8 @@ public class TopRightMenu
     private float CustomStarsPosition;
     private uint lastGameTime;
     private bool isPaused;
+    private uint GameTimeLastFlashedWantedStars;
+    private bool isShowingGreyedWantedStars;
 
     public TopRightMenu(IDisplayable displayablePlayer, ITimeReportable time, ISettingsProvideable settings, UI uI)
     {
@@ -162,7 +164,8 @@ public class TopRightMenu
         }
         if (willShowCash)
         {
-            DisplayTextOnScreen("$" + DisplayablePlayer.BankAccounts.Money.ToString(), CashPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
+
+            DisplayTextOnScreen(DisplayablePlayer.BankAccounts.CashDisplay(), CashPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
         }
         if (willShowCashChange)
         {
@@ -374,10 +377,35 @@ public class TopRightMenu
     }
     private void DisplayWantedLevel(GraphicsEventArgs args, float InitialPosX, float InitialPosY, float Scale)
     {
+
+        if(DisplayablePlayer.IsInSearchMode && Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsFlashWhenSearching)
+        {
+            uint GameTimeBetweenFlash = (uint)(Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsTimeBetweenFlash * (1.0f - DisplayablePlayer.SearchMode.SearchModePercentage));
+            if(GameTimeBetweenFlash <= 200)
+            {
+                GameTimeBetweenFlash = 200;
+            }
+            if (Game.GameTime - GameTimeLastFlashedWantedStars >= GameTimeBetweenFlash)
+            {
+                GameTimeLastFlashedWantedStars = Game.GameTime;
+                isShowingGreyedWantedStars = !isShowingGreyedWantedStars;
+                EntryPoint.WriteToConsole("WANTED STARS FLASHING CHANGE");
+            }
+        }
+        else
+        {
+            isShowingGreyedWantedStars = false;
+        }
+
+
         for (int wantedLevelStar = 1; wantedLevelStar <= Settings.SettingsManager.PoliceSettings.MaxWantedLevel; wantedLevelStar++)
         {
             Texture toShow;
-            if (wantedLevelStar <= DisplayablePlayer.WantedLevel)
+            if(isShowingGreyedWantedStars)
+            {
+                toShow = WantedGreyed;
+            }
+            else if (wantedLevelStar <= DisplayablePlayer.WantedLevel)
             {
                 if(!DisplayablePlayer.PoliceResponse.WantedLevelHasBeenRadioedIn)
                 {
@@ -398,10 +426,13 @@ public class TopRightMenu
             }
             float FinalPosX = InitialPosX - (wantedLevelStar * ((toShow.Size.Width - Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsSpacingPixelReduction) * Scale));//InitialPosX - (i * (toShow.Size.Width * Scale));
             float FinalPosY = InitialPosY;
-            if (toShow != null && toShow.Size != null)
+            if (toShow == null || toShow.Size == null)
             {
-                args.Graphics.DrawTexture(toShow, new RectangleF(FinalPosX, FinalPosY, toShow.Size.Width * Scale, toShow.Size.Height * Scale));
+                continue;
+                
             }
+            RectangleF rectangleF = new RectangleF(FinalPosX, FinalPosY, toShow.Size.Width * Scale, toShow.Size.Height * Scale);
+            args.Graphics.DrawTexture(toShow, rectangleF);
         }
     }
     private void DisplayInvestigationMarks(GraphicsEventArgs args, float InitialPosX, float InitialPosY, float Scale)

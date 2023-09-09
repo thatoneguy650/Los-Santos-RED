@@ -562,7 +562,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Sending ${MoneyToRecieve}",
                             $"Heard you were done. We owe you ${MoneyToRecieve}",
                             };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom());
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), false);
         }
         private void SendDeadDropStartMessage()
         {
@@ -571,7 +571,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Go get your payment of ${MoneyToRecieve} from {myDrop.Description}, address is {myDrop.FullStreetAddress}.",
                             };
 
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom());
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), false);
         }
         private void SendCompletedMessage()
         {
@@ -582,7 +582,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"Sending ${MoneyToRecieve}",
                         $"Heard you were done. We owe you ${MoneyToRecieve}",
                         };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom());
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), false);
         }
         private void SendFailMessage()
         {
@@ -593,7 +593,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"How did you fuck this up so bad, they are squealing everything",
                         $"Since you fucked that up, they went right to the cops.",
                         };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom());
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), false);
         }
     }
 

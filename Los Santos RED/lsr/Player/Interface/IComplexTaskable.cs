@@ -68,6 +68,8 @@ namespace LosSantosRED.lsr.Interface
 
 
         PedAlerts PedAlerts { get; }
+        bool WillCower { get; }
+
         void PlaySpeech(string name, bool v);
         void PlaySpeech(List<string> list, bool isInVehicle, bool v);
         void ReportCrime(ITargetable player);

@@ -449,7 +449,7 @@ public class GangReputation
             //}
             string MessageToSend;
             MessageToSend = Replies.PickRandom();
-            Player.CellPhone.AddScheduledText(phoneContact, MessageToSend);
+            Player.CellPhone.AddScheduledText(phoneContact, MessageToSend, false);
         }
     }
 

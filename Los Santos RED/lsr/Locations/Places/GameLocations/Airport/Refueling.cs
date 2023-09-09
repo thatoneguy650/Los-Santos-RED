@@ -64,7 +64,7 @@ public class Refueling
     }
     public bool RefuelSlow(int UnitsToAdd, GasPump gasPump)
     {
-        if (UnitsToAdd * PricePerUnit > Player.BankAccounts.Money)
+        if (UnitsToAdd * PricePerUnit > Player.BankAccounts.GetMoney(true))
         {
             PurchaseFailed();
             return false;
@@ -111,7 +111,7 @@ public class Refueling
                             {
                                 VehicleExt.Vehicle.FuelLevel += PercentFilledPerUnit;
                             }
-                            Player.BankAccounts.GiveMoney(-1 * PricePerUnit);
+                            Player.BankAccounts.GiveMoney(-1 * PricePerUnit, true);
                             //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
 
                             Shop.PlaySuccessSound();
@@ -147,7 +147,7 @@ public class Refueling
     }
     public bool RefuelQuick(int UnitsToAdd)
     {
-        if (UnitsToAdd * PricePerUnit > Player.BankAccounts.Money)
+        if (UnitsToAdd * PricePerUnit > Player.BankAccounts.GetMoney(true))
         {
             PurchaseFailed();
             return false;
@@ -161,7 +161,7 @@ public class Refueling
                 {
                     VehicleExt.Vehicle.FuelLevel = Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax;
                 }
-                Player.BankAccounts.GiveMoney(-1 * PricePerUnit * UnitsToAdd);
+                Player.BankAccounts.GiveMoney(-1 * PricePerUnit * UnitsToAdd, true);
                 if (UnitsToAdd > 0)
                 {
                     PurchaseSucceeded(UnitsToAdd);

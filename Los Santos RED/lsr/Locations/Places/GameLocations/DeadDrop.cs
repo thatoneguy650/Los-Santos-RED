@@ -78,7 +78,7 @@ public class DeadDrop : GameLocation
     }
     private void DoDropOff(ILocationInteractable Player)
     {
-        if (Player.BankAccounts.Money >= Math.Abs(MoneyAmount))
+        if (Player.BankAccounts.GetMoney(false) >= Math.Abs(MoneyAmount))
         {
             Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
@@ -89,7 +89,7 @@ public class DeadDrop : GameLocation
                 return;
             }
             Game.DisplayHelp("You have dropped off the cash, leave the area");
-            Player.BankAccounts.GiveMoney(-1 * MoneyAmount);
+            Player.BankAccounts.GiveMoney(-1 * MoneyAmount, false);
             //CompleteOnLeaveArea(Player);
             //IsEnabled = false;
             CanInteract = false;
@@ -118,7 +118,7 @@ public class DeadDrop : GameLocation
             return;
         }
         Game.DisplayHelp("You have picked up the cash, don't hang around");
-        Player.BankAccounts.GiveMoney(MoneyAmount);
+        Player.BankAccounts.GiveMoney(MoneyAmount, false);
 
         IsEnabled = false;
 

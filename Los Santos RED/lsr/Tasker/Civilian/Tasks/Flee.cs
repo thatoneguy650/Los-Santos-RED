@@ -10,8 +10,12 @@ using System.Threading.Tasks;
 
 public class Flee : ComplexTask
 {
-    bool isInVehicle = false;
+    private bool isInVehicle = false;
     private ITargetable Target;
+    private bool isCowering = false;
+    private float CowerDistance = 40f;
+    private bool IsWithinCowerDistance => Ped.DistanceToPlayer <= CowerDistance;
+    private bool ShouldCower => Ped.WillCower && IsWithinCowerDistance;
     public Flee(IComplexTaskable ped, ITargetable player) : base(player, ped, 5000)
     {
         Name = "Flee";
@@ -43,6 +47,10 @@ public class Flee : ComplexTask
             NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 1.0f);
             NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, 1.0f);
         }
+        if(ShouldCower != isCowering)
+        {
+            Retask();
+        }
         GameTimeLastRan = Game.GameTime;
     }
     public override void Stop()
@@ -55,27 +63,35 @@ public class Flee : ComplexTask
     }
     private void Retask()
     {
-        if (Ped.Pedestrian.Exists())
+        if (!Ped.Pedestrian.Exists())
         {
-            Ped.Pedestrian.BlockPermanentEvents = true;
-            Ped.Pedestrian.KeepTasks = true;
-            if (isInVehicle && Ped.IsDriver)
+            return;
+        }
+        Ped.Pedestrian.BlockPermanentEvents = true;
+        Ped.Pedestrian.KeepTasks = true;
+        if (isInVehicle && Ped.IsDriver)
+        {
+            Vector3 CurrentPos = Ped.Pedestrian.Position;
+            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 5000f, -1, true, false);
+            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Alerted);
+            NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 100f);//new
+            NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 1.0f);
+            NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, 1.0f);
+        }
+        else
+        {
+            Vector3 CurrentPos = Ped.Pedestrian.Position;
+            if(Ped.WillCower && IsWithinCowerDistance)
             {
-                Vector3 CurrentPos = Ped.Pedestrian.Position;
-                //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 100f, (int)eCustomDrivingStyles.Alerted);
-                NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 5000f, -1, true, false);
-                NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Alerted);
-                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 100f);//new
-                NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 1.0f);
-                NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, 1.0f);
+                NativeFunction.Natives.TASK_COWER(Ped.Pedestrian, -1);
+                EntryPoint.WriteToConsole("FLEE SET PED COWER");
             }
             else
             {
-                Vector3 CurrentPos = Ped.Pedestrian.Position;
                 NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 5000f, -1, true, false);
-            }
-            //EntryPoint.WriteToConsoleTestLong("RETASK FLEE");
+            }     
         }
+        isCowering = ShouldCower;
     }
 }
 

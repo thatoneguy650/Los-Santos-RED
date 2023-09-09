@@ -104,7 +104,7 @@ namespace LSR.Vehicles
         public uint GameTimeToReportStolen { get; set; } = 0;
         public bool ColorMatchesDescription => Vehicle.PrimaryColor == DescriptionColor;
         public bool HasOriginalPlate => CarPlate != null && CarPlate.PlateNumber == OriginalLicensePlate.PlateNumber;
-        public bool IsWanted => CopsRecognizeAsStolen || (CarPlate != null && CarPlate.IsWanted);
+        public bool IsWanted => CarPlate != null && CarPlate.IsWanted;// CopsRecognizeAsStolen || (CarPlate != null && CarPlate.IsWanted);
         public bool CopsRecognizeAsStolen
         {
             get
@@ -115,7 +115,7 @@ namespace LSR.Vehicles
                 }
                 else
                 {
-                    if (CarPlate != null && CarPlate.IsWanted)
+                    if (IsWanted)//CarPlate != null && CarPlate.IsWanted)
                     {
                         return true;
                     }
@@ -622,7 +622,7 @@ namespace LSR.Vehicles
             {
                 DescriptionColor = Vehicle.PrimaryColor;
             }
-            if (CarPlate != null && !CarPlate.IsWanted)
+            if (IsStolen && CarPlate != null && !CarPlate.IsWanted)
             {
                 CarPlate.IsWanted = true;
             }
@@ -1235,13 +1235,13 @@ namespace LSR.Vehicles
             UIMenuItem impoundMenuItem = new UIMenuItem(vehicleName, $"Pay the impound fee and be granted your {vehicleName}.~n~Date Impounded: ~p~{DateTimeImpounded}~s~~n~Impounded Days: ~y~{DaysImpounded}~s~~n~Daily Fee: ~r~${DailyFee}~s~~n~Extra Fee: ~r~${ExtraFee}~s~~n~Total: ~r~${fee}~s~") { RightLabel = $"${fee}" };
             impoundMenuItem.Activated += (sender, selectedItem) =>
             {
-                if(player.BankAccounts.Money <= fee)
+                if(player.BankAccounts.GetMoney(true) <= fee)
                 {
                     new GTANotification(location.Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transaction.").Display();
                     NativeHelper.PlayErrorSound();
                     return;
                 }
-                player.BankAccounts.GiveMoney(-1 * fee);
+                player.BankAccounts.GiveMoney(-1 * fee, true);
                 UnSetImpounded();
                 new GTANotification(location.Name, "~g~Payment Accepted", $"Please collect your vehicle from the lot.").Display();
                 location.RestrictedAreas?.RemoveImpoundRestrictions();

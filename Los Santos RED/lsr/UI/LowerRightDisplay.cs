@@ -226,18 +226,13 @@ public class LowerRightDisplay
             }
             else
             {
-
                 if (DisplayablePlayer.IsInSearchMode)
                 {
                     PlayerDisplay += $"~o~ Attempting To Locate";
                 }
                 else
                 {
-                    if (DisplayablePlayer.CurrentLocation.IsInside && DisplayablePlayer.AnyPoliceKnowInteriorLocation)
-                    {
-                        PlayerDisplay += $"~r~ Breaching";
-                    }
-                    else if (DisplayablePlayer.PoliceResponse.IsWeaponsFree)
+                    if (DisplayablePlayer.PoliceResponse.IsWeaponsFree)
                     {
                         PlayerDisplay += $"~r~ Weapons Free";
                     }
@@ -245,12 +240,24 @@ public class LowerRightDisplay
                     {
                         PlayerDisplay += $"~r~ Lethal Force Authorized";
                     }
+                    else if (DisplayablePlayer.CurrentLocation.IsInside && DisplayablePlayer.AnyPoliceKnowInteriorLocation)
+                    {
+                        PlayerDisplay += $"~r~ Breaching Position";
+                    }
                     else
                     {
-                        PlayerDisplay += $"~r~ Active Pursuit";
+                        PlayerDisplay += $"~r~ Pursuit Active";
                     }
                 }
-                PlayerDisplay += $" ({DisplayablePlayer.PoliceResponse.CurrentRespondingPoliceCount}) {UI.CurrentDefaultTextColor}";
+                if(Settings.SettingsManager.LSRHUDSettings.PlayerStatusIncludePoliceCount)
+                {
+                    PlayerDisplay += $" ({DisplayablePlayer.PoliceResponse.CurrentRespondingPoliceCount}) {UI.CurrentDefaultTextColor}";
+                }
+                else
+                {
+                    PlayerDisplay += $"{UI.CurrentDefaultTextColor}";
+                }
+                
             }
         }
         else if (DisplayablePlayer.Investigation != null && DisplayablePlayer.Investigation.IsActive)

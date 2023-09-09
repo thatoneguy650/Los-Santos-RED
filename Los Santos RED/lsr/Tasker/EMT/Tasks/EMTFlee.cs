@@ -19,15 +19,14 @@ public class EMTFlee : ComplexTask
     }
     public override void Start()
     {
-        if (Ped.Pedestrian.Exists())
+        if (!Ped.Pedestrian.Exists())
         {
-            // EntryPoint.WriteToConsole($"TASKER: EMTFlee Start: {Ped.Pedestrian.Handle}", 3);
-
-            NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
-            Vector3 CurrentPos = Ped.Pedestrian.Position;
-            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 500f, -1, false, false);
-            GameTimeLastRan = Game.GameTime;
+            return;
         }
+        NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
+        Vector3 CurrentPos = Ped.Pedestrian.Position;
+        NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 500f, -1, false, false);
+        GameTimeLastRan = Game.GameTime;
     }
     public override void Update()
     {

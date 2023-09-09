@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
+using Mod;
 using Rage;
 using Rage.Native;
 using RAGENativeUI.PauseMenu;
@@ -36,7 +37,11 @@ namespace LosSantosRED.lsr.Data
         }
         public string PlayerName { get; set; }
         public int Money { get; set; }
-        public int AccountMoney { get; set; }
+      //  public int AccountMoney { get; set; }
+
+
+        public List<BankAccount> SavedBankAccounts { get; set; } = new List<BankAccount>();
+
         public string ModelName { get; set; }
         public Vector3 PlayerPosition { get; set; }
         public float PlayerHeading { get; set; }
@@ -82,8 +87,24 @@ namespace LosSantosRED.lsr.Data
         {
             PlayerName = player.PlayerName;
             ModelName = player.ModelName;
-            Money = player.BankAccounts.Money;
-            AccountMoney = player.BankAccounts.AccountMoney;
+
+
+
+
+
+            //Money = player.BankAccounts.Money;
+            //AccountMoney = player.BankAccounts.AccountMoney;
+            Money = player.BankAccounts.GetMoney(false);
+            SavedBankAccounts.Clear();
+            foreach (BankAccount bankAccount in player.BankAccounts.BankAccountList)
+            {
+                SavedBankAccounts.Add(bankAccount);
+            }
+
+
+
+
+
             IsMale = player.IsMale;
             CurrentModelVariation = player.CurrentModelVariation.Copy();
             WeaponInventory = new List<StoredWeapon>();
@@ -254,7 +275,7 @@ namespace LosSantosRED.lsr.Data
 
                 time.SetDateTime(CurrentDateTime);
                 pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation, SpeechSkill, VoiceName);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
-                player.BankAccounts.AccountMoney = AccountMoney;
+                LoadMoney(player);
                 LoadWeapons(weapons);
                 LoadInventory(player, modItems);
                 LoadVehicles(player, world,settings, modItems, placesOfInterest, time);
@@ -277,6 +298,13 @@ namespace LosSantosRED.lsr.Data
                 Game.FadeScreenIn(0);
                 EntryPoint.WriteToConsole("Error Loading Game Save: " + e.Message + " " + e.StackTrace, 0);
                 Game.DisplayNotification("Error Loading Save");
+            }
+        }
+        private void LoadMoney(IInventoryable player)
+        {
+            foreach (BankAccount bankAccount in SavedBankAccounts)
+            {
+                player.BankAccounts.BankAccountList.Add(bankAccount);
             }
         }
         private void LoadAgencies(IAgencies agencies, IInventoryable player)

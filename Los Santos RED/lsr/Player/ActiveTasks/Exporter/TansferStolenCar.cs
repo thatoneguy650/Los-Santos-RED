@@ -334,8 +334,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 $"Take it to the shop on {DropOffStore.FullStreetAddress}. Make sure it is in perfect condition.",
                 $"Get to {DropOffStore.FullStreetAddress}. Don't fuck up the car, it needs to be mint",
                 $"Bring it to {DropOffStore.FullStreetAddress}, don't loiter. Make sure it gets there in perfect condition.",
+                $"Bring it to {DropOffStore.FullStreetAddress}, don't loiter. Do NOT fuck up the car.",
                     };
-            Player.CellPhone.AddPhoneResponse(Contact.Name, Replies.PickRandom());
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), true);
         }
         private void SendVehicleSpawnedMessage()
         {
@@ -346,7 +347,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"Use the ~p~{CarName}~s~, plate number is {SpawnedVehicle.LicensePlate}. Keys should be in it.",
                         $"Take the ~p~{CarName}~s~. It is ready to go.",
                         };
-            Player.CellPhone.AddScheduledText(Contact, PickupMessage.PickRandom());
+            Player.CellPhone.AddScheduledText(Contact, PickupMessage.PickRandom(), true);
         }
         private void SendInitialInstructionsMessage()
         {
@@ -366,7 +367,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"Sending ${MoneyToRecieve}",
                         $"Heard you were done. We owe you ${MoneyToRecieve}",
                         };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom());
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), false);
         }
         private void SendTaskAbortMessage()
         {
@@ -394,7 +395,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                         $"Did you think you could keep this from us? Would be unfortunate to get caught in that hot car.",
                                         $"Enjoy your time in Bolingbroke SHU",
                                             };
-            Player.CellPhone.AddScheduledText(new GangContact(gang.ContactName, gang.ContactIcon), Replies2.PickRandom());
+            Player.CellPhone.AddScheduledText(new GangContact(gang.ContactName, gang.ContactIcon), Replies2.PickRandom(), true);
         }
     }
 }

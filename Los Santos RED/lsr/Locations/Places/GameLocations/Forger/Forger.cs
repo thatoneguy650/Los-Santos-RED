@@ -112,7 +112,7 @@ public class Forger : GameLocation
         }
         foreach (InventoryItem lpi in Player.Inventory.ItemsList.Where(x => x.ModItem != null && x.ModItem.ItemType == ItemType.LicensePlates))
         {
-            lpi.ModItem.CreateSimpleSellMenu(Player, SellPlateSubMenu, this, CleanPlateSalesPrice, WantedPlateSalesPrice);
+            lpi.ModItem.CreateSimpleSellMenu(Player, SellPlateSubMenu, this, CleanPlateSalesPrice, WantedPlateSalesPrice, false);
         }
     }
     private void AddRandomPlateBuy()
@@ -121,13 +121,13 @@ public class Forger : GameLocation
         PlateSubMenu.AddItem(randomPlateMenuItem);
         randomPlateMenuItem.Activated += (sender, e) =>
         {
-            if (Player.BankAccounts.Money <= RandomPlateCost)
+            if (Player.BankAccounts.GetMoney(false) <= RandomPlateCost)
             {
                 PlayErrorSound();
                 DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation.");
                 return;
             }
-            Player.BankAccounts.GiveMoney(-1 * RandomPlateCost);
+            Player.BankAccounts.GiveMoney(-1 * RandomPlateCost, false);
             string newText = RandomItems.RandomString(8);
             LicensePlate licensePlate = new LicensePlate(newText, 1, false);
             LicensePlateItem toAdd = new LicensePlateItem($"{newText}") { Description = licensePlate.GenerateDescription(), LicensePlate = licensePlate };
@@ -165,13 +165,13 @@ public class Forger : GameLocation
         CustomPlateSubMenu.AddItem(buyCustomPlateMenuItem);
         buyCustomPlateMenuItem.Activated += (sender, e) =>
         {
-            if (Player.BankAccounts.Money <= CustomPlateCost)
+            if (Player.BankAccounts.GetMoney(false) <= CustomPlateCost)
             {
                 PlayErrorSound();
                 DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation.");
                 return;
             }
-            Player.BankAccounts.GiveMoney(-1 * CustomPlateCost);
+            Player.BankAccounts.GiveMoney(-1 * CustomPlateCost, false);
             LicensePlate licensePlate = new LicensePlate(customPlateTextMenuItem.RightLabel, customPlateTypeMenuItem.SelectedItem.Index, false);
             LicensePlateItem toAdd = new LicensePlateItem($"{customPlateTextMenuItem.RightLabel}") { Description = licensePlate.GenerateDescription(), LicensePlate = licensePlate };
             Player.Inventory.Add(toAdd, 1.0f);

@@ -198,7 +198,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 "Ah you got me my favorite thing! I owe you a thing or two",
                                 };
             }
-            Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(), 0, false);
         }
         private void SendInitialInstructionsMessage()
         {

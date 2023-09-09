@@ -5576,7 +5576,7 @@ public class DispatchableVehicles : IDispatchableVehicles
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS RED01",
-                    IsWanted = false,
+
                     PlateType = 8,
                 },
                 WheelType = 11,
@@ -5894,7 +5894,7 @@ public class DispatchableVehicles : IDispatchableVehicles
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS RED02",
-                    IsWanted = false,
+
                     PlateType = 8,
                 },
                 WheelType = 11,
@@ -6212,7 +6212,7 @@ public class DispatchableVehicles : IDispatchableVehicles
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS RED03",
-                    IsWanted = false,
+
                     PlateType = 54,
                 },
                 WheelType = 1,
@@ -6530,7 +6530,7 @@ public class DispatchableVehicles : IDispatchableVehicles
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS RED04",
-                    IsWanted = false,
+
                     PlateType = 8,
                 },
                 WheelType = 4,
@@ -6848,7 +6848,7 @@ public class DispatchableVehicles : IDispatchableVehicles
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS RED05",
-                    IsWanted = false,
+
                     PlateType = 8,
                 },
                 WheelType = 11,
@@ -7181,7 +7181,7 @@ public class DispatchableVehicles : IDispatchableVehicles
                     LicensePlate = new LSR.Vehicles.LicensePlate()
                     {
                         PlateNumber = "FAMILIES",
-                        IsWanted = false,
+    
                         PlateType = 10,
                     },
                     WheelType = 2,
@@ -7507,7 +7507,7 @@ public class DispatchableVehicles : IDispatchableVehicles
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "FA-FD-01",
-                    IsWanted = false,
+
                     PlateType = 73,
                 },
                 WheelType = 9,
@@ -7825,7 +7825,7 @@ public class DispatchableVehicles : IDispatchableVehicles
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "FA-FD-02",
-                    IsWanted = false,
+
                     PlateType = 73,
                 },
                 WheelType = 2,
@@ -8143,7 +8143,7 @@ public class DispatchableVehicles : IDispatchableVehicles
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "FA-FD-03",
-                    IsWanted = false,
+
                     PlateType = 73,
                 },
                 WheelType = 0,
@@ -8461,7 +8461,7 @@ public class DispatchableVehicles : IDispatchableVehicles
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "FA-FD-04",
-                    IsWanted = false,
+
                     PlateType = 73,
                 },
                 WheelType = 6,
@@ -8779,7 +8779,7 @@ public class DispatchableVehicles : IDispatchableVehicles
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "FA-FD-05",
-                    IsWanted = false,
+
                     PlateType = 10,
                 },
                 WheelType = 2,
@@ -9106,7 +9106,7 @@ public class DispatchableVehicles : IDispatchableVehicles
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "V4RRI-O1",
-                    IsWanted = false,
+
                     PlateType = 22,
                 },
                 WheelType = 1,
@@ -9416,7 +9416,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "V4RRI-O2",
-                    IsWanted = false,
+
                     PlateType = 22,
                 },
                 WheelType = 1,
@@ -9727,7 +9727,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "V4RRI-O3",
-                    IsWanted = false,
+
                     PlateType = 22,
                 },
                 WheelType = 11,
@@ -10038,7 +10038,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "V4RRI-O4",
-                    IsWanted = false,
+
                     PlateType = 22,
                 },
                 WheelType = 11,
@@ -10351,7 +10351,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "VAGOS001",
-                    IsWanted = false,
+
                     PlateType = 22,
                 },
                 WheelType = 11,
@@ -10662,7 +10662,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "VAGOS002",
-                    IsWanted = false,
+
                     PlateType = 22,
                 },
                 WheelType = 11,
@@ -10973,7 +10973,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "VAGOS003",
-                    IsWanted = false,
+
                     PlateType = 22,
                 },
                 WheelType = 11,
@@ -11284,7 +11284,7 @@ Output = 3,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "VAGOS004",
-                    IsWanted = false,
+
                     PlateType = 22,
                 },
                 WheelType = 11,
@@ -11699,7 +11699,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "DIABLO01",
-                    IsWanted = false,
+
                     PlateType = 35,
                 },
                 WheelType = 11,
@@ -12009,7 +12009,7 @@ Output = 3,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "DIABLO02",
-                    IsWanted = false,
+
                     PlateType = 35,
                 },
                 WheelType = 11,
@@ -12320,7 +12320,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "DIABLO03",
-                    IsWanted = false,
+
                     PlateType = 35,
                 },
                 WheelType = 11,
@@ -12631,7 +12631,7 @@ Output = 3,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "DIABLO04",
-                    IsWanted = false,
+
                     PlateType = 35,
                 },
                 WheelType = 11,
@@ -12956,7 +12956,7 @@ Output = 3,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "KKANG 01",
-                    IsWanted = false,
+
                     PlateType = 57,
                 },
                 WheelType = 11,
@@ -13280,7 +13280,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "KKANG 02",
-                    IsWanted = false,
+
                     PlateType = 57,
                 },
                 WheelType = 11,
@@ -13604,7 +13604,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "KKANG 03",
-                    IsWanted = false,
+
                     PlateType = 57,
                 },
                 WheelType = 11,
@@ -13928,7 +13928,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "KKANG 04",
-                    IsWanted = false,
+
                     PlateType = 57,
                 },
                 WheelType = 11,
@@ -14252,7 +14252,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "KKANG 05",
-                    IsWanted = false,
+
                     PlateType = 57,
                 },
                 WheelType = 6,
@@ -14578,7 +14578,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "TRIAD-01",
-                    IsWanted = false,
+
                     PlateType = 53,
                 },
                 WheelType = 11,
@@ -14902,7 +14902,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "TRIAD-02",
-                    IsWanted = false,
+
                     PlateType = 53,
                 },
                 WheelType = 11,
@@ -15226,7 +15226,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "TRIAD-03",
-                    IsWanted = false,
+
                     PlateType = 53,
                 },
                 WheelType = 11,
@@ -15550,7 +15550,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "TRIAD-04",
-                    IsWanted = false,
+
                     PlateType = 53,
                 },
                 WheelType = 11,
@@ -15874,7 +15874,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "TRIAD-05",
-                    IsWanted = false,
+
                     PlateType = 53,
                 },
                 WheelType = 6,
@@ -16194,7 +16194,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS MAR01",
-                    IsWanted = false,
+
                     PlateType = 50,
                 },
                 WheelType = 9,
@@ -16514,7 +16514,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS MAR02",
-                    IsWanted = false,
+
                     PlateType = 50,
                 },
                 WheelType = 1,
@@ -16834,7 +16834,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS MAR03",
-                    IsWanted = false,
+
                     PlateType = 50,
                 },
                 WheelType = 1,
@@ -17154,7 +17154,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS MAR04",
-                    IsWanted = false,
+
                     PlateType = 50,
                 },
                 WheelType = 1,
@@ -17474,7 +17474,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS MAR05",
-                    IsWanted = false,
+
                     PlateType = 50,
                 },
                 WheelType = 9,
@@ -17802,7 +17802,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS CAR01",
-                    IsWanted = false,
+
                     PlateType = 27,
                 },
                 WheelType = 11,
@@ -18120,7 +18120,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS CAR02",
-                    IsWanted = false,
+
                     PlateType = 27,
                 },
                 WheelType = 11,
@@ -18438,7 +18438,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS CAR03",
-                    IsWanted = false,
+
                     PlateType = 27,
                 },
                 WheelType = 11,
@@ -18756,7 +18756,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS CAR04",
-                    IsWanted = false,
+
                     PlateType = 27,
                 },
                 WheelType = 11,
@@ -19074,7 +19074,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS CAR05",
-                    IsWanted = false,
+
                     PlateType = 27,
                 },
                 WheelType = 11,
@@ -19400,7 +19400,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "BA-GS-01",
-                    IsWanted = false,
+
                     PlateType = 56,
                 },
                 WheelType = 11,
@@ -19718,7 +19718,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "BA-GS-02",
-                    IsWanted = false,
+
                     PlateType = 56,
                 },
                 WheelType = 11,
@@ -20036,7 +20036,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "BA-GS-03",
-                    IsWanted = false,
+
                     PlateType = 56,
                 },
                 WheelType = 11,
@@ -20354,7 +20354,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "BA-GS-04",
-                    IsWanted = false,
+
                     PlateType = 56,
                 },
                 WheelType = 11,
@@ -20672,7 +20672,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "BA-GS-05",
-                    IsWanted = false,
+
                     PlateType = 56,
                 },
                 WheelType = 11,
@@ -20998,7 +20998,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS ARM01",
-                    IsWanted = false,
+
                     PlateType = 47,
                 },
                 WheelType = 11,
@@ -21316,7 +21316,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS ARM02",
-                    IsWanted = false,
+
                     PlateType = 47,
                 },
                 WheelType = 11,
@@ -21634,7 +21634,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS ARM03",
-                    IsWanted = false,
+
                     PlateType = 47,
                 },
                 WheelType = 11,
@@ -21952,7 +21952,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS ARM04",
-                    IsWanted = false,
+
                     PlateType = 47,
                 },
                 WheelType = 11,
@@ -22270,7 +22270,7 @@ Output = -1,
                 LicensePlate = new LSR.Vehicles.LicensePlate()
                 {
                     PlateNumber = "LS ARM05",
-                    IsWanted = false,
+
                     PlateType = 47,
                 },
                 WheelType = 11,

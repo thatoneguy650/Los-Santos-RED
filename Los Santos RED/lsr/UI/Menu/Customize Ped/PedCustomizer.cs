@@ -186,7 +186,7 @@ public class PedCustomizer
         MovePlayerToBookingRoom();
         WorkingModelName = Player.ModelName;
         WorkingName = Player.PlayerName;
-        WorkingMoney = Player.BankAccounts.Money;
+        WorkingMoney = Player.BankAccounts.GetMoney(false);
         CreateModelPed();
         SetModelAsCharacter();
         CameraCycler.SetDefault();

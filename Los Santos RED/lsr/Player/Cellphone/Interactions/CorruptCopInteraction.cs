@@ -174,9 +174,9 @@ public class CorruptCopInteraction : IContactMenuInteraction
                 };
             Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }
-        else if (Player.BankAccounts.Money >= CostToClearWanted)
+        else if (Player.BankAccounts.GetMoney(false) >= CostToClearWanted)
         {
-            Player.BankAccounts.GiveMoney(-1 * CostToClearWanted);
+            Player.BankAccounts.GiveMoney(-1 * CostToClearWanted, false);
 
             GameFiber PayoffFiber = GameFiber.StartNew(delegate
             {
@@ -201,7 +201,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
                 };
             Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }
-        else if (Player.BankAccounts.Money < CostToClearWanted)
+        else if (Player.BankAccounts.GetMoney(false) < CostToClearWanted)
         {
             List<string> Replies = new List<string>() {
                 $"Don't bother me unless you have some money",
@@ -219,9 +219,9 @@ public class CorruptCopInteraction : IContactMenuInteraction
     }
     private void PayoffCopInvestigation()
     {
-        if (Player.BankAccounts.Money >= CostToClearInvestigation)
+        if (Player.BankAccounts.GetMoney(false) >= CostToClearInvestigation)
         {
-            Player.BankAccounts.GiveMoney(-1 * CostToClearInvestigation);
+            Player.BankAccounts.GiveMoney(-1 * CostToClearInvestigation, false);
 
             GameFiber PayoffFiber = GameFiber.StartNew(delegate
             {
@@ -247,7 +247,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
                 };
             Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }
-        else if (Player.BankAccounts.Money < CostToClearInvestigation)
+        else if (Player.BankAccounts.GetMoney(false) < CostToClearInvestigation)
         {
             List<string> Replies = new List<string>() {
                 $"Don't bother me unless you have some money",

@@ -241,8 +241,8 @@ public class CellPhone
         "URGENT! Your grandson was arrested last night in New Armadillo. Need bail money immediately! Wire Eastern Confederacy at econfed.utg/legit",
 
         };
-        Player.CellPhone.AddScheduledText(new PhoneContact(ScammerNames.PickRandom(), "CHAR_BLANK_ENTRY"), ScammerMessages.PickRandom(), 0);
-        CheckScheduledTexts();     
+        Player.CellPhone.AddScheduledText(new PhoneContact(ScammerNames.PickRandom(), "CHAR_BLANK_ENTRY"), ScammerMessages.PickRandom(), 0, true);
+        //CheckScheduledTexts();     
 
     }
     public void RandomizeSettings()
@@ -273,7 +273,7 @@ public class CellPhone
             {
                 CheckScheduledContacts();
             }
-            GameTimeBetweenCheckScheduledItems = RandomItems.GetRandomNumber(5000, 7000);
+            GameTimeBetweenCheckScheduledItems = 1000;// RandomItems.GetRandomNumber(5000, 7000);
             GameTimeLastCheckedScheduledItems = Game.GameTime;
         }
     }
@@ -311,7 +311,7 @@ public class CellPhone
         for (int i = ScheduledContacts.Count - 1; i >= 0; i--)
         {
             ScheduledContact sc = ScheduledContacts[i];
-            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0 && Game.GameTime - sc.GameTimeSent >= 10000)
+            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0 && (sc.SendImmediately || Game.GameTime - sc.GameTimeSent >= 10000))
             {
                 if (!AddedContacts.Any(x => x.Name == sc.ContactName))
                 {
@@ -344,23 +344,21 @@ public class CellPhone
             }
         }
     }
-    public void AddScheduledText(PhoneContact phoneContact, string MessageToSend, int minutesToWait)
+    public void AddScheduledText(PhoneContact phoneContact, string MessageToSend, int minutesToWait, bool sendImmediately)
     {
-        AddScheduledText(phoneContact, MessageToSend, Time.CurrentDateTime.AddMinutes(minutesToWait));
+        AddScheduledText(phoneContact, MessageToSend, Time.CurrentDateTime.AddMinutes(minutesToWait), sendImmediately);
     }
-    public void AddScheduledText(PhoneContact phoneContact, string MessageToSend)
+    public void AddScheduledText(PhoneContact phoneContact, string MessageToSend, bool sendImmediately)
     {
-        AddScheduledText(phoneContact, MessageToSend, 0);
+        AddScheduledText(phoneContact, MessageToSend, 0, sendImmediately);
     }
-
-    public void AddScheduledText(PhoneContact phoneContact, string MessageToSend, DateTime timeToAdd)
+    public void AddScheduledText(PhoneContact phoneContact, string MessageToSend, DateTime timeToAdd, bool sendImmediately)
     {
         if (!AddedTexts.Any(x => x.ContactName == phoneContact.Name && x.Message == MessageToSend))
         {
-            ScheduledTexts.Add(new ScheduledText(timeToAdd, phoneContact, MessageToSend));
+            ScheduledTexts.Add(new ScheduledText(timeToAdd, phoneContact, MessageToSend) { SendImmediately = sendImmediately });
         }
     }
-
     public void AddCustomScheduledText(PhoneContact phoneContact, string MessageToSend, DateTime timeToAdd, string customPicture, bool sendImmediately)
     {
         if (!AddedTexts.Any(x => x.ContactName == phoneContact.Name && x.Message == MessageToSend))
@@ -369,6 +367,7 @@ public class CellPhone
             ScheduledTexts.Add(new ScheduledText(timeToAdd, phoneContact, MessageToSend) { CustomPicture = customPicture, SendImmediately = sendImmediately });
         }
     }
+
 
     public void AddText(string Name, string IconName, string message, int hourSent, int minuteSent, bool isRead, string customPicture)
     {
@@ -402,6 +401,7 @@ public class CellPhone
         NativeHelper.DisplayNotificationCustom(IconName, IconName, Name, "~o~Response", Message, NotificationIconTypes.RightJumpingArrow, false);
         PlayPhoneResponseSound();
     }
+
     public void DisableContact(string Name)
     {
         PhoneContact myContact = AddedContacts.FirstOrDefault(x => x.Name == Name);
@@ -410,6 +410,8 @@ public class CellPhone
             myContact.Active = false;
         }
     }
+
+
     public bool IsContactEnabled(string contactName)
     {
         PhoneContact myContact = AddedContacts.FirstOrDefault(x => x.Name == contactName);
@@ -569,6 +571,7 @@ public class CellPhone
         public string IconName { get; set; } = "CHAR_BLANK_ENTRY";
         public uint GameTimeSent { get; set; }
         public PhoneContact PhoneContact { get; set; }
+        public bool SendImmediately { get; set; } = false;
     }
     private class ScheduledText
     {

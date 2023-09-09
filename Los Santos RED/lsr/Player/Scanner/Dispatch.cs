@@ -57,7 +57,7 @@ public class Dispatch
             }
         }
     }
-    public bool HasntBeenPlayedForAWhile => Game.GameTime - GameTimeLastPlayed <= 180000;
+    public bool HasntBeenPlayedForAWhile => Game.GameTime - GameTimeLastPlayed <= 90000;
     public bool IncludeAttentionAllUnits { get; set; }
     public bool IncludeCarryingWeapon { get; set; }
     public bool IncludeDrivingSpeed { get; set; }

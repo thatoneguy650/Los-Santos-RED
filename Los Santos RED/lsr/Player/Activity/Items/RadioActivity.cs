@@ -147,7 +147,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Tick()
         {
-            while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && !isPaused)
+            while (Player.ActivityManager.CanPerformActivitiesMiddle && !IsCancelled && !isPaused)
             {
                 GeneralTick();
                 InputTick();

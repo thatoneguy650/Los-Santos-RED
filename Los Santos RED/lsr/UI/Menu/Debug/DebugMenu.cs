@@ -949,7 +949,7 @@ new YmapDisabler("manhat01",true),
         UIMenuItem GiveMoney = new UIMenuItem("Give Money", "Give the player $50K");
         GiveMoney.Activated += (menu, item) =>
         {
-            Player.BankAccounts.GiveMoney(50000);
+            Player.BankAccounts.GiveMoney(50000, false);
             menu.Visible = false;
         };
         UIMenuItem SetMoney = new UIMenuItem("Set Money", "Sets the current player money");
@@ -1652,6 +1652,33 @@ new YmapDisabler("manhat01",true),
             toGet.CurrentHealthState.SetUnconscious(PoliceRespondable);
         };
         HelperMenuItem.AddItem(SetNearestPedUnconscious);
+
+
+
+        UIMenuItem printBankAccounts = new UIMenuItem("Print Bank Accounts", "Print Bank Accounts");
+        printBankAccounts.Activated += (menu, item) =>
+        {
+            Player.BankAccounts.WriteToConsole();
+            menu.Visible = false;
+
+        };
+        HelperMenuItem.AddItem(printBankAccounts);
+
+
+
+        UIMenuItem killScripts = new UIMenuItem("Kill Script", "Kill a script with the given name. DANGEROUS!");
+        killScripts.Activated += (menu, item) =>
+        {
+            string scriptName = NativeHelper.GetKeyboardInput("");
+            if(!string.IsNullOrEmpty(scriptName))
+            {
+                Game.TerminateAllScriptsWithName(scriptName);
+            }
+            
+            menu.Visible = false;
+
+        };
+        HelperMenuItem.AddItem(killScripts);
 
 
     }

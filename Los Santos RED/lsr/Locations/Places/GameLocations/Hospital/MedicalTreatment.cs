@@ -34,13 +34,13 @@ public class MedicalTreatment
         UIMenuItem uIMenuItem = new UIMenuItem(Name, FormattedDescription(player)) { RightLabel = FormattedPrice };
         uIMenuItem.Activated += (sender, selecteditem) =>
         {
-            if(player.BankAccounts.Money < Price)
+            if(player.BankAccounts.GetMoney(true) < Price)
             {
                 hospital.DisplayInsufficientFundsMessage();
                 return;
             }
             hospital.DisplayPurchaseMessage();
-            player.BankAccounts.GiveMoney(-1 * Price);
+            player.BankAccounts.GiveMoney(-1 * Price, true);
             player.HealthManager.ChangeHealth(HealthGained);
             sender.Visible = false;
         };

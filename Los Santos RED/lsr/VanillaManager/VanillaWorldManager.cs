@@ -16,7 +16,7 @@ public class VanillaWorldManager
     private ISettingsProvideable Settings;
     private bool isVanillaShopsActive = true;
     private bool isVanillaBlipsActive = true;
-
+    private bool isVanillaVendingActive;
 
     public VanillaWorldManager(ISettingsProvideable settings)
     {
@@ -110,6 +110,16 @@ public class VanillaWorldManager
         }
 
         TerminateAudio();
+
+
+        if(Settings.SettingsManager.VanillaSettings.TerminateVanillaVendingMachines)
+        {
+            if(isVanillaVendingActive)
+            {
+                TerminateVanillaMachines();
+            }
+        }
+
         //if (Settings.SettingsManager.VanillaSettings.SupressRandomPoliceEvents)
         //{
         //    SuppressRandomEvents();
@@ -201,7 +211,13 @@ public class VanillaWorldManager
         Game.StartNewScript("shop_controller");
         isVanillaShopsActive = true;
     }
-
+    private void TerminateVanillaMachines()
+    {
+        Game.TerminateAllScriptsWithName("ob_vend1");
+        Game.TerminateAllScriptsWithName("ob_vend2");
+        Game.TerminateAllScriptsWithName("atm_trigger");
+        isVanillaVendingActive = false;
+    }
 
     private void TerminateBlipController()
     {

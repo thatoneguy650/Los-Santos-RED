@@ -125,7 +125,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             List<string> Replies = new List<string>() {
                 $"Get rid of that thing and then get back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} for payment."
                     };
-            Player.CellPhone.AddScheduledText(HiringContact, Replies.PickRandom(), 1);
+            Player.CellPhone.AddScheduledText(HiringContact, Replies.PickRandom(), 0, true);
         }
         private bool SpawnCar()
         {

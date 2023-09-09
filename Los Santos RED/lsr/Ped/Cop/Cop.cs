@@ -412,7 +412,10 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     }
 
 
-
+    public override string InteractPrompt(IButtonPromptable player)
+    {
+        return $"Talk to {FormattedName}";
+    }
 
 
     //public void AddDivision(string forceGroupName)

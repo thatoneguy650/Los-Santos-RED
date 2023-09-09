@@ -118,13 +118,13 @@ public class Hotel : GameLocation
     }
     private void StayAtHotel(int Price, int Nights)
     {
-        if(Player.BankAccounts.Money < Price)
+        if(Player.BankAccounts.GetMoney(true) < Price)
         {
             PlayErrorSound();
             DisplayMessage("~r~Purchase Failed", "We are sorry, we are unable to complete this transation. Please make sure you have the funds.");
             return;
         }
-        Player.BankAccounts.GiveMoney(-1 * Price);
+        Player.BankAccounts.GiveMoney(-1 * Price, true);
         Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + Nights, 11, 0, 0));
         Player.IsResting = true;
         Player.IsSleeping = true;

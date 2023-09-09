@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -106,10 +107,23 @@ public class GangSettings : ISettingsDefaultable
     public int HeliSpawnLimit_Default { get; set; }
     public bool SendHitSquadText { get; set; }
 
+
+    public bool ShowGangTerritoryBlip { get; set; }
+    public float GangTerritoryBlipSize { get; set; }
+    public float GangTerritoryBlipAlpha { get; set; }
     public GangSettings()
     {
         SetDefault();
     }
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        ShowGangTerritoryBlip = true;
+        GangTerritoryBlipSize = 100f;
+        GangTerritoryBlipAlpha = 0.1f;
+    }
+
     public void SetDefault()
     {
         ManageTasking = true;
@@ -204,6 +218,10 @@ public class GangSettings : ISettingsDefaultable
        // BoatSpawnLimit_Default = 1;
         HeliSpawnLimit_Default = 1;
         SendHitSquadText = true;
+
+        ShowGangTerritoryBlip = true;//HAS DESERIALIZED VALUES
+        GangTerritoryBlipSize = 200f;//HAS DESERIALIZED VALUES
+        GangTerritoryBlipAlpha = 0.2f;//HAS DESERIALIZED VALUES
     }
 
 }

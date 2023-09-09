@@ -22,7 +22,7 @@ public class CarCrusher : GameLocation
 
     }
     public override string TypeName { get; set; } = "Car Crusher";
-    public override int MapIcon { get; set; } = 524;// (int)527;
+    public override int MapIcon { get; set; } = 527;// (int)527;
     public override string ButtonPromptText { get; set; }
     public float VehiclePickupDistance { get; set; } = 15f;
     public int StandardCrushPrice { get; set; } = 500;
@@ -156,7 +156,7 @@ public class CarCrusher : GameLocation
             DisplayMessage("~r~Crushing Failed", "We are unable to complete this crushing.");
             return;
         }
-        if(Player.BankAccounts.Money < Price)
+        if(Player.BankAccounts.GetMoney(false) < Price)
         {
             PlayErrorSound();
             DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation.");
@@ -185,7 +185,7 @@ public class CarCrusher : GameLocation
         CrusherSubMenu.RefreshIndex();
         CrusherSubMenu.Close(true);
         Game.FadeScreenIn(1000, true);
-        Player.BankAccounts.GiveMoney(-1 * Price);
+        Player.BankAccounts.GiveMoney(-1 * Price, false);
         PlaySuccessSound();
         DisplayMessage("~g~Crushed", $"Thank you for crushing your ~p~{CarName}~s~ at ~y~{Name}~s~");
     }

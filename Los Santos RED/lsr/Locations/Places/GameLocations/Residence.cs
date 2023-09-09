@@ -33,7 +33,7 @@ public class Residence : GameLocation, ILocationSetupable
     private UIMenuListScrollerItem<int> incrementScroller;
     private UIMenuNumericScrollerItem<int> storeCashScroller;
     private UIMenuNumericScrollerItem<int> removeCashScroller;
-
+    private int MaxAccountValue = 5000000;
     private string IsRentedDescription => $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~";
     private string IsRentedRightLabel => Time == null ? $"Due Date: {DateRentalPaymentDue}" : "Remaining Days: " + Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0).ToString();
     private string CanRentRightLabel => $"{RentalFee:C0} for {RentalDays} days";
@@ -144,9 +144,9 @@ public class Residence : GameLocation, ILocationSetupable
     {
         try
         {
-            if (Player.BankAccounts.Money >= RentalFee)
+            if (Player.BankAccounts.GetMoney(true) >= RentalFee)
             {
-                Player.BankAccounts.GiveMoney(-1 * RentalFee);
+                Player.BankAccounts.GiveMoney(-1 * RentalFee, true);
                 DateRentalPaymentPaid = Time.CurrentDateTime;
                 DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
                 UpdateStoredData();
@@ -326,51 +326,53 @@ public class Residence : GameLocation, ILocationSetupable
     private void UpdateStoredCash()
     {
         cashStorageSubMenu.Clear();
-
         incrementScroller = new UIMenuListScrollerItem<int>("Increment","Set the scroll increment.",new List<int>() { 1,5,25,100,500,1000,10000,100000 }) { Formatter = v => v.ToString("N0") };
-
-        storeCashScroller = new UIMenuNumericScrollerItem<int>("Store Cash", "Store the selected amount of cash.", 0, Player.BankAccounts.Money, 1) { Value = Player.BankAccounts.Money, Formatter = v => "~r~$" + v + "~s~", };
+        storeCashScroller = new UIMenuNumericScrollerItem<int>("Store Cash", $"Store the selected amount of cash. Max of ${MaxAccountValue}", 0, GetOnHandCash(), 1) { Value = GetOnHandCash(), Formatter = v => "~r~$" + v + "~s~", };
         removeCashScroller = new UIMenuNumericScrollerItem<int>("Remove Cash", "Remove the selected amount of cash.", 0, StoredCash, 1) { Value = StoredCash, Formatter = v => "~g~$" + v + "~s~", };
-
-
-
         incrementScroller.IndexChanged += (sender, oldIndex, newIndex) =>
         {
             storeCashScroller.Step = incrementScroller.SelectedItem;
             removeCashScroller.Step = incrementScroller.SelectedItem;
         };
-
-
         storeCashScroller.Activated += (sender,selectedItem) =>
         {
-            if(storeCashScroller.Value <= Player.BankAccounts.Money)
+            int onHandCash = GetOnHandCash();
+            int newStoreValue = StoredCash + storeCashScroller.Value;
+            if (newStoreValue >= Int32.MaxValue || newStoreValue >= MaxAccountValue)
             {
-                Player.BankAccounts.GiveMoney(-1 * storeCashScroller.Value);
-                StoredCash += storeCashScroller.Value;
-
-                
-                storeCashScroller.Maximum = Player.BankAccounts.Money;
+                Game.DisplaySubtitle("Account is at Maximum!");
+                return;
+            }
+            if (storeCashScroller.Value <= GetOnHandCash())
+            {
+                Player.BankAccounts.GiveMoney(-1 * storeCashScroller.Value, false);
+                StoredCash += storeCashScroller.Value;   
+                storeCashScroller.Maximum = GetOnHandCash();
                 removeCashScroller.Maximum = StoredCash;
-
-
-                storeCashScroller.Value = Player.BankAccounts.Money;
+                storeCashScroller.Value = GetOnHandCash();
                 removeCashScroller.Value = StoredCash;
+
+                DisplayMessage("~g~Stored~s~", $"You have stored ${storeCashScroller.Value}.~n~Current Balance: ${StoredCash}");
+
             }
         };
 
         removeCashScroller.Activated += (sender, selectedItem) =>
         {
+            if (removeCashScroller.Value + Player.BankAccounts.GetMoney(false) >= Int32.MaxValue)
+            {
+                Game.DisplaySubtitle("Money is at Maximum!");
+                return;
+            }
             if (StoredCash >= removeCashScroller.Value)
             {
-                Player.BankAccounts.GiveMoney(removeCashScroller.Value);
+                Player.BankAccounts.GiveMoney(removeCashScroller.Value, false);
                 StoredCash -= removeCashScroller.Value;
-
-
-                storeCashScroller.Maximum = Player.BankAccounts.Money;
+                storeCashScroller.Maximum = GetOnHandCash();
                 removeCashScroller.Maximum = StoredCash;
-
-                storeCashScroller.Value = Player.BankAccounts.Money;
+                storeCashScroller.Value = GetOnHandCash();
                 removeCashScroller.Value = StoredCash;
+                DisplayMessage("~g~Removed~s~", $"You have removed ${removeCashScroller.Value}.~n~Current Balance: ${StoredCash}");
             }
         };
         cashStorageSubMenu.AddItem(incrementScroller);
@@ -378,9 +380,21 @@ public class Residence : GameLocation, ILocationSetupable
         cashStorageSubMenu.AddItem(removeCashScroller);
     }
 
+    private int GetOnHandCash()
+    {
+        int money = Player.BankAccounts.GetMoney(false);
+        if (money >= 2147483647)
+        {
+            money = 2147483646;
+        }
+        return money;
+    }
+
+
+
     private bool Rent()
     {
-        if(CanRent && Player.BankAccounts.Money >= RentalFee)
+        if(CanRent && Player.BankAccounts.GetMoney(true) >= RentalFee)
         {
             OnRented();
             return true;
@@ -391,7 +405,7 @@ public class Residence : GameLocation, ILocationSetupable
     }
     private bool Purchase()
     {
-        if (CanBuy && Player.BankAccounts.Money >= PurchasePrice)
+        if (CanBuy && Player.BankAccounts.GetMoney(true) >= PurchasePrice)
         {
             OnPurchased();
             return true;
@@ -445,7 +459,7 @@ public class Residence : GameLocation, ILocationSetupable
     }
     private void OnRented()
     {
-        Player.BankAccounts.GiveMoney(-1 * RentalFee);
+        Player.BankAccounts.GiveMoney(-1 * RentalFee, true);
         DateRentalPaymentPaid = Time.CurrentDateTime;
         IsRented = true;
         DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
@@ -458,7 +472,7 @@ public class Residence : GameLocation, ILocationSetupable
     }
     private void OnPurchased()
     {
-        Player.BankAccounts.GiveMoney(-1 * PurchasePrice);
+        Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
         IsOwned = true;
         IsRented = false;
         UpdateStoredData();
@@ -482,7 +496,7 @@ public class Residence : GameLocation, ILocationSetupable
     {
         Reset();
         Player.Properties.RemoveResidence(this);
-        Player.BankAccounts.GiveMoney(SalesPrice);
+        Player.BankAccounts.GiveMoney(SalesPrice, true);
         PlaySuccessSound();
         DisplayMessage("~g~Sold", $"You have sold {Name} for {SalesPrice.ToString("C0")}");
     }

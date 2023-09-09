@@ -37,7 +37,7 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
         {
             AssignedAgency = zones.GetZone(EntrancePosition)?.AssignedEMSAgency;
         }
-        if(string.IsNullOrEmpty(TreatmentOptionsID))
+        if(!string.IsNullOrEmpty(TreatmentOptionsID))
         {
             MedicalTreatments = shopMenus.GetMedicalTreatments(TreatmentOptionsID);
         }

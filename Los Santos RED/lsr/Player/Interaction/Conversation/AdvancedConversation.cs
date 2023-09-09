@@ -84,26 +84,9 @@ public class AdvancedConversation
     }
     private void UpdateMenuItems()
     {
-        UIMenuItem transactionInteract = new UIMenuItem("Begin Transaction", "Buy or sell with the current ped.");
-        transactionInteract.Activated += (menu, item) =>
-        {
-            menu.Visible = false;
-            StartTransactionWithPed();
-        };
-        if (ConversationSimple.ConversingPed?.HasMenu == true)
-        {
-            ConversationMenu.AddItem(transactionInteract);
-        }
-
-
-        ConversationSimple.ConversingPed?.AddSpecificInteraction(LocationInteractable, MenuPool, ConversationMenu);
-
-
-        AddAdvancedItems();
-        QuestionSubMenu = MenuPool.AddSubMenu(ConversationMenu, "Ask A Question");
-        QuestionSubMenu.RemoveBanner();
-        AddDrugItemQuestions();
-        AddGangItemQuestions();
+        ConversationSimple.ConversingPed?.AddSpecificInteraction(LocationInteractable, MenuPool, ConversationMenu, this);
+        AddSpecificReply();
+        AddQuestions();
         UIMenuItem Cancel = new UIMenuItem("Cancel", "Stop asking questions");
         Cancel.Activated += (menu, item) =>
         {
@@ -111,12 +94,21 @@ public class AdvancedConversation
         };
         ConversationMenu.AddItem(Cancel);
     }
-    private void StartTransactionWithPed()
+
+    private void AddQuestions()
+    {
+        QuestionSubMenu = MenuPool.AddSubMenu(ConversationMenu, "Ask A Question");
+        QuestionSubMenu.RemoveBanner();
+        AddDrugItemQuestions();
+        AddGangItemQuestions();
+    }
+
+    public void StartTransactionWithPed()
     {
         ConversationSimple?.TransitionToTransaction();
         Player.ActivityManager.StartTransaction(ConversationSimple.ConversingPed);
     }
-    private void AddAdvancedItems()
+    private void AddSpecificReply()
     {
         UIMenu speechSubMenu = MenuPool.AddSubMenu(ConversationMenu, "Say Specific Reply");
         speechSubMenu.RemoveBanner();

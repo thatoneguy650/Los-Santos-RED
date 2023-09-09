@@ -1,4 +1,6 @@
-﻿public class LSRHUDSettings : ISettingsDefaultable
+﻿using System.Runtime.Serialization;
+
+public class LSRHUDSettings : ISettingsDefaultable
 {
 
     public bool CrimesDisplayEnabled { get; set; }
@@ -47,7 +49,7 @@
     public bool PlayerStatusShowWhenSleeping { get; set; }
 
 
-
+    public bool PlayerStatusIncludePoliceCount { get; set; }
 
     public bool ShowStreetDisplay { get; set; }
     public bool FadeStreetDisplay { get; set; }
@@ -103,7 +105,11 @@
     public bool ShowStaminaDisplay { get; set; }
     public bool ShowIntoxicationDisplay { get; set; }
     public bool ShowSearchModeDisplay { get; set; }
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
 
+    }
 
     public LSRHUDSettings()
     {
@@ -150,6 +156,7 @@
         PlayerStatusIncludeTime = false;
         PlayerStatusSimpleTime = true;
         PlayerStatusShowWhenSleeping = true;
+        PlayerStatusIncludePoliceCount = false;
         ShowStreetDisplay = true;
         FadeStreetDisplay = true;
         FadeStreetDisplayDuringWantedAndInvestigation = false;

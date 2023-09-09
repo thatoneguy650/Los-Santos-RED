@@ -238,7 +238,7 @@ public class ModItem
         int TotalPrice = menuItem.SalesPrice * TotalItems;
         if (player.Inventory.Remove(this, TotalItems))
         {
-            player.BankAccounts.GiveMoney(TotalPrice);
+            player.BankAccounts.GiveMoney(TotalPrice, Transaction.UseAccounts);
             Transaction.MoneySpent += TotalPrice;
             Transaction.PersonTransaction?.TransactionPed?.PedInventory.Add(this, TotalItems);
             //menuItem.ItemsBoughtFromPlayer += TotalItems;
@@ -373,7 +373,7 @@ public class ModItem
     private bool PurchaseItem(Transaction Transaction, ILocationInteractable player, MenuItem menuItem, int TotalItems, bool isStealing)
     {
         int TotalPrice = menuItem.PurchasePrice * TotalItems;
-        if (player.BankAccounts.Money >= TotalPrice || isStealing)
+        if (player.BankAccounts.GetMoney(Transaction.UseAccounts) >= TotalPrice || isStealing)
         {      
             Transaction?.PersonTransaction?.TransactionPed?.PedInventory.Remove(this, TotalItems);
             //menuItem.ItemsSoldToPlayer += TotalItems;
@@ -387,7 +387,7 @@ public class ModItem
             }
             if (!isStealing)
             {
-                player.BankAccounts.GiveMoney(-1 * TotalPrice);
+                player.BankAccounts.GiveMoney(-1 * TotalPrice, Transaction.UseAccounts);
                 Transaction.MoneySpent += TotalPrice;
             }
             Transaction.OnItemPurchased(this, menuItem, TotalItems);
@@ -573,7 +573,7 @@ public class ModItem
         inventoryItemSubMenuItem.Description = descriptionToUse;
     }
 
-    public virtual void CreateSimpleSellMenu(ILocationInteractable player, UIMenu sellPlateSubMenu,GameLocation gameLocation, int defaultPrice, int altPrice)
+    public virtual void CreateSimpleSellMenu(ILocationInteractable player, UIMenu sellPlateSubMenu,GameLocation gameLocation, int defaultPrice, int altPrice, bool useAccounts)
     {
         UIMenuItem MenuItem = new UIMenuItem(Name,Description);
         MenuItem.Activated += (sender, e) =>
@@ -582,7 +582,7 @@ public class ModItem
             {
                 return;
             }
-            player.BankAccounts.GiveMoney(defaultPrice);
+            player.BankAccounts.GiveMoney(defaultPrice, useAccounts);
             MenuItem.Enabled = false;
             if (gameLocation == null)
             {

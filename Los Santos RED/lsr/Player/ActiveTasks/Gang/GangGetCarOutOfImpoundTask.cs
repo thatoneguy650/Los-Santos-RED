@@ -233,7 +233,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             List<string> Replies = new List<string>() {
                 $"Heard that thing was moving along. Bring it back to {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} and make sure it is pristine!"
                     };
-            Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(),1);
+            Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(),1, false);
         }
         private bool SpawnCar()
         {

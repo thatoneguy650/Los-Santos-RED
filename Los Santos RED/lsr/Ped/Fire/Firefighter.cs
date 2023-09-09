@@ -96,5 +96,9 @@ public class Firefighter : PedExt, IWeaponIssuable
         }
         return ExtraItems;
     }
+    public override string InteractPrompt(IButtonPromptable player)
+    {
+        return $"Talk to {FormattedName}";
+    }
 
 }

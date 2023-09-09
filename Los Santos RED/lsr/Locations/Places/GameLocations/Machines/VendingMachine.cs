@@ -20,6 +20,7 @@ public class VendingMachine : GameLocation
     private string PlayingDict;
     private string PlayingAnim;
     private bool hasAttachedProp;
+    private MachineInteraction MachineInteraction;
 
     private Rage.Object SellingProp;
     public VendingMachine() : base()
@@ -30,7 +31,7 @@ public class VendingMachine : GameLocation
     public Rage.Object MachineProp { get; set; }
     public override bool ShowsOnDirectory { get; set; } = false;
     public override string TypeName { get; set; } = "Vending Machine";
-    public override int MapIcon { get; set; } = 793;// (int)BlipSprite.PointOfInterest;
+    public override int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
     public override float MapIconScale { get; set; } = 0.25f;
     public override string ButtonPromptText { get; set; }
     public override bool CanCurrentlyInteract(ILocationInteractable player) 
@@ -67,20 +68,18 @@ public class VendingMachine : GameLocation
                 try
                 {
                     NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, -1, 2000, 2000);
-                    GetPropEntry();
-                    if (!MoveToMachine())
+                    MachineInteraction = new MachineInteraction(Player, MachineProp);
+                    if (MachineInteraction.MoveToMachine())
                     {
-                        //EntryPoint.WriteToConsole("Transaction: TOP LEVE DISPOSE AFTER NO MOVE FUCKER");
-                        FullDispose();
+                        CreateInteractionMenu();
+                        Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+                        Transaction.PreviewItems = false;
+                        Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
+                        InteractionMenu.Visible = true;
+                        Transaction.ProcessTransactionMenu();
+                        Transaction.DisposeTransactionMenu();
+                        DisposeInteractionMenu();
                     }
-                    CreateInteractionMenu();
-                    Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-                    Transaction.PreviewItems = false;
-                    Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-                    InteractionMenu.Visible = true;
-                    Transaction.ProcessTransactionMenu();
-                    Transaction.DisposeTransactionMenu();
-                    DisposeInteractionMenu();
                     FullDispose();
                     Player.ActivityManager.IsInteractingWithLocation = false;
                     Player.IsTransacting = false;
@@ -103,78 +102,12 @@ public class VendingMachine : GameLocation
     }
     private void FullDispose()
     {
-        //Deactivate();
         NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
     }
-    private void GetPropEntry()
-    {
-        if (MachineProp != null && MachineProp.Exists())
-        {
-            PropEntryPosition = MachineProp.GetOffsetPositionFront(-1f);
-            PropEntryPosition = new Vector3(PropEntryPosition.X, PropEntryPosition.Y, Game.LocalPlayer.Character.Position.Z);
-            float ObjectHeading = MachineProp.Heading - 180f;
-            if (ObjectHeading >= 180f)
-            {
-                PropEntryHeading = ObjectHeading - 180f;
-            }
-            else
-            {
-                PropEntryHeading = ObjectHeading + 180f;
-            }
-        }
-    }
-    private bool MoveToMachine()
-    {
-        if(PropEntryPosition == Vector3.Zero)
-        {
-            return false;
-        }
-        NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, PropEntryPosition.X, PropEntryPosition.Y, PropEntryPosition.Z, 1.0f, -1, PropEntryHeading, 0.2f);
-        uint GameTimeStartedSitting = Game.GameTime;
-        float heading = Game.LocalPlayer.Character.Heading;
-        bool IsFacingDirection = false;
-        bool IsCloseEnough = false;
-        while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsCloseEnough && !IsCancelled)
-        {
-            if (Player.IsMoveControlPressed)
-            {
-                IsCancelled = true;
-            }
-            IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(PropEntryPosition) < 0.2f;
-            GameFiber.Yield();
-        }
-        GameFiber.Sleep(250);
-        GameTimeStartedSitting = Game.GameTime;
-        while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsFacingDirection && !IsCancelled)
-        {
-            if (Player.IsMoveControlPressed)
-            {
-                IsCancelled = true;
-            }
-            heading = Game.LocalPlayer.Character.Heading;
-            if (Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)) <= 0.5f)//0.5f)
-            {
-                IsFacingDirection = true;
-                //EntryPoint.WriteToConsole($"Moving to Machine FACING TRUE {Game.LocalPlayer.Character.DistanceTo(PropEntryPosition)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)} {heading} {PropEntryHeading}");
-            }
-            GameFiber.Yield();
-        }
-        GameFiber.Sleep(250);
-        if (IsCloseEnough && IsFacingDirection && !IsCancelled)
-        {
-            //EntryPoint.WriteToConsole($"Moving to Machine IN POSITION {Game.LocalPlayer.Character.DistanceTo(PropEntryPosition)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)} {heading} {PropEntryHeading}");
-            return true;
-        }
-        else
-        {
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-            return false;
-        }
-    }
     private void StartMachineBuyAnimation(ModItem item, bool isIllicit)
     {
-        if (MoveToMachine())
+        if (MachineInteraction.MoveToMachine())// MoveToMachine())
         {
             if (UseMachine(item))
             {

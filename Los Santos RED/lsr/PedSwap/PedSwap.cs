@@ -1206,7 +1206,7 @@ public class PedSwap : IPedSwap
     private void StoreTargetPedData(Ped TargetPed)
     {
         CurrentModelPlayerIs = TargetPed.Model;
-        CurrentPedMoney = Player.BankAccounts.Money;
+        CurrentPedMoney = Player.BankAccounts.GetMoney(false);
         CurrentPedPosition = Player.Position;
         CurrentPedIsDead = Player.Character.IsDead;
         CurrentPedIsBusted = Player.IsBusted;

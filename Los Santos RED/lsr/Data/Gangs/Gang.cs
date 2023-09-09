@@ -127,8 +127,8 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public int MemberKickUpDays { get; set; } = 7;
     public int MemberKickUpAmount { get; set; } = 2000;
     public int MemberKickUpMissLimit { get; set; } = 3;
-    public bool MembersGetFreeVehicles { get; set; } = true;
-    public bool MembersGetFreeWeapons { get; set; } = true;
+    public bool MembersGetFreeVehicles { get; set; } = false;
+    public bool MembersGetFreeWeapons { get; set; } = false;
     public GangClassification GangClassification { get; set; } = GangClassification.Generic;
     public List<string> EnemyGangs { get; set; } = new List<string>();
     [XmlIgnore]

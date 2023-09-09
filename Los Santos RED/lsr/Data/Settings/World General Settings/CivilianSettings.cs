@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -93,6 +94,23 @@ public class CivilianSettings : ISettingsDefaultable
     public float FightPolicePercentagePoorZones { get; set; }
 
 
+
+
+    [Description("Percentage of civilians that will cower instead of flee  in the rich zones (See Zones.xml). Maximum value of 100.")]
+    public float CowerPercentageRichZones { get; set; }
+    [Description("Percentage of civilians that will cower instead of flee  in the middle income zones (See Zones.xml). Maximum value of 100.")]
+    public float CowerPercentageMiddleZones { get; set; }
+    [Description("Percentage of civilians that will cower instead of flee in the poor zones (See Zones.xml). Maximum value of 100.")]
+    public float CowerPercentagePoorZones { get; set; }
+
+
+
+
+
+
+
+
+
     [Description("Minumum amount of money a merchant will surrender upon mugging.")]
     public int MerchantMoneyMin { get; set; }
     [Description("Maximum amount of money a merchant will surrender upon mugging.")]
@@ -138,6 +156,13 @@ public class CivilianSettings : ISettingsDefaultable
     public uint GameTimeAfterCallInToReportCrime { get; set; }
     public bool DisableWrithe { get; set; }
     public bool DisableWritheShooting { get; set; }
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        CowerPercentageRichZones = 10f;//HAS DESERIALIZED VALUES
+        CowerPercentageMiddleZones = 3f;//HAS DESERIALIZED VALUES
+        CowerPercentagePoorZones = 1f;//HAS DESERIALIZED VALUES
+    }
 
     public CivilianSettings()
     {
@@ -190,6 +215,12 @@ public class CivilianSettings : ISettingsDefaultable
         FightPolicePercentageRichZones = 1f;
         FightPolicePercentageMiddleZones = 2f;
         FightPolicePercentagePoorZones = 5f;
+
+
+
+        CowerPercentageRichZones = 10f;//HAS DESERIALIZED VALUES
+        CowerPercentageMiddleZones = 3f;//HAS DESERIALIZED VALUES
+        CowerPercentagePoorZones = 1f;//HAS DESERIALIZED VALUES
 
 
         MerchantMoneyMin = 500;

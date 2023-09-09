@@ -2180,11 +2180,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(318.4567f, -2005.651f, 21.25648f), 205.8739f),
                     new SpawnPlace(new Vector3(308.2981f, -1978.542f, 21.6238f), 141.6945f),
             } },
-
-
-
-
-            new GunStore(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, "Guns #4", "Specializes in ~o~Assault Rifles~s~","GunShop4") { IsEnabled = true, 
+            new GunStore(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, "Guns #4", "Specializes in ~o~Assault Rifles~s~","GunShop4") { IsEnabled = false, 
                 MoneyToUnlock = 15000, ContactName = StaticStrings.UndergroundGunsContactName,
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-258.1833f, 6250.695f, 31.48922f),25.17568f),
@@ -2292,7 +2288,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
             BannerImagePath = "yardies.png",
-            MapIconColorString = "Green",
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,

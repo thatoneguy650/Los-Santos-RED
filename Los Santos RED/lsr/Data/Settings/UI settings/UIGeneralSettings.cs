@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -48,7 +49,8 @@ public class UIGeneralSettings : ISettingsDefaultable
     public float CustomWantedLevelStarsSpacingPixelReduction { get; set; }
     public int CustomWantedLevelStarsRedColorLimit { get; set; }
 
-
+    public bool CustomWantedLevelStarsFlashWhenSearching { get; set; }
+    public uint CustomWantedLevelStarsTimeBetweenFlash { get; set; }
 
     public bool UseCustomInvestigationMarks { get; set; }
     public float CustomInvestigationMarksScale { get; set; }
@@ -56,6 +58,12 @@ public class UIGeneralSettings : ISettingsDefaultable
     public int CustomInvestigationMarksRedColorLimit { get; set; }
     public bool ShowVehicleInteractionPrompt { get; set; }
     public bool ShowVehicleInteractionPromptInVehicle { get; set; }
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        CustomWantedLevelStarsFlashWhenSearching = true;
+        CustomWantedLevelStarsTimeBetweenFlash = 1000;
+    }
 
     public UIGeneralSettings()
     {
@@ -116,5 +124,7 @@ public class UIGeneralSettings : ISettingsDefaultable
         CustomWantedLevelStarsRedColorLimit = 6;
         ShowVehicleInteractionPrompt = true;
         ShowVehicleInteractionPromptInVehicle = true;
+        CustomWantedLevelStarsFlashWhenSearching = true;//HAS DESERIALIZED VALUES
+        CustomWantedLevelStarsTimeBetweenFlash = 1000;//HAS DESERIALIZED VALUES
     }
 }

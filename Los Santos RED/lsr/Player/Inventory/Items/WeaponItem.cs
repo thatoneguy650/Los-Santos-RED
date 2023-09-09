@@ -156,7 +156,7 @@ public class WeaponItem : ModItem
             {
                 return;
             }
-            player.BankAccounts.GiveMoney(menuItem.SalesPrice);
+            player.BankAccounts.GiveMoney(menuItem.SalesPrice, Transaction.UseAccounts);
             Transaction.MoneySpent += menuItem.SalesPrice;
             OnWeaponSellMenuOpen(sender, player);
         };
@@ -365,7 +365,7 @@ public class WeaponItem : ModItem
                         if (myComponent != null && menuItem != null)
                         {
                             //EntryPoint.WriteToConsole($"Weapon Component Purchase {menuItem.ModItemName} Player.Money {player.BankAccounts.Money} menuItem.PurchasePrice {menuItem.PurchasePrice} myComponent {myComponent.Name}");
-                            if (player.BankAccounts.Money < myItem.SelectedItem.PurchasePrice)
+                            if (player.BankAccounts.GetMoney(Transaction.UseAccounts) < myItem.SelectedItem.PurchasePrice)
                             {
                                 Transaction.DisplayInsufficientFundsMessage();
                                 return;
@@ -380,7 +380,7 @@ public class WeaponItem : ModItem
                             {
                                 return;
                             }
-                            player.BankAccounts.GiveMoney(-1 * myItem.SelectedItem.PurchasePrice);
+                            player.BankAccounts.GiveMoney(-1 * myItem.SelectedItem.PurchasePrice, Transaction.UseAccounts);
                             Transaction.MoneySpent += myItem.SelectedItem.PurchasePrice;
                             OnWeaponMenuOpen(sender, player);
                         }
@@ -414,7 +414,7 @@ public class WeaponItem : ModItem
             {
                 int TotalPrice = menuItem.SubPrice * TotalItems;
                 //EntryPoint.WriteToConsole($"Weapon Purchase {menuItem.ModItemName} Player.Money {player.BankAccounts.Money} menuItem.PurchasePrice {1}");
-                if (player.BankAccounts.Money < TotalPrice)
+                if (player.BankAccounts.GetMoney(Transaction.UseAccounts) < TotalPrice)
                 {
                     Transaction.DisplayInsufficientFundsMessage();
                     return;
@@ -423,7 +423,7 @@ public class WeaponItem : ModItem
                 {
                     return;
                 }
-                player.BankAccounts.GiveMoney(-1 * TotalPrice);
+                player.BankAccounts.GiveMoney(-1 * TotalPrice, Transaction.UseAccounts);
                 Transaction.MoneySpent += TotalPrice;
                 OnWeaponMenuOpen(sender,player);
             }
@@ -459,7 +459,7 @@ public class WeaponItem : ModItem
                 }
             }
             //EntryPoint.WriteToConsole($"Weapon Purchase {menuItem.ModItemName} Player.Money {player.BankAccounts.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}");
-            if (player.BankAccounts.Money < TotalPrice)
+            if (player.BankAccounts.GetMoney(Transaction.UseAccounts) < TotalPrice)
             {
                 Transaction.DisplayInsufficientFundsMessage();
                 return;
@@ -468,7 +468,7 @@ public class WeaponItem : ModItem
             {
                 return;
             }
-            player.BankAccounts.GiveMoney(-1 * TotalPrice);
+            player.BankAccounts.GiveMoney(-1 * TotalPrice, Transaction.UseAccounts);
             Transaction.MoneySpent += TotalPrice;
             OnWeaponMenuOpen(sender, player);
         };

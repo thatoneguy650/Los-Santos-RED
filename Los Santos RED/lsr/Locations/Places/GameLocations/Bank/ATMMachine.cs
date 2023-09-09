@@ -72,29 +72,21 @@ public class ATMMachine : GameLocation// i know m stand for machine, makes it ne
             {
                 try
                 {
-                    GetPropEntry();
-                    if (!MoveToMachine())
+                    MachineInteraction machineInteraction = new MachineInteraction(Player, ATMObject);
+                    machineInteraction.StandingOffsetPosition = 0.5f;
+                    if (machineInteraction.MoveToMachine() && StartUseMachine())
                     {
-                        FullDispose();
-                    }
-                    CreateInteractionMenu();
-                    InteractionMenu.Visible = true;
-
-
-
-                    BankInteraction = new BankInteraction(Player, AssociatedBank);
-                    BankInteraction.Start(MenuPool, InteractionMenu);
-
-
-
-
-
-                    while (IsAnyMenuVisible || KeepInteractionGoing)
-                    {
-                        MenuPool.ProcessMenus();
-                        GameFiber.Yield();
-                    }
-                    DisposeInteractionMenu();
+                        CreateInteractionMenu();
+                        InteractionMenu.Visible = true;
+                        BankInteraction = new BankInteraction(Player, AssociatedBank);
+                        BankInteraction.Start(MenuPool, InteractionMenu);
+                        while (IsAnyMenuVisible || KeepInteractionGoing)
+                        {
+                            MenuPool.ProcessMenus();
+                            GameFiber.Yield();
+                        }
+                        DisposeInteractionMenu();
+                    }                  
                     FullDispose();
                     Player.ActivityManager.IsInteractingWithLocation = false;
                     Player.IsTransacting = false;
@@ -118,101 +110,76 @@ public class ATMMachine : GameLocation// i know m stand for machine, makes it ne
     private void FullDispose()
     {
         NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
-        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         Game.LocalPlayer.HasControl = true;
         KeepInteractionGoing = false;
         Player.ButtonPrompts.RemovePrompts("ATM");
-        //IsFueling = false;
-    }
-    private void GetPropEntry()
-    {
-        if (ATMObject != null && ATMObject.Exists())
-        {
-            float DistanceToFront = Player.Position.DistanceTo2D(ATMObject.GetOffsetPositionFront(-1f));
-            float DistanceToRear = Player.Position.DistanceTo2D(ATMObject.GetOffsetPositionFront(1f));
-            if (DistanceToFront <= DistanceToRear)
-            {
-                PropEntryPosition = ATMObject.GetOffsetPositionFront(-1f);
-                PropEntryPosition = new Vector3(PropEntryPosition.X, PropEntryPosition.Y, Game.LocalPlayer.Character.Position.Z);
-                float ObjectHeading = ATMObject.Heading - 180f;
-                if (ObjectHeading >= 180f)
-                {
-                    PropEntryHeading = ObjectHeading - 180f;
-                }
-                else
-                {
-                    PropEntryHeading = ObjectHeading + 180f;
-                }
-            }
-            else
-            {
-                //EntryPoint.WriteToConsoleTestLong("Gas Pump You are Closer to the REAR, using that side");
-                PropEntryPosition = ATMObject.GetOffsetPositionFront(1f);
-                PropEntryPosition = new Vector3(PropEntryPosition.X, PropEntryPosition.Y, Game.LocalPlayer.Character.Position.Z);
-                float ObjectHeading = ATMObject.Heading;
-                if (ObjectHeading >= 180f)
-                {
-                    PropEntryHeading = ObjectHeading - 180f;
-                }
-                else
-                {
-                    PropEntryHeading = ObjectHeading + 180f;
-                }
-            }
-        }
-    }
-    private bool MoveToMachine()
-    {
-        if (PropEntryPosition == Vector3.Zero)
-        {
-            return false;
-        }
-        NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, PropEntryPosition.X, PropEntryPosition.Y, PropEntryPosition.Z, 1.0f, -1, PropEntryHeading, 0.2f);
-        uint GameTimeStartedSitting = Game.GameTime;
-        float heading = Game.LocalPlayer.Character.Heading;
-        bool IsFacingDirection = false;
-        bool IsCloseEnough = false;
-        while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsCloseEnough && !IsCancelled)
-        {
-            if (Player.IsMoveControlPressed)
-            {
-                IsCancelled = true;
-            }
-            IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(PropEntryPosition) < 0.2f;
-            GameFiber.Yield();
-        }
-        GameFiber.Sleep(250);
-        GameTimeStartedSitting = Game.GameTime;
-        while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsFacingDirection && !IsCancelled)
-        {
-            if (Player.IsMoveControlPressed)
-            {
-                IsCancelled = true;
-            }
-            heading = Game.LocalPlayer.Character.Heading;
-            if (Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)) <= 0.5f)//0.5f)
-            {
-                IsFacingDirection = true;
-            }
-            GameFiber.Yield();
-        }
-        GameFiber.Sleep(250);
-        if (IsCloseEnough && IsFacingDirection && !IsCancelled)
-        {
-            return true;
-        }
-        else
-        {
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-            return false;
-        }
+        EndUseMachine();
     }
     private void StartMachineBuyAnimation()
     {
-        if (!MoveToMachine())
+
+    }
+    private bool StartUseMachine()
+    {
+        PlayingDict = "anim@mp_atm@enter";
+        PlayingAnim = "enter";
+        bool IsCompleted = false;
+        AnimationWatcher aw = new AnimationWatcher();
+        AnimationDictionary.RequestAnimationDictionay(PlayingDict);
+        EntryPoint.WriteToConsole("ATM START ENTRY");
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 4.0f, -4.0f, -1, (int)AnimationFlags.StayInEndFrame, 0, false, false, false);//-1
+        while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
         {
-            FullDispose();
+            Player.WeaponEquipment.SetUnarmed();
+            float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
+            if (AnimationTime >= 1.0f)
+            {
+                //EntryPoint.WriteToConsole("ATM START ENTRY COMPLETE");
+                IsCompleted = true;
+                break;
+            }
+            else if (Player.IsMoveControlPressed)
+            {
+                break;
+            }
+            //EntryPoint.WriteToConsole($"ATM Anim Time {AnimationTime}");
+            //else if (!aw.IsAnimationRunning(AnimationTime))
+            //{
+            //    IsCompleted = false;
+            //    EntryPoint.WriteToConsole("ATM START ENTRY NOT RUNNING");
+            //    break;
+            //}
+            GameFiber.Yield();
         }
+        if(!IsCompleted)
+        {
+            return false;
+        }
+        EntryPoint.WriteToConsole("ATM START BASE");
+        PlayingDict = "anim@mp_atm@base";
+        PlayingAnim = "base";
+        AnimationDictionary.RequestAnimationDictionay(PlayingDict);
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 4.0f, -4.0f, -1, (int)AnimationFlags.Loop, 0, false, false, false);//-1
+        return IsCompleted;
+    }
+    private void EndUseMachine()
+    {
+        PlayingDict = "anim@mp_atm@exit";
+        PlayingAnim = "exit";
+        AnimationDictionary.RequestAnimationDictionay(PlayingDict);
+        AnimationWatcher aw = new AnimationWatcher();
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 4.0f, -4.0f, -1, 0, 0, false, false, false);//-1
+        while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
+        {
+            Player.WeaponEquipment.SetUnarmed();
+            float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
+            if(!aw.IsAnimationRunning(AnimationTime))
+            {
+                break;
+            }
+            GameFiber.Yield();
+        }
+        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
     }
 }
 

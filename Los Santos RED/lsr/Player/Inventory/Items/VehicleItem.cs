@@ -132,7 +132,7 @@ public class VehicleItem : ModItem
             }
             if (SellVehicle(Transaction, menuItem, player, settings, world))
             {
-                player.BankAccounts.GiveMoney(menuItem.SalesPrice);
+                player.BankAccounts.GiveMoney(menuItem.SalesPrice, Transaction.UseAccounts);
                 Transaction.MoneySpent += menuItem.SalesPrice;
                 sender.Visible = false;
             }
@@ -231,7 +231,7 @@ public class VehicleItem : ModItem
                 return;
             }
             //EntryPoint.WriteToConsole($"Vehicle Purchase {menuItem.ModItemName} Player.Money {player.BankAccounts.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}");
-            if (player.BankAccounts.Money < menuItem.PurchasePrice)
+            if (player.BankAccounts.GetMoney(Transaction.UseAccounts) < menuItem.PurchasePrice)
             {
                 Transaction.DisplayInsufficientFundsMessage();
                 return;
@@ -259,7 +259,7 @@ public class VehicleItem : ModItem
             {
                 return;
             }
-            player.BankAccounts.GiveMoney(-1 * menuItem.PurchasePrice);
+            player.BankAccounts.GiveMoney(-1 * menuItem.PurchasePrice, Transaction.UseAccounts);
             Transaction.MoneySpent += menuItem.PurchasePrice;   
            // sender.Visible = false;
         };

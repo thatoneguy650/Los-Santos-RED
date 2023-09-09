@@ -143,13 +143,13 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
         UIMenuItem PayBailFees = new UIMenuItem("Pay Bail Fees", "Pay your outstanding bail fees.") { RightLabel = $"${Player.Respawning.PastDueBailFees}" };
         PayBailFees.Activated += (sender, selectedItem) =>
         {
-            if (Player.BankAccounts.Money <= Player.Respawning.PastDueBailFees)
+            if (Player.BankAccounts.GetMoney(true) <= Player.Respawning.PastDueBailFees)
             {
                 new GTANotification(Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transaction.").Display();
                 NativeHelper.PlayErrorSound();
                 return;
             }
-            Player.BankAccounts.GiveMoney(-1 * Player.Respawning.PastDueBailFees);
+            Player.BankAccounts.GiveMoney(-1 * Player.Respawning.PastDueBailFees, true);
             new GTANotification(Name, "~g~Accepted", $"Your bail fees have been paid.").Display();
             Player.Respawning.PayPastDueBail();
             PayBailFees.Enabled = Player.Respawning.PastDueBailFees > 0;

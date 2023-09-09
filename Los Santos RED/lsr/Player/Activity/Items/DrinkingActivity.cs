@@ -88,7 +88,7 @@ namespace LosSantosRED.lsr.Player
             AttachBottleToHand();
             Player.ActivityManager.IsPerformingActivity = true;
             StartNewEnterAnimation();
-            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
+            while (Player.ActivityManager.CanPerformActivitiesMiddle && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
@@ -111,7 +111,7 @@ namespace LosSantosRED.lsr.Player
             bool IsFinishedWithSip = false;
             StartNewIdleAnimation();
             ConsumableItemNeedGain = new ConsumableRefresher(Player, DrinkItem, Settings);
-            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
+            while (Player.ActivityManager.CanPerformActivitiesMiddle && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);

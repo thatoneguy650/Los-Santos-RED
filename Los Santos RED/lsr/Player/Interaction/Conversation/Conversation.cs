@@ -20,7 +20,7 @@ public class Conversation : Interaction, IAdvancedConversationable
     private bool IsDisposed;
     private ISettingsProvideable Settings;
     private ICrimes Crimes;
-    private dynamic pedHeadshotHandle;
+    private uint pedHeadshotHandle;
     private AdvancedConversation AdvancedConversation;
     private IModItems ModItems;
     private IZones Zones;
@@ -240,7 +240,7 @@ public class Conversation : Interaction, IAdvancedConversationable
         {
             return;
         }
-        ShowPedInfoNotification();
+        Ped.ShowPedInfoNotification(pedHeadshotHandle);
     }
     private void DoPlayerGreet()
     {
@@ -342,31 +342,6 @@ public class Conversation : Interaction, IAdvancedConversationable
         Ped.Pedestrian.KeepTasks = true;
         NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Ped.Pedestrian, Player.Character, -1, 0, 2);     
     }
-    private void ShowPedInfoNotification()
-    {
-        string Description = $"~p~{Ped.GroupName}~s~";
-        if (Ped.IsFedUpWithPlayer)
-        {
-            Description += "~n~~r~Fed Up~s~";
-        }
-        else if (Ped.TimesInsultedByPlayer > 0)
-        {
-            Description += $"~n~~o~Insulted {Ped.TimesInsultedByPlayer} time(s)~s~";
-        }
-        if (Ped.HasMenu)
-        {
-            Description += $"~n~~g~Can Transact~s~";
-        }
-        if (NativeFunction.Natives.IsPedheadshotReady<bool>(pedHeadshotHandle))
-        {
-            string str = NativeFunction.Natives.GetPedheadshotTxdString<string>(pedHeadshotHandle);
-            Game.DisplayNotification(str, str, "~b~Ped Info", $"~y~{Ped.Name}", Description);
-        }
-        else
-        {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Ped Info", $"~y~{Ped.Name}", Description);
-        }
-    }
     private void CheckInput()
     {
         if (Player.ButtonPrompts.IsPressed("Cancel"))
@@ -403,10 +378,10 @@ public class Conversation : Interaction, IAdvancedConversationable
         {
             if (!Player.ButtonPrompts.HasPrompt("Conversation"))
             {
-                Player.ButtonPrompts.AddPrompt("Conversation", Ped.TimesInsultedByPlayer <= 0 ? "Chat" : "Apologize", "PositiveReply", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
-                Player.ButtonPrompts.AddPrompt("Conversation", Ped.TimesInsultedByPlayer <= 0 ? "Insult" : "Antagonize", "NegativeReply", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2);
-                Player.ButtonPrompts.AddPrompt("Conversation", "Transact/Question", "AskQuestion", Settings.SettingsManager.KeySettings.InteractStart, 5);
-                Player.ButtonPrompts.AddPrompt("Conversation", "Cancel", "Cancel", Settings.SettingsManager.KeySettings.InteractCancel, 90);
+                Player.ButtonPrompts.AddPrompt("Conversation", Ped.TimesInsultedByPlayer <= 0 ? "Quick Chat +" : "Quick Apologize +", "PositiveReply", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
+                Player.ButtonPrompts.AddPrompt("Conversation", Ped.TimesInsultedByPlayer <= 0 ? "Quick Insult -" : "Quick Antagonize -", "NegativeReply", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2);
+                Player.ButtonPrompts.AddPrompt("Conversation", "Interact Menu", "AskQuestion", Settings.SettingsManager.KeySettings.InteractStart, 5);
+                Player.ButtonPrompts.AddPrompt("Conversation", "Stop Talking", "Cancel", Settings.SettingsManager.KeySettings.InteractCancel, 90);
             }
         }
     }
@@ -436,22 +411,12 @@ public class Conversation : Interaction, IAdvancedConversationable
         if (IsReply)
         {
             SayAvailableAmbient(ToReply, new List<string>() { "CHAT_RESP", "PED_RANT_RESP", "CHAT_STATE", "PED_RANT",
-                //"PHONE_CONV1_CHAT1", "PHONE_CONV1_CHAT2", "PHONE_CONV1_CHAT3", "PHONE_CONV1_INTRO", "PHONE_CONV1_OUTRO",
-                //"PHONE_CONV2_CHAT1", "PHONE_CONV2_CHAT2", "PHONE_CONV2_CHAT3", "PHONE_CONV2_INTRO", "PHONE_CONV2_OUTRO",
-                //"PHONE_CONV3_CHAT1", "PHONE_CONV3_CHAT2", "PHONE_CONV3_CHAT3", "PHONE_CONV3_INTRO", "PHONE_CONV3_OUTRO",
-                //"PHONE_CONV4_CHAT1", "PHONE_CONV4_CHAT2", "PHONE_CONV4_CHAT3", "PHONE_CONV4_INTRO", "PHONE_CONV4_OUTRO",
-                //"PHONE_SURPRISE_PLAYER_APPEARANCE_01","SEE_WEIRDO_PHONE",
                 "PED_RANT_01",
             }, true, isPlayer);
         }
         else
         {
             SayAvailableAmbient(ToReply, new List<string>() { "CHAT_STATE", "PED_RANT", "CHAT_RESP", "PED_RANT_RESP", "CULT_TALK",
-                //"PHONE_CONV1_CHAT1", "PHONE_CONV1_CHAT2", "PHONE_CONV1_CHAT3", "PHONE_CONV1_INTRO", "PHONE_CONV1_OUTRO",
-                //"PHONE_CONV2_CHAT1", "PHONE_CONV2_CHAT2", "PHONE_CONV2_CHAT3", "PHONE_CONV2_INTRO", "PHONE_CONV2_OUTRO",
-                //"PHONE_CONV3_CHAT1", "PHONE_CONV3_CHAT2", "PHONE_CONV3_CHAT3", "PHONE_CONV3_INTRO", "PHONE_CONV3_OUTRO",
-                //"PHONE_CONV4_CHAT1", "PHONE_CONV4_CHAT2", "PHONE_CONV4_CHAT3", "PHONE_CONV4_INTRO", "PHONE_CONV4_OUTRO",
-                //"PHONE_SURPRISE_PLAYER_APPEARANCE_01","SEE_WEIRDO_PHONE",
                 "PED_RANT_01",
             }, true, isPlayer);
         }

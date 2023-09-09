@@ -177,6 +177,10 @@ public class PersonTransaction : Interaction
         Transaction = new Transaction(MenuPool, InteractionMenu, ShopMenu, AssociatedStore);
         Transaction.PreviewItems = false;
         Transaction.PersonTransaction = this;
+
+        Transaction.UseAccounts = Ped.ShopMenu == null || !Ped.ShopMenu.Items.Any(x => x.IsIllicilt);
+
+
         Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);
     }
     private void CheckButtonPrompts()

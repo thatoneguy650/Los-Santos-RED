@@ -92,7 +92,7 @@ namespace LosSantosRED.lsr.Player
         {
             StartNewIdleAnimation();
             ConsumableItemNeedGain = new ConsumableRefresher(Player, IngestItem, Settings);
-            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
+            while (Player.ActivityManager.CanPerformActivitiesMiddle && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);

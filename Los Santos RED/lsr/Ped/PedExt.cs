@@ -5,6 +5,7 @@ using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
+using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -131,7 +132,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual bool IsAnimal { get; set; } = false;
     public virtual int DefaultCombatFlag { get; set; } = 0;
     public virtual int DefaultEnterExitFlag { get; set; } = 0;
-    public string InteractPrompt(IButtonPromptable player)
+    public virtual string InteractPrompt(IButtonPromptable player)
     {
         bool toSell = false;
         bool toSellPlayerHas = false;
@@ -345,6 +346,11 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual bool WillCallPoliceIntense { get; set; } = false;
     public virtual bool WillFight { get; set; } = false;
     public virtual bool WillFightPolice { get; set; } = false;
+
+    public virtual bool WillCower { get; set; } = false;
+
+
+
     public bool IsGroupMember { get; set; } = false;
     public bool WithinWeaponsAudioRange => PlayerPerception.WithinWeaponsAudioRange;
     public string VoiceName { get; set; } = "";
@@ -928,6 +934,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         WillCallPolice = RandomItems.RandomPercent(CivilianCallPercentage());
         WillCallPoliceIntense = RandomItems.RandomPercent(CivilianSeriousCallPercentage());
         WillFightPolice = RandomItems.RandomPercent(CivilianFightPolicePercentage());
+        WillCower = RandomItems.RandomPercent(CivilianCowerPercentage());
         if (addBlip)
         {
             AddBlip();
@@ -989,24 +996,44 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
         OtherCrimesWitnessed.Clear();
     }
-
-    public virtual void AddSpecificInteraction(ILocationInteractable player, MenuPool menuPool, UIMenu headerMenu)
+    public virtual void AddSpecificInteraction(ILocationInteractable player, MenuPool menuPool, UIMenu headerMenu, AdvancedConversation advancedConversation)
     {
-
+        UIMenuItem transactionInteract = new UIMenuItem("Start Transaction", "Buy or sell with the current ped.");
+        transactionInteract.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+            advancedConversation.StartTransactionWithPed();
+        };
+        if (HasMenu)
+        {
+            headerMenu.AddItem(transactionInteract);
+        }
     }
-
-    //private void AddMedicalEventWitnessed(ITargetable Player)
-    //{
-    //    Player.AddMedicalEvent(PedAlerts.PositionLastSeenUnconsciousPed);
-    //    PedAlerts.HasSeenUnconsciousPed = false;
-    //}
-
-    //public virtual void AddMedicalEventWitnessed(IPoliceRespondable Player, Vector3 position)
-    //{
-    //    Player.AddMedicalEvent(position);
-    //    PedAlerts.HasSeenUnconsciousPed = false;
-    //}
-
+    public virtual void ShowPedInfoNotification(uint pedHeadshotHandle)
+    {
+        string Description = $"~p~{GroupName}~s~";
+        if (IsFedUpWithPlayer)
+        {
+            Description += "~n~~r~Fed Up~s~";
+        }
+        else if (TimesInsultedByPlayer > 0)
+        {
+            Description += $"~n~~o~Insulted {TimesInsultedByPlayer} time(s)~s~";
+        }
+        if (HasMenu)
+        {
+            Description += $"~n~~g~Can Transact~s~";
+        }
+        if (pedHeadshotHandle != 0 && NativeFunction.Natives.IsPedheadshotReady<bool>(pedHeadshotHandle))
+        {
+            string str = NativeFunction.Natives.GetPedheadshotTxdString<string>(pedHeadshotHandle);
+            Game.DisplayNotification(str, str, "~b~Ped Info", $"~y~{Name}", Description);
+        }
+        else
+        {
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Ped Info", $"~y~{Name}", Description);
+        }
+    }
     private float CivilianCallPercentage()
     {
         if (EntryPoint.FocusZone != null)
@@ -1111,6 +1138,32 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             return Settings.SettingsManager.CivilianSettings.FightPolicePercentageMiddleZones;
         }
     }
+    private float CivilianCowerPercentage()
+    {
+        if (EntryPoint.FocusZone != null)
+        {
+            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
+            {
+                return Settings.SettingsManager.CivilianSettings.CowerPercentageRichZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
+            {
+                return Settings.SettingsManager.CivilianSettings.CowerPercentageMiddleZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
+            {
+                return Settings.SettingsManager.CivilianSettings.CowerPercentagePoorZones;
+            }
+            else
+            {
+                return Settings.SettingsManager.CivilianSettings.CowerPercentageMiddleZones;
+            }
+        }
+        else
+        {
+            return Settings.SettingsManager.CivilianSettings.CowerPercentageMiddleZones;
+        }
+    }
     public virtual void OnKilledByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
     {
 
@@ -1131,7 +1184,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     {
 
     }
-
     public virtual bool OnTreatedByEMT(float revivePercentage)
     {
         HasBeenTreatedByEMTs = true;
@@ -1160,12 +1212,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             return true;
         }    
     }
-
     public void SetUnconscious(IPoliceRespondable policeRespondable)
     {
         
     }
-
     public virtual void ShowCustomDisplay(uint headshotID,string Title, string Description)
     {
         string pic1 = "CHAR_BLANK_ENTRY";
@@ -1210,7 +1260,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
         return Output;
     }
-
     public virtual void SetSeenDead(PedExt deadBody)
     {
         //if (GameTimeLastSeenDead != 0)
@@ -1218,12 +1267,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         //    GameTimeLastSeenDead = Game.GameTime;
         //}
     }
-
     public virtual void SetSeenUnconscious(PedExt distressedPed)
     {
         //GameTimeLastSeenUnconscious = Game.GameTime;
     }
-
     public void SetWasSeenDead()
     {
         if(GameTimeFirstSeenDead != 0)

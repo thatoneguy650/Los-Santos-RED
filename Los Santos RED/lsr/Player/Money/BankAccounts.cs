@@ -19,8 +19,11 @@ public class BankAccounts
 
     public int LastChangeMoneyAmount { get; set; }
     public bool RecentlyChangedMoney => GameTimeLastChangedMoney != 0 && Game.GameTime - GameTimeLastChangedMoney <= 7000;
-    public int AccountMoney { get; set; } = 0;
-    public int Money
+    //public int AccountMoney { get; set; } = 0;
+    public int TotalAccountMoney => BankAccountList == null || !BankAccountList.Any() ? 0 : BankAccountList.Sum(x => x.Money);
+    public int TotalMoney => TotalAccountMoney + Money;
+    public List<BankAccount> BankAccountList { get; set; } = new List<BankAccount>();
+    private int Money
     {
         get
         {
@@ -76,13 +79,39 @@ public class BankAccounts
             currentMoney = Money;
         }
     }
-    public void GiveMoney(int Amount)
+
+
+
+
+    public int GetMoney(bool useAccounts)
+    {
+        if(!useAccounts)
+        {
+            return Money;
+        }
+        return Money + TotalAccountMoney;
+    }
+
+
+
+
+    public void GiveMoney(int Amount, bool useAccounts)
     {
         if (Amount != 0)
         {
             LastChangeMoneyAmount = Amount;
             GameTimeLastChangedMoney = Game.GameTime;
         }
+        if (useAccounts)
+        {
+            EntryPoint.WriteToConsole($"GiveMoney ACCOUNT TO REMOVE {Amount}");
+            Amount = GiveMoneyAccount(Amount);
+            EntryPoint.WriteToConsole($"GiveMoney ACCOUNT STILL TO REMOVE {Amount}");
+        }
+
+
+
+ 
         int CurrentCash;
         uint PlayerCashHash;
         if (Player.CharacterModelIsPrimaryCharacter)
@@ -96,7 +125,6 @@ public class BankAccounts
         //EntryPoint.WriteToConsoleTestLong($"PlayerCashHash {PlayerCashHash} ModelName {Player.ModelName}");
         if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || Player.CharacterModelIsPrimaryCharacter)
         {
-
             unsafe
             {
                 NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
@@ -123,6 +151,40 @@ public class BankAccounts
         }
         //currentMoney = Money;
     }
+
+    private int GiveMoneyAccount(int Amount)
+    {
+        if(Amount > 0)
+        {
+            BankAccount bankAccount = BankAccountList.OrderBy(x => x.IsPrimary ? 0 : 999).FirstOrDefault();
+            if(bankAccount != null)
+            {
+                bankAccount.Money += Amount;
+            }
+            return Amount;
+        }
+        else
+        {
+            int AccountMoneyTakenAlready = Amount;
+            foreach (BankAccount ba in BankAccountList.OrderByDescending(x => x.Money))
+            {
+                EntryPoint.WriteToConsole($"GiveMoneyAccount BEGIN {ba.BankContactName} {ba.Money}");
+                if (AccountMoneyTakenAlready + ba.Money < 0)
+                {
+                    ba.Money = 0;
+                    AccountMoneyTakenAlready += ba.Money;
+                }
+                else
+                {
+                    ba.Money = ba.Money += AccountMoneyTakenAlready;
+                    AccountMoneyTakenAlready = 0;
+                }
+                EntryPoint.WriteToConsole($"GiveMoneyAccount END {ba.BankContactName} {ba.Money}");
+            }
+            return AccountMoneyTakenAlready;
+        }
+    }
+
     public void SetMoney(int Amount)
     {
         uint PlayerCashHash;
@@ -147,6 +209,42 @@ public class BankAccounts
         currentMoney = Money;
     }
 
+    public string CashDisplay()
+    {
+        string toReturn = $"${Money}";
+        int totalAccount = TotalAccountMoney;
+        if(totalAccount > 0)
+        {
+            toReturn += $" (${totalAccount})";
+        }
+        return toReturn;
+    }
 
+    public BankAccount GetAccount(string name)
+    {
+        BankAccount bankAccount = BankAccountList.Where(x => x.BankContactName == name).FirstOrDefault();
+        return bankAccount;
+    }
+    public int GetAccountValue(string name)
+    {
+        BankAccount ba = GetAccount(name);
+        if(ba == null)
+        {
+            return 0;
+        }
+        return ba.Money;
+    }
+
+    public void WriteToConsole()
+    {
+        EntryPoint.WriteToConsole("BANK ACCOUNTS---------------");
+
+        EntryPoint.WriteToConsole($"On Hand Cash {Money}");
+        foreach(BankAccount bankAccount in BankAccountList)
+        {
+            EntryPoint.WriteToConsole($"Account: {bankAccount.BankContactName} {bankAccount.Money}");
+        }
+        EntryPoint.WriteToConsole("BANK ACCOUNTS---------------");
+    }
 }
 

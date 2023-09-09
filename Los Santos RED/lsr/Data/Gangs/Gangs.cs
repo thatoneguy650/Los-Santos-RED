@@ -134,6 +134,8 @@ public class Gangs : IGangs
             DrugDealerPercentage = 65f,
             LicensePlatePrefix = "LOST",
             GangClassification = GangClassification.Biker,
+            MembersGetFreeVehicles = true,
+            MembersGetFreeWeapons = true,
         };//Meth
         Vagos = new Gang("~y~", "AMBIENT_GANG_MEXICAN", "Vagos", "Vagos", "Yellow", "VagosPeds", "VagosVehicles", "", "MeleeWeapons", "VagosSidearms", "VagosLongGuns", "Vagos", "CHAR_BLANK_ENTRY", "Vagos Member")
         {
@@ -353,6 +355,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 1500,
             DrugDealerPercentage = 65f,
             GangClassification = GangClassification.Generic,
+            MembersGetFreeWeapons = true,
         };//TOILET CLEANER
         Korean = new Gang("~q~", "AMBIENT_GANG_KKANGPAE", "Kkangpae", "Kkangpae", "Pink", "KoreanPeds", "KoreanVehicles", "", "MeleeWeapons", "KkangpaeSidearms", "KkangpaeLongGuns", "Kkangpae", "CHAR_BLANK_ENTRY", "Kkangpae Member")
         {
@@ -577,6 +580,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 2800,
             DrugDealerPercentage = 65f,
             GangClassification = GangClassification.Cartel,
+            MembersGetFreeWeapons = true,
         };//Meth
         Armenian = new Gang("~b~", "AMBIENT_GANG_ARMENIAN", "Armenian Mob", "Armenian", "Black", "ArmenianPeds", "ArmeniaVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Armenians", "CHAR_BLANK_ENTRY", "Armenian Member")
         {
@@ -608,7 +612,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 3000,
             DrugDealerPercentage = 65f,
             GangClassification = GangClassification.Cartel,
-
+            MembersGetFreeVehicles = true,
         };//heroin
         Yardies = new Gang("~g~", "AMBIENT_GANG_YARDIES", "Yardies", "Yardies", "Green", "YardiesPeds", "YardieVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Yardies", "CHAR_BLANK_ENTRY", "Yardie Member")
         {

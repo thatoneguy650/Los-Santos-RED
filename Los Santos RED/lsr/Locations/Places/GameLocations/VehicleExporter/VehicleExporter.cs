@@ -249,7 +249,7 @@ public class VehicleExporter : GameLocation
         ExportSubMenu.RefreshIndex();
         ExportSubMenu.Close(true);
         Game.FadeScreenIn(1000, true);
-        Player.BankAccounts.GiveMoney(Price);
+        Player.BankAccounts.GiveMoney(Price, false);
         PlaySuccessSound();
         DisplayMessage("~g~Exported", $"Thank you for exporting ~p~{CarName}~s~ at ~y~{Name}~s~");
         HasExported = true;

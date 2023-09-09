@@ -178,7 +178,7 @@ public class RepairGarage : GameLocation
         {
             return;
         }
-        if (Player.BankAccounts.Money <= WashCost)
+        if (Player.BankAccounts.GetMoney(false) <= WashCost)
         {
             PlayErrorSound();
             DisplayMessage("~r~Washing Failed", "Insufficient funds!");
@@ -194,7 +194,7 @@ public class RepairGarage : GameLocation
             GameFiber.Yield();
         }
         Time.ForceShowClock = false;
-        Player.BankAccounts.GiveMoney(-1 * WashCost);
+        Player.BankAccounts.GiveMoney(-1 * WashCost, false);
         PlaySuccessSound();
         DisplayMessage("~g~Washed", $"Thank you for washing your vehicle at ~y~{Name}~s~");      
         InteractionMenu.Visible = false;
@@ -210,7 +210,7 @@ public class RepairGarage : GameLocation
         {
             return;
         }
-        if (Player.BankAccounts.Money <= totalRepairCost)
+        if (Player.BankAccounts.GetMoney(false) <= totalRepairCost)
         {
             PlayErrorSound();
             DisplayMessage("~r~Repair Failed", "Insufficient funds!");
@@ -238,7 +238,7 @@ public class RepairGarage : GameLocation
             GameFiber.Yield();
         }
         Time.ForceShowClock = false;
-        Player.BankAccounts.GiveMoney(-1 * totalRepairCost);
+        Player.BankAccounts.GiveMoney(-1 * totalRepairCost, false);
         PlaySuccessSound();
         if(withRespray)
         {

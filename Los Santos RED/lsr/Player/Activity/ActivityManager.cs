@@ -68,6 +68,7 @@ public class ActivityManager
     //DO I NEED ALL 3?
     public bool CanPerformActivitesBase => Player.IsAliveAndFree && !Player.IsIncapacitated && !Player.IsGettingIntoAVehicle && !Player.RecentlyGotOutOfVehicle && !Player.IsBreakingIntoCar;// && (Interaction == null || Interaction.CanPerformActivities);
     public bool CanPerformActivitiesExtended => CanPerformActivitesBase && (!Player.IsMovingFast || Player.IsInVehicle) && !Player.IsMovingDynamically;
+    public bool CanPerformActivitiesMiddle => CanPerformActivitesBase && (!Player.IsMovingFast || Player.IsInVehicle);
     public bool CanPerformActivitiesOnFoot => CanPerformActivitesBase && !Player.IsInVehicle;
 
 
