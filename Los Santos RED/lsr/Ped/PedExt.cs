@@ -433,6 +433,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual bool CanBeLooted { get; set; } = true;
     public virtual bool CanBeDragged { get; set; } = true;
     public virtual bool CanPlayRadioInAnimation => false;
+    public virtual string BlipName => "Person";
     public bool AlwaysHasLongGun { get; set; } = false;
     public bool IsBeingHeldAsHostage { get; set; } = false;
     public bool GeneratesBodyAlerts { get; set; } = true;
@@ -957,7 +958,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
         Blip myBlip = Pedestrian.AttachBlip();
         NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(GroupName);
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(BlipName);
         NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
         myBlip.Color = BlipColor;
         myBlip.Scale = BlipSize;

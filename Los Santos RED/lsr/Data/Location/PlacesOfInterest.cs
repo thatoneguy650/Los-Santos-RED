@@ -449,11 +449,29 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ,ZonesToEnable = new HashSet<string>() { "PrLog" }
                 ,StateID = StaticStrings.NorthYanktonStateID,
             },
-            new CayoPericoAirport("CPA",new Vector3(),0f,"Cayo Perico Airstrip",
+            new CayoPericoAirport("CPA",new Vector3(4502.47f, -4530.506f, 4.17187f), 201.2939f,"Cayo Perico Airstrip",
                 "Have this crap instead of ~r~REAL~s~ DLC!" +
                 "~n~" +
                 "~n~City: ~y~Cayo Perico~s~" +
-                "~n~Country: ~p~Colombia~s~") { IsEnabled = false,StateID = StaticStrings.ColombiaStateID },
+                "~n~Country: ~p~Colombia~s~") 
+            { 
+                IsEnabled = false,
+                StateID = StaticStrings.ColombiaStateID, 
+                RequiresMPMap = true,
+                OpenTime = 0,
+                CloseTime = 24,
+                ArrivalPosition = new Vector3(4524.132f, -4498.074f, 4.23596f),
+                ArrivalHeading = 298.5098f,
+                CameraPosition = new Vector3(4538.386f, -4544.42f, 25.30816f), 
+                CameraDirection = new Vector3(-0.8255408f, 0.4359591f, -0.3583601f), 
+                CameraRotation = new Rotator(-20.99952f, -1.005964E-05f, 62.16195f),
+                AirArrivalPosition = new Vector3(3643.128f, -4779.568f, 63.15142f),
+                AirArrivalHeading =  282.1072f,
+
+            },
+
+
+
             new Airport("SFX",new Vector3(),0f,"San Fierro Intl.",
                 "The city of psychedelic wonders." +
                 "~n~" +
@@ -1087,6 +1105,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new ConvenienceStore(new Vector3(877.7466f, -132.4732f, 78.59199f), 322.8992f,  "B.J.'s Market", "","ConvenienceStoreMenu"),
             new ConvenienceStore(new Vector3(-59.0772f, 6523.902f, 31.49085f), 314.5225f,  "Willie's Supermarket", "","ConvenienceStoreMenu"),
             new ConvenienceStore(new Vector3(-1478.208f, -949.8577f, 10.21891f), 187.2803f, "The Beachfront Market", "","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(-1113.532f, -1365.805f, 5.040397f), 207.2889f,  "Farmer Giles", "Organic Food Store","GrainOfTruthMenu"),
         };
     }
     private void DefaultConfig_Banks()
@@ -1095,7 +1114,9 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
 
             new Bank(new Vector3(-1318f, -831.5065f, 16.97263f), 125.3848f, "Maze Bank", ""){ BannerImagePath = "maze.png",},
-            new Bank(new Vector3(-3142.849f, 1131.727f, 20.84295f), 247.9002f, "Blaine County Savings", ""){ BannerImagePath = "blainecountybank.png",},
+            
+
+
             new Bank(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, "Fleeca Bank", "") { BannerImagePath = "fleeca.png",},
             new Bank(new Vector3(-350.1604f, -45.84864f, 49.03682f), 337.4063f, "Fleeca Bank", "")             
             {
@@ -1139,6 +1160,41 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(1175.087f, 2708.431f, 38.08793f), 177.2366f),
                 }
             },
+            new Bank(new Vector3(-1214.902f, -327.0157f, 37.6686f), 26.31765f, "Fleeca Bank", "")
+            {
+                BannerImagePath = "fleeca.png",
+                InteriorID = 87810,
+                TellerLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(-1211.815f, -332.2156f, 37.78094f), 25.86222f),
+                    new SpawnPlace(new Vector3(-1213.225f, -333.1036f, 37.78089f), 22.51491f),
+                }
+            },
+
+
+            new Bank(new Vector3(230.2334f, 214.4399f, 105.552f), 115.9025f, "Pacific Standard Bank", "")
+            {
+                InteriorID = 103170,
+                TellerLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(249.3135f, 224.6261f, 106.287f), 147.2702f),
+                    new SpawnPlace(new Vector3(253.0091f, 223.5203f, 106.2868f), 151.6559f),
+                },
+                ActivateCells = 3,
+                ActivateDistance = 200f,
+            },
+
+            new Bank(new Vector3(-3142.849f, 1131.727f, 20.84295f), 247.9002f, "Blaine County Savings", ""){ BannerImagePath = "blainecountybank.png",},
+            new Bank(new Vector3(-111.82f, 6461.803f, 31.63924f), 134.2345f, "Blaine County Savings", ""){ 
+                BannerImagePath = "blainecountybank.png",
+                InteriorID = 42754,
+                TellerLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(-111.1494f, 6470.298f, 31.6267f), 133.0098f),
+                },
+            },
+
+
+            new Bank(new Vector3(-1103.88f, -1353.062f, 5.037252f), 206.2566f, "Lombank", ""){BannerImagePath = "lombank.png" },
+            new Bank(new Vector3(-863.493f, -193.3951f, 37.84323f), 299.7061f, "Lombank", ""){BannerImagePath = "lombank.png" },
+            new Bank(new Vector3(6.928352f, -932.4435f, 29.905f), 111.645f, "Lombank", ""){BannerImagePath = "lombank.png" },
         };
     }
     private void DefaultConfig_BeautyShops()
@@ -1465,6 +1521,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(-1108.847f, -1355.264f, 5.035112f), 206.1676f, "Crucial Fix Coffee", "Get your fix","CoffeeMenu", FoodType.Coffee),
             new Restaurant(new Vector3(189.0311f, -231.234f, 54.07472f), 340.4597f, "Crucial Fix Coffee", "Get your fix","CoffeeMenu", FoodType.Coffee),
             new Restaurant(new Vector3(273.174f, -833.0611f, 29.41237f), 185.6476f, "Crucial Fix Coffee", "Get your fix","CoffeeMenu", FoodType.Coffee),
+            new Restaurant(new Vector3(-1109.055f, -1355.237f, 5.034323f), 208.2667f, "Crucial Fix Coffee", "Get your fix","CoffeeMenu", FoodType.Coffee),
             new Restaurant(new Vector3(-576.6631f, -677.8674f, 32.36259f), 306.9058f, "Hit-N-Run Coffee", "Vehicular assault discouraged","CoffeeMenu", FoodType.Coffee),
             new Restaurant(new Vector3(-1253.337f, -296.6488f, 37.31522f), 206.5786f, "{java.update();}", "Real coffee made by fake programmers","CoffeeMenu", FoodType.Coffee) { IsOnMPMap = false },
             new Restaurant(new Vector3(-509.1889f, -22.9895f, 45.60899f), 354.7263f, "Little Teapot", "The finest organic & free range teas exploited from the third world","CoffeeMenu", FoodType.Coffee) {ScannerFilePath = "01_specific_location\\0x1980DD57.wav" },

@@ -16,7 +16,7 @@ public class HeadShop : GameLocation
 
     }
     public override string TypeName { get; set; } = "Head Shop";
-    public override int MapIcon { get; set; } = 96;
+    public override int MapIcon { get; set; } = 648;
     public override string ButtonPromptText { get; set; }
     public HeadShop(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {

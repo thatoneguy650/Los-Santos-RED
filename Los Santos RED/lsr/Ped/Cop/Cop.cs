@@ -68,6 +68,9 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public override int TurretAccuracy { get; set; } = 30;
     public override int TurretShootRate { get; set; } = 1000;
     public override bool AutoCallsInUnconsciousPeds { get; set; } = true;
+
+    public override string BlipName => "Police";
+
     public CopAssistManager AssistManager { get; private set;}
     public CopVoice Voice { get; private set; }
     public WeaponInventory WeaponInventory { get; private set; }

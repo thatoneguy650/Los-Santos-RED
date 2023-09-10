@@ -193,7 +193,8 @@ public class SearchActivity
         //FLOAT MoveBlendRatio = PEDMOVEBLENDRATIO_RUN,
         //ESEEK_ENTITY_OFFSET_FLAGS OffsetFlags = ESEEK_DEFAULT ) = "0x6624b56c8f9a7bbf"
 
-        NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Cop.Pedestrian, CopTargetPosition.X, CopTargetPosition.Y, CopTargetPosition.Z, 1.0f, -1, CopTargetHeading, 0.1f);
+        //NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Cop.Pedestrian, CopTargetPosition.X, CopTargetPosition.Y, CopTargetPosition.Z, 1.0f, -1, CopTargetHeading, 0.1f);
+        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Cop.Pedestrian, CopTargetPosition.X, CopTargetPosition.Y, CopTargetPosition.Z, 1.0f, -1, 0.1f, 0, CopTargetHeading);
     }
     private void CopMoveLoop()
     {

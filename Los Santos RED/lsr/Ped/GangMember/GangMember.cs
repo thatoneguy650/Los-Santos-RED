@@ -42,7 +42,7 @@ public class GangMember : PedExt, IWeaponIssuable
     public override float BlipSize => 0.3f;
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool HasTaser { get; set; } = false;
-
+    public override string BlipName => "Gang Member";
     public bool IsHitSquad { get; set; } = false;
     public new string FormattedName => (PlayerKnownsName ? Name : GroupName);
     public override bool KnowsDrugAreas => true;

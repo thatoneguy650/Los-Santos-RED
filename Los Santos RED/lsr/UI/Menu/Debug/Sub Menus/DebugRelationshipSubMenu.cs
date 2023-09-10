@@ -17,9 +17,9 @@ public class DebugRelationshipSubMenu : DebugSubMenu
     }
     public override void AddItems()
     {
-        UIMenu PlayerStateItemsMenu = MenuPool.AddSubMenu(Debug, "Relationships Menu");
+        UIMenu PlayerStateItemsMenu = MenuPool.AddSubMenu(Debug, "Other Relationships Menu");
         PlayerStateItemsMenu.SetBannerType(EntryPoint.LSRedColor);
-        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various relationship items.";
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various non gang relationship items.";
 
 
         UIMenuItem AddOfficerFriendly = new UIMenuItem("Add Officer Friendly", "Add officer friendly contact and set relationship to friendly");

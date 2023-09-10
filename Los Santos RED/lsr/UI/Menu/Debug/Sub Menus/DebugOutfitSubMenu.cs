@@ -17,7 +17,7 @@ public class DebugOutfitSubMenu : DebugSubMenu
 
     public override void AddItems()
     {
-        SubMenu = MenuPool.AddSubMenu(Debug, "Outfits");
+        SubMenu = MenuPool.AddSubMenu(Debug, "Outfit Menu");
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Quick set a variation for the current character.";
         SubMenu.SetBannerType(EntryPoint.LSRedColor);
         UpdateOutfits();

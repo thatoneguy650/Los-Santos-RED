@@ -34,9 +34,10 @@ public class DebugPlayerStateSubMenu : DebugSubMenu
     }
     public override void AddItems()
     {
-        UIMenu PlayerStateItemsMenu = MenuPool.AddSubMenu(Debug, "Player State Menu");
+        UIMenu PlayerStateItemsMenu = MenuPool.AddSubMenu(Debug, "Player General Menu");
         PlayerStateItemsMenu.SetBannerType(EntryPoint.LSRedColor);
-        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various time items.";
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various player items.";
+
         UIMenuItem KillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
         KillPlayer.Activated += (menu, item) =>
         {
@@ -250,31 +251,55 @@ public class DebugPlayerStateSubMenu : DebugSubMenu
         };
 
 
+        UIMenuListScrollerItem<string> SetArrested = new UIMenuListScrollerItem<string>("Set Arrested", "Set the player ped as arrested.", new List<string>() { "Stay Standing", "Kneeling" });
+        SetArrested.Activated += (menu, item) =>
+        {
+            bool stayStanding = SetArrested.SelectedItem == "Stay Standing";
+            Player.Arrest();
+            Game.TimeScale = 1.0f;
+            Player.Surrendering.SetArrestedAnimation(stayStanding);
+            menu.Visible = false;
+        };
+        
+
+        UIMenuItem UnSetArrested = new UIMenuItem("UnSet Arrested", "Release the player from an arrest.");
+        UnSetArrested.Activated += (menu, item) =>
+        {
+            Game.TimeScale = 1.0f;
+            Player.Reset(true, false, true, true, true, false, false, false, false, false, false, false, false, false, false, true, false);
+            Player.Surrendering.UnSetArrestedAnimation();
+            menu.Visible = false;
+        };
+
+
+
+        PlayerStateItemsMenu.AddItem(FillHealthAndArmor);
+        PlayerStateItemsMenu.AddItem(SetHealth);
         PlayerStateItemsMenu.AddItem(KillPlayer);
+
+        PlayerStateItemsMenu.AddItem(ToggleInvisible);
+
         PlayerStateItemsMenu.AddItem(GiveMoney);
         PlayerStateItemsMenu.AddItem(SetMoney);
+
+        PlayerStateItemsMenu.AddItem(ResetNeeds);
+        PlayerStateItemsMenu.AddItem(SetRandomNeeds);
         PlayerStateItemsMenu.AddItem(ForceSober);
         PlayerStateItemsMenu.AddItem(GetAllItems);
         PlayerStateItemsMenu.AddItem(GetSomeItems);
-        PlayerStateItemsMenu.AddItem(FillHealthAndArmor);
         PlayerStateItemsMenu.AddItem(GetRandomWeapon);
         PlayerStateItemsMenu.AddItem(GetRandomUpgradedWeapon);
         PlayerStateItemsMenu.AddItem(GetRandomSuppressedWeapon);
-        PlayerStateItemsMenu.AddItem(SetRandomNeeds);
-        PlayerStateItemsMenu.AddItem(SetHealth);
-        PlayerStateItemsMenu.AddItem(ResetNeeds);
-        PlayerStateItemsMenu.AddItem(AutoSetRadioStation);
-
-
         PlayerStateItemsMenu.AddItem(GetDriversLicense);
         PlayerStateItemsMenu.AddItem(GetCCWLicense);
         PlayerStateItemsMenu.AddItem(GetPilotsLicense);
-
-        PlayerStateItemsMenu.AddItem(RemoveButtonPrompts);
+        PlayerStateItemsMenu.AddItem(AutoSetRadioStation);
         PlayerStateItemsMenu.AddItem(TaxiSpawn);
         PlayerStateItemsMenu.AddItem(ScamText);
         PlayerStateItemsMenu.AddItem(RandomizePhone);
-        PlayerStateItemsMenu.AddItem(ToggleInvisible);
+        PlayerStateItemsMenu.AddItem(SetArrested);
+        PlayerStateItemsMenu.AddItem(UnSetArrested);
+        PlayerStateItemsMenu.AddItem(RemoveButtonPrompts);
     }
 }
 

@@ -69,6 +69,7 @@ public class VehicleExporter : GameLocation
         {
             Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
+            Player.IsTransacting = true;
             GameFiber.StartNew(delegate
             {
                 try
@@ -94,6 +95,7 @@ public class VehicleExporter : GameLocation
                     StoreCamera.Dispose();
                     Player.ActivityManager.IsInteractingWithLocation = false;
                     CanInteract = true;
+                    Player.IsTransacting = false;
                 }
                 catch (Exception ex)
                 {

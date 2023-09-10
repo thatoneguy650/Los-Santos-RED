@@ -22,7 +22,7 @@ public class CarCrusher : GameLocation
 
     }
     public override string TypeName { get; set; } = "Car Crusher";
-    public override int MapIcon { get; set; } = 527;// (int)527;
+    public override int MapIcon { get; set; } = 380;// (int)527;
     public override string ButtonPromptText { get; set; }
     public float VehiclePickupDistance { get; set; } = 15f;
     public int StandardCrushPrice { get; set; } = 500;
@@ -54,7 +54,7 @@ public class CarCrusher : GameLocation
         {
             Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
-
+            Player.IsTransacting = true;
             GameFiber.StartNew(delegate
             {
                 try
@@ -71,6 +71,7 @@ public class CarCrusher : GameLocation
                     StoreCamera.Dispose();
                     Player.ActivityManager.IsInteractingWithLocation = false;
                     CanInteract = true;
+                    Player.IsTransacting = false;
                 }
                 catch (Exception ex)
                 {

@@ -7,13 +7,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Xml.Linq;
 
 
 public class BankInteraction
 {
     private ILocationInteractable Player;
-    private UIMenu AccountSubMenu;
-    private UIMenuItem AccountSubMenuItem;
+    private UIMenu AccountsSubMenu;
+    private UIMenuItem AccountsSubMenuItem;
     private Bank Bank;
     private Texture BannerImage;
     private MenuPool MenuPool;
@@ -23,6 +25,7 @@ public class BankInteraction
     private UIMenuNumericScrollerItem<int> depositCashScroller;
     private UIMenuNumericScrollerItem<int> withDrawCashScroller;
     private int MaxAccountValue = 5000000;
+    private uint NotificationHandle;
 
     public BankInteraction(ILocationInteractable player, Bank bank)
     {
@@ -36,21 +39,26 @@ public class BankInteraction
         AddAccountsSubmenu();
         AddAccountItems();
         InteractionMenu.Visible = true;
-        Player.IsTransacting = true;
-
+       // Player.IsTransacting = true;
+        
     }
     private void AddAccountsSubmenu()
     {
-        AccountSubMenu = MenuPool.AddSubMenu(InteractionMenu, $"Access Account");
+        AccountsSubMenu = MenuPool.AddSubMenu(InteractionMenu, $"Access Accounts");
+        AccountsSubMenuItem = InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1];
 
-        AccountSubMenuItem = InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1];
-
-
-        InteractionMenu.OnMenuClose += (sender) =>
+        AccountsSubMenu.OnMenuOpen += (sender) =>
         {
+            EntryPoint.WriteToConsole("BANK INTERACTION IS TRANSACTING SET TO TRUE");
+            Player.IsTransacting = true;
+        };
+
+        AccountsSubMenu.OnMenuClose += (sender) =>
+        {
+            EntryPoint.WriteToConsole("BANK INTERACTION IS TRANSACTING SET TO FALSE");
             Player.IsTransacting = false;
         };
-        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = $"Access account to deposit or withdraw money";
+        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = $"Access accounts to deposit or withdraw money";
         if (Bank == null)
         {
             return;
@@ -58,56 +66,76 @@ public class BankInteraction
         if (Bank.HasBannerImage)
         {
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Bank.BannerImagePath}");
-            AccountSubMenu.SetBannerType(BannerImage);
+            AccountsSubMenu.SetBannerType(BannerImage);
+            EntryPoint.WriteToConsole("BANK INTERACTION AccountsSubMenu.SetBannerType(BannerImage) RAN");
         }
     }
     private void AddAccountItems()
     {
-        AccountSubMenu.Clear();
+        AccountsSubMenu.Clear();
         if (Bank == null)
         {
-            return;
+            AddGenericAccounts();
         }
-        BankAccount bankAccount = Player.BankAccounts.GetAccount(Bank.Name);
-        if(bankAccount == null)
+        else
         {
-            AccountSubMenuItem.Description = "No Account";
-            UIMenuItem addAccount = new UIMenuItem("Create Account", $"Create a new checking account with {Bank.Name}.");
-            addAccount.Activated += (sender, e) =>
-            {
-                Player.BankAccounts.BankAccountList.Add(new BankAccount(Bank.Name, 0));
-                Bank.DisplayMessage("~g~Account Created",$"You have successfully create an account at {Bank.Name}");
-                AddAccountItems();
-            };
-            AccountSubMenu.AddItem(addAccount);
+            AddSpecificAccounts();
+        }     
+    }
+    private void AddSpecificAccounts()
+    {
+        bool added = false;
+        foreach (BankAccount bankAccount in Player.BankAccounts.BankAccountList.Where(x=> x.BankContactName == Bank.Name))
+        {
+            AddAccountSubMenu(bankAccount);
+            added = true;
+        }
+        if(added)
+        {
+
             return;
         }
+        AddNewAccount();
+    }
+    private void AddGenericAccounts()
+    {
+        foreach(BankAccount bankAccount in Player.BankAccounts.BankAccountList)
+        {
+            AddAccountSubMenu(bankAccount);
+        }
+    }
+    private void AddAccountSubMenu(BankAccount bankAccount)
+    {
+        UIMenu BankAccountSubMenu = MenuPool.AddSubMenu(AccountsSubMenu, bankAccount.BankContactName);
+        if (Bank?.HasBannerImage == true)
+        {
+            BankAccountSubMenu.SetBannerType(BannerImage);
+        }
+        bankAccount.SetSubMenu(BankAccountSubMenu, AccountsSubMenu.MenuItems[AccountsSubMenu.MenuItems.Count() - 1]);
 
 
-        UIMenuItem setPrimary = new UIMenuItem("Set Primary", $"Set the account as primary. Electronic payments will first be debited from this account, then others as needed.") { RightLabel = bankAccount.IsPrimary ? "Primary" :"" };
+
+
+
+        UIMenuItem setPrimary = new UIMenuItem("Set Primary", $"Set the account as primary. Electronic payments will first be debited from this account, then others as needed.") { RightLabel = bankAccount.IsPrimary ? "Primary" : "" };
         setPrimary.Activated += (sender, e) =>
         {
             Player.BankAccounts.BankAccountList.ForEach(x => x.IsPrimary = false);
             bankAccount.IsPrimary = true;
-            Bank.DisplayMessage("~g~Primary Account", $"Your account at {Bank.Name} is now set as primary.");
+            DisplayMessage("~g~Primary Account", $"Your account {bankAccount.BankContactName} is now set as primary.");      
             AddAccountItems();
         };
-        AccountSubMenu.AddItem(setPrimary);
-
+        BankAccountSubMenu.AddItem(setPrimary);
         UpdateDescription(bankAccount);
-        incrementScroller = new UIMenuListScrollerItem<int>("Increment", "Set the scroll increment.", new List<int>() { 1, 5, 25, 100, 500, 1000, 10000, 100000 }) { SelectedItem = 100, Formatter = v => "$" + v.ToString("N0") };
+        incrementScroller = new UIMenuListScrollerItem<int>("Increment", "Set the deposit/withdrawl increment.", new List<int>() { 1, 5, 25, 100, 500, 1000, 10000, 100000 }) { SelectedItem = 100, Formatter = v => "$" + v.ToString("N0") };
         incrementScroller.IndexChanged += (sender, oldIndex, newIndex) =>
         {
             depositCashScroller.Step = incrementScroller.SelectedItem;
             withDrawCashScroller.Step = incrementScroller.SelectedItem;
         };
-        AccountSubMenu.AddItem(incrementScroller);
-
-        AccountSubMenu.RefreshIndex();
-
+        BankAccountSubMenu.AddItem(incrementScroller);
+        BankAccountSubMenu.RefreshIndex();
         int onHandCashNow = GetOnHandCash();
-
-
         depositCashScroller = new UIMenuNumericScrollerItem<int>("Deposit", $"Deposit the selected amount of money. ~n~Max of ${MaxAccountValue}", 0, GetOnHandCash(), 100) { Value = 0, Formatter = v => "~r~$" + v.ToString("N0") + "~s~", };
         depositCashScroller.Activated += (sender, selectedItem) =>
         {
@@ -125,24 +153,17 @@ public class BankInteraction
                 bankAccount.Money += depositCashScroller.Value;
                 depositCashScroller.Maximum = onHandCash;
                 withDrawCashScroller.Maximum = bankAccount.Money;
-
-
-
                 depositCashScroller.Value = 0;// onHandCash;
                 withDrawCashScroller.Value = 0;//bankAccount.Money;
-
-
-
-
                 UpdateDescription(bankAccount);
-                Bank.DisplayMessage("~g~Deposit~s~", $"You have successfully deposited ${toDeposit}.~n~Account Balance: ${bankAccount.Money}");
+                DisplayMessage("~g~Deposit~s~", $"Deposit Amount: ${toDeposit}.~n~Balance: ${bankAccount.Money}");    
             }
         };
-        AccountSubMenu.AddItem(depositCashScroller);
+        BankAccountSubMenu.AddItem(depositCashScroller);
         withDrawCashScroller = new UIMenuNumericScrollerItem<int>("Withdraw", "Withdraw the selected amount of money.", 0, bankAccount.Money, 100) { Value = 0, Formatter = v => "~g~$" + v.ToString("N0") + "~s~", };
         withDrawCashScroller.Activated += (sender, selectedItem) =>
         {
-            if(withDrawCashScroller.Value + Player.BankAccounts.GetMoney(false) > Int32.MaxValue)
+            if (withDrawCashScroller.Value + Player.BankAccounts.GetMoney(false) > Int32.MaxValue)
             {
                 Game.DisplaySubtitle("Money is at Maximum!");
                 return;
@@ -154,26 +175,40 @@ public class BankInteraction
                 bankAccount.Money -= withDrawCashScroller.Value;
                 depositCashScroller.Maximum = GetOnHandCash();
                 withDrawCashScroller.Maximum = bankAccount.Money;
-
-
-
-
                 depositCashScroller.Value = 0;//GetOnHandCash();
                 withDrawCashScroller.Value = 0;// bankAccount.Money;
-
-
-
                 UpdateDescription(bankAccount);
-                Bank.DisplayMessage("~g~Withdrawl~s~", $"You successfully withdrew ${towithdraw}.~n~Account Balance: ${bankAccount.Money}");
+                DisplayMessage("~g~Withdrawl~s~", $"Withdrawl Amount: ${towithdraw}.~n~Balance: ${bankAccount.Money}");
             }
         };
-        AccountSubMenu.AddItem(withDrawCashScroller);
-        AccountSubMenu.RefreshIndex();
+        BankAccountSubMenu.AddItem(withDrawCashScroller);
+        BankAccountSubMenu.RefreshIndex();
+    }
+    private void AddNewAccount()
+    {
+        //AccountsSubMenuItem.Description = "No Account";
+        UIMenuItem addAccount = new UIMenuItem("Create Account", $"Create a new account with {Bank.Name}.");
+        addAccount.Activated += (sender, e) =>
+        {
+            Player.BankAccounts.BankAccountList.Add(new BankAccount(Bank.Name, 0));
+            Bank.DisplayMessage("~g~Account Created", $"You have successfully create an account at {Bank.Name}");
+            AddAccountItems();
+        };
+        AccountsSubMenu.AddItem(addAccount);      
+    }
+    private void DisplayMessage(string header, string message)
+    {
+        if(Bank != null)
+        {
+            Bank.DisplayMessage(header, message);
+            return;
+        }
+        Game.RemoveNotification(NotificationHandle);
+        NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Bank Account", header, message);
     }
     private void UpdateDescription(BankAccount bankAccount)
     {
-        AccountSubMenuItem.Description = $"Balance: ${bankAccount.Money} {(bankAccount.IsPrimary ? " - ~r~Primary~s~" : "")}";
-        AccountSubMenu.SubtitleText = $"Balance: ${bankAccount.Money} {(bankAccount.IsPrimary ? " - ~r~Primary~s~" : "")}";
+        bankAccount.UpdateMenus();
     }
     private int GetOnHandCash()
     {

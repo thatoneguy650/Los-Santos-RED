@@ -238,6 +238,8 @@ namespace LSR.Vehicles
             else
                 FuelTankCapacity = 20;
         }
+        public int PoliceBlipID => vehicleClass == VehicleClass.Helicopter ? 15 : 3;
+
         private void GetOwnedBlipID()
         {
             if(vehicleClass == VehicleClass.Helicopter)

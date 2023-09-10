@@ -80,6 +80,7 @@ public class AdvancedConversation
         MenuPool = new MenuPool();
         ConversationMenu = new UIMenu("Conversation", "Select an Option");
         ConversationMenu.RemoveBanner();
+
         MenuPool.Add(ConversationMenu);
     }
     private void UpdateMenuItems()

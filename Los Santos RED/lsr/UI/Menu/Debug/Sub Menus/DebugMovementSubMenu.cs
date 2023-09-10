@@ -17,10 +17,10 @@ public class DebugMovementSubMenu : DebugSubMenu
     }
     public override void AddItems()
     {
-        UIMenu ClipsetsSubMenu = MenuPool.AddSubMenu(Debug, "Movement Clipsets");
+        UIMenu ClipsetsSubMenu = MenuPool.AddSubMenu(Debug, "Movement Clipset Menu");
         ClipsetsSubMenu.SetBannerType(EntryPoint.LSRedColor);
         ClipsetsSubMenu.Width = 0.5f;
-        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Set various clipsets";
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Set various clipsets. WIP";
         List<string> possibleWeaponOverrides = new List<string>() { "Ballistic", "Default", "Franklin", "Michael", "Trevor", "Gang", "Hillbilly", "Gang1H", "MP_F_Freemode" };
 
 

@@ -142,26 +142,5 @@ public class DebugPerformanceSubMenu : DebugSubMenu
         }
         EntryPoint.WriteToConsole($"ENTITIES =============================== TOTAL: {TotalEntities}", 0);
     }
-    private void HighlightProp()
-    {
-
-        Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
-        if (ClosestEntity.Exists())
-        {
-            Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
-            EntryPoint.WriteToConsole($"Closest Object = {ClosestEntity.Model.Name} {ClosestEntity.Model.Hash}", 5);
-            EntryPoint.WriteToConsole($"Closest Object X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
-
-            EntryPoint.WriteToConsole($"Closest: {ClosestEntity.Model.Hash},new Vector3({ClosestEntity.Position.X}f, {ClosestEntity.Position.Y}f, {ClosestEntity.Position.Z}f)", 5);
-
-            uint GameTimeStartedDisplaying = Game.GameTime;
-            while (Game.GameTime - GameTimeStartedDisplaying <= 2000)
-            {
-                Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Yellow);
-                GameFiber.Yield();
-            }
-
-        }
-    }
 }
 

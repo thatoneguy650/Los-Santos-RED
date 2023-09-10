@@ -19,7 +19,7 @@ public class DebugGangSubMenu : DebugSubMenu
     }
     public override void AddItems()
     {
-        UIMenu GangItems = MenuPool.AddSubMenu(Debug, "Gang Items");
+        UIMenu GangItems = MenuPool.AddSubMenu(Debug, "Gang Relationship Menu");
         GangItems.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Debug Gang Items.";
 

@@ -52,6 +52,7 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
     public bool ShouldUpdateTarget => Game.GameTime - GameTimeLastUpdatedTarget >= Settings.SettingsManager.PoliceTaskSettings.TargetUpdateTime;
     public string ModelName { get; set; }
     public override int ShootRate { get; set; } = 500;
+    public override string BlipName => "Security Guard";
     public override int Accuracy { get; set; } = 40;
     public override int CombatAbility { get; set; } = 1;
     public override int TaserAccuracy { get; set; } = 30;

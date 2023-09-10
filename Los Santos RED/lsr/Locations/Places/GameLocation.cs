@@ -110,7 +110,7 @@ public class GameLocation : ILocationDispatchable
     public virtual int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
     public virtual Color MapIconColor => Color.FromName(MapIconColorString);
     public virtual string MapIconColorString { get; set; } = "White";
-    public virtual float MapIconScale { get; set; } = 0.6f;//1.0f;
+    public virtual float MapIconScale { get; set; } = 0.5f;//1.0f;
     public virtual float MapIconRadius { get; set; } = 1.0f;
     public virtual float MapOpenIconAlpha { get; set; } = 1.0f;
     public virtual float MapClosedIconAlpha { get; set; } = 0.25f;
@@ -138,6 +138,7 @@ public class GameLocation : ILocationDispatchable
     public Vector3 CameraPosition { get; set; } = Vector3.Zero;
     public Vector3 CameraDirection { get; set; } = Vector3.Zero;
     public Rotator CameraRotation { get; set; }
+    public virtual string BlipName => TypeName;
     public virtual bool CanInteractWhenWanted { get; set; } = false;
     public virtual bool ShowsMarker { get; set; } = true;
     public virtual float ActivateDistance { get; set; } = 225;
@@ -559,11 +560,11 @@ public class GameLocation : ILocationDispatchable
         Blip locationBlip;
         if (MapIconRadius != 1.0f)
         {
-            locationBlip = new Blip(EntrancePosition, MapIconRadius) { Name = TypeName, Color = MapIconColor };
+            locationBlip = new Blip(EntrancePosition, MapIconRadius) { Color = MapIconColor };
         }
         else
         {
-            locationBlip = new Blip(EntrancePosition) {  Name = TypeName };
+            locationBlip = new Blip(EntrancePosition);
             if ((BlipSprite)MapIcon != BlipSprite.Destination)
             {
                 locationBlip.Sprite = (BlipSprite)MapIcon;
@@ -579,7 +580,7 @@ public class GameLocation : ILocationDispatchable
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)locationBlip.Handle, true);
         }
         NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(TypeName);
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(BlipName);
         NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(locationBlip);
         return locationBlip;
     }

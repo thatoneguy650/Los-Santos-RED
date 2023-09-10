@@ -153,7 +153,7 @@ public class StaticPlaces
     {
         foreach (GameLocation basicLocation in PlacesOfInterest.AllLocations())
         {
-            if(!basicLocation.IsActivated && basicLocation.IsEnabled)
+            if(!basicLocation.IsActivated && basicLocation.IsEnabled && basicLocation.IsBlipEnabled)
             {
                 basicLocation.ActivateBlip(Time, World);
             }

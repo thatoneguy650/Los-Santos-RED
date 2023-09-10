@@ -64,9 +64,8 @@ public class SonarBlip
         {
             return;
         }
-
-        Blip.Sprite = (BlipSprite)672;
-        Blip.Angle = (int)VehicleExt.Vehicle.Heading;
+        //Blip.Sprite = (BlipSprite)VehicleExt.PoliceBlipID;// 672;
+        //Blip.Angle = (int)VehicleExt.Vehicle.Heading;
 
         Blip.Scale = VehicleExt.BlipSize;
         Blip.Color = VehicleExt.BlipColor;

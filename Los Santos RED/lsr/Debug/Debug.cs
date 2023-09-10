@@ -478,16 +478,16 @@ public class Debug
         //    EntryPoint.WriteToConsole($"{veh.Vehicle.Model.Name} {veh.IsImpounded} {veh.ImpoundedLocation} {veh.TimesImpounded} {veh.DateTimeImpounded}");
         //}
 
-        LighterItem lighterItem = Player.Inventory.ItemsList.Where(x=> x.ModItem != null).Select(x=> x.ModItem).OfType<LighterItem>().ToList().FirstOrDefault();
-        if (lighterItem == null)
-        {
-            Game.DisplayHelp($"Need a ~r~Lighter~s~ to use");
-           // return false;
-        }
-        else
-        {
-            Game.DisplayHelp($"FOUND{lighterItem.Name}");
-        }
+        //LighterItem lighterItem = Player.Inventory.ItemsList.Where(x=> x.ModItem != null).Select(x=> x.ModItem).OfType<LighterItem>().ToList().FirstOrDefault();
+        //if (lighterItem == null)
+        //{
+        //    Game.DisplayHelp($"Need a ~r~Lighter~s~ to use");
+        //   // return false;
+        //}
+        //else
+        //{
+        //    Game.DisplayHelp($"FOUND{lighterItem.Name}");
+        //}
         //NativeFunction.Natives.SET_BIGMAP_ACTIVE(!IsBigMapActive, false);
         //Game.DisplaySubtitle($"IsBigMapActive:{IsBigMapActive}");
         //GameFiber.Sleep(1000);
@@ -521,7 +521,7 @@ public class Debug
 
         // return;
 
-        // StuffTwo();
+        HighlightDoorsAndProps();
 
 
         //VehicleExt myCar = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, true, 100f);
@@ -3102,7 +3102,7 @@ public class Debug
 
 
     }
-    private void StuffTwo()
+    private void HighlightDoorsAndProps()
     {
         try
         {

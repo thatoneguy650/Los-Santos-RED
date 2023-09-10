@@ -30,6 +30,7 @@ public class GangDen : GameLocation//, ILocationGangAssignable
     public override string ButtonPromptText { get; set; }
     public override string AssociationID => AssignedAssociationID;
     public bool IsPrimaryGangDen { get; set; } = false;
+    public override string BlipName => AssociatedGang != null ? AssociatedGang.ShortName : base.BlipName;
     public bool HasVanillaGangSpawnedAroundToBeBlocked { get; set; } = false;
     protected override float GetCurrentIconAlpha(ITimeReportable time)
     {
@@ -41,6 +42,10 @@ public class GangDen : GameLocation//, ILocationGangAssignable
     }
     public override void ActivateBlip(ITimeReportable time, IEntityProvideable world)
     {
+        if(AssociatedGang == null)
+        {
+            return;
+        }
         if (!TerritoryBlip.Exists())
         {
             TerritoryBlip = CreateGangTerritoryBlip();
@@ -395,14 +400,13 @@ public class GangDen : GameLocation//, ILocationGangAssignable
         Blip locationBlip;
         locationBlip = new Blip(EntrancePosition, Settings.SettingsManager.GangSettings.GangTerritoryBlipSize) 
         { 
-            Name = AssociatedGang.ID, 
             Color = AssociatedGang.Color
         };     
         locationBlip.Color = AssociatedGang.Color;// currentBlipColor;
         locationBlip.Alpha = Settings.SettingsManager.GangSettings.GangTerritoryBlipAlpha;/// currentblipAlpha;
         NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)locationBlip.Handle, true);   
         NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(AssociatedGang.ID);
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(BlipName);
         NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(locationBlip);
         return locationBlip;
     }

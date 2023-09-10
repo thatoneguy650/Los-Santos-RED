@@ -93,6 +93,7 @@ public class Residence : GameLocation, ILocationSetupable
         }
         Player.ActivityManager.IsInteractingWithLocation = true;
         CanInteract = false;
+        Player.IsTransacting = true;
         GameFiber.StartNew(delegate
         {
             try
@@ -118,6 +119,7 @@ public class Residence : GameLocation, ILocationSetupable
                 StoreCamera.Dispose();
                 Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
+                Player.IsTransacting = false;
             }
             catch (Exception ex)
             {

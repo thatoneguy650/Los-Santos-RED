@@ -28,6 +28,7 @@ public class EMT : PedExt
     public override bool KnowsGangAreas => false;
     public override bool WillCallPolice { get; set; } = true;
     public override bool WillCallPoliceIntense { get; set; } = true;
+    public override string BlipName => "EMT";
     public override Color BlipColor => AssignedAgency != null ? AssignedAgency.Color : base.BlipColor;
     public override bool GenerateUnconsciousAlerts { get; set; } = false;
     public bool IsRespondingToInvestigation { get; set; }

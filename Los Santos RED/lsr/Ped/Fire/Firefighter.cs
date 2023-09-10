@@ -28,6 +28,7 @@ public class Firefighter : PedExt, IWeaponIssuable
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public override bool KnowsDrugAreas => false;
     public override bool KnowsGangAreas => false;
+    public override string BlipName => "Firefighter";
     public override Color BlipColor => AssignedAgency != null ? AssignedAgency.Color : base.BlipColor;
     public override bool WillCallPolice { get; set; } = true;
     public override bool WillCallPoliceIntense { get; set; } = true;

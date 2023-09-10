@@ -27,7 +27,7 @@ public class DebugLocationSubMenu : DebugSubMenu
     }
     public override void AddItems()
     {
-        UIMenu LocationItemsMenu = MenuPool.AddSubMenu(Debug, "Location Menu");
+        UIMenu LocationItemsMenu = MenuPool.AddSubMenu(Debug, "Location Logging Menu");
         LocationItemsMenu.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various location items.";
         UIMenuItem LogLocationMenu = new UIMenuItem("Log Game Location", "Location Type, Then Name");
@@ -141,6 +141,23 @@ public class DebugLocationSubMenu : DebugSubMenu
 
         };
 
+        UIMenuItem TurnOffCayo = new UIMenuItem("Turn Off Cayo", "Turn Off Cayo Perico");
+        TurnOffCayo.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+            NativeFunction.Natives.SET_ISLAND_ENABLED("HeistIsland", false);
+            NativeFunction.Natives.SET_USE_ISLAND_MAP(false);
+            NativeFunction.Natives.SET_ALLOW_STREAM_HEIST_ISLAND_NODES(false);
+            NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("Heist_Island_Peds", false);
+            NativeFunction.Natives.SET_AMBIENT_ZONE_STATE_PERSISTENT("AZL_DLC_Hei4_Island_Zones", false, false);
+            NativeFunction.Natives.SET_AMBIENT_ZONE_STATE_PERSISTENT("AZL_DLC_Hei4_Island_Disabled_Zones", true, false);
+            NativeFunction.Natives.SET_ALLOW_STREAM_HEIST_ISLAND_NODES(false);
+
+        };
+
+
+
+
         LocationItemsMenu.AddItem(LogSpawnPositionMenu);
         LocationItemsMenu.AddItem(LogLocationMenu);
         LocationItemsMenu.AddItem(LogLocationSimpleMenu);
@@ -155,6 +172,7 @@ public class DebugLocationSubMenu : DebugSubMenu
         LocationItemsMenu.AddItem(DisableLS);
         LocationItemsMenu.AddItem(SetLCSettingAndItemsMenu);
         LocationItemsMenu.AddItem(TurnOffInterior);
+        LocationItemsMenu.AddItem(TurnOffCayo);
     }
 
     private void Frecam()

@@ -380,6 +380,10 @@ namespace LosSantosRED.lsr.Player
                 bool IsFacingDirection = false;
                 bool IsCloseEnough = false;
                 NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, SeatEntryPosition.X, SeatEntryPosition.Y, SeatEntryPosition.Z, 1.0f, -1, SeatEntryHeading, Settings.SettingsManager.ActivitySettings.SittingSlideDistance);
+
+                //NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, SeatEntryPosition.X, SeatEntryPosition.Y, SeatEntryPosition.Z, 1.0f, -1, Settings.SettingsManager.ActivitySettings.SittingSlideDistance, 0, SeatEntryHeading);
+
+
                 uint SeatHash = 0;
                 string SeatName = "";
                 if(ClosestSittableEntity.Exists())
@@ -399,6 +403,7 @@ namespace LosSantosRED.lsr.Player
                     {
                         IsCloseEnough = true;
                         IsFacingDirection = true;
+                        EntryPoint.WriteToConsole("SITTING BREAK FOR CLOSE");
                         break;
                     }
                     if (Player.IsMoveControlPressed)
@@ -408,15 +413,17 @@ namespace LosSantosRED.lsr.Player
                     if(SeatDistance <= Settings.SettingsManager.ActivitySettings.ForceSitDistance && GameTimeGotClose == 0)
                     {
                         GameTimeGotClose = Game.GameTime;
+                        EntryPoint.WriteToConsole("SITTING GAMETIMEGOT CLOSE");
                     }
                     if(GameTimeGotClose != 0 && Game.GameTime - GameTimeGotClose >= Settings.SettingsManager.ActivitySettings.ForceSitTimeOut && !IsCloseEnough && Settings.SettingsManager.ActivitySettings.ForceSitWhenClose)
                     {
                         Game.LocalPlayer.Character.Position = SeatEntryPosition;
                         Game.LocalPlayer.Character.Heading = SeatEntryHeading;
+                        EntryPoint.WriteToConsole("SITTING FORCING POS");
                     }
 
 
-                    
+
 
 
 //#if DEBUG

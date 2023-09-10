@@ -45,6 +45,7 @@ public class Airport : GameLocation, ILocationSetupable
     public HashSet<RoadToggler> RoadToggels { get; set; } = new HashSet<RoadToggler>();
     public HashSet<string> ZonesToEnable { get; set; } = new HashSet<string>();
     public int FuelPrice { get; set; } = 6;
+    public bool RequiresMPMap { get; set; } = false;
     public Airport(string airportID, Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         AirportID = airportID;
@@ -158,7 +159,7 @@ public class Airport : GameLocation, ILocationSetupable
             {
                 bool canFly = false;
                 Airport destinationAiport = PlacesOfInterest.PossibleLocations.Airports.FirstOrDefault(x => x.AirportID == flight.ToAirportID);
-                if (destinationAiport != null && destinationAiport.IsEnabled)
+                if (destinationAiport != null && destinationAiport.IsEnabled && (!destinationAiport.RequiresMPMap || World.IsMPMapLoaded))
                 {
                     canFly = true;
                 }

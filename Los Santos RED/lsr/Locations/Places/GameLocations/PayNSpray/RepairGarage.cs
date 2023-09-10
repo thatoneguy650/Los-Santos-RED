@@ -67,7 +67,7 @@ public class RepairGarage : GameLocation
         }
         Player.ActivityManager.IsInteractingWithLocation = true;
         CanInteract = false;
-
+        Player.IsTransacting = true;
         GameFiber.StartNew(delegate
         {
             try
@@ -85,6 +85,7 @@ public class RepairGarage : GameLocation
                 StoreCamera.Dispose();
                 Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
+                Player.IsTransacting = false;
             }
             catch (Exception ex)
             {

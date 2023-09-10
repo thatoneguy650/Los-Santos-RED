@@ -22,7 +22,7 @@ public class ScrapYard : GameLocation
 
     }
     public override string TypeName { get; set; } = "Scrap Yard";
-    public override int MapIcon { get; set; } = 50;// (int)BlipSprite.CriminalCarsteal;
+    public override int MapIcon { get; set; } = 527;// (int)BlipSprite.CriminalCarsteal;
     public override string ButtonPromptText { get; set; }
     public float VehiclePickupDistance { get; set; } = 25f;
     public int ScrapValuePerVolume { get; set; } = 100;
@@ -51,6 +51,7 @@ public class ScrapYard : GameLocation
         {
             Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
+            Player.IsTransacting = true;
             GameFiber.StartNew(delegate
             {
                 try
@@ -66,6 +67,7 @@ public class ScrapYard : GameLocation
                     StoreCamera.Dispose();
                     Player.ActivityManager.IsInteractingWithLocation = false;
                     CanInteract = true;
+                    Player.IsTransacting = false;
                 }
                 catch (Exception ex)
                 {

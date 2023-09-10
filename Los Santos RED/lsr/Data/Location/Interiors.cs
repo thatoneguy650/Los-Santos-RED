@@ -251,6 +251,25 @@ public class Interiors : IInteriors
             new Interior(11266,"Fleeca Bank"),
             new Interior(20226,"Fleeca Bank"),
             new Interior(90626,"Fleeca Bank"),
+            new Interior(87810,"Fleeca Bank"),
+            new Interior(103170,"Pacific Standard Bank") {
+                Doors =  new List<InteriorDoor>() {
+
+                } },
+
+
+            new Interior(42754,"Blaine County Savings") {
+                Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(3110375179, new Vector3(-108.9147f,6469.105f,31.91028f)),//teller
+                    new InteriorDoor(2628496933, new Vector3(-109.65f,6462.11f,31.98499f)),//FRONT 1
+                    new InteriorDoor(3941780146, new Vector3(-111.48f,6463.94f,31.98499f)),//FRONT 2
+                    //new InteriorDoor(-1184592117, new Vector3(-108.9147f,6469.105f,31.91028f)),//teller
+                    //new InteriorDoor(-1666470363, new Vector3(-109.65f,6462.11f,31.98499f)),//FRONT 1
+                    //new InteriorDoor(-353187150, new Vector3(-111.48f,6463.94f,31.98499f)),//FRONT 2
+                } },
+
+
+            //103170
         });
     }
     private void Tunnels()
