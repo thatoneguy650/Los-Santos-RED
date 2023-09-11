@@ -85,6 +85,60 @@ namespace LosSantosRED.lsr.Helper
             return uint.TryParse(hex, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out hash);
         }
 
+
+
+        public static void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, bool outline)
+        {
+            DisplayTextOnScreen(TextToShow, X, Y, Scale, TextColor, Font, Justification, outline, 255);
+        }
+        public static void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, bool outline, int alpha)
+        {
+            try
+            {
+                if (TextToShow == "" || alpha == 0 || TextToShow is null)
+                {
+                    return;
+                }
+                NativeFunction.Natives.SET_TEXT_FONT((int)Font);
+                NativeFunction.Natives.SET_TEXT_SCALE(Scale, Scale);
+                NativeFunction.Natives.SET_TEXT_COLOUR((int)TextColor.R, (int)TextColor.G, (int)TextColor.B, alpha);
+
+                NativeFunction.Natives.SetTextJustification((int)Justification);
+
+                NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
+
+                if (outline)
+                {
+                    NativeFunction.Natives.SET_TEXT_OUTLINE();
+
+
+                    //NativeFunction.Natives.SET_TEXT_EDGE(1, 0, 0, 0, 255);
+                }
+                NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
+                //NativeFunction.Natives.SetTextDropshadow(20, 255, 255, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
+                //NativeFunction.Natives.SetTextJustification((int)GTATextJustification.Center);
+                if (Justification == GTATextJustification.Right)
+                {
+                    NativeFunction.Natives.SET_TEXT_WRAP(0f, Y);
+                }
+                else
+                {
+                    NativeFunction.Natives.SET_TEXT_WRAP(0f, 1f);
+                }
+                NativeFunction.Natives.x25fbb336df1804cb("STRING"); //NativeFunction.Natives.x25fbb336df1804cb("STRING");
+                                                                    //NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
+                NativeFunction.Natives.x6C188BE134E074AA(TextToShow);
+                NativeFunction.Natives.xCD015E5BB0D96A57(Y, X);
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole($"UI ERROR {ex.Message} {ex.StackTrace}", 0);
+            }
+            //return;
+        }
+
+
+
         public static string FormatControls(Keys modifier, Keys key)
         {
             string KeyString = $"~o~{KeyHandyName(key)}~s~";

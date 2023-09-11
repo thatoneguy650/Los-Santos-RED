@@ -307,6 +307,7 @@ public class Crimes : ICrimes
     public void SetPreferred()
     {
         IsBackendChanged = true;
-        SetHard();
+        //SetHard();
+        HitCarWithCar.CanBeReactedToByCivilians = true;
     }
 }

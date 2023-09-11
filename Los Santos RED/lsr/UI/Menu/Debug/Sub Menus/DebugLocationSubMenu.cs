@@ -6,24 +6,34 @@ using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Media;
+using static Debug;
 
 public class DebugLocationSubMenu : DebugSubMenu
 {
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
     private Camera FreeCam;
+    private IStreets Streets;
     private string FreeCamString = "Regular";
     private float FreeCamScale = 1.0f;
     private bool isHidingHelp;
-    public DebugLocationSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IEntityProvideable world, ISettingsProvideable settings) : base(debug, menuPool, player)
+    private Street CurrentStreet;
+    private Street CurrentCrossStreet;
+
+    public DebugLocationSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IEntityProvideable world, ISettingsProvideable settings, IStreets streets) : base(debug, menuPool, player)
     {
         World = world;
         Settings = settings;
+        Streets = streets;
     }
     public override void AddItems()
     {
@@ -154,10 +164,6 @@ public class DebugLocationSubMenu : DebugSubMenu
             NativeFunction.Natives.SET_ALLOW_STREAM_HEIST_ISLAND_NODES(false);
 
         };
-
-
-
-
         LocationItemsMenu.AddItem(LogSpawnPositionMenu);
         LocationItemsMenu.AddItem(LogLocationMenu);
         LocationItemsMenu.AddItem(LogLocationSimpleMenu);
@@ -173,8 +179,19 @@ public class DebugLocationSubMenu : DebugSubMenu
         LocationItemsMenu.AddItem(SetLCSettingAndItemsMenu);
         LocationItemsMenu.AddItem(TurnOffInterior);
         LocationItemsMenu.AddItem(TurnOffCayo);
-    }
 
+
+        UIMenuItem DrawStreetTextMenu = new UIMenuItem("Draw Street Text", "Draw Street Text");
+        DrawStreetTextMenu.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+            DrawStreetText();
+        };
+        LocationItemsMenu.AddItem(DrawStreetTextMenu);
+
+
+
+    }
     private void Frecam()
     {
         GameFiber.StartNew(delegate
@@ -195,7 +212,7 @@ public class DebugLocationSubMenu : DebugSubMenu
                     {
                         FreeCam.Position += NativeHelper.GetCameraDirection(FreeCam, FreeCamScale);
                     }
-                    else if (Game.IsKeyDownRightNow(Keys.S))
+                    if (Game.IsKeyDownRightNow(Keys.S))
                     {
                         FreeCam.Position -= NativeHelper.GetCameraDirection(FreeCam, FreeCamScale);
                     }
@@ -203,7 +220,7 @@ public class DebugLocationSubMenu : DebugSubMenu
                     {
                         FreeCam.Position = NativeHelper.GetOffsetPosition(FreeCam.Position, FreeCam.Rotation.Yaw, -1.0f * FreeCamScale);
                     }
-                    else if (Game.IsKeyDownRightNow(Keys.D))
+                    if (Game.IsKeyDownRightNow(Keys.D))
                     {
                         FreeCam.Position = NativeHelper.GetOffsetPosition(FreeCam.Position, FreeCam.Rotation.Yaw, 1.0f * FreeCamScale);
                     }
@@ -221,14 +238,12 @@ public class DebugLocationSubMenu : DebugSubMenu
                         FreeCamScale -= 0.5f;
                         GameFiber.Sleep(100);
                     }
-
                     if (Game.IsKeyDownRightNow(Keys.J))
                     {
                         Game.LocalPlayer.Character.Position = FreeCam.Position;
                         Game.LocalPlayer.Character.Heading = FreeCam.Heading;
                         GameFiber.Sleep(200);
                     }
-
                     if (Game.IsKeyDownRightNow(Keys.K))
                     {
                         isHidingHelp = !isHidingHelp;
@@ -338,6 +353,261 @@ public class DebugLocationSubMenu : DebugSubMenu
         File.AppendAllText("Plugins\\LosSantosRED\\" + "StoredInteriors.txt", sb.ToString());
         sb.Clear();
     }
+
+    private void DrawStreetText()
+    {
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+
+                int globalScaleformID = NativeFunction.Natives.REQUEST_SCALEFORM_MOVIE<int>("ORGANISATION_NAME");
+                while (!NativeFunction.Natives.HAS_SCALEFORM_MOVIE_LOADED<bool>(globalScaleformID))
+                {
+                    GameFiber.Yield();
+                }
+
+
+
+                while (!Game.IsKeyDownRightNow(Keys.Z))
+                {
+                    Game.DisplayHelp("PRESS Z TO STOP");
+                    StreetTextLoop(globalScaleformID);
+                    
+                    GameFiber.Yield();
+                }
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "Run Debug Logic");
+
+
+    }
+    private void StreetTextLoop(int globalScaleformID)
+    {
+        if (Player.CurrentLocation.CurrentStreet == null)
+        {
+            return;
+        }
+        Vector3 position = Game.LocalPlayer.Character.GetOffsetPositionFront(Settings.SettingsManager.DebugSettings.StreetDisplayNodeOffsetFront);
+        Vector3 outPos;
+        float outHeading;
+        //bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(position.X, position.Y, position.Z, out outPos, out outHeading, 0, 3.0f, 0f);
+
+
+        bool hasNode = NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION<bool>(position.X, position.Y, position.Z, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z
+    , 0, out outPos, out outHeading, 0, 0x40400000, 0);
+
+
+
+        if (!hasNode || outPos == null || outPos == Vector3.Zero)
+        {
+            return;
+        }
+        Vector3 drawPos = outPos;
+        drawPos += new Vector3(Settings.SettingsManager.DebugSettings.StreetDisplayOffsetX, Settings.SettingsManager.DebugSettings.StreetDisplayOffsetY, Settings.SettingsManager.DebugSettings.StreetDisplayOffsetZ);
+
+        int density = 0;
+        int flags = 0;
+        NativeFunction.Natives.GET_VEHICLE_NODE_PROPERTIES<bool>(drawPos.X, drawPos.Y, drawPos.Z, out density, out flags);
+        eVehicleNodeProperties nodeProperties = (eVehicleNodeProperties)flags;
+
+
+        if(!nodeProperties.HasFlag(eVehicleNodeProperties.VNP_ON_PLAYERS_ROAD))
+        {
+            return;
+        }
+
+        GetStreetsAtPos(drawPos);
+
+        string textToDisplay = "";
+        if (CurrentStreet != null)
+        {
+            textToDisplay += CurrentStreet.ProperStreetName;
+        }
+        if (CurrentCrossStreet != null)
+        {
+            textToDisplay += " - " + CurrentCrossStreet.ProperStreetName;
+        }
+
+        if (flags != 0)
+        {
+            textToDisplay += " - " + nodeProperties;
+        }
+
+
+
+
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_ORGANISATION_NAME");
+
+        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(textToDisplay);
+        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
+
+        NativeFunction.Natives.SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(Settings.SettingsManager.DebugSettings.StreetDisplayStyleIndex);
+        NativeFunction.Natives.SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(Settings.SettingsManager.DebugSettings.StreetDisplayColorIndex);
+        NativeFunction.Natives.SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(Settings.SettingsManager.DebugSettings.StreetDisplayFontIndex);
+
+
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+
+        Vector3 rotationVector = new Vector3(Settings.SettingsManager.DebugSettings.StreetDisplayRotationX, Settings.SettingsManager.DebugSettings.StreetDisplayRotationY, Settings.SettingsManager.DebugSettings.StreetDisplayRotationZ);
+        float realYaw = outHeading;
+        //if (realYaw >= 180f)
+        //{
+            realYaw = 360 - realYaw;
+            realYaw = realYaw - 180;
+        //}
+
+
+        //if(realYaw < 0)
+        //{
+        //    realYaw *= -1.0f;
+        //}
+
+        //realYaw = realYaw;
+        //if (realYaw >= 180f)
+        //{
+        //    realYaw = realYaw - 180f;
+        //}
+        //else
+        //{
+        //    realYaw = realYaw + 180f;
+        //}
+
+
+
+
+        if (Settings.SettingsManager.DebugSettings.StreetDisplayUseCalc)
+        {
+
+
+
+            rotationVector = new Vector3(0f, 0f, realYaw);
+        }
+
+        Render3D(globalScaleformID,
+            drawPos,
+             rotationVector,
+             Settings.SettingsManager.DebugSettings.StreetDisplayScaleX * new Vector3(1.0f,1.0f,1.0f));
+
+
+        string toDisplay = textToDisplay;
+        toDisplay += $" Node Heading:{outHeading}";
+        toDisplay += $" PlayerRot:{Game.LocalPlayer.Character.Rotation.Yaw} realYaw:{realYaw}";
+
+        Game.DisplaySubtitle(toDisplay);
+    }
+
+
+
+    public void Render3D(int handle, Vector3 position, Vector3 rotation, Vector3 scale)
+    {
+        NativeFunction.Natives.DRAW_SCALEFORM_MOVIE_3D_SOLID(handle, position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z, 2.0f, 2.0f, 1.0f, scale.X, scale.Y, scale.Z, 2);
+    }
+    private void GetStreetsAtPos(Vector3 ClosestNode)
+    {
+        int StreetHash = 0;
+        int CrossingHash = 0;
+        string CurrentStreetName;
+        string CurrentCrossStreetName;
+        unsafe
+        {
+            NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", ClosestNode.X, ClosestNode.Y, ClosestNode.Z, &StreetHash, &CrossingHash);
+        }
+        string StreetName = string.Empty;
+        if (StreetHash != 0)
+        {
+            unsafe
+            {
+                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
+                StreetName = Marshal.PtrToStringAnsi(ptr);
+            }
+            CurrentStreetName = StreetName;
+            //GameFiber.Yield();
+        }
+        else
+        {
+            CurrentStreetName = "";
+        }
+
+        string CrossStreetName = string.Empty;
+        if (CrossingHash != 0)
+        {
+            unsafe
+            {
+                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", CrossingHash);
+                CrossStreetName = Marshal.PtrToStringAnsi(ptr);
+            }
+            CurrentCrossStreetName = CrossStreetName;
+            //GameFiber.Yield();
+        }
+        else
+        {
+            CurrentCrossStreetName = "";
+        }
+
+        CurrentStreet = Streets.GetStreet(CurrentStreetName);
+        CurrentCrossStreet = Streets.GetStreet(CurrentCrossStreetName);
+    }
+
+    private void StreetTextLoop_OLD()
+    {
+        if (Player.CurrentLocation.CurrentStreet == null)
+        {
+            return;
+        }
+        Vector3 drawPos = Player.CurrentLocation.ClosestRoadNode;
+        if (drawPos == null || drawPos == Vector3.Zero)
+        {
+            return;
+        }
+        drawPos += new Vector3(0f, 0f, 5f);
+        string textToDisplay = Player.CurrentLocation.CurrentStreet.ProperStreetName;
+        NativeFunction.Natives.SET_DRAW_ORIGIN(drawPos.X, drawPos.Y, drawPos.Z, 0);
+        NativeHelper.DisplayTextOnScreen(textToDisplay, 0f, 0f, Settings.SettingsManager.LSRHUDSettings.StreetScale, System.Drawing.Color.White, Settings.SettingsManager.LSRHUDSettings.StreetFont,
+            (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.StreetJustificationID, false, 255);
+        NativeFunction.Natives.CLEAR_DRAW_ORIGIN();
+
+        Game.DisplaySubtitle(textToDisplay);
+
+        Rage.Debug.DrawArrowDebug(drawPos, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Black);
+
+
+    }
+
+
+
+    private void DisplayTextOnScreen2(string TextToShow, float X, float Y, float Scale, System.Drawing.Color TextColor, GTAFont Font, GTATextJustification Justification, bool outline, int alpha)
+    {
+        try
+        {
+            if (TextToShow == "" || alpha == 0 || TextToShow is null)
+            {
+                return;
+            }
+            NativeFunction.Natives.SET_TEXT_FONT((int)Font);
+
+            NativeFunction.Natives.SET_TEXT_PROPORTIONAL(0);
+            NativeFunction.Natives.SET_TEXT_SCALE(0f, Scale);
+            NativeFunction.Natives.SET_TEXT_COLOUR((int)TextColor.R, (int)TextColor.G, (int)TextColor.B, alpha);
+            NativeFunction.Natives.SET_TEXT_CENTRE(true);
+            NativeFunction.Natives.SET_TEXT_OUTLINE();
+            NativeFunction.Natives.x25fbb336df1804cb("STRING");//BEGIN_TEXT_COMMAND_DISPLAY_TEXT //NativeFunction.Natives.x25fbb336df1804cb("STRING");//NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
+            NativeFunction.Natives.x6C188BE134E074AA(TextToShow);//ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME
+            NativeFunction.Natives.xCD015E5BB0D96A57(Y, X);//END_TEXT_COMMAND_DISPLAY_TEXT
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"UI ERROR {ex.Message} {ex.StackTrace}", 0);
+        }
+        //return;
+    }
+
+
 
 }
 

@@ -139,21 +139,21 @@ public class LowerRightDisplay
     {
         if (DisplayablePlayer.DebugString != "" && Settings.SettingsManager.UIGeneralSettings.ShowDebug)
         {
-            DisplayTextOnScreen(DisplayablePlayer.DebugString, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayPositionX - lowerRightHeighSpace - 0.35f, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.CrimesDisplayJustificationID, false);
+            NativeHelper.DisplayTextOnScreen(DisplayablePlayer.DebugString, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayPositionX - lowerRightHeighSpace - 0.35f, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.CrimesDisplayJustificationID, false);
         }
     }
     private void DisplayCurrentCrimes()
     {
         if (Settings.SettingsManager.LSRHUDSettings.CrimesDisplayEnabled)
         {
-            DisplayTextOnScreen(lastCrimesDisplay, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayPositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.CrimesDisplayJustificationID, false);
+            NativeHelper.DisplayTextOnScreen(lastCrimesDisplay, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayPositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.CrimesDisplayJustificationID, false);
         }
     }
     private void DisplayVehicleStatus()
     {
         if (Settings.SettingsManager.LSRHUDSettings.VehicleDisplayEnabled)
         {
-            DisplayTextOnScreen(lastVehicleStatusDisplay, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayPositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.VehicleDisplayJustificationID, false);
+            NativeHelper.DisplayTextOnScreen(lastVehicleStatusDisplay, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayPositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.VehicleDisplayJustificationID, false);
         }
     }
     private void DisplayPlayerInfo()
@@ -163,11 +163,11 @@ public class LowerRightDisplay
             PlayerFader.Update(lastPlayerDisplay, lastPlayerDisplay);
             if (Settings.SettingsManager.LSRHUDSettings.FadePlayerDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadePlayerDisplayDuringWantedAndInvestigation) && !UI.IsDrawingWheelMenu)
             {
-                DisplayTextOnScreen(PlayerFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionY, Settings.SettingsManager.LSRHUDSettings.PlayerStatusScale, Color.White, Settings.SettingsManager.LSRHUDSettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.PlayerStatusJustificationID, false, PlayerFader.AlphaValue);
+                NativeHelper.DisplayTextOnScreen(PlayerFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionY, Settings.SettingsManager.LSRHUDSettings.PlayerStatusScale, Color.White, Settings.SettingsManager.LSRHUDSettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.PlayerStatusJustificationID, false, PlayerFader.AlphaValue);
             }
             else
             {
-                DisplayTextOnScreen(lastPlayerDisplay, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionY, Settings.SettingsManager.LSRHUDSettings.PlayerStatusScale, Color.White, Settings.SettingsManager.LSRHUDSettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.PlayerStatusJustificationID, false);
+                NativeHelper.DisplayTextOnScreen(lastPlayerDisplay, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionY, Settings.SettingsManager.LSRHUDSettings.PlayerStatusScale, Color.White, Settings.SettingsManager.LSRHUDSettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.PlayerStatusJustificationID, false);
             }
         }
     }
@@ -178,11 +178,11 @@ public class LowerRightDisplay
             StreetFader.Update(lastFaderStreetDisplay, lastStreetDisplay);
             if (Settings.SettingsManager.LSRHUDSettings.FadeStreetDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadeStreetDisplayDuringWantedAndInvestigation) && !UI.IsDrawingWheelMenu)
             {
-                DisplayTextOnScreen(StreetFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.StreetPositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.StreetPositionY, Settings.SettingsManager.LSRHUDSettings.StreetScale, Color.White, Settings.SettingsManager.LSRHUDSettings.StreetFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.StreetJustificationID, false, StreetFader.AlphaValue);
+                NativeHelper.DisplayTextOnScreen(StreetFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.StreetPositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.StreetPositionY, Settings.SettingsManager.LSRHUDSettings.StreetScale, Color.White, Settings.SettingsManager.LSRHUDSettings.StreetFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.StreetJustificationID, false, StreetFader.AlphaValue);
             }
             else
             {
-                DisplayTextOnScreen(lastStreetDisplay, Settings.SettingsManager.LSRHUDSettings.StreetPositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.StreetPositionY, Settings.SettingsManager.LSRHUDSettings.StreetScale, Color.White, Settings.SettingsManager.LSRHUDSettings.StreetFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.StreetJustificationID, false);
+                NativeHelper.DisplayTextOnScreen(lastStreetDisplay, Settings.SettingsManager.LSRHUDSettings.StreetPositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.StreetPositionY, Settings.SettingsManager.LSRHUDSettings.StreetScale, Color.White, Settings.SettingsManager.LSRHUDSettings.StreetFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.StreetJustificationID, false);
             }
         }
     }
@@ -193,11 +193,11 @@ public class LowerRightDisplay
             ZoneFader.Update(lastZoneDisplay, lastZoneDisplay);
             if (Settings.SettingsManager.LSRHUDSettings.FadeZoneDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadeZoneDisplayDuringWantedAndInvestigation) && !UI.IsDrawingWheelMenu)
             {
-                DisplayTextOnScreen(ZoneFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.ZonePositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.ZonePositionY, Settings.SettingsManager.LSRHUDSettings.ZoneScale, Color.White, Settings.SettingsManager.LSRHUDSettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.ZoneJustificationID, false, ZoneFader.AlphaValue);
+                NativeHelper.DisplayTextOnScreen(ZoneFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.ZonePositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.ZonePositionY, Settings.SettingsManager.LSRHUDSettings.ZoneScale, Color.White, Settings.SettingsManager.LSRHUDSettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.ZoneJustificationID, false, ZoneFader.AlphaValue);
             }
             else
             {
-                DisplayTextOnScreen(lastZoneDisplay, Settings.SettingsManager.LSRHUDSettings.ZonePositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.ZonePositionY, Settings.SettingsManager.LSRHUDSettings.ZoneScale, Color.White, Settings.SettingsManager.LSRHUDSettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.ZoneJustificationID, false);
+                NativeHelper.DisplayTextOnScreen(lastZoneDisplay, Settings.SettingsManager.LSRHUDSettings.ZonePositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.ZonePositionY, Settings.SettingsManager.LSRHUDSettings.ZoneScale, Color.White, Settings.SettingsManager.LSRHUDSettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.ZoneJustificationID, false);
             }
         }
     }
@@ -462,55 +462,55 @@ public class LowerRightDisplay
         return CrimeDisplay;
     }
 
-    private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, bool outline)
-    {
-        DisplayTextOnScreen(TextToShow, X, Y, Scale, TextColor, Font, Justification, outline, 255);
-    }
-    private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, bool outline, int alpha)
-    {
-        try
-        {
-            if (TextToShow == "" || alpha == 0 || TextToShow is null)
-            {
-                return;
-            }
-            NativeFunction.Natives.SET_TEXT_FONT((int)Font);
-            NativeFunction.Natives.SET_TEXT_SCALE(Scale, Scale);
-            NativeFunction.Natives.SET_TEXT_COLOUR((int)TextColor.R, (int)TextColor.G, (int)TextColor.B, alpha);
+    //private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, bool outline)
+    //{
+    //    DisplayTextOnScreen(TextToShow, X, Y, Scale, TextColor, Font, Justification, outline, 255);
+    //}
+    //private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, bool outline, int alpha)
+    //{
+    //    try
+    //    {
+    //        if (TextToShow == "" || alpha == 0 || TextToShow is null)
+    //        {
+    //            return;
+    //        }
+    //        NativeFunction.Natives.SET_TEXT_FONT((int)Font);
+    //        NativeFunction.Natives.SET_TEXT_SCALE(Scale, Scale);
+    //        NativeFunction.Natives.SET_TEXT_COLOUR((int)TextColor.R, (int)TextColor.G, (int)TextColor.B, alpha);
 
-            NativeFunction.Natives.SetTextJustification((int)Justification);
+    //        NativeFunction.Natives.SetTextJustification((int)Justification);
 
-            NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
+    //        NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
 
-            if (outline)
-            {
-                NativeFunction.Natives.SET_TEXT_OUTLINE();
+    //        if (outline)
+    //        {
+    //            NativeFunction.Natives.SET_TEXT_OUTLINE();
 
 
-                //NativeFunction.Natives.SET_TEXT_EDGE(1, 0, 0, 0, 255);
-            }
-            NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
-            //NativeFunction.Natives.SetTextDropshadow(20, 255, 255, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
-            //NativeFunction.Natives.SetTextJustification((int)GTATextJustification.Center);
-            if (Justification == GTATextJustification.Right)
-            {
-                NativeFunction.Natives.SET_TEXT_WRAP(0f, Y);
-            }
-            else
-            {
-                NativeFunction.Natives.SET_TEXT_WRAP(0f, 1f);
-            }
-            NativeFunction.Natives.x25fbb336df1804cb("STRING"); //NativeFunction.Natives.x25fbb336df1804cb("STRING");
-            //NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
-            NativeFunction.Natives.x6C188BE134E074AA(TextToShow);
-            NativeFunction.Natives.xCD015E5BB0D96A57(Y, X);
-        }
-        catch (Exception ex)
-        {
-            EntryPoint.WriteToConsole($"UI ERROR {ex.Message} {ex.StackTrace}", 0);
-        }
-        //return;
-    }
+    //            //NativeFunction.Natives.SET_TEXT_EDGE(1, 0, 0, 0, 255);
+    //        }
+    //        NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
+    //        //NativeFunction.Natives.SetTextDropshadow(20, 255, 255, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
+    //        //NativeFunction.Natives.SetTextJustification((int)GTATextJustification.Center);
+    //        if (Justification == GTATextJustification.Right)
+    //        {
+    //            NativeFunction.Natives.SET_TEXT_WRAP(0f, Y);
+    //        }
+    //        else
+    //        {
+    //            NativeFunction.Natives.SET_TEXT_WRAP(0f, 1f);
+    //        }
+    //        NativeFunction.Natives.x25fbb336df1804cb("STRING"); //NativeFunction.Natives.x25fbb336df1804cb("STRING");
+    //        //NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
+    //        NativeFunction.Natives.x6C188BE134E074AA(TextToShow);
+    //        NativeFunction.Natives.xCD015E5BB0D96A57(Y, X);
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        EntryPoint.WriteToConsole($"UI ERROR {ex.Message} {ex.StackTrace}", 0);
+    //    }
+    //    //return;
+    //}
 
     private void OnIsInVehicleChanged()
     {

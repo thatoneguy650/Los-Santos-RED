@@ -21,6 +21,29 @@ public class DebugSettings : ISettingsDefaultable
     //public float EquipmentAnimEnd { get; set; }
     //public float EquipmentAnimStart { get; set; }
 
+
+
+    public int StreetDisplayStyleIndex { get; set; }
+    public int StreetDisplayColorIndex { get; set; }
+    public int StreetDisplayFontIndex { get; set; }
+
+
+
+    public float StreetDisplayOffsetX { get; set; }
+    public float StreetDisplayOffsetY { get; set; }
+    public float StreetDisplayOffsetZ { get; set; }
+
+
+    public float StreetDisplayRotationX { get; set; }
+    public float StreetDisplayRotationY { get; set; }
+    public float StreetDisplayRotationZ { get; set; }
+
+    public float StreetDisplayScaleX { get; set; }
+    public float StreetDisplayScaleY { get; set; }
+    public float StreetDisplayScaleZ { get; set; }
+    public bool StreetDisplayUseCalc { get; set; }
+    public float StreetDisplayNodeOffsetFront { get; set; }
+
     public DebugSettings()
     {
         SetDefault();
@@ -40,5 +63,16 @@ public class DebugSettings : ISettingsDefaultable
         //BongAnimBlend = 2.0f;
         //EquipmentAnimStart = 0.25f;
         //EquipmentAnimEnd = 0.75f;
+        StreetDisplayStyleIndex = 0;
+        StreetDisplayColorIndex = 2;
+        StreetDisplayFontIndex = 5;
+
+        StreetDisplayOffsetZ = 2f;
+
+        StreetDisplayScaleX = 5.0f;
+        StreetDisplayScaleY = 1.0f;
+        StreetDisplayScaleZ = 1.0f;
+        StreetDisplayUseCalc = true;
+        StreetDisplayNodeOffsetFront = 40f;
     }
 }

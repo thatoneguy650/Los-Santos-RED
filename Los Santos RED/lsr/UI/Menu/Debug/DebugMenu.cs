@@ -80,7 +80,7 @@ public class DebugMenu : ModUIMenu
         DebugSubMenus.Add(new DebugRelationshipSubMenu(Debug, MenuPool, Player, ModDataFileManager));
         DebugSubMenus.Add(new DebugVehicleSubMenu(Debug, MenuPool, Player, PlateTypes));
         DebugSubMenus.Add(new DebugTimeSubMenu(Debug, MenuPool, Player, Time));   
-        DebugSubMenus.Add(new DebugLocationSubMenu(Debug, MenuPool, Player, World, Settings));        
+        DebugSubMenus.Add(new DebugLocationSubMenu(Debug, MenuPool, Player, World, Settings, ModDataFileManager.Streets));        
         DebugSubMenus.Add(new DebugHelperSubMenu(Debug, MenuPool, Player, World, PlacesOfInterest, Settings,Time,PoliceRespondable, ModDataFileManager, Gangs));
         //DebugSubMenus.Add(new DebugOtherSubMenu(Debug, MenuPool, Player));
         DebugSubMenus.Add(new DebugPerformanceSubMenu(Debug, MenuPool, Player));

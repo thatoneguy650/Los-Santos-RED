@@ -247,14 +247,22 @@ public class Interiors : IInteriors
 
             //Banks
             new Interior(71682,"Fleeca Bank"),
-            new Interior(76802,"Fleeca Bank"),
+            new Interior(76802,"Fleeca Bank"){
+                Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)),//teller door
+                } },
             new Interior(11266,"Fleeca Bank"),
             new Interior(20226,"Fleeca Bank"),
             new Interior(90626,"Fleeca Bank"),
             new Interior(87810,"Fleeca Bank"),
+
+
+
+            //4163212883
+
             new Interior(103170,"Pacific Standard Bank") {
                 Doors =  new List<InteriorDoor>() {
-
+                    new InteriorDoor(4072696575, new Vector3(256.3116f,220.6579f,106.4296f)),//teller door
                 } },
 
 

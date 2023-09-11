@@ -14,6 +14,8 @@ namespace LosSantosRED.lsr.Locations
     {
         private Vector3 ClosestNode;
 
+
+
         private IStreets Streets;
         private IZones Zones;
         private Zone PreviousZone;
@@ -52,6 +54,7 @@ namespace LosSantosRED.lsr.Locations
         public bool IsOnFreeway => CurrentStreet != null && CurrentStreet.IsHighway;
         public Vector3 ClosestRoadNode => ClosestNode;
         public int ClosestRoadNodeID => ClosestNodeID;
+        public float ClosestNodeHeading { get; private set; }
         public string NodeString { get; set; }
         public uint TimeInside => IsInside && GameTimeWentInside != 0 ? Game.GameTime - GameTimeWentInside : 0;
         public uint TimeOutside => !IsInside && GameTimeWentOutside != 0 ? Game.GameTime - GameTimeWentOutside : 0;
@@ -155,8 +158,13 @@ namespace LosSantosRED.lsr.Locations
             {
                 Vector3 position = EntityToLocate.Position;//Game.LocalPlayer.Character.Position;
                 Vector3 outPos;
-                bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, out outPos, 0, 3.0f, 0f);
+                float outHeading;
+               // bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, out outPos, 0, 3.0f, 0f);
+
+                bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(position.X, position.Y, position.Z, out outPos, out outHeading, 0, 3.0f, 0f);
+
                 ClosestNode = outPos;
+                ClosestNodeHeading = outHeading;
                 if (!hasNode || ClosestNode == Vector3.Zero || ClosestNode.DistanceTo(EntityToLocate) >= 15f)//was 15f
                 {
                     IsOffroad = true;
