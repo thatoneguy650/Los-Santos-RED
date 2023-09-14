@@ -103,7 +103,7 @@ public class DispatchablePeople : IDispatchablePeople
         {
             EntryPoint.WriteToConsole($"No Dispatchable People config found, creating default", 0);
             SetupDefault();
-           // DefaultConfig_LosSantos2008();
+            DefaultConfig_LosSantos2008();
             DefaultConfig_Simple();
             DefaultConfig_FullExpandedJurisdiction();
             DefaultConfig();

@@ -124,6 +124,7 @@ public class ModDataFileManager
         GameFiber.Yield();
         GangTerritories = new GangTerritories(Gangs);
         GangTerritories.ReadConfig();
+        Gangs.CheckTerritory(GangTerritories);
         GameFiber.Yield();
         RadioStations = new RadioStations();
         RadioStations.ReadConfig();
@@ -198,7 +199,7 @@ public class ModDataFileManager
         SetupAddonPlatesConfig();
         SetupEUP();
         SetupFullExpandedJurisdiction();
-        //SetupLosSantos2008();
+        SetupLosSantos2008();
         SetupLibertyCity();
         SetupSimple();
     }

@@ -30,7 +30,7 @@ public class IssueableWeapons : IIssuableWeapons
         {
             EntryPoint.WriteToConsole($"No Issuable Weapons config found, creating default", 0);
             DefaultConfig();
-            //DefaultConfig_LosSantos2008();
+            DefaultConfig_LosSantos2008();
         }
     }
     private void DefaultConfig()

@@ -3,6 +3,7 @@ using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -698,5 +699,17 @@ public class Gangs : IGangs
             LOST,Vagos,Families,Ballas,Marabunte,Varrios,Triads,Redneck,Korean,Cartel,Armenian
         };
         Serialization.SerializeParams(SimpleGangsList, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\Gangs_Simple.xml");
+    }
+
+    public void CheckTerritory(GangTerritories gangTerritories)
+    {
+        foreach(Gang gang in GangsList)
+        {
+            List<ZoneJurisdiction> totalTerritory = gangTerritories.GetGangTerritory(gang.ID);
+            if(totalTerritory == null || totalTerritory.Any())
+            {
+                EntryPoint.WriteToConsole($"${gang.ID} HAS NO TERRITORY",0);
+            }
+        }
     }
 }

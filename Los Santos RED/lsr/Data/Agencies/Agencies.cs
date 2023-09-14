@@ -70,7 +70,7 @@ public class Agencies : IAgencies
             SetupDefault();
             DefaultConfig_Simple();
             DefaultConfig_FullExpanded();
-            //DefaultConfig_LosSantos2008();
+            DefaultConfig_LosSantos2008();
             DefaultConfig_LibertyCity();
             DefaultConfig();
         }

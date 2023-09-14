@@ -119,9 +119,7 @@ public class GangSettings : ISettingsDefaultable
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
-        ShowGangTerritoryBlip = true;
-        GangTerritoryBlipSize = 100f;
-        GangTerritoryBlipAlpha = 0.1f;
+        SetDefault();
     }
 
     public void SetDefault()
@@ -220,8 +218,8 @@ public class GangSettings : ISettingsDefaultable
         SendHitSquadText = true;
 
         ShowGangTerritoryBlip = true;//HAS DESERIALIZED VALUES
-        GangTerritoryBlipSize = 200f;//HAS DESERIALIZED VALUES
-        GangTerritoryBlipAlpha = 0.2f;//HAS DESERIALIZED VALUES
+        GangTerritoryBlipSize = 100f;//HAS DESERIALIZED VALUES
+        GangTerritoryBlipAlpha = 0.1f;//HAS DESERIALIZED VALUES
     }
 
 }

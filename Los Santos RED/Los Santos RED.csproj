@@ -453,6 +453,8 @@
     <Compile Include="lsr\UI\Other\UIMenuItemExt.cs" />
     <Compile Include="lsr\UI\Other\VehicleShowcase.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\DrawableIcon.cs" />
+    <Compile Include="lsr\UI\Stree Name Pop Ups\StreetNamePopUp.cs" />
+    <Compile Include="lsr\UI\Stree Name Pop Ups\StreetNode.cs" />
     <Compile Include="lsr\UI\TopRightMenu.cs" />
     <Compile Include="lsr\Vehicle\DispatchableVehicleExtra.cs" />
     <Compile Include="lsr\Vehicle\DispatchableVehicleGroup.cs" />

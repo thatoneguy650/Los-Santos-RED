@@ -33,6 +33,8 @@ public class DebugHelperSubMenu : DebugSubMenu
     private IPoliceRespondable PoliceRespondable;
     private ModDataFileManager ModDataFileManager;
     private IGangs Gangs;
+    private UIMenu HelperMenuItem;
+
     public DebugHelperSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IEntityProvideable world, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IPoliceRespondable policeRespondable, ModDataFileManager modDataFileManager, IGangs gangs) : base(debug, menuPool, player)
     {
         World = world;
@@ -45,7 +47,7 @@ public class DebugHelperSubMenu : DebugSubMenu
     }
     public override void AddItems()
     {
-        UIMenu HelperMenuItem = MenuPool.AddSubMenu(Debug, "Helper Menu");
+        HelperMenuItem = MenuPool.AddSubMenu(Debug, "Helper Menu");
         HelperMenuItem.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Various helper items";
 
@@ -234,9 +236,69 @@ public class DebugHelperSubMenu : DebugSubMenu
 
         };
         HelperMenuItem.AddItem(killScripts);
+        AddPhoneItems();
     }
 
+    private void AddPhoneItems()
+    {
+        //GET_PED_PHONE_PALETTE_IDX
+        UIMenuItem setPedMobile = new UIMenuItem("Set Ped Mobile", "Set closest ped mobile!");
+        setPedMobile.Activated += (menu, item) =>
+        {
+            PedExt pedExt = World.Pedestrians.Citizens.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            if(pedExt == null || !pedExt.Pedestrian.Exists())
+            {
+                return;
+            }
+           // int phonePalette = NativeFunction.Natives.GET_PED_PHONE_PALETTE_IDX<int>(pedExt.Pedestrian);
+           // EntryPoint.WriteToConsole($"phonePalette {phonePalette}");
+            NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", pedExt.Pedestrian, 8000);
+           // EntryPoint.WriteToConsole($"phonePalette {phonePalette}");
 
+
+
+            menu.Visible = false;
+
+            GameFiber.Sleep(500);
+            if (pedExt == null || !pedExt.Pedestrian.Exists())
+            {
+                return;
+            }
+            List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList();
+            foreach (Rage.Object obj in Objects)
+            {
+                if (obj.Exists() && obj.DistanceTo2D(pedExt.Pedestrian) <= 5f)
+                {
+                    EntryPoint.WriteToConsole($"{obj.Model.Name} {obj.Model.Hash}");
+                }
+            }
+
+
+
+
+        };
+        HelperMenuItem.AddItem(setPedMobile);
+
+
+
+        UIMenuNumericScrollerItem<int> setPedMobilePalette = new UIMenuNumericScrollerItem<int>("Set Ped Phone Color", "Sets the phone color of a ped?",0,99,1);
+        setPedMobilePalette.Value = 0;
+        setPedMobilePalette.Activated += (menu, item) =>
+        {
+            PedExt pedExt = World.Pedestrians.Citizens.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            if (pedExt == null || !pedExt.Pedestrian.Exists())
+            {
+                return;
+            }
+            pedExt.Pedestrian.BlockPermanentEvents = true;
+            NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", pedExt.Pedestrian, -1);
+            NativeFunction.Natives.SET_PED_PHONE_PALETTE_IDX(pedExt.Pedestrian, setPedMobilePalette.Value);
+
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(setPedMobilePalette);
+
+    }
     private void WriteToClassCreator(String TextToLog, int test, string fileName)
     {
         StringBuilder sb = new StringBuilder();

@@ -28,6 +28,7 @@ public class DebugLocationSubMenu : DebugSubMenu
     private bool isHidingHelp;
     private Street CurrentStreet;
     private Street CurrentCrossStreet;
+    private uint GameTimeLastUpdatedNodes;
 
     public DebugLocationSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IEntityProvideable world, ISettingsProvideable settings, IStreets streets) : base(debug, menuPool, player)
     {
@@ -354,26 +355,25 @@ public class DebugLocationSubMenu : DebugSubMenu
         sb.Clear();
     }
 
+
+
     private void DrawStreetText()
     {
+
+        StreetNamePopUp streetNamePopUp = new StreetNamePopUp(Settings, Streets);
+
         GameFiber.StartNew(delegate
         {
             try
             {
-
-                int globalScaleformID = NativeFunction.Natives.REQUEST_SCALEFORM_MOVIE<int>("ORGANISATION_NAME");
-                while (!NativeFunction.Natives.HAS_SCALEFORM_MOVIE_LOADED<bool>(globalScaleformID))
-                {
-                    GameFiber.Yield();
-                }
-
-
-
                 while (!Game.IsKeyDownRightNow(Keys.Z))
                 {
                     Game.DisplayHelp("PRESS Z TO STOP");
-                    StreetTextLoop(globalScaleformID);
-                    
+                    if(Game.GameTime - GameTimeLastUpdatedNodes >= Settings.SettingsManager.DebugSettings.StreetDisplayTimeBetweenUpdate)
+                    {
+                        streetNamePopUp.GetNodes();
+                        GameTimeLastUpdatedNodes = Game.GameTime;
+                    }
                     GameFiber.Yield();
                 }
             }
@@ -385,7 +385,66 @@ public class DebugLocationSubMenu : DebugSubMenu
         }, "Run Debug Logic");
 
 
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                int globalScaleformID = NativeFunction.Natives.REQUEST_SCALEFORM_MOVIE<int>("ORGANISATION_NAME");
+                while (!NativeFunction.Natives.HAS_SCALEFORM_MOVIE_LOADED<bool>(globalScaleformID))
+                {
+                    GameFiber.Yield();
+                }
+                while (!Game.IsKeyDownRightNow(Keys.Z))
+                {
+                    streetNamePopUp.DisplayNodes(globalScaleformID);
+                    GameFiber.Yield();
+                }
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "Run Debug Logic");
+
+
+
+
+
     }
+
+    //private void DrawStreetText()
+    //{
+    //    GameFiber.StartNew(delegate
+    //    {
+    //        try
+    //        {
+
+    //            int globalScaleformID = NativeFunction.Natives.REQUEST_SCALEFORM_MOVIE<int>("ORGANISATION_NAME");
+    //            while (!NativeFunction.Natives.HAS_SCALEFORM_MOVIE_LOADED<bool>(globalScaleformID))
+    //            {
+    //                GameFiber.Yield();
+    //            }
+
+
+
+    //            while (!Game.IsKeyDownRightNow(Keys.Z))
+    //            {
+    //                Game.DisplayHelp("PRESS Z TO STOP");
+    //                StreetTextLoop(globalScaleformID);
+
+    //                GameFiber.Yield();
+    //            }
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+    //            EntryPoint.ModController.CrashUnload();
+    //        }
+    //    }, "Run Debug Logic");
+
+
+    //}
     private void StreetTextLoop(int globalScaleformID)
     {
         if (Player.CurrentLocation.CurrentStreet == null)

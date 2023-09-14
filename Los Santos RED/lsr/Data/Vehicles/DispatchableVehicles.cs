@@ -88,7 +88,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             EntryPoint.WriteToConsole($"No Dispatchable Vehicles config found, creating default", 0);
             SetupDefaults();
             DefaultConfig_Simple();
-            //DefaultConfig_LosSantos2008();
+            DefaultConfig_LosSantos2008();
             DefaultConfig_FullExpandedJurisdiction();
             DefaultConfig();
         }

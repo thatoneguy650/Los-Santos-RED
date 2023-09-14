@@ -171,7 +171,7 @@ public class GangMember : PedExt, IWeaponIssuable
                 {
                     //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName}", 5);
                     List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(Gang.ID);
-                    if (totalTerritories.Any(x => x.ZoneInternalGameName.ToLower() == KillingZone.InternalGameName.ToLower()))
+                    if (totalTerritories != null && totalTerritories.Any(x => x.ZoneInternalGameName.ToLower() == KillingZone.InternalGameName.ToLower()))
                     {
                         //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName} IS GANG TERRITORY!", 5);
                         RepToRemove -= 4000;// 1000;
@@ -213,7 +213,7 @@ public class GangMember : PedExt, IWeaponIssuable
                 {
                     //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName}", 5);
                     List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(Gang.ID);
-                    if (totalTerritories.Any(x => x.ZoneInternalGameName.ToLower() == KillingZone.InternalGameName.ToLower()))
+                    if (totalTerritories != null && totalTerritories.Any(x => x.ZoneInternalGameName.ToLower() == KillingZone.InternalGameName.ToLower()))
                     {
                         //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName} IS GANG TERRITORY!", 5);
                         RepToRemove -= 2500;// 500;

@@ -4,6 +4,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -43,6 +44,16 @@ public class DebugSettings : ISettingsDefaultable
     public float StreetDisplayScaleZ { get; set; }
     public bool StreetDisplayUseCalc { get; set; }
     public float StreetDisplayNodeOffsetFront { get; set; }
+    public uint StreetDisplayTimeBetweenUpdate { get; set; }
+    public int StreetDisplayNodesToGet { get; set; }
+    public float StreetDisplayMinNodeDistance { get; set; }
+    public float StreetDisplayMaxNodeDistance { get; set; }
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
 
     public DebugSettings()
     {
@@ -74,5 +85,9 @@ public class DebugSettings : ISettingsDefaultable
         StreetDisplayScaleZ = 1.0f;
         StreetDisplayUseCalc = true;
         StreetDisplayNodeOffsetFront = 40f;
+        StreetDisplayTimeBetweenUpdate = 500;
+        StreetDisplayNodesToGet = 50;
+        StreetDisplayMinNodeDistance = 10f;
+        StreetDisplayMaxNodeDistance = 40f;
     }
 }
