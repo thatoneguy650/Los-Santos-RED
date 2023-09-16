@@ -1533,22 +1533,27 @@ public class Debug
     public void DebugNumpad8()
     {
 
-        GameFiber.StartNew(delegate
-        {
-            Vector3 PlayerPos = Game.LocalPlayer.Character.Position;
-            while (!Game.IsKeyDownRightNow(Keys.Z))
-            {
-                //Rage.Debug.DrawArrowDebug(PlayerPos, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Red);
-                //bool isExplosion = NativeFunction.Natives.IS_EXPLOSION_IN_SPHERE<bool>(-1, PlayerPos.X,PlayerPos.Y,PlayerPos.Z,20f);
-                bool IsCurrentWeaponSilenced = Player.Character.IsCurrentWeaponSilenced;
-                bool IS_PED_CURRENT_WEAPON_SILENCED = NativeFunction.Natives.IS_PED_CURRENT_WEAPON_SILENCED<bool>(Game.LocalPlayer.Character);
-                Game.DisplaySubtitle($"IsCurrentWeaponSilenced:{IsCurrentWeaponSilenced} IS_PED_CURRENT_WEAPON_SILENCED:{IS_PED_CURRENT_WEAPON_SILENCED}");
-                Game.DisplayHelp($"Press Z to Exit");
-                GameFiber.Yield();
-            }
+        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("City_Banks", true);
+        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("Countryside_Banks", true);
+        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("AMMUNATION", true);
+        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("YellowJackInn", true);
+        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("VANGELICO", true);
+        //GameFiber.StartNew(delegate
+        //{
+        //    Vector3 PlayerPos = Game.LocalPlayer.Character.Position;
+        //    while (!Game.IsKeyDownRightNow(Keys.Z))
+        //    {
+        //        //Rage.Debug.DrawArrowDebug(PlayerPos, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Red);
+        //        //bool isExplosion = NativeFunction.Natives.IS_EXPLOSION_IN_SPHERE<bool>(-1, PlayerPos.X,PlayerPos.Y,PlayerPos.Z,20f);
+        //        bool IsCurrentWeaponSilenced = Player.Character.IsCurrentWeaponSilenced;
+        //        bool IS_PED_CURRENT_WEAPON_SILENCED = NativeFunction.Natives.IS_PED_CURRENT_WEAPON_SILENCED<bool>(Game.LocalPlayer.Character);
+        //        Game.DisplaySubtitle($"IsCurrentWeaponSilenced:{IsCurrentWeaponSilenced} IS_PED_CURRENT_WEAPON_SILENCED:{IS_PED_CURRENT_WEAPON_SILENCED}");
+        //        Game.DisplayHelp($"Press Z to Exit");
+        //        GameFiber.Yield();
+        //    }
 
 
-        }, "Run Debug Logic");
+        //}, "Run Debug Logic");
 
         //GameFiber.StartNew(delegate
         //{
@@ -1574,7 +1579,7 @@ public class Debug
         //}, "Run Debug Logic");
 
 
-       // IS_EXPLOSION_IN_AREA
+        // IS_EXPLOSION_IN_AREA
 
         //DoCops();
         // Test222();

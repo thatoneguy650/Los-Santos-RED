@@ -115,11 +115,13 @@ public class GangMember : PedExt, IWeaponIssuable
         Money = RandomItems.GetRandomNumberInt(Gang.AmbientMemberMoneyMin, Gang.AmbientMemberMoneyMax);
         WillFight = RandomItems.RandomPercent(Gang.FightPercentage);
         WillCallPolice = false;
-        WillFightPolice = RandomItems.RandomPercent(Gang.FightPolicePercentage);    
-        if(IsHitSquad)
+        WillFightPolice = RandomItems.RandomPercent(Gang.FightPolicePercentage);
+        WillAlwaysFightPolice = RandomItems.RandomPercent(Gang.AlwaysFightPolicePercentage);
+        if (IsHitSquad)
         {
             WillFight = true;
             WillFightPolice = true;
+            WillAlwaysFightPolice = true;
         }
         if (RandomItems.RandomPercent(Gang.DrugDealerPercentage))
         {

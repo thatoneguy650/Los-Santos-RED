@@ -306,16 +306,14 @@ namespace LosSantosRED.lsr
         public string PrintCrimes(bool withInstances)
         {
             string CrimeString = "";
-            foreach (CrimeEvent MyCrime in CrimesObserved.Where(x => x.Instances > 0).OrderBy(x => x.AssociatedCrime.Priority).Take(3))
+
+            if (withInstances)
             {
-                if (withInstances)
-                {
-                    CrimeString += string.Format("~n~{0} ({1})~s~", MyCrime.AssociatedCrime.Name, MyCrime.Instances);
-                }
-                else
-                {
-                    CrimeString += string.Format("{0} ", MyCrime.AssociatedCrime.Name);
-                }
+                CrimeString = string.Join(", ", CrimesObserved.Where(x => x.Instances > 0).OrderBy(x => x.AssociatedCrime.Priority).Take(3).Select(x => $"~n~{x.AssociatedCrime.Name} ({x.Instances})"));
+            }
+            else
+            {
+                CrimeString = string.Join(", ", CrimesObserved.Where(x => x.Instances > 0).OrderBy(x => x.AssociatedCrime.Priority).Take(3).Select(x => x.AssociatedCrime.Name));
             }
             return CrimeString.Trim();
         }

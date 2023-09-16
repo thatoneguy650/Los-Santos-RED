@@ -830,13 +830,23 @@ public class PedSwap : IPedSwap
         }
         if (legalOnly || RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetDriversLicense))
         {
+            string stateID = Player.CurrentLocation?.CurrentZone?.StateID;
+            if(string.IsNullOrEmpty(stateID))
+            {
+                stateID = StaticStrings.SanAndreasStateID;
+            }
             Player.Licenses.DriversLicense = new DriversLicense();
-            Player.Licenses.DriversLicense.IssueLicense(Time, 12);
+            Player.Licenses.DriversLicense.IssueLicense(Time, 12, stateID);
         }
         if (legalOnly || RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetCCWLicense))
         {
+            string stateID = Player.CurrentLocation?.CurrentZone?.StateID;
+            if (string.IsNullOrEmpty(stateID))
+            {
+                stateID = StaticStrings.SanAndreasStateID;
+            }
             Player.Licenses.CCWLicense = new CCWLicense();
-            Player.Licenses.CCWLicense.IssueLicense(Time, 12);
+            Player.Licenses.CCWLicense.IssueLicense(Time, 12, stateID);
         }
         if (Settings.SettingsManager.NeedsSettings.ApplyNeeds)
         {

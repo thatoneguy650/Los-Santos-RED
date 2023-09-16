@@ -137,6 +137,11 @@ namespace LosSantosRED.lsr
             {
                 Game.DisableControlAction(0, GameControl.Duck, true);
             }
+
+            if(Player.IsBusted)
+            {
+                NativeHelper.DisablePlayerControl();
+            }
         }
         private void ProcessGeneralControls()
         {

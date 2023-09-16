@@ -298,7 +298,6 @@ public class GangInteraction : IContactMenuInteraction
                     "Good luck dickhead.",
                     };
         Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
-        //CustomiFruit.Close();
     }
     private void EnemyReply()
     {

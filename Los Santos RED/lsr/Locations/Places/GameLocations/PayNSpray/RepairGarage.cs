@@ -182,7 +182,7 @@ public class RepairGarage : GameLocation
         if (Player.BankAccounts.GetMoney(false) <= WashCost)
         {
             PlayErrorSound();
-            DisplayMessage("~r~Washing Failed", "Insufficient funds!");
+            DisplayMessage("~r~Cash Only", "You do not have enough cash on hand.");
             return;
         }
         Player.CurrentVehicle.Engine.Toggle(false);
@@ -214,7 +214,7 @@ public class RepairGarage : GameLocation
         if (Player.BankAccounts.GetMoney(false) <= totalRepairCost)
         {
             PlayErrorSound();
-            DisplayMessage("~r~Repair Failed", "Insufficient funds!");
+            DisplayMessage("~r~Cash Only", "You do not have enough cash on hand.");
             return;
         }
         Player.CurrentVehicle.Engine.Toggle(false);

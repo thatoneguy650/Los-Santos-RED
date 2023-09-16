@@ -14,7 +14,8 @@ public class License
 
     public virtual DateTime ExpirationDate { get; set; }
     public virtual DateTime IssueDate { get; set; }
-    public virtual void IssueLicense(ITimeReportable time, int months)
+    public virtual string IssueStateID { get; set; }
+    public virtual void IssueLicense(ITimeReportable time, int months, string stateID)
     {
         if(IsValid(time))
         {

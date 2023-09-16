@@ -33,10 +33,10 @@ public class RespawnSettings : ISettingsDefaultable
     public int PoliceBribePoliceKilledMultiplier { get; set; }
     [Description("Additional bribe amount for each police officer injured.")]
     public int PoliceBribePoliceInjuredMultiplier { get; set; }
-    [Description("If enabled, the required minimum bribe amount will be shown in the menu.")]
-    public bool ShowRequiredBribeAmount { get; set; }
-    [Description("If enabled, the required minimum bribe amount will be shown in the menu when you are using a controller only.")]
-    public bool ShowRequiredBribeAmountControllerOnly { get; set; }
+    //[Description("If enabled, the required minimum bribe amount will be shown in the menu.")]
+    //public bool ShowRequiredBribeAmount { get; set; }
+    //[Description("If enabled, the required minimum bribe amount will be shown in the menu when you are using a controller only.")]
+    //public bool ShowRequiredBribeAmountControllerOnly { get; set; }
     [Description("Deduct money on player after surrendering")]
     public bool DeductBailFee { get; set; }
     [Description("Minimum bail amount for each wanted level. Ex a value of 750 would require a $2250 bail fee at 3 stars.")]
@@ -144,8 +144,8 @@ public class RespawnSettings : ISettingsDefaultable
         OffsetY = 0.5f;
 
 
-        ShowRequiredBribeAmount = true;
-        ShowRequiredBribeAmountControllerOnly = true;
+        //ShowRequiredBribeAmount = true;
+        //ShowRequiredBribeAmountControllerOnly = true;
         ImpoundVehicles = true;
         ImpoundVehiclesDailyFee = 500;
         ImpoundVehiclesStolenPenalty = 5000;

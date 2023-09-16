@@ -16,11 +16,11 @@ public class RollingPapersItem : ModItem
     {
 
     }
-    public RollingPapersItem(string name, string description) : base(name, description, ItemType.Equipment)
+    public RollingPapersItem(string name, string description) : base(name, description, ItemType.Paraphernalia)
     {
 
     }
-    public RollingPapersItem(string name) : base(name, ItemType.Equipment)
+    public RollingPapersItem(string name) : base(name, ItemType.Paraphernalia)
     {
 
     }

@@ -9,23 +9,34 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 
 public class BurnerPhoneSettingsThemeEntry : BurnerPhoneSettingsAppEntry
 {
     private List<BurnerPhoneSettingTracker> BurnerPhoneSettingTrackers;
-    private List<Tuple<int, string>> Themes = new List<Tuple<int, string>>();
+    private List<CellphoneIDLookup> Themes = new List<CellphoneIDLookup>();
     public BurnerPhoneSettingsThemeEntry(BurnerPhoneSettingsApp burnerPhoneSettingsApp, ISettingsProvideable settings, string name, int index, int icon) : base(burnerPhoneSettingsApp, settings, name, index, icon)
     {
         SelectedItemIcon = (int)BurnerPhoneSettingsIcon.Ticked;// 39;
         NonSelectedItemIcon = (int)BurnerPhoneSettingsIcon.Edit; //0;
-
-        Themes.Add(new Tuple<int, string>(1, "Blue"));
-        Themes.Add(new Tuple<int, string>(2, "Green"));
-        Themes.Add(new Tuple<int, string>(3, "Red"));
-        Themes.Add(new Tuple<int, string>(4, "Orange"));
-        Themes.Add(new Tuple<int, string>(5, "Gray"));
-        Themes.Add(new Tuple<int, string>(6, "Purple"));
-        Themes.Add(new Tuple<int, string>(7, "Pink"));
+    }
+    private void GetThemes()
+    {
+        Themes.Clear();
+        if (BurnerPhoneSettingsApp.Player.CellPhone.CurrentCellphoneData == null)
+        {
+            Themes.Add(new CellphoneIDLookup(1, "Blue"));
+            Themes.Add(new CellphoneIDLookup(2, "Green"));
+            Themes.Add(new CellphoneIDLookup(3, "Red"));
+            Themes.Add(new CellphoneIDLookup(4, "Orange"));
+            Themes.Add(new CellphoneIDLookup(5, "Gray"));
+            Themes.Add(new CellphoneIDLookup(6, "Purple"));
+            Themes.Add(new CellphoneIDLookup(7, "Pink"));
+        }
+        else
+        {
+            Themes.AddRange(BurnerPhoneSettingsApp.Player.CellPhone.CurrentCellphoneData.Themes);
+        }
     }
     public override void Open(bool Reset)
     {
@@ -38,7 +49,7 @@ public class BurnerPhoneSettingsThemeEntry : BurnerPhoneSettingsAppEntry
         NativeFunction.Natives.xC3D0841A0CC546A6(22);//2
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
-        DisplayVolume();
+        DisplayThemes();
 
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(BurnerPhoneSettingsApp.BurnerPhone.GlobalScaleformID, "DISPLAY_VIEW");
         NativeFunction.Natives.xC3D0841A0CC546A6(22);
@@ -53,14 +64,14 @@ public class BurnerPhoneSettingsThemeEntry : BurnerPhoneSettingsAppEntry
         HandleBack();
         SetRingtoneSoftKeys();
     }
-    private void DisplayVolume()
+    private void DisplayThemes()
     {
         BurnerPhoneSettingTrackers = new List<BurnerPhoneSettingTracker>();
-
-        foreach(Tuple<int,string> thingo in Themes.OrderBy(x => x.Item1))
+        GetThemes();
+        foreach(CellphoneIDLookup thingo in Themes.OrderBy(x => x.ID))
         {
-            BurnerPhoneSettingTracker burnerPhoneSettingTracker = new BurnerPhoneSettingTracker(thingo.Item1 - 1, thingo.Item2) { IntegerValue = thingo.Item1 };
-            if (BurnerPhoneSettingsApp.Player.CellPhone.Theme == thingo.Item1)
+            BurnerPhoneSettingTracker burnerPhoneSettingTracker = new BurnerPhoneSettingTracker(thingo.ID - 1, thingo.Name) { IntegerValue = thingo.ID };
+            if (BurnerPhoneSettingsApp.Player.CellPhone.Theme == thingo.ID)
             {
                 burnerPhoneSettingTracker.IsSelected = true;
             }

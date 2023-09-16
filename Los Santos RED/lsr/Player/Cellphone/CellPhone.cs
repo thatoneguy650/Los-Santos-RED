@@ -59,6 +59,9 @@ public class CellPhone
     private IShopMenus ShopMenus;
 
 
+    private ICellphones Cellphones;
+    public CellphoneData CurrentCellphoneData { get; private set; }
+
     public BurnerPhone BurnerPhone { get; private set; }
 
     public string RingTone => !string.IsNullOrEmpty(CustomRingtone) ? CustomRingtone : Settings.SettingsManager.CellphoneSettings.DefaultCustomRingtoneName;
@@ -67,28 +70,22 @@ public class CellPhone
     public int Background => CustomBackground != -1 ? CustomBackground : Settings.SettingsManager.CellphoneSettings.DefaultBurnerCellBackgroundID;
     public float Volume => CustomVolume != -1.0f ? CustomVolume : Settings.SettingsManager.CellphoneSettings.DefaultCustomToneVolume;
     public bool SleepMode { get; set; } = false;
-    public int PhoneType => CustomPhoneType != -1 ? CustomPhoneType : Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID;
-    public string PhoneOS => CustomPhoneOS != "" ? CustomPhoneOS : Settings.SettingsManager.CellphoneSettings.BurnerCellScaleformName;
-
-
+    public int PhoneType => CustomPhoneType != -1 ? CustomPhoneType : CurrentCellphoneData != null ? CurrentCellphoneData.PhoneType : Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID;
+    public string PhoneOS => CustomPhoneOS != "" ? CustomPhoneOS : CurrentCellphoneData != null ? CurrentCellphoneData.PhoneOS : Settings.SettingsManager.CellphoneSettings.BurnerCellScaleformName;
     public string CustomRingtone { get; set; } = "";
     public string CustomTextTone { get; set; } = "";
     public int CustomTheme { get; set; } = -1;
     public int CustomBackground { get; set; } = -1;
     public float CustomVolume { get; set; } = -1.0f;
-
     public int CustomPhoneType { get; set; } = -1;
     public string CustomPhoneOS { get; set; } = "";
-
-
-
     private bool ShouldCheckScheduledItems => GameTimeLastCheckedScheduledItems == 0 || Game.GameTime - GameTimeLastCheckedScheduledItems >= GameTimeBetweenCheckScheduledItems;
     public bool IsActive => BurnerPhone?.IsActive == true;
     public List<PhoneText> TextList => AddedTexts;
     public List<PhoneContact> ContactList => AddedContacts;
     public List<PhoneResponse> PhoneResponseList => PhoneResponses;
     public CellPhone(ICellPhoneable player, IContactInteractable gangInteractable, IJurisdictions jurisdictions, ISettingsProvideable settings, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, IZones zones, IStreets streets,
-        IGangTerritories gangTerritories, ICrimes crimes, IEntityProvideable world, IModItems modItems, IWeapons weapons, INameProvideable names, IShopMenus shopMenus)
+        IGangTerritories gangTerritories, ICrimes crimes, IEntityProvideable world, IModItems modItems, IWeapons weapons, INameProvideable names, IShopMenus shopMenus, ICellphones cellphones)
     {
         Player = player;
         MenuPool = new MenuPool();
@@ -109,8 +106,9 @@ public class CellPhone
         Names = names;
         ShopMenus = shopMenus;
         BurnerPhone = new BurnerPhone(Player, Time, Settings, modItems);
-        //BurnerPhone = new BurnerPhone_Old(Player, Time, Settings, modItems);
         phoneAudioPlayer = new NAudioPlayer(Settings);
+        Cellphones = cellphones;
+        CurrentCellphoneData = Cellphones.GetDefault();
     }
     public void Setup()
     {
@@ -156,6 +154,7 @@ public class CellPhone
         CustomBackground = -1;
         CustomVolume = -1.0f;
         ContactIndex = 0;
+        CurrentCellphoneData = Cellphones.GetDefault();
         AddedTexts = new List<PhoneText>();
         AddedContacts = new List<PhoneContact>();
         PhoneResponses = new List<PhoneResponse>();
@@ -185,15 +184,12 @@ public class CellPhone
         NativeHelper.StartScript("cellphone_flashhand", 1424);
         NativeHelper.StartScript("cellphone_controller", 1424);
         IsDisposed = true;
-        //}
     }
     public void Close(int time)
     {
-        //EntryPoint.WriteToConsoleTestLong("Mobile Phone Closed");
         if (isRunningForcedMobileTask)
         {
             NativeFunction.Natives.DESTROY_MOBILE_PHONE();
-            //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         }
         isRunningForcedMobileTask = false;
         if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone && IsActive)
@@ -259,10 +255,21 @@ public class CellPhone
             CustomRingtone = "";
             CustomTextTone = "";
         }
-        CustomTheme = RandomItems.GetRandomNumberInt(1, 8);
-        CustomBackground = new List<int>() { 0,4,5,6,7,8,9,10,11,12,13,14,15,16,17 }.PickRandom();
-        CustomPhoneType = RandomItems.GetRandomNumberInt(0,3);
-        CustomPhoneOS = CustomPhoneType == 0 ? "cellphone_ifruit" : CustomPhoneType == 1 ? "cellphone_facade" : CustomPhoneType == 2 ? "cellphone_badger" : "cellphone_ifruit";// new List<string>() { "cellphone_ifruit", "cellphone_facade", "cellphone_badger" }.PickRandom();
+        CurrentCellphoneData = Cellphones.GetRandomRegular();
+        if (CurrentCellphoneData != null)
+        {
+            CustomTheme = CurrentCellphoneData.GetRandomTheme();
+            CustomBackground = CurrentCellphoneData.GetRandomBackground();
+            CustomPhoneType = -1;
+            CustomPhoneOS = "";
+        }
+        else
+        {
+            CustomTheme = RandomItems.GetRandomNumberInt(1, 8);
+            CustomBackground = new List<int>() { 0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 }.PickRandom();
+            CustomPhoneType = RandomItems.GetRandomNumberInt(0, 3);
+            CustomPhoneOS = CustomPhoneType == 0 ? "cellphone_ifruit" : CustomPhoneType == 1 ? "cellphone_facade" : CustomPhoneType == 2 ? "cellphone_badger" : "cellphone_ifruit";// new List<string>() { "cellphone_ifruit", "cellphone_facade", "cellphone_badger" }.PickRandom();
+        }
     }
     private void CheckScheduledItems()
     {
@@ -311,7 +318,7 @@ public class CellPhone
         for (int i = ScheduledContacts.Count - 1; i >= 0; i--)
         {
             ScheduledContact sc = ScheduledContacts[i];
-            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0 && (sc.SendImmediately || Game.GameTime - sc.GameTimeSent >= 10000))
+            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0 && (sc.SendImmediately || Game.GameTime - sc.GameTimeSent >= 7000))
             {
                 if (!AddedContacts.Any(x => x.Name == sc.ContactName))
                 {
@@ -348,10 +355,6 @@ public class CellPhone
     {
         AddScheduledText(phoneContact, MessageToSend, Time.CurrentDateTime.AddMinutes(minutesToWait), sendImmediately);
     }
-    public void AddScheduledText(PhoneContact phoneContact, string MessageToSend, bool sendImmediately)
-    {
-        AddScheduledText(phoneContact, MessageToSend, 0, sendImmediately);
-    }
     public void AddScheduledText(PhoneContact phoneContact, string MessageToSend, DateTime timeToAdd, bool sendImmediately)
     {
         if (!AddedTexts.Any(x => x.ContactName == phoneContact.Name && x.Message == MessageToSend))
@@ -367,8 +370,6 @@ public class CellPhone
             ScheduledTexts.Add(new ScheduledText(timeToAdd, phoneContact, MessageToSend) { CustomPicture = customPicture, SendImmediately = sendImmediately });
         }
     }
-
-
     public void AddText(string Name, string IconName, string message, int hourSent, int minuteSent, bool isRead, string customPicture)
     {
         if (!AddedTexts.Any(x => x.ContactName == Name && x.Message == message && x.HourSent == hourSent && x.MinuteSent == minuteSent))
@@ -401,7 +402,6 @@ public class CellPhone
         NativeHelper.DisplayNotificationCustom(IconName, IconName, Name, "~o~Response", Message, NotificationIconTypes.RightJumpingArrow, false);
         PlayPhoneResponseSound();
     }
-
     public void DisableContact(string Name)
     {
         PhoneContact myContact = AddedContacts.FirstOrDefault(x => x.Name == Name);
@@ -410,8 +410,6 @@ public class CellPhone
             myContact.Active = false;
         }
     }
-
-
     public bool IsContactEnabled(string contactName)
     {
         PhoneContact myContact = AddedContacts.FirstOrDefault(x => x.Name == contactName);
@@ -429,8 +427,6 @@ public class CellPhone
         }
         phoneAudioPlayer.Abort();
     }
-
-
     public void PlayRingtone()
     {
         if(SleepMode)
@@ -509,7 +505,6 @@ public class CellPhone
     {
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Hang_Up", "Phone_SoundSet_Default", 0);
     }
-
     public void Start()
     {
         GameFiber.StartNew(delegate
@@ -595,82 +590,3 @@ public class CellPhone
     }
 
 }
-
-//public void AddGangText(PhoneContact phoneContact, Gang gang, bool isPositive)
-//{
-//    if (gang != null)
-//    {
-//        List<string> Replies = new List<string>();
-//        if (isPositive)
-//        {
-//            Replies.AddRange(new List<string>() {
-//                $"Heard some good things about you, come see us sometime.",
-//                $"Call us soon to discuss business.",
-//                $"Might have some business opportunites for you soon, give us a call.",
-//                $"You've been making some impressive moves, call us to discuss.",
-//                $"Give us a call soon.",
-//                $"We may have some opportunites for you.",
-//                $"My guys tell me you are legit, hit us up sometime.",
-//                $"Looking for people I can trust, if so give us a call.",
-//                $"Word has gotten around about you, mostly positive, give us a call soon.",
-//                $"Always looking for help with some 'items'. Call us if you think you can handle it.",
-//            });
-//        }
-//        else
-//        {
-//            Replies.AddRange(new List<string>() {
-//                $"Watch your back",
-//                $"Dead man walking",
-//                $"ur fucking dead",
-//                $"You just fucked with the wrong people asshole",
-//                $"We're gonna fuck you up buddy",
-//                $"My boys are gonna skin you alive prick.",
-//                $"You will die slowly.",
-//                $"I'll take pleasure in guttin you boy.",
-//                $"Better leave LS while you can...",
-//                $"We'll be waiting for you asshole.",
-//                $"You're gonna wish you were dead motherfucker.",
-//                $"Got some 'associates' out looking for you prick. Where you at?",
-
-
-//                $"We'll be seeing you soon",
-//                $"{Player.PlayerName}? Better watch out.",
-//                $"You'll never hear us coming",
-//                $"You are a dead man",
-//                $"You're gonna find out what happens when you fuck with us asshole.",
-//                $"When my boys find you...",
-//            });
-//        }
-
-//        List<ZoneJurisdiction> myGangTerritories = GangTerritories.GetGangTerritory(gang.ID);
-//        ZoneJurisdiction mainTerritory = myGangTerritories.OrderBy(x => x.Priority).FirstOrDefault();
-
-//        if (mainTerritory != null)
-//        {
-//            Zone mainGangZone = Zones.GetZone(mainTerritory.ZoneInternalGameName);
-//            if (mainGangZone != null)
-//            {
-//                if (isPositive)
-//                {
-//                    Replies.AddRange(new List<string>() {
-//                        $"Heard some good things about you, come see us sometime in ~p~{mainGangZone.DisplayName}~s~ to discuss some business",
-//                        $"Call us soon to discuss business in ~p~{mainGangZone.DisplayName}~s~.",
-//                        $"Might have some business opportunites for you soon in ~p~{mainGangZone.DisplayName}~s~, give us a call.",
-//                        $"You've been making some impressive moves, call us to discuss.",
-//                    });
-//                }
-//                else
-//                {
-//                    Replies.AddRange(new List<string>() {
-//                        $"Watch your back next time you are in ~p~{mainGangZone.DisplayName}~s~ motherfucker",
-//                        $"You are dead next time we see you in ~p~{mainGangZone.DisplayName}~s~",
-//                        $"Better stay out of ~p~{mainGangZone.DisplayName}~s~ cocksucker",
-//                    });
-//                }
-//            }
-//        }
-//        string MessageToSend;
-//        MessageToSend = Replies.PickRandom();
-//        AddScheduledText(phoneContact, MessageToSend);
-//    }
-//}

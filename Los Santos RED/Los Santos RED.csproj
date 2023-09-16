@@ -125,6 +125,9 @@
     <Compile Include="lsr\Camera\CameraControl.cs" />
     <Compile Include="lsr\Data\Agencies\IPlatePrefixable.cs" />
     <Compile Include="lsr\Data\Agencies\WantedLevels.cs" />
+    <Compile Include="lsr\Data\Interface\ICellphones.cs" />
+    <Compile Include="lsr\Player\Cellphone\Data\CellphoneData.cs" />
+    <Compile Include="lsr\Data\Items\Cellphones.cs" />
     <Compile Include="lsr\Data\Organizations\Organization.cs" />
     <Compile Include="lsr\Data\Organizations\Organizations.cs" />
     <Compile Include="lsr\Data\Gangs\GangClassification.cs" />
@@ -290,6 +293,7 @@
     <Compile Include="lsr\Player\Cellphone\Contacts\KillerContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\TaxiServiceContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\VehicleExporterContact.cs" />
+    <Compile Include="lsr\Player\Cellphone\Data\CellphoneIDLookup.cs" />
     <Compile Include="lsr\Player\Cellphone\Interactions\KillerInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\Interactions\TaxiServiceInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\Interactions\Taxi\AmbientSpawner.cs" />
@@ -318,6 +322,7 @@
     <Compile Include="lsr\Player\Money\BankAccount.cs" />
     <Compile Include="lsr\Player\Relationships\ContactRelationship.cs" />
     <Compile Include="lsr\Player\Respawning\PlayerPoliceSearch.cs" />
+    <Compile Include="lsr\Player\Respawning\PossibleBribe.cs" />
     <Compile Include="lsr\Player\Respawning\SearchActivity.cs" />
     <Compile Include="lsr\Player\SecurityResponse.cs" />
     <Compile Include="lsr\Player\Variation\OutfitManager.cs" />

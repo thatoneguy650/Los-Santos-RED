@@ -34,8 +34,10 @@ public class PlayerInfoMenu
     private GangTab GangTab;
 
     private ISettingsProvideable Settings;
+    private ILocationTypes LocationTypes;
 
-    public PlayerInfoMenu(IGangRelateable player, ITimeReportable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, IEntityProvideable world, IShopMenus shopMenus, IModItems modItems, IWeapons weapons, ISettingsProvideable settings)
+    public PlayerInfoMenu(IGangRelateable player, ITimeReportable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones, 
+        IStreets streets, IInteriors interiors, IEntityProvideable world, IShopMenus shopMenus, IModItems modItems, IWeapons weapons, ISettingsProvideable settings, ILocationTypes locationTypes)
     {
         Player = player;
         Time = time;
@@ -50,6 +52,7 @@ public class PlayerInfoMenu
         ModItems = modItems;
         Weapons = weapons;
         Settings = settings;
+        LocationTypes = locationTypes;
     }
     public void Setup()
     {
@@ -66,7 +69,7 @@ public class PlayerInfoMenu
 
         LocationsTab = new LocationsTab(Player, PlacesOfInterest, Time, Settings, tabView);
         VehiclesTab = new VehiclesTab(Player, Streets, Zones, Interiors, tabView, Settings);
-        LicensesTab = new LicensesTab(Player, Time, tabView);
+        LicensesTab = new LicensesTab(Player, Time, tabView, LocationTypes);
         CrimesTab = new CrimesTab(Player, tabView);
         GangTab = new GangTab(Player,PlacesOfInterest,ShopMenus,ModItems,Weapons,GangTerritories,Zones, tabView, Time, Settings, World);
     }

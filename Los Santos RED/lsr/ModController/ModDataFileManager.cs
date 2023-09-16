@@ -48,7 +48,7 @@ public class ModDataFileManager
     public SavedOutfits SavedOutfits;
     public VehicleSeatAndDoorLookup VehicleSeatDoorData;
     public Organizations Associations;
-
+    public Cellphones Cellphones;
     public ModDataFileManager()
     {
 
@@ -191,6 +191,11 @@ public class ModDataFileManager
         Associations = new Organizations();
         Associations.ReadConfig();
         Associations.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons);
+        GameFiber.Yield();
+
+
+        Cellphones = new Cellphones();
+        Cellphones.ReadConfig();
         GameFiber.Yield();
     }
     private void SetupAlternateConfigs()

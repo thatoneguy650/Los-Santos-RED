@@ -13,12 +13,14 @@ public class LicensesTab
     private IGangRelateable Player;
     private ITimeReportable Time;
     private TabView TabView;
+    private ILocationTypes LocationTypes;
 
-    public LicensesTab(IGangRelateable player, ITimeReportable time, TabView tabView)
+    public LicensesTab(IGangRelateable player, ITimeReportable time, TabView tabView, ILocationTypes locationTypes)
     {
         Player = player;
         Time = time;
         TabView = tabView;
+        LocationTypes = locationTypes;
     }
 
     public void AddItems()
@@ -30,7 +32,19 @@ public class LicensesTab
 
         if (Player.Licenses.HasDriversLicense)
         {
-            dldesc = "State: ~y~San Andreas~s~~n~";
+            GameState issueState = LocationTypes.GetState(Player.Licenses.DriversLicense.IssueStateID);
+            if (issueState == null)
+            {
+                LocationTypes.GetState(StaticStrings.SanAndreasStateID);
+            }
+            if(issueState == null)
+            {
+                dldesc = $"State: ~y~{issueState.StateName}~s~~n~";
+            }
+            else
+            {
+                dldesc = "State: ~y~San Andreas~s~~n~";
+            }
             dldesc += $"~n~Status: " + (Player.Licenses.DriversLicense.IsValid(Time) ? "~g~Valid~s~" : "~r~Expired~s~");
             dldesc += Player.Licenses.DriversLicense.ExpirationDescription(Time);
         }
@@ -38,9 +52,24 @@ public class LicensesTab
         {
             dldesc = "~r~No Drivers License Issued~s~";
         }
+
+
+
         if (Player.Licenses.HasCCWLicense)
         {
-            ccwdesc = "State: ~y~San Andreas~s~~n~";
+            GameState issueState = LocationTypes.GetState(Player.Licenses.CCWLicense.IssueStateID);
+            if (issueState == null)
+            {
+                LocationTypes.GetState(StaticStrings.SanAndreasStateID);
+            }
+            if (issueState == null)
+            {
+                ccwdesc = $"State: ~y~{issueState.StateName}~s~~n~";
+            }
+            else
+            {
+                ccwdesc = "State: ~y~San Andreas~s~~n~";
+            }
             ccwdesc += $"~n~Status: " + (Player.Licenses.CCWLicense.IsValid(Time) ? "~g~Valid~s~" : "~r~Expired~s~");
             ccwdesc += Player.Licenses.CCWLicense.ExpirationDescription(Time);
         }
@@ -52,7 +81,24 @@ public class LicensesTab
 
         if (Player.Licenses.HasPilotsLicense)
         {
-            pilotdesc = "Endorsements:";
+
+
+            GameState issueState = LocationTypes.GetState(Player.Licenses.PilotsLicense.IssueStateID);
+            if (issueState == null)
+            {
+                LocationTypes.GetState(StaticStrings.SanAndreasStateID);
+            }
+            if (issueState == null)
+            {
+                ccwdesc = $"State: ~y~{issueState.StateName}~s~~n~";
+            }
+            else
+            {
+                ccwdesc = "State: ~y~San Andreas~s~~n~";
+            }
+
+
+            pilotdesc += "~n~Endorsements:";
 
             if(Player.Licenses.PilotsLicense.IsRotaryEndorsed)
             {

@@ -335,7 +335,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 $"Get to {DropOffStore.FullStreetAddress}.",
                 $"Bring the van to {DropOffStore.FullStreetAddress}, don't loiter.",
                     };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), true);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 0, true);
         }
         private void SendVehicleSpawnedMessage()
         {
@@ -346,7 +346,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"The guns are loaded in the Dark Blue ~p~Burrito Van~s~, plate number is {SpawnedVehicle.LicensePlate}. Keys should be in it.",
                         $"Take the Dark Blue ~p~Burrito Van~s~. It is already loaded and ready to go.",
                         };
-            Player.CellPhone.AddScheduledText(Contact, PickupMessage.PickRandom(), true);
+            Player.CellPhone.AddScheduledText(Contact, PickupMessage.PickRandom(), 0, true);
         }
         private void SendInitialInstructionsMessage()
         {
@@ -366,7 +366,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"Sending ${MoneyToRecieve}",
                         $"Heard you were done. We owe you ${MoneyToRecieve}",
                         };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), false);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 2, false);
         }
         private void SendTaskAbortMessage()
         {
@@ -394,7 +394,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                         $"Did you think you could keep this from us? Would be unfortunate to get caught with all those guns.",
                                         $"Enjoy your time in Bolingbroke SHU",
                                             };
-            Player.CellPhone.AddScheduledText(new GangContact(gang.ContactName, gang.ContactIcon), Replies2.PickRandom(), true);
+            Player.CellPhone.AddScheduledText(new GangContact(gang.ContactName, gang.ContactIcon), Replies2.PickRandom(), 0, true);
         }
     }
 }

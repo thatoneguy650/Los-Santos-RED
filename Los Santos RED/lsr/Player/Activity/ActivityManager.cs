@@ -1124,6 +1124,7 @@ public class ActivityManager
                     DriverExt.WillCallPoliceIntense = false;
                     DriverExt.WillFight = false;
                     DriverExt.WillFightPolice = false;
+                    DriverExt.WillAlwaysFightPolice = false;
                     DriverExt.CanBeTasked = false;
                 }
                 NativeFunction.Natives.SET_DRIVER_ABILITY(Driver, 100f);

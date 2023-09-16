@@ -107,10 +107,33 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
 
 
 
+
+
+
     public float FightPercentage { get; set; } = 70f;
     public float FightPolicePercentage { get; set; } = 30f;
+
+
+    public float AlwaysFightPolicePercentage { get; set; } = 5f;
+
+
+
+
+
+
+
     public float DrugDealerPercentage { get; set; } = 45f;
+
+
+
+
+
     public string DealerMenuGroup { get; set; } = "";
+
+
+
+
+
     public int AmbientMemberMoneyMin { get; set; } = 500;
     public int AmbientMemberMoneyMax { get; set; } = 1200;
     public int DealerMemberMoneyMin { get; set; } = 1500;

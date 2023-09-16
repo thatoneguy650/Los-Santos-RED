@@ -12,7 +12,7 @@ using System.Linq;
 public class BustedMenu : ModUIMenu
 {
     private MenuPool MenuPool;
-    private UIMenuItem Bribe;
+    private UIMenuListScrollerItem<PossibleBribe> Bribe;
     private List<DistanceSelect> Distances;
     private UIMenu Menu;
     private UIMenuItem PayFine;
@@ -214,7 +214,15 @@ public class BustedMenu : ModUIMenu
     private void AddPayCitation()
     {
         string payCitationText = "Pay Citation";
-        string payCitationDescription = $"Pay the citation to be on your way. The LSPD slush fund isn't going to grow itself is it? Help feed the ~o~beast~s~!";
+
+        string agencyName = "LSPD";
+        Agency agency = Player.CurrentLocation.CurrentZone?.AssignedLEAgency;
+        if (agency != null)
+        {
+            agencyName = agency.ShortName;
+        }
+
+        string payCitationDescription = $"Pay the citation to be on your way. The {agencyName} slush fund isn't going to grow itself is it? Help feed the ~o~beast~s~!";
         if (IsDetained)
         {
             payCitationText = "Pay Citation";
@@ -251,38 +259,36 @@ public class BustedMenu : ModUIMenu
             bribeText = "Bribe";
             bribeDescription = "Pay a Bribe to get out of trouble. Don't be cheap or you will regret it.";
         }
-        Respawning.Respawning.CalulateBribe();
-        Bribe = new UIMenuItem(bribeText, bribeDescription);
-
-        if (Settings.SettingsManager.RespawnSettings.ShowRequiredBribeAmount || (Settings.SettingsManager.RespawnSettings.ShowRequiredBribeAmountControllerOnly && Respawning.IsUsingController))
+        Respawning.Respawning.CalculateBribe();
+        List<PossibleBribe> possibleBribes = new List<PossibleBribe>() 
+        { 
+            new PossibleBribe(Respawning.Respawning.RequiredBribeAmount,100f),
+        };
+        if(Respawning.Respawning.RequiredBribeAmount >= 500)
         {
-            Bribe.RightBadge = UIMenuItem.BadgeStyle.None;
-            Bribe.RightLabel = $"~r~${Respawning.Respawning.RequiredBribeAmount}~s~";
-            Bribe.Activated += (sender, selectedItem) =>
-            {
-                Respawning.Respawning.BribePolice(Respawning.Respawning.RequiredBribeAmount, this);
-                Menu.Visible = false;
-            };
+            possibleBribes.Add(new PossibleBribe((int)Math.Floor(Respawning.Respawning.RequiredBribeAmount * 0.7f), 70f));
+            possibleBribes.Add(new PossibleBribe((int)Math.Floor(Respawning.Respawning.RequiredBribeAmount * 0.5f), 50f));
+            possibleBribes.Add(new PossibleBribe((int)Math.Floor(Respawning.Respawning.RequiredBribeAmount * 0.25f), 25f));
         }
-        else
+        Bribe = new UIMenuListScrollerItem<PossibleBribe>(bribeText, bribeDescription, possibleBribes);
+        Bribe.Activated += (sender, selectedItem) =>
         {
-            Bribe.RightBadge = UIMenuItem.BadgeStyle.Trevor;
-            Bribe.RightLabel = "";
-            Bribe.Activated += (sender, selectedItem) =>
-            {
-                if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int BribeAmount))
-                {
-                    Respawning.Respawning.BribePolice(BribeAmount, this);
-                }
-                Menu.Visible = false;
-            };
-        }
+            Respawning.Respawning.BribePolice(Respawning.Respawning.RequiredBribeAmount, this, Bribe.SelectedItem);
+            Menu.Visible = false;
+        };
         Menu.AddItem(Bribe);
     }
+
     private void AddSurrenderToPolice()//fallback, always works
     {
         string surrenderText = "Surrender";
-        string surrenderDescription = "Surrender and get out on bail. Due to jail overcrowding, bail is granted regardless of the offense. Makes you feel safe in ~p~San Andreas~s~ does't it? Lose bail money, guns, and drugs at least.";
+
+        string currentState = Player.CurrentLocation.CurrentZone?.GameState?.StateName;
+        if(string.IsNullOrEmpty(currentState))
+        {
+            currentState = "San Andreas";
+        }
+        string surrenderDescription = $"Surrender and get out on bail. Due to jail overcrowding, bail is granted regardless of the offense. Makes you feel safe in ~p~{currentState}~s~ does't it? Lose bail money, guns, and drugs at least.";
         if (IsDetained)
         {
             surrenderText = "Surrender";

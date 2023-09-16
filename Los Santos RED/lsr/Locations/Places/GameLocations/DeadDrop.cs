@@ -104,7 +104,7 @@ public class DeadDrop : GameLocation
         }
         else
         {
-            Game.DisplayHelp("You do not have enought cash to make the drop");
+            Game.DisplayHelp("You do not have enought cash to make the drop!");
         }
     }
     private void DoPickup(ILocationInteractable Player)

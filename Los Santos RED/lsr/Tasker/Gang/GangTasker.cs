@@ -119,7 +119,11 @@ public class GangTasker
         }
         else if (GangMember.IsWanted && GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)
         {
-            if (GangMember.WillFightPolice && isNearHomeTerritory)
+            if(GangMember.WillAlwaysFightPolice)
+            {
+                SetFight(GangMember, null);
+            }
+            else if (GangMember.WillFightPolice && isNearHomeTerritory)
             {
                 SetFight(GangMember, null);
             }

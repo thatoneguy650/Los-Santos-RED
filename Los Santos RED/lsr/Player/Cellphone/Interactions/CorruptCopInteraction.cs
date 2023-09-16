@@ -204,8 +204,8 @@ public class CorruptCopInteraction : IContactMenuInteraction
         else if (Player.BankAccounts.GetMoney(false) < CostToClearWanted)
         {
             List<string> Replies = new List<string>() {
-                $"Don't bother me unless you have some money",
-                $"This shit isn't free you know",
+                $"Don't bother me unless you have some cash",
+                $"This shit isn't free you know, make sure you've got the cash",
                 };
             Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }
@@ -250,8 +250,8 @@ public class CorruptCopInteraction : IContactMenuInteraction
         else if (Player.BankAccounts.GetMoney(false) < CostToClearInvestigation)
         {
             List<string> Replies = new List<string>() {
-                $"Don't bother me unless you have some money",
-                $"This shit isn't free you know",
+                $"Don't bother me unless you have some cash",
+                $"This shit isn't free you know, make sure you've got the cash",
                 };
             Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }

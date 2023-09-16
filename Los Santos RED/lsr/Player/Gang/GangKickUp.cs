@@ -124,7 +124,7 @@ public class GangKickUp
             $"You need to kick up ${DueAmount} every {Gang.MemberKickUpDays} days.",
             $"This ain't free, ${DueAmount} every {Gang.MemberKickUpDays} days.",
         };
-        Player.CellPhone.AddScheduledText(Contact, StartMessages.PickRandom(), false);
+        Player.CellPhone.AddScheduledText(Contact, StartMessages.PickRandom(), 2, false);
     }
     private void SendPaymentMessage()
     {
@@ -146,7 +146,7 @@ public class GangKickUp
             $"Cutting it a little close? ${DueAmount} by {DueDate:g}.",
 
         };
-        Player.CellPhone.AddScheduledText(Contact, WarningMessages.PickRandom(), false);
+        Player.CellPhone.AddScheduledText(Contact, WarningMessages.PickRandom(), 2, false);
         HasSentWarning = true;
         //EntryPoint.WriteToConsoleTestLong("SENT WARNING FOR GANG KICK UP");
     }
@@ -161,7 +161,7 @@ public class GangKickUp
         $"Missing the kick up can be hazardous to your health. Now its ${DueAmount} by {DueDate:g}. Don't forget.",
         $"Fuck you, pay me ${DueAmount} by {DueDate:g}.",
         };
-        Player.CellPhone.AddScheduledText(Contact, MissedMessages.PickRandom(), false);
+        Player.CellPhone.AddScheduledText(Contact, MissedMessages.PickRandom(), 2, false);
     }
     public override string ToString()
     {

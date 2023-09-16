@@ -161,6 +161,7 @@ public class DebugCrimeSubMenu : DebugSubMenu
                     pedExt.WasEverSetPersistent = true;
                     pedExt.WillFight = true;
                     pedExt.WillFightPolice = true;
+                    pedExt.WillAlwaysFightPolice = true;
                     World.Pedestrians.AddEntity(pedExt);
                 }
                 while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
@@ -227,6 +228,7 @@ public class DebugCrimeSubMenu : DebugSubMenu
                     PedExt pedExt = new PedExt(coolguy, Settings, Crimes, Weapons, "Test1", "CRIMINAL", World);
                     pedExt.WillFight = true;
                     pedExt.WillFightPolice = true;
+                    pedExt.WillAlwaysFightPolice = true;
                     pedExt.WasEverSetPersistent = true;
                     World.Pedestrians.AddEntity(pedExt);
                     NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", coolguy, 281, true);//Can Writhe

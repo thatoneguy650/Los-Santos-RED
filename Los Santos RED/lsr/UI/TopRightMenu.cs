@@ -194,6 +194,28 @@ public class TopRightMenu
             }
             DisplayTextOnScreen(NeedsString, NeedsPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
         }
+
+
+
+        if (DisplayablePlayer.IsInSearchMode && Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsFlashWhenSearching)
+        {
+            uint GameTimeBetweenFlash = (uint)(Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsTimeBetweenFlash * (1.0f - DisplayablePlayer.SearchMode.SearchModePercentage));
+            if (GameTimeBetweenFlash <= 200)
+            {
+                GameTimeBetweenFlash = 200;
+            }
+            if (Game.GameTime - GameTimeLastFlashedWantedStars >= GameTimeBetweenFlash)
+            {
+                GameTimeLastFlashedWantedStars = Game.GameTime;
+                isShowingGreyedWantedStars = !isShowingGreyedWantedStars;
+                //EntryPoint.WriteToConsole("WANTED STARS FLASHING CHANGE");
+            }
+        }
+        else
+        {
+            isShowingGreyedWantedStars = false;
+        }
+
     }
     private string GetWeaponDisplay()
     {
@@ -359,7 +381,7 @@ public class TopRightMenu
 
     private void GetStuff(GraphicsEventArgs args)
     {
-        if(!willShowCustomStars || isPaused)
+        if(!willShowCustomStars || isPaused || !EntryPoint.ModController.IsRunning)
         {
             return;
         }
@@ -378,24 +400,7 @@ public class TopRightMenu
     private void DisplayWantedLevel(GraphicsEventArgs args, float InitialPosX, float InitialPosY, float Scale)
     {
 
-        if(DisplayablePlayer.IsInSearchMode && Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsFlashWhenSearching)
-        {
-            uint GameTimeBetweenFlash = (uint)(Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsTimeBetweenFlash * (1.0f - DisplayablePlayer.SearchMode.SearchModePercentage));
-            if(GameTimeBetweenFlash <= 200)
-            {
-                GameTimeBetweenFlash = 200;
-            }
-            if (Game.GameTime - GameTimeLastFlashedWantedStars >= GameTimeBetweenFlash)
-            {
-                GameTimeLastFlashedWantedStars = Game.GameTime;
-                isShowingGreyedWantedStars = !isShowingGreyedWantedStars;
-                EntryPoint.WriteToConsole("WANTED STARS FLASHING CHANGE");
-            }
-        }
-        else
-        {
-            isShowingGreyedWantedStars = false;
-        }
+
 
 
         for (int wantedLevelStar = 1; wantedLevelStar <= Settings.SettingsManager.PoliceSettings.MaxWantedLevel; wantedLevelStar++)

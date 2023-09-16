@@ -258,7 +258,7 @@ public class CityHall : GameLocation
                 if (Player.Licenses.HasValidDriversLicense(Time))
                 {
                     Player.BankAccounts.GiveMoney(-1 * DriversLicenseFee, true);
-                    Player.Licenses.DriversLicense.IssueLicense(Time, 12);
+                    Player.Licenses.DriversLicense.IssueLicense(Time, 12, StateID);
                     DriversLicenseMenu.Description = DriversLicenseDescription();
                     PlaySuccessSound();
                     DisplayMessage("~g~Purchase", $"You have updated your drivers license.~n~Issue Date: {Player.Licenses.DriversLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.DriversLicense.ExpirationDate:d}");
@@ -267,7 +267,7 @@ public class CityHall : GameLocation
                 {
                     Player.BankAccounts.GiveMoney(-1 * DriversLicenseFee, true);
                     Player.Licenses.DriversLicense = new DriversLicense();
-                    Player.Licenses.DriversLicense.IssueLicense(Time, 12);
+                    Player.Licenses.DriversLicense.IssueLicense(Time, 12, StateID);
                     DriversLicenseMenu.Description = DriversLicenseDescription();
                     PlaySuccessSound();
                     DisplayMessage("~g~Purchase", $"Drivers license issued.~n~Issue Date: {Player.Licenses.DriversLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.DriversLicense.ExpirationDate:d}");
@@ -286,7 +286,7 @@ public class CityHall : GameLocation
                 if (Player.Licenses.HasCCWLicense && Player.Licenses.CCWLicense.IsValid(Time))
                 {
                     Player.BankAccounts.GiveMoney(-1 * CCWLicenseFee, true);
-                    Player.Licenses.CCWLicense.IssueLicense(Time, 12);
+                    Player.Licenses.CCWLicense.IssueLicense(Time, 12, StateID);
                     CCWLicenseMenu.Description = CCWLicenseDescription();
                     PlaySuccessSound();
                     DisplayMessage("~g~Purchase", $"You have updated your CCW license.~n~Issue Date: {Player.Licenses.CCWLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.CCWLicense.ExpirationDate:d}");
@@ -295,7 +295,7 @@ public class CityHall : GameLocation
                 {
                     Player.BankAccounts.GiveMoney(-1 * CCWLicenseFee, true);
                     Player.Licenses.CCWLicense = new CCWLicense();
-                    Player.Licenses.CCWLicense.IssueLicense(Time, 12);
+                    Player.Licenses.CCWLicense.IssueLicense(Time, 12, StateID);
                     CCWLicenseMenu.Description = CCWLicenseDescription();
                     PlaySuccessSound();
                     DisplayMessage("~g~Purchase", $"CCW license issued.~n~Issue Date: {Player.Licenses.CCWLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.CCWLicense.ExpirationDate:d}");
@@ -314,7 +314,7 @@ public class CityHall : GameLocation
                 if (Player.Licenses.HasPilotsLicense && Player.Licenses.PilotsLicense.IsValid(Time))
                 {
                     Player.BankAccounts.GiveMoney(-1 * PilotsLicenseFee, true);
-                    Player.Licenses.PilotsLicense.IssueLicense(Time, 12);
+                    Player.Licenses.PilotsLicense.IssueLicense(Time, 12, StateID);
                     PilotsLicenseMenu.Description = PilotsLicenseDescription();
                     PlaySuccessSound();
                     DisplayMessage("~g~Purchase", $"You have updated your Pilots license.~n~Issue Date: {Player.Licenses.PilotsLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.PilotsLicense.ExpirationDate:d}");
@@ -323,7 +323,7 @@ public class CityHall : GameLocation
                 {
                     Player.BankAccounts.GiveMoney(-1 * PilotsLicenseFee, true);
                     Player.Licenses.PilotsLicense = new PilotsLicense();
-                    Player.Licenses.PilotsLicense.IssueLicense(Time, 12);
+                    Player.Licenses.PilotsLicense.IssueLicense(Time, 12, StateID);
                     PilotsLicenseMenu.Description = PilotsLicenseDescription();
                     PlaySuccessSound();
                     DisplayMessage("~g~Purchase", $"Pilots license issued.~n~Issue Date: {Player.Licenses.PilotsLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.PilotsLicense.ExpirationDate:d}");

@@ -26,7 +26,7 @@ public class FootChase
     private enum SubTask
     {
         AttackWithLessLethal,
-        AimTaser,
+        AimWeapon,
         Goto,
         None,
         Look,
@@ -47,7 +47,7 @@ public class FootChase
             }
         }
     }
-    private bool ShouldAimTaser => !UseWantedLevel || Player.WantedLevel > 1;
+    private bool ShouldAimWeapon => !UseWantedLevel || Player.WantedLevel > 1;
     public FootChase(IComplexTaskable ped, ITargetable player, IEntityProvideable world, IPlayerChaseable cop, ISettingsProvideable settings)
     {
         World = world;
@@ -114,10 +114,10 @@ public class FootChase
     {
 
         bool shouldAttackWithLessLethal = ShouldAttackWithLessLethal;
-        bool shouldAimTaser = ShouldAimTaser;
+        bool shouldAimWeapon = ShouldAimWeapon;
         GameFiber.Yield();
-        //EntryPoint.WriteToConsole($"Cop {Ped.Pedestrian.Handle} shouldAttackWithLessLethal {shouldAttackWithLessLethal} shouldAimTaser {shouldAimTaser} UseWantedLevel {UseWantedLevel}");
-        if (CurrentSubTask != SubTask.AttackWithLessLethal && LocalDistance < CloseDistance && shouldAttackWithLessLethal && shouldAimTaser)//7f
+        //EntryPoint.WriteToConsole($"Cop {Ped.Pedestrian.Handle} shouldAttackWithLessLethal {shouldAttackWithLessLethal} shouldAimTaser {shouldAimWeapon} UseWantedLevel {UseWantedLevel} LocalDistance{LocalDistance} CloseDistance{CloseDistance}");
+        if (CurrentSubTask != SubTask.AttackWithLessLethal && LocalDistance < CloseDistance && shouldAttackWithLessLethal && shouldAimWeapon)//7f
         {
             if (UseWantedLevel)
             {
@@ -128,9 +128,9 @@ public class FootChase
                 Cop.WeaponInventory.SetLessLethal();
             }
             TaskAttackWithLessLethal();
-           // EntryPoint.WriteToConsole("TaskAttackWithLessLethal");
+            //EntryPoint.WriteToConsole("TaskAttackWithLessLethal");
         }
-        else if (CurrentSubTask != SubTask.AimTaser && LocalDistance < CloseDistance && !shouldAttackWithLessLethal && shouldAimTaser && (Cop.HasTaser || Player.IsDangerouslyArmed))//7f
+        else if (CurrentSubTask != SubTask.AimWeapon && LocalDistance < CloseDistance && !shouldAttackWithLessLethal && shouldAimWeapon && (Cop.HasTaser || Player.IsDangerouslyArmed))//HAVE GUN OUT?
         {
             if (UseWantedLevel)
             {
@@ -141,9 +141,15 @@ public class FootChase
                 Cop.WeaponInventory.SetLessLethal();
             }
             TaskAimTaser();
-            //EntryPoint.WriteToConsole("TaskAimTaser");
+            //EntryPoint.WriteToConsole("TaskAimWeapon");
         }
-        else if (LocalDistance < CloseDistance && !shouldAttackWithLessLethal && !shouldAimTaser)
+        else if (CurrentSubTask != SubTask.SimpleLook && LocalDistance < CloseDistance && !shouldAttackWithLessLethal && shouldAimWeapon && !Cop.HasTaser && !Player.IsDangerouslyArmed)//7f
+        {
+            Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
+            TaskLookAtSimple();
+            //EntryPoint.WriteToConsole("TaskLookAtSimple");
+        }
+        else if (LocalDistance < CloseDistance && !shouldAttackWithLessLethal && !shouldAimWeapon)
         {
             if (Player.ClosestCopToPlayer != null && Player.ClosestCopToPlayer.Handle == Ped.Handle)
             {
@@ -152,7 +158,7 @@ public class FootChase
                     Cop.WeaponInventory.ShouldAutoSetWeaponState = false;
                     Cop.WeaponInventory.SetUnarmed();
                     TaskWriteTicket();
-                   // EntryPoint.WriteToConsole("TaskWriteTicket");
+                    //EntryPoint.WriteToConsole("TaskWriteTicket");
                 }
             }
             else if (!Cop.HasTaser)
@@ -233,7 +239,7 @@ public class FootChase
         }
         else if (!Cop.HasTaser && !Player.IsDangerouslyArmed)
         {
-            CloseDistance = 2f;
+            CloseDistance = 5f;// 2f;
         }
     }
     private void SetRunSpeed()
@@ -330,7 +336,7 @@ public class FootChase
     }
     private void TaskAimTaser()
     {
-        CurrentSubTask = SubTask.AimTaser;
+        CurrentSubTask = SubTask.AimWeapon;
 
         if (LocalDistance > 5f)
         {

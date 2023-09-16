@@ -79,6 +79,7 @@ public class Civilians
                     ped.WillCallPoliceIntense = false;
                     ped.WillFight = false;
                     ped.WillFightPolice = false;
+                    ped.WillAlwaysFightPolice = false;
                     ped.WasEverSetPersistent = true;
                     ped.WillCower = false;
                 }
@@ -259,6 +260,7 @@ public class Civilians
                     ped.WillCallPoliceIntense = false;
                     ped.WillFight = true;
                     ped.WillFightPolice = true;
+                    ped.WillAlwaysFightPolice = true;
                     ped.WasEverSetPersistent = true;
                 }
                 if(ped.Gang?.ID == playerGangID)

@@ -11,6 +11,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 
 public class CarCrusher : GameLocation
@@ -160,7 +161,7 @@ public class CarCrusher : GameLocation
         if(Player.BankAccounts.GetMoney(false) < Price)
         {
             PlayErrorSound();
-            DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation.");
+            DisplayMessage("~r~Cash Only","You do not have enough cash on hand.");
             return;
         }
         Game.FadeScreenOut(1000, true);

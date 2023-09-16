@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.AxHost;
 
 public class DebugPlayerStateSubMenu : DebugSubMenu
 {
@@ -186,23 +187,38 @@ public class DebugPlayerStateSubMenu : DebugSubMenu
         UIMenuItem GetDriversLicense = new UIMenuItem("Get Drivers License", "Get a drivers license");
         GetDriversLicense.Activated += (menu, item) =>
         {
+            string stateID = Player.CurrentLocation?.CurrentZone?.StateID;
+            if (string.IsNullOrEmpty(stateID))
+            {
+                stateID = StaticStrings.SanAndreasStateID;
+            }
             Player.Licenses.DriversLicense = new DriversLicense();
-            Player.Licenses.DriversLicense.IssueLicense(Time, 12);
+            Player.Licenses.DriversLicense.IssueLicense(Time, 12, stateID);
             menu.Visible = false;
         };
         UIMenuItem GetCCWLicense = new UIMenuItem("Get CCW License", "Get a ccw license");
         GetCCWLicense.Activated += (menu, item) =>
         {
+            string stateID = Player.CurrentLocation?.CurrentZone?.StateID;
+            if (string.IsNullOrEmpty(stateID))
+            {
+                stateID = StaticStrings.SanAndreasStateID;
+            }
             Player.Licenses.CCWLicense = new CCWLicense();
-            Player.Licenses.CCWLicense.IssueLicense(Time, 12);
+            Player.Licenses.CCWLicense.IssueLicense(Time, 12, stateID);
             menu.Visible = false;
         };
 
         UIMenuItem GetPilotsLicense = new UIMenuItem("Get Pilots License", "Get a pilots license");
         GetPilotsLicense.Activated += (menu, item) =>
         {
+            string stateID = Player.CurrentLocation?.CurrentZone?.StateID;
+            if (string.IsNullOrEmpty(stateID))
+            {
+                stateID = StaticStrings.SanAndreasStateID;
+            }
             Player.Licenses.PilotsLicense = new PilotsLicense();
-            Player.Licenses.PilotsLicense.IssueLicense(Time, 12);
+            Player.Licenses.PilotsLicense.IssueLicense(Time, 12, stateID);
             Player.Licenses.PilotsLicense.IsFixedWingEndorsed = true;
             Player.Licenses.PilotsLicense.IsRotaryEndorsed = true;
             Player.Licenses.PilotsLicense.IsLighterThanAirEndorsed = true;

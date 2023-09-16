@@ -167,19 +167,12 @@ public class PedCustomizer
                 PedCustomizerMenu.CustomizeMainMenu.Visible = true;
                 ShowDisplayName = true;
             }
-
-        }
-        
+        }     
         if (ShowDisplayName)
         {
             DisplayName();
         }
     }
-    //public void Tick()
-    //{
-    //    MenuPool.ProcessMenus();
-    //}
-
     public void Start()
     {
         Game.FadeScreenOut(1500, true);

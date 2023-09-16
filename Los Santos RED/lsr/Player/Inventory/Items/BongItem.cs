@@ -16,11 +16,11 @@ public class BongItem : ModItem
     {
 
     }
-    public BongItem(string name, string description) : base(name, description, ItemType.Equipment)
+    public BongItem(string name, string description) : base(name, description, ItemType.Paraphernalia)
     {
 
     }
-    public BongItem(string name) : base(name, ItemType.Equipment)
+    public BongItem(string name) : base(name, ItemType.Paraphernalia)
     {
 
     }

@@ -21,4 +21,5 @@ public enum ItemType
     Tobacco,
     Jewelry,
     Cellphone,
+    Paraphernalia,
 }

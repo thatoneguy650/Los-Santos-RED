@@ -16,11 +16,11 @@ public class PipeItem : ModItem
     {
 
     }
-    public PipeItem(string name, string description) : base(name, description, ItemType.Equipment)
+    public PipeItem(string name, string description) : base(name, description, ItemType.Paraphernalia)
     {
 
     }
-    public PipeItem(string name) : base(name, ItemType.Equipment)
+    public PipeItem(string name) : base(name, ItemType.Paraphernalia)
     {
 
     }

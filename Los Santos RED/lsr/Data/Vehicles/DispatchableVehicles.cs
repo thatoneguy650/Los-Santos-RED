@@ -9,6 +9,25 @@ using System.Threading.Tasks;
 
 public class DispatchableVehicles : IDispatchableVehicles
 {
+    private string PoliceStanier = "police";
+    private string PoliceBuffalo = "police2";
+    private string PoliceTorrence = "police3";
+    private string PoliceGranger = "sheriff2";
+    private string PoliceGresley = "sheriff";
+
+    private string PoliceBison = "policeold2";
+    private string PoliceMerit = "policeold1";
+
+    private string PoliceFugitive = "pranger";
+    private string PoliceBike = "policeb";
+    private string PoliceTransporter = "policet";
+
+    private string StanierUnmarked = "police4";
+    private string BuffaloUnmarked = "fbi";
+    private string GrangerUnmarked = "fbi2";
+
+    private string SecurityTorrence = "lurcher";
+
 
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\DispatchableVehicles.xml";
     private List<DispatchableVehicleGroup> VehicleGroupLookup = new List<DispatchableVehicleGroup>();
@@ -22629,14 +22648,30 @@ Output = -1,
     }
     public void DefaultConfig_LosSantos2008()
     {
+
         List<DispatchableVehicleGroup> OldVehicleLookupGroup = new List<DispatchableVehicleGroup>();
         List<DispatchableVehicle> LSPDVehicles_Old = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 85,85) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1, false, 100), new DispatchableVehicleExtra(2, true, 100) } },
-            new DispatchableVehicle("police2", 15, 15),
-            new DispatchableVehicle("policet", 0, 25) { MinOccupants = 3, MaxOccupants = 4,MinWantedLevelSpawn = 3} };
+            new DispatchableVehicle(PoliceMerit, 25,25){ RequiredLiveries = new List<int>() { 1 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle(PoliceStanier, 20,15){ RequiredLiveries = new List<int>() { 1 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle(PoliceBuffalo, 25, 20){ RequiredLiveries = new List<int>() { 1 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
+            new DispatchableVehicle(PoliceGranger, 15, 12){ CaninePossibleSeats = new List<int>{ 1 }, RequiredLiveries = new List<int>() { 1 } },
+            new DispatchableVehicle(StanierUnmarked, 1,1),
+            new DispatchableVehicle(PoliceTransporter, 0, 15) { MinOccupants = 3, MaxOccupants = 4,MinWantedLevelSpawn = 3},
+            new DispatchableVehicle(PoliceBike, 15, 10) {GroupName = "Motorcycle", MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 0 } }, };
         List<DispatchableVehicle> LSSDVehicles_Old = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sheriff", 85, 85) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(2, true, 100) } },
-            new DispatchableVehicle("sheriff2", 15, 15), };
+            new DispatchableVehicle(PoliceStanier, 20,25){ MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 7 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle(PoliceMerit, 25,25){ MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 7 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle(PoliceBuffalo, 50, 25) {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 7 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
+            new DispatchableVehicle(PoliceGranger, 50, 25) { CaninePossibleSeats = new List<int>{ 1 },MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() {7 } },
+            new DispatchableVehicle(PoliceBike, 20, 10) { GroupName = "Motorcycle",MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 3 } },};
+        List<DispatchableVehicle> SAHPVehicles_Old = new List<DispatchableVehicle>() {
+            new DispatchableVehicle(PoliceStanier, 20,15){ GroupName = "StandardSAHP", RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(1, true, 50), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle(PoliceMerit, 25,20){ GroupName = "StandardSAHP",RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1, false, 100), new DispatchableVehicleExtra(1, true, 50), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle(PoliceBike, 45, 20) { GroupName = "Motorcycle", MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 1 } },
+            new DispatchableVehicle(PoliceBuffalo, 45, 45) {GroupName = "StandardSAHP",RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } ,VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(1, true, 50) } },
+            new DispatchableVehicle(PoliceGranger, 10, 5) {GroupName = "StandardSAHP",RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } },
+        };
+
         List<DispatchableVehicle> BallasVehicles_Old = new List<DispatchableVehicle>() {
             new DispatchableVehicle("baller", 50, 50){ RequiredPrimaryColorID = 145,RequiredSecondaryColorID = 145 },
             new DispatchableVehicle("patriot", 50, 50){ RequiredPrimaryColorID = 145,RequiredSecondaryColorID = 145 },//purp[le
@@ -22666,7 +22701,7 @@ Output = -1,
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("LSPDVehicles", LSPDVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("SAHPVehicles", SAHPVehicles));
+        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("SAHPVehicles", SAHPVehicles_Old));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("LSSDVehicles", LSSDVehicles_Old));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("BCSOVehicles", LSSDVehicles_Old));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("VWHillsLSSDVehicles", LSSDVehicles_Old));
@@ -22758,24 +22793,6 @@ Output = -1,
     private void DefaultConfig_FullExpandedJurisdiction()
     {
         
-        string PoliceStanier = "police";
-        string PoliceBuffalo = "police2";
-        string PoliceTorrence = "police3";
-        string PoliceGranger = "sheriff2";
-        string PoliceGresley = "sheriff";
-
-        string PoliceBison = "policeold2";
-        string PoliceMerit = "policeold1";
-        
-        string PoliceFugitive = "pranger";
-        string PoliceBike = "policeb";
-        string PoliceTransporter = "policet";
-
-        string StanierUnmarked = "police4";
-        string BuffaloUnmarked = "fbi";
-        string GrangerUnmarked = "fbi2";
-
-        string SecurityTorrence = "lurcher";
 
         List<DispatchableVehicleGroup> VehicleGroupLookupFEJ = new List<DispatchableVehicleGroup>();
         //Cops

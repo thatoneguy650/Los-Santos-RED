@@ -67,7 +67,7 @@ public class Settings : ISettingsProvideable
 
         SettingsManager.PoliceSettings.TalkFailFineAmount = 100;
 
-        SettingsManager.RespawnSettings.ShowRequiredBribeAmount = true;
+       // SettingsManager.RespawnSettings.ShowRequiredBribeAmount = true;
 
         SettingsManager.RecoilSettings.ApplyRecoil = false;
         SettingsManager.SwaySettings.ApplySway = false;
@@ -102,7 +102,7 @@ public class Settings : ISettingsProvideable
         SettingsManager.RespawnSettings.PoliceBailDurationCiviliansKilledMultiplier = 1;
         SettingsManager.RespawnSettings.ClearIllicitInventoryOnDeath = false;
         SettingsManager.RespawnSettings.ClearIllicitInventoryOnSurrender = false;
-        SettingsManager.RespawnSettings.ShowRequiredBribeAmount = true;
+        //SettingsManager.RespawnSettings.ShowRequiredBribeAmount = true;
         SettingsManager.RespawnSettings.ImpoundVehicles = false;
 
         SettingsManager.VehicleSettings.ForceFirstPersonOnVehicleDuck = false;

@@ -778,6 +778,7 @@ public class Pedestrians : ITaskerReportable
             createdPedExt.WillCallPoliceIntense = false;
             createdPedExt.WillFight = false;
             createdPedExt.WillFightPolice = false;
+            createdPedExt.WillAlwaysFightPolice = false;
             createdPedExt.CanBeAmbientTasked = false;
             createdPedExt.SetupTransactionItems(null);
         }
@@ -834,6 +835,7 @@ public class Pedestrians : ITaskerReportable
         {
             gm.WillFight = false;
             gm.WillFightPolice = false;
+            gm.WillAlwaysFightPolice = false;
             gm.CanBeAmbientTasked = false;
             gm.SetupTransactionItems(null);
         }
@@ -841,6 +843,7 @@ public class Pedestrians : ITaskerReportable
         {
             gm.WillFight = false;
             gm.WillFightPolice = false;
+            gm.WillAlwaysFightPolice = false;
             gm.SetupTransactionItems(null);
             NativeFunction.Natives.REMOVE_ALL_PED_WEAPONS(Pedestrian, false);
         }

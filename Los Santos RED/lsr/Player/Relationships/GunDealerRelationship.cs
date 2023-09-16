@@ -33,7 +33,7 @@ public class GunDealerRelationship : ContactRelationship
         if(TextToSend > 1)
         {
             sendGroupText = true;
-            Player.CellPhone.AddScheduledText(new GunDealerContact(ContactName), GroupReplies.PickRandom(), false);
+            Player.CellPhone.AddScheduledText(new GunDealerContact(ContactName), GroupReplies.PickRandom(),4, false);
         }
         foreach (GunStore gs in PlacesOfInterest.PossibleLocations.GunStores)
         {
@@ -57,7 +57,7 @@ public class GunDealerRelationship : ContactRelationship
                     $"Need some extra hardware? {gs.FullStreetAddress}",
                     $"Got some other things at the shop on {gs.FullStreetAddress}",
                 };
-                Player.CellPhone.AddScheduledText(new GunDealerContact(ContactName), Replies.PickRandom(), false);
+                Player.CellPhone.AddScheduledText(new GunDealerContact(ContactName), Replies.PickRandom(),4, false);
             }
         }
         if(TotalMoneySpent >= 2000)
@@ -92,7 +92,7 @@ public class GunDealerRelationship : ContactRelationship
                                 $"Need some extra hardware? {gs.FullStreetAddress}",
                                 $"Got some other things at the shop on {gs.FullStreetAddress}",
                             };
-                            Player.CellPhone.AddScheduledText(new GunDealerContact(ContactName), Replies.PickRandom(), false);
+                            Player.CellPhone.AddScheduledText(new GunDealerContact(ContactName), Replies.PickRandom(), 3, false);
                         }
                         //EntryPoint.WriteToConsoleTestLong($"{gs.Name} is now enabled");
                     }

@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Player;
+﻿using LosSantosRED.lsr.Locations;
+using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
 using Rage;
 using System;
@@ -39,6 +40,7 @@ namespace LosSantosRED.lsr.Interface
         bool CharacterModelIsPrimaryCharacter { get; }
         CellPhone CellPhone { get; }
         Gang CurrentGang { get; }
+        LocationData CurrentLocation { get; }
 
         void DisplayPlayerNotification();
         void Reset(bool v1, bool v2, bool v3, bool v4, bool v5, bool v6, bool v7, bool v8, bool v9, bool v10, bool v11, bool v12, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetACtivites, bool resetGracePeriod);

@@ -124,7 +124,7 @@ public class Forger : GameLocation
             if (Player.BankAccounts.GetMoney(false) <= RandomPlateCost)
             {
                 PlayErrorSound();
-                DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation.");
+                DisplayMessage("~r~Cash Only", "You do not have enough cash on hand.");
                 return;
             }
             Player.BankAccounts.GiveMoney(-1 * RandomPlateCost, false);
@@ -168,7 +168,7 @@ public class Forger : GameLocation
             if (Player.BankAccounts.GetMoney(false) <= CustomPlateCost)
             {
                 PlayErrorSound();
-                DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation.");
+                DisplayMessage("~r~Cash Only", "You do not have enough cash on hand.");
                 return;
             }
             Player.BankAccounts.GiveMoney(-1 * CustomPlateCost, false);

@@ -245,7 +245,7 @@ public class DebugHelperSubMenu : DebugSubMenu
         UIMenuItem setPedMobile = new UIMenuItem("Set Ped Mobile", "Set closest ped mobile!");
         setPedMobile.Activated += (menu, item) =>
         {
-            PedExt pedExt = World.Pedestrians.Citizens.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            PedExt pedExt = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
             if(pedExt == null || !pedExt.Pedestrian.Exists())
             {
                 return;
@@ -285,7 +285,7 @@ public class DebugHelperSubMenu : DebugSubMenu
         setPedMobilePalette.Value = 0;
         setPedMobilePalette.Activated += (menu, item) =>
         {
-            PedExt pedExt = World.Pedestrians.Citizens.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            PedExt pedExt = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
             if (pedExt == null || !pedExt.Pedestrian.Exists())
             {
                 return;

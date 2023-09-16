@@ -103,21 +103,23 @@ public class Respawning// : IRespawning
 
 
     }
-    public bool BribePolice(int Amount, ModUIMenu menu)
+    public bool BribePolice(int Amount, ModUIMenu menu, PossibleBribe possibleBribe)
     {
         CalculateBribe();
-        if (CurrentPlayer.BankAccounts.GetMoney(true) < Amount)
+
+
+        if (CurrentPlayer.BankAccounts.GetMoney(false) < Amount)
         {
-            Game.DisplayNotification(BankContactPicture, BankContactPicture, "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", Amount));
+            Game.DisplayNotification(BlankContactPicture, BlankContactPicture, StaticStrings.OfficerFriendlyContactName, "~r~Cash Only", "You do not have enough cash on hand.");
             menu?.Show();
             return false;
         }
-        else if (Amount < RequiredBribeAmount)//(CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
+        else if (Amount < RequiredBribeAmount && !possibleBribe.AttemptBribe())//(CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
         {
             Game.DisplayNotification(BlankContactPicture, BlankContactPicture, StaticStrings.OfficerFriendlyContactName, "Expedited Service Fee", string.Format(BribeFailedResponse, Amount));
             if (Settings.SettingsManager.RespawnSettings.DeductMoneyOnFailedBribe)
             {
-                CurrentPlayer.BankAccounts.GiveMoney(-1 * Amount, true);
+                CurrentPlayer.BankAccounts.GiveMoney(-1 * Amount, false);
             }
             menu?.Show();
             return false;
@@ -140,7 +142,6 @@ public class Respawning// : IRespawning
             {
                 CurrentPlayer.CellPhone.AddScheduledText(new CorruptCopContact(StaticStrings.OfficerFriendlyContactName), OfficerFriendlyResponses.PickRandom(), 1, false);
             }
-            //CurrentPlayer.CellPhone.AddScheduledContact(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(2));
             CurrentPlayer.Scanner.OnBribedPolice();
             return true;
         }
@@ -695,10 +696,8 @@ public class Respawning// : IRespawning
     {
         TimesTalked = 0;
     }
-    public void CalulateBribe()
-    {
-        CalculateBribe();
-    }
+
+    
     public void ConsentToSearch(ModUIMenu menu)
     {
 

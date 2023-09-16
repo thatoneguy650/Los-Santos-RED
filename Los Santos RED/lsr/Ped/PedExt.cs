@@ -347,6 +347,11 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual bool WillFight { get; set; } = false;
     public virtual bool WillFightPolice { get; set; } = false;
 
+
+    public virtual bool WillAlwaysFightPolice { get; set; } = false;
+
+
+
     public virtual bool WillCower { get; set; } = false;
 
 

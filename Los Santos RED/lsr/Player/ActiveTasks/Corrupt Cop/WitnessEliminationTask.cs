@@ -396,6 +396,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             Witness.WillCallPoliceIntense = true;
                             Witness.WillFight = false;
                             Witness.WillFightPolice = false;
+                            Witness.WillAlwaysFightPolice = false;
                             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(ped, (int)eCombatAttributes.BF_AlwaysFlee, true);
                             NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(ped, 2, true);
                             //EntryPoint.WriteToConsoleTestLong("WITNESS ELIMINATION, THE WITNESS WITH FLEE FROM YOU");
@@ -406,6 +407,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             Witness.WillCallPolice = false;
                             Witness.WillCallPoliceIntense = false;
                             Witness.WillFightPolice = true;
+                            Witness.WillAlwaysFightPolice = true;
                             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(ped, (int)eCombatAttributes.BF_AlwaysFight, true);
                             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(ped, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
                             NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(ped, 0, false);
@@ -562,7 +564,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Sending ${MoneyToRecieve}",
                             $"Heard you were done. We owe you ${MoneyToRecieve}",
                             };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), false);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1, false);
         }
         private void SendDeadDropStartMessage()
         {
@@ -571,7 +573,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Go get your payment of ${MoneyToRecieve} from {myDrop.Description}, address is {myDrop.FullStreetAddress}.",
                             };
 
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), false);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1, false);
         }
         private void SendCompletedMessage()
         {
@@ -582,7 +584,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"Sending ${MoneyToRecieve}",
                         $"Heard you were done. We owe you ${MoneyToRecieve}",
                         };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), false);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 2, false);
         }
         private void SendFailMessage()
         {
@@ -593,7 +595,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"How did you fuck this up so bad, they are squealing everything",
                         $"Since you fucked that up, they went right to the cops.",
                         };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), false);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 2, false);
         }
     }
 
