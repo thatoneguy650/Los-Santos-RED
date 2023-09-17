@@ -254,7 +254,7 @@ public class GangTab
         toReturn.Add(new Tuple<string, string>(startString,""));
         startString = "";
 
-        if (gangTerritory.Any())
+        if (gangTerritory != null && gangTerritory.Any())
         {
             foreach (ZoneJurisdiction zj in gangTerritory)
             {

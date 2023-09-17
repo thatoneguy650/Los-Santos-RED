@@ -1655,7 +1655,7 @@ public class DispatchablePeople : IDispatchablePeople
 
         List<DispatchablePersonGroup> PeopleGroupLookup_Old = new List<DispatchablePersonGroup>();
         //Cops
-        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("StandardCops", StandardCops_Old));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("StandardCops", StandardCops));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("SheriffPeds", SheriffPeds_Old));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("NOOSEPeds", NOOSEPeds_Old));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("FIBPeds", FIBPeds_Old));

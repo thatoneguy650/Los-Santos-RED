@@ -34,8 +34,9 @@ public class GangTerritories : IGangTerritories
         else
         {
             EntryPoint.WriteToConsole($"No Gang Territories config found, creating default", 0);
-            DefaultConfig_LosSantos2008();
+            
             DefaultConfig();
+            DefaultConfig_LosSantos2008();
             DefaultConfig_Simple();
             DefaultConfig_LibertyCity();
             

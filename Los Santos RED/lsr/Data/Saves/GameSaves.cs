@@ -139,7 +139,7 @@ public class GameSaves : IGameSaves
             new StoredWeapon(3756226112, Vector3.Zero, new WeaponVariation(), 0),
         };
         GameSave AlexisGameSave = new GameSave("Alexis Davis", 15500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new List<VehicleSaveStatus>() {
-            new VehicleSaveStatus("furoregt", new Vector3(-365.8749f, -179.3706f, 36.62038f), 206.9494f){ 
+            new VehicleSaveStatus("comet2", new Vector3(-365.8749f, -179.3706f, 36.62038f), 206.9494f){ 
                 InventoryItems = new List<InventorySave>() { new InventorySave("DIC Lighter",1.0f), }
             , WeaponInventory = new List<StoredWeapon>() {new StoredWeapon(1593441988, Vector3.Zero, new WeaponVariation(new List<WeaponComponent>() { new WeaponComponent("Extended Clip") } ), 120), },
                 VehicleVariation = new VehicleVariation() { PrimaryColor =  111, SecondaryColor = 111, LicensePlate = new LSR.Vehicles.LicensePlate("125JK34", 0, false) } },

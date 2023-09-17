@@ -140,9 +140,9 @@ public class PlayerOtherSettings : ISettingsDefaultable
         SeeBehindDistanceStealth = 1.5f;
         SeeBehindDistanceRegular = 1.5f;
 
-        VehicleAutoCameraXDistance = 5f;
-        VehicleAutoCameraYDistance = 8f;
-        VehicleAutoCameraZDistance = 2f;
+        VehicleAutoCameraXDistance = 3f;
+        VehicleAutoCameraYDistance = 4f;
+        VehicleAutoCameraZDistance = 1f;
     }
 
 }

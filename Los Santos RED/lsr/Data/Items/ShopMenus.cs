@@ -41,8 +41,192 @@ public class ShopMenus : IShopMenus
         {
             EntryPoint.WriteToConsole($"No Shop Menus config found, creating default", 0);
             DefaultConfig();
+            DefaultConfig_LosSantos2008();
         }
     }
+
+    private void DefaultConfig_LosSantos2008()
+    {
+        ShopMenuTypes oldPossibleShopMenus = PossibleShopMenus.Copy();
+
+
+        List<string> toRemoveMenus = new List<string>() { "BenefactorGallavanterMenu", "VapidMenu", "LuxuryAutosMenu", "PremiumDeluxeMenu", "AlbanyMenu" };
+
+        //foreach(ShopMenu shopmenu in oldPossibleShopMenus.ShopMenuList)
+        //{
+        //    if(toRemoveMenus.Contains(shopmenu.Name))
+        //    {
+        //        shopmenu.Items.Clear();
+        //    }
+        //}
+
+        oldPossibleShopMenus.ShopMenuList.RemoveAll(x => toRemoveMenus.Contains(x.ID));
+        oldPossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
+            new ShopMenu("BenefactorGallavanterMenu","Benefactor/Gallavanter",new List<MenuItem>() {       
+                new MenuItem("Gallivanter Baller",67000,45000),
+                new MenuItem("Benefactor Schafter",65000,34000),
+                new MenuItem("Benefactor Schafter (IV)",75000,52000),
+                new MenuItem("Benefactor Schafter GTR (IV)",112000,81000),
+                new MenuItem("Benefactor Feltzer",145000,90500),
+                new MenuItem("Benefactor Feltzer (IV)",145000,90500),
+                new MenuItem("Benefactor Serrano",60000,45000),
+                new MenuItem("Benefactor Dubsta",110000,78000),
+            }),
+            new ShopMenu("VapidMenu","Vapid",new List<MenuItem>() {
+                new MenuItem("Vapid Stanier",28000, 12000),
+                new MenuItem("Vapid Stanier (IV)",29000, 13000),
+                new MenuItem("Vapid Uranus",105000,82000),
+                new MenuItem("Vapid Huntley Sport (IV)",35000,25000),
+                new MenuItem("Vapid Fortune",15000,10000),
+                new MenuItem("Vapid Coquette (IV)",56000,35000),
+                new MenuItem("Vapid Contender",34000,28000),
+                new MenuItem("Vapid Bobcat",31000,25000),
+                new MenuItem("Vapid Minivan",29000, 12500),
+                new MenuItem("Vapid Minivan Custom",30500,13000),
+                new MenuItem("Vapid Speedo",31000,13500),
+                new MenuItem("Vapid Speedo Custom",31500,14000),
+                new MenuItem("Vapid Sadler",38000,15500),
+                new MenuItem("Vapid Dominator",55000,33000),
+                new MenuItem("Vapid Bullet",155000,105050),
+            }),
+            new ShopMenu("LuxuryAutosMenu","Luxury Autos",new List<MenuItem>() {//pegassi/grotti/enus/buckingham/pfiuster
+                new MenuItem("Schyster PMP 600",37000,28000),
+                new MenuItem("Declasse Premier (IV)",32000,27000),
+                new MenuItem("Albany Presidente (IV)",37000,31000),
+                new MenuItem("Albany Presidente 2 (IV)",39000,32000),
+                new MenuItem("Ubermacht Sentinel (IV)",35000,30000),
+                new MenuItem("Annis Pinnacle",45000,38000),
+                new MenuItem("Enus Super Diamond (IV)",655000,467000),
+                //new MenuItem("Grotti Blade",28000,21000),
+                new MenuItem("Grotti Cheetah Classic",334500,259000),
+                new MenuItem("Grotti Cheetah (IV)",255000,167000),
+                new MenuItem("Grotti Turismo (IV)",150000,86000),
+                new MenuItem("Pfister Comet",100000,78000),
+                new MenuItem("Pfister Comet Retro Custom",13000,12000),
+                new MenuItem("Pegassi Bati 801",15000,7500),
+                new MenuItem("Pegassi Bati 801RR",16000,7000),
+            }),
+            new ShopMenu("PremiumDeluxeMenu","PremiumDeluxe",new List<MenuItem>() {
+                new MenuItem("Dundreary Admiral",29000, 18000),
+               // new MenuItem("Schyster Cabby",30000, 22000),
+                new MenuItem("Bravado Feroci",30500,21000),
+                new MenuItem("Emperor Lokus",31000, 25000),
+                new MenuItem("Bravado Gauntlet",32000,28000),
+                new MenuItem("Bravado Buffalo",35000,27000),
+                new MenuItem("Declasse Merit",29000,21000),
+                new MenuItem("Bravado Banshee",105000,78000),
+                new MenuItem("Dinka Perennial",15000,10000),
+
+                new MenuItem("Karin Futo",12000,8000),
+                new MenuItem("Karin Rebel",19000,9500),
+                new MenuItem("Karin BeeJay XL",29000,17000),
+                new MenuItem("Karin Dilettante",35000,18000),
+                new MenuItem("Karin Asterope",36500,22000),
+                new MenuItem("Karin Sultan Classic",36750,21500),
+                new MenuItem("Karin Sultan",37000,28000),
+                new MenuItem("Karin Sultan RS",38000,32000),
+                new MenuItem("Karin Intruder",38000,32000),
+                new MenuItem("Karin Previon",39000,34500),
+                new MenuItem("Karin Everon",44000,35000),
+                new MenuItem("Declasse Vigero (IV)",32000,28000),
+                new MenuItem("Maibatsu Vincent (IV)",22000,15000),
+            }),
+            new ShopMenu("AlbanyMenu","Albany",new List<MenuItem>() {
+                new MenuItem("Albany Emperor (IV)",25000,17500),
+                new MenuItem("Albany Buccaneer",29000,19500),
+                new MenuItem("Albany Buccaneer Custom",49000,29500),
+                new MenuItem("Albany Cavalcade",45000,27500),
+                new MenuItem("Albany Cavalcade FXT",50000,25000),
+                new MenuItem("Albany Emperor",25000,17500),
+                new MenuItem("Albany Manana",28000,19500),
+                new MenuItem("Albany Manana Custom",42400,21200),
+                new MenuItem("Albany Primo",35000,17500),
+                new MenuItem("Albany Primo Custom",55000,27500),
+                new MenuItem("Albany Virgo",36000,18000),
+                new MenuItem("Albany Esperanto (IV)",22000,15000),
+                new MenuItem("Albany Washington",48000,19000),
+            }),
+        });
+
+
+        oldPossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
+        new ShopMenu("SunshineMenu", "Sunshine", new List<MenuItem>() {
+                new MenuItem("Vapid Dominator",55000,10000),
+                new MenuItem("Albany Cavalcade",0,9500),
+                new MenuItem("Albany Washington",0,5000),
+                new MenuItem("Bravado Buffalo",0,7000),
+                new MenuItem("Bravado Banshee",0,25000),
+                new MenuItem("Karin BeeJay XL",0,5500),
+                new MenuItem("Benefactor Serrano",0,4500),
+                new MenuItem("Benefactor Dubsta",0,21000),
+                new MenuItem("Gallivanter Baller",0,17000),
+                new MenuItem("Pfister Comet",0,27000),
+
+                new MenuItem("Albany Emperor (IV)",0,17500),
+                new MenuItem("Albany Cavalcade FXT",0,10000),
+                new MenuItem("Bravado Feroci",0,11000),
+                new MenuItem("Emperor Lokus",0, 12000),
+                new MenuItem("Schyster PMP 600",0,13000),
+                new MenuItem("Declasse Premier (IV)",0,12500),
+                new MenuItem("Albany Presidente (IV)",0,15000),
+                new MenuItem("Vapid Stanier (IV)",0, 10000),
+                new MenuItem("Vapid Uranus",0,8500),
+            }),
+
+        new ShopMenu("NationalMenu", "National", new List<MenuItem>() {
+                new MenuItem("Karin Sultan",0,5600),
+                new MenuItem("Bravado Gauntlet",0,8600),
+                new MenuItem("Bravado Buffalo",0,10500),
+                new MenuItem("Bravado Banshee",0,22000),
+                new MenuItem("Vapid Bullet",0,43000),
+                new MenuItem("Gallivanter Baller",0,16000),
+                new MenuItem("Benefactor Schafter",0,6800),
+                new MenuItem("Benefactor Feltzer",0,19000),  
+                
+                new MenuItem("Albany Virgo",0,5000),
+                new MenuItem("Declasse Vigero (IV)",0,12000),
+                new MenuItem("Dundreary Admiral",0, 8000),
+                new MenuItem("Schyster Cabby",0, 4000),
+                new MenuItem("Enus Super Diamond (IV)",0,12000),
+                new MenuItem("Grotti Cheetah Classic",0,15000),
+                new MenuItem("Grotti Cheetah (IV)",0,16500),
+                new MenuItem("Grotti Turismo (IV)",0,14500),
+                new MenuItem("Vapid Huntley Sport (IV)",0,18500),
+                new MenuItem("Vapid Fortune",0,4500),
+            }),
+
+        new ShopMenu("PaletoExportMenu", "Paleto Exports", new List<MenuItem>() {
+                new MenuItem("Bravado Gauntlet",0,7800),
+                new MenuItem("Bravado Buffalo",0,8900),
+                new MenuItem("Karin Futo",0,2000),
+                new MenuItem("Karin Rebel",0,5600),
+                new MenuItem("Karin BeeJay XL",0,2800),
+                new MenuItem("Karin Dilettante",0,2400),
+                new MenuItem("Karin Asterope",0,3400),
+                new MenuItem("Vapid Stanier",0, 3400),
+                new MenuItem("Vapid Minivan",0, 2500),
+                new MenuItem("Benefactor Schwartzer",0,4000),
+                new MenuItem("BF Surfer",0, 1500),
+                new MenuItem("BF Injection",0,2000),
+
+                new MenuItem("Albany Emperor (IV)",0,4000),
+                new MenuItem("Albany Esperanto (IV)",0,3500),
+                new MenuItem("Maibatsu Vincent (IV)",0,15000),
+                new MenuItem("Albany Presidente 2 (IV)",0,15500),
+                new MenuItem("Ubermacht Sentinel (IV)",0,14500),
+                new MenuItem("Annis Pinnacle",0,13000),
+                new MenuItem("Vapid Coquette (IV)",0,19000),
+                new MenuItem("Vapid Contender",0,6700),
+                new MenuItem("Vapid Bobcat",0,4500),
+            }),
+
+        });
+
+
+
+        Serialization.SerializeParam(oldPossibleShopMenus, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\ShopMenus_LosSantos2008.xml");
+    }
+
     public ShopMenu GetSpecificMenu(string menuID)
     {
         return PossibleShopMenus.ShopMenuList.Where(x => x.ID == menuID).FirstOrDefault();// ShopMenuList.Where(x => x.ID == menuID).FirstOrDefault()?.Copy();

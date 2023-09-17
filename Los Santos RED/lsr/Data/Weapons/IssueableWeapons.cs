@@ -163,23 +163,22 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_marksmanrifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Large Scope"), new WeaponComponent("Tracer Rounds") })),
         };
 
-        IssuableWeaponsGroupLookup = new List<IssuableWeaponsGroup>();
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("Tasers", Tasers));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("Nightsticks", Nightsticks));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("AllSidearms", AllSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("AllLongGuns", AllLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("BestSidearms", BestSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("BestLongGuns", BestLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MilitarySidearms", MilitarySidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MilitaryLongGuns", MilitaryLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("HeliSidearms", HeliSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("HeliLongGuns", HeliLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("LimitedSidearms", LimitedSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("LimitedLongGuns", LimitedLongGuns));
-
-
-
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("GoodSniperLongGuns", GoodSniperLongGuns));
+        IssuableWeaponsGroupLookup = new List<IssuableWeaponsGroup>
+        {
+            new IssuableWeaponsGroup("Tasers", Tasers),
+            new IssuableWeaponsGroup("Nightsticks", Nightsticks),
+            new IssuableWeaponsGroup("AllSidearms", AllSidearms),
+            new IssuableWeaponsGroup("AllLongGuns", AllLongGuns),
+            new IssuableWeaponsGroup("BestSidearms", BestSidearms),
+            new IssuableWeaponsGroup("BestLongGuns", BestLongGuns),
+            new IssuableWeaponsGroup("MilitarySidearms", MilitarySidearms),
+            new IssuableWeaponsGroup("MilitaryLongGuns", MilitaryLongGuns),
+            new IssuableWeaponsGroup("HeliSidearms", HeliSidearms),
+            new IssuableWeaponsGroup("HeliLongGuns", HeliLongGuns),
+            new IssuableWeaponsGroup("LimitedSidearms", LimitedSidearms),
+            new IssuableWeaponsGroup("LimitedLongGuns", LimitedLongGuns),
+            new IssuableWeaponsGroup("GoodSniperLongGuns", GoodSniperLongGuns)
+        };
 
 
         //Gangs
@@ -478,14 +477,10 @@ public class IssueableWeapons : IIssuableWeapons
         {
             new IssuableWeapon("weapon_minigun", new WeaponVariation()),
         };
-
-        //Fire
         List<IssuableWeapon> FireExtinguisher = new List<IssuableWeapon>()
         {
             new IssuableWeapon("weapon_fireextinguisher", new WeaponVariation()),
         };
-
-
 
 
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MeleeWeapons", MeleeWeapons));
@@ -513,7 +508,6 @@ public class IssueableWeapons : IIssuableWeapons
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("FireExtinguisher", FireExtinguisher));
         Serialization.SerializeParams(IssuableWeaponsGroupLookup, ConfigFileName);
     }
-
     private void DefaultConfig_LosSantos2008()
     {
         //Weapon COPS
@@ -542,9 +536,9 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}),10),
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}),5),
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),5),
-            new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(),5),
-            new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}),10),
-            new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(),5),
+            new IssuableWeapon("weapon_tacticalrifle", new WeaponVariation(),5),
+            new IssuableWeapon("weapon_tacticalrifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}),10),
+            new IssuableWeapon("weapon_tacticalrifle", new WeaponVariation(),5),
         };
         List<IssuableWeapon> BestSidearms = new List<IssuableWeapon>()
         {
@@ -575,7 +569,6 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation()  ,20),
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {   new WeaponComponent("Flashlight" )}),20),
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {   new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),20),
-
             new IssuableWeapon("weapon_combatmg", new WeaponVariation(),15),
         };
         List<IssuableWeapon> HeliSidearms = new List<IssuableWeapon>()
@@ -589,8 +582,6 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight")})),
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {   new WeaponComponent("Extended Clip") })),
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Large Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )})),
-            //new IssuableWeapon("weapon_marksmanrifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Large Scope"), new WeaponComponent("Suppressor"), new WeaponComponent("Tracer Rounds" )})),
-            //new IssuableWeapon("weapon_marksmanrifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Large Scope"), new WeaponComponent("Tracer Rounds") })),
         };
         List<IssuableWeapon> LimitedSidearms = new List<IssuableWeapon>()
         {
@@ -613,8 +604,6 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_pumpshotgun", new WeaponVariation()),
             new IssuableWeapon("weapon_pumpshotgun", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )})),
 
-            new IssuableWeapon("weapon_pumpshotgun_mk2", new WeaponVariation()),
-            new IssuableWeapon("weapon_pumpshotgun_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )})),
         };
         List<IssuableWeapon> Tasers = new List<IssuableWeapon>()
         {
@@ -625,19 +614,21 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_nightstick", new WeaponVariation(), 100),
         };
 
-        IssuableWeaponsGroupLookup = new List<IssuableWeaponsGroup>();
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("Tasers", Tasers));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("Nightsticks", Nightsticks));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("AllSidearms", AllSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("AllLongGuns", AllLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("BestSidearms", BestSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("BestLongGuns", BestLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MilitarySidearms", MilitarySidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MilitaryLongGuns", MilitaryLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("HeliSidearms", HeliSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("HeliLongGuns", HeliLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("LimitedSidearms", LimitedSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("LimitedLongGuns", LimitedLongGuns));
+        List<IssuableWeaponsGroup> IssuableWeaponsGroupLookup_Old = new List<IssuableWeaponsGroup>
+        {
+            new IssuableWeaponsGroup("Tasers", Tasers),
+            new IssuableWeaponsGroup("Nightsticks", Nightsticks),
+            new IssuableWeaponsGroup("AllSidearms", AllSidearms),
+            new IssuableWeaponsGroup("AllLongGuns", AllLongGuns),
+            new IssuableWeaponsGroup("BestSidearms", BestSidearms),
+            new IssuableWeaponsGroup("BestLongGuns", BestLongGuns),
+            new IssuableWeaponsGroup("MilitarySidearms", MilitarySidearms),
+            new IssuableWeaponsGroup("MilitaryLongGuns", MilitaryLongGuns),
+            new IssuableWeaponsGroup("HeliSidearms", HeliSidearms),
+            new IssuableWeaponsGroup("HeliLongGuns", HeliLongGuns),
+            new IssuableWeaponsGroup("LimitedSidearms", LimitedSidearms),
+            new IssuableWeaponsGroup("LimitedLongGuns", LimitedLongGuns)
+        };
 
         //Gangs
         List<IssuableWeapon> MeleeWeapons = new List<IssuableWeapon>()
@@ -931,36 +922,40 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_bullpupshotgun", new WeaponVariation()),
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation()),
         };
-
         List<IssuableWeapon> Minigun = new List<IssuableWeapon>()
         {
             new IssuableWeapon("weapon_minigun", new WeaponVariation()),
         };
+        List<IssuableWeapon> FireExtinguisher = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_fireextinguisher", new WeaponVariation()),
+        };
 
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MeleeWeapons", MeleeWeapons));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("AllGangSidearms", AllGangSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("AllGangLongGuns", AllGangLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("FamiliesSidearms", FamiliesSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("FamiliesLongGuns", FamiliesLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("LostSidearms", LostSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("LostLongGuns", LostLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("VagosSidearms", VagosSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("VagosLongGuns", VagosLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("BallasSidearms", BallasSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("BallasLongGuns", BallasLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MarabuntaSidearms", MarabuntaSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MarabuntaLongGuns", MarabuntaLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("VarriosSidearms", VarriosSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("VarriosLongGuns", VarriosLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("TriadsSidearms", TriadsSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("TriadsLongGuns", TriadsLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("KkangpaeSidearms", KkangpaeSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("KkangpaeLongGuns", KkangpaeLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MafiaSidearms", MafiaSidearms));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns));
-        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("Minigun", Minigun));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("MeleeWeapons", MeleeWeapons));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("AllGangSidearms", AllGangSidearms));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("AllGangLongGuns", AllGangLongGuns));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("FamiliesSidearms", FamiliesSidearms));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("FamiliesLongGuns", FamiliesLongGuns));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("LostSidearms", LostSidearms));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("LostLongGuns", LostLongGuns));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("VagosSidearms", VagosSidearms));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("VagosLongGuns", VagosLongGuns));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("BallasSidearms", BallasSidearms));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("BallasLongGuns", BallasLongGuns));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("MarabuntaSidearms", MarabuntaSidearms));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("MarabuntaLongGuns", MarabuntaLongGuns));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("VarriosSidearms", VarriosSidearms));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("VarriosLongGuns", VarriosLongGuns));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("TriadsSidearms", TriadsSidearms));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("TriadsLongGuns", TriadsLongGuns));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("KkangpaeSidearms", KkangpaeSidearms));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("KkangpaeLongGuns", KkangpaeLongGuns));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("MafiaSidearms", MafiaSidearms));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("Minigun", Minigun));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("FireExtinguisher", FireExtinguisher));
 
-        Serialization.SerializeParams(IssuableWeaponsGroupLookup, ConfigFileName);
+        Serialization.SerializeParams(IssuableWeaponsGroupLookup_Old, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\IssuableWeapons_LosSantos2008.xml");
     }
 
     public List<IssuableWeapon> GetWeaponData(string issuableWeaponsID)
