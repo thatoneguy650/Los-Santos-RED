@@ -306,13 +306,55 @@ public class ModDataFileManager
     }
     private void SetupLosSantos2008()
     {
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008");
-        string Description = "PreMade config for 2008 Los Santos. See what LS was like when we were in LC with Niko. Includes a custom vehiclemodelsets.meta and popgroups.ymt to give you a 2008 feel using existing GTA 5 vehicles. More to come!" + Environment.NewLine + Environment.NewLine +
-        "Los Santos 2008 Installation: " + Environment.NewLine +
-        "Copy popgroups.ymt from AlternateConfigs\\LosSantos2008\\Files to '\\mods\\update\\update.rpf\\x64\\levels\\gta5\\'" + Environment.NewLine +
-        "Copy vehiclemodelsets.meta from AlternateConfigs\\LosSantos2008\\Files to '\\mods\\update\\update.rpf\\common\\data\\ai\\'" + Environment.NewLine +
-        "To use, copy all of the .xml files from the AlternateConfigs\\LosSantos2008 folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" + Environment.NewLine + Environment.NewLine +
-        "";
+        string Description =
+            "See what San Andreas was like in 2008 when we were in Liberty City with Niko. Includes customized traffic, phones, police, and gangs."
+            + Environment.NewLine +
+            "This pack will replace the following vehicles police (Stanier), police2 (Buffalo), sheriff2 (Granger Police), policeb (Police Bike), policeold1 (Merit Police). It will also replace the following files: popgroups.ymt, vehiclemodelsets.meta, and prop_player_phone_01. THE IV PACK IS REQUIRED!"
+            + Environment.NewLine + Environment.NewLine +
+            "IV Pack Installation: "
+            + Environment.NewLine +
+            "1. Follow the instructions at https://www.gta5-mods.com/vehicles/ivpack-gtaiv-vehicles-in-gtav (be sure to get the heap/packfile adjusters and a gameconfig)"
+            + Environment.NewLine + Environment.NewLine +
+            "2008 Installation: "
+            + Environment.NewLine +
+            "1. Install the gresk2008installer.oiv with OpenIV"
+            + Environment.NewLine +
+            "2. Copy all of the .xml files from the AlternateConfigs\\LosSantos2008 folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)"
+            + Environment.NewLine + Environment.NewLine + Environment.NewLine +
+
+
+
+            ""
+            + Environment.NewLine + Environment.NewLine + Environment.NewLine +
+
+
+            "Model Credits:"
+            + Environment.NewLine +
+            "Stanier - Model by Rockstar Games, UV-Map by LtMattJeter, template by Lt.Caine, mirror lights by Netman, lightbars, assembly and skins by Yard1"
+            + Environment.NewLine +
+            "Buffalo - Model by Rockstar Games, UV-Map, template, lightbar, assembly and skins by Yard1."
+            + Environment.NewLine +
+            "Granger - Base GTAV vehicle model made by Rockstar Games and modified by Lt.Caine. Vehicle body remapped by Lt.Caine. Yard1 for fixing vehicle glass collision issues"
+            + Environment.NewLine +
+            "Police Bike Retro - Model: Rockstar Games. Mapping: AllenKennedy"
+            + Environment.NewLine +
+            "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1."
+            + Environment.NewLine + Environment.NewLine +
+            "Creator Links"
+            + Environment.NewLine +
+            "Yard1 - https://www.gta5-mods.com/users/Yard1/files"
+            + Environment.NewLine +
+            "Lt.Caine - https://www.lcpdfr.com/profile/143082-ltcaine/content/?type=downloads_file"
+            + Environment.NewLine +
+            "AllenKennedy - https://www.gta5-mods.com/users/AllenKennedy/files"
+            + Environment.NewLine +
+            "";
+
+
+
+
+
+
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\readme.txt", Description);
     }
     private void SetupLibertyCity()

@@ -37,7 +37,7 @@ public class LicensesTab
             {
                 LocationTypes.GetState(StaticStrings.SanAndreasStateID);
             }
-            if(issueState == null)
+            if(issueState != null)
             {
                 dldesc = $"State: ~y~{issueState.StateName}~s~~n~";
             }

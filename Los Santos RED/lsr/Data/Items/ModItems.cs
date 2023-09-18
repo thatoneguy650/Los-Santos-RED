@@ -1710,7 +1710,7 @@ public class ModItems : IModItems
                 ItemSubType = ItemSubType.Meal},
 
             //TacoFarmer & Generic
-            new FoodItem("Asada Plate","", ItemType.Food) {
+            new FoodItem("Asada Plate","", ItemType.Combos) {
                 ConsumeOnPurchase = true,
                 HealthChangeAmount = LargeHealthRecover,
                 HungerChangeAmount = LargeHungerRecover,

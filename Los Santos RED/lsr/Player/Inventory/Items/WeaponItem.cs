@@ -473,6 +473,18 @@ public class WeaponItem : ModItem
             OnWeaponMenuOpen(sender, player);
         };
         WeaponMenu.AddItem(Purchase);
+
+
+        UIMenuCheckboxItem StopRotation = new UIMenuCheckboxItem("Rotate Preview", Transaction.RotatePreview) { Description = "Toggle rotation of the preview" };
+        StopRotation.CheckboxEvent += (sender, Checked) =>
+        {
+            Transaction.RotatePreview = StopRotation.Checked;
+        };
+        WeaponMenu.AddItem(StopRotation);
+        WeaponMenu.OnMenuOpen += (sender) =>
+        {
+            StopRotation.Checked = Transaction.RotatePreview;
+        };
     }
     private void OnWeaponMenuOpen(UIMenu sender, ILocationInteractable player)
     {   

@@ -16,6 +16,7 @@ public class Transaction
 {
     private UIMenu ParentMenu;
     private uint NotificationHandle;
+    private uint GameTimeLastRotatedModel;
     public List<VehicleColorLookup> VehicleColors { get; private set; }
     public PurchaseMenu PurchaseMenu { get; private set; }
     public SellMenu SellMenu { get; private set; }
@@ -311,6 +312,7 @@ public class Transaction
         {
             if (RotatePreview)
             {
+
                 if (SellingProp.Exists())
                 {
                     SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw + 1f);

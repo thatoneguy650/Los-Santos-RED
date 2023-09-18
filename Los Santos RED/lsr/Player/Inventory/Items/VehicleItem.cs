@@ -213,6 +213,7 @@ public class VehicleItem : ModItem
             VehicleMenu.RemoveBanner();
         }
 
+
         //Purchase Stuff Here
 
         string PurchaseHeader = "Purchase";
@@ -223,6 +224,20 @@ public class VehicleItem : ModItem
             PurchaseHeader = "Acquire";
             PurchaseDescription = "Select to take possession of this vehicle";
         }
+
+        UIMenuCheckboxItem StopRotation = new UIMenuCheckboxItem("Rotate Preview", Transaction.RotatePreview) { Description = "Toggle rotation of the preview" };
+        StopRotation.CheckboxEvent += (sender, Checked) =>
+        {
+            Transaction.RotatePreview = StopRotation.Checked;
+        };
+        VehicleMenu.AddItem(StopRotation);
+
+        VehicleMenu.OnMenuOpen += (sender) =>
+        {
+            StopRotation.Checked = Transaction.RotatePreview;
+        };
+
+
         UIMenuItem Purchase = new UIMenuItem(PurchaseHeader, PurchaseDescription) { RightLabel = formattedPurchasePrice };
         Purchase.Activated += (sender, selectedItem) =>
         {
@@ -326,6 +341,9 @@ public class VehicleItem : ModItem
         }
         liveryFullMenu = null;     
     }
+
+
+
     private bool PurchaseVehicle(Transaction transaction, MenuItem CurrentMenuItem, ILocationInteractable player, ISettingsProvideable settings, IEntityProvideable world)
     {
         bool ItemInDeliveryBay = true;
