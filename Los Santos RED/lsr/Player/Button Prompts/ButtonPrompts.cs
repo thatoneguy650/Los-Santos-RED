@@ -15,6 +15,7 @@ public class ButtonPrompts
     
     private IButtonPromptable Player;
     private ISettingsProvideable Settings;
+    private IEntityProvideable World;
     private bool addedPromptGroup;
     private bool CanInteractWithClosestLocation => Player.ClosestInteractableLocation != null
         && !Player.ActivityManager.IsInteractingWithLocation
@@ -22,10 +23,11 @@ public class ButtonPrompts
     public List<ButtonPrompt> Prompts { get; private set; }
     public bool IsSuspended { get; set; } = false;
     public bool IsUsingKeyboard { get; private set; } = true;
-    public ButtonPrompts(IButtonPromptable player, ISettingsProvideable settings)
+    public ButtonPrompts(IButtonPromptable player, ISettingsProvideable settings, IEntityProvideable world)
     {
         Player = player;
         Settings = settings;
+        World = world;
         Prompts = new List<ButtonPrompt>();
     }
     public void Setup()
@@ -41,6 +43,7 @@ public class ButtonPrompts
         AttemptAddAdvancedInteractionPrompts();
         AttemptAddVehiclePrompts();
         AttemptAddLocationPrompts();
+
         AttemptAddActivityPrompts();
         AttemptRemoveMenuPrompts();
     }
@@ -111,6 +114,13 @@ public class ButtonPrompts
         if (!Prompts.Any(x => x.Identifier == identifier))
         {
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
+        }
+    }
+    public void AddPrompt(string groupName, string prompt, string identifier, Keys interactKey, int order, Action action)
+    {
+        if (!Prompts.Any(x => x.Identifier == identifier))
+        {
+            Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order) { Action = action });
         }
     }
     public void AddPrompt(string groupName, string prompt, string identifier, Keys modifierKey, Keys interactKey, int order)
@@ -233,13 +243,19 @@ public class ButtonPrompts
         RemovePrompts("Drag");//new
         RemovePrompts("Grab");//new
         RemovePrompts("Treat");//new
+
+
+
+
         if (!HasPrompt($"{Player.ClosestInteractableLocation.ButtonPromptText}"))
         {
             RemovePrompts("InteractableLocation");
             AddPrompt("InteractableLocation", $"{Player.ClosestInteractableLocation.ButtonPromptText}", $"{Player.ClosestInteractableLocation.ButtonPromptText}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
         }
-
     }
+
+  
+
     private void ScenarioPrompts()
     {
         RemovePrompts("StartConversation");
@@ -438,6 +454,8 @@ public class ButtonPrompts
         {
             Prompts.RemoveAll(x => x.Group == "InteractableLocation");
         }
+
+
         if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && !addedPromptGroup && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanPerformActivitiesExtended && Player.IsNearScenario && Settings.SettingsManager.ActivitySettings.AllowStartingScenarios)//currently isnearscenario is turned off
         {
             ScenarioPrompts();

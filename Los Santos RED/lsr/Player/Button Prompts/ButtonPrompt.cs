@@ -98,7 +98,7 @@ public class ButtonPrompt
 
     public bool IsFakePressed { get; set; }
     public uint GameTimeFakePressed { get; set; }
-
+    public Action Action { get; set; }
     public void SetFakePressed()
     {
         IsFakePressed = true;

@@ -69,7 +69,7 @@ public class Interior
     public bool NeedsActivation { get; set; } = false;
 
     public bool IsRestricted { get; set; } = false;
-
+    public bool IsWeaponRestricted { get; set; } = false;
     public void Load()
     {
         GameFiber.StartNew(delegate

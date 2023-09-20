@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Forms;
 
 public class LocationCamera
 {
@@ -757,7 +757,11 @@ public class LocationCamera
         StoreCam.Direction = _direction;
     }
 
-
+    public void RotateCameraByMouse()
+    {
+        CameraRotator cameraRotator = new CameraRotator(StoreCam, Store.VehiclePreviewCameraPosition);
+        cameraRotator.RotateCameraByMouse();
+    }
 
 }
 

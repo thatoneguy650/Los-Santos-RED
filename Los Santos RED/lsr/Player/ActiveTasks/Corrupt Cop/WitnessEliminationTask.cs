@@ -296,7 +296,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void AddTask()
         {
             //EntryPoint.WriteToConsoleTestLong($"You are hired to kill a witness!");
-            PlayerTasks.AddTask(Contact.Name, MoneyToRecieve, 2000, 0, -500, 7,"Witness Elimination");
+            PlayerTasks.AddTask(Contact.Name, 0, 2000, 0, -500, 7,"Witness Elimination");
             CurrentTask = PlayerTasks.GetTask(Contact.Name);
             IsWitnessSpawned = false;
             GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);

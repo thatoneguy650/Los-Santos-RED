@@ -45,19 +45,6 @@ public class DeathMenu : ModUIMenu
             Create();
             Player.ButtonPrompts.RemovePrompts("MenuShowDead");
             Player.ButtonPrompts.RemovePrompts("MenuShowBusted");
-
-            //if(NativeHelper.IsUsingController)
-            //{
-            //    EntryPoint.WriteToConsole("Death Menu Controller Prompt Added");
-            //    Player.ButtonPrompts.AddPrompt("MenuShowDead", "Toggle Dead Menu", "MenuShowDead", Settings.SettingsManager.KeySettings.ControllerActionDisplayModifier, Settings.SettingsManager.KeySettings.ControllerActionDisplay, 999);
-            //}
-            //else
-            //{
-                //EntryPoint.WriteToConsole("Death Menu Regular Prompt Added");
-                //Player.ButtonPrompts.AttemptAddPrompt("MenuShowDead", "Toggle Dead Menu", "MenuShowDead", Settings.SettingsManager.KeySettings.MenuKey, 999);
-            //}
-
-            
             Menu.Visible = true;
         }
     }
@@ -75,6 +62,12 @@ public class DeathMenu : ModUIMenu
     private void Create()
     {
         Menu.Clear();
+        CreateUndieItem();
+        CreateHospitalRespawnItem();
+        CreateTakeoverItem();
+    }
+    private void CreateUndieItem()
+    {
         UIMenuItem Undie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
         Undie.Activated += (sender, selectedItem) =>
         {
@@ -84,8 +77,20 @@ public class DeathMenu : ModUIMenu
         if (Settings.SettingsManager.RespawnSettings.AllowUndie && Player.Respawning.CanUndie && !Settings.SettingsManager.RespawnSettings.PermanentDeathMode)
         {
             Menu.AddItem(Undie);
-        }  
-        UIMenuListScrollerItem<Hospital> HospitalRespawn = new UIMenuListScrollerItem<Hospital>("Give Up", "Respawn at the nearest hospital. Lose a hospital fee and your guns.", PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
+        }
+    }
+    private void CreateHospitalRespawnItem()
+    {
+        string hosptalRespawnText = "Give Up";
+        string hospitalrespawnDescription = "Respawn at the nearest hospital. Lose a hospital fee, ~r~cash on hand~s~, guns, and drugs.";
+        PlayerRespawning.Respawning.CalculateHospitalStay();
+        hospitalrespawnDescription += $"~n~~n~Hospital Fee: ~r~${PlayerRespawning.Respawning.HospitalFee}~s~";
+        if (PlayerRespawning.Respawning.HospitalBillPastDue > 0)
+        {
+            hospitalrespawnDescription += $" (~r~${PlayerRespawning.Respawning.HospitalBillPastDue} past due~s~)";
+        }
+        hospitalrespawnDescription += $"~n~Hosptial Stay Length: ~y~{PlayerRespawning.Respawning.HospitalDuration}~s~ days";
+        UIMenuListScrollerItem<Hospital> HospitalRespawn = new UIMenuListScrollerItem<Hospital>(hosptalRespawnText, hospitalrespawnDescription, PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
         HospitalRespawn.Activated += (sender, selectedItem) =>
         {
             PlayerRespawning.Respawning.RespawnAtHospital(HospitalRespawn.SelectedItem);
@@ -95,7 +100,12 @@ public class DeathMenu : ModUIMenu
         {
             Menu.AddItem(HospitalRespawn);
         }
-        UIMenuListScrollerItem<DistanceSelect> TakeoverRandomPed = new UIMenuListScrollerItem<DistanceSelect>("Takeover Pedestrian", "Takes over a random pedestrian around the player.", Distances);
+    }
+    private void CreateTakeoverItem()
+    {
+        string takeoverRespawnText = "Takeover Pedestrian";
+        string takeoverrespawnDescription = "Takeover a random pedestrian around the player.";
+        UIMenuListScrollerItem<DistanceSelect> TakeoverRandomPed = new UIMenuListScrollerItem<DistanceSelect>(takeoverRespawnText, takeoverrespawnDescription, Distances);
         TakeoverRandomPed.Activated += (sender, selectedItem) =>
         {
             if (TakeoverRandomPed.SelectedItem.Distance == -1f)
@@ -108,7 +118,7 @@ public class DeathMenu : ModUIMenu
             }
             if (Settings.SettingsManager.RespawnSettings.PermanentDeathMode)//shouldnt be here!
             {
-                GameSaves.DeleteSave();//GameSaves.DeleteSave_Obsolete(Player.PlayerName, Player.ModelName);
+                GameSaves.DeleteSave();
             }
             Menu.Visible = false;
         };

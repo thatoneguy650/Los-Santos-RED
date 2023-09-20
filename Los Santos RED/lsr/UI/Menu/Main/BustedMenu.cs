@@ -30,8 +30,20 @@ public class BustedMenu : ModUIMenu
     private UIMenuItem AskForCrimes;
     private UIMenuItem ConsentToSearch;
     private bool IsDetained => Player.WantedLevel == 0;
+    private string BribeDescription
+    {
+        get
+        {
+            string bribedesc = "Bribe the police to let you go. Can't buy a boat on a cop's salary can you? Don't be cheap or you will regret it.";
+            if (IsDetained)
+            {
+                bribedesc = "Pay a Bribe to get out of trouble. Don't be cheap or you will regret it.";
+            }
+            return bribedesc;
+        }
+    }
 
-    public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable, ITimeReportable time)
+public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable, ITimeReportable time)
     {
         PedSwap = pedSwap;
         Respawning = respawning;
@@ -253,11 +265,9 @@ public class BustedMenu : ModUIMenu
     private void AddBribeOptions()
     {
         string bribeText = "Bribe Police";
-        string bribeDescription = "Bribe the police to let you go. Can't buy a boat on a cop's salary can you? Don't be cheap or you will regret it.";
         if (IsDetained)
         {
             bribeText = "Bribe";
-            bribeDescription = "Pay a Bribe to get out of trouble. Don't be cheap or you will regret it.";
         }
         Respawning.Respawning.CalculateBribe();
         List<PossibleBribe> possibleBribes = new List<PossibleBribe>() 
@@ -266,15 +276,28 @@ public class BustedMenu : ModUIMenu
         };
         if(Respawning.Respawning.RequiredBribeAmount >= 500)
         {
-            possibleBribes.Add(new PossibleBribe((int)Math.Floor(Respawning.Respawning.RequiredBribeAmount * 0.7f), 70f));
-            possibleBribes.Add(new PossibleBribe((int)Math.Floor(Respawning.Respawning.RequiredBribeAmount * 0.5f), 50f));
-            possibleBribes.Add(new PossibleBribe((int)Math.Floor(Respawning.Respawning.RequiredBribeAmount * 0.25f), 25f));
+            for (int i = 9; i > 2; i--)
+            {
+                int bribeAmount = (int)Math.Floor(Respawning.Respawning.RequiredBribeAmount * (0.1f * (float)i));
+                float bribePercentage = (float)i * 10f;
+                if(bribeAmount <= 500)
+                {
+                    break;
+                }
+                possibleBribes.Add(new PossibleBribe(bribeAmount, bribePercentage));
+            }
         }
-        Bribe = new UIMenuListScrollerItem<PossibleBribe>(bribeText, bribeDescription, possibleBribes);
+        Bribe = new UIMenuListScrollerItem<PossibleBribe>(bribeText, BribeDescription, possibleBribes.OrderByDescending(x=> x.Percentage));
         Bribe.Activated += (sender, selectedItem) =>
         {
-            Respawning.Respawning.BribePolice(Respawning.Respawning.RequiredBribeAmount, this, Bribe.SelectedItem);
-            Menu.Visible = false;
+            if (Respawning.Respawning.BribePolice(this, Bribe.SelectedItem))
+            {
+                Menu.Visible = false;
+            }
+            else
+            {
+
+            }
         };
         Menu.AddItem(Bribe);
     }
@@ -288,13 +311,19 @@ public class BustedMenu : ModUIMenu
         {
             currentState = "San Andreas";
         }
-        string surrenderDescription = $"Surrender and get out on bail. Due to jail overcrowding, bail is granted regardless of the offense. Makes you feel safe in ~p~{currentState}~s~ does't it? Lose bail money, guns, and drugs at least.";
+        string surrenderDescription = $"Surrender and get out on bail. Due to jail overcrowding, bail is granted regardless of the offense. Makes you feel safe in ~p~{currentState}~s~ does't it? Lose bail money, guns, and drugs.";
         if (IsDetained)
         {
             surrenderText = "Surrender";
-            surrenderDescription = "Get transferred to police custody. Lose bail money, guns, and drugs at least.";
+            surrenderDescription = "Get transferred to police custody. Lose bail money, guns, and drugs.";
         }
-
+        Respawning.Respawning.CalculateBailDurationAndFees();
+        surrenderDescription += $"~n~~n~Bail Fee: ~r~${Respawning.Respawning.BailFee}~s~";
+        if(Respawning.Respawning.BailFeePastDue > 0)
+        {
+            surrenderDescription += $" (~r~${Respawning.Respawning.BailFeePastDue} past due~s~)";
+        }
+        surrenderDescription += $"~n~Bail Length: ~y~{Respawning.Respawning.BailDuration}~s~ days";
         if (Settings.SettingsManager.RespawnSettings.ForceBooking && 1 == 0)
         {
             if (Player.IsBeingBooked)

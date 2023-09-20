@@ -225,16 +225,40 @@ public class VehicleItem : ModItem
             PurchaseDescription = "Select to take possession of this vehicle";
         }
 
-        UIMenuCheckboxItem StopRotation = new UIMenuCheckboxItem("Rotate Preview", Transaction.RotatePreview) { Description = "Toggle rotation of the preview" };
+
+
+
+
+        UIMenuCheckboxItem StopRotation = new UIMenuCheckboxItem("Rotate Preview", Transaction.RotateVehiclePreview) { Description = "Toggle rotation of the preview" };
         StopRotation.CheckboxEvent += (sender, Checked) =>
         {
-            Transaction.RotatePreview = StopRotation.Checked;
+            Transaction.RotateVehiclePreview = StopRotation.Checked;
         };
         VehicleMenu.AddItem(StopRotation);
 
+
+
+        //UIMenuItem RotateCamera = new UIMenuItem("Rotate Camera", "Rotate the camera around");
+        //RotateCamera.Activated += (sender, selectedItem) =>
+        //{
+        //    //Transaction.RotatePreview = StopRotation.Checked;
+
+
+        //    Transaction.LocationCamera?.RotateCameraByMouse();
+
+        //};
+        //VehicleMenu.AddItem(RotateCamera);
+
+
+
+
+
+
+
+
         VehicleMenu.OnMenuOpen += (sender) =>
         {
-            StopRotation.Checked = Transaction.RotatePreview;
+            StopRotation.Checked = Transaction.RotateVehiclePreview;
         };
 
 

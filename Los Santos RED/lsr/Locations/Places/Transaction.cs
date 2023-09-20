@@ -44,10 +44,11 @@ public class Transaction
     public bool IsStealing { get; set; }
     public bool IsShowingConfirmDialog { get; set; } = false;
     public bool RotatePreview { get; set; } = true;
-    public bool RotateVehiclePreview { get; set; } = true;
+    public bool RotateVehiclePreview { get; set; } = false;
     public ILicensePlatePreviewable LicensePlatePreviewable { get; set; }
     public bool IsPurchasing { get; set; } = true;
     public bool UseAccounts { get; set; } = true;
+    public LocationCamera LocationCamera { get; set; }
 
     public Transaction(MenuPool menuPool, UIMenu parentMenu, ShopMenu menu, GameLocation store)
     {

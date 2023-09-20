@@ -83,8 +83,10 @@ public class BurnerPhoneMessagesApp : BurnerPhoneApp
             {
                 PhoneContact phoneContact = Player.CellPhone.ContactList.Where(x => x.Name == Player.CellPhone.TextList.Where(y => y.Index == CurrentRow).FirstOrDefault()?.ContactName).FirstOrDefault();
                 if(phoneContact != null) 
-                { 
-                    BurnerPhone.ContactsApp.Call(phoneContact); 
+                {
+                    BurnerPhone.ReturnHome(Index);
+                    BurnerPhone.ContactsApp.Call(phoneContact);
+                    //GameFiber.Sleep(50);
                 }
                 //Game.DisplaySubtitle($"CALL FROM MESSAGE {Player.CellPhone.TextList.Where(x => x.Index == CurrentRow).FirstOrDefault()?.ContactName}");
             }

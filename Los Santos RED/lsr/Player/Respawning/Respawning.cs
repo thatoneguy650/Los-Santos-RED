@@ -22,8 +22,7 @@ public class Respawning// : IRespawning
     private readonly string BlankContactPicture = "CHAR_BLANK_ENTRY";
     private readonly string BribeFailedResponse = "Thats it? ~r~${0}~s~?";
 
-    private int BailFee;
-    private int BailFeePastDue;
+
     private IRespawnable CurrentPlayer;
     private uint GameTimeLastBribedPolice;
     private uint GameTimeLastPaidFine;
@@ -32,7 +31,7 @@ public class Respawning// : IRespawning
     private uint GameTimeLastRespawned;
     private uint GameTimeLastSurrenderedToPolice;
     private uint GameTimeLastUndied;
-    private int HospitalBillPastDue;
+
     private IPlacesOfInterest PlacesOfInterest;
     private ISettingsProvideable Settings;
     private ITimeControllable Time;
@@ -42,12 +41,11 @@ public class Respawning// : IRespawning
     private List<string> BribedCopResponses;
     private List<string> CitationCopResponses;
     
-    private int BailDuration;
-    private DateTime BailPostingTime;
+
     private string BailReport;
     private DateTime HospitalDischargeDate;
     private string HospitalStayReport;
-    private int HospitalFee;
+
     private uint GameTimeLastPlacedAtLocation;
     private IPoliceRespondable PoliceRespondable;
     private ISeatAssignable SeatAssignable;
@@ -78,6 +76,15 @@ public class Respawning// : IRespawning
     public int TimesTalked { get; private set; }
     public int RequiredBribeAmount { get; private set; }
     public int PastDueBailFees => BailFeePastDue;
+    public int BailDuration { get; private set; }
+    public DateTime BailPostingTime { get; private set; }
+    public int HospitalDuration { get; private set; }
+    public int HospitalFee { get; private set; }
+    public int HospitalBillPastDue { get; private set; }
+    public int BailFee { get; private set; }
+    public int BailFeePastDue { get; private set; }
+
+
     public void PayPastDueBail()
     {
         BailFeePastDue = 0;
@@ -103,24 +110,26 @@ public class Respawning// : IRespawning
 
 
     }
-    public bool BribePolice(int Amount, ModUIMenu menu, PossibleBribe possibleBribe)
+    public bool BribePolice(ModUIMenu menu, PossibleBribe possibleBribe)
     {
         CalculateBribe();
 
 
-        if (CurrentPlayer.BankAccounts.GetMoney(false) < Amount)
+        if (CurrentPlayer.BankAccounts.GetMoney(false) < possibleBribe.Amount)
         {
             Game.DisplayNotification(BlankContactPicture, BlankContactPicture, StaticStrings.OfficerFriendlyContactName, "~r~Cash Only", "You do not have enough cash on hand.");
             menu?.Show();
+            NativeHelper.PlayErrorSound();
             return false;
         }
-        else if (Amount < RequiredBribeAmount && !possibleBribe.AttemptBribe())//(CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
+        else if (possibleBribe.Amount < RequiredBribeAmount && !possibleBribe.AttemptBribe())//(CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
         {
-            Game.DisplayNotification(BlankContactPicture, BlankContactPicture, StaticStrings.OfficerFriendlyContactName, "Expedited Service Fee", string.Format(BribeFailedResponse, Amount));
+            Game.DisplayNotification(BlankContactPicture, BlankContactPicture, StaticStrings.OfficerFriendlyContactName, "Expedited Service Fee", string.Format(BribeFailedResponse, possibleBribe.Amount));
             if (Settings.SettingsManager.RespawnSettings.DeductMoneyOnFailedBribe)
             {
-                CurrentPlayer.BankAccounts.GiveMoney(-1 * Amount, false);
+                CurrentPlayer.BankAccounts.GiveMoney(-1 * possibleBribe.Amount, false);
             }
+            NativeHelper.PlayErrorSound();
             menu?.Show();
             return false;
         }
@@ -128,8 +137,9 @@ public class Respawning// : IRespawning
         {
             ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
             Game.DisplayNotification(BlankContactPicture, BlankContactPicture, StaticStrings.OfficerFriendlyContactName, "~r~Expedited Service Fee", BribedCopResponses.PickRandom());
-            CurrentPlayer.BankAccounts.GiveMoney(-1 * Amount, true);
+            CurrentPlayer.BankAccounts.GiveMoney(-1 * possibleBribe.Amount, true);
             GameTimeLastBribedPolice = Game.GameTime;
+            NativeHelper.PlaySuccessSound();
             List<string> OfficerFriendlyResponses = new List<string>() { 
             "Thanks for the donation, give me a call if you are in a jam with the cops.",
             "Pleasure doing business. Hit me up when you've got issues with johnny law.",
@@ -238,6 +248,10 @@ public class Respawning// : IRespawning
             {
                 //$"What seems to be the problem officer?",
                 $"What did I ~y~allegedly~s~ do?",
+                $"What did you ~y~bust~s~ me for?",
+                $"What is the ~y~reason for the stop~s~?",
+                $"Why did you ~y~stop me~s~?",
+                $"Why was I ~y~singled out~s~?",
             };
         Game.DisplaySubtitle("You: ~s~" + AttemptTalkOut.PickRandom());
         GameFiber.Sleep(4000);
@@ -256,7 +270,7 @@ public class Respawning// : IRespawning
                 {
                     $"It wasn't me officer, it was the one-armed man!",
                     $"I pay your salary just so you know.",
-                    $"I don't know what you are talking about.",
+                    $"I don't know what you're talking about.",
                     $"I plead the fifth.",
                     $"I am a law abiding citizen and I will not take this harassment!",
                     $"That stuff? It isn't mine. I also didn't do it. Whatever it is.",
@@ -359,17 +373,35 @@ public class Respawning// : IRespawning
         {
             CurrentPlayer.Inventory.RemoveIllicitInventoryItems();
         }
-        Time.SetDateTime(HospitalDischargeDate);
+        EntryPoint.WriteToConsole($"PRE 1: {Time.CurrentDateTime} {HospitalDuration} {HospitalDischargeDate}");
+
+
+
         GameFiber.Sleep(4000);
+        Time.SetDateTime(HospitalDischargeDate);
         CurrentPlayer.HumanState.SetRandom();
         FadeIn();
         if (Settings.SettingsManager.RespawnSettings.DeductHospitalFee)
         {
             SetHospitalFee(respawnableLocation.Name);
         }
+        if(Settings.SettingsManager.RespawnSettings.RemoveOnHandCashOnDeath)
+        {
+            LoseOnHandCash();
+        }
         ShowImpoundDisplay();
         GameTimeLastDischargedFromHospital = Game.GameTime;
+        EntryPoint.WriteToConsole($"POST 1: {Time.CurrentDateTime} {HospitalDuration} {HospitalDischargeDate}");
     }
+
+    private void LoseOnHandCash()
+    {
+        int CurrentCash = CurrentPlayer.BankAccounts.GetMoney(false);
+        int PercentToRemove = RandomItems.GetRandomNumberInt(Settings.SettingsManager.RespawnSettings.RemoveOnHandCashOnDeathPercentageMin, Settings.SettingsManager.RespawnSettings.RemoveOnHandCashOnDeathPercentageMax);
+        int CashToRemove = (int)Math.Floor(CurrentCash * ((float)PercentToRemove/100f));
+        CurrentPlayer.BankAccounts.GiveMoney(-1 * CashToRemove, false);
+    }
+
     public void SurrenderToPolice(ILocationRespawnable respawnableLocation)
     {
         FadeOut();
@@ -380,7 +412,7 @@ public class Respawning// : IRespawning
 
 
 
-        CalculateBailDurationAndFees();
+        //CalculateBailDurationAndFees();
 
 
         HasIllegalWeapons = false;
@@ -404,7 +436,7 @@ public class Respawning// : IRespawning
             HasIllegalItems = CurrentPlayer.Inventory.GetIllicitItems()?.Any() == true;
             CurrentPlayer.Inventory.RemoveIllicitInventoryItems();
         }
-
+        EntryPoint.WriteToConsole($"PRE 1: {Time.CurrentDateTime} {BailDuration}");
 
 
         Time.SetDateTime(BailPostingTime);
@@ -422,6 +454,8 @@ public class Respawning// : IRespawning
         DisplayBailNotification(respawnableLocation.Name);
         ShowImpoundDisplay();
         GameTimeLastSurrenderedToPolice = Game.GameTime;
+
+        EntryPoint.WriteToConsole($"POST 1: {Time.CurrentDateTime} {BailDuration}");
     }
     private void ShowImpoundDisplay()
     {
@@ -495,16 +529,20 @@ public class Respawning// : IRespawning
         Game.FadeScreenOut(1500);
         GameFiber.Wait(1500);
     }
-    private void CalculateHospitalStay()
+    public void CalculateHospitalStay()
     {
-        int HighestWantedLevel = CurrentPlayer.WantedLevel;
-        int DaysToStay = RandomItems.GetRandomNumberInt(Settings.SettingsManager.RespawnSettings.HospitalStayMinDays, Settings.SettingsManager.RespawnSettings.HospitalStayMaxDays);
-        HospitalFee = Settings.SettingsManager.RespawnSettings.HospitalStayDailyFee * DaysToStay;
-        HospitalDischargeDate = Time.CurrentDateTime.AddDays(DaysToStay);
-        HospitalStayReport = $"~s~Hospitalized Days: ~g~{DaysToStay}~s~~n~Released: {HospitalDischargeDate:g}~s~";
-        //EntryPoint.WriteToConsoleTestLong($"CalculateHospitalStay(): HighestWantedLevel {HighestWantedLevel} HospitalFee {HospitalFee} HospitalDischargeDate {HospitalDischargeDate:g}");
+        HospitalDuration = RandomItems.GetRandomNumberInt(Settings.SettingsManager.RespawnSettings.HospitalStayMinDays, Settings.SettingsManager.RespawnSettings.HospitalStayMaxDays);
+        HospitalFee = Settings.SettingsManager.RespawnSettings.HospitalStayDailyFee * HospitalDuration;  
+        //HospitalDischargeDate = Time.CurrentDateTime.AddDays(HospitalDuration);
+
+
+        HospitalDischargeDate = Time.CurrentDateTime.AddDays(HospitalDuration);
+        HospitalDischargeDate = new DateTime(HospitalDischargeDate.Year, HospitalDischargeDate.Month, HospitalDischargeDate.Day, 9, 0, 0);
+
+
+        HospitalStayReport = $"~s~Hospitalized Days: ~g~{HospitalDuration}~s~~n~Released: {HospitalDischargeDate:g}~s~";
     }
-    private void CalculateBailDurationAndFees()
+    public void CalculateBailDurationAndFees()
     {
         int PoliceKilled = CurrentPlayer.PoliceResponse.PoliceKilled;
         int PoliceInjured = CurrentPlayer.PoliceResponse.PoliceHurt;

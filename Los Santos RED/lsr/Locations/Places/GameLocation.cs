@@ -1,21 +1,14 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
-using Mod;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
-using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Xml.Serialization;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 public class GameLocation : ILocationDispatchable
 {
@@ -270,7 +263,14 @@ public class GameLocation : ILocationDispatchable
             World.Places.ActiveLocations.Remove(this);
         }
         RestrictedAreas?.Deactivate();
+        RemoveButtonPrompts();
     }
+
+    protected virtual void RemoveButtonPrompts()
+    {
+
+    }
+
     public virtual List<Tuple<string, string>> DirectoryInfo(int currentHour, float distanceTo)
     {
         List<Tuple<string, string>> toreturn = new List<Tuple<string, string>>();
@@ -486,6 +486,7 @@ public class GameLocation : ILocationDispatchable
                 distanceToPlayer = EntrancePosition.DistanceTo(Game.LocalPlayer.Character);
                 UpdateBlip(time);
                 GameTimeLastCheckedDistance = Game.GameTime;
+                UpdatePrompts();
             }
             //RestrictedAreas?.Update(Player);
         }
@@ -804,6 +805,10 @@ public class GameLocation : ILocationDispatchable
             return;
         }
         StoreCamera.HighlightHome();
+    }
+    public virtual void UpdatePrompts()
+    {
+
     }
 }
 

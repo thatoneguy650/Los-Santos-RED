@@ -88,10 +88,13 @@ public class RespawnSettings : ISettingsDefaultable
 
     [Description("Percentage of times lester will clear your bail fees. Minimum 0, maximum 100.")]
     public int LesterBailHelpPercent { get; set; }
+    public bool RemoveOnHandCashOnDeath { get; set; }
+    public int RemoveOnHandCashOnDeathPercentageMin { get; set; }
+    public int RemoveOnHandCashOnDeathPercentageMax { get; set; }
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
-        LesterBailHelpPercent = 1;
+        SetDefault();        
     }
 
     public RespawnSettings()
@@ -151,5 +154,8 @@ public class RespawnSettings : ISettingsDefaultable
         ImpoundVehiclesStolenPenalty = 5000;
 
         LesterBailHelpPercent = 1;
+        RemoveOnHandCashOnDeath = true;
+        RemoveOnHandCashOnDeathPercentageMin = 25;
+        RemoveOnHandCashOnDeathPercentageMax = 85;
     }
 }

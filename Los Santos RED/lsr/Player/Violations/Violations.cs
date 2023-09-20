@@ -54,6 +54,8 @@ namespace LosSantosRED.lsr
 
         public bool CanEnterRestrictedAreas => Player.IsCop || Settings.SettingsManager.ViolationSettings.TreatAsCop;
 
+
+
         public void Setup()
         {
             TrafficViolations.Setup();

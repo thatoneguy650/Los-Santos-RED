@@ -246,28 +246,44 @@ public class Interiors : IInteriors
             new Interior(7170, "Premium Deluxe Motorsport",new List<string>() { "shr_int" },new List<string>() { "fakeint" },new List<string>() { "shutter_open","csr_beforeMission" }),
 
             //Banks
-            new Interior(71682,"Fleeca Bank"),
+            new Interior(71682,"Fleeca Bank") {
+               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(4163212883, new Vector3(-355.3892f, -51.06768f, 49.31105f)),//teller door
+                } },
             new Interior(76802,"Fleeca Bank"){
-                Doors =  new List<InteriorDoor>() {
+               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
                     new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)),//teller door
                 } },
-            new Interior(11266,"Fleeca Bank"),
-            new Interior(20226,"Fleeca Bank"),
-            new Interior(90626,"Fleeca Bank"),
-            new Interior(87810,"Fleeca Bank"),
+            new Interior(11266,"Fleeca Bank") { 
+                IsWeaponRestricted = true,
+                Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(4163212883, new Vector3(309.7491f, -280.1797f, 54.43926f)),//teller door
+                } },
+            new Interior(20226,"Fleeca Bank") {
+               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)),//teller door
+                } },
+            new Interior(90626,"Fleeca Bank") {
+               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(4163212883, new Vector3(1178.87f, 2709.365f, 38.36251f)),//teller door
+                } },
+            new Interior(87810,"Fleeca Bank") {
+               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(4163212883, new Vector3(-1214.906f, -334.7281f, 38.05551f)),//teller door
+                } },
 
 
 
             //4163212883
 
             new Interior(103170,"Pacific Standard Bank") {
-                Doors =  new List<InteriorDoor>() {
+                IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
                     new InteriorDoor(4072696575, new Vector3(256.3116f,220.6579f,106.4296f)),//teller door
                 } },
 
 
             new Interior(42754,"Blaine County Savings") {
-                Doors =  new List<InteriorDoor>() {
+                IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
                     new InteriorDoor(3110375179, new Vector3(-108.9147f,6469.105f,31.91028f)),//teller
                     new InteriorDoor(2628496933, new Vector3(-109.65f,6462.11f,31.98499f)),//FRONT 1
                     new InteriorDoor(3941780146, new Vector3(-111.48f,6463.94f,31.98499f)),//FRONT 2

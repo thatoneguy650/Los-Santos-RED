@@ -1311,21 +1311,21 @@ public class PopUpMenu
     }
     private void SetupTextures()
     {
-        Sign10 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\10mph.png");
-        Sign15 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\15mph.png");
-        Sign20 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\20mph.png");
-        Sign25 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\25mph.png");
-        Sign30 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\30mph.png");
-        Sign35 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\35mph.png");
-        Sign40 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\40mph.png");
-        Sign45 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\45mph.png");
-        Sign50 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\50mph.png");
-        Sign55 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\55mph.png");
-        Sign60 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\60mph.png");
-        Sign65 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\65mph.png");
-        Sign70 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\70mph.png");
-        Sign75 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\75mph.png");
-        Sign80 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\80mph.png");
+        Sign10 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\speedlimit\\10mph.png");
+        Sign15 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\speedlimit\\15mph.png");
+        Sign20 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\speedlimit\\20mph.png");
+        Sign25 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\speedlimit\\25mph.png");
+        Sign30 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\speedlimit\\30mph.png");
+        Sign35 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\speedlimit\\35mph.png");
+        Sign40 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\speedlimit\\40mph.png");
+        Sign45 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\speedlimit\\45mph.png");
+        Sign50 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\speedlimit\\50mph.png");
+        Sign55 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\speedlimit\\55mph.png");
+        Sign60 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\speedlimit\\60mph.png");
+        Sign65 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\speedlimit\\65mph.png");
+        Sign70 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\speedlimit\\70mph.png");
+        Sign75 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\speedlimit\\75mph.png");
+        Sign80 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\speedlimit\\80mph.png");
     }
 }
 

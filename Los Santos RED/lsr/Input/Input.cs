@@ -226,6 +226,17 @@ namespace LosSantosRED.lsr
             {
                 Player.ActivityManager.StartSittingDown(true, true);
             }
+
+            foreach(ButtonPrompt bp in Player.ButtonPrompts.Prompts.ToList())
+            {
+                if(bp.Action != null && (bp.IsPressedNow || bp.IsHeldNow || bp.IsFakePressed))
+                {
+                    bp.Action();
+                }
+            }
+
+
+
             if (!Player.IsInVehicle)
             {
                 if (IsPressingSprint)

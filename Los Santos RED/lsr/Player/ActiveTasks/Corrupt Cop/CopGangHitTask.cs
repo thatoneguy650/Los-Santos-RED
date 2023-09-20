@@ -163,7 +163,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             CurrentGangReputation = Player.RelationshipManager.GangRelationships.GetReputation(TargetGang);
             CurrentKilledMembers = CurrentGangReputation.MembersKilled;
             //EntryPoint.WriteToConsoleTestLong($"You are hired to kill starting kill = {CurrentKilledMembers} MembersToKill {MembersToKill}!");
-            PlayerTasks.AddTask(Contact.Name, MoneyToRecieve, 2000, 0, -500, 7,"Gang Hit");
+            PlayerTasks.AddTask(Contact.Name, 0, 2000, 0, -500, 7,"Gang Hit");//money is receieved at the dead drop
             CurrentTask = PlayerTasks.GetTask(Contact.Name);
         }
         private void GetPayment()

@@ -332,6 +332,14 @@ public class ModItems : IModItems
                 ThirstChangeAmount = LargeThirstRecover,
                 ItemSubType = ItemSubType.Water, 
                 FindPercentage = 10 },//slight clipping, no issyes
+            new DrinkItem("Flow Water ZERO", "Hydrogen & Oxygen Infusion", ItemType.Drinks) {
+                ModelItemID = "prop_ld_flow_bottle",
+                HealthChangeAmount = MediumHealthRecover,
+                ThirstChangeAmount = FullThirstRecover,
+                ItemSubType = ItemSubType.Water,
+                FindPercentage = 10 },//slight clipping, no issyes
+
+            //prop_ld_flow_bottle.ydr
             new DrinkItem("Bottle of GREY Water", "Expensive water that tastes worse than tap!", ItemType.Drinks){
                 ModelItemID = "h4_prop_battle_waterbottle_01a",
                 HealthChangeAmount = MediumHealthRecover, 
@@ -464,6 +472,152 @@ public class ModItems : IModItems
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor, 
                 FindPercentage = 1},
+
+            new DrinkItem("The Mount Bourbon Whisky", "The ulitmate blender. 60% alc/vol. Distilled and bottled by The Mount Distilling Co.", ItemType.Drinks){
+                PackageItemID = "prop_whiskey_bottle",
+                IntoxicantName = "High Proof Alcohol",
+                HealthChangeAmount = SmallHealthRecover,
+                SleepChangeAmount = -1.0f * TinySleepRecover,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = MediumThirstRecover,
+                ItemSubType= ItemSubType.Liquor,
+                FindPercentage = 1},
+
+            new DrinkItem("Richard's Whisky Short", "Made with grain produced in the fields of Kentucky.", ItemType.Drinks){
+                PackageItemID = "ba_prop_battle_whiskey_bottle_s",
+                IntoxicantName = "High Proof Alcohol",
+                HealthChangeAmount = SmallHealthRecover,
+                SleepChangeAmount = -1.0f * TinySleepRecover,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = MediumThirstRecover,
+                ItemSubType= ItemSubType.Liquor,
+                FindPercentage = 1},
+            new DrinkItem("Macbeth Single Malt Short", "Cask aged scotch whisky", ItemType.Drinks){
+                PackageItemID = "ba_prop_battle_whiskey_bottle_2_s",
+                IntoxicantName = "High Proof Alcohol",
+                HealthChangeAmount = SmallHealthRecover,
+                SleepChangeAmount = -1.0f * TinySleepRecover,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = MediumThirstRecover,
+                ItemSubType= ItemSubType.Liquor,
+                FindPercentage = 1},
+
+            new DrinkItem("Ragga Rum", "Original Dark", ItemType.Drinks){
+                PackageItemID = "prop_rum_bottle",
+                IntoxicantName = "High Proof Alcohol",
+                HealthChangeAmount = SmallHealthRecover,
+                SleepChangeAmount = -1.0f * TinySleepRecover,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = MediumThirstRecover,
+                ItemSubType= ItemSubType.Liquor,
+                FindPercentage = 1},
+            new DrinkItem("This Worm Has Turned Tequilya", "Tequilya distilled the traditional way with a mind blowing tripping worm!", ItemType.Drinks){
+                PackageItemID = "prop_tequila_bottle",
+                IntoxicantName = "High Proof Alcohol",
+                HealthChangeAmount = SmallHealthRecover,
+                SleepChangeAmount = -1.0f * TinySleepRecover,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = MediumThirstRecover,
+                ItemSubType= ItemSubType.Liquor,
+                FindPercentage = 1},
+
+
+            new DrinkItem("Cardiaque Brandy", "Fine Napoleon Brandy.", ItemType.Drinks){
+                PackageItemID = "prop_bottle_brandy",
+                IntoxicantName = "High Proof Alcohol",
+                HealthChangeAmount = SmallHealthRecover,
+                SleepChangeAmount = -1.0f * TinySleepRecover,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = MediumThirstRecover,
+                ItemSubType= ItemSubType.Liquor,
+                FindPercentage = 1},
+
+            new DrinkItem("Bourgeoix Cognac", "Fit for a prince.", ItemType.Drinks){
+                PackageItemID = "prop_bottle_cognac",
+                IntoxicantName = "High Proof Alcohol",
+                HealthChangeAmount = SmallHealthRecover,
+                SleepChangeAmount = -1.0f * TinySleepRecover,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = MediumThirstRecover,
+                ItemSubType= ItemSubType.Liquor,
+                FindPercentage = 1},
+            new DrinkItem("Macbeth Single Malt", "Cask aged scotch whisky", ItemType.Drinks){
+                PackageItemID = "prop_bottle_macbeth",
+                IntoxicantName = "High Proof Alcohol",
+                HealthChangeAmount = SmallHealthRecover,
+                SleepChangeAmount = -1.0f * TinySleepRecover,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = MediumThirstRecover,
+                ItemSubType= ItemSubType.Liquor,
+                FindPercentage = 1},
+
+            new DrinkItem("Richard's Whisky", "Made with grain produced in the fields of Kentucky.", ItemType.Drinks){
+                PackageItemID = "prop_bottle_richard",
+                IntoxicantName = "High Proof Alcohol",
+                HealthChangeAmount = SmallHealthRecover,
+                SleepChangeAmount = -1.0f * TinySleepRecover,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = MediumThirstRecover,
+                ItemSubType= ItemSubType.Liquor,
+                FindPercentage = 1},
+
+            new DrinkItem("NOGO Vodka", "Make the night a NOGO.", ItemType.Drinks){
+                PackageItemID = "prop_vodka_bottle",
+                IntoxicantName = "High Proof Alcohol",
+                HealthChangeAmount = SmallHealthRecover,
+                SleepChangeAmount = -1.0f * TinySleepRecover,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = MediumThirstRecover,
+                ItemSubType= ItemSubType.Liquor,
+                FindPercentage = 1},
+
+            new DrinkItem("Bleuter'd Champagne", "Vintage 1969. Nice.", ItemType.Drinks){
+                PackageItemID = "prop_champ_01a",
+                IntoxicantName = "High Proof Alcohol",
+                HealthChangeAmount = SmallHealthRecover,
+                SleepChangeAmount = -1.0f * TinySleepRecover,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = MediumThirstRecover,
+                ItemSubType= ItemSubType.Liquor,
+                FindPercentage = 1},
+
+            new DrinkItem("Cherenkov Red Label Vodka", "Warms you to the core.", ItemType.Drinks){
+                PackageItemID = "prop_cherenkov_01",
+                IntoxicantName = "High Proof Alcohol",
+                HealthChangeAmount = SmallHealthRecover,
+                SleepChangeAmount = -1.0f * TinySleepRecover,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = MediumThirstRecover,
+                ItemSubType= ItemSubType.Liquor,
+                FindPercentage = 1},
+            new DrinkItem("Cherenkov Blue Label Vodka", "Warms you to the core.", ItemType.Drinks){
+                PackageItemID = "prop_cherenkov_02",
+                IntoxicantName = "High Proof Alcohol",
+                HealthChangeAmount = SmallHealthRecover,
+                SleepChangeAmount = -1.0f * TinySleepRecover,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = MediumThirstRecover,
+                ItemSubType= ItemSubType.Liquor,
+                FindPercentage = 1},
+            new DrinkItem("Cherenkov Green Label Vodka", "Warms you to the core.", ItemType.Drinks){
+                PackageItemID = "prop_cherenkov_03",
+                IntoxicantName = "High Proof Alcohol",
+                HealthChangeAmount = SmallHealthRecover,
+                SleepChangeAmount = -1.0f * TinySleepRecover,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = MediumThirstRecover,
+                ItemSubType= ItemSubType.Liquor,
+                FindPercentage = 1},
+            new DrinkItem("Cherenkov Purple Label Vodka", "Warms you to the core.", ItemType.Drinks){
+                PackageItemID = "prop_cherenkov_04",
+                IntoxicantName = "High Proof Alcohol",
+                HealthChangeAmount = SmallHealthRecover,
+                SleepChangeAmount = -1.0f * TinySleepRecover,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = MediumThirstRecover,
+                ItemSubType= ItemSubType.Liquor,
+                FindPercentage = 1},
+
             //Cups & Cans
             new DrinkItem("Can of eCola", "Deliciously Infectious!", ItemType.Drinks){
                 ModelItemID = "ng_proc_sodacan_01a",
@@ -493,6 +647,7 @@ public class ModItems : IModItems
                 HealthChangeAmount = MediumHealthRecover,
                 ThirstChangeAmount = FullThirstRecover,
                 HungerChangeAmount = MediumHungerRecover,
+                ModelItemID = "prop_cs_milk_01",
                 ItemSubType= ItemSubType.Milk },
             new DrinkItem("Cup of eCola", "Deliciously Infectious!", ItemType.Drinks){
                 ModelItemID = "prop_plastic_cup_02",
@@ -711,7 +866,7 @@ public class ModItems : IModItems
             new IngestItem("Mollis","For outstanding erections. Get the performance you've always dreamed of", ItemType.Drugs) {
                 ModelItemID = "prop_cs_pills",IntoxicantName = "Mollis",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 2 },     
             new IngestItem("Chesty","Cough suppressant manufactured by Good Aids Pharmacy. Gives 24-hour relief and is available in honey flavour.", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Chesty", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 10 },    
+                ModelItemID = "prop_cs_script_bottle_01",IntoxicantName = "Chesty", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 10 },    
             new IngestItem("Equanox","Combats dissatisfaction, lethargy, depression, melancholy, sexual dysfunction. May cause nausea, loss of sleep, blurred vision, leakage, kidney problems and breathing irregularities.", ItemType.Drugs) {
                 ModelItemID = "prop_cs_pills",IntoxicantName = "Equanox", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 5 },        
             new IngestItem("Zombix","Painkiller and antidepressant manufactured by O'Deas Pharmacy. ~n~'Go straight for the head.'", ItemType.Drugs) {

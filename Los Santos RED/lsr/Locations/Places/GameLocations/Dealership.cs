@@ -59,6 +59,7 @@ public class Dealership : GameLocation, ILicensePlatePreviewable
                     CreateInteractionMenu();
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
                     Transaction.LicensePlatePreviewable = this;
+                    Transaction.LocationCamera = StoreCamera;
                     Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
                     Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
                     Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);

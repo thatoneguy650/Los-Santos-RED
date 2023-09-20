@@ -18,6 +18,7 @@ public class TheftViolations
     private ITimeReportable Time;
     private IZones Zones;
     private IGangTerritories GangTerritories;
+    public bool IsRobbingBank { get; set; }
     public TheftViolations(IViolateable player, Violations violations, ISettingsProvideable settings, ITimeReportable time, IZones zones, IGangTerritories gangTerritories)
     {
         Player = player;
@@ -65,7 +66,10 @@ public class TheftViolations
         {
             Violations.AddViolating(StaticStrings.ChangingPlatesCrimeID);//.IsCurrentlyViolating = true;
         }
-
+        if (IsRobbingBank)
+        {
+            Violations.AddViolating(StaticStrings.ArmedRobberyCrimeID);//.IsCurrentlyViolating = true;
+        }
         CheckStolenVehicles();
     }
     private void CheckStolenVehicles()

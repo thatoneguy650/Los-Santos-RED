@@ -8,6 +8,15 @@ public class Settings : ISettingsProvideable
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Settings.xml";
     public SettingsManager SettingsManager { get; private set; }
+
+
+
+    [XmlIgnore]
+    public SettingsManager EasySettingsManager { get; private set; }
+
+    [XmlIgnore]
+    public SettingsManager DefaultSettingsManager { get; private set; }
+
     [XmlIgnore]
     public bool IsBackendChanged { get; set; } = false;
     public void ReadConfig()
@@ -29,6 +38,18 @@ public class Settings : ISettingsProvideable
             EntryPoint.WriteToConsole($"No Settings config found, creating default", 0);
             DefaultConfig();
         }
+
+
+        EasySettingsManager = new SettingsManager();
+        EasySettingsManager.Setup();
+        EasySettingsManager.SetDefault();
+        SetSettingManagerEasy(EasySettingsManager);
+
+        DefaultSettingsManager = new SettingsManager();
+        DefaultSettingsManager.Setup();
+        DefaultSettingsManager.SetDefault();
+
+
         SettingsManager.Setup();
     }
     public void DefaultConfig()
@@ -41,77 +62,11 @@ public class Settings : ISettingsProvideable
     {
         Serialization.SerializeParam(SettingsManager == null ? new SettingsManager() : SettingsManager, ConfigFileName);
     }
-
     public void SetEasy()
     {
         IsBackendChanged = true;
         SettingsManager.SetDefault();
-
-        SettingsManager.VehicleSettings.InjureOnWindowBreak = false;
-
-
-        SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry = false;
-        SettingsManager.VehicleSettings.RequireScrewdriverForHotwire = false;
-
-        SettingsManager.GangSettings.ShowSpawnedBlip = true;
-        SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips = true;
-        SettingsManager.EMSSettings.ShowSpawnedBlips = true;
-
-        SettingsManager.GangSettings.ShowAmbientBlips = true;
-
-
-        SettingsManager.CriminalHistorySettings.RealTimeExpireWantedMultiplier = 500000;
-        SettingsManager.CriminalHistorySettings.CalendarTimeExpireWantedMultiplier = 8;
-
-
-
-        SettingsManager.PoliceSettings.TalkFailFineAmount = 100;
-
-       // SettingsManager.RespawnSettings.ShowRequiredBribeAmount = true;
-
-        SettingsManager.RecoilSettings.ApplyRecoil = false;
-        SettingsManager.SwaySettings.ApplySway = false;
-
-
-        SettingsManager.DamageSettings.AllowInjuryEffects = false;
-        SettingsManager.DamageSettings.ModifyPlayerDamage = false;
-
-        SettingsManager.RespawnSettings.RemoveWeaponsOnSurrender = false;
-
-
-        SettingsManager.RespawnSettings.HospitalStayDailyFee = 1000;
-        SettingsManager.RespawnSettings.HospitalStayMinDays = 1;
-        SettingsManager.RespawnSettings.HospitalStayMaxDays = 2;
-
-
-        SettingsManager.RespawnSettings.RemoveWeaponsOnDeath = false;
-
-
-        SettingsManager.RespawnSettings.DeductMoneyOnFailedBribe = false;
-        //SettingsManager.RespawnSettings.PoliceBribeBase = 100;
-        SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale = 500;
-        SettingsManager.RespawnSettings.PoliceBribePoliceKilledMultiplier = 5000;
-        SettingsManager.RespawnSettings.PoliceBribePoliceInjuredMultiplier = 200;
-        SettingsManager.RespawnSettings.PoliceBailWantedLevelScale = 500;
-        SettingsManager.RespawnSettings.PoliceBailPoliceKilledMultiplier = 300;
-        SettingsManager.RespawnSettings.PoliceBailPoliceInjuredMultiplier = 150;
-        SettingsManager.RespawnSettings.PoliceBailCiviliansKilledMultiplier = 500;
-
-
-        SettingsManager.RespawnSettings.PoliceBailDurationPoliceKilledMultiplier = 2;
-        SettingsManager.RespawnSettings.PoliceBailDurationCiviliansKilledMultiplier = 1;
-        SettingsManager.RespawnSettings.ClearIllicitInventoryOnDeath = false;
-        SettingsManager.RespawnSettings.ClearIllicitInventoryOnSurrender = false;
-        //SettingsManager.RespawnSettings.ShowRequiredBribeAmount = true;
-        SettingsManager.RespawnSettings.ImpoundVehicles = false;
-
-        SettingsManager.VehicleSettings.ForceFirstPersonOnVehicleDuck = false;
-        SettingsManager.VehicleSettings.LockVehiclePercentage = 30f;
-        SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckNoHeadlights = false;
-        SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedHeadlights = false;
-        SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedDoors = false;
-        SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedWindows = false;
-
+        SetSettingManagerEasy(SettingsManager);
     }
     public void SetDefault()
     {
@@ -297,5 +252,73 @@ public class Settings : ISettingsProvideable
 
 
 
+    }
+
+    private void SetSettingManagerEasy(SettingsManager settingsManager)
+    {
+        settingsManager.VehicleSettings.InjureOnWindowBreak = false;
+
+
+        settingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry = false;
+        settingsManager.VehicleSettings.RequireScrewdriverForHotwire = false;
+
+        settingsManager.GangSettings.ShowSpawnedBlip = true;
+        settingsManager.PoliceSpawnSettings.ShowSpawnedBlips = true;
+        settingsManager.EMSSettings.ShowSpawnedBlips = true;
+
+        settingsManager.GangSettings.ShowAmbientBlips = true;
+
+
+        settingsManager.CriminalHistorySettings.RealTimeExpireWantedMultiplier = 500000;
+        settingsManager.CriminalHistorySettings.CalendarTimeExpireWantedMultiplier = 8;
+
+
+
+        settingsManager.PoliceSettings.TalkFailFineAmount = 100;
+
+        // SettingsManager.RespawnSettings.ShowRequiredBribeAmount = true;
+
+        settingsManager.RecoilSettings.ApplyRecoil = false;
+        settingsManager.SwaySettings.ApplySway = false;
+
+
+        settingsManager.DamageSettings.AllowInjuryEffects = false;
+        settingsManager.DamageSettings.ModifyPlayerDamage = false;
+
+        settingsManager.RespawnSettings.RemoveWeaponsOnSurrender = false;
+
+
+        settingsManager.RespawnSettings.HospitalStayDailyFee = 1000;
+        settingsManager.RespawnSettings.HospitalStayMinDays = 1;
+        settingsManager.RespawnSettings.HospitalStayMaxDays = 2;
+
+
+        settingsManager.RespawnSettings.RemoveWeaponsOnDeath = false;
+
+
+        settingsManager.RespawnSettings.DeductMoneyOnFailedBribe = false;
+        //SettingsManager.RespawnSettings.PoliceBribeBase = 100;
+        settingsManager.RespawnSettings.PoliceBribeWantedLevelScale = 500;
+        settingsManager.RespawnSettings.PoliceBribePoliceKilledMultiplier = 5000;
+        settingsManager.RespawnSettings.PoliceBribePoliceInjuredMultiplier = 200;
+        settingsManager.RespawnSettings.PoliceBailWantedLevelScale = 500;
+        settingsManager.RespawnSettings.PoliceBailPoliceKilledMultiplier = 300;
+        settingsManager.RespawnSettings.PoliceBailPoliceInjuredMultiplier = 150;
+        settingsManager.RespawnSettings.PoliceBailCiviliansKilledMultiplier = 500;
+
+
+        settingsManager.RespawnSettings.PoliceBailDurationPoliceKilledMultiplier = 2;
+        settingsManager.RespawnSettings.PoliceBailDurationCiviliansKilledMultiplier = 1;
+        settingsManager.RespawnSettings.ClearIllicitInventoryOnDeath = false;
+        settingsManager.RespawnSettings.ClearIllicitInventoryOnSurrender = false;
+        //SettingsManager.RespawnSettings.ShowRequiredBribeAmount = true;
+        settingsManager.RespawnSettings.ImpoundVehicles = false;
+
+        settingsManager.VehicleSettings.ForceFirstPersonOnVehicleDuck = false;
+        settingsManager.VehicleSettings.LockVehiclePercentage = 30f;
+        settingsManager.VehicleSettings.NonRoadworthyVehicleCheckNoHeadlights = false;
+        settingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedHeadlights = false;
+        settingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedDoors = false;
+        settingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedWindows = false;
     }
 }

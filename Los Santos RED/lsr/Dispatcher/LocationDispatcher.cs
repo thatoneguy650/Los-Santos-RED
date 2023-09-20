@@ -90,7 +90,7 @@ public class LocationDispatcher
             {
                 foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)
                 {
-                    EntryPoint.WriteToConsole($"ATTEMPTING VEHICLE SPAWN AT {ps.Name} FOR {cl.GroupID}");
+                    //EntryPoint.WriteToConsole($"ATTEMPTING VEHICLE SPAWN AT {ps.Name} FOR {cl.GroupID}");
 
 
                     bool hasStuff = ForcedGroups.Contains(cl.GroupID);

@@ -160,6 +160,13 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
 
             object SubSettings = property.GetValue(SettingsProvider.SettingsManager);
             PropertyInfo[] subSettings = property.PropertyType.GetProperties();
+
+
+            object defSubSettings = property.GetValue(SettingsProvider.DefaultSettingsManager);
+            
+
+
+
             foreach (PropertyInfo fi in subSettings)
             {
                 System.ComponentModel.DescriptionAttribute coolio = (System.ComponentModel.DescriptionAttribute)fi.GetCustomAttribute(typeof(DescriptionAttribute), true);
@@ -168,14 +175,22 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
                 {
                     Description = coolio.Description;
                 }
-                Description = Description.Substring(0, Math.Min(800, Description.Length));
+                Description = Description.Substring(0, Math.Min(750, Description.Length));
                 if (fi.PropertyType == typeof(bool))
                 {
+           
+                        Description += $"~n~Default: {(bool)fi.GetValue(defSubSettings)}";
+                    
+
+
                     UIMenuCheckboxItem MySetting = new UIMenuCheckboxItem(fi.Name, (bool)fi.GetValue(SubSettings), Description);
                     subMenu.AddItem(MySetting);
                 }
                 else if (fi.PropertyType == typeof(int) || fi.PropertyType == typeof(string) || fi.PropertyType == typeof(float) || fi.PropertyType == typeof(uint) || fi.PropertyType == typeof(Keys))
                 {
+       
+                        Description += $"~n~Default: {fi.GetValue(defSubSettings)}";
+                    
                     UIMenuItem MySetting = new UIMenuItem($"{fi.Name}: {fi.GetValue(SubSettings)}", Description);
                     subMenu.AddItem(MySetting);
                 }

@@ -393,7 +393,7 @@ public class GangDen : GameLocation//, ILocationGangAssignable
 
     private Blip CreateGangTerritoryBlip()
     {
-        if(!Settings.SettingsManager.GangSettings.ShowGangTerritoryBlip || AssociatedGang == null || !IsPrimaryGangDen)
+        if(!Settings.SettingsManager.GangSettings.ShowGangTerritoryBlip || AssociatedGang == null)
         {
             return null;
         }

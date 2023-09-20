@@ -529,6 +529,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Cup of Coffee", 2),
                 new MenuItem("Bottle of Raine Water", 2),
                 new MenuItem("Bottle of GREY Water", 3),
+                new MenuItem("Flow Water ZERO", 3)
             }),
             new ShopMenu("SandwichMenu","Sanwiches",new List<MenuItem>() {
                 new MenuItem("Ham and Cheese Sandwich", 2),
@@ -553,7 +554,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("DIC Lighter Silver", 10),
                 new MenuItem("DIC Lighter Gold", 15),
                 new MenuItem("Dippo Lighter", 20),
-                new MenuItem("Bottle of Raine Water", 2) }),
+                new MenuItem("Bottle of Raine Water", 2),
+                new MenuItem("Flow Water ZERO", 3) }),
             new ShopMenu("LiquorStoreMenu","Liquor Store",new List<MenuItem>() {
                 new MenuItem("Bottle of 40 oz", 5),
                 new MenuItem("Bottle of Barracho", 3),
@@ -571,6 +573,25 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of Logger", 3),
                 new MenuItem("Bottle of Sinsimito Tequila", 30),
                 new MenuItem("Bottle of Cazafortuna Tequila", 35),
+
+
+
+
+                new MenuItem("The Mount Bourbon Whisky", 35),
+                new MenuItem("Richard's Whisky Short", 55),
+                new MenuItem("Macbeth Single Malt Short", 40),
+                new MenuItem("Ragga Rum", 55),
+                new MenuItem("This Worm Has Turned Tequilya", 40),
+                new MenuItem("Cardiaque Brandy", 65),
+                new MenuItem("Bourgeoix Cognac", 70),
+                new MenuItem("Macbeth Single Malt", 45),
+                new MenuItem("Richard's Whisky", 50),
+                new MenuItem("NOGO Vodka", 30),
+                new MenuItem("Bleuter'd Champagne", 95),
+                new MenuItem("Cherenkov Red Label Vodka", 35),
+                new MenuItem("Cherenkov Blue Label Vodka", 40),
+                new MenuItem("Cherenkov Green Label Vodka", 45),
+                new MenuItem("Cherenkov Purple Label Vodka", 50),
             }),
             new ShopMenu("BarMenu","Bar",new List<MenuItem>() { 
                 //new MenuItem("Burger", 5),
@@ -592,7 +613,25 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of Blarneys", 3),
                 new MenuItem("Can of Logger", 3),
                 new MenuItem("Bottle of Sinsimito Tequila", 30),
-                new MenuItem("Bottle of Cazafortuna Tequila", 35),}),
+                new MenuItem("Bottle of Cazafortuna Tequila", 35),
+                new MenuItem("The Mount Bourbon Whisky", 35),
+                new MenuItem("Richard's Whisky Short", 55),
+                new MenuItem("Macbeth Single Malt Short", 40),
+                new MenuItem("Ragga Rum", 55),
+                new MenuItem("This Worm Has Turned Tequilya", 40),
+                new MenuItem("Cardiaque Brandy", 65),
+                new MenuItem("Bourgeoix Cognac", 70),
+                new MenuItem("Macbeth Single Malt", 45),
+                new MenuItem("Richard's Whisky", 50),
+                new MenuItem("NOGO Vodka", 30),
+                new MenuItem("Bleuter'd Champagne", 95),
+                new MenuItem("Cherenkov Red Label Vodka", 35),
+                new MenuItem("Cherenkov Blue Label Vodka", 40),
+                new MenuItem("Cherenkov Green Label Vodka", 45),
+                new MenuItem("Cherenkov Purple Label Vodka", 50),
+
+
+            }),
             new ShopMenu("CoffeeMenu","Coffee",new List<MenuItem>() {
                 new MenuItem("Cup of Coffee", 2),
                 new MenuItem("Donut", 5),
@@ -680,8 +719,9 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of Blarneys", 3),
                 new MenuItem("Can of Logger", 3),
                 new MenuItem("Cup of Coffee", 2),
-                new MenuItem("Bottle of Raine Water", 2)
-            
+                new MenuItem("Bottle of Raine Water", 2),
+                new MenuItem("Flow Water ZERO", 3)
+
             }),
             new ShopMenu("FancyDeliMenu","Deli",new List<MenuItem>() { new MenuItem("Chicken Club Salad",10),new MenuItem("Spicy Seafood Gumbo",14),new MenuItem("Muffaletta",8),new MenuItem("Zucchini Garden Pasta",9),new MenuItem("Pollo Mexicano",12),new MenuItem("Italian Cruz Po'boy",19),new MenuItem("Chipotle Chicken Panini",10)}),
             new ShopMenu("FancyFishMenu","Fish",new List<MenuItem>() { new MenuItem("Coconut Crusted Prawns",12),new MenuItem("Crab and Shrimp Louie",10),new MenuItem("Open-Faced Crab Melt",28),new MenuItem("King Salmon",48),new MenuItem("Ahi Tuna",44), }),
@@ -841,7 +881,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of Blarneys", 3),
                 new MenuItem("Can of Logger", 3),
                 new MenuItem("Cup of Coffee", 2),
-                new MenuItem("Bottle of Raine Water", 2)
+                new MenuItem("Bottle of Raine Water", 2),
+                new MenuItem("Flow Water ZERO", 3)
             }),
             new ShopMenu("ItalianMenu","Italian",new List<MenuItem>() {
                 new MenuItem("Slice of Pizza", 3),
@@ -1031,7 +1072,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Big Fruit Smoothie", 14),
                 new MenuItem("Donut", 3),
                 new MenuItem("Bagel Sandwich", 8),
-                new MenuItem("Bottle of Raine Water", 3)
+                new MenuItem("Bottle of Raine Water", 3),
+                new MenuItem("Flow Water ZERO", 3)
             }),
 
             //Chicken
@@ -1143,7 +1185,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Donut", 1),
                 new MenuItem("Cup of Coffee", 2),
                 new MenuItem("Bottle of Raine Water", 2),
-                new MenuItem("Bottle of GREY Water", 3),}),
+                new MenuItem("Bottle of GREY Water", 3),
+                new MenuItem("Flow Water ZERO", 3)}),
             new ShopMenu("FruitVineMenu","Fruit Of The Vine",new List<MenuItem>() {
                 new MenuItem("Sticky Rib Phat Chips", 2),
                 new MenuItem("Big Cheese Phat Chips", 2),
@@ -1177,10 +1220,17 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of Blarneys", 3),
                 new MenuItem("Can of Logger", 3),
                 new MenuItem("Bottle of Sinsimito Tequila", 30),
-                new MenuItem("Bottle of Cazafortuna Tequila", 35),
+                new MenuItem("Bottle of Cazafortuna Tequila", 35),                          
+                new MenuItem("Cardiaque Brandy", 65),
+                new MenuItem("Bourgeoix Cognac", 70),
+                new MenuItem("Macbeth Single Malt", 45),
+                new MenuItem("Richard's Whisky", 50),
+                new MenuItem("Cherenkov Green Label Vodka", 45),
+                new MenuItem("Cherenkov Purple Label Vodka", 50),
                 new MenuItem("Cup of Coffee", 2),
                 new MenuItem("Bottle of Raine Water", 2),
-                new MenuItem("Bottle of GREY Water", 3),}),
+                new MenuItem("Bottle of GREY Water", 3),
+                new MenuItem("Flow Water ZERO", 3)}),
             new ShopMenu("RonMenu","Ron",new List<MenuItem>() {
                 new MenuItem("Habanero Phat Chips", 2),
                 new MenuItem("Supersalt Phat Chips", 2),
@@ -1205,7 +1255,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of Logger", 3),
                 new MenuItem("Cup of Coffee", 2),
                 new MenuItem("Bottle of Raine Water", 2),
-                new MenuItem("Bottle of GREY Water", 3),}),
+                new MenuItem("Bottle of GREY Water", 3),
+                new MenuItem("Flow Water ZERO", 3)}),
             new ShopMenu("XeroMenu","Xero",new List<MenuItem>() {
                 new MenuItem("Sticky Rib Phat Chips", 2),
                 new MenuItem("Habanero Phat Chips", 2),
@@ -1228,9 +1279,17 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of Hoplivion Double IPA", 4),
                 new MenuItem("Can of Logger", 3),
                 new MenuItem("Bottle of Cazafortuna Tequila", 35),
+                new MenuItem("The Mount Bourbon Whisky", 35),
+                new MenuItem("Ragga Rum", 55),
+                new MenuItem("This Worm Has Turned Tequilya", 40),
+                new MenuItem("Richard's Whisky", 50),
+                new MenuItem("NOGO Vodka", 30),
+                new MenuItem("Cherenkov Red Label Vodka", 35),
+                new MenuItem("Cherenkov Purple Label Vodka", 50),
                 new MenuItem("Cup of Coffee", 2),
                 new MenuItem("Bottle of Raine Water", 2),
-                new MenuItem("Bottle of GREY Water", 3),}),
+                new MenuItem("Bottle of GREY Water", 3),
+                new MenuItem("Flow Water ZERO", 3)}),
             new ShopMenu("LTDMenu","LTD",new List<MenuItem>() {
                 new MenuItem("White Bread", 3),
                 new MenuItem("Carton of Milk", 4),
@@ -1260,7 +1319,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of Logger", 3),
                 new MenuItem("Cup of Coffee", 2),
                 new MenuItem("Bottle of Raine Water", 2),
-                new MenuItem("Bottle of GREY Water", 3),}),
+                new MenuItem("Bottle of GREY Water", 3),
+                new MenuItem("Flow Water ZERO", 3)}),
         });
     }
     private void SpecificHotels()
@@ -1745,7 +1805,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of eCola", 1),
                 new MenuItem("Can of Orang-O-Tang", 1),
                 new MenuItem("Bottle of JUNK Energy", 2),
-                new MenuItem("Bottle of Raine Water", 2), }) { BannerOverride = "sprunk.png" },
+                new MenuItem("Bottle of Raine Water", 2),
+                new MenuItem("Flow Water ZERO", 3) }) { BannerOverride = "sprunk.png" },
             new ShopMenu("eColaVendingMenu","eCola Machine",new List<MenuItem>() {
                 new MenuItem("Can of Sprunk", 1),
                 new MenuItem("Can of eCola", 1),

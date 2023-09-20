@@ -136,7 +136,7 @@ namespace Mod
             PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes, names, Weapons, shopMenus, ModItems, pedGroups);
             Licenses = new Licenses(this);
             Properties = new Properties(this, PlacesOfInterest, TimeControllable);
-            ButtonPrompts = new ButtonPrompts(this, Settings);
+            ButtonPrompts = new ButtonPrompts(this, Settings, World);
             Injuries = new Injuries(this, Settings);
             Dances = dances;
             HumanState = new HumanState(this, TimeControllable, Settings);
