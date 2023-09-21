@@ -237,7 +237,7 @@ public class SeatAssigner
                     {
                         if (Ped.Pedestrian.Exists())
                         {
-                            if (NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, vehicleToCheck.Vehicle, seatToCheck, false, true))
+                            if (NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, vehicleToCheck.Vehicle, seatToCheck, false, false))//if (NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, vehicleToCheck.Vehicle, seatToCheck, false, true))
                             {
                                 return true;
                             }

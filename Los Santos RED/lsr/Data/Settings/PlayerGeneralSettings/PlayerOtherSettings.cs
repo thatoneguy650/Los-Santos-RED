@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,6 +40,9 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public int CorruptCopInvestigationClearCost { get; set; }
     [Description("Cost to remove your wanted level using the corrupt cop interaction. Number is multiplied by your current wanted level to get the total cost. Ex. 5000 at 2 starts would cost $10000")]
     public int CorruptCopWantedClearCostScalar { get; set; }
+    [Description("Cost to remove an APB/BOLO using the corrupt cop interaction.")]
+    public int CorruptCopAPBClearCost { get; set; }
+
     [Description("Hours needed to wait between contact tasks after completing the previous task.")]
     public float HoursBetweenTasksWhenCompleted { get; set; }
     [Description("Hours needed to wait between contact tasks after failing the previous task.")]
@@ -82,6 +86,11 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public float VehicleAutoCameraYDistance { get; set; }
     public float VehicleAutoCameraZDistance { get; set; }
 
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
     public PlayerOtherSettings()
     {
         SetDefault();
@@ -108,6 +117,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
 
         CorruptCopInvestigationClearCost = 2000;
         CorruptCopWantedClearCostScalar = 5000;
+        CorruptCopAPBClearCost = 1500;
         HoursBetweenTasksWhenCompleted = 3;
         HoursBetweenTasksWhenFailed = 12;
 

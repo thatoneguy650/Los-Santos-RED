@@ -54,8 +54,7 @@ public class ScannerSettings : ISettingsDefaultable
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
-        ShowPoliceVehicleBlipsWithScanner = true;
-        PoliceBlipUpdateTime = 10000;
+        SetDefault();
     }
 
     public void SetDefault()

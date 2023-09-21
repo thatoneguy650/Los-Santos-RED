@@ -21,6 +21,7 @@ public class DebugLocationSubMenu : DebugSubMenu
 {
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
+    private IPlacesOfInterest PlacesOfInterest;
     private Camera FreeCam;
     private IStreets Streets;
     private string FreeCamString = "Regular";
@@ -30,11 +31,12 @@ public class DebugLocationSubMenu : DebugSubMenu
     private Street CurrentCrossStreet;
     private uint GameTimeLastUpdatedNodes;
 
-    public DebugLocationSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IEntityProvideable world, ISettingsProvideable settings, IStreets streets) : base(debug, menuPool, player)
+    public DebugLocationSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IEntityProvideable world, ISettingsProvideable settings, IStreets streets, IPlacesOfInterest placesOfInterest) : base(debug, menuPool, player)
     {
         World = world;
         Settings = settings;
         Streets = streets;
+        PlacesOfInterest = placesOfInterest;
     }
     public override void AddItems()
     {
@@ -189,6 +191,34 @@ public class DebugLocationSubMenu : DebugSubMenu
             DrawStreetText();
         };
         LocationItemsMenu.AddItem(DrawStreetTextMenu);
+
+
+        UIMenuItem OpenCloseDoors = new UIMenuItem("Open Doors", "Force open all nearby doors");
+        OpenCloseDoors.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+            foreach(GameLocation gameLocation in World.Places.ActiveLocations.ToList())
+            {
+                if (gameLocation.DistanceToPlayer <= 100f)
+                {
+                    gameLocation.Interior?.OpenDoors();
+                }
+            }
+        };
+        LocationItemsMenu.AddItem(OpenCloseDoors);
+
+
+        UIMenuItem EnableScenarios = new UIMenuItem("Enable Scenarios", "Enable some scenarios groups");
+        EnableScenarios.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+            NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("City_Banks", true);
+            NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("Countryside_Banks", true);
+            NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("AMMUNATION", true);
+            NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("YellowJackInn", true);
+            NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("VANGELICO", true);
+        };
+        LocationItemsMenu.AddItem(EnableScenarios);
 
 
 

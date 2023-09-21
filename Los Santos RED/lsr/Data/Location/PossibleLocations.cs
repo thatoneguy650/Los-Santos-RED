@@ -122,6 +122,43 @@ public class PossibleLocations
     }
 
 
-
+    public List<GameLocation> WitnessTaskLocations()
+    {
+        List<GameLocation> AllLocations = new List<GameLocation>();
+        AllLocations.AddRange(Banks);
+        AllLocations.AddRange(Bars);
+        AllLocations.AddRange(BeautyShops);
+        AllLocations.AddRange(CarDealerships);
+        AllLocations.AddRange(CityHalls);
+        AllLocations.AddRange(ConvenienceStores);
+        AllLocations.AddRange(Dispensaries);
+        AllLocations.AddRange(GasStations);
+        AllLocations.AddRange(HardwareStores);
+        AllLocations.AddRange(HeadShops);
+        AllLocations.AddRange(Hospitals);
+        AllLocations.AddRange(Hotels);
+        AllLocations.AddRange(LiquorStores);
+        AllLocations.AddRange(PawnShops);
+        AllLocations.AddRange(Pharmacies);
+        AllLocations.AddRange(Restaurants);
+        AllLocations.AddRange(Landmarks);
+        AllLocations.AddRange(SportingGoodsStores);
+        return AllLocations;
+    }
+    public List<GameLocation> RobberyTaskLocations()
+    {
+        List<GameLocation> AllLocations = new List<GameLocation>();
+        AllLocations.AddRange(Banks);
+        AllLocations.AddRange(ConvenienceStores);
+        AllLocations.AddRange(Dispensaries);
+        AllLocations.AddRange(GasStations);
+        AllLocations.AddRange(HardwareStores);
+        AllLocations.AddRange(HeadShops);
+        AllLocations.AddRange(LiquorStores);
+        AllLocations.AddRange(PawnShops);
+        AllLocations.AddRange(Pharmacies);
+        AllLocations.AddRange(SportingGoodsStores);
+        return AllLocations;
+    }
 }
 

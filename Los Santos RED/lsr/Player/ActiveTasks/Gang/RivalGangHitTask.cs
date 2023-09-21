@@ -38,7 +38,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         public bool JoinGangOnComplete { get; set; } = false;
 
         public RivalGangHitTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes
-            ,PhoneContact phoneContact, GangTasks gangTasks)
+            ,PhoneContact phoneContact, GangTasks gangTasks, Gang targetGang)
         {
             Player = player;
             Time = time;
@@ -51,6 +51,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Crimes = crimes;
             PhoneContact = phoneContact;
             GangTasks = gangTasks;
+            TargetGang = targetGang;
         }
         public void Setup()
         {
@@ -123,11 +124,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetTargetGang()
         {
-            TargetGang = null;
-            if (HiringGang.EnemyGangs != null && HiringGang.EnemyGangs.Any())
-            {
-                TargetGang = Gangs.GetGang(HiringGang.EnemyGangs.PickRandom());
-            }
+           // TargetGang = null;
+            //if (HiringGang.EnemyGangs != null && HiringGang.EnemyGangs.Any())
+            //{
+            //    TargetGang = Gangs.GetGang(HiringGang.EnemyGangs.PickRandom());
+            //}
             if (TargetGang == null)
             {
                 TargetGang = Gangs.GetAllGangs().Where(x => x.ID != HiringGang.ID).PickRandom();

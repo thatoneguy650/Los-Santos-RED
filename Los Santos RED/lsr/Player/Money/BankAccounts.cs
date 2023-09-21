@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Helper;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
@@ -13,13 +14,13 @@ public class BankAccounts
 {
     private IBankAccountHoldable Player;
     private ISettingsProvideable Settings;
+    private IPlacesOfInterest PlacesOfInterest;
     private uint GameTimeLastChangedMoney;
     private int money = 0;
     private int currentMoney;
 
     public int LastChangeMoneyAmount { get; set; }
     public bool RecentlyChangedMoney => GameTimeLastChangedMoney != 0 && Game.GameTime - GameTimeLastChangedMoney <= 7000;
-    //public int AccountMoney { get; set; } = 0;
     public int TotalAccountMoney => BankAccountList == null || !BankAccountList.Any() ? 0 : BankAccountList.Sum(x => x.Money);
     public int TotalMoney => TotalAccountMoney + Money;
     public List<BankAccount> BankAccountList { get; set; } = new List<BankAccount>();
@@ -52,10 +53,11 @@ public class BankAccounts
         }
     }
 
-    public BankAccounts(IBankAccountHoldable player, ISettingsProvideable settings)
+    public BankAccounts(IBankAccountHoldable player, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
         Settings = settings;
+        PlacesOfInterest = placesOfInterest;
     }
     public void Setup()
     {
@@ -64,11 +66,11 @@ public class BankAccounts
     }
     public void Dispose()
     {
-
+        BankAccountList.Clear();
     }
     public void Reset()
     {
-
+        BankAccountList.Clear();
     }
     public void Update()
     {
@@ -185,7 +187,7 @@ public class BankAccounts
         }
     }
 
-    public void SetMoney(int Amount)
+    public void SetCash(int Amount)
     {
         uint PlayerCashHash;
         if (Player.CharacterModelIsPrimaryCharacter)
@@ -245,6 +247,17 @@ public class BankAccounts
             EntryPoint.WriteToConsole($"Account: {bankAccount.BankContactName} {bankAccount.Money}");
         }
         EntryPoint.WriteToConsole("BANK ACCOUNTS---------------");
+    }
+
+    public void CreateRandomAccount(int amount)
+    {
+        Bank randomBank = PlacesOfInterest.PossibleLocations.Banks.PickRandom();
+        if(randomBank == null)
+        {
+            EntryPoint.WriteToConsole("CANNOT GIVE RANDOM BANK ACCOUNT, NO BANKS FOUND");
+            return;
+        }
+        BankAccountList.Add(new BankAccount(randomBank.Name, amount));
     }
 }
 

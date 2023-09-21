@@ -263,13 +263,10 @@ public class GameLocation : ILocationDispatchable
             World.Places.ActiveLocations.Remove(this);
         }
         RestrictedAreas?.Deactivate();
-        RemoveButtonPrompts();
-    }
-
-    protected virtual void RemoveButtonPrompts()
-    {
 
     }
+
+
 
     public virtual List<Tuple<string, string>> DirectoryInfo(int currentHour, float distanceTo)
     {
@@ -486,6 +483,10 @@ public class GameLocation : ILocationDispatchable
                 distanceToPlayer = EntrancePosition.DistanceTo(Game.LocalPlayer.Character);
                 UpdateBlip(time);
                 GameTimeLastCheckedDistance = Game.GameTime;
+                
+            }
+            if(DistanceToPlayer <= 100f)
+            {
                 UpdatePrompts();
             }
             //RestrictedAreas?.Update(Player);

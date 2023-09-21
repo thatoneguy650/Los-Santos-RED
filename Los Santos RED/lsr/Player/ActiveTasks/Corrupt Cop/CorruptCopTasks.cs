@@ -55,21 +55,21 @@ public class CorruptCopTasks : IPlayerTaskGroup
     }
     public void StartWitnessEliminationTask(CorruptCopContact contact)
     {
-        WitnessEliminationTask WitnessEliminationTask = new WitnessEliminationTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Names, Weapons, ShopMenus);
+        WitnessEliminationTask WitnessEliminationTask = new WitnessEliminationTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Names, Weapons, ShopMenus, contact);
         AllTasks.Add(WitnessEliminationTask);
         WitnessEliminationTask.Setup();
         WitnessEliminationTask.Start(contact);
     }
     public void StartCopHitTask(CorruptCopContact contact)
     {
-        CopHitTask CopHitTask = new CopHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Names, Weapons);
+        CopHitTask CopHitTask = new CopHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Names, Weapons, contact);
         AllTasks.Add(CopHitTask);
         CopHitTask.Setup();
         CopHitTask.Start(contact);
     }
-    public void StartCopGangHitTask(CorruptCopContact contact)
+    public void StartCopGangHitTask(CorruptCopContact contact, Gang targetGang)
     {
-        CopGangHitTask CopGangHitTask = new CopGangHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        CopGangHitTask CopGangHitTask = new CopGangHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, contact, targetGang);
         AllTasks.Add(CopGangHitTask);
         CopGangHitTask.Setup();
         CopGangHitTask.Start(contact);

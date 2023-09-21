@@ -264,11 +264,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetShops()
         {
-            DropOffStore = PlacesOfInterest.PossibleLocations.GunStores.Where(x => x.ContactName == Contact.Name && x.IsEnabled).PickRandom();
+            DropOffStore = PlacesOfInterest.PossibleLocations.GunStores.Where(x => x.ContactName == Contact.Name && x.IsEnabled && x.IsCorrectMap(World.IsMPMapLoaded)).PickRandom();
             PickUpStore = null;
             if (DropOffStore != null)
             {
-                PickUpStore = PlacesOfInterest.PossibleLocations.GunStores.Where(x => x.ContactName == Contact.Name && x.Name != DropOffStore.Name && x.ParkingSpaces.Any()).PickRandom();
+                PickUpStore = PlacesOfInterest.PossibleLocations.GunStores.Where(x => x.ContactName == Contact.Name && x.Name != DropOffStore.Name && x.ParkingSpaces.Any() && x.IsCorrectMap(World.IsMPMapLoaded)).PickRandom();
             }
             if (PickUpStore != null && DropOffStore != null)
             {

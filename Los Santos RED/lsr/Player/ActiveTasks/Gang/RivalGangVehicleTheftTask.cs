@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Player.ActiveTasks
 {
-    public class RivalGangTheftTask : IPlayerTask
+    public class RivalGangVehicleTheftTask : IPlayerTask
     {
 
         private ITaskAssignable Player;
@@ -35,8 +35,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
         private bool HasTargetGangVehicleAndHiringDen => TargetGang != null && HiringGangDen != null && VehicleToSteal != null;
         private bool IsInStolenGangCar => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.Model.Name.ToLower() == VehicleToSteal.ModelName.ToLower() && Player.CurrentVehicle.WasModSpawned && Player.CurrentVehicle.AssociatedGang != null && Player.CurrentVehicle.AssociatedGang.ID == TargetGang.ID;
-        public RivalGangTheftTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes,
-            PhoneContact phoneContact, GangTasks gangTasks)
+        public RivalGangVehicleTheftTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes,
+            PhoneContact phoneContact, GangTasks gangTasks, Gang targetGang)
         {
             Player = player;
             Time = time;
@@ -49,6 +49,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Crimes = crimes;
             PhoneContact = phoneContact;
             GangTasks = gangTasks;
+            TargetGang = targetGang;
         }
         public void Setup()
         {
@@ -121,14 +122,14 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetTargetGang()
         {
-            TargetGang = null;
+            //TargetGang = null;
             VehicleToSteal = null;
             VehicleToStealMakeName = "";
             VehicleToStealModelName = "";
-            if (HiringGang.EnemyGangs != null && HiringGang.EnemyGangs.Any())
-            {
-                TargetGang = Gangs.GetGang(HiringGang.EnemyGangs.PickRandom());
-            }
+            //if (HiringGang.EnemyGangs != null && HiringGang.EnemyGangs.Any())
+            //{
+            //    TargetGang = Gangs.GetGang(HiringGang.EnemyGangs.PickRandom());
+            //}
             if (TargetGang == null)
             {
                 TargetGang = Gangs.GetAllGangs().Where(x => x.ID != HiringGang.ID).PickRandom();

@@ -15,6 +15,7 @@ using System.Net.Http.Headers;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace LosSantosRED.lsr.Data
 {
@@ -37,11 +38,7 @@ namespace LosSantosRED.lsr.Data
         }
         public string PlayerName { get; set; }
         public int Money { get; set; }
-      //  public int AccountMoney { get; set; }
-
-
         public List<BankAccount> SavedBankAccounts { get; set; } = new List<BankAccount>();
-
         public string ModelName { get; set; }
         public Vector3 PlayerPosition { get; set; }
         public float PlayerHeading { get; set; }
@@ -73,9 +70,7 @@ namespace LosSantosRED.lsr.Data
         public PilotsLicense PilotsLicense { get; set; }
         public List<SavedTextMessage> TextMessages { get; set; } = new List<SavedTextMessage>();
         public List<PhoneContact> Contacts { get; set; } = new List<PhoneContact>();
-
         public List<ContactRelationship> ContactRelationships { get; set; } = new List<ContactRelationship>();
-
         public List<GangRepSave> GangReputationsSave { get; set; } = new List<GangRepSave>();
         public GangKickSave GangKickSave { get; set; }
         public List<StoredWeapon> WeaponInventory { get; set; } = new List<StoredWeapon>();
@@ -83,27 +78,27 @@ namespace LosSantosRED.lsr.Data
         public List<VehicleSaveStatus> OwnedVehicleVariations { get; set; } = new List<VehicleSaveStatus>();
         public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();
         public CellPhoneSave CellPhoneSave { get; set; } = new CellPhoneSave();
+        //Save
         public void Save(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
+        {
+            SaveDemographics(player);
+            SaveMoney(player);
+            SaveInventory(player, modItems);
+            SaveWeapons(player, weapons);
+            SaveVehicles(player);
+            SaveReputation(player);
+            SaveContacts(player, time);
+            SavePostition(player);
+            SaveHumanState(player);
+            SaveLicenses(player);
+            SaveResidences(player);
+            SaveAgencies(player);
+            SaveCellPhone(player); 
+        }
+        private void SaveDemographics(ISaveable player)
         {
             PlayerName = player.PlayerName;
             ModelName = player.ModelName;
-
-
-
-
-
-            //Money = player.BankAccounts.Money;
-            //AccountMoney = player.BankAccounts.AccountMoney;
-            Money = player.BankAccounts.GetMoney(false);
-            SavedBankAccounts.Clear();
-            foreach (BankAccount bankAccount in player.BankAccounts.BankAccountList)
-            {
-                SavedBankAccounts.Add(bankAccount);
-            }
-
-
-
-
 
             IsMale = player.IsMale;
             CurrentModelVariation = player.CurrentModelVariation.Copy();
@@ -112,25 +107,38 @@ namespace LosSantosRED.lsr.Data
             Health = player.Character.Health;
             Armor = player.Character.Armor;
 
-            modItems.WriteToFile();
-            SaveDateTime = DateTime.Now;
+            SpeechSkill = player.SpeechSkill;
+            VoiceName = player.FreeModeVoice;
 
+            SaveDateTime = DateTime.Now;
+        }
+        private void SaveMoney(ISaveable player)
+        {
+            Money = player.BankAccounts.GetMoney(false);
+            SavedBankAccounts.Clear();
+            foreach (BankAccount bankAccount in player.BankAccounts.BankAccountList)
+            {
+                SavedBankAccounts.Add(bankAccount);
+            }
+        }
+        private void SaveInventory(ISaveable player, IModItems modItems)
+        {
+            modItems.WriteToFile();
             InventoryItems.Clear();
             foreach (InventoryItem cii in player.Inventory.ItemsList)
             {
                 InventoryItems.Add(new InventorySave(cii.ModItem.Name, cii.RemainingPercent));
             }
-
-           // InventoryItemsList.Clear();
-           // InventoryItemsList.AddRange(player.Inventory.ItemsList.ToList());
-
-
-
-
+        }
+        private void SaveWeapons(ISaveable player, IWeapons weapons)
+        {
             foreach (WeaponDescriptor wd in Game.LocalPlayer.Character.Inventory.Weapons)
             {
                 WeaponInventory.Add(new StoredWeapon((uint)wd.Hash, Vector3.Zero, weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)wd.Hash), wd.Ammo));
             }
+        }
+        private void SaveVehicles(ISaveable player)
+        {
             OwnedVehicleVariations.Clear();
             foreach (VehicleExt car in player.VehicleOwnership.OwnedVehicles)
             {
@@ -162,17 +170,22 @@ namespace LosSantosRED.lsr.Data
                     OwnedVehicleVariations.Add(vss);
                 }
             }
+        }
+        private void SaveReputation(ISaveable player)
+        {
             GangReputationsSave = new List<GangRepSave>();
             foreach (GangReputation gr in player.RelationshipManager.GangRelationships.GangReputations)
             {
-                GangReputationsSave.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt, gr.MembersKilled, gr.MembersCarJacked, gr.MembersHurtInTerritory, gr.MembersKilledInTerritory, gr.MembersCarJackedInTerritory, gr.PlayerDebt, gr.IsMember, gr.IsEnemy,gr.TasksCompleted));
+                GangReputationsSave.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt, gr.MembersKilled, gr.MembersCarJacked, gr.MembersHurtInTerritory, gr.MembersKilledInTerritory, gr.MembersCarJackedInTerritory, gr.PlayerDebt, gr.IsMember, gr.IsEnemy, gr.TasksCompleted));
             }
 
-            if(player.RelationshipManager.GangRelationships.CurrentGang != null && player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
+            if (player.RelationshipManager.GangRelationships.CurrentGang != null && player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
             {
                 GangKickSave = new GangKickSave(player.RelationshipManager.GangRelationships.CurrentGang.ID, player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueDate, player.RelationshipManager.GangRelationships.CurrentGangKickUp.MissedPeriods, player.RelationshipManager.GangRelationships.CurrentGangKickUp.MissedAmount);
             }
-
+        }
+        private void SaveContacts(ISaveable player, ITimeReportable time)
+        {
             Contacts = new List<PhoneContact>();
             foreach (PhoneContact ifc in player.CellPhone.ContactList.ToList())
             {
@@ -191,30 +204,20 @@ namespace LosSantosRED.lsr.Data
             {
                 ContactRelationships.Add(test);
             }
-
-
-            //UndergroundGunsMoneySpent = player.RelationshipManager.GunDealerRelationship.TotalMoneySpentAtShops;
-            //UndergroundGunsDebt = player.RelationshipManager.GunDealerRelationship.PlayerDebt;
-            //UndergroundGunsReputation = player.RelationshipManager.GunDealerRelationship.ReputationLevel;
-
-            //OfficerFriendlyMoneySpent = player.RelationshipManager.OfficerFriendlyRelationship.TotalMoneySpentOnBribes;
-            //OfficerFriendlyDebt = player.RelationshipManager.OfficerFriendlyRelationship.PlayerDebt;
-            //OfficerFriendlyReputation = player.RelationshipManager.OfficerFriendlyRelationship.ReputationLevel;
-
-
-
-
-
-
-
+        }
+        private void SavePostition(ISaveable player)
+        {
             PlayerPosition = player.Character.Position;
             PlayerHeading = player.Character.Heading;
-
-
+        }
+        private void SaveHumanState(ISaveable player)
+        {
             HungerValue = player.HumanState.Hunger.CurrentValue;
             SleepValue = player.HumanState.Sleep.CurrentValue;
             ThirstValue = player.HumanState.Thirst.CurrentValue;
-
+        }
+        private void SaveLicenses(ISaveable player)
+        {
             if (player.Licenses.HasDriversLicense)
             {
                 DriversLicense = new DriversLicense() { ExpirationDate = player.Licenses.DriversLicense.ExpirationDate, IssueDate = player.Licenses.DriversLicense.IssueDate, IssueStateID = player.Licenses.DriversLicense.IssueStateID };
@@ -227,6 +230,9 @@ namespace LosSantosRED.lsr.Data
             {
                 PilotsLicense = new PilotsLicense() { ExpirationDate = player.Licenses.PilotsLicense.ExpirationDate, IssueDate = player.Licenses.PilotsLicense.IssueDate, IssueStateID = player.Licenses.DriversLicense.IssueStateID, IsFixedWingEndorsed = player.Licenses.PilotsLicense.IsFixedWingEndorsed, IsRotaryEndorsed = player.Licenses.PilotsLicense.IsRotaryEndorsed, IsLighterThanAirEndorsed = player.Licenses.PilotsLicense.IsLighterThanAirEndorsed };
             }
+        }
+        private void SaveResidences(ISaveable player)
+        {
             SavedResidences.Clear();
             foreach (Residence res in player.Properties.Residences)//placesOfInterest.PossibleLocations.Residences)
             {
@@ -238,18 +244,18 @@ namespace LosSantosRED.lsr.Data
                         myRes.DateOfLastRentalPayment = res.DateRentalPaymentPaid;
                         myRes.RentalPaymentDate = res.DateRentalPaymentDue;
                     }
-                    if(res.WeaponStorage != null)
+                    if (res.WeaponStorage != null)
                     {
                         myRes.WeaponInventory = new List<StoredWeapon>();
-                        foreach(StoredWeapon storedWeapon in res.WeaponStorage.StoredWeapons)
+                        foreach (StoredWeapon storedWeapon in res.WeaponStorage.StoredWeapons)
                         {
                             myRes.WeaponInventory.Add(storedWeapon.Copy());
                         }
                     }
-                    if(res.SimpleInventory!= null)
+                    if (res.SimpleInventory != null)
                     {
                         myRes.InventoryItems = new List<InventorySave>();
-                        foreach(InventoryItem ii in res.SimpleInventory.ItemsList)
+                        foreach (InventoryItem ii in res.SimpleInventory.ItemsList)
                         {
                             myRes.InventoryItems.Add(new InventorySave(ii.ModItem?.Name, ii.RemainingPercent));
                         }
@@ -258,21 +264,25 @@ namespace LosSantosRED.lsr.Data
                     SavedResidences.Add(myRes);
                 }
             }
-            SpeechSkill = player.SpeechSkill;
+        }
+        private void SaveAgencies(ISaveable player)
+        {
             IsCop = player.IsCop;
             IsEMT = player.IsEMT;
             IsFireFighter = player.IsFireFighter;
             IsSecurityGuard = player.IsSecurityGuard;
             AssignedAgencyID = player.AssignedAgency?.ID;
-            VoiceName = player.FreeModeVoice;
-            CellPhoneSave = new CellPhoneSave(player.CellPhone.CustomRingtone,player.CellPhone.CustomTextTone,player.CellPhone.CustomTheme,player.CellPhone.CustomBackground,player.CellPhone.CustomVolume,player.CellPhone.SleepMode, player.CellPhone.CustomPhoneType,player.CellPhone.CustomPhoneOS);
         }
+        private void SaveCellPhone(ISaveable player)
+        {
+            CellPhoneSave = new CellPhoneSave(player.CellPhone.CustomRingtone, player.CellPhone.CustomTextTone, player.CellPhone.CustomTheme, player.CellPhone.CustomBackground, player.CellPhone.CustomVolume, player.CellPhone.SleepMode, player.CellPhone.CustomPhoneType, player.CellPhone.CustomPhoneOS);
+        }
+        //Load
         public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, IAgencies agencies, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
             try
             {
                 Game.FadeScreenOut(1000, true);
-
                 time.SetDateTime(CurrentDateTime);
                 pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation, SpeechSkill, VoiceName);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
                 LoadMoney(player);
@@ -287,7 +297,6 @@ namespace LosSantosRED.lsr.Data
                 LoadHumanState(player);
                 LoadCellPhoneSettings(player);
                 LoadAgencies(agencies, player);
-
                 LoadHealth(player);
                 GameFiber.Sleep(1000);
                 Game.FadeScreenIn(1500, true);
@@ -338,7 +347,6 @@ namespace LosSantosRED.lsr.Data
                 player.Character.Armor = Armor;
             }
         }
-
         private void LoadCellPhoneSettings(IInventoryable player)
         {
             player.CellPhone.CustomRingtone = CellPhoneSave.CustomRingtone;
@@ -350,7 +358,6 @@ namespace LosSantosRED.lsr.Data
             player.CellPhone.CustomPhoneType = CellPhoneSave.CustomPhoneType;
             player.CellPhone.CustomPhoneOS = CellPhoneSave.CustomPhoneOS;
         }
-
         public override string ToString()
         {
             return $"{PlayerName}";//base.ToString();
@@ -589,6 +596,7 @@ namespace LosSantosRED.lsr.Data
                 player.Character.Heading = PlayerHeading;   
             }
         }
+        //Info
         public TabMissionSelectItem SaveTabInfo(ITimeReportable time, IGangs gangs, IWeapons weapons, IModItems modItems)
         {
             List<MissionInformation> saveMissionInfos = new List<MissionInformation>();
@@ -724,13 +732,6 @@ namespace LosSantosRED.lsr.Data
         }
         public string Title => $"{SaveNumber.ToString("D2")} - {PlayerName} ({Money.ToString("C0")}) - {CurrentDateTime.ToString("MM/dd/yyyy HH:mm")}";
         public string RightLabel => SaveDateTime.ToString("MM/dd/yyyy HH:mm");
-
-        //[OnDeserializing]
-        //internal void OnDeserializedMethod(StreamingContext context)
-        //{
-        //    Health = 1;
-        //}
-
     }
 
 }

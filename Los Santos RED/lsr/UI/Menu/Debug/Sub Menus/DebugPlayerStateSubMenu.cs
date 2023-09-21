@@ -56,7 +56,7 @@ public class DebugPlayerStateSubMenu : DebugSubMenu
         {
             if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int moneyToSet))
             {
-                Player.BankAccounts.SetMoney(moneyToSet);
+                Player.BankAccounts.SetCash(moneyToSet);
             }
             menu.Visible = false;
         };
@@ -282,7 +282,7 @@ public class DebugPlayerStateSubMenu : DebugSubMenu
         UnSetArrested.Activated += (menu, item) =>
         {
             Game.TimeScale = 1.0f;
-            Player.Reset(true, false, true, true, true, false, false, false, false, false, false, false, false, false, false, true, false);
+            Player.Reset(true, false, true, true, true, false, false, false, false, false, false, false, false, false, false, true, false, false);
             Player.Surrendering.UnSetArrestedAnimation();
             menu.Visible = false;
         };

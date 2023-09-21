@@ -156,7 +156,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                     }
                     if (Settings.SettingsManager.PoliceSettings.AllowShootingInvestigations && !IsShootingCheckerActive)//Need Frame Perfect checking on cops shooting for stealth
                     {
-                        ShootingChecker(policeRespondable);
+                        ShootingChecker();
                     }
                     if (Settings.SettingsManager.PoliceSettings.AllowAlerts)
                     {
@@ -335,7 +335,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         SawPlayerViolating = true;
         //EntryPoint.WriteToConsole($"I AM {Handle} AND I SAW PLAYER VIOLATING");
     }
-    private void ShootingChecker(IPoliceRespondable policeRespondable)
+    private void ShootingChecker()
     {
         if (!IsShootingCheckerActive)
         {
@@ -365,7 +365,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                 catch (Exception ex)
                 {
                     EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                    EntryPoint.ModController.CrashUnload();
+                    //EntryPoint.ModController.CrashUnload();
                 }
             }, "Ped Shooting Checker");
         }

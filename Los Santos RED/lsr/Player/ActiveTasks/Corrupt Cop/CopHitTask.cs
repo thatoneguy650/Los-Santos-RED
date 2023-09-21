@@ -52,7 +52,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
         private bool IsPlayerFarFromTargetCop => TargetCop != null && TargetCop.Pedestrian.Exists() && TargetCop.Pedestrian.DistanceTo2D(Player.Character) >= 850f;
         private bool IsPlayerNearTargetCopSpawn => SpawnPositionCellX != -1 && SpawnPositionCellY != -1 && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, SpawnPositionCellX, SpawnPositionCellY, 5);
-        public CopHitTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names, IWeapons weapons)
+        public CopHitTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, 
+            INameProvideable names, IWeapons weapons, CorruptCopContact corruptCopContact)
         {
             Player = player;
             Time = time;
@@ -65,10 +66,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Crimes = crimes;
             Names = names;
             Weapons = weapons;
+            Contact = corruptCopContact;
         }
         public void Setup()
         {
-            Contact = new CorruptCopContact(Contact.Name);
+
         }
         public void Dispose()
         {

@@ -57,12 +57,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 return false;
             }
-            CrusherLocation = PlacesOfInterest.PossibleLocations.CarCrushers.PickRandom();
+            CrusherLocation = PlacesOfInterest.PossibleLocations.CarCrushers.Where(x => x.IsCorrectMap(World.IsMPMapLoaded)).PickRandom();
             if (CrusherLocation == null)
             {
                 return false;
             }
-            SpawnLocation = PlacesOfInterest.PossibleLocations.GenericTaskLocations().PickRandom();
+            SpawnLocation = PlacesOfInterest.PossibleLocations.GenericTaskLocations().Where(x=> x.IsCorrectMap(World.IsMPMapLoaded)).PickRandom();
             if (SpawnLocation == null)
             {
                 return false;

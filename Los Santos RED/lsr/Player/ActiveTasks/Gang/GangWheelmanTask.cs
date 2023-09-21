@@ -135,7 +135,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 CurrentTask = PlayerTasks.GetTask(HiringGang.ContactName);
                 if (CurrentTask == null || !CurrentTask.IsActive)
                 {
-                    //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {HiringGang.ContactName}");
                     break;
                 }
                 if(!hasStartedRobbery)
@@ -183,15 +182,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     {
                         Game.FadeScreenOut(500);
                     }
-                    //Game.FadeScreenOut(1500, true);
-
-
                     World.Pedestrians.ClearGangMembers();
-
                     hasSpawnedRobbers = SpawnRobbers();
-                   // GameFiber.Sleep(100);
                     Game.FadeScreenIn(1000);
-                    //Game.FadeScreenIn(1500, true);
                     PlayScene();
                     if(hasSpawnedRobbers)
                     {
@@ -208,7 +201,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     Player.ButtonPrompts.AddPrompt("RobberyStart", "Hold To Start Robbery", ButtonPromptIdentifier, Settings.SettingsManager.KeySettings.InteractCancel, 99);
                     if (Player.ButtonPrompts.IsHeld(ButtonPromptIdentifier))
                     {
-                        //EntryPoint.WriteToConsoleTestLong("RobberyStart You pressed fastforward to time");
                         Player.ButtonPrompts.RemovePrompts("RobberyStart");
                         Time.FastForward(RobberyTime);
                         Game.FadeScreenOut(1000, true);
@@ -228,44 +220,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void PlayScene()
         {
-
             GangMember Star = SpawnedRobbers.PickRandom();
             if (Star != null && Star.Pedestrian.Exists())
             {
                 NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Star.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
             }
-
-
-            //if (!CutsceneCamera.Exists())
-            //{
-            //    CutsceneCamera = new Camera(false);
-            //}
-            //if (1 == 1)//far away camera
-            //{
-            //    float distanceAway = 10f;
-            //    float distanceAbove = 7f;
-            //    Vector3 InitialCameraPosition = NativeHelper.GetOffsetPosition(RobberyLocation.EntrancePosition, RobberyLocation.EntranceHeading + 90f, distanceAway);
-            //    InitialCameraPosition = new Vector3(InitialCameraPosition.X, InitialCameraPosition.Y, InitialCameraPosition.Z + distanceAbove);
-            //    CutsceneCamera.Position = InitialCameraPosition;
-            //    Vector3 ToLookAt = new Vector3(RobberyLocation.EntrancePosition.X, RobberyLocation.EntrancePosition.Y, RobberyLocation.EntrancePosition.Z + 2f);
-            //    Vector3 _direction = (ToLookAt - InitialCameraPosition).ToNormalized();
-            //    CutsceneCamera.Direction = _direction;
-
-            //}
-            //else //close door camera
-            //{
-            //    Vector3 ToLookAtPos = NativeHelper.GetOffsetPosition(RobberyLocation.EntrancePosition, RobberyLocation.EntranceHeading + 90f, 5f);
-            //    EgressCamPosition = NativeHelper.GetOffsetPosition(ToLookAtPos, RobberyLocation.EntranceHeading, 7f);
-            //    EgressCamPosition += new Vector3(0f, 0f, 0.4f);
-            //    ToLookAtPos += new Vector3(0f, 0f, 0.4f);
-            //    CutsceneCamera.Position = EgressCamPosition;
-            //    CutsceneCamera.FOV = 55f;
-            //    Vector3 _direction = (ToLookAtPos - EgressCamPosition).ToNormalized();
-            //    CutsceneCamera.Direction = _direction;
-            //}
-
-            //CutsceneCamera.Active = true;
-            //hasSpawnedRobbers = SpawnRobbers();
             foreach (GangMember gangMember in SpawnedRobbers)
             {
                 if(gangMember.Pedestrian.Exists())
@@ -273,25 +232,18 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     uint bestWeapon = NativeFunction.Natives.GET_BEST_PED_WEAPON<uint>(gangMember.Pedestrian);
                     uint currentWeapon;
                     NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(gangMember.Pedestrian, out currentWeapon, true);
-
-                    //EntryPoint.WriteToConsoleTestLong($"PLAY SCENE currentWeapon {currentWeapon}");
-
                     if (currentWeapon != bestWeapon)
                     {
                         NativeFunction.Natives.SET_CURRENT_PED_WEAPON(gangMember.Pedestrian, bestWeapon, true);
-                       // NativeFunction.Natives.SET_PED_CAN_SWITCH_WEAPON(gangMember.Pedestrian, false);
-                        //EntryPoint.WriteToConsoleTestLong($"PLAY SCENE SETTING TO bestWeapon {bestWeapon} currentWeapon {currentWeapon}");
                     }
                 }
             }
-            //GangMember Star = SpawnedRobbers.PickRandom();
             if(Star != null && Star.Pedestrian.Exists())
             {
                 uint currentWeapon;
                 NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(Star.Pedestrian, out currentWeapon, true);
                 if (currentWeapon != 2725352035)
                 {
-                    //EntryPoint.WriteToConsoleTestLong($"PLAY SCENE STARTING currentWeapon {currentWeapon}");
                     PlaySpeech(Star, "COVER_ME", false);
                     NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Star.Pedestrian, RobberyLocation.EntrancePosition.X, RobberyLocation.EntrancePosition.Y, RobberyLocation.EntrancePosition.Z + 0.5f, true);
                     if (RandomItems.RandomPercent(50))
@@ -314,29 +266,18 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             GameFiber.Sleep(2000);
             NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
-            //if (CutsceneCamera.Exists())
-            //{
-            //    CutsceneCamera.Delete();
-            //}
         }
         private bool IsRobberyValid()
         {
             Player.ButtonPrompts.RemovePrompts("RobberyStart");
             if (!hasSpawnedRobbers)
             {
-                //EntryPoint.WriteToConsoleTestLong($"FAILED!  as you werent close enough of the robbers didnt spawn!");
                 return false;
             }
             if (hasSpawnedRobbers && !AreRobbersNormal())
             {
-                //EntryPoint.WriteToConsoleTestLong($"FAILED! ROBBER ISSUES!");
                 return false;
             }
-            //if(!Player.IsAliveAndFree)//should handle on the respawn event, want to allow undie,,,,
-            //{
-            //    EntryPoint.WriteToConsole($"FAILED! You got busted or died!");
-            //    return false;
-            //}
             return true;
         }
         private void CheckRobberyReadyForPayment()
@@ -349,14 +290,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     SendMoneyPickupMessage();
                     hasSentCompleteMessage = true;
                 }
-                //EntryPoint.WriteToConsoleTestLong($"You lost the cops so it is now ready for payment!");
             }
         }
         private void SetRobbersViolent()
         {
             foreach (GangMember RobberAccomplice in SpawnedRobbers)
             {
-                //RobberAccomplice.Pedestrian.RelationshipGroup = RobberRelationshipGroup;
                 RelationshipGroup.Cop.SetRelationshipWith(RobberRelationshipGroup, Relationship.Hate);
                 RobberRelationshipGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
                 NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(RobberAccomplice.Pedestrian, 500000, 0);//TR
@@ -375,35 +314,19 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         List<string> PossibleSpeech = new List<string>() { "COVER_ME","RELOADING","TAKE_COVER","PINNED_DOWN", "GENERIC_FRIGHTENED_MED", "GENERIC_FRIGHTENED_HIGH" };
                         PlaySpeech(tospeak, PossibleSpeech.PickRandom(), false);
                         GameTimeBetweenRobberSpeech = RandomItems.GetRandomNumber(2000, 5000);
-
-
-                        //EntryPoint.WriteToConsoleTestLong($"WHEELMAN SPEECH CHECK DEADLY SHOOTING!");
                     }
                     else if (Player.IsWanted && tospeak.IsWanted && Player.AnyPoliceRecentlySeenPlayer)
                     {
                         List<string> PossibleSpeech = new List<string>() { "GENERIC_WAR_CRY","SHOUT_INSULT", "CHALLENGE_THREATEN", "FIGHT", "GENERIC_CURSE_HIGH" };
                         PlaySpeech(tospeak, PossibleSpeech.PickRandom(), false);
                         GameTimeBetweenRobberSpeech = RandomItems.GetRandomNumber(2000, 5000);
-
-
-                        //EntryPoint.WriteToConsoleTestLong($"WHEELMAN SPEECH CHECK WANTED!");
-
                     }
                     else if(Player.IsNotWanted && tospeak.IsNotWanted)
                     {
                         List<string> PossibleSpeech = new List<string>() { "CHAT_STATE", "PED_RANT", "CHAT_RESP", "PED_RANT_RESP", "CULT_TALK","CHAT_RESP",
-                //"PHONE_CONV1_CHAT1", "PHONE_CONV1_CHAT2", "PHONE_CONV1_CHAT3", "PHONE_CONV1_INTRO", "PHONE_CONV1_OUTRO",
-                //"PHONE_CONV2_CHAT1", "PHONE_CONV2_CHAT2", "PHONE_CONV2_CHAT3", "PHONE_CONV2_INTRO", "PHONE_CONV2_OUTRO",
-                //"PHONE_CONV3_CHAT1", "PHONE_CONV3_CHAT2", "PHONE_CONV3_CHAT3", "PHONE_CONV3_INTRO", "PHONE_CONV3_OUTRO",
-                //"PHONE_CONV4_CHAT1", "PHONE_CONV4_CHAT2", "PHONE_CONV4_CHAT3", "PHONE_CONV4_INTRO", "PHONE_CONV4_OUTRO",
-                //"PHONE_SURPRISE_PLAYER_APPEARANCE_01","SEE_WEIRDO_PHONE",
                 "PED_RANT_01", };
                         PlaySpeech(tospeak, PossibleSpeech.PickRandom(), false);
                         GameTimeBetweenRobberSpeech = RandomItems.GetRandomNumber(5000, 15000);
-
-
-                        //EntryPoint.WriteToConsoleTestLong($"WHEELMAN SPEECH CHECK IDLE!");
-
                     }
                     else
                     {
@@ -412,7 +335,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 GameTimeBetweenRobberSpeech = RandomItems.GetRandomNumber(5000, 15000);
                 GameTimeRobberLastSpoke = Game.GameTime;
-                //EntryPoint.WriteToConsoleTestLong($"WHEELMAN SPEECH CHECK NO SPEECH!");
             }
         }
         private void PlaySpeech(GangMember gangMember, string speechName, bool useMegaphone)
@@ -428,12 +350,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     gangMember.Pedestrian.PlayAmbientSpeech(gangMember.VoiceName, speechName, 0, SpeechModifier.Force);
                 }
-                //EntryPoint.WriteToConsoleTestLong($"FREEMODE GANG SPEAK {gangMember.Pedestrian.Handle} freeModeVoice {gangMember.VoiceName} speechName {speechName}");
             }
             else
             {
                 gangMember.Pedestrian.PlayAmbientSpeech(speechName, useMegaphone);
-                //EntryPoint.WriteToConsoleTestLong($"REGULAR GANG SPEAK {gangMember.Pedestrian.Handle} freeModeVoice {gangMember.VoiceName} speechName {speechName}");
             }
         }
         private void CheckRobberCrimes()
@@ -444,21 +364,17 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     if(gm.WantedLevel > Player.WantedLevel && gm.PedViolations.WorstObservedCrime != null)
                     {
-                        //EntryPoint.WriteToConsoleTestLong($"WANTED LEVEL Adding Crime {gm.PedViolations.WorstObservedCrime.Name}!");
                         Player.AddCrime(gm.PedViolations.WorstObservedCrime, true, Player.Character.Position, Player.CurrentVehicle, null, true, true, true);
                     }
                     else if(gm.IsDeadlyChase && !Player.PoliceResponse.IsDeadlyChase && gm.PedViolations.WorstObservedCrime != null)
                     {
-                        //EntryPoint.WriteToConsoleTestLong($"DEADLY CHASE Adding Crime {gm.PedViolations.WorstObservedCrime.Name}!");
                         Player.AddCrime(gm.PedViolations.WorstObservedCrime, true, Player.Character.Position, Player.CurrentVehicle, Player.WeaponEquipment.CurrentWeapon, true, true, true);
                     }
                     else if(gm.PedViolations.WorstObservedCrime == null)
                     {
-                        //EntryPoint.WriteToConsoleTestLong($"WHEELMAN NO CRIMES!!!!");
                     }
                 }
             }
-            //EntryPoint.WriteToConsole($"WHEELMAN CHECK ROBBER CRIMES RAN!!!!");
         }
         private bool AreRobbersNormal()
         {
@@ -466,22 +382,18 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 if(!gm.Pedestrian.Exists())
                 {
-                    //EntryPoint.WriteToConsoleTestLong($"FAILED!  A robber got despawned soemhow!");
                     return false;
                 }
                 else if(gm.IsBusted)
                 {
-                    //EntryPoint.WriteToConsoleTestLong($"FAILED!  The robber got caught!");
                     return false;
                 }
                 else if (gm.Pedestrian.IsDead)
                 {
-                    //EntryPoint.WriteToConsoleTestLong($"FAILED!  A robber died!");
                     return false;
                 }
                 else if (gm.Pedestrian.DistanceTo2D(Player.Character) >= 250f)
                 {
-                    //EntryPoint.WriteToConsoleTestLong($"FAILED!  A robber got left!");
                     return false;
                 }
             }
@@ -529,28 +441,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         RobberAccomplice.WeaponInventory.IssueWeapons(Weapons, true, true, true, RobberAccompliceInfo);
                         RobberAccomplice.CanBeTasked = false;
                         RobberAccomplice.CanBeAmbientTasked = false;
-
-
                         RobberAccomplice.Money = RandomItems.GetRandomNumberInt(2000, 5000);
-
-                        //if(WillAddComplications)
-                        //{
-                            RobberAccomplice.Pedestrian.RelationshipGroup = RobberRelationshipGroup;
-                        //    RelationshipGroup.Cop.SetRelationshipWith(RobberRelationshipGroup, Relationship.Hate);
-                        //    RobberRelationshipGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
-                            NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(RobberAccomplice.Pedestrian, 500000, 0);//TR
-                        //}
                         RobberAccomplice.Pedestrian.RelationshipGroup = RobberRelationshipGroup;
                         NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(RobberAccomplice.Pedestrian, 500000, 0);//TR
-
                         Player.GroupManager.Add(RobberAccomplice);
-
-
-
-
-                        //PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
-                        //NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(RobberAccomplice.Pedestrian, PlayerGroup);
-                        //NativeFunction.Natives.SET_PED_AS_GROUP_LEADER(Player.Character, PlayerGroup);
                         RobberAccomplice.Pedestrian.KeepTasks = true;
                         return true;
                     }
@@ -560,8 +454,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void SetFailed()
         {
-            //EntryPoint.WriteToConsoleTestLong("Gang Wheelman FAILED");
-            //CleanupRobbers();
             if (RobberyLocation != null)
             {
                 RobberyLocation.IsPlayerInterestedInLocation = false;
@@ -583,10 +475,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 RobberyLocation.IsPlayerInterestedInLocation = false;
             }
-            //EntryPoint.WriteToConsoleTestLong("Gang Wheelman COMPLETED");
             CleanupRobbers();
-            //GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 15000));
-            //SendMoneyPickupMessage();
         }
         private void CleanupRobbers()
         {
@@ -594,7 +483,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 if (RobberAccomplice != null && RobberAccomplice.Pedestrian.Exists())
                 {
-                    //RobberAccomplice.Pedestrian.IsPersistent = false;
                     Blip attachedBlip = RobberAccomplice.Pedestrian.GetAttachedBlip();
                     if (attachedBlip.Exists())
                     {
@@ -626,51 +514,25 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetRobberyInformation()
         {
-            List<GameLocation> PossibleSpots = new List<GameLocation>();
-            //PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Banks);
-            //PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.BeautyShops);
-            PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.ConvenienceStores);
-            PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Dispensaries);
-            PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.GasStations);
-            PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.HardwareStores);
-            PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.HeadShops);
-            PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.LiquorStores);
-            PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.PawnShops);
-            PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Pharmacies);
-            //PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Restaurants);
-            //RobberyLocation = PossibleSpots.Where(x=> x..PickRandom();
-
+            List<GameLocation> PossibleSpots = PlacesOfInterest.PossibleLocations.RobberyTaskLocations().Where(x=> x.IsCorrectMap(World.IsMPMapLoaded)).ToList();
             List<GameLocation> AvailableSpots = new List<GameLocation>();
-
             foreach (GameLocation possibleSpot in PossibleSpots)
             {
                 bool isNear = false;
-
-
-
                 foreach(GameLocation policeStation in PlacesOfInterest.PossibleLocations.PoliceStations)//do not want to do robberies outside the police stations.....
                 {
-                    if(possibleSpot.CheckIsNearby(policeStation.CellX,policeStation.CellY,2))
+                    if(possibleSpot.CheckIsNearby(policeStation.CellX,policeStation.CellY,3))
                     {
                         isNear = true;
                         break;
                     }
                 }
-
-
-
                 if(!isNear)
                 {
                     AvailableSpots.Add(possibleSpot);
                 }
-
-
-
             }
-            //   RobberyLocation = PlacesOfInterest.PossibleLocations.ConvenienceStores.FirstOrDefault(x => x.Name == "24/7 Chumash");
             RobberyLocation = AvailableSpots.PickRandom();
-
-
             HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded);
             HoursToRobbery = RandomItems.GetRandomNumberInt(8, 12);
             RobberyTime = Time.CurrentDateTime.AddHours(HoursToRobbery);
@@ -689,7 +551,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);
             HasAddedComplications = false;
             WillAddComplications = false;// RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.RivalGangHitComplicationsPercentage);
-
             hasStartedGetaway = false;
             hasSpawnedRobbers = false;
             hasSentCompleteMessage = false;
@@ -698,14 +559,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             hasAddedArmedRobberyCrime = false;
             isFadedOut = false;
             SpawnedRobbers.Clear();
-
-
             if(RobberyLocation != null)
             {
                 RobberyLocation.IsPlayerInterestedInLocation = true;
             }
-
-            //EntryPoint.WriteToConsoleTestLong($"You are hired to wheelman!");
             PlayerTasks.AddTask(HiringGang.ContactName, MoneyToRecieve, 2000, 2000, -500, 7, "Gang Wheelman");
             CurrentTask = PlayerTasks.GetTask(HiringGang.ContactName);
             CurrentTask.FailOnStandardRespawn = true;

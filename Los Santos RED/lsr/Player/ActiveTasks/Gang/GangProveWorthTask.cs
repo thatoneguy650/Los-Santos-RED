@@ -149,7 +149,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             if(TargetGang != null)
             {
-                TargetGangDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == TargetGang?.ID && x.IsPrimaryGangDen);
+                TargetGangDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == TargetGang?.ID && x.IsPrimaryGangDen && x.IsCorrectMap(World.IsMPMapLoaded));
             }
         }
         private void GetHiringDen()

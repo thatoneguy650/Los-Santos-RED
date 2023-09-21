@@ -21,13 +21,14 @@ public class CorruptCopInteraction : IContactMenuInteraction
     private IGangs Gangs;
     private IPlacesOfInterest PlacesOfInterest;
     private ISettingsProvideable Settings;
-    private UIMenuItem GangHit;
+    private UIMenuListScrollerItem<Gang> GangHit;
     private UIMenuItem TaskCancel;
     private UIMenuItem WitnessElimination;
     private UIMenuItem CopHit;
     private UIMenu JobsSubMenu;
     private UIMenu ServicesSubMenu;
     private CorruptCopContact Contact;
+    private UIMenuItem PayoffCopsAPB;
 
     private int CostToClearWanted
     {
@@ -41,6 +42,13 @@ public class CorruptCopInteraction : IContactMenuInteraction
         get
         {
             return Settings.SettingsManager.PlayerOtherSettings.CorruptCopInvestigationClearCost;
+        }
+    }
+    private int CostToClearAPB
+    {
+        get
+        {
+            return Settings.SettingsManager.PlayerOtherSettings.CorruptCopAPBClearCost;
         }
     }
     public CorruptCopInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, CorruptCopContact contact)
@@ -94,11 +102,21 @@ public class CorruptCopInteraction : IContactMenuInteraction
             PayoffCopInvestigation();
             sender.Visible = false;
         };
+        PayoffCopsAPB = new UIMenuItem("Clear APB/BOLO", "Ask your contact to have the cops forget about your APB/BOLO") { RightLabel = "~r~" + CostToClearAPB.ToString("C0") + "~s~" };
+        PayoffCopsAPB.Activated += (sender, e) =>
+        {
+            PayoffCopAPB();
+            sender.Visible = false;
+        };
         ServicesSubMenu.AddItem(PayoffCops);
         ServicesSubMenu.AddItem(PayoffCopsInvestigation);
+        ServicesSubMenu.AddItem(PayoffCopsAPB);
         PayoffCops.Enabled = Player.IsWanted;
         PayoffCopsInvestigation.Enabled = Player.Investigation.IsActive;
+        PayoffCopsAPB.Enabled = Player.CriminalHistory.HasHistory;
     }
+
+
 
     private void AddJobs()
     {
@@ -115,10 +133,10 @@ public class CorruptCopInteraction : IContactMenuInteraction
             JobsSubMenu.AddItem(TaskCancel);
             return;
         }
-        GangHit = new UIMenuItem("Gang Hit", "Do a hit on a gang for the cops.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax:C0}~s~" };
+        GangHit = new UIMenuListScrollerItem<Gang>("Gang Hit", $"Do a hit on a gang for the cops.~n~Payment: ~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax:C0}~s~", Gangs.AllGangs.ToList());
         GangHit.Activated += (sender, e) =>
         {
-            Player.PlayerTasks.CorruptCopTasks.StartCopGangHitTask(Contact);
+            Player.PlayerTasks.CorruptCopTasks.StartCopGangHitTask(Contact, GangHit.SelectedItem);
             sender.Visible = false;
         };
         WitnessElimination = new UIMenuItem("Witness Elimination", "Probably some major federal indictment of somebody who majorly does not want to get indicted.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMax:C0}~s~" };
@@ -232,6 +250,50 @@ public class CorruptCopInteraction : IContactMenuInteraction
                     Player.Respawning.PayoffPolice();
                     Player.SetWantedLevel(0, "Cop Payoff", true);
                     Player.Investigation.Expire();
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
+            }, "PayoffFiber");
+            List<string> Replies = new List<string>() {
+                $"Let me work my magic, hang on.",
+                $"They should forget about you soon.",
+                $"Let me make up some bullshit to distract them, wait a few.",
+                $"Sending out an officer down across town, should get them off your tail for a while",
+                };
+            Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
+        }
+        else if (Player.BankAccounts.GetMoney(false) < CostToClearInvestigation)
+        {
+            List<string> Replies = new List<string>() {
+                $"Don't bother me unless you have some cash",
+                $"This shit isn't free you know, make sure you've got the cash",
+                };
+            Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
+        }
+        else
+        {
+            List<string> Replies = new List<string>() {
+                $"Don't bother me",
+                };
+            Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
+        }
+    }
+    private void PayoffCopAPB()
+    {
+        if (Player.BankAccounts.GetMoney(false) >= CostToClearAPB)
+        {
+            Player.BankAccounts.GiveMoney(-1 * CostToClearAPB, false);
+
+            GameFiber PayoffFiber = GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    int SleepTime = RandomItems.GetRandomNumberInt(5000, 10000);
+                    GameFiber.Sleep(SleepTime);
+                    Player.CriminalHistory.Clear();
                 }
                 catch (Exception ex)
                 {

@@ -1366,40 +1366,53 @@ public class Debug
 
     private void DebugNumpad7()
     {
-        Vector3 source = Game.LocalPlayer.Character.Position;
-        Vector3 target = new Vector3(source.X, source.Y, source.Z + 1.0f);
-        if (!NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(source.X, source.Y, source.Z, out float GroundZ, true, false))
-        {
-            return;
-            //position = new Vector3(position.X, position.Y, GroundZ);
-        }
-        target = new Vector3(source.X, source.Y, GroundZ - 1.0f);
-        int ShapeTestResultID = NativeFunction.Natives.START_SHAPE_TEST_CAPSULE<int>(source.X, source.Y, source.Z, target.X, target.Y, target.Z, 1.0f, 1, Game.LocalPlayer.Character, 7);
-        if(ShapeTestResultID == 0)
-        {
-            return;
-        }
-        Vector3 hitPositionArg;
-        bool hitSomethingArg;
-        int materialHashArg;
-        int entityHandleArg;
-        Vector3 surfaceNormalArg;
-        int Result = 0;
-        unsafe
-        {
-            Result = NativeFunction.CallByName<int>("GET_SHAPE_TEST_RESULT_INCLUDING_MATERIAL", ShapeTestResultID, &hitSomethingArg, &hitPositionArg, &surfaceNormalArg, &materialHashArg, &entityHandleArg);
-        }
-        if(Result == 0)
-        { 
-            return;
-        }
 
-        bool DidHit = hitSomethingArg;
-        Vector3 HitPosition = hitPositionArg;
-        Vector3 SurfaceNormal = surfaceNormalArg;
-        int MaterialHash = materialHashArg;
-        Game.DisplaySubtitle($"{DidHit} {HitPosition} {SurfaceNormal} {(MaterialHash)MaterialHash}");
-        EntryPoint.WriteToConsole($"{DidHit} {HitPosition} {SurfaceNormal} {MaterialHash} {(MaterialHash)MaterialHash}");
+       // NativeFunction.Natives.SET_STATE_OF_CLOSEST_DOOR_OF_TYPE(4163212883, -355.3892f, -51.06768f, 49.31105f, false,1.0f,true);
+
+
+
+        //Vector3 source = Game.LocalPlayer.Character.Position;
+        //Vector3 target = new Vector3(source.X, source.Y, source.Z + 1.0f);
+        //if (!NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(source.X, source.Y, source.Z, out float GroundZ, true, false))
+        //{
+        //    return;
+        //    //position = new Vector3(position.X, position.Y, GroundZ);
+        //}
+        //target = new Vector3(source.X, source.Y, GroundZ - 1.0f);
+        //int ShapeTestResultID = NativeFunction.Natives.START_SHAPE_TEST_CAPSULE<int>(source.X, source.Y, source.Z, target.X, target.Y, target.Z, 1.0f, 1, Game.LocalPlayer.Character, 7);
+        //if(ShapeTestResultID == 0)
+        //{
+        //    return;
+        //}
+        //Vector3 hitPositionArg;
+        //bool hitSomethingArg;
+        //int materialHashArg;
+        //int entityHandleArg;
+        //Vector3 surfaceNormalArg;
+        //int Result = 0;
+        //unsafe
+        //{
+        //    Result = NativeFunction.CallByName<int>("GET_SHAPE_TEST_RESULT_INCLUDING_MATERIAL", ShapeTestResultID, &hitSomethingArg, &hitPositionArg, &surfaceNormalArg, &materialHashArg, &entityHandleArg);
+        //}
+        //if(Result == 0)
+        //{ 
+        //    return;
+        //}
+
+        //bool DidHit = hitSomethingArg;
+        //Vector3 HitPosition = hitPositionArg;
+        //Vector3 SurfaceNormal = surfaceNormalArg;
+        //int MaterialHash = materialHashArg;
+        //Game.DisplaySubtitle($"{DidHit} {HitPosition} {SurfaceNormal} {(MaterialHash)MaterialHash}");
+        //EntryPoint.WriteToConsole($"{DidHit} {HitPosition} {SurfaceNormal} {MaterialHash} {(MaterialHash)MaterialHash}");
+
+
+
+
+
+
+
+
 
 
         //GET_CLOSEST_OBJECT_OF_TYPE
@@ -1533,11 +1546,45 @@ public class Debug
     public void DebugNumpad8()
     {
 
-        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("City_Banks", true);
-        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("Countryside_Banks", true);
-        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("AMMUNATION", true);
-        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("YellowJackInn", true);
-        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("VANGELICO", true);
+
+
+
+        Rage.Object doorEntity = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(145.2892f, -1041.0303f, 29.3679f, 3.0f, 4163212883, true, false, true);
+        if(!doorEntity.Exists())
+        {
+            return;
+        }
+        NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity,false);
+
+        int x = 0;
+        while (x < 200)
+        {
+            if(doorEntity.Exists())
+            {
+                doorEntity.Rotation = new Rotator(0f, 0f, doorEntity.Rotation.Yaw - 0.5f);
+            }
+            x++;
+            GameFiber.Yield();
+        }
+
+        GameFiber.Sleep(5000);
+        if (!doorEntity.Exists())
+        {
+            return;
+        }
+        NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, true);
+        //NativeFunction.Natives.x9B12F9A24FABEDB0(4163212883, 145.2892f, -1041.0303f, 29.3679f, false, 1.0f);
+
+
+
+
+
+
+        //NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("City_Banks", true);
+        //NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("Countryside_Banks", true);
+        //NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("AMMUNATION", true);
+        //NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("YellowJackInn", true);
+        //NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("VANGELICO", true);
         //GameFiber.StartNew(delegate
         //{
         //    Vector3 PlayerPos = Game.LocalPlayer.Character.Position;

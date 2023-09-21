@@ -145,7 +145,7 @@ namespace Mod
             WeaponEquipment = new WeaponEquipment(this, this, Weapons, Settings, this, this, this);
             GPSManager = new GPSManager(this, World);
             VehicleOwnership = new VehicleOwnership(this, World, Settings);
-            BankAccounts = new BankAccounts(this, Settings);
+            BankAccounts = new BankAccounts(this, Settings, PlacesOfInterest);
             ActivityManager = new ActivityManager(this, settings, this, this, this, this, this, TimeControllable, RadioStations, Crimes, ModItems, Dances, World, Intoxicants, this, Speeches, Seats, Weapons, PlacesOfInterest, Zones, shopMenus, gangs, gangTerritories, VehicleSeatDoorData);
             HealthManager = new HealthManager(this, Settings);
             ArmorManager = new ArmorManager(this, settings);
@@ -375,7 +375,6 @@ namespace Mod
         public Vehicle LastFriendlyVehicle { get; set; }
         public int LastSeatIndex => -1;
         public string ModelName { get; set; }
-
         public Ped Pedestrian => Game.LocalPlayer.Character;
         public bool PoliceLastSeenOnFoot { get; set; }
         public Vector3 PlacePolicePhysicallyLastSeenPlayer { get; set; }
@@ -547,7 +546,7 @@ namespace Mod
             IsBusted = false;
         }
         public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, 
-            bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod)
+            bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod, bool resetBankAccounts)
         {
             IsDead = false;
             IsBusted = false;
@@ -564,8 +563,6 @@ namespace Mod
             GPSManager.Reset();
             NativeFunction.Natives.SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(false);
             IsMobileRadioEnabled = false;
-
-
             if(resetGracePeriod)
             {
                 PoliceResponse.ResetGracePeriod();
@@ -644,6 +641,10 @@ namespace Mod
             if(resetLicenses)
             {
                 Licenses.Reset();
+            }
+            if(resetBankAccounts)
+            {
+                BankAccounts.Reset();
             }
             if (Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart)
             {
@@ -745,7 +746,7 @@ namespace Mod
             ModelName = modelName;
             PlayerName = playerName;
             IsMale = isMale;
-            BankAccounts.SetMoney(money);
+            BankAccounts.SetCash(money);
             SpeechSkill = speechSkill;// 
             if (voiceName == "")
             {
@@ -922,6 +923,11 @@ namespace Mod
             }
             InterestedVehicle.VehicleInteractionMenu.ShowInteractionMenu(this, Weapons, ModItems, vdsd, VehicleSeatDoorData, World, Settings);
         }
+        public void ToggleAutoBackup()
+        {
+            AutoDispatch = !AutoDispatch;
+            Game.DisplayHelp($"AutoDispatch {(AutoDispatch ? "Enabled" : "Disabled")}");
+        }
         //Events
         public void OnAppliedWantedStats(int wantedLevel) => Scanner.OnAppliedWantedStats(wantedLevel);
         public void OnGotOffFreeway()
@@ -1061,6 +1067,16 @@ namespace Mod
             PlayerVoice.OnWantedSearchMode();
         }
         public void OnWeaponsFree() => Scanner.OnWeaponsFree();
+        public void OnHitSquadDispatched(Gang enemyGang)
+        {
+            PhoneContact gangcontact = CellPhone.ContactList.Where(x => x.Name == enemyGang.ContactName).FirstOrDefault();
+            if (gangcontact == null)
+            {
+                return;
+            }
+            PlayerTasks.GangTasks.SendHitSquadMessage(gangcontact);
+
+        }
         private void OnAimingChanged()
         {
             if (IsAiming)
@@ -1585,7 +1601,6 @@ namespace Mod
             PlayerTasks.Update();
             UpdateClosestLookedAtObject();
         }
-
         private void UpdateGeneralStatus()
         {
             if (Game.LocalPlayer.Character.IsDead && !IsDead)
@@ -1864,7 +1879,6 @@ namespace Mod
             }
             isJacking = Character.IsJacking;
         }
-
         private void UpdateDuckingInVehicle()
         {
             bool isDuckingInVehicle = NativeFunction.Natives.GET_PED_CONFIG_FLAG<bool>(Character, 359, 1);
@@ -2131,22 +2145,7 @@ namespace Mod
                 TargettingHandle = NativeHelper.GetTargettingHandle();
             }
         }
-        public void ToggleAutoBackup()
-        {
-            AutoDispatch = !AutoDispatch;
-            Game.DisplayHelp($"AutoDispatch {(AutoDispatch ? "Enabled" : "Disabled")}");
-        }
 
-        public void OnHitSquadDispatched(Gang enemyGang)
-        {
-            PhoneContact gangcontact = CellPhone.ContactList.Where(x => x.Name == enemyGang.ContactName).FirstOrDefault();
-            if(gangcontact == null)
-            {
-                return;
-            }
-            PlayerTasks.GangTasks.SendHitSquadMessage(gangcontact);
-
-        }
         private void UpdateClosestScenario()
         {
             if (Settings.SettingsManager.ActivitySettings.AllowStartingScenarios && IsNotWanted && !IsInVehicle)//works fine, just turned off by default, needs some work

@@ -608,7 +608,7 @@ public class PedSwap : IPedSwap
             Player.ModelName = modelName;
             Player.CurrentModelVariation = variation.Copy();
             Player.PlayerName = fullName;
-            Player.BankAccounts.SetMoney(money);
+            Player.BankAccounts.SetCash(money);
             if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter)
             {
                 Player.WeaponEquipment.StoreWeapons();
@@ -690,7 +690,7 @@ public class PedSwap : IPedSwap
         }
         if (Settings.SettingsManager.PedSwapSettings.SetRandomMoney && CurrentPedMoney > 0)
         {
-            Player.BankAccounts.SetMoney(CurrentPedMoney);
+            Player.BankAccounts.SetCash(CurrentPedMoney);
         }
     }
     public void RemoveOffset()
@@ -862,6 +862,10 @@ public class PedSwap : IPedSwap
         if(RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetRandomPhone))
         {
             Player.CellPhone.RandomizeSettings();
+        }
+        if (RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetRandomPhone))
+        {
+            Player.BankAccounts.CreateRandomAccount(RandomItems.GetRandomNumberInt(Settings.SettingsManager.PedSwapSettings.RandomBankAccountMoneyMin, Settings.SettingsManager.PedSwapSettings.RandomBankAccountMoneyMax));
         }
     }
     private void HandlePreviousPed(bool deleteOld, Ped TargetPed)
@@ -1343,28 +1347,26 @@ public class PedSwap : IPedSwap
     }
     public void NewPlayer(string modelName, bool isMale)//gotta go
     {
-        Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
-
-
-        Player.SetDemographics(
-            modelName, 
-            isMale, 
-            GetName(modelName, Names.GetRandomName(isMale)), 
-            RandomItems.MyRand.Next(Settings.SettingsManager.PedSwapSettings.RandomMoneyMin, Settings.SettingsManager.PedSwapSettings.RandomMoneyMax), 
+        NewPlayer(
+            modelName,
+            isMale,
+            GetName(modelName, Names.GetRandomName(isMale)),
+            RandomItems.MyRand.Next(Settings.SettingsManager.PedSwapSettings.RandomMoneyMin, Settings.SettingsManager.PedSwapSettings.RandomMoneyMax),
             RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max),
-            ""  
+            ""
             );
     }
     public void NewPlayer(string modelName, bool isMale, string playerName, int moneyToSpawnWith, int speechSkill, string voiceName)//gotta go
     {
-        Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+        Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
         Player.SetDemographics(
             modelName, 
             isMale, 
             playerName, 
             moneyToSpawnWith, 
             speechSkill,
-            voiceName);
+            voiceName
+            );
     }
     private string GetName(string modelBeforeSpoof, string defaultName)//gotta get outta here
     {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,6 +37,17 @@ public class PedSwapSettings : ISettingsDefaultable
     [Description("Percentage of time you will get a randomized phone when taking over a random ped. 0 is never 100 is always.")]
     public float PercentageToGetRandomPhone { get; set; }
 
+
+    [Description("Percentage of time you will get a randomized bank account when taking over a random ped. 0 is never 100 is always.")]
+    public float PercentageToGetRandomBankAccount { get; set; }
+    [Description("Minimum amount of bank account money to be given upon takeover")]
+    public int RandomBankAccountMoneyMin { get; set; }
+    [Description("Maximum amount of bank account money to be given upon takeover")]
+    public int RandomBankAccountMoneyMax { get; set; }
+
+
+
+
     [Description("X Position of Name display when customizeing ped. 0.0-1.0")]
     public float NamePositionX { get; set; }
     [Description("Y Position of Name display when customizeing ped. 0.0-1.0")]
@@ -55,6 +67,11 @@ public class PedSwapSettings : ISettingsDefaultable
     public string AffiliationColor { get; set; }
     public int AffiliationFont { get; set; }
     public int AffiliationJustificationID { get; set; }
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
 
 
     public PedSwapSettings()
@@ -96,5 +113,8 @@ public class PedSwapSettings : ISettingsDefaultable
         AffiliationFont = (int)GTAFont.FontHouseScript;
         AffiliationJustificationID = 2;
         PercentageToGetRandomPhone = 100f;
+        PercentageToGetRandomBankAccount = 60f;
+        RandomBankAccountMoneyMin = 10;
+        RandomBankAccountMoneyMax = 25000;
     }
 }

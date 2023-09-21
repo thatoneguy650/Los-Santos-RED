@@ -30,7 +30,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private DeadDrop myDrop;
         private CorruptCopContact Contact;
 
-        public CopGangHitTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes)
+        public CopGangHitTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes,
+            CorruptCopContact corruptCopContact, Gang targetGang)
         {
             Player = player;
             Time = time;
@@ -41,27 +42,16 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Settings = settings;
             World = world;
             Crimes = crimes;
+            Contact = corruptCopContact;
+            TargetGang = targetGang;
         }
         public void Setup()
         {
-            Contact = new CorruptCopContact(Contact.Name);
+
         }
         public void Dispose()
         {
-            //if (SpawnedVehicle.Exists())
-            //{
-            //    Blip attachedBlip = SpawnedVehicle.GetAttachedBlip();
-            //    if (attachedBlip.Exists())
-            //    {
-            //        attachedBlip.Delete();
-            //    }
-            //    SpawnedVehicle.IsPersistent = false;
-            //    SpawnedVehicle.Delete();
-            //}
-            //if (GunProp.Exists())
-            //{
-            //    GunProp.Delete();
-            //}
+
         }
         public void Start(CorruptCopContact contact)
         {
@@ -176,7 +166,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetGang()
         {
-            TargetGang = null;
+            //TargetGang = null;
             if (TargetGang == null)
             {
                 TargetGang = Gangs.GetAllGangs().PickRandom();

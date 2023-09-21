@@ -135,7 +135,7 @@ public class Respawning// : IRespawning
         }
         else
         {
-            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
             Game.DisplayNotification(BlankContactPicture, BlankContactPicture, StaticStrings.OfficerFriendlyContactName, "~r~Expedited Service Fee", BribedCopResponses.PickRandom());
             CurrentPlayer.BankAccounts.GiveMoney(-1 * possibleBribe.Amount, true);
             GameTimeLastBribedPolice = Game.GameTime;
@@ -164,7 +164,7 @@ public class Respawning// : IRespawning
     public void PayFine()
     {
         int FineAmount = CurrentPlayer.FineAmount();
-        ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+        ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
         if (CurrentPlayer.BankAccounts.GetMoney(true) < FineAmount)
         {
             BailFeePastDue += FineAmount;       
@@ -207,7 +207,7 @@ public class Respawning// : IRespawning
                     {
                         RemoveIllegalWeapons();
                     }
-                    ResetPlayer(true, true, false, false, true, false, true, false, false, false, false, false, true, true, false, true, true);//if you pass clear weapons here it will just remover everything anwyays
+                    ResetPlayer(true, true, false, false, true, false, true, false, false, false, false, false, true, true, false, true, true, false);//if you pass clear weapons here it will just remover everything anwyays
                     CurrentPlayer.PlayerTasks.OnStandardRespawn();
                     if (respawnableLocation == null)
                     {
@@ -300,7 +300,7 @@ public class Respawning// : IRespawning
                 };
             Game.DisplaySubtitle("~g~Cop: ~s~" + TalkOutResponsePositive.PickRandom());
             GameFiber.Sleep(4000);
-            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
             CurrentPlayer.Scanner.OnTalkedOutOfTicket();
             return true;
         }
@@ -327,7 +327,7 @@ public class Respawning// : IRespawning
     }
     public void ResistArrest()
     {
-        ResetPlayer(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
+        ResetPlayer(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
         GameTimeLastResistedArrest = Game.GameTime;
     }
     public void RespawnAtCurrentLocation(bool withInvicibility, bool resetWanted, bool clearCriminalHistory, bool clearInventory)
@@ -335,7 +335,7 @@ public class Respawning// : IRespawning
         if (CanUndie)
         {
             int wantedLevel = CurrentPlayer.WantedLevel;
-            Respawn(resetWanted, true, false, false, clearCriminalHistory, clearInventory, false, false, false, false, false, false, false, false, false, false, false);
+            Respawn(resetWanted, true, false, false, clearCriminalHistory, clearInventory, false, false, false, false, false, false, false, false, false, false, false, false);
             CurrentPlayer.SetWantedLevel(wantedLevel, "RespawnAtCurrentLocation", true);
             if (withInvicibility & Settings.SettingsManager.RespawnSettings.InvincibilityOnRespawn)
             {
@@ -365,7 +365,7 @@ public class Respawning// : IRespawning
         {
             ImpoundNotification = ImpoundVehicles();
         }
-        Respawn(true, true, true, false, true, false, true, false, false, false, false, false, true,true, false, true, true);//we are already removing the weapons above, done need to do it twice with the old bug
+        Respawn(true, true, true, false, true, false, true, false, false, false, false, false, true,true, false, true, true, false);//we are already removing the weapons above, done need to do it twice with the old bug
         CurrentPlayer.PlayerTasks.OnStandardRespawn();
 
         SetPlayerAtLocation(respawnableLocation);
@@ -423,7 +423,7 @@ public class Respawning// : IRespawning
         }
         
         ImpoundNotification = ImpoundVehicles();
-        ResetPlayer(true, true, false, false, true, false, true,false, false, false, false, false,true, true, false, true, true);//if you pass clear weapons here it will just remover everything anwyays
+        ResetPlayer(true, true, false, false, true, false, true,false, false, false, false, false,true, true, false, true, true, false);//if you pass clear weapons here it will just remover everything anwyays
         CurrentPlayer.PlayerTasks.OnStandardRespawn();
         SetPlayerAtLocation(respawnableLocation);
 
@@ -574,9 +574,11 @@ public class Respawning// : IRespawning
         RequiredBribeAmount += PoliceKilled * Settings.SettingsManager.RespawnSettings.PoliceBribePoliceKilledMultiplier;
         RequiredBribeAmount += PoliceInjured * Settings.SettingsManager.RespawnSettings.PoliceBribePoliceInjuredMultiplier;
     }
-    private void ResetPlayer(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearVehicleOwnership, bool resetCellphone, bool clearActiveTasks, bool clearProperties, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod)
+    private void ResetPlayer(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearVehicleOwnership,
+        bool resetCellphone, bool clearActiveTasks, bool clearProperties, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod, bool resetBankAccounts)
     {
-        CurrentPlayer.Reset(resetWanted, resetTimesDied, clearWeapons, clearCriminalHistory, clearInventory, clearIntoxication, resetGangRelationships, clearVehicleOwnership, resetCellphone, clearActiveTasks, clearProperties, resetHealth, resetNeeds, resetGroup, resetLicenses, resetActivites, resetGracePeriod);
+        CurrentPlayer.Reset(resetWanted, resetTimesDied, clearWeapons, clearCriminalHistory, clearInventory, clearIntoxication, resetGangRelationships, clearVehicleOwnership, resetCellphone, clearActiveTasks, clearProperties, resetHealth, resetNeeds,
+            resetGroup, resetLicenses, resetActivites, resetGracePeriod, resetBankAccounts);
         // CurrentPlayer.UnSetArrestedAnimation();
 
         NativeFunction.Natives.SET_ENABLE_HANDCUFFS(Game.LocalPlayer.Character, false);
@@ -607,12 +609,13 @@ public class Respawning// : IRespawning
         //NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
         CurrentPlayer.Surrendering.UnSetArrestedAnimation();
     }
-    private void Respawn(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles, bool resetCellphone, bool clearActiveTasks, bool clearProperties, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod)
+    private void Respawn(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles, bool resetCellphone,
+        bool clearActiveTasks, bool clearProperties, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod, bool resetBankAccounts)
     {
         try
         {
             ResurrectPlayer(resetTimesDied);
-            ResetPlayer(resetWanted, resetHealth, resetTimesDied, clearWeapons, clearCriminalHistory, clearInventory, clearIntoxication, resetGangRelationships, clearOwnedVehicles, resetCellphone, clearActiveTasks, clearProperties, resetNeeds, resetGroup, resetLicenses, resetActivites, resetGracePeriod);
+            ResetPlayer(resetWanted, resetHealth, resetTimesDied, clearWeapons, clearCriminalHistory, clearInventory, clearIntoxication, resetGangRelationships, clearOwnedVehicles, resetCellphone, clearActiveTasks, clearProperties, resetNeeds, resetGroup, resetLicenses, resetActivites, resetGracePeriod, resetBankAccounts);
             Game.HandleRespawn();
             Time.UnPauseTime();
             GameTimeLastRespawned = Game.GameTime;
@@ -752,7 +755,7 @@ public class Respawning// : IRespawning
                 }
                 if(searchActivity.CompletedSearch && !searchActivity.FoundIllegalItems)
                 {
-                    ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+                    ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
                     CurrentPlayer.Scanner.OnTalkedOutOfTicket();
                 }
                 else

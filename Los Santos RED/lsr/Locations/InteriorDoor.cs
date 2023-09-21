@@ -39,6 +39,11 @@ public class InteriorDoor
     public void UnLockDoor()
     {
         NativeFunction.Natives.x9B12F9A24FABEDB0(ModelHash, Position.X, Position.Y, Position.Z, false, 1.0f);
+
+
+       // NativeFunction.Natives.x9B12F9A24FABEDB0(4163212883, 145.2892f, -1041.0303f, 29.3679f, false, 1.0f);
+
+
         isLocked = false;
     }
 

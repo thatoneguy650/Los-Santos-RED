@@ -30,7 +30,7 @@ public class GangTasks : IPlayerTaskGroup
 
     private List<RivalGangHitTask> RivalGangHits = new List<RivalGangHitTask>();
     private List<PayoffGangTask> PayoffGangTasks = new List<PayoffGangTask>();
-    private List<RivalGangTheftTask> RivalGangTheftTasks = new List<RivalGangTheftTask>();
+    private List<RivalGangVehicleTheftTask> RivalGangTheftTasks = new List<RivalGangVehicleTheftTask>();
     private List<GangPickupTask> GangPickupTasks = new List<GangPickupTask>();
     private List<GangDeliveryTask> GangDeliveryTasks = new List<GangDeliveryTask>();
     private List<GangWheelmanTask> GangWheelmanTasks = new List<GangWheelmanTask>();
@@ -98,9 +98,9 @@ public class GangTasks : IPlayerTaskGroup
         newTask.Setup();
         newTask.Start(gang);
     }
-    public void StartGangHit(Gang gang, int killRequirement, GangContact gangContact)
+    public void StartGangHit(Gang gang, int killRequirement, GangContact gangContact, Gang targetGang)
     {
-        RivalGangHitTask newTask = new RivalGangHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this);
+        RivalGangHitTask newTask = new RivalGangHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this, targetGang);
         newTask.KillRequirement = killRequirement;
         RivalGangHits.Add(newTask);
         newTask.Setup();
@@ -113,9 +113,9 @@ public class GangTasks : IPlayerTaskGroup
         newTask.Setup();
         newTask.Start(gang);
     }
-    public void StartGangTheft(Gang gang, GangContact gangContact)
+    public void StartGangVehicleTheft(Gang gang, GangContact gangContact, Gang targetGang)
     {
-        RivalGangTheftTask newTask = new RivalGangTheftTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this);
+        RivalGangVehicleTheftTask newTask = new RivalGangVehicleTheftTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this, targetGang);
         RivalGangTheftTasks.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);

@@ -61,7 +61,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
         private bool IsPlayerFarFromWitness => Witness != null && Witness.Pedestrian.Exists() && Witness.Pedestrian.DistanceTo2D(Player.Character) >= 850f;
         private bool IsPlayerNearWitnessSpawn => SpawnPositionCellX != -1 && SpawnPositionCellY != -1 && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, SpawnPositionCellX, SpawnPositionCellY, 6);
-        public WitnessEliminationTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names,IWeapons weapons, IShopMenus shopMenus)
+        public WitnessEliminationTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, 
+            ICrimes crimes, INameProvideable names,IWeapons weapons, IShopMenus shopMenus, CorruptCopContact corruptCopContact)
         {
             Player = player;
             Time = time;
@@ -75,10 +76,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Names = names;
             Weapons = weapons;
             ShopMenus = shopMenus;
+            Contact = corruptCopContact;
         }
         public void Setup()
         {
-            Contact = new CorruptCopContact(Contact.Name);
+            
         }
         public void Dispose()
         {
@@ -135,32 +137,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             WitnessIsAtHome = RandomItems.RandomPercent(30);
             if (WitnessIsAtHome)
             {
-                WitnessLocation = PlacesOfInterest.PossibleLocations.Residences.Where(x => !x.IsOwnedOrRented).PickRandom();
+                WitnessLocation = PlacesOfInterest.PossibleLocations.Residences.Where(x => !x.IsOwnedOrRented && x.IsCorrectMap(World.IsMPMapLoaded)).PickRandom();
             }
             else
             {
-                List<GameLocation> PossibleSpots = new List<GameLocation>();
-
-                //PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Banks);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Bars);
-                //PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.BeautyShops);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.CarDealerships);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.CityHalls);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.ConvenienceStores);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Dispensaries);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.GasStations);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.HardwareStores);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.HeadShops);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Hospitals);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Hotels);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.LiquorStores);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.PawnShops);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Pharmacies);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Restaurants);
-                //PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.ScrapYards);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Landmarks);
-
-                WitnessLocation = PossibleSpots.PickRandom();
+                WitnessLocation = PlacesOfInterest.PossibleLocations.WitnessTaskLocations().Where(x => x.IsCorrectMap(World.IsMPMapLoaded)).PickRandom();
             }
             
             WitnessVariation = null;
@@ -178,7 +159,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 WitnessSpawnHeading = WitnessLocation.EntranceHeading;
                 SpawnPositionCellX = (int)(WitnessSpawnPosition.X / EntryPoint.CellSize);
                 SpawnPositionCellY = (int)(WitnessSpawnPosition.Y / EntryPoint.CellSize);
-
             }
             else
             {

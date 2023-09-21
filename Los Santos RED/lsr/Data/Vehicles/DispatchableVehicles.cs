@@ -23120,6 +23120,11 @@ Output = -1,
         VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("YardieVehicles", YardieVehicles));
         VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("DiablosVehicles", DiablosVehicles));
         VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("MafiaVehicles", MafiaVehicles));
+        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("GambettiVehicles", GambettiVehicles));
+        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("PavanoVehicles", PavanoVehicles));
+        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("LupisellaVehicles", LupisellaVehicles));
+        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("MessinaVehicles", MessinaVehicles));
+        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("AncelottiVehicles", AncelottiVehicles));
         VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles));
         VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("CartelVehicles", CartelVehicles));
         VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles));

@@ -698,18 +698,19 @@ public class DebugHelperSubMenu : DebugSubMenu
         int Number = 1;
         foreach (string locationType in ModDataFileManager.PlacesOfInterest.PossibleLocations.InteractableLocations().GroupBy(x => x.GetType().ToString()).Distinct().Select(x => x.Key))
         {
-            WriteToClassCreator($"List<{locationType}> {locationType}List_{Number} = new List<{locationType}>()", 0, "Locations");
-            WriteToClassCreator($"{{", 0, "Locations");
+            //WriteToClassCreator($"List<{locationType}> {locationType}List_{Number} = new List<{locationType}>()", 0, "Locations");
+            //WriteToClassCreator($"{{", 0, "Locations");
             foreach (GameLocation location2 in ModDataFileManager.PlacesOfInterest.PossibleLocations.InteractableLocations().Where(x => x.GetType().ToString() == locationType))
             {
                 string type = location2.GetType().ToString();
-                WriteToClassCreator($"new {type}() {{", 0, "Locations");
+                WriteToClassCreator($"{type} {locationType}_{Number} = new {type}() {{", 0, "Locations");
                 PrintClass(location2, AllowedProperties, "Locations");
-                WriteToClassCreator($"}},", 0, "Locations");
+                WriteToClassCreator($"}};", 0, "Locations");
+                Number++;
             }
-            WriteToClassCreator($"}};", 0, "Locations");
-            WriteToClassCreator($"Locations.LocationTypeList.AddRange({locationType}List_{Number});", 0, "Locations");
-            Number++;
+            //WriteToClassCreator($"}};", 0, "Locations");
+            //WriteToClassCreator($"Locations.LocationTypeList.AddRange({locationType}List_{Number});", 0, "Locations");
+            //Number++;
         }
     }
     private void PrintClass(object dv, List<string> AllowedProperties, string fileName)
@@ -757,13 +758,23 @@ public class DebugHelperSubMenu : DebugSubMenu
             {
                 continue;
             }
-            else if (property.PropertyType == typeof(String) || property.PropertyType == typeof(string) || property.PropertyType == typeof(System.Drawing.Color) || property.PropertyType.IsEnum)
+            else if (property.PropertyType == typeof(String) || property.PropertyType == typeof(string) || property.PropertyType == typeof(System.Drawing.Color))
             {
                 object main = property.GetValue(dv);
                 object secondary = property.GetValue(dvBase);
                 if (main == null || secondary == null || !main.Equals(secondary))
                 {
                     WriteToClassCreator($"{property.Name} = \"{property.GetValue(dv)}\",", 0, fileName);
+                }
+            }
+            else if (property.PropertyType.IsEnum)
+            {
+               // var enumValueName = Enum.GetName(property.GetType(), property.GetValue(dv));
+                object main = property.GetValue(dv);
+                object secondary = property.GetValue(dvBase);
+                if (main == null || secondary == null || !main.Equals(secondary))
+                {
+                    WriteToClassCreator($"{property.Name} = {property.Name}.{property.GetValue(dv)},", 0, fileName);
                 }
             }
             else if (property.PropertyType == typeof(float))
