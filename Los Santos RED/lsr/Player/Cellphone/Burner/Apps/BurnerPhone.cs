@@ -70,7 +70,10 @@ public class BurnerPhone
 
         PhoneApps.Add(MessagesApp);
         PhoneApps.Add(ContactsApp);
-        PhoneApps.Add(FlashlightApp);
+        if (Player.CellPhone.CurrentCellphoneData?.HasFlashlight == true)
+        {
+            PhoneApps.Add(FlashlightApp);
+        }
         PhoneApps.Add(SettingsApp);
 
         MaxColumns = 3;//hardcoded to the phone

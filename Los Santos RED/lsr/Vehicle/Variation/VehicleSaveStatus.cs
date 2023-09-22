@@ -39,5 +39,6 @@ public class VehicleSaveStatus
     public DateTime DateTimeImpounded { get; set; }
     public int TimesImpounded { get; set; }
     public string ImpoundedLocation { get; set; }
+    public int StoredCash { get; set; }
 }
 

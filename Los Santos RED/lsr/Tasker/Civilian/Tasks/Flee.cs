@@ -13,9 +13,8 @@ public class Flee : ComplexTask
     private bool isInVehicle = false;
     private ITargetable Target;
     private bool isCowering = false;
-    private float CowerDistance = 40f;
-    private bool IsWithinCowerDistance => Ped.DistanceToPlayer <= CowerDistance;
-    private bool ShouldCower => Ped.WillCower && IsWithinCowerDistance;
+    private bool IsWithinCowerDistance => Ped.DistanceToPlayer <= Ped.CowerDistance;
+    private bool ShouldCower => Ped.WillCower && IsWithinCowerDistance && !Player.RecentlyShot;
     public Flee(IComplexTaskable ped, ITargetable player) : base(player, ped, 5000)
     {
         Name = "Flee";

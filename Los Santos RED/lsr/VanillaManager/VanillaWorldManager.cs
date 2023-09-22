@@ -24,7 +24,11 @@ public class VanillaWorldManager
     }
     public void Setup()
     {
-
+        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("City_Banks", true);
+        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("Countryside_Banks", true);
+        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("AMMUNATION", true);
+        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("YellowJackInn", true);
+        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("VANGELICO", true);
     }
     public void Dispose()
     {

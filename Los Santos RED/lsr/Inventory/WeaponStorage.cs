@@ -71,7 +71,7 @@ public class WeaponStorage
     {
         Weapons = weapons;
         UIMenu WeaponsHeaderMenu = menuPool.AddSubMenu(menuToAdd, "Stored Weapons");
-        menuToAdd.MenuItems[menuToAdd.MenuItems.Count() - 1].Description = "Manage Stored Weapons. Place items within storage, or retreive them for use.";
+        menuToAdd.MenuItems[menuToAdd.MenuItems.Count() - 1].Description = "Manage Stored Weapons. Place items within storage, or retrieve them for use.";
         WeaponsHeaderMenu.SetBannerType(EntryPoint.LSRedColor);
         player.WeaponEquipment.StoreWeapons();
         List<StoredWeapon> PlayerStoredWeapons = player.WeaponEquipment.StoredWeapons.Where(x=> (int)x.WeaponHash != -72657034).ToList();//parachute?

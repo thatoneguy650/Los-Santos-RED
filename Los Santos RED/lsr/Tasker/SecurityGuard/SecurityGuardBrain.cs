@@ -103,7 +103,7 @@ public class SecurityGuardBrain : PedBrain
             {
                 SetInvestigate();
             }
-            else if (PedExt.PedReactions.ReactionTier == ReactionTier.Mundane)
+            else if (PedExt.HasCellPhone && PedExt.PedReactions.ReactionTier == ReactionTier.Mundane)
             {
                 SetCalmCallIn();
             }

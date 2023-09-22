@@ -104,7 +104,7 @@ public class PedBrain
             PedExt.PedReactions.Update(Player);
             if (PedExt.PedReactions.HasSeenScaryCrime || PedExt.PedReactions.HasSeenAngryCrime)
             {
-                if (PedExt.WillCallPolice || (PedExt.WillCallPoliceIntense && PedExt.PedReactions.HasSeenIntenseCrime))
+                if (PedExt.HasCellPhone && (PedExt.WillCallPolice || (PedExt.WillCallPoliceIntense && PedExt.PedReactions.HasSeenIntenseCrime)))
                 {
                     SetScaredCallIn();
                 }
@@ -128,7 +128,7 @@ public class PedBrain
             {
                 SetFight();
             }
-            else if (PedExt.PedReactions.HasSeenMundaneCrime && PedExt.WillCallPolice)
+            else if (PedExt.HasCellPhone && PedExt.PedReactions.HasSeenMundaneCrime && PedExt.WillCallPolice)
             {
                 SetCalmCallIn();
             }

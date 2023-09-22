@@ -150,6 +150,10 @@ namespace LosSantosRED.lsr.Data
                     vss.DateTimeImpounded = car.DateTimeImpounded;
                     vss.TimesImpounded = car.TimesImpounded;
                     vss.ImpoundedLocation = car.ImpoundedLocation;
+                    if (car.CashStorage != null)
+                    {
+                        vss.StoredCash = car.CashStorage.StoredCash;
+                    }
                     if (car.WeaponStorage != null)
                     {
                         vss.WeaponInventory = new List<StoredWeapon>();
@@ -260,7 +264,10 @@ namespace LosSantosRED.lsr.Data
                             myRes.InventoryItems.Add(new InventorySave(ii.ModItem?.Name, ii.RemainingPercent));
                         }
                     }
-                    myRes.StoredCash = res.StoredCash;
+                    if(res.CashStorage != null)
+                    {
+                        myRes.StoredCash = res.CashStorage.StoredCash;
+                    }
                     SavedResidences.Add(myRes);
                 }
             }
@@ -453,6 +460,7 @@ namespace LosSantosRED.lsr.Data
                 {
                     MyVeh.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
                 }
+                MyVeh.CashStorage.StoredCash = OwnedVehicleVariation.StoredCash;
                 player.VehicleOwnership.TakeOwnershipOfVehicle(MyVeh, false);
                 if (OwnedVehicleVariation.LastPosition != Vector3.Zero)
                 {
@@ -561,7 +569,7 @@ namespace LosSantosRED.lsr.Data
                         {
                             savedPlace.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
                         }
-                        savedPlace.StoredCash = res.StoredCash;
+                        savedPlace.CashStorage.StoredCash = res.StoredCash;
                         savedPlace.RefreshUI();
                     }
                 }

@@ -824,7 +824,7 @@ public class PedSwap : IPedSwap
                 int ItemsToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.PedSwapSettings.MaxRandomItemsToGet);
                 for (int i = 0; i < ItemsToGet; i++)
                 {
-                    Player.Inventory.Add(ModItems.GetRandomItem(true), RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.PedSwapSettings.MaxRandomItemsAmount));
+                    Player.Inventory.Add(ModItems.GetRandomItem(true, false), RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.PedSwapSettings.MaxRandomItemsAmount));
                 }
             }
         }

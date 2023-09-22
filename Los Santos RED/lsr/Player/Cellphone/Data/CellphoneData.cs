@@ -11,9 +11,9 @@ public class CellphoneData
     {
     }
 
-    public CellphoneData(string name, int phoneType, string phoneOS)
+    public CellphoneData(string modItemName, int phoneType, string phoneOS)
     {
-        ModItemName = name;
+        ModItemName = modItemName;
         PhoneType = phoneType;
         PhoneOS = phoneOS;
     }
@@ -54,6 +54,7 @@ public class CellphoneData
     public bool IsDefault { get; set; } = false;
     public bool IsRegular { get; set; } = true;
     public bool IsHistoric { get; set; } = false;
+    public bool HasFlashlight { get; set; } = true;
     public int GetRandomBackground()
     {
        if(Backgrounds == null)

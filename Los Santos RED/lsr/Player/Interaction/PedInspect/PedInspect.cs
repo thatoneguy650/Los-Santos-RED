@@ -28,6 +28,7 @@ public class PedInspect : DynamicActivity
     private bool IsBlockedEvents;
     private PedExt Ped;
     private IInteractionable Player;
+    private ICellphones Cellphones;
     private bool CancelledConversation;
     private ISettingsProvideable Settings;
     private ICrimes Crimes;
@@ -44,13 +45,14 @@ public class PedInspect : DynamicActivity
     private UIMenuItem InspectPedMenuItem;
     private UIMenuItem KillPedMenuItem;
 
-    public PedInspect(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems)
+    public PedInspect(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, ICellphones cellphones)
     {
         Player = player;
         Ped = ped;
         Settings = settings;
         Crimes = crimes;
         ModItems = modItems;
+        Cellphones = cellphones;
         FailMessage = "Cannot Inspect Ped";
     }
     public override string DebugString => $"";
@@ -283,12 +285,18 @@ public class PedInspect : DynamicActivity
         int CashAdded = 0;
         if (Ped.Pedestrian.Exists())
         {
-            Ped.HasBeenLooted = true;
+
+
+
+            
             if (RandomItems.RandomPercent(Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomItems))
             {
-                Ped.PedInventory.AddRandomItems(ModItems);
+                Ped.PedInventory.AddRandomItems(ModItems, false);
             }
-            ItemsFound = Ped.LootInventory(Player);
+            ItemsFound = Ped.LootInventory(Player, ModItems, Cellphones);
+
+
+
             hasAddedItem = ItemsFound != "";
             if (Ped.Money > 0)//dead peds already drop it, truned off dropping for now
             {
@@ -325,6 +333,7 @@ public class PedInspect : DynamicActivity
             Description = "Nothing Found";
         }
         Ped.ShowCustomDisplay(pedHeadshotHandle, "~r~Ped Searched", Description);
+        EntryPoint.WriteToConsole($"LOOTING:{Ped.Name} {Description}");
     }
 
 

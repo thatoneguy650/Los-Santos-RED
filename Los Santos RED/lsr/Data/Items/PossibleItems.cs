@@ -12,6 +12,7 @@ public class PossibleItems
 
     }
     public List<FlashlightItem> FlashlightItems { get; private set; } = new List<FlashlightItem>();
+    public List<CellphoneItem> CellphoneItems { get; private set; } = new List<CellphoneItem>();
     public List<ModItem> ModItems { get; private set; } = new List<ModItem>();
     public List<ShovelItem> ShovelItems { get; private set; } = new List<ShovelItem>();
     public List<UmbrellaItem> UmbrellaItems { get; private set; } = new List<UmbrellaItem>();

@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
@@ -298,7 +299,69 @@ public class DebugHelperSubMenu : DebugSubMenu
         };
         HelperMenuItem.AddItem(setPedMobilePalette);
 
+
+        UIMenuItem doPedRagdollLocation = new UIMenuItem("Flag Ragdoll", "Flag the nearest ped position");
+        doPedRagdollLocation.Activated += (menu, item) =>
+        {
+            FlagRagdollLocation();
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(doPedRagdollLocation);
+        //        
+
     }
+    private void FlagRagdollLocation()
+    {
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                PedExt pedExt = World.Pedestrians.PedExts.Where(x => x.IsDead || x.IsUnconscious).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+                if (pedExt == null || !pedExt.Pedestrian.Exists())
+                {
+                    return;
+                }
+                if (!int.TryParse(NativeHelper.GetKeyboardInput("0"), out int boneid))
+                {
+                    return;
+                }
+                Vector3 DesiredPosition = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", pedExt.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", pedExt.Pedestrian, boneid));
+                float calcHeading = (float)GetHeading(Player.Character.Position, DesiredPosition);
+                float calcHeading2 = (float)CalculeAngle(DesiredPosition, Player.Character.Position);
+                float DesiredHeading = calcHeading2;
+                uint GameTimeStarted = Game.GameTime;
+                while(Game.GameTime - GameTimeStarted <= 10000 && EntryPoint.ModController.IsRunning)
+                {
+                    Rage.Debug.DrawArrowDebug(DesiredPosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.White);
+                    Game.DisplaySubtitle($"{Game.LocalPlayer.Character.Heading} {calcHeading} {calcHeading2}");
+                    GameFiber.Yield();
+                }
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "ATM Interact");
+    }
+
+    private double GetHeading(Vector3 a, Vector3 b)
+    {
+        double x = b.X - a.X;
+        double y = b.Y - a.Y;
+        return 270 - Math.Atan2(y, x) * (180 / Math.PI);
+    }
+    private double CalculeAngle(Vector3 start, Vector3 arrival)
+    {
+        var deltaX = Math.Pow((arrival.X - start.X), 2);
+        var deltaY = Math.Pow((arrival.Y - start.Y), 2);
+        var radian = Math.Atan2((arrival.Y - start.Y), (arrival.X - start.X));
+        var angle = (radian * (180 / Math.PI) + 360) % 360;
+        return angle;
+    }
+
+
+
     private void WriteToClassCreator(String TextToLog, int test, string fileName)
     {
         StringBuilder sb = new StringBuilder();

@@ -42,6 +42,7 @@ public class ActivityManager
     private IShopMenus ShopMenus;
     private IGangs Gangs;
     private IGangTerritories GangTerritories;
+    private ICellphones Cellphones;
     private IVehicleSeatAndDoorLookup VehicleSeatDoorData;
 
     private DynamicActivity LowerBodyActivity;
@@ -217,7 +218,7 @@ public class ActivityManager
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
         IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories,
-        IVehicleSeatAndDoorLookup vehicleSeatDoorData)
+        IVehicleSeatAndDoorLookup vehicleSeatDoorData, ICellphones cellphones)
     {
         Player = player;
         Settings = settings;
@@ -243,6 +244,7 @@ public class ActivityManager
         Gangs = gangs;
         GangTerritories = gangTerritories;
         VehicleSeatDoorData = vehicleSeatDoorData;
+        Cellphones = cellphones;
     }
     public void Setup()
     {
@@ -629,7 +631,7 @@ public class ActivityManager
             Game.DisplayHelp("Cancel existing activity to start");
             return;
         }
-        PedInspect pedInspect = new PedInspect(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems);
+        PedInspect pedInspect = new PedInspect(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, Cellphones);
         if (pedInspect.CanPerform(Actionable))
         {
             ForceCancelAllActive();
@@ -743,7 +745,7 @@ public class ActivityManager
             {
                 Interaction.Dispose();
             }
-            Interaction = new HoldUp(Interactionable, Player.CurrentTargetedPed, Settings, ModItems);
+            Interaction = new HoldUp(Interactionable, Player.CurrentTargetedPed, Settings, ModItems, Cellphones);
             Interaction.Start();
         }
     }

@@ -39,8 +39,8 @@ public class BankInteraction
         AddAccountsSubmenu();
         AddAccountItems();
         InteractionMenu.Visible = true;
-       // Player.IsTransacting = true;
-        
+        // Player.IsTransacting = true;
+        EntryPoint.WriteToConsole("BANK INTERCATION SHOWING MENU");
     }
     private void AddAccountsSubmenu()
     {
@@ -127,7 +127,11 @@ public class BankInteraction
         };
         BankAccountSubMenu.AddItem(setPrimary);
         UpdateDescription(bankAccount);
-        incrementScroller = new UIMenuListScrollerItem<int>("Increment", "Set the deposit/withdrawl increment.", new List<int>() { 1, 5, 25, 100, 500, 1000, 10000, 100000 }) { SelectedItem = 100, Formatter = v => "$" + v.ToString("N0") };
+        incrementScroller = new UIMenuListScrollerItem<int>("Increment", "Set the deposit/withdrawl increment.", new List<int>() { 1, 5, 25, 100, 500, 1000, 10000, 100000 }) 
+        { 
+            SelectedItem = 100, 
+            Formatter = v => "$" + v.ToString("N0") 
+        };
         incrementScroller.IndexChanged += (sender, oldIndex, newIndex) =>
         {
             depositCashScroller.Step = incrementScroller.SelectedItem;
@@ -136,7 +140,10 @@ public class BankInteraction
         BankAccountSubMenu.AddItem(incrementScroller);
         BankAccountSubMenu.RefreshIndex();
         int onHandCashNow = GetOnHandCash();
-        depositCashScroller = new UIMenuNumericScrollerItem<int>("Deposit", $"Deposit the selected amount of money. ~n~Max of ${MaxAccountValue}", 0, GetOnHandCash(), 100) { Value = 0, Formatter = v => "~r~$" + v.ToString("N0") + "~s~", };
+        depositCashScroller = new UIMenuNumericScrollerItem<int>("Deposit", $"Deposit the selected amount of money. ~n~Max of ${MaxAccountValue}", 0, GetOnHandCash(), 100) { 
+            Value = 0, 
+            Formatter = v => "~r~$" + v.ToString("N0") + "~s~", 
+        };
         depositCashScroller.Activated += (sender, selectedItem) =>
         {
             int onHandCash = GetOnHandCash();

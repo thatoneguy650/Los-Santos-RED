@@ -95,7 +95,15 @@ public class BankAccounts
     }
 
 
-
+    public int GetOnHandCashSafe()
+    {
+        int money = GetMoney(false);
+        if (money >= 2147483647)
+        {
+            money = 2147483646;
+        }
+        return money;
+    }
 
     public void GiveMoney(int Amount, bool useAccounts)
     {

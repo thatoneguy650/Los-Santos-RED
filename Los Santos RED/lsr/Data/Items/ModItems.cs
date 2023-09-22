@@ -92,6 +92,7 @@ public class ModItems : IModItems
     {
         List<ModItem> AllItems = new List<ModItem>();
         AllItems.AddRange(PossibleItems.FlashlightItems);
+        AllItems.AddRange(PossibleItems.CellphoneItems);
         AllItems.AddRange(PossibleItems.ShovelItems);
         AllItems.AddRange(PossibleItems.LicensePlateItems);
         AllItems.AddRange(PossibleItems.UmbrellaItems);
@@ -125,6 +126,7 @@ public class ModItems : IModItems
     {
         List<ModItem> AllItems = new List<ModItem>();
         AllItems.AddRange(PossibleItems.FlashlightItems);
+        AllItems.AddRange(PossibleItems.CellphoneItems);
         AllItems.AddRange(PossibleItems.ShovelItems);
         AllItems.AddRange(PossibleItems.LicensePlateItems);
         AllItems.AddRange(PossibleItems.UmbrellaItems);
@@ -154,6 +156,7 @@ public class ModItems : IModItems
     {
         List<ModItem> AllItems = new List<ModItem>();
         AllItems.AddRange(PossibleItems.FlashlightItems);
+        AllItems.AddRange(PossibleItems.CellphoneItems);
         AllItems.AddRange(PossibleItems.ShovelItems);
         AllItems.AddRange(PossibleItems.UmbrellaItems);
         AllItems.AddRange(PossibleItems.FoodItems);
@@ -186,6 +189,7 @@ public class ModItems : IModItems
     {
         List<ModItem> AllItems = new List<ModItem>();
         AllItems.AddRange(PossibleItems.FlashlightItems);
+        AllItems.AddRange(PossibleItems.CellphoneItems);
         AllItems.AddRange(PossibleItems.ShovelItems);
         AllItems.AddRange(PossibleItems.UmbrellaItems);
         AllItems.AddRange(PossibleItems.FoodItems);
@@ -206,25 +210,33 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.RollingPapersItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
         AllItems.AddRange(PossibleItems.RadioItems);
-
         AllItems.AddRange(PossibleItems.ValuableItems);
         AllItems.AddRange(PossibleItems.EquipmentItems);
         AllItems.AddRange(PossibleItems.BodyArmorItems);
-
-
         return AllItems;
     }
-    public void Setup(PhysicalItems physicalItems, IWeapons weapons, IIntoxicants intoxicants)
+    public void Setup(PhysicalItems physicalItems, IWeapons weapons, IIntoxicants intoxicants, ICellphones cellphones)
     {
         foreach(ModItem modItem in AllItems())
         {
             modItem.Setup(physicalItems, weapons, intoxicants);
         }
+        foreach(CellphoneItem cell in PossibleItems.CellphoneItems)
+        {
+            if(cellphones.GetPhone(cell.Name) == null)
+            {
+                cell.FindPercentage = 0;
+                EntryPoint.WriteToConsole($"REMOVING CELLPHONE {cell.Name} FIND PERCENTAGE NO MATCHING VALUE IN CELLPHONES.XML");
+            }
+        }
     }
-    public ModItem GetRandomItem(bool allowIllegal)// List<string> RequiredModels)
+    public ModItem GetRandomItem(bool allowIllegal, bool allowCellphones)// List<string> RequiredModels)
     {
         List<ModItem> ToPickFrom = PossibleFoundItems();
-
+        if(!allowCellphones)
+        {
+            ToPickFrom.RemoveAll(x => x.ItemType == ItemType.Equipment && x.ItemSubType == ItemSubType.CellPhone);
+        }
         if(!allowIllegal)
         {
             ToPickFrom.RemoveAll(x => x.IsPossessionIllicit);
@@ -285,7 +297,6 @@ public class ModItems : IModItems
         DefaultConfig_Valuables();
         Serialization.SerializeParam(PossibleItems, ConfigFileName);
     }
-
     private void DefaultConfig_Armor()
     {
         PossibleItems.BodyArmorItems.AddRange(new List<BodyArmorItem>
@@ -2103,22 +2114,27 @@ public class ModItems : IModItems
         });
 
 
-
+        PossibleItems.CellphoneItems.AddRange(new List<CellphoneItem> {
+            new CellphoneItem("iFruit Cellphone","All of the price, none of the features.") {
+                ModelItemID = "prop_phone_ing",
+                EmissiveDistance = 25.0f,FindPercentage = 10,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,   CanSearch = false,ItemSubType = ItemSubType.CellPhone
+            },
+            new CellphoneItem("Facade Cellphone","Operating system dictators, software monopolists and licensing racketeers.") {
+                ModelItemID = "prop_phone_ing_02",
+                EmissiveDistance = 25.0f,FindPercentage = 10,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,CanSearch = false,ItemSubType = ItemSubType.CellPhone
+            },
+            new CellphoneItem("Badger Cellphone","A first-world global communications company with third-world cell phone coverage.") {
+                ModelItemID = "prop_phone_ing_03",
+                EmissiveDistance = 25.0f,FindPercentage = 10,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,CanSearch = false,ItemSubType = ItemSubType.CellPhone
+            },
+            new CellphoneItem("Celltowa Cellphone","Low end feature phone made in China. It makes calls and not much else.") {
+                ModelItemID = "prop_prologue_phone",
+                HasFlashlight = false,ItemSubType = ItemSubType.CellPhone, 
+            },
+        });
 
 
         PossibleItems.FlashlightItems.AddRange(new List<FlashlightItem> {
-            new FlashlightItem("iFruit Cellphone","All of the price, none of the features.") {
-                ModelItemID = "prop_phone_ing",
-                EmissiveDistance = 25.0f,FindPercentage = 10,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,   IsCellphone = true,CanSearch = false,ItemSubType = ItemSubType.CellPhone
-            },
-            new FlashlightItem("Facade Cellphone","Operating system dictators, software monopolists and licensing racketeers.") {
-                ModelItemID = "prop_phone_ing_02",
-                EmissiveDistance = 25.0f,FindPercentage = 10,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,IsCellphone = true,CanSearch = false,ItemSubType = ItemSubType.CellPhone
-            },
-            new FlashlightItem("Badger Cellphone","A first-world global communications company with third-world cell phone coverage.") {
-                ModelItemID = "prop_phone_ing_03",
-                EmissiveDistance = 25.0f,FindPercentage = 10,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,IsCellphone = true,CanSearch = false,ItemSubType = ItemSubType.CellPhone
-            },
             new FlashlightItem("TAG-HARD Flashlight","Need to beat a suspect, but don't have your nightstick? Look no further.") {
                 ModelItemID = "prop_cs_police_torch",
                 EmissiveRadius = 10f, EmissiveDistance = 75f,EmissiveBrightness = 0.75f, FindPercentage = 1,ItemSubType = ItemSubType.Flashlight },

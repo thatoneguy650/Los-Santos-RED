@@ -994,6 +994,10 @@ public class Pedestrians : ITaskerReportable
                     {
                         Passenger.Delete();
                         GameFiber.Yield();
+                        if(!ped.Exists() || !ped.CurrentVehicle.Exists())
+                        {
+                            break;
+                        }
                     }
                 }
                 if (ped.Exists() && ped.CurrentVehicle.Exists() && ped.CurrentVehicle != null)

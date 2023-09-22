@@ -33,6 +33,7 @@ namespace LSR.Vehicles
         private uint GameTimeLastAddedSonarBlip;
         public VehicleInteractionMenu VehicleInteractionMenu { get; private set; }
         public SimpleInventory SimpleInventory { get; private set; }
+        public CashStorage CashStorage { get; private set; }
         public VehicleClass VehicleClass => vehicleClass;
         public string VehicleModelName { get; private set; }
         public bool HasShowHotwireLockPrompt { get; set; } = false;
@@ -309,6 +310,7 @@ namespace LSR.Vehicles
             VehicleInteractionMenu = new VehicleInteractionMenu(this);
             WeaponStorage = new WeaponStorage(Settings);
             SimpleInventory = new SimpleInventory(Settings);
+            CashStorage = new CashStorage();
             SonarBlip = new SonarBlip(this, Settings);
         }
         public void SetAsEntered()
@@ -1185,7 +1187,7 @@ namespace LSR.Vehicles
             }
             if (RandomItems.RandomPercent(Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomItems))
             {
-                SimpleInventory.AddRandomItems(modItems);
+                SimpleInventory.AddRandomItems(modItems, true);
             }
             HasAddedRandomItems = true;
         }

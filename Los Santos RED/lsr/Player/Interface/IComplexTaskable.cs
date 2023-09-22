@@ -69,6 +69,7 @@ namespace LosSantosRED.lsr.Interface
 
         PedAlerts PedAlerts { get; }
         bool WillCower { get; }
+        float CowerDistance { get; }
 
         void PlaySpeech(string name, bool v);
         void PlaySpeech(List<string> list, bool isInVehicle, bool v);

@@ -12,7 +12,7 @@ namespace LosSantosRED.lsr.Interface
         WeaponItem GetWeapon(string modelName);
         WeaponItem GetWeapon(uint modelHash);
         ModItem Get(string text);
-        ModItem GetRandomItem(bool allowIllegal);
+        ModItem GetRandomItem(bool allowIllegal, bool allowCellphones);
         List<ModItem> AllItems();
         List<ModItem> InventoryItems();
         void WriteToFile();

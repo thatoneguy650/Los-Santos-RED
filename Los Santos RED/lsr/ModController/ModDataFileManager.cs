@@ -70,9 +70,13 @@ public class ModDataFileManager
         Intoxicants.ReadConfig();
         GameFiber.Yield();
 
+        Cellphones = new Cellphones();
+        Cellphones.ReadConfig();
+        GameFiber.Yield();
+
         ModItems = new ModItems();
         ModItems.ReadConfig();
-        ModItems.Setup(PhysicalItems, Weapons, Intoxicants);
+        ModItems.Setup(PhysicalItems, Weapons, Intoxicants, Cellphones);
         GameFiber.Yield();
         ShopMenus = new ShopMenus();
         ShopMenus.ReadConfig();
@@ -194,9 +198,7 @@ public class ModDataFileManager
         GameFiber.Yield();
 
 
-        Cellphones = new Cellphones();
-        Cellphones.ReadConfig();
-        GameFiber.Yield();
+
     }
     private void SetupAlternateConfigs()
     {

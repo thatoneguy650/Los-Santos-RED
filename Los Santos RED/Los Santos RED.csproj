@@ -127,6 +127,7 @@
     <Compile Include="lsr\Data\Agencies\IPlatePrefixable.cs" />
     <Compile Include="lsr\Data\Agencies\WantedLevels.cs" />
     <Compile Include="lsr\Data\Interface\ICellphones.cs" />
+    <Compile Include="lsr\Inventory\CashStorage.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankDrawer.cs" />
     <Compile Include="lsr\Player\Cellphone\Data\CellphoneData.cs" />
     <Compile Include="lsr\Data\Items\Cellphones.cs" />
@@ -317,6 +318,7 @@
     <Compile Include="lsr\Player\Interface\IOutfitManageable.cs" />
     <Compile Include="lsr\Player\Interface\IRestrictedAreaManagable.cs" />
     <Compile Include="lsr\Player\Inventory\Items\BodyArmorItem.cs" />
+    <Compile Include="lsr\Player\Inventory\Items\CellphoneItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\EquipmentItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\PipeItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\RollingPapersItem.cs" />
@@ -351,7 +353,7 @@
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\SearchLocationOnFootTaskState.cs" />
     <Compile Include="lsr\Tasker\Old\GenericIdle_Old.cs" />
     <Compile Include="lsr\Tasker\PlayerChaseable\IPlayerChaseable.cs" />
-    <Compile Include="lsr\Ped\SimpleInventory.cs" />
+    <Compile Include="lsr\Inventory\SimpleInventory.cs" />
     <Compile Include="lsr\Ped\SecurityGuard\SecurityGuard.cs" />
     <Compile Include="lsr\Tasker\Generic\PedBrain.cs" />
     <Compile Include="lsr\Tasker\SecurityGuard\SecurityGuardBrain.cs" />
@@ -478,7 +480,7 @@
     <Compile Include="lsr\Vehicle\Storage\StoredBody.cs" />
     <Compile Include="lsr\Vehicle\Storage\VehicleBodyManager.cs" />
     <Compile Include="lsr\Vehicle\Storage\VehicleDoorSeatData.cs" />
-    <Compile Include="lsr\Vehicle\Storage\WeaponStorage.cs" />
+    <Compile Include="lsr\Inventory\WeaponStorage.cs" />
     <Compile Include="lsr\Vehicle\Variation\VehicleNeon.cs" />
     <Compile Include="lsr\Weapon\IssuableWeaponsGroup.cs" />
     <Compile Include="lsr\Data\Weapons\IssueableWeapons.cs" />

@@ -30,8 +30,8 @@ public class VehicleInteractionMenu
         {
             VehicleExt.VehicleBodyManager.CreateInteractionMenu(MenuPool, VehicleInteractMenu, vehicleSeatDoorData, world);
         }
-        UIMenu InventoryWeaponHeaderMenu = MenuPool.AddSubMenu(VehicleInteractMenu, "Inventory and Weapons");
-        VehicleInteractMenu.MenuItems[VehicleInteractMenu.MenuItems.Count() - 1].Description = "Manage Stored Inventory and Weapons. Place items or weapons within storage, or retreive them for use.";
+        UIMenu InventoryWeaponHeaderMenu = MenuPool.AddSubMenu(VehicleInteractMenu, "Inventory, Cash, and Weapons");
+        VehicleInteractMenu.MenuItems[VehicleInteractMenu.MenuItems.Count() - 1].Description = "Manage Stored Inventory, Cash, and Weapons. Place items, cash, or weapons within storage, or retrieve them for use.";
         InventoryWeaponHeaderMenu.SetBannerType(EntryPoint.LSRedColor);
         InventoryWeaponHeaderMenu.OnMenuOpen += (sender) =>
         {
@@ -72,6 +72,9 @@ public class VehicleInteractionMenu
         VehicleExt.HandleRandomWeapons(modItems, weapons);
         VehicleExt.SimpleInventory.CreateInteractionMenu(player, MenuPool, InventoryWeaponHeaderMenu, !player.IsInVehicle);
         VehicleExt.WeaponStorage.CreateInteractionMenu(player, MenuPool, InventoryWeaponHeaderMenu, weapons, modItems, !player.IsInVehicle);
+        VehicleExt.CashStorage.CreateInteractionMenu(player, MenuPool, InventoryWeaponHeaderMenu, null);
+
+
         VehicleInteractMenu.Visible = true;
         IsShowingMenu = true;
         Player.ButtonPrompts.RemovePrompts("VehicleInteract");

@@ -20,12 +20,15 @@ public class HoldUp : Interaction
     private ISettingsProvideable Settings;
     private bool Fleed;
     private IModItems ModItems;
-    public HoldUp(IInteractionable player, PedExt target, ISettingsProvideable settings, IModItems modItems)
+    private ICellphones Cellphones;
+    private bool isForcedCower = false;
+    public HoldUp(IInteractionable player, PedExt target, ISettingsProvideable settings, IModItems modItems, ICellphones cellphones)
     {
         Player = player;
         Target = target;
         Settings = settings;
         ModItems = modItems;
+        Cellphones = cellphones;
     }
     public override string DebugString => $"HoldingUp {Target.Pedestrian.Handle} IsIntimidated {IsTargetIntimidated} TargetMugged {Target.HasBeenMugged}";
     private bool IsTargetIntimidated => GameTimeStartedIntimidating != 0 && Game.GameTime - GameTimeStartedIntimidating >= 1000;
@@ -201,7 +204,10 @@ public class HoldUp : Interaction
         {         
             Target.Pedestrian.BlockPermanentEvents = false;
             Target.CanBeTasked = true;
-            NativeFunction.Natives.CLEAR_PED_TASKS(Target.Pedestrian);
+            if (!isForcedCower)
+            {
+                NativeFunction.Natives.CLEAR_PED_TASKS(Target.Pedestrian);
+            }
         }
         Player.ActivityManager.IsHoldingUp = false;
         Player.IsCarJacking = false;
@@ -255,18 +261,31 @@ public class HoldUp : Interaction
         NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Target.Pedestrian, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
 
         string ItemsFound;
-        Target.HasBeenLooted = true;
+
+
+
+
+
         if(RandomItems.RandomPercent(Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomItems))
         {
-            Target.PedInventory.AddRandomItems(ModItems);
+            Target.PedInventory.AddRandomItems(ModItems, false);
         }
-        ItemsFound = Target.LootInventory(Player);
+        ItemsFound = Target.LootInventory(Player, ModItems, Cellphones);
+
+
+
+
+
+
+
+
         string Description = "";
         if (ItemsFound != "")
         {  
             Description += $"Items Stolen:";
             Description += ItemsFound;
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~r~Ped Mugged", $"~y~{Target.Name}", Description);
+            EntryPoint.WriteToConsole($"MUGGING:{Target.Name} {Description}");
         }
         IsActivelyOrdering = false;
     }
@@ -276,6 +295,8 @@ public class HoldUp : Interaction
         SayAvailableAmbient(Player.Character, new List<string>() { "GUN_DRAW", "CHALLENGE_THREATEN" }, true);
         //Target.Pedestrian.Tasks.Cower(-1);
         NativeFunction.Natives.TASK_COWER(Target.Pedestrian, -1);
+        Target.WillCower = true;
+        isForcedCower = true;
         SayAvailableAmbient(Target.Pedestrian, new List<string>() { "GUN_BEG" }, false);
         GameFiber.Sleep(2000);
         IsActivelyOrdering = false;
@@ -286,8 +307,10 @@ public class HoldUp : Interaction
         SayAvailableAmbient(Player.Character, new List<string>() { "GUN_DRAW", "CHALLENGE_THREATEN" }, true);
         NativeFunction.Natives.TASK_SMART_FLEE_PED(Target.Pedestrian, Player.Character, 500f, -1, false, false);
         SayAvailableAmbient(Target.Pedestrian, new List<string>() { "GUN_BEG" }, false);
+        //Target.WillCower = false;
         GameFiber.Sleep(2000);
         IsActivelyOrdering = false;
+        isForcedCower = false;
     }
     private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
     {

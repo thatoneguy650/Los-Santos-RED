@@ -1092,53 +1092,66 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         Banks = new List<Bank>()
         {
+            new Bank(new Vector3(-1318f, -831.5065f, 16.97263f), 125.3848f, "Maze Bank", "")
+            {
+                BannerImagePath = "stores\\maze.png",
+            },
 
-            new Bank(new Vector3(-1318f, -831.5065f, 16.97263f), 125.3848f, "Maze Bank", ""){ BannerImagePath = "stores\\maze.png",},
-            
-
-
-            new Bank(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, "Fleeca Bank", "") { BannerImagePath = "stores\\fleeca.png",},
-            new Bank(new Vector3(-350.1604f, -45.84864f, 49.03682f), 337.4063f, "Fleeca Bank", "")             
+            new Bank(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, "Fleeca Bank", "")
+            {
+                BannerImagePath = "stores\\fleeca.png",
+            },
+            new Bank(new Vector3(-350.1604f, -45.84864f, 49.03682f), 337.4063f, "Fleeca Bank", "")
             {
                 BannerImagePath = "stores\\fleeca.png",
                 InteriorID = 71682,
                 TellerLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-351.3789f, -51.64762f, 49.03649f), 336.6109f),
-                }
-            },        
-            new Bank(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f,  "Fleeca Bank", "") 
-            { 
+                },
+                ActivateCells = 3,
+                ActivateDistance = 150f,
+            },
+            new Bank(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f,  "Fleeca Bank", "")
+            {
                 BannerImagePath = "stores\\fleeca.png",
                 InteriorID = 76802,
-                TellerLocations = new List<SpawnPlace>() { 
+                TellerLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(147.8368f, -1041.57f, 29.36793f), 338.927f),
                     new SpawnPlace(new Vector3(149.4326f, -1042.337f, 29.368f), 340.193f),
-                } 
+                },
+                ActivateCells = 3,
+                ActivateDistance = 150f,
             },
-            new Bank(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f,  "Fleeca Bank", "")             
+            new Bank(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f,  "Fleeca Bank", "")
             {
                 BannerImagePath = "stores\\fleeca.png",
                 InteriorID = 11266,
                 TellerLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(313.6212f, -280.8588f, 54.1647f), 335.8324f),
                     new SpawnPlace(new Vector3(312.5256f, -280.4068f, 54.1647f), 338.1261f),
-                }
-            },           
-            new Bank(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f,  "Fleeca Bank", "")             
+                },
+                ActivateCells = 3,
+                ActivateDistance = 150f,
+            },
+            new Bank(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f,  "Fleeca Bank", "")
             {
                 BannerImagePath = "stores\\fleeca.png",
                 InteriorID = 20226,
                 TellerLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-2960.644f, 482.839f, 15.69701f), 81.83675f),
-                }
+                },
+                ActivateCells = 3,
+                ActivateDistance = 150f,
             },
-            new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", "")             
+            new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", "")
             {
                 BannerImagePath = "stores\\fleeca.png",
                 InteriorID = 90626,
                 TellerLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(1175.087f, 2708.431f, 38.08793f), 177.2366f),
-                }
+                },
+                ActivateCells = 3,
+                ActivateDistance = 150f,
             },
             new Bank(new Vector3(-1214.902f, -327.0157f, 37.6686f), 26.31765f, "Fleeca Bank", "")
             {
@@ -1147,34 +1160,51 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TellerLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-1211.815f, -332.2156f, 37.78094f), 25.86222f),
                     new SpawnPlace(new Vector3(-1213.225f, -333.1036f, 37.78089f), 22.51491f),
-                }
+                },
+                ActivateCells = 3,
+                ActivateDistance = 150f,
             },
 
 
             new Bank(new Vector3(230.2334f, 214.4399f, 105.552f), 115.9025f, "Pacific Standard Bank", "")
             {
+                BannerImagePath = "stores\\pacificstandard.png",
                 InteriorID = 103170,
                 TellerLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(249.3135f, 224.6261f, 106.287f), 147.2702f),
                     new SpawnPlace(new Vector3(253.0091f, 223.5203f, 106.2868f), 151.6559f),
                 },
                 ActivateCells = 3,
-                ActivateDistance = 200f,
+                ActivateDistance = 150f,
             },
 
-            new Bank(new Vector3(-3142.849f, 1131.727f, 20.84295f), 247.9002f, "Blaine County Savings", ""){ BannerImagePath = "stores\\blainecountybank.png",},
-            new Bank(new Vector3(-111.82f, 6461.803f, 31.63924f), 134.2345f, "Blaine County Savings", ""){ 
+            new Bank(new Vector3(-3142.849f, 1131.727f, 20.84295f), 247.9002f, "Blaine County Savings", "")
+            {
+                BannerImagePath = "stores\\blainecountybank.png",
+            },
+            new Bank(new Vector3(-111.82f, 6461.803f, 31.63924f), 134.2345f, "Blaine County Savings", "")
+            {
                 BannerImagePath = "stores\\blainecountybank.png",
                 InteriorID = 42754,
                 TellerLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-111.1494f, 6470.298f, 31.6267f), 133.0098f),
                 },
+                ActivateCells = 3,
+                ActivateDistance = 150f,
             },
 
-
-            new Bank(new Vector3(-1103.88f, -1353.062f, 5.037252f), 206.2566f, "Lombank", ""){BannerImagePath = "stores\\lombank.png" },
-            new Bank(new Vector3(-863.493f, -193.3951f, 37.84323f), 299.7061f, "Lombank", ""){BannerImagePath = "stores\\lombank.png" },
-            new Bank(new Vector3(6.928352f, -932.4435f, 29.905f), 111.645f, "Lombank", ""){BannerImagePath = "stores\\lombank.png" },
+            new Bank(new Vector3(-1103.88f, -1353.062f, 5.037252f), 206.2566f, "Lombank", "")
+            {
+                BannerImagePath = "stores\\lombank.png" 
+            },
+            new Bank(new Vector3(-863.493f, -193.3951f, 37.84323f), 299.7061f, "Lombank", "")
+            {
+                BannerImagePath = "stores\\lombank.png" 
+            },
+            new Bank(new Vector3(6.928352f, -932.4435f, 29.905f), 111.645f, "Lombank", "")
+            {
+                BannerImagePath = "stores\\lombank.png" 
+            },
         };
     }
     private void DefaultConfig_BeautyShops()
@@ -2194,7 +2224,9 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         GunStores = new List<GunStore>()
         {
-            new GunStore(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, "Guns #1", "General shop","GunShop1") { IsEnabled = true, ContactName = StaticStrings.UndergroundGunsContactName,
+            new GunStore(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, "Guns #1", "General shop","GunShop1") { 
+                IsEnabled = true, 
+                ContactName = StaticStrings.UndergroundGunsContactName,
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(1044.326f, -2404.086f, 29.69204f),352.682f),
                     new SpawnPlace(new Vector3(1044.763f, -2397.967f, 29.08815f), 355.825f),
@@ -2202,7 +2234,9 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(1061.272f, -2445.152f, 28.1964f), 89.23737f),
                     new SpawnPlace(new Vector3(1066.94f, -2463.334f, 27.96432f), 357.0727f),
                 } },
-            new GunStore(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, "Guns #2", "Specializes in ~o~Pistols~s~","GunShop5") { IsEnabled = false, MoneyToUnlock = 5000, ContactName = StaticStrings.UndergroundGunsContactName,
+            new GunStore(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, "Guns #2", "Specializes in ~o~Pistols~s~","GunShop2") { 
+                IsEnabled = true, 
+                ContactName = StaticStrings.UndergroundGunsContactName,
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-233.4157f, -1306.795f, 31.31846f),89.50895f),
                     new SpawnPlace(new Vector3(-221.8178f, -1291.497f, 30.46753f), 38.83605f),
@@ -2210,23 +2244,29 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(-198.912f, -1300.158f, 30.46804f), 260.0593f),
                     new SpawnPlace(new Vector3(-223.2236f, -1308.06f, 30.46892f), 89.06057f),
             } },
-            new GunStore(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, "Guns #3", "Specializes in ~o~Sub-Machine Guns~s~","GunShop3") { IsEnabled = false, MoneyToUnlock = 10000, ContactName = StaticStrings.UndergroundGunsContactName,
+            new GunStore(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, "Guns #3", "Specializes in ~o~Sub-Machine Guns~s~","GunShop3") { 
+                IsEnabled = false, 
+                MoneyToUnlock = 10000, 
+                ContactName = StaticStrings.UndergroundGunsContactName,
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(322.9245f, -1981.151f, 23.22856f),305.8783f),
                     new SpawnPlace(new Vector3(317.3759f, -1986.411f, 21.63353f), 137.6388f),
                     new SpawnPlace(new Vector3(318.4567f, -2005.651f, 21.25648f), 205.8739f),
                     new SpawnPlace(new Vector3(308.2981f, -1978.542f, 21.6238f), 141.6945f),
             } },
-            new GunStore(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, "Guns #4", "Specializes in ~o~Assault Rifles~s~","GunShop4") { IsEnabled = false, 
-                MoneyToUnlock = 15000, ContactName = StaticStrings.UndergroundGunsContactName,
+            new GunStore(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, "Guns #4", "Specializes in ~o~Assault Rifles~s~","GunShop4") { 
+                IsEnabled = false, 
+                MoneyToUnlock = 20000, ContactName = StaticStrings.UndergroundGunsContactName,
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-258.1833f, 6250.695f, 31.48922f),25.17568f),
                     new SpawnPlace(new Vector3(-256.5694f, 6265.761f, 30.58578f), 317.2921f),
                     new SpawnPlace(new Vector3(-267.765f, 6251.046f, 30.61459f), 312.4225f),
                     new SpawnPlace(new Vector3(-269.5155f, 6274.559f, 30.46577f), 136.3388f),
                 } },
-            new GunStore(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, "Guns #5", "Specializes in ~o~Heavy Weapons~s~","GunShop2") { IsEnabled = false, 
-                MoneyToUnlock = 25000, ContactName = StaticStrings.UndergroundGunsContactName,
+            new GunStore(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, "Guns #5", "Specializes in ~o~Heavy Weapons~s~","GunShop5") { 
+                IsEnabled = false, 
+                MoneyToUnlock = 35000, 
+                ContactName = StaticStrings.UndergroundGunsContactName,
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(1661.471f, 4951.514f, 42.07043f),217.9459f),
                     new SpawnPlace(new Vector3(1659.542f, 4946.245f, 41.20879f), 224.609f),
@@ -3506,17 +3546,21 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         ScrapYards = new List<ScrapYard>() {
             new ScrapYard(new Vector3(1520.797f, -2113.375f, 76.86716f     ), 270.4797f, "Wesley's Scrap Yard", "Don't Ask, Don't Tell!") { OpenTime = 0, CloseTime = 24 },
-            new ScrapYard(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, "Marina Drive Scrap", "Top value for your 'questionable' provenance ") { OpenTime = 0, CloseTime = 24 },
+            new ScrapYard(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, "Marina Drive Scrap", "Top value for your 'questionable' provenance") { OpenTime = 0, CloseTime = 24 },
             new ScrapYard(new Vector3(-195.9066f, 6264.628f, 31.48937f), 41.33705f, "Red's Machine Supplies", "Parts Bought and Sold!") { OpenTime = 0, CloseTime = 24 },
         };     
     }
     private void DefaultConfig_CarCrushers()
     {
         CarCrushers = new List<CarCrusher>() {
-            new CarCrusher(new Vector3(-538.0128f, -1720.554f, 19.4278f), 324.869f, "The Crushinator", "Dead skunk in the trunk?") { OpenTime = 0, CloseTime = 24,
-                CameraPosition = new Vector3(-527.7763f, -1704.601f, 27.12083f), CameraDirection = new Vector3(0.005943439f, -0.9625598f, -0.2710043f), CameraRotation = new Rotator(-15.72404f, 1.940237E-07f, -179.6462f) },
-            //new CarCrusher(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, "Marina Drive Scrap", "Top value for your 'questionable' provenance ") { OpenTime = 0, CloseTime = 24 },
-            //new CarCrusher(new Vector3(-195.9066f, 6264.628f, 31.48937f), 41.33705f, "Red's Machine Supplies", "Parts Bought and Sold!") { OpenTime = 0, CloseTime = 24 },
+            new CarCrusher(new Vector3(-538.0128f, -1720.554f, 19.4278f), 324.869f, "The Crushinator", "Dead skunk in the trunk?") { 
+                OpenTime = 0, 
+                CloseTime = 24,
+                BannerImagePath = "stores\\crushinator.png",
+                CameraPosition = new Vector3(-527.7763f, -1704.601f, 27.12083f), 
+                CameraDirection = new Vector3(0.005943439f, -0.9625598f, -0.2710043f), 
+                CameraRotation = new Rotator(-15.72404f, 1.940237E-07f, -179.6462f) 
+            },
         };    
     }
     private void DefaultConfig_DeadDrops()

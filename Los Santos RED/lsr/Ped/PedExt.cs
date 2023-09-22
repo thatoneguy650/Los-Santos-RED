@@ -2,12 +2,14 @@
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
+using Mod;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 public class PedExt : IComplexTaskable, ISeatAssignable
@@ -65,6 +67,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         HasDrugAreaKnowledge = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageKnowsAnyDrugTerritory);
         HasGangAreaKnowledge = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageKnowsAnyGangTerritory);
         UpdateJitter = RandomItems.GetRandomNumber(100, 200);
+        CowerDistance = RandomItems.GetRandomNumber(20f, 45f);
     }
     public PedViolations PedViolations { get; private set; }
     public PedPerception PedPerception { get; private set; }
@@ -209,7 +212,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
 
     public virtual ePedAlertType PedAlertTypes { get; set; } = ePedAlertType.UnconsciousBody;
     public virtual bool GenerateUnconsciousAlerts { get; set; } = true;
-
+    public bool HasCellPhone { get; set; } = true;
     public bool HasBeenCarJackedByPlayer { get; set; } = false;
     public bool HasBeenHurtByPlayer { get; set; } = false;
     public bool WasKilledByPlayer { get; set; } = false;
@@ -285,6 +288,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool NeedsTaskAssignmentCheck => Game.GameTime - GameTimeLastUpdatedTask >= Settings.SettingsManager.PerformanceSettings.TaskAssignmentCheckFrequency;// (IsCop ? 500 : 700);
     public List<WitnessedCrime> OtherCrimesWitnessed => PedPerception.NPCCrimesWitnessed;
     public Ped Pedestrian { get; set; }
+    public virtual float CowerDistance { get; set; } = 40f;
     public List<WitnessedCrime> PlayerCrimesWitnessed => PlayerPerception.PlayerCrimesWitnessed;
     public List<WitnessedCrime> CrimesWitnessed
     {
@@ -880,9 +884,11 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         ItemDesires.AddDesiredItem(shopMenu);
         //EntryPoint.WriteToConsole("SetupTransactionItems END");
     }
-    public string LootInventory(IInteractionable player)
+    public string LootInventory(IInteractionable player, IModItems modItems, ICellphones cellphones)
     {
+        HasBeenLooted = true;
         string ItemsFound = "";
+        ItemsFound += StealPhone(player, modItems, cellphones);
         foreach (InventoryItem ii in PedInventory.ItemsList)
         {
             player.Inventory.Add(ii.ModItem, ii.RemainingPercent);
@@ -890,6 +896,31 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
         PedInventory.ItemsList.Clear();
         return ItemsFound;
+    }
+    private string StealPhone(IInteractionable player, IModItems modItems, ICellphones cellphones)
+    {
+        EntryPoint.WriteToConsole($"STEAL PHONE START");
+        if(!HasCellPhone)
+        {
+            EntryPoint.WriteToConsole($"STEAL PHONE NO PHONE");
+            return "";
+        }
+        HasCellPhone = false;
+        CellphoneData phone = cellphones.GetRandomRegular();
+        if(phone == null)
+        {
+            EntryPoint.WriteToConsole($"STEAL PHONE NO RANDOM");
+            return "";
+        }
+        EntryPoint.WriteToConsole($"STEAL PHONE CellphoneData {phone.ModItemName}");
+        CellphoneItem cellphoneItem = modItems.PossibleItems.CellphoneItems.FirstOrDefault(x => x.Name.ToLower() == phone.ModItemName.ToLower());
+        if(cellphoneItem == null)
+        {
+            EntryPoint.WriteToConsole($"STEAL PHONE NO MOD ITEM");
+            return "";
+        }
+        player.Inventory.Add(cellphoneItem,1.0f);
+        return $"~n~~p~{cellphoneItem.Name}~s~";
     }
     public virtual void ReportCrime(ITargetable Player)
     {

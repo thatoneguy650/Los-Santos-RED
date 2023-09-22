@@ -29,11 +29,7 @@ public class Residence : GameLocation, ILocationSetupable
     private IActivityPerformable ActivityPerformable;
     private UIMenuItem RentStopItem;
     private UIMenuItem SellHouseItem;
-    private UIMenu cashStorageSubMenu;
-    private UIMenuListScrollerItem<int> incrementScroller;
-    private UIMenuNumericScrollerItem<int> storeCashScroller;
-    private UIMenuNumericScrollerItem<int> removeCashScroller;
-    private int MaxAccountValue = 5000000;
+
     private string IsRentedDescription => $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~";
     private string IsRentedRightLabel => Time == null ? $"Due Date: {DateRentalPaymentDue}" : "Remaining Days: " + Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0).ToString();
     private string CanRentRightLabel => $"{RentalFee:C0} for {RentalDays} days";
@@ -55,7 +51,7 @@ public class Residence : GameLocation, ILocationSetupable
     [XmlIgnore]
     public WeaponStorage WeaponStorage { get; set; }
     [XmlIgnore]
-    public int StoredCash { get; set; }
+    public CashStorage CashStorage { get; set; }
 
     public bool CanRent => !IsOwned && !IsRented && RentalFee > 0;
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
@@ -140,7 +136,8 @@ public class Residence : GameLocation, ILocationSetupable
         WeaponStorage.Reset();
         SimpleInventory.Reset();
         UpdateStoredData();
-        StoredCash = 0;
+        CashStorage.Reset();
+
     }
     public void ReRent()
     {
@@ -265,33 +262,17 @@ public class Residence : GameLocation, ILocationSetupable
             };
             InteractionMenu.AddItem(SellHouseItem);
         }
-
         RestMenuItem = new UIMenuNumericScrollerItem<int>("Rest", "Rest at your residence to recover health. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
         InteractionMenu.AddItem(RestMenuItem);
         outfitsSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Outfits");
-
-
-
         if (!HasBannerImage)
         {
             outfitsSubMenu.SetBannerType(EntryPoint.LSRedColor);
         }
-
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Set an outfit.";
         UpdateOutfits();
         UpdateInventory();
         UpdateStoredWeapons();
-
-
-        cashStorageSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Stored Cash");
-        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Manage stored cash.";
-
-        if (!HasBannerImage)
-        {
-            cashStorageSubMenu.SetBannerType(EntryPoint.LSRedColor);
-        }
-
-
         UpdateStoredCash();
     }
     private void SellHouse()
@@ -312,6 +293,11 @@ public class Residence : GameLocation, ILocationSetupable
     {
         SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, false);
     }
+    private void UpdateStoredCash()
+    {
+        CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this);
+    }
+
     private void UpdateOutfits()
     {
         outfitsSubMenu.Clear();
@@ -325,72 +311,7 @@ public class Residence : GameLocation, ILocationSetupable
             outfitsSubMenu.AddItem(uIMenuItem);
         }
     }
-    private void UpdateStoredCash()
-    {
-        cashStorageSubMenu.Clear();
-        incrementScroller = new UIMenuListScrollerItem<int>("Increment","Set the scroll increment.",new List<int>() { 1,5,25,100,500,1000,10000,100000 }) { Formatter = v => v.ToString("N0") };
-        storeCashScroller = new UIMenuNumericScrollerItem<int>("Store Cash", $"Store the selected amount of cash. Max of ${MaxAccountValue}", 0, GetOnHandCash(), 1) { Value = GetOnHandCash(), Formatter = v => "~r~$" + v + "~s~", };
-        removeCashScroller = new UIMenuNumericScrollerItem<int>("Remove Cash", "Remove the selected amount of cash.", 0, StoredCash, 1) { Value = StoredCash, Formatter = v => "~g~$" + v + "~s~", };
-        incrementScroller.IndexChanged += (sender, oldIndex, newIndex) =>
-        {
-            storeCashScroller.Step = incrementScroller.SelectedItem;
-            removeCashScroller.Step = incrementScroller.SelectedItem;
-        };
-        storeCashScroller.Activated += (sender,selectedItem) =>
-        {
-            int onHandCash = GetOnHandCash();
-            int newStoreValue = StoredCash + storeCashScroller.Value;
-            if (newStoreValue >= Int32.MaxValue || newStoreValue >= MaxAccountValue)
-            {
-                Game.DisplaySubtitle("Account is at Maximum!");
-                return;
-            }
-            if (storeCashScroller.Value <= GetOnHandCash())
-            {
-                Player.BankAccounts.GiveMoney(-1 * storeCashScroller.Value, false);
-                StoredCash += storeCashScroller.Value;   
-                storeCashScroller.Maximum = GetOnHandCash();
-                removeCashScroller.Maximum = StoredCash;
-                storeCashScroller.Value = GetOnHandCash();
-                removeCashScroller.Value = StoredCash;
 
-                DisplayMessage("~g~Stored~s~", $"You have stored ${storeCashScroller.Value}.~n~Current Balance: ${StoredCash}");
-
-            }
-        };
-
-        removeCashScroller.Activated += (sender, selectedItem) =>
-        {
-            if (removeCashScroller.Value + Player.BankAccounts.GetMoney(false) >= Int32.MaxValue)
-            {
-                Game.DisplaySubtitle("Money is at Maximum!");
-                return;
-            }
-            if (StoredCash >= removeCashScroller.Value)
-            {
-                Player.BankAccounts.GiveMoney(removeCashScroller.Value, false);
-                StoredCash -= removeCashScroller.Value;
-                storeCashScroller.Maximum = GetOnHandCash();
-                removeCashScroller.Maximum = StoredCash;
-                storeCashScroller.Value = GetOnHandCash();
-                removeCashScroller.Value = StoredCash;
-                DisplayMessage("~g~Removed~s~", $"You have removed ${removeCashScroller.Value}.~n~Current Balance: ${StoredCash}");
-            }
-        };
-        cashStorageSubMenu.AddItem(incrementScroller);
-        cashStorageSubMenu.AddItem(storeCashScroller);
-        cashStorageSubMenu.AddItem(removeCashScroller);
-    }
-
-    private int GetOnHandCash()
-    {
-        int money = Player.BankAccounts.GetMoney(false);
-        if (money >= 2147483647)
-        {
-            money = 2147483646;
-        }
-        return money;
-    }
 
 
 
@@ -586,6 +507,10 @@ public class Residence : GameLocation, ILocationSetupable
         if (WeaponStorage == null)
         {
             WeaponStorage = new WeaponStorage(Settings);
+        }
+        if(CashStorage == null)
+        {
+            CashStorage = new CashStorage();
         }
     }
 

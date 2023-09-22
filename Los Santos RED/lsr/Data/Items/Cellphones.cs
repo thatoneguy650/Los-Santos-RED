@@ -45,7 +45,7 @@ public class Cellphones : ICellphones
             new CellphoneData("iFruit Cellphone",0,"cellphone_ifruit") { IsDefault = true },
             new CellphoneData("Facade Cellphone",1,"cellphone_facade"),
             new CellphoneData("Badger Cellphone",2,"cellphone_badger"),
-            new CellphoneData("Celltowa Cellphone",4,"cellphone_facade") { IsRegular = false, IsHistoric = true },
+            new CellphoneData("Celltowa Cellphone",4,"cellphone_facade") { IsRegular = false, IsHistoric = true, HasFlashlight = false },
         };
         Serialization.SerializeParams(CellphoneList, ConfigFileName);
     }
@@ -53,7 +53,7 @@ public class Cellphones : ICellphones
     {
         List<CellphoneData> OldCellphoneList = new List<CellphoneData>
         {
-            new CellphoneData("Celltowa Cellphone",4,"cellphone_facade") { IsDefault = true },
+            new CellphoneData("Celltowa Cellphone",4,"cellphone_facade") { IsDefault = true, HasFlashlight = false },
         };
         Serialization.SerializeParams(OldCellphoneList, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Cellphones_LosSantos2008.xml");
     }
@@ -68,6 +68,10 @@ public class Cellphones : ICellphones
     public CellphoneData GetRandomRegular()
     {
         return CellphoneList.Where(x => x.IsRegular).PickRandom();
+    }
+    public CellphoneData GetPhone(string name)
+    {
+        return CellphoneList.Where(x => x.ModItemName == name).PickRandom();
     }
 }
 
