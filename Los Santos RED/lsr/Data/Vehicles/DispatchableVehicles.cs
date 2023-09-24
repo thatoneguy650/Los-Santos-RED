@@ -234,7 +234,9 @@ public class DispatchableVehicles : IDispatchableVehicles
         };
         MarshalsServiceVehicles = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle("police4", 100, 100),
+            new DispatchableVehicle("police4", 50, 50),
+            new DispatchableVehicle("fbi", 50, 50){ OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
+            new DispatchableVehicle("fbi2", 50, 50) { OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
         };
         //Gangs
         GenericGangVehicles = new List<DispatchableVehicle>() {
@@ -22734,7 +22736,8 @@ Output = -1,
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("GroupSechsVehicles", GroupSechsVehicles));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("SecuroservVehicles", SecuroservVehicles));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("LCPDVehicles", LCPDVehicles));
-
+        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("LCPDVehicles", MarshalsServiceVehicles));
+        //MarshalsServiceVehicles
         //Gang
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("AllGangVehicles", AllGangVehicles));
@@ -22788,6 +22791,7 @@ Output = -1,
         SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("GroupSechsVehicles", GroupSechsVehicles));
         SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("SecuroservVehicles", SecuroservVehicles));
         SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("LCPDVehicles", LCPDVehicles));
+        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles));
 
         //Gang
         SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles));
@@ -23056,7 +23060,7 @@ Output = -1,
             new DispatchableVehicle("annihilator", 0, 100) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 5 }};
 
 
-        List<DispatchableVehicle> MarshalsServiceVehicles_FEJ = UnmarkedVehicles_FEJ.Copy();//for now
+        List<DispatchableVehicle> MarshalsServiceVehicles_FEJ = MarshalsServiceVehicles.Copy();//for now
 
         //Security
         List<DispatchableVehicle> MerryweatherPatrolVehicles_FEJ = new List<DispatchableVehicle>(){

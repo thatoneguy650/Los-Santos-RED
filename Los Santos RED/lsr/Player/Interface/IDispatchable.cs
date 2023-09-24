@@ -27,8 +27,10 @@ namespace LosSantosRED.lsr.Interface
         bool IsSwimming { get; }
         bool RecentlyStartedPlaying { get; }
         RelationshipManager RelationshipManager { get; }
+        CriminalHistory CriminalHistory { get; }
 
         void OnHitSquadDispatched(Gang enemyGang);
         void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType);
+        void OnMarshalsDispatched(Agency agency);
     }
 }

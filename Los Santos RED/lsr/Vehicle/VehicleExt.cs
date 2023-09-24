@@ -43,17 +43,12 @@ namespace LSR.Vehicles
         public bool IsGang { get; set; } = false;
         public bool IsService => IsPolice || IsEMT || IsFire;
         public Blip AttachedBlip { get; set; }
-       // public Blip SonarBlip { get; set; }
         public bool IsHotWireLocked { get; set; } = false;
         public bool IsDisabled { get; set; } = false;
-
-
-
         public bool IsImpounded { get; set; }
         public DateTime DateTimeImpounded { get; set; }
         public int TimesImpounded { get; set; }
         public string ImpoundedLocation { get; set; }
-
         public Vehicle Vehicle { get; set; } = null;
         public Vector3 PlaceOriginallyEntered { get; set; }
         public Radio Radio { get; set; }
@@ -68,7 +63,6 @@ namespace LSR.Vehicles
         public Gang AssociatedGang { get; set; }
         public Agency AssociatedAgency { get; set; }
         public SonarBlip SonarBlip { get; set; }
-
         public virtual Color BlipColor => AssociatedAgency != null ? AssociatedAgency.Color : AssociatedGang != null ? AssociatedGang.Color : Color.White;
         public virtual float BlipSize => AssociatedAgency != null ? 0.6f : 0.25f;
         public uint HasExistedFor => Game.GameTime - GameTimeSpawned;
@@ -240,7 +234,6 @@ namespace LSR.Vehicles
                 FuelTankCapacity = 20;
         }
         public int PoliceBlipID => vehicleClass == VehicleClass.Helicopter ? 15 : 3;
-
         private void GetOwnedBlipID()
         {
             if(vehicleClass == VehicleClass.Helicopter)
@@ -496,8 +489,6 @@ namespace LSR.Vehicles
             }
             return description;
         }
-
-
         public string GetRegularDescription(bool isOwned)
         {
             string vehicleString = "";
@@ -563,8 +554,6 @@ namespace LSR.Vehicles
             }
             return CarDescription;
         }
-
-
         public void Update(IDriveable driver)
         {
             if (Vehicle.Exists())
@@ -723,7 +712,6 @@ namespace LSR.Vehicles
                 }
             }
         }
-
         public void SetWindow(int windowID, bool RollDown)
         {
             if(!Vehicle.Exists())
@@ -746,11 +734,9 @@ namespace LSR.Vehicles
                 NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Vehicle, windowID);             
             }
         }
-
-
         public void SetRadioStation(string stationName) => Radio.SetRadioStation(stationName);
         public bool WasSpawnedEmpty { get; set; } = false;
-        public bool OwnedByPlayer { get; internal set; }
+        public bool IsOwnedByPlayer { get; internal set; }
         public bool AllowVanityPlates { get; set; } = true;
         public bool WasCrushed { get; set; }
         public bool IsAlwaysOpenForPlayer { get; set; } = false;
@@ -1027,7 +1013,7 @@ namespace LSR.Vehicles
         }
         public void AddOwnership()
         {
-            OwnedByPlayer = true;
+            IsOwnedByPlayer = true;
             if (!Vehicle.Exists())
             {
                 return;
@@ -1037,7 +1023,7 @@ namespace LSR.Vehicles
         }
         public void RemoveOwnership()
         {
-            OwnedByPlayer = false;
+            IsOwnedByPlayer = false;
             if (!Vehicle.Exists())
             {
                 return;
@@ -1276,10 +1262,6 @@ namespace LSR.Vehicles
             AttachedBlip.Scale = BlipSize;
             AttachedBlip.Color = BlipColor;
         }
-        //public void UpdateSonarBlip()
-        //{
-        //    SonarBlip.Update();
-        //}
         public void FullyDelete()
         {
             SonarBlip.Dispose();
@@ -1349,8 +1331,6 @@ namespace LSR.Vehicles
             }  
             return false;
         }
-
-
         public bool IsVisiblyDamaged(ITimeReportable Time)
         {
             if (!Vehicle.Exists())
@@ -1436,7 +1416,6 @@ namespace LSR.Vehicles
             }
             return true;
         }
-
         public void CreateDoorInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu doorAccessHeaderMenu, IVehicleSeatAndDoorLookup vehicleSeatDoorData)
         {
             List<VehicleDoorSeatData> stuff = vehicleSeatDoorData.VehicleDoorSeatDataList.ToList();
@@ -1481,6 +1460,15 @@ namespace LSR.Vehicles
                 };
                 windowAccessHeaderMenu.AddItem(uIMenuListScrollerItem);
             }
+        }
+
+        public virtual string InteractPrompt()
+        {
+            if (!Vehicle.Exists() || (!HasBeenEnteredByPlayer && !IsOwnedByPlayer) || VehicleInteractionMenu.IsShowingMenu || Vehicle.Speed >= 0.5f )
+            {
+                return "";
+            }
+            return "Vehicle Interact";
         }
     }
 }

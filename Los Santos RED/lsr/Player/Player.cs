@@ -464,8 +464,9 @@ namespace Mod
             HumanState.Setup();
             GPSManager.Setup();
             SetWantedLevel(0, "Initial", true);
-            NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
+            //NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
             WeaponEquipment.SetUnarmed();
+            
             VehicleOwnership.Setup();
             BankAccounts.Setup();
             HealthManager.Setup();
@@ -1002,7 +1003,6 @@ namespace Mod
             {
                 Scanner.Reset();
             }
-
             PlayerVoice.OnSuspectEluded();
         }
         public void OnVehicleCrashed()
@@ -1078,6 +1078,29 @@ namespace Mod
             PlayerTasks.GangTasks.SendHitSquadMessage(gangcontact);
 
         }
+
+
+
+        public void OnMarshalsDispatched(Agency deployedAgency)
+        {
+            if(!Settings.SettingsManager.PoliceSettings.SendMarshalsAPBResponseText)
+            {
+                return;
+            }
+            if (!CellPhone.ContactList.Any(x => x.Name == StaticStrings.OfficerFriendlyContactName))
+            {
+                return;        
+            }
+            List<string> Replies = new List<string>() {
+                                $"Letting you know they got some feds looking for you.",
+                                $"Feds on the prowl, watch your back.",
+                                $"I got words the feds are out to get you, be careful.",
+                                $"Guess you made someone really made, the feds are looking for you.",
+                                $"Fed task force on the way to your position.",
+                                };
+            CellPhone.AddScheduledText(new CorruptCopContact(StaticStrings.OfficerFriendlyContactName), Replies.PickRandom(), 0, true);
+        }
+
         private void OnAimingChanged()
         {
             if (IsAiming)
@@ -1442,11 +1465,9 @@ namespace Mod
             {
                 PoliceResponse.OnWantedLevelIncreased();
                // EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL INCREASED", 3);
-                //BigMessage.ShowColoredShard("WANTED", $"{wantedLevel} stars", HudColor.Gold, HudColor.InGameBackground);
             }
             else if (IsWanted && PreviousWantedLevel > WantedLevel)
             {
-                //PoliceResponse.OnWantedLevelDecreased();
                // EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL DECREASED", 3);
             }
            // EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
@@ -1531,22 +1552,20 @@ namespace Mod
                 }
                 if (WantedLevel < desiredWantedLevel || (desiredWantedLevel == 0 && WantedLevel != 0))
                 {
-                    if (Settings.SettingsManager.PoliceSettings.UseFakeWantedLevelSystem)
-                    {
-                        NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
-                        if (Settings.SettingsManager.UIGeneralSettings.ShowFakeWantedLevelStars && desiredWantedLevel <= 6)
-                        {
-                            NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(desiredWantedLevel);
-                        }
-                    }
-                    else
-                    {
-                        NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", desiredWantedLevel);
-                        Game.LocalPlayer.WantedLevel = desiredWantedLevel;
-                    }
-
+                    //if (Settings.SettingsManager.PoliceSettings.UseFakeWantedLevelSystem)
+                    //{
+                    //    NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
+                    //    if (Settings.SettingsManager.UIGeneralSettings.ShowFakeWantedLevelStars && desiredWantedLevel <= 6)
+                    //    {
+                    //        NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(desiredWantedLevel);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", desiredWantedLevel);
+                    //    Game.LocalPlayer.WantedLevel = desiredWantedLevel;
+                    //}
                     wantedLevel = desiredWantedLevel;
-
                     if (desiredWantedLevel > 0)
                     {
                         GameTimeWantedLevelStarted = Game.GameTime;
@@ -2255,24 +2274,23 @@ namespace Mod
                     {
                         if (realWantedLevel > 1)
                         {
-                            SetWantedLevel(realWantedLevel, "Something Else Set, Allowed by settings (1)", true);
+                            PoliceResponse.RadioInWanted();
+                            SetWantedLevel(realWantedLevel, $"Something Else Set, Allowed by settings (1) realWantedLevel{realWantedLevel}", true);
+                            PoliceResponse.RadioInWanted();
                             PlacePoliceLastSeenPlayer = Position;
 
                         }
                     }
                     else//or is they want my mod to just accept any wanted level generated
                     {
-                        SetWantedLevel(realWantedLevel, "Something Else Set, Allowed by settings (2)", true);
+                        PoliceResponse.RadioInWanted();
+                        SetWantedLevel(realWantedLevel, $"Something Else Set, Allowed by settings (2) realWantedLevel{realWantedLevel}", true);
+                        PoliceResponse.RadioInWanted();
                         PlacePoliceLastSeenPlayer = Position;
                     }
                 }
-
                 Game.LocalPlayer.WantedLevel = 0;
-                NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
-            }
-            if (Settings.SettingsManager.UIGeneralSettings.ShowFakeWantedLevelStars && NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>() != wantedLevel)
-            {
-                NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(wantedLevel);
+                //NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
             }
             if (PreviousWantedLevel != wantedLevel)//NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>()) //if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
             {

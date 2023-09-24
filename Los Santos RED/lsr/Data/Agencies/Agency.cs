@@ -98,9 +98,7 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
         }
         return null;
     }
-
     public DispatchablePerson GetRandomPed(int wantedLevel, string RequiredPedGroup) => GetRandomPed(wantedLevel, RequiredPedGroup, false);
-
     public DispatchablePerson GetRandomPed(int wantedLevel, string RequiredPedGroup, bool forceAnimal)// List<string> RequiredModels)
     {
         if (Personnel == null || !Personnel.Any())
@@ -230,7 +228,6 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
         return null;
     }
     public DispatchableVehicle GetVehicleInfo(Vehicle vehicle) => Vehicles.Where(x => x.ModelName.ToLower() == vehicle.Model.Name.ToLower()).FirstOrDefault();
-   // public bool HasSpawnableHelicopters(int wantedLevel) => Vehicles.Any(x => x.IsHelicopter && x.CanCurrentlySpawn(wantedLevel));
     public override string ToString()
     {
         return ID;
@@ -292,9 +289,6 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
         }
         return null;
     }
-
-
-
     public ShopMenu GenerateMenu(IModItems modItems)
     {
         List<MenuItem> menuItems = new List<MenuItem>();

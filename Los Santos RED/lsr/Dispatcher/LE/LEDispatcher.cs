@@ -12,16 +12,21 @@ using System.Runtime.InteropServices.ComTypes;
 
 public class LEDispatcher
 {
-    private readonly IAgencies Agencies;
-    private readonly IDispatchable Player;
-
-    private readonly float MinimumDeleteDistance = 150f;//200f
-    private readonly uint MinimumExistingTime = 20000;
     private readonly ISettingsProvideable Settings;
     private readonly IStreets Streets;
     private readonly IEntityProvideable World;
     private readonly IJurisdictions Jurisdictions;
     private readonly IZones Zones;
+    private readonly IAgencies Agencies;
+    private readonly IDispatchable Player;
+    private readonly IWeapons Weapons;
+    private readonly INameProvideable Names;
+    private readonly IPlacesOfInterest PlacesOfInterest;
+    private readonly IModItems ModItems;
+
+    private readonly float MinimumDeleteDistance = 150f;//200f
+    private readonly uint MinimumExistingTime = 20000;
+
     private bool HasDispatchedThisTick;
     private bool ShouldRunAmbientDispatch;
     private uint GameTimeAttemptedDispatch;
@@ -30,25 +35,21 @@ public class LEDispatcher
     private uint GameTimeLastSpawnedRoadblock;
     private Roadblock Roadblock;
     private Agency LastAgencySpawned;
-    private IWeapons Weapons;
-    private bool TotalIsWanted => World.TotalWantedLevel > 0;
-    private INameProvideable Names;
     private PoliceStation PoliceStation;
     private SpawnLocation SpawnLocation;
     private Agency Agency;
     private DispatchableVehicle VehicleType;
     private DispatchablePerson PersonType;
-    private IPlacesOfInterest PlacesOfInterest;
-    private IModItems ModItems;
-
+    private MarshalDispatcher MarshalDispatcher;
     private Vector3 RoadblockInitialPosition;
     private Vector3 RoadblockAwayPosition;
     private Street RoadblockInitialPositionStreet;
     private Vector3 RoadblockFinalPosition;
     private float RoadblockFinalHeading;
+
     private bool HasNeedToSpawnHeli => World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit;
     private bool HasNeedToSpawnBoat => (Player.CurrentVehicle?.IsBoat == true || Player.IsSwimming) && World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit;
-
+    private bool TotalIsWanted => World.TotalWantedLevel > 0;
     public LEDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest, IModItems modItems)
     {
         Player = player;
@@ -62,6 +63,7 @@ public class LEDispatcher
         Names = names;
         PlacesOfInterest = placesOfInterest;
         ModItems = modItems;
+        MarshalDispatcher = new MarshalDispatcher(Player, this, Settings, World, Weapons, Names, PlacesOfInterest, ModItems, Agencies);
     }
     private float LikelyHoodOfAnySpawn
     {
@@ -164,14 +166,9 @@ public class LEDispatcher
             }
         }
     }
-
-
-
     private bool HasNeedToAmbientCanineDispatch => World.Pedestrians.TotalSpawnedAmbientPoliceCanines < SpawnedK9Limit;
-
-
-    private float ClosestPoliceSpawnToOtherPoliceAllowed => TotalIsWanted ? 200f : 500f;
-    private float ClosestPoliceSpawnToSuspectAllowed => TotalIsWanted ? 150f : 250f;
+    public float ClosestPoliceSpawnToOtherPoliceAllowed => TotalIsWanted ? 200f : 500f;
+    public float ClosestPoliceSpawnToSuspectAllowed => TotalIsWanted ? 150f : 250f;
     private List<Cop> DeletableCops => World.Pedestrians.AllPoliceList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime && x.Handle != Player.Handle) || x.CanRemove).ToList();//NEED TO ADD WAS MOD SPAWNED HERE, LET THE REST OF THE FUCKERS MANAGE THEIR OWN STUFF?
     private float DistanceToDelete => TotalIsWanted ? Settings.SettingsManager.PoliceSpawnSettings.DistanceToRecallInVehicle_Wanted : Settings.SettingsManager.PoliceSpawnSettings.DistanceToRecallInVehicle_NotWanted;
     private float DistanceToDeleteOnFoot => TotalIsWanted ? Settings.SettingsManager.PoliceSpawnSettings.DistanceToRecallOnFoot_Wanted : Settings.SettingsManager.PoliceSpawnSettings.DistanceToRecallOnFoot_NotWanted;
@@ -180,9 +177,12 @@ public class LEDispatcher
     private bool IsTimeToAmbientDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks && Player.PoliceResponse.HasBeenAtCurrentWantedLevelFor >= 30000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenRecall;
-
-
     private bool IsTimeToAmbientCanineDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
+
+
+
+
+
     private int TimeBetweenSpawn
     {
         get
@@ -732,16 +732,22 @@ public class LEDispatcher
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
-        if (Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
+        if(!Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
         {
-            HandleAmbientSpawns();
-            HandleRoadblockSpawns();
+            return HasDispatchedThisTick;
+        }
+        HandleAmbientSpawns();
+        HandleRoadblockSpawns();
+        if(MarshalDispatcher.Dispatch())
+        {
+            HasDispatchedThisTick = true;
         }
         return HasDispatchedThisTick;
     }
     public void Dispose()
     {
         RemoveRoadblock();
+        MarshalDispatcher.Dispose();
     }
     public void Recall()
     {
@@ -771,8 +777,6 @@ public class LEDispatcher
 
         CleanUp();
     }
-
-
     public void CleanUp()
     {
         if (!Settings.SettingsManager.WorldSettings.CleanupVehicles)
@@ -782,6 +786,9 @@ public class LEDispatcher
         RemoveAbandonedPoliceVehicles();
         FixDamagedPoliceVehicles();     
     }
+    
+
+
     private void RemoveAbandonedPoliceVehicles()
     {
         try
@@ -791,7 +798,7 @@ public class LEDispatcher
 
             bool isNearLimit = PossibleSpawnedPoliceCars - TotalPoliceCars <= 3 && TotalPoliceCars >= 10;
             int updated = 0;
-            foreach (VehicleExt PoliceCar in World.Vehicles.PoliceVehicleList.Where(x => !x.OwnedByPlayer && x.Vehicle.Exists() && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000).ToList())
+            foreach (VehicleExt PoliceCar in World.Vehicles.PoliceVehicleList.Where(x => !x.IsOwnedByPlayer && x.Vehicle.Exists() && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000).ToList())
             {
                 if (PoliceCar.Vehicle.Exists())
                 {
@@ -844,7 +851,7 @@ public class LEDispatcher
     private void FixDamagedPoliceVehicles()
     {
         int updated = 0;
-        foreach (VehicleExt PoliceCar in World.Vehicles.PoliceVehicleList.Where(x => !x.OwnedByPlayer && x.Vehicle.Exists() && x.WasModSpawned && x.HasExistedFor >= 15000).ToList())
+        foreach (VehicleExt PoliceCar in World.Vehicles.PoliceVehicleList.Where(x => !x.IsOwnedByPlayer && x.Vehicle.Exists() && x.WasModSpawned && x.HasExistedFor >= 15000).ToList())
         {
             if (PoliceCar.Vehicle.Exists())
             {
@@ -862,9 +869,6 @@ public class LEDispatcher
             }
         }
     }
-
-
-
     private void HandleAmbientSpawns()
     {
         if (!IsTimeToAmbientDispatch || !HasNeedToAmbientDispatch)

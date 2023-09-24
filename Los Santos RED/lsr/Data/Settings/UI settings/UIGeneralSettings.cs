@@ -41,7 +41,7 @@ public class UIGeneralSettings : ISettingsDefaultable
 
 
     public bool ShowFullscreenWarnings { get; set; }
-    public bool ShowFakeWantedLevelStars { get; set; }
+   // public bool ShowFakeWantedLevelStars { get; set; }
 
 
     public bool UseCustomWantedLevelStars { get; set; }
@@ -61,8 +61,7 @@ public class UIGeneralSettings : ISettingsDefaultable
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
-        CustomWantedLevelStarsFlashWhenSearching = true;
-        CustomWantedLevelStarsTimeBetweenFlash = 1000;
+        SetDefault();
     }
 
     public UIGeneralSettings()
@@ -116,7 +115,7 @@ public class UIGeneralSettings : ISettingsDefaultable
 
 #endif
 
-        ShowFakeWantedLevelStars = false;
+       // ShowFakeWantedLevelStars = false;
         UseCustomWantedLevelStars = true;
         UseCustomInvestigationMarks = true;
         CustomInvestigationMarksRedColorLimit = 3;

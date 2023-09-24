@@ -43,40 +43,29 @@ public class ButtonPrompts
         AttemptAddAdvancedInteractionPrompts();
         AttemptAddVehiclePrompts();
         AttemptAddLocationPrompts();
-
         AttemptAddActivityPrompts();
         AttemptRemoveMenuPrompts();
     }
-
     private void AttemptAddVehiclePrompts()
     {
         VehicleExt toConsider = Player.InterestedVehicle;
-        if(!Settings.SettingsManager.UIGeneralSettings.ShowVehicleInteractionPrompt || 
-            Player.ActivityManager.IsInteractingWithLocation || 
-            Player.IsShowingFrontEndMenus || 
-            addedPromptGroup || 
-            Player.Surrendering.HandsAreUp || 
-            !Player.IsAliveAndFree || 
-            toConsider == null || 
-
-            (!Settings.SettingsManager.UIGeneralSettings.ShowVehicleInteractionPromptInVehicle && Player.IsInVehicle) ||
-
-            !toConsider.Vehicle.Exists() || 
-            (!toConsider.HasBeenEnteredByPlayer && !Player.VehicleOwnership.OwnedVehicles.Any(x => x.Handle == toConsider.Handle)) || 
-            
-            toConsider.VehicleInteractionMenu.IsShowingMenu || 
-            toConsider.Vehicle.Speed >= 0.5f || Player.ActivityManager.IsPerformingActivity)
+        if (!Settings.SettingsManager.UIGeneralSettings.ShowVehicleInteractionPrompt || Player.ActivityManager.IsInteractingWithLocation || Player.IsShowingFrontEndMenus || Player.Surrendering.HandsAreUp || 
+            !Player.IsAliveAndFree || (!Settings.SettingsManager.UIGeneralSettings.ShowVehicleInteractionPromptInVehicle && Player.IsInVehicle) || Player.ActivityManager.IsPerformingActivity || toConsider == null)
+        {
+            RemovePrompts("VehicleInteract");
+            return;
+        }
+        string interactPrompt = toConsider.InteractPrompt();
+        if (string.IsNullOrEmpty(interactPrompt))
         {
             RemovePrompts("VehicleInteract");
             return;
         }
         if (!HasPrompt($"VehicleInteract"))
         {
-           // RemovePrompts("VehicleInteract");
-            AttemptAddPrompt("VehicleInteract", $"Vehicle Interact", $"VehicleInteract", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999);
+            AttemptAddPrompt("VehicleInteract", interactPrompt, $"VehicleInteract", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999);
         }
     }
-
     public void Dispose()
     {
         Prompts.Clear();
@@ -93,7 +82,6 @@ public class ButtonPrompts
     {
         Prompts.RemoveAll(x => x.Group == groupName);
     }
-
     public void AttemptAddPrompt(string groupName, string prompt, string identifier, Keys modifierKey, Keys interactKey, int order)
     {
         if (!Prompts.Any(x => x.Identifier == identifier) && !Prompts.Any(x => x.Key == interactKey))
@@ -108,7 +96,6 @@ public class ButtonPrompts
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
         }
     }
-
     public void AddPrompt(string groupName, string prompt, string identifier, Keys interactKey, int order)
     {
         if (!Prompts.Any(x => x.Identifier == identifier))
@@ -130,8 +117,6 @@ public class ButtonPrompts
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, modifierKey, order));
         }
     }
-
-
     public void AddPrompt(string groupName, string prompt, string identifier, ControllerButtons interactKey, int order)
     {
         if (!Prompts.Any(x => x.Identifier == identifier))
@@ -146,8 +131,6 @@ public class ButtonPrompts
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, modifierKey, order));
         }
     }
-
-
     public void AddPrompt(string groupName, string prompt, string identifier, GameControl gameControl, int order)
     {
         if (!Prompts.Any(x => x.Identifier == identifier))
@@ -155,7 +138,6 @@ public class ButtonPrompts
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, gameControl, order));
         }
     }
-
     public void AttemptAddPrompt(string groupName, string prompt, string identifier, GameControl gameControl, int order)
     {
         if (!Prompts.Any(x => x.Identifier == identifier) && !Prompts.Any(x=> x.GameControl == gameControl))
@@ -163,7 +145,6 @@ public class ButtonPrompts
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, gameControl, order));
         }
     }
-
     public void AddPrompt(string groupName, string prompt, string identifier, GameControl modifierControl, GameControl gameControl, int order)
     {
         if (!Prompts.Any(x => x.Identifier == identifier))
@@ -171,7 +152,6 @@ public class ButtonPrompts
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, gameControl, modifierControl, order));
         }
     }
-
     public bool HasPrompt(string identifier)
     {
         return Prompts.Any(x => x.Identifier == identifier);
@@ -213,7 +193,6 @@ public class ButtonPrompts
             AddPrompt("Search", $"Inspect {Player.CurrentLookedAtPed.FormattedName}", $"Search {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1);
         }
     }
-
     private void PersonDraggingPrompts()
     {
         RemovePrompts("InteractableLocation");
@@ -253,9 +232,6 @@ public class ButtonPrompts
             AddPrompt("InteractableLocation", $"{Player.ClosestInteractableLocation.ButtonPromptText}", $"{Player.ClosestInteractableLocation.ButtonPromptText}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
         }
     }
-
-  
-
     private void ScenarioPrompts()
     {
         RemovePrompts("StartConversation");
@@ -285,7 +261,6 @@ public class ButtonPrompts
         {
             RemovePrompts("ActivityControlCancel");
         }
-
         if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.ActivityManager.IsPerformingActivity)
         {
             if (Player.ActivityManager.CanPauseCurrentActivity && !Player.ActivityManager.IsCurrentActivityPaused)
@@ -466,6 +441,5 @@ public class ButtonPrompts
             Prompts.RemoveAll(x => x.Group == "StartScenario");
         }
     }
-
 }
 

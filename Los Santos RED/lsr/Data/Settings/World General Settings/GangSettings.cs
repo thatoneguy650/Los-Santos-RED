@@ -111,6 +111,9 @@ public class GangSettings : ISettingsDefaultable
     public bool ShowGangTerritoryBlip { get; set; }
     public float GangTerritoryBlipSize { get; set; }
     public float GangTerritoryBlipAlpha { get; set; }
+
+
+
     public GangSettings()
     {
         SetDefault();

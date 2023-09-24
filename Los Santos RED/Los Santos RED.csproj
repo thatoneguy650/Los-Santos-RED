@@ -127,6 +127,7 @@
     <Compile Include="lsr\Data\Agencies\IPlatePrefixable.cs" />
     <Compile Include="lsr\Data\Agencies\WantedLevels.cs" />
     <Compile Include="lsr\Data\Interface\ICellphones.cs" />
+    <Compile Include="lsr\Dispatcher\LE\MarshalDispatcher.cs" />
     <Compile Include="lsr\Inventory\CashStorage.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankDrawer.cs" />
     <Compile Include="lsr\Player\Cellphone\Data\CellphoneData.cs" />
@@ -344,6 +345,7 @@
     <Compile Include="lsr\Tasker\Generic\GeneralInvestigate\FireGeneralInvestigate.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralInvestigate\EMSGeneralInvestigate.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\GangGeneralLocate.cs" />
+    <Compile Include="lsr\Tasker\Generic\GeneralLocate\MarshalGeneralLocate.cs" />
     <Compile Include="lsr\Tasker\Old\GeneralLocate_Old.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\GoToInVehicleTaskState.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\GoToOnFootTaskState.cs" />

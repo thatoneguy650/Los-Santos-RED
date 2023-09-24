@@ -23,6 +23,7 @@ public class LESpawnTask : SpawnTask
 
 
     private bool HasAgency => Agency != null;
+    public bool IsMarshalMember { get; set; } = false;
     public override void AttemptSpawn()
     {
         try
@@ -268,6 +269,12 @@ public class LESpawnTask : SpawnTask
         NativeFunction.CallByName<bool>("SET_PED_AS_COP", Pedestrian, true);
         bool isMale = PersonType.IsMale(Pedestrian);
         Cop PrimaryCop = new Cop(Pedestrian, Settings, Pedestrian.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
+
+        if(IsMarshalMember)
+        {
+            PrimaryCop.IsMarshalMember = true;
+        }
+
         World.Pedestrians.AddEntity(PrimaryCop);
         PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode);//TASKING IS BROKEN FOR ALL COPS FAR FROM PLAYER AND ALL OTHER PEDS
         if (Pedestrian.Exists())

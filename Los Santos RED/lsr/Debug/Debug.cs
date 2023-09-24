@@ -4451,12 +4451,12 @@ private void SetPropAttachment()
 
             else
             {
-                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}({cop.Handle})-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} SeePlayer:{canSeePlayer} Name:{cop.Name} {cop.GroupName} " +
+                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}({cop.Handle})-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} {cop.AssignedAgency?.ShortName} SeePlayer:{canSeePlayer} Name:{cop.Name} {cop.GroupName} " +
                     $"weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} " +
                     $"TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} " +
                     $"Target:{0} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} ");
                 EntryPoint.WriteToConsole($"IsRespondingToCitizenWanted {cop.IsRespondingToCitizenWanted} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} weapon: {Weapon} {VehicleWeapon} " +
-                    $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} RGotIn:{cop.RecentlyGotInVehicle} RGotOut:{cop.RecentlyGotOutOfVehicle} WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState} {retardedcops} CanBeTasked:{cop.CanBeTasked} CanBeAmbientTasked:{cop.CanBeAmbientTasked}", 5);
+                    $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} IsMarshalMember{cop.IsMarshalMember} RGotIn:{cop.RecentlyGotInVehicle} RGotOut:{cop.RecentlyGotOutOfVehicle} WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState} {retardedcops} CanBeTasked:{cop.CanBeTasked} CanBeAmbientTasked:{cop.CanBeAmbientTasked}", 5);
             }
             
         }
@@ -4568,7 +4568,7 @@ private void SetPropAttachment()
             bool hasVehicleWeapon = false;
             hasVehicleWeapon = NativeFunction.Natives.GET_CURRENT_PED_VEHICLE_WEAPON<bool>(cop.Pedestrian, out currentVehicleWeapon);
             string VehicleWeapon = $" VehicleWeapon: Has {hasVehicleWeapon} : {currentVehicleWeapon}";
-            EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask?.OtherTarget?.Handle} Vehicle {VehString} {combat} {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} Position: {cop.Pedestrian.Position}", 2);
+            EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} {cop.AssignedAgency?.ShortName} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask?.OtherTarget?.Handle} Vehicle {VehString} {combat} {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} Position: {cop.Pedestrian.Position} IsMarshalMember{cop.IsMarshalMember}", 2);
         }
         EntryPoint.WriteToConsole($"============================================ COPS END", 2);
     }

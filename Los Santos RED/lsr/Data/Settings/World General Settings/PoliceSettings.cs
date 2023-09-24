@@ -6,12 +6,24 @@ public class PoliceSettings : ISettingsDefaultable
     [Description("Attach a blip to any ambient police peds.")]
     public bool AttachBlipsToAmbientPeds { get; set; }
 
-    [Description("Enable or disable the non-vanilla wanted system. (Not recommended to disable)")]
-    public bool UseFakeWantedLevelSystem { get; set; }
+
+
+
+
+
+    //[Description("Enable or disable the non-vanilla wanted system. (Not recommended to disable)")]
+    //public bool UseFakeWantedLevelSystem { get; set; }
     [Description("If enabled, only LSR will be able to set the wanted level.")]
     public bool TakeExclusiveControlOverWantedLevel { get; set; }
     [Description("If enabled, one star wanted levels not set by the mod will be ignored.")]
     public bool TakeExclusiveControlOverWantedLevelOneStarAndBelow { get; set; }
+
+
+
+
+
+
+
 
     [Description("Minimum wanted level allowed while lethal force is authorized.")]
     public int DeadlyChaseMinimumWantedLevel { get; set; }
@@ -145,6 +157,19 @@ public class PoliceSettings : ISettingsDefaultable
     public int BreachingExpireTimeOutsideOnly { get; set; }
     public float BreachingExpireTimeDistanceOnly { get; set; }
 
+
+
+
+    public bool AllowMarshalsAPBResponse { get; set; }
+    public uint MinTimeBetweenMarshalsAPBResponse { get; set; }
+    public uint MaxTimeBetweenMarshalsAPBResponse { get; set; }
+
+    public uint MinTimeOfAPBBetweenMarshalsAPBResponse { get; set; }
+    public uint MaxTimeOfAPBBetweenMarshalsAPBResponse { get; set; }
+
+
+    public bool SendMarshalsAPBResponseText { get; set; }
+
     public PoliceSettings()
     {
         SetDefault();
@@ -196,7 +221,7 @@ public class PoliceSettings : ISettingsDefaultable
         UnarmedChaseMaxWantedLevel = 3;
         MaxWantedLevel = 6;
         KnowsShootingSourceLocation = true;
-        UseFakeWantedLevelSystem = true;
+       // UseFakeWantedLevelSystem = true;
         DropWeaponWhenBusted = false;
         ForceDefaultWeaponAnimations = true;
         DropWeaponWhenBusted = true;
@@ -218,5 +243,14 @@ public class PoliceSettings : ISettingsDefaultable
         BreachingExipireDistanceOutsideWithMinDistance = 75f;
         BreachingExpireTimeOutsideOnly = 20000;
         BreachingExpireTimeDistanceOnly = 120f;
+
+
+        AllowMarshalsAPBResponse = true;
+        MinTimeBetweenMarshalsAPBResponse = 900000;
+        MaxTimeBetweenMarshalsAPBResponse = 1500000;
+        SendMarshalsAPBResponseText = true;
+        MinTimeOfAPBBetweenMarshalsAPBResponse = 20000;
+        MaxTimeOfAPBBetweenMarshalsAPBResponse = 120000;
+
     }
 }

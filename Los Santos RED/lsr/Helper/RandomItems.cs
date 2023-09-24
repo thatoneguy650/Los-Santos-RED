@@ -65,10 +65,5 @@ public static class RandomItems
     {
         return (float)(MyRand.NextDouble() * (maximum - minimum) + minimum);
     }
-
-    internal static bool RandomPercent(object outOfStateRandomVehiclePlatesPercent)
-    {
-        throw new NotImplementedException();
-    }
 }
 

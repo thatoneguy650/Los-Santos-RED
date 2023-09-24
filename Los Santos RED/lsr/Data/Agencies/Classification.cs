@@ -15,4 +15,5 @@ public enum Classification
     Other = 6,
     EMS = 7,
     Fire = 8,
+    Marshal = 9,
 }

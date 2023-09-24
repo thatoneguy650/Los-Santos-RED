@@ -24,6 +24,7 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> SAHPPeds;
     private List<DispatchablePerson> MilitaryPeds;
     private List<DispatchablePerson> PrisonPeds;
+    private List<DispatchablePerson> MarshalsServicePeds;
     private List<DispatchablePerson> SecurityPeds;
     private List<DispatchablePerson> GruppeSechsPeds;
     private List<DispatchablePerson> SecuroservPeds;
@@ -59,6 +60,7 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> StandardCops_Simple;
     private List<DispatchablePerson> FIBPeds_Simple;
     private List<DispatchablePerson> NOOSEPeds_Simple;
+    private List<DispatchablePerson> MarshalsServicePeds_Simple;
     private List<DispatchablePerson> PrisonPeds_Simple;
     private List<DispatchablePerson> SecurityPeds_Simple;
     private List<DispatchablePerson> GruppeSechsPeds_Simple;
@@ -195,7 +197,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,MaxWantedLevelSpawn = 2
                 ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
                 ,RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(3, 1, 0, 0), new PedComponent(4, 35, 0, 0),new PedComponent(6, 10, 0, 0), new PedComponent(7, 125, 0, 0), new PedComponent(8, 130, 0, 0), new PedComponent(10, 0, 0, 0), new PedComponent(11, 348, 0, 0)},
+                    new List<PedComponent>() { new PedComponent(3, 1, 0, 0), new PedComponent(4, 35, 0, 0),new PedComponent(6, 10, 0, 0), new PedComponent(7, 0, 0, 0), new PedComponent(8, 130, 0, 0), new PedComponent(10, 0, 0, 0), new PedComponent(11, 348, 0, 0)},
                     new List<PedPropComponent>() { })
                 ,OptionalProps = new List<PedPropComponent>() {  }
                 ,OptionalPropChance = 0
@@ -208,7 +210,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,MaxWantedLevelSpawn = 2
                 ,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
                 ,RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(3, 3, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 29, 0, 0), new PedComponent(7, 95, 0, 0), new PedComponent(8, 160, 0, 0), new PedComponent(10, 0, 0, 0), new PedComponent(11, 366, 0, 0)},
+                    new List<PedComponent>() { new PedComponent(3, 3, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 29, 0, 0), new PedComponent(7, 0, 0, 0), new PedComponent(8, 160, 0, 0), new PedComponent(10, 0, 0, 0), new PedComponent(11, 366, 0, 0)},
                     new List<PedPropComponent>() {  })
                 ,OptionalProps = new List<PedPropComponent>() {  }
                 ,OptionalPropChance = 10
@@ -607,6 +609,51 @@ public class DispatchablePeople : IDispatchablePeople
                 ,OptionalComponents = new List<PedComponent>() { new PedComponent(4, 129, 0, 0) }
                 ,OptionalComponentChance = 35
             },
+
+        };
+
+
+        MarshalsServicePeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("mp_m_freemode_01",50,0) {
+                DebugName = "USMSMPMale"
+                ,GroupName = "Detective"
+                ,RandomizeHead = true
+                ,MaxWantedLevelSpawn = 2
+                ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 1, 0, 0), new PedComponent(4, 35, 0, 0),new PedComponent(6, 10, 0, 0), new PedComponent(7, 0, 0, 0), new PedComponent(8, 130, 0, 0), new PedComponent(10, 0, 0, 0), new PedComponent(11, 348, 0, 0)},
+                    new List<PedPropComponent>() { })
+                ,OptionalProps = new List<PedPropComponent>() {  }
+                ,OptionalPropChance = 0
+            },
+
+            new DispatchablePerson("mp_f_freemode_01",50,0) {
+                DebugName = "USMSMPFemale"
+                ,GroupName = "Detective"
+                ,RandomizeHead = true
+                ,MaxWantedLevelSpawn = 2
+                ,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 3, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 29, 0, 0), new PedComponent(7, 0, 0, 0), new PedComponent(8, 160, 0, 0), new PedComponent(10, 0, 0, 0), new PedComponent(11, 366, 0, 0)},
+                    new List<PedPropComponent>() {  })
+                ,OptionalProps = new List<PedPropComponent>() {  }
+                ,OptionalPropChance = 10
+            },
+
+            new DispatchablePerson("mp_m_freemode_01",0,50) {
+                DebugName = "USMSArmorMPMale"
+                ,GroupName = "Armored"
+                ,RandomizeHead = true
+                ,MaxWantedLevelSpawn = 3
+                ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(2, 5, 3, 0), new PedComponent(3, 139, 4, 0), new PedComponent(4, 47, 0, 0), new PedComponent(5, 0, 0, 0), new PedComponent(6, 14, 0, 0), new PedComponent(7, 125, 0, 0), new PedComponent(8, 130, 0, 0), 
+                        new PedComponent(9, 16, 0, 0), new PedComponent(10, 0, 0, 0), new PedComponent(11, 348, 18, 0)},
+                    new List<PedPropComponent>() { })
+                ,OptionalProps = new List<PedPropComponent>() {  }
+                ,OptionalPropChance = 0
+            },
+
 
         };
 
@@ -1553,6 +1600,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("PrisonPeds", PrisonPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("MarshalsServicePeds", MarshalsServicePeds));
         //Fire
         PeopleGroupLookup.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
         //EMT
@@ -1666,6 +1714,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("PrisonPeds", PrisonPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("MarshalsServicePeds", MarshalsServicePeds));
         //Fire
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
         //EMT
@@ -1761,6 +1810,10 @@ public class DispatchablePeople : IDispatchablePeople
                     new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) })
             },
         };
+        MarshalsServicePeds_Simple = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_m_ciasec_01",55,70){ DebugName = "USMSSimple", MaxWantedLevelSpawn = 3 },
+        };
+
 
 
         PrisonPeds_Simple = new List<DispatchablePerson>() {
@@ -1795,6 +1848,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("PrisonPeds", PrisonPeds_Simple));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("MarshalsServicePeds", MarshalsServicePeds_Simple));
         //Fire
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
         //EMTs

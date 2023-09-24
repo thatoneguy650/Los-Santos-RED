@@ -24,20 +24,6 @@ public class EquipmentItem : ConsumableItem
     }
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
-        //actionable.Inventory.Use(this);
-        //if (ChangesArmor)
-        //{
-        //    actionable.ArmorManager.ChangeArmor(ArmorChangeAmount);
-        //    Game.DisplaySubtitle($"Armor Changed {ArmorChangeAmount}");
-        //}
-        //if(ChangesHealth)
-        //{
-        //    actionable.HealthManager.ChangeHealth(HealthChangeAmount);
-        //    Game.DisplaySubtitle($"Health Changed {ArmorChangeAmount}");
-        //}
-        //return true;
-
-
         ApplyEquipmentActivity activity = new ApplyEquipmentActivity(actionable, settings, this, intoxicants);
         if (!activity.CanPerform(actionable))
         {

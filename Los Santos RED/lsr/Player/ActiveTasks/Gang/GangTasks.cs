@@ -222,7 +222,7 @@ public class GangTasks : IPlayerTaskGroup
                                 $"We will be seeing each other shortly.",
                                 $"Going to get real very soon.",
                                 };
-        Player.CellPhone.AddScheduledText(contact, Replies.PickRandom(), 1, false);
+        Player.CellPhone.AddScheduledText(contact, Replies.PickRandom(), 0,true);
     }
 }
 

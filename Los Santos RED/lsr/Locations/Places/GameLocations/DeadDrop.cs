@@ -37,14 +37,6 @@ public class DeadDrop : GameLocation
     public int MoneyAmount { get; set; } = 500;
     public bool CanUse => !IsEnabled;
 
-
-
-
-
-
-
-
-    //  public Gang AssociatedGang { get; set; }
     public DeadDrop(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -90,16 +82,12 @@ public class DeadDrop : GameLocation
             }
             Game.DisplayHelp("You have dropped off the cash, leave the area");
             Player.BankAccounts.GiveMoney(-1 * MoneyAmount, false);
-            //CompleteOnLeaveArea(Player);
-            //IsEnabled = false;
             CanInteract = false;
             IsEnabled = false;
+            MoneyAmount = 0;
             InteractionComplete = true;
-
-
             Deactivate(true);
             ButtonPromptText = "";
-            //ClearActiveGangTasks(Player);
             Player.ActivityManager.IsInteractingWithLocation = false;
         }
         else
@@ -119,17 +107,12 @@ public class DeadDrop : GameLocation
         }
         Game.DisplayHelp("You have picked up the cash, don't hang around");
         Player.BankAccounts.GiveMoney(MoneyAmount, false);
-
         IsEnabled = false;
-
+        MoneyAmount = 0;
         InteractionComplete = true;
-       // Player.PlayerTasks.GetTask(AssociatedGang.ContactName).IsReadyForPayment = true;
-
-       // SendMessageOnLeaveArea(Player);
         ButtonPromptText = "";
         Deactivate(true);
         Player.ActivityManager.IsInteractingWithLocation = false;
-        //ClearActiveGangTasks(Player);
     }
     private bool PlayMoneyAnimation(ILocationInteractable Player)
     {
@@ -244,7 +227,7 @@ public class DeadDrop : GameLocation
             ButtonPromptText = $"Pickup ${Math.Abs(MoneyAmount)}";
         }
     }
-    public void Reset()
+    public override void Reset()
     {
         InteractionComplete = false;
         IsEnabled = false;

@@ -130,12 +130,10 @@ public class CopTasker
                         }
                     }
                 }
-
                 else if (Cop.PedAlerts.IsAlerted)// Cop.BodiesSeen.Any() || )
                 {
                     SetInvestigate(Cop);
                 }
-
                 else if (Player.Investigation.IsActive && Player.Investigation.RequiresPolice && Cop.IsRespondingToInvestigation)// && Cop.IsIdleTaskable)
                 {
                     SetInvestigate(Cop);
@@ -144,7 +142,10 @@ public class CopTasker
                 {
                     SetInvestigate(Cop);
                 }
-                
+                else if (Cop.IsMarshalMember && !Cop.PlayerPerception.EverSeenTarget && Cop.ClosestDistanceToPlayer >= 20f)
+                {
+                    SetMarshalLocate(Cop);
+                }
                 else
                 {
                     SetIdle(Cop);
@@ -347,6 +348,20 @@ public class CopTasker
             Cop.CurrentTask.Start();
         }
     }
+
+    private void SetMarshalLocate(Cop Cop)
+    {
+        if (Cop.CurrentTask?.Name != "Locate")
+        {
+            Cop.CurrentTask = new MarshalGeneralLocate(Cop, Cop, Player, World, null, PlacesOfInterest, Settings, Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringLocate, Cop);
+            Cop.WeaponInventory.Reset();
+            GameFiber.Yield();//TR Added back 4
+            Cop.CurrentTask.Start();
+        }
+    }
+
+
+
     private void SetChase(Cop Cop)
     {
         if (Cop.CurrentTask?.Name != "Chase")
