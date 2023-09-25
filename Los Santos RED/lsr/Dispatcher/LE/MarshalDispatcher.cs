@@ -66,7 +66,7 @@ public class MarshalDispatcher
     {
         SpawnedMarshalls.RemoveAll(x => !x.Pedestrian.Exists());
         bool canDispatch = false;
-        if(Player.CriminalHistory.HasDeadlyHistory && !Player.IsWanted && Player.CriminalHistory.IsNearLastSeenLocation)
+        if(Player.CriminalHistory.HasDeadlyHistory && !Player.IsWanted && Player.CriminalHistory.IsWithinMarshalDistance)
         {
             canDispatch = true;
         }
@@ -98,7 +98,7 @@ public class MarshalDispatcher
 
     private void HandleMarshalsSpawn()
     {
-        if (!Settings.SettingsManager.PoliceSettings.AllowMarshalsAPBResponse || !IsTimeToDispatchMarshals || Player.IsWanted || !Player.CriminalHistory.HasDeadlyHistory || !HasNeedToDispatch || !Player.CriminalHistory.IsNearLastSeenLocation)
+        if (!Settings.SettingsManager.PoliceSettings.AllowMarshalsAPBResponse || !IsTimeToDispatchMarshals || Player.IsWanted || !Player.CriminalHistory.HasDeadlyHistory || !HasNeedToDispatch || !Player.CriminalHistory.IsWithinMarshalDistance)
         {
             return;
         }
@@ -155,7 +155,7 @@ public class MarshalDispatcher
             spawnTask.AttemptSpawn();
             GameFiber.Yield();
             spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn;SpawnedMarshalls.Add(x); });
-            spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
+            spawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));//World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
             HasDispatchedThisTick = true;
             Player.OnLawEnforcementSpawn(Agency, VehicleType, PersonType);
             return spawnTask.CreatedPeople.Any(x => x.Pedestrian.Exists());

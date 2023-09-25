@@ -14,5 +14,9 @@ namespace LSR.Vehicles
         public FireVehicleExt(Vehicle vehicle, ISettingsProvideable settings) : base(vehicle, settings)
         {
         }
+        public override void AddVehicleToList(IEntityProvideable world)
+        {
+            world.Vehicles.AddFire(this);
+        }
     }
 }

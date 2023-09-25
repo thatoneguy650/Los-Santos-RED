@@ -143,6 +143,7 @@ public class GameLocation : ILocationDispatchable
     public Rotator VehiclePreviewCameraRotation { get; set; }
     public SpawnPlace VehiclePreviewLocation { get; set; }
     public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
+    public virtual int RegisterCash { get; set; } = 3500;
     [XmlIgnore]
     public bool IsActivated { get; set; } = false;
     [XmlIgnore]

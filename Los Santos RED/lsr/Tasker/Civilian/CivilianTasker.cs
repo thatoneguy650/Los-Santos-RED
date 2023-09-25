@@ -35,48 +35,23 @@ public class CivilianTasker
     }
     public void Update()
     {
-        if (Settings.SettingsManager.CivilianSettings.ManageCivilianTasking)
+        if (!Settings.SettingsManager.CivilianSettings.ManageCivilianTasking)
         {
-            PedProvider.Pedestrians.ExpireSeatAssignments();
-            foreach (PedExt civilian in PedProvider.Pedestrians.CivilianList.Where(x => x.Pedestrian.Exists() && x.HasExistedFor >= 1000))
-            {
-                try
-                {
-                    civilian.PedBrain.Update(Player, PlacesOfInterest);
-                }
-                catch (Exception e)
-                {
-                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Civilian Task");
-                }
-            }
-            GameFiber.Yield();
-            foreach (PedExt serviceWorkers in PedProvider.Pedestrians.ServiceWorkers.Where(x => x.Pedestrian.Exists() && x.HasExistedFor >= 1000))
-            {
-                try
-                {
-                    serviceWorkers.PedBrain.Update(Player, PlacesOfInterest);          
-                }
-                catch (Exception e)
-                {
-                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Civilian Task");
-                }
-            }
-            GameFiber.Yield();
-            foreach (SecurityGuard securityGuard in PedProvider.Pedestrians.SecurityGuardList.Where(x => x.Pedestrian.Exists() && x.HasExistedFor >= 1000))
-            {
-                try
-                {
-                    securityGuard.PedBrain.Update(Player, PlacesOfInterest);
-                }
-                catch (Exception e)
-                {
-                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Civilian Task");
-                }
-            }
-            GameFiber.Yield();
+            return;
         }
+        PedProvider.Pedestrians.ExpireSeatAssignments();
+        foreach (PedExt civilian in PedProvider.Pedestrians.GeneralCitizenGroup.Where(x => x.Pedestrian.Exists() && x.HasExistedFor >= 1000))//civilians,ServiceWorkers, and security guards!
+        {
+            try
+            {
+                civilian.PedBrain.Update(Player, PlacesOfInterest);
+            }
+            catch (Exception e)
+            {
+                EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Civilian Task");
+            }
+        }
+        GameFiber.Yield();
     }
 }

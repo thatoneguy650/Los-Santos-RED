@@ -48,7 +48,7 @@ public class BookingVehicleManager
         Settings = settings;
         BookingActivity = bookingActivity;
         Cop = cop;
-        SeatAssigner = new SeatAssigner(seatAssignable, World, World.Vehicles.PoliceVehicleList);
+        SeatAssigner = new SeatAssigner(seatAssignable, World, World.Vehicles.SimplePoliceVehicles);
     }
     public void Setup()
     {

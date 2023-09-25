@@ -10,10 +10,6 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 public class Vehicles
 {
-    private readonly List<VehicleExt> PoliceVehicles = new List<VehicleExt>();
-    private readonly List<VehicleExt> EMSVehicles = new List<VehicleExt>();
-    private readonly List<VehicleExt> FireVehicles = new List<VehicleExt>();
-    private readonly List<VehicleExt> CivilianVehicles = new List<VehicleExt>();
     private IZones Zones;
     private IAgencies Agencies;
     private IPlateTypes PlateTypes;
@@ -35,21 +31,63 @@ public class Vehicles
         PlateController = new PlateController(this, Zones, PlateTypes, Settings);
     }
     public PlateController PlateController { get; private set; }
-    public List<VehicleExt> PoliceVehicleList => PoliceVehicles;
-    public List<VehicleExt> CivilianVehicleList => CivilianVehicles;
-    public List<VehicleExt> FireVehicleList => FireVehicles;
-    public List<VehicleExt> EMSVehicleList => EMSVehicles;
-    public List<VehicleExt> GangVehicles => CivilianVehicleList.Where(x => x.AssociatedGang != null).ToList();
-
+    public List<PoliceVehicleExt> PoliceVehicles { get; private set; } = new List<PoliceVehicleExt>();
+    public List<EMSVehicleExt> EMSVehicles { get; private set; } = new List<EMSVehicleExt>();
+    public List<FireVehicleExt> FireVehicles { get; private set; } = new List<FireVehicleExt>();
+    public List<GangVehicleExt> GangVehicles { get; private set; } = new List<GangVehicleExt>();
+    public List<VehicleExt> CivilianVehicles { get; private set; } = new List<VehicleExt>();
+    public List<SecurityVehicleExt> SecurityVehicles { get; private set; } = new List<SecurityVehicleExt>();
     public List<VehicleExt> AllVehicleList 
     {
         get
         {
             List<VehicleExt> myList = new List<VehicleExt>();
-            myList.AddRange(PoliceVehicleList);
-            myList.AddRange(CivilianVehicleList);
-            myList.AddRange(FireVehicleList);
-            myList.AddRange(EMSVehicleList);
+            myList.AddRange(PoliceVehicles);
+            myList.AddRange(CivilianVehicles);
+            myList.AddRange(FireVehicles);
+            myList.AddRange(EMSVehicles);
+            myList.AddRange(GangVehicles);
+            myList.AddRange(SecurityVehicles);
+            return myList;
+        }
+    }
+    public List<VehicleExt> SimplePoliceVehicles
+    {
+        get
+        {
+            List<VehicleExt> myList = new List<VehicleExt>();
+            myList.AddRange(PoliceVehicles);
+            return myList;
+        }
+    }
+    public List<VehicleExt> SimpleGangVehicles
+    {
+        get
+        {
+            List<VehicleExt> myList = new List<VehicleExt>();
+            myList.AddRange(GangVehicles);
+            return myList;
+        }
+    }
+    public List<VehicleExt> ServiceVehicles
+    {
+        get
+        {
+            List<VehicleExt> myList = new List<VehicleExt>();
+            myList.AddRange(PoliceVehicles);
+            myList.AddRange(FireVehicles);
+            myList.AddRange(EMSVehicles);
+            myList.AddRange(SecurityVehicles);
+            return myList;
+        }
+    }
+    public List<VehicleExt> NonServiceVehicles
+    {
+        get
+        {
+            List<VehicleExt> myList = new List<VehicleExt>();
+            myList.AddRange(CivilianVehicles);
+            myList.AddRange(GangVehicles);
             return myList;
         }
     }
@@ -76,6 +114,10 @@ public class Vehicles
         EMSVehicles.RemoveAll(x => !x.Vehicle.Exists());
         GameFiber.Yield();//TR 29
         FireVehicles.RemoveAll(x => !x.Vehicle.Exists());
+        GameFiber.Yield();//TR 29
+        GangVehicles.RemoveAll(x => !x.Vehicle.Exists());
+        GameFiber.Yield();//TR 29
+        SecurityVehicles.RemoveAll(x => !x.Vehicle.Exists());
     }
     public void CreateNew()
     {
@@ -108,70 +150,150 @@ public class Vehicles
     }
     public bool AddEntity(Vehicle vehicle)
     {
-        if (vehicle.Exists())
+        if(!vehicle.Exists())
         {
-
-            if (vehicle.IsPoliceVehicle)
+            return false;
+        }
+        if (vehicle.IsPoliceVehicle)
+        {
+            if (!PoliceVehicles.Any(x => x.Handle == vehicle.Handle))
             {
-                if (!PoliceVehicles.Any(x => x.Handle == vehicle.Handle))
-                {
-                    VehicleExt Car = new VehicleExt(vehicle, Settings);
-                    Car.Setup();
-                    Car.IsPolice = true;
-                    Car.CanRandomlyHaveIllegalItems = false;
-                    PoliceVehicles.Add(Car);
-                    return true;
-                }
-            }
-            else
-            {
-                if (!CivilianVehicles.Any(x => x.Handle == vehicle.Handle))
-                {
-                    VehicleExt Car = new VehicleExt(vehicle, Settings);
-                    Car.Setup();
-                    CivilianVehicles.Add(Car);
-                    return true;
-                }
+                PoliceVehicleExt Car = new PoliceVehicleExt(vehicle, Settings);
+                Car.Setup();
+                Car.IsPolice = true;
+                Car.CanRandomlyHaveIllegalItems = false;
+                PoliceVehicles.Add(Car);
+                return true;
             }
         }
+        else
+        {
+            if (!CivilianVehicles.Any(x => x.Handle == vehicle.Handle))
+            {
+                VehicleExt Car = new VehicleExt(vehicle, Settings);
+                Car.Setup();
+                CivilianVehicles.Add(Car);
+                return true;
+            }
+        }    
         return false;
     }
-    public void AddEntity(VehicleExt vehicleExt, ResponseType responseType)
+    public void AddPolice(PoliceVehicleExt vehicleExt)
     {
-        if (vehicleExt != null && vehicleExt.Vehicle.Exists())
+        if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
         {
-            if (responseType == ResponseType.LawEnforcement || vehicleExt.Vehicle.IsPoliceVehicle)
-            {
-                if (!PoliceVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
-                {
-                    vehicleExt.IsPolice = true;
-                    PoliceVehicles.Add(vehicleExt);
-                }
-            }
-            else if (responseType == ResponseType.EMS)
-            {
-                if (!EMSVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
-                {
-                    vehicleExt.IsEMT = true;
-                    EMSVehicles.Add(vehicleExt);
-                }
-            }
-            else if (responseType == ResponseType.Fire)
-            {
-                if (!FireVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
-                {
-                    vehicleExt.IsFire = true;
-                    FireVehicles.Add(vehicleExt);
-                }
-            }
-            else
-            {
-                if (!CivilianVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
-                {
-                    CivilianVehicles.Add(vehicleExt);
-                }
-            }
+            return;
         }
+        if (!PoliceVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
+        {
+            PoliceVehicles.Add(vehicleExt);
+            CivilianVehicles.RemoveAll(x => x.Handle == vehicleExt.Handle);
+        }
+        
+    }
+    public void AddEMS(EMSVehicleExt vehicleExt)
+    {
+        if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+        if (!EMSVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
+        {
+            EMSVehicles.Add(vehicleExt);
+            CivilianVehicles.RemoveAll(x => x.Handle == vehicleExt.Handle);
+        }
+    }
+    public void AddFire(FireVehicleExt vehicleExt)
+    {
+        if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+        if (!FireVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
+        {
+            FireVehicles.Add(vehicleExt);
+            CivilianVehicles.RemoveAll(x => x.Handle == vehicleExt.Handle);
+        }
+    }
+    public void AddGang(GangVehicleExt vehicleExt)
+    {
+        if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+        if (!GangVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
+        {
+            GangVehicles.Add(vehicleExt);
+            CivilianVehicles.RemoveAll(x => x.Handle == vehicleExt.Handle);
+        }
+    }
+    public void AddCivilian(VehicleExt vehicleExt)
+    {
+        if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+        if (!CivilianVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
+        {
+            CivilianVehicles.Add(vehicleExt);
+        }
+    }
+    public void AddSecurity(SecurityVehicleExt vehicleExt)
+    {
+        if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+        if (!SecurityVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
+        {
+            SecurityVehicles.Add(vehicleExt);
+            CivilianVehicles.RemoveAll(x => x.Handle == vehicleExt.Handle);
+        }
+    }
+    public PoliceVehicleExt GetPolice(Vehicle vehicle)
+    {
+        PoliceVehicleExt ToReturn = null;
+        if (vehicle.Exists())
+        {
+            ToReturn = PoliceVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == vehicle.Handle);
+        }
+        return ToReturn;
+    }
+    public EMSVehicleExt GetEMS(Vehicle vehicle)
+    {
+        EMSVehicleExt ToReturn = null;
+        if (vehicle.Exists())
+        {
+            ToReturn = EMSVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == vehicle.Handle);
+        }
+        return ToReturn;
+    }
+    public FireVehicleExt GetFire(Vehicle vehicle)
+    {
+        FireVehicleExt ToReturn = null;
+        if (vehicle.Exists())
+        {
+            ToReturn = FireVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == vehicle.Handle);
+        }
+        return ToReturn;
+    }
+    public GangVehicleExt GetGang(Vehicle vehicle)
+    {
+        GangVehicleExt ToReturn = null;
+        if (vehicle.Exists())
+        {
+            ToReturn = GangVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == vehicle.Handle);
+        }
+        return ToReturn;
+    }
+    public SecurityVehicleExt GetSecurity(Vehicle vehicle)
+    {
+        SecurityVehicleExt ToReturn = null;
+        if (vehicle.Exists())
+        {
+            ToReturn = SecurityVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == vehicle.Handle);
+        }
+        return ToReturn;
     }
     public void ClearPolice()
     {
@@ -206,8 +328,26 @@ public class Vehicles
             }
         }
         FireVehicles.Clear();
+        foreach (VehicleExt vehicleExt in SecurityVehicles)
+        {
+            vehicleExt.FullyDelete();
+            if (vehicleExt.Vehicle.Exists())
+            {
+                EntryPoint.PersistentVehiclesDeleted++;
+            }
+        }
+        SecurityVehicles.Clear();
         if (includeCivilian)
         {
+            foreach (GangVehicleExt vehicleExt in GangVehicles.Where(x => x.WasModSpawned))
+            {
+                vehicleExt.FullyDelete();
+                if (vehicleExt.Vehicle.Exists())
+                {
+                    EntryPoint.PersistentVehiclesDeleted++;
+                }
+            }
+            GangVehicles.Clear();
             foreach (VehicleExt vehicleExt in CivilianVehicles.Where(x => x.WasModSpawned))
             {
                 vehicleExt.FullyDelete();
@@ -216,33 +356,34 @@ public class Vehicles
                     EntryPoint.PersistentVehiclesDeleted++;
                 }
             }
+            CivilianVehicles.Clear();
         }
     }
-    public VehicleExt GetClosestVehicleExt(Vector3 position, bool includePolice, float maxDistance)
+    public VehicleExt GetClosestVehicleExt(Vector3 position, bool includeService, float maxDistance)
     {
         if(position == Vector3.Zero)
         {
             return null;
         }
-        VehicleExt civilianCar = CivilianVehicles.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(position)).FirstOrDefault();
+        VehicleExt civilianCar = NonServiceVehicles.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(position)).FirstOrDefault();
         float civilianDistance = 999f;
-        float policeDistance = 999f;
+        float serviceDistance = 999f;
         if (civilianCar != null && civilianCar.Vehicle.Exists())
         {
             civilianDistance = civilianCar.Vehicle.DistanceTo2D(position);
         }
-        if (includePolice)
+        if (includeService)
         {
-            VehicleExt policeCar = PoliceVehicles.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(position)).FirstOrDefault();
-            if(policeCar != null && policeCar.Vehicle.Exists())
+            VehicleExt serviceVehicle = ServiceVehicles.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(position)).FirstOrDefault();
+            if(serviceVehicle != null && serviceVehicle.Vehicle.Exists())
             {
-                policeDistance = policeCar.Vehicle.DistanceTo2D(position);
+                serviceDistance = serviceVehicle.Vehicle.DistanceTo2D(position);
             }
-            if (policeDistance < civilianDistance)
+            if (serviceDistance < civilianDistance)
             {
-                if(policeDistance <= maxDistance)
+                if(serviceDistance <= maxDistance)
                 {
-                    return policeCar;
+                    return serviceVehicle;
                 }
                 else
                 {
@@ -264,70 +405,38 @@ public class Vehicles
         VehicleExt ToReturn = null;
         if (vehicle.Exists())
         {
-            ToReturn = PoliceVehicles.FirstOrDefault(x => x.Vehicle.Handle == vehicle.Handle);
+            ToReturn = ServiceVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == vehicle.Handle);
             if (ToReturn == null)
             {
-                ToReturn = CivilianVehicles.FirstOrDefault(x => x.Vehicle.Handle == vehicle.Handle);
+                ToReturn = NonServiceVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == vehicle.Handle);
             }
         }
         return ToReturn;
     }
     public VehicleExt GetVehicleExt(uint handle)
     {
-        VehicleExt ToReturn = PoliceVehicles.FirstOrDefault(x => x.Vehicle.Handle == handle);
+        VehicleExt ToReturn = ServiceVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == handle);
         if (ToReturn == null)
         {
-            ToReturn = CivilianVehicles.FirstOrDefault(x => x.Vehicle.Handle == handle);
-        }
-        return ToReturn;
-    }
-    public Agency GetAgency(Vehicle vehicle, int wantedLevel, ResponseType responseType)
-    {
-        Agency ToReturn;
-        List<Agency> ModelMatchAgencies = Agencies.GetAgencies(vehicle);
-        if (ModelMatchAgencies.Count > 1)
-        {
-            Zone ZoneFound = Zones.GetZone(vehicle.Position);
-            if (ZoneFound != null && ZoneFound.InternalGameName != "UNK")
-            {
-                List<Agency> ToGoThru = Jurisdictions.GetAgencies(ZoneFound.InternalGameName, wantedLevel, responseType);
-                if (ToGoThru != null)
-                {
-                    foreach (Agency ZoneAgency in ToGoThru)
-                    {
-                        if (ModelMatchAgencies.Any(x => x.ID == ZoneAgency.ID))
-                        {
-                            return ZoneAgency;
-                        }
-                    }
-                }
-            }
-        }
-        ToReturn = ModelMatchAgencies.FirstOrDefault();
-        if (ToReturn == null)
-        {
-            if (vehicle.IsPersistent)
-            {
-                EntryPoint.PersistentVehiclesDeleted++;
-            }
-            vehicle.Delete();
+            ToReturn = NonServiceVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == handle);
         }
         return ToReturn;
     }
     public void UpdatePoliceSonarBlips(bool setBlipped)
     {
-        foreach(VehicleExt copCar in PoliceVehicleList)
+        foreach(VehicleExt copCar in PoliceVehicles)
         {
-            if (copCar.Vehicle.Exists())
+            if (!copCar.Vehicle.Exists())
             {
-                if (setBlipped)
-                {
-                    copCar.SonarBlip.Update(World);
-                }
-                else
-                {
-                    copCar.SonarBlip.Dispose();
-                }
+                continue;
+            }
+            if (setBlipped)
+            {
+                copCar.SonarBlip.Update(World);
+            }
+            else
+            {
+                copCar.SonarBlip.Dispose();
             }
         }
     }

@@ -120,13 +120,51 @@ public class WeaponStorage
         }
     }
 
-    public void OnImpounded()
+    public void OnImpounded(bool hasValidCCW)
     {
-        RemoveIllegalWeapons();
+        RemoveIllegalWeapons(hasValidCCW);
     }
-    private void RemoveIllegalWeapons()
+    //private void RemoveIllegalWeapons()
+    //{
+    //    StoredWeapons.Clear();
+    //}
+
+    public List<WeaponInformation> GetIllegalWeapons(bool hasValidCCW)
     {
+        List<WeaponInformation> illegalWeapons = new List<WeaponInformation>();
+        foreach (StoredWeapon Weapon in StoredWeapons)
+        {
+            WeaponInformation weaponInfo = Weapons.GetWeapon((ulong)Weapon.WeaponHash);
+            if (weaponInfo == null || weaponInfo.IsLegalWithoutCCW || (hasValidCCW && weaponInfo.IsLegal))
+            {
+                continue;
+            }
+            illegalWeapons.Add(weaponInfo);
+        }
+        return illegalWeapons;
+    }
+    public bool RemoveIllegalWeapons(bool hasValidCCW)
+    {
+        bool foundItems = false;
+        List<StoredWeapon> MyOldGuns = StoredWeapons.ToList();  
         StoredWeapons.Clear();
+        //Add out guns back with variations
+        foreach (StoredWeapon MyNewGun in MyOldGuns)
+        {
+            WeaponInformation MyGTANewGun = Weapons.GetWeapon((ulong)MyNewGun.WeaponHash);
+            if (MyGTANewGun == null || MyGTANewGun.IsLegalWithoutCCW || (hasValidCCW && MyGTANewGun.IsLegal))//or its an addon gun
+            {
+                StoredWeapons.Add(MyNewGun);
+            }
+            if (!MyGTANewGun.IsLegal)
+            {
+                foundItems = true;
+            }
+        }
+        return foundItems;
     }
+
+
+
 }
 

@@ -91,6 +91,8 @@ public class RespawnSettings : ISettingsDefaultable
     public bool RemoveOnHandCashOnDeath { get; set; }
     public int RemoveOnHandCashOnDeathPercentageMin { get; set; }
     public int RemoveOnHandCashOnDeathPercentageMax { get; set; }
+    public bool IncludeCarInSearch { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -157,5 +159,6 @@ public class RespawnSettings : ISettingsDefaultable
         RemoveOnHandCashOnDeath = true;
         RemoveOnHandCashOnDeathPercentageMin = 25;
         RemoveOnHandCashOnDeathPercentageMax = 85;
+        IncludeCarInSearch = true;
     }
 }

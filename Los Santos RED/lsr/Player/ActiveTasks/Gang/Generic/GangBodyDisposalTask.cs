@@ -144,7 +144,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             gmSpawn.AddEmptyVehicleBlip = true;
 
             gmSpawn.AttemptSpawn();
-            gmSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+            gmSpawn.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));//World.Vehicles.AddEntity(x, ResponseType.None));
             DeadBodyVehicle = gmSpawn.CreatedVehicles.FirstOrDefault();
             if (DeadBodyVehicle == null || !DeadBodyVehicle.Vehicle.Exists())
             {

@@ -46,7 +46,7 @@ public class TaxiDropOff
             civilianSpawnTask.AllowBuddySpawn = false;
             civilianSpawnTask.AttemptSpawn();
             civilianSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
-            civilianSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+            civilianSpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));//World.Vehicles.AddEntity(x, ResponseType.None));
             PedExt spawnedDriver = civilianSpawnTask.CreatedPeople.FirstOrDefault();
             VehicleExt spawnedTaxi = civilianSpawnTask.CreatedVehicles.FirstOrDefault();
             if (spawnedDriver != null && spawnedDriver.Pedestrian.Exists() && spawnedDriver.Pedestrian.CurrentVehicle.Exists())

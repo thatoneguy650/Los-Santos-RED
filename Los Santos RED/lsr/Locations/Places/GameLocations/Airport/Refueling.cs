@@ -17,7 +17,7 @@ public class Refueling
     private ISettingsProvideable Settings;
     private int PricePerUnit;
 
-    private VehicleExt VehicleExt;
+
     private bool IsCancelled = false;
     private string Name;
     public Refueling(ILocationInteractable player, string name, int pricePerUnit, VehicleExt vehicleExt, ISettingsProvideable settings, GameLocation shop)
@@ -35,6 +35,7 @@ public class Refueling
     public int UnitsOfFuelNeeded { get; private set; }
     public float PercentFilledPerUnit { get; private set; }
     public float AmountToFill { get; private set; }
+    public VehicleExt VehicleExt { get; private set; }
     public bool CanRefuel => VehicleExt != null && VehicleExt.Vehicle.Exists() && !VehicleExt.Vehicle.IsEngineOn && VehicleExt.Vehicle.FuelLevel < Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax && VehicleExt.RequiresFuel;
     public void Setup()
     {
@@ -182,26 +183,33 @@ public class Refueling
     }
     public void DisplayFuelingFailedReason()
     {
+        string reason = GetFuelingFailedReason();
+        if(string.IsNullOrEmpty(reason))
+        {
+            return;
+        }
+        Shop.PlayErrorSound();
+        Shop.DisplayMessage("~r~Fueling Failed", reason);    
+    }
+    public string GetFuelingFailedReason()
+    {
         if (VehicleExt == null || (VehicleExt != null && !VehicleExt.Vehicle.Exists()))
         {
-            Shop.PlayErrorSound();
-            Shop.DisplayMessage("~r~Fueling Failed", $"No vehicle found to fuel");
+            return $"No vehicle found to fuel";
         }
         else if (VehicleExt != null && VehicleExt.Vehicle.Exists() && !VehicleExt.RequiresFuel)
         {
-            Shop.PlayErrorSound();
-            Shop.DisplayMessage("~r~Fueling Failed", $"Incompatible Fueling");
+            return $"Incompatible Fueling";
         }
         else if (VehicleExt != null && VehicleExt.Vehicle.Exists() && VehicleExt.Vehicle.IsEngineOn)
         {
-            Shop.PlayErrorSound();
-            Shop.DisplayMessage("~r~Fueling Failed", $"Vehicle engine is still on");
+            return $"Vehicle engine is still on";
         }
         else if (VehicleExt != null && VehicleExt.Vehicle.Exists() && !VehicleExt.Vehicle.IsEngineOn && VehicleExt.Vehicle.FuelLevel >= Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax)
         {
-            Shop.PlayErrorSound();
-            Shop.DisplayMessage("~r~Fueling Failed", $"Vehicle fuel tank is already full");
+            return $"Vehicle fuel tank is already full";
         }
+        return "";
     }
 }
 

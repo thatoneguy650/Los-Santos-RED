@@ -149,7 +149,7 @@ public class SecurityDispatcher
             securitySpawnTask.PlacePedOnGround = VehicleType == null;
             securitySpawnTask.AttemptSpawn();
             securitySpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });
-            securitySpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Other));
+            securitySpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));//World.Vehicles.AddEntity(x, ResponseType.Other));
         }
         catch (Exception ex)
         {

@@ -34,6 +34,10 @@ public class Pedestrians : ITaskerReportable
     private RelationshipGroup hatesPlayerRG;
     private RelationshipGroup norelationshipRG;
 
+
+    public List<PedExt> PossibleTargets { get; private set; } = new List<PedExt>();
+    public Cop ClosestCopToPlayer { get; private set; }
+
     public Pedestrians(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories, IEntityProvideable world)
     {
         Agencies = agencies;
@@ -106,6 +110,18 @@ public class Pedestrians : ITaskerReportable
             List<PedExt> myList = new List<PedExt>();
             myList.AddRange(MerchantList);
             myList.AddRange(TellerList);
+            return myList;
+        }
+    }
+    public List<PedExt> GeneralCitizenGroup
+    {
+        get
+        {
+            List<PedExt> myList = new List<PedExt>();
+            myList.AddRange(MerchantList);
+            myList.AddRange(TellerList);
+            myList.AddRange(CivilianList);
+            myList.AddRange(SecurityGuardList);
             return myList;
         }
     }
@@ -1042,5 +1058,24 @@ public class Pedestrians : ITaskerReportable
     public List<AssignedSeat> GetPedsAssignedToVehicle(VehicleExt vehicleToCheck)
     {
         return SeatAssignments.Where(x => x.Vehicle != null && vehicleToCheck != null && x.Vehicle.Handle == vehicleToCheck.Handle).ToList();
+    }
+    public void SetPossiblePoliceTargets()
+    {
+        if (World.IsZombieApocalypse)
+        {
+            List<PedExt> TotalList = new List<PedExt>();
+            TotalList.AddRange(World.Pedestrians.CivilianList);
+            TotalList.AddRange(World.Pedestrians.GangMemberList);
+            TotalList.AddRange(World.Pedestrians.ZombieList);
+            PossibleTargets = TotalList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && !x.IsUnconscious && (x.IsWanted || (x.IsBusted && !x.IsArrested)) && x.DistanceToPlayer <= 200f).ToList();//150f
+        }
+        else
+        {
+            List<PedExt> TotalList = new List<PedExt>();
+            TotalList.AddRange(World.Pedestrians.CivilianList);
+            TotalList.AddRange(World.Pedestrians.GangMemberList);
+            PossibleTargets = TotalList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && !x.IsUnconscious && (x.IsWanted || (x.IsBusted && !x.IsArrested)) && x.DistanceToPlayer <= 200f).ToList();//150f
+        }
+        ClosestCopToPlayer = World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists() && !x.IsInVehicle && x.DistanceToPlayer <= 30f && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
     }
 }

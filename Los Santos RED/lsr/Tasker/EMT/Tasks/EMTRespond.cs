@@ -310,7 +310,7 @@ public class EMTRespond : ComplexTask
             }
             else
             {
-                foreach (VehicleExt ambulance in World.Vehicles.EMSVehicleList)
+                foreach (VehicleExt ambulance in World.Vehicles.EMSVehicles)
                 {
                     if (ambulance.Vehicle.Exists() && ambulance.Vehicle.Speed < 0.5f)//stopped 4 door car with at least one seat free in back
                     {

@@ -25,7 +25,10 @@ public class MachineInteraction
     }
 
     public bool IsDualSided { get; set; } = false;
+    public bool IsSingleSided = false;
     public float StandingOffsetPosition { get; set; } = 1.0f;
+    public float CloseDistance { get; set; } = 0.2f;
+    public float CloseHeading { get; set; } = 0.5f;
     private void GetPropEntry()
     {
         if (MachingOject == null || !MachingOject.Exists())
@@ -34,6 +37,10 @@ public class MachineInteraction
         }
         float DistanceToFront = Player.Position.DistanceTo2D(MachingOject.GetOffsetPositionFront(-1f * StandingOffsetPosition));
         float DistanceToRear = Player.Position.DistanceTo2D(MachingOject.GetOffsetPositionFront(1f * StandingOffsetPosition));
+        if(IsSingleSided)
+        {
+            DistanceToRear = 999f;
+        }
         if (DistanceToFront <= DistanceToRear)
         {
             PropEntryPosition = MachingOject.GetOffsetPositionFront(-1.0f * StandingOffsetPosition);
@@ -93,7 +100,8 @@ public class MachineInteraction
             {
                 IsCancelled = true;
             }
-            IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(PropEntryPosition) < 0.2f;
+            IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(PropEntryPosition) < CloseDistance;
+            Game.DisplaySubtitle($"Distance: {Game.LocalPlayer.Character.DistanceTo2D(PropEntryPosition)} IsCloseEnough{IsCloseEnough}");
             GameFiber.Yield();
         }
         GameFiber.Sleep(250);
@@ -105,10 +113,11 @@ public class MachineInteraction
                 IsCancelled = true;
             }
             heading = Game.LocalPlayer.Character.Heading;
-            if (Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)) <= 0.5f)//0.5f)
+            if (Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)) <= CloseHeading)//0.5f)
             {
                 IsFacingDirection = true;
             }
+            Game.DisplaySubtitle($"Current Heading: {heading} PropEntryHeading: {PropEntryHeading}");
             GameFiber.Yield();
         }
         GameFiber.Sleep(250);

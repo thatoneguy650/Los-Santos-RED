@@ -112,9 +112,6 @@ public class CivilianSpawnTask : SpawnTask
                 return null;
             }
             VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, SetPersistent);
-            //CreatedVehicle.SimpleInventory.AddRandomItems(ModItems,Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet,Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount,true);
-
-            //CreatedVehicle.SetSpawnItems(VehicleType, null, null, SetPersistent);
             CreatedVehicles.Add(CreatedVehicle);
             return CreatedVehicle;
         }

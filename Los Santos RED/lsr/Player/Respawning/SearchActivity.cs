@@ -20,9 +20,9 @@ public class SearchActivity
     private ISeatAssignable SeatAssignable;
     private ITimeReportable Time;
     private IModItems ModItems;
-
     private AnimationWatcher AnimationWatcher;
     private Cop Cop;
+    private VehicleExt CarToSearch;
     private string PlayerGetSearchedAnimation;
     private string CopDoSearchAnimation;
     private string PlayerGetSearchDictionary;
@@ -30,7 +30,6 @@ public class SearchActivity
     private string PlayerCuffedDictionary;
     private string PlayerCuffedAnimation;
     private bool IsCancelled;
-
     private bool isCopInPosition;
     private bool isPlayerCuffed;
     private Vector3 CopTargetPosition;
@@ -38,19 +37,17 @@ public class SearchActivity
     private bool AnnouncedIllegalWeapons;
     private bool AnnouncedIllegalDrugs;
     private PlayerPoliceSearch PlayerPoliceSearch;
+    private CameraControl CameraControl;
+    private string animDict;
+    private string anim;
+    private float AnimationToggleTime;
 
     public bool CanContinueSearch => EntryPoint.ModController.IsRunning && (Player.IsBusted || Player.IsArrested) && !Player.IsIncapacitated && Player.IsAlive && Cop.Pedestrian.Exists() && !Cop.Pedestrian.IsDead && !Cop.IsInWrithe && !Cop.IsUnconscious;
     public bool IsActive { get; private set; }
-
-    //private bool FoundIllegalDrugs;
-    //private bool FoundIllegalWeapons;
-    //private bool DidItemsSearch;
-    //private bool DidWeaponSearch;
-
-    public bool FoundIllegalItems => PlayerPoliceSearch.FoundIllegalItems;
+    public bool FoundIllegalItems => PlayerPoliceSearch.FoundIllegalItems ||PlayerPoliceSearch.FoundVehicleIllegalItems;
     public bool CompletedSearch { get; private set; } = false;
-
-    public SearchActivity(IRespawnable player, IEntityProvideable world, IPoliceRespondable policeRespondable, ISeatAssignable seatAssignable, ISettingsProvideable settings, ITimeReportable time, IModItems modItems)
+    public bool HasVehicle => CarToSearch != null && CarToSearch.Vehicle.Exists();
+    public SearchActivity(IRespawnable player, IEntityProvideable world, IPoliceRespondable policeRespondable, ISeatAssignable seatAssignable, ISettingsProvideable settings, ITimeReportable time, IModItems modItems, VehicleExt carToSearch)
     {
         Player = player;
         World = world;
@@ -59,7 +56,8 @@ public class SearchActivity
         SeatAssignable = seatAssignable;
         Time = time;
         ModItems = modItems;
-        PlayerPoliceSearch= new PlayerPoliceSearch(Player,Time,ModItems);
+        CarToSearch = carToSearch;
+        PlayerPoliceSearch = new PlayerPoliceSearch(Player,Time,ModItems, CarToSearch);
     }
     public void Setup()
     {
@@ -98,17 +96,19 @@ public class SearchActivity
                     MoveCopBehindPlayer();
                     if (isCopInPosition)
                     {
-                        PlayEntryAnimation();
-                        ReleaseCop();
-                        EndSearch();
-                        //EntryPoint.WriteToConsoleTestLong("Search Activity, Finished Searching Player");
+                        PlayPlayerSearchAnimation();
+                        if (HasVehicle && Settings.SettingsManager.RespawnSettings.IncludeCarInSearch)
+                        {
+
+                            MoveCopToCar();
+                            if (isCopInPosition)
+                            {
+                                PlayCarSearchAnimation();
+                            }
+                        }
                     }
-                    else
-                    {
-                        ReleaseCop();
-                        EndSearch();
-                        //EntryPoint.WriteToConsoleTestLong("Search Activity, Failure Moving Cop To Search Position");
-                    }
+                    ReleaseCop();
+                    EndSearch();
                 }
                 catch (Exception ex)
                 {
@@ -123,6 +123,205 @@ public class SearchActivity
             EndSearch();
             //EntryPoint.WriteToConsoleTestLong("Booking Activity, No Cop Found");
         }
+    }
+    private void ToggleTrunkLoop(bool setOpen)
+    {
+        if (!Cop.Pedestrian.Exists() || CarToSearch == null || !CarToSearch.Vehicle.Exists())
+        {
+            return;
+        }
+
+        bool isOpen = CarToSearch != null && CarToSearch.Vehicle.Exists() && CarToSearch.Vehicle.Doors[5].IsOpen;
+        animDict = "anim_heist@hs4f@ig14_open_car_trunk@male@";
+        anim = setOpen ? "open_trunk_rushed" : "close_trunk";
+        AnimationToggleTime = setOpen ? Settings.SettingsManager.DoorToggleSettings.OpenHoodAnimationTime : Settings.SettingsManager.DoorToggleSettings.CloseHoodAnimationTime;
+        if ((setOpen && isOpen) || (!setOpen && !isOpen))
+        {
+            EntryPoint.WriteToConsole($"ToggleTrunkLoop setOpen{setOpen} isOpen{isOpen}");
+            return;
+        }
+        AnimationDictionary.RequestAnimationDictionay(animDict);
+        AnimationWatcher aw = new AnimationWatcher();
+        uint GameTimeStartedAnimation = Game.GameTime;
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Cop.Pedestrian, animDict, anim, 2.0f, -2.0f, -1, (int)(AnimationFlags.StayInEndFrame), 0, false, false, false);
+        bool toggledDoor = false;
+        EntryPoint.WriteToConsole($"DOOR TOGGLE: STARTED ANIM");
+        while (CanContinueSearch)
+        {
+            float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Cop.Pedestrian, animDict, anim);
+            if (AnimationTime >= 1.0f)
+            {
+                EntryPoint.WriteToConsole($"DOOR TOGGLE: FINISHED ANIM ANIM TIME TIME OUT");
+                break;
+            }
+            if (!aw.IsAnimationRunning(AnimationTime))
+            {
+                EntryPoint.WriteToConsole($"DOOR TOGGLE: FINISHED ANIM ANIM NOT RUNNING");
+                break;
+            }
+            if (!toggledDoor && AnimationTime >= AnimationToggleTime)
+            {
+                DoorMovement();
+                toggledDoor = true;
+            }
+//#if DEBUG
+//            Game.DisplaySubtitle($"AnimationTime: {AnimationTime}");
+//#endif
+            GameFiber.Yield();
+        }
+    }
+
+
+    private void DoorMovement()
+    {
+        if (!Cop.Pedestrian.Exists() || CarToSearch == null || !CarToSearch.Vehicle.Exists())
+        {
+            return;
+        }
+        EntryPoint.WriteToConsole($"DoorMovement");
+        if (CarToSearch.Vehicle.Doors[5].IsOpen)
+        {
+            CarToSearch.Vehicle.Doors[5].Close(false);
+        }
+        else
+        {
+            CarToSearch.Vehicle.Doors[5].Open(false, false);
+            GameFiber.Wait(750);
+            if (CarToSearch.Vehicle.Exists())
+            {
+                CarToSearch.Vehicle.Doors[5].Open(true, false);
+            }
+        }
+    }
+
+    private void PlayCarSearchAnimation()
+    {
+        if (!Cop.Pedestrian.Exists() || CarToSearch == null || !CarToSearch.Vehicle.Exists())
+        {
+            return;
+        }
+
+        if (Settings.SettingsManager.RespawnSettings.UseCustomCameraWhenBooking)
+        {
+            CameraControl.Setup();
+            CameraControl.HighlightEntity(CarToSearch.Vehicle, 3f,2f,1f);
+        }
+
+
+        ToggleTrunkLoop(true);
+        //cameraControl = new CameraControl(Player);
+
+
+
+
+        Cop.WeaponInventory.ShouldAutoSetWeaponState = false;
+        Cop.WeaponInventory.SetUnarmed();
+
+
+
+
+        NativeFunction.Natives.TASK_PLAY_ANIM(Cop.Pedestrian, CopDoSearchDictionary, CopDoSearchAnimation, 1.0f, -1.0f, -1, 2, 0, false, false, false);
+        Player.Surrendering.SetArrestedAnimation(true);
+        bool endLoop = false;
+        AnnouncedIllegalWeapons = false;
+        AnnouncedIllegalDrugs = false;
+        while (Cop.Pedestrian.Exists() && !endLoop)
+        {
+
+            float animTime = NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Cop.Pedestrian, CopDoSearchDictionary, CopDoSearchAnimation);
+            if (animTime >= 0.4f)
+            {
+                if (!PlayerPoliceSearch.DidVehicleWeaponSearch)
+                {
+                    //EntryPoint.WriteToConsoleTestLong("Cop Search Do Weapons Search");
+                    PlayerPoliceSearch.DoVehicleWeaponSearch();
+                }
+                if (PlayerPoliceSearch.FoundVehicleIllegalWeapons && !AnnouncedIllegalWeapons)
+                {
+                    //EntryPoint.WriteToConsoleTestLong("Cop Search Announce Found Weapons");
+                    CopAnnounceFoundWeapon();
+                }
+            }
+            if (animTime >= 0.7f)
+            {
+                if (!PlayerPoliceSearch.DidVehicleItemsSearch)
+                {
+                    //EntryPoint.WriteToConsoleTestLong("Cop Search Do Items Search");
+                    PlayerPoliceSearch.DoVehicleItemSearch();
+                }
+                if (PlayerPoliceSearch.FoundVehicleIllegalDrugs && !AnnouncedIllegalDrugs)
+                {
+                    //EntryPoint.WriteToConsoleTestLong("Cop Search Announce Found Drugs");
+                    CopAnnounceFoundDrugs();
+                }
+            }
+            if (animTime >= 1.0f)
+            {
+                CompletedSearch = true;
+                if (!FoundIllegalItems)
+                {
+                    //EntryPoint.WriteToConsoleTestLong("Cop Search Announce Found Nothing");
+                    CopAnnounceFoundNothing();
+                }
+                endLoop = true;
+            }
+            bool isAnimRunning = AnimationWatcher.IsAnimationRunning(animTime);
+            if (!isAnimRunning)
+            {
+                //EntryPoint.WriteToConsoleTestLong("Cop Animation on Search Not Running");
+                endLoop = true;
+            }
+
+            GameFiber.Yield();
+        }
+        //EntryPoint.WriteToConsoleTestLong("Cop Search ANIM LOOP ENDED");
+        if (CanContinueSearch)
+        {
+            Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
+            Cop.WeaponInventory.RemoveHeavyWeapon();
+            Cop.WeaponInventory.UpdateLoadout(PoliceRespondable, false, Settings.SettingsManager.PoliceSettings.OverrideAccuracy);
+            endLoop = false;
+            while (Cop.Pedestrian.Exists() && !endLoop)
+            {
+                if (NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Cop.Pedestrian, CopDoSearchDictionary, CopDoSearchAnimation) >= 1.0f)
+                {
+                    endLoop = true;
+                }
+                GameFiber.Yield();
+            }
+        }
+
+        if(CanContinueSearch)
+        {
+            ToggleTrunkLoop(false);
+        }
+
+        if (Settings.SettingsManager.RespawnSettings.UseCustomCameraWhenBooking)
+        {
+            CameraControl.ReturnToGameplayCam();
+        }
+    }
+
+    private void MoveCopToCar()
+    {
+        if (!Cop.Pedestrian.Exists() || CarToSearch == null || !CarToSearch.Vehicle.Exists())
+        {
+            return;
+        }
+        
+        GetCopDesiredCarPosition();
+        TaskCopToDesiredPosition();
+        CopMoveLoop(true);
+    }
+    private void GetCopDesiredCarPosition()
+    {
+        if (CarToSearch == null || !CarToSearch.Vehicle.Exists())
+        {
+            return;
+        }
+        VehicleDoorSeatData vdsd = new VehicleDoorSeatData("unknow", "unknow", 5, -1);
+        CopTargetPosition = vdsd.GetDoorOffset(CarToSearch.Vehicle, Settings);
+        CopTargetHeading = vdsd.GetDoorHeading(CarToSearch.Vehicle, Settings);
     }
     private void EndSearch()
     {
@@ -156,6 +355,7 @@ public class SearchActivity
                 {
                     GameFiber.Yield();
                 }
+                Player.WeaponEquipment.SetUnarmed();
             }
         }
     }
@@ -173,7 +373,7 @@ public class SearchActivity
         {
             GetCopDesiredPosition();
             TaskCopToDesiredPosition();
-            CopMoveLoop();
+            CopMoveLoop(false);
         }
     }
     private void GetCopDesiredPosition()
@@ -184,33 +384,37 @@ public class SearchActivity
     private void TaskCopToDesiredPosition()
     {
         NativeFunction.Natives.CLEAR_PED_TASKS(Cop.Pedestrian);
-
-        //NativeFunction.Natives.TASK_GOTO_ENTITY_OFFSET(Cop.Pedestrian, Player.Character,-1,1.0f,-180f,1.0f,0);//does the same as below, but worse
-        //TASK_GOTO_ENTITY_OFFSET( PED_INDEX PedIndex, ENTITY_INDEX EntityIndex,
-        //INT Time = DEFAULT_TIME_BEFORE_WARP,
-        //FLOAT SeekRadius = DEFAULT_SEEK_RADIUS,
-        //FLOAT SeekAngle = 0.0,
-        //FLOAT MoveBlendRatio = PEDMOVEBLENDRATIO_RUN,
-        //ESEEK_ENTITY_OFFSET_FLAGS OffsetFlags = ESEEK_DEFAULT ) = "0x6624b56c8f9a7bbf"
-
-        //NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Cop.Pedestrian, CopTargetPosition.X, CopTargetPosition.Y, CopTargetPosition.Z, 1.0f, -1, CopTargetHeading, 0.1f);
         NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Cop.Pedestrian, CopTargetPosition.X, CopTargetPosition.Y, CopTargetPosition.Z, 1.0f, -1, 0.1f, 0, CopTargetHeading);
     }
-    private void CopMoveLoop()
+    private void CopMoveLoop(bool isVehicle)
     {
         isCopInPosition = false;
         while (CanContinueSearch)
         {
-            if (CopTargetPosition.DistanceTo2D(Player.Character.GetOffsetPositionFront(-0.9f)) >= 0.1f)
+            if (!isVehicle && CopTargetPosition.DistanceTo2D(Player.Character.GetOffsetPositionFront(-0.9f)) >= 0.1f)
             {
-                GetCopDesiredPosition();
-                TaskCopToDesiredPosition();
+                if (isVehicle)
+                {
+                    GetCopDesiredCarPosition();
+                    TaskCopToDesiredPosition();
+                }
+                else
+                {
+                    GetCopDesiredPosition();
+                    TaskCopToDesiredPosition();
+                }
             }
-            if (Cop.Pedestrian.DistanceTo2D(CopTargetPosition) <= 0.05f && Math.Abs(Extensions.GetHeadingDifference(Cop.Pedestrian.Heading, CopTargetHeading)) <= 0.5f)
+            float distanceToPos = Cop.Pedestrian.DistanceTo2D(CopTargetPosition);
+            float headingDiff = Math.Abs(Extensions.GetHeadingDifference(Cop.Pedestrian.Heading, CopTargetHeading));
+            if (distanceToPos <= 0.3f && headingDiff <= 0.5f)
             {
                 isCopInPosition = true;
                 break;
             }
+//#if DEBUG
+//            Game.DisplaySubtitle($"distanceToPos:{distanceToPos} headingDiff{headingDiff} isCopInPosition{isCopInPosition} {isVehicle}");
+//            Rage.Debug.DrawArrowDebug(CopTargetPosition + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.White);
+//#endif
             GameFiber.Yield();
         }
         if (isCopInPosition)
@@ -218,25 +422,19 @@ public class SearchActivity
             GameFiber.Wait(500);
         }
     }
-    private void PlayEntryAnimation()
+    private void PlayPlayerSearchAnimation()
     {
-        CameraControl cameraControl = new CameraControl(Player);
+        CameraControl = new CameraControl(Player);
         if (Settings.SettingsManager.RespawnSettings.UseCustomCameraWhenBooking)
         {
-            cameraControl.Setup();
-            cameraControl.HighlightEntity(Player.Character);
+            CameraControl.Setup();
+            CameraControl.HighlightEntity(Player.Character);
         }
-       // isPlayerCuffed = false;
         Cop.WeaponInventory.ShouldAutoSetWeaponState = false;
         Cop.WeaponInventory.SetUnarmed();
         NativeFunction.Natives.TASK_PLAY_ANIM(Cop.Pedestrian, CopDoSearchDictionary, CopDoSearchAnimation, 1.0f, -1.0f, -1, 2, 0, false, false, false);
-
-
         Player.Surrendering.SetArrestedAnimation(true);
-        
-        //NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, PlayerGetSearchDictionary, PlayerGetSearchedAnimation, 1.0f, -1.0f, -1, 0, 0, false, false, false);
         bool endLoop = false;
-        //DoWeaponAndItemSearch();
         while (Cop.Pedestrian.Exists() && !endLoop)
         {
            
@@ -254,14 +452,12 @@ public class SearchActivity
                     CopAnnounceFoundWeapon();
                 }
             }
-
             if (animTime >= 0.7f)
             {
                 if (!PlayerPoliceSearch.DidItemsSearch)
                 {
                     //EntryPoint.WriteToConsoleTestLong("Cop Search Do Items Search");
                     PlayerPoliceSearch.DoItemSearch();
-                    
                 }
                 if (PlayerPoliceSearch.FoundIllegalDrugs && !AnnouncedIllegalDrugs)
                 {
@@ -269,18 +465,16 @@ public class SearchActivity
                     CopAnnounceFoundDrugs();
                 }
             }
-
             if(animTime >= 1.0f)
             {
                 CompletedSearch = true;
-                if (!FoundIllegalItems)
+                if (!FoundIllegalItems && !HasVehicle)
                 {
                     //EntryPoint.WriteToConsoleTestLong("Cop Search Announce Found Nothing");
                     CopAnnounceFoundNothing();
                 }
                 endLoop = true;
             }
-
             bool isAnimRunning = AnimationWatcher.IsAnimationRunning(animTime);
             if (!isAnimRunning)
             {
@@ -305,17 +499,10 @@ public class SearchActivity
                 }
                 GameFiber.Yield();
             }
-            if (CanContinueSearch)
-            {
-                //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                //Player.Character.KeepTasks = true;
-                //NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, PlayerCuffedDictionary, PlayerCuffedAnimation, 1.0f, -1.0f, -1, 49, 0, 0, 1, 0);
-               // isPlayerCuffed = true;
-            }
         }
-        if (Settings.SettingsManager.RespawnSettings.UseCustomCameraWhenBooking)
+        if (!HasVehicle && Settings.SettingsManager.RespawnSettings.UseCustomCameraWhenBooking)
         {
-            cameraControl.ReturnToGameplayCam();
+            CameraControl.ReturnToGameplayCam();
         }
     }
     private void CopAnnounceFoundWeapon()
@@ -355,64 +542,4 @@ public class SearchActivity
                 };
         Game.DisplaySubtitle("~g~Cop: ~s~" + foundNothingResponse.PickRandom());
     }
-    //private void DoWeaponSearch()
-    //{
-    //    bool hasCCW = Player.Licenses.HasValidCCWLicense(Time);
-    //    DidWeaponSearch = true;
-    //    List<WeaponInformation> IllegalWeapons = Player.WeaponEquipment.GetIllegalWeapons(hasCCW);
-    //    WeaponInformation worstWeapon = IllegalWeapons.OrderByDescending(x => x.WeaponLevel).FirstOrDefault();
-    //    if(worstWeapon == null)
-    //    {
-    //        return;
-    //    }
-    //    foreach (WeaponInformation weapon in IllegalWeapons)
-    //    {
-    //        int TimesToCheck = 1;
-    //        WeaponItem wi = ModItems.PossibleItems.WeaponItems.FirstOrDefault(x => x.ModelName == weapon.ModelName);
-    //        if(wi == null)
-    //        {
-    //            //EntryPoint.WriteToConsoleTestLong($"SEARCH WEAPON {weapon.ModelName} DID NOT FIND WEAPON, CONTINUING");
-    //            continue;
-    //        }
-    //        if(weapon.Category == WeaponCategory.Throwable)
-    //        {
-    //            TimesToCheck = NativeFunction.Natives.GET_AMMO_IN_PED_WEAPON<int>(Player.Character, weapon.Hash);
-    //            TimesToCheck.Clamp(1, 10);
-    //        }
-    //        //EntryPoint.WriteToConsoleTestLong($"SEARCH WEAPON {weapon.ModelName} FOUND MODITEM %:{wi.PoliceFindDuringPlayerSearchPercentage} TimesToCheck {TimesToCheck}");
-    //        if (RandomItems.RandomPercent(wi.PoliceFindDuringPlayerSearchPercentage * TimesToCheck))
-    //        {
-    //            Player.Violations.WeaponViolations.AddFoundWeapon(worstWeapon, hasCCW);
-    //            FoundIllegalWeapons = true;
-    //            FoundIllegalItems = true;
-    //            Player.WeaponEquipment.RemoveIllegalWeapons(hasCCW);
-    //            //EntryPoint.WriteToConsoleTestLong($"SEARCH WEAPON {weapon.ModelName} PERCENTAGE MET, WEAPONS FOUND");
-    //            break;
-    //        }
-    //    }
-    //}
-    //private void DoItemSearch()
-    //{
-    //    DidItemsSearch = true;
-    //    List<ModItem> IllegalItems = Player.Inventory.GetIllicitItems();
-    //    foreach (ModItem modItem in IllegalItems)
-    //    {
-    //        int ItemsOwned = 1;
-    //        InventoryItem ii = Player.Inventory.Get(modItem);
-    //        if(ii != null)
-    //        {
-    //            ItemsOwned = ii.Amount;
-    //        }
-    //        //EntryPoint.WriteToConsoleTestLong($"SEARCH WEAPON {modItem.Name} %:{modItem.PoliceFindDuringPlayerSearchPercentage} ItemsOwned {ItemsOwned} Total%{modItem.PoliceFindDuringPlayerSearchPercentage * ItemsOwned}");
-    //        if (RandomItems.RandomPercent(modItem.PoliceFindDuringPlayerSearchPercentage * ItemsOwned))
-    //        {
-    //            Player.Violations.OtherViolations.AddFoundIllegalItem();
-    //            FoundIllegalDrugs = true;
-    //            FoundIllegalItems = true;
-    //            Player.Inventory.RemoveIllicitInventoryItems();
-    //            //EntryPoint.WriteToConsoleTestLong($"SEARCH ITEMS {modItem.Name} PERCENTAGE MET, ITEMS FOUND");
-    //            break;
-    //        }
-    //    }
-    //}
 }

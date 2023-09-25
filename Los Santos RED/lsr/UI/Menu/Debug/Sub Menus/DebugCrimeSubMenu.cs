@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
 using Mod;
 using Rage;
 using Rage.Native;
@@ -59,8 +60,16 @@ public class DebugCrimeSubMenu : DebugSubMenu
         UIMenuItem CallInCrime = new UIMenuItem("Call Cops On Yourself", "Call the cops on yourself with description.");
         CallInCrime.Activated += (menu, item) =>
         {
+            //CrimeSceneDescription description = new CrimeSceneDescription(!Player.IsInVehicle, false, Player.Character.Position, true);
+            //Player.PoliceResponse.AddCrime(Crimes.CrimeList?.FirstOrDefault(x => x.ID == StaticStrings.ArmedRobberyCrimeID), description, true);
+
+
+            Crime crimeObserved = Crimes.GetCrime(StaticStrings.ArmedRobberyCrimeID);
             CrimeSceneDescription description = new CrimeSceneDescription(!Player.IsInVehicle, false, Player.Character.Position, true);
-            Player.PoliceResponse.AddCrime(Crimes.CrimeList?.FirstOrDefault(x => x.ID == StaticStrings.ArmedRobberyCrimeID), description, true);
+            Player.PoliceResponse.AddCrime(crimeObserved, description, false);
+            Player.Investigation.Start(Player.Character.Position, true, true, false, false);
+
+
             menu.Visible = false;
         };
 

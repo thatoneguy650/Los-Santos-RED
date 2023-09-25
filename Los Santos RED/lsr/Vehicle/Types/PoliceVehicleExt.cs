@@ -8,11 +8,15 @@ using System.Threading.Tasks;
 
 namespace LSR.Vehicles
 {
-    public class EMSVehicleExt : VehicleExt
+    public class PoliceVehicleExt : VehicleExt
     {
         public override bool CanRandomlyHaveIllegalItems { get; set; } = false;
-        public EMSVehicleExt(Vehicle vehicle, ISettingsProvideable settings) : base(vehicle, settings)
+        public PoliceVehicleExt(Vehicle vehicle, ISettingsProvideable settings) : base(vehicle, settings)
         {
+        }
+        public override void AddVehicleToList(IEntityProvideable world)
+        {
+            world.Vehicles.AddPolice(this);
         }
     }
 }

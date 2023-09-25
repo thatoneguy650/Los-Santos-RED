@@ -30,7 +30,7 @@ public class PlateController
             try
             {
                 int VehiclesUpdated = 0;
-                foreach (VehicleExt MyCar in Vehicles.CivilianVehicleList.Where(x => x.Vehicle.Exists() && !x.HasUpdatedPlateType).ToList().Take(20))
+                foreach (VehicleExt MyCar in Vehicles.NonServiceVehicles.Where(x => x.Vehicle.Exists() && !x.HasUpdatedPlateType).ToList().Take(20))
                 {
                     if (MyCar.Vehicle.Exists())
                     {

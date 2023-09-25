@@ -35,22 +35,23 @@ public class FirefighterTasker
     }
     public void Update()
     {
-        if (Settings.SettingsManager.FireSettings.ManageTasking)
+        if (!Settings.SettingsManager.FireSettings.ManageTasking)
         {
-            World.Pedestrians.ExpireSeatAssignments();
-            foreach (Firefighter firefighter in World.Pedestrians.FirefighterList.Where(x => x.Pedestrian.Exists() && x.HasExistedFor >= 1000))
-            {
-                try
-                {
-                    firefighter.PedBrain.Update(Player, PlacesOfInterest);
-                }
-                catch (Exception e)
-                {
-                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Firefighter Task");
-                }
-            }
-            GameFiber.Yield();
+            return;
         }
+        World.Pedestrians.ExpireSeatAssignments();
+        foreach (Firefighter firefighter in World.Pedestrians.FirefighterList.Where(x => x.Pedestrian.Exists() && x.HasExistedFor >= 1000))
+        {
+            try
+            {
+                firefighter.PedBrain.Update(Player, PlacesOfInterest);
+            }
+            catch (Exception e)
+            {
+                EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Firefighter Task");
+            }
+        }
+        GameFiber.Yield();   
     }
 }

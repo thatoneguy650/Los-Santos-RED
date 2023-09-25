@@ -208,19 +208,16 @@ public class LESpawnTask : SpawnTask
             {
                 return null;
             }
-            VehicleExt CreatedVehicle = World.Vehicles.GetVehicleExt(SpawnedVehicle);
+            PoliceVehicleExt CreatedVehicle = World.Vehicles.GetPolice(SpawnedVehicle);//.GetVehicleExt(SpawnedVehicle);
             if (CreatedVehicle == null)
             {
-                CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
+                CreatedVehicle = new PoliceVehicleExt(SpawnedVehicle, Settings);
                 CreatedVehicle.Setup();
                 CreatedVehicle.AssociatedAgency = Agency;
+                CreatedVehicle.AddVehicleToList(World);
             }
             CreatedVehicle.IsPolice = true;
             CreatedVehicle.WasModSpawned = true;
-            if (Agency != null)
-            {
-                World.Vehicles.AddEntity(CreatedVehicle, Agency.ResponseType);
-            }
             GameFiber.Yield();
             if (!SpawnedVehicle.Exists())
             {
@@ -229,7 +226,6 @@ public class LESpawnTask : SpawnTask
             VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, true);
             CreatedVehicle.UpgradePerformance();
             CreatedVehicle.UpdatePlatePrefix(Agency);
-            CreatedVehicle.CanRandomlyHaveIllegalItems = false;
             CreatedVehicles.Add(CreatedVehicle);
             return CreatedVehicle;
         }
@@ -272,7 +268,7 @@ public class LESpawnTask : SpawnTask
 
         if(IsMarshalMember)
         {
-            PrimaryCop.IsMarshalMember = true;
+            PrimaryCop.IsMarshalTaskForceMember = true;
         }
 
         World.Pedestrians.AddEntity(PrimaryCop);

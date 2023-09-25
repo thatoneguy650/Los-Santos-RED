@@ -51,20 +51,9 @@ public class EMTBrain : PedBrain
             PedExt.PedReactions.Update(Player);
             if (PedExt.PedReactions.HasSeenScaryCrime || PedExt.PedReactions.HasSeenAngryCrime)
             {
-                if (PedExt.HasCellPhone && (PedExt.WillCallPolice || (PedExt.WillCallPoliceIntense && PedExt.PedReactions.HasSeenIntenseCrime)))
+                if (PedExt.WillFight && PedExt.PedReactions.HasSeenAngryCrime && Player.IsNotWanted)
                 {
-                    SetScaredCallIn();
-                }
-                else if (PedExt.WillFight)
-                {
-                    if (PedExt.PedReactions.HasSeenAngryCrime && Player.IsNotWanted)
-                    {
-                        SetFight();
-                    }
-                    else
-                    {
-                        SetFlee();
-                    }
+                    SetFight();
                 }
                 else
                 {
@@ -144,7 +133,6 @@ public class EMTBrain : PedBrain
             PedExt.CurrentTask.Start();
         }
     }
-
     protected override void SetIdle()
     {
         if (PedExt.CurrentTask?.Name == "Idle")
@@ -155,7 +143,6 @@ public class EMTBrain : PedBrain
         GameFiber.Yield();//TR Added back 4
         PedExt.CurrentTask.Start();
     }
-
     private void SetTreatTask(PedExt targetPed)
     {
         if (EMT.CurrentTask?.Name != "EMTTreat" || (targetPed != null && EMT.CurrentTask?.OtherTarget?.Handle != targetPed.Handle))// && Cop.IsIdleTaskable)

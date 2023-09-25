@@ -49,20 +49,9 @@ public class FirefighterBrain : PedBrain
             PedExt.PedReactions.Update(Player);
             if (PedExt.PedReactions.HasSeenScaryCrime || PedExt.PedReactions.HasSeenAngryCrime)
             {
-                if (PedExt.HasCellPhone && (PedExt.WillCallPolice || (PedExt.WillCallPoliceIntense && PedExt.PedReactions.HasSeenIntenseCrime)))
+                if (PedExt.WillFight && PedExt.PedReactions.HasSeenAngryCrime && Player.IsNotWanted)
                 {
-                    SetScaredCallIn();
-                }
-                else if (PedExt.WillFight)
-                {
-                    if (PedExt.PedReactions.HasSeenAngryCrime && Player.IsNotWanted)
-                    {
-                        SetFight();
-                    }
-                    else
-                    {
-                        SetFlee();
-                    }
+                    SetFight();
                 }
                 else
                 {

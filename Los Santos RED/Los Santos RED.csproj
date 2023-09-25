@@ -130,6 +130,7 @@
     <Compile Include="lsr\Dispatcher\LE\MarshalDispatcher.cs" />
     <Compile Include="lsr\Inventory\CashStorage.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankDrawer.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Machines\CashRegister.cs" />
     <Compile Include="lsr\Player\Cellphone\Data\CellphoneData.cs" />
     <Compile Include="lsr\Data\Items\Cellphones.cs" />
     <Compile Include="lsr\Data\Organizations\Organization.cs" />
@@ -302,6 +303,7 @@
     <Compile Include="lsr\Player\Cellphone\Interactions\TaxiServiceInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\Interactions\Taxi\AmbientSpawner.cs" />
     <Compile Include="lsr\Player\Cellphone\Interactions\VehicleExporterInteraction.cs" />
+    <Compile Include="lsr\Player\Crime\BOLO.cs" />
     <Compile Include="lsr\Player\Crime\RestrictedAreaManager.cs" />
     <Compile Include="lsr\Player\Crime\WantedLevel.cs" />
     <Compile Include="lsr\Player\Equipment\ClipsetManager.cs" />
@@ -334,11 +336,13 @@
     <Compile Include="lsr\Police\OfficerMIA.cs" />
     <Compile Include="lsr\Police\OfficerMIAWatcher.cs" />
     <Compile Include="lsr\Tasker\AIChaseable\IAIChaseable.cs" />
+    <Compile Include="lsr\Tasker\Cop\CopBrain.cs" />
     <Compile Include="lsr\Tasker\EMT\EMTBrain.cs" />
     <Compile Include="lsr\Tasker\Fire\FireExtinguish.cs" />
     <Compile Include="lsr\Tasker\Fire\FirefighterBrain.cs" />
     <Compile Include="lsr\Tasker\Fire\FirefighterTasker.cs" />
     <Compile Include="lsr\Tasker\Fire\GotToAndExtinguishTaskState.cs" />
+    <Compile Include="lsr\Tasker\Gang\GangBrain.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralFlee\GeneralFlee.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralInvestigate\GeneralInvestigate.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralInvestigate\PoliceGeneralInvestigate.cs" />
@@ -467,18 +471,18 @@
     <Compile Include="lsr\UI\Stree Name Pop Ups\StreetNamePopUp.cs" />
     <Compile Include="lsr\UI\Stree Name Pop Ups\StreetNode.cs" />
     <Compile Include="lsr\UI\TopRightMenu.cs" />
-    <Compile Include="lsr\Vehicle\DispatchableVehicleExtra.cs" />
-    <Compile Include="lsr\Vehicle\DispatchableVehicleGroup.cs" />
+    <Compile Include="lsr\Vehicle\Variation\DispatchableVehicleExtra.cs" />
+    <Compile Include="lsr\Vehicle\Variation\DispatchableVehicleGroup.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles.cs" />
     <Compile Include="lsr\Data\Peds\DispatchablePeople.cs" />
     <Compile Include="lsr\Data\Vehicles\PlateTypeManager.cs" />
-    <Compile Include="lsr\Vehicle\EMSVehicleExt.cs" />
-    <Compile Include="lsr\Vehicle\FireVehicleExt.cs" />
-    <Compile Include="lsr\Vehicle\GangVehicleExt.cs" />
+    <Compile Include="lsr\Vehicle\Types\EMSVehicleExt.cs" />
+    <Compile Include="lsr\Vehicle\Types\FireVehicleExt.cs" />
+    <Compile Include="lsr\Vehicle\Types\GangVehicleExt.cs" />
     <Compile Include="lsr\Vehicle\Menu\VehicleInteractionMenu.cs" />
-    <Compile Include="lsr\Vehicle\PoliceVehicleExt.cs" />
-    <Compile Include="lsr\Vehicle\SecurityVehicleExt.cs" />
-    <Compile Include="lsr\Vehicle\SonarBlip.cs" />
+    <Compile Include="lsr\Vehicle\Types\PoliceVehicleExt.cs" />
+    <Compile Include="lsr\Vehicle\Types\SecurityVehicleExt.cs" />
+    <Compile Include="lsr\Vehicle\Other\SonarBlip.cs" />
     <Compile Include="lsr\Vehicle\Storage\StoredBody.cs" />
     <Compile Include="lsr\Vehicle\Storage\VehicleBodyManager.cs" />
     <Compile Include="lsr\Vehicle\Storage\VehicleDoorSeatData.cs" />
@@ -886,9 +890,9 @@
     <Compile Include="lsr\VanillaManager\VanillaCopManager.cs" />
     <Compile Include="lsr\VanillaManager\VanillaGangManager.cs" />
     <Compile Include="lsr\VanillaManager\VanillaWorldManager.cs" />
-    <Compile Include="lsr\Vehicle\eCustomDrivingStyles.cs" />
-    <Compile Include="lsr\Vehicle\eDrivingMode.cs" />
-    <Compile Include="lsr\Vehicle\Engine.cs" />
+    <Compile Include="lsr\Vehicle\Other\eCustomDrivingStyles.cs" />
+    <Compile Include="lsr\Vehicle\Other\eDrivingMode.cs" />
+    <Compile Include="lsr\Vehicle\Components\Engine.cs" />
     <Compile Include="lsr\Vehicle\Variation\VehicleExtra.cs" />
     <Compile Include="lsr\Vehicle\Variation\VehicleMod.cs" />
     <Compile Include="lsr\Vehicle\Variation\VehicleSaveStatus.cs" />
@@ -953,7 +957,7 @@
     <Compile Include="lsr\Ped\Demographics\PedGroup.cs" />
     <Compile Include="lsr\Ped\Demographics\RelationshipSnapshot.cs" />
     <Compile Include="lsr\Player\Activity\CarBreakIn.cs" />
-    <Compile Include="lsr\Vehicle\RadioStation.cs" />
+    <Compile Include="lsr\Vehicle\Components\RadioStation.cs" />
     <Compile Include="lsr\VanillaManager\VanillaManager.cs" />
     <Compile Include="lsr\Weather\eWeatherTypeHash.cs" />
     <Compile Include="lsr\Weather\IWeatherReportable.cs" />
@@ -1014,7 +1018,7 @@
     <Compile Include="lsr\Data\Settings\World General Settings\PoliceSettings.cs" />
     <Compile Include="lsr\Data\Settings\Settings.cs" />
     <Compile Include="lsr\Data\Settings\UI settings\UIGeneralSettings.cs" />
-    <Compile Include="lsr\Vehicle\PlateType.cs" />
+    <Compile Include="lsr\Vehicle\Other\PlateType.cs" />
     <Compile Include="lsr\World\Vehicles\Vehicles.cs" />
     <Compile Include="lsr\Weapon\WeaponCategory.cs" />
     <Compile Include="lsr\Weapon\WeaponInformation.cs" />
@@ -1027,8 +1031,8 @@
     <Compile Include="lsr\Data\Peds\Names.cs" />
     <Compile Include="lsr\Data\Location\Streets.cs" />
     <Compile Include="lsr\Weapon\StoredWeapon.cs" />
-    <Compile Include="lsr\Vehicle\VehicleExt.cs" />
-    <Compile Include="lsr\Vehicle\LicensePlate.cs" />
+    <Compile Include="lsr\Vehicle\Types\VehicleExt.cs" />
+    <Compile Include="lsr\Vehicle\Components\LicensePlate.cs" />
     <Compile Include="lsr\Ped\Cop\Cop.cs" />
     <Compile Include="lsr\Ped\Variation\PedComponent.cs" />
     <Compile Include="lsr\Ped\Variation\PedVariation.cs" />
@@ -1046,9 +1050,9 @@
     <Compile Include="lsr\Player\Activity\CarJack.cs" />
     <Compile Include="lsr\Player\Activity\CarLockPick.cs" />
     <Compile Include="lsr\Player\Activity\PlateTheft.cs" />
-    <Compile Include="lsr\Vehicle\Radio.cs" />
-    <Compile Include="lsr\Vehicle\FuelTank.cs" />
-    <Compile Include="lsr\Vehicle\Indicators.cs" />
+    <Compile Include="lsr\Vehicle\Components\Radio.cs" />
+    <Compile Include="lsr\Vehicle\Components\FuelTank.cs" />
+    <Compile Include="lsr\Vehicle\Components\Indicators.cs" />
     <Compile Include="lsr\Weather\WeatherManager.cs" />
   </ItemGroup>
   <ItemGroup>

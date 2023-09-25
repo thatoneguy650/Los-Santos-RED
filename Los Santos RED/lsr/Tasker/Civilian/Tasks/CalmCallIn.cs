@@ -27,29 +27,14 @@ public class CalmCallIn : ComplexTask
         if (Ped.Pedestrian.Exists())
         {
             GameTimeToCallIn = RandomItems.GetRandomNumber(Settings.SettingsManager.CivilianSettings.GameTimeToCallInMinimum, Settings.SettingsManager.CivilianSettings.GameTimeToCallInMaximum);
-            TaskMoveAway();
+            ReTask();
             GameTimeStartedFlee = Game.GameTime;
             HasStartedPhoneTask = false;
         }
         GameTimeLastRan = Game.GameTime;
     }
-    private void TaskMoveAway()
-    {
-        //EntryPoint.WriteToConsole($"TASKER: CalmCallIn Start: {Ped.Pedestrian.Handle}", 3);
-        //unsafe
-        //{
-        //    int lol = 0;
-        //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-        //    NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 10000);
-        //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-        //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-        //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-        //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-        //}
-    }
     public override void Update()
     {
-
         if (!Ped.Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.AllowCallInIfPedDoesNotExist)
         {
             if (Settings.SettingsManager.CivilianSettings.AllowCallInIfPedDoesNotExist && Game.GameTime - GameTimeStartedCallIn >= Settings.SettingsManager.CivilianSettings.GameTimeToCallInIfPedDoesNotExist && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.PedAlerts.HasCrimeToReport))
@@ -65,39 +50,13 @@ public class CalmCallIn : ComplexTask
         }
         if (!HasStartedPhoneTask && Game.GameTime - GameTimeStartedFlee >= GameTimeToCallIn)
         {
-            NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", Ped.Pedestrian, Settings.SettingsManager.CivilianSettings.GameTimeAfterCallInToReportCrime);
-            HasStartedPhoneTask = true;
-            Ped.PlaySpeech(new List<string>() { "GENERIC_SHOCKED_MED", "GENERIC_FRUSTRATED_HIGH", "GET_OUT_OF_HERE" }, false, false);
-            EntryPoint.WriteToConsole($"{Ped.Handle} STARTED PHONE TASK");
+            TaskCallIn();
         }
         if (HasStartedPhoneTask && Game.GameTime - GameTimeStartedCallIn >= GameTimeToCallIn + Settings.SettingsManager.CivilianSettings.GameTimeAfterCallInToReportCrime && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.PedAlerts.HasCrimeToReport))
         {
             Ped.ReportCrime(Player);
             EntryPoint.WriteToConsole($"{Ped.Handle} CALLED IN CRIME");
         }
-
-
-
-
-        //if (Ped.Pedestrian.Exists())
-        //{
-        //    if (Game.GameTime - GameTimeStartedCallIn >= 10000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
-        //    {
-        //        Ped.ReportCrime(Player);
-        //    }
-        //}
-        //else
-        //{
-        //    if (Game.GameTime - GameTimeStartedCallIn >= 4000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
-        //    {
-        //        Ped.ReportCrime(Player);
-        //    }
-        //}
-
-
-
-
-
         GameTimeLastRan = Game.GameTime;
     }
     public override void Stop()
@@ -107,7 +66,13 @@ public class CalmCallIn : ComplexTask
     public override void ReTask()
     {
 
+    } 
+    private void TaskCallIn()
+    {
+        NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", Ped.Pedestrian, Settings.SettingsManager.CivilianSettings.GameTimeAfterCallInToReportCrime);
+        HasStartedPhoneTask = true;
+        Ped.PlaySpeech(new List<string>() { "GENERIC_SHOCKED_MED", "GENERIC_FRUSTRATED_HIGH", "GET_OUT_OF_HERE" }, false, false);
+        EntryPoint.WriteToConsole($"{Ped.Handle} STARTED PHONE TASK");
     }
- 
 }
 

@@ -329,7 +329,7 @@ public class PedSwap : IPedSwap
                     carSpawn.AllowAnySpawn = true;
                     carSpawn.WillAddDriver = false;
                     carSpawn.AttemptSpawn();
-                    carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Security));
+                    carSpawn.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));//World.Vehicles.AddEntity(x, ResponseType.Security));
                     VehicleExt createdVehicle = carSpawn.CreatedVehicles.FirstOrDefault();
                     if (createdVehicle != null && createdVehicle.Vehicle.Exists())
                     {
@@ -394,7 +394,7 @@ public class PedSwap : IPedSwap
                     carSpawn.AllowAnySpawn = true;
                     carSpawn.WillAddDriver = false;
                     carSpawn.AttemptSpawn();
-                    carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
+                    carSpawn.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));//World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
                     VehicleExt createdVehicle = carSpawn.CreatedVehicles.FirstOrDefault();
                     if (createdVehicle != null && createdVehicle.Vehicle.Exists())
                     {
@@ -458,7 +458,7 @@ public class PedSwap : IPedSwap
                     carSpawn.AllowAnySpawn = true;
                     carSpawn.WillAddDriver = false;
                     carSpawn.AttemptSpawn();
-                    carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+                    carSpawn.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));//World.Vehicles.AddEntity(x, ResponseType.None));
                     VehicleExt createdVehicle = carSpawn.CreatedVehicles.FirstOrDefault();
                     if (createdVehicle != null && createdVehicle.Vehicle.Exists())
                     {
@@ -520,7 +520,7 @@ public class PedSwap : IPedSwap
                 carSpawn.AllowAnySpawn = true;
                 carSpawn.WillAddDriver = false;
                 carSpawn.AttemptSpawn();
-                carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.EMS));
+                carSpawn.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));//World.Vehicles.AddEntity(x, ResponseType.EMS));
                 VehicleExt createdVehicle = carSpawn.CreatedVehicles.FirstOrDefault();
                 if (createdVehicle != null && createdVehicle.Vehicle.Exists())
                 {
@@ -581,7 +581,7 @@ public class PedSwap : IPedSwap
                 carSpawn.AllowAnySpawn = true;
                 carSpawn.WillAddDriver = false;
                 carSpawn.AttemptSpawn();
-                carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Fire));
+                carSpawn.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));//World.Vehicles.AddEntity(x, ResponseType.Fire));
                 VehicleExt createdVehicle = carSpawn.CreatedVehicles.FirstOrDefault();
                 if (createdVehicle != null && createdVehicle.Vehicle.Exists())
                 {

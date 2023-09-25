@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.Serialization;
 
 public class PoliceSettings : ISettingsDefaultable
 {
@@ -169,7 +170,12 @@ public class PoliceSettings : ISettingsDefaultable
 
 
     public bool SendMarshalsAPBResponseText { get; set; }
-
+    public float MarshalsAPBResponseExtraRadiusDistance { get;  set; }
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
     public PoliceSettings()
     {
         SetDefault();
@@ -251,6 +257,7 @@ public class PoliceSettings : ISettingsDefaultable
         SendMarshalsAPBResponseText = true;
         MinTimeOfAPBBetweenMarshalsAPBResponse = 20000;
         MaxTimeOfAPBBetweenMarshalsAPBResponse = 120000;
+        MarshalsAPBResponseExtraRadiusDistance = 150f;
 
     }
 }

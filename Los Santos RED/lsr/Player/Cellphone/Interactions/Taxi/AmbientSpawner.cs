@@ -69,7 +69,7 @@ public class AmbientSpawner
         civilianSpawnTask.AllowBuddySpawn = false;
         civilianSpawnTask.AttemptSpawn();
         civilianSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
-        civilianSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+        civilianSpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));
         spawnedDriver = civilianSpawnTask.CreatedPeople.FirstOrDefault();
         spawnedVehicle = civilianSpawnTask.CreatedVehicles.FirstOrDefault();
 

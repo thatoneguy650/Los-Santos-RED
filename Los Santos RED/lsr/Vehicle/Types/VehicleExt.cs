@@ -1197,14 +1197,14 @@ namespace LSR.Vehicles
             }
             HasAddedRandomWeapons = true;
         }
-        public void SetImpounded(ITimeReportable time, string locationName)
+        public void SetImpounded(ITimeReportable time, string locationName, bool hasValidCCW)
         {
             IsImpounded = true;
             DateTimeImpounded = time.CurrentDateTime;
             TimesImpounded++;
             ImpoundedLocation = locationName;
             SimpleInventory.OnImpounded();
-            WeaponStorage.OnImpounded();
+            WeaponStorage.OnImpounded(hasValidCCW);
         }
         private void UnSetImpounded()
         {
@@ -1470,5 +1470,10 @@ namespace LSR.Vehicles
             }
             return "Vehicle Interact";
         }
+        public virtual void AddVehicleToList(IEntityProvideable world)
+        {
+            world.Vehicles.AddCivilian(this);
+        }
+
     }
 }

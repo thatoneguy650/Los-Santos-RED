@@ -24,6 +24,7 @@ public class DynamicPlaces
     private List<VendingMachine> ActiveVendingMachines = new List<VendingMachine>();
     private List<string> VendingMachinesModelNames = new List<string>();
     private List<uint> VendingMachinessModelHashes = new List<uint>();
+
     private List<GasPump> ActiveGasPumps = new List<GasPump>();
     private List<string> GasPumpsModelNames = new List<string>();
     private List<uint> GasPumpsModelHashes = new List<uint>();
@@ -33,6 +34,9 @@ public class DynamicPlaces
     private List<string> ATMModelNames = new List<string>();
     private List<uint> ATMModelHashes = new List<uint>();
 
+    private List<CashRegister> ActiveCashRegisters = new List<CashRegister>();
+    private List<string> CashRegisterModelNames = new List<string>();
+    private List<uint> CashRegisterModelHashes = new List<uint>();
 
     public DynamicPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time)
     {
@@ -83,6 +87,20 @@ public class DynamicPlaces
         //prop_atm_01 standalone ATM
         //prop_atm_02 LOM BANK
         //prop_atm_03 generic
+
+        CashRegisterModelNames = new List<string>() { "p_till_01_s", "prop_till_01_dam", "prop_till_01", "prop_till_02", "prop_till_03" };
+
+        CashRegisterModelHashes = new List<uint>()
+        {
+            892543765,
+            3940037152, 
+            303280717, 
+            534367705,
+            759654580,
+        };
+
+
+
     }
     public void Dispose()
     {
@@ -118,6 +136,11 @@ public class DynamicPlaces
                         ActivateATMMachine(obj, modelName, position, heading);
                         GameFiber.Yield();
                     }
+                    else if (CashRegisterModelNames.Contains(modelName) || CashRegisterModelHashes.Contains(hash))
+                    {
+                        ActiveCashRegister(obj, modelName, position, heading);
+                        GameFiber.Yield();
+                    }
                 }
                 checkedObjects++;
                 if (checkedObjects > 10)
@@ -136,7 +159,34 @@ public class DynamicPlaces
             RemoveInactiveGasPumps();
             GameFiber.Yield();
             RemoveInactiveATM();
+            GameFiber.Yield();
+            RemoveInactiveCashRegisters();
         }
+    }
+    private void ActiveCashRegister(Rage.Object obj, string modelName, Vector3 position, float heading)
+    {
+        float distanceTo = obj.DistanceTo(Game.LocalPlayer.Character.Position);
+        if (distanceTo > 50f)
+        {
+            return;
+        }
+        if (ActiveVendingMachines.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
+        {
+            return;
+        }
+        //ShopMenu vendingMenu = ShopMenus.GetVendingMenu(modelName);
+        Vector3 EntrancePos = obj.GetOffsetPositionFront(0.5f);
+
+        GameLocation closestLocation = Places.ActiveLocations.OrderBy(x => x.EntrancePosition.DistanceTo2D(obj)).FirstOrDefault();//maybe store anyothe list of stations?
+        int RegisterCash = 3500;
+        if(closestLocation != null)
+        {
+            RegisterCash = closestLocation.RegisterCash;
+        }
+        CashRegister newVend = new CashRegister(EntrancePos, heading, "Cash Register", "Cash Register", "", obj, RegisterCash) { OpenTime = 0, CloseTime = 24 };
+        newVend.CanInteractWhenWanted = true;
+        newVend.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
+        ActiveCashRegisters.Add(newVend);
     }
     private void ActivateVendingMachine(Rage.Object obj, string modelName, Vector3 position, float heading)
     {
@@ -209,9 +259,6 @@ public class DynamicPlaces
         newATMMachine.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
         ActiveATMMachines.Add(newATMMachine);
     }
-
-
-
     private void RemoveInactiveVendingMachines()
     {
         for (int i = ActiveVendingMachines.Count - 1; i >= 0; i--)
@@ -268,6 +315,26 @@ public class DynamicPlaces
                 }
                 GameFiber.Yield();
             }      
+        }
+    }
+    private void RemoveInactiveCashRegisters()
+    {
+        for (int i = ActiveCashRegisters.Count - 1; i >= 0; i--)
+        {
+            CashRegister gl = ActiveCashRegisters[i];
+            if (gl.DistanceToPlayer < 100f && gl.RegisterProp.Exists() && !NativeFunction.Natives.HAS_OBJECT_BEEN_BROKEN<bool>(gl.RegisterProp, false))
+            {
+                continue;
+            }
+            if (gl.IsActivated)
+            {
+                gl.Deactivate(true);
+                if (ActiveCashRegisters.Contains(gl))
+                {
+                    ActiveCashRegisters.Remove(gl);
+                }
+                GameFiber.Yield();
+            }
         }
     }
 }

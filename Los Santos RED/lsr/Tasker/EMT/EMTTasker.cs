@@ -38,23 +38,24 @@ public class EMTTasker
     }
     public void Update()
     {
-        if (Settings.SettingsManager.EMSSettings.ManageTasking)
+        if (!Settings.SettingsManager.EMSSettings.ManageTasking)
         {
-            World.Pedestrians.ExpireSeatAssignments();
-            foreach (EMT emt in World.Pedestrians.EMTList.Where(x => x.Pedestrian.Exists() && x.HasExistedFor >= 1000))
-            {
-                try
-                {
-                    emt.PedBrain.Update(Player, PlacesOfInterest);
-                }
-                catch (Exception e)
-                {
-                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting EMT Task");
-                }
-            }
-            GameFiber.Yield();
+            return;
         }
+        World.Pedestrians.ExpireSeatAssignments();
+        foreach (EMT emt in World.Pedestrians.EMTList.Where(x => x.Pedestrian.Exists() && x.HasExistedFor >= 1000))
+        {
+            try
+            {
+                emt.PedBrain.Update(Player, PlacesOfInterest);
+            }
+            catch (Exception e)
+            {
+                EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting EMT Task");
+            }
+        }
+        GameFiber.Yield();
     }
 }
 

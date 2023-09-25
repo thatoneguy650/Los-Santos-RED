@@ -91,7 +91,6 @@ public class SecurityGuardSpawnTask : SpawnTask
             {
                 NativeFunction.Natives.CLEAR_AREA(Position.X, Position.Y, Position.Z, 3f, true, false, false, false);
             }
-            //EntryPoint.WriteToConsole($"SecurityGuardSpawnTask: Attempting to spawn {VehicleType.ModelName}", 3);
             SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(SpawnedVehicle);
             GameFiber.Yield();
@@ -99,18 +98,15 @@ public class SecurityGuardSpawnTask : SpawnTask
             {
                 return null;
             }
-            VehicleExt CreatedVehicle = World.Vehicles.GetVehicleExt(SpawnedVehicle);
+            SecurityVehicleExt CreatedVehicle = World.Vehicles.GetSecurity(SpawnedVehicle);
             if (CreatedVehicle == null)
             {
-                CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
+                CreatedVehicle = new SecurityVehicleExt(SpawnedVehicle, Settings);
                 CreatedVehicle.Setup();
                 CreatedVehicle.AssociatedAgency = Agency;
+                CreatedVehicle.AddVehicleToList(World);
             }
             CreatedVehicle.WasModSpawned = true;
-            if (Agency != null)
-            {
-                World.Vehicles.AddEntity(CreatedVehicle, Agency.ResponseType);
-            }
             GameFiber.Yield();
             if (!SpawnedVehicle.Exists())
             {
@@ -118,9 +114,6 @@ public class SecurityGuardSpawnTask : SpawnTask
             }
             VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, true);
             CreatedVehicle.UpdatePlatePrefix(Agency);
-            CreatedVehicle.CanRandomlyHaveIllegalItems = false;
-            //CreatedVehicle.SimpleInventory.AddRandomItems(ModItems,6,2,false);
-            //CreatedVehicle.SetSpawnItems(VehicleType, Agency, null, true);
             CreatedVehicles.Add(CreatedVehicle);
             return CreatedVehicle;  
         }

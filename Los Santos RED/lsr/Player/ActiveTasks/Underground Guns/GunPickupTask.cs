@@ -317,7 +317,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         GunProp.AttachTo(SpawnedVehicle, SpawnedVehicle.GetBoneIndex("chassis_dummy"), new Vector3(0f, -1f, -0.3f), new Rotator(0f, 0f, 0f));
                     }
                     VehicleExt SpawnedVehicleExt = new VehicleExt(SpawnedVehicle, Settings);
-                    World.Vehicles.AddEntity(SpawnedVehicleExt, ResponseType.None);
+                    World.Vehicles.AddCivilian(SpawnedVehicleExt);
                     SpawnedVehicleExt.CanHavePlateRandomlyUpdated = false;
                     SpawnedVehicleExt.SetRandomPlate();
                     SpawnedVehicleExt.AddBlip();

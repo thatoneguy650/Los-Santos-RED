@@ -314,7 +314,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Player.LastFriendlyVehicle = null;
             Player.LastFriendlyVehicle = SpawnedVehicle;
             SpawnedVehicleExt = new VehicleExt(SpawnedVehicle, Settings);
-            World.Vehicles.AddEntity(SpawnedVehicleExt,ResponseType.None);
+            World.Vehicles.AddCivilian(SpawnedVehicleExt);
             SpawnedVehicleExt.CanHavePlateRandomlyUpdated = false;
             SpawnedVehicleExt.SetRandomPlate();
             SpawnedVehicleExt.AddBlip();

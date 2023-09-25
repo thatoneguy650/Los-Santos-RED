@@ -56,7 +56,7 @@ public class EMSConditionalLocation : ConditionalLocation
             eMTSpawnTask.AttemptSpawn();
             eMTSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
             eMTSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
-            eMTSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.EMS));
+            eMTSpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));
         }
         catch (Exception ex)
         {

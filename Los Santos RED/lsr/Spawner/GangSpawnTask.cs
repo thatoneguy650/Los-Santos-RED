@@ -112,18 +112,15 @@ public class GangSpawnTask : SpawnTask
             {
                 return null;
             }
-            VehicleExt CreatedVehicle = World.Vehicles.GetVehicleExt(SpawnedVehicle);
+            GangVehicleExt CreatedVehicle = World.Vehicles.GetGang(SpawnedVehicle);
             if (CreatedVehicle == null)
             {
-                CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
+                CreatedVehicle = new GangVehicleExt(SpawnedVehicle, Settings);
                 CreatedVehicle.Setup();
+                CreatedVehicle.AddVehicleToList(World);
             }
             CreatedVehicle.IsGang = true;
             CreatedVehicle.WasModSpawned = true;
-            if (Gang != null)
-            {
-                World.Vehicles.AddEntity(CreatedVehicle, ResponseType.None);
-            }
             GameFiber.Yield();
             if (!SpawnedVehicle.Exists())
             {
@@ -132,7 +129,6 @@ public class GangSpawnTask : SpawnTask
             VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, true);
             CreatedVehicle.AssociatedGang = Gang;
             CreatedVehicle.UpdatePlatePrefix(Gang);
-            //CreatedVehicle.SimpleInventory.AddRandomItems(ModItems,8,4,true);
             CreatedVehicles.Add(CreatedVehicle);
             return CreatedVehicle;
 

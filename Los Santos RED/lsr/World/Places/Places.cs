@@ -73,7 +73,25 @@ public class Places
     }
     public void UpdateLocations()
     {
-        StaticPlaces.Update();
+        if (!EntryPoint.ModController.IsRunning)
+        {
+            return;
+        }
+        int updated = 0;
+        foreach (GameLocation gl in ActiveLocations.ToList())
+        {
+            gl.Update(Time);
+            updated++;
+            if (updated >= 15)//5
+            {
+                GameFiber.Yield();
+                updated = 0;
+            }
+            if (!EntryPoint.ModController.IsRunning)
+            {
+                break;
+            }
+        }
     }
     public void Reset()
     {

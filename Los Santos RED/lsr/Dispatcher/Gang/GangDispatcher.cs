@@ -445,7 +445,7 @@ public class GangDispatcher
                 World.Pedestrians.AddEntity(created);
             }
             gangSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });
-            gangSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+            gangSpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));// World.Vehicles.AddEntity(x, ResponseType.None));;
             HasDispatchedThisTick = true;
             return gangSpawnTask.CreatedPeople.Any(x => x.Pedestrian.Exists());
         }

@@ -316,7 +316,7 @@ public class FireDispatcher
             firefighterSpawnTask.AttemptSpawn();
             firefighterSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });
             firefighterSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
-            firefighterSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Fire));
+            firefighterSpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));// World.Vehicles.AddEntity(x, ResponseType.Fire));;
         }
         catch (Exception ex)
         {

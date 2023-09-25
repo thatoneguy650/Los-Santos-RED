@@ -96,19 +96,16 @@ public class EMTSpawnTask : SpawnTask
             {
                 return null;
             }
-            VehicleExt CreatedVehicle = World.Vehicles.GetVehicleExt(SpawnedVehicle);
+            EMSVehicleExt CreatedVehicle = World.Vehicles.GetEMS(SpawnedVehicle);
             if (CreatedVehicle == null)
             {
-                CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
+                CreatedVehicle = new EMSVehicleExt(SpawnedVehicle, Settings);
                 CreatedVehicle.Setup();
                 CreatedVehicle.AssociatedAgency = Agency;
+                World.Vehicles.AddEMS(CreatedVehicle);
             }
             CreatedVehicle.WasModSpawned = true;
             CreatedVehicle.IsEMT = true;
-            if (Agency != null)
-            {
-                World.Vehicles.AddEntity(CreatedVehicle, Agency.ResponseType);
-            }
             GameFiber.Yield();
             if (!SpawnedVehicle.Exists())
             {
@@ -116,8 +113,6 @@ public class EMTSpawnTask : SpawnTask
             }
             VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, true);
             CreatedVehicle.UpdatePlatePrefix(Agency);
-            CreatedVehicle.CanRandomlyHaveIllegalItems = false;
-            //CreatedVehicle.SimpleInventory.AddRandomItems(ModItems, 6,2, false);
             CreatedVehicles.Add(CreatedVehicle);
             return CreatedVehicle;
         }

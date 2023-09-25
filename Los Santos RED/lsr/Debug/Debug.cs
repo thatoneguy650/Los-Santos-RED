@@ -4456,7 +4456,7 @@ private void SetPropAttachment()
                     $"TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} " +
                     $"Target:{0} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} ");
                 EntryPoint.WriteToConsole($"IsRespondingToCitizenWanted {cop.IsRespondingToCitizenWanted} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} weapon: {Weapon} {VehicleWeapon} " +
-                    $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} IsMarshalMember{cop.IsMarshalMember} RGotIn:{cop.RecentlyGotInVehicle} RGotOut:{cop.RecentlyGotOutOfVehicle} WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState} {retardedcops} CanBeTasked:{cop.CanBeTasked} CanBeAmbientTasked:{cop.CanBeAmbientTasked}", 5);
+                    $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} IsMarshalMember{cop.IsMarshalTaskForceMember} RGotIn:{cop.RecentlyGotInVehicle} RGotOut:{cop.RecentlyGotOutOfVehicle} WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState} {retardedcops} CanBeTasked:{cop.CanBeTasked} CanBeAmbientTasked:{cop.CanBeAmbientTasked}", 5);
             }
             
         }
@@ -4530,6 +4530,80 @@ private void SetPropAttachment()
         EntryPoint.WriteToConsole($"============================================ K9 END", 5);
 
 
+        EntryPoint.WriteToConsole($"============================================ POLICE VEHICLE START", 5);
+        foreach(PoliceVehicleExt vehicleExt in World.Vehicles.PoliceVehicles)
+        {
+            string vehicleText = $"{vehicleExt.Handle}";
+            if(vehicleExt.Vehicle.Exists())
+            {
+                vehicleText += $"{vehicleExt.Vehicle.Model.Name}";
+            }
+            EntryPoint.WriteToConsole($"{vehicleText}", 5);
+        }
+        EntryPoint.WriteToConsole($"============================================ POLICE VEHICLE END", 5);
+
+        EntryPoint.WriteToConsole($"============================================ EMS VEHICLE START", 5);
+        foreach (EMSVehicleExt vehicleExt in World.Vehicles.EMSVehicles)
+        {
+            string vehicleText = $"{vehicleExt.Handle}";
+            if (vehicleExt.Vehicle.Exists())
+            {
+                vehicleText += $"{vehicleExt.Vehicle.Model.Name}";
+            }
+            EntryPoint.WriteToConsole($"{vehicleText}", 5);
+        }
+        EntryPoint.WriteToConsole($"============================================ EMS VEHICLE END", 5);
+
+        EntryPoint.WriteToConsole($"============================================ FIRE VEHICLE START", 5);
+        foreach (FireVehicleExt vehicleExt in World.Vehicles.FireVehicles)
+        {
+            string vehicleText = $"{vehicleExt.Handle}";
+            if (vehicleExt.Vehicle.Exists())
+            {
+                vehicleText += $"{vehicleExt.Vehicle.Model.Name}";
+            }
+            EntryPoint.WriteToConsole($"{vehicleText}", 5);
+        }
+        EntryPoint.WriteToConsole($"============================================ FIRE VEHICLE END", 5);
+
+
+        EntryPoint.WriteToConsole($"============================================ SECURITY VEHICLE START", 5);
+        foreach (SecurityVehicleExt vehicleExt in World.Vehicles.SecurityVehicles)
+        {
+            string vehicleText = $"{vehicleExt.Handle}";
+            if (vehicleExt.Vehicle.Exists())
+            {
+                vehicleText += $"{vehicleExt.Vehicle.Model.Name}";
+            }
+            EntryPoint.WriteToConsole($"{vehicleText}", 5);
+        }
+        EntryPoint.WriteToConsole($"============================================ SECURITY VEHICLE END", 5);
+
+        EntryPoint.WriteToConsole($"============================================ GANG VEHICLE START", 5);
+        foreach (GangVehicleExt vehicleExt in World.Vehicles.GangVehicles)
+        {
+            string vehicleText = $"{vehicleExt.Handle}";
+            if (vehicleExt.Vehicle.Exists())
+            {
+                vehicleText += $"{vehicleExt.Vehicle.Model.Name}";
+            }
+            EntryPoint.WriteToConsole($"{vehicleText}", 5);
+        }
+        EntryPoint.WriteToConsole($"============================================ GANG VEHICLE END", 5);
+
+        EntryPoint.WriteToConsole($"============================================ CIVILIAN VEHICLE START", 5);
+        foreach (VehicleExt vehicleExt in World.Vehicles.CivilianVehicles)
+        {
+            string vehicleText = $"{vehicleExt.Handle}";
+            if (vehicleExt.Vehicle.Exists())
+            {
+                vehicleText += $"{vehicleExt.Vehicle.Model.Name}";
+            }
+            EntryPoint.WriteToConsole($"{vehicleText}", 5);
+        }
+        EntryPoint.WriteToConsole($"============================================ CIVILIAN VEHICLE END", 5);
+
+
         EntryPoint.WriteToConsole($"============================================", 5);
         EntryPoint.WriteToConsole($"============================================", 5);
         EntryPoint.WriteToConsole($"Player.CurrentLookedAtPed?.Handle: {Player.CurrentLookedAtPed?.Handle}", 5);
@@ -4540,38 +4614,38 @@ private void SetPropAttachment()
         //DisplayablePlayer.CurrentLocation.CurrentInterior?.Name
         //Player.CurrentLookedAtPed
     }
-    private void WriteCopState()
-    {
-        EntryPoint.WriteToConsole($"============================================ POLICE VEHICLES START", 2);
-        foreach (VehicleExt veh in World.Vehicles.PoliceVehicleList.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character)))
-        {
-            EntryPoint.WriteToConsole($"veh {veh.Vehicle.Handle} {veh.Vehicle.Model.Name} IsPersistent {veh.Vehicle.IsPersistent} Position: {veh.Vehicle.Position}", 2);
-        }
-        EntryPoint.WriteToConsole($"============================================ POLICE VEHICLES END", 2);
-        EntryPoint.WriteToConsole($"============================================ COPS START", 2);
-        foreach (Cop cop in World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists()))
-        {
-            string VehString = "";
-            string combat = "";
-            if (cop.IsInVehicle && cop.Pedestrian.CurrentVehicle.Exists())
-            {
-                VehString = cop.Pedestrian.CurrentVehicle.Model.Name;
-            }
-            if (cop.Pedestrian.CombatTarget.Exists())
-            {
-                combat = " Combat: " + cop.Pedestrian.CombatTarget.Handle.ToString();
-            }
-            uint currentWeapon;
-            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(cop.Pedestrian, out currentWeapon, true);
-            string Weapon = $" Weapon: {currentWeapon}";
-            uint currentVehicleWeapon;
-            bool hasVehicleWeapon = false;
-            hasVehicleWeapon = NativeFunction.Natives.GET_CURRENT_PED_VEHICLE_WEAPON<bool>(cop.Pedestrian, out currentVehicleWeapon);
-            string VehicleWeapon = $" VehicleWeapon: Has {hasVehicleWeapon} : {currentVehicleWeapon}";
-            EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} {cop.AssignedAgency?.ShortName} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask?.OtherTarget?.Handle} Vehicle {VehString} {combat} {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} Position: {cop.Pedestrian.Position} IsMarshalMember{cop.IsMarshalMember}", 2);
-        }
-        EntryPoint.WriteToConsole($"============================================ COPS END", 2);
-    }
+    //private void WriteCopState()
+    //{
+    //    EntryPoint.WriteToConsole($"============================================ POLICE VEHICLES START", 2);
+    //    foreach (VehicleExt veh in World.Vehicles.PoliceVehicles.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character)))
+    //    {
+    //        EntryPoint.WriteToConsole($"veh {veh.Vehicle.Handle} {veh.Vehicle.Model.Name} IsPersistent {veh.Vehicle.IsPersistent} Position: {veh.Vehicle.Position}", 2);
+    //    }
+    //    EntryPoint.WriteToConsole($"============================================ POLICE VEHICLES END", 2);
+    //    EntryPoint.WriteToConsole($"============================================ COPS START", 2);
+    //    foreach (Cop cop in World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists()))
+    //    {
+    //        string VehString = "";
+    //        string combat = "";
+    //        if (cop.IsInVehicle && cop.Pedestrian.CurrentVehicle.Exists())
+    //        {
+    //            VehString = cop.Pedestrian.CurrentVehicle.Model.Name;
+    //        }
+    //        if (cop.Pedestrian.CombatTarget.Exists())
+    //        {
+    //            combat = " Combat: " + cop.Pedestrian.CombatTarget.Handle.ToString();
+    //        }
+    //        uint currentWeapon;
+    //        NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(cop.Pedestrian, out currentWeapon, true);
+    //        string Weapon = $" Weapon: {currentWeapon}";
+    //        uint currentVehicleWeapon;
+    //        bool hasVehicleWeapon = false;
+    //        hasVehicleWeapon = NativeFunction.Natives.GET_CURRENT_PED_VEHICLE_WEAPON<bool>(cop.Pedestrian, out currentVehicleWeapon);
+    //        string VehicleWeapon = $" VehicleWeapon: Has {hasVehicleWeapon} : {currentVehicleWeapon}";
+    //        EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} {cop.AssignedAgency?.ShortName} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask?.OtherTarget?.Handle} Vehicle {VehString} {combat} {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} Position: {cop.Pedestrian.Position} IsMarshalMember{cop.IsMarshalTaskForceMember}", 2);
+    //    }
+    //    EntryPoint.WriteToConsole($"============================================ COPS END", 2);
+    //}
     private void SetIndex()
     {
         if (PlateIndex < 0)

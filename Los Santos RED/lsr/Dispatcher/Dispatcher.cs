@@ -152,7 +152,7 @@ public class Dispatcher
         }
         try
         {
-            foreach (VehicleExt civilianCar in World.Vehicles.CivilianVehicleList.Where(x => !x.IsOwnedByPlayer && x.WasModSpawned && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000 && x.Vehicle.Exists() && x.Vehicle.IsPersistent).ToList())
+            foreach (VehicleExt civilianCar in World.Vehicles.NonServiceVehicles.Where(x => !x.IsOwnedByPlayer && x.WasModSpawned && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000 && x.Vehicle.Exists() && x.Vehicle.IsPersistent).ToList())
             {
                 if (!civilianCar.Vehicle.Exists() || civilianCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
                 {

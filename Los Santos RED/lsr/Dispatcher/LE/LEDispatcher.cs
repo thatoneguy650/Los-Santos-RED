@@ -798,7 +798,7 @@ public class LEDispatcher
 
             bool isNearLimit = PossibleSpawnedPoliceCars - TotalPoliceCars <= 3 && TotalPoliceCars >= 10;
             int updated = 0;
-            foreach (VehicleExt PoliceCar in World.Vehicles.PoliceVehicleList.Where(x => !x.IsOwnedByPlayer && x.Vehicle.Exists() && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000).ToList())
+            foreach (VehicleExt PoliceCar in World.Vehicles.PoliceVehicles.Where(x => !x.IsOwnedByPlayer && x.Vehicle.Exists() && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000).ToList())
             {
                 if (PoliceCar.Vehicle.Exists())
                 {
@@ -851,7 +851,7 @@ public class LEDispatcher
     private void FixDamagedPoliceVehicles()
     {
         int updated = 0;
-        foreach (VehicleExt PoliceCar in World.Vehicles.PoliceVehicleList.Where(x => !x.IsOwnedByPlayer && x.Vehicle.Exists() && x.WasModSpawned && x.HasExistedFor >= 15000).ToList())
+        foreach (VehicleExt PoliceCar in World.Vehicles.PoliceVehicles.Where(x => !x.IsOwnedByPlayer && x.Vehicle.Exists() && x.WasModSpawned && x.HasExistedFor >= 15000).ToList())
         {
             if (PoliceCar.Vehicle.Exists())
             {
@@ -945,7 +945,7 @@ public class LEDispatcher
             spawnTask.AttemptSpawn();
             GameFiber.Yield();
             spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });
-            spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
+            spawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));
             HasDispatchedThisTick = true;
             Player.OnLawEnforcementSpawn(Agency, VehicleType, PersonType);
             return spawnTask.CreatedPeople.Any(x => x.Pedestrian.Exists());

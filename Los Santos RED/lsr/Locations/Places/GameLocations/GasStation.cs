@@ -20,6 +20,7 @@ public class GasStation : GameLocation
     public override int MapIcon { get; set; } = 361;// (int)BlipSprite.JerryCan;
     public override string ButtonPromptText { get; set; }
     public int PricePerGallon { get; set; } = 3;
+    public override int RegisterCash { get; set; } = 1500;
     public GasStation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;

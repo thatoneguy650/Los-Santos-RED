@@ -70,6 +70,10 @@ namespace LosSantosRED.lsr.Interface
         PedAlerts PedAlerts { get; }
         bool WillCower { get; }
         float CowerDistance { get; }
+        bool HasCellPhone { get; }
+        bool WillCallPolice { get; }
+        bool WillCallPoliceIntense { get; }
+        PedReactions PedReactions { get; }
 
         void PlaySpeech(string name, bool v);
         void PlaySpeech(List<string> list, bool isInVehicle, bool v);

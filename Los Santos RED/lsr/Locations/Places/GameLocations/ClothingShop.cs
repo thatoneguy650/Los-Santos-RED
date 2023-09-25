@@ -20,6 +20,7 @@ public class ClothingShop : GameLocation
     public override int MapIcon { get; set; } = (int)BlipSprite.ClothesStore;
     public override string ButtonPromptText { get; set; }
     public Vector3 ChangingRoomLocation { get; set; }
+    public override int RegisterCash { get; set; } = 2000;
     public ClothingShop(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, Vector3 changingRoomLocation) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;

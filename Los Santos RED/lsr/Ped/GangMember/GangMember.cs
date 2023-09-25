@@ -21,6 +21,7 @@ public class GangMember : PedExt, IWeaponIssuable
             GameTimeSpawned = Game.GameTime;
         }
         ReputationReport = new ReputationReport(this);
+        PedBrain = new GangBrain(this, Settings, world, weapons);
     }
     public List<ReputationReport> WitnessedReports { get; private set; } = new List<ReputationReport>();
     public ReputationReport ReputationReport { get; private set; }
@@ -48,8 +49,6 @@ public class GangMember : PedExt, IWeaponIssuable
     public override bool KnowsDrugAreas => true;
     public override bool KnowsGangAreas => true;
     public override bool IsGangMember { get; set; } = true;
-
-
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;

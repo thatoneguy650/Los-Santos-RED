@@ -85,6 +85,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public float VehicleAutoCameraXDistance { get; set; }
     public float VehicleAutoCameraYDistance { get; set; }
     public float VehicleAutoCameraZDistance { get; set; }
+    public int RobberyCashPerSwipe { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -153,6 +154,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         VehicleAutoCameraXDistance = 3f;
         VehicleAutoCameraYDistance = 4f;
         VehicleAutoCameraZDistance = 1f;
+        RobberyCashPerSwipe = 500;
     }
 
 }

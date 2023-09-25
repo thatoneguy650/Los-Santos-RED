@@ -177,7 +177,7 @@ public class SimpleInventory
     {
         RemoveIllegalItems();
     }
-    private void RemoveIllegalItems()
+    public void RemoveIllegalItems()
     {
         foreach (InventoryItem inventoryItem in ItemsList.ToList())
         {
@@ -187,5 +187,32 @@ public class SimpleInventory
             }
         }
     }
+
+    public List<ModItem> GetIllegalItems()
+    {
+        List<ModItem> items = new List<ModItem>();
+        foreach (InventoryItem ii in ItemsList.ToList())
+        {
+            if (ii.ModItem != null && ii.ModItem.IsPossessionIllicit)
+            {
+                items.Add(ii.ModItem);
+            }
+        }
+        return items;
+    }
+
+    //public bool RemoveIllicitInventoryItems()
+    //{
+    //    bool foundItems = false;
+    //    foreach (InventoryItem ii in ItemsList.ToList())
+    //    {
+    //        if (ii.ModItem != null && ii.ModItem.IsPossessionIllicit)
+    //        {
+    //            Remove(ii.ModItem);
+    //            foundItems = true;
+    //        }
+    //    }
+    //    return foundItems;
+    //}
 }
 

@@ -47,7 +47,7 @@ public class LEConditionalLocation : ConditionalLocation
             spawnTask.AttemptSpawn();
             GameFiber.Yield();
             spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
-            spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
+            spawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));//World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
             Player.OnLawEnforcementSpawn(Agency, DispatchableVehicle, DispatchablePerson);
         }
         catch (Exception ex)

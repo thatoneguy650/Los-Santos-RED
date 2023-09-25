@@ -46,7 +46,7 @@ public class SecurityConditionalLocation : ConditionalLocation
             securitySpawnTask.PlacePedOnGround = DispatchableVehicle == null; //true;
             securitySpawnTask.AttemptSpawn();
             securitySpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
-            securitySpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Other));
+            securitySpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));// World.Vehicles.AddEntity(x, ResponseType.Other));
         }
         catch (Exception ex)
         {

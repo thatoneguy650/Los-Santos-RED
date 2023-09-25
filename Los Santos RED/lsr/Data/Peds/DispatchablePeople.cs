@@ -640,7 +640,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,OptionalPropChance = 10
             },
 
-            new DispatchablePerson("mp_m_freemode_01",0,50) {
+            new DispatchablePerson("mp_m_freemode_01", 0, 50, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
                 DebugName = "USMSArmorMPMale"
                 ,GroupName = "Armored"
                 ,RandomizeHead = true
@@ -1790,7 +1790,7 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("s_m_m_fiboffice_01",15,0){ DebugName = "FIBNormalMale1", MaxWantedLevelSpawn = 3 },
             new DispatchablePerson("s_m_m_fiboffice_02",15,0){ DebugName = "FIBNormalMale2", MaxWantedLevelSpawn = 3 },
             new DispatchablePerson("u_m_m_fibarchitect",10,0) { DebugName = "FIBNormalMale3", MaxWantedLevelSpawn = 3 },
-            new DispatchablePerson("s_m_y_swat_01", 0,100) {
+            new DispatchablePerson("s_m_y_swat_01", 0, 100, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
                 DebugName = "FIBSWATDefaultMale"
                 ,GroupName = "FIBHRT"
                 ,MinWantedLevelSpawn = 5
@@ -1802,7 +1802,7 @@ public class DispatchablePeople : IDispatchablePeople
             },
         };
         NOOSEPeds_Simple = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_m_y_swat_01", 100,100){
+            new DispatchablePerson("s_m_y_swat_01",100,100, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2){
                 DebugName = "NOOSEDefaultMale"
                 ,AllowRandomizeBeforeVariationApplied = true
                 ,RequiredVariation = new PedVariation(
@@ -1811,7 +1811,7 @@ public class DispatchablePeople : IDispatchablePeople
             },
         };
         MarshalsServicePeds_Simple = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_m_m_ciasec_01",55,70){ DebugName = "USMSSimple", MaxWantedLevelSpawn = 3 },
+            new DispatchablePerson("s_m_m_ciasec_01",0, 50, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2){ DebugName = "USMSSimple", MaxWantedLevelSpawn = 3 },
         };
 
 
@@ -5694,7 +5694,7 @@ public class DispatchablePeople : IDispatchablePeople
                 })
             },
             //Response - Has Armor
-            new DispatchablePerson("mp_m_freemode_01", 30, 30) {
+            new DispatchablePerson("mp_m_freemode_01", 30, 30, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
                 ArmorMin = 50, ArmorMax = 50,MinWantedLevelSpawn = 2,CombatAbilityMin = 1,CombatAbilityMax = 2,
                 DebugName = "<Male USMS Response>", RandomizeHead = true, OverrideVoice = new List < string > () {
                     "S_M_Y_COP_01_WHITE_FULL_01",
@@ -5715,7 +5715,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 0, 0),
                 })
             },
-            new DispatchablePerson("mp_f_freemode_01", 30, 30) {
+            new DispatchablePerson("mp_f_freemode_01", 30, 30, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
                 ArmorMin = 50, ArmorMax = 50,MinWantedLevelSpawn = 2,CombatAbilityMin = 1,CombatAbilityMax = 2,
                 DebugName = "<Female USMS Response>", RandomizeHead = true, OverrideVoice = new List < string > () {
                     "S_F_Y_COP_01_WHITE_FULL_01",
@@ -5758,7 +5758,7 @@ public class DispatchablePeople : IDispatchablePeople
                 })
             },
             //Field Agent - Has Armor
-            new DispatchablePerson("mp_m_freemode_01", 30, 30) {
+            new DispatchablePerson("mp_m_freemode_01", 30, 30, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
                 ArmorMin = 50, ArmorMax = 50,MinWantedLevelSpawn = 2,CombatAbilityMin = 1,CombatAbilityMax = 2,
                 DebugName = "<Male USMS Field Agent>", RandomizeHead = true, OverrideVoice = new List < string > () {
                     "S_M_Y_COP_01_WHITE_FULL_01",

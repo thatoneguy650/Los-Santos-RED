@@ -407,7 +407,8 @@ public class VehicleItem : ModItem
                     MyNewCar.CanHaveRandomItems = false;
                     //EntryPoint.WriteToConsoleTestLong("New Vehicle Created in PurchaseVehicle");
                 }
-                world.Vehicles.AddEntity(MyNewCar, ResponseType.None);
+                MyNewCar.AddVehicleToList(world);
+                //world.Vehicles.AddEntity(MyNewCar, ResponseType.None);
                 player.VehicleOwnership.TakeOwnershipOfVehicle(MyNewCar, false);
 
                 transaction.OnItemPurchased(this, CurrentMenuItem, 1);
@@ -448,7 +449,8 @@ public class VehicleItem : ModItem
         Car.WasModSpawned = true;
         Car.WasSpawnedEmpty = true;
         Car.CanHaveRandomItems = false;
-        world.Vehicles.AddEntity(Car, ResponseType.None);
+        Car.AddVehicleToList(world);
+        //world.Vehicles.AddEntity(Car, ResponseType.None);
         Transaction.SellingVehicle.Wash();
         CreateLiveryMenuOne(Transaction);
         if (!HasLivery1)

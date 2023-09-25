@@ -99,19 +99,16 @@ public class FireFighterSpawnTask : SpawnTask
             {
                 return null;
             }
-            VehicleExt CreatedVehicle = World.Vehicles.GetVehicleExt(SpawnedVehicle);
+            FireVehicleExt CreatedVehicle = World.Vehicles.GetFire(SpawnedVehicle);
             if (CreatedVehicle == null)
             {
-                CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
+                CreatedVehicle = new FireVehicleExt(SpawnedVehicle, Settings);
                 CreatedVehicle.Setup();
                 CreatedVehicle.AssociatedAgency = Agency;
+                CreatedVehicle.AddVehicleToList(World);
             }
             CreatedVehicle.WasModSpawned = true;
             CreatedVehicle.IsFire = true;
-            if (Agency != null)
-            {
-                World.Vehicles.AddEntity(CreatedVehicle, Agency.ResponseType);
-            }
             GameFiber.Yield();
             if (!SpawnedVehicle.Exists())
             {
@@ -119,9 +116,6 @@ public class FireFighterSpawnTask : SpawnTask
             }
             VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, true);
             CreatedVehicle.UpdatePlatePrefix(Agency);
-            CreatedVehicle.CanRandomlyHaveIllegalItems = false;
-            //CreatedVehicle.SimpleInventory.AddRandomItems(ModItems,6,2,false);
-            //CreatedVehicle.SetSpawnItems(VehicleType, Agency, null, true);
             CreatedVehicles.Add(CreatedVehicle);
             return CreatedVehicle;
         }

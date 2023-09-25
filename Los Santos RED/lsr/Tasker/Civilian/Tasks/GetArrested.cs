@@ -69,7 +69,7 @@ public class GetArrested : ComplexTask
         Name = "GetArrested";
         SubTaskName = "";
         World = world;
-        SeatAssigner = new SeatAssigner(Ped,World, World.Vehicles.PoliceVehicleList);
+        SeatAssigner = new SeatAssigner(Ped,World, World.Vehicles.SimplePoliceVehicles);
     }
     public override void Start()
     {

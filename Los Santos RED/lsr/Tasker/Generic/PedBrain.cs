@@ -104,13 +104,13 @@ public class PedBrain
             PedExt.PedReactions.Update(Player);
             if (PedExt.PedReactions.HasSeenScaryCrime || PedExt.PedReactions.HasSeenAngryCrime)
             {
-                if (PedExt.HasCellPhone && (PedExt.WillCallPolice || (PedExt.WillCallPoliceIntense && PedExt.PedReactions.HasSeenIntenseCrime)))
-                {
-                    SetScaredCallIn();
-                }
-                else if (PedExt.WillFight)
-                {
-                    if (PedExt.PedReactions.HasSeenAngryCrime && Player.IsNotWanted)
+                //if (PedExt.HasCellPhone && (PedExt.WillCallPolice || (PedExt.WillCallPoliceIntense && PedExt.PedReactions.HasSeenIntenseCrime)))
+                //{
+                //    SetScaredCallIn();
+                //}
+                //else if (PedExt.WillFight)
+                //{
+                    if (PedExt.WillFight && PedExt.PedReactions.HasSeenAngryCrime && Player.IsNotWanted)
                     {
                         SetFight();
                     }
@@ -118,11 +118,11 @@ public class PedBrain
                     {
                         SetFlee();
                     }
-                }
-                else
-                {
-                    SetFlee();
-                }
+                //}
+                //else
+                //{
+                //    SetFlee();
+                //}
             }
             else if (PedExt.CanAttackPlayer && PedExt.WillFight)// && !Civilian.IsGangMember )
             {
@@ -155,7 +155,7 @@ public class PedBrain
         {
             return;
         }
-        PedExt.CurrentTask = new Flee(PedExt, Player) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };
+        PedExt.CurrentTask = new Flee(PedExt, Player, Settings) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };
         GameFiber.Yield();//TR Added back 7
         PedExt.CurrentTask?.Start();
     }
@@ -169,16 +169,16 @@ public class PedBrain
         GameFiber.Yield();//TR Added back 7
         PedExt.CurrentTask?.Start();
     }
-    protected void SetScaredCallIn()
-    {
-        if (PedExt.CurrentTask?.Name == "ScaredCallIn")
-        {
-            return;
-        }
-        PedExt.CurrentTask = new ScaredCallIn(PedExt, Player, Settings) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };
-        GameFiber.Yield();//TR Added back 7
-        PedExt.CurrentTask?.Start();
-    }
+    //protected void SetScaredCallIn()
+    //{
+    //    if (PedExt.CurrentTask?.Name == "ScaredCallIn")
+    //    {
+    //        return;
+    //    }
+    //    PedExt.CurrentTask = new ScaredCallIn(PedExt, Player, Settings) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };
+    //    GameFiber.Yield();//TR Added back 7
+    //    PedExt.CurrentTask?.Start();
+    //}
     protected void SetCalmCallIn()
     {
         if (PedExt.CurrentTask?.Name == "CalmCallIn")

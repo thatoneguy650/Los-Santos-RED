@@ -1983,7 +1983,7 @@ namespace Mod
                             VehicleExt createdVehicleExt = new VehicleExt(vehicle, Settings);
                             createdVehicleExt.Setup();
                             //createdVehicleExt.CanHaveRandomItems = false;
-                            World.Vehicles.AddEntity(createdVehicleExt, ResponseType.None);
+                            World.Vehicles.AddCivilian(createdVehicleExt);
                             TrackedVehicles.Add(createdVehicleExt);
                             existingVehicleExt = createdVehicleExt;
                             //EntryPoint.WriteToConsoleTestLong("New Vehicle Created in UpdateCurrentVehicle");

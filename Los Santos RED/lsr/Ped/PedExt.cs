@@ -449,7 +449,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool WasCrushed { get; set; }
     public bool IsManuallyDeleted { get; set; } = false;
     public bool CanBeBuried => IsUnconscious || IsDead;
-
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;

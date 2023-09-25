@@ -254,7 +254,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             gmSpawn.AllowBuddySpawn = false;
             gmSpawn.AddEmptyVehicleBlip = true;
             gmSpawn.AttemptSpawn();
-            gmSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+            gmSpawn.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));//World.Vehicles.AddEntity(x, ResponseType.None));
             ImpoundedVehicle = gmSpawn.CreatedVehicles.FirstOrDefault();
             if(ImpoundedVehicle == null || !ImpoundedVehicle.Vehicle.Exists())
             {
@@ -268,7 +268,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             ImpoundedVehicle.IsAlwaysOpenForPlayer = true;
             startingHealth = ImpoundedVehicle.Vehicle.Health;
             startingEngineHealth = ImpoundedVehicle.Vehicle.EngineHealth;
-            if(!ImpoundLocation.VehicleImpoundLot.ImpoundVehicle(ImpoundedVehicle, Time))
+            if(!ImpoundLocation.VehicleImpoundLot.ImpoundVehicle(ImpoundedVehicle, Time, false))
             {
                 return false;
             }

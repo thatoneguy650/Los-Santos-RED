@@ -100,7 +100,7 @@ public class Chase : ComplexTask
         if (Ped.Pedestrian.Exists())
         {
             NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
-            SeatAssigner = new SeatAssigner(Ped, World, World.Vehicles.PoliceVehicleList);
+            SeatAssigner = new SeatAssigner(Ped, World, World.Vehicles.SimplePoliceVehicles);
 
             //EntryPoint.WriteToConsole($"TASKER: Chase Start: {Ped.Pedestrian.Handle} ChaseDistance: {ChaseDistance}", 5);
             GameTimeChaseStarted = Game.GameTime;

@@ -35,7 +35,7 @@ public class GangConditionalLocation : ConditionalLocation
                 World.Pedestrians.AddEntity(created);
             }
             gangSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
-            gangSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+            gangSpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));//World.Vehicles.AddEntity(x, ResponseType.None));
         }
         catch (Exception ex)
         {

@@ -474,7 +474,7 @@ public class PedGrab : DynamicActivity
             Game.DisplayHelp("Cannot Load Ped");
             return false;
         }
-        SeatAssigner sa = new SeatAssigner(Ped, World, World.Vehicles.PoliceVehicleList);
+        SeatAssigner sa = new SeatAssigner(Ped, World, World.Vehicles.SimplePoliceVehicles);
         sa.AssignPrisonerSeat();
         if (sa.VehicleAssigned == null || !sa.VehicleAssigned.Vehicle.Exists() || sa.VehicleAssigned.Vehicle.DistanceTo2D(Ped.Pedestrian) >= 10f)
         {

@@ -83,7 +83,8 @@ public class CameraControl
         float ZOffset = 1f;//;RandomItems.GetRandomNumber(1f, 2f);
         TransitionHighlightEntity(toHighlight, wait, XOffset, YOffset, ZOffset);
     }
-    public void HighlightEntity(Entity toHighlight)
+
+    public void HighlightEntity(Entity toHighlight, float xOffset, float yOffset, float zOffset)
     {
         if (toHighlight.Exists())//will freeze on the second camera movement
         {
@@ -91,9 +92,9 @@ public class CameraControl
             {
                 camTo = new Camera(false);
             }
-            float XOffset = RandomItems.RandomPercent(50) ? -2f : 2f;//  RandomItems.GetRandomNumber(-3f, 3f);
-            float YOffset = 2f;// RandomItems.GetRandomNumber(1f, 3f);
-            float ZOffset = 1f;//;RandomItems.GetRandomNumber(1f, 2f);
+            float XOffset = xOffset;// RandomItems.RandomPercent(50) ? -2f : 2f;//  RandomItems.GetRandomNumber(-3f, 3f);
+            float YOffset = yOffset;// 2f;// RandomItems.GetRandomNumber(1f, 3f);
+            float ZOffset = zOffset;// 1f;//;RandomItems.GetRandomNumber(1f, 2f);
             Vector3 InitialCameraPosition = toHighlight.GetOffsetPosition(new Vector3(XOffset, YOffset, ZOffset));
             Vector3 ToLookAt = new Vector3(toHighlight.Position.X, toHighlight.Position.Y, toHighlight.Position.Z + 0.5f);
             Vector3 _direction = (ToLookAt - InitialCameraPosition).ToNormalized();
@@ -103,6 +104,7 @@ public class CameraControl
             camTo.Active = true;
         }
     }
+    public void HighlightEntity(Entity toHighlight) => HighlightEntity(toHighlight, RandomItems.RandomPercent(50) ? -2f : 2f, 2f, 1f);
     public void ReturnToGameplayCam()
     {  
         if (camTo.Exists())

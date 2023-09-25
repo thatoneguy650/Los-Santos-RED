@@ -43,6 +43,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         WeaponInventory = new WeaponInventory(this, Settings);
         Voice = new CopVoice(this, ModelName, Settings);
         AssistManager = new CopAssistManager(this);
+        PedBrain = new CopBrain(this, Settings, world, weapons);
     }
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => AssignedAgency.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => AssignedAgency.GetRandomWeapon(v, weapons);
@@ -77,6 +78,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public bool IsRespondingToInvestigation { get; set; }
     public bool IsRespondingToWanted { get; set; }
     public bool IsRespondingToCitizenWanted { get; set; }
+    public bool IsRespondingToAPB { get; set; }
     public bool HasTaser { get; set; } = false;
     public int Division { get; set; } = -1;
     public virtual string UnitType { get; set; } = "Lincoln";
@@ -129,7 +131,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     }
     public bool IsShooting { get; private set; }
 
-    public bool IsMarshalMember { get; set; } = false;
+    public bool IsMarshalTaskForceMember { get; set; } = false;
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
