@@ -14,12 +14,14 @@ public class DebugDispatcherSubMenu : DebugSubMenu
     private Dispatcher Dispatcher;
     private IEntityProvideable World;
     private IGangs Gangs;
-    public DebugDispatcherSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IAgencies agencies, Dispatcher dispatcher, IEntityProvideable world, IGangs gangs) : base(debug, menuPool, player)
+    private IOrganizations Organizations;
+    public DebugDispatcherSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IAgencies agencies, Dispatcher dispatcher, IEntityProvideable world, IGangs gangs, IOrganizations organizations) : base(debug, menuPool, player)
     {
         Agencies = agencies;
         Dispatcher = dispatcher;
         World = world;
         Gangs = gangs;
+        Organizations = organizations;
     }
     public override void AddItems()
     {
@@ -113,6 +115,19 @@ public class DebugDispatcherSubMenu : DebugSubMenu
             Dispatcher.DebugSpawnGang(SpawnEmptyGangVehicle.SelectedItem.ID, false, true);
             menu.Visible = false;
         };
+
+
+        UIMenuListScrollerItem<TaxiFirm> SpawnTaxi = new UIMenuListScrollerItem<TaxiFirm>("Taxu Random Vehicle Spawn", "Spawn a random taxi ped with a vehicle", Organizations.PossibleOrganizations.TaxiFirms);
+        SpawnTaxi.Activated += (menu, item) =>
+        {
+            Dispatcher.DebugSpawnTaxi(SpawnTaxi.SelectedItem.ID, false, false);
+            menu.Visible = false;
+        };
+
+
+
+
+
         UIMenuNumericScrollerItem<float> SpawnRockblock = new UIMenuNumericScrollerItem<float>("Spawn Roadblock", "Spawn roadblock", 10f, 200f, 10f);
         SpawnRockblock.Activated += (menu, item) =>
         {
@@ -158,6 +173,7 @@ public class DebugDispatcherSubMenu : DebugSubMenu
         DispatcherMenu.AddItem(SpawnGangFoot);
         DispatcherMenu.AddItem(SpawnGangVehicle);
         DispatcherMenu.AddItem(SpawnEmptyGangVehicle);
+        DispatcherMenu.AddItem(SpawnTaxi);
         DispatcherMenu.AddItem(SpawnRockblock);
         DispatcherMenu.AddItem(DespawnRockblock);
         DispatcherMenu.AddItem(PlayScanner);

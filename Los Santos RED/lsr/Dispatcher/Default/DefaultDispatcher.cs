@@ -1,13 +1,5 @@
-﻿using ExtensionsMethods;
-using LosSantosRED.lsr.Interface;
-using LSR.Vehicles;
+﻿using LosSantosRED.lsr.Interface;
 using Rage;
-using Rage.Native;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Runtime;
 
 public class DefaultDispatcher
 {
@@ -21,7 +13,9 @@ public class DefaultDispatcher
     protected readonly IWeapons Weapons;
     protected readonly INameProvideable Names;
     protected readonly IPlacesOfInterest PlacesOfInterest;
-
+    protected readonly ICrimes Crimes;
+    protected readonly IModItems ModItems;
+    protected readonly IShopMenus ShopMenus;
 
 
 
@@ -33,7 +27,8 @@ public class DefaultDispatcher
     protected virtual float MinDistanceToSpawn => 250f;
     protected virtual float MaxDistanceToSpawn => 900f;
 
-    public DefaultDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest)
+    public DefaultDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names,
+        IPlacesOfInterest placesOfInterest, ICrimes crimes, IModItems modItems, IShopMenus shopMenus)
     {
         Player = player;
         World = world;
@@ -45,6 +40,9 @@ public class DefaultDispatcher
         Weapons = weapons;
         Names = names;
         PlacesOfInterest = placesOfInterest;
+        ShopMenus = shopMenus;
+        ModItems = modItems;
+        Crimes = crimes;
     }
     public virtual void Dispatch()
     {
@@ -109,7 +107,7 @@ public class DefaultDispatcher
     }
 
 
-    protected bool IsValidSpawn(SpawnLocation spawnLocation)
+    protected virtual bool IsValidSpawn(SpawnLocation spawnLocation)
     {
         if (spawnLocation.StreetPosition.DistanceTo2D(Player.Position) < 250f)
         {
@@ -123,16 +121,28 @@ public class DefaultDispatcher
     }
 
 
-    protected bool GetSpawnTypes()
+    protected virtual bool GetSpawnTypes()
     {
         return false;
     }
-    protected void CallSpawnTask()
+    protected virtual bool CallSpawnTask()
     {
-
+        return false;
     }
     protected virtual bool DetermineRecall()
     {
         return false;
+    }
+    protected virtual void RemoveBlip(Ped ped)
+    {
+        if (!ped.Exists())
+        {
+            return;
+        }
+        Blip MyBlip = ped.GetAttachedBlip();
+        if (MyBlip.Exists())
+        {
+            MyBlip.Delete();
+        }
     }
 }

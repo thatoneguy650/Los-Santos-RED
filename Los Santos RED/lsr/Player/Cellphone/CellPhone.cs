@@ -28,7 +28,7 @@ public class CellPhone
 
 
 
-
+    private IContacts Contacts;
     private ISettingsProvideable Settings;
     private ITimeReportable Time;
     private IGangs Gangs;
@@ -85,7 +85,7 @@ public class CellPhone
     public List<PhoneContact> ContactList => AddedContacts;
     public List<PhoneResponse> PhoneResponseList => PhoneResponses;
     public CellPhone(ICellPhoneable player, IContactInteractable gangInteractable, IJurisdictions jurisdictions, ISettingsProvideable settings, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, IZones zones, IStreets streets,
-        IGangTerritories gangTerritories, ICrimes crimes, IEntityProvideable world, IModItems modItems, IWeapons weapons, INameProvideable names, IShopMenus shopMenus, ICellphones cellphones)
+        IGangTerritories gangTerritories, ICrimes crimes, IEntityProvideable world, IModItems modItems, IWeapons weapons, INameProvideable names, IShopMenus shopMenus, ICellphones cellphones, IContacts contacts)
     {
         Player = player;
         MenuPool = new MenuPool();
@@ -105,7 +105,8 @@ public class CellPhone
         Weapons = weapons;
         Names = names;
         ShopMenus = shopMenus;
-        BurnerPhone = new BurnerPhone(Player, Time, Settings, modItems);
+        Contacts = contacts;
+        BurnerPhone = new BurnerPhone(Player, Time, Settings, modItems, Contacts);
         phoneAudioPlayer = new NAudioPlayer(Settings);
         Cellphones = cellphones;
         CurrentCellphoneData = Cellphones.GetDefault();
@@ -113,7 +114,11 @@ public class CellPhone
     public void Setup()
     {
         IsDisposed = false;
-        AddContact(new EmergencyServicesContact(StaticStrings.EmergencyServicesContactName, "CHAR_CALL911"), false);
+        //AddContact(new EmergencyServicesContact(StaticStrings.EmergencyServicesContactName, "CHAR_CALL911"), false);
+        foreach (PhoneContact phoneContact in Contacts.GetDefaultContacts())
+        {
+            AddContact(phoneContact, false);
+        }
         BurnerPhone.Setup();
         phoneAudioPlayer.Setup();
     }
@@ -160,7 +165,10 @@ public class CellPhone
         PhoneResponses = new List<PhoneResponse>();
         ScheduledContacts = new List<ScheduledContact>();
         ScheduledTexts = new List<ScheduledText>();
-        AddContact(new EmergencyServicesContact(StaticStrings.EmergencyServicesContactName, "CHAR_CALL911"), false);
+        foreach(PhoneContact phoneContact in Contacts.GetDefaultContacts())
+        {
+            AddContact(phoneContact, false);
+        }
     }
     public void ClearTextMessages()
     {

@@ -48,7 +48,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             List<string> Replies = new List<string>() {
                 $"I got a {DeadBodyVehicle.FullName(false)} Plate #{DeadBodyVehicle.CarPlate.PlateNumber} with some unwanted guests. Pickup near ~p~{SpawnLocation.Name}~s~ on ~y~{SpawnLocation.FullStreetAddress}~s~ and take it to ~p~{CrusherLocation.Name}~s~ on ~y~{CrusherLocation.FullStreetAddress}~s~. ${PaymentAmount}"
                 };
-            Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(HiringGang.Contact.Name, HiringGang.Contact.IconName, Replies.PickRandom());
         }
         protected override bool GetTaskData()
         {

@@ -312,9 +312,9 @@ public class GangDen : GameLocation//, ILocationGangAssignable
         ExpectedItemAmount = 0;
     }
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups, IEntityProvideable world, 
-        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations)
+        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts)
     {
-        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations);
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts);
         Menu = ShopMenus.GetSpecificMenu(MenuID);
         AssociatedGang = gangs.GetGang(AssignedAssociationID);
         ButtonPromptText = $"Enter {AssociatedGang?.ShortName} {AssociatedGang?.DenName}";
@@ -377,7 +377,7 @@ public class GangDen : GameLocation//, ILocationGangAssignable
     public override void DisplayMessage(string header, string message)
     {
         Game.RemoveNotification(NotificationHandle);
-        NotificationHandle = Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, header, message);
+        NotificationHandle = Game.DisplayNotification(AssociatedGang.Contact.IconName, AssociatedGang.Contact.IconName, AssociatedGang.Contact.Name, header, message);
     }
     public override void AddDistanceOffset(Vector3 offsetToAdd)
     {

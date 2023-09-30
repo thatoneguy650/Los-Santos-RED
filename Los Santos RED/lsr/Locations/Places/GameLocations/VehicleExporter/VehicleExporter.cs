@@ -38,6 +38,8 @@ public class VehicleExporter : GameLocation
     public string ContactName { get; set; } = "";
     public int HoursBetweenExports { get; set; } = 3;
     public List<SpawnPlace> ParkingSpaces { get; set; } = new List<SpawnPlace>();
+    [XmlIgnore]
+    public PhoneContact PhoneContact { get; set; }
     public VehicleExporter(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string _Menu) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = _Menu;
@@ -47,6 +49,12 @@ public class VehicleExporter : GameLocation
     {
         ExportedVehicles.Clear();
         base.Reset();
+    }
+    public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes,
+    IPedGroups PedGroups, IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts)
+    {
+        PhoneContact = contacts.GetContactData(ContactName);
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts);
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {

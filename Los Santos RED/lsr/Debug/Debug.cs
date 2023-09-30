@@ -1834,6 +1834,7 @@ public class Debug
             Settings.SettingsManager.GangSettings.ManageDispatching = false;
             Settings.SettingsManager.FireSettings.ManageDispatching = false;
             Settings.SettingsManager.SecuritySettings.ManageDispatching = false;
+            Settings.SettingsManager.ServiceSettings.ManageDispatching = false;
             Game.DisplaySubtitle("Dispatching Disabled");
         }
         else
@@ -1843,6 +1844,7 @@ public class Debug
             Settings.SettingsManager.GangSettings.ManageDispatching = true;
             Settings.SettingsManager.FireSettings.ManageDispatching = true;
             Settings.SettingsManager.SecuritySettings.ManageDispatching = true;
+            Settings.SettingsManager.ServiceSettings.ManageDispatching = true;
             Dispatcher.DebugResetLocations();
             Game.DisplaySubtitle("Dispatching Enabled");
         }
@@ -4360,8 +4362,8 @@ private void SetPropAttachment()
         //    EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} IsZombie {ped.IsZombie} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
         //}
         //EntryPoint.WriteToConsole($"============================================ ZOMBIES END", 5);
-        EntryPoint.WriteToConsole($"============================================ MERCHANTS START", 5);
-        foreach (PedExt ped in World.Pedestrians.ServiceWorkers.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f).OrderBy(x => x.DistanceToPlayer))
+        EntryPoint.WriteToConsole($"============================================ SERVICE START", 5);
+        foreach (PedExt ped in World.Pedestrians.ServiceWorkers.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
         {
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
@@ -4370,9 +4372,9 @@ private void SetPropAttachment()
                 $"MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} " +
                 $"WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} " +
                 $"Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} " +
-                $"Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG} WasModSpawned:{ped.WasModSpawned} CanConverse:{ped.CanConverse}", 5);
+                $"Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG} WasModSpawned:{ped.WasModSpawned} CanConverse:{ped.CanConverse} Tasked{ped.CanBeTasked} AmbientTasked{ped.CanBeAmbientTasked}", 5);
         }
-        EntryPoint.WriteToConsole($"============================================ MERCHANTS END", 5);
+        EntryPoint.WriteToConsole($"============================================ SERVICE END", 5);
         EntryPoint.WriteToConsole($"============================================ DEAD START", 5);
         foreach (PedExt ped in World.Pedestrians.DeadPeds.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
         {
@@ -4591,18 +4593,28 @@ private void SetPropAttachment()
         }
         EntryPoint.WriteToConsole($"============================================ GANG VEHICLE END", 5);
 
+        EntryPoint.WriteToConsole($"============================================ TAXI VEHICLE START", 5);
+        foreach (VehicleExt vehicleExt in World.Vehicles.TaxiVehicles)
+        {
+            string vehicleText = $"{vehicleExt.Handle}";
+            if (vehicleExt.Vehicle.Exists())
+            {
+                vehicleText += $" {vehicleExt.Vehicle.Model.Name}";
+            }
+            EntryPoint.WriteToConsole($"{vehicleText}", 5);
+        }
+        EntryPoint.WriteToConsole($"============================================ TAXI VEHICLE END", 5);
         EntryPoint.WriteToConsole($"============================================ CIVILIAN VEHICLE START", 5);
         foreach (VehicleExt vehicleExt in World.Vehicles.CivilianVehicles)
         {
             string vehicleText = $"{vehicleExt.Handle}";
             if (vehicleExt.Vehicle.Exists())
             {
-                vehicleText += $"{vehicleExt.Vehicle.Model.Name}";
+                vehicleText += $" {vehicleExt.Vehicle.Model.Name}";
             }
             EntryPoint.WriteToConsole($"{vehicleText}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ CIVILIAN VEHICLE END", 5);
-
 
         EntryPoint.WriteToConsole($"============================================", 5);
         EntryPoint.WriteToConsole($"============================================", 5);

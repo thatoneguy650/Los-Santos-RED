@@ -35,6 +35,7 @@ public class BurnerPhone
     private int prevCurrentApp;
     private int prevCurrentIndex;
     private ISettingsProvideable Settings;
+    private IContacts Contacts;
     //private bool IsDisplayingCall;
 
     private IModItems ModItems;
@@ -52,19 +53,20 @@ public class BurnerPhone
     public int GlobalScaleformID => globalScaleformID;
     public bool IsActive => isPhoneActive;
     private int CurrentIndex => (3 * CurrentRow) + CurrentColumn;
-    public BurnerPhone(ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings, IModItems modItems)
+    public BurnerPhone(ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings, IModItems modItems, IContacts contacts)
     {
         Player = player;
         Time = time;
         Settings = settings;
         ModItems = modItems;
+        Contacts = contacts;
     }
     public void Setup()
     {
         NativeFunction.Natives.DESTROY_MOBILE_PHONE();
         PhoneApps = new List<BurnerPhoneApp>();
         MessagesApp = new BurnerPhoneMessagesApp(this, Player, Time, Settings, 0);
-        ContactsApp = new BurnerPhoneContactsApp(this, Player, Time, Settings, 1);
+        ContactsApp = new BurnerPhoneContactsApp(this, Player, Time, Settings, 1, Contacts);
         FlashlightApp = new BurnerPhoneFlashlightApp(this, Player, Time, Settings, 2, ModItems);
         SettingsApp = new BurnerPhoneSettingsApp(this, Player, Time, Settings, 3);
 
@@ -286,7 +288,7 @@ public class BurnerPhone
         {
             PressedRight();
         }
-        
+    
         if(pressedDirection)
         {
             //EntryPoint.WriteToConsoleTestLong($"Row:{CurrentRow} Column:{CurrentColumn} Index:{CurrentIndex}");

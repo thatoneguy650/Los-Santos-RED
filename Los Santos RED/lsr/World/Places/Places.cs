@@ -26,8 +26,9 @@ public class Places
     private IEntityProvideable World;
     private IAgencies Agencies;
     private IOrganizations Associations;
+    private IContacts Contacts;
     public Places(IEntityProvideable world, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus,
-        IInteriors interiors, IGangs gangs, IGangTerritories gangTerritories, IStreets streets, IAgencies agencies, INameProvideable names, IPedGroups pedGroups, ILocationTypes locationTypes, IPlateTypes plateTypes, IOrganizations associations)
+        IInteriors interiors, IGangs gangs, IGangTerritories gangTerritories, IStreets streets, IAgencies agencies, INameProvideable names, IPedGroups pedGroups, ILocationTypes locationTypes, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts)
     {
         World = world;
         PlacesOfInterest = placesOfInterest;
@@ -44,8 +45,9 @@ public class Places
         Streets = streets;
         Agencies = agencies;
         Associations = associations;
+        Contacts = contacts;
         DynamicPlaces = new DynamicPlaces(this, PlacesOfInterest, World, Interiors, ShopMenus, Settings, Crimes, Weapons, Time);
-        StaticPlaces = new StaticPlaces(this, PlacesOfInterest, World, Interiors, ShopMenus, Settings, Crimes, Weapons, Zones,Streets,Gangs,Agencies, Time, names, pedGroups, Jurisdictions, GangTerritories, locationTypes, plateTypes, Associations);
+        StaticPlaces = new StaticPlaces(this, PlacesOfInterest, World, Interiors, ShopMenus, Settings, Crimes, Weapons, Zones,Streets,Gangs,Agencies, Time, names, pedGroups, Jurisdictions, GangTerritories, locationTypes, plateTypes, Associations, Contacts);
     }
     public List<GameLocation> ActiveLocations { get; private set; } = new List<GameLocation>();
     public DynamicPlaces DynamicPlaces { get; private set; }

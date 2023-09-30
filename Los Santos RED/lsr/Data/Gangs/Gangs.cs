@@ -61,7 +61,7 @@ public class Gangs : IGangs
             DefaultConfig();
         }
     }
-    public void Setup(IHeads heads, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople, IIssuableWeapons issuableWeapons)
+    public void Setup(IHeads heads, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople, IIssuableWeapons issuableWeapons, IContacts contacts)
     {
         foreach (Gang gang in GangsList)
         {
@@ -71,6 +71,7 @@ public class Gangs : IGangs
             gang.Personnel = dispatchablePeople.GetPersonData(gang.PersonnelID);
             gang.Vehicles = dispatchableVehicles.GetVehicleData(gang.VehiclesID);
             gang.PossibleHeads = heads.GetHeadData(gang.HeadDataGroupID);
+            gang.Contact = contacts.GetGangContactData(gang.ContactName);
         }
     }
     public List<Gang> GetAllGangs()

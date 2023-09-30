@@ -57,7 +57,7 @@ public class GangBrain : PedBrain
             }
         }
     }
-    private void UpdateCurrentTask()//this should be moved out?
+    protected override void UpdateCurrentTask()//this should be moved out?
     {
         GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(GangMember.Gang);
         bool isPlayerGang = Player.RelationshipManager.GangRelationships.CurrentGang?.ID == GangMember.Gang?.ID;

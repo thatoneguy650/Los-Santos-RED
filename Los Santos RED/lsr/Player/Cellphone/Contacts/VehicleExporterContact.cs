@@ -21,6 +21,5 @@ public class VehicleExporterContact : PhoneContact, IPhoneContact
         MenuInteraction = new VehicleExporterInteraction(player, gangs, placesOfInterest, settings, modItems, this);
         MenuInteraction.Start(this);
     }
-
 }
 

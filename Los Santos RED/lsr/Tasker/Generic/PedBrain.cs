@@ -79,7 +79,7 @@ public class PedBrain
             }
         }
     }
-    private void UpdateCurrentTask()
+    protected virtual void UpdateCurrentTask()
     {
         if (PedExt.IsBusted)
         {
@@ -104,25 +104,14 @@ public class PedBrain
             PedExt.PedReactions.Update(Player);
             if (PedExt.PedReactions.HasSeenScaryCrime || PedExt.PedReactions.HasSeenAngryCrime)
             {
-                //if (PedExt.HasCellPhone && (PedExt.WillCallPolice || (PedExt.WillCallPoliceIntense && PedExt.PedReactions.HasSeenIntenseCrime)))
-                //{
-                //    SetScaredCallIn();
-                //}
-                //else if (PedExt.WillFight)
-                //{
-                    if (PedExt.WillFight && PedExt.PedReactions.HasSeenAngryCrime && Player.IsNotWanted)
-                    {
-                        SetFight();
-                    }
-                    else
-                    {
-                        SetFlee();
-                    }
-                //}
-                //else
-                //{
-                //    SetFlee();
-                //}
+                if (PedExt.WillFight && PedExt.PedReactions.HasSeenAngryCrime && Player.IsNotWanted)
+                {
+                    SetFight();
+                }
+                else
+                {
+                    SetFlee();
+                }
             }
             else if (PedExt.CanAttackPlayer && PedExt.WillFight)// && !Civilian.IsGangMember )
             {
@@ -169,16 +158,6 @@ public class PedBrain
         GameFiber.Yield();//TR Added back 7
         PedExt.CurrentTask?.Start();
     }
-    //protected void SetScaredCallIn()
-    //{
-    //    if (PedExt.CurrentTask?.Name == "ScaredCallIn")
-    //    {
-    //        return;
-    //    }
-    //    PedExt.CurrentTask = new ScaredCallIn(PedExt, Player, Settings) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };
-    //    GameFiber.Yield();//TR Added back 7
-    //    PedExt.CurrentTask?.Start();
-    //}
     protected void SetCalmCallIn()
     {
         if (PedExt.CurrentTask?.Name == "CalmCallIn")

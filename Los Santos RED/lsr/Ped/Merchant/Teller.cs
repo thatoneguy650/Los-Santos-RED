@@ -13,6 +13,7 @@ public class Teller : PedExt
     public Bank AssociatedBank { get; set; }
     public Teller(Ped _Pedestrian, ISettingsProvideable settings, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world) : base(_Pedestrian, settings, crimes, weapons, _Name, "Teller", world)
     {
+        WasModSpawned = true;
         Money = RandomItems.GetRandomNumberInt(settings.SettingsManager.CivilianSettings.MerchantMoneyMin, settings.SettingsManager.CivilianSettings.MerchantMoneyMax);
     }
     public override bool KnowsDrugAreas => false;

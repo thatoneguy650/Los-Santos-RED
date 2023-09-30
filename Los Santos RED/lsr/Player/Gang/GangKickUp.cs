@@ -15,7 +15,7 @@ public class GangKickUp
     private IGangRelateable Player;
     private Gang Gang;
     private ITimeReportable Time;
-    private GangContact Contact;
+   //private GangContact Contact;
 
     public DateTime DueDate { get; private set; }
     public int DueAmount { get; private set; }
@@ -29,7 +29,7 @@ public class GangKickUp
         Player = player;
         Gang = gang;
         Time = time;
-        Contact = new GangContact(Gang.ContactName, Gang.ContactIcon);
+        //Contact = Gang.Contact;
     }
     public void Setup()
     {
@@ -124,7 +124,7 @@ public class GangKickUp
             $"You need to kick up ${DueAmount} every {Gang.MemberKickUpDays} days.",
             $"This ain't free, ${DueAmount} every {Gang.MemberKickUpDays} days.",
         };
-        Player.CellPhone.AddScheduledText(Contact, StartMessages.PickRandom(), 2, false);
+        Player.CellPhone.AddScheduledText(Gang.Contact, StartMessages.PickRandom(), 2, false);
     }
     private void SendPaymentMessage()
     {
@@ -134,7 +134,7 @@ public class GangKickUp
             $"Good work, see you in {Gang.MemberKickUpDays} days with ${DueAmount}.",
             $"Always good to get some respect from you. Next up is ${DueAmount} in {Gang.MemberKickUpDays} days.",
         };
-        NativeHelper.DisplayNotificationCustom(Gang.ContactIcon, Gang.ContactIcon, Gang.ContactName, "~g~Response", StartMessages.PickRandom(), NotificationIconTypes.DollarSign, false);
+        NativeHelper.DisplayNotificationCustom(Gang.Contact.IconName, Gang.Contact.IconName, Gang.ContactName, "~g~Response", StartMessages.PickRandom(), NotificationIconTypes.DollarSign, false);
         //Player.CellPhone.AddPhoneResponse(Gang.ContactName, Gang.ContactIcon, StartMessages.PickRandom());
     }
     private void SendWarningMessage()
@@ -146,7 +146,7 @@ public class GangKickUp
             $"Cutting it a little close? ${DueAmount} by {DueDate:g}.",
 
         };
-        Player.CellPhone.AddScheduledText(Contact, WarningMessages.PickRandom(), 2, false);
+        Player.CellPhone.AddScheduledText(Gang.Contact, WarningMessages.PickRandom(), 2, false);
         HasSentWarning = true;
         //EntryPoint.WriteToConsoleTestLong("SENT WARNING FOR GANG KICK UP");
     }
@@ -161,7 +161,7 @@ public class GangKickUp
         $"Missing the kick up can be hazardous to your health. Now its ${DueAmount} by {DueDate:g}. Don't forget.",
         $"Fuck you, pay me ${DueAmount} by {DueDate:g}.",
         };
-        Player.CellPhone.AddScheduledText(Contact, MissedMessages.PickRandom(), 2, false);
+        Player.CellPhone.AddScheduledText(Gang.Contact, MissedMessages.PickRandom(), 2, false);
     }
     public override string ToString()
     {

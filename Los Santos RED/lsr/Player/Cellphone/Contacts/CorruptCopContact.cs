@@ -23,6 +23,13 @@ public class CorruptCopContact : PhoneContact
         MenuInteraction = new CorruptCopInteraction(player, gangs, placesOfInterest, settings, this);
         MenuInteraction.Start(this);       
     }
-
+    public override ContactRelationship GetRelationship()
+    {
+        if (contactRelationship == null)
+        {
+            contactRelationship = new OfficerFriendlyRelationship(Name);
+        }
+        return contactRelationship;
+    }
 }
 

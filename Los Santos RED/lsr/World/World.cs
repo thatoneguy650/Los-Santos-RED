@@ -36,7 +36,8 @@ namespace Mod
         private bool isSettingDensity;
 
         public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups,
-            IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IAudioPlayable audio, IGangs gangs, IGangTerritories gangTerritories, IStreets streets, IModItems modItems, IPedGroups pedGroups, ILocationTypes locationTypes, IOrganizations associations)
+            IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IAudioPlayable audio, IGangs gangs, IGangTerritories gangTerritories, IStreets streets, IModItems modItems, IPedGroups pedGroups, ILocationTypes locationTypes,
+            IOrganizations associations, IContacts contacts)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;
@@ -52,7 +53,7 @@ namespace Mod
             Streets = streets;
             Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus, Gangs, GangTerritories, this);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes, modItems, this);
-            Places = new Places(this,zones,jurisdictions,settings,placesOfInterest,weapons,crimes,time,shopMenus,interiors,gangs,gangTerritories,streets, agencies, names, pedGroups, locationTypes, plateTypes, associations);
+            Places = new Places(this,zones,jurisdictions,settings,placesOfInterest,weapons,crimes,time,shopMenus,interiors,gangs,gangTerritories,streets, agencies, names, pedGroups, locationTypes, plateTypes, associations, contacts);
         }
         public bool IsMPMapLoaded { get; private set; }
         public bool IsZombieApocalypse { get; set; } = false;

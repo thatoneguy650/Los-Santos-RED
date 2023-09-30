@@ -7,16 +7,11 @@ using System.Drawing;
 
 public class Firefighter : PedExt, IWeaponIssuable
 {
-    private uint GameTimeSpawned;
     public Firefighter(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, IEntityProvideable world) : base(pedestrian,settings, crimes, weapons, name, "FireFighter", world)
     {
         Health = health;
         AssignedAgency = agency;
         WasModSpawned = wasModSpawned;
-        if (WasModSpawned)
-        {
-            GameTimeSpawned = Game.GameTime;
-        }
         WeaponInventory = new WeaponInventory(this, Settings);
         PedBrain = new FirefighterBrain(this, Settings, world, weapons);
     }
@@ -25,7 +20,6 @@ public class Firefighter : PedExt, IWeaponIssuable
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => AssignedAgency.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => AssignedAgency.GetRandomWeapon(v, weapons);
     public Agency AssignedAgency { get; set; } = new Agency();
-    public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public override bool KnowsDrugAreas => false;
     public override bool KnowsGangAreas => false;
     public override string BlipName => "Firefighter";

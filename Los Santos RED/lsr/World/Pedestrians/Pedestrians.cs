@@ -63,6 +63,9 @@ public class Pedestrians : ITaskerReportable
     public List<Teller> Tellers { get; private set; } = new List<Teller>();
     public List<Zombie> Zombies { get; private set; } = new List<Zombie>();
     public List<GangMember> GangMembers { get; private set; } = new List<GangMember>();
+
+    public List<TaxiDriver> TaxiDrivers { get; private set; } = new List<TaxiDriver>();
+
     public List<PedExt> DeadPeds { get; private set; } = new List<PedExt>();
     public List<PedExt> CivilianList => Civilians.Where(x => x.Pedestrian.Exists()).ToList();
     public List<GangMember> GangMemberList => GangMembers.Where(x => x.Pedestrian.Exists()).ToList();
@@ -74,6 +77,7 @@ public class Pedestrians : ITaskerReportable
     public List<Firefighter> FirefighterList => Firefighters.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Merchant> MerchantList => Merchants.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Teller> TellerList => Tellers.Where(x => x.Pedestrian.Exists()).ToList();
+    public List<TaxiDriver> TaxiDriverList => TaxiDrivers.Where(x => x.Pedestrian.Exists()).ToList();
     public List<PedExt> LivingPeople
     {
         get
@@ -87,6 +91,7 @@ public class Pedestrians : ITaskerReportable
             myList.AddRange(PoliceList);
             myList.AddRange(FirefighterList);
             myList.AddRange(SecurityGuardList);
+            myList.AddRange(TaxiDriverList);
             return myList;
         }
     }
@@ -100,6 +105,7 @@ public class Pedestrians : ITaskerReportable
             myList.AddRange(MerchantList);
             myList.AddRange(TellerList);
             myList.AddRange(SecurityGuardList);
+            myList.AddRange(TaxiDriverList);
             return myList;
         }
     }
@@ -110,6 +116,7 @@ public class Pedestrians : ITaskerReportable
             List<PedExt> myList = new List<PedExt>();
             myList.AddRange(MerchantList);
             myList.AddRange(TellerList);
+            myList.AddRange(TaxiDriverList);
             return myList;
         }
     }
@@ -122,6 +129,7 @@ public class Pedestrians : ITaskerReportable
             myList.AddRange(TellerList);
             myList.AddRange(CivilianList);
             myList.AddRange(SecurityGuardList);
+            myList.AddRange(TaxiDriverList);
             return myList;
         }
     }
@@ -150,6 +158,7 @@ public class Pedestrians : ITaskerReportable
             myList.AddRange(DeadPeds);
             myList.AddRange(SecurityGuardList);
             myList.AddRange(PoliceCanineList);
+            myList.AddRange(TaxiDriverList);
             return myList;
         }
     }
@@ -170,6 +179,9 @@ public class Pedestrians : ITaskerReportable
     public int TotalSpawnedAmbientGangMembers => GangMembers.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedFirefighters => Firefighters.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedZombies => Zombies.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+
+    public int TotalSpawnedTaxiDrivers => TaxiDrivers.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+    public int TotalSpawnedAmbientTaxiDrivers => TaxiDrivers.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public void Setup()
     {
         foreach (Gang gang in Gangs.AllGangs)
@@ -418,14 +430,16 @@ public class Pedestrians : ITaskerReportable
             }
         }
         Firefighters.Clear();
-        foreach (Merchant merchant in Merchants)
+        foreach (PedExt serviceWorker in ServiceWorkers)
         {
-            if (merchant.Pedestrian.Exists() && merchant.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
+            if (serviceWorker.Pedestrian.Exists() && serviceWorker.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
-                merchant.Pedestrian.Delete();
+                serviceWorker.Pedestrian.Delete();
             }
         }
         Merchants.Clear();
+        Tellers.Clear();
+        TaxiDrivers.Clear();
         foreach (Zombie zombie in Zombies)
         {
             if (zombie.Pedestrian.Exists() && zombie.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
@@ -548,7 +562,7 @@ public class Pedestrians : ITaskerReportable
         }
         Firefighters.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
         GameFiber.Yield();
-        foreach (Merchant Civilian in Merchants.Where(x => x.Pedestrian.Exists() && x.CanRemove))
+        foreach (PedExt Civilian in ServiceWorkers.Where(x => x.Pedestrian.Exists() && x.CanRemove))
         {
             Civilian.DeleteBlip();
             if (Civilian.Pedestrian.IsDead && !DeadPeds.Any(x => x.Handle == Civilian.Handle))
@@ -558,6 +572,8 @@ public class Pedestrians : ITaskerReportable
             }
         }
         Merchants.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
+        Tellers.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
+        TaxiDrivers.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
         GameFiber.Yield();
     }
     private void PruneGangMembers()
@@ -717,6 +733,13 @@ public class Pedestrians : ITaskerReportable
                     Tellers.Add((Teller)pedExt);
                 }
             }
+            else if (pedExt.GetType() == typeof(TaxiDriver))
+            {
+                if (!TaxiDrivers.Any(x => x.Handle == pedExt.Handle))
+                {
+                    TaxiDrivers.Add((TaxiDriver)pedExt);
+                }
+            }
             else
             {
                 if (!Civilians.Any(x => x.Handle == pedExt.Handle))
@@ -752,11 +775,23 @@ public class Pedestrians : ITaskerReportable
         {
             myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
         }
+        PedExt createdPedExt;
+        if (Pedestrian.CurrentVehicle.Exists() && Pedestrian.CurrentVehicle.Model.Hash == 3338918751)
+        {
+            createdPedExt = new TaxiDriver(Pedestrian, Settings, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), myGroup.MemberName, World, false)
+            {
+                WasPersistentOnCreate = WasPersistentOnCreate,
+            };
+        }
+        else
+        {
+            createdPedExt = new PedExt(Pedestrian, Settings, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), myGroup.MemberName, World)
+            {
+                WasPersistentOnCreate = WasPersistentOnCreate,
+            };
+        }
         
-        PedExt createdPedExt = new PedExt(Pedestrian, Settings, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), myGroup.MemberName, World) 
-        { 
-            WasPersistentOnCreate = WasPersistentOnCreate, 
-        };
+ 
         createdPedExt.SetBaseStats(null, ShopMenus, Weapons, false);  
         if (!Pedestrian.Exists())
         {

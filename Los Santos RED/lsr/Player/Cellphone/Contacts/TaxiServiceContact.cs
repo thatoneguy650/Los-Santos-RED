@@ -12,7 +12,7 @@ public class TaxiServiceContact : PhoneContact, IPhoneContact
     {
     }
 
-    public TaxiServiceContact(string name) : base(name)
+    public TaxiServiceContact(string name, string iconName) : base(name, iconName)
     {
     }
 

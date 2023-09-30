@@ -75,7 +75,7 @@ public class DebugMenu : ModUIMenu
         DebugSubMenus.Add(new DebugCrimeSubMenu(Debug, MenuPool, Player, Settings, Crimes, Tasker, World, Weapons));
         DebugSubMenus.Add(new DebugOutfitSubMenu(Debug,MenuPool,Player));
         DebugSubMenus.Add(new DebugMovementSubMenu(Debug, MenuPool, Player));
-        DebugSubMenus.Add(new DebugDispatcherSubMenu(Debug,MenuPool,Player, Agencies, Dispatcher, World, Gangs));
+        DebugSubMenus.Add(new DebugDispatcherSubMenu(Debug,MenuPool,Player, Agencies, Dispatcher, World, Gangs, ModDataFileManager.Organizations));
         DebugSubMenus.Add(new DebugGangSubMenu(Debug, MenuPool, Player, Gangs, Dispatcher));
         DebugSubMenus.Add(new DebugRelationshipSubMenu(Debug, MenuPool, Player, ModDataFileManager));
         DebugSubMenus.Add(new DebugVehicleSubMenu(Debug, MenuPool, Player, PlateTypes));

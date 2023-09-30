@@ -8,22 +8,16 @@ using System.Drawing;
 
 public class EMT : PedExt
 {
-    private uint GameTimeSpawned;
     public EMT(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, IEntityProvideable world) : base(pedestrian,settings,crimes,weapons,name,"EMT",world)
     {
         Health = health;
         AssignedAgency = agency;
         WasModSpawned = wasModSpawned;
-        if (WasModSpawned)
-        {
-            GameTimeSpawned = Game.GameTime;
-        }
         PedReactions.IncludeUnconsciousAsMundane = false;
         PedBrain = new EMTBrain(this, Settings, world, weapons);
     }
     public override ePedAlertType PedAlertTypes { get; set; } = ePedAlertType.UnconsciousBody | ePedAlertType.HelpCry;
     public Agency AssignedAgency { get; set; } = new Agency();
-    public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public override bool KnowsDrugAreas => false;
     public override bool KnowsGangAreas => false;
     public override bool WillCallPolice { get; set; } = true;

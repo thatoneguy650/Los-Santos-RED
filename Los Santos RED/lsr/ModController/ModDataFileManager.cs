@@ -47,8 +47,10 @@ public class ModDataFileManager
     public TattooNames TattooNames;
     public SavedOutfits SavedOutfits;
     public VehicleSeatAndDoorLookup VehicleSeatDoorData;
-    public Organizations Associations;
+    public Organizations Organizations;
     public Cellphones Cellphones;
+    public Contacts Contacts;
+
     public ModDataFileManager()
     {
 
@@ -111,13 +113,19 @@ public class ModDataFileManager
         DispatchablePeople.ReadConfig();
         DispatchablePeople.Setup(IssueableWeapons);
         GameFiber.Yield();
+
+        Contacts = new Contacts();
+        Contacts.ReadConfig();
+        GameFiber.Yield();
+
+
         Agencies = new Agencies();
         Agencies.ReadConfig();
         Agencies.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons);
         GameFiber.Yield();
         Gangs = new Gangs();
         Gangs.ReadConfig();
-        Gangs.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons);
+        Gangs.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons, Contacts);
         GameFiber.Yield();
         PlacesOfInterest = new PlacesOfInterest(ShopMenus, Gangs);
         PlacesOfInterest.ReadConfig();
@@ -192,9 +200,9 @@ public class ModDataFileManager
         VehicleSeatDoorData.ReadConfig();
         GameFiber.Yield();
 
-        Associations = new Organizations();
-        Associations.ReadConfig();
-        Associations.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons);
+        Organizations = new Organizations();
+        Organizations.ReadConfig();
+        Organizations.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons, Contacts);
         GameFiber.Yield();
 
 

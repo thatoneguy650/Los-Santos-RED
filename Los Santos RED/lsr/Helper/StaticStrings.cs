@@ -37,7 +37,10 @@ public static class StaticStrings
     public static readonly string UndergroundGunsContactName = "Underground Guns";//these have gotta go, but where?
     public static readonly string EmergencyServicesContactName = "911 - Emergency Services";//these have gotta go, but where?  
     public static readonly string VehicleExporterContactName = "Vehicle Exports";//these have gotta go, but where?
-    public static readonly string TaxiServiceContactName = "Downtown Cab Co.";//these have gotta go, but where?
+    public static readonly string DowntownCabCoContactName = "Downtown Cab Co.";//these have gotta go, but where?
+    public static readonly string ExportotopiaContactName = "Exportotopia";//these have gotta go, but where?
+    public static readonly string LSRGunDealerContactName = "LSR Gun Dealer";
+    //Exportotopia
 
     //Crimes
     public static readonly string KillingPoliceCrimeID = "KillingPolice";

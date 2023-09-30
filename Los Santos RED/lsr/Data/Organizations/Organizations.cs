@@ -11,13 +11,16 @@ using System.Linq;
 public class Organizations : IOrganizations
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Organizations.xml";
-    private List<Organization> OrganizationsList;
+    //private List<Organization> OrganizationsList;
     private Organization DefaultOrganization;
-    private Organization DowntownCabCo;
+    private TaxiFirm DowntownCabCo;
     private Organization VehicleExports;
     private Organization Exportotopia;
     private Organization UndergroundGuns;
     private Organization LSRGuns;
+
+
+    public PossibleOrganizations PossibleOrganizations { get; private set; }
 
     public Organizations()
     {
@@ -30,12 +33,12 @@ public class Organizations : IOrganizations
         if (taskFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded Organizations Config: {taskFile.FullName}", 0);
-            OrganizationsList = Serialization.DeserializeParams<Organization>(taskFile.FullName);
+            PossibleOrganizations = Serialization.DeserializeParam<PossibleOrganizations>(taskFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
             EntryPoint.WriteToConsole($"Loaded Organizations Config  {ConfigFileName}", 0);
-            OrganizationsList = Serialization.DeserializeParams<Organization>(ConfigFileName);
+            PossibleOrganizations = Serialization.DeserializeParam<PossibleOrganizations>(ConfigFileName);
         }
         else
         {
@@ -50,7 +53,7 @@ public class Organizations : IOrganizations
         {
             return null;
         }
-        return OrganizationsList.Where(x => x.ID.ToLower() == AgencyInitials.ToLower()).FirstOrDefault();
+        return PossibleOrganizations.AllOrganizations().Where(x => x.ID.ToLower() == AgencyInitials.ToLower()).FirstOrDefault();
     }
     public Organization GetOrganizationByContact(string contactName)
     {
@@ -58,64 +61,66 @@ public class Organizations : IOrganizations
         {
             return null;
         }
-        return OrganizationsList.Where(x => x.PhoneContact != null && x.PhoneContact.Name.ToLower() == contactName.ToLower()).FirstOrDefault();
+        return PossibleOrganizations.AllOrganizations().Where(x => x.PhoneContact != null && x.PhoneContact.Name.ToLower() == contactName.ToLower()).FirstOrDefault();
     }
     public List<Organization> GetOrganizations(Ped ped)
     {
-        return OrganizationsList.Where(x => x.Personnel != null && x.Personnel.Any(b => b.ModelName.ToLower() == ped.Model.Name.ToLower())).ToList();
+        return PossibleOrganizations.AllOrganizations().Where(x => x.Personnel != null && x.Personnel.Any(b => b.ModelName.ToLower() == ped.Model.Name.ToLower())).ToList();
     }
     public List<Organization> GetOrganizations(Vehicle vehicle)
     {
-        return OrganizationsList.Where(x => x.Vehicles != null && x.Vehicles.Any(b => b.ModelName.ToLower() == vehicle.Model.Name.ToLower())).ToList();
+        return PossibleOrganizations.AllOrganizations().Where(x => x.Vehicles != null && x.Vehicles.Any(b => b.ModelName.ToLower() == vehicle.Model.Name.ToLower())).ToList();
     }
     public List<Organization> GetAssociations()
     {
-        return OrganizationsList;
+        return PossibleOrganizations.AllOrganizations();
     }
     private void SetupDefault()
     {
-        DowntownCabCo = new Organization("~y~", "DTCAB", "Downtown Cab Co.", "Downtown Cab Co.", "Yellow", "", "", "DT ", "Tasers", "", "", "Cabbie") { 
+        DowntownCabCo = new TaxiFirm("~y~", "DTCAB", "Downtown Cab Co.", "Downtown Cab Co.", "Yellow", "TaxiDrivers", "TaxiVehicles", "DT ", "", "", "", "Cabbie") { 
             Description = "In transit since 1922",
             HeadDataGroupID = "AllHeads",
-            PhoneContact = new TaxiServiceContact("Downtown Cab Co.") { IconName = "CHAR_TAXI" }
+            ContactName = StaticStrings.DowntownCabCoContactName,
         };
         VehicleExports = new Organization("~w~", "VEHEXP", StaticStrings.VehicleExporterContactName, StaticStrings.VehicleExporterContactName, "White", "", "", "", "", "", "", "Exporter")
         {
             HeadDataGroupID = "AllHeads",
-            PhoneContact = new VehicleExporterContact(StaticStrings.VehicleExporterContactName),
+            ContactName = StaticStrings.VehicleExporterContactName,
         };
         Exportotopia = new Organization("~w~", "EXPORTO", "Exportotopia", "Exportotopia", "White", "", "", "", "", "", "", "Exporter")
         {
             HeadDataGroupID = "AllHeads",
-            PhoneContact = new VehicleExporterContact("Exportotopia"),
+            ContactName = StaticStrings.ExportotopiaContactName,
         };
         UndergroundGuns = new Organization("~r~", "UNDRGUN", StaticStrings.UndergroundGunsContactName, StaticStrings.UndergroundGunsContactName, "Red", "", "", "", "", "", "", "Gun Dealer")
         {
             HeadDataGroupID = "AllHeads",
-            PhoneContact = new GunDealerContact(StaticStrings.UndergroundGunsContactName),
+            ContactName = StaticStrings.UndergroundGunsContactName,
         };
         LSRGuns = new Organization("~r~", "LSRGUN", "LSR Gun Dealer", "LSR Gun Dealer", "Red", "", "", "", "", "", "", "Gun Dealer")
         {
             HeadDataGroupID = "AllHeads",
-            PhoneContact = new GunDealerContact("LSR Gun Dealer"),
+            ContactName = StaticStrings.LSRGunDealerContactName,
         };
     }
     private void DefaultConfig()
     {
         DefaultOrganization = new Organization("~b~", "ASSOC", "Association", "Association", "Blue", "", "", "LS ", "", "", "", "Employee");
-        OrganizationsList = new List<Organization>
+        PossibleOrganizations = new PossibleOrganizations();
+        PossibleOrganizations.GeneralOrganizations = new List<Organization>
+        {     
+            VehicleExports,
+            UndergroundGuns,
+        };
+        PossibleOrganizations.TaxiFirms = new List<TaxiFirm>
         {
             DowntownCabCo,
-            VehicleExports,
-            Exportotopia,
-            UndergroundGuns,
-            LSRGuns,
         };
-        Serialization.SerializeParams(OrganizationsList, ConfigFileName);
+        Serialization.SerializeParam(PossibleOrganizations, ConfigFileName);
     }
-    public void Setup(IHeads heads, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople, IIssuableWeapons issuableWeapons)
+    public void Setup(IHeads heads, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople, IIssuableWeapons issuableWeapons, IContacts contacts)
     {
-        foreach (Organization organization in OrganizationsList)
+        foreach (Organization organization in PossibleOrganizations.AllOrganizations())//OrganizationsList)
         {
             organization.LessLethalWeapons = issuableWeapons.GetWeaponData(organization.LessLethalWeaponsID);
             organization.LongGuns = issuableWeapons.GetWeaponData(organization.LongGunsID);
@@ -123,7 +128,12 @@ public class Organizations : IOrganizations
             organization.Personnel = dispatchablePeople.GetPersonData(organization.PersonnelID);
             organization.Vehicles = dispatchableVehicles.GetVehicleData(organization.VehiclesID);
             organization.PossibleHeads = heads.GetHeadData(organization.HeadDataGroupID);
+            organization.PhoneContact = contacts.GetContactData(organization.ContactName);
         }
     }
 
+    public TaxiFirm GetRandomTaxiFirm()
+    {
+        return PossibleOrganizations.TaxiFirms.PickRandom();
+    }
 }

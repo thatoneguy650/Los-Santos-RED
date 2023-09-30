@@ -16,6 +16,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
 {
     public IPoliceRespondable PlayerToCheck;
     protected ISettingsProvideable Settings;
+    protected uint GameTimeSpawned;
     private uint GameTimeCreated = 0;
     private uint GameTimeLastEnteredVehicle;
     private uint GameTimeLastExitedVehicle;
@@ -51,7 +52,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         CurrentHealthState = new HealthState(this, settings, false);
         Settings = settings;
 
-
+        if (WasModSpawned)
+        {
+            GameTimeSpawned = Game.GameTime;
+        }
 
 
         PedViolations = new PedViolations(this, crimes, settings, weapons, world);
@@ -83,6 +87,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public int AssignedSeat { get; set; }
     public VehicleExt AssignedVehicle { get; set; }
     public Vector3 Position => position;
+    public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool CanAttackPlayer => IsFedUpWithPlayer || HatesPlayer;
     public bool CanBeAmbientTasked { get; set; } = true;
     public bool CanBeMugged => !IsCop && Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && !Pedestrian.IsInCombat && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsMerchant || IsGangMember || WasModSpawned);

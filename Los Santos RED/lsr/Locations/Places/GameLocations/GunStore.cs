@@ -25,6 +25,8 @@ public class GunStore : GameLocation
     public int MoneyToUnlock { get; set; } = 0;
     public string ContactName { get; set; } = "";
     public override int RegisterCash { get; set; } = 7000;
+    [XmlIgnore]
+    public PhoneContact PhoneContact { get; set; }
     public GunStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
@@ -33,6 +35,12 @@ public class GunStore : GameLocation
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         return true;
+    }
+    public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, 
+        IPedGroups PedGroups, IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts)
+    {
+        PhoneContact = contacts.GetContactData(ContactName);
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts);
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
@@ -68,7 +76,7 @@ public class GunStore : GameLocation
                     InteractionMenu.Visible = true;
                     Transaction.ProcessTransactionMenu();
 
-                    Player.RelationshipManager.Add(new GunDealerRelationship(ContactName));
+                    Player.RelationshipManager.Add(PhoneContact.GetRelationship());// new GunDealerRelationship(ContactName));
                     Player.RelationshipManager.OnInteracted(ContactName, Transaction.MoneySpent, (Transaction.MoneySpent) / 5);
 
                     Transaction.DisposeTransactionMenu();

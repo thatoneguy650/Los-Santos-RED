@@ -325,7 +325,7 @@ public class DebugLocationSubMenu : DebugSubMenu
     private void LogCameraPosition()
     {
 
-        if (FreeCam.Active)
+        if (FreeCam.Exists() && FreeCam.Active)
         {
             Vector3 pos = FreeCam.Position;
             Rotator r = FreeCam.Rotation;

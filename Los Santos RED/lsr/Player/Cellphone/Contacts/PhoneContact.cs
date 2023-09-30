@@ -14,16 +14,21 @@ using System.Xml.Serialization;
 [XmlInclude(typeof(TaxiServiceContact))]
 public class PhoneContact
 {
+
+    protected ContactRelationship contactRelationship;
     public string Name { get; set; } = "Unknown"; 
     public int Index { get; set; } = 0;
     public bool Active { get; set; } = true;
     public int DialTimeout { get; set; } = 3000;  
     public bool RandomizeDialTimeout { get; set; } = true;
     public string IconName { get; set; } = "CHAR_BLANK_ENTRY";
-    public bool Bold { get; set; } = false;
-
+    public bool IsDefault { get; set; } = false;
+    public string Number { get; set; } = "";
     [XmlIgnore]
     public IContactMenuInteraction MenuInteraction { get; set; }
+    public int CurrentDialTimeout => RandomizeDialTimeout ? RandomizedDialTimeout : DialTimeout;
+    [XmlIgnore]
+    public int RandomizedDialTimeout { get; set; } = 3000;
     public PhoneContact(string name)
     {
         Name = name;
@@ -41,5 +46,12 @@ public class PhoneContact
     {
         cellPhone.Close(0);
     }
-
- }
+    public virtual ContactRelationship GetRelationship()
+    {
+        if(contactRelationship == null)
+        {
+            contactRelationship = new ContactRelationship(Name);
+        }
+        return contactRelationship;
+    }
+}

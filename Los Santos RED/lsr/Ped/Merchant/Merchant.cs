@@ -13,6 +13,7 @@ public class Merchant : PedExt
    // public GameLocation Store { get; set; }
     public Merchant(Ped _Pedestrian, ISettingsProvideable settings, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world) : base(_Pedestrian, settings, crimes, weapons, _Name, "Vendor", world)
     {
+        WasModSpawned = true;
         Money = RandomItems.GetRandomNumberInt(settings.SettingsManager.CivilianSettings.MerchantMoneyMin, settings.SettingsManager.CivilianSettings.MerchantMoneyMax);
     }
     public override bool KnowsDrugAreas => false;

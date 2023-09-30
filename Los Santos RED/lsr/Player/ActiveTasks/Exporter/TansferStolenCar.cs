@@ -395,7 +395,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                         $"Did you think you could keep this from us? Would be unfortunate to get caught in that hot car.",
                                         $"Enjoy your time in Bolingbroke SHU",
                                             };
-            Player.CellPhone.AddScheduledText(new GangContact(gang.ContactName, gang.ContactIcon), Replies2.PickRandom(), 0, true);
+            Player.CellPhone.AddScheduledText(gang.Contact, Replies2.PickRandom(), 0, true);
         }
     }
 }

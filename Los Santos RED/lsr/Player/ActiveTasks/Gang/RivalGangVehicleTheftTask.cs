@@ -166,7 +166,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     $"Go steal a ~p~{VehicleToStealMakeName} {VehicleToStealModelName}~s~ from those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ assholes. Once you are done come back to {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. ${MoneyToRecieve} on completion",
                     $"Go get me a ~p~{VehicleToStealMakeName} {VehicleToStealModelName}~s~ with {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ gang colors. Bring it back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. Payment ${MoneyToRecieve}",
                     };
-            Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(HiringGang.Contact.Name, HiringGang.Contact.IconName, Replies.PickRandom());
         }
     }
 }

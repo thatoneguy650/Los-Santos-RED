@@ -18,7 +18,6 @@ public class AmbientSpawner
     private IEntityProvideable World;
     private IModItems ModItems;
     private IShopMenus ShopMenus;
-
     private DispatchableVehicle DispatchableVehicle;
     private DispatchablePerson DispatchablePerson;
     private PedExt spawnedDriver;
@@ -41,7 +40,6 @@ public class AmbientSpawner
         ModItems = modItems;
         ShopMenus = shopMenus;
     }
-
     public void Start()
     {
         GetSpawnPosition();
@@ -57,8 +55,6 @@ public class AmbientSpawner
     {
         hirePosition = new SpawnLocation(Position);
         hirePosition.GetClosestStreet(true);
-
-
         spawnPosition = new SpawnLocation(Position.Around2D(250f, 550f));
         spawnPosition.GetClosestStreet(true);
     }
@@ -72,9 +68,7 @@ public class AmbientSpawner
         civilianSpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));
         spawnedDriver = civilianSpawnTask.CreatedPeople.FirstOrDefault();
         spawnedVehicle = civilianSpawnTask.CreatedVehicles.FirstOrDefault();
-
         spawnedVehicle?.AddBlip();
-
         if(spawnedDriver != null && spawnedDriver.Pedestrian.Exists() && spawnedVehicle != null && spawnedVehicle.Vehicle.Exists())
         {
             SpawnedItems = true;
@@ -87,7 +81,6 @@ public class AmbientSpawner
             spawnedDriver.CanBeTasked = true;
             spawnedDriver.CanBeAmbientTasked = true;
             //NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(spawnedDriver.Pedestrian, spawnedDriver.Pedestrian.CurrentVehicle, 10f, (int)eCustomDrivingStyles.RegularDriving, 10f);
-
             unsafe
             {
                 int lol = 0;
@@ -100,11 +93,6 @@ public class AmbientSpawner
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", spawnedDriver.Pedestrian, lol);
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
-
-
-
-
-
             //NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(spawnedDriver.Pedestrian, spawnedDriver.Pedestrian.CurrentVehicle, hirePosition.StreetPosition.X, hirePosition.StreetPosition.Y, hirePosition.StreetPosition.Z, 10f, (int)eCustomDrivingStyles.RegularDriving, 10f); //30f speed
         }
     }
@@ -127,7 +115,7 @@ public class AmbientSpawner
                     }
                     if(spawnedDriver.RecentlyUpdated && spawnedDriver.ClosestDistanceToPlayer <= 30f && spawnedDriver.DistanceToPlayer >= 150f)
                     {
-                        EntryPoint.WriteToConsole("Spawned Driver Got CLose then far");
+                        EntryPoint.WriteToConsole("Spawned Driver Got Close then far");
                         break;
                     }
                     if(spawnedDriver.RecentlyUpdated && spawnedDriver.DistanceToPlayer >= 600f)
@@ -137,8 +125,6 @@ public class AmbientSpawner
                     }
                     GameFiber.Sleep(1000);
                 }
-
-
                // GameFiber.Sleep(15000);
                 if (spawnedDriver != null && spawnedDriver.Pedestrian.Exists())
                 {

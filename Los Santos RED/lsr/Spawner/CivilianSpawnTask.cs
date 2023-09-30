@@ -8,11 +8,11 @@ using System.Linq;
 
 public class CivilianSpawnTask : SpawnTask
 {
-    public bool SetPersistent = false;
-    private Vehicle SpawnedVehicle;
-    private ICrimes Crimes;
-    private IShopMenus ShopMenus;
 
+    protected Vehicle SpawnedVehicle;
+    protected ICrimes Crimes;
+    protected IShopMenus ShopMenus;
+    public bool SetPersistent { get; set; } = false;
     public CivilianSpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, bool setPersistent, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world, IModItems modItems, IShopMenus shopMenus) 
         : base(spawnLocation,vehicleType,personType,addBlip,addOptionalPassengers,settings,weapons,names,world, modItems)
     {
@@ -46,9 +46,9 @@ public class CivilianSpawnTask : SpawnTask
             Cleanup(true);
         }
     }
-    private void AttemptPersonOnlySpawn()
+    protected override void AttemptPersonOnlySpawn()
     {
-        CreatePerson();
+        base.AttemptPersonOnlySpawn();
     }
     protected override PedExt CreatePerson()
     {
@@ -137,7 +137,7 @@ public class CivilianSpawnTask : SpawnTask
             OccupantsToAdd = 0;
         }
     }
-    private PedExt SetupRegularPed(Ped ped)
+    protected virtual PedExt SetupRegularPed(Ped ped)
     {
         ped.IsPersistent = SetPersistent;    
         EntryPoint.PersistentPedsCreated++;//TR
@@ -153,7 +153,7 @@ public class CivilianSpawnTask : SpawnTask
         }
         return CreatedPedExt;
     }
-    private void SetupPed(Ped ped)
+    protected void SetupPed(Ped ped)
     {
         PlacePed(ped);
         int DesiredHealth = RandomItems.MyRand.Next(PersonType.HealthMin, PersonType.HealthMax) + 100;

@@ -149,7 +149,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 reply += $" You should be able to get it at {ClosestPlace.Name}.";
             }
-            Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, reply);
+            Player.CellPhone.AddPhoneResponse(HiringGang.Contact.Name, HiringGang.Contact.IconName, reply);
         }
     }
 }

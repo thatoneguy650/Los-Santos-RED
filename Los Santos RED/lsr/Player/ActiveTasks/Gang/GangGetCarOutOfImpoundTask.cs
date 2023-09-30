@@ -226,7 +226,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 $"for your payment of ${MoneyToRecieve}. " +
                 $"Better be in great shape.",
                     };
-            Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(HiringGang.Contact.Name, HiringGang.Contact.IconName, Replies.PickRandom());
         }
         private void SendReturnToBaseMessage()
         {

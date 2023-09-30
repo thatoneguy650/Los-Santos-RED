@@ -297,7 +297,7 @@ public class GangInteraction : IContactMenuInteraction
                     "You are a stupid motherfucker aren't you?",
                     "Good luck dickhead.",
                     };
-        Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
+        Player.CellPhone.AddPhoneResponse(ActiveGang.Contact.Name, ActiveGang.Contact.IconName, Replies.PickRandom());
     }
     private void EnemyReply()
     {
@@ -306,7 +306,7 @@ public class GangInteraction : IContactMenuInteraction
                     "Go fuck yourself prick.",
                     "(click)",
                     };
-        Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
+        Player.CellPhone.AddPhoneResponse(ActiveGang.Contact.Name, ActiveGang.Contact.IconName, Replies.PickRandom());
     }
     private void RequestDenAddress()
     {
@@ -323,7 +323,7 @@ public class GangInteraction : IContactMenuInteraction
                     $"The {ActiveGang.DenName}? It's on {myDen.FullStreetAddress}.",
 
                     };
-            Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(ActiveGang.Contact.Name, ActiveGang.Contact.IconName, Replies.PickRandom());
         }
     }
     private bool LeaveGang()

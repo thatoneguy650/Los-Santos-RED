@@ -37,6 +37,7 @@ public class Vehicles
     public List<GangVehicleExt> GangVehicles { get; private set; } = new List<GangVehicleExt>();
     public List<VehicleExt> CivilianVehicles { get; private set; } = new List<VehicleExt>();
     public List<SecurityVehicleExt> SecurityVehicles { get; private set; } = new List<SecurityVehicleExt>();
+    public List<TaxiVehicleExt> TaxiVehicles { get; private set; } = new List<TaxiVehicleExt>();
     public List<VehicleExt> AllVehicleList 
     {
         get
@@ -48,6 +49,7 @@ public class Vehicles
             myList.AddRange(EMSVehicles);
             myList.AddRange(GangVehicles);
             myList.AddRange(SecurityVehicles);
+            myList.AddRange(TaxiVehicles);
             return myList;
         }
     }
@@ -88,6 +90,7 @@ public class Vehicles
             List<VehicleExt> myList = new List<VehicleExt>();
             myList.AddRange(CivilianVehicles);
             myList.AddRange(GangVehicles);
+            myList.AddRange(TaxiVehicles);
             return myList;
         }
     }
@@ -118,6 +121,8 @@ public class Vehicles
         GangVehicles.RemoveAll(x => !x.Vehicle.Exists());
         GameFiber.Yield();//TR 29
         SecurityVehicles.RemoveAll(x => !x.Vehicle.Exists());
+        GameFiber.Yield();//TR 29
+        TaxiVehicles.RemoveAll(x => !x.Vehicle.Exists());
     }
     public void CreateNew()
     {
@@ -170,9 +175,17 @@ public class Vehicles
         {
             if (!CivilianVehicles.Any(x => x.Handle == vehicle.Handle))
             {
-                VehicleExt Car = new VehicleExt(vehicle, Settings);
+                VehicleExt Car;
+                if (vehicle.Model.Name.ToLower() == "taxi")
+                {
+                    Car = new TaxiVehicleExt(vehicle, Settings);
+                }
+                else
+                {
+                    Car = new VehicleExt(vehicle, Settings);
+                }
                 Car.Setup();
-                CivilianVehicles.Add(Car);
+                Car.AddVehicleToList(World);
                 return true;
             }
         }    
@@ -357,6 +370,15 @@ public class Vehicles
                 }
             }
             CivilianVehicles.Clear();
+            foreach (VehicleExt vehicleExt in TaxiVehicles.Where(x => x.WasModSpawned))
+            {
+                vehicleExt.FullyDelete();
+                if (vehicleExt.Vehicle.Exists())
+                {
+                    EntryPoint.PersistentVehiclesDeleted++;
+                }
+            }
+            TaxiVehicles.Clear();
         }
     }
     public VehicleExt GetClosestVehicleExt(Vector3 position, bool includeService, float maxDistance)
@@ -438,6 +460,19 @@ public class Vehicles
             {
                 copCar.SonarBlip.Dispose();
             }
+        }
+    }
+
+    public void AddTaxi(TaxiVehicleExt vehicleExt)
+    {
+        if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+        if (!TaxiVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
+        {
+            TaxiVehicles.Add(vehicleExt);
+            CivilianVehicles.RemoveAll(x => x.Handle == vehicleExt.Handle);
         }
     }
 }

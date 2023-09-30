@@ -74,6 +74,7 @@ namespace Mod
         private IWeapons Weapons;
         private ITimeControllable TimeControllable;
         private ICrimes Crimes;
+        private IContacts Contacts;
         private IGangTerritories GangTerritories;
         private IGameSaves GameSaves;
         private ISeats Seats;
@@ -90,7 +91,7 @@ namespace Mod
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
-            , IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats, IAgencies agencies, ISavedOutfits savedOutfits, IVehicleSeatAndDoorLookup vehicleSeatDoorData, ICellphones cellphones)
+            , IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats, IAgencies agencies, ISavedOutfits savedOutfits, IVehicleSeatAndDoorLookup vehicleSeatDoorData, ICellphones cellphones, IContacts contacts)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -113,6 +114,7 @@ namespace Mod
             Seats = seats;
             Agencies = agencies;
             VehicleSeatDoorData = vehicleSeatDoorData;
+            Contacts = contacts;
             Scanner = new Scanner(provider, this, audio, secondaryAudio, Settings, TimeControllable, PlacesOfInterest);
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName, "Person", World), Settings, true);
             if (CharacterModelIsFreeMode)
@@ -132,7 +134,7 @@ namespace Mod
             Intoxication = new Intoxication(this);
             Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings, this, this, ModItems);
             RelationshipManager = new RelationshipManager(gangs, Settings, PlacesOfInterest, TimeControllable, this, this);
-            CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories, Crimes, World, ModItems, Weapons, Names, shopMenus, cellphones);
+            CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories, Crimes, World, ModItems, Weapons, Names, shopMenus, cellphones, Contacts);
             PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes, names, Weapons, shopMenus, ModItems, pedGroups);
             Licenses = new Licenses(this);
             Properties = new Properties(this, PlacesOfInterest, TimeControllable);

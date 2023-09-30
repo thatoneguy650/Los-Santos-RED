@@ -199,16 +199,17 @@ public class GangReputation
             {
                 rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
                 RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral); 
+
                 Player.SetDenStatus(Gang, false);
                 if (!IsEnemy)
                 {
                     if (sendText)
                     {
-                        SendInfoText(new GangContact(Gang.ContactName,Gang.ContactIcon), Gang, false);
+                        SendInfoText(Gang.Contact, Gang, false);
                     }
                     else
                     {
-                        Player.CellPhone.AddContact(new GangContact(Gang.ContactName,Gang.ContactIcon), false);
+                        Player.CellPhone.AddContact(Gang.Contact, false);
                     }
                 }
             }
@@ -219,11 +220,11 @@ public class GangReputation
                 Player.SetDenStatus(Gang, true);
                 if (sendText)
                 {
-                    SendInfoText(new GangContact(Gang.ContactName, Gang.ContactIcon), Gang, true);
+                    SendInfoText(Gang.Contact, Gang, true);
                 }
                 else
                 {
-                    Player.CellPhone.AddContact(new GangContact(Gang.ContactName, Gang.ContactIcon), false);
+                    Player.CellPhone.AddContact(Gang.Contact, false);
                 }
             }
             else if (GangRelationship == GangRespect.Member || IsMember)
@@ -233,11 +234,11 @@ public class GangReputation
                 Player.SetDenStatus(Gang, true);
                 if (sendText)
                 {
-                    SendInfoText(new GangContact(Gang.ContactName, Gang.ContactIcon), Gang, true);
+                    SendInfoText(Gang.Contact, Gang, true);
                 }
                 else
                 {
-                    Player.CellPhone.AddContact(new GangContact(Gang.ContactName, Gang.ContactIcon), false);
+                    Player.CellPhone.AddContact(Gang.Contact, false);
                 }
             }
             else if (GangRelationship == GangRespect.Neutral)

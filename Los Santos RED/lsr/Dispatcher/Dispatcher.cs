@@ -25,10 +25,12 @@ public class Dispatcher
     private SecurityDispatcher SecurityDispatcher;
     private GangDispatcher GangDispatcher;
     private LocationDispatcher LocationDispatcher;
+    private TaxiDispatcher TaxiDispatcher;
     private IWeapons Weapons;
     private INameProvideable Names;
     private IWeatherReportable WeatherReporter;
     private ITimeControllable Time;
+    private IOrganizations Organizations;
     //private List<RandomHeadData> RandomHeadList;
 
     private ICrimes Crimes;
@@ -41,7 +43,7 @@ public class Dispatcher
     private bool hasLocationDispatched;
 
     public Dispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, ICrimes crimes,
-        IPedGroups pedGroups, IGangs gangs, IGangTerritories gangTerritories, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IWeatherReportable weatherReporter, ITimeControllable time, IModItems modItems)
+        IPedGroups pedGroups, IGangs gangs, IGangTerritories gangTerritories, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IWeatherReportable weatherReporter, ITimeControllable time, IModItems modItems, IOrganizations organizations)
     {
         Player = player;
         World = world;
@@ -61,6 +63,7 @@ public class Dispatcher
         WeatherReporter = weatherReporter;
         Time = time;
         ModItems = modItems;
+        Organizations = organizations;
     }
     public void Setup()
     {
@@ -72,6 +75,7 @@ public class Dispatcher
         ZombieDispatcher = new ZombieDispatcher(World, Player, Settings, Streets, Zones, Jurisdictions, Weapons, Names, Crimes);
         GangDispatcher = new GangDispatcher(World, Player, Gangs, Settings, Streets, Zones, GangTerritories, Weapons, Names, PedGroups, Crimes, ShopMenus, PlacesOfInterest, ModItems);
         LocationDispatcher = new LocationDispatcher(World, Player, Gangs, Settings, Streets, Zones, GangTerritories, Weapons, Names, PedGroups, Crimes, ShopMenus, PlacesOfInterest, Agencies, Jurisdictions, WeatherReporter, Time, ModItems);
+        TaxiDispatcher = new TaxiDispatcher(World, Player, Agencies,Settings, Streets,Zones,Jurisdictions,Weapons,Names,PlacesOfInterest,Organizations,Crimes,ModItems,ShopMenus);
     }
     public void Dispatch()
     {
@@ -127,6 +131,11 @@ public class Dispatcher
             return;
         }
         LocationDispatcher.Dispatch();
+        if (!EntryPoint.ModController.IsRunning)
+        {
+            return;
+        }
+        TaxiDispatcher.Dispatch();
     }
     public void Recall()
     {
@@ -142,6 +151,7 @@ public class Dispatcher
         }
         GameFiber.Yield();
         GangDispatcher.Recall();
+        TaxiDispatcher.Recall();
         RecallCivilians();
     }
     private void RecallCivilians()
@@ -213,6 +223,18 @@ public class Dispatcher
     {
         GangDispatcher.DebugSpawnGangMember(agencyID, onFoot, isEmpty);
     }
+
+
+    public void DebugSpawnTaxi()
+    {
+        TaxiDispatcher.DebugSpawnTaxi("", false, false);
+    }
+    public void DebugSpawnTaxi(string agencyID, bool onFoot, bool isEmpty)
+    {
+        TaxiDispatcher.DebugSpawnTaxi(agencyID, onFoot, isEmpty);
+    }
+
+
     public void DebugSpawnEMT(string agencyID, bool onFoot, bool isEmpty)
     {
         EMSDispatcher.DebugSpawnEMT(agencyID, onFoot, isEmpty);

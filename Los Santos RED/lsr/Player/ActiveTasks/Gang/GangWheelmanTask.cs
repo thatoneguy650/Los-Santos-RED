@@ -589,7 +589,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
 
             };
-            Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(HiringGang.Contact.Name, HiringGang.Contact.IconName, Replies.PickRandom());
         }
         private void SendMoneyPickupMessage()
         {

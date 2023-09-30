@@ -56,9 +56,8 @@ public class TaxiServiceInteraction : IContactMenuInteraction
         TaxiServiceMenu = new UIMenu("", "Select an Option");
         TaxiServiceMenu.RemoveBanner();
         MenuPool.Add(TaxiServiceMenu);
-        //AddJobItems();
         AddRequestItems();
-        //AddLocationItems();
+        AddLocationItems();
         TaxiServiceMenu.Visible = true;
         InteractionLoop();
     }
@@ -71,12 +70,12 @@ public class TaxiServiceInteraction : IContactMenuInteraction
         {
 
 
+            //Player.TaxiManager.RequestTaxi();
+
+
             AmbientSpawner ambientSpawner = new AmbientSpawner(new DispatchableVehicle("taxi", 100, 100), new DispatchablePerson("a_m_m_socenlat_01", 100, 100),Player.Position,Settings,Crimes,Weapons,Names,World,ModItems,ShopMenus);
             ambientSpawner.SetPersistent = true;
-
-
             ambientSpawner.Start();
-
             string fullText = "";
             if (ambientSpawner.SpawnedItems)
             {        
@@ -87,39 +86,33 @@ public class TaxiServiceInteraction : IContactMenuInteraction
             {
                 fullText = "No service available in your current location.";
             }
-
             Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
             sender.Visible = false;
         };
         RequestSubMenu.AddItem(requestTaxiMenuItem);
     }
-    //private void AddLocationItems()
-    //{
-    //    LocationsSubMenu = MenuPool.AddSubMenu(TaxiServiceMenu, "Locations");
-    //    LocationsSubMenu.RemoveBanner();
+    private void AddLocationItems()
+    {
+        LocationsSubMenu = MenuPool.AddSubMenu(TaxiServiceMenu, "Locations");
+        LocationsSubMenu.RemoveBanner();
 
-    //    foreach (VehicleExporter gl in PlacesOfInterest.PossibleLocations.VehicleExporters.Where(x => x.ContactName == TaxiServiceContact.Name))
-    //    {
-    //        if (!gl.IsEnabled)
-    //        {
-    //            continue;
-    //        }
-    //        UIMenu locationsubMenu = MenuPool.AddSubMenu(LocationsSubMenu, gl.Name);
-    //        locationsubMenu.RemoveBanner();
-
-    //        UIMenuItem storeAddressRequest = new UIMenuItem("Request Directions", gl.Name + "~n~" + gl.Description + "~n~Address: " + gl.FullStreetAddress);
-    //        storeAddressRequest.Activated += (sender, selectedItem) =>
-    //        {
-    //            RequestLocations(gl);
-    //            sender.Visible = false;
-    //        };
-    //        locationsubMenu.AddItem(storeAddressRequest);
-
-    //        UIMenu locationListsubMenu = MenuPool.AddSubMenu(locationsubMenu, "Vehicle List");
-    //        locationListsubMenu.RemoveBanner();
-    //        gl.AddPriceListItems(locationListsubMenu, ModItems);
-    //    }
-    //}
+        foreach (GameLocation gl in PlacesOfInterest.PossibleLocations.Landmarks.Where(x => 1==0))// x.ContactName == TaxiServiceContact.Name))
+        {
+            if (!gl.IsEnabled)
+            {
+                continue;
+            }
+            UIMenu locationsubMenu = MenuPool.AddSubMenu(LocationsSubMenu, gl.Name);
+            locationsubMenu.RemoveBanner();
+            UIMenuItem storeAddressRequest = new UIMenuItem("Request Directions", gl.Name + "~n~" + gl.Description + "~n~Address: " + gl.FullStreetAddress);
+            storeAddressRequest.Activated += (sender, selectedItem) =>
+            {
+                RequestLocations(gl);
+                sender.Visible = false;
+            };
+            locationsubMenu.AddItem(storeAddressRequest);
+        }
+    }
 
     private void InteractionLoop()
     {
@@ -144,48 +137,22 @@ public class TaxiServiceInteraction : IContactMenuInteraction
     {
         MenuPool.ProcessMenus();
     }
-    //private void RequestLocations(VehicleExporter exporter)
-    //{
-    //    if (exporter != null)
-    //    {
-    //        Player.GPSManager.AddGPSRoute(exporter.Name, exporter.EntrancePosition);
-    //        List<string> Replies = new List<string>() {
-    //                $"Our shop is located on {exporter.FullStreetAddress} come see us.",
-    //                $"Come check out our shop on {exporter.FullStreetAddress}.",
-    //                $"You can find our shop on {exporter.FullStreetAddress}.",
-    //                $"{exporter.FullStreetAddress}.",
-    //                $"It's on {exporter.FullStreetAddress} come see us.",
-    //                $"The shop? It's on {exporter.FullStreetAddress}.",
+    private void RequestLocations(GameLocation locationName)
+    {
+        if (locationName != null)
+        {
+            Player.GPSManager.AddGPSRoute(locationName.Name, locationName.EntrancePosition);
+            List<string> Replies = new List<string>() {
+                    $"Our shop is located on {locationName.FullStreetAddress} come see us.",
+                    $"Come check out our shop on {locationName.FullStreetAddress}.",
+                    $"You can find our shop on {locationName.FullStreetAddress}.",
+                    $"{locationName.FullStreetAddress}.",
+                    $"It's on {locationName.FullStreetAddress} come see us.",
+                    $"The shop? It's on {locationName.FullStreetAddress}.",
 
-    //                };
-    //        Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, Replies.PickRandom());
-    //    }
-    //}
-
-    //private void AddJobItems()
-    //{
-    //    JobsSubMenu = MenuPool.AddSubMenu(TaxiServiceMenu, "Jobs");
-    //    JobsSubMenu.RemoveBanner();
-
-    //    UIMenuItem TaskCancel = new UIMenuItem("Cancel Task", "Tell the gun dealer you can't complete the task.") { RightLabel = "~o~$?~s~" };
-    //    TaskCancel.Activated += (sender, selectedItem) =>
-    //    {
-    //        Player.PlayerTasks.CancelTask(TaxiServiceContact.Name);
-    //        sender.Visible = false;
-    //    };
-    //    if (Player.PlayerTasks.HasTask(TaxiServiceContact.Name))
-    //    {
-    //        JobsSubMenu.AddItem(TaskCancel);
-    //        return;
-    //    }
-    //    UIMenuItem TransferCars = new UIMenuItem("Transfer", "Transfer some hot vehicles.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.VehicleExporterTransferPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.VehicleExporterTransferPaymentMax:C0}~s~" };
-    //    TransferCars.Activated += (sender, selectedItem) =>
-    //    {
-    //        Player.PlayerTasks.VehicleExporterTasks.TansferStolenCar.Start(TaxiServiceContact);
-    //        sender.Visible = false;
-    //    };
-    //    JobsSubMenu.AddItem(TransferCars);
-    //}
-
+                    };
+            Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, Replies.PickRandom());
+        }
+    }
 }
 

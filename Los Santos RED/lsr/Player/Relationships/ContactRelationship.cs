@@ -13,7 +13,6 @@ public class ContactRelationship
 {
     protected IContactRelateable Player;
     protected IPlacesOfInterest PlacesOfInterest;
-   // protected int reputationLevel = 200;
     public readonly int DefaultRepAmount = 200;
     public readonly int RepMaximum = 2000;
     public readonly int RepMinimum = -2000;
@@ -36,12 +35,18 @@ public class ContactRelationship
     }
     public void Dispose()
     {
-        Reset(false);
+        //Reset(false);
     }
     public void Reset(bool sendText)
     {
+        EntryPoint.WriteToConsole($"ContactRelationship RESET RAN {TotalMoneySpent}");
         SetReputation(DefaultRepAmount, sendText);
+        SetMoneySpent(0, false);
         PlayerDebt = 0;
+    }
+    public virtual void Deactivate()
+    {
+
     }
     public void SetReputation(int value, bool sendText)
     {
@@ -85,6 +90,11 @@ public class ContactRelationship
     public virtual void SetMoneySpent(int Amount, bool sendNotification)
     {
         TotalMoneySpent = Amount;
+    }
+
+    public virtual void Activate()
+    {
+
     }
 }
 

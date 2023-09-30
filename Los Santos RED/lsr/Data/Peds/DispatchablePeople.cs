@@ -53,6 +53,7 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> MafiaPeds;
     private List<DispatchablePerson> YardiesPeds;
     private List<DispatchablePerson> OtherPeds;
+    private List<DispatchablePerson> TaxiDrivers;
     private List<DispatchablePerson> StandardCops_Old;
     private List<DispatchablePerson> FIBPeds_Old;
     private List<DispatchablePerson> NOOSEPeds_Old;
@@ -1538,6 +1539,10 @@ public class DispatchablePeople : IDispatchablePeople
             },
         };
 
+        TaxiDrivers = new List<DispatchablePerson>() {
+            new DispatchablePerson("a_m_m_socenlat_01",100,100),
+        };
+
 
         ////  ,CustomPropAttachments = new List<CustomPropAttachment>() { new CustomPropAttachment("prop_holster_01", "BONETAG_PELVIS", new Vector3(-0.04f, 0f, 0.19f), new Rotator(-90f, -90f, 0f)) { SpawnChance = 100f } }
 
@@ -1632,6 +1637,7 @@ public class DispatchablePeople : IDispatchablePeople
 
         //Other
         PeopleGroupLookup.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
 
         Serialization.SerializeParams(PeopleGroupLookup, ConfigFileName);
     }
@@ -1747,6 +1753,7 @@ public class DispatchablePeople : IDispatchablePeople
 
         //Other
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
 
         Serialization.SerializeParams(PeopleGroupLookup_Old, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\DispatchablePeople_LosSantos2008.xml");
     }
@@ -1877,6 +1884,7 @@ public class DispatchablePeople : IDispatchablePeople
 
         //Other
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
 
         Serialization.SerializeParams(PeopleGroupLookup_Simple, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\DispatchablePeople_Simple.xml");
     }
@@ -7740,6 +7748,7 @@ public class DispatchablePeople : IDispatchablePeople
 
         //Other
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
 
         DefaultConfig_FullExpandedJurisdictionEXTRA(PeopleConfig_EUP);
 

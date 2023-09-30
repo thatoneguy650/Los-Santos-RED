@@ -87,6 +87,8 @@ public class DispatchableVehicles : IDispatchableVehicles
     private List<DispatchableVehicle> NOOSESEPVehicles;
     private List<DispatchableVehicle> MarshalsServiceVehicles;
     private List<DispatchableVehicle> LCPDVehicles;
+    private List<DispatchableVehicle> TaxiVehicles;
+
     public List<DispatchableVehicleGroup> AllVehicles => VehicleGroupLookup;
     public void ReadConfig()
     {
@@ -354,6 +356,12 @@ public class DispatchableVehicles : IDispatchableVehicles
 
         };
         SetupDefaultGangSpecialVehicles();
+
+        //Other
+        TaxiVehicles = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("taxi", 100, 100),
+
+        };
     }
     private void SetupDefaultGangSpecialVehicles_Gambetti()
     {
@@ -22643,7 +22651,10 @@ Output = -1,
             new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles),
             new DispatchableVehicleGroup("CartelVehicles", CartelVehicles),
             new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles),
-            new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles)
+            new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles),
+
+            //Other 
+            new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
         };
         Serialization.SerializeParams(VehicleGroupLookup, ConfigFileName);
         Serialization.SerializeParams(VehicleGroupLookup, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\DispatchableVehicles_EUP.xml");
@@ -22651,7 +22662,7 @@ Output = -1,
     public void DefaultConfig_LosSantos2008()
     {
         string PoliceStanierOld = "police8";
-        List<DispatchableVehicleGroup> OldVehicleLookupGroup = new List<DispatchableVehicleGroup>();
+
         List<DispatchableVehicle> LSPDVehicles_Old = new List<DispatchableVehicle>() {
             new DispatchableVehicle(PoliceMerit, 25,25){ RequiredLiveries = new List<int>() { 1 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(2, true, 100) } },
             new DispatchableVehicle(PoliceStanier, 20,15){ RequiredLiveries = new List<int>() { 1 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
@@ -22704,116 +22715,126 @@ Output = -1,
         };
 
         //Cop
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("ParkRangerVehicles", ParkRangerVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("FIBVehicles", FIBVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("LSPDVehicles", LSPDVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("SAHPVehicles", SAHPVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("LSSDVehicles", LSSDVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("BCSOVehicles", LSSDVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("VWHillsLSSDVehicles", LSSDVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("DavisLSSDVehicles", LSSDVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("MajesticLSSDVehicles", LSSDVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("LSPPVehicles", LSPDVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("LSIAPDVehicles", LSPDVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("RHPDVehicles", LSPDVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("DPPDVehicles", LSPDVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("VWPDVehicles", LSPDVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("EastLSPDVehicles", LSPDVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("PoliceHeliVehicles", PoliceHeliVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("SheriffHeliVehicles", SheriffHeliVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("Firetrucks", Firetrucks));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("Amublance1", Amublance1));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("Amublance2", Amublance2));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("Amublance3", Amublance3));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("NYSPVehicles", NYSPVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("MerryweatherPatrolVehicles", MerryweatherPatrolVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("BobcatSecurityVehicles", BobcatSecurityVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("GroupSechsVehicles", GroupSechsVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("SecuroservVehicles", SecuroservVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("LCPDVehicles", LCPDVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("LCPDVehicles", MarshalsServiceVehicles));
-        //MarshalsServiceVehicles
-        //Gang
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("AllGangVehicles", AllGangVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("BallasVehicles", BallasVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("VagosVehicles", VagosVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("MarabuntaVehicles", MarabuntaVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("KoreanVehicles", KoreanVehicles_old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("TriadVehicles", TriadVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("YardieVehicles", YardieVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("DiablosVehicles", DiablosVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("MafiaVehicles", MafiaVehicles_Old));
+        List<DispatchableVehicleGroup> OldVehicleLookupGroup = new List<DispatchableVehicleGroup>
+        {
+            new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles),
+            new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles),
+            new DispatchableVehicleGroup("ParkRangerVehicles", ParkRangerVehicles),
+            new DispatchableVehicleGroup("FIBVehicles", FIBVehicles),
+            new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles),
+            new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles),
+            new DispatchableVehicleGroup("LSPDVehicles", LSPDVehicles_Old),
+            new DispatchableVehicleGroup("SAHPVehicles", SAHPVehicles_Old),
+            new DispatchableVehicleGroup("LSSDVehicles", LSSDVehicles_Old),
+            new DispatchableVehicleGroup("BCSOVehicles", LSSDVehicles_Old),
+            new DispatchableVehicleGroup("VWHillsLSSDVehicles", LSSDVehicles_Old),
+            new DispatchableVehicleGroup("DavisLSSDVehicles", LSSDVehicles_Old),
+            new DispatchableVehicleGroup("MajesticLSSDVehicles", LSSDVehicles_Old),
+            new DispatchableVehicleGroup("LSPPVehicles", LSPDVehicles_Old),
+            new DispatchableVehicleGroup("LSIAPDVehicles", LSPDVehicles_Old),
+            new DispatchableVehicleGroup("RHPDVehicles", LSPDVehicles_Old),
+            new DispatchableVehicleGroup("DPPDVehicles", LSPDVehicles_Old),
+            new DispatchableVehicleGroup("VWPDVehicles", LSPDVehicles_Old),
+            new DispatchableVehicleGroup("EastLSPDVehicles", LSPDVehicles_Old),
+            new DispatchableVehicleGroup("PoliceHeliVehicles", PoliceHeliVehicles),
+            new DispatchableVehicleGroup("SheriffHeliVehicles", SheriffHeliVehicles),
+            new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles),
+            new DispatchableVehicleGroup("Firetrucks", Firetrucks),
+            new DispatchableVehicleGroup("Amublance1", Amublance1),
+            new DispatchableVehicleGroup("Amublance2", Amublance2),
+            new DispatchableVehicleGroup("Amublance3", Amublance3),
+            new DispatchableVehicleGroup("NYSPVehicles", NYSPVehicles),
+            new DispatchableVehicleGroup("MerryweatherPatrolVehicles", MerryweatherPatrolVehicles),
+            new DispatchableVehicleGroup("BobcatSecurityVehicles", BobcatSecurityVehicles),
+            new DispatchableVehicleGroup("GroupSechsVehicles", GroupSechsVehicles),
+            new DispatchableVehicleGroup("SecuroservVehicles", SecuroservVehicles),
+            new DispatchableVehicleGroup("LCPDVehicles", LCPDVehicles),
+            new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles),
 
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("GambettiVehicles", MafiaVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("PavanoVehicles", MafiaVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("LupisellaVehicles", MafiaVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("MessinaVehicles", MafiaVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("AncelottiVehicles", MafiaVehicles_Old));
+            //Gang
+            new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles),
+            new DispatchableVehicleGroup("AllGangVehicles", AllGangVehicles),
+            new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
+            new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles),
+            new DispatchableVehicleGroup("BallasVehicles", BallasVehicles_Old),
+            new DispatchableVehicleGroup("VagosVehicles", VagosVehicles),
+            new DispatchableVehicleGroup("MarabuntaVehicles", MarabuntaVehicles),
+            new DispatchableVehicleGroup("KoreanVehicles", KoreanVehicles_old),
+            new DispatchableVehicleGroup("TriadVehicles", TriadVehicles),
+            new DispatchableVehicleGroup("YardieVehicles", YardieVehicles),
+            new DispatchableVehicleGroup("DiablosVehicles", DiablosVehicles),
+            new DispatchableVehicleGroup("MafiaVehicles", MafiaVehicles_Old),
 
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("CartelVehicles", CartelVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles));
+            new DispatchableVehicleGroup("GambettiVehicles", MafiaVehicles_Old),
+            new DispatchableVehicleGroup("PavanoVehicles", MafiaVehicles_Old),
+            new DispatchableVehicleGroup("LupisellaVehicles", MafiaVehicles_Old),
+            new DispatchableVehicleGroup("MessinaVehicles", MafiaVehicles_Old),
+            new DispatchableVehicleGroup("AncelottiVehicles", MafiaVehicles_Old),
+
+            new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles_Old),
+            new DispatchableVehicleGroup("CartelVehicles", CartelVehicles_Old),
+            new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles),
+            new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles),
+
+            //Other
+            new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles)
+        };
+
+
         Serialization.SerializeParams(OldVehicleLookupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\DispatchableVehicles_LosSantos2008.xml");
 
     }
     private void DefaultConfig_Simple()
     {
-        List<DispatchableVehicleGroup> SimpleVehicleLoopupGroup = new List<DispatchableVehicleGroup>();
+        List<DispatchableVehicleGroup> SimpleVehicleLoopupGroup = new List<DispatchableVehicleGroup>
+        {
+            //Police
+            new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles),
+            new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles),
+            new DispatchableVehicleGroup("ParkRangerVehicles", ParkRangerVehicles),
+            new DispatchableVehicleGroup("FIBVehicles", FIBVehicles),
+            new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles),
+            new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles),
+            new DispatchableVehicleGroup("LSPDVehicles", LSPDVehicles),
+            new DispatchableVehicleGroup("SAHPVehicles", SAHPVehicles),
+            new DispatchableVehicleGroup("LSSDVehicles", LSSDVehicles),
+            new DispatchableVehicleGroup("PoliceHeliVehicles", PoliceHeliVehicles),
+            new DispatchableVehicleGroup("SheriffHeliVehicles", SheriffHeliVehicles),
+            new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles),
+            new DispatchableVehicleGroup("Firetrucks", Firetrucks),
+            new DispatchableVehicleGroup("Amublance1", Amublance1),
+            new DispatchableVehicleGroup("Amublance2", Amublance2),
+            new DispatchableVehicleGroup("Amublance3", Amublance3),
+            new DispatchableVehicleGroup("NYSPVehicles", NYSPVehicles),
+            new DispatchableVehicleGroup("MerryweatherPatrolVehicles", MerryweatherPatrolVehicles),
+            new DispatchableVehicleGroup("BobcatSecurityVehicles", BobcatSecurityVehicles),
+            new DispatchableVehicleGroup("GroupSechsVehicles", GroupSechsVehicles),
+            new DispatchableVehicleGroup("SecuroservVehicles", SecuroservVehicles),
+            new DispatchableVehicleGroup("LCPDVehicles", LCPDVehicles),
+            new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles),
 
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("ParkRangerVehicles", ParkRangerVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("FIBVehicles", FIBVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("LSPDVehicles", LSPDVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("SAHPVehicles", SAHPVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("LSSDVehicles", LSSDVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("PoliceHeliVehicles", PoliceHeliVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("SheriffHeliVehicles", SheriffHeliVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("Firetrucks", Firetrucks));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("Amublance1", Amublance1));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("Amublance2", Amublance2));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("Amublance3", Amublance3));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("NYSPVehicles", NYSPVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("MerryweatherPatrolVehicles", MerryweatherPatrolVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("BobcatSecurityVehicles", BobcatSecurityVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("GroupSechsVehicles", GroupSechsVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("SecuroservVehicles", SecuroservVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("LCPDVehicles", LCPDVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles));
+            //Gang
+            new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles),
+            new DispatchableVehicleGroup("AllGangVehicles", AllGangVehicles),
+            new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
+            new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles),
+            new DispatchableVehicleGroup("BallasVehicles", BallasVehicles),
+            new DispatchableVehicleGroup("VagosVehicles", VagosVehicles),
+            new DispatchableVehicleGroup("MarabuntaVehicles", MarabuntaVehicles),
+            new DispatchableVehicleGroup("KoreanVehicles", KoreanVehicles),
+            new DispatchableVehicleGroup("TriadVehicles", TriadVehicles),
+            new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles),
+            new DispatchableVehicleGroup("CartelVehicles", CartelVehicles),
+            new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles),
+            new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles),
 
-        //Gang
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("AllGangVehicles", AllGangVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("BallasVehicles", BallasVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("VagosVehicles", VagosVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("MarabuntaVehicles", MarabuntaVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("KoreanVehicles", KoreanVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("TriadVehicles", TriadVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("CartelVehicles", CartelVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles));
-        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles));
+            //Other
+            new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles)
+        };
         Serialization.SerializeParams(SimpleVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\DispatchableVehicles_Simple.xml");
     }
     private void DefaultConfig_FullExpandedJurisdiction()
     {
-        
-
-        List<DispatchableVehicleGroup> VehicleGroupLookupFEJ = new List<DispatchableVehicleGroup>();
         //Cops
         List<DispatchableVehicle> UnmarkedVehicles_FEJ = new List<DispatchableVehicle>() {
             new DispatchableVehicle(StanierUnmarked, 50, 50),
@@ -23072,67 +23093,72 @@ Output = -1,
             new DispatchableVehicle(SecurityTorrence, 100, 100){  RequiredLiveries = new List<int>() { 0 } },};
         List<DispatchableVehicle> SecuroservVehicles_FEJ = new List<DispatchableVehicle>(){
             new DispatchableVehicle(SecurityTorrence, 100, 100){  RequiredLiveries = new List<int>() { 4 } },};
+        List<DispatchableVehicleGroup> VehicleGroupLookupFEJ = new List<DispatchableVehicleGroup>
+        {
+            new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles_FEJ),
+            new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles_FEJ),
+            new DispatchableVehicleGroup("ParkRangerVehicles", ParkRangerVehicles_FEJ),
+            new DispatchableVehicleGroup("FIBVehicles", FIBVehicles_FEJ),
+            new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles_FEJ),
+            new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles_FEJ),
+            new DispatchableVehicleGroup("LSPDVehicles", LSPDVehicles_FEJ),
+            new DispatchableVehicleGroup("SAHPVehicles", SAHPVehicles_FEJ),
+            new DispatchableVehicleGroup("LSSDVehicles", LSSDVehicles_FEJ),
+            new DispatchableVehicleGroup("BCSOVehicles", BCSOVehicles_FEJ),
+            new DispatchableVehicleGroup("LSIAPDVehicles", LSIAPDVehicles_FEJ),
+            new DispatchableVehicleGroup("LSPPVehicles", LSPPVehicles_FEJ),
+            new DispatchableVehicleGroup("VWHillsLSSDVehicles", VWHillsLSSDVehicles_FEJ),
+            new DispatchableVehicleGroup("DavisLSSDVehicles", DavisLSSDVehicles_FEJ),
+            new DispatchableVehicleGroup("MajesticLSSDVehicles", MajesticLSSDVehicles_FEJ),
+            new DispatchableVehicleGroup("RHPDVehicles", RHPDVehicles_FEJ),
+            new DispatchableVehicleGroup("DPPDVehicles", DPPDVehicles_FEJ),
+            new DispatchableVehicleGroup("VWPDVehicles", VWPDVehicles_FEJ),
+            new DispatchableVehicleGroup("EastLSPDVehicles", EastLSPDVehicles_FEJ),
+            new DispatchableVehicleGroup("PoliceHeliVehicles", PoliceHeliVehicles),
+            new DispatchableVehicleGroup("SheriffHeliVehicles", SheriffHeliVehicles),
+            new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles),
+            new DispatchableVehicleGroup("Firetrucks", Firetrucks),
+            new DispatchableVehicleGroup("Amublance1", Amublance1),
+            new DispatchableVehicleGroup("Amublance2", Amublance2),
+            new DispatchableVehicleGroup("Amublance3", Amublance3),
+            new DispatchableVehicleGroup("NYSPVehicles", NYSPVehicles_FEJ),
+            new DispatchableVehicleGroup("MerryweatherPatrolVehicles", MerryweatherPatrolVehicles_FEJ),
+            new DispatchableVehicleGroup("BobcatSecurityVehicles", BobcatSecurityVehicles_FEJ),
+            new DispatchableVehicleGroup("GroupSechsVehicles", GroupSechsVehicles_FEJ),
+            new DispatchableVehicleGroup("SecuroservVehicles", SecuroservVehicles_FEJ),
+            new DispatchableVehicleGroup("LCPDVehicles", LCPDVehicles_FEJ),
 
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("ParkRangerVehicles", ParkRangerVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("FIBVehicles", FIBVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("LSPDVehicles", LSPDVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("SAHPVehicles", SAHPVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("LSSDVehicles", LSSDVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("BCSOVehicles", BCSOVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("LSIAPDVehicles", LSIAPDVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("LSPPVehicles", LSPPVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("VWHillsLSSDVehicles", VWHillsLSSDVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("DavisLSSDVehicles", DavisLSSDVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("MajesticLSSDVehicles", MajesticLSSDVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("RHPDVehicles", RHPDVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("DPPDVehicles", DPPDVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("VWPDVehicles", VWPDVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("EastLSPDVehicles", EastLSPDVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("PoliceHeliVehicles", PoliceHeliVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("SheriffHeliVehicles", SheriffHeliVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("Firetrucks", Firetrucks));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("Amublance1", Amublance1));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("Amublance2", Amublance2));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("Amublance3", Amublance3));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("NYSPVehicles", NYSPVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("MerryweatherPatrolVehicles", MerryweatherPatrolVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("BobcatSecurityVehicles", BobcatSecurityVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("GroupSechsVehicles", GroupSechsVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("SecuroservVehicles", SecuroservVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("LCPDVehicles", LCPDVehicles_FEJ));
+            new DispatchableVehicleGroup("BorderPatrolVehicles", BorderPatrolVehicles_FEJ),
+            new DispatchableVehicleGroup("NOOSEPIAVehicles", NOOSEPIAVehicles_FEJ),
+            new DispatchableVehicleGroup("NOOSESEPVehicles", NOOSESEPVehicles_FEJ),
+            new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles_FEJ),
 
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("BorderPatrolVehicles", BorderPatrolVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("NOOSEPIAVehicles", NOOSEPIAVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("NOOSESEPVehicles", NOOSESEPVehicles_FEJ));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles_FEJ));
+            //Gang stuff
+            new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles),
+            new DispatchableVehicleGroup("AllGangVehicles", AllGangVehicles),
+            new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
+            new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles),
+            new DispatchableVehicleGroup("BallasVehicles", BallasVehicles),
+            new DispatchableVehicleGroup("VagosVehicles", VagosVehicles),
+            new DispatchableVehicleGroup("MarabuntaVehicles", MarabuntaVehicles),
+            new DispatchableVehicleGroup("KoreanVehicles", KoreanVehicles),
+            new DispatchableVehicleGroup("TriadVehicles", TriadVehicles),
+            new DispatchableVehicleGroup("YardieVehicles", YardieVehicles),
+            new DispatchableVehicleGroup("DiablosVehicles", DiablosVehicles),
+            new DispatchableVehicleGroup("MafiaVehicles", MafiaVehicles),
+            new DispatchableVehicleGroup("GambettiVehicles", GambettiVehicles),
+            new DispatchableVehicleGroup("PavanoVehicles", PavanoVehicles),
+            new DispatchableVehicleGroup("LupisellaVehicles", LupisellaVehicles),
+            new DispatchableVehicleGroup("MessinaVehicles", MessinaVehicles),
+            new DispatchableVehicleGroup("AncelottiVehicles", AncelottiVehicles),
+            new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles),
+            new DispatchableVehicleGroup("CartelVehicles", CartelVehicles),
+            new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles),
+            new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles),
 
-        //Gang stuff
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("AllGangVehicles", AllGangVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("BallasVehicles", BallasVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("VagosVehicles", VagosVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("MarabuntaVehicles", MarabuntaVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("KoreanVehicles", KoreanVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("TriadVehicles", TriadVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("YardieVehicles", YardieVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("DiablosVehicles", DiablosVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("MafiaVehicles", MafiaVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("GambettiVehicles", GambettiVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("PavanoVehicles", PavanoVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("LupisellaVehicles", LupisellaVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("MessinaVehicles", MessinaVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("AncelottiVehicles", AncelottiVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("CartelVehicles", CartelVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles));
-        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles));
+            //Other
+            new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
+        };
 
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\DispatchableVehicles_FullExpandedJurisdiction.xml");
     }

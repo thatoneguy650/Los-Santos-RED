@@ -180,7 +180,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     $"Go get ${MoneyToPickup} from {DeadDrop.Description}, address is {DeadDrop.FullStreetAddress}. Bring it to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. 10% to you when you drop it off",
                     $"Make a pickup of ${MoneyToPickup} from {DeadDrop.Description} on {DeadDrop.FullStreetAddress}. Take it to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. You'll get 10% when I get my money.",
                     };
-            Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(HiringGang.Contact.Name, HiringGang.Contact.IconName, Replies.PickRandom());
         }
     }
 }

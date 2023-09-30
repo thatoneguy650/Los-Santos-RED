@@ -127,10 +127,18 @@
     <Compile Include="lsr\Data\Agencies\IPlatePrefixable.cs" />
     <Compile Include="lsr\Data\Agencies\WantedLevels.cs" />
     <Compile Include="lsr\Data\Interface\ICellphones.cs" />
+    <Compile Include="lsr\Data\Interface\IContacts.cs" />
+    <Compile Include="lsr\Data\Organizations\Contacts.cs" />
+    <Compile Include="lsr\Data\Organizations\PossibleContacts.cs" />
+    <Compile Include="lsr\Data\Organizations\PossibleOrganizations.cs" />
+    <Compile Include="lsr\Data\Organizations\TaxiFirm.cs" />
+    <Compile Include="lsr\Data\Settings\World General Settings\ServiceSettings.cs" />
     <Compile Include="lsr\Dispatcher\LE\MarshalDispatcher.cs" />
+    <Compile Include="lsr\Dispatcher\TaxiDispatcher.cs" />
     <Compile Include="lsr\Inventory\CashStorage.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankDrawer.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Machines\CashRegister.cs" />
+    <Compile Include="lsr\Ped\Merchant\TaxiDriver.cs" />
     <Compile Include="lsr\Player\Cellphone\Data\CellphoneData.cs" />
     <Compile Include="lsr\Data\Items\Cellphones.cs" />
     <Compile Include="lsr\Data\Organizations\Organization.cs" />
@@ -326,6 +334,7 @@
     <Compile Include="lsr\Player\Inventory\Items\PipeItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\RollingPapersItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\ValuableItem.cs" />
+    <Compile Include="lsr\Player\Managers\TaxiManager.cs" />
     <Compile Include="lsr\Player\Money\BankAccount.cs" />
     <Compile Include="lsr\Player\Relationships\ContactRelationship.cs" />
     <Compile Include="lsr\Player\Respawning\PlayerPoliceSearch.cs" />
@@ -335,6 +344,7 @@
     <Compile Include="lsr\Player\Variation\OutfitManager.cs" />
     <Compile Include="lsr\Police\OfficerMIA.cs" />
     <Compile Include="lsr\Police\OfficerMIAWatcher.cs" />
+    <Compile Include="lsr\Spawner\TaxiSpawnTask.cs" />
     <Compile Include="lsr\Tasker\AIChaseable\IAIChaseable.cs" />
     <Compile Include="lsr\Tasker\Cop\CopBrain.cs" />
     <Compile Include="lsr\Tasker\EMT\EMTBrain.cs" />
@@ -350,6 +360,7 @@
     <Compile Include="lsr\Tasker\Generic\GeneralInvestigate\EMSGeneralInvestigate.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\GangGeneralLocate.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\MarshalGeneralLocate.cs" />
+    <Compile Include="lsr\Tasker\Generic\TaxiDriverBrain.cs" />
     <Compile Include="lsr\Tasker\Old\GeneralLocate_Old.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\GoToInVehicleTaskState.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\GoToOnFootTaskState.cs" />
@@ -471,6 +482,7 @@
     <Compile Include="lsr\UI\Stree Name Pop Ups\StreetNamePopUp.cs" />
     <Compile Include="lsr\UI\Stree Name Pop Ups\StreetNode.cs" />
     <Compile Include="lsr\UI\TopRightMenu.cs" />
+    <Compile Include="lsr\Vehicle\Types\TaxiVehicleExt.cs" />
     <Compile Include="lsr\Vehicle\Variation\DispatchableVehicleExtra.cs" />
     <Compile Include="lsr\Vehicle\Variation\DispatchableVehicleGroup.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles.cs" />

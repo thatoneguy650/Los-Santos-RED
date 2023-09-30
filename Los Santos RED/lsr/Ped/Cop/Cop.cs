@@ -10,7 +10,6 @@ using System.Linq;
 public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
 {
     private bool IsSetStayInVehicle;
-    private uint GameTimeSpawned;
     private bool WasAlreadySetPersistent = false;
     private bool IsShootingCheckerActive;
     private uint GameTimeFirstSawPlayerViolating;
@@ -24,10 +23,6 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         AssignedAgency = agency;
         WasModSpawned = wasModSpawned;
         ModelName = modelName;
-        if (WasModSpawned)
-        {
-            GameTimeSpawned = Game.GameTime;
-        }
         if (Pedestrian.Exists() && Pedestrian.IsPersistent)
         {
             WasAlreadySetPersistent = true;
@@ -50,7 +45,6 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public Agency AssignedAgency { get; set; } = new Agency();
     public override Color BlipColor => AssignedAgency != null ? AssignedAgency.Color : base.BlipColor;
     public string CopDebugString => WeaponInventory.DebugWeaponState;
-    public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public virtual bool ShouldBustPlayer => !IsPlayerControlled && !IsInVehicle && DistanceToPlayer > 0.1f && HeightToPlayer <= 2.5f && !IsUnconscious && !IsInWrithe && DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.BustDistance && Pedestrian.Exists() && !Pedestrian.IsRagdoll;
     public bool IsIdleTaskable => WasModSpawned || !WasAlreadySetPersistent;
     public bool ShouldUpdateTarget => Game.GameTime - GameTimeLastUpdatedTarget >= Settings.SettingsManager.PoliceTaskSettings.TargetUpdateTime;

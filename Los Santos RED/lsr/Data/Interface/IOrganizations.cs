@@ -8,6 +8,9 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IOrganizations
     {
+        PossibleOrganizations PossibleOrganizations { get; }
+
         Organization GetOrganizationByContact(string contactName);
+        TaxiFirm GetRandomTaxiFirm();
     }
 }

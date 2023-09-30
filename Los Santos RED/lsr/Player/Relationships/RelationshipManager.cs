@@ -39,8 +39,10 @@ public class RelationshipManager
         GangRelationships.Reset();
         foreach (ContactRelationship relationship in ContactRelationships)
         {
-            relationship.Reset(sendText);
+            //relationship.Reset(sendText);
+            relationship.Deactivate();
         }
+        ContactRelationships.Clear();
     }
     public void Setup()
     {

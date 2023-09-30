@@ -112,6 +112,15 @@ public class SettingsManager
     [Category("World")]
     [Description("Civilian Settings")]
     public CivilianSettings CivilianSettings { get; set; } = new CivilianSettings();
+
+
+    [Category("World")]
+    [Description("Service Settings")]
+    public ServiceSettings ServiceSettings { get; set; } = new ServiceSettings();
+
+
+
+
     [Category("World")]
     [Description("EMS Settings")]
     public EMSSettings EMSSettings { get; set; } = new EMSSettings();
@@ -165,7 +174,7 @@ public class SettingsManager
         AllDefaultableSettings = new List<ISettingsDefaultable>()
         {
             RespawnSettings, VehicleSettings, PedSwapSettings, ActivitySettings, SprintSettings, ViolationSettings, RecoilSettings, SwaySettings, SelectorSettings, InvestigationSettings, CriminalHistorySettings, ScannerSettings, KeySettings, PlayerOtherSettings, CellphoneSettings,
-            PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherSettings, VanillaSettings,DebugSettings,PerformanceSettings,
+            PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherSettings, VanillaSettings,DebugSettings,PerformanceSettings,ServiceSettings,
             UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings, NeedsSettings, RoadblockSettings, PoliceSpawnSettings,PoliceTaskSettings,PoliceSpeechSettings,PlayerSpeechSettings,FlashlightSettings, SecuritySettings,DragSettings,BinocularSettings,DoorToggleSettings,ShovelSettings
         };
     }

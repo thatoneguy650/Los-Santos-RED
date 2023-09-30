@@ -20,7 +20,7 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
         FullName = _FullName;
         ShortName = _ShortName;
         ContactName = _ShortName;
-        ContactIcon = "CHAR_DEFAULT";
+        //ContactIcon = "CHAR_DEFAULT";
         MemberName = _MemberName;
     }
     public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, string peopleID, string vehiclesID, string _LicensePlatePrefix, string meleeWeaponsID, string sideArmsID, string longGunsID, string _MemberName)
@@ -37,7 +37,7 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
         SideArmsID = sideArmsID;
         LongGunsID = longGunsID;
         ContactName = _ShortName;
-        ContactIcon = "CHAR_DEFAULT";
+        //ContactIcon = "CHAR_DEFAULT";
         MemberName = _MemberName;
     }
     public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, string peopleID, string vehiclesID, string _LicensePlatePrefix, string meleeWeaponsID, string sideArmsID, string longGunsID, string _ContactName, string contactIcon, string _MemberName)
@@ -54,7 +54,7 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
         SideArmsID = sideArmsID;
         LongGunsID = longGunsID;
         ContactName = _ContactName;
-        ContactIcon = contactIcon;
+        //ContactIcon = contactIcon;
         MemberName = _MemberName;
     }
     public string ID { get; set; } = "UNK";
@@ -62,7 +62,7 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public string ShortName { get; set; } = "Unk";
     public string MemberName { get; set; } = "Gang Member";
     public string ContactName { get; set; } = "Unknown";
-    public string ContactIcon { get; set; }
+    //public string ContactIcon { get; set; }
     public string DenName { get; set; } = "Den";
     public string ColorPrefix { get; set; } = "~s~";
     public string ColorString { get; set; } = "White";
@@ -170,6 +170,8 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public bool IsFedUpWithPlayer { get; set; } = false;
     [XmlIgnore]
     public bool HasWantedMembers { get; set; }
+    [XmlIgnore]
+    public GangContact Contact { get; set; }
     public Color Color => Color.FromName(ColorString);
     public string ColorInitials => ColorPrefix + ShortName;
     public bool CanSpawn(int wantedLevel) => wantedLevel >= MinWantedLevelSpawn && wantedLevel <= MaxWantedLevelSpawn;
@@ -321,42 +323,7 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
         }
         return null;
     }
-    //public IssuableWeapon GetRandomWeapon(bool isSidearm, IWeapons weapons)
-    //{
-    //    IssuableWeapon weaponToIssue;
-    //    if (isSidearm)
-    //    {
-    //        weaponToIssue = SideArms.PickRandom();
-    //    }
-    //    else
-    //    {
-    //        weaponToIssue = LongGuns.PickRandom();
-    //    }if (weaponToIssue != null)
-    //    {
-    //        WeaponInformation WeaponLookup = weapons.GetWeapon(weaponToIssue.ModelName);
-    //        weaponToIssue.SetIssued(Game.GetHashKey(weaponToIssue.ModelName), WeaponLookup.PossibleComponents, WeaponLookup.IsTaser);
-    //        return weaponToIssue;
-    //    }
-    //    return null;
-    //}
-    //public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons)
-    //{
-    //    IssuableWeapon weaponToIssue = MeleeWeapons.PickRandom();
-    //    if (weaponToIssue != null)
-    //    {
-    //        WeaponInformation WeaponLookup = weapons.GetWeapon(weaponToIssue.ModelName);
-    //        weaponToIssue.SetIssued(Game.GetHashKey(weaponToIssue.ModelName), WeaponLookup.PossibleComponents, WeaponLookup.IsTaser);
-    //        return weaponToIssue;
-    //    }
-    //    return null;
-    //}
     public DispatchableVehicle GetVehicleInfo(Vehicle vehicle) => Vehicles.Where(x => x.ModelName.ToLower() == vehicle.Model.Name.ToLower()).FirstOrDefault();
-
-
-
-
-
-
     public override string ToString()
     {
         return ShortName.ToString();

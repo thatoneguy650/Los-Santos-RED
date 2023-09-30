@@ -57,7 +57,7 @@ public class GunDealerRelationship : ContactRelationship
                     $"Need some extra hardware? {gs.FullStreetAddress}",
                     $"Got some other things at the shop on {gs.FullStreetAddress}",
                 };
-                Player.CellPhone.AddScheduledText(new GunDealerContact(ContactName), Replies.PickRandom(),4, false);
+                Player.CellPhone.AddScheduledText(new GunDealerContact(ContactName), Replies.PickRandom(),1, false);
             }
         }
         if(TotalMoneySpent >= 2000)
@@ -68,11 +68,35 @@ public class GunDealerRelationship : ContactRelationship
     public override void SetMoneySpent(int Amount, bool sendNotification)
     {
         TotalMoneySpent = Amount;
+        SetLocations(sendNotification);
+        if (TotalMoneySpent >= 2000)
+        {
+            Player.CellPhone.AddContact(new GunDealerContact(ContactName), sendNotification);
+        }
+    }
+    public override void Activate()
+    {
+        SetLocations(false);
+        //EntryPoint.WriteToConsole($"GUN DEALER REAL UPDATE RAN TotalMoneySpent {TotalMoneySpent}");
+        base.Activate();
+    }
+    public override void Deactivate()
+    {
+        foreach (GunStore gs in PlacesOfInterest.PossibleLocations.GunStores.Where(x=> x.ContactName == ContactName))
+        {
+            if (gs.MoneyToUnlock > 0 && gs.IsEnabled)
+            {
+                gs.IsEnabled = false;
+            }
+        }
+    }
+    private void SetLocations(bool sendNotification)
+    {
         foreach (GunStore gs in PlacesOfInterest.PossibleLocations.GunStores)
         {
-            if(gs.ContactName == ContactName)
+            if (gs.ContactName == ContactName)
             {
-                if(TotalMoneySpent >= gs.MoneyToUnlock)
+                if (TotalMoneySpent >= gs.MoneyToUnlock)
                 {
                     if (!gs.IsEnabled)
                     {
@@ -92,7 +116,7 @@ public class GunDealerRelationship : ContactRelationship
                                 $"Need some extra hardware? {gs.FullStreetAddress}",
                                 $"Got some other things at the shop on {gs.FullStreetAddress}",
                             };
-                            Player.CellPhone.AddScheduledText(new GunDealerContact(ContactName), Replies.PickRandom(), 3, false);
+                            Player.CellPhone.AddScheduledText(new GunDealerContact(ContactName), Replies.PickRandom(), 1, false);
                         }
                         //EntryPoint.WriteToConsoleTestLong($"{gs.Name} is now enabled");
                     }
@@ -102,10 +126,6 @@ public class GunDealerRelationship : ContactRelationship
                     gs.IsEnabled = false;
                 }
             }
-        }
-        if (TotalMoneySpent >= 2000)
-        {
-            Player.CellPhone.AddContact(new GunDealerContact(ContactName), sendNotification);
         }
     }
 }

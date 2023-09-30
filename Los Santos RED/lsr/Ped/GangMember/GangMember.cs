@@ -10,16 +10,13 @@ using System.Windows.Forms;
 
 public class GangMember : PedExt, IWeaponIssuable
 {
-    private uint GameTimeSpawned;
+
     public GangMember(Ped _Pedestrian, ISettingsProvideable settings, Gang gang, bool wasModSpawned, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world) : base(_Pedestrian, settings, crimes, weapons, _Name,gang.MemberName, world)
     {
         Gang = gang;
         WasModSpawned = wasModSpawned;
         WeaponInventory = new WeaponInventory(this, settings);
-        if (WasModSpawned)
-        {
-            GameTimeSpawned = Game.GameTime;
-        }
+
         ReputationReport = new ReputationReport(this);
         PedBrain = new GangBrain(this, Settings, world, weapons);
     }
@@ -41,7 +38,7 @@ public class GangMember : PedExt, IWeaponIssuable
     public Gang Gang { get; set; } = new Gang();
     public override Color BlipColor => Gang != null ? Gang.Color : base.BlipColor;
     public override float BlipSize => 0.3f;
-    public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
+
     public bool HasTaser { get; set; } = false;
     public override string BlipName => "Gang Member";
     public bool IsHitSquad { get; set; } = false;
