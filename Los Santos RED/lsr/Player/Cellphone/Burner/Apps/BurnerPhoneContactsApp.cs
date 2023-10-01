@@ -189,11 +189,11 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
             PhoneContact tocall = Contacts.GetContactByNumber(NumpadString);
             if (tocall == null)
             {
-                tocall = new PhoneContact(NumpadString) { Active = false };
+                tocall = new PhoneContact(NumpadString) { RandomizeDialTimeout = true, Active = false };
             }
             else
             {
-                Player.CellPhone.AddContact(tocall, true);
+                Player.CellPhone.AddContact(tocall, false);
             }
             Call(tocall);
         }

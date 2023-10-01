@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-public class ServiceSettings : ISettingsDefaultable
+public class TaxiSettings : ISettingsDefaultable
 {
     [Description("Allows mod spawning of service peds in the world.")]
     public bool ManageDispatching { get; set; }
@@ -48,7 +48,7 @@ public class ServiceSettings : ISettingsDefaultable
     public float AmbientSpawnPedestrianAttemptPercentage { get; set; }
  
 
-    public ServiceSettings()
+    public TaxiSettings()
     {
         SetDefault();
     }
@@ -73,11 +73,11 @@ public class ServiceSettings : ISettingsDefaultable
         TimeBetweenSpawn_SuburbAdditional = 30000;
         TimeBetweenSpawn_IndustrialAdditional = 30000;
 
-        MinDistanceToSpawnOnFoot = 125f;//75f// 50f;
-        MaxDistanceToSpawnOnFoot = 225f;//200f// 150f;
+        MinDistanceToSpawnOnFoot = 100f;//75f// 50f;
+        MaxDistanceToSpawnOnFoot = 200f;//200f// 150f;
 
-        MinDistanceToSpawnInVehicle = 250f;//300f// 50f;
-        MaxDistanceToSpawnInVehicle = 500f;//500f// 150f;
+        MinDistanceToSpawnInVehicle = 150f;//300f// 50f;
+        MaxDistanceToSpawnInVehicle = 300f;//500f// 150f;
 
         TotalSpawnedMembersLimit = 2;//5
         TotalSpawnedAmbientMembersLimit = 1;// 8;
@@ -86,14 +86,14 @@ public class ServiceSettings : ISettingsDefaultable
         TotalSpawnedAmbientMembersLimit_Wilderness = 1;
         TotalSpawnedAmbientMembersLimit_Rural = 1;
         TotalSpawnedAmbientMembersLimit_Suburb = 1;
-        TotalSpawnedAmbientMembersLimit_Industrial = 2;
+        TotalSpawnedAmbientMembersLimit_Industrial = 1;
 
-        AmbientSpawnPercentage = 40;
-        AmbientSpawnPercentage_Wilderness = 20;
-        AmbientSpawnPercentage_Rural = 25;
-        AmbientSpawnPercentage_Suburb = 35;
-        AmbientSpawnPercentage_Industrial = 35;
-        AmbientSpawnPercentage_Downtown = 45;
+        AmbientSpawnPercentage = 10;
+        AmbientSpawnPercentage_Wilderness = 2;
+        AmbientSpawnPercentage_Rural = 5;
+        AmbientSpawnPercentage_Suburb = 5;
+        AmbientSpawnPercentage_Industrial = 5;
+        AmbientSpawnPercentage_Downtown = 15;
 
 #if DEBUG
         ShowSpawnedBlip = true;

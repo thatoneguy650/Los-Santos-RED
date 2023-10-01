@@ -206,6 +206,7 @@ public class ModDataFileManager
         GameFiber.Yield();
 
 
+        Contacts.Setup(Organizations);
 
     }
     private void SetupAlternateConfigs()
@@ -241,9 +242,9 @@ public class ModDataFileManager
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction");
         string Description =
-            "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, NIGHTKID, and AllenKennedy's mapped default police vehicles."
+            "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, NIGHTKID, israelsr, and AllenKennedy's mapped default police/service vehicles."
             + Environment.NewLine +
-            "These are all replace vehicles for police (Stanier), police2 (Buffalo), police3 (Interceptor), sheriff (Gresley Police), sheriff2 (Granger Police), policeb (Police Bike), policeold1 (Merit Police), pranger (Fugitive Police), policeold2 (Police Bison) and lurcher (Security Torrence). No custom gameconfig should be required."
+            "These are all replace vehicles for police (Stanier), police2 (Buffalo), police3 (Interceptor), sheriff (Gresley Police), sheriff2 (Granger Police), policeb (Police Bike), policeold1 (Merit Police), pranger (Fugitive Police), policeold2 (Police Bison), taxi (Stanier Taxi), and lurcher (Security Torrence). No custom gameconfig should be required."
             + Environment.NewLine + Environment.NewLine +
             "EUP Installation: "
             + Environment.NewLine +
@@ -273,9 +274,9 @@ public class ModDataFileManager
             "'\\mods\\update\\update.rpf\\common\\data\\dlclist.xml'"
             + Environment.NewLine
             + Environment.NewLine +
-            "Copy the sheriff, lurcher, policeold1, pranger, policeold2 and policeb entries from '\\mods\\update\\x64\\dlcpacks\\greskfej\\dlc.rpf\\data\\vehicles.meta'"
+            "Copy the sheriff, lurcher, taxi, policeold1, pranger, policeold2 and policeb entries from '\\mods\\update\\x64\\dlcpacks\\greskfej\\dlc.rpf\\data\\vehicles.meta'"
             + Environment.NewLine +
-            "and overwrite the existing sheriff, policeold1, pranger, policeold2 and policeb entries and add a new lurcher entry in '\\mods\\update\\update.rpf\\common\\data\\levels\\gta5\\vehicles.meta'"
+            "and overwrite the existing sheriff, policeold1, pranger, policeold2, taxi, and policeb entries and add a new lurcher entry in '\\mods\\update\\update.rpf\\common\\data\\levels\\gta5\\vehicles.meta'"
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
 
 
@@ -299,6 +300,8 @@ public class ModDataFileManager
             + Environment.NewLine +
             "Bison - Model by Rockstar Games, UV-Map, template, assembly and by Yard1."
             + Environment.NewLine +
+            "Stanier Taxi - israelsr"
+            + Environment.NewLine +
             "Fugitive - Original Cheval Fugitive model by Rockstar Games modified, UV mapped, skins and assembled by NIGHTKID - Generic police equipments(radio, pushbar, spotlight, partition, lightbars) model by Rockstar Games - Arma console by LeoAllTheWay, converted by NIGHTKID - Jay's Stalker radarv by jasonct203 converted by NIGHTKID - Setina pushbar/FPIU wraparound by GUMP converted by NIGHTKID - NFS Equipment(Antenna) by TGM converted by NIGHTKID - Tir6 Texure by Kpdofficer - Carvariation.meta and Vehicles.meta files by JWillMac51"
             + Environment.NewLine + Environment.NewLine +
             "Creator Links"
@@ -310,6 +313,8 @@ public class ModDataFileManager
             "AllenKennedy - https://www.gta5-mods.com/users/AllenKennedy/files"
             + Environment.NewLine +
             "NIGHTKID/Han'SGarage - https://www.lcpdfr.com/profile/69491-hansgarage/content/?type=downloads_file"
+            + Environment.NewLine +
+            "israelsr - https://www.gta5-mods.com/users/israelsr"
             + Environment.NewLine +
             "";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\readme.txt", Description);

@@ -1474,6 +1474,14 @@ namespace LSR.Vehicles
         {
             world.Vehicles.AddCivilian(this);
         }
-
+        public virtual string GetDebugString()
+        {
+            string vehicleText = $"{Handle}";
+            if (Vehicle.Exists())
+            {
+                vehicleText += $" {Vehicle.Model.Name}";
+            }
+            return vehicleText;
+        }
     }
 }

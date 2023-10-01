@@ -9,13 +9,14 @@ using System.Threading.Tasks;
 
 public class GunDealerRelationship : ContactRelationship
 {
+    private GunDealerContact GunDealerContact;
     public GunDealerRelationship()
     {
 
     }
-    public GunDealerRelationship(string contactName) : base(contactName)
+    public GunDealerRelationship(string contactName, GunDealerContact gunDealerContact) : base(contactName)
     {
-
+        GunDealerContact = gunDealerContact;
     }
     public override void AddMoneySpent(int Amount)
     {
@@ -33,7 +34,7 @@ public class GunDealerRelationship : ContactRelationship
         if(TextToSend > 1)
         {
             sendGroupText = true;
-            Player.CellPhone.AddScheduledText(new GunDealerContact(ContactName), GroupReplies.PickRandom(),4, false);
+            Player.CellPhone.AddScheduledText(GunDealerContact, GroupReplies.PickRandom(),4, false);
         }
         foreach (GunStore gs in PlacesOfInterest.PossibleLocations.GunStores)
         {
@@ -57,12 +58,12 @@ public class GunDealerRelationship : ContactRelationship
                     $"Need some extra hardware? {gs.FullStreetAddress}",
                     $"Got some other things at the shop on {gs.FullStreetAddress}",
                 };
-                Player.CellPhone.AddScheduledText(new GunDealerContact(ContactName), Replies.PickRandom(),1, false);
+                Player.CellPhone.AddScheduledText(GunDealerContact, Replies.PickRandom(),1, false);
             }
         }
         if(TotalMoneySpent >= 2000)
         {
-            Player.CellPhone.AddContact(new GunDealerContact(ContactName), true);
+            Player.CellPhone.AddContact(GunDealerContact, true);
         }
     }
     public override void SetMoneySpent(int Amount, bool sendNotification)
@@ -71,7 +72,7 @@ public class GunDealerRelationship : ContactRelationship
         SetLocations(sendNotification);
         if (TotalMoneySpent >= 2000)
         {
-            Player.CellPhone.AddContact(new GunDealerContact(ContactName), sendNotification);
+            Player.CellPhone.AddContact(GunDealerContact, sendNotification);
         }
     }
     public override void Activate()
@@ -116,7 +117,7 @@ public class GunDealerRelationship : ContactRelationship
                                 $"Need some extra hardware? {gs.FullStreetAddress}",
                                 $"Got some other things at the shop on {gs.FullStreetAddress}",
                             };
-                            Player.CellPhone.AddScheduledText(new GunDealerContact(ContactName), Replies.PickRandom(), 1, false);
+                            Player.CellPhone.AddScheduledText(GunDealerContact, Replies.PickRandom(), 1, false);
                         }
                         //EntryPoint.WriteToConsoleTestLong($"{gs.Name} is now enabled");
                     }

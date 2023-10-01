@@ -85,37 +85,39 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
     private void CreateSettingsMenu()
     {
         SettingsUIMenu.Clear();
-        //ReloadSettingsFromFile = new UIMenuItem("Reload Settings From File", "Reloads the Settings XML");
         SaveSettingsToFile = new UIMenuItem("Save Settings To File", "Saves the Settings to XML");
         DefaultSettings = new UIMenuItem("Set Default Settings", "Set all values back to default settings");
         MySettings = new UIMenuItem("Set Greskrendtregk Settings", "Set my personal settings");
         EasySettings = new UIMenuItem("Set Easy Settings", "Use the easy preset for settings");
         HardSettings = new UIMenuItem("Set Hard Settings", "Use the hard preset for settings");
 
-        //SettingsUIMenu.AddItem(ReloadSettingsFromFile);
         SettingsUIMenu.AddItem(SaveSettingsToFile);
         SettingsUIMenu.AddItem(DefaultSettings);
         SettingsUIMenu.AddItem(MySettings);
-        //SettingsUIMenu.AddItem(EasySettings);
         SettingsUIMenu.AddItem(HardSettings);
-
 
         SettingsUIMenu.OnItemSelect += OnItemSelect;
         SettingsUIMenu.OnListChange += OnListChange;
 
-        UIMenu playerSubMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Change Player Settings SubMenu");
-        playerSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        CreateToggleSettingsMenu();
+        CreateItemSubMenu("Change Crimes SubMenu", Crimes.CrimeList);
+    }
 
-        UIMenu worldSubMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Change World Settings SubMenu");
-        worldSubMenu.SetBannerType(EntryPoint.LSRedColor);
-
-        UIMenu uiSubMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Change UI Settings SubMenu");
-        uiSubMenu.SetBannerType(EntryPoint.LSRedColor);
-
-        UIMenu otherSubMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Change Other Settings SubMenu");
-        otherSubMenu.SetBannerType(EntryPoint.LSRedColor);
-
+    private void CreateToggleSettingsMenu()
+    {
+        UIMenu genericCategoryMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Change Other Settings SubMenu");
+        genericCategoryMenu.SetBannerType(EntryPoint.LSRedColor);
         PropertyInfo[] properties = SettingsProvider.SettingsManager.GetType().GetProperties();
+        List<Tuple<CategoryAttribute,UIMenu>> CategoryMenus = new List<Tuple<CategoryAttribute, UIMenu>>();
+
+        List<CategoryAttribute> Categories = properties.Select(x=> (System.ComponentModel.CategoryAttribute)x.GetCustomAttribute(typeof(CategoryAttribute), true)).Distinct().ToList();
+        foreach(CategoryAttribute ca in Categories)
+        {
+            UIMenu categorysubMenu = MenuPool.AddSubMenu(SettingsUIMenu, $"Change {ca.Category} Settings SubMenu");
+            categorysubMenu.SetBannerType(EntryPoint.LSRedColor);
+            CategoryMenus.Add(new Tuple<CategoryAttribute, UIMenu>(ca,categorysubMenu));
+        }
+
         foreach (PropertyInfo property in properties)
         {
             string strippedPropertyName = property.Name;//.Replace("Settings","");
@@ -128,44 +130,24 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
                 strippedPropertyName = propertyNameAlt.Description;
             }
 
-
+            UIMenu menuToAdd = genericCategoryMenu;
             if (propertyCategory != null)
             {
-                if (propertyCategory.Category == "Player")
+                UIMenu specificMenu = CategoryMenus.FirstOrDefault(x => x.Item1.Category == propertyCategory.Category)?.Item2;
+                if (specificMenu != null)
                 {
-                    subMenu = MenuPool.AddSubMenu(playerSubMenu, strippedPropertyName);
-                }
-                else if (propertyCategory.Category == "World")
-                {
-                    subMenu = MenuPool.AddSubMenu(worldSubMenu, strippedPropertyName);
-                }
-                else if (propertyCategory.Category == "UI")
-                {
-                    subMenu = MenuPool.AddSubMenu(uiSubMenu, strippedPropertyName);
-                }
-                else
-                {
-                    subMenu = MenuPool.AddSubMenu(otherSubMenu, strippedPropertyName);
+                    menuToAdd = specificMenu;
                 }
             }
-            else
-            {
-                subMenu = MenuPool.AddSubMenu(otherSubMenu, strippedPropertyName);
-            }
+            subMenu = MenuPool.AddSubMenu(menuToAdd, strippedPropertyName);
 
             subMenu.SetBannerType(EntryPoint.LSRedColor);
             subMenu.OnItemSelect += OnNewSettingsSelect;
             subMenu.OnCheckboxChange += OnNewCheckboxChange;
             subMenu.Width = 0.5f;
-
             object SubSettings = property.GetValue(SettingsProvider.SettingsManager);
             PropertyInfo[] subSettings = property.PropertyType.GetProperties();
-
-
             object defSubSettings = property.GetValue(SettingsProvider.DefaultSettingsManager);
-            
-
-
 
             foreach (PropertyInfo fi in subSettings)
             {
@@ -178,28 +160,20 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
                 Description = Description.Substring(0, Math.Min(750, Description.Length));
                 if (fi.PropertyType == typeof(bool))
                 {
-           
-                        Description += $"~n~Default: {(bool)fi.GetValue(defSubSettings)}";
-                    
-
-
+                    Description += $"~n~Default: {(bool)fi.GetValue(defSubSettings)}";
                     UIMenuCheckboxItem MySetting = new UIMenuCheckboxItem(fi.Name, (bool)fi.GetValue(SubSettings), Description);
                     subMenu.AddItem(MySetting);
                 }
                 else if (fi.PropertyType == typeof(int) || fi.PropertyType == typeof(string) || fi.PropertyType == typeof(float) || fi.PropertyType == typeof(uint) || fi.PropertyType == typeof(Keys))
                 {
-       
-                        Description += $"~n~Default: {fi.GetValue(defSubSettings)}";
-                    
+                    Description += $"~n~Default: {fi.GetValue(defSubSettings)}";
                     UIMenuItem MySetting = new UIMenuItem($"{fi.Name}: {fi.GetValue(SubSettings)}", Description);
                     subMenu.AddItem(MySetting);
                 }
             }
         }
-        CreateItemSubMenu("Change Crimes SubMenu", Crimes.CrimeList);
-        //CreateItemSubMenu("Change Shop Menus SubMenu", ShopMenus.ShopMenuList);
-        //CreateItemSubMenu("Change Intoxicants SubMenu", Intoxicants.Items);
     }
+
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == SaveSettingsToFile)

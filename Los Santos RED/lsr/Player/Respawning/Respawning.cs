@@ -148,11 +148,28 @@ public class Respawning// : IRespawning
             "As long as you've got the cash, I can take care of the cops.",
 
             };
-            if (!CurrentPlayer.CellPhone.ContactList.Any(x => x.Name == StaticStrings.OfficerFriendlyContactName))
-            {
-                CurrentPlayer.CellPhone.AddScheduledText(new CorruptCopContact(StaticStrings.OfficerFriendlyContactName), OfficerFriendlyResponses.PickRandom(), 1, false);
-            }
+
             CurrentPlayer.Scanner.OnBribedPolice();
+
+
+            //if (!CurrentPlayer.CellPhone.ContactList.Any(x => x.Name == StaticStrings.OfficerFriendlyContactName))
+            //{
+            //    CurrentPlayer.CellPhone.AddScheduledText(new CorruptCopContact(StaticStrings.OfficerFriendlyContactName), OfficerFriendlyResponses.PickRandom(), 1, false);
+            //}
+
+
+            if (CurrentPlayer.CellPhone.GetCorruptCopContact() != null)
+            {
+                return true;
+            }
+
+            CorruptCopContact toSend = CurrentPlayer.CellPhone.DefaultCorruptCopContact;
+            if(toSend != null)
+            {
+                CurrentPlayer.CellPhone.AddScheduledText(toSend, OfficerFriendlyResponses.PickRandom(), 1, false);
+            }
+
+
             return true;
         }
     }

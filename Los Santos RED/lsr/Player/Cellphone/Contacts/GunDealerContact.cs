@@ -26,7 +26,7 @@ public class GunDealerContact : PhoneContact, IPhoneContact
     {
         if (contactRelationship == null)
         {
-            contactRelationship = new GunDealerRelationship(Name);
+            contactRelationship = new GunDealerRelationship(Name, this);
         }
         return contactRelationship;
     }

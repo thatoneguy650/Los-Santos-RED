@@ -27,6 +27,7 @@ public class DebugDispatcherSubMenu : DebugSubMenu
     {
         UIMenu DispatcherMenu = MenuPool.AddSubMenu(Debug, "Dispatcher");
         DispatcherMenu.SetBannerType(EntryPoint.LSRedColor);
+        DispatcherMenu.Width = 0.4f;
         UIMenuListScrollerItem<Agency> SpawnAgencyFoot = new UIMenuListScrollerItem<Agency>("Agency Random On-Foot Spawn", "Spawn a random agency ped on foot", Agencies.GetAgencies());
         SpawnAgencyFoot.Activated += (menu, item) =>
         {
@@ -117,7 +118,7 @@ public class DebugDispatcherSubMenu : DebugSubMenu
         };
 
 
-        UIMenuListScrollerItem<TaxiFirm> SpawnTaxi = new UIMenuListScrollerItem<TaxiFirm>("Taxu Random Vehicle Spawn", "Spawn a random taxi ped with a vehicle", Organizations.PossibleOrganizations.TaxiFirms);
+        UIMenuListScrollerItem<TaxiFirm> SpawnTaxi = new UIMenuListScrollerItem<TaxiFirm>("Taxi Random Vehicle Spawn", "Spawn a random taxi ped with a vehicle", Organizations.PossibleOrganizations.TaxiFirms);
         SpawnTaxi.Activated += (menu, item) =>
         {
             Dispatcher.DebugSpawnTaxi(SpawnTaxi.SelectedItem.ID, false, false);

@@ -31,8 +31,10 @@ public class TaxiServiceInteraction : IContactMenuInteraction
     private INameProvideable Names;
     private IShopMenus ShopMenus;
     private IEntityProvideable World;
+    private TaxiFirm TaxiFirm;
 
-    public TaxiServiceInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IModItems modItems, TaxiServiceContact taxiServiceContact, ICrimes crimes, IWeapons weapons, INameProvideable names, IShopMenus shopMenus, IEntityProvideable world)
+    public TaxiServiceInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IModItems modItems, TaxiServiceContact taxiServiceContact, ICrimes crimes, IWeapons weapons,
+        INameProvideable names, IShopMenus shopMenus, IEntityProvideable world, TaxiFirm taxiFirm)
     {
         Player = player;
         Gangs = gangs;
@@ -45,6 +47,7 @@ public class TaxiServiceInteraction : IContactMenuInteraction
         Names = names;
         ShopMenus = shopMenus;
         World = world;
+        TaxiFirm = taxiFirm;
         MenuPool = new MenuPool();
     }
     public void Start(PhoneContact contact)
@@ -69,16 +72,9 @@ public class TaxiServiceInteraction : IContactMenuInteraction
         requestTaxiMenuItem.Activated += (sender, selectedItem) =>
         {
 
-
-            //Player.TaxiManager.RequestTaxi();
-
-
-            AmbientSpawner ambientSpawner = new AmbientSpawner(new DispatchableVehicle("taxi", 100, 100), new DispatchablePerson("a_m_m_socenlat_01", 100, 100),Player.Position,Settings,Crimes,Weapons,Names,World,ModItems,ShopMenus);
-            ambientSpawner.SetPersistent = true;
-            ambientSpawner.Start();
             string fullText = "";
-            if (ambientSpawner.SpawnedItems)
-            {        
+            if (Player.TaxiManager.RequestService(TaxiFirm))
+            {
                 fullText = $"{TaxiServiceContact.Name} is en route to ";
                 fullText += Player.CurrentLocation?.GetStreetAndZoneString();
             }
@@ -88,6 +84,22 @@ public class TaxiServiceInteraction : IContactMenuInteraction
             }
             Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
             sender.Visible = false;
+
+            //AmbientSpawner ambientSpawner = new AmbientSpawner(new DispatchableVehicle("taxi", 100, 100), new DispatchablePerson("a_m_m_socenlat_01", 100, 100),Player.Position,Settings,Crimes,Weapons,Names,World,ModItems,ShopMenus);
+            //ambientSpawner.SetPersistent = true;
+            //ambientSpawner.Start();
+            //string fullText = "";
+            //if (ambientSpawner.SpawnedItems)
+            //{        
+            //    fullText = $"{TaxiServiceContact.Name} is en route to ";
+            //    fullText += Player.CurrentLocation?.GetStreetAndZoneString();
+            //}
+            //else
+            //{
+            //    fullText = "No service available in your current location.";
+            //}
+            //Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
+            //sender.Visible = false;
         };
         RequestSubMenu.AddItem(requestTaxiMenuItem);
     }

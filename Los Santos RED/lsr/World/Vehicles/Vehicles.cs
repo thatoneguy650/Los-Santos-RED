@@ -5,6 +5,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static DispatchScannerFiles;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 
@@ -19,7 +20,12 @@ public class Vehicles
     private Entity[] RageVehicles;
     private IEntityProvideable World;
     private uint GameTimeLastCreatedVehicles;
-    public Vehicles(IAgencies agencies,IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes, IModItems modItems, IEntityProvideable world)
+    private bool TaxiModelIsDefault = false;
+    private bool HasCheckedTaxiModel;
+    private TaxiFirm DefaultTaxiFirm;
+    private IOrganizations Organizations;
+
+    public Vehicles(IAgencies agencies,IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes, IModItems modItems, IEntityProvideable world, IOrganizations organizations)
     {
         Zones = zones;
         Agencies = agencies;
@@ -28,6 +34,7 @@ public class Vehicles
         Settings = settings;
         ModItems = modItems;
         World = world;
+        Organizations = organizations;
         PlateController = new PlateController(this, Zones, PlateTypes, Settings);
     }
     public PlateController PlateController { get; private set; }
@@ -102,7 +109,7 @@ public class Vehicles
     public int GangBoatsCount => GangVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsBoat);
     public void Setup()
     {
-
+        DefaultTaxiFirm = Organizations.GetDefaultTaxiFirm();
     }
     public void Dispose()
     {
@@ -163,11 +170,7 @@ public class Vehicles
         {
             if (!PoliceVehicles.Any(x => x.Handle == vehicle.Handle))
             {
-                PoliceVehicleExt Car = new PoliceVehicleExt(vehicle, Settings);
-                Car.Setup();
-                Car.IsPolice = true;
-                Car.CanRandomlyHaveIllegalItems = false;
-                PoliceVehicles.Add(Car);
+                CreatePoliceFromAmbient(vehicle);
                 return true;
             }
         }
@@ -175,21 +178,84 @@ public class Vehicles
         {
             if (!CivilianVehicles.Any(x => x.Handle == vehicle.Handle))
             {
-                VehicleExt Car;
-                if (vehicle.Model.Name.ToLower() == "taxi")
-                {
-                    Car = new TaxiVehicleExt(vehicle, Settings);
-                }
-                else
-                {
-                    Car = new VehicleExt(vehicle, Settings);
-                }
-                Car.Setup();
-                Car.AddVehicleToList(World);
+                CreateCivilianVehicleFromAmbient(vehicle);
                 return true;
             }
         }    
         return false;
+    }
+
+
+    private void CreatePoliceFromAmbient(Vehicle vehicle)
+    {
+        PoliceVehicleExt Car = new PoliceVehicleExt(vehicle, Settings);
+        Car.Setup();
+        Car.IsPolice = true;
+        Car.CanRandomlyHaveIllegalItems = false;
+        PoliceVehicles.Add(Car);
+    }
+
+    private void CreateCivilianVehicleFromAmbient(Vehicle vehicle)
+    {
+        if (vehicle.Model.Hash == 3338918751)//.Name.ToLower() == "taxi")
+        {
+            CreateTaxiVehicleFromAmbient(vehicle);
+        }
+        else
+        {
+            CreateRegularCivilianVehicle(vehicle);
+        }
+    }
+    private void CreateTaxiVehicleFromAmbient(Vehicle vehicle)
+    {
+        if(!HasCheckedTaxiModel)
+        {
+            CheckVanillaTaxi(vehicle);
+        }
+        TaxiFirm taxiFirm = DefaultTaxiFirm;
+        if (!TaxiModelIsDefault)
+        {
+            taxiFirm = GetSpecificTaxiFirm(vehicle);
+            if (taxiFirm == null)
+            {
+                taxiFirm = DefaultTaxiFirm;
+            }
+        }
+        TaxiVehicleExt Taxi = new TaxiVehicleExt(vehicle, Settings);
+        Taxi.TaxiFirm = taxiFirm;
+        Taxi.Setup();
+        Taxi.AddVehicleToList(World);
+
+    }
+    private TaxiFirm GetSpecificTaxiFirm(Vehicle vehicle)
+    {
+        if (!vehicle.Exists())
+        {
+            return null;
+        }
+        int liveryID = NativeFunction.Natives.GET_VEHICLE_LIVERY<int>(vehicle);
+        if (liveryID != -1)
+        {
+            return Organizations.GetTaxiFirmFromVehicle("taxi", liveryID);
+        }
+        return null;
+    }
+    private void CheckVanillaTaxi(Vehicle vehicle)
+    {
+        if(!vehicle.Exists())
+        {
+            return;
+        }
+        int TotalLiveries = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(vehicle);
+        TaxiModelIsDefault = TotalLiveries == -1;
+        HasCheckedTaxiModel = true;
+    }
+
+    private void CreateRegularCivilianVehicle(Vehicle vehicle)
+    {
+        VehicleExt Car = new VehicleExt(vehicle, Settings);
+        Car.Setup();
+        Car.AddVehicleToList(World);
     }
     public void AddPolice(PoliceVehicleExt vehicleExt)
     {

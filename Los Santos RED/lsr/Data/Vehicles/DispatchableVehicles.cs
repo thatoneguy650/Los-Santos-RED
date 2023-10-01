@@ -360,7 +360,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         //Other
         TaxiVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("taxi", 100, 100),
-
+           // new DispatchableVehicle("broadway", 1, 1) { RequiresDLC = true, RequiredLiveries = new List<int>() { 11 } },
         };
     }
     private void SetupDefaultGangSpecialVehicles_Gambetti()
@@ -23093,6 +23093,21 @@ Output = -1,
             new DispatchableVehicle(SecurityTorrence, 100, 100){  RequiredLiveries = new List<int>() { 0 } },};
         List<DispatchableVehicle> SecuroservVehicles_FEJ = new List<DispatchableVehicle>(){
             new DispatchableVehicle(SecurityTorrence, 100, 100){  RequiredLiveries = new List<int>() { 4 } },};
+
+        List<DispatchableVehicle> DowntownTaxiVehicles = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("taxi", 100, 100){ RequiredLiveries = new List<int>() { 0 } },
+        };
+        List<DispatchableVehicle> PurpleTaxiVehicles = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("taxi", 100, 100){ RequiredLiveries = new List<int>() { 1 } },
+        };
+        List<DispatchableVehicle> HellTaxiVehicles = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("taxi", 100, 100){ RequiredLiveries = new List<int>() { 2 } },
+        };
+        List<DispatchableVehicle> ShitiTaxiVehicles = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("taxi", 100, 100){ RequiredLiveries = new List<int>() { 3 } },
+        };
+
+
         List<DispatchableVehicleGroup> VehicleGroupLookupFEJ = new List<DispatchableVehicleGroup>
         {
             new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles_FEJ),
@@ -23158,6 +23173,13 @@ Output = -1,
 
             //Other
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
+            new DispatchableVehicleGroup("DowntownTaxiVehicles", DowntownTaxiVehicles),
+            new DispatchableVehicleGroup("HellTaxiVehicles", HellTaxiVehicles),
+            new DispatchableVehicleGroup("PurpleTaxiVehicles", PurpleTaxiVehicles),
+            new DispatchableVehicleGroup("ShitiTaxiVehicles", ShitiTaxiVehicles),
+
+            //
+
         };
 
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\DispatchableVehicles_FullExpandedJurisdiction.xml");

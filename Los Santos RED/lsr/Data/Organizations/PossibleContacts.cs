@@ -13,8 +13,8 @@ public class PossibleContacts
     }
     public List<GangContact> GangContacts { get; private set; } = new List<GangContact>();
     public List<GunDealerContact> GunDealerContacts { get; private set; } = new List<GunDealerContact>();
-    public List<EmergencyServicesContact> EmergencyServicesContacts { get; private set; } = new List<EmergencyServicesContact>();
-    public List<CorruptCopContact> CorruptCopContacts { get; private set; } = new List<CorruptCopContact>();
+    public EmergencyServicesContact EmergencyServicesContact { get; set; } = new EmergencyServicesContact();
+    public CorruptCopContact CorruptCopContact { get; set; } = new CorruptCopContact();
     public List<KillerContact> KillerContacts { get; private set; } = new List<KillerContact>();
     public List<VehicleExporterContact> VehicleExporterContacts { get; private set; } = new List<VehicleExporterContact>();
     public List<TaxiServiceContact> TaxiServiceContacts { get; private set; } = new List<TaxiServiceContact>();
@@ -23,10 +23,11 @@ public class PossibleContacts
         List<PhoneContact> AllLocations = new List<PhoneContact>();
         AllLocations.AddRange(GangContacts);
         AllLocations.AddRange(GunDealerContacts);
-        AllLocations.AddRange(EmergencyServicesContacts);
+        AllLocations.Add(EmergencyServicesContact);
         AllLocations.AddRange(KillerContacts);
         AllLocations.AddRange(VehicleExporterContacts);
         AllLocations.AddRange(TaxiServiceContacts);
+        AllLocations.Add(CorruptCopContact);
         return AllLocations;
     }
 }

@@ -776,7 +776,7 @@ public class Pedestrians : ITaskerReportable
             myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
         }
         PedExt createdPedExt;
-        if (Pedestrian.CurrentVehicle.Exists() && Pedestrian.CurrentVehicle.Model.Hash == 3338918751)
+        if (Pedestrian.CurrentVehicle.Exists() && Pedestrian.CurrentVehicle.Model.Hash == 3338918751) //Taxi
         {
             createdPedExt = new TaxiDriver(Pedestrian, Settings, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), myGroup.MemberName, World, false)
             {

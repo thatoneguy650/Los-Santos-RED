@@ -21,7 +21,7 @@ namespace Mod
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherAnnounceable,
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IContactRelateable, ILicenseable, IPropertyOwnable,
                           ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable, IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable,
-                          IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable, IRestrictedAreaManagable
+                          IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable, IRestrictedAreaManagable, ITaxiRideable
     {
         public int UpdateState = 0;
         private float CurrentVehicleRoll;
@@ -159,6 +159,7 @@ namespace Mod
             OutfitManager = new OutfitManager(this, savedOutfits);
             OfficerMIAWatcher = new OfficerMIAWatcher(World, this, this, Settings, TimeControllable);
             RestrictedAreaManager = new RestrictedAreaManager(this, this, World, Settings);
+            TaxiManager = new TaxiManager(this, World,PlacesOfInterest, Settings);
         }
         public RelationshipManager RelationshipManager { get; private set; }
         public GPSManager GPSManager { get; private set; }
@@ -197,6 +198,7 @@ namespace Mod
         public OutfitManager OutfitManager { get; private set; }
         public OfficerMIAWatcher OfficerMIAWatcher { get; private set; }
         public RestrictedAreaManager RestrictedAreaManager { get; private set; }
+        public TaxiManager TaxiManager { get; private set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
@@ -451,6 +453,8 @@ namespace Mod
         public bool IsUsingController { get; set; }
         public bool IsShowingActionWheel { get; set; }
         public bool IsInPoliceVehicle { get; private set; }
+        public Dispatcher Dispatcher { get; set; }
+
         //Required
         public void Setup()
         {
@@ -1089,9 +1093,10 @@ namespace Mod
             {
                 return;
             }
-            if (!CellPhone.ContactList.Any(x => x.Name == StaticStrings.OfficerFriendlyContactName))
+            PhoneContact tosend = CellPhone.GetCorruptCopContact();
+            if(tosend == null)
             {
-                return;        
+                return;
             }
             List<string> Replies = new List<string>() {
                                 $"Letting you know they got some feds looking for you.",
@@ -1100,7 +1105,7 @@ namespace Mod
                                 $"Guess you made someone really made, the feds are looking for you.",
                                 $"Fed task force on the way to your position.",
                                 };
-            CellPhone.AddScheduledText(new CorruptCopContact(StaticStrings.OfficerFriendlyContactName), Replies.PickRandom(), 0, true);
+            CellPhone.AddScheduledText(tosend, Replies.PickRandom(), 0, true);
         }
 
         private void OnAimingChanged()

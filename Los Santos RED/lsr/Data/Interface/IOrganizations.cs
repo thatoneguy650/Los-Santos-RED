@@ -10,7 +10,9 @@ namespace LosSantosRED.lsr.Interface
     {
         PossibleOrganizations PossibleOrganizations { get; }
 
+        TaxiFirm GetDefaultTaxiFirm();
         Organization GetOrganizationByContact(string contactName);
         TaxiFirm GetRandomTaxiFirm();
+        TaxiFirm GetTaxiFirmFromVehicle(string v, int liveryID);
     }
 }

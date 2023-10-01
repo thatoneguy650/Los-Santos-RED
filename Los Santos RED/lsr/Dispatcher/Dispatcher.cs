@@ -233,7 +233,10 @@ public class Dispatcher
     {
         TaxiDispatcher.DebugSpawnTaxi(agencyID, onFoot, isEmpty);
     }
-
+    public void ForceTaxiSpawn(TaxiFirm taxifirmID)
+    {
+        TaxiDispatcher.ForceTaxiSpawn(taxifirmID);
+    }
 
     public void DebugSpawnEMT(string agencyID, bool onFoot, bool isEmpty)
     {

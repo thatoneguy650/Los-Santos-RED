@@ -1,17 +1,15 @@
 ﻿using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 public class TaxiDriverBrain : PedBrain
 {
-    public TaxiDriverBrain(PedExt pedExt, ISettingsProvideable settings, IEntityProvideable world, IWeapons weapons) : base(pedExt, settings, world, weapons)
+    private TaxiDriver TaxiDriver;
+    public TaxiDriverBrain(PedExt pedExt, ISettingsProvideable settings, IEntityProvideable world, IWeapons weapons, TaxiDriver taxiDriver) : base(pedExt, settings, world, weapons)
     {
+        TaxiDriver = taxiDriver;
     }
     public override void Update(ITargetable player, IPlacesOfInterest placesOfInterest)
     {
@@ -89,17 +87,42 @@ public class TaxiDriverBrain : PedBrain
             {
                 SetCalmCallIn();
             }
-            else if (PedExt.WasModSpawned && PedExt.CurrentTask == null)
+            else
             {
-                SetIdle();
+                HandleIdle();
             }
+            //else if (PedExt.WasModSpawned && PedExt.CurrentTask == null)
+            //{
+            //    SetIdle();
+            //}
         }
-        else if (PedExt.WasModSpawned && PedExt.CurrentTask == null)
+        else //if (PedExt.WasModSpawned && PedExt.CurrentTask == null)
         {
-            SetIdle();
+            HandleIdle();///
+           // SetIdle();
         }
         PedExt.GameTimeLastUpdatedTask = Game.GameTime;
     }
-
+    private void HandleIdle()
+    {
+        if(TaxiDriver.IsPickingUpPlayer)
+        {
+            SetTaxiService();
+        }
+        else if(PedExt.WasModSpawned)
+        {
+            SetIdle();
+        }
+    }
+    protected virtual void SetTaxiService()
+    {
+        if (PedExt.CurrentTask?.Name == "TaxiService")
+        {
+            return;
+        }
+        PedExt.CurrentTask = new TaxiService(PedExt, PedExt, Player, World, new List<VehicleExt>() { PedExt.AssignedVehicle }, PlacesOfInterest, Settings, true, TaxiDriver);
+        GameFiber.Yield();//TR Added back 4
+        PedExt.CurrentTask.Start();
+    }
 }
 

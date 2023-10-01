@@ -11,9 +11,11 @@ using System.Threading.Tasks;
 
 public class TaxiSpawnTask : CivilianSpawnTask
 {
-    public TaxiSpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, bool setPersistent, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world, IModItems modItems, IShopMenus shopMenus) : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, setPersistent, settings, crimes, weapons, names, world, modItems, shopMenus)
+    private TaxiFirm TaxiFirm;
+    public TaxiSpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, bool setPersistent, ISettingsProvideable settings, ICrimes crimes, 
+        IWeapons weapons, INameProvideable names, IEntityProvideable world, IModItems modItems, IShopMenus shopMenus, TaxiFirm taxiFirm) : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, setPersistent, settings, crimes, weapons, names, world, modItems, shopMenus)
     {
-
+        TaxiFirm = taxiFirm;
     }
     protected override PedExt SetupRegularPed(Ped ped)
     {
@@ -22,6 +24,7 @@ public class TaxiSpawnTask : CivilianSpawnTask
         bool isMale = PersonType.IsMale(ped);
 
         TaxiDriver CreatedPedExt = new TaxiDriver(ped, Settings, Crimes, Weapons, Names.GetRandomName(isMale), "Taxi Driver", World, true);
+        CreatedPedExt.TaxiFirm = TaxiFirm;
         ped.RelationshipGroup = isMale ? new RelationshipGroup("CIVMALE") : new RelationshipGroup("CIVFEMALE");
         World.Pedestrians.AddEntity(CreatedPedExt);
         CreatedPedExt.SetBaseStats(PersonType, ShopMenus, Weapons, AddBlip);
@@ -50,6 +53,7 @@ public class TaxiSpawnTask : CivilianSpawnTask
                 return null;
             }
             TaxiVehicleExt CreatedVehicle = new TaxiVehicleExt(SpawnedVehicle, Settings);
+            CreatedVehicle.TaxiFirm = TaxiFirm;
             CreatedVehicle.Setup();
             CreatedVehicle.WasModSpawned = true;
             GameFiber.Yield();

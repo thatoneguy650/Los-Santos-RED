@@ -40,6 +40,11 @@ public static class StaticStrings
     public static readonly string DowntownCabCoContactName = "Downtown Cab Co.";//these have gotta go, but where?
     public static readonly string ExportotopiaContactName = "Exportotopia";//these have gotta go, but where?
     public static readonly string LSRGunDealerContactName = "LSR Gun Dealer";
+
+
+    public static readonly string HellCabContactName = "Hell Cab";//these have gotta go, but where?
+    public static readonly string PurpleCabContactName = "Purple Cab Co.";//these have gotta go, but where?
+    public static readonly string ShitiCabContactName = "Shiti Cab";//these have gotta go, but where?
     //Exportotopia
 
     //Crimes

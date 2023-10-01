@@ -2,6 +2,7 @@
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using NAudio.Wave;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -44,8 +45,34 @@ public class Organizations : IOrganizations
         {
             EntryPoint.WriteToConsole($"No Organizations config found, creating default", 0);
             SetupDefault();
+            DefaultConfig_FullExpanded();
             DefaultConfig();
         }
+    }
+    public void Setup(IHeads heads, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople, IIssuableWeapons issuableWeapons, IContacts contacts)
+    {
+        foreach (Organization organization in PossibleOrganizations.AllOrganizations())//OrganizationsList)
+        {
+            organization.LessLethalWeapons = issuableWeapons.GetWeaponData(organization.LessLethalWeaponsID);
+            organization.LongGuns = issuableWeapons.GetWeaponData(organization.LongGunsID);
+            organization.SideArms = issuableWeapons.GetWeaponData(organization.SideArmsID);
+            organization.Personnel = dispatchablePeople.GetPersonData(organization.PersonnelID);
+            organization.Vehicles = dispatchableVehicles.GetVehicleData(organization.VehiclesID);
+            organization.PossibleHeads = heads.GetHeadData(organization.HeadDataGroupID);
+            organization.PhoneContact = contacts.GetContactData(organization.ContactName);
+        }
+    }
+    public TaxiFirm GetDefaultTaxiFirm()
+    {
+        return PossibleOrganizations.TaxiFirms.FirstOrDefault(x => x.IsDefault);
+    }
+    public TaxiFirm GetRandomTaxiFirm()
+    {
+        return PossibleOrganizations.TaxiFirms.PickRandom();
+    }
+    public TaxiFirm GetTaxiFirmFromVehicle(string v, int liveryID)
+    {
+        return PossibleOrganizations.TaxiFirms.Where(x => x.Vehicles != null && x.Vehicles.Any(y => y.ModelName == v && y.RequiredLiveries != null && y.RequiredLiveries.Contains(liveryID))).PickRandom();
     }
     public Organization GetOrganizations(string AgencyInitials)
     {
@@ -81,6 +108,7 @@ public class Organizations : IOrganizations
             Description = "In transit since 1922",
             HeadDataGroupID = "AllHeads",
             ContactName = StaticStrings.DowntownCabCoContactName,
+            IsDefault = true,
         };
         VehicleExports = new Organization("~w~", "VEHEXP", StaticStrings.VehicleExporterContactName, StaticStrings.VehicleExporterContactName, "White", "", "", "", "", "", "", "Exporter")
         {
@@ -118,22 +146,56 @@ public class Organizations : IOrganizations
         };
         Serialization.SerializeParam(PossibleOrganizations, ConfigFileName);
     }
-    public void Setup(IHeads heads, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople, IIssuableWeapons issuableWeapons, IContacts contacts)
+    private void DefaultConfig_FullExpanded()
     {
-        foreach (Organization organization in PossibleOrganizations.AllOrganizations())//OrganizationsList)
+        PossibleOrganizations PossibleOrganizations_FullExpanded = new PossibleOrganizations();
+
+
+        DowntownCabCo = new TaxiFirm("~y~", "DTCAB", "Downtown Cab Co.", "Downtown Cab Co.", "Yellow", "TaxiDrivers", "DowntownTaxiVehicles", "DT ", "", "", "", "Cabbie")
         {
-            organization.LessLethalWeapons = issuableWeapons.GetWeaponData(organization.LessLethalWeaponsID);
-            organization.LongGuns = issuableWeapons.GetWeaponData(organization.LongGunsID);
-            organization.SideArms = issuableWeapons.GetWeaponData(organization.SideArmsID);
-            organization.Personnel = dispatchablePeople.GetPersonData(organization.PersonnelID);
-            organization.Vehicles = dispatchableVehicles.GetVehicleData(organization.VehiclesID);
-            organization.PossibleHeads = heads.GetHeadData(organization.HeadDataGroupID);
-            organization.PhoneContact = contacts.GetContactData(organization.ContactName);
-        }
+            Description = "In transit since 1922",
+            HeadDataGroupID = "AllHeads",
+            ContactName = StaticStrings.DowntownCabCoContactName,
+            IsDefault = true,
+        };
+
+        TaxiFirm HellCab = new TaxiFirm("~g~", "HELLCAB", "Hell Cab", "Hell Cab", "Green", "TaxiDrivers", "HellTaxiVehicles", "HC ", "", "", "", "Cabbie")
+        {
+            Description = "Open the door to Hell and ride!",
+            HeadDataGroupID = "AllHeads",
+            ContactName = StaticStrings.HellCabContactName,
+            IsDefault = true,
+        };
+
+        TaxiFirm PurpleCabCo = new TaxiFirm("~y~", "PRPLCAB", "Purple Cab Co.", "Purple Cab Co.", "Yellow", "TaxiDrivers", "PurpleTaxiVehicles", "PC ", "", "", "", "Cabbie")
+        {
+            Description = "High Vis Meets High Class",
+            HeadDataGroupID = "AllHeads",
+            ContactName = StaticStrings.PurpleCabContactName,
+            IsDefault = true,
+        };
+        TaxiFirm ShitiCabCo = new TaxiFirm("~y~", "SHITICAB", "Shiti Cab", "Shiti Cab", "Yellow", "TaxiDrivers", "ShitiTaxiVehicles", "PC ", "", "", "", "Cabbie")
+        {
+            Description = "Our service is anything but!",
+            HeadDataGroupID = "AllHeads",
+            ContactName = StaticStrings.ShitiCabContactName,
+            IsDefault = true,
+        };
+
+
+        PossibleOrganizations_FullExpanded.GeneralOrganizations = new List<Organization>
+        {
+            VehicleExports,
+            UndergroundGuns,
+        };
+        PossibleOrganizations_FullExpanded.TaxiFirms = new List<TaxiFirm>
+        {
+            DowntownCabCo,
+            HellCab,
+            PurpleCabCo,
+            ShitiCabCo,
+        };
+        Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Organizations_FullExpandedJurisdiction.xml");
     }
 
-    public TaxiFirm GetRandomTaxiFirm()
-    {
-        return PossibleOrganizations.TaxiFirms.PickRandom();
-    }
 }

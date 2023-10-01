@@ -23,6 +23,7 @@ public class PhoneContact
     public bool RandomizeDialTimeout { get; set; } = true;
     public string IconName { get; set; } = "CHAR_BLANK_ENTRY";
     public bool IsDefault { get; set; } = false;
+    public string FullNumber { get; set; } = "";
     public string Number { get; set; } = "";
     [XmlIgnore]
     public IContactMenuInteraction MenuInteraction { get; set; }

@@ -7,32 +7,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static DispatchScannerFiles;
 
 
 public class TaxiDispatcher : DefaultDispatcher
 {
+    private TaxiFirm TaxiFirm;
     private IOrganizations Organizations;
     private uint GameTimeAttemptedDispatch;
     private bool ShouldRunAmbientDispatch;
     private uint GameTimeAttemptedRecall;
     private readonly float MinimumDeleteDistance = 150f;//200f
     private readonly uint MinimumExistingTime = 20000;
-    protected override float MaxDistanceToSpawn => Settings.SettingsManager.ServiceSettings.MaxDistanceToSpawnInVehicle;
-    protected override float MinDistanceToSpawn => Settings.SettingsManager.ServiceSettings.MinDistanceToSpawnInVehicle;
+    protected override float MaxDistanceToSpawn => Settings.SettingsManager.TaxiSettings.MaxDistanceToSpawnInVehicle;
+    protected override float MinDistanceToSpawn => Settings.SettingsManager.TaxiSettings.MinDistanceToSpawnInVehicle;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= 5000;// TimeBetweenSpawn;
     private bool IsTimeToAmbientDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;//15000;
-    private float DistanceToDeleteInVehicle => Settings.SettingsManager.ServiceSettings.MaxDistanceToSpawnInVehicle + 150f;// 300f;
-    private float DistanceToDeleteOnFoot => Settings.SettingsManager.ServiceSettings.MaxDistanceToSpawnOnFoot + 50f;// 200 + 50f grace = 250f;
+    private float DistanceToDeleteInVehicle => Settings.SettingsManager.TaxiSettings.MaxDistanceToSpawnInVehicle + 150f;// 300f;
+    private float DistanceToDeleteOnFoot => Settings.SettingsManager.TaxiSettings.MaxDistanceToSpawnOnFoot + 50f;// 200 + 50f grace = 250f;
     private List<TaxiDriver> DeleteableTaxiDrivers => World.Pedestrians.TaxiDriverList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
     private bool HasNeedToAmbientDispatch
     {
         get
         {
-            if(!Settings.SettingsManager.ServiceSettings.ManageDispatching)
+            if(!Settings.SettingsManager.TaxiSettings.ManageDispatching)
             {
                 return false;
             }
-            if (World.Pedestrians.TotalSpawnedTaxiDrivers >= Settings.SettingsManager.ServiceSettings.TotalSpawnedMembersLimit)
+            if (World.Pedestrians.TotalSpawnedTaxiDrivers >= Settings.SettingsManager.TaxiSettings.TotalSpawnedMembersLimit)
             {
                 return false;
             }
@@ -47,26 +49,26 @@ public class TaxiDispatcher : DefaultDispatcher
     {
         get
         {
-            int AmbientMemberLimit = Settings.SettingsManager.ServiceSettings.TotalSpawnedAmbientMembersLimit;
+            int AmbientMemberLimit = Settings.SettingsManager.TaxiSettings.TotalSpawnedAmbientMembersLimit;
             if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
             {
-                AmbientMemberLimit = Settings.SettingsManager.ServiceSettings.TotalSpawnedAmbientMembersLimit_Wilderness;
+                AmbientMemberLimit = Settings.SettingsManager.TaxiSettings.TotalSpawnedAmbientMembersLimit_Wilderness;
             }
             else if (EntryPoint.FocusZone?.Type == eLocationType.Rural)
             {
-                AmbientMemberLimit = Settings.SettingsManager.ServiceSettings.TotalSpawnedAmbientMembersLimit_Rural;
+                AmbientMemberLimit = Settings.SettingsManager.TaxiSettings.TotalSpawnedAmbientMembersLimit_Rural;
             }
             else if (EntryPoint.FocusZone?.Type == eLocationType.Suburb)
             {
-                AmbientMemberLimit = Settings.SettingsManager.ServiceSettings.TotalSpawnedAmbientMembersLimit_Suburb;
+                AmbientMemberLimit = Settings.SettingsManager.TaxiSettings.TotalSpawnedAmbientMembersLimit_Suburb;
             }
             else if (EntryPoint.FocusZone?.Type == eLocationType.Industrial)
             {
-                AmbientMemberLimit = Settings.SettingsManager.ServiceSettings.TotalSpawnedAmbientMembersLimit_Industrial;
+                AmbientMemberLimit = Settings.SettingsManager.TaxiSettings.TotalSpawnedAmbientMembersLimit_Industrial;
             }
             else if (EntryPoint.FocusZone?.Type == eLocationType.Downtown)
             {
-                AmbientMemberLimit = Settings.SettingsManager.ServiceSettings.TotalSpawnedAmbientMembersLimit_Downtown;
+                AmbientMemberLimit = Settings.SettingsManager.TaxiSettings.TotalSpawnedAmbientMembersLimit_Downtown;
             }
             return AmbientMemberLimit;
         }
@@ -75,26 +77,26 @@ public class TaxiDispatcher : DefaultDispatcher
     {
         get
         {
-            int TotalTimeBetweenSpawns = Settings.SettingsManager.ServiceSettings.TimeBetweenSpawn;
+            int TotalTimeBetweenSpawns = Settings.SettingsManager.TaxiSettings.TimeBetweenSpawn;
             if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
             {
-                TotalTimeBetweenSpawns += Settings.SettingsManager.ServiceSettings.TimeBetweenSpawn_WildernessAdditional;
+                TotalTimeBetweenSpawns += Settings.SettingsManager.TaxiSettings.TimeBetweenSpawn_WildernessAdditional;
             }
             else if (EntryPoint.FocusZone?.Type == eLocationType.Rural)
             {
-                TotalTimeBetweenSpawns += Settings.SettingsManager.ServiceSettings.TimeBetweenSpawn_RuralAdditional;
+                TotalTimeBetweenSpawns += Settings.SettingsManager.TaxiSettings.TimeBetweenSpawn_RuralAdditional;
             }
             else if (EntryPoint.FocusZone?.Type == eLocationType.Suburb)
             {
-                TotalTimeBetweenSpawns += Settings.SettingsManager.ServiceSettings.TimeBetweenSpawn_SuburbAdditional;
+                TotalTimeBetweenSpawns += Settings.SettingsManager.TaxiSettings.TimeBetweenSpawn_SuburbAdditional;
             }
             else if (EntryPoint.FocusZone?.Type == eLocationType.Industrial)
             {
-                TotalTimeBetweenSpawns += Settings.SettingsManager.ServiceSettings.TimeBetweenSpawn_IndustrialAdditional;
+                TotalTimeBetweenSpawns += Settings.SettingsManager.TaxiSettings.TimeBetweenSpawn_IndustrialAdditional;
             }
             else if (EntryPoint.FocusZone?.Type == eLocationType.Downtown)
             {
-                TotalTimeBetweenSpawns += Settings.SettingsManager.ServiceSettings.TimeBetweenSpawn;
+                TotalTimeBetweenSpawns += Settings.SettingsManager.TaxiSettings.TimeBetweenSpawn;
             }
             return TotalTimeBetweenSpawns;
         }
@@ -103,26 +105,26 @@ public class TaxiDispatcher : DefaultDispatcher
     {
         get
         {
-            int ambientSpawnPercent = Settings.SettingsManager.ServiceSettings.AmbientSpawnPercentage;
+            int ambientSpawnPercent = Settings.SettingsManager.TaxiSettings.AmbientSpawnPercentage;
             if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
             {
-                ambientSpawnPercent = Settings.SettingsManager.ServiceSettings.AmbientSpawnPercentage_Wilderness;
+                ambientSpawnPercent = Settings.SettingsManager.TaxiSettings.AmbientSpawnPercentage_Wilderness;
             }
             else if (EntryPoint.FocusZone?.Type == eLocationType.Rural)
             {
-                ambientSpawnPercent = Settings.SettingsManager.ServiceSettings.AmbientSpawnPercentage_Rural;
+                ambientSpawnPercent = Settings.SettingsManager.TaxiSettings.AmbientSpawnPercentage_Rural;
             }
             else if (EntryPoint.FocusZone?.Type == eLocationType.Suburb)
             {
-                ambientSpawnPercent = Settings.SettingsManager.ServiceSettings.AmbientSpawnPercentage_Suburb;
+                ambientSpawnPercent = Settings.SettingsManager.TaxiSettings.AmbientSpawnPercentage_Suburb;
             }
             else if (EntryPoint.FocusZone?.Type == eLocationType.Industrial)
             {
-                ambientSpawnPercent = Settings.SettingsManager.ServiceSettings.AmbientSpawnPercentage_Industrial;
+                ambientSpawnPercent = Settings.SettingsManager.TaxiSettings.AmbientSpawnPercentage_Industrial;
             }
             else if (EntryPoint.FocusZone?.Type == eLocationType.Downtown)
             {
-                ambientSpawnPercent = Settings.SettingsManager.ServiceSettings.AmbientSpawnPercentage_Downtown;
+                ambientSpawnPercent = Settings.SettingsManager.TaxiSettings.AmbientSpawnPercentage_Downtown;
             }
             return ambientSpawnPercent;
         }
@@ -266,27 +268,27 @@ public class TaxiDispatcher : DefaultDispatcher
     }
     protected override bool GetSpawnTypes()
     {
-        TaxiFirm taxiFirm = Organizations.GetRandomTaxiFirm();
-        if(taxiFirm == null)
+        TaxiFirm = Organizations.GetRandomTaxiFirm();
+        if(TaxiFirm == null)
         { 
             return false;
         }
-        if(taxiFirm.Personnel == null || taxiFirm.Vehicles == null)
+        if(TaxiFirm.Personnel == null || TaxiFirm.Vehicles == null)
         {
             return false;
         }
-        VehicleType = taxiFirm.Vehicles.PickRandom();
+        VehicleType = TaxiFirm.Vehicles.PickRandom();
         if (VehicleType == null)
         {
             return false;
         }
         if(string.IsNullOrEmpty(VehicleType.RequiredPedGroup))
         {
-            PersonType = taxiFirm.Personnel.PickRandom();
+            PersonType = TaxiFirm.Personnel.PickRandom();
         }
         else
         {
-            PersonType = taxiFirm.Personnel.Where(x=> x.GroupName == VehicleType.RequiredPedGroup).PickRandom();
+            PersonType = TaxiFirm.Personnel.Where(x=> x.GroupName == VehicleType.RequiredPedGroup).PickRandom();
         }
         if(PersonType == null)
         {
@@ -298,7 +300,7 @@ public class TaxiDispatcher : DefaultDispatcher
     }
     protected override bool CallSpawnTask()
     {
-        TaxiSpawnTask civilianSpawnTask = new TaxiSpawnTask(SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.ServiceSettings.ShowSpawnedBlip, false, true, Settings, Crimes, Weapons, Names, World, ModItems, ShopMenus);
+        TaxiSpawnTask civilianSpawnTask = new TaxiSpawnTask(SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.TaxiSettings.ShowSpawnedBlip, false, true, Settings, Crimes, Weapons, Names, World, ModItems, ShopMenus, TaxiFirm);
         civilianSpawnTask.AllowAnySpawn = true;
         civilianSpawnTask.AllowBuddySpawn = false;
         civilianSpawnTask.PlacePedOnGround = false;
@@ -320,7 +322,31 @@ public class TaxiDispatcher : DefaultDispatcher
         EntryPoint.WriteToConsole($"TAXI DISPATCHER CallSpawnTask SpawnedItems{SpawnedItems} PEDHANDLE:{spawnedDriver?.Handle} VEHHANDLE:{spawnedVehicle?.Handle}");
         return SpawnedItems;
     }
-
+    public void ForceTaxiSpawn(TaxiFirm taxiFirm)
+    {
+        VehicleType = null;
+        PersonType = null;
+        if(!GetSpawnLocation())
+        {
+            return;
+        }
+        TaxiFirm = taxiFirm;
+        if (TaxiFirm == null)
+        {
+            return;
+        }
+        VehicleType = TaxiFirm.GetRandomVehicle(Player.WantedLevel, true, true, true, "", Settings);
+        if (VehicleType != null)
+        {
+            string RequiredGroup = "";
+            if (VehicleType != null)
+            {
+                RequiredGroup = VehicleType.RequiredPedGroup;
+            }
+            PersonType = TaxiFirm.GetRandomPed(Player.WantedLevel, RequiredGroup);
+        }
+        CallSpawnTask();
+    }
     public void DebugSpawnTaxi(string gangID, bool onFoot, bool isEmpty)
     {
         VehicleType = null;
@@ -329,14 +355,14 @@ public class TaxiDispatcher : DefaultDispatcher
         SpawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
         SpawnLocation.StreetPosition = SpawnLocation.InitialPosition;
         SpawnLocation.Heading = Game.LocalPlayer.Character.Heading;
-        TaxiFirm taxiFirm = Organizations.GetRandomTaxiFirm();
-        if(taxiFirm == null)
+        TaxiFirm = Organizations.PossibleOrganizations.TaxiFirms.Where(x => x.ID == gangID).PickRandom();//.GetRandomTaxiFirm();
+        if(TaxiFirm == null)
         {
             return;
         }
         if (!onFoot)
         {
-            VehicleType = taxiFirm.GetRandomVehicle(Player.WantedLevel, true, true, true, "", Settings);
+            VehicleType = TaxiFirm.GetRandomVehicle(Player.WantedLevel, true, true, true, "", Settings);
         }
         if (VehicleType != null || onFoot)
         {
@@ -345,7 +371,7 @@ public class TaxiDispatcher : DefaultDispatcher
             {
                 RequiredGroup = VehicleType.RequiredPedGroup;
             }
-            PersonType = taxiFirm.GetRandomPed(Player.WantedLevel, RequiredGroup);
+            PersonType = TaxiFirm.GetRandomPed(Player.WantedLevel, RequiredGroup);
         }
         if (isEmpty)
         {

@@ -1834,7 +1834,7 @@ public class Debug
             Settings.SettingsManager.GangSettings.ManageDispatching = false;
             Settings.SettingsManager.FireSettings.ManageDispatching = false;
             Settings.SettingsManager.SecuritySettings.ManageDispatching = false;
-            Settings.SettingsManager.ServiceSettings.ManageDispatching = false;
+            Settings.SettingsManager.TaxiSettings.ManageDispatching = false;
             Game.DisplaySubtitle("Dispatching Disabled");
         }
         else
@@ -1844,7 +1844,7 @@ public class Debug
             Settings.SettingsManager.GangSettings.ManageDispatching = true;
             Settings.SettingsManager.FireSettings.ManageDispatching = true;
             Settings.SettingsManager.SecuritySettings.ManageDispatching = true;
-            Settings.SettingsManager.ServiceSettings.ManageDispatching = true;
+            Settings.SettingsManager.TaxiSettings.ManageDispatching = true;
             Dispatcher.DebugResetLocations();
             Game.DisplaySubtitle("Dispatching Enabled");
         }
@@ -4535,36 +4535,21 @@ private void SetPropAttachment()
         EntryPoint.WriteToConsole($"============================================ POLICE VEHICLE START", 5);
         foreach(PoliceVehicleExt vehicleExt in World.Vehicles.PoliceVehicles)
         {
-            string vehicleText = $"{vehicleExt.Handle}";
-            if(vehicleExt.Vehicle.Exists())
-            {
-                vehicleText += $"{vehicleExt.Vehicle.Model.Name}";
-            }
-            EntryPoint.WriteToConsole($"{vehicleText}", 5);
+            EntryPoint.WriteToConsole($"{vehicleExt.GetDebugString()}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ POLICE VEHICLE END", 5);
 
         EntryPoint.WriteToConsole($"============================================ EMS VEHICLE START", 5);
         foreach (EMSVehicleExt vehicleExt in World.Vehicles.EMSVehicles)
         {
-            string vehicleText = $"{vehicleExt.Handle}";
-            if (vehicleExt.Vehicle.Exists())
-            {
-                vehicleText += $"{vehicleExt.Vehicle.Model.Name}";
-            }
-            EntryPoint.WriteToConsole($"{vehicleText}", 5);
+            EntryPoint.WriteToConsole($"{vehicleExt.GetDebugString()}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ EMS VEHICLE END", 5);
 
         EntryPoint.WriteToConsole($"============================================ FIRE VEHICLE START", 5);
         foreach (FireVehicleExt vehicleExt in World.Vehicles.FireVehicles)
         {
-            string vehicleText = $"{vehicleExt.Handle}";
-            if (vehicleExt.Vehicle.Exists())
-            {
-                vehicleText += $"{vehicleExt.Vehicle.Model.Name}";
-            }
-            EntryPoint.WriteToConsole($"{vehicleText}", 5);
+            EntryPoint.WriteToConsole($"{vehicleExt.GetDebugString()}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ FIRE VEHICLE END", 5);
 
@@ -4572,47 +4557,27 @@ private void SetPropAttachment()
         EntryPoint.WriteToConsole($"============================================ SECURITY VEHICLE START", 5);
         foreach (SecurityVehicleExt vehicleExt in World.Vehicles.SecurityVehicles)
         {
-            string vehicleText = $"{vehicleExt.Handle}";
-            if (vehicleExt.Vehicle.Exists())
-            {
-                vehicleText += $"{vehicleExt.Vehicle.Model.Name}";
-            }
-            EntryPoint.WriteToConsole($"{vehicleText}", 5);
+            EntryPoint.WriteToConsole($"{vehicleExt.GetDebugString()}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ SECURITY VEHICLE END", 5);
 
         EntryPoint.WriteToConsole($"============================================ GANG VEHICLE START", 5);
         foreach (GangVehicleExt vehicleExt in World.Vehicles.GangVehicles)
         {
-            string vehicleText = $"{vehicleExt.Handle}";
-            if (vehicleExt.Vehicle.Exists())
-            {
-                vehicleText += $"{vehicleExt.Vehicle.Model.Name}";
-            }
-            EntryPoint.WriteToConsole($"{vehicleText}", 5);
+            EntryPoint.WriteToConsole($"{vehicleExt.GetDebugString()}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ GANG VEHICLE END", 5);
 
         EntryPoint.WriteToConsole($"============================================ TAXI VEHICLE START", 5);
-        foreach (VehicleExt vehicleExt in World.Vehicles.TaxiVehicles)
+        foreach (TaxiVehicleExt vehicleExt in World.Vehicles.TaxiVehicles)
         {
-            string vehicleText = $"{vehicleExt.Handle}";
-            if (vehicleExt.Vehicle.Exists())
-            {
-                vehicleText += $" {vehicleExt.Vehicle.Model.Name}";
-            }
-            EntryPoint.WriteToConsole($"{vehicleText}", 5);
+            EntryPoint.WriteToConsole($"{vehicleExt.GetDebugString()}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ TAXI VEHICLE END", 5);
         EntryPoint.WriteToConsole($"============================================ CIVILIAN VEHICLE START", 5);
         foreach (VehicleExt vehicleExt in World.Vehicles.CivilianVehicles)
         {
-            string vehicleText = $"{vehicleExt.Handle}";
-            if (vehicleExt.Vehicle.Exists())
-            {
-                vehicleText += $" {vehicleExt.Vehicle.Model.Name}";
-            }
-            EntryPoint.WriteToConsole($"{vehicleText}", 5);
+            EntryPoint.WriteToConsole($"{vehicleExt.GetDebugString()}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ CIVILIAN VEHICLE END", 5);
 

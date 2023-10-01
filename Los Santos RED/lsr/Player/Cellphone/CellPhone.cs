@@ -146,7 +146,7 @@ public class CellPhone
     {
         CheckScheduledItems();
         MenuPool.ProcessMenus();
-        foreach(PhoneContact phoneContact in ContactList)
+        foreach (PhoneContact phoneContact in ContactList)
         {
             phoneContact.MenuInteraction?.Update();
         }
@@ -165,7 +165,7 @@ public class CellPhone
         PhoneResponses = new List<PhoneResponse>();
         ScheduledContacts = new List<ScheduledContact>();
         ScheduledTexts = new List<ScheduledText>();
-        foreach(PhoneContact phoneContact in Contacts.GetDefaultContacts())
+        foreach (PhoneContact phoneContact in Contacts.GetDefaultContacts())
         {
             AddContact(phoneContact, false);
         }
@@ -253,7 +253,7 @@ public class CellPhone
     {
         var dir = new DirectoryInfo("Plugins\\LosSantosRED\\audio\\tones");
         List<FileInfo> files = dir.GetFiles().ToList();
-        if(files != null)
+        if (files != null)
         {
             CustomRingtone = files.PickRandom()?.Name;
             CustomTextTone = files.PickRandom()?.Name;
@@ -297,13 +297,13 @@ public class CellPhone
         for (int i = ScheduledTexts.Count - 1; i >= 0; i--)
         {
             ScheduledText sc = ScheduledTexts[i];
-            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0  && (sc.SendImmediately || Game.GameTime - sc.GameTimeSent >= 10000))
+            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0 && (sc.SendImmediately || Game.GameTime - sc.GameTimeSent >= 10000))
             {
                 if (!AddedTexts.Any(x => x.ContactName == sc.ContactName && x.Message == sc.Message))
                 {
                     AddText(sc.ContactName, sc.IconName, sc.Message, Time.CurrentHour, Time.CurrentMinute, false, sc.CustomPicture);
 
-                    if(!string.IsNullOrEmpty(sc.CustomPicture))
+                    if (!string.IsNullOrEmpty(sc.CustomPicture))
                     {
                         EntryPoint.WriteToConsole($"CUSTOM PICTURE SENT {sc.CustomPicture}");
                         NativeHelper.DisplayNotificationCustom(sc.CustomPicture, sc.CustomPicture, sc.ContactName, "~g~Text Received~s~", sc.Message, NotificationIconTypes.ChatBox, false);
@@ -347,7 +347,7 @@ public class CellPhone
     }
     public void AddContact(PhoneContact phoneContact, bool displayNotification)
     {
-        if (!AddedContacts.Any(x=> x.Name == phoneContact.Name))
+        if (!AddedContacts.Any(x => x.Name == phoneContact.Name))
         {
             phoneContact.Index = ContactIndex;
             ContactIndex++;
@@ -390,7 +390,7 @@ public class CellPhone
             AddedTexts.Add(textA);
 
             int NewTextIndex = 0;
-            foreach(PhoneText ifta in TextList.OrderByDescending(x=> x.TimeReceived))
+            foreach (PhoneText ifta in TextList.OrderByDescending(x => x.TimeReceived))
             {
                 ifta.Index = NewTextIndex;
                 NewTextIndex++;
@@ -399,7 +399,7 @@ public class CellPhone
     }
     public void AddPhoneResponse(string Name, string IconName, string Message)
     {
-        PhoneResponses.Add(new PhoneResponse(Name, IconName, Message,Time.CurrentDateTime));
+        PhoneResponses.Add(new PhoneResponse(Name, IconName, Message, Time.CurrentDateTime));
         NativeHelper.DisplayNotificationCustom(IconName, IconName, Name, "~o~Response", Message, NotificationIconTypes.RightJumpingArrow, false);
         PlayPhoneResponseSound();
     }
@@ -413,7 +413,7 @@ public class CellPhone
     public void DisableContact(string Name)
     {
         PhoneContact myContact = AddedContacts.FirstOrDefault(x => x.Name == Name);
-        if(myContact != null)
+        if (myContact != null)
         {
             myContact.Active = false;
         }
@@ -429,7 +429,7 @@ public class CellPhone
     }
     public void StopAudio()
     {
-        if(!phoneAudioPlayer.IsAudioPlaying)
+        if (!phoneAudioPlayer.IsAudioPlaying)
         {
             return;
         }
@@ -437,17 +437,17 @@ public class CellPhone
     }
     public void PlayRingtone()
     {
-        if(SleepMode)
+        if (SleepMode)
         {
             return;
         }
-        float volumeToUse = Volume.Clamp(0.0f,1.0f);
+        float volumeToUse = Volume.Clamp(0.0f, 1.0f);
         string ringToneToUse = Settings.SettingsManager.CellphoneSettings.DefaultCustomRingtoneName;
         if (!string.IsNullOrEmpty(CustomRingtone))
         {
             ringToneToUse = CustomRingtone;
         }
-        if(Settings.SettingsManager.CellphoneSettings.UseCustomRingtone)
+        if (Settings.SettingsManager.CellphoneSettings.UseCustomRingtone)
         {
             string AudioPath = $"tones\\{ringToneToUse}";
             if (!phoneAudioPlayer.IsAudioPlaying)
@@ -554,6 +554,21 @@ public class CellPhone
         {
             NativeFunction.Natives.TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("cellphone_flashhand");
             NativeFunction.Natives.TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("cellphone_controller");
+        }
+    }
+    public PhoneContact GetCorruptCopContact()
+    {
+        if (Contacts.PossibleContacts.CorruptCopContact == null)
+        {
+            return null;
+        }
+        return ContactList.FirstOrDefault(x => Contacts.PossibleContacts.CorruptCopContact.Name == x.Name);
+    }
+    public CorruptCopContact DefaultCorruptCopContact
+    {
+        get
+        {
+            return Contacts.PossibleContacts.CorruptCopContact;
         }
     }
 

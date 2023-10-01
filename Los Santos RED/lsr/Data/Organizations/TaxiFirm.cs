@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 public class TaxiFirm : Organization
 {
+    public bool IsDefault { get; set; } = false;
     public TaxiFirm()
     {
     }
