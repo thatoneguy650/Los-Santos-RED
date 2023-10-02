@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 
 public class DefaultDispatcher
@@ -16,7 +17,7 @@ public class DefaultDispatcher
     protected readonly ICrimes Crimes;
     protected readonly IModItems ModItems;
     protected readonly IShopMenus ShopMenus;
-
+    protected int TimesToTryLocation = 3;
 
 
 
@@ -26,7 +27,8 @@ public class DefaultDispatcher
 
     protected virtual float MinDistanceToSpawn => 250f;
     protected virtual float MaxDistanceToSpawn => 900f;
-
+    protected virtual float DistanceToDeleteInVehicle => MaxDistanceToSpawn + 150f;// 300f;
+    protected virtual float DistanceToDeleteOnFoot => MaxDistanceToSpawn + 50f;// 200 + 50f grace = 250f;
     public DefaultDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names,
         IPlacesOfInterest placesOfInterest, ICrimes crimes, IModItems modItems, IShopMenus shopMenus)
     {
@@ -88,7 +90,7 @@ public class DefaultDispatcher
             timesTried++;
             GameFiber.Yield();
         }
-        while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 3);//2//10
+        while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < TimesToTryLocation);//2//10
         return isValidSpawn && SpawnLocation.HasSpawns;
     }
     protected virtual Vector3 GetSpawnPosition()
@@ -143,6 +145,72 @@ public class DefaultDispatcher
         if (MyBlip.Exists())
         {
             MyBlip.Delete();
+        }
+    }
+    protected virtual void Delete(PedExt pedExt)
+    {
+        if (pedExt != null && pedExt.Pedestrian.Exists())
+        {
+            //EntryPoint.WriteToConsole($"Attempting to Delete {Cop.Pedestrian.Handle}");
+            if (pedExt.Pedestrian.IsInAnyVehicle(false))
+            {
+                if (pedExt.Pedestrian.CurrentVehicle.HasPassengers)
+                {
+                    foreach (Ped Passenger in pedExt.Pedestrian.CurrentVehicle.Passengers)
+                    {
+                        if (Passenger.Handle != Game.LocalPlayer.Character.Handle)
+                        {
+                            RemoveBlip(Passenger);
+                            Passenger.Delete();
+                            EntryPoint.PersistentPedsDeleted++;
+                        }
+                    }
+                }
+                if (pedExt.Pedestrian.Exists() && pedExt.Pedestrian.CurrentVehicle.Exists() && pedExt.Pedestrian.CurrentVehicle != null)
+                {
+                    Blip carBlip = pedExt.Pedestrian.CurrentVehicle.GetAttachedBlip();
+                    if (carBlip.Exists())
+                    {
+                        carBlip.Delete();
+                    }
+                    VehicleExt vehicleExt = World.Vehicles.GetVehicleExt(pedExt.Pedestrian.CurrentVehicle);
+                    if (vehicleExt != null)
+                    {
+                        vehicleExt.FullyDelete();
+                    }
+                    else
+                    {
+                        pedExt.Pedestrian.CurrentVehicle.Delete();
+                    }
+                    EntryPoint.PersistentVehiclesDeleted++;
+                }
+            }
+            RemoveBlip(pedExt.Pedestrian);
+            if (pedExt.Pedestrian.Exists())
+            {
+                //EntryPoint.WriteToConsole(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
+                pedExt.Pedestrian.Delete();
+                EntryPoint.PersistentPedsDeleted++;
+            }
+        }
+    }
+    protected virtual bool ShouldBeRecalled(PedExt pedExt)
+    {
+        if (!pedExt.RecentlyUpdated)
+        {
+            return false;
+        }
+        else if (pedExt.IsManuallyDeleted)
+        {
+            return false;
+        }
+        else if (pedExt.IsInVehicle)
+        {
+            return pedExt.DistanceToPlayer >= DistanceToDeleteInVehicle;
+        }
+        else
+        {
+            return pedExt.DistanceToPlayer >= DistanceToDeleteOnFoot;
         }
     }
 }

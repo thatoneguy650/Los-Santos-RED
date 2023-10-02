@@ -1366,7 +1366,7 @@ public class Debug
 
     private void DebugNumpad7()
     {
-
+        Game.DisplaySubtitle(Player.GPSManager.GetGPSRoutePosition().ToString());
        // NativeFunction.Natives.SET_STATE_OF_CLOSEST_DOOR_OF_TYPE(4163212883, -355.3892f, -51.06768f, 49.31105f, false,1.0f,true);
 
 

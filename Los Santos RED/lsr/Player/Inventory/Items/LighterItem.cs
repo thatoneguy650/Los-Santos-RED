@@ -29,9 +29,9 @@ public class LighterItem : ModItem
         }
         return false;
     }
-    public override bool ConsumeItem(IActionable actionable, bool applyNeeds)
-    {
-        return base.ConsumeItem(actionable, applyNeeds);
-    }
+    //public override bool ConsumeItem(IActionable actionable, bool applyNeeds)
+    //{
+    //    return base.ConsumeItem(actionable, applyNeeds);
+    //}
 }
 

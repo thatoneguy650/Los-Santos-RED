@@ -105,7 +105,7 @@ public class TaxiDriverBrain : PedBrain
     }
     private void HandleIdle()
     {
-        if(TaxiDriver.IsPickingUpPlayer)
+        if(TaxiDriver.IsRideActive)
         {
             SetTaxiService();
         }

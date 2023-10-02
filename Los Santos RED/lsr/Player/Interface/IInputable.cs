@@ -60,7 +60,7 @@ namespace LosSantosRED.lsr.Interface
         //  void LootPed();
         // void PauseCurrentActivity();
         void PlaySpeech(string player, bool v);
-        void ShowVehicleInteractMenu();
+        void ShowVehicleInteractMenu(bool showDefault);
         //   void StartConversation();
         //   void StartLocationInteraction();
         //   void StartScenario();

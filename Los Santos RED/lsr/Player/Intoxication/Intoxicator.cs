@@ -44,5 +44,10 @@ public class Intoxicator//THIS IS THE CURRENT INTOXICANTS VALUE INSIDE UR BODY
             IsConsuming = true;
         }
     }
+    public void SetConsumed()
+    {
+        GameTimeStartedIntoxicating = Game.GameTime - 30000;
+        GameTimeStoppedIntoxicating = Game.GameTime;
+    }
 }
 

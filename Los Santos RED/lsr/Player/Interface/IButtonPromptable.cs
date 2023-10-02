@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,6 +60,10 @@ namespace LosSantosRED.lsr.Interface
         bool IsShowingFrontEndMenus { get; }
   
         VehicleOwnership VehicleOwnership { get; }
+        Ped Character { get; }
+        ButtonPrompts ButtonPrompts { get; }
+
+        void ShowVehicleInteractMenu(bool showDefault);
         // bool IsSitting { get; }
         //  bool IsConversing { get; }
         //GameLocation ClosestTeleportEntrance { get; }

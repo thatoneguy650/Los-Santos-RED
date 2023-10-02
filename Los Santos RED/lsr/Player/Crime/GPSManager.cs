@@ -54,5 +54,26 @@ public class GPSManager
             Game.DisplaySubtitle("Waypoint Removed");
         }
     }
+    public Vector3 GetGPSRoutePosition()
+    {
+        if (!NativeFunction.Natives.IS_WAYPOINT_ACTIVE<bool>())
+        {
+            return Vector3.Zero;
+        }
+        Vector3 markerPos = NativeFunction.Natives.GET_BLIP_COORDS<Vector3>(NativeFunction.Natives.GET_FIRST_BLIP_INFO_ID<int>(8));
+        EntryPoint.WriteToConsole($"Current Marker Position1: {markerPos}");
+        if (markerPos == Vector3.Zero)
+        {
+            return Vector3.Zero;
+        }
+        if (!NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(markerPos.X, markerPos.Y, 500f, out float GroundZ, true, false))
+        {
+            EntryPoint.WriteToConsole($"Current Marker NO GROUND Z FOUND RETURNING REGULAR MARKERPOS");
+            return new Vector3(markerPos.X, markerPos.Y, markerPos.Z);
+        }
+        EntryPoint.WriteToConsole($"Current Marker Position2: {new Vector3(markerPos.X, markerPos.Y, GroundZ)} GroundZ{GroundZ}");
+        return new Vector3(markerPos.X, markerPos.Y, GroundZ);
+
+    }
 
 }

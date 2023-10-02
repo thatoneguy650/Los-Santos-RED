@@ -1144,10 +1144,10 @@ public class PopUpMenu
         List<PopUpBox> VehicleActionsSubMenu = new List<PopUpBox>()
         {
             new PopUpBox(0,"Remove Plate",new Action(() => Player.ActivityManager.RemovePlate()),"Remove the license plate from the nearest vehicle."),
-            new PopUpBox(1,"Enter Vehicle (Passenger)", new Action(() => Player.ActivityManager.EnterVehicleAsPassenger(false)),"Enter vehicle you are looking at as passenger"),
+            new PopUpBox(1,"Enter Vehicle (Passenger)", new Action(() => Player.ActivityManager.EnterVehicleAsPassenger(false, false)),"Enter vehicle you are looking at as passenger"),
             new PopUpBox(2,"Enter Vehicle (By Seat)", "EnterSeatSubMenu","Enter vehicle you are looking at and sit on the specific seat") { ClosesMenu = false },
             new PopUpBox(3,"Toggle Door", "OpenDoorSubMenu","Toggle the door of the vehicle you are looking at") { ClosesMenu = false },
-            new PopUpBox(4,"Menu",Player.ShowVehicleInteractMenu,"Show Vehicle Interaction Menu"),
+            new PopUpBox(4,"Menu",new Action(() => Player.ShowVehicleInteractMenu(true)),"Show Vehicle Interaction Menu"),
         };
 
 
@@ -1215,7 +1215,7 @@ public class PopUpMenu
             new PopUpBox(1,"Indicators","IndicatorsSubMenu","Open Indicators Sub Menu") { ClosesMenu = false },
             new PopUpBox(2,"Driver Window",Player.ActivityManager.ToggleDriverWindow,"Toggle driver window. Access other windows in the menu."),
             new PopUpBox(3,"Driver Door",Player.ActivityManager.CloseDriverDoor,"Close driver door. Access other doors in the menu when outside the vehicle"),
-            new PopUpBox(4,"Menu",Player.ShowVehicleInteractMenu,"Show Vehicle Interaction Menu"),
+            new PopUpBox(4,"Menu",new Action(() => Player.ShowVehicleInteractMenu(true)),"Show Vehicle Interaction Menu"),
         };
         List<PopUpBox> IndicatorsSubMenu = new List<PopUpBox>()
         {

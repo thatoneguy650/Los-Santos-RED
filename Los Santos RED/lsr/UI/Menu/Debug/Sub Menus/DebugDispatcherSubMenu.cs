@@ -121,7 +121,7 @@ public class DebugDispatcherSubMenu : DebugSubMenu
         UIMenuListScrollerItem<TaxiFirm> SpawnTaxi = new UIMenuListScrollerItem<TaxiFirm>("Taxi Random Vehicle Spawn", "Spawn a random taxi ped with a vehicle", Organizations.PossibleOrganizations.TaxiFirms);
         SpawnTaxi.Activated += (menu, item) =>
         {
-            Dispatcher.DebugSpawnTaxi(SpawnTaxi.SelectedItem.ID, false, false);
+            Dispatcher.DebugSpawnTaxi(SpawnTaxi.SelectedItem, false, false);
             menu.Visible = false;
         };
 

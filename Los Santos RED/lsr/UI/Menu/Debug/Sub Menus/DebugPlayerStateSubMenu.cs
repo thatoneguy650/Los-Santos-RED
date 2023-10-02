@@ -233,15 +233,15 @@ public class DebugPlayerStateSubMenu : DebugSubMenu
         };
 
 
-        //spawn taxi
-        UIMenuItem TaxiSpawn = new UIMenuItem("Spawn Taxi", "Spawns a taxi in fron of player");
-        TaxiSpawn.Activated += (menu, item) =>
-        {
-            TaxiDropOff TaxiDropOff = new TaxiDropOff(Game.LocalPlayer.Character.GetOffsetPositionFront(10f), Settings, Crimes, Weapons, Names, World, ModItems, null);
-            TaxiDropOff.Setup();
-            TaxiDropOff.Start();
-            menu.Visible = false;
-        };
+        ////spawn taxi
+        //UIMenuItem TaxiSpawn = new UIMenuItem("Spawn Taxi", "Spawns a taxi in fron of player");
+        //TaxiSpawn.Activated += (menu, item) =>
+        //{
+        //    TaxiDropOff TaxiDropOff = new TaxiDropOff(Game.LocalPlayer.Character.GetOffsetPositionFront(10f), Settings, Crimes, Weapons, Names, World, ModItems, null);
+        //    TaxiDropOff.Setup();
+        //    TaxiDropOff.Start();
+        //    menu.Visible = false;
+        //};
 
         //spawn taxi
         UIMenuItem ScamText = new UIMenuItem("Scam Text", "Add a random scam text");
@@ -310,7 +310,7 @@ public class DebugPlayerStateSubMenu : DebugSubMenu
         PlayerStateItemsMenu.AddItem(GetCCWLicense);
         PlayerStateItemsMenu.AddItem(GetPilotsLicense);
         PlayerStateItemsMenu.AddItem(AutoSetRadioStation);
-        PlayerStateItemsMenu.AddItem(TaxiSpawn);
+        //PlayerStateItemsMenu.AddItem(TaxiSpawn);
         PlayerStateItemsMenu.AddItem(ScamText);
         PlayerStateItemsMenu.AddItem(RandomizePhone);
         PlayerStateItemsMenu.AddItem(SetArrested);

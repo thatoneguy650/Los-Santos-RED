@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using ExtensionsMethods;
 
 public class BurnerPhoneContactsApp : BurnerPhoneApp
 {
@@ -117,6 +118,7 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
             BurnerPhone.MoveFinger(5);
             BurnerPhone.PlayAcceptedSound();
             IsDisplayingNumpad = true;
+            BurnerPhone.SetHeader("");
             DisplayNumpadUI();
         }
         int TotalContacts = Player.CellPhone.ContactList.Count();
@@ -173,8 +175,12 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
             BurnerPhone.MoveFinger(5);
             BurnerPhone.PlayAcceptedSound();
             NumpadString += GetCurrentNumpad();
-            Game.DisplaySubtitle(NumpadString);
-            BurnerPhone.SetHeader(NumpadString);
+            //Game.DisplaySubtitle(NumpadString);
+
+
+
+
+            BurnerPhone.SetHeader(FormatPhoneNumber(NumpadString));
         }
         else if (NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(3, 177))//CLOSE
         {
@@ -220,6 +226,74 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
     //        BurnerPhone.ReturnHome(Index);
     //    }
     //}
+
+
+    public string FormatPhoneNumber(string phoneNumber)
+    {
+        if(phoneNumber.Length <= 2)
+        {
+            return phoneNumber;
+        }
+        if(phoneNumber.Length == 3)
+        {
+            return $"({phoneNumber})";
+        }
+        if (phoneNumber.Length == 4)
+        {
+            return $"({phoneNumber.Left(3)}) {phoneNumber.Substring(3,1)}";
+        }
+        if (phoneNumber.Length == 5)
+        {
+            return $"({phoneNumber.Left(3)}) {phoneNumber.Substring(3, 2)}";
+        }
+        if (phoneNumber.Length == 6)
+        {
+            return $"({phoneNumber.Left(3)}) {phoneNumber.Substring(3, 3)}";
+        }
+        if (phoneNumber.Length == 7)
+        {
+            return $"({phoneNumber.Left(3)}) {phoneNumber.Substring(3, 3)}-{phoneNumber.Substring(6, 1)}";
+        }
+        if (phoneNumber.Length == 8)
+        {
+            return $"({phoneNumber.Left(3)}) {phoneNumber.Substring(3, 3)}-{phoneNumber.Substring(6, 2)}";
+        }
+        if (phoneNumber.Length == 9)
+        {
+            return $"({phoneNumber.Left(3)}) {phoneNumber.Substring(3, 3)}-{phoneNumber.Substring(6, 3)}";
+        }
+        if (phoneNumber.Length == 10)
+        {
+            return $"({phoneNumber.Left(3)}) {phoneNumber.Substring(3, 3)}-{phoneNumber.Substring(6, 4)}";
+        }
+        if (phoneNumber.Length > 10)
+        {
+            return $"({phoneNumber.Left(3)}) {phoneNumber.Substring(3, 3)}-{phoneNumber.Substring(6, phoneNumber.Length-6)}";
+        }
+        return phoneNumber;
+        //string originalValue = phoneNumber;
+
+        //phoneNumber = new System.Text.RegularExpressions.Regex(@"\D")
+        //    .Replace(phoneNumber, string.Empty);
+
+        //value = value.TrimStart('1');
+
+        //if (phoneNumber.Length == 7)
+
+        //    return Convert.ToInt64(value).ToString("###-####");
+        //if (phoneNumber.Length == 9)
+
+        //    return Convert.ToInt64(originalValue).ToString("###-###-####");
+        //if (phoneNumber.Length == 10)
+
+        //    return Convert.ToInt64(value).ToString("###-###-####");
+
+        //if (phoneNumber.Length > 10)
+        //    return Convert.ToInt64(phoneNumber)
+        //        .ToString("###-###-#### " + new String('#', (phoneNumber.Length - 10)));
+
+        //return phoneNumber;
+    }
     private string GetCurrentNumpad()
     {
         if(CurrentRow == 0)

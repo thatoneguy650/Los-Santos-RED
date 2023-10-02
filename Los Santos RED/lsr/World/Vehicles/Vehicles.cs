@@ -176,7 +176,7 @@ public class Vehicles
         }
         else
         {
-            if (!CivilianVehicles.Any(x => x.Handle == vehicle.Handle))
+            if (!CivilianVehicles.Any(x => x.Handle == vehicle.Handle) && !TaxiVehicles.Any(x => x.Handle == vehicle.Handle))
             {
                 CreateCivilianVehicleFromAmbient(vehicle);
                 return true;
@@ -537,6 +537,7 @@ public class Vehicles
         }
         if (!TaxiVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
         {
+            EntryPoint.WriteToConsole($"TAXI VEHICLE ADDING {vehicleExt.Handle}");
             TaxiVehicles.Add(vehicleExt);
             CivilianVehicles.RemoveAll(x => x.Handle == vehicleExt.Handle);
         }

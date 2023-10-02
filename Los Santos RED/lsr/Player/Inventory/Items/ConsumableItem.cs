@@ -91,6 +91,10 @@ public abstract class ConsumableItem : ModItem
                 actionable.HealthManager.ChangeHealth(HealthChangeAmount);
             }
         }
+        if(IsIntoxicating && Intoxicant != null)
+        {
+            actionable.Intoxication.Ingest(Intoxicant);
+        }
         if(ChangesArmor)
         {
             actionable.ArmorManager.ChangeArmor(ArmorChangeAmount);

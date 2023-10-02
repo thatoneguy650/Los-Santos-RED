@@ -264,17 +264,26 @@ public class Residence : GameLocation, ILocationSetupable
         }
         RestMenuItem = new UIMenuNumericScrollerItem<int>("Rest", "Rest at your residence to recover health. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
         InteractionMenu.AddItem(RestMenuItem);
+
         outfitsSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Outfits");
         if (!HasBannerImage)
         {
             outfitsSubMenu.SetBannerType(EntryPoint.LSRedColor);
         }
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Set an outfit.";
+
         UpdateOutfits();
         UpdateInventory();
         UpdateStoredWeapons();
         UpdateStoredCash();
+        UpdateConsumableItems();
     }
+
+    private void UpdateConsumableItems()
+    {
+        //Player.Inventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu);
+    }
+
     private void SellHouse()
     {
         OnSold();

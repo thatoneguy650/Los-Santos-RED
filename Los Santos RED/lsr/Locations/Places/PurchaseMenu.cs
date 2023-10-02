@@ -219,7 +219,7 @@ public class PurchaseMenu : ModUIMenu
     }
     private void GeneratePreview(UIMenu menuSelected, int v)
     {
-        if(menuSelected == null || menuSelected.MenuItems == null)
+        if (menuSelected == null || menuSelected.MenuItems == null)
         {
             Transaction.ClearPreviews();
             //EntryPoint.WriteToConsoleTestLong($"{menuSelected.TitleText} Menu OnIndexChange newIndex {v} NO ITEM SELECTED");

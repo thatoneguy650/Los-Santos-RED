@@ -24,8 +24,11 @@ public class RegularGoToInVehicleTaskState : TaskState
     private bool isSetCode3Close;
     private ILocationReachable LocationReachable;
     private uint GametimeLastRetasked;
+    private eCustomDrivingStyles DrivingStyle;
+    private float DrivingSpeed;
 
-    public RegularGoToInVehicleTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, bool blockPermanentEvents, Vector3 placetoDriveTo, ILocationReachable locationReachable)
+    public RegularGoToInVehicleTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, bool blockPermanentEvents, Vector3 placetoDriveTo, ILocationReachable locationReachable,
+        eCustomDrivingStyles drivingStyle, float speed)
     {
         PedGeneral = pedGeneral;
         Player = player;
@@ -35,6 +38,8 @@ public class RegularGoToInVehicleTaskState : TaskState
         BlockPermanentEvents = blockPermanentEvents;
         PlaceToDriveTo = placetoDriveTo;
         LocationReachable = locationReachable;
+        DrivingStyle = drivingStyle;
+        DrivingSpeed = speed;
     }
     public bool IsValid => PedGeneral != null && PedGeneral.IsInVehicle && !LocationReachable.HasReachedLocatePosition;
     public string DebugName => $"RegularGoToInVehicleTaskState";
@@ -89,15 +94,15 @@ public class RegularGoToInVehicleTaskState : TaskState
         }
         if (PedGeneral.IsInHelicopter)
         {
-            NativeFunction.Natives.TASK_HELI_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 6, 10f, 10f, -1f, 60, 60, -1.0f, 0);//6 = attack
+            NativeFunction.Natives.TASK_HELI_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 6, DrivingSpeed, 10f, -1f, 60, 60, -1.0f, 0);//6 = attack
         }
         else if (PedGeneral.IsInBoat)
         {
-            NativeFunction.Natives.TASK_BOAT_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 4, 10f, (int)eCustomDrivingStyles.RegularDriving, -1.0f, 7);
+            NativeFunction.Natives.TASK_BOAT_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 4, DrivingSpeed, (int)DrivingStyle, -1.0f, 7);
         }
         else
         {
-            NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 10f, (int)eCustomDrivingStyles.RegularDriving, 10f); //30f speed
+            NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, DrivingSpeed, (int)DrivingStyle, 10f); //30f speed
         }
         GametimeLastRetasked = Game.GameTime;
     }

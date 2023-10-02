@@ -222,7 +222,6 @@ public class SellMenu : ModUIMenu
             //EntryPoint.WriteToConsoleTestLong($"{menuSelected.TitleText} Menu OnIndexChange newIndex {v} NO ITEM SELECTED");
             return;
         }
-
         MenuItem selectedMenuItem = ShopMenu.Items.Where(x => x.ModItemName == myItem.Text).FirstOrDefault();
         if (selectedMenuItem != null)
         {

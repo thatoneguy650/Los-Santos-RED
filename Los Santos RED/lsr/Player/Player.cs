@@ -580,6 +580,8 @@ namespace Mod
                 PoliceResponse.AddToGracePeriod();
             }
 
+            TaxiManager.Reset();
+
             if (resetWanted)
             {
                 GameTimeStartedPlaying = Game.GameTime;
@@ -913,7 +915,7 @@ namespace Mod
                //EntryPoint.WriteToConsoleTestLong($"Player Cop Taskable: {meCop.CanBeTasked}");
             }
         }
-        public void ShowVehicleInteractMenu()
+        public void ShowVehicleInteractMenu(bool showDefault)
         {
             if(InterestedVehicle == null || !InterestedVehicle.Vehicle.Exists())
             {
@@ -929,7 +931,7 @@ namespace Mod
                 //EntryPoint.WriteToConsole("InterestedVehicle.VehicleInteractionMenu.IsShowingMenu");
                 return;
             }
-            InterestedVehicle.VehicleInteractionMenu.ShowInteractionMenu(this, Weapons, ModItems, vdsd, VehicleSeatDoorData, World, Settings);
+            InterestedVehicle.VehicleInteractionMenu.ShowInteractionMenu(this, Weapons, ModItems, vdsd, VehicleSeatDoorData, World, Settings, showDefault);
         }
         public void ToggleAutoBackup()
         {

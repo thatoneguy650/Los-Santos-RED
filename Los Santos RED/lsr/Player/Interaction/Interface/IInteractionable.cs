@@ -35,7 +35,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsShowingActionWheel { get; }
         bool IsEMT { get; }
         bool IsCop { get; }
-
+        TaxiManager TaxiManager { get; }
+        GPSManager GPSManager { get; }
 
         void PlaySpeech(string v1, bool v2);
         void SetAngeredCop();

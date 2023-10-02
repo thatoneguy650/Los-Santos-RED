@@ -225,13 +225,13 @@ public class Dispatcher
     }
 
 
-    public void DebugSpawnTaxi()
+    //public void DebugSpawnTaxi()
+    //{
+    //    TaxiDispatcher.DebugSpawnTaxi("", false, false);
+    //}
+    public void DebugSpawnTaxi(TaxiFirm taxifirmID, bool onFoot, bool isEmpty)
     {
-        TaxiDispatcher.DebugSpawnTaxi("", false, false);
-    }
-    public void DebugSpawnTaxi(string agencyID, bool onFoot, bool isEmpty)
-    {
-        TaxiDispatcher.DebugSpawnTaxi(agencyID, onFoot, isEmpty);
+        TaxiDispatcher.DebugSpawnTaxi(taxifirmID, onFoot, isEmpty);
     }
     public void ForceTaxiSpawn(TaxiFirm taxifirmID)
     {

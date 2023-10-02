@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
+using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -163,6 +164,27 @@ namespace LosSantosRED.lsr.Player
             return foundItems;
         }
 
+        public void CreateInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu menuToAdd)
+        {
+            UIMenu useItemsMenu = menuPool.AddSubMenu(menuToAdd, "Use Inventory");
+            menuToAdd.MenuItems[menuToAdd.MenuItems.Count() - 1].Description = "Use items from the players inventory.";
+            useItemsMenu.SetBannerType(EntryPoint.LSRedColor);
 
+            List<UIMenu> categoryMenus = new List<UIMenu>();
+            List<string> Categories = ItemsList.Where(x => x.ModItem != null && x.ModItem.CanConsume && x.RemainingPercent > 0f).Select(x => x.ModItem.MenuCategory).Distinct().ToList();
+            foreach(string category in Categories)
+            {
+                UIMenu categorySubItem = menuPool.AddSubMenu(useItemsMenu, category);
+                categoryMenus.Add(categorySubItem);
+                categorySubItem.SetBannerType(EntryPoint.LSRedColor);
+            }
+
+           foreach (InventoryItem ii in ItemsList.Where(x=> x.ModItem != null && x.ModItem.CanConsume && x.RemainingPercent > 0f))
+            {
+                ii.AddToInteractionMenu(player, useItemsMenu, categoryMenus);
+            }
+
+
+        }
     }
 }

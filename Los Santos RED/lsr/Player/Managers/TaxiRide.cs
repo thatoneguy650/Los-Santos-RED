@@ -14,6 +14,14 @@ public class TaxiRide
     private IEntityProvideable World;
     private ITaxiRideable Player;
 
+    public TaxiRide(IEntityProvideable world, ITaxiRideable player, TaxiFirm requestedFirm, TaxiVehicleExt respondingVehicle, TaxiDriver respondingDriver)
+    {
+        World = world;
+        Player = player;
+        RequestedFirm = requestedFirm;
+        RespondingVehicle = respondingVehicle;
+        RespondingDriver = respondingDriver;
+    }
     public TaxiRide(IEntityProvideable world, ITaxiRideable player, TaxiFirm requestedFirm, Vector3 pickupLocation)
     {
         World = world;
@@ -27,6 +35,7 @@ public class TaxiRide
     public TaxiVehicleExt RespondingVehicle { get; private set; }
     public TaxiDriver RespondingDriver { get; private set; }
     public bool CanStart { get; private set; }
+    public bool IsValid { get; private set; } = true;
     public void Setup()
     {
         CanStart = false;
@@ -34,6 +43,7 @@ public class TaxiRide
         PickupLocation.GetClosestStreet(true);
         if(!PickupLocation.HasStreetPosition)
         {
+            IsValid = false;
             return;
         }
         if (GetVehicleAndDriver())//if there is an existing one
@@ -69,6 +79,38 @@ public class TaxiRide
         }
         RespondingDriver.SetTaskingActive(PickupLocation.StreetPosition);
         return true;
+    }
+
+    public void Cancel()
+    {
+        RespondingDriver?.ReleaseTasking();     
+    }
+
+    public void CheckValid()
+    {
+        if(RespondingVehicle == null || !RespondingVehicle.Vehicle.Exists())
+        {
+            IsValid = false;
+            return;
+        }
+        if (RespondingDriver == null || !RespondingDriver.Pedestrian.Exists())
+        {
+            IsValid = false;
+            return;
+        }
+    }
+
+    public void UpdateDestination(Vector3 coordinates)
+    {
+        if(coordinates == Vector3.Zero)
+        {
+            return;
+        }
+        if(RespondingDriver == null)
+        {
+            return;
+        }
+        RespondingDriver.SetTaskingActive(coordinates);
     }
 }
 

@@ -20,10 +20,20 @@ public class TaxiService : ComplexTask, ILocationReachable
     private ISettingsProvideable Settings;
     private bool BlockPermanentEvents = false;
     private uint GameTimeReachedLocation;
+    protected bool LocationsChanged = false;
+    protected bool DrivingStyleChanged = false;
+
+    protected Vector3 PlaceToDriveTo;
+    protected Vector3 prevPlaceToDriveTo;
+    private uint GameTimeStarted;
+    protected string prevDrivingStyle;
+
     private bool AllowEnteringVehicle => !Ped.IsAnimal && (!Ped.IsLocationSpawned || PedGeneral.HasExistedFor >= 10000);
 
     public bool HasReachedLocatePosition { get; protected set; } = false;
 
+
+   
     public TaxiService(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, 
         bool blockPermanentEvents, TaxiDriver taxiDriver) : base(player, ped, 1500)//1500
     {
@@ -43,6 +53,9 @@ public class TaxiService : ComplexTask, ILocationReachable
     }
     public override void Start()
     {
+        GameTimeStarted = Game.GameTime;
+        GetLocations();
+        prevPlaceToDriveTo = PlaceToDriveTo;
         CurrentTaskState?.Stop();
         GetNewTaskState();
         CurrentTaskState?.Start();
@@ -62,8 +75,32 @@ public class TaxiService : ComplexTask, ILocationReachable
             SubTaskName = CurrentTaskState.DebugName;
             CurrentTaskState.Update();
         }
+        GetLocations();
+        CheckLocationChanged();
+        CheckDrivingStyleChanged();
+        StandardUpdate();
         CheckLocationItems();
     }
+
+
+    private void StandardUpdate()
+    {
+        if (CurrentTaskState == null || !CurrentTaskState.IsValid || LocationsChanged || DrivingStyleChanged)
+        {
+            if (Game.GameTime - GameTimeStarted >= 1000)
+            {
+                Start();
+                //EntryPoint.WriteToConsole($"{PedGeneral.Handle} UPDATE START Task{CurrentTaskState?.DebugName} INVALID {CurrentTaskState?.IsValid}");
+            }
+        }
+        else
+        {
+            SubTaskName = CurrentTaskState.DebugName;
+            CurrentTaskState.Update();
+        }
+    }
+
+
 
     private void CheckLocationItems()
     {
@@ -92,17 +129,17 @@ public class TaxiService : ComplexTask, ILocationReachable
                     }
                     else
                     {
-                        CurrentTaskState = new RegularGoToInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, TaxiDriver.PickupLocation, this);// CurrentTaskState = new WanderInVehicleTaskState(PedGeneral, World, SeatAssigner, PlacesOfInterest, Settings, BlockPermanentEvents, false);
+                        CurrentTaskState = new RegularGoToInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToDriveTo, this, TaxiDriver.TaxiDrivingStyle.DrivingStyle, TaxiDriver.TaxiDrivingStyle.Speed);// CurrentTaskState = new WanderInVehicleTaskState(PedGeneral, World, SeatAssigner, PlacesOfInterest, Settings, BlockPermanentEvents, false);
                     }
                 }
                 else
                 {
-                    CurrentTaskState = new RegularGoToInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, TaxiDriver.PickupLocation, this);
+                    CurrentTaskState = new RegularGoToInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToDriveTo, this, TaxiDriver.TaxiDrivingStyle.DrivingStyle, TaxiDriver.TaxiDrivingStyle.Speed);
                 }
             }
             else
             {
-                CurrentTaskState = new WaitInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents);
+                CurrentTaskState = new StayWaitInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents);
             }
         }
         else
@@ -124,5 +161,42 @@ public class TaxiService : ComplexTask, ILocationReachable
         HasReachedLocatePosition = true;
         EntryPoint.WriteToConsole("TAXI DRIVER ARRIVED, WAITING 10 SECONDS");
     }
+
+    private void CheckLocationChanged()
+    {
+        float driveChangeDistance = prevPlaceToDriveTo.DistanceTo2D(PlaceToDriveTo);
+        if (PedGeneral.IsInVehicle && driveChangeDistance <= 15f) //if (prevPlaceToDriveTo != PlaceToDriveTo  || prevPlaceToWalkTo != PlaceToWalkTo)// if (prevPlaceToDriveTo.DistanceTo2D(PlaceToDriveTo) <= 5f && prevPlaceToWalkTo.DistanceTo2D(PlaceToWalkTo) <= 5f)       
+        {
+            LocationsChanged = false;
+            return;
+        }
+        HasReachedLocatePosition = false;
+        prevPlaceToDriveTo = PlaceToDriveTo;
+        LocationsChanged = true;
+        //EntryPoint.WriteToConsole($"{PedGeneral.Handle} General Locate, Search Place Changed driveChangeDistance{driveChangeDistance} walkChangeDistance{walkChangeDistance}");
+    }
+    private void CheckDrivingStyleChanged()
+    {
+        if(TaxiDriver == null)
+        {
+            DrivingStyleChanged = false;
+            return;
+        }
+        if(TaxiDriver.TaxiDrivingStyle.Name == prevDrivingStyle)
+        {
+            DrivingStyleChanged = false;
+            return;
+        }
+        else 
+        {
+            DrivingStyleChanged = true;
+            prevDrivingStyle = TaxiDriver.TaxiDrivingStyle.Name;
+        }
+    }
+    protected virtual void GetLocations()
+    {
+        PlaceToDriveTo = TaxiDriver.DestinationLocation;
+    }
+
 }
 

@@ -17,6 +17,10 @@ public class ButtonPrompts
     private ISettingsProvideable Settings;
     private IEntityProvideable World;
     private bool addedPromptGroup;
+    private Action CancelCurrentActivityAction;
+    private Action PauseCurrentActivityAction;
+    private Action ContinueCurrentActivityAction;
+
     private bool CanInteractWithClosestLocation => Player.ClosestInteractableLocation != null
         && !Player.ActivityManager.IsInteractingWithLocation
         && !Player.ActivityManager.IsInteracting;
@@ -32,8 +36,10 @@ public class ButtonPrompts
     }
     public void Setup()
     {
+        CancelCurrentActivityAction = () => { Player.ActivityManager.CancelCurrentActivity(); };
+        PauseCurrentActivityAction = () => { Player.ActivityManager.PauseCurrentActivity(); };
+        ContinueCurrentActivityAction = () => { Player.ActivityManager.ContinueCurrentActivity(); };
         Prompts.Clear();
-        //Player.ButtonPromptList.Clear();
     }
     public void Update()
     {
@@ -49,22 +55,30 @@ public class ButtonPrompts
     private void AttemptAddVehiclePrompts()
     {
         VehicleExt toConsider = Player.InterestedVehicle;
-        if (!Settings.SettingsManager.UIGeneralSettings.ShowVehicleInteractionPrompt || Player.ActivityManager.IsInteractingWithLocation || Player.IsShowingFrontEndMenus || Player.Surrendering.HandsAreUp || 
-            !Player.IsAliveAndFree || (!Settings.SettingsManager.UIGeneralSettings.ShowVehicleInteractionPromptInVehicle && Player.IsInVehicle) || Player.ActivityManager.IsPerformingActivity || toConsider == null)
+        if (!Settings.SettingsManager.UIGeneralSettings.ShowVehicleInteractionPrompt || 
+            Player.ActivityManager.IsInteractingWithLocation || 
+            Player.IsShowingFrontEndMenus || 
+            Player.Surrendering.HandsAreUp || 
+            !Player.IsAliveAndFree || 
+            //(!Settings.SettingsManager.UIGeneralSettings.ShowVehicleInteractionPromptInVehicle && Player.IsInVehicle) || //send this to the vehicle?
+            //Player.ActivityManager.IsPerformingActivity || 
+            toConsider == null
+            )
         {
             RemovePrompts("VehicleInteract");
             return;
         }
-        string interactPrompt = toConsider.InteractPrompt();
-        if (string.IsNullOrEmpty(interactPrompt))
-        {
-            RemovePrompts("VehicleInteract");
-            return;
-        }
-        if (!HasPrompt($"VehicleInteract"))
-        {
-            AttemptAddPrompt("VehicleInteract", interactPrompt, $"VehicleInteract", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999);
-        }
+        toConsider.UpdateInteractPrompts(Player);
+        //string interactPrompt = toConsider.InteractPrompt(Player, Settings);
+        //if (string.IsNullOrEmpty(interactPrompt))
+        //{
+        //    RemovePrompts("VehicleInteract");
+        //    return;
+        //}
+        //if (!HasPrompt($"VehicleInteract"))
+        //{
+        //    AttemptAddPrompt("VehicleInteract", interactPrompt, $"VehicleInteract", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999);
+        //}
     }
     public void Dispose()
     {
@@ -96,6 +110,24 @@ public class ButtonPrompts
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
         }
     }
+
+
+    public void AttemptAddPrompt(string groupName, string prompt, string identifier, Keys modifierKey, Keys interactKey, int order, Action action)
+    {
+        if (!Prompts.Any(x => x.Identifier == identifier) && !Prompts.Any(x => x.Key == interactKey))
+        {
+            Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, modifierKey, order) { Action = action });
+        }
+    }
+    public void AttemptAddPrompt(string groupName, string prompt, string identifier, Keys interactKey, int order, Action action)
+    {
+        if (!Prompts.Any(x => x.Identifier == identifier) && !Prompts.Any(x => x.Key == interactKey))
+        {
+            Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order) { Action = action });
+        }
+    }
+
+
     public void AddPrompt(string groupName, string prompt, string identifier, Keys interactKey, int order)
     {
         if (!Prompts.Any(x => x.Identifier == identifier))
@@ -265,7 +297,7 @@ public class ButtonPrompts
         {
             if (Player.ActivityManager.CanPauseCurrentActivity && !Player.ActivityManager.IsCurrentActivityPaused)
             {
-                AttemptAddPrompt("ActivityControlPause", Player.ActivityManager.PauseCurrentActivityPrompt, "ActivityControlPause", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
+                AttemptAddPrompt("ActivityControlPause", Player.ActivityManager.PauseCurrentActivityPrompt, "ActivityControlPause", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998, PauseCurrentActivityAction);
             }
             else
             {
@@ -273,7 +305,7 @@ public class ButtonPrompts
             }
             if (Player.ActivityManager.CanCancelCurrentActivity)
             {
-                AttemptAddPrompt("ActivityControlCancel", Player.ActivityManager.CancelCurrentActivityPrompt, "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
+                AttemptAddPrompt("ActivityControlCancel", Player.ActivityManager.CancelCurrentActivityPrompt, "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999, CancelCurrentActivityAction);
             }
             else
             {
@@ -285,7 +317,7 @@ public class ButtonPrompts
         {
             if(Player.ActivityManager.PausedActivites.Any(x=>x.IsPaused()))
             {
-                AttemptAddPrompt("ActivityControlContinue", "Continue An Activity", "ActivityControlContinue", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
+                AttemptAddPrompt("ActivityControlContinue", "Continue An Activity", "ActivityControlContinue", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998, ContinueCurrentActivityAction);
             }
             else
             {

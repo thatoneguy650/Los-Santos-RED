@@ -27,23 +27,24 @@ public class InteriorDoor
     public Vector3 Position { get; set; } = Vector3.Zero;
     public bool IsLocked => isLocked;
     public Rotator Rotation { get; set; } = new Rotator(0f, 0f, 0f);
-
+    public bool ForceRotateOpen { get; set; } = false;
     public bool NeedsDefaultUnlock { get; set; } = false;
-    //public bool LockState => LockState; 
-    //public float OpenRatio => openRatio;
     public void LockDoor()
     {
         NativeFunction.Natives.x9B12F9A24FABEDB0(ModelHash, Position.X, Position.Y, Position.Z, true, 1.0f);
+        if(ForceRotateOpen)
+        {
+            ForceRotateCloseDoor();
+        }
         isLocked = true;
     }
     public void UnLockDoor()
     {
         NativeFunction.Natives.x9B12F9A24FABEDB0(ModelHash, Position.X, Position.Y, Position.Z, false, 1.0f);
-
-
-       // NativeFunction.Natives.x9B12F9A24FABEDB0(4163212883, 145.2892f, -1041.0303f, 29.3679f, false, 1.0f);
-
-
+        if(ForceRotateOpen)
+        {
+            ForceRotateOpenDoor();
+        }
         isLocked = false;
     }
 
@@ -60,6 +61,28 @@ public class InteriorDoor
         Position += offsetToAdd;
     }
 
+    private void ForceRotateOpenDoor()
+    {
+        Rage.Object doorEntity = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Position.X, Position.Y, Position.Z, 3.0f, ModelHash, true, false, true);
+        if (!doorEntity.Exists())
+        {
+            return;
+        }
+        NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, false);
+        doorEntity.Rotation = new Rotator(0f, 0f, doorEntity.Rotation.Yaw - 100f);
+        NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, true);
+    }
+    private void ForceRotateCloseDoor()
+    {
+        Rage.Object doorEntity = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Position.X, Position.Y, Position.Z, 3.0f, ModelHash, true, false, true);
+        if (!doorEntity.Exists())
+        {
+            return;
+        }
+        NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, false);
+        doorEntity.Rotation = new Rotator(0f, 0f, doorEntity.Rotation.Yaw + 100f);
+        NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, true);
+    }
     //public void GetState()
     //{
     //    bool _lockState;

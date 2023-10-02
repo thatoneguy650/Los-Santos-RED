@@ -11,17 +11,17 @@ using LosSantosRED.lsr.Interface;
 
 public class VehicleInteractionMenu
 {
-    public bool IsShowingMenu { get; private set; } = false;
-    private VehicleExt VehicleExt;
-    private MenuPool MenuPool;
-    private UIMenu VehicleInteractMenu;
-    private VehicleDoorSeatData VehicleDoorSeatData;
-    private IInteractionable Player;
+    protected VehicleExt VehicleExt;
+    protected MenuPool MenuPool;
+    protected UIMenu VehicleInteractMenu;
+    protected VehicleDoorSeatData VehicleDoorSeatData;
+    protected IInteractionable Player;
+    public bool IsShowingMenu { get; set; } = false;
     public VehicleInteractionMenu(VehicleExt vehicleExt)
     {
         VehicleExt = vehicleExt;
     }
-    public void ShowInteractionMenu(IInteractionable player, IWeapons weapons, IModItems modItems, VehicleDoorSeatData vehicleDoorSeatData, IVehicleSeatAndDoorLookup vehicleSeatDoorData, IEntityProvideable world, ISettingsProvideable settings)
+    public virtual void ShowInteractionMenu(IInteractionable player, IWeapons weapons, IModItems modItems, VehicleDoorSeatData vehicleDoorSeatData, IVehicleSeatAndDoorLookup vehicleSeatDoorData, IEntityProvideable world, ISettingsProvideable settings, bool showDefault)
     {
         VehicleDoorSeatData = vehicleDoorSeatData;
         Player = player;
@@ -80,14 +80,14 @@ public class VehicleInteractionMenu
         Player.ButtonPrompts.RemovePrompts("VehicleInteract");
         ProcessMenu();
     }
-    private void CreateInteractionMenu()
+    protected virtual void CreateInteractionMenu()
     {
         MenuPool = new MenuPool();
         VehicleInteractMenu = new UIMenu("Vehicle", "Select an Option");
         VehicleInteractMenu.SetBannerType(EntryPoint.LSRedColor);
         MenuPool.Add(VehicleInteractMenu);     
     }
-    private void ProcessMenu()
+    protected virtual void ProcessMenu()
     {
         GameFiber.StartNew(delegate
         {

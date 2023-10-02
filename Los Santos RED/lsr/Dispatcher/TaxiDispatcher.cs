@@ -23,8 +23,8 @@ public class TaxiDispatcher : DefaultDispatcher
     protected override float MinDistanceToSpawn => Settings.SettingsManager.TaxiSettings.MinDistanceToSpawnInVehicle;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= 5000;// TimeBetweenSpawn;
     private bool IsTimeToAmbientDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;//15000;
-    private float DistanceToDeleteInVehicle => Settings.SettingsManager.TaxiSettings.MaxDistanceToSpawnInVehicle + 150f;// 300f;
-    private float DistanceToDeleteOnFoot => Settings.SettingsManager.TaxiSettings.MaxDistanceToSpawnOnFoot + 50f;// 200 + 50f grace = 250f;
+    protected override float DistanceToDeleteInVehicle => Settings.SettingsManager.TaxiSettings.MaxDistanceToSpawnInVehicle + 150f;// 300f;
+    protected override float DistanceToDeleteOnFoot => Settings.SettingsManager.TaxiSettings.MaxDistanceToSpawnOnFoot + 50f;// 200 + 50f grace = 250f;
     private List<TaxiDriver> DeleteableTaxiDrivers => World.Pedestrians.TaxiDriverList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
     private bool HasNeedToAmbientDispatch
     {
@@ -73,7 +73,7 @@ public class TaxiDispatcher : DefaultDispatcher
             return AmbientMemberLimit;
         }
     }
-    private int TimeBetweenSpawn// => Settings.SettingsManager.GangSettings.TimeBetweenSpawn;//15000;
+    private int TimeBetweenSpawn
     {
         get
         {
@@ -101,7 +101,7 @@ public class TaxiDispatcher : DefaultDispatcher
             return TotalTimeBetweenSpawns;
         }
     }
-    private int PercentageOfAmbientSpawn // => Settings.SettingsManager.GangSettings.TimeBetweenSpawn;//15000;
+    private int PercentageOfAmbientSpawn
     {
         get
         {
@@ -129,7 +129,6 @@ public class TaxiDispatcher : DefaultDispatcher
             return ambientSpawnPercent;
         }
     }
-
     public TaxiDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions,
         IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest, IOrganizations organizations, ICrimes crimes, IModItems modItems, IShopMenus shopMenus) : base(world, player, agencies, settings, streets, zones, jurisdictions, weapons, names, placesOfInterest, crimes , modItems,shopMenus)
     {
@@ -184,72 +183,6 @@ public class TaxiDispatcher : DefaultDispatcher
         }
         GameTimeAttemptedRecall = Game.GameTime;
         return true;
-    }
-    private bool ShouldBeRecalled(TaxiDriver taxiDriver)
-    {
-        if (!taxiDriver.RecentlyUpdated)
-        {
-            return false;
-        }
-        else if (taxiDriver.IsManuallyDeleted)
-        {
-            return false;
-        }
-        else if (taxiDriver.IsInVehicle)
-        {
-            return taxiDriver.DistanceToPlayer >= DistanceToDeleteInVehicle;
-        }
-        else
-        {
-            return taxiDriver.DistanceToPlayer >= DistanceToDeleteOnFoot;
-        }
-    }
-    private void Delete(PedExt taxiDriver)
-    {
-        if (taxiDriver != null && taxiDriver.Pedestrian.Exists())
-        {
-            //EntryPoint.WriteToConsole($"Attempting to Delete {Cop.Pedestrian.Handle}");
-            if (taxiDriver.Pedestrian.IsInAnyVehicle(false))
-            {
-                if (taxiDriver.Pedestrian.CurrentVehicle.HasPassengers)
-                {
-                    foreach (Ped Passenger in taxiDriver.Pedestrian.CurrentVehicle.Passengers)
-                    {
-                        if (Passenger.Handle != Game.LocalPlayer.Character.Handle)
-                        {
-                            RemoveBlip(Passenger);
-                            Passenger.Delete();
-                            EntryPoint.PersistentPedsDeleted++;
-                        }
-                    }
-                }
-                if (taxiDriver.Pedestrian.Exists() && taxiDriver.Pedestrian.CurrentVehicle.Exists() && taxiDriver.Pedestrian.CurrentVehicle != null)
-                {
-                    Blip carBlip = taxiDriver.Pedestrian.CurrentVehicle.GetAttachedBlip();
-                    if (carBlip.Exists())
-                    {
-                        carBlip.Delete();
-                    }
-                    VehicleExt vehicleExt = World.Vehicles.GetVehicleExt(taxiDriver.Pedestrian.CurrentVehicle);
-                    if (vehicleExt != null)
-                    {
-                        vehicleExt.FullyDelete();
-                    }
-                    else
-                    {
-                        taxiDriver.Pedestrian.CurrentVehicle.Delete();
-                    }
-                    EntryPoint.PersistentVehiclesDeleted++;
-                }
-            }
-            RemoveBlip(taxiDriver.Pedestrian);
-            if (taxiDriver.Pedestrian.Exists())
-            {
-                //EntryPoint.WriteToConsole(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
-                taxiDriver.Pedestrian.Delete();
-                EntryPoint.PersistentPedsDeleted++;
-            }
-        }
     }
     protected override Vector3 GetSpawnPosition()
     {
@@ -326,10 +259,13 @@ public class TaxiDispatcher : DefaultDispatcher
     {
         VehicleType = null;
         PersonType = null;
+        TimesToTryLocation = 20;
         if(!GetSpawnLocation())
         {
+            TimesToTryLocation = 3;
             return;
         }
+        TimesToTryLocation = 3;
         TaxiFirm = taxiFirm;
         if (TaxiFirm == null)
         {
@@ -347,15 +283,15 @@ public class TaxiDispatcher : DefaultDispatcher
         }
         CallSpawnTask();
     }
-    public void DebugSpawnTaxi(string gangID, bool onFoot, bool isEmpty)
+    public void DebugSpawnTaxi(TaxiFirm taxiFirm, bool onFoot, bool isEmpty)
     {
         VehicleType = null;
         PersonType = null;
         SpawnLocation = new SpawnLocation();
         SpawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
         SpawnLocation.StreetPosition = SpawnLocation.InitialPosition;
-        SpawnLocation.Heading = Game.LocalPlayer.Character.Heading;
-        TaxiFirm = Organizations.PossibleOrganizations.TaxiFirms.Where(x => x.ID == gangID).PickRandom();//.GetRandomTaxiFirm();
+        SpawnLocation.Heading = Game.LocalPlayer.Character.Heading - 180f;
+        TaxiFirm = taxiFirm;
         if(TaxiFirm == null)
         {
             return;
@@ -379,6 +315,4 @@ public class TaxiDispatcher : DefaultDispatcher
         }
         CallSpawnTask();
     }
-
-
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 public class YanktonAiport : Airport
 {
-    private TaxiDropOff TaxiDropOff;
+    //private TaxiDropOff TaxiDropOff;
     public YanktonAiport(string airportID, Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(airportID, _EntrancePosition, _EntranceHeading, _Name, _Description)
     {
     }
@@ -34,9 +34,9 @@ public class YanktonAiport : Airport
 
         if (setPos)
         {
-            TaxiDropOff = new TaxiDropOff(ArrivalPosition, Settings, Crimes, Weapons, Names, World, ModItems, null);
-            TaxiDropOff.Setup();
-            TaxiDropOff.Start();
+            //TaxiDropOff = new TaxiDropOff(ArrivalPosition, Settings, Crimes, Weapons, Names, World, ModItems, null);
+            //TaxiDropOff.Setup();
+            //TaxiDropOff.Start();
         }
     }
 }

@@ -80,26 +80,10 @@ public class TaxiServiceInteraction : IContactMenuInteraction
             }
             else
             {
-                fullText = "No service available in your current location.";
+                fullText = "No service available to your current location.";
             }
             Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
             sender.Visible = false;
-
-            //AmbientSpawner ambientSpawner = new AmbientSpawner(new DispatchableVehicle("taxi", 100, 100), new DispatchablePerson("a_m_m_socenlat_01", 100, 100),Player.Position,Settings,Crimes,Weapons,Names,World,ModItems,ShopMenus);
-            //ambientSpawner.SetPersistent = true;
-            //ambientSpawner.Start();
-            //string fullText = "";
-            //if (ambientSpawner.SpawnedItems)
-            //{        
-            //    fullText = $"{TaxiServiceContact.Name} is en route to ";
-            //    fullText += Player.CurrentLocation?.GetStreetAndZoneString();
-            //}
-            //else
-            //{
-            //    fullText = "No service available in your current location.";
-            //}
-            //Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
-            //sender.Visible = false;
         };
         RequestSubMenu.AddItem(requestTaxiMenuItem);
     }

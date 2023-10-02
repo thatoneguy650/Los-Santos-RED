@@ -248,28 +248,28 @@ public class Interiors : IInteriors
             //Banks
             new Interior(71682,"Fleeca Bank") {
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(4163212883, new Vector3(-355.3892f, -51.06768f, 49.31105f)),//teller door
+                    new InteriorDoor(4163212883, new Vector3(-355.3892f, -51.06768f, 49.31105f)) { ForceRotateOpen = true },//teller door
                 } },
             new Interior(76802,"Fleeca Bank"){
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)),//teller door
+                    new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)) { ForceRotateOpen = true },//teller door
                 } },
             new Interior(11266,"Fleeca Bank") { 
                 IsWeaponRestricted = true,
                 Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(4163212883, new Vector3(309.7491f, -280.1797f, 54.43926f)),//teller door
+                    new InteriorDoor(4163212883, new Vector3(309.7491f, -280.1797f, 54.43926f)) { ForceRotateOpen = true },//teller door
                 } },
             new Interior(20226,"Fleeca Bank") {
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)),//teller door
+                    new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true },//teller door
                 } },
             new Interior(90626,"Fleeca Bank") {
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(4163212883, new Vector3(1178.87f, 2709.365f, 38.36251f)),//teller door
+                    new InteriorDoor(4163212883, new Vector3(1178.87f, 2709.365f, 38.36251f)) { ForceRotateOpen = true },//teller door
                 } },
             new Interior(87810,"Fleeca Bank") {
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(4163212883, new Vector3(-1214.906f, -334.7281f, 38.05551f)),//teller door
+                    new InteriorDoor(4163212883, new Vector3(-1214.906f, -334.7281f, 38.05551f)) { ForceRotateOpen = true },//teller door
                 } },
 
 

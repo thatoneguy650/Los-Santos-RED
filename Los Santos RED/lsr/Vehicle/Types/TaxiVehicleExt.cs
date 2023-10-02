@@ -12,8 +12,10 @@ namespace LSR.Vehicles
     {
         public override bool CanRandomlyHaveIllegalItems { get; set; } = true;
         public TaxiFirm TaxiFirm { get; set; }
+
         public TaxiVehicleExt(Vehicle vehicle, ISettingsProvideable settings) : base(vehicle, settings)
         {
+            VehicleInteractionMenu = new TaxiInteractionMenu(this, this);
         }
         public override void AddVehicleToList(IEntityProvideable world)
         {
@@ -27,7 +29,87 @@ namespace LSR.Vehicles
                 return toReturn;
             }
             toReturn += $" TaxiFirm: {TaxiFirm.FullName}";
+            if(Vehicle.Exists())
+            {
+                toReturn += $" Position: {Vehicle.Position}";
+            }
             return toReturn;
         }
+
+        public override void UpdateInteractPrompts(IButtonPromptable player)
+        {
+            if (!Vehicle.Exists() || VehicleInteractionMenu.IsShowingMenu)// || Vehicle.Speed >= 0.5f || !Vehicle.Driver.Exists() || Vehicle.Driver.IsFleeing)
+            {
+                player.ButtonPrompts.RemovePrompts("Vehicle Interact");
+                return;
+            }
+            Ped driver = Vehicle.Driver;
+            bool hasDriver = driver.Exists() && driver.Handle != player.Character.Handle && !driver.IsFleeing;
+            //EntryPoint.WriteToConsole($"UpdateInteractPrompts TAXI {hasDriver}");
+            bool hasPassengers = Vehicle.PassengerCount > 0;
+            bool showRegularMenu = false;
+            bool showGetInMenu = false;
+            bool showTaxiMenu = false;
+
+            if(hasDriver)
+            {
+                if (player.IsInVehicle)
+                {
+                    showTaxiMenu = true;
+                }
+                else if (!hasPassengers && Vehicle.Speed <= 1.0f)
+                {
+                    showGetInMenu = true;
+                }
+            }
+            else
+            {
+                showRegularMenu = true;
+            }
+
+            if(!showGetInMenu)
+            {
+                player.ButtonPrompts.RemovePrompt($"VehicleInteractTaxiGetIn");
+            }
+            if(!showTaxiMenu)
+            {
+                player.ButtonPrompts.RemovePrompt("VehicleInteractTaxiMenu");
+            }
+
+            if (showGetInMenu)
+            {
+                if (!player.ButtonPrompts.HasPrompt($"VehicleInteractTaxiGetIn"))
+                {
+                    player.ButtonPrompts.RemovePrompts("Vehicle Interact");
+                    //EntryPoint.WriteToConsole($"UpdateInteractPrompts TAXI {hasDriver} GET IN AS PASS MENU");
+                    Action action = () => { player.ActivityManager.EnterVehicleAsPassenger(false, true); };
+                    player.ButtonPrompts.AttemptAddPrompt("VehicleInteract", "Get In Taxi", $"VehicleInteractTaxiGetIn", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999, action);
+                }
+            }
+            else if (showTaxiMenu)
+            {
+                if (!player.ButtonPrompts.HasPrompt($"VehicleInteractTaxiMenu"))
+                {
+                    player.ButtonPrompts.RemovePrompts("Vehicle Interact");
+                   // EntryPoint.WriteToConsole($"UpdateInteractPrompts TAXI {hasDriver} OPEN TAXI MENU");
+                    Action action = () => { player.ShowVehicleInteractMenu(false); };
+                    player.ButtonPrompts.AttemptAddPrompt("VehicleInteract", "Taxi Menu", $"VehicleInteractTaxiMenu", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999, action);
+                }
+            }
+            else if (showRegularMenu)
+            {
+                //player.ButtonPrompts.RemovePrompts("Vehicle Interact");
+                base.UpdateInteractPrompts(player);
+            }
+            else
+            {
+                player.ButtonPrompts.RemovePrompts("Vehicle Interact");
+            }
+        }
+
+
+
+
+
     }
 }

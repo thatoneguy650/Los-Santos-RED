@@ -812,14 +812,22 @@ public class ActivityManager
         }
     }
     //Other
-    public void EnterVehicleAsPassenger(bool withBlocking)
+    public void EnterVehicleAsPassenger(bool withBlocking, bool onlyBack)
     {
         VehicleExt toEnter = GetInterestedVehicle();
         if (toEnter == null || !toEnter.Vehicle.Exists())
         {
             return;
         }
-        int? seatIndex = toEnter.Vehicle.GetFreePassengerSeatIndex();
+        int? seatIndex = null;
+        if (onlyBack)
+        {
+            seatIndex = toEnter.Vehicle.GetFreeSeatIndex(1, 2);
+        }
+        else
+        {
+            seatIndex = toEnter.Vehicle.GetFreePassengerSeatIndex();
+        }
         if (seatIndex == null)
         {
             return;

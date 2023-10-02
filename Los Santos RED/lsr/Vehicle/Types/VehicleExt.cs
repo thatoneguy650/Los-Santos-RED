@@ -24,14 +24,14 @@ namespace LSR.Vehicles
         private VehicleClass vehicleClass;
         private uint GameTimeEntered = 0;
         private bool HasAttemptedToLock;
-        private ISettingsProvideable Settings;
+        protected ISettingsProvideable Settings;
         private int Health = 1000;
         private bool IsOnFire;
         private uint GameTimeBecameEmpty;
         private bool HasAddedRandomItems = false;
         private bool HasAddedRandomWeapons = false;
         private uint GameTimeLastAddedSonarBlip;
-        public VehicleInteractionMenu VehicleInteractionMenu { get; private set; }
+        public VehicleInteractionMenu VehicleInteractionMenu { get; set; }
         public SimpleInventory SimpleInventory { get; private set; }
         public CashStorage CashStorage { get; private set; }
         public VehicleClass VehicleClass => vehicleClass;
@@ -1461,14 +1461,23 @@ namespace LSR.Vehicles
                 windowAccessHeaderMenu.AddItem(uIMenuListScrollerItem);
             }
         }
-
-        public virtual string InteractPrompt()
+        public virtual void UpdateInteractPrompts(IButtonPromptable player)
         {
-            if (!Vehicle.Exists() || (!HasBeenEnteredByPlayer && !IsOwnedByPlayer) || VehicleInteractionMenu.IsShowingMenu || Vehicle.Speed >= 0.5f )
+            if (!Vehicle.Exists() || (!HasBeenEnteredByPlayer && !IsOwnedByPlayer) || VehicleInteractionMenu.IsShowingMenu || Vehicle.Speed >= 0.5f)
             {
-                return "";
+                player.ButtonPrompts.RemovePrompts("Vehicle Interact");
+                return;
             }
-            return "Vehicle Interact";
+            if ((!Settings.SettingsManager.UIGeneralSettings.ShowVehicleInteractionPromptInVehicle && player.IsInVehicle) || player.ActivityManager.IsPerformingActivity)
+            {
+                player.ButtonPrompts.RemovePrompts("Vehicle Interact");
+                return;
+            }
+            if (!player.ButtonPrompts.HasPrompt($"VehicleInteract"))
+            {
+                Action action = () => { player.ShowVehicleInteractMenu(true); };
+                player.ButtonPrompts.AttemptAddPrompt("VehicleInteract", "Vehicle Interact", $"VehicleInteract", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999, action);
+            }
         }
         public virtual void AddVehicleToList(IEntityProvideable world)
         {
@@ -1483,5 +1492,7 @@ namespace LSR.Vehicles
             }
             return vehicleText;
         }
+
+
     }
 }

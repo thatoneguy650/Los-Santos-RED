@@ -192,6 +192,27 @@ public class Intoxication
             Update(IsPrimary);
         }
     }
+
+    public void Ingest(Intoxicant intoxicant)
+    {
+        if (intoxicant == null)
+        {
+            return;
+        }
+        Intoxicator existing = CurrentIntoxicators.FirstOrDefault(x => x.Intoxicant.Name == intoxicant.Name);
+        if (existing != null)
+        {
+            existing.StartConsuming();
+        }
+        else
+        {
+            Intoxicator toAdd = new Intoxicator(Player, intoxicant);
+            toAdd.SetConsumed();
+            CurrentIntoxicators.Add(toAdd);
+        }
+        //EntryPoint.WriteToConsole($"Intoxication Started Ingesting {intoxicant.Name}");
+    }
+
     public void StartIngesting(Intoxicant intoxicant)
     {
         if(intoxicant == null)
