@@ -12,7 +12,7 @@ namespace LSR.Vehicles
     {
         public override bool CanRandomlyHaveIllegalItems { get; set; } = true;
         public TaxiFirm TaxiFirm { get; set; }
-
+        public override bool IsTaxi => true;
         public TaxiVehicleExt(Vehicle vehicle, ISettingsProvideable settings) : base(vehicle, settings)
         {
             VehicleInteractionMenu = new TaxiInteractionMenu(this, this);

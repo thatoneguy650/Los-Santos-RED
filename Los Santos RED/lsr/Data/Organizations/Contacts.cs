@@ -99,6 +99,9 @@ public class Contacts : IContacts
         TaxiServiceContact shitiCabContact = new TaxiServiceContact(StaticStrings.ShitiCabContactName, "CHAR_BLANK_ENTRY") { FullNumber = "4484222", Number = "8874484222" };
         PossibleContacts_FullExpanded.TaxiServiceContacts.Add(shitiCabContact);
 
+        TaxiServiceContact sunderedDependentCabContact = new TaxiServiceContact(StaticStrings.SunderedDependentCabContactName, "CHAR_BLANK_ENTRY") { FullNumber = "5555050", Number = "3235555050" };
+        PossibleContacts_FullExpanded.TaxiServiceContacts.Add(sunderedDependentCabContact);
+
         Serialization.SerializeParam(PossibleContacts_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Contacts_FullExpandedJurisdiction.xml");
     }
 

@@ -28,9 +28,7 @@ class StayWaitInVehicleTaskState : TaskState
     }
 
     public bool IsValid => PedGeneral != null && PedGeneral.Pedestrian.Exists() && PedGeneral.IsInVehicle && PedGeneral.Pedestrian.CurrentVehicle.Exists();
-
     public string DebugName { get; } = "StayWaitInVehicleTaskState";
-
     public void Dispose()
     {
 
@@ -60,6 +58,9 @@ class StayWaitInVehicleTaskState : TaskState
             PedGeneral.Pedestrian.BlockPermanentEvents = true;
             PedGeneral.Pedestrian.KeepTasks = true;
         }
+
+        NativeFunction.CallByName<bool>("TASK_PAUSE", PedGeneral.Pedestrian, -1);
+
     }
 
 }

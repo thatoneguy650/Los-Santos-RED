@@ -164,24 +164,25 @@ public class Organizations : IOrganizations
             Description = "Open the door to Hell and ride!",
             HeadDataGroupID = "AllHeads",
             ContactName = StaticStrings.HellCabContactName,
-            IsDefault = true,
         };
-
         TaxiFirm PurpleCabCo = new TaxiFirm("~y~", "PRPLCAB", "Purple Cab Co.", "Purple Cab Co.", "Yellow", "TaxiDrivers", "PurpleTaxiVehicles", "PC ", "", "", "", "Cabbie")
         {
             Description = "High Vis Meets High Class",
             HeadDataGroupID = "AllHeads",
             ContactName = StaticStrings.PurpleCabContactName,
-            IsDefault = true,
         };
         TaxiFirm ShitiCabCo = new TaxiFirm("~y~", "SHITICAB", "Shiti Cab", "Shiti Cab", "Yellow", "TaxiDrivers", "ShitiTaxiVehicles", "PC ", "", "", "", "Cabbie")
         {
             Description = "Our service is anything but!",
             HeadDataGroupID = "AllHeads",
             ContactName = StaticStrings.ShitiCabContactName,
-            IsDefault = true,
         };
-
+        TaxiFirm SunderedCab = new TaxiFirm("~y~", "SUNDERED", "Sundered Dependent Taxi", "Sundered Taxi", "Yellow", "TaxiDrivers", "SunderedTaxiVehicles", "SI ", "", "", "", "Cabbie")
+        {
+            Description = "Ride the green monster!",
+            HeadDataGroupID = "AllHeads",
+            ContactName = StaticStrings.SunderedDependentCabContactName,
+        };
 
         PossibleOrganizations_FullExpanded.GeneralOrganizations = new List<Organization>
         {
@@ -194,6 +195,7 @@ public class Organizations : IOrganizations
             HellCab,
             PurpleCabCo,
             ShitiCabCo,
+            SunderedCab,
         };
         Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Organizations_FullExpandedJurisdiction.xml");
     }

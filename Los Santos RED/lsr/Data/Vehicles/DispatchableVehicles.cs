@@ -23106,7 +23106,9 @@ Output = -1,
         List<DispatchableVehicle> ShitiTaxiVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("taxi", 100, 100){ RequiredLiveries = new List<int>() { 3 } },
         };
-
+        List<DispatchableVehicle> SunderedTaxiVehicles = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("taxi", 100, 100){ RequiredLiveries = new List<int>() { 4 } },
+        };
 
         List<DispatchableVehicleGroup> VehicleGroupLookupFEJ = new List<DispatchableVehicleGroup>
         {
@@ -23177,7 +23179,7 @@ Output = -1,
             new DispatchableVehicleGroup("HellTaxiVehicles", HellTaxiVehicles),
             new DispatchableVehicleGroup("PurpleTaxiVehicles", PurpleTaxiVehicles),
             new DispatchableVehicleGroup("ShitiTaxiVehicles", ShitiTaxiVehicles),
-
+            new DispatchableVehicleGroup("SunderedTaxiVehicles",SunderedTaxiVehicles),
             //
 
         };

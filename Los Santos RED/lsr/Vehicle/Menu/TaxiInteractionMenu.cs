@@ -35,6 +35,10 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
             Player.ButtonPrompts.RemovePrompts("VehicleInteract");
             return;
         }
+
+
+        EntryPoint.WriteToConsole($"SHOW TAXI INTERACTION USING THE TAXI RIDE FROM:{TaxiRide.RespondingDriver?.Handle} VEH:{TaxiRide.RespondingVehicle?.Handle}");
+
         CreateInteractionMenuTaxi();
         AddItems();
         VehicleInteractMenu.Visible = true;
@@ -111,11 +115,11 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
         UIMenuListScrollerItem<PedDrivingStyle> drivingStyleScroller = new UIMenuListScrollerItem<PedDrivingStyle>("Styles","Choose a style", PossibleStyles);
         drivingStyleScroller.Activated += (sender,selectedItem) =>
         {
-            if(TaxiRide == null || TaxiRide.RespondingDriver == null)
+            if(TaxiRide == null || TaxiRide.RespondingDriver == null || TaxiRide.RespondingDriver.TaxiRide == null)
             {
                 return;
             }
-            TaxiRide.RespondingDriver.TaxiDrivingStyle = drivingStyleScroller.SelectedItem;
+            TaxiRide.RespondingDriver.TaxiRide.TaxiDrivingStyle = drivingStyleScroller.SelectedItem;
         };
         DrivingStyle.AddItem(drivingStyleScroller);
     }

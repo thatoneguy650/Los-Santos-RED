@@ -547,6 +547,7 @@ namespace Mod
             ActivityManager.Update();
             OfficerMIAWatcher.Update();
             RestrictedAreaManager.Update();//yields in here
+            TaxiManager.Update();
         }
         public void SetNotBusted()
         {
@@ -700,6 +701,7 @@ namespace Mod
             OutfitManager.Dispose();
             OfficerMIAWatcher.Dispose();
             RestrictedAreaManager.Dispose();
+
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);

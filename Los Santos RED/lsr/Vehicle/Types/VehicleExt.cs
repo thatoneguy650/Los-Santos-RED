@@ -51,6 +51,7 @@ namespace LSR.Vehicles
         public string ImpoundedLocation { get; set; }
         public Vehicle Vehicle { get; set; } = null;
         public Vector3 PlaceOriginallyEntered { get; set; }
+        public virtual bool IsTaxi => false;
         public Radio Radio { get; set; }
         public Indicators Indicators { get; set; }
         public Engine Engine { get; set; }

@@ -34,9 +34,21 @@ public class TaxiManager
     }
     public void Update()
     {
+        if(Player.CurrentVehicle != null && Player.CurrentVehicle.IsTaxi)
+        {
+            if(!ActiveRides.Any(x=> x.RespondingVehicle != null && x.RespondingVehicle.Handle == Player.CurrentVehicle.Handle))
+            {
+                GetOrCreateRide(Player.CurrentVehicle);
+                EntryPoint.WriteToConsole("TaxiManager CREATE RIDE ON GETIN");
+            }
+        }
         foreach (TaxiRide taxiRide in ActiveRides)
         {
-            taxiRide.CheckValid();
+            taxiRide.Update();
+            if(taxiRide.IsActive)
+            {
+                EntryPoint.WriteToConsole($"WE HAVE AN ACTIVE RIDE DRIVER:{taxiRide.RespondingDriver?.Handle} VEH:{taxiRide.RespondingVehicle?.Handle}");
+            }
         }
         ActiveRides.RemoveAll(x => !x.IsValid);
     }
@@ -52,7 +64,7 @@ public class TaxiManager
         }
         TaxiRide taxiRide = new TaxiRide(World, Player, taxiFirm, Player.Position);
         taxiRide.Setup();
-        if(!taxiRide.CanStart)
+        if(!taxiRide.IsActive)
         {
             return false;
         }
@@ -60,22 +72,6 @@ public class TaxiManager
         EntryPoint.WriteToConsole("TaxiManager RequestService Active Ride Added");
         return true;
     }
-
-    //public void CancelRide(TaxiVehicleExt taxiVehicleExt)
-    //{
-    //    if(taxiVehicleExt == null)
-    //    {
-    //        return;
-    //    }
-    //    TaxiRide taxiRide = ActiveRides.Where(x=> x.RespondingVehicle != null && x.RespondingVehicle.Handle == taxiVehicleExt.Handle).FirstOrDefault();
-    //    if(taxiRide == null)
-    //    {
-    //        EntryPoint.WriteToConsole("TaxiManager Cancel Ride no active ride found");
-    //        return;
-    //    }
-    //    taxiRide.Cancel();
-    //    ActiveRides.Remove(taxiRide);
-    //}
     public void CancelRide(TaxiRide taxiRide)
     {
         if (taxiRide == null)
@@ -85,6 +81,14 @@ public class TaxiManager
         }
         taxiRide.Cancel();
         ActiveRides.Remove(taxiRide);
+    }
+    public TaxiRide GetOrCreateRide(VehicleExt regularVehicle)
+    {
+        if(regularVehicle == null)
+        {
+            return null;
+        }
+        return GetOrCreateRide(World.Vehicles.TaxiVehicles.FirstOrDefault(x=> x.Handle == regularVehicle.Handle));
     }
     public TaxiRide GetOrCreateRide(TaxiVehicleExt taxiVehicleExt)
     {
@@ -106,6 +110,10 @@ public class TaxiManager
                 return null;
             }
             tr = new TaxiRide(World, Player, taxiVehicleExt.TaxiFirm, taxiVehicleExt, RespondingDriver);
+            RespondingDriver.SetTaxiRide(tr);
+            tr.SetActive();
+            ActiveRides.Add(tr);
+            EntryPoint.WriteToConsole($"CREATE NEW TAXI RIDE WITH DRIVER:{RespondingDriver.Handle} VEH:{taxiVehicleExt.Handle}");
         }
         return tr;
     }

@@ -111,7 +111,7 @@ public static class EntryPoint
     }
     private static void CheckForUpdates()
     {
-        WebClient webClient = new WebClient();
+        WebClientWithTimeout webClient = new WebClientWithTimeout();
         string receivedData = string.Empty;
         try
         {
@@ -171,6 +171,15 @@ public static class EntryPoint
     public static void Command_UnloadLSR()
     {
         ModController?.Dispose();
+    }
+    public class WebClientWithTimeout : WebClient
+    {
+        protected override WebRequest GetWebRequest(Uri address)
+        {
+            WebRequest wr = base.GetWebRequest(address);
+            wr.Timeout = 3000; // timeout in milliseconds (ms)
+            return wr;
+        }
     }
 
 

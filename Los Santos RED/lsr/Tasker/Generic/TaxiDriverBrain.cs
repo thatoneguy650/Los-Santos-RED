@@ -91,21 +91,16 @@ public class TaxiDriverBrain : PedBrain
             {
                 HandleIdle();
             }
-            //else if (PedExt.WasModSpawned && PedExt.CurrentTask == null)
-            //{
-            //    SetIdle();
-            //}
         }
-        else //if (PedExt.WasModSpawned && PedExt.CurrentTask == null)
+        else
         {
-            HandleIdle();///
-           // SetIdle();
+            HandleIdle();
         }
         PedExt.GameTimeLastUpdatedTask = Game.GameTime;
     }
     private void HandleIdle()
     {
-        if(TaxiDriver.IsRideActive)
+        if(TaxiDriver.TaxiRide?.IsActive == true)
         {
             SetTaxiService();
         }

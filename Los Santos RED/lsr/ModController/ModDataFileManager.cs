@@ -256,30 +256,8 @@ public class ModDataFileManager
             + Environment.NewLine +
             "2. Copy all of the .xml files from the AlternateConfigs\\FullExpandedJurisdiction folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)"
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
-
-
-
-            "MANUAL INSTALL (Optional)"
-            + Environment.NewLine +
-            "extract the greskfejinstaller.oiv as a zip file and open the content folder"
-            + Environment.NewLine +
-            "Copy greskfej folder to '\\mods\\update\\x64\\dlcpacks'"
-            + Environment.NewLine +
-            "Add"
-            + Environment.NewLine +
-            "<Item>dlcpacks:/greskfej/</Item>"
-            + Environment.NewLine +
-            "to the end of "
-            + Environment.NewLine +
-            "'\\mods\\update\\update.rpf\\common\\data\\dlclist.xml'"
-            + Environment.NewLine
-            + Environment.NewLine +
-            "Copy the sheriff, lurcher, taxi, policeold1, pranger, policeold2 and policeb entries from '\\mods\\update\\x64\\dlcpacks\\greskfej\\dlc.rpf\\data\\vehicles.meta'"
-            + Environment.NewLine +
-            "and overwrite the existing sheriff, policeold1, pranger, policeold2, taxi, and policeb entries and add a new lurcher entry in '\\mods\\update\\update.rpf\\common\\data\\levels\\gta5\\vehicles.meta'"
+            ""
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
-
-
             "Model Credits:" 
             + Environment.NewLine +
             "Stanier - Model by Rockstar Games, UV-Map by LtMattJeter, template by Lt.Caine, mirror lights by Netman, lightbars, assembly and skins by Yard1" 
@@ -298,9 +276,9 @@ public class ModDataFileManager
             + Environment.NewLine +
             "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1."
             + Environment.NewLine +
-            "Bison - Model by Rockstar Games, UV-Map, template, assembly and by Yard1."
+            "Bison - Model by Rockstar Games; UV-Map, template, and assembly by Yard1."
             + Environment.NewLine +
-            "Stanier Taxi - israelsr"
+            "Stanier Taxi - Model by Rockstar Games; UV-Map, template, and assembly by israelsr"
             + Environment.NewLine +
             "Fugitive - Original Cheval Fugitive model by Rockstar Games modified, UV mapped, skins and assembled by NIGHTKID - Generic police equipments(radio, pushbar, spotlight, partition, lightbars) model by Rockstar Games - Arma console by LeoAllTheWay, converted by NIGHTKID - Jay's Stalker radarv by jasonct203 converted by NIGHTKID - Setina pushbar/FPIU wraparound by GUMP converted by NIGHTKID - NFS Equipment(Antenna) by TGM converted by NIGHTKID - Tir6 Texure by Kpdofficer - Carvariation.meta and Vehicles.meta files by JWillMac51"
             + Environment.NewLine + Environment.NewLine +
@@ -336,13 +314,8 @@ public class ModDataFileManager
             + Environment.NewLine +
             "2. Copy all of the .xml files from the AlternateConfigs\\LosSantos2008 folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)"
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
-
-
-
             ""
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
-
-
             "Model Credits:"
             + Environment.NewLine +
             "Stanier - Model by Rockstar Games, UV-Map by LtMattJeter, template by Lt.Caine, mirror lights by Netman, lightbars, assembly and skins by Yard1"
@@ -364,18 +337,12 @@ public class ModDataFileManager
             "AllenKennedy - https://www.gta5-mods.com/users/AllenKennedy/files"
             + Environment.NewLine +
             "";
-
-
-
-
-
-
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\readme.txt", Description);
     }
     private void SetupLibertyCity()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity");
-        string Description = "For use with liberty city (centered). Not complete. The Full Expanded Jurisdiction config has some LCPD liveries if you need some vehicles.";
+        string Description = "For use with Liberty City (centered). Not complete. Credit to box for the locations. The Full Expanded Jurisdiction config has some LCPD liveries if you need some vehicles.";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\readme.txt", Description);
     }
     private void SetupSimple()

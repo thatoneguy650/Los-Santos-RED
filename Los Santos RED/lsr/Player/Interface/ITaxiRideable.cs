@@ -14,5 +14,6 @@ namespace LosSantosRED.lsr.Interface
         TaxiManager TaxiManager { get; }
         Vector3 Position { get; }
         Dispatcher Dispatcher { get; }
+        VehicleExt CurrentVehicle { get; }
     }
 }
