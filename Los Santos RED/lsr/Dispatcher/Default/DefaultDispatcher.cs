@@ -83,14 +83,15 @@ public class DefaultDispatcher
         do
         {
             SpawnLocation.InitialPosition = GetSpawnPosition();
-            SpawnLocation.GetClosestStreet(Player.IsWanted);
+            SpawnLocation.GetClosestStreet(false);
             SpawnLocation.GetClosestSidewalk();
             GameFiber.Yield();
             isValidSpawn = IsValidSpawn(SpawnLocation);
             timesTried++;
+            EntryPoint.WriteToConsole($"ATTEMPTING TAXI DISPATCH LOCATION timesTried{timesTried} TimesToTryLocation{TimesToTryLocation}");
             GameFiber.Yield();
         }
-        while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < TimesToTryLocation);//2//10
+        while ((!SpawnLocation.HasSpawns || !isValidSpawn) && timesTried < TimesToTryLocation);//2//10
         return isValidSpawn && SpawnLocation.HasSpawns;
     }
     protected virtual Vector3 GetSpawnPosition()
@@ -111,12 +112,14 @@ public class DefaultDispatcher
 
     protected virtual bool IsValidSpawn(SpawnLocation spawnLocation)
     {
-        if (spawnLocation.StreetPosition.DistanceTo2D(Player.Position) < 250f)
+        if (spawnLocation.StreetPosition.DistanceTo2D(Player.Position) < MinDistanceToSpawn)
         {
+            EntryPoint.WriteToConsole($"NOT VALID SPAWN 1 {MinDistanceToSpawn} {spawnLocation.StreetPosition.DistanceTo2D(Player.Position)}");
             return false;
         }
-        else if (spawnLocation.InitialPosition.DistanceTo2D(Player.Position) < 250f)
+        else if (spawnLocation.InitialPosition.DistanceTo2D(Player.Position) < MinDistanceToSpawn)
         {
+            EntryPoint.WriteToConsole($"NOT VALID SPAWN 2 {MinDistanceToSpawn} {spawnLocation.InitialPosition.DistanceTo2D(Player.Position)}");
             return false;
         }
         return true;

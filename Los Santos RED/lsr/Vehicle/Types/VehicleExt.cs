@@ -1489,7 +1489,7 @@ namespace LSR.Vehicles
             string vehicleText = $"{Handle}";
             if (Vehicle.Exists())
             {
-                vehicleText += $" {Vehicle.Model.Name}";
+                vehicleText += $" {Vehicle.Model.Name} WasModSpawned: {WasModSpawned}";
             }
             return vehicleText;
         }

@@ -17,6 +17,7 @@ public class BlankLocation : GameLocation
 
     }
     public override bool ShowsOnDirectory { get; set; } = false;
+    public override bool ShowsOnTaxi { get; set; } = false;
     public override string TypeName { get; set; } = "Blank Location";
     public override bool ShowsMarker => false;
     public override bool IsBlipEnabled => false;

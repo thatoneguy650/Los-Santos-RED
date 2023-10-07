@@ -61,7 +61,7 @@ public class GPSManager
             return Vector3.Zero;
         }
         Vector3 markerPos = NativeFunction.Natives.GET_BLIP_COORDS<Vector3>(NativeFunction.Natives.GET_FIRST_BLIP_INFO_ID<int>(8));
-        EntryPoint.WriteToConsole($"Current Marker Position1: {markerPos}");
+        //EntryPoint.WriteToConsole($"Current Marker Position1: {markerPos}");
         if (markerPos == Vector3.Zero)
         {
             return Vector3.Zero;
@@ -71,7 +71,7 @@ public class GPSManager
             EntryPoint.WriteToConsole($"Current Marker NO GROUND Z FOUND RETURNING REGULAR MARKERPOS");
             return new Vector3(markerPos.X, markerPos.Y, markerPos.Z);
         }
-        EntryPoint.WriteToConsole($"Current Marker Position2: {new Vector3(markerPos.X, markerPos.Y, GroundZ)} GroundZ{GroundZ}");
+        //EntryPoint.WriteToConsole($"Current Marker Position2: {new Vector3(markerPos.X, markerPos.Y, GroundZ)} GroundZ{GroundZ}");
         return new Vector3(markerPos.X, markerPos.Y, GroundZ);
 
     }

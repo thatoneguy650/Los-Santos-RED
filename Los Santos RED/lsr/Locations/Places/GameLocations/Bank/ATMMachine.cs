@@ -34,6 +34,7 @@ public class ATMMachine : GameLocation// i know m stand for machine, makes it ne
 
     }
     public override bool ShowsOnDirectory { get; set; } = false;
+    public override bool ShowsOnTaxi { get; set; } = false;
     public override string TypeName { get; set; } = "ATM";
     public override int MapIcon { get; set; } = 500;//361;// (int)BlipSprite.PointOfInterest;
     public override float MapIconScale { get; set; } = 0.25f;

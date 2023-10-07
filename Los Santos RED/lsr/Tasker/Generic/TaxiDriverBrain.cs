@@ -104,7 +104,7 @@ public class TaxiDriverBrain : PedBrain
         {
             SetTaxiService();
         }
-        else if(PedExt.WasModSpawned)
+        else if (PedExt.WasModSpawned)
         {
             SetIdle();
         }
@@ -118,6 +118,7 @@ public class TaxiDriverBrain : PedBrain
         PedExt.CurrentTask = new TaxiService(PedExt, PedExt, Player, World, new List<VehicleExt>() { PedExt.AssignedVehicle }, PlacesOfInterest, Settings, true, TaxiDriver);
         GameFiber.Yield();//TR Added back 4
         PedExt.CurrentTask.Start();
+        EntryPoint.WriteToConsole($"PED: {PedExt.Handle} STARTED TaxiService");
     }
 }
 

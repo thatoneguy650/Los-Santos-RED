@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class ContactsTab
+public class ContactsTab : ITabbableMenu
 {
     private IGangRelateable Player;
     private IGangs Gangs;

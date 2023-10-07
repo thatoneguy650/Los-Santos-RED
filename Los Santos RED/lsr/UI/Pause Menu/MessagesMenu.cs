@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 public class MessagesMenu
 {
@@ -28,9 +29,11 @@ public class MessagesMenu
     private MessagesTab MessagesTab;
     private PhoneRepliesTab PhoneRepliesTab;
     private TextMessagesTab TextMessagesTab;
-
+    private ContactsAddTab ContactAddTab;
     private ISettingsProvideable Settings;
-    public MessagesMenu(IGangRelateable player, ITimeReportable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, IEntityProvideable world, ISettingsProvideable settings)
+    private IContacts Contacts;
+    private List<ITabbableMenu> Tabs = new List<ITabbableMenu>();
+    public MessagesMenu(IGangRelateable player, ITimeReportable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, IEntityProvideable world, ISettingsProvideable settings, IContacts contacts)
     {
         Player = player;
         Time = time;
@@ -42,6 +45,7 @@ public class MessagesMenu
         Interiors = interiors;
         World = world;
         Settings = settings;
+        Contacts = contacts;
     }
     public void Setup()
     {
@@ -54,11 +58,21 @@ public class MessagesMenu
             Game.IsPaused = false;
         };
         Game.RawFrameRender += (s, e) => tabView.DrawTextures(e.Graphics);
+
+
         LocationsTab = new LocationsTab(Player, PlacesOfInterest, Time, Settings, tabView);
         ContactsTab = new ContactsTab(Player, Gangs, tabView);
         MessagesTab = new MessagesTab(Player, tabView);
         PhoneRepliesTab = new PhoneRepliesTab(Player, tabView);
         TextMessagesTab = new TextMessagesTab(Player, tabView);
+        ContactAddTab = new ContactsAddTab(Player, PlacesOfInterest, Time, Settings, tabView, Contacts, this);
+
+        Tabs.Add(LocationsTab);
+        Tabs.Add(ContactsTab);
+        Tabs.Add(MessagesTab);
+        Tabs.Add(PhoneRepliesTab);
+        Tabs.Add(TextMessagesTab);
+        Tabs.Add(ContactAddTab);
     }
     public void Toggle()
     {
@@ -80,6 +94,10 @@ public class MessagesMenu
             tabView.Money = Time.CurrentDateTime.ToString("ddd, dd MMM yyyy hh:mm tt");
         }
     }
+    public void RefreshMenu()
+    {
+        UpdateMenu();
+    }
     private void UpdateMenu()
     {
         tabView.MoneySubtitle = Player.BankAccounts.TotalMoney.ToString("C0");
@@ -87,11 +105,16 @@ public class MessagesMenu
         tabView.Money = Time.CurrentTime;
         tabView.Tabs.Clear();
 
-        MessagesTab.AddItems();
-        ContactsTab.AddItems();
-        PhoneRepliesTab.AddItems();
-        TextMessagesTab.AddItems();
-        LocationsTab.AddItems();
+
+        foreach(ITabbableMenu tabbableMenu in Tabs)
+        {
+            tabbableMenu.AddItems();
+        }
+        //MessagesTab.AddItems();
+        //ContactsTab.AddItems();
+        //PhoneRepliesTab.AddItems();
+        //TextMessagesTab.AddItems();
+        //LocationsTab.AddItems();
 
         tabView.RefreshIndex();
     }

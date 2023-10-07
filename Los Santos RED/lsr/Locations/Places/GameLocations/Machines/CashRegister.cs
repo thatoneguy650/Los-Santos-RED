@@ -29,6 +29,7 @@ public class CashRegister : GameLocation
     [XmlIgnore]
     public Rage.Object RegisterProp { get; set; }
     public override bool ShowsOnDirectory { get; set; } = false;
+    public override bool ShowsOnTaxi { get; set; } = false;
     public override string TypeName { get; set; } = "Cash Register";
     public override int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
     public override float MapIconScale { get; set; } = 0.25f;

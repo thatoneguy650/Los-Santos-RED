@@ -49,6 +49,9 @@ public class TaxiRide
             return Vector3.Zero;
         }
     }
+    public float EsimatedDistance { get; set; }
+    public string DesitnationName { get; set; }
+    public bool HasSetFast { get; set; } = false;
     public TaxiFirm RequestedFirm { get; set; }
     public SpawnLocation PickupLocation { get; set; }
     public TaxiVehicleExt RespondingVehicle { get; private set; }
@@ -70,6 +73,7 @@ public class TaxiRide
         PickupLocation.GetClosestStreet(true);
         if(!PickupLocation.HasStreetPosition)
         {
+            EntryPoint.WriteToConsole("TAXI RIDE SETUP FAIL NO STREET POSITION");
             return;
         }
         if (GetVehicleAndDriver())//if there is an existing one
@@ -83,9 +87,11 @@ public class TaxiRide
             IsActive = true;
             return;
         }
+        EntryPoint.WriteToConsole("TAXI RIDE SETUP FAIL NO DISPATCH");
     }
     private void SpawnVehicleAndDriver()
     {
+        EntryPoint.WriteToConsole("TAXI RIDE SETUP FORCING TAXI SPAWN");
         Player.Dispatcher.ForceTaxiSpawn(RequestedFirm);// Dispatcher.ForceTaxiSpawn(RequestedFirm);
     }
     private bool GetVehicleAndDriver()
@@ -108,6 +114,10 @@ public class TaxiRide
     public void Cancel()
     {
         IsActive = false;
+        if(RespondingDriver != null)
+        {
+            RespondingDriver.TaxiRide = null;
+        }
        // RespondingDriver?.ReleaseTasking();     
     }
     public void Update()
@@ -126,7 +136,7 @@ public class TaxiRide
         {
             OnPickedUpPlayer();
         }
-        if(HasPickedUpPlayer && !HasDroppedOffPlayer && HasDestination && RespondingDriver.Position.DistanceTo2D(DestinationLocation.StreetPosition) <= 15f)
+        if(!HasArrivedAtDestination && HasPickedUpPlayer && !HasDroppedOffPlayer && HasDestination && RespondingDriver.Position.DistanceTo2D(DestinationLocation.StreetPosition) <= 15f)
         {
             OnArrivedAtDestination();
         }
@@ -134,32 +144,104 @@ public class TaxiRide
     private void OnArrivedAtDestination()
     {
         EntryPoint.WriteToConsole("TAXI RIDE PLAYER HAS ARRIVED");
+        ChargePlayer();
         HasArrivedAtDestination = true;
     }
+    private void ChargePlayer()
+    {
+        int fullFare = GetPrice(EsimatedDistance);
+        if (fullFare > 0)
+        {
+            Player.BankAccounts.GiveMoney(-1 * fullFare, true);
+            DisplayNotification("~g~Arrived", $"Total Price: ~r~${fullFare}~s~");
+        }
+    }
+
     private void OnPickedUpPlayer()
     {
         EntryPoint.WriteToConsole("TAXI RIDE PLAYER WAS PICKED UP");
         HasPickedUpPlayer = true;
     }
-    public void UpdateDestination(Vector3 coordinates)
+    public void UpdateDestination(Vector3 destinationCoordinates, Vector3 startCoordinates, string Name)
     {
-        if(coordinates == Vector3.Zero)
+        if(destinationCoordinates == Vector3.Zero)
         {
             return;
         }
-        if(RespondingDriver == null)
+        if (startCoordinates == Vector3.Zero)
         {
             return;
         }
-        //HasArrivedAtDestination = false;
-        DestinationLocation.StreetPosition = coordinates;
-        //RespondingDriver.SetTaskingActive(coordinates);
-        EntryPoint.WriteToConsole($"TAXI RIDE UPDATED DESTINATION {coordinates}");
+        if (RespondingDriver == null)
+        {
+            return;
+        }
+        if(HasDestination && !HasArrivedAtDestination)
+        {
+            EntryPoint.WriteToConsole($"TAXI RIDE UPDATED DESTINATION ALREADY HAS DESTINATION CHARGING");
+            int PartialPrice = GetPrice(startCoordinates.DistanceTo2D(Player.Position));
+            if(PartialPrice > 0)
+            {
+                Player.BankAccounts.GiveMoney(-1 * PartialPrice, true);
+                DisplayNotification("~r~Destination Updated",$"Partial Ride Price: ~r~${PartialPrice}");
+            }
+        }
+        else
+        {
+            DisplayNotification("~g~Destination Added", $"Added New Destination: {Name}");
+        }
+        PickupLocation = new SpawnLocation(startCoordinates);
+        PickupLocation.StreetPosition = startCoordinates;
+        DestinationLocation.StreetPosition = destinationCoordinates;
+        EsimatedDistance = startCoordinates.DistanceTo2D(DestinationLocation.StreetPosition);
+        DesitnationName = Name;
+        EntryPoint.WriteToConsole($"TAXI RIDE UPDATED DESTINATION {destinationCoordinates}");
     }
-
+    public int GetPrice(float distance)
+    {
+        int totalFare = 20;
+        float smallerDistance = distance / 100f;
+        int AdditionalFare = (int)Math.Floor(smallerDistance) * 3;
+        return totalFare + AdditionalFare;
+    }
     public void SetActive()
     {
         IsActive = true;
+    }
+    public void OnGotOutOfVehicle()
+    {
+        if(!IsActive)
+        {
+            return;
+        }
+        if(HasArrivedAtDestination)
+        {
+            Cancel();
+            return;
+        }
+        else 
+        {
+            Game.DisplayHelp("Return to the taxi to continue the ride.");
+        }
+    }
+
+    public void DisplayNotification(string subtitle, string text)
+    {
+        if (string.IsNullOrEmpty(subtitle) || string.IsNullOrEmpty(text))
+        {
+            return;
+        }
+        string texture = "CHAR_BLANK_ENTRY";
+        string title = "Taxi Company";
+        if (RequestedFirm != null)
+        {
+            title = RequestedFirm.ShortName;
+            if (RequestedFirm.PhoneContact != null)
+            {
+                texture = RequestedFirm.PhoneContact.IconName;
+            }
+        }
+        Game.DisplayNotification(texture, texture, title, subtitle, text);
     }
 }
 

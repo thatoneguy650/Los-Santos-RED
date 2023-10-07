@@ -20,6 +20,7 @@ public class DeadDrop : GameLocation
         
     }
     public override bool ShowsOnDirectory { get; set; } = false;
+
     public override string TypeName { get; set; } = "Dead Drop";
     public override int MapIcon { get; set; } = (int)BlipSprite.Destination;
     public override string MapIconColorString { get; set; } = "Blue";

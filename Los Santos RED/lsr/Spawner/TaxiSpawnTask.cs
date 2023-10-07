@@ -56,6 +56,9 @@ public class TaxiSpawnTask : CivilianSpawnTask
             CreatedVehicle.TaxiFirm = TaxiFirm;
             CreatedVehicle.Setup();
             CreatedVehicle.WasModSpawned = true;
+            CreatedVehicle.AddVehicleToList(World);
+
+
             GameFiber.Yield();
             if (!SpawnedVehicle.Exists())
             {

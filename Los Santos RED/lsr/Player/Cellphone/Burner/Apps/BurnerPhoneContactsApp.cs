@@ -201,6 +201,7 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
             {
                 Player.CellPhone.AddContact(tocall, false);
             }
+            IsDisplayingNumpad = false;
             Call(tocall);
         }
 

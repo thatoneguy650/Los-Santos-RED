@@ -473,6 +473,18 @@ public class Debug
     }
     private void DebugNumpad4()
     {
+
+
+        foreach(PedExt pedExt in World.Pedestrians.PedExts)
+        {
+            if(pedExt.WasModSpawned)
+            {
+                EntryPoint.WriteToConsole($"CLEARING TASKS FOR {pedExt.Handle}");
+                pedExt.ClearTasks(true);
+            }
+        }
+
+
         //foreach(VehicleExt veh in Player.VehicleOwnership.OwnedVehicles.Where(x=>x.Vehicle.Exists()))
         //{
         //    EntryPoint.WriteToConsole($"{veh.Vehicle.Model.Name} {veh.IsImpounded} {veh.ImpoundedLocation} {veh.TimesImpounded} {veh.DateTimeImpounded}");
@@ -521,7 +533,7 @@ public class Debug
 
         // return;
 
-        HighlightDoorsAndProps();
+        //HighlightDoorsAndProps();
 
 
         //VehicleExt myCar = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, true, 100f);

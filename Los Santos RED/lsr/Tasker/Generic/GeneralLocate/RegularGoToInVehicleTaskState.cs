@@ -41,7 +41,7 @@ public class RegularGoToInVehicleTaskState : TaskState
         DrivingStyle = drivingStyle;
         DrivingSpeed = speed;
     }
-    public bool IsValid => PedGeneral != null && PedGeneral.IsInVehicle && !LocationReachable.HasReachedLocatePosition;
+    public bool IsValid => PedGeneral != null && PedGeneral.IsInVehicle;// && !LocationReachable.HasReachedLocatePosition;
     public string DebugName => $"RegularGoToInVehicleTaskState";
     public void Dispose()
     {
@@ -69,11 +69,11 @@ public class RegularGoToInVehicleTaskState : TaskState
     private void CheckTasks()
     {
         Rage.TaskStatus taskStatus = PedGeneral.Pedestrian.Tasks.CurrentTaskStatus;
-        if (PedGeneral.IsDriver && (taskStatus == Rage.TaskStatus.NoTask || taskStatus == Rage.TaskStatus.Preparing) && Game.GameTime - GametimeLastRetasked >= 2000)
+        if (PedGeneral.IsDriver && (taskStatus == Rage.TaskStatus.NoTask || taskStatus == Rage.TaskStatus.Preparing) && Game.GameTime - GametimeLastRetasked >= 4000)
         {
             TaskEntry();
             GametimeLastRetasked = Game.GameTime;
-            EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} RETASKED");
+            EntryPoint.WriteToConsole($"RAGULAR GO TO  TASK: TAXI {PedGeneral?.Handle} RETASKED");
         }
     }
 
@@ -102,14 +102,31 @@ public class RegularGoToInVehicleTaskState : TaskState
         }
         else
         {
-            NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, DrivingSpeed, (int)DrivingStyle, 10f); //30f speed
+
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", 0, PedGeneral.Pedestrian.CurrentVehicle, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, DrivingSpeed, (int)DrivingStyle, 10f);
+                NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, PedGeneral.Pedestrian.CurrentVehicle, 27, 10000);
+                NativeFunction.CallByName<bool>("TASK_PAUSE", 0, -1);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", PedGeneral.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+
+
+
+
+            //NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, DrivingSpeed, (int)DrivingStyle, 10f); //30f speed
         }
         GametimeLastRetasked = Game.GameTime;
     }
     private void CheckGoToDistances()
     {
         float DistanceToCoordinates = PedGeneral.Pedestrian.DistanceTo2D(PlaceToDriveTo);
-        if (DistanceToCoordinates <= 20f)
+        if (DistanceToCoordinates <= 10f)
         {
             LocationReachable.OnLocationReached();
         }

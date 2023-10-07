@@ -238,8 +238,8 @@ public class TaxiDispatcher : DefaultDispatcher
         civilianSpawnTask.AllowBuddySpawn = false;
         civilianSpawnTask.PlacePedOnGround = false;
         civilianSpawnTask.AttemptSpawn();
-        civilianSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
-        civilianSpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));
+        //civilianSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
+        //civilianSpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));
         PedExt spawnedDriver = civilianSpawnTask.CreatedPeople.FirstOrDefault();
         VehicleExt spawnedVehicle = civilianSpawnTask.CreatedVehicles.FirstOrDefault();
         //spawnedVehicle?.AddBlip();
@@ -259,16 +259,18 @@ public class TaxiDispatcher : DefaultDispatcher
     {
         VehicleType = null;
         PersonType = null;
-        TimesToTryLocation = 20;
+        TimesToTryLocation = 50;
         if(!GetSpawnLocation())
         {
             TimesToTryLocation = 3;
+            EntryPoint.WriteToConsole("ForceTaxiSpawn FAIL NO SPAWN LOCATION");
             return;
         }
         TimesToTryLocation = 3;
         TaxiFirm = taxiFirm;
         if (TaxiFirm == null)
         {
+            EntryPoint.WriteToConsole("ForceTaxiSpawn FAIL NO TAXI FIRM");
             return;
         }
         VehicleType = TaxiFirm.GetRandomVehicle(Player.WantedLevel, true, true, true, "", Settings);

@@ -93,7 +93,7 @@ public class UI : IMenuProvideable
         MenuList = new List<ModUIMenu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
         PlayerInfoMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus,modItems, weapons, Settings, LocationTypes);
         SavePauseMenu = new SavePauseMenu(saveablePlayer, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus, modItems, weapons, Settings, gameSaves, pedSwap,playerinventory, saveablePlayer, agencies);
-        MessagesMenu = new MessagesMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, Settings);
+        MessagesMenu = new MessagesMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, Settings, modDataFileManager.Contacts);
         AboutMenu = new AboutMenu(gangRelateable, Time, Settings);
         ActionPopUpMenu = new PopUpMenu(actionablePlayer, Settings, this, gestures, dances);
         TimerBarController = new TimerBarController(displayablePlayer, TimerBarPool, Settings);

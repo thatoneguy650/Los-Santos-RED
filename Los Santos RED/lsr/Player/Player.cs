@@ -59,6 +59,7 @@ namespace Mod
         private int storedViewMode = -1;
         private uint targettingHandle;
         private int wantedLevel = 0;
+        private uint prevCurrentVehicleHandle;
 
         private IIntoxicants Intoxicants;
         private IModItems ModItems;
@@ -933,7 +934,7 @@ namespace Mod
                 //EntryPoint.WriteToConsole("InterestedVehicle.VehicleInteractionMenu.IsShowingMenu");
                 return;
             }
-            InterestedVehicle.VehicleInteractionMenu.ShowInteractionMenu(this, Weapons, ModItems, vdsd, VehicleSeatDoorData, World, Settings, showDefault);
+            InterestedVehicle.VehicleInteractionMenu.ShowInteractionMenu(this, Weapons, ModItems, vdsd, VehicleSeatDoorData, World, Settings, showDefault, PlacesOfInterest, TimeControllable);
         }
         public void ToggleAutoBackup()
         {
@@ -1308,6 +1309,7 @@ namespace Mod
                 {
                     CurrentVehicle.HasAutoSetRadio = false;
                 }
+
             }
             else
             {
@@ -1324,6 +1326,7 @@ namespace Mod
                     IsMobileRadioEnabled = false;
                     NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
                 }
+                TaxiManager.OnGotOutOfVehicle();
             }
             //UpdateOwnedBlips();
             //EntryPoint.WriteToConsole($"PLAYER EVENT: IsInVehicle to {IsInVehicle}");
@@ -1484,6 +1487,19 @@ namespace Mod
            // EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
             PreviousWantedLevel = wantedLevel;// NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>();//PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
         }
+
+        private void OnCurrentVehicleChanged()
+        {
+            if (CurrentVehicle != null)
+            {
+                TaxiManager.OnGotInVehicle();
+            }
+            else
+            {
+
+            }
+        }
+
         //Crimes
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
@@ -1723,6 +1739,14 @@ namespace Mod
                 {
                     CurrentVehicle.SetAsEntered();
                 }
+
+
+                if(prevCurrentVehicleHandle != CurrentVehicle.Handle)
+                {
+                    EntryPoint.WriteToConsole($"PLAYER EVENT OnCurrentVehicleChanged to {CurrentVehicle.Handle}");
+                    OnCurrentVehicleChanged();
+                    prevCurrentVehicleHandle = CurrentVehicle.Handle;
+                }
             }
             else
             {
@@ -1731,6 +1755,7 @@ namespace Mod
                 IsInAutomobile = false;
                 CurrentVehicleIsRolledOver = false;
                 VehicleSpeed = 0f;
+                prevCurrentVehicleHandle = 0;
             }
             if (VehicleSpeedMPH >= 80f)
             {
@@ -1848,6 +1873,9 @@ namespace Mod
             //    MyBusRide.Start();
             //}
         }
+
+
+
         private void UpdateOutOfVehicleData()
         {
             CurrentVehicleIsRolledOver = false;

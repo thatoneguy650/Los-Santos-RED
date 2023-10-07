@@ -48,7 +48,7 @@ public class ModItem
     // private UIMenuNumericScrollerItem<int> purchaseScroller;
 
 
-
+    private UIMenuListScrollerItem<int> incrementScroller;
 
     private UIMenuNumericScrollerItem<int> takeScroller;
     private UIMenu inventoryItemSubMenu;
@@ -495,6 +495,21 @@ public class ModItem
         inventoryItemSubMenuItem.Description = Description;
         inventoryItemSubMenu.SetBannerType(EntryPoint.LSRedColor);
 
+
+
+
+        incrementScroller = new UIMenuListScrollerItem<int>("Increment", "Set the scroll increment.", new List<int>() { 1, 5, 25, 100, 500, 1000, 10000, 100000 })
+        {
+            SelectedItem = 1,
+            Formatter = v => v.ToString("N0")
+        };
+
+
+
+
+        inventoryItemSubMenu.AddItem(incrementScroller);
+
+
         takeScroller = new UIMenuNumericScrollerItem<int>("Take", "", 1, 1, 1) { Value = 1, Enabled = true, Formatter = v => v.ToString() + " " + MeasurementName + (v > 1 ? "(s)" : "") };
         takeScroller.Activated += (sender, selectedItem) =>
         {
@@ -524,6 +539,16 @@ public class ModItem
             UpdateInventoryScrollers(player, simpleInventory, settings);
         };
         inventoryItemSubMenu.AddItem(giveScroller);
+
+
+        incrementScroller.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            takeScroller.Step = incrementScroller.SelectedItem;
+            giveScroller.Step = incrementScroller.SelectedItem;
+        };
+
+
+
         UpdateInventoryScrollers(player, simpleInventory, settings);
     }
     public void UpdateInventoryScrollers(IInteractionable player, SimpleInventory simpleInventory, ISettingsProvideable settings)

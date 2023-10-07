@@ -66,26 +66,47 @@ public class TaxiServiceInteraction : IContactMenuInteraction
     }
     private void AddRequestItems()
     {
-        RequestSubMenu = MenuPool.AddSubMenu(TaxiServiceMenu, "Request Taxi");
-        RequestSubMenu.RemoveBanner();
-        UIMenuItem requestTaxiMenuItem = new UIMenuItem("Request Taxi", "Ask for a taxi to be dispatched.");
-        requestTaxiMenuItem.Activated += (sender, selectedItem) =>
-        {
+        //RequestSubMenu = MenuPool.AddSubMenu(TaxiServiceMenu, "Request Taxi");
+        //RequestSubMenu.RemoveBanner();
 
-            string fullText = "";
-            if (Player.TaxiManager.RequestService(TaxiFirm))
+
+        TaxiRide ExistingRide = Player.TaxiManager.ActiveRides.FirstOrDefault(x => x.RequestedFirm != null && x.RequestedFirm.ID == TaxiFirm.ID);
+        if(ExistingRide == null)
+        {
+            UIMenuItem requestTaxiMenuItem = new UIMenuItem("Request Taxi", "Ask for a taxi to be dispatched.");
+            requestTaxiMenuItem.Activated += (sender, selectedItem) =>
             {
-                fullText = $"{TaxiServiceContact.Name} is en route to ";
-                fullText += Player.CurrentLocation?.GetStreetAndZoneString();
-            }
-            else
+
+                string fullText = "";
+                if (Player.TaxiManager.RequestService(TaxiFirm))
+                {
+                    fullText = $"{TaxiServiceContact.Name} is en route to ";
+                    fullText += Player.CurrentLocation?.GetStreetAndZoneString();
+                }
+                else
+                {
+                    fullText = "No service available to your current location. Please try again later.";
+                }
+                Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
+                sender.Visible = false;
+            };
+            TaxiServiceMenu.AddItem(requestTaxiMenuItem);
+        }
+        else
+        {
+            UIMenuItem cancelTaxiMenu = new UIMenuItem("Cancel Ride", "Cancel the current ride.");
+            cancelTaxiMenu.Activated += (sender, selectedItem) =>
             {
-                fullText = "No service available to your current location.";
-            }
-            Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
-            sender.Visible = false;
-        };
-        RequestSubMenu.AddItem(requestTaxiMenuItem);
+                Player.TaxiManager.CancelRide(ExistingRide, false);
+                string fullText = "Ride has been cancelled";
+                Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
+                sender.Visible = false;
+            };
+            TaxiServiceMenu.AddItem(cancelTaxiMenu);
+        }
+
+
+
     }
     private void AddLocationItems()
     {

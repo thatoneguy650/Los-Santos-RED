@@ -31,7 +31,7 @@ namespace LSR.Vehicles
             toReturn += $" TaxiFirm: {TaxiFirm.FullName}";
             if(Vehicle.Exists())
             {
-                toReturn += $" Position: {Vehicle.Position}";
+                toReturn += $" Position: {Vehicle.Position} ";
             }
             return toReturn;
         }
@@ -82,7 +82,7 @@ namespace LSR.Vehicles
                 {
                     player.ButtonPrompts.RemovePrompts("Vehicle Interact");
                     //EntryPoint.WriteToConsole($"UpdateInteractPrompts TAXI {hasDriver} GET IN AS PASS MENU");
-                    Action action = () => { player.ActivityManager.EnterVehicleAsPassenger(false, true); };
+                    Action action = () => { player.ActivityManager.EnterVehicleAsPassenger(false, true, true); };
                     player.ButtonPrompts.AttemptAddPrompt("VehicleInteract", "Get In Taxi", $"VehicleInteractTaxiGetIn", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999, action);
                 }
             }

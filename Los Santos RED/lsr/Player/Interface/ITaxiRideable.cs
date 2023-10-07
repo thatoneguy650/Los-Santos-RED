@@ -15,5 +15,7 @@ namespace LosSantosRED.lsr.Interface
         Vector3 Position { get; }
         Dispatcher Dispatcher { get; }
         VehicleExt CurrentVehicle { get; }
+        ActivityManager ActivityManager { get; }
+        BankAccounts BankAccounts { get; }
     }
 }

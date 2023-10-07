@@ -102,7 +102,10 @@ public class EMTSpawnTask : SpawnTask
                 CreatedVehicle = new EMSVehicleExt(SpawnedVehicle, Settings);
                 CreatedVehicle.Setup();
                 CreatedVehicle.AssociatedAgency = Agency;
-                World.Vehicles.AddEMS(CreatedVehicle);
+                CreatedVehicle.AddVehicleToList(World);
+
+
+                //World.Vehicles.AddEMS(CreatedVehicle);
             }
             CreatedVehicle.WasModSpawned = true;
             CreatedVehicle.IsEMT = true;

@@ -21,7 +21,8 @@ public class VehicleInteractionMenu
     {
         VehicleExt = vehicleExt;
     }
-    public virtual void ShowInteractionMenu(IInteractionable player, IWeapons weapons, IModItems modItems, VehicleDoorSeatData vehicleDoorSeatData, IVehicleSeatAndDoorLookup vehicleSeatDoorData, IEntityProvideable world, ISettingsProvideable settings, bool showDefault)
+    public virtual void ShowInteractionMenu(IInteractionable player, IWeapons weapons, IModItems modItems, VehicleDoorSeatData vehicleDoorSeatData, IVehicleSeatAndDoorLookup vehicleSeatDoorData, IEntityProvideable world, ISettingsProvideable settings, bool showDefault, 
+        IPlacesOfInterest placesOfInterest, ITimeReportable time)
     {
         VehicleDoorSeatData = vehicleDoorSeatData;
         Player = player;

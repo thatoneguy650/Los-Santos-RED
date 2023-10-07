@@ -34,51 +34,62 @@ public class TaxiManager
     }
     public void Update()
     {
-        if(Player.CurrentVehicle != null && Player.CurrentVehicle.IsTaxi)
-        {
-            if(!ActiveRides.Any(x=> x.RespondingVehicle != null && x.RespondingVehicle.Handle == Player.CurrentVehicle.Handle))
-            {
-                GetOrCreateRide(Player.CurrentVehicle);
-                EntryPoint.WriteToConsole("TaxiManager CREATE RIDE ON GETIN");
-            }
-        }
         foreach (TaxiRide taxiRide in ActiveRides)
         {
             taxiRide.Update();
-            if(taxiRide.IsActive)
-            {
-                EntryPoint.WriteToConsole($"WE HAVE AN ACTIVE RIDE DRIVER:{taxiRide.RespondingDriver?.Handle} VEH:{taxiRide.RespondingVehicle?.Handle}");
-            }
         }
-        ActiveRides.RemoveAll(x => !x.IsValid);
+        ActiveRides.RemoveAll(x => !x.IsValid || !x.IsActive);
+    }
+    public void OnGotInVehicle()
+    {
+        if (Player.CurrentVehicle != null && Player.CurrentVehicle.IsTaxi)
+        {
+            GetOrCreateRide(Player.CurrentVehicle);
+            EntryPoint.WriteToConsole("TaxiManager CREATE RIDE ON GETIN");
+        }
+    }
+    public void OnGotOutOfVehicle()
+    {
+        foreach(TaxiRide taxiRide in ActiveRides)
+        {
+            taxiRide.OnGotOutOfVehicle();
+        }
     }
     public bool RequestService(TaxiFirm taxiFirm)
     {
         if(taxiFirm == null)
         {
+            EntryPoint.WriteToConsole($"RequestService FAIL, NO TAXI FIRM");
             return false;
         }
         if(ActiveRides.Any(x=> x.RequestedFirm.ID == taxiFirm.ID))
         {
+            EntryPoint.WriteToConsole($"RequestService FAIL, ALREADY ACTIVE RIDE");
             return false;
         }
         TaxiRide taxiRide = new TaxiRide(World, Player, taxiFirm, Player.Position);
         taxiRide.Setup();
         if(!taxiRide.IsActive)
         {
+            EntryPoint.WriteToConsole($"RequestService FAIL, NOT ACTIVE");
             return false;
         }
         ActiveRides.Add(taxiRide);
         EntryPoint.WriteToConsole("TaxiManager RequestService Active Ride Added");
         return true;
     }
-    public void CancelRide(TaxiRide taxiRide)
+    public void CancelRide(TaxiRide taxiRide, bool showNotification)
     {
         if (taxiRide == null)
         {
             EntryPoint.WriteToConsole("TaxiManager Cancel Ride no active ride found");
             return;
         }
+        if (showNotification)
+        {
+            taxiRide.DisplayNotification("~r~Ride Cancelled", "You have cancelled this taxi ride");
+        }
+        Player.ActivityManager.LeaveVehicle(true);
         taxiRide.Cancel();
         ActiveRides.Remove(taxiRide);
     }

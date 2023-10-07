@@ -116,6 +116,9 @@ public class GameLocation : ILocationDispatchable
     public bool IsOnSPMap { get; set; } = true;
     public bool IsOnMPMap { get; set; } = true;
     public virtual bool ShowsOnDirectory { get; set; } = true;
+
+    public virtual bool ShowsOnTaxi { get; set; } = true;
+
     public virtual string TypeName { get; set; } = "Location";
     public virtual int SortOrder { get; set; } = 999;
     public string StateID { get; set; }
@@ -283,6 +286,16 @@ public class GameLocation : ILocationDispatchable
         toreturn.Add(Tuple.Create("Distance:", Math.Round(distanceTo * 0.000621371, 2).ToString() + " Miles away"));
         return toreturn;
 
+    }
+    public virtual string TaxiInfo(int currentHour, float distanceTo)
+    {
+        string toReturn = Description;
+        toReturn += "~n~Currently: " + (IsTemporarilyClosed ? "~r~Temporarily Closed~s~" : IsOpen(currentHour) ? "~s~Open~s~" : "~m~Closed~s~");
+        toReturn += "~n~Hours: " + (Is247 ? "~g~24/7~s~" : $"{OpenTime}{(OpenTime <= 11 ? " am" : " pm")}-{CloseTime - 12}{(CloseTime <= 11 ? " am" : " pm")}");
+        toReturn += "~n~Address: " + StreetAddress;
+        toReturn += "~n~Location: " + "~p~" + ZoneName + "~s~";
+        toReturn += "~n~Distance: " + Math.Round(distanceTo * 0.000621371f, 2).ToString() + " Miles away";
+        return toReturn;
     }
     public virtual void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups,
         IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts)

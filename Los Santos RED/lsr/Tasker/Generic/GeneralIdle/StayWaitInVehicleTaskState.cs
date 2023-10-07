@@ -27,7 +27,7 @@ class StayWaitInVehicleTaskState : TaskState
         BlockPermanentEvents = blockPermanentEvents;
     }
 
-    public bool IsValid => PedGeneral != null && PedGeneral.Pedestrian.Exists() && PedGeneral.IsInVehicle && PedGeneral.Pedestrian.CurrentVehicle.Exists();
+    public bool IsValid => PedGeneral != null && PedGeneral.Pedestrian.Exists() && PedGeneral.Pedestrian.CurrentVehicle.Exists();
     public string DebugName { get; } = "StayWaitInVehicleTaskState";
     public void Dispose()
     {
@@ -59,7 +59,25 @@ class StayWaitInVehicleTaskState : TaskState
             PedGeneral.Pedestrian.KeepTasks = true;
         }
 
-        NativeFunction.CallByName<bool>("TASK_PAUSE", PedGeneral.Pedestrian, -1);
+
+
+        if (PedGeneral != null && PedGeneral.Pedestrian.Exists() && PedGeneral.Pedestrian.CurrentVehicle.Exists())
+        {
+            EntryPoint.WriteToConsole("STAY IN VEHICLE RUNNING TEMP ACTION");
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, PedGeneral.Pedestrian.CurrentVehicle, 27, 99999);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", PedGeneral.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+        }
+
+
+        //NativeFunction.CallByName<bool>("TASK_PAUSE", PedGeneral.Pedestrian, -1);
 
     }
 

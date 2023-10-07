@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Player;
+﻿using LosSantosRED.lsr.Locations;
+using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
 using Rage;
 using System;
@@ -37,6 +38,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsCop { get; }
         TaxiManager TaxiManager { get; }
         GPSManager GPSManager { get; }
+        LocationData CurrentLocation { get; }
 
         void PlaySpeech(string v1, bool v2);
         void SetAngeredCop();

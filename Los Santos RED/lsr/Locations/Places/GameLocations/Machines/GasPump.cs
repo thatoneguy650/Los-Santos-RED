@@ -40,6 +40,7 @@ public class GasPump : GameLocation
     }
 
     public override bool ShowsOnDirectory { get; set; } = false;
+    public override bool ShowsOnTaxi { get; set; } = false;
     public override string TypeName { get; set; } = "Gas Pump";
     public override int MapIcon { get; set; } = 361;// (int)BlipSprite.PointOfInterest;
     public override float MapIconScale { get; set; } = 0.25f;

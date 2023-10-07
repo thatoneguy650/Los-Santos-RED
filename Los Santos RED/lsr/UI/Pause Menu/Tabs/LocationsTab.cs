@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class LocationsTab
+public class LocationsTab : ITabbableMenu
 {
     private IPlacesOfInterest PlacesOfInterest;
     private IGangRelateable Player;

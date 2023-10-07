@@ -225,7 +225,7 @@ public class Vehicles
         Taxi.TaxiFirm = taxiFirm;
         Taxi.Setup();
         Taxi.AddVehicleToList(World);
-
+        EntryPoint.WriteToConsole($" CreateTaxiVehicleFromAmbient {Taxi.Handle}");
     }
     private TaxiFirm GetSpecificTaxiFirm(Vehicle vehicle)
     {

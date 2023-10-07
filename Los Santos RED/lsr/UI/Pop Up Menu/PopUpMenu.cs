@@ -1144,7 +1144,7 @@ public class PopUpMenu
         List<PopUpBox> VehicleActionsSubMenu = new List<PopUpBox>()
         {
             new PopUpBox(0,"Remove Plate",new Action(() => Player.ActivityManager.RemovePlate()),"Remove the license plate from the nearest vehicle."),
-            new PopUpBox(1,"Enter Vehicle (Passenger)", new Action(() => Player.ActivityManager.EnterVehicleAsPassenger(false, false)),"Enter vehicle you are looking at as passenger"),
+            new PopUpBox(1,"Enter Vehicle (Passenger)", new Action(() => Player.ActivityManager.EnterVehicleAsPassenger(false, false, true)),"Enter vehicle you are looking at as passenger"),
             new PopUpBox(2,"Enter Vehicle (By Seat)", "EnterSeatSubMenu","Enter vehicle you are looking at and sit on the specific seat") { ClosesMenu = false },
             new PopUpBox(3,"Toggle Door", "OpenDoorSubMenu","Toggle the door of the vehicle you are looking at") { ClosesMenu = false },
             new PopUpBox(4,"Menu",new Action(() => Player.ShowVehicleInteractMenu(true)),"Show Vehicle Interaction Menu"),
@@ -1175,12 +1175,12 @@ public class PopUpMenu
 
         List<PopUpBox> EnterSeatSubMenu = new List<PopUpBox>()
         {
-            new PopUpBox(0,"Driver", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,-1, false)),"Sit in the drivers seat"),
-            new PopUpBox(1,"Passenger", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,0, false)),"Sit in the passenger seat"),
-            new PopUpBox(2,"Left Rear", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,1, false)),"Sit in the left rear seat"),
-            new PopUpBox(3,"Right Rear", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,2, false)),"Sit in the right rear seat"),
-            new PopUpBox(4,"Seat Extra 1", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,3, false)),"Sit in the first extra seat"),
-            new PopUpBox(5,"Seat Extra 2", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,4, false)),"Sit in the second extra seat"),
+            new PopUpBox(0,"Driver", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,-1, false, true)),"Sit in the drivers seat"),
+            new PopUpBox(1,"Passenger", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,0, false, true)),"Sit in the passenger seat"),
+            new PopUpBox(2,"Left Rear", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,1, false, true)),"Sit in the left rear seat"),
+            new PopUpBox(3,"Right Rear", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,2, false, true)),"Sit in the right rear seat"),
+            new PopUpBox(4,"Seat Extra 1", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,3, false, true)),"Sit in the first extra seat"),
+            new PopUpBox(5,"Seat Extra 2", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,4, false, true)),"Sit in the second extra seat"),
         };
 
 

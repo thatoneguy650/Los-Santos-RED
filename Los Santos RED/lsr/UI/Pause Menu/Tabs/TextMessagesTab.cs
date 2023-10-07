@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class TextMessagesTab
+public class TextMessagesTab : ITabbableMenu
 {
     private IGangRelateable Player;
     private TabView TabView;

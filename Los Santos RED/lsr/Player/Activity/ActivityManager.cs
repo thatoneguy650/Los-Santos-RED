@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
 
 public class ActivityManager
 {
@@ -812,7 +813,7 @@ public class ActivityManager
         }
     }
     //Other
-    public void EnterVehicleAsPassenger(bool withBlocking, bool onlyBack)
+    public void EnterVehicleAsPassenger(bool withBlocking, bool onlyBack, bool stopDriver)
     {
         VehicleExt toEnter = GetInterestedVehicle();
         if (toEnter == null || !toEnter.Vehicle.Exists())
@@ -846,9 +847,9 @@ public class ActivityManager
         }
         Player.LastFriendlyVehicle = toEnter.Vehicle;
         NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, toEnter.Vehicle, -1, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);
-        WatchVehicleEntry(toEnter);
+        WatchVehicleEntry(toEnter, stopDriver);
     }
-    public void EnterVehicleInSpecificSeat(bool withBlocking, int seatIndex, bool addFriendly)
+    public void EnterVehicleInSpecificSeat(bool withBlocking, int seatIndex, bool addFriendly, bool stopDriver)
     {
         VehicleExt toEnter = GetInterestedVehicle();
         if (toEnter == null || !toEnter.Vehicle.Exists() || !toEnter.Vehicle.IsSeatFree(seatIndex))
@@ -872,7 +873,7 @@ public class ActivityManager
             Player.LastFriendlyVehicle = toEnter.Vehicle;
         }
         NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, toEnter.Vehicle, -1, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);
-        WatchVehicleEntry(toEnter);
+        WatchVehicleEntry(toEnter, stopDriver);
     }
     public void ToggleDoor(int doorIndex, bool withAnimation)
     {
@@ -1009,7 +1010,7 @@ public class ActivityManager
         }
         return true;
     }
-    private void WatchVehicleEntry(VehicleExt toEnter)
+    private void WatchVehicleEntry(VehicleExt toEnter, bool stopDriver)
     {
         if(toEnter == null || !toEnter.Vehicle.Exists())
         {
@@ -1021,6 +1022,10 @@ public class ActivityManager
             {
                 uint GameTimeStarted = Game.GameTime;
                 //EntryPoint.WriteToConsoleTestLong("WatchVehicleEntry START");
+                if (stopDriver && toEnter != null && toEnter.Vehicle.Exists() && toEnter.Vehicle.Driver.Exists())
+                {
+                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", toEnter.Vehicle.Driver, toEnter.Vehicle, 27, -1);
+                }
                 while (EntryPoint.ModController.IsRunning && Game.GameTime - GameTimeStarted <= 20000)
                 {
                     int taskStatus = NativeFunction.Natives.GET_SCRIPT_TASK_STATUS<int>(Player.Character, Game.GetHashKey("SCRIPT_TASK_ENTER_VEHICLE"));
@@ -1036,6 +1041,13 @@ public class ActivityManager
                     }
                     GameFiber.Yield();
                 }
+                if(stopDriver && toEnter != null && toEnter.Vehicle.Exists() && toEnter.Vehicle.Driver.Exists())
+                {
+                    NativeFunction.Natives.CLEAR_PED_TASKS(toEnter.Vehicle.Driver);
+                }
+
+
+
                 //EntryPoint.WriteToConsoleTestLong("WatchVehicleEntry END");
             }
             catch (Exception ex)
@@ -1318,6 +1330,62 @@ public class ActivityManager
     {
         NativeFunction.Natives.SET_CONTROL_VALUE_NEXT_FRAME<bool>(0, (int)GameControl.Enter, 1.0f);
     }
+
+    public void LeaveVehicle(bool isRegular)
+    {
+        if(!Player.Character.CurrentVehicle.Exists())
+        {
+            return;
+        }
+        WatchVehicleLeave(Player.Character.CurrentVehicle, true);
+    }
+
+
+    private void WatchVehicleLeave(Vehicle vehicle, bool stopDriver)
+    {
+        if (!vehicle.Exists())
+        {
+            return;
+        }
+        GameFiber DoorWatcher = GameFiber.StartNew(delegate
+        {
+            try
+            {
+                EntryPoint.WriteToConsole("WATCH VEHICLE LEAVE STARTED");
+                int flags = (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_WAIT_FOR_ENTRY_POINT_TO_BE_CLEAR;
+                uint GameTimeStarted = Game.GameTime;
+                if (stopDriver && vehicle.Exists() && vehicle.Driver.Exists())
+                {
+                    EntryPoint.WriteToConsole("WATCH VEHICLE RUNNING TEMP ACTION");
+                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", vehicle.Driver, vehicle, 27, 99999);
+                }
+                while (EntryPoint.ModController.IsRunning && Game.GameTime - GameTimeStarted <= 20000)
+                {
+                    if(vehicle.Exists() && vehicle.Speed <= 0.5f)
+                    {
+                        break;
+                    }
+                    GameFiber.Yield();
+                }
+                if (stopDriver && vehicle.Exists() && vehicle.Driver.Exists())
+                {
+                    NativeFunction.Natives.CLEAR_PED_TASKS(vehicle.Driver);
+                }
+                if (!Player.Character.CurrentVehicle.Exists())
+                {
+                    EntryPoint.WriteToConsole("WATCH VEHICLE LEAVE NO VEHICLE");
+                    return;
+                }
+                NativeFunction.Natives.TASK_LEAVE_VEHICLE(Player.Character, Player.Character.CurrentVehicle, flags);
+                EntryPoint.WriteToConsole("WATCH VEHICLE LEAVE LEAVING");
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+            }
+        }, "DoorWatcher");
+    }
+
 }
 
 

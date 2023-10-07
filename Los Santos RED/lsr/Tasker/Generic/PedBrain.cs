@@ -177,6 +177,9 @@ public class PedBrain
         PedExt.CurrentTask = new GeneralIdle(PedExt, PedExt, Player, World, new List<VehicleExt>() { PedExt.AssignedVehicle }, PlacesOfInterest, Settings, false, false, false, true);
         GameFiber.Yield();//TR Added back 4
         PedExt.CurrentTask.Start();
+        EntryPoint.WriteToConsole($"PED: {PedExt.Handle} STARTED GeneralIdle");
+
+
     }
     protected virtual WeaponInformation GetWeaponToIssue(bool IsGangMember)
     {
