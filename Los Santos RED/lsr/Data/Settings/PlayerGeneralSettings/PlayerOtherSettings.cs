@@ -86,6 +86,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public float VehicleAutoCameraYDistance { get; set; }
     public float VehicleAutoCameraZDistance { get; set; }
     public int RobberyCashPerSwipe { get; set; }
+    [Description("If enabled, the player will be place into another temp car while they are teleported. Needed for compatibility with 'True Realistic Driving V'")]
+    public bool RemovePlayerFromVehicleWhenTeleporting { get;  set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -155,6 +157,11 @@ public class PlayerOtherSettings : ISettingsDefaultable
         VehicleAutoCameraYDistance = 4f;
         VehicleAutoCameraZDistance = 1f;
         RobberyCashPerSwipe = 500;
+#if DEBUG
+        RemovePlayerFromVehicleWhenTeleporting = true;
+#else
+    RemovePlayerFromVehicleWhenTeleporting = false;
+#endif
     }
 
 }

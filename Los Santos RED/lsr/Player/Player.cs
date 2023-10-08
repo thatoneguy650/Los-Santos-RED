@@ -146,7 +146,7 @@ namespace Mod
             Speeches = speeches;
             Stance = new Stance(this, Settings);
             WeaponEquipment = new WeaponEquipment(this, this, Weapons, Settings, this, this, this);
-            GPSManager = new GPSManager(this, World);
+            GPSManager = new GPSManager(this, World, Settings);
             VehicleOwnership = new VehicleOwnership(this, World, Settings);
             BankAccounts = new BankAccounts(this, Settings, PlacesOfInterest);
             ActivityManager = new ActivityManager(this, settings, this, this, this, this, this, TimeControllable, RadioStations, Crimes, ModItems, Dances, World, Intoxicants, this, Speeches, Seats, Weapons, PlacesOfInterest, Zones, shopMenus, gangs, 
@@ -702,6 +702,7 @@ namespace Mod
             OutfitManager.Dispose();
             OfficerMIAWatcher.Dispose();
             RestrictedAreaManager.Dispose();
+            TaxiManager.Dispose();
 
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);

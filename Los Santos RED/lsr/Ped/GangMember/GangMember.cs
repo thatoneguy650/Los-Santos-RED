@@ -137,7 +137,11 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             return;
         }
-        WeaponInventory.IssueWeapons(weapons, IsHitSquad || forceMelee || RandomItems.RandomPercent(Gang.PercentageWithMelee), IsHitSquad || forceSidearm || RandomItems.RandomPercent(Gang.PercentageWithSidearms), IsHitSquad || forceLongGun || RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson);       
+        WeaponInventory.IssueWeapons(weapons, IsHitSquad || forceMelee || RandomItems.RandomPercent(Gang.PercentageWithMelee), IsHitSquad || forceSidearm || RandomItems.RandomPercent(Gang.PercentageWithSidearms), IsHitSquad || forceLongGun || RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson);
+        if (Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.SightDistance > 60f)
+        {
+            NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.CivilianSettings.SightDistance);
+        }
     }
     public override void OnItemPurchased(ILocationInteractable player, ModItem modItem, int numberPurchased, int moneySpent)
     {

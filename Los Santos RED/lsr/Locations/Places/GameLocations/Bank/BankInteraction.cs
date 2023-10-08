@@ -67,6 +67,7 @@ public class BankInteraction
         {
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Bank.BannerImagePath}");
             AccountsSubMenu.SetBannerType(BannerImage);
+            Game.RawFrameRender += (s, e) => MenuPool.DrawBanners(e.Graphics);
             EntryPoint.WriteToConsole("BANK INTERACTION AccountsSubMenu.SetBannerType(BannerImage) RAN");
         }
     }
@@ -225,6 +226,11 @@ public class BankInteraction
             money = 2147483646;
         }
         return money;
+    }
+
+    public void Dispose()
+    {
+        Game.RawFrameRender -= (s, e) => MenuPool.DrawBanners(e.Graphics);
     }
 }
 

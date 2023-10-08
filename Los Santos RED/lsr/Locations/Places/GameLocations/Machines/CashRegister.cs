@@ -72,7 +72,7 @@ public class CashRegister : GameLocation
                     MachineInteraction = new MachineInteraction(Player, RegisterProp);
                     MachineInteraction.IsSingleSided = true;
                     MachineInteraction.CloseDistance = 0.5f;
-                    if (MachineInteraction.MoveToMachine())
+                    if (MachineInteraction.MoveToMachine(3.0f))
                     {
                         if (RegisterCash == 0)
                         {
@@ -167,7 +167,11 @@ public class CashRegister : GameLocation
             RegisterCash -= Settings.SettingsManager.PlayerOtherSettings.RobberyCashPerSwipe;
             EntryPoint.WriteToConsole($"REGISTER GAVE CASH 2 {RegisterCash}");
         }
-        Game.DisplaySubtitle($"REGISTER Cash: ${RegisterCash}");
+        if(RegisterCash <= 0)
+        {
+            Game.DisplaySubtitle(registerStealEmptyText);
+        }
+        
     }
 }
 

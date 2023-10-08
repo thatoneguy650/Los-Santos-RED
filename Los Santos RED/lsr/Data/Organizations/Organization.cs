@@ -36,7 +36,7 @@ public class Organization : IPlatePrefixable, IGeneratesDispatchables
     public string ShortName { get; set; } = "Unk";
     public string MemberName { get; set; } = "Employee";
     public string Description { get; set; } = "";
-    //public PhoneContact PhoneContact { get; set; }
+    public string BannerImagePath { get; set; } = "";
     public string ContactName { get; set; }
     public string ColorPrefix { get; set; } = "~s~";
     public string ColorString { get; set; } = "White";
@@ -47,6 +47,8 @@ public class Organization : IPlatePrefixable, IGeneratesDispatchables
     public string SideArmsID { get; set; }
     public string LongGunsID { get; set; }
     public string VehiclesID { get; set; }
+
+
     [XmlIgnore]
     public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();
     [XmlIgnore]
@@ -61,6 +63,11 @@ public class Organization : IPlatePrefixable, IGeneratesDispatchables
     public List<IssuableWeapon> LessLethalWeapons { get; set; } = new List<IssuableWeapon>();
     [XmlIgnore]
     public PhoneContact PhoneContact { get; set; }
+    [XmlIgnore]
+    public Texture BannerImage { get; set; }
+
+
+    public bool HasBannerImage => BannerImagePath != "";
     public string ColorInitials => ColorPrefix + ShortName;
     public Color Color => Color.FromName(ColorString);
     public bool CanSpawn(int wantedLevel) => true;

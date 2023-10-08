@@ -70,7 +70,7 @@ public class VendingMachine : GameLocation
                 {
                     NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, -1, 2000, 2000);
                     MachineInteraction = new MachineInteraction(Player, MachineProp);
-                    if (MachineInteraction.MoveToMachine())
+                    if (MachineInteraction.MoveToMachine(1.0f))
                     {
                         CreateInteractionMenu();
                         Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
@@ -108,7 +108,7 @@ public class VendingMachine : GameLocation
     }
     private void StartMachineBuyAnimation(ModItem item, bool isIllicit)
     {
-        if (MachineInteraction.MoveToMachine())// MoveToMachine())
+        if (MachineInteraction.MoveToMachine(1.0f))// MoveToMachine())
         {
             if (UseMachine(item))
             {

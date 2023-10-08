@@ -67,6 +67,10 @@ public class EMT : PedExt
         {
             AddBlip();
         }
+        if (Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.SightDistance > 60f)
+        {
+            NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.CivilianSettings.SightDistance);
+        }
     }
     protected override string GetPedInfoForDisplay()
     {

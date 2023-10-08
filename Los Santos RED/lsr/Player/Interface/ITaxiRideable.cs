@@ -17,5 +17,7 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentVehicle { get; }
         ActivityManager ActivityManager { get; }
         BankAccounts BankAccounts { get; }
+        int WantedLevel { get; }
+        GPSManager GPSManager { get; }
     }
 }

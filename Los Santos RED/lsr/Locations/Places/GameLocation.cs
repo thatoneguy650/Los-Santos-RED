@@ -204,10 +204,11 @@ public class GameLocation : ILocationDispatchable
     public virtual void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
         World = world;
+        bool isOpen = IsOpen(time.CurrentHour);
         if (HasVendor)
         {
             CanInteract = false;
-            if (IsOpen(time.CurrentHour))
+            if (isOpen && settings.SettingsManager.CivilianSettings.ManageDispatching)
             {
                 SpawnVendor(settings, crimes, weapons, true);// InteractsWithVendor);
             }
@@ -220,7 +221,7 @@ public class GameLocation : ILocationDispatchable
             interior = interiors.GetInteriorByLocalID(InteriorID);
             if (interior != null)
             {
-                interior.Load();
+                interior.Load(isOpen);
             }
         }
         if (!ShouldAlwaysHaveBlip && IsBlipEnabled)
@@ -269,9 +270,6 @@ public class GameLocation : ILocationDispatchable
         RestrictedAreas?.Deactivate();
 
     }
-
-
-
     public virtual List<Tuple<string, string>> DirectoryInfo(int currentHour, float distanceTo)
     {
         List<Tuple<string, string>> toreturn = new List<Tuple<string, string>>();
@@ -287,7 +285,7 @@ public class GameLocation : ILocationDispatchable
         return toreturn;
 
     }
-    public virtual string TaxiInfo(int currentHour, float distanceTo)
+    public virtual string TaxiInfo(int currentHour, float distanceTo, TaxiFirm taxiFirm)
     {
         string toReturn = Description;
         toReturn += "~n~Currently: " + (IsTemporarilyClosed ? "~r~Temporarily Closed~s~" : IsOpen(currentHour) ? "~s~Open~s~" : "~m~Closed~s~");
@@ -295,6 +293,14 @@ public class GameLocation : ILocationDispatchable
         toReturn += "~n~Address: " + StreetAddress;
         toReturn += "~n~Location: " + "~p~" + ZoneName + "~s~";
         toReturn += "~n~Distance: " + Math.Round(distanceTo * 0.000621371f, 2).ToString() + " Miles away";
+
+        if(taxiFirm== null)
+        {
+            return toReturn;
+        }
+        toReturn += $"~n~~n~Base Fare: ${taxiFirm.BaseFare} ";
+        toReturn += $"~n~Price Per Mile: ${taxiFirm.PricePerMile} ";
+        toReturn += $"~n~Total Fare: ${taxiFirm.CalculateFare(distanceTo * 0.000621371f)} ";
         return toReturn;
     }
     public virtual void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups,
@@ -511,7 +517,6 @@ public class GameLocation : ILocationDispatchable
             GameTimeLastCheckedDistance = Game.GameTime;
         }
     }
-
     public virtual void ActivateBlip(ITimeReportable time, IEntityProvideable world)
     {
         if (!createdBlip.Exists())
@@ -557,7 +562,6 @@ public class GameLocation : ILocationDispatchable
             //EntryPoint.WriteToConsole($"CHANGING BLIP Color {Name} {currentBlipColor}");
         }
     }
-
     protected virtual float GetCurrentIconAlpha(ITimeReportable time)
     {
         float newAlpha;
@@ -600,7 +604,6 @@ public class GameLocation : ILocationDispatchable
         NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(locationBlip);
         return locationBlip;
     }
-
     public bool CheckIsNearby(int cellX, int cellY, int Distance)
     {
         if (GameTimeLastCheckedNearby == 0 || Game.GameTime - GameTimeLastCheckedNearby >= NearbyUpdateIntervalTime)

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 public class PedDrivingStyle
 {
+
     public PedDrivingStyle()
     {
     }
@@ -22,9 +23,10 @@ public class PedDrivingStyle
     public eCustomDrivingStyles DrivingStyle { get; set; }
     public float Speed { get; set; }
     public int Fee { get; set; } = 0;
+    public bool HasBeenPurchased { get; set; }
     public override string ToString()
     {
-        return Name + (Fee == 0 ? "" : $" - ~r~${Fee}~s~");
+        return Name + (Fee == 0 || HasBeenPurchased ? "" : $" - ~r~${Fee}~s~");
     }
 }
 

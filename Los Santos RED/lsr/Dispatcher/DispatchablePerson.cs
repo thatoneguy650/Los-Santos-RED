@@ -254,6 +254,7 @@ public class DispatchablePerson
         {
             CombatFloatsToSet.ForEach(x => x.ApplyToPed(pedExt.Pedestrian));
         }
+
     }
 
 

@@ -14,7 +14,7 @@ public class Organizations : IOrganizations
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Organizations.xml";
     //private List<Organization> OrganizationsList;
     private Organization DefaultOrganization;
-    private TaxiFirm DowntownCabCo;
+    private TaxiFirm DowntownCabCoOld;
     private Organization VehicleExports;
     private Organization Exportotopia;
     private Organization UndergroundGuns;
@@ -104,11 +104,12 @@ public class Organizations : IOrganizations
     }
     private void SetupDefault()
     {
-        DowntownCabCo = new TaxiFirm("~y~", "DTCAB", "Downtown Cab Co.", "Downtown Cab Co.", "Yellow", "TaxiDrivers", "TaxiVehicles", "DT ", "", "", "", "Cabbie") { 
+        DowntownCabCoOld = new TaxiFirm("~y~", "DTCAB", "Downtown Cab Co.", "Downtown Cab Co.", "Yellow", "TaxiDrivers", "TaxiVehicles", "DT ", "", "", "", "Cabbie") {
             Description = "In transit since 1922",
             HeadDataGroupID = "AllHeads",
             ContactName = StaticStrings.DowntownCabCoContactName,
             IsDefault = true,
+            BannerImagePath = "stores\\downtownvanilla.png",
         };
         VehicleExports = new Organization("~w~", "VEHEXP", StaticStrings.VehicleExporterContactName, StaticStrings.VehicleExporterContactName, "White", "", "", "", "", "", "", "Exporter")
         {
@@ -142,7 +143,7 @@ public class Organizations : IOrganizations
         };
         PossibleOrganizations.TaxiFirms = new List<TaxiFirm>
         {
-            DowntownCabCo,
+            DowntownCabCoOld,
         };
         Serialization.SerializeParam(PossibleOrganizations, ConfigFileName);
     }
@@ -151,37 +152,42 @@ public class Organizations : IOrganizations
         PossibleOrganizations PossibleOrganizations_FullExpanded = new PossibleOrganizations();
 
 
-        DowntownCabCo = new TaxiFirm("~y~", "DTCAB", "Downtown Cab Co.", "Downtown Cab Co.", "Yellow", "TaxiDrivers", "DowntownTaxiVehicles", "DT ", "", "", "", "Cabbie")
+        TaxiFirm DowntownCabCo = new TaxiFirm("~y~", "DTCAB", "Downtown Cab Co.", "Downtown Cab Co.", "Yellow", "TaxiDrivers", "DowntownTaxiVehicles", "DT ", "", "", "", "Cabbie")
         {
             Description = "In transit since 1922",
             HeadDataGroupID = "AllHeads",
             ContactName = StaticStrings.DowntownCabCoContactName,
             IsDefault = true,
+            BannerImagePath = "stores\\downtownnew.png",
         };
 
         TaxiFirm HellCab = new TaxiFirm("~g~", "HELLCAB", "Hell Cab", "Hell Cab", "Green", "TaxiDrivers", "HellTaxiVehicles", "HC ", "", "", "", "Cabbie")
         {
-            Description = "Open the door to Hell and ride!",
+            Description = "Open the door to HELL and RIDE!",
             HeadDataGroupID = "AllHeads",
             ContactName = StaticStrings.HellCabContactName,
+            BannerImagePath = "stores\\hellcab.png",
         };
         TaxiFirm PurpleCabCo = new TaxiFirm("~y~", "PRPLCAB", "Purple Cab Co.", "Purple Cab Co.", "Yellow", "TaxiDrivers", "PurpleTaxiVehicles", "PC ", "", "", "", "Cabbie")
         {
             Description = "High Vis Meets High Class",
             HeadDataGroupID = "AllHeads",
             ContactName = StaticStrings.PurpleCabContactName,
+            BannerImagePath = "stores\\purplecab.png",
         };
         TaxiFirm ShitiCabCo = new TaxiFirm("~y~", "SHITICAB", "Shiti Cab", "Shiti Cab", "Yellow", "TaxiDrivers", "ShitiTaxiVehicles", "PC ", "", "", "", "Cabbie")
         {
-            Description = "Our service is anything but!",
+            Description = "Our service is anything BUT!",
             HeadDataGroupID = "AllHeads",
             ContactName = StaticStrings.ShitiCabContactName,
+            BannerImagePath = "stores\\shiticab.png",
         };
         TaxiFirm SunderedCab = new TaxiFirm("~y~", "SUNDERED", "Sundered Dependent Taxi", "Sundered Taxi", "Yellow", "TaxiDrivers", "SunderedTaxiVehicles", "SI ", "", "", "", "Cabbie")
         {
-            Description = "Ride the green monster!",
+            Description = "We contemptuously drive L.S.",
             HeadDataGroupID = "AllHeads",
             ContactName = StaticStrings.SunderedDependentCabContactName,
+            BannerImagePath = "stores\\sunderedtaxi.png",
         };
 
         PossibleOrganizations_FullExpanded.GeneralOrganizations = new List<Organization>

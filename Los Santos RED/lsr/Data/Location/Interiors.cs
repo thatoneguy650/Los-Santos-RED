@@ -202,34 +202,25 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(3082015943, new Vector3(-1226.894f,-903.1218f,12.47039f)),
+                    new InteriorDoor(3082015943, new Vector3(-1226.894f,-903.1218f,12.47039f)){ LockWhenClosed = true },
                 }),
             new Interior(19202,"Rob's Liquors",//Route 1
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(3082015943, new Vector3(-2973.535f,390.1414f,15.18735f)),
-                   // new InteriorDoor(-1212951353, new Vector3(-2973.535f, 390.1414f, 15.18735f)),
-                    //new InteriorDoor(1173348778, new Vector3(-2965.648f, 386.7928f, 15.18735f)),
-                    //new InteriorDoor(1173348778, new Vector3(-2961.749f, 390.2573f, 15.19322f)),
+                    new InteriorDoor(3082015943, new Vector3(-2973.535f,390.1414f,15.18735f)){ LockWhenClosed = true },
                 }),
             new Interior(98818,"Rob's Liquors",//Prosperity Street
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(3082015943, new Vector3(-1490.411f,-383.8453f,40.30745f)),
-                    //new InteriorDoor(-1212951353, new Vector3(-1490.411f, -383.8453f, 40.30745f)),
-                    //new InteriorDoor(1173348778, new Vector3(-1482.679f, -380.153f, 40.30745f)),
-                    //new InteriorDoor(1173348778, new Vector3(-1482.693f, -374.9365f, 40.31332f)),
+                    new InteriorDoor(3082015943, new Vector3(-1490.411f,-383.8453f,40.30745f)){ LockWhenClosed = true },
                 }),
             new Interior(73986,"Rob's Liquors",//El Rancho Boulevard
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(3082015943, new Vector3(1141.038f,-980.3225f,46.55986f)),
-                    //new InteriorDoor(-1212951353, new Vector3(1141.038f, -980.3225f, 46.55986f)),
-                    //new InteriorDoor(1173348778, new Vector3(1132.645f, -978.6059f, 46.55986f)),
-                    //new InteriorDoor(1173348778, new Vector3(1129.51f, -982.7756f, 46.56573f)),
+                    new InteriorDoor(3082015943, new Vector3(1141.038f,-980.3225f,46.55986f)) { LockWhenClosed = true },
                 }),
             new Interior(50178,"Rob's Liquors"),
 
@@ -248,27 +239,40 @@ public class Interiors : IInteriors
             //Banks
             new Interior(71682,"Fleeca Bank") {
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+                   new InteriorDoor(73386408,new Vector3(-348.8109f, -47.26213f, 49.38759f)) { LockWhenClosed = true },//Front Door1
+                   new InteriorDoor(3142793112,new Vector3(-351.2598f, -46.41221f, 49.38765f)) { LockWhenClosed = true },//Front Door1
                     new InteriorDoor(4163212883, new Vector3(-355.3892f, -51.06768f, 49.31105f)) { ForceRotateOpen = true },//teller door
                 } },
             new Interior(76802,"Fleeca Bank"){
-               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)) { ForceRotateOpen = true },//teller door
+               IsWeaponRestricted = true
+               , Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(3142793112,new Vector3(149.6298f, -1037.231f, 29.71915f)){ LockWhenClosed = true, } ,//Front Door1
+                    new InteriorDoor(73386408,new Vector3(152.0632f, -1038.124f, 29.71909f)) { LockWhenClosed = true, } ,//Front Door2
+                    new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)) { LockWhenClosed = true,ForceRotateOpen = true },//teller door
                 } },
             new Interior(11266,"Fleeca Bank") { 
                 IsWeaponRestricted = true,
                 Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(73386408,new Vector3(316.3925f, -276.4888f, 54.5158f)) { LockWhenClosed = true }, //Front Door1
+                    new InteriorDoor(3142793112,new Vector3(313.9587f, -275.5965f, 54.51586f)) { LockWhenClosed = true }, //Front Door2
                     new InteriorDoor(4163212883, new Vector3(309.7491f, -280.1797f, 54.43926f)) { ForceRotateOpen = true },//teller door
                 } },
             new Interior(20226,"Fleeca Bank") {
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { LockWhenClosed = true }, //Front Door1
+                    new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { LockWhenClosed = true }, //Front Door2
                     new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true },//teller door
                 } },
             new Interior(90626,"Fleeca Bank") {
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+                   new InteriorDoor(3142793112,new Vector3(1176.495f, 2703.613f, 38.43911f)) { LockWhenClosed = true },
+                   new InteriorDoor(73386408,new Vector3(1173.903f, 2703.613f, 38.43904f)) { LockWhenClosed = true },
                     new InteriorDoor(4163212883, new Vector3(1178.87f, 2709.365f, 38.36251f)) { ForceRotateOpen = true },//teller door
                 } },
             new Interior(87810,"Fleeca Bank") {
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+                   new InteriorDoor(3142793112,new Vector3(-1215.386f, -328.5237f, 38.13211f)) { LockWhenClosed = true },
+                   new InteriorDoor(73386408,new Vector3(-1213.074f, -327.3524f, 38.13205f)) { LockWhenClosed = true },
                     new InteriorDoor(4163212883, new Vector3(-1214.906f, -334.7281f, 38.05551f)) { ForceRotateOpen = true },//teller door
                 } },
 
@@ -278,15 +282,22 @@ public class Interiors : IInteriors
 
             new Interior(103170,"Pacific Standard Bank") {
                 IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(4072696575, new Vector3(256.3116f,220.6579f,106.4296f)),//teller door
+
+                    new InteriorDoor(2253282288,new Vector3(232.6054f, 214.1584f, 106.4049f)) { LockWhenClosed = true },//FRONT LEFT
+                    new InteriorDoor(2253282288,new Vector3(231.5075f, 216.5148f, 106.4049f)) { LockWhenClosed = true },//FRONT RIGHT
+
+
+                    new InteriorDoor(1335309163,new Vector3(260.6518f, 203.2292f, 106.4328f)) { LockWhenClosed = true },//BACK LEFT
+                    new InteriorDoor(1335309163,new Vector3(258.2093f, 204.119f, 106.4328f)) { LockWhenClosed = true },//BACK RIGHT
+                    new InteriorDoor(4072696575, new Vector3(256.3116f,220.6579f,106.4296f)) { LockWhenClosed = true },//teller door
                 } },
 
 
             new Interior(42754,"Blaine County Savings") {
                 IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(3110375179, new Vector3(-108.9147f,6469.105f,31.91028f)),//teller
-                    new InteriorDoor(2628496933, new Vector3(-109.65f,6462.11f,31.98499f)),//FRONT 1
-                    new InteriorDoor(3941780146, new Vector3(-111.48f,6463.94f,31.98499f)),//FRONT 2
+                    new InteriorDoor(3110375179, new Vector3(-108.9147f,6469.105f,31.91028f)) { LockWhenClosed = true },//teller
+                    new InteriorDoor(2628496933, new Vector3(-109.65f,6462.11f,31.98499f)) { LockWhenClosed = true },//FRONT 1
+                    new InteriorDoor(3941780146, new Vector3(-111.48f,6463.94f,31.98499f)) { LockWhenClosed = true },//FRONT 2
                     //new InteriorDoor(-1184592117, new Vector3(-108.9147f,6469.105f,31.91028f)),//teller
                     //new InteriorDoor(-1666470363, new Vector3(-109.65f,6462.11f,31.98499f)),//FRONT 1
                     //new InteriorDoor(-353187150, new Vector3(-111.48f,6463.94f,31.98499f)),//FRONT 2

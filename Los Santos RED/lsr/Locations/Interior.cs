@@ -70,17 +70,15 @@ public class Interior
 
     public bool IsRestricted { get; set; } = false;
     public bool IsWeaponRestricted { get; set; } = false;
-    public void OpenDoors()
+    public void DebugOpenDoors()
     {
         foreach (InteriorDoor door in Doors)
         {
             door.UnLockDoor();
             EntryPoint.WriteToConsole($"INTERIOR: {Name} {door.ModelHash} {door.Position} UNLOCKED");
-            //NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, 0, 50.0f);//NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, door.Rotation.Pitch, door.Rotation.Roll, door.Rotation.Yaw);
-            //door.IsLocked = false;
         }
     }
-    public void Load()
+    public void Load(bool isOpen)
     {
         GameFiber.StartNew(delegate
         {
@@ -118,13 +116,20 @@ public class Interior
                     NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, interiorSet);
                     GameFiber.Yield();
                 }
-                foreach (InteriorDoor door in Doors)
+                if (isOpen)
                 {
-                    door.UnLockDoor();
-                    //NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, 0, 50.0f);//NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, door.Rotation.Pitch, door.Rotation.Roll, door.Rotation.Yaw);
-                    //door.IsLocked = false;
+                    foreach (InteriorDoor door in Doors)
+                    {
+                        door.UnLockDoor();
+                    }
                 }
-
+                else
+                {
+                    foreach (InteriorDoor door in Doors.Where(x=> x.LockWhenClosed))
+                    {
+                        door.LockDoor();
+                    }
+                }
 
 
 

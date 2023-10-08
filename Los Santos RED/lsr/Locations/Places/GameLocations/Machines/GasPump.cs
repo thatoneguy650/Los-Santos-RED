@@ -82,7 +82,7 @@ public class GasPump : GameLocation
                 try
                 {
                     MachineInteraction = new MachineInteraction(Player, PumpProp);
-                    if (MachineInteraction.MoveToMachine())
+                    if (MachineInteraction.MoveToMachine(1.0f))
                     {
                         CreateInteractionMenu();
                         InteractionMenu.Visible = true;
@@ -117,7 +117,7 @@ public class GasPump : GameLocation
         {
             pricePerUnit = 3;
         }
-        foreach (VehicleExt vehicle in World.Vehicles.AllVehicleList.Where(x=> x.HasBeenEnteredByPlayer && x.Vehicle.Exists() && x.Vehicle.DistanceTo2D(Player.Character) <= 6.0f).OrderBy(x=> x.Vehicle.DistanceTo2D(Player.Character)))
+        foreach (VehicleExt vehicle in World.Vehicles.AllVehicleList.Where(x=> x.HasBeenEnteredByPlayer && x.Vehicle.Exists() && x.Vehicle.DistanceTo2D(EntrancePosition) <= 8.0f).OrderBy(x=> x.Vehicle.DistanceTo2D(Player.Character)))
         {
             Refueling Refueling = new Refueling(Player, Name, pricePerUnit, vehicle, Settings, this);
             Refueling.Setup();
@@ -202,7 +202,7 @@ public class GasPump : GameLocation
     }
     private void StartMachineBuyAnimation()
     {
-        if (!MachineInteraction.MoveToMachine())
+        if (!MachineInteraction.MoveToMachine(1.0f))
         {
             FullDispose();
             return;

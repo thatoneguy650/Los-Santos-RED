@@ -14,5 +14,9 @@ namespace LosSantosRED.lsr.Interface
     public interface IDestinateable
     {
         Vector3 Position { get; }
+        bool IsInVehicle { get; }
+        VehicleExt CurrentVehicle { get; }
+        Ped Character { get; }
+        VehicleExt InterestedVehicle { get; }
     }
 }

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 public class TaxiSettings : ISettingsDefaultable
 {
-    [Description("Allows mod spawning of service peds in the world.")]
+    [Description("Allows mod spawning of taxi peds in the world.")]
     public bool ManageDispatching { get; set; }
-    [Description("Attach a blip to any spawned service pedestrian.")]
+    [Description("Attach a blip to any spawned taxi pedestrian.")]
     public bool ShowSpawnedBlip { get; set; }
-    [Description("Attach a blip to any ambient service pedestrian.")]
+    [Description("Attach a blip to any ambient taxi pedestrian.")]
     public bool ShowAmbientBlips { get; set; }
     [Description("Minimum time in milliseconds between a spawn.")]
     public int TimeBetweenSpawn { get; set; }
@@ -21,17 +21,17 @@ public class TaxiSettings : ISettingsDefaultable
     public int TimeBetweenSpawn_RuralAdditional { get; set; }
     public int TimeBetweenSpawn_SuburbAdditional { get; set; }
     public int TimeBetweenSpawn_IndustrialAdditional { get; set; }
-    [Description("Minimum distance in meters to spawn a service ped from the player.")]
+    [Description("Minimum distance in meters to spawn a taxi ped from the player.")]
     public float MinDistanceToSpawnOnFoot { get; set; }
-    [Description("Maximum distance in meters to spawn a service ped from the player.")]
+    [Description("Maximum distance in meters to spawn a taxi ped from the player.")]
     public float MaxDistanceToSpawnOnFoot { get; set; }
-    [Description("Minimum distance in meters to spawn a service ped in a vehicle from the player.")]
+    [Description("Minimum distance in meters to spawn a taxi ped in a vehicle from the player.")]
     public float MinDistanceToSpawnInVehicle { get; set; }
-    [Description("Maximum distance in meters to spawn a service ped in a vehicle from the player.")]
+    [Description("Maximum distance in meters to spawn a taxi ped in a vehicle from the player.")]
     public float MaxDistanceToSpawnInVehicle { get; set; }
-    [Description("Total limit of spawned service peds. Does not include vanilla members.")]
+    [Description("Total limit of spawned taxi peds. Does not include vanilla members.")]
     public int TotalSpawnedMembersLimit { get; set; }
-    [Description("Total limit of ambient spawned service peds. Does not include vanilla service peds or service peds spawned by location.")]
+    [Description("Total limit of ambient spawned taxi peds. Does not include vanilla taxi peds or taxi peds spawned by location.")]
     public int TotalSpawnedAmbientMembersLimit { get; set; }
     public int TotalSpawnedAmbientMembersLimit_Downtown { get; set; }
     public int TotalSpawnedAmbientMembersLimit_Wilderness { get; set; }

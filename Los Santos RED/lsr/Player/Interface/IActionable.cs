@@ -71,6 +71,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsServicePed { get; }
         PedExt CurrentLookedAtPed { get; }
         VehicleExt InterestedVehicle { get; }
+        GPSManager GPSManager { get; }
 
         void DisplayPlayerNotification();
         void SetWantedLevel(int selectedItem, string v1, bool v2);

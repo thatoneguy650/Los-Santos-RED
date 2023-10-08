@@ -27,7 +27,7 @@ public class MachineInteraction
     public bool IsDualSided { get; set; } = false;
     public bool IsSingleSided = false;
     public float StandingOffsetPosition { get; set; } = 1.0f;
-    public float CloseDistance { get; set; } = 0.2f;
+    public float CloseDistance { get; set; } = 0.35f;
     public float CloseHeading { get; set; } = 0.5f;
     private void GetPropEntry()
     {
@@ -71,7 +71,7 @@ public class MachineInteraction
             }
         }
     }
-    public bool MoveToMachine()
+    public bool MoveToMachine(float speed)
     {
         GetPropEntry();
         if (PropEntryPosition == Vector3.Zero)
@@ -80,7 +80,7 @@ public class MachineInteraction
         }
         //NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, PropEntryPosition.X, PropEntryPosition.Y, PropEntryPosition.Z, 1.0f, -1, PropEntryHeading, 0.2f);
 
-        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, PropEntryPosition.X, PropEntryPosition.Y, PropEntryPosition.Z, 1.0f, -1, 0.2f, 0, PropEntryHeading);
+        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, PropEntryPosition.X, PropEntryPosition.Y, PropEntryPosition.Z, speed, -1, 0.2f, 0, PropEntryHeading);
 
 
         /*NATIVE PROC TASK_GO_STRAIGHT_TO_COORD(PED_INDEX PedIndex, VECTOR VecCoors,  FLOAT MoveBlendRatio, INT Time = DEFAULT_TIME_BEFORE_WARP, FLOAT FinalHeading = DEFAULT_NAVMESH_FINAL_HEADING, FLOAT TargetRadius = 0.5) = "0x13c3030981ea7c3b"
@@ -101,7 +101,7 @@ public class MachineInteraction
                 IsCancelled = true;
             }
             IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(PropEntryPosition) < CloseDistance;
-            Game.DisplaySubtitle($"Distance: {Game.LocalPlayer.Character.DistanceTo2D(PropEntryPosition)} IsCloseEnough{IsCloseEnough}");
+            //Game.DisplaySubtitle($"Distance: {Game.LocalPlayer.Character.DistanceTo2D(PropEntryPosition)} IsCloseEnough{IsCloseEnough}");
             GameFiber.Yield();
         }
         GameFiber.Sleep(250);
@@ -117,16 +117,18 @@ public class MachineInteraction
             {
                 IsFacingDirection = true;
             }
-            Game.DisplaySubtitle($"Current Heading: {heading} PropEntryHeading: {PropEntryHeading}");
+            //Game.DisplaySubtitle($"Current Heading: {heading} PropEntryHeading: {PropEntryHeading}");
             GameFiber.Yield();
         }
         GameFiber.Sleep(250);
         if (IsCloseEnough && IsFacingDirection && !IsCancelled)
         {
+            EntryPoint.WriteToConsole("MOVE TO MACHINE, CLOSE ENOUGH");
             return true;
         }
         else
         {
+            EntryPoint.WriteToConsole("MOVE TO MACHINE, NOT CLOSE");
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             return false;
         }

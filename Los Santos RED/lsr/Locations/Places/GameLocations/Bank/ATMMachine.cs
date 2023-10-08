@@ -75,7 +75,7 @@ public class ATMMachine : GameLocation// i know m stand for machine, makes it ne
                 {
                     MachineInteraction machineInteraction = new MachineInteraction(Player, ATMObject);
                     machineInteraction.StandingOffsetPosition = 0.5f;
-                    if (machineInteraction.MoveToMachine() && StartUseMachine())
+                    if (machineInteraction.MoveToMachine(1.0f) && StartUseMachine())
                     {
                         CreateInteractionMenu();
                         InteractionMenu.Visible = true;
@@ -86,6 +86,7 @@ public class ATMMachine : GameLocation// i know m stand for machine, makes it ne
                             MenuPool.ProcessMenus();
                             GameFiber.Yield();
                         }
+                        BankInteraction.Dispose();
                         DisposeInteractionMenu();
                     }                  
                     FullDispose();
@@ -135,7 +136,7 @@ public class ATMMachine : GameLocation// i know m stand for machine, makes it ne
             float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
             if (AnimationTime >= 1.0f)
             {
-                //EntryPoint.WriteToConsole("ATM START ENTRY COMPLETE");
+                EntryPoint.WriteToConsole("ATM START ENTRY COMPLETE");
                 IsCompleted = true;
                 break;
             }

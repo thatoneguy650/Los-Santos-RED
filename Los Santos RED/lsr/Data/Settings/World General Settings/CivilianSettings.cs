@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 public class CivilianSettings : ISettingsDefaultable
 {
-
+    [Description("Allows mod spawning of civilians (store owners, merchants, tellers, etc.) in the world.")]
+    public bool ManageDispatching { get; set; }
     [Description("Allows tasking of ambient civilians in the world.")]
     public bool ManageCivilianTasking { get; set; }
     [Description("Percentage of the time security guards will fight over flee. Percentage with a max of 100.")]
@@ -159,9 +160,7 @@ public class CivilianSettings : ISettingsDefaultable
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
-        CowerPercentageRichZones = 10f;//HAS DESERIALIZED VALUES
-        CowerPercentageMiddleZones = 3f;//HAS DESERIALIZED VALUES
-        CowerPercentagePoorZones = 1f;//HAS DESERIALIZED VALUES
+        SetDefault();
     }
 
     public CivilianSettings()
@@ -170,6 +169,7 @@ public class CivilianSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
+        ManageDispatching = true;
         ManageCivilianTasking = true;
         SecurityFightPercentage = 30f;//70f
         OverrideHealth = true;
@@ -177,7 +177,7 @@ public class CivilianSettings : ISettingsDefaultable
         MaxHealth = 100;
         OverrideAccuracy = true;
         GeneralAccuracy = 5;//10
-        SightDistance = 80f;//70f;//90f
+        SightDistance = 60f;//70f;//90f
         GunshotHearingDistance = 125f;//100f
         TaskMissionPeds = false;
         AllowMissionPedsToInteract = false;

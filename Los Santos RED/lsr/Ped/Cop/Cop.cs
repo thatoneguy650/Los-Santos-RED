@@ -270,6 +270,11 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             NativeFunction.Natives.STOP_PED_WEAPON_FIRING_WHEN_DROPPED(Pedestrian);
         }
+        if (Settings.SettingsManager.PoliceSettings.SightDistance > 60f)
+        {
+            NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.PoliceSettings.SightDistance);
+        }
+
     }
     private void UpdateCombatFlags()
     {

@@ -65,24 +65,6 @@ public class VanillaWorldManager
             TerminateHealthRecharge();
         }
 
-        //if (Settings.SettingsManager.VanillaSettings.TerminateScenarioPeds)
-        //{
-        //    TerminateScenarioPeds();
-        //}
-
-        //if (Settings.SettingsManager.VanillaSettings.TerminateRandomEvents)
-        //{
-        //    if (!isRandomEventsDisabled)
-        //    {
-        //        SetRandomEventsFlagDisabled();
-        //    }
-        //}
-        //else if (isRandomEventsDisabled)
-        //{
-        //    SetRandomEventsFlagEnabled();
-        //}
-
-
         if(Settings.SettingsManager.VanillaSettings.TerminateVanillaShops)
         {
             if(isVanillaShopsActive)
@@ -123,11 +105,6 @@ public class VanillaWorldManager
                 TerminateVanillaMachines();
             }
         }
-
-        //if (Settings.SettingsManager.VanillaSettings.SupressRandomPoliceEvents)
-        //{
-        //    SuppressRandomEvents();
-        //}
     }
 
     //private void SuppressRandomEvents()
@@ -220,6 +197,7 @@ public class VanillaWorldManager
         Game.TerminateAllScriptsWithName("ob_vend1");
         Game.TerminateAllScriptsWithName("ob_vend2");
         Game.TerminateAllScriptsWithName("atm_trigger");
+        Game.TerminateAllScriptsWithName("ob_cashregister");
         isVanillaVendingActive = false;
     }
 

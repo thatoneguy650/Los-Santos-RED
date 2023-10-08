@@ -18,6 +18,8 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
     private TaxiRide TaxiRide;
     private IPlacesOfInterest PlacesOfInterest;
     private ITimeReportable Time;
+    private UIMenuItem teleportMenuItem;
+
     public TaxiInteractionMenu(VehicleExt vehicleExt, TaxiVehicleExt taxiVehicleExt) : base(vehicleExt)
     {
         TaxiVehicleExt = taxiVehicleExt;
@@ -52,13 +54,41 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
     {
         AddDestinationMenu();
         AddDrivingStyleMenu();
+        AddQuickTravelItem();
         AddOtherOptions();
     }
+
+    private void AddQuickTravelItem()
+    {
+        if (TaxiRide == null || !TaxiRide.HasDestination || TaxiRide.HasArrivedAtDestination)
+        {
+            return;
+        }
+        teleportMenuItem = new UIMenuItem("Quick Travel", "Quick travel to the destination") { RightLabel = $"~r~${TaxiRide.RequestedFirm.TeleportFee}" };
+        teleportMenuItem.Activated += (sender, selectedItem) =>
+        {
+
+            if (TaxiRide == null || TaxiRide.RespondingDriver == null || TaxiRide.RespondingDriver.TaxiRide == null)
+            {
+                return;
+            }
+            if (Player.BankAccounts.GetMoney(true) < TaxiRide.RequestedFirm.TeleportFee)
+            {
+                TaxiRide.DisplayNotification("~r~Insufficient Funds", "We are sorry, we are unable to complete this transaction.");
+                return;
+            }
+            Player.BankAccounts.GiveMoney(-1 * TaxiRide.RequestedFirm.TeleportFee, true);
+            sender.Visible = false;
+            Player.GPSManager.TeleportToDestination(TaxiRide.DestinationLocation);
+        };
+        VehicleInteractMenu.AddItem(teleportMenuItem);
+    }
+
     private void AddDestinationMenu()
     {
         UIMenu DestinationSubMenu = MenuPool.AddSubMenu(VehicleInteractMenu, "Destinations");
         VehicleInteractMenu.MenuItems[VehicleInteractMenu.MenuItems.Count() - 1].Description = "Set the current chosen destination.";
-        DestinationSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        SetMenuBanner(DestinationSubMenu);
         DestinationSubMenu.OnMenuOpen += (sender1) =>
         {
             DestinationSubMenu.Clear();
@@ -67,20 +97,24 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
             {
                 SpawnLocation spawnLocation = new SpawnLocation(MarkerPosOrig);
                 spawnLocation.GetClosestStreet(false);
-                int EstimatedPrice = TaxiRide.GetPrice(Player.Character.Position.DistanceTo2D(spawnLocation.StreetPosition));
-                DestinationSubMenu.SetBannerType(EntryPoint.LSRedColor);
-                UIMenuItem GoToMarker = new UIMenuItem("Marker", "Drive to the current marker") { RightLabel = $"~r~${EstimatedPrice}" };
+                float DistanceToMiles = Player.Character.Position.DistanceTo2D(spawnLocation.StreetPosition) * 0.000621371f;
+                int EstimatedPrice = TaxiRide.GetPrice(DistanceToMiles);
+                string Description = "Drive to the current marker";
+                if (TaxiRide.RequestedFirm != null)
+                {
+                    Description += $"~n~~n~Base Fare: ${TaxiRide.RequestedFirm.BaseFare} ";
+                    Description += $"~n~Price Per Mile: ${TaxiRide.RequestedFirm.PricePerMile} ";
+                    Description += $"~n~Total Fare: ${TaxiRide.RequestedFirm.CalculateFare(DistanceToMiles)} ";
+                }
+                UIMenuItem GoToMarker = new UIMenuItem("Marker", Description) { RightLabel = ($"~s~{Math.Round(DistanceToMiles, 2)} mi - ~r~${EstimatedPrice}") };
                 GoToMarker.Activated += (sender, e) =>
                 {
                     SetDestinationMarker();
-                    DestinationSubMenu.Visible = false;
+                    sender.Visible = false;
                 };
                 DestinationSubMenu.AddItem(GoToMarker);
             }
-
-
             List<UIMenu> SubMenus = new List<UIMenu>();
-
             foreach (GameLocation gameLocation in PlacesOfInterest.PossibleLocations.InteractableLocations().OrderBy(x => x.TypeName))
             {
                 if (!gameLocation.IsEnabled || !gameLocation.ShowsOnTaxi || !gameLocation.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState))
@@ -91,15 +125,10 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
                 if (categoryToAdd == null)
                 {
                     categoryToAdd = MenuPool.AddSubMenu(DestinationSubMenu, gameLocation.TypeName);
-                    categoryToAdd.SetBannerType(EntryPoint.LSRedColor);
+                    SetMenuBanner(categoryToAdd);
                     SubMenus.Add(categoryToAdd);
                 }
             }
-
-
-
-
-
             foreach (GameLocation gameLocation in PlacesOfInterest.PossibleLocations.InteractableLocations().OrderBy(x => Player.Character.Position.DistanceTo2D(x.EntrancePosition)))
             {
                 if (!gameLocation.IsEnabled || !gameLocation.ShowsOnTaxi || !gameLocation.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState))
@@ -113,13 +142,12 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
                 }
                 float Distance = Player.Character.Position.DistanceTo2D(gameLocation.EntrancePosition);
                 float distanceMile = Distance * 0.000621371f;
-                int EstimatedLocationPrice = TaxiRide.GetPrice(Distance);
-                UIMenuItem goToLocation = new UIMenuItem(gameLocation.Name, gameLocation.TaxiInfo(Time.CurrentHour, Distance)) { RightLabel = ($"~s~{Math.Round(distanceMile,2)} mi - ~r~${EstimatedLocationPrice}") };
+                int EstimatedLocationPrice = TaxiRide.GetPrice(distanceMile);
+                UIMenuItem goToLocation = new UIMenuItem(gameLocation.Name, gameLocation.TaxiInfo(Time.CurrentHour, Distance, TaxiRide.RequestedFirm)) { RightLabel = ($"~s~{Math.Round(distanceMile,2)} mi - ~r~${EstimatedLocationPrice}") };
                 goToLocation.Activated += (sender, e) =>
                 {
                     SetLocationMarker(gameLocation);
-                    Player.GPSManager.AddGPSRoute(gameLocation.Name, gameLocation.EntrancePosition);
-                    DestinationSubMenu.Visible = false;
+                    sender.Visible = false;
                 };
                 categoryToAdd.AddItem(goToLocation);
             }
@@ -136,6 +164,9 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
         Vector3 MarkerPos = gameLocation.EntrancePosition;
         SpawnLocation spawnLocation = new SpawnLocation(MarkerPos);
         spawnLocation.GetClosestStreet(false);
+        spawnLocation.GetClosestSideOfRoad();
+
+        EntryPoint.WriteToConsole($"TAXI SetLocationMarker {gameLocation.Name} HasStreetPosition:{spawnLocation.HasStreetPosition} HasSideOfRoadPosition:{spawnLocation.HasSideOfRoadPosition}");
         if (!spawnLocation.HasStreetPosition)
         {
             EntryPoint.WriteToConsole("Add Destination, no street pos");
@@ -146,8 +177,13 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
             EntryPoint.WriteToConsole("Add Destination, marker pos not found");
             return;
         }
+
+        spawnLocation.StreetPosition = Player.GPSManager.ForceGroundZ(spawnLocation.StreetPosition);
         VehicleInteractMenu.SubtitleText = $"Destination: {gameLocation.Name}";
-        TaxiRide.UpdateDestination(MarkerPos, Player.Character.Position, gameLocation.Name);
+
+
+        TaxiRide.UpdateDestination(spawnLocation.FinalPosition, Player.Character.Position, gameLocation.Name);
+        Player.GPSManager.AddGPSRoute(gameLocation.Name, spawnLocation.FinalPosition);
     }
 
     private void SetDestinationMarker()
@@ -160,6 +196,8 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
         Vector3 MarkerPos = Player.GPSManager.GetGPSRoutePosition();
         SpawnLocation spawnLocation = new SpawnLocation(MarkerPos);
         spawnLocation.GetClosestStreet(false);
+        spawnLocation.GetClosestSideOfRoad();
+        EntryPoint.WriteToConsole($"TAXI SetDestinationMarker MARKER HasStreetPosition:{spawnLocation.HasStreetPosition} HasSideOfRoadPosition:{spawnLocation.HasSideOfRoadPosition}");
         if (!spawnLocation.HasStreetPosition)
         {
             EntryPoint.WriteToConsole("Add Destination, no street pos");
@@ -170,40 +208,44 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
             EntryPoint.WriteToConsole("Add Destination, marker pos not found");
             return;
         }
+
+        spawnLocation.StreetPosition = Player.GPSManager.ForceGroundZ(spawnLocation.StreetPosition);
+
         VehicleInteractMenu.SubtitleText = "Destination: Marker";
-        TaxiRide.UpdateDestination(MarkerPos, Player.Character.Position, "Marker");
+        TaxiRide.UpdateDestination(spawnLocation.FinalPosition, Player.Character.Position, "Marker");
+        Player.GPSManager.AddGPSRoute("Marker", spawnLocation.FinalPosition);
     }
     private void AddDrivingStyleMenu()
     {
-        int fastFee = 40;
-        if(TaxiRide?.HasSetFast == true)
+        if (TaxiRide == null || TaxiRide.HasArrivedAtDestination)
         {
-            fastFee = 0;
+            return;
         }
-        List<PedDrivingStyle> PossibleStyles = new List<PedDrivingStyle>() { 
-            new PedDrivingStyle("Normal", eCustomDrivingStyles.RegularDriving, 10f), 
-            new PedDrivingStyle("Fast", eCustomDrivingStyles.RegularDriving, 40f) { Fee = fastFee }, 
-        };
-        UIMenuListScrollerItem<PedDrivingStyle> drivingStyleScroller = new UIMenuListScrollerItem<PedDrivingStyle>("Styles","Choose a style", PossibleStyles);
+        UIMenuListScrollerItem<PedDrivingStyle> drivingStyleScroller = new UIMenuListScrollerItem<PedDrivingStyle>("Styles","Choose a style", TaxiRide.PossibleTaxiDrivingStyles);
         drivingStyleScroller.Activated += (sender,selectedItem) =>
         {
             if(TaxiRide == null || TaxiRide.RespondingDriver == null || TaxiRide.RespondingDriver.TaxiRide == null)
             {
                 return;
             }
-            if(Player.BankAccounts.GetMoney(true) < drivingStyleScroller.SelectedItem.Fee)
+            if(!drivingStyleScroller.SelectedItem.HasBeenPurchased && Player.BankAccounts.GetMoney(true) < drivingStyleScroller.SelectedItem.Fee)
             {
                 TaxiRide.DisplayNotification("~r~Insufficient Funds", "We are sorry, we are unable to complete this transaction.");
                 return;
             }    
-            if(drivingStyleScroller.SelectedItem.Fee > 0)
+
+            if(!drivingStyleScroller.SelectedItem.HasBeenPurchased)
             {
-                TaxiRide.HasSetFast = true;
+                TaxiRide.DisplayNotification("~g~Driving Style", $"Updated to {drivingStyleScroller.SelectedItem.Name}~n~Price: ~r~${drivingStyleScroller.SelectedItem.Fee}");
+                Player.BankAccounts.GiveMoney(-1 * drivingStyleScroller.SelectedItem.Fee, true);
             }
+            else
+            {
+                TaxiRide.DisplayNotification("~g~Driving Style", $"Updated to {drivingStyleScroller.SelectedItem.Name}");
+            }
+            drivingStyleScroller.SelectedItem.HasBeenPurchased = true;
             TaxiRide.RespondingDriver.TaxiRide.TaxiDrivingStyle = drivingStyleScroller.SelectedItem;
-            TaxiRide.DisplayNotification("~g~Driving Style", $"Updated to {drivingStyleScroller.SelectedItem.Name}~n~Price: ~r~${drivingStyleScroller.SelectedItem.Fee}");
-            Player.BankAccounts.GiveMoney(-1 * drivingStyleScroller.SelectedItem.Fee, true);
-            VehicleInteractMenu.Visible = false;
+            sender.Visible = false;
         };
         VehicleInteractMenu.AddItem(drivingStyleScroller);
     }
@@ -215,13 +257,32 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
             Player.TaxiManager.CancelRide(TaxiRide, true);
             VehicleInteractMenu.Visible = false;
         };
-        VehicleInteractMenu.AddItem(CancelRide);
+        if (TaxiRide != null && !TaxiRide.HasArrivedAtDestination)
+        {
+            VehicleInteractMenu.AddItem(CancelRide);
+        }
+    }
+    private void SetMenuBanner(UIMenu toSet)
+    {
+        if(TaxiRide != null && TaxiRide.RequestedFirm != null && TaxiRide.RequestedFirm.HasBannerImage)
+        {
+            if(TaxiRide.RequestedFirm.BannerImage == null)
+            {
+                TaxiRide.RequestedFirm.BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{TaxiRide.RequestedFirm.BannerImagePath}");
+            }
+            toSet.SetBannerType(TaxiRide.RequestedFirm.BannerImage);
+            Game.RawFrameRender += (s, e) => MenuPool.DrawBanners(e.Graphics);
+        }
+        else
+        {
+            toSet.SetBannerType(EntryPoint.LSRedColor);
+        }
     }
     private void CreateInteractionMenuTaxi()
     {
         MenuPool = new MenuPool();
         VehicleInteractMenu = new UIMenu("Taxi", $"Destination: {(TaxiRide == null ? "None" : TaxiRide.DesitnationName)}");
-        VehicleInteractMenu.SetBannerType(EntryPoint.LSRedColor);
+        SetMenuBanner(VehicleInteractMenu);
         MenuPool.Add(VehicleInteractMenu);
         if(TaxiVehicleExt != null && TaxiVehicleExt.TaxiFirm != null)
         {
@@ -240,6 +301,9 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
                     GameFiber.Yield();
                 }
                 IsShowingMenu = false;
+
+                Game.RawFrameRender -= (s, e) => MenuPool.DrawBanners(e.Graphics);
+
             }
             catch (Exception ex)
             {

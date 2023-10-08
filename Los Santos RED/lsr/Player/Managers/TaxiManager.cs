@@ -23,6 +23,14 @@ public class TaxiManager
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
     }
+    public void Dispose()
+    {
+        foreach (TaxiRide taxiRide in ActiveRides)
+        {
+            taxiRide.Dispose();
+        }
+        ActiveRides.Clear();
+    }
     public void Reset()
     {
         foreach(TaxiRide taxiRide in ActiveRides)

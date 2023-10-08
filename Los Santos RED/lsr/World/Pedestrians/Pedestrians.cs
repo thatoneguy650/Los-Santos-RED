@@ -790,8 +790,8 @@ public class Pedestrians : ITaskerReportable
                 WasPersistentOnCreate = WasPersistentOnCreate,
             };
         }
-        
- 
+        AddEntity(createdPedExt);
+
         createdPedExt.SetBaseStats(null, ShopMenus, Weapons, false);  
         if (!Pedestrian.Exists())
         {
@@ -837,7 +837,8 @@ public class Pedestrians : ITaskerReportable
         {
             createdPedExt.SetupTransactionItems(EntryPoint.FocusZone?.GetIllicitMenu(Settings, ShopMenus));
         }
-        Civilians.Add(createdPedExt);
+
+        //Civilians.Add(createdPedExt);
         //EntryPoint.WriteToConsole("ADD AMBIENT FINAL");
     }
     private void AddAmbientGangMember(Ped Pedestrian)

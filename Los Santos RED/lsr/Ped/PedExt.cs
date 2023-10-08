@@ -988,7 +988,11 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         if (!Pedestrian.Exists())
         {
             return;
-        }    
+        }
+        if (Settings.SettingsManager.CivilianSettings.SightDistance > 60f)
+        {
+            NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.CivilianSettings.SightDistance);
+        }
     }
     public void AddBlip()
     {

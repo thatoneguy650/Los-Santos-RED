@@ -30,15 +30,14 @@ public class VanillaSettings : ISettingsDefaultable
     [Description("Terminates the vanilla character select system (Michael, Franklin, Trevor Wheel). WILL DISABLE THE ROCKSTAR EDITOR WHICH CANNOT BE RE-ENABLED WITHOUT A GAME RESTART.")]
     public bool TerminateSelector { get; set; }
 
-    [Description("Terminates all vanilla vending machines (Soda and ATM). CANNOT BE RE-ENABLED, REQUIRES GAME RESTART.")]
+    [Description("Terminates all vanilla vending machines (Soda, CashRegisters, and ATM). CANNOT BE RE-ENABLED, REQUIRES GAME RESTART.")]
     public bool TerminateVanillaVendingMachines { get; set; }
     public bool SupressVanillaCopCrimes { get; set; }
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
-
+        SetDefault();
     }
-
     public VanillaSettings()
     {
 
@@ -52,8 +51,6 @@ public class VanillaSettings : ISettingsDefaultable
         TerminateWantedMusic = true;
         TerminateScanner = true;
         TerminateScenarioCops = true;
-        //SuppressVanillaGangPeds = false;
-//TerminateScenarioPeds = false;//gets rid of them ALLLLLLLLL, not driving gang members tho
         SupressRandomPoliceEvents = true;
         BlockGangScenarios = false;
         BlockGangScenariosAroundDensDistance = 50f;// 200f;
@@ -62,10 +59,8 @@ public class VanillaSettings : ISettingsDefaultable
         TerminateVanillaShops = false;
         TerminateVanillaBlips = false;
         TerminateSelector = false;
-
         SupressVanillaCopCrimes = true;
-        TerminateVanillaVendingMachines = false;
-
+        TerminateVanillaVendingMachines = true;
     }
 
 }

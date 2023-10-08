@@ -288,11 +288,14 @@ public class RepairGarage : GameLocation
         {
             return;
         }
-        foreach (InteriorDoor id in GarageDoors)
+        if (IsOpen(time.CurrentHour))
         {
-            if (id.Position != Vector3.Zero)
+            foreach (InteriorDoor id in GarageDoors)
             {
-                id.Activate();
+                if (id.Position != Vector3.Zero)
+                {
+                    id.Activate();
+                }
             }
         }
         base.Activate(interiors, settings, crimes, weapons, time, world);

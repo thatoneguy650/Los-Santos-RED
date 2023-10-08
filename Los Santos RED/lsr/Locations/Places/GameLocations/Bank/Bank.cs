@@ -31,6 +31,7 @@ public class Bank : GameLocation
     {
 
     }
+
     public override string TypeName { get; set; } = "Bank";
     public override int MapIcon { get; set; } = (int)BlipSprite.Devin;
     public List<SpawnPlace> TellerLocations { get; set; } = new List<SpawnPlace>();
@@ -39,6 +40,7 @@ public class Bank : GameLocation
     public int DrawerCashMin { get; set; } = 1000;
     public int DrawerCashMax { get; set; } = 9000;
     public int DrawerCashGainedPerAnimation { get; set; } = 500;
+    public float ExtaTellerSpawnPercentage { get; set; } = 70f;
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Bank At {Name}";
@@ -77,6 +79,7 @@ public class Bank : GameLocation
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();
                 }
+                BankInteraction.Dispose();
                 DisposeInteractionMenu();
                 StoreCamera.Dispose();
                 Player.IsTransacting = false;
@@ -321,7 +324,7 @@ public class Bank : GameLocation
         BankDrawers.Clear();
         foreach (SpawnPlace spawnPlace in TellerLocations)
         {
-            if(TellersSpawned == 0 || RandomItems.RandomPercent(70f))
+            if(IsOpen(time.CurrentHour) && settings.SettingsManager.CivilianSettings.ManageDispatching && (TellersSpawned == 0 || RandomItems.RandomPercent(ExtaTellerSpawnPercentage)))
             {
                 if (SpawnTeller(settings, crimes, weapons, spawnPlace))
                 {

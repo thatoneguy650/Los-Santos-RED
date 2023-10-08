@@ -1847,6 +1847,7 @@ public class Debug
             Settings.SettingsManager.FireSettings.ManageDispatching = false;
             Settings.SettingsManager.SecuritySettings.ManageDispatching = false;
             Settings.SettingsManager.TaxiSettings.ManageDispatching = false;
+            Settings.SettingsManager.CivilianSettings.ManageDispatching = false;
             Game.DisplaySubtitle("Dispatching Disabled");
         }
         else
@@ -1857,6 +1858,7 @@ public class Debug
             Settings.SettingsManager.FireSettings.ManageDispatching = true;
             Settings.SettingsManager.SecuritySettings.ManageDispatching = true;
             Settings.SettingsManager.TaxiSettings.ManageDispatching = true;
+            Settings.SettingsManager.CivilianSettings.ManageDispatching = true;
             Dispatcher.DebugResetLocations();
             Game.DisplaySubtitle("Dispatching Enabled");
         }

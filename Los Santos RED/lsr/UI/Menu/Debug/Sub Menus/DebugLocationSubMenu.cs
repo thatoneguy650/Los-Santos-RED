@@ -201,7 +201,7 @@ public class DebugLocationSubMenu : DebugSubMenu
             {
                 if (gameLocation.DistanceToPlayer <= 100f)
                 {
-                    gameLocation.Interior?.OpenDoors();
+                    gameLocation.Interior?.DebugOpenDoors();
                 }
             }
         };

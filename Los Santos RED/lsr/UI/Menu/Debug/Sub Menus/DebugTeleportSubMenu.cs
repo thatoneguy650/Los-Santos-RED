@@ -22,6 +22,19 @@ public class DebugTeleportSubMenu : DebugSubMenu
         LocationItemsMenu.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Teleport to various locations";
         LocationItemsMenu.Width = 0.6f;
+
+
+
+        UIMenuItem teleportToMarker = new UIMenuItem("Teleport To Marker", "Teleport to the current marker.");
+        teleportToMarker.Activated += (sender, selectedItem) =>
+        {
+            Player.GPSManager.TeleportToMarker();
+            sender.Visible = false;
+        };
+        LocationItemsMenu.AddItem(teleportToMarker);
+
+
+
         List<GameLocation> DirectoryLocations = PlacesOfInterest.AllLocations().ToList();
         foreach (string typeName in DirectoryLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
         {
@@ -31,6 +44,27 @@ public class DebugTeleportSubMenu : DebugSubMenu
                 GameLocation toTele = myLocationType.SelectedItem;
                 if (toTele != null)
                 {
+
+                    //SpawnLocation spawnLocation = new SpawnLocation(toTele.EntrancePosition);
+                    //spawnLocation.GetClosestStreet(false);
+                    //spawnLocation.GetClosestSideOfRoad();
+                    //if(spawnLocation.HasSideOfRoadPosition)
+                    //{
+                    //    spawnLocation.StreetPosition = Player.GPSManager.ForceGroundZ(spawnLocation.StreetPosition);
+                    //    EntryPoint.WriteToConsole($"TELE HAS SIDE OF ROAD POS");
+                    //    Game.LocalPlayer.Character.Position = spawnLocation.StreetPosition;
+                    //    Game.LocalPlayer.Character.Heading = spawnLocation.Heading;
+                    //    return;
+                    //}
+                    //if (spawnLocation.HasStreetPosition)
+                    //{
+                    //    spawnLocation.StreetPosition = Player.GPSManager.ForceGroundZ(spawnLocation.StreetPosition);
+                    //    EntryPoint.WriteToConsole($"TELE HAS STREET POS");
+                    //    Game.LocalPlayer.Character.Position = spawnLocation.StreetPosition;
+                    //    Game.LocalPlayer.Character.Heading = spawnLocation.Heading;
+                    //    return;
+                    //}
+                    EntryPoint.WriteToConsole($"TELE HAS ONLY ENTRANCE POS");
                     Game.LocalPlayer.Character.Position = toTele.EntrancePosition;
                     Game.LocalPlayer.Character.Heading = toTele.EntranceHeading;
                 }
