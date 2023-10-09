@@ -11,18 +11,18 @@ using System.Threading.Tasks;
 
 public class GeneralIdle : ComplexTask
 {
-    private PedExt PedGeneral;
-    private IEntityProvideable World;
-    private IPlacesOfInterest PlacesOfInterest;
-    private SeatAssigner SeatAssigner;
-    private TaskState CurrentTaskState;
-    private ISettingsProvideable Settings;
-    private bool BlockPermanentEvents = false;
-    private bool CheckPassengers = false;
-    private bool CheckSiren = false;
-    private bool ForceStandardScenarios = false;
-    private bool AllowEnteringVehicle => !Ped.IsAnimal && (!Ped.IsLocationSpawned || PedGeneral.HasExistedFor >= 10000);
-    public GeneralIdle(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world,List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents, bool checkPassengers, bool checkSiren, bool forceStandardScenarios) : base(player, ped, 1500)//1500
+    protected PedExt PedGeneral;
+    protected IEntityProvideable World;
+    protected IPlacesOfInterest PlacesOfInterest;
+    protected SeatAssigner SeatAssigner;
+    protected TaskState CurrentTaskState;
+    protected ISettingsProvideable Settings;
+    protected bool BlockPermanentEvents = false;
+    protected bool CheckPassengers = false;
+    protected bool CheckVehicleState = false;
+    protected bool ForceStandardScenarios = false;
+    protected virtual bool AllowEnteringVehicle => !Ped.IsAnimal && (!Ped.IsLocationSpawned || PedGeneral.HasExistedFor >= 10000);
+    public GeneralIdle(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world,List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents, bool checkPassengers, bool checkVehicleState, bool forceStandardScenarios) : base(player, ped, 1500)//1500
     {
         PedGeneral = pedGeneral;
         Name = "Idle";
@@ -32,7 +32,7 @@ public class GeneralIdle : ComplexTask
         Settings = settings;
         BlockPermanentEvents = blockPermanentEvents;
         CheckPassengers = checkPassengers;
-        CheckSiren = checkSiren;
+        CheckVehicleState = checkVehicleState;
         ForceStandardScenarios = forceStandardScenarios;
         SeatAssigner = new SeatAssigner(Ped, World, possibleVehicles);
     }
@@ -61,12 +61,12 @@ public class GeneralIdle : ComplexTask
             SubTaskName = CurrentTaskState.DebugName;
             CurrentTaskState.Update();
         }
-        if (CheckSiren)
+        if (CheckVehicleState)
         {
-            SetSiren();
+            SetVehicleState();
         }
     }
-    private void GetNewTaskState()
+    protected virtual void GetNewTaskState()
     {
         if(AllowEnteringVehicle && !Ped.IsInVehicle && !SeatAssigner.IsAssignmentValid())
         {
@@ -79,10 +79,6 @@ public class GeneralIdle : ComplexTask
                 if (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsInAnyVehicle(false) && SeatAssigner.HasPedsWaitingToEnter(World.Vehicles.GetVehicleExt(Ped.Pedestrian.CurrentVehicle), Ped.Pedestrian.SeatIndex))
                 {
                     CurrentTaskState = new WaitInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents);
-                }
-                else if(CheckPassengers && HasArrestedPassengers())
-                {
-                    CurrentTaskState = new ReturnToStationVehicleTaskState(PedGeneral, World, PlacesOfInterest, Settings, BlockPermanentEvents);
                 }
                 else
                 {
@@ -105,42 +101,14 @@ public class GeneralIdle : ComplexTask
                 CurrentTaskState = new WanderOnFootTaskState(PedGeneral, World, SeatAssigner, Settings, BlockPermanentEvents, ForceStandardScenarios);
             }
         }
-
-        //if(CurrentTaskState != null)
-        //{
-        //    EntryPoint.WriteToConsole($"{PedGeneral?.Handle} GetNewTaskState {CurrentTaskState.DebugName}");  
-        //}
-        //else
-        //{
-        //    EntryPoint.WriteToConsole($"{PedGeneral?.Handle} GetNewTaskState NONE");
-        //}
     }
-    private void SetSiren()
+    protected virtual void SetVehicleState()
     {
         if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.HasSiren && Ped.Pedestrian.CurrentVehicle.IsSirenOn)
         {
             Ped.Pedestrian.CurrentVehicle.IsSirenOn = false;
             Ped.Pedestrian.CurrentVehicle.IsSirenSilent = false;
         }
-    }
-    public bool HasArrestedPassengers()
-    {
-        if (PedGeneral.IsDriver && PedGeneral.Pedestrian.IsInAnyVehicle(false) && PedGeneral.Pedestrian.CurrentVehicle.Exists())
-        {
-            foreach (Ped ped in PedGeneral.Pedestrian.CurrentVehicle.Passengers)
-            {
-                PedExt pedExt = World.Pedestrians.GetPedExt(ped.Handle);
-                if (pedExt != null && pedExt.IsArrested)
-                {
-                    return true;
-                }
-                if (ped.Handle == Game.LocalPlayer.Character.Handle)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }
 

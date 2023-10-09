@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
+using NAudio.Wave;
 
 public class ActivityManager
 {
@@ -214,7 +215,7 @@ public class ActivityManager
     public bool CanHearScanner => !Settings.SettingsManager.ScannerSettings.DisableScannerWithoutRadioItem || Player.Inventory.Has(typeof(RadioItem));
     public bool CanSeePoliceBlips => !Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips && Settings.SettingsManager.ScannerSettings.ShowPoliceVehicleBlipsWithScanner && Player.Inventory.Has(typeof(RadioItem)) && (Player.IsInVehicle || HasScannerOut);
 
-
+    public bool IsEnteringAsPassenger { get; private set; }
 
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
@@ -815,6 +816,13 @@ public class ActivityManager
     //Other
     public void EnterVehicleAsPassenger(bool withBlocking, bool onlyBack, bool stopDriver)
     {
+        if(IsEnteringAsPassenger)
+        {
+            return;
+        }
+
+        EntryPoint.WriteToConsole("ENTER AS PASSENGER RAN");
+
         VehicleExt toEnter = GetInterestedVehicle();
         if (toEnter == null || !toEnter.Vehicle.Exists())
         {
@@ -823,7 +831,17 @@ public class ActivityManager
         int? seatIndex = null;
         if (onlyBack)
         {
-            seatIndex = toEnter.Vehicle.GetFreeSeatIndex(1, 2);
+            int TotalSeats = NativeFunction.Natives.GET_VEHICLE_MODEL_NUMBER_OF_SEATS<int>(toEnter.Vehicle.Model.Hash);
+
+            if (TotalSeats < 4)
+            {
+                seatIndex = toEnter.Vehicle.GetFreePassengerSeatIndex();
+
+            }
+            else
+            {
+                seatIndex = toEnter.Vehicle.GetFreeSeatIndex(1, 2);
+            }
         }
         else
         {
@@ -845,6 +863,7 @@ public class ActivityManager
                 }
             }
         }
+        IsEnteringAsPassenger = true;
         Player.LastFriendlyVehicle = toEnter.Vehicle;
         NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, toEnter.Vehicle, -1, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);
         WatchVehicleEntry(toEnter, stopDriver);
@@ -1014,6 +1033,7 @@ public class ActivityManager
     {
         if(toEnter == null || !toEnter.Vehicle.Exists())
         {
+            IsEnteringAsPassenger = false;
             return;
         }
         GameFiber DoorWatcher = GameFiber.StartNew(delegate
@@ -1022,30 +1042,42 @@ public class ActivityManager
             {
                 uint GameTimeStarted = Game.GameTime;
                 //EntryPoint.WriteToConsoleTestLong("WatchVehicleEntry START");
+
+                PedExt driverPed = World.Pedestrians.GetPedExt(toEnter.Vehicle.Driver.Handle);
+
                 if (stopDriver && toEnter != null && toEnter.Vehicle.Exists() && toEnter.Vehicle.Driver.Exists())
                 {
-                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", toEnter.Vehicle.Driver, toEnter.Vehicle, 27, -1);
+                    //toEnter.Vehicle.Driver.BlockPermanentEvents = true;
+                    driverPed?.SetPersistent();
+
+
+                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", toEnter.Vehicle.Driver, toEnter.Vehicle, 27, 9999);
                 }
+                bool isCancelled = false;
                 while (EntryPoint.ModController.IsRunning && Game.GameTime - GameTimeStarted <= 20000)
                 {
                     int taskStatus = NativeFunction.Natives.GET_SCRIPT_TASK_STATUS<int>(Player.Character, Game.GetHashKey("SCRIPT_TASK_ENTER_VEHICLE"));
                     //Game.DisplaySubtitle($"taskStatus {taskStatus}");
                     if(taskStatus != 1)
                     {
+                        //isCancelled = true;
                         break;
                     }
                     if (Player.IsMoveControlPressed || toEnter == null || !toEnter.Vehicle.Exists() || toEnter.Vehicle.Speed >= 0.5f)
                     {
+                        isCancelled = true;
                         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                         break;
                     }
                     GameFiber.Yield();
                 }
-                if(stopDriver && toEnter != null && toEnter.Vehicle.Exists() && toEnter.Vehicle.Driver.Exists())
+                if (isCancelled && stopDriver && toEnter != null && toEnter.Vehicle.Exists() && toEnter.Vehicle.Driver.Exists())
                 {
+                    //toEnter.Vehicle.Driver.BlockPermanentEvents = false;
+                    driverPed?.SetNonPersistent();
                     NativeFunction.Natives.CLEAR_PED_TASKS(toEnter.Vehicle.Driver);
                 }
-
+                IsEnteringAsPassenger = false;
 
 
                 //EntryPoint.WriteToConsoleTestLong("WatchVehicleEntry END");
@@ -1356,6 +1388,7 @@ public class ActivityManager
                 uint GameTimeStarted = Game.GameTime;
                 if (stopDriver && vehicle.Exists() && vehicle.Driver.Exists())
                 {
+                    vehicle.Driver.BlockPermanentEvents = true;
                     EntryPoint.WriteToConsole("WATCH VEHICLE RUNNING TEMP ACTION");
                     NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", vehicle.Driver, vehicle, 27, 99999);
                 }
@@ -1369,6 +1402,7 @@ public class ActivityManager
                 }
                 if (stopDriver && vehicle.Exists() && vehicle.Driver.Exists())
                 {
+                    vehicle.Driver.BlockPermanentEvents = false;
                     NativeFunction.Natives.CLEAR_PED_TASKS(vehicle.Driver);
                 }
                 if (!Player.Character.CurrentVehicle.Exists())

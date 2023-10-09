@@ -6,19 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public enum eCustomDrivingStyles
+public enum eCustomDrivingStyles : int
 {
-	//RegularDriving = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians  | 8 | (int)VehicleDrivingFlags.RespectIntersections | 256,
-	//RegularDrivingClose = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians | 8 | (int)VehicleDrivingFlags.RespectIntersections | 256 | (int)VehicleDrivingFlags.DriveBySight,
-	//Code2 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,  //20220531 allowwrongway and median crossing is new
-	//Code3 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8  | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,
-	//Code3Close = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | (int)VehicleDrivingFlags.DriveBySight | 524288,
-	//Panic = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing  | 524288,
-
-
-
-
-	RegularDriving = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians | 8 | (int)VehicleDrivingFlags.RespectIntersections | 256,
+	//ORIGINAL
+	/*	
+	 *	RegularDriving = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians | 8 | (int)VehicleDrivingFlags.RespectIntersections | 256,
 	RegularDrivingClose = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians | 8 | (int)VehicleDrivingFlags.RespectIntersections | 256 | (int)VehicleDrivingFlags.DriveBySight,
 	Code2 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,  //20220531 allowwrongway and median crossing is new
 	Code3 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,
@@ -26,21 +18,38 @@ public enum eCustomDrivingStyles
 	Panic = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,
 	
 	Alerted = (int)786469,
-
-    //Code3 = eDrivingMode.DF_SwerveAroundAllCars | eDrivingMode.DF_SteerAroundObjects | eDrivingMode.DF_SteerAroundPeds | eDrivingMode.DF_UseShortCutLinks | eDrivingMode.DF_ChangeLanesAroundObstructions | eDrivingMode.DF_DriveIntoOncomingTraffic | eDrivingMode.DF_StopForCars,
-    //Code3Close = eDrivingMode.DF_SwerveAroundAllCars | eDrivingMode.DF_SteerAroundObjects | eDrivingMode.DF_SteerAroundPeds | eDrivingMode.DF_UseShortCutLinks | eDrivingMode.DF_ChangeLanesAroundObstructions | eDrivingMode.DF_PreferNavmeshRoute | eDrivingMode.DF_DriveIntoOncomingTraffic | eDrivingMode.DF_StopForCars,
+	*/
 
 
-
+	RegularDriving = 1 | 2 | 8 | 128 | 256 | 16384 | 524288,
 
 
 
 
-    //8 = avoid empty vehicles
-    //256 use blinkers
-    //AllowMedianCrossing is mostly called take shortest path
+    Taxi_StandardDrivingMode = VanillaDrivingStyles.DF_StopForCars | VanillaDrivingStyles.DF_StopForPeds | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_SteerAroundStationaryCars | VanillaDrivingStyles.DF_StopAtLights |
+    VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | VanillaDrivingStyles.DF_AdjustCruiseSpeedBasedOnRoadSpeed,
 
-    //524288 Reckless (Previously named: Allow overtaking vehicles if possible)
+    TaxiRushed_AvoidCarsObeyLights = VanillaDrivingStyles.DF_SwerveAroundAllCars | VanillaDrivingStyles.DF_StopAtLights | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions,
+
+
+    TaxiCrazy_AvoidCars = VanillaDrivingStyles.DF_SwerveAroundAllCars | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions,
+
+
+    VanillaStandardDrivingMode = VanillaDrivingStyles.DF_StopForCars | VanillaDrivingStyles.DF_StopForPeds | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_SteerAroundStationaryCars | VanillaDrivingStyles.DF_StopAtLights | 
+		VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions,
+
+	VanillaAvoidCarsObeyLights = VanillaDrivingStyles.DF_SwerveAroundAllCars | VanillaDrivingStyles.DF_StopAtLights | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | VanillaDrivingStyles.DF_StopForCars,
+
+
+
+    //RegularDrivingClose = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians | 8 | (int)VehicleDrivingFlags.RespectIntersections | 256 | (int)VehicleDrivingFlags.DriveBySight,
+	Code2 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,  //20220531 allowwrongway and median crossing is new
+	Code3 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,
+	Code3Close = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | (int)VehicleDrivingFlags.DriveBySight | 524288,
+	//Panic = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,
+	
+	Vanilla_Alerted = (int)786469,
+
 
 
 
@@ -50,7 +59,43 @@ public enum eCustomDrivingStyles
 
 }
 
+public enum VanillaDrivingStyles : int
+{
+    DF_StopForCars = 1,
+    DF_StopForPeds = 2,
+    DF_SwerveAroundAllCars = 4,
+    DF_SteerAroundStationaryCars = 8,
+    DF_SteerAroundPeds = 16,
+    DF_SteerAroundObjects = 32,
+    DF_DontSteerAroundPlayerPed = 64,
+    DF_StopAtLights = 128,
+    DF_GoOffRoadWhenAvoiding = 256,
+    DF_DriveIntoOncomingTraffic = 512,
+    DF_DriveInReverse = 1024,
 
+    //if pathfinding fails, cruise randomly instead of going on a straight line
+    DF_UseWanderFallbackInsteadOfStraightLine = 2048,
+
+    DF_AvoidRestrictedAreas = 4096,
+
+    // These only work on MISSION_CRUISE
+    DF_PreventBackgroundPathfinding = 8192,
+    DF_AdjustCruiseSpeedBasedOnRoadSpeed = 16384,
+
+    DF_UseShortCutLinks = 262144,
+    DF_ChangeLanesAroundObstructions = 524288,
+    DF_UseSwitchedOffNodes = 2097152,   //cruise tasks ignore this anyway--only used for goto's
+    DF_PreferNavmeshRoute = 4194304,    //if you're going to be primarily driving off road
+
+    // Only works for planes using MISSION_GOTO, will cause them to drive along the ground instead of fly
+    DF_PlaneTaxiMode = 8388608,
+
+    DF_ForceStraightLine = 16777216,
+    DF_UseStringPullingAtJunctions = 33554432,
+
+    DF_AvoidHighways = 536870912,
+    DF_ForceJoinInRoadDirection = 1073741824,
+}
 
 
 /*

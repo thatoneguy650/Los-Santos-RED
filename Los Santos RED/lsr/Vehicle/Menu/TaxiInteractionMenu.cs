@@ -81,6 +81,14 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
             sender.Visible = false;
             Player.GPSManager.TeleportToDestination(TaxiRide.DestinationLocation);
         };
+#if DEBUG
+
+#else
+
+
+        teleportMenuItem.Enabled = false    ;
+
+#endif
         VehicleInteractMenu.AddItem(teleportMenuItem);
     }
 
@@ -234,7 +242,7 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
                 return;
             }    
 
-            if(!drivingStyleScroller.SelectedItem.HasBeenPurchased)
+            if(!drivingStyleScroller.SelectedItem.HasBeenPurchased && drivingStyleScroller.SelectedItem.Fee > 0)
             {
                 TaxiRide.DisplayNotification("~g~Driving Style", $"Updated to {drivingStyleScroller.SelectedItem.Name}~n~Price: ~r~${drivingStyleScroller.SelectedItem.Fee}");
                 Player.BankAccounts.GiveMoney(-1 * drivingStyleScroller.SelectedItem.Fee, true);

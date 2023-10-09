@@ -109,7 +109,7 @@ public class TaxiDriverBrain : PedBrain
             SetIdle();
         }
     }
-    protected virtual void SetTaxiService()
+    private void SetTaxiService()
     {
         if (PedExt.CurrentTask?.Name == "TaxiService")
         {
@@ -119,6 +119,19 @@ public class TaxiDriverBrain : PedBrain
         GameFiber.Yield();//TR Added back 4
         PedExt.CurrentTask.Start();
         EntryPoint.WriteToConsole($"PED: {PedExt.Handle} STARTED TaxiService");
+    }
+    protected override void SetIdle()
+    {
+        if (PedExt.CurrentTask?.Name == "Idle")
+        {
+            return;
+        }
+        PedExt.CurrentTask = new TaxiGeneralIdle(PedExt, PedExt, Player, World, new List<VehicleExt>() { PedExt.AssignedVehicle }, PlacesOfInterest, Settings, false, false, true, true);
+        GameFiber.Yield();//TR Added back 4
+        PedExt.CurrentTask.Start();
+        EntryPoint.WriteToConsole($"PED: {PedExt.Handle} STARTED TAXIGeneralIdle");
+
+
     }
 }
 

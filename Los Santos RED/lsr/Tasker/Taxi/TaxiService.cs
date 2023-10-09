@@ -24,16 +24,12 @@ public class TaxiService : ComplexTask, ILocationReachable
     protected bool DrivingStyleChanged = false;
 
     protected Vector3 PlaceToDriveTo;
+    private float PlaceToDriveToHeading;
     protected Vector3 prevPlaceToDriveTo;
     private uint GameTimeStarted;
     protected string prevDrivingStyle;
-
     private bool AllowEnteringVehicle => !Ped.IsAnimal && (!Ped.IsLocationSpawned || PedGeneral.HasExistedFor >= 10000);
-
     public bool HasReachedLocatePosition { get; protected set; } = false;
-
-
-   
     public TaxiService(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, 
         bool blockPermanentEvents, TaxiDriver taxiDriver) : base(player, ped, 1500)//1500
     {
@@ -81,9 +77,16 @@ public class TaxiService : ComplexTask, ILocationReachable
         CheckDrivingStyleChanged();
         StandardUpdate();
         CheckLocationItems();
+        CheckLight();
     }
-
-
+    private void CheckLight()
+    {
+        if (Ped.IsDriver && Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && NativeFunction.Natives.IS_TAXI_LIGHT_ON<bool>(Ped.Pedestrian.CurrentVehicle))
+        {
+            NativeFunction.Natives.SET_TAXI_LIGHTS(Ped.Pedestrian.CurrentVehicle, false);
+           // Ped.Pedestrian.CurrentVehicle.IsTaxiLightOn = false;
+        }
+    }
     private void StandardUpdate()
     {
         if (CurrentTaskState == null || !CurrentTaskState.IsValid || LocationsChanged || DrivingStyleChanged)
@@ -100,9 +103,6 @@ public class TaxiService : ComplexTask, ILocationReachable
             CurrentTaskState.Update();
         }
     }
-
-
-
     private void CheckLocationItems()
     {
         if(TaxiDriver.TaxiRide == null)
@@ -121,24 +121,9 @@ public class TaxiService : ComplexTask, ILocationReachable
                 TaxiDriver.TaxiRide?.Cancel();
             }
         }
-        //if (TaxiDriver.DistanceToPlayer >= 350f)
-        //{
-        //    EntryPoint.WriteToConsole("TAXI DRIVER PLAYER IS OVER 350f meters away, RELEASING");
-        //    if (TaxiDriver == null || TaxiDriver.TaxiRide == null)
-        //    {
-        //        return;
-        //    }
-        //    TaxiDriver.TaxiRide?.Cancel();
-        //}
     }
-
     private void GetNewTaskState()
     {
-        //EntryPoint.WriteToConsole("TAXI SERVICE GetNewTaskState RAN");
-        //if (AllowEnteringVehicle && !Ped.IsInVehicle && !SeatAssigner.IsAssignmentValid())
-        //{
-        //    SeatAssigner.AssignFrontSeat(PedGeneral.HasExistedFor >= 10000);
-        //}
         if(TaxiDriver == null || TaxiDriver.TaxiRide == null)
         {
             EntryPoint.WriteToConsole("TAXI BRAIN GetNewTaskState SOMETHING IS WRONG");
@@ -146,46 +131,12 @@ public class TaxiService : ComplexTask, ILocationReachable
         }
         if (Ped.IsInVehicle)
         {
-            CurrentTaskState = new RegularGoToInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false, PlaceToDriveTo, this, TaxiDriver.TaxiRide.TaxiDrivingStyle.DrivingStyle, TaxiDriver.TaxiRide.TaxiDrivingStyle.Speed);
-            //if(TaxiDriver.TaxiRide.HasPickedUpPlayer)
-            //{
-            //    if (HasReachedLocatePosition || !TaxiDriver.TaxiRide.HasDestination || TaxiDriver.TaxiRide.HasArrivedAtDestination || PlaceToDriveTo == Vector3.Zero)
-            //    {
-            //        CurrentTaskState = new RegularGoToInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false, PlaceToDriveTo, this, TaxiDriver.TaxiRide.TaxiDrivingStyle.DrivingStyle, TaxiDriver.TaxiRide.TaxiDrivingStyle.Speed); ;// new StayWaitInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false);
-            //    }
-            //    else 
-            //    {
-            //        CurrentTaskState = new RegularGoToInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false, PlaceToDriveTo, this, TaxiDriver.TaxiRide.TaxiDrivingStyle.DrivingStyle, TaxiDriver.TaxiRide.TaxiDrivingStyle.Speed);
-            //    }
-            //}
-            //else
-            //{
-            //    if(HasReachedLocatePosition || PlaceToDriveTo == Vector3.Zero)
-            //    {
-            //        CurrentTaskState = new RegularGoToInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false, PlaceToDriveTo, this, TaxiDriver.TaxiRide.TaxiDrivingStyle.DrivingStyle, TaxiDriver.TaxiRide.TaxiDrivingStyle.Speed); ;// new StayWaitInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false);
-            //    }
-            //    else
-            //    {
-            //        CurrentTaskState = new RegularGoToInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false, PlaceToDriveTo, this, TaxiDriver.TaxiRide.TaxiDrivingStyle.DrivingStyle, TaxiDriver.TaxiRide.TaxiDrivingStyle.Speed);
-            //    }
-            //}
-
-
-
-
-
-            //if (TaxiDriver.TaxiRide.HasPickedUpPlayer && (HasReachedLocatePosition || !TaxiDriver.TaxiRide.HasDestination || TaxiDriver.TaxiRide.HasArrivedAtDestination || PlaceToDriveTo == Vector3.Zero))
-            //{
-            //    CurrentTaskState = new StayWaitInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false);
-            //}
-            //else
-            //{
-            //    CurrentTaskState = new RegularGoToInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false, PlaceToDriveTo, this, TaxiDriver.TaxiRide.TaxiDrivingStyle.DrivingStyle, TaxiDriver.TaxiRide.TaxiDrivingStyle.Speed);// CurrentTaskState = new WanderInVehicleTaskState(PedGeneral, World, SeatAssigner, PlacesOfInterest, Settings, BlockPermanentEvents, false);
-            //}
+            NativeFunction.Natives.SET_DRIVER_ABILITY(1.0f);
+            CurrentTaskState = new RegularGoToInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, !TaxiDriver.WasModSpawned, PlaceToDriveTo, PlaceToDriveToHeading, this, TaxiDriver.TaxiRide.TaxiDrivingStyle.DrivingStyle, TaxiDriver.TaxiRide.TaxiDrivingStyle.Speed);
         }
         else
         {
-            if (SeatAssigner.IsAssignmentValid())//Ped.ShouldGetInVehicle)
+            if (SeatAssigner.IsAssignmentValid())
             {
                 CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false);
             }
@@ -209,7 +160,7 @@ public class TaxiService : ComplexTask, ILocationReachable
     private void CheckLocationChanged()
     {
         float driveChangeDistance = prevPlaceToDriveTo.DistanceTo2D(PlaceToDriveTo);
-        if (PedGeneral.IsInVehicle && driveChangeDistance <= 15f) //if (prevPlaceToDriveTo != PlaceToDriveTo  || prevPlaceToWalkTo != PlaceToWalkTo)// if (prevPlaceToDriveTo.DistanceTo2D(PlaceToDriveTo) <= 5f && prevPlaceToWalkTo.DistanceTo2D(PlaceToWalkTo) <= 5f)       
+        if (PedGeneral.IsInVehicle && driveChangeDistance <= 3f) //if (prevPlaceToDriveTo != PlaceToDriveTo  || prevPlaceToWalkTo != PlaceToWalkTo)// if (prevPlaceToDriveTo.DistanceTo2D(PlaceToDriveTo) <= 5f && prevPlaceToWalkTo.DistanceTo2D(PlaceToWalkTo) <= 5f)       
         {
             LocationsChanged = false;
             return;
@@ -245,6 +196,7 @@ public class TaxiService : ComplexTask, ILocationReachable
             return;
         }
         PlaceToDriveTo = TaxiDriver.TaxiRide.CurrentDriveToPosition;
+        PlaceToDriveToHeading = TaxiDriver.TaxiRide.CurrentDriveToHeading;
     }
 
 }

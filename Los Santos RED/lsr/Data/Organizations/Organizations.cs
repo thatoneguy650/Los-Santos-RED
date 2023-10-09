@@ -182,7 +182,7 @@ public class Organizations : IOrganizations
             ContactName = StaticStrings.ShitiCabContactName,
             BannerImagePath = "stores\\shiticab.png",
         };
-        TaxiFirm SunderedCab = new TaxiFirm("~y~", "SUNDERED", "Sundered Dependent Taxi", "Sundered Taxi", "Yellow", "TaxiDrivers", "SunderedTaxiVehicles", "SI ", "", "", "", "Cabbie")
+        TaxiFirm SunderedCab = new TaxiFirm("~y~", "SUNDERED", "Sundered Codependent Taxi", "Sundered Taxi", "Yellow", "TaxiDrivers", "SunderedTaxiVehicles", "SI ", "", "", "", "Cabbie")
         {
             Description = "We contemptuously drive L.S.",
             HeadDataGroupID = "AllHeads",

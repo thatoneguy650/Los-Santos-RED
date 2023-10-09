@@ -95,7 +95,7 @@ public class TaxiManager
         }
         if (showNotification)
         {
-            taxiRide.DisplayNotification("~r~Ride Cancelled", "You have cancelled this taxi ride");
+            taxiRide.DisplayNotification("~r~Ride Cancelled", "You have cancelled this taxi ride. Please wait for the Taxi to stop before exiting.");
         }
         Player.ActivityManager.LeaveVehicle(true);
         taxiRide.Cancel();
@@ -128,7 +128,7 @@ public class TaxiManager
             {
                 return null;
             }
-            tr = new TaxiRide(World, Player, taxiVehicleExt.TaxiFirm, taxiVehicleExt, RespondingDriver);
+            tr = new TaxiRide(World, Player, taxiVehicleExt.TaxiFirm, taxiVehicleExt, RespondingDriver, Player.Position);
             RespondingDriver.SetTaxiRide(tr);
             tr.SetActive();
             ActiveRides.Add(tr);

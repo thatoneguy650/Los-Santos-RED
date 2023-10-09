@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 public class BlankLocationsData
 {
-    private float defaultSpawnPercentage = 55f;
+    private float defaultSpawnPercentage = 40f;
     public BlankLocationsData()
     {
     }
@@ -402,7 +402,7 @@ public class BlankLocationsData
                     {
                         Location = new Vector3(1245.835f, -334.4011f, 68.78214f),
                             Heading = 171.9635f,
-                            Percentage = 55f,
+                            Percentage = defaultSpawnPercentage,
                             //AssociationID = "LSPD-ELS",
                             RequiredPedGroup = "",
                             RequiredVehicleGroup = "",
@@ -447,7 +447,7 @@ public class BlankLocationsData
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 100f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = 0f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = 0f,
@@ -525,7 +525,7 @@ public class BlankLocationsData
                                 {
                                     Location = new Vector3(355.1435f, -1036.628f, 28.81483f),
                                         Heading = 88.71296f,
-                                        Percentage = 100f,
+                                        Percentage = 0f,
                                         AssociationID = "",
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
@@ -571,7 +571,7 @@ public class BlankLocationsData
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 100f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = 0f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = 0f,
@@ -618,7 +618,7 @@ public class BlankLocationsData
                                 {
                                     Location = new Vector3(162.7488f, -1635.171f, 29.09935f),
                                         Heading = -165.3666f,
-                                        Percentage = 100f,
+                                        Percentage = 0f,
                                         AssociationID = "",
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
@@ -654,7 +654,7 @@ public class BlankLocationsData
                 {
                     new ConditionalGroup()
                     {
-                        Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             MinHourSpawn = 12,
                             MaxHourSpawn = 20,
                             PossiblePedSpawns = new List<ConditionalLocation>()
@@ -721,7 +721,7 @@ public class BlankLocationsData
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -842,7 +842,7 @@ public class BlankLocationsData
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -963,7 +963,7 @@ public class BlankLocationsData
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -1112,7 +1112,7 @@ public class BlankLocationsData
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -1210,7 +1210,7 @@ public class BlankLocationsData
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -1424,7 +1424,7 @@ public class BlankLocationsData
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 18,
           MaxHourSpawn = 4,
           PossiblePedSpawns =
@@ -1539,7 +1539,7 @@ public class BlankLocationsData
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 8,
           MaxHourSpawn = 20,
           PossiblePedSpawns =
@@ -1610,7 +1610,7 @@ public class BlankLocationsData
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 8,
           MaxHourSpawn = 20,
           PossiblePedSpawns =
@@ -1724,7 +1724,7 @@ public class BlankLocationsData
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 18,
           MaxHourSpawn = 4,
           PossiblePedSpawns =
@@ -1864,7 +1864,7 @@ public class BlankLocationsData
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -2133,7 +2133,7 @@ public class BlankLocationsData
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -2281,7 +2281,7 @@ public class BlankLocationsData
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -2408,7 +2408,7 @@ public class BlankLocationsData
 new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 18,
           MaxHourSpawn = 4,
           PossiblePedSpawns =
@@ -2480,7 +2480,7 @@ new List<ConditionalGroup>() {
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           PossiblePedSpawns =
               new List<ConditionalLocation>() {
                 new GangConditionalLocation() {
@@ -2550,7 +2550,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 100f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -3000,7 +3000,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 100f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -3194,7 +3194,7 @@ new List<ConditionalGroup>() {
                 new ConditionalGroup()
                 {
                     Name = "",
-                    Percentage = 100f,
+                    Percentage = defaultSpawnPercentage,
                     PossiblePedSpawns = new List<ConditionalLocation>()
                     {
                         new GangConditionalLocation()
@@ -3282,7 +3282,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -3376,7 +3376,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -3497,7 +3497,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -3618,7 +3618,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -3739,7 +3739,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -3921,7 +3921,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 100f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -4281,7 +4281,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -4521,7 +4521,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 100f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -4742,7 +4742,7 @@ new List<ConditionalGroup>() {
       new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 8,
           MaxHourSpawn = 18,
           PossiblePedSpawns =
@@ -4827,7 +4827,7 @@ new List<ConditionalGroup>() {
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 18,
           MaxHourSpawn = 4,
           PossiblePedSpawns =
@@ -4912,7 +4912,7 @@ new List<ConditionalGroup>() {
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 18,
           MaxHourSpawn = 4,
           PossiblePedSpawns =
@@ -5005,7 +5005,7 @@ new List<ConditionalGroup>() {
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 8,
           MaxHourSpawn = 18,
           PossiblePedSpawns =
@@ -5076,7 +5076,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -5197,7 +5197,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -5343,7 +5343,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -5494,7 +5494,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -5615,7 +5615,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -5740,7 +5740,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -6060,7 +6060,7 @@ new List<ConditionalGroup>() {
                 new ConditionalGroup()
                 {
                     Name = "",
-                    Percentage = 75f,
+                    Percentage = defaultSpawnPercentage,
                     MaxWantedLevelSpawn = 6,
                     PossiblePedSpawns = new List<ConditionalLocation>()
                     {
@@ -6127,7 +6127,7 @@ new List<ConditionalGroup>() {
                 new ConditionalGroup()
                 {
                     Name = "",
-                    Percentage = 75f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 8,
                     MaxHourSpawn = 20,
                     MaxWantedLevelSpawn = 6,
@@ -6197,7 +6197,7 @@ new List<ConditionalGroup>() {
                 new ConditionalGroup()
                 {
                     Name = "",
-                    Percentage = 75f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 8,
                     MaxHourSpawn = 20,
                     MaxWantedLevelSpawn = 6,
@@ -6258,7 +6258,7 @@ new List<ConditionalGroup>() {
                 new ConditionalGroup()
                 {
                     Name = "",
-                    Percentage = 75f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 8,
                     MaxHourSpawn = 20,
                     MaxWantedLevelSpawn = 6,
@@ -6342,7 +6342,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -6463,7 +6463,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -6585,7 +6585,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -6680,7 +6680,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -6802,7 +6802,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -6921,7 +6921,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -7044,7 +7044,7 @@ new List<ConditionalGroup>() {
                 new ConditionalGroup()
                 {
                     Name = "",
-                    Percentage = 75f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 18,
                     MaxHourSpawn = 4,
                     MaxWantedLevelSpawn = 6,
@@ -7207,7 +7207,7 @@ new List<ConditionalGroup>() {
                 new ConditionalGroup()
                 {
                     Name = "",
-                    Percentage = 75f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 18,
                     MaxHourSpawn = 4,
                     MaxWantedLevelSpawn = 6,
@@ -7334,7 +7334,7 @@ new List<ConditionalGroup>() {
                 new ConditionalGroup()
                 {
                     Name = "",
-                    Percentage = 75f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 18,
                     MaxHourSpawn = 4,
                     MaxWantedLevelSpawn = 6,
@@ -7392,7 +7392,7 @@ new List<ConditionalGroup>() {
                 new ConditionalGroup()
                 {
                     Name = "",
-                    Percentage = 75f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 8,
                     MaxHourSpawn = 18,
                     MaxWantedLevelSpawn = 6,
@@ -7449,7 +7449,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -7625,7 +7625,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -7926,7 +7926,7 @@ new List<ConditionalGroup>() {
       new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 20,
           MaxHourSpawn = 4,
           PossiblePedSpawns =
@@ -7996,7 +7996,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -8233,7 +8233,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -8495,7 +8495,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -8616,7 +8616,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -8827,7 +8827,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -8978,7 +8978,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -9184,7 +9184,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -9308,7 +9308,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -9429,7 +9429,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -9553,7 +9553,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -9677,7 +9677,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -9801,7 +9801,7 @@ new List<ConditionalGroup>() {
                     new ConditionalGroup()
                     {
                         Name = "",
-                            Percentage = 75f,
+                            Percentage = defaultSpawnPercentage,
                             OverrideNightPercentage = -1f,
                             OverrideDayPercentage = -1f,
                             OverridePoorWeatherPercentage = -1f,
@@ -9920,7 +9920,7 @@ new List<ConditionalGroup>() {
                     TerritorySpawnsForceMainGang = false,
                     Location = new Vector3(-301.9806f, -1641.12f, 32.12749f),
                     Heading = -122.441f,
-                    Percentage = 35f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 20,
                     MaxHourSpawn = 4,
                 },
@@ -9928,7 +9928,7 @@ new List<ConditionalGroup>() {
                 {
                     Location = new Vector3(-314.6769f, -1640.273f, 31.84881f),
                     Heading = -6.660462f,
-                    Percentage = 35f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 20,
                     MaxHourSpawn = 4,
                 },
@@ -9937,7 +9937,7 @@ new List<ConditionalGroup>() {
                     TerritorySpawnsForceMainGang = false,
                     Location = new Vector3(-315.531f, -1639.359f, 31.84881f),
                     Heading = -86.77119f,
-                    Percentage = 35f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 20,
                     MaxHourSpawn = 4,
                 },
@@ -9946,7 +9946,7 @@ new List<ConditionalGroup>() {
                     TerritorySpawnsForceMainGang = false,
                     Location = new Vector3(-314.3615f, -1638.53f, 31.84881f),
                     Heading = 160.9149f,
-                    Percentage = 35f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 20,
                     MaxHourSpawn = 4,
                 },
@@ -9955,7 +9955,7 @@ new List<ConditionalGroup>() {
                     TerritorySpawnsForceMainGang = false,
                     Location = new Vector3(-314.5116f, -1631.374f, 31.84881f),
                     Heading = -85.18255f,
-                    Percentage = 35f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 20,
                     MaxHourSpawn = 4,
                 },
@@ -9964,7 +9964,7 @@ new List<ConditionalGroup>() {
                     TerritorySpawnsForceMainGang = false,
                     Location = new Vector3(-313.6505f, -1630.512f, 31.84881f),
                     Heading = 174.248f,
-                    Percentage = 35f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 20,
                     MaxHourSpawn = 4,
                 },
@@ -9973,7 +9973,7 @@ new List<ConditionalGroup>() {
                     TerritorySpawnsForceMainGang = false,
                     Location = new Vector3(-312.4868f, -1630.584f, 31.84881f),
                     Heading = -92.0695f,
-                    Percentage = 35f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 20,
                     MaxHourSpawn = 4,
                 },
@@ -9982,7 +9982,7 @@ new List<ConditionalGroup>() {
                     TerritorySpawnsForceMainGang = false,
                     Location = new Vector3(-300.5563f, -1658.229f, 31.84879f),
                     Heading = -72.46208f,
-                    Percentage = 35f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 20,
                     MaxHourSpawn = 4,
                 },
@@ -9991,7 +9991,7 @@ new List<ConditionalGroup>() {
                     TerritorySpawnsForceMainGang = false,
                     Location = new Vector3(-299.8108f, -1659.356f, 31.84879f),
                     Heading = -0.9050441f,
-                    Percentage = 35f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 20,
                     MaxHourSpawn = 4,
                 },
@@ -10000,7 +10000,7 @@ new List<ConditionalGroup>() {
                     TerritorySpawnsForceMainGang = false,
                     Location = new Vector3(-298.2735f, -1658.152f, 31.8488f),
                     Heading = 117.1161f,
-                    Percentage = 35f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 20,
                     MaxHourSpawn = 4,
                 },
@@ -10021,7 +10021,7 @@ new List<ConditionalGroup>() {
                 {
                     Location = new Vector3(-176.7435f, -1430.187f, 31.28525f),
                     Heading = -179.4815f,
-                    Percentage = 45f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 18,
                     MaxHourSpawn = 3,
                     TaskRequirements = TaskRequirements.Guard,
@@ -10034,7 +10034,7 @@ new List<ConditionalGroup>() {
                 {
                     Location = new Vector3(-174.276f, -1431.17f, 31.2626f),
                     Heading = -127.0762f,
-                    Percentage = 45f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 18,
                     MaxHourSpawn = 3,
                     TaskRequirements = TaskRequirements.Guard,
@@ -10047,7 +10047,7 @@ new List<ConditionalGroup>() {
                 {
                     Location = new Vector3(-173.2247f, -1432.683f, 31.26154f),
                     Heading = 3.284423f,
-                    Percentage = 45f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 18,
                     MaxHourSpawn = 3,
                     TaskRequirements = TaskRequirements.Guard,
@@ -10060,7 +10060,7 @@ new List<ConditionalGroup>() {
                 {
                     Location = new Vector3(-172.6694f, -1431.62f, 31.24565f),
                     Heading = 118.8518f,
-                    Percentage = 45f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 18,
                     MaxHourSpawn = 3,
                     ForcedScenarios = new List<String>()
@@ -10072,7 +10072,7 @@ new List<ConditionalGroup>() {
                 {
                     Location = new Vector3(-176.829f, -1431.623f, 31.28296f),
                     Heading = -6.896521f,
-                    Percentage = 45f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 18,
                     MaxHourSpawn = 3,
                     TaskRequirements = TaskRequirements.Guard,
@@ -10088,7 +10088,7 @@ new List<ConditionalGroup>() {
                 {
                     Location = new Vector3(-174.8521f, -1438.027f, 30.81062f),
                     Heading = -38.86021f,
-                    Percentage = 45f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 18,
                     MaxHourSpawn = 3,
                 },
@@ -10096,7 +10096,7 @@ new List<ConditionalGroup>() {
                 {
                     Location = new Vector3(-177.9715f, -1435.419f, 30.82336f),
                     Heading = 139.328f,
-                    Percentage = 45f,
+                    Percentage = defaultSpawnPercentage,
                     MinHourSpawn = 18,
                     MaxHourSpawn = 3,
                 },
@@ -10132,7 +10132,7 @@ new List<ConditionalGroup>() {
       new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+         Percentage = defaultSpawnPercentage,
           MinHourSpawn = 18,
           MaxHourSpawn = 4,
           PossiblePedSpawns =
@@ -10206,7 +10206,7 @@ new List<ConditionalGroup>() {
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 8,
           MaxHourSpawn = 20,
           PossiblePedSpawns =
@@ -10280,7 +10280,7 @@ new List<ConditionalGroup>() {
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 8,
           MaxHourSpawn = 14,
           PossiblePedSpawns =
@@ -10367,7 +10367,7 @@ new List<ConditionalGroup>() {
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 18,
           MaxHourSpawn = 4,
           PossiblePedSpawns =
@@ -10442,7 +10442,7 @@ new List<ConditionalGroup>() {
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 12,
           MaxHourSpawn = 20,
           PossiblePedSpawns =
@@ -10515,7 +10515,7 @@ new List<ConditionalGroup>() {
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 18,
           MaxHourSpawn = 4,
           PossiblePedSpawns =
@@ -10618,7 +10618,7 @@ new List<ConditionalGroup>() {
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           PossiblePedSpawns =
               new List<ConditionalLocation>() {
                 new GangConditionalLocation() {
@@ -10728,7 +10728,7 @@ new List<ConditionalGroup>() {
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 18,
           MaxHourSpawn = 4,
           PossiblePedSpawns =
@@ -10843,7 +10843,7 @@ new List<ConditionalGroup>() {
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
           Name = "",
-          Percentage = 75f,
+          Percentage = defaultSpawnPercentage,
           MinHourSpawn = 18,
           MaxHourSpawn = 4,
           PossiblePedSpawns =

@@ -87,6 +87,8 @@ public class DispatchableVehicles : IDispatchableVehicles
     private List<DispatchableVehicle> NOOSESEPVehicles;
     private List<DispatchableVehicle> MarshalsServiceVehicles;
     private List<DispatchableVehicle> LCPDVehicles;
+    private DispatchableVehicle TaxiBroadWay;
+    private DispatchableVehicle TaxiEudora;
     private List<DispatchableVehicle> TaxiVehicles;
 
     public List<DispatchableVehicleGroup> AllVehicles => VehicleGroupLookup;
@@ -358,9 +360,75 @@ public class DispatchableVehicles : IDispatchableVehicles
         SetupDefaultGangSpecialVehicles();
 
         //Other
+        TaxiBroadWay = new DispatchableVehicle("broadway", 4, 4)
+        {
+            DebugName = "broadway_taxi_PeterBadoingy_DLCDespawn",
+            MaxOccupants = 2,
+            RequiredPrimaryColorID = 89,
+            RequiredSecondaryColorID = 89,
+            RequiresDLC = true,
+            RequiredVariation = new VehicleVariation()
+            {
+                PrimaryColor = 89,
+                SecondaryColor = 89,
+                Mod1PaintType = 7,
+                Mod2PaintType = 7,
+                WheelType = 8,
+                VehicleExtras = new List<VehicleExtra>()
+                    {
+                        new VehicleExtra(1,true),new VehicleExtra(2,true),
+                    },
+                VehicleToggles = new List<VehicleToggle>()
+                    {
+                        new VehicleToggle(18,true),
+                    },
+                VehicleMods = new List<VehicleMod>()
+                    {
+                        new VehicleMod(1,3),new VehicleMod(2,2),new VehicleMod(3,2),new VehicleMod(4,3),new VehicleMod(5,3),new VehicleMod(7,1),new VehicleMod(8,2),new VehicleMod(9,2),new VehicleMod(11,3),new VehicleMod(12,2),new VehicleMod(13,2),new VehicleMod(14,2),
+                        new VehicleMod(15,1),new VehicleMod(16,4),new VehicleMod(23,10),new VehicleMod(48,11),new VehicleMod(50,3),
+                    },
+                InteriorColor = 13,
+                DashboardColor = 111,
+            },
+        };
+        TaxiEudora = new DispatchableVehicle("eudora", 4, 4)
+        {
+            DebugName = "eudora_taxi_PeterBadoingy_DLCDespawn",
+            MaxOccupants = 2,
+            RequiredPrimaryColorID = 89,
+            RequiredSecondaryColorID = 89,
+            RequiresDLC = true,
+            RequiredVariation = new VehicleVariation()
+            {
+                PrimaryColor = 89,
+                SecondaryColor = 89,
+                Mod1PaintType = 7,
+                Mod2PaintType = 7,
+                WheelType = 2,
+                PearlescentColor = 88,
+                VehicleExtras = new List<VehicleExtra>()
+                {
+
+                },
+                VehicleToggles = new List<VehicleToggle>()
+                    {
+                        new VehicleToggle(18,true),
+                    },
+                VehicleMods = new List<VehicleMod>()
+                    {
+                        new VehicleMod(1,2),new VehicleMod(2,2),new VehicleMod(3,0),new VehicleMod(4,2),new VehicleMod(5,0),new VehicleMod(6,1),new VehicleMod(7,5),new VehicleMod(9,7),new VehicleMod(10,0),new VehicleMod(11,3),new VehicleMod(12,2),new VehicleMod(13,2),
+                        new VehicleMod(15,0),new VehicleMod(16,4),new VehicleMod(23,10),new VehicleMod(48,10),new VehicleMod(50,3),
+                    },
+                InteriorColor = 22,
+                DashboardColor = 158,
+            },
+        };
+
+
         TaxiVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("taxi", 100, 100),
-           // new DispatchableVehicle("broadway", 1, 1) { RequiresDLC = true, RequiredLiveries = new List<int>() { 11 } },
+            new DispatchableVehicle("taxi", 92, 92),
+            TaxiBroadWay,
+            TaxiEudora,
         };
     }
     private void SetupDefaultGangSpecialVehicles_Gambetti()
@@ -23095,7 +23163,9 @@ Output = -1,
             new DispatchableVehicle(SecurityTorrence, 100, 100){  RequiredLiveries = new List<int>() { 4 } },};
 
         List<DispatchableVehicle> DowntownTaxiVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("taxi", 100, 100){ RequiredLiveries = new List<int>() { 0 } },
+            new DispatchableVehicle("taxi", 92, 92){ RequiredLiveries = new List<int>() { 0 } },
+            TaxiBroadWay,
+            TaxiEudora,
         };
         List<DispatchableVehicle> PurpleTaxiVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("taxi", 100, 100){ RequiredLiveries = new List<int>() { 1 } },

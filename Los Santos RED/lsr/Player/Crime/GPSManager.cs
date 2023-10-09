@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using static RAGENativeUI.Elements.UIMenuStatsPanel;
 
@@ -71,10 +72,27 @@ public class GPSManager
         {
             return Vector3.Zero;
         }
-        if (!NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(markerPos.X, markerPos.Y, 500f, out float GroundZ, true, false))
+        if (!NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(markerPos.X, markerPos.Y, 1000f, out float GroundZ, true, false))
         {
-            EntryPoint.WriteToConsole($"Current Marker NO GROUND Z FOUND RETURNING REGULAR MARKERPOS {markerPos}");
-            return ForceGroundZ(markerPos);
+
+            Vector3 NewVec = ForceGroundZ(markerPos);
+
+
+
+            if (NewVec.Z == 0.0f)
+            {
+                NewVec = ForceGroundZ(markerPos);
+            }
+
+            if (NewVec.Z == 0.0f)
+            {
+                EntryPoint.WriteToConsole($"NEWVEC Z IS Z? {markerPos} NEW:{NewVec}");
+
+                return Vector3.Zero ;
+            }
+            EntryPoint.WriteToConsole($"Current Marker NO GROUND Z FOUND RETURNING REGULAR MARKERPOS {markerPos} NEW:{NewVec}");
+
+            return NewVec;
 
 
 
@@ -93,57 +111,63 @@ public class GPSManager
             return;
         }
         Vector3 finalPos = positionToTeleportTo.FinalPosition;
-        if(Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+        if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         {
-            Vehicle toTransport = Player.InterestedVehicle.Vehicle;
-            if (Settings.SettingsManager.PlayerOtherSettings.RemovePlayerFromVehicleWhenTeleporting)
-            {
-                Game.FadeScreenOut(1000, true);
-                int existingSeat = Player.Character.SeatIndex;
-                Player.Character.Position = Player.Character.GetOffsetPosition(new Vector3(0f, 10f, 2f));
+            Vehicle toTransport = Player.CurrentVehicle.Vehicle;
+            //if (Settings.SettingsManager.PlayerOtherSettings.RemovePlayerFromVehicleWhenTeleporting)
+            //{
+            //    Game.FadeScreenOut(1000, true);
+            //    int existingSeat = Player.Character.SeatIndex;
+            //    Player.Character.Position = Player.Character.GetOffsetPosition(new Vector3(0f, 10f, 2f));
 
-                Vehicle bike = new Vehicle("asea", Player.Character.GetOffsetPosition(new Vector3(0f, 10f, 2f)));
-                if (bike.Exists())
-                {
-                    Player.Character.WarpIntoVehicle(bike, -1);
-                }
-
-
+            //    Vehicle bike = new Vehicle("asea", Player.Character.GetOffsetPosition(new Vector3(0f, 10f, 2f)));
+            //    if (bike.Exists())
+            //    {
+            //        Player.Character.WarpIntoVehicle(bike, -1);
+            //    }
 
 
 
-                GameFiber.Sleep(500);
-                if (bike.Exists())
-                {
-                    bike.Delete();
-                }
 
-                if (toTransport.Exists())
-                {
-                    toTransport.Position = finalPos;
-                }
-                Player.Character.Position = finalPos.Around2D(5f) + new Vector3(0f, 0f, 2f);
-                GameFiber.Sleep(500);
-                if (toTransport.Exists())
-                {
 
-                    Player.Character.WarpIntoVehicle(toTransport, existingSeat);
-                }
-                Game.FadeScreenIn(1000, true);
-                //Player.Character.Position = finalPos.Around2D(5f) + new Vector3(0f, 0f, 10f);
+            //    GameFiber.Sleep(500);
+            //    if (bike.Exists())
+            //    {
+            //        bike.Delete();
+            //    }
 
-            }
-            else
-            {
+            //    if (toTransport.Exists())
+            //    {
+            //        toTransport.Position = finalPos;
+            //    }
+            //    Player.Character.Position = finalPos.Around2D(5f) + new Vector3(0f, 0f, 2f);
+            //    GameFiber.Sleep(500);
+            //    if (toTransport.Exists())
+            //    {
+
+            //        Player.Character.WarpIntoVehicle(toTransport, existingSeat);
+            //    }
+            //    Game.FadeScreenIn(1000, true);
+            //    //Player.Character.Position = finalPos.Around2D(5f) + new Vector3(0f, 0f, 10f);
+
+            //}
+            //else
+            //{
                 Game.FadeScreenOut(500, true);
-                toTransport.Position = finalPos;
-                Game.FadeScreenIn(500, true);
-            }
+            toTransport.Position = finalPos;// + new Vector3(0f,0f,1000f);
+
+            EntryPoint.WriteToConsole($"TELEPORTING TO {finalPos}");
+            NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(toTransport);
+            GameFiber.Sleep(1000);
+
+            Game.FadeScreenIn(500, true);
+            //}
         }
         else
         {
             Game.FadeScreenOut(500, true);
             Player.Character.Position = finalPos;
+            GameFiber.Sleep(1000);
             Game.FadeScreenIn(500, true);
         }
     }
@@ -182,6 +206,7 @@ public class GPSManager
         if(NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(v.X, v.Y, 1000f, out float GroundZ, true, false))
         {
             zcoord = GroundZ;
+            EntryPoint.WriteToConsole($"ForceGroundZ1 FOUND Z: {zcoord}");
             return new Vector3(v.X, v.Y, zcoord);
         }
         foreach(Tuple<int,List<float>> tuple in AllList.OrderBy(x=> x.Item1))
@@ -194,6 +219,7 @@ public class GPSManager
             if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(v.X, v.Y, 1000f, out float GroundZ2, true, false))
             {
                 zcoord = GroundZ2;
+                EntryPoint.WriteToConsole($"ForceGroundZ2 FOUND Z: {zcoord}");
                 return new Vector3(v.X, v.Y, zcoord);
             }
         }
@@ -240,7 +266,7 @@ public class GPSManager
         //    if (Function.Call<bool>(Hash.GET_GROUND_Z_FOR_3D_COORD, v.X, v.Y, 1000f, outArgb))
         //        zcoord = outArgb.GetResult<float>();
         //}
-
+        EntryPoint.WriteToConsole("FORCEGORUNDz DIDNT FIND ANYTHING");
         return new Vector3(v.X, v.Y, zcoord);
     }
 

@@ -68,7 +68,7 @@ public class CopBrain : PedBrain
             }
         }
     }
-    private void UpdateCurrentTask()
+    protected override void UpdateCurrentTask()
     {
         if (Cop.DistanceToPlayer <= Player.ActiveDistance)// && !Cop.IsInHelicopter)//heli, dogs, boats come next?
         {
@@ -135,20 +135,10 @@ public class CopBrain : PedBrain
     }
     private PedExt PedToAttack()
     {
-        //if (Cop.RecentlyUpdatedTarget)
-        //{
-        //    return Cop.CurrentTask?.OtherTarget;
-        //}
-        //else
-        //{
-        //    Cop.GameTimeLastUpdatedTarget = Game.GameTime;
-        //}
-
         if (Settings.SettingsManager.PerformanceSettings.CopGetPedToAttackDisable)
         {
             return null;
         }
-
         if (!World.Pedestrians.PossibleTargets.Any(x => x.IsWanted))
         {
             return null;
@@ -276,9 +266,7 @@ public class CopBrain : PedBrain
     {
         if (Cop.CurrentTask?.Name != "Idle")// && Cop.IsIdleTaskable)
         {
-            // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
-            //Cop.CurrentTask = new Idle(Cop, Player, World, PlacesOfInterest, Cop);
-            Cop.CurrentTask = new GeneralIdle(Cop, Cop, Player, World, World.Vehicles.SimplePoliceVehicles, PlacesOfInterest, Settings, Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringIdle, true, Settings.SettingsManager.WorldSettings.AllowSettingSirenState, true);
+            Cop.CurrentTask = new CopGeneralIdle(Cop, Cop, Player, World, World.Vehicles.SimplePoliceVehicles, PlacesOfInterest, Settings, Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringIdle, true, Settings.SettingsManager.WorldSettings.AllowSettingSirenState, true);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
             Cop.CurrentTask.Start();
@@ -304,7 +292,6 @@ public class CopBrain : PedBrain
             Cop.CurrentTask.Start();
         }
     }
-
     private void SetMarshalLocate()
     {
         if (Cop.CurrentTask?.Name != "Locate")
@@ -315,9 +302,6 @@ public class CopBrain : PedBrain
             Cop.CurrentTask.Start();
         }
     }
-
-
-
     private void SetChase()
     {
         if (Cop.CurrentTask?.Name != "Chase")

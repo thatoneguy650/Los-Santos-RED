@@ -962,6 +962,14 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
 
     }
+    public virtual void SetPersistent()
+    {
+
+    }
+    public virtual void SetNonPersistent()
+    {
+
+    }
     public void SetBaseStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons weapons, bool addBlip)
     {
         if (!Pedestrian.Exists())
