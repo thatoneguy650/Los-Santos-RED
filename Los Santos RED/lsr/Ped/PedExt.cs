@@ -1032,6 +1032,14 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             attachedBlip.Delete();
         }
     }
+    public virtual void FullyDelete()
+    {
+        DeleteBlip();
+        if(Pedestrian.Exists())
+        {
+            Pedestrian.Delete();
+        }
+    }
     private void AddPlayerCrimeWitnessed(ITargetable Player)
     {
         foreach(WitnessedCrime witnessedCrime in PlayerCrimesWitnessed.ToList())

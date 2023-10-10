@@ -62,7 +62,7 @@ public class LicensesTab
             {
                 LocationTypes.GetState(StaticStrings.SanAndreasStateID);
             }
-            if (issueState == null)
+            if (issueState != null)
             {
                 ccwdesc = $"State: ~y~{issueState.StateName}~s~~n~";
             }
@@ -88,7 +88,7 @@ public class LicensesTab
             {
                 LocationTypes.GetState(StaticStrings.SanAndreasStateID);
             }
-            if (issueState == null)
+            if (issueState != null)
             {
                 ccwdesc = $"State: ~y~{issueState.StateName}~s~~n~";
             }

@@ -104,6 +104,451 @@ public class GPSManager
 
     }
 
+
+
+
+
+
+
+
+    //Adapted from TomGrobbe
+    public void TeleportToCoords(Vector3 pos, float heading, bool forceRoadNode, bool safeModeDisabled)
+    {
+        EntryPoint.WriteToConsole($"STARTING TELEPORT TO COORDS {pos} {heading}");
+        if (!safeModeDisabled)
+        {
+            // Is player in a vehicle and the driver? Then we'll use that to teleport.
+            var veh = Game.LocalPlayer.Character.CurrentVehicle;
+            bool inVehicle() => veh != null && veh.Exists();// && Game.LocalPlayer.Character == veh.Driver;
+
+            bool vehicleRestoreVisibility = inVehicle() && veh.IsVisible;
+            bool pedRestoreVisibility = Game.LocalPlayer.Character.IsVisible;
+
+
+            // Fade out the screen and wait for it to be faded out completely.
+            Game.FadeScreenOut(500, true);
+
+            while (!Game.IsScreenFadedOut)
+            {
+                GameFiber.Yield();
+            }
+
+
+
+
+            // Freeze vehicle or player location and fade out the entity to the network.
+            if (inVehicle())
+            {
+                veh.IsPositionFrozen = true;
+                //if (veh.IsVisible)
+                //{
+                //    NetworkFadeOutEntity(veh.Handle, true, false);
+                //}
+            }
+            else
+            {
+                NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Game.LocalPlayer.Character);
+                Game.LocalPlayer.Character.IsPositionFrozen = true;
+                //if (Game.LocalPlayer.Character.IsVisible)
+                //{
+                //    NetworkFadeOutEntity(Game.LocalPlayer.Character.Handle, true, false);
+                //}
+            }
+
+
+
+            // This will be used to get the return value from the groundz native.
+            float groundZ = 850.0f;
+
+            // Bool used to determine if the groundz coord could be found.
+            bool found = false;
+
+            // Loop from 950 to 0 for the ground z coord, and take away 25 each time.
+            if (!forceRoadNode)
+            {
+                for (float zz = 950.0f; zz >= 0f; zz -= 25f)
+                {
+                    float z = zz;
+                    // The z coord is alternating between a very high number, and a very low one.
+                    // This way no matter the location, the actual ground z coord will always be found the fastest.
+                    // If going from top > bottom then it could take a long time to reach the bottom. And vice versa.
+                    // By alternating top/bottom each iteration, we minimize the time on average for ANY location on the map.
+                    if (zz % 2 != 0)
+                    {
+                        z = 950f - zz;
+                    }
+
+                    // Request collision at the coord. I've never actually seen this do anything useful, but everyone keeps telling me this is needed.
+                    // It doesn't matter to get the ground z coord, and neither does it actually prevent entities from falling through the map, nor does
+                    // it seem to load the world ANY faster than without, but whatever.
+                    NativeFunction.Natives.REQUEST_COLLISION_AT_COORD(pos.X, pos.Y, z);
+
+                    // Request a new scene. This will trigger the world to be loaded around that area.
+                    NativeFunction.Natives.NEW_LOAD_SCENE_START(pos.X, pos.Y, z, pos.X, pos.Y, z, 50f, 0);
+
+                    // Timer to make sure things don't get out of hand (player having to wait forever to get teleported if something fails).
+                    uint tempTimer = Game.GameTime;
+
+                    // Wait for the new scene to be loaded.
+                    while (NativeFunction.Natives.IS_NETWORK_LOADING_SCENE<bool>())//  IsNetworkLoadingScene())
+                    {
+                        // If this takes longer than 1 second, just abort. It's not worth waiting that long.
+                        if (Game.GameTime - tempTimer > 1000)
+                        {
+                            EntryPoint.WriteToConsole("Waiting for the scene to load is taking too long (more than 1s). Breaking from wait loop.");
+                            break;
+                        }
+                        GameFiber.Yield();
+                    }
+
+                    // If the player is in a vehicle, teleport the vehicle to this new position.
+                    if (inVehicle())
+                    {
+                        NativeFunction.Natives.SET_ENTITY_COORDS(veh, pos.X, pos.Y, z, false, false, false, true);
+                        veh.Heading = heading;
+                    }
+                    // otherwise, teleport the player to this new position.
+                    else
+                    {
+                        NativeFunction.Natives.SET_ENTITY_COORDS(Game.LocalPlayer.Character, pos.X, pos.Y, z, false, false, false, true);
+                        Game.LocalPlayer.Character.Heading = heading;
+                    }
+
+                    // Reset the timer.
+                    tempTimer = Game.GameTime;
+
+                    // Wait for the collision to be loaded around the entity in this new location.
+                    while (!NativeFunction.Natives.HAS_COLLISION_LOADED_AROUND_ENTITY<bool>(Game.LocalPlayer.Character))
+                    {
+                        // If this takes too long, then just abort, it's not worth waiting that long since we haven't found the real ground coord yet anyway.
+                        if (Game.GameTime - tempTimer > 1000)
+                        {
+                            EntryPoint.WriteToConsole("Waiting for the collision is taking too long (more than 1s). Breaking from wait loop.");
+                            break;
+                        }
+                        GameFiber.Yield();
+                    }
+
+                    // Check for a ground z coord.
+                    found = NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(pos.X, pos.Y, z, ref groundZ, false);
+
+                    // If we found a ground z coord, then teleport the player (or their vehicle) to that new location and break from the loop.
+                    if (found)
+                    {
+                        EntryPoint.WriteToConsole($"Ground coordinate found: {groundZ}");
+                        if (inVehicle())
+                        {
+                            NativeFunction.Natives.SET_ENTITY_COORDS(veh, pos.X, pos.Y, groundZ, false, false, false, true);
+
+                            // We need to unfreeze the vehicle because sometimes having it frozen doesn't place the vehicle on the ground properly.
+                            veh.IsPositionFrozen = false;
+                            NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY(veh);
+                            veh.Heading = heading;
+                            // Re-freeze until screen is faded in again.
+                            veh.IsPositionFrozen = true;
+                        }
+                        else
+                        {
+                            NativeFunction.Natives.SET_ENTITY_COORDS(Game.LocalPlayer.Character, pos.X, pos.Y, groundZ, false, false, false, true);
+                            Game.LocalPlayer.Character.Heading = heading;
+                        }
+                        break;
+                    }
+
+                    // Wait 10ms before trying the next location.
+                    GameFiber.Sleep(10);
+                }
+            }
+            // If the loop ends but the ground z coord has not been found yet, then get the nearest vehicle node as a fail-safe coord.
+            if (!found)
+            {
+                var safePos = pos;
+                NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE<bool>(pos.X, pos.Y, pos.Z, 0, ref safePos, 0, 0, 0);
+
+                // Notify the user that the ground z coord couldn't be found, so we will place them on a nearby road instead.
+                EntryPoint.WriteToConsole("Could not find a safe ground coord. Placing you on the nearest road instead.");
+                EntryPoint.WriteToConsole("Could not find a safe ground coord. Placing you on the nearest road instead.");
+
+                // Teleport vehicle, or player.
+                if (inVehicle())
+                {
+                    NativeFunction.Natives.SET_ENTITY_COORDS(veh, safePos.X, safePos.Y, safePos.Z, false, false, false, true);
+                    veh.Heading = heading;
+                    veh.IsPositionFrozen = false;
+                    NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY(veh);
+                    veh.IsPositionFrozen = true;
+                }
+                else
+                {
+                    NativeFunction.Natives.SET_ENTITY_COORDS(Game.LocalPlayer.Character, safePos.X, safePos.Y, safePos.Z, false, false, false, true);
+                    Game.LocalPlayer.Character.Heading = heading;
+                }
+            }
+
+            // Once the teleporting is done, unfreeze vehicle or player and fade them back in.
+            if (inVehicle())
+            {
+                if (vehicleRestoreVisibility)
+                {
+                    //NetworkFadeInEntity(veh.Handle, true);
+                    //if (!pedRestoreVisibility)
+                    //{
+                    //    Game.LocalPlayer.Character.IsVisible = false;
+                    //}
+                }
+                veh.IsPositionFrozen = false;
+            }
+            else
+            {
+                //if (pedRestoreVisibility)
+                //{
+                //    NetworkFadeInEntity(Game.LocalPlayer.Character.Handle, true);
+                //}
+                Game.LocalPlayer.Character.IsPositionFrozen = false;
+            }
+
+            // Fade screen in and reset the camera angle.
+
+
+            GameFiber.Sleep(1000);
+
+            Game.FadeScreenIn(500, true);
+            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(0.0f, 1.0f);
+        }
+
+        // Disable safe teleporting and go straight to the specified coords.
+        else
+        {
+            NativeFunction.Natives.REQUEST_COLLISION_AT_COORD(pos.X, pos.Y, pos.Z);
+
+            // Teleport directly to the coords without trying to get a safe z pos.
+            if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Driver == Game.LocalPlayer.Character)
+            {
+                NativeFunction.Natives.SET_ENTITY_COORDS(Game.LocalPlayer.Character.CurrentVehicle, pos.X, pos.Y, pos.Z, false, false, false, true);
+                Game.LocalPlayer.Character.CurrentVehicle.Heading = heading;
+            }
+            else
+            {
+                NativeFunction.Natives.SET_ENTITY_COORDS(Game.LocalPlayer.Character, pos.X, pos.Y, pos.Z, false, false, false, true);
+                Game.LocalPlayer.Character.Heading = heading;
+            }
+        }
+    }
+    //ORIG
+    //public void TeleportToCoords(Vector3 pos, bool safeModeDisabled = false)
+    //{
+    //    if (!safeModeDisabled)
+    //    {
+    //        // Is player in a vehicle and the driver? Then we'll use that to teleport.
+    //        var veh = Game.LocalPlayer.Character.CurrentVehicle;
+    //        bool inVehicle() => veh != null && veh.Exists() && Game.LocalPlayer.Character == veh.Driver;
+
+    //        bool vehicleRestoreVisibility = inVehicle() && veh.IsVisible;
+    //        bool pedRestoreVisibility = Game.LocalPlayer.Character.IsVisible;
+
+    //        // Freeze vehicle or player location and fade out the entity to the network.
+    //        if (inVehicle())
+    //        {
+    //            veh.IsPositionFrozen = true;
+    //            //if (veh.IsVisible)
+    //            //{
+    //            //    NetworkFadeOutEntity(veh.Handle, true, false);
+    //            //}
+    //        }
+    //        else
+    //        {
+    //            NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Game.LocalPlayer.Character);
+    //            Game.LocalPlayer.Character.IsPositionFrozen = true;
+    //            //if (Game.LocalPlayer.Character.IsVisible)
+    //            //{
+    //            //    NetworkFadeOutEntity(Game.LocalPlayer.Character.Handle, true, false);
+    //            //}
+    //        }
+
+    //        // Fade out the screen and wait for it to be faded out completely.
+    //        Game.FadeScreenOut(500, true);
+
+    //        while (!Game.IsScreenFadedOut)
+    //        {
+    //            GameFiber.Yield();
+    //        }
+
+    //        // This will be used to get the return value from the groundz native.
+    //        float groundZ = 850.0f;
+
+    //        // Bool used to determine if the groundz coord could be found.
+    //        bool found = false;
+
+    //        // Loop from 950 to 0 for the ground z coord, and take away 25 each time.
+    //        for (float zz = 950.0f; zz >= 0f; zz -= 25f)
+    //        {
+    //            float z = zz;
+    //            // The z coord is alternating between a very high number, and a very low one.
+    //            // This way no matter the location, the actual ground z coord will always be found the fastest.
+    //            // If going from top > bottom then it could take a long time to reach the bottom. And vice versa.
+    //            // By alternating top/bottom each iteration, we minimize the time on average for ANY location on the map.
+    //            if (zz % 2 != 0)
+    //            {
+    //                z = 950f - zz;
+    //            }
+
+    //            // Request collision at the coord. I've never actually seen this do anything useful, but everyone keeps telling me this is needed.
+    //            // It doesn't matter to get the ground z coord, and neither does it actually prevent entities from falling through the map, nor does
+    //            // it seem to load the world ANY faster than without, but whatever.
+    //            NativeFunction.Natives.REQUEST_COLLISION_AT_COORD(pos.X, pos.Y, z);
+
+    //            // Request a new scene. This will trigger the world to be loaded around that area.
+    //            NativeFunction.Natives.NEW_LOAD_SCENE_START(pos.X, pos.Y, z, pos.X, pos.Y, z, 50f, 0);
+
+    //            // Timer to make sure things don't get out of hand (player having to wait forever to get teleported if something fails).
+    //            uint tempTimer = Game.GameTime;
+
+    //            // Wait for the new scene to be loaded.
+    //            while (NativeFunction.Natives.IS_NETWORK_LOADING_SCENE<bool>())//  IsNetworkLoadingScene())
+    //            {
+    //                // If this takes longer than 1 second, just abort. It's not worth waiting that long.
+    //                if (Game.GameTime - tempTimer > 1000)
+    //                {
+    //                    EntryPoint.WriteToConsole("Waiting for the scene to load is taking too long (more than 1s). Breaking from wait loop.");
+    //                    break;
+    //                }
+    //                GameFiber.Yield();
+    //            }
+
+    //            // If the player is in a vehicle, teleport the vehicle to this new position.
+    //            if (inVehicle())
+    //            {
+    //                NativeFunction.Natives.SET_ENTITY_COORDS(veh, pos.X, pos.Y, z, false, false, false, true);
+    //            }
+    //            // otherwise, teleport the player to this new position.
+    //            else
+    //            {
+    //                NativeFunction.Natives.SET_ENTITY_COORDS(Game.LocalPlayer.Character, pos.X, pos.Y, z, false, false, false, true);
+    //            }
+
+    //            // Reset the timer.
+    //            tempTimer = Game.GameTime;
+
+    //            // Wait for the collision to be loaded around the entity in this new location.
+    //            while (!NativeFunction.Natives.HAS_COLLISION_LOADED_AROUND_ENTITY<bool>(Game.LocalPlayer.Character))
+    //            {
+    //                // If this takes too long, then just abort, it's not worth waiting that long since we haven't found the real ground coord yet anyway.
+    //                if (Game.GameTime - tempTimer > 1000)
+    //                {
+    //                    EntryPoint.WriteToConsole("Waiting for the collision is taking too long (more than 1s). Breaking from wait loop.");
+    //                    break;
+    //                }
+    //                GameFiber.Yield();
+    //            }
+
+    //            // Check for a ground z coord.
+    //            found = NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(pos.X, pos.Y, z, ref groundZ, false);
+
+    //            // If we found a ground z coord, then teleport the player (or their vehicle) to that new location and break from the loop.
+    //            if (found)
+    //            {
+    //                EntryPoint.WriteToConsole($"Ground coordinate found: {groundZ}");
+    //                if (inVehicle())
+    //                {
+    //                    NativeFunction.Natives.SET_ENTITY_COORDS(veh, pos.X, pos.Y, groundZ, false, false, false, true);
+
+    //                    // We need to unfreeze the vehicle because sometimes having it frozen doesn't place the vehicle on the ground properly.
+    //                    veh.IsPositionFrozen = false;
+    //                    NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY(veh);
+
+    //                    // Re-freeze until screen is faded in again.
+    //                    veh.IsPositionFrozen = true;
+    //                }
+    //                else
+    //                {
+    //                    NativeFunction.Natives.SET_ENTITY_COORDS(Game.LocalPlayer.Character, pos.X, pos.Y, groundZ, false, false, false, true);
+    //                }
+    //                break;
+    //            }
+
+    //            // Wait 10ms before trying the next location.
+    //            GameFiber.Sleep(10);
+    //        }
+
+    //        // If the loop ends but the ground z coord has not been found yet, then get the nearest vehicle node as a fail-safe coord.
+    //        if (!found)
+    //        {
+    //            var safePos = pos;
+    //            NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE<bool>(pos.X, pos.Y, pos.Z, 0, ref safePos, 0, 0, 0);
+
+    //            // Notify the user that the ground z coord couldn't be found, so we will place them on a nearby road instead.
+    //            EntryPoint.WriteToConsole("Could not find a safe ground coord. Placing you on the nearest road instead.");
+    //            EntryPoint.WriteToConsole("Could not find a safe ground coord. Placing you on the nearest road instead.");
+
+    //            // Teleport vehicle, or player.
+    //            if (inVehicle())
+    //            {
+    //                NativeFunction.Natives.SET_ENTITY_COORDS(veh, safePos.X, safePos.Y, safePos.Z, false, false, false, true);
+    //                veh.IsPositionFrozen = false;
+    //                NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY(veh);
+    //                veh.IsPositionFrozen = true;
+    //            }
+    //            else
+    //            {
+    //                NativeFunction.Natives.SET_ENTITY_COORDS(Game.LocalPlayer.Character, safePos.X, safePos.Y, safePos.Z, false, false, false, true);
+    //            }
+    //        }
+
+    //        // Once the teleporting is done, unfreeze vehicle or player and fade them back in.
+    //        if (inVehicle())
+    //        {
+    //            if (vehicleRestoreVisibility)
+    //            {
+    //                //NetworkFadeInEntity(veh.Handle, true);
+    //                //if (!pedRestoreVisibility)
+    //                //{
+    //                //    Game.LocalPlayer.Character.IsVisible = false;
+    //                //}
+    //            }
+    //            veh.IsPositionFrozen = false;
+    //        }
+    //        else
+    //        {
+    //            //if (pedRestoreVisibility)
+    //            //{
+    //            //    NetworkFadeInEntity(Game.LocalPlayer.Character.Handle, true);
+    //            //}
+    //            Game.LocalPlayer.Character.IsPositionFrozen = false;
+    //        }
+
+    //        // Fade screen in and reset the camera angle.
+    //        Game.FadeScreenIn(500, true);
+    //        NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(0.0f, 1.0f);
+    //    }
+
+    //    // Disable safe teleporting and go straight to the specified coords.
+    //    else
+    //    {
+    //        NativeFunction.Natives.REQUEST_COLLISION_AT_COORD(pos.X, pos.Y, pos.Z);
+
+    //        // Teleport directly to the coords without trying to get a safe z pos.
+    //        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Driver == Game.LocalPlayer.Character)
+    //        {
+    //            NativeFunction.Natives.SET_ENTITY_COORDS(Game.LocalPlayer.Character.CurrentVehicle, pos.X, pos.Y, pos.Z, false, false, false, true);
+    //        }
+    //        else
+    //        {
+    //            NativeFunction.Natives.SET_ENTITY_COORDS(Game.LocalPlayer.Character, pos.X, pos.Y, pos.Z, false, false, false, true);
+    //        }
+    //    }
+    //}
+
+
+
+
+
+
+
+
+
+
+
+
     public void TeleportToDestination(SpawnLocation positionToTeleportTo)
     {
         if(positionToTeleportTo == null)
@@ -180,7 +625,8 @@ public class GPSManager
             Game.DisplaySubtitle("No Marker Set");
             return;
         }
-        TeleportToDestination(new SpawnLocation(markerPos));
+        TeleportToCoords(markerPos,0f, false, false);
+        //TeleportToDestination(new SpawnLocation(markerPos));
     }
 
 
@@ -353,6 +799,12 @@ public class GPSManager
 
     //    return result;
     //}
+
+
+
+
+
+
 
 
 

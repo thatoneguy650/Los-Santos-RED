@@ -113,6 +113,7 @@ public class TaxiManager
     {
         if(taxiVehicleExt == null)
         {
+            EntryPoint.WriteToConsole("GetOrCreateRide FAIL 1");
             return null;
         }
         TaxiRide tr = ActiveRides.FirstOrDefault(x => x.RespondingVehicle != null && taxiVehicleExt != null && x.RespondingVehicle.Handle == taxiVehicleExt.Handle);
@@ -120,12 +121,14 @@ public class TaxiManager
         {
             if(!taxiVehicleExt.Vehicle.Exists() || !taxiVehicleExt.Vehicle.Driver.Exists())
             {
+                EntryPoint.WriteToConsole("GetOrCreateRide FAIL 2");
                 return null;
             }
             uint driverhandle = taxiVehicleExt.Vehicle.Driver.Handle;
             TaxiDriver RespondingDriver = World.Pedestrians.TaxiDriverList.FirstOrDefault(x => x.Handle == driverhandle);
             if(RespondingDriver == null)
             {
+                EntryPoint.WriteToConsole("GetOrCreateRide FAIL 3");
                 return null;
             }
             tr = new TaxiRide(World, Player, taxiVehicleExt.TaxiFirm, taxiVehicleExt, RespondingDriver, Player.Position);

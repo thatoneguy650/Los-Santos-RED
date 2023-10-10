@@ -487,6 +487,9 @@ namespace LosSantosRED.lsr.Data
         private void LoadRelationships(IInventoryable player, IGangs gangs)
         {
             player.RelationshipManager.GangRelationships.ResetGang(false);
+
+            player.RelationshipManager.Reset(false);
+
             foreach (GangRepSave gangRepSave in GangReputationsSave)
             {
                 Gang myGang = gangs.GetGang(gangRepSave.GangID);
@@ -504,7 +507,7 @@ namespace LosSantosRED.lsr.Data
                     }
                 }
             }
-            player.RelationshipManager.Reset(false);
+
             foreach (ContactRelationship contactRelationship in ContactRelationships)
             {
                 EntryPoint.WriteToConsole($"RELATIONSHIP LOAD {contactRelationship.ContactName} MONEY:{contactRelationship.TotalMoneySpent} REP:{contactRelationship.ReputationLevel}");

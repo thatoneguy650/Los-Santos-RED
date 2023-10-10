@@ -105,22 +105,22 @@ public class TaxiService : ComplexTask, ILocationReachable
     }
     private void CheckLocationItems()
     {
-        if(TaxiDriver.TaxiRide == null)
-        {
-            return;
-        }
-        if (TaxiDriver.TaxiRide.HasPickedUpPlayer)// || TaxiDriver.TaxiRide.HasArrivedAtDestination)
-        {
-            if ((GameTimeReachedLocation > 0 && Game.GameTime - GameTimeReachedLocation >= 45000) || TaxiDriver.DistanceToPlayer >= 35f)
-            {
-                EntryPoint.WriteToConsole("TAXI DRIVER WAITED 45 SECONDS OR PLAYER IS OVER 35meters away, RELEASING");
-                if (TaxiDriver == null || TaxiDriver.TaxiRide == null)
-                {
-                    return;
-                }
-                TaxiDriver.TaxiRide?.Cancel();
-            }
-        }
+        //if(TaxiDriver.TaxiRide == null)
+        //{
+        //    return;
+        //}
+        //if (TaxiDriver.TaxiRide.HasPickedUpPlayer)// || TaxiDriver.TaxiRide.HasArrivedAtDestination)
+        //{
+        //    if ((GameTimeReachedLocation > 0 && Game.GameTime - GameTimeReachedLocation >= 45000) || TaxiDriver.DistanceToPlayer >= 35f)
+        //    {
+        //        EntryPoint.WriteToConsole("TAXI DRIVER WAITED 45 SECONDS OR PLAYER IS OVER 35meters away, RELEASING");
+        //        if (TaxiDriver == null || TaxiDriver.TaxiRide == null)
+        //        {
+        //            return;
+        //        }
+        //        TaxiDriver.TaxiRide?.Cancel();
+        //    }
+        //}
     }
     private void GetNewTaskState()
     {

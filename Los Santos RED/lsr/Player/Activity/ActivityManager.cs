@@ -1051,7 +1051,7 @@ public class ActivityManager
                     driverPed?.SetPersistent();
 
 
-                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", toEnter.Vehicle.Driver, toEnter.Vehicle, 27, 9999);
+                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", toEnter.Vehicle.Driver, toEnter.Vehicle, 6, 9999);
                 }
                 bool isCancelled = false;
                 while (EntryPoint.ModController.IsRunning && Game.GameTime - GameTimeStarted <= 20000)
@@ -1388,9 +1388,9 @@ public class ActivityManager
                 uint GameTimeStarted = Game.GameTime;
                 if (stopDriver && vehicle.Exists() && vehicle.Driver.Exists())
                 {
-                    vehicle.Driver.BlockPermanentEvents = true;
+                    //vehicle.Driver.BlockPermanentEvents = true;
                     EntryPoint.WriteToConsole("WATCH VEHICLE RUNNING TEMP ACTION");
-                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", vehicle.Driver, vehicle, 27, 99999);
+                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", vehicle.Driver, vehicle, 6, 99999);
                 }
                 while (EntryPoint.ModController.IsRunning && Game.GameTime - GameTimeStarted <= 20000)
                 {
@@ -1402,7 +1402,7 @@ public class ActivityManager
                 }
                 if (stopDriver && vehicle.Exists() && vehicle.Driver.Exists())
                 {
-                    vehicle.Driver.BlockPermanentEvents = false;
+                    //vehicle.Driver.BlockPermanentEvents = false;
                     NativeFunction.Natives.CLEAR_PED_TASKS(vehicle.Driver);
                 }
                 if (!Player.Character.CurrentVehicle.Exists())

@@ -782,6 +782,7 @@ public class Pedestrians : ITaskerReportable
             {
                 WasPersistentOnCreate = WasPersistentOnCreate,
             };
+            EntryPoint.WriteToConsole($"CREATE AMBIENT TAXI PED {createdPedExt.Handle}");
         }
         else
         {
@@ -791,7 +792,7 @@ public class Pedestrians : ITaskerReportable
             };
         }
         AddEntity(createdPedExt);
-
+        
         createdPedExt.SetBaseStats(null, ShopMenus, Weapons, false);  
         if (!Pedestrian.Exists())
         {
@@ -1114,4 +1115,5 @@ public class Pedestrians : ITaskerReportable
         }
         ClosestCopToPlayer = World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists() && !x.IsInVehicle && x.DistanceToPlayer <= 30f && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
     }
+
 }

@@ -213,7 +213,7 @@ public class GameLocation : ILocationDispatchable
                 SpawnVendor(settings, crimes, weapons, true);// InteractsWithVendor);
             }
         }
-        World.Pedestrians.AddEntity(Vendor);
+        //World.Pedestrians.AddEntity(Vendor);
         IsActivated = true;
         World = world;
         if (HasInterior)
@@ -245,7 +245,8 @@ public class GameLocation : ILocationDispatchable
     {
         if (Vendor != null && Vendor.Pedestrian.Exists())
         {
-            Vendor.Pedestrian.Delete();
+            Vendor.FullyDelete();
+            //Vendor.Pedestrian.Delete();
         }
         IsActivated = false;
         if (deleteBlip)
@@ -744,7 +745,7 @@ public class GameLocation : ILocationDispatchable
     }
     protected void SpawnVendor(ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, bool addMenu)
     {
-        Ped ped;
+        //Ped ped;
         string ModelName;
         if (VendorModels != null && VendorModels.Any())
         {
@@ -755,12 +756,16 @@ public class GameLocation : ILocationDispatchable
             ModelName = FallBackVendorModels.PickRandom();
         }
         NativeFunction.Natives.CLEAR_AREA(VendorPosition.X, VendorPosition.Y, VendorPosition.Z, 2f, true, false, false, false);
-        Model modelToCreate = new Model(Game.GetHashKey(ModelName));
-        modelToCreate.LoadAndWait();
-        ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), VendorPosition.X, VendorPosition.Y, VendorPosition.Z, VendorHeading, false, false);//ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), VendorPosition.X, VendorPosition.Y, VendorPosition.Z + 1f, VendorHeading, false, false);
+        EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {ModelName}");
+        Ped ped = new Ped(ModelName, VendorPosition, VendorHeading);
         GameFiber.Yield();
         if (ped.Exists())
         {
+            Vendor = new Merchant(ped, settings, "Vendor", crimes, weapons, World);
+            if (!World.Pedestrians.Merchants.Any(x => x.Handle == Vendor.Handle))
+            {
+                World.Pedestrians.Merchants.Add(Vendor);
+            }
             ped.IsPersistent = true;//THIS IS ON FOR NOW!
             ped.RandomizeVariation();
             NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", ped, "WORLD_HUMAN_STAND_IMPATIENT", 0, true);
@@ -769,13 +774,13 @@ public class GameLocation : ILocationDispatchable
             GameFiber.Yield();
             if (ped.Exists())
             {
-                Vendor = new Merchant(ped, settings, "Vendor", crimes, weapons, World);
                 if (addMenu)
                 {
                     Vendor.SetupTransactionItems(Menu);
                 }
                 Vendor.AssociatedStore = this;
                 Vendor.SpawnPosition = VendorPosition;
+                EntryPoint.WriteToConsole($"SPAWNED WORKED VENDOR AT {Name}");
             }
         }
     }

@@ -19,5 +19,6 @@ namespace LosSantosRED.lsr.Interface
         BankAccounts BankAccounts { get; }
         int WantedLevel { get; }
         GPSManager GPSManager { get; }
+        bool IsInVehicle { get; }
     }
 }

@@ -64,7 +64,7 @@ public class Contacts : IContacts
     private void SetupDefault()
     {
         emergencyServicesContact = new EmergencyServicesContact(StaticStrings.EmergencyServicesContactName, "CHAR_CALL911") { Number = "911", FullNumber = "911", IsDefault = true };
-        downtownCabContact = new TaxiServiceContact(StaticStrings.DowntownCabCoContactName, "CHAR_TAXI") { FullNumber = "3235555555", Number = "5555555" };
+        downtownCabContact = new TaxiServiceContact(StaticStrings.DowntownCabCoContactName, "CHAR_TAXI") { FullNumber = "3235555555", Number = "5555555", IsDefault = true };
         gunDealerContact = new GunDealerContact(StaticStrings.UndergroundGunsContactName);
         corruptCopContact = new CorruptCopContact(StaticStrings.OfficerFriendlyContactName);
         vehicleExporterContact = new VehicleExporterContact(StaticStrings.VehicleExporterContactName);  

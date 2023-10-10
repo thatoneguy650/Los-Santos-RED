@@ -39,6 +39,7 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
         TaxiRide = Player.TaxiManager.GetOrCreateRide(TaxiVehicleExt);
         if(TaxiRide == null)
         {
+            EntryPoint.WriteToConsole($"COULD NOT FIND TAXI RIDE FOR THIS VEHICLE");
             Player.ButtonPrompts.RemovePrompts("VehicleInteract");
             return;
         }
@@ -79,16 +80,8 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
             }
             Player.BankAccounts.GiveMoney(-1 * TaxiRide.RequestedFirm.TeleportFee, true);
             sender.Visible = false;
-            Player.GPSManager.TeleportToDestination(TaxiRide.DestinationLocation);
+            Player.GPSManager.TeleportToCoords(TaxiRide.DestinationLocation.StreetPosition,TaxiRide.CurrentDriveToHeading,true,false);
         };
-#if DEBUG
-
-#else
-
-
-        teleportMenuItem.Enabled = false    ;
-
-#endif
         VehicleInteractMenu.AddItem(teleportMenuItem);
     }
 
@@ -229,7 +222,7 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
         {
             return;
         }
-        UIMenuListScrollerItem<PedDrivingStyle> drivingStyleScroller = new UIMenuListScrollerItem<PedDrivingStyle>("Styles","Choose a style", TaxiRide.PossibleTaxiDrivingStyles);
+        UIMenuListScrollerItem<PedDrivingStyle> drivingStyleScroller = new UIMenuListScrollerItem<PedDrivingStyle>("Driving Style","Inform the driver how you want them to drive", TaxiRide.PossibleTaxiDrivingStyles);
         drivingStyleScroller.Activated += (sender,selectedItem) =>
         {
             if(TaxiRide == null || TaxiRide.RespondingDriver == null || TaxiRide.RespondingDriver.TaxiRide == null)
@@ -244,15 +237,16 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
 
             if(!drivingStyleScroller.SelectedItem.HasBeenPurchased && drivingStyleScroller.SelectedItem.Fee > 0)
             {
-                TaxiRide.DisplayNotification("~g~Driving Style", $"Updated to {drivingStyleScroller.SelectedItem.Name}~n~Price: ~r~${drivingStyleScroller.SelectedItem.Fee}");
+                TaxiRide.DisplayNotification($"~g~Driving Style", $"Updated driving style to {drivingStyleScroller.SelectedItem.Name}~n~Fee: ~r~${drivingStyleScroller.SelectedItem.Fee}");
                 Player.BankAccounts.GiveMoney(-1 * drivingStyleScroller.SelectedItem.Fee, true);
             }
             else
             {
-                TaxiRide.DisplayNotification("~g~Driving Style", $"Updated to {drivingStyleScroller.SelectedItem.Name}");
+                TaxiRide.DisplayNotification($"~g~Driving Style", $"Updated driving style to {drivingStyleScroller.SelectedItem.Name}");
             }
             drivingStyleScroller.SelectedItem.HasBeenPurchased = true;
             TaxiRide.RespondingDriver.TaxiRide.TaxiDrivingStyle = drivingStyleScroller.SelectedItem;
+            TaxiRide.RespondingDriver.PlaySpeech("TAXID_SPEED_UP", false);
             sender.Visible = false;
         };
         VehicleInteractMenu.AddItem(drivingStyleScroller);
@@ -289,7 +283,7 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
     private void CreateInteractionMenuTaxi()
     {
         MenuPool = new MenuPool();
-        VehicleInteractMenu = new UIMenu("Taxi", $"Destination: {(TaxiRide == null ? "None" : TaxiRide.DesitnationName)}");
+        VehicleInteractMenu = new UIMenu("Taxi", $"Destination: {(TaxiRide == null ? "None" : TaxiRide.DestinationName)}");
         SetMenuBanner(VehicleInteractMenu);
         MenuPool.Add(VehicleInteractMenu);
         if(TaxiVehicleExt != null && TaxiVehicleExt.TaxiFirm != null)

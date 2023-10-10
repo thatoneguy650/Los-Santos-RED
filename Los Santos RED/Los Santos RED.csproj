@@ -347,6 +347,7 @@
     <Compile Include="lsr\Player\Variation\OutfitManager.cs" />
     <Compile Include="lsr\Police\OfficerMIA.cs" />
     <Compile Include="lsr\Police\OfficerMIAWatcher.cs" />
+    <Compile Include="lsr\Spawner\MerchantSpawnTask.cs" />
     <Compile Include="lsr\Spawner\TaxiSpawnTask.cs" />
     <Compile Include="lsr\Tasker\AIChaseable\IAIChaseable.cs" />
     <Compile Include="lsr\Tasker\Cop\CopBrain.cs" />
