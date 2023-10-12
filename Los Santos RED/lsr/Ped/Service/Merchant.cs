@@ -22,6 +22,7 @@ public class Merchant : PedExt
     public override bool WillCallPolice { get; set; } = true;
     public override bool WillCallPoliceIntense { get; set; } = true;
     public override bool IsMerchant { get; set; } = true;
+    public override bool CanBeIdleTasked => false;
     public override string InteractPrompt(IButtonPromptable player)
     {
         return $"Transact with {FormattedName}";

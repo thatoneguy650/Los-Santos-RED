@@ -104,7 +104,7 @@ public class TaxiDriverBrain : PedBrain
         {
             SetTaxiService();
         }
-        else if (PedExt.WasModSpawned)
+        else if (PedExt.WasModSpawned && PedExt.CanBeIdleTasked)
         {
             SetIdle();
         }

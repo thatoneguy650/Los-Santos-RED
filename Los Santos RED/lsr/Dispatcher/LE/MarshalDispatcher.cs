@@ -148,7 +148,7 @@ public class MarshalDispatcher
             LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, addOptionalPassengers, World, ModItems, forcek9);
             spawnTask.AllowAnySpawn = allowAny;
             spawnTask.AllowBuddySpawn = allowBuddy;
-            spawnTask.ClearArea = clearArea;
+            spawnTask.ClearVehicleArea = clearArea;
             spawnTask.IsMarshalMember = true;
             spawnTask.SpawnRequirement = spawnRequirement;
             // spawnTask.PlacePedOnGround = VehicleType == null;

@@ -452,6 +452,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsBeingHeldAsHostage { get; set; } = false;
     public bool GeneratesBodyAlerts { get; set; } = true;
     public bool WasCrushed { get; set; }
+    public virtual bool CanBeIdleTasked { get; set; } = true;
     public bool IsManuallyDeleted { get; set; } = false;
     public bool CanBeBuried => IsUnconscious || IsDead;
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
@@ -1299,7 +1300,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             pic1 = str;
             pic2 = str;
         }
-        string Description = "";
         Game.DisplayNotification(pic1, pic2, "~o~Information", $"~y~{Name}", GetPedInfoForDisplay());
     }
     protected virtual string GetPedInfoForDisplay()

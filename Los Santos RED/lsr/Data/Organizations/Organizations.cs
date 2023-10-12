@@ -110,6 +110,10 @@ public class Organizations : IOrganizations
             ContactName = StaticStrings.DowntownCabCoContactName,
             IsDefault = true,
             BannerImagePath = "stores\\downtownvanilla.png",
+            BaseFare = 10,
+            PricePerMile = 5,
+            FastSpeedFee = 20,
+            CrazySpeedFee = 100,
         };
         VehicleExports = new Organization("~w~", "VEHEXP", StaticStrings.VehicleExporterContactName, StaticStrings.VehicleExporterContactName, "White", "", "", "", "", "", "", "Exporter")
         {

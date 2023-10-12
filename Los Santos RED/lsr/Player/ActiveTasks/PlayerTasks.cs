@@ -99,7 +99,6 @@ public class PlayerTasks
         {
             playerTaskGroup.Dispose();
         }
-
         LastContactTask.Clear();
     }
     public void OnStandardRespawn()

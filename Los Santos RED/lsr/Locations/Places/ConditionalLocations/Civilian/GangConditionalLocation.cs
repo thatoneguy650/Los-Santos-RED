@@ -27,7 +27,7 @@ public class GangConditionalLocation : ConditionalLocation
             gangSpawnTask.AllowAnySpawn = true;
             gangSpawnTask.AllowBuddySpawn = false;
             gangSpawnTask.SpawnRequirement = TaskRequirements;
-            gangSpawnTask.ClearArea = true;
+            gangSpawnTask.ClearVehicleArea = true;
             gangSpawnTask.PlacePedOnGround = DispatchableVehicle == null;// true;
             gangSpawnTask.AttemptSpawn();
             foreach (PedExt created in gangSpawnTask.CreatedPeople)

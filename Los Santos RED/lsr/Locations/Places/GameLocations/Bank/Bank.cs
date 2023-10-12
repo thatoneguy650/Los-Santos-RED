@@ -102,7 +102,7 @@ public class Bank : GameLocation
             foreach (BankDrawer sp in BankDrawers)
             {
                 float distanceto = sp.Position.DistanceTo2D(Player.Position);
-                if (distanceto <= 2.0f && distanceto <= newClosestDistance)
+                if (distanceto <= 1.0f && distanceto <= newClosestDistance)
                 {
                     newClosestDistance = distanceto;
                     newClosestDrawer = sp;
@@ -185,7 +185,7 @@ public class Bank : GameLocation
             return false;
         }
         IsCancelled = false;
-        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, PropEntryPosition.X, PropEntryPosition.Y, PropEntryPosition.Z, 3.0f, -1, 1.0f, 0, PropEntryHeading);
+        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, PropEntryPosition.X, PropEntryPosition.Y, PropEntryPosition.Z, 3.0f, -1, 0.5f, 0, PropEntryHeading);//NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, PropEntryPosition.X, PropEntryPosition.Y, PropEntryPosition.Z, 3.0f, -1, 1.0f, 0, PropEntryHeading);
         uint GameTimeStartedSitting = Game.GameTime;
         float heading = Game.LocalPlayer.Character.Heading;
         bool IsFacingDirection = false;
@@ -324,7 +324,7 @@ public class Bank : GameLocation
         BankDrawers.Clear();
         foreach (SpawnPlace spawnPlace in TellerLocations)
         {
-            if(IsOpen(time.CurrentHour) && settings.SettingsManager.CivilianSettings.ManageDispatching && (TellersSpawned == 0 || RandomItems.RandomPercent(ExtaTellerSpawnPercentage)))
+            if(IsOpen(time.CurrentHour) && settings.SettingsManager.CivilianSettings.ManageDispatching && world.Pedestrians.TotalSpawnedServiceWorkers < settings.SettingsManager.CivilianSettings.TotalSpawnedServiceMembersLimit && (TellersSpawned == 0 || RandomItems.RandomPercent(ExtaTellerSpawnPercentage)))
             {
                 if (SpawnTeller(settings, crimes, weapons, spawnPlace))
                 {
@@ -341,7 +341,7 @@ public class Bank : GameLocation
     }
     protected bool SpawnTeller(ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, SpawnPlace spawnPlace)
     {
-        Ped ped;
+        //Ped ped;
         string ModelName;
         if (TellerModels != null && TellerModels.Any())
         {
@@ -351,37 +351,39 @@ public class Bank : GameLocation
         {
             ModelName = FallBackTellerModels.PickRandom();
         }
+        EntryPoint.WriteToConsole($"ATTEMPTING TELLER AT {Name} {ModelName}");
         NativeFunction.Natives.CLEAR_AREA(spawnPlace.Position.X, spawnPlace.Position.Y, spawnPlace.Position.Z, 2f, true, false, false, false);
-        Model modelToCreate = new Model(Game.GetHashKey(ModelName));
-        modelToCreate.LoadAndWait();
-        ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), spawnPlace.Position.X, spawnPlace.Position.Y, spawnPlace.Position.Z, spawnPlace.Heading, false, false);//ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), VendorPosition.X, VendorPosition.Y, VendorPosition.Z + 1f, VendorHeading, false, false);
+        Ped ped = new Ped(ModelName, spawnPlace.Position, spawnPlace.Heading);
         GameFiber.Yield();
         if (!ped.Exists())
         {
             return false;
         }
-        ped.IsPersistent = true;//THIS IS ON FOR NOW!
-        ped.RandomizeVariation();
-        NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", ped, "WORLD_HUMAN_STAND_IMPATIENT", 0, true);
-        ped.KeepTasks = true;
         EntryPoint.SpawnedEntities.Add(ped);
-        GameFiber.Yield();
-        if (!ped.Exists())
-        {
-            return false;
-        }
         Teller teller = new Teller(ped, settings, "Teller", crimes, weapons, World);
+        if (!World.Pedestrians.Tellers.Any(x => x.Handle == ped.Handle))
+        {
+            World.Pedestrians.Tellers.Add(teller);
+        }
         teller.AssociatedBank = this;
         teller.SpawnPosition = spawnPlace.Position;
         teller.WasModSpawned = true;
         teller.WillCower = true;
-        float resultArg = ped.Position.Z;
-        if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(ped.Position.X, ped.Position.Y, ped.Position.Z + 1f, out resultArg, false))
+        ped.IsPersistent = true;//THIS IS ON FOR NOW!
+        ped.RandomizeVariation();
+        teller.LocationTaskRequirements = new LocationTaskRequirements() { TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_STAND_IMPATIENT" } };
+        GameFiber.Yield();
+        if (!ped.Exists())
         {
-            ped.Position = new Vector3(ped.Position.X, ped.Position.Y, resultArg);
+            return false;
         }
-        World.Pedestrians.AddEntity(teller);
+        //float resultArg = ped.Position.Z;
+        //if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(ped.Position.X, ped.Position.Y, ped.Position.Z + 1f, out resultArg, false))
+        //{
+        //    ped.Position = new Vector3(ped.Position.X, ped.Position.Y, resultArg);
+        //}
         SpawnedTellers.Add(teller);
+        EntryPoint.WriteToConsole($"SPAWNED WORKED TELLER AT {Name}");
         return true;
     }
     public override void Deactivate(bool deleteBlip)

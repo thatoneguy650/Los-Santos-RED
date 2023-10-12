@@ -65,7 +65,7 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
         {
             return;
         }
-        teleportMenuItem = new UIMenuItem("Quick Travel", "Quick travel to the destination") { RightLabel = $"~r~${TaxiRide.RequestedFirm.TeleportFee}" };
+        teleportMenuItem = new UIMenuItem("Quick Travel", "Quick travel to the destination");// { RightLabel = $"~r~${TaxiRide.RequestedFirm.TeleportFee}" };
         teleportMenuItem.Activated += (sender, selectedItem) =>
         {
 
@@ -73,14 +73,11 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
             {
                 return;
             }
-            if (Player.BankAccounts.GetMoney(true) < TaxiRide.RequestedFirm.TeleportFee)
-            {
-                TaxiRide.DisplayNotification("~r~Insufficient Funds", "We are sorry, we are unable to complete this transaction.");
-                return;
-            }
-            Player.BankAccounts.GiveMoney(-1 * TaxiRide.RequestedFirm.TeleportFee, true);
             sender.Visible = false;
-            Player.GPSManager.TeleportToCoords(TaxiRide.DestinationLocation.StreetPosition,TaxiRide.CurrentDriveToHeading,true,false);
+            float DistanceToMiles = Player.Character.Position.DistanceTo2D(TaxiRide.DestinationLocation.StreetPosition) * 0.000621371f;
+            int hoursToTake = (int)Math.Ceiling(DistanceToMiles / 5.0f);
+            EntryPoint.WriteToConsole($"Teleporting to pos with taxi Distance (mi) {DistanceToMiles} hoursToTake {hoursToTake}");
+            Player.GPSManager.TeleportToCoords(TaxiRide.DestinationLocation.StreetPosition,TaxiRide.CurrentDriveToHeading, true , false, hoursToTake);
         };
         VehicleInteractMenu.AddItem(teleportMenuItem);
     }

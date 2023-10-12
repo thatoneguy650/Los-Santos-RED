@@ -144,7 +144,7 @@ public class SecurityDispatcher
             SecurityGuardSpawnTask securitySpawnTask = new SecurityGuardSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, Crimes, ModItems);
             securitySpawnTask.AllowAnySpawn = allowAny;
             securitySpawnTask.AllowBuddySpawn = allowBuddy;
-            securitySpawnTask.ClearArea = clearArea;
+            securitySpawnTask.ClearVehicleArea = clearArea;
             securitySpawnTask.SpawnRequirement = spawnRequirement;
             securitySpawnTask.PlacePedOnGround = VehicleType == null;
             securitySpawnTask.AttemptSpawn();

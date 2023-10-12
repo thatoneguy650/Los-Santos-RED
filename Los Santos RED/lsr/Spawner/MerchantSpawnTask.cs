@@ -5,6 +5,8 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Linq;
+using System.Windows;
+using System.Xml.Linq;
 
 public class MerchantSpawnTask : SpawnTask
 {
@@ -13,7 +15,8 @@ public class MerchantSpawnTask : SpawnTask
     protected ICrimes Crimes;
     protected IShopMenus ShopMenus;
     public bool SetPersistent { get; set; } = false;
-    public MerchantSpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, bool setPersistent, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world, IModItems modItems, IShopMenus shopMenus)
+    public MerchantSpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, bool setPersistent, ISettingsProvideable settings,
+        ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world, IModItems modItems, IShopMenus shopMenus)
         : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
     {
         Crimes = crimes;
@@ -59,27 +62,77 @@ public class MerchantSpawnTask : SpawnTask
             Ped createdPed = new Ped(PersonType.ModelName, new Vector3(CreatePos.X, CreatePos.Y, CreatePos.Z), SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(createdPed);
             GameFiber.Yield();
-            if (createdPed.Exists())
+            if (!createdPed.Exists())
             {
-                SetupPed(createdPed);
-                if (!createdPed.Exists())
-                {
-                    return null;
-                }
-                PedExt Person = SetupRegularPed(createdPed);
-                PersonType?.SetPedVariation(createdPed, null, true);
-                GameFiber.Yield();
-                CreatedPeople.Add(Person);
-                return Person;
+                return null;
             }
-            return null;
+            SetupPed(createdPed);
+            if (!createdPed.Exists())
+            {
+                return null;
+            }
+            PedExt Person = SetupMerchantPed(createdPed);
+            PersonType?.SetPedVariation(createdPed, null, true);
+            GameFiber.Yield();
+            CreatedPeople.Add(Person);
+            return Person;
         }
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"CivilianSpawn: ERROR DELETED PERSON {ex.Message} {ex.StackTrace}", 0);
+            foreach (Entity entity in Rage.World.GetEntities(Position, 3.0f, GetEntitiesFlags.ConsiderAllPeds | GetEntitiesFlags.ExcludePlayerPed).ToList())
+            {
+                if (entity.Exists())
+                {
+                    entity.Delete();
+                }
+            }
             return null;
         }
     }
+
+    //private void NumberTwO()
+    //{
+    //    //Ped ped;
+    //    string ModelName;
+    //    if (VendorModels != null && VendorModels.Any())
+    //    {
+    //        ModelName = VendorModels.PickRandom();
+    //    }
+    //    else
+    //    {
+    //        ModelName = FallBackVendorModels.PickRandom();
+    //    }
+    //    NativeFunction.Natives.CLEAR_AREA(CreatePos.X, CreatePos.Y, CreatePos.Z, 2f, true, false, false, false);
+    //    EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {ModelName}");
+    //    Ped ped = new Ped(ModelName, CreatePos, VendorHeading);
+    //    GameFiber.Yield();
+    //    if (ped.Exists())
+    //    {
+    //        Vendor = new Merchant(ped, Settings, "Vendor", Crimes, Weapons, World);
+
+    //        if (!World.Pedestrians.Merchants.Any(x => x.Handle == Vendor.Handle))
+    //        {
+    //            World.Pedestrians.Merchants.Add(Vendor);
+    //        }
+    //        ped.IsPersistent = true;//THIS IS ON FOR NOW!
+    //        ped.RandomizeVariation();
+    //        NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", ped, "WORLD_HUMAN_STAND_IMPATIENT", 0, true);
+    //        ped.KeepTasks = true;
+    //        EntryPoint.SpawnedEntities.Add(ped);
+    //        GameFiber.Yield();
+    //        if (ped.Exists())
+    //        {
+    //            if (addMenu)
+    //            {
+    //                Vendor.SetupTransactionItems(Menu);
+    //            }
+    //            Vendor.AssociatedStore = this;
+    //            Vendor.SpawnPosition = CreatePos;
+    //            EntryPoint.WriteToConsole($"SPAWNED WORKED VENDOR AT {Name}");
+    //        }
+    //    }
+    //}
     private void Setup()
     {
         if (VehicleType != null)
@@ -91,7 +144,7 @@ public class MerchantSpawnTask : SpawnTask
             OccupantsToAdd = 0;
         }
     }
-    protected virtual PedExt SetupRegularPed(Ped ped)
+    private PedExt SetupMerchantPed(Ped ped)
     {
         ped.IsPersistent = SetPersistent;
         EntryPoint.PersistentPedsCreated++;//TR

@@ -228,7 +228,7 @@ namespace LosSantosRED.lsr
                 }),
                 new ModTaskGroup("RG10:World LowPri", new List<ModTask>()
                 {
-                    new ModTask(2000, "World.ActiveNearLocations", World.Places.ActivateLocations, 0),//1000
+                    new ModTask(1000, "World.ActiveNearLocations", World.Places.ActivateLocations, 0),//1000
                     new ModTask(4000, "Weather.Update", Weather.Update, 1),//1000
                     new ModTask(2000,"WeatherManager.Update",WeatherManager.Update,2),
                     new ModTask(1000, "World.UpdateNear", World.Places.UpdateLocations, 3),//500//1000

@@ -162,6 +162,13 @@ public class LESpawnTask : SpawnTask
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"LESpawn: ERROR DELETED PERSON {ex.Message} {ex.StackTrace}", 0);
+            foreach (Entity entity in Rage.World.GetEntities(Position, 3.0f, GetEntitiesFlags.ConsiderAllPeds | GetEntitiesFlags.ExcludePlayerPed).ToList())
+            {
+                if (entity.Exists())
+                {
+                    entity.Delete();
+                }
+            }
             return null;
         }
     }
@@ -190,6 +197,13 @@ public class LESpawnTask : SpawnTask
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"LESpawn: ERROR DELETED PERSON {ex.Message} {ex.StackTrace}", 0);
+            foreach (Entity entity in Rage.World.GetEntities(Position, 3.0f, GetEntitiesFlags.ConsiderAllPeds | GetEntitiesFlags.ExcludePlayerPed).ToList())
+            {
+                if (entity.Exists())
+                {
+                    entity.Delete();
+                }
+            }
             return null;
         }
     }
@@ -197,7 +211,7 @@ public class LESpawnTask : SpawnTask
     {
         try
         {
-            if (ClearArea)
+            if (ClearVehicleArea)
             {
                 NativeFunction.Natives.CLEAR_AREA(Position.X, Position.Y, Position.Z, 3f, true, false, false, false);
             }
@@ -235,6 +249,13 @@ public class LESpawnTask : SpawnTask
             if (SpawnedVehicle.Exists())
             {
                 SpawnedVehicle.Delete();
+            }
+            foreach (Entity entity in Rage.World.GetEntities(Position, 3.0f, GetEntitiesFlags.ConsiderAllVehicles).ToList())
+            {
+                if (entity.Exists())
+                {
+                    entity.Delete();
+                }
             }
             GameFiber.Yield();
             return null;

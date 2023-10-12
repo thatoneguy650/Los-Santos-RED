@@ -939,7 +939,7 @@ public class LEDispatcher
             LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, addOptionalPassengers, World, ModItems, forcek9);
             spawnTask.AllowAnySpawn = allowAny;
             spawnTask.AllowBuddySpawn = allowBuddy;
-            spawnTask.ClearArea = clearArea;
+            spawnTask.ClearVehicleArea = clearArea;
             spawnTask.SpawnRequirement = spawnRequirement;
            // spawnTask.PlacePedOnGround = VehicleType == null;
             spawnTask.AttemptSpawn();

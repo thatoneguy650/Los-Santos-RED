@@ -171,7 +171,7 @@ public class DeadDrop : GameLocation
         }
 
         // NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, MovePosition.X, MovePosition.Y, MovePosition.Z, 1.0f, -1, ObjectHeading, 0.2f);
-        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, MovePosition.X, MovePosition.Y, MovePosition.Z, 1.0f, -1, 0.2f, 0, ObjectHeading);
+        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, MovePosition.X, MovePosition.Y, MovePosition.Z, 1.0f, -1, 0.5f, 0, ObjectHeading);
         uint GameTimeStartedSitting = Game.GameTime;
         float heading = Game.LocalPlayer.Character.Heading;
         bool IsFacingDirection = false;

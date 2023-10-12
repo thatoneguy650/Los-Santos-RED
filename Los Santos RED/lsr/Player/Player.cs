@@ -146,7 +146,7 @@ namespace Mod
             Speeches = speeches;
             Stance = new Stance(this, Settings);
             WeaponEquipment = new WeaponEquipment(this, this, Weapons, Settings, this, this, this);
-            GPSManager = new GPSManager(this, World, Settings);
+            GPSManager = new GPSManager(this, World, Settings, TimeControllable);
             VehicleOwnership = new VehicleOwnership(this, World, Settings);
             BankAccounts = new BankAccounts(this, Settings, PlacesOfInterest);
             ActivityManager = new ActivityManager(this, settings, this, this, this, this, this, TimeControllable, RadioStations, Crimes, ModItems, Dances, World, Intoxicants, this, Speeches, Seats, Weapons, PlacesOfInterest, Zones, shopMenus, gangs, 
@@ -617,6 +617,12 @@ namespace Mod
             {
                 Intoxication.Reset();
             }
+
+            if (resetActiveTasks)
+            {
+                PlayerTasks.Reset();
+            }
+
             if (resetRelationships)
             {
                 RelationshipManager.Reset(false);
@@ -629,10 +635,7 @@ namespace Mod
             {
                 CellPhone.Reset();
             }
-            if (resetActiveTasks)
-            {
-                PlayerTasks.Reset();
-            }
+
             if (resetProperties)
             {
                 Properties.Reset();

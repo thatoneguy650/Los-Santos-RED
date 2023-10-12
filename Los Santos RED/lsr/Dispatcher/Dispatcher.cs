@@ -195,7 +195,6 @@ public class Dispatcher
     public void DebugRemoveRoadblock()
     {
         LEDispatcher.RemoveRoadblock();
-
         World.Vehicles.ClearSpawned(true);
         World.Pedestrians.ClearSpawned();
     }
@@ -223,12 +222,6 @@ public class Dispatcher
     {
         GangDispatcher.DebugSpawnGangMember(agencyID, onFoot, isEmpty);
     }
-
-
-    //public void DebugSpawnTaxi()
-    //{
-    //    TaxiDispatcher.DebugSpawnTaxi("", false, false);
-    //}
     public void DebugSpawnTaxi(TaxiFirm taxifirmID, bool onFoot, bool isEmpty)
     {
         TaxiDispatcher.DebugSpawnTaxi(taxifirmID, onFoot, isEmpty);
@@ -237,7 +230,6 @@ public class Dispatcher
     {
         TaxiDispatcher.ForceTaxiSpawn(taxifirmID);
     }
-
     public void DebugSpawnEMT(string agencyID, bool onFoot, bool isEmpty)
     {
         EMSDispatcher.DebugSpawnEMT(agencyID, onFoot, isEmpty);

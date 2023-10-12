@@ -111,8 +111,7 @@ public class GangSettings : ISettingsDefaultable
     public bool ShowGangTerritoryBlip { get; set; }
     public float GangTerritoryBlipSize { get; set; }
     public float GangTerritoryBlipAlpha { get; set; }
-
-
+    public bool SetPersistent { get; set; }
 
     public GangSettings()
     {
@@ -152,12 +151,12 @@ public class GangSettings : ISettingsDefaultable
         MaxDistanceToSpawnOnFoot = 225f;//200f// 150f;
 
 
-        MinDistanceToSpawnInVehicle = 400f;//300f// 50f;
-        MaxDistanceToSpawnInVehicle = 600f;//500f// 150f;
+        MinDistanceToSpawnInVehicle = 300f;// 400f;//300f// 50f;
+        MaxDistanceToSpawnInVehicle = 500f;// 600f;//500f// 150f;
 
 
 
-        TotalSpawnedMembersLimit = 16;//5
+        TotalSpawnedMembersLimit = 12;// 16;//5
         TotalSpawnedAmbientMembersLimit = 5;// 8;
 
         TotalSpawnedAmbientMembersLimit_Downtown = 5;
@@ -223,6 +222,8 @@ public class GangSettings : ISettingsDefaultable
         ShowGangTerritoryBlip = true;//HAS DESERIALIZED VALUES
         GangTerritoryBlipSize = 125f;//HAS DESERIALIZED VALUES
         GangTerritoryBlipAlpha = 0.15f;//HAS DESERIALIZED VALUES
+
+        SetPersistent = false;
     }
 
 }

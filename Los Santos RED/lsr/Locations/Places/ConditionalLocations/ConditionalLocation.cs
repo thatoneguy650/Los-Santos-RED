@@ -47,14 +47,6 @@ public class ConditionalLocation
         Heading = heading;
         Percentage = percentage;
     }
-    [XmlIgnore]
-    public bool AttemptedSpawn { get; private set; }
-
-    [XmlIgnore]
-    public bool Ignore { get; private set; }
-
-
-
     public Vector3 Location { get; set; }
     public float Heading { get; set; }
     public float Percentage { get; set; }
@@ -62,11 +54,8 @@ public class ConditionalLocation
     public string RequiredPedGroup { get; set; }
     public string RequiredVehicleGroup { get; set; }
     public bool IsEmpty { get; set; } = true;
-    public string GroupID { get; set; } = "";
-
     public bool AllowAirVehicle { get; set; } = false;
     public bool AllowBoat { get; set; } = false;
-
     public TaskRequirements TaskRequirements { get; set; } = TaskRequirements.None;
     public List<string> ForcedScenarios { get; set; }
     public float OverrideNightPercentage { get; set; } = -1.0f;
@@ -80,29 +69,33 @@ public class ConditionalLocation
     public bool ForceMelee { get; set; } = false;
     public bool ForceSidearm { get; set; } = false;
     public bool ForceLongGun { get; set; } = false;
+    [XmlIgnore]
+    public bool AttemptedSpawn { get; private set; }
+    [XmlIgnore]
+    public bool Ignore { get; private set; }
+    //public virtual void Setup(IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, ITimeControllable time, IModItems modItems)
+    //{
+    //    Agencies = agencies;
+    //    Gangs = gangs;
+    //    Zones = zones;
+    //    Jurisdictions = jurisdictions;
+    //    GangTerritories = gangTerritories;
+    //    Settings = settings;
+    //    World = world;
+    //    MasterAssociationID = masterAssociationID;
+    //    Weapons = weapons;
+    //    Names = names;
+    //    Crimes = crimes;
+    //    PedGroups = pedGroups;
+    //    ShopMenus = shopMenus;
+    //    Time = time;
+    //    ModItems = modItems;
+    //    GetDispatchableGenerator();
+    //}
+    //public override void StoreData()
+    //{
 
-    public virtual void Setup(IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, ITimeControllable time, IModItems modItems)
-    {
-        Agencies = agencies;
-        Gangs = gangs;
-        Zones = zones;
-        Jurisdictions = jurisdictions;
-        GangTerritories = gangTerritories;
-        Settings = settings;
-        World = world;
-        MasterAssociationID = masterAssociationID;
-        Weapons = weapons;
-        Names = names;
-        Crimes = crimes;
-        PedGroups = pedGroups;
-        ShopMenus = shopMenus;
-        Time = time;
-        ModItems = modItems;
-        GetDispatchableGenerator();
-    }
-
-
-
+    //}
     public virtual void AttemptSpawn(IDispatchable player, bool isPerson, bool force, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IWeatherReportable weatherReporter, ITimeControllable time, IModItems modItems)
     {
         Player = player;

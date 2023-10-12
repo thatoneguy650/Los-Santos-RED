@@ -16,9 +16,8 @@ public class EMSConditionalLocation : ConditionalLocation
 
     public EMSConditionalLocation()
     {
+
     }
-
-
     public override bool DetermineRun(bool force)
     {
         if (!Settings.SettingsManager.EMSSettings.ManageDispatching)
@@ -51,7 +50,7 @@ public class EMSConditionalLocation : ConditionalLocation
             eMTSpawnTask.AllowAnySpawn = true;
             eMTSpawnTask.AllowBuddySpawn = false;
             eMTSpawnTask.SpawnRequirement = TaskRequirements;
-            eMTSpawnTask.ClearArea = true;
+            eMTSpawnTask.ClearVehicleArea = true;
             eMTSpawnTask.PlacePedOnGround = DispatchableVehicle == null;// true;
             eMTSpawnTask.AttemptSpawn();
             eMTSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });

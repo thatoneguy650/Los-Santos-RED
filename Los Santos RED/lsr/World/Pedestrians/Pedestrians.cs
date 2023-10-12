@@ -176,12 +176,25 @@ public class Pedestrians : ITaskerReportable
     public int TotalSpawnedAmbientEMTs => EMTs.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedAmbientFirefighterss => Firefighters.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedGangMembers => GangMembers.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+
+
+    public int TotalSpawnedSecurityGuards => SecurityGuards.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+
     public int TotalSpawnedAmbientGangMembers => GangMembers.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedFirefighters => Firefighters.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedZombies => Zombies.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
 
     public int TotalSpawnedTaxiDrivers => TaxiDrivers.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedAmbientTaxiDrivers => TaxiDrivers.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+
+
+    public int TotalSpawnedMerchants => Merchants.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+    public int TotalSpawnedTellers => Tellers.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+
+
+
+    public int TotalSpawnedServiceWorkers => ServiceWorkers.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+
     public void Setup()
     {
         foreach (Gang gang in Gangs.AllGangs)

@@ -317,7 +317,7 @@ public class EMSDispatcher
             eMTSpawnTask.AllowAnySpawn = allowAny;
             eMTSpawnTask.AllowBuddySpawn = allowBuddy;
             eMTSpawnTask.SpawnRequirement = spawnRequirement;
-            eMTSpawnTask.ClearArea = clearArea;
+            eMTSpawnTask.ClearVehicleArea = clearArea;
             eMTSpawnTask.PlacePedOnGround = VehicleType == null;
             eMTSpawnTask.AttemptSpawn();  
             eMTSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });

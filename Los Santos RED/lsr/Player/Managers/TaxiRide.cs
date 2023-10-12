@@ -17,7 +17,8 @@ public class TaxiRide
     private Blip PickupBlip;
     private uint GameTimeArrivedAtPickup;
     private bool HasDonePickupItems;
-
+    private bool IsWaitingOnPlayerAfterGetOut;
+    private SpawnLocation PulloverLocation;
     public TaxiRide(IEntityProvideable world, ITaxiRideable player, TaxiFirm requestedFirm, TaxiVehicleExt respondingVehicle, TaxiDriver respondingDriver, Vector3 pickupLocation)
     {
         World = world;
@@ -60,6 +61,10 @@ public class TaxiRide
             if(!HasPickedUpPlayer && HasPickup)
             {
                 return PickupLocation.StreetPosition;
+            }
+            else if (HasPickedUpPlayer && IsWaitingOnPlayerAfterGetOut && PulloverLocation.HasStreetPosition)
+            {
+                return PulloverLocation.StreetPosition;
             }
             else if (HasPickedUpPlayer && HasDestination)
             {
@@ -147,7 +152,7 @@ public class TaxiRide
             IsValid = false;
             return;
         }
-        if (RespondingDriver.HasSeenPlayerCommitMajorCrime || RespondingDriver.Pedestrian.IsFleeing || Player.WantedLevel >= 3)
+        if (RespondingDriver.HasSeenPlayerCommitMajorCrime || RespondingDriver.Pedestrian.IsFleeing || Player.IsWanted || Player.IsDead)
         {
             Cancel();
             IsValid = false;
@@ -188,6 +193,13 @@ public class TaxiRide
                 OnIsNearbyDestination();
             }
         }
+
+
+        if (IsWaitingOnPlayerAfterGetOut && Player.CurrentVehicle != null && Player.CurrentVehicle.Handle == RespondingVehicle.Handle)
+        {
+            OnPlayerReturnedToTaxi();
+        }
+
     }
     public void Cancel()
     {
@@ -273,10 +285,39 @@ public class TaxiRide
         }
         else
         {
-            RespondingDriver?.PlaySpeech("TAXID_GET_OUT_EARLY", false);
-            Game.DisplayHelp("Return to the taxi to continue the ride.");
+
+            OnPlayerGotOutMidway();
         }
     }
+    private void OnPlayerReturnedToTaxi()
+    {
+        IsWaitingOnPlayerAfterGetOut = false;
+        PulloverLocation = null;
+        if (RespondingDriver == null)
+        {
+            return;
+        }
+        RespondingDriver.PlaySpeech("GENERIC_HOWS_IT_GOING", false);
+    }
+    private void OnPlayerGotOutMidway()
+    {
+        IsWaitingOnPlayerAfterGetOut = true;
+        if(RespondingDriver == null)
+        {
+            return;
+        }
+        RespondingDriver.PlaySpeech("TAXID_GET_OUT_EARLY", false);
+        Game.DisplayHelp("Return to the taxi to continue the ride.");
+        SpawnLocation spawnLocation = new SpawnLocation(RespondingDriver.Position);
+        spawnLocation.GetClosestStreet(false);
+        spawnLocation.GetClosestSideOfRoad();
+        if(!spawnLocation.HasStreetPosition)
+        {
+            spawnLocation.StreetPosition = RespondingDriver.Position;
+        }
+        PulloverLocation = spawnLocation;
+    }
+
     public void DisplayNotification(string subtitle, string text)
     {
         if (string.IsNullOrEmpty(subtitle) || string.IsNullOrEmpty(text))

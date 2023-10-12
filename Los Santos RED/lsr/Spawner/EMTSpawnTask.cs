@@ -78,6 +78,13 @@ public class EMTSpawnTask : SpawnTask
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"EMTSpawn: ERROR DELETED PERSON {ex.Message} {ex.StackTrace}", 0);
+            foreach (Entity entity in Rage.World.GetEntities(Position, 3.0f, GetEntitiesFlags.ConsiderAllPeds | GetEntitiesFlags.ExcludePlayerPed).ToList())
+            {
+                if (entity.Exists())
+                {
+                    entity.Delete();
+                }
+            }
             return null;
         }
     }
@@ -85,7 +92,7 @@ public class EMTSpawnTask : SpawnTask
     {
         try
         {
-            if (ClearArea)
+            if (ClearVehicleArea)
             {
                 NativeFunction.Natives.CLEAR_AREA(Position.X, Position.Y, Position.Z, 3f, true, false, false, false);
             }
@@ -125,6 +132,13 @@ public class EMTSpawnTask : SpawnTask
             if (SpawnedVehicle.Exists())
             {
                 SpawnedVehicle.Delete();
+            }
+            foreach (Entity entity in Rage.World.GetEntities(Position, 3.0f, GetEntitiesFlags.ConsiderAllVehicles).ToList())
+            {
+                if (entity.Exists())
+                {
+                    entity.Delete();
+                }
             }
             GameFiber.Yield();
             return null;

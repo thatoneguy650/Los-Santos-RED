@@ -157,6 +157,13 @@ public class CivilianSettings : ISettingsDefaultable
     public uint GameTimeAfterCallInToReportCrime { get; set; }
     public bool DisableWrithe { get; set; }
     public bool DisableWritheShooting { get; set; }
+
+
+
+
+    [Description("Total limit of spawned service peds (teller, vendor, etc.).")]
+    public int TotalSpawnedServiceMembersLimit { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -242,6 +249,8 @@ public class CivilianSettings : ISettingsDefaultable
         GameTimeAfterCallInToReportCrime = 2000;
         DisableWrithe = true;
         DisableWritheShooting = true;
+
+        TotalSpawnedServiceMembersLimit = 6;
     }
 
 }

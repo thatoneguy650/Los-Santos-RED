@@ -80,7 +80,7 @@ public class MachineInteraction
         }
         //NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, PropEntryPosition.X, PropEntryPosition.Y, PropEntryPosition.Z, 1.0f, -1, PropEntryHeading, 0.2f);
 
-        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, PropEntryPosition.X, PropEntryPosition.Y, PropEntryPosition.Z, speed, -1, 0.2f, 0, PropEntryHeading);
+        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, PropEntryPosition.X, PropEntryPosition.Y, PropEntryPosition.Z, speed, -1, 0.25f, 0, PropEntryHeading);
 
 
         /*NATIVE PROC TASK_GO_STRAIGHT_TO_COORD(PED_INDEX PedIndex, VECTOR VecCoors,  FLOAT MoveBlendRatio, INT Time = DEFAULT_TIME_BEFORE_WARP, FLOAT FinalHeading = DEFAULT_NAVMESH_FINAL_HEADING, FLOAT TargetRadius = 0.5) = "0x13c3030981ea7c3b"

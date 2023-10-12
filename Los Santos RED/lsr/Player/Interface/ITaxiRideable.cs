@@ -20,5 +20,7 @@ namespace LosSantosRED.lsr.Interface
         int WantedLevel { get; }
         GPSManager GPSManager { get; }
         bool IsInVehicle { get; }
+        bool IsWanted { get; }
+        bool IsDead { get; }
     }
 }

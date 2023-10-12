@@ -436,7 +436,7 @@ public class GangDispatcher
             gangSpawnTask.AllowAnySpawn = allowAny;
             gangSpawnTask.AllowBuddySpawn = allowBuddy;
             gangSpawnTask.SpawnRequirement = spawnRequirement;
-            gangSpawnTask.ClearArea = clearArea;
+            gangSpawnTask.ClearVehicleArea = clearArea;
             gangSpawnTask.PlacePedOnGround = VehicleType == null;
             gangSpawnTask.IsHitSquad = isHitSquad;
             gangSpawnTask.AttemptSpawn();

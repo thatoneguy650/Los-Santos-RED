@@ -31,7 +31,6 @@ public class ConditionalGroup
     protected DispatchableVehicle DispatchableVehicle;
     public string Name { get; set; }
     public float Percentage { get; set; }
-
     public float OverrideNightPercentage { get; set; } = -1.0f;
     public float OverrideDayPercentage { get; set; } = -1.0f;
     public float OverridePoorWeatherPercentage { get; set; } = -1.0f;
@@ -39,8 +38,6 @@ public class ConditionalGroup
     public int MaxHourSpawn { get; set; } = 24;
     public int MinWantedLevelSpawn { get; set; } = 0;
     public int MaxWantedLevelSpawn { get; set; } = 3;
-
-
     public List<ConditionalLocation> PossiblePedSpawns { get; set; }
     public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
     [XmlIgnore]

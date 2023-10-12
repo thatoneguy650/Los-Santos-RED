@@ -51,7 +51,8 @@ namespace LSR.Vehicles
             bool showGetInMenu = false;
             bool showTaxiMenu = false;
 
-            if(hasDriver)
+
+            if(hasDriver && player.IsNotWanted)
             {
                 if (player.IsInVehicle)
                 {

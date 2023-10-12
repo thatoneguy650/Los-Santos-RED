@@ -46,7 +46,6 @@ public class BlankLocationsData
             {
                 new LEConditionalLocation(new Vector3(-1004.588f,-2451.93f,25.63272f), 294.0977f, defaultSpawnPercentage) {
                     MaxWantedLevelSpawn = 5,
-                    GroupID = "RoofTopSniper1",
                     RequiredPedGroup = "Sniper",
                     TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
             },
@@ -56,7 +55,6 @@ public class BlankLocationsData
                 new LEConditionalLocation(new Vector3(-544.9591f, -2225.018f, 122.3655f), 56.47693f, defaultSpawnPercentage) {
                     MinWantedLevelSpawn = 2,
                     MaxWantedLevelSpawn = 5,
-                    GroupID = "RoofTopSniper2",
                     RequiredPedGroup = "Sniper",
                     TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
             },
@@ -66,7 +64,6 @@ public class BlankLocationsData
                 new LEConditionalLocation(new Vector3(132.3552f, -1032.493f, 57.79759f), 336.7522f, defaultSpawnPercentage) {
                     MinWantedLevelSpawn = 2,
                     MaxWantedLevelSpawn = 5,
-                    GroupID = "RoofTopSniper3",
                     RequiredPedGroup = "Sniper",
                     TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
             },
@@ -76,7 +73,6 @@ public class BlankLocationsData
                 new LEConditionalLocation(new Vector3(-62.03125f, -707.9713f, 55.52032f), 94.052f, defaultSpawnPercentage) {
                     MinWantedLevelSpawn = 2,
                     MaxWantedLevelSpawn = 5,
-                    GroupID = "RoofTopSniper4",
                     RequiredPedGroup = "Sniper",
                     TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
             },
@@ -86,7 +82,6 @@ public class BlankLocationsData
                 new LEConditionalLocation(new Vector3(-547.1264f, -625.6401f, 56.11749f), 172.5318f, defaultSpawnPercentage) {
                     MinWantedLevelSpawn = 2,
                     MaxWantedLevelSpawn = 5,
-                    GroupID = "RoofTopSniper5",
                     RequiredPedGroup = "Sniper",
                     TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
             },
@@ -96,7 +91,6 @@ public class BlankLocationsData
                 new LEConditionalLocation(new Vector3(-771.976f, -302.2982f, 54.00434f), 109.9027f, defaultSpawnPercentage) {
                     MinWantedLevelSpawn = 2,
                     MaxWantedLevelSpawn = 5,
-                    GroupID = "RoofTopSniper6",
                     RequiredPedGroup = "Sniper",
                     TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
             },
@@ -106,7 +100,6 @@ public class BlankLocationsData
                 new LEConditionalLocation(new Vector3(-1332.035f, -500.6434f, 40.44254f), 260.7096f, defaultSpawnPercentage) {
                     MinWantedLevelSpawn = 2,
                     MaxWantedLevelSpawn = 5,
-                    GroupID = "RoofTopSniper7",
                     RequiredPedGroup = "Sniper",
                     TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
             },
@@ -260,7 +253,6 @@ public class BlankLocationsData
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(2716.348f, 3428.547f, 55.57796f), 248.8778f, defaultSpawnPercentage) {
-                        GroupID = "SpeedTrap6",
                         AssociationID = "SAHP",
                         RequiredVehicleGroup = "StandardSAHP",
                         IsEmpty = false,
@@ -382,7 +374,6 @@ public class BlankLocationsData
     {
         BlankLocation HornyBurgersCops = new BlankLocation()
         {
-            ActivateDistance = 400f,
             Name = "HornyBurgersCops",
             FullName = "HornyBurgersCops",
             Description = "SpeedTrap Cops at the Horny Burgers shop",
@@ -392,7 +383,6 @@ public class BlankLocationsData
             OpenTime = 6,
             CloseTime = 20,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
             { },
@@ -407,7 +397,7 @@ public class BlankLocationsData
                             RequiredPedGroup = "",
                             RequiredVehicleGroup = "",
                             IsEmpty = false,
-                            GroupID = "",
+                            
                             AllowAirVehicle = false,
                             AllowBoat = false,
                             TaskRequirements = TaskRequirements.Guard,
@@ -430,7 +420,6 @@ public class BlankLocationsData
         BlankLocationPlaces.Add(HornyBurgersCops);
         BlankLocation RustyBrownsCops = new BlankLocation()
         {
-            ActivateDistance = 400f,
             Name = "RustyBrownsCops",
             FullName = "RustyBrownsCops",
             Description = "2 Cops at the Rusty Brown's donut shop",
@@ -440,7 +429,6 @@ public class BlankLocationsData
             OpenTime = 8,
             CloseTime = 16,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -466,7 +454,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -496,7 +484,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -530,7 +518,7 @@ public class BlankLocationsData
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -554,7 +542,6 @@ public class BlankLocationsData
         BlankLocationPlaces.Add(RustyBrownsCops);
         BlankLocation BishopsChickenCop = new BlankLocation()
         {
-            ActivateDistance = 400f,
             Name = "BishopsChickenCop",
             FullName = "BishopsChickenCop",
             Description = "A Cops at the Bishop's Chicken Shop",
@@ -564,7 +551,6 @@ public class BlankLocationsData
             OpenTime = 16,
             CloseTime = 20,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -590,7 +576,7 @@ public class BlankLocationsData
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         TaskRequirements = TaskRequirements.Guard,
@@ -623,7 +609,7 @@ public class BlankLocationsData
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -699,13 +685,11 @@ public class BlankLocationsData
             Description = "Ancelotti's having a break at the Gas Station",
             EntrancePosition = new Vector3(-2576.103f, 2334.192f, 33.06499f),
             EntranceHeading = -111.3623f,
-            ActivateCells = 8,
-            ActivateDistance = 400f,
         };
         BlankLocationPlaces.Add(AncelottiGasStation);
         BlankLocation AncelottiMomsPie = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "AncelottiMomsPie",
             Description = "2 Ancelotti's outside Moms Pie Diner",
             MapIcon = 76,
@@ -714,7 +698,6 @@ public class BlankLocationsData
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -740,7 +723,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -770,7 +753,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -803,7 +786,7 @@ public class BlankLocationsData
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>() {},
@@ -826,7 +809,6 @@ public class BlankLocationsData
         BlankLocationPlaces.Add(AncelottiMomsPie);
         BlankLocation AncelottiOdea = new BlankLocation()
         {
-            ActivateDistance = 400f,
             Name = "AncelottiOdea",
             Description = "2 Ancelotti's outside Odea's",
             MapIcon = 76,
@@ -835,7 +817,6 @@ public class BlankLocationsData
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -857,59 +838,23 @@ public class BlankLocationsData
                                         Location = new Vector3(-3155.077f, 1098.002f, 20.85437f),
                                             Heading = 107.5466f,
                                             Percentage = 0f,
-                                            AssociationID = "",
-                                            RequiredPedGroup = "",
-                                            RequiredVehicleGroup = "",
-                                            IsEmpty = true,
-                                            GroupID = "",
-                                            AllowAirVehicle = false,
-                                            AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
                                             ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_HANG_OUT_STREET",
                                                 "WORLD_HUMAN_AA_COFFEE",
                                             },
-                                            OverrideNightPercentage = -1f,
-                                            OverrideDayPercentage = -1f,
-                                            OverridePoorWeatherPercentage = -1f,
-                                            MinHourSpawn = 0,
-                                            MaxHourSpawn = 24,
-                                            MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
                                     },
                                     new GangConditionalLocation()
                                     {
                                         Location = new Vector3(-3156.236f, 1098.123f, 20.85246f),
                                             Heading = -109.456f,
                                             Percentage = 0f,
-                                            AssociationID = "",
-                                            RequiredPedGroup = "",
-                                            RequiredVehicleGroup = "",
-                                            IsEmpty = true,
-                                            GroupID = "",
-                                            AllowAirVehicle = false,
-                                            AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
                                             ForcedScenarios = new List<string>()
                                             {
                                                 "WORLD_HUMAN_LEANING_CASINO_TERRACE",
                                             },
-                                            OverrideNightPercentage = -1f,
-                                            OverrideDayPercentage = -1f,
-                                            OverridePoorWeatherPercentage = -1f,
-                                            MinHourSpawn = 0,
-                                            MaxHourSpawn = 24,
-                                            MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -919,26 +864,8 @@ public class BlankLocationsData
                                     Location = new Vector3(-3151.205f, 1095.979f, 20.16063f),
                                         Heading = 102.04f,
                                         Percentage = 0f,
-                                        AssociationID = "",
-                                        RequiredPedGroup = "",
-                                        RequiredVehicleGroup = "",
-                                        IsEmpty = true,
-                                        GroupID = "",
-                                        AllowAirVehicle = false,
-                                        AllowBoat = false,
                                         ForcedScenarios = new List<string>()
                                         {},
-                                        OverrideNightPercentage = -1f,
-                                        OverrideDayPercentage = -1f,
-                                        OverridePoorWeatherPercentage = -1f,
-                                        MinHourSpawn = 0,
-                                        MaxHourSpawn = 24,
-                                        MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 6,
-                                        LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
-                                        ForceLongGun = false,
                                 },
                             },
                     },
@@ -947,7 +874,6 @@ public class BlankLocationsData
         BlankLocationPlaces.Add(AncelottiOdea);
         BlankLocation AncelottiRobsLiquor = new BlankLocation()
         {
-            ActivateDistance = 400f,
             Name = "AncelottiRobsLiquor",
             Description = "3 Ancelotti's at the side Robs Liquor",
             MapIcon = 76,
@@ -956,7 +882,6 @@ public class BlankLocationsData
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -982,7 +907,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -1011,7 +936,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -1040,7 +965,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -1072,7 +997,7 @@ public class BlankLocationsData
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -1096,7 +1021,7 @@ public class BlankLocationsData
         BlankLocationPlaces.Add(AncelottiRobsLiquor);
         BlankLocation AncelottiWalkway = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "AncelottiWalkway",
             Description = "2 Ancelotti's the beach walkway",
             MapIcon = 76,
@@ -1105,7 +1030,7 @@ public class BlankLocationsData
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -1131,7 +1056,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -1161,7 +1086,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -1194,7 +1119,7 @@ public class BlankLocationsData
     {
         BlankLocation ArmenianGasStation = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "ArmenianGasStation",
             Description = "Armenian's at the Globe Oil Gas Station",
             MapIcon = 162,
@@ -1203,7 +1128,7 @@ public class BlankLocationsData
             OpenTime = 6,
             CloseTime = 20,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_ARMENIAN",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -1229,7 +1154,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -1260,7 +1185,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -1291,7 +1216,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -1322,7 +1247,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -1356,7 +1281,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -1382,7 +1307,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -1406,7 +1331,7 @@ public class BlankLocationsData
         BlankLocationPlaces.Add(ArmenianGasStation);
         BlankLocation ArmenianArsenalSt = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "ArmenianArsenalSt",
             FullName = "",
             Description = "Armenian's at South Arsenal Street Container Depot",
@@ -1416,7 +1341,7 @@ public class BlankLocationsData
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_ARMENIAN",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -1521,7 +1446,7 @@ public class BlankLocationsData
         BlankLocationPlaces.Add(ArmenianArsenalSt);
         BlankLocation ArmenianArsenalSt2 = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "ArmenianArsenalSt2",
             FullName = "",
             Description = "2 Armenian's at South Arsenal Street Small Warehouse",
@@ -1531,7 +1456,7 @@ public class BlankLocationsData
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_ARMENIAN",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -1592,7 +1517,7 @@ public class BlankLocationsData
         BlankLocationPlaces.Add(ArmenianArsenalSt2);
         BlankLocation ArmenianRecycling = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "ArmenianRecycling",
             FullName = "",
             Description = "Armenian's at the Ls Recycling Depot",
@@ -1602,7 +1527,7 @@ public class BlankLocationsData
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_ARMENIAN",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -1706,7 +1631,7 @@ public class BlankLocationsData
         BlankLocationPlaces.Add(ArmenianRecycling);
         BlankLocation ArmenianScrapYard = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "ArmenianScrapYard",
             FullName = "",
             Description = "Armenian's at the Ls Scrapyard",
@@ -1716,7 +1641,7 @@ public class BlankLocationsData
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_ARMENIAN",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -1848,7 +1773,7 @@ public class BlankLocationsData
     {
         BlankLocation CARTELOldBarn = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "CARTELOldBarn",
             Description = "Cartel Group at a Old Barn",
             MapIcon = 78,
@@ -1857,7 +1782,7 @@ public class BlankLocationsData
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_MADRAZO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -1883,7 +1808,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -1914,7 +1839,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -1945,7 +1870,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -1976,7 +1901,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -2007,7 +1932,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -2041,7 +1966,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -2067,7 +1992,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -2093,7 +2018,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = false,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -2117,7 +2042,7 @@ public class BlankLocationsData
         BlankLocationPlaces.Add(CARTELOldBarn);
         BlankLocation CARTELOldHouse = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "CARTELOldHouse",
             Description = "2 Cartel members at a Old House",
             MapIcon = 78,
@@ -2126,7 +2051,7 @@ public class BlankLocationsData
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_MADRAZO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -2152,7 +2077,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -2182,7 +2107,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -2215,7 +2140,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -2241,7 +2166,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = false,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -2265,7 +2190,7 @@ public class BlankLocationsData
         BlankLocationPlaces.Add(CARTELOldHouse);
         BlankLocation CartelCementWorks = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "CartelCementWorks",
             Description = "2 Cartel members at the Cement Works, located on Senora Road near the cow field",
             MapIcon = 78,
@@ -2274,7 +2199,7 @@ public class BlankLocationsData
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_MADRAZO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -2300,7 +2225,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -2331,7 +2256,7 @@ public class BlankLocationsData
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -2365,7 +2290,7 @@ public class BlankLocationsData
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -2389,7 +2314,7 @@ public class BlankLocationsData
         BlankLocationPlaces.Add(CartelCementWorks);
         BlankLocation CARTELMarlowe2 = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "CARTELMarlowe2",
             FullName = "",
             Description = "2 Cartel members on a 2nd location along Marlowe Drive",
@@ -2400,7 +2325,7 @@ public class BlankLocationsData
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_MADRAZO",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -2461,7 +2386,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(CARTELMarlowe2);
         BlankLocation CARTELMarlowe = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "CARTELMarlowe",
             FullName = "",
             Description = "2 Cartel members on Marlowe Drive",
@@ -2472,7 +2397,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_MADRAZO",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -2534,7 +2459,7 @@ new List<ConditionalGroup>() {
     {
         BlankLocation DiablosCarPark = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "DiablosCarPark",
             Description = "10 Diablo Members 4 Vehicles Car park Gathering, Located on Chum Street just off Signal Street bridge",
             MapIcon = 355,
@@ -2543,7 +2468,7 @@ new List<ConditionalGroup>() {
             OpenTime = 18,
             CloseTime = 4,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_DIABLOS",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -2569,7 +2494,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -2600,7 +2525,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -2631,7 +2556,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -2662,7 +2587,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -2693,7 +2618,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -2724,7 +2649,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -2755,7 +2680,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -2786,7 +2711,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -2817,7 +2742,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -2848,7 +2773,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -2882,7 +2807,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -2908,7 +2833,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -2934,7 +2859,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -2960,7 +2885,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -2984,7 +2909,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(DiablosCarPark);
         BlankLocation DiablosUnderBridge = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "DiablosUnderBridge",
             Description = "4 Diablo members 1 vehicle,located Under the Elysian Fields Freeway near Voodoo Place",
             MapIcon = 355,
@@ -2993,7 +2918,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_DIABLOS",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3020,7 +2945,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -3052,7 +2977,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -3084,7 +3009,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -3116,7 +3041,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -3151,7 +3076,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -3175,7 +3100,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(DiablosUnderBridge);
         BlankLocation DiablosAutopia = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "DiablosAutopia",
             FullName = "",
             Description = "3 Diablo members 1 vehicle,located Autopia Parkway",
@@ -3185,7 +3110,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
 
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_DIABLOS",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -3267,7 +3192,7 @@ new List<ConditionalGroup>() {
     {
         BlankLocation GambettiEclipse = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "GambettiEclipse",
             Description = "2 Gambetti outside the Eclipse Lounge",
             EntrancePosition = new Vector3(-80.93258f, 239.8747f, 100.8947f),
@@ -3275,7 +3200,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3301,7 +3226,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -3331,7 +3256,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -3361,7 +3286,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(GambettiEclipse);
         BlankLocation GambettiGuidos = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "GambettiGuidos",
             Description = "2 Gambetti outside Guidos Pizza Store",
             EntrancePosition = new Vector3(443.7656f, 121.4294f, 98.95059f),
@@ -3369,7 +3294,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3395,7 +3320,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -3425,7 +3350,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -3458,7 +3383,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -3482,7 +3407,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(GambettiGuidos);
         BlankLocation GambettiLastTrain = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "GambettiLastTrain",
             Description = "2 Gambetti outside Last Train Diner",
             EntrancePosition = new Vector3(-362.5037f, 265.7051f, 84.09846f),
@@ -3490,7 +3415,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3516,7 +3441,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -3546,7 +3471,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -3579,7 +3504,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -3603,7 +3528,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(GambettiLastTrain);
         BlankLocation GambettiNorthArcher = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "GambettiNorthArcher",
             Description = "2 Gambetti outside an apartment off North Archer Road",
             EntrancePosition = new Vector3(-148.7277f, 210.5457f, 92.31926f),
@@ -3611,7 +3536,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3637,7 +3562,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -3667,7 +3592,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -3700,7 +3625,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -3724,7 +3649,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(GambettiNorthArcher);
         BlankLocation GambettiPower = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "GambettiPower",
             Description = "3 Gambetti in a alley off Power Street",
             EntrancePosition = new Vector3(443.7656f, 121.4294f, 98.95059f),
@@ -3732,7 +3657,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3759,7 +3684,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -3789,7 +3714,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -3819,7 +3744,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -3852,7 +3777,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = false,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -3879,7 +3804,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -3906,7 +3831,7 @@ new List<ConditionalGroup>() {
     {
         BlankLocation KKANGPAECarPark = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "KKANGPAECarPark",
             Description = "KKANGPAE group on a car park",
             EntrancePosition = new Vector3(-809.8347f, -578.8478f, 29.82631f),
@@ -3914,7 +3839,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3940,7 +3865,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -3971,7 +3896,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -4002,7 +3927,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -4032,7 +3957,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -4063,7 +3988,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -4094,7 +4019,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -4125,7 +4050,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -4156,7 +4081,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -4190,7 +4115,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -4216,7 +4141,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -4242,7 +4167,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -4266,7 +4191,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(KKANGPAECarPark);
         BlankLocation KKANGPAELuckyPlucker = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "KKANGPAELuckyPlucker",
             Description = "KKANGPAE members at Lucky Plucker",
             EntrancePosition = new Vector3(-606.5583f, -872.8243f, 25.1454f),
@@ -4274,7 +4199,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -4301,7 +4226,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -4332,7 +4257,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -4363,7 +4288,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -4394,7 +4319,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -4428,7 +4353,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -4455,7 +4380,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -4482,7 +4407,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -4506,7 +4431,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(KKANGPAELuckyPlucker);
         BlankLocation KKANGPAENoodleShop = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "KKANGPAENoodleShop",
             Description = "KKANGPAE at the S.Ho Noodle Shop",
             EntrancePosition = new Vector3(-704.4111f, -886.5811f, 23.80389f),
@@ -4514,7 +4439,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -4541,7 +4466,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -4573,7 +4498,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -4605,7 +4530,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -4637,7 +4562,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -4672,7 +4597,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -4699,7 +4624,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -4723,7 +4648,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(KKANGPAENoodleShop);
         BlankLocation KKANGPAEPlaza = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "KKANGPAEPlaza",
             FullName = "",
             Description = "3 KKANGPAE members outside betta Life in Korean Plaza",
@@ -4734,7 +4659,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -4808,7 +4733,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(KKANGPAEPlaza);
         BlankLocation KKANGPAENoodleHouse = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "KKANGPAENoodleHouse",
             FullName = "",
             Description = "3 KKANGPAE members at S.Ho Korean Noodle House",
@@ -4819,7 +4744,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -4893,7 +4818,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(KKANGPAENoodleHouse);
         BlankLocation KKANGPAEVespMall = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "KKANGPAEVespMall",
             FullName = "",
             Description = "KKANGPAE members at the Vespucci Mall",
@@ -4904,7 +4829,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -4986,7 +4911,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(KKANGPAEVespMall);
         BlankLocation KKANGPAEWigWam = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "KKANGPAEWigWam",
             FullName = "",
             Description = "2 KKANGPAE members outside WigWam",
@@ -4997,7 +4922,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -5061,7 +4986,7 @@ new List<ConditionalGroup>() {
     {
         BlankLocation LupisellaBayviewLodge = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "LupisellaBayviewLodge",
             Description = "2 Lupisella's outside Bayview Lodge",
             EntrancePosition = new Vector3(-706.9418f, 5784.884f, 17.03095f),
@@ -5069,7 +4994,7 @@ new List<ConditionalGroup>() {
             OpenTime = 6,
             CloseTime = 20,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5095,7 +5020,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5125,7 +5050,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5158,7 +5083,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -5182,7 +5107,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(LupisellaBayviewLodge);
         BlankLocation LupisellaCleaners = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "LupisellaCleaners",
             Description = "2 Lupisella's outside No Mark Cleaners",
             EntrancePosition = new Vector3(-54.82728f, 6469.723f, 31.02168f),
@@ -5190,7 +5115,7 @@ new List<ConditionalGroup>() {
             OpenTime = 6,
             CloseTime = 20,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5216,7 +5141,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5245,7 +5170,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5278,7 +5203,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -5304,7 +5229,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = false,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -5328,7 +5253,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(LupisellaCleaners);
         BlankLocation LupisellaDreamView = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "LupisellaDreamView",
             Description = "3 Lupisella's outside Dream View Motel",
             EntrancePosition = new Vector3(-82.15873f, 6358.285f, 30.99591f),
@@ -5336,7 +5261,7 @@ new List<ConditionalGroup>() {
             OpenTime = 6,
             CloseTime = 20,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5362,7 +5287,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5392,7 +5317,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5422,7 +5347,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5455,7 +5380,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -5479,7 +5404,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(LupisellaDreamView);
         BlankLocation LupisellaForestCabin = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "LupisellaForestCabin",
             Description = "2 Lupisella's outside a cabin at the Peleto Forest Works",
             EntrancePosition = new Vector3(-837.5941f, 5408.731f, 34.03185f),
@@ -5487,7 +5412,7 @@ new List<ConditionalGroup>() {
             OpenTime = 6,
             CloseTime = 20,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5513,7 +5438,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5543,7 +5468,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5576,7 +5501,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -5600,7 +5525,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(LupisellaForestCabin);
         BlankLocation LupisellaMojitoInn = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "LupisellaMojitoInn",
             Description = "2 Lupisella's outside Mojito Inn",
             EntrancePosition = new Vector3(-119.8819f, 6396.609f, 31.1784f),
@@ -5608,7 +5533,7 @@ new List<ConditionalGroup>() {
             OpenTime = 6,
             CloseTime = 20,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5634,7 +5559,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5664,7 +5589,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5697,7 +5622,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -5724,7 +5649,7 @@ new List<ConditionalGroup>() {
     {
         BlankLocation MarabunteCov = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "MarabunteCov",
             Description = "Marabunte Group at Covington industries carpark",
             MapIcon = 78,
@@ -5733,7 +5658,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_MARABUNTE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5759,7 +5684,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5788,7 +5713,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5817,7 +5742,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5846,7 +5771,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5875,7 +5800,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5904,7 +5829,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5933,7 +5858,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -5965,7 +5890,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = false,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -5991,7 +5916,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -6017,7 +5942,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -6041,7 +5966,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(MarabunteCov);
         BlankLocation MarabunteElRancho = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "MarabunteElRancho",
             FullName = "",
             Description = "3 Marabunte on El Rancho blvd",
@@ -6051,7 +5976,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_MARABUNTE",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -6108,7 +6033,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(MarabunteElRancho);
         BlankLocation MarabunteGasStation = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "MarabunteGasStation",
             FullName = "",
             Description = "2 Marabunte at a Gas Station",
@@ -6118,7 +6043,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_MARABUNTE",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -6178,7 +6103,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(MarabunteGasStation);
         BlankLocation MarabunteLsTattoo = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "MarabunteLsTattoo",
             FullName = "",
             Description = "2 Marabunte outside Los Santos Tattoos",
@@ -6188,7 +6113,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_MARABUNTE",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -6239,7 +6164,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(MarabunteLsTattoo);
         BlankLocation MarabunteTaco = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "MarabunteTaco",
             FullName = "",
             Description = "3 Marabunte at Moms Taco",
@@ -6249,7 +6174,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_MARABUNTE",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -6326,7 +6251,7 @@ new List<ConditionalGroup>() {
     {
         BlankLocation MessinaAmmunation = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "MessinaAmmunation",
             Description = "2 Messina's outside Ammunation",
             MapIcon = 78,
@@ -6335,7 +6260,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6361,7 +6286,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -6391,7 +6316,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -6423,7 +6348,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -6447,7 +6372,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(MessinaAmmunation);
         BlankLocation MessinaBeanMachine = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "MessinaBeanMachine",
             Description = "3 Messina's outside Bean Machine",
             MapIcon = 78,
@@ -6456,7 +6381,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6482,7 +6407,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -6512,7 +6437,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -6545,7 +6470,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -6569,7 +6494,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(MessinaBeanMachine);
         BlankLocation MessinaLSGents = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "MessinaLSGents",
             Description = "2 Messina outside the LS Gentstyle",
             MapIcon = 78,
@@ -6578,7 +6503,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6604,7 +6529,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -6634,7 +6559,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -6664,7 +6589,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(MessinaLSGents);
         BlankLocation MessinaPosonby = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "MessinaPosonby",
             Description = "2 Messina's outside Posonbys",
             MapIcon = 78,
@@ -6673,7 +6598,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6699,7 +6624,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -6728,7 +6653,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -6760,7 +6685,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -6787,7 +6712,7 @@ new List<ConditionalGroup>() {
     {
         BlankLocation PavanoAlamoFruit = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "PavanoAlamoFruit",
             Description = "2 Pavano outside Alamo Fruit Market",
             EntrancePosition = new Vector3(1785.255f, 4584.821f, 37.20624f),
@@ -6795,7 +6720,7 @@ new List<ConditionalGroup>() {
             OpenTime = 6,
             CloseTime = 20,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6821,7 +6746,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -6850,7 +6775,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -6882,7 +6807,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -6906,7 +6831,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(PavanoAlamoFruit);
         BlankLocation PavanoUnionGrain = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "PavanoUnionGrain",
             Description = "2 Pavano outside UnionGrain",
             EntrancePosition = new Vector3(2024.766f, 4974.324f, 40.88439f),
@@ -6914,7 +6839,7 @@ new List<ConditionalGroup>() {
             OpenTime = 6,
             CloseTime = 20,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6940,7 +6865,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -6969,7 +6894,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -7001,7 +6926,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -7025,7 +6950,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(PavanoUnionGrain);
         BlankLocation PavanoAirport = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "PavanoAirport",
             FullName = "",
             Description = "Pavano group at the Grapeseed Airport",
@@ -7035,7 +6960,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -7188,7 +7113,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(PavanoAirport);
         BlankLocation PavanoFarmEggs = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "PavanoFarmEggs",
             FullName = "",
             Description = "5 Pavano outside derelict Farm Eggs building",
@@ -7198,7 +7123,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -7315,7 +7240,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(PavanoFarmEggs);
         BlankLocation PavanoGasStation = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "PavanoGasStation",
             FullName = "",
             Description = "2 Pavano members outside Old Gas Station",
@@ -7325,7 +7250,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -7373,7 +7298,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(PavanoGasStation);
         BlankLocation PavanoStore = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "PavanoStore",
             FullName = "",
             Description = "2 Pavano members outside an old Store",
@@ -7383,7 +7308,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -7434,7 +7359,7 @@ new List<ConditionalGroup>() {
     {
         BlankLocation TRIADSConstructionSite = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "TRIADSConstructionSite",
             Description = "Triads's meeting in a construction site pit",
             EntrancePosition = new Vector3(-96.0987f, -981.312f, 20.97673f),
@@ -7442,7 +7367,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7468,7 +7393,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -7497,7 +7422,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -7527,7 +7452,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -7560,7 +7485,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -7586,7 +7511,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -7610,7 +7535,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(TRIADSConstructionSite);
         BlankLocation TRIADSUnderGroundParking = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "TRIADSUnderGroundParking",
             Description = "Triads's meeting in Underground Parking",
             EntrancePosition = new Vector3(-148.7391f, -615.175f, 32.42778f),
@@ -7618,7 +7543,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7644,7 +7569,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -7675,7 +7600,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -7706,7 +7631,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -7737,7 +7662,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -7768,7 +7693,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -7798,7 +7723,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -7831,7 +7756,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -7857,7 +7782,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -7883,7 +7808,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = false,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -7907,7 +7832,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(TRIADSUnderGroundParking);
         BlankLocation TRIADSLegionSquare = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "TRIADSLegionSquare",
             FullName = "",
             Description = "2 Triads's on Legion Square",
@@ -7918,7 +7843,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -7981,7 +7906,7 @@ new List<ConditionalGroup>() {
     {
         BlankLocation YARDIESAlDente = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "YARDIESAlDente",
             Description = "5 Yardies hanging around the parking nextto Al Dente",
             EntrancePosition = new Vector3(-1168.661f, -1394.101f, 4.297443f),
@@ -7989,7 +7914,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8015,7 +7940,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8045,7 +7970,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8075,7 +8000,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8105,7 +8030,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8135,7 +8060,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8168,7 +8093,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -8194,7 +8119,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = false,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -8218,7 +8143,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(YARDIESAlDente);
         BlankLocation YARDIESAlleyway = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "YARDIESAlleyway",
             Description = "5 Yardies hanging around in a Alleyway",
             EntrancePosition = new Vector3(-1309.823f, -1253.378f, 4.213122f),
@@ -8226,7 +8151,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8252,7 +8177,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8281,7 +8206,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8311,7 +8236,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8341,7 +8266,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8371,7 +8296,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8404,7 +8329,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = false,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -8430,7 +8355,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -8456,7 +8381,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -8480,7 +8405,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(YARDIESAlleyway);
         BlankLocation YARDIESBayCity = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "YARDIESBayCity",
             Description = "2 Yardies on Bay City Ave",
             EntrancePosition = new Vector3(-997.6016f, -1603.78f, 4.366539f),
@@ -8488,7 +8413,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8514,7 +8439,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8544,7 +8469,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8577,7 +8502,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -8601,7 +8526,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(YARDIESBayCity);
         BlankLocation YARDIESBeach = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "YARDIESBeach",
             Description = "5 Yardies hanging out at the beach",
             EntrancePosition = new Vector3(-1346.998f, -1515.024f, 3.89973f),
@@ -8609,7 +8534,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8635,7 +8560,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8665,7 +8590,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8695,7 +8620,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8725,7 +8650,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8755,7 +8680,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8788,7 +8713,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -8812,7 +8737,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(YARDIESBeach);
         BlankLocation YARDIESBeanMachine = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "YARDIESBeanMachine",
             Description = "3 Yardies near Bean Machine",
             EntrancePosition = new Vector3(-1279.127f, -1145.539f, 5.873619f),
@@ -8820,7 +8745,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8846,7 +8771,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8876,7 +8801,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8906,7 +8831,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -8939,7 +8864,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -8963,7 +8888,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(YARDIESBeanMachine);
         BlankLocation YARDIESMagellanAve = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "YARDIESMagellanAve",
             Description = "4 Yardies hanging around Magellan Ave",
             EntrancePosition = new Vector3(-1260.589f, -1241.573f, 4.723385f),
@@ -8971,7 +8896,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8997,7 +8922,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9027,7 +8952,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9056,7 +8981,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9086,7 +9011,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9119,7 +9044,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = false,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -9145,7 +9070,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             ForcedScenarios = new List<string>()
@@ -9169,7 +9094,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(YARDIESMagellanAve);
         BlankLocation YARDIESPolomino = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "YARDIESPolomino",
             Description = "3 Yardies on the corner of Polomino Ave",
             EntrancePosition = new Vector3(-1219.959f, -1353.113f, 4.133864f),
@@ -9177,7 +9102,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9203,7 +9128,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9233,7 +9158,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9263,7 +9188,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9293,7 +9218,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(YARDIESPolomino);
         BlankLocation YARDIESharkBites = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "YARDIESharkBites",
             Description = "2 Yardies next to Shark Bites",
             EntrancePosition = new Vector3(-1284.461f, -1400.887f, 4.083547f),
@@ -9301,7 +9226,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9327,7 +9252,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9357,7 +9282,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9390,7 +9315,7 @@ new List<ConditionalGroup>() {
                                         RequiredPedGroup = "",
                                         RequiredVehicleGroup = "",
                                         IsEmpty = true,
-                                        GroupID = "",
+                                        
                                         AllowAirVehicle = false,
                                         AllowBoat = false,
                                         ForcedScenarios = new List<string>()
@@ -9414,7 +9339,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(YARDIESharkBites);
         BlankLocation YARDIESlicenDice = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "YARDIESlicenDice",
             Description = "3 Yardies outside Slice N Dice",
             EntrancePosition = new Vector3(-1341.714f, -1302.357f, 4.836801f),
@@ -9422,7 +9347,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9448,7 +9373,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9478,7 +9403,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9508,7 +9433,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9538,7 +9463,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(YARDIESlicenDice);
         BlankLocation YARDIESmokeWater = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "YARDIESmokeWater",
             Description = "3 Yardies outside Smoke on the Water",
             EntrancePosition = new Vector3(-1190.044f, -1573.374f, 4.367838f),
@@ -9546,7 +9471,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9572,7 +9497,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9602,7 +9527,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9632,7 +9557,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9662,7 +9587,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(YARDIESmokeWater);
         BlankLocation YARDIESVespLiquor = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "YARDIESVespLiquor",
             Description = "3 Yardies outside Vespucci Liquor Market",
             EntrancePosition = new Vector3(-1103.732f, -1288.805f, 5.425843f),
@@ -9670,7 +9595,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9696,7 +9621,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9726,7 +9651,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9756,7 +9681,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9786,7 +9711,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(YARDIESVespLiquor);
         BlankLocation YARDIESteamBoat = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "YARDIESteamBoat",
             Description = "2 Yardies outside SteamBoat Beers",
             EntrancePosition = new Vector3(-1210.031f, -1386.722f, 4.079804f),
@@ -9794,7 +9719,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.SanAndreasStateID,
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9820,7 +9745,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9850,7 +9775,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -9880,7 +9805,7 @@ new List<ConditionalGroup>() {
                                             RequiredPedGroup = "",
                                             RequiredVehicleGroup = "",
                                             IsEmpty = true,
-                                            GroupID = "",
+                                            
                                             AllowAirVehicle = false,
                                             AllowBoat = false,
                                             TaskRequirements = TaskRequirements.Guard,
@@ -10113,7 +10038,7 @@ new List<ConditionalGroup>() {
     {
         BlankLocation RedneckTrailerHome2 = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "RedneckTrailerHome2",
             FullName = "",
             Description = "2 4 Rednecks at a Trailer Home",
@@ -10124,7 +10049,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_HILLBILLY",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -10187,7 +10112,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(RedneckTrailerHome2);
         BlankLocation RednecksAutoShop = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "RednecksAutoShop",
             FullName = "",
             Description = "2 Rednecks outside a AutoShop",
@@ -10198,7 +10123,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_HILLBILLY",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -10260,7 +10185,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(RednecksAutoShop);
         BlankLocation RedneckFishing = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "RedneckFishing",
             FullName = "",
             Description =
@@ -10272,7 +10197,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_HILLBILLY",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -10348,7 +10273,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(RedneckFishing);
         BlankLocation RedneckGasStation = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "RedneckGasStation",
             FullName = "",
             Description = "2 Redneck members at the local gas station, located on the corner of 'Alhambra Drive' and 'Marina Drive' in Sandy Shores",
@@ -10359,7 +10284,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_HILLBILLY",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -10423,7 +10348,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(RedneckGasStation);
         BlankLocation RednecksOttosAuto = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "RednecksOttosAuto",
             FullName = "",
             Description = "2 Rednecks outside Ottos AutoParts",
@@ -10434,7 +10359,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_HILLBILLY",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -10496,7 +10421,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(RednecksOttosAuto);
         BlankLocation RednecksRooftop = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "RednecksRooftop",
             FullName = "",
             Description = "4 Rednecks on a Trailer Rooftop",
@@ -10507,7 +10432,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_HILLBILLY",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -10599,7 +10524,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(RednecksRooftop);
         BlankLocation RednecksTrailerHome = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "RednecksTrailerHome",
             FullName = "",
             Description = "4 Rednecks at a Trailer Home",
@@ -10610,7 +10535,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_HILLBILLY",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -10709,7 +10634,7 @@ new List<ConditionalGroup>() {
         BlankLocationPlaces.Add(RednecksTrailerHome);
         BlankLocation RednecksYellowJack = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "RednecksYellowJack",
             FullName = "",
             Description = "4 Rednecks at a Yellow Jack Bar",
@@ -10720,7 +10645,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_HILLBILLY",
             MenuID = "",
             VendorModels = new List<String>() { },
@@ -10824,7 +10749,7 @@ new List<ConditionalGroup>() {
     {
         BlankLocation VarriosArenaCP = new BlankLocation()
         {
-            ActivateDistance = 400f,
+            
             Name = "VarriosArenaCP",
             FullName = "",
             Description = "7 Varrios members at Maze Bank Arena CarPark",
@@ -10835,7 +10760,7 @@ new List<ConditionalGroup>() {
             OpenTime = 0,
             CloseTime = 24,
             StateID = "SanAndreas",
-            ActivateCells = 8,
+            
             AssignedAssociationID = "AMBIENT_GANG_SALVA",
             MenuID = "",
             VendorModels = new List<String>() { },

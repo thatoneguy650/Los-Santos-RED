@@ -311,7 +311,7 @@ public class FireDispatcher
             firefighterSpawnTask.AllowAnySpawn = allowAny;
             firefighterSpawnTask.AllowBuddySpawn = allowBuddy;
             firefighterSpawnTask.SpawnRequirement = spawnRequirement;
-            firefighterSpawnTask.ClearArea = clearArea;
+            firefighterSpawnTask.ClearVehicleArea = clearArea;
             firefighterSpawnTask.PlacePedOnGround = VehicleType == null;
             firefighterSpawnTask.AttemptSpawn();
             firefighterSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });

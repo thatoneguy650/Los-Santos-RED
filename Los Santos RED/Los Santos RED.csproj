@@ -134,11 +134,12 @@
     <Compile Include="lsr\Data\Organizations\TaxiFirm.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\TaxiSettings.cs" />
     <Compile Include="lsr\Dispatcher\LE\MarshalDispatcher.cs" />
-    <Compile Include="lsr\Dispatcher\TaxiDispatcher.cs" />
+    <Compile Include="lsr\Dispatcher\Civilian\TaxiDispatcher.cs" />
     <Compile Include="lsr\Inventory\CashStorage.cs" />
+    <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\MerchantConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankDrawer.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Machines\CashRegister.cs" />
-    <Compile Include="lsr\Ped\Merchant\TaxiDriver.cs" />
+    <Compile Include="lsr\Ped\Service\TaxiDriver.cs" />
     <Compile Include="lsr\Ped\Styles\PedDrivingStyle.cs" />
     <Compile Include="lsr\Player\Cellphone\Data\CellphoneData.cs" />
     <Compile Include="lsr\Data\Items\Cellphones.cs" />
@@ -194,11 +195,11 @@
     <Compile Include="lsr\Debug\LSMapDisabler.cs" />
     <Compile Include="lsr\Dispatcher\Default\DefaultDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Default\LEDispatcherNew.cs" />
-    <Compile Include="lsr\Dispatcher\LocationDispatcher.cs" />
+    <Compile Include="lsr\Dispatcher\Location\LocationDispatcher.cs" />
     <Compile Include="lsr\Helper\eCombat_Attribute.cs" />
     <Compile Include="lsr\Helper\GTA Enums\eAnimationFlags.cs" />
     <Compile Include="lsr\Helper\GTA Enums\eEnter_Exit_Vehicle_Flags.cs" />
-    <Compile Include="lsr\Locations\GameState.cs" />
+    <Compile Include="lsr\Locations\Other\GameState.cs" />
     <Compile Include="lsr\Locations\Menus\PercentageSelectGroupMenuContainer.cs" />
     <Compile Include="lsr\Data\Peds\ClothesNames.cs" />
     <Compile Include="lsr\Data\Peds\PossibleNames.cs" />
@@ -211,12 +212,12 @@
     <Compile Include="lsr\Locations\Menus\ShopMenuGroup.cs" />
     <Compile Include="lsr\Locations\Menus\TreatmentOptions.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\ConditionalGroup.cs" />
-    <Compile Include="lsr\Locations\Places\ConditionalLocations\EMSConditionalLocation.cs" />
-    <Compile Include="lsr\Locations\Places\ConditionalLocations\FireConditionalSpawn.cs" />
-    <Compile Include="lsr\Locations\Places\ConditionalLocations\GangConditionalLocation.cs" />
-    <Compile Include="lsr\Locations\Places\ConditionalLocations\LEConditionalLocation.cs" />
+    <Compile Include="lsr\Locations\Places\ConditionalLocations\Service\EMSConditionalLocation.cs" />
+    <Compile Include="lsr\Locations\Places\ConditionalLocations\Service\FireConditionalLocation.cs" />
+    <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\GangConditionalLocation.cs" />
+    <Compile Include="lsr\Locations\Places\ConditionalLocations\Service\LEConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\IGeneratesDispatchables.cs" />
-    <Compile Include="lsr\Locations\Places\ConditionalLocations\SecurityConditionalLocation.cs" />
+    <Compile Include="lsr\Locations\Places\ConditionalLocations\Service\SecurityConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\ATMMachine.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankInteraction.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\City Hall\LicenseAnswer.cs" />
@@ -268,7 +269,7 @@
     <Compile Include="lsr\Ped\GangMember\ReputationReport.cs" />
     <Compile Include="lsr\Ped\Alerts\PedAlerts.cs" />
     <Compile Include="lsr\Ped\ItemDesires.cs" />
-    <Compile Include="lsr\Ped\Merchant\Teller.cs" />
+    <Compile Include="lsr\Ped\Service\Teller.cs" />
     <Compile Include="lsr\Ped\PedReaction.cs" />
     <Compile Include="lsr\Ped\ReactionTier.cs" />
     <Compile Include="lsr\Ped\SecurityGuard\SecurityDog.cs" />
@@ -545,8 +546,8 @@
     <Compile Include="lsr\Player\Inventory\Items\VehicleItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\WeaponItem.cs" />
     <Compile Include="lsr\Player\Inventory\PropAttachment.cs" />
-    <Compile Include="lsr\Locations\GameCounty.cs" />
-    <Compile Include="lsr\Locations\ILocationGangAssignable.cs" />
+    <Compile Include="lsr\Locations\Other\GameCounty.cs" />
+    <Compile Include="lsr\Locations\Places\ILocationGangAssignable.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Prison.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\SubwayStation.cs" />
     <Compile Include="lsr\Locations\Places\ILocationDispatchable.cs" />
@@ -560,11 +561,11 @@
     <Compile Include="lsr\Locations\Places\Other\BusRoute.cs" />
     <Compile Include="lsr\Locations\Places\Other\BusRouteStop.cs" />
     <Compile Include="lsr\Locations\Places\Other\LocationTeleporter.cs" />
-    <Compile Include="lsr\Locations\RoadNode.cs" />
-    <Compile Include="lsr\Locations\SpawnPlace.cs" />
+    <Compile Include="lsr\Locations\Other\RoadNode.cs" />
+    <Compile Include="lsr\Locations\Other\SpawnPlace.cs" />
     <Compile Include="lsr\ModController\ModDataFileManager.cs" />
     <Compile Include="lsr\Player\Inventory\MenuItemExtra.cs" />
-    <Compile Include="lsr\Locations\InteriorDoor.cs" />
+    <Compile Include="lsr\Locations\Interiors\InteriorDoor.cs" />
     <Compile Include="lsr\Old\BasicLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\Bank.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\BeautyShop.cs" />
@@ -850,7 +851,7 @@
     <Compile Include="lsr\Data\Scanner\ZoneScannerAudio.cs" />
     <Compile Include="lsr\Dispatcher\EMS\EMSDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Fire\FireDispatcher.cs" />
-    <Compile Include="lsr\Dispatcher\VanillaDispatchType.cs" />
+    <Compile Include="lsr\Dispatcher\Items\VanillaDispatchType.cs" />
     <Compile Include="lsr\PedSwap\IPedSwap.cs" />
     <Compile Include="lsr\Player\Activity\ScenarioActivity.cs" />
     <Compile Include="lsr\Player\Interface\IDispatchable.cs" />
@@ -878,8 +879,8 @@
     <Compile Include="lsr\Player\Inventory\MenuItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\ModItem.cs" />
     <Compile Include="lsr\Player\Inventory\PhysicalItem.cs" />
-    <Compile Include="lsr\Locations\Interior.cs" />
-    <Compile Include="lsr\Ped\Merchant\Merchant.cs" />
+    <Compile Include="lsr\Locations\Interiors\Interior.cs" />
+    <Compile Include="lsr\Ped\Service\Merchant.cs" />
     <Compile Include="lsr\Ped\Crimes\PedViolations.cs" />
     <Compile Include="lsr\Ped\Crimes\PlayerPerception.cs" />
     <Compile Include="lsr\Ped\Crimes\WitnessedCrime.cs" />
@@ -926,7 +927,7 @@
     <Compile Include="lsr\Weapon\IssuableWeapon.cs" />
     <Compile Include="lsr\Weapon\SelectorOptions.cs" />
     <Compile Include="lsr\Weapon\WeaponTypeGroup.cs" />
-    <Compile Include="lsr\Dispatcher\SpawnLocation.cs" />
+    <Compile Include="lsr\Locations\Other\SpawnLocation.cs" />
     <Compile Include="lsr\Player\Activity\SuicideActivity.cs" />
     <Compile Include="lsr\Player\Activity\Data\DrinkingData.cs" />
     <Compile Include="lsr\Player\Activity\Data\SmokingData.cs" />
@@ -992,11 +993,11 @@
     <Compile Include="lsr\World\Interface\IEntityLoggable.cs" />
     <Compile Include="lsr\Ped\Health\InjuryType.cs" />
     <Compile Include="lsr\Ped\Health\HealthState.cs" />
-    <Compile Include="lsr\Locations\LocationData.cs" />
+    <Compile Include="lsr\Locations\Other\LocationData.cs" />
     <Compile Include="lsr\Player\Violations\Violations.cs" />
     <Compile Include="lsr\Helper\RandomItems.cs" />
     <Compile Include="lsr\Input\Input.cs" />
-    <Compile Include="lsr\Locations\MapBlip.cs" />
+    <Compile Include="lsr\Locations\Other\MapBlip.cs" />
     <Compile Include="lsr\Ped\Health\BodyLocation.cs" />
     <Compile Include="lsr\Ped\Health\Bone.cs" />
     <Compile Include="lsr\World\Places\DynamicPlaces.cs" />
@@ -1013,12 +1014,12 @@
     <Compile Include="lsr\Ped\Demographics\PedName.cs" />
     <Compile Include="lsr\Data\Agencies\Agency.cs" />
     <Compile Include="lsr\Data\Agencies\Classification.cs" />
-    <Compile Include="lsr\Dispatcher\DispatchablePerson.cs" />
-    <Compile Include="lsr\Dispatcher\DispatchableVehicle.cs" />
+    <Compile Include="lsr\Dispatcher\Items\DispatchablePerson.cs" />
+    <Compile Include="lsr\Dispatcher\Items\DispatchableVehicle.cs" />
     <Compile Include="lsr\Locations\CountyJurisdiction.cs" />
-    <Compile Include="lsr\Locations\LocationType.cs" />
-    <Compile Include="lsr\Locations\Street.cs" />
-    <Compile Include="lsr\Locations\ZoneJurisdiction.cs" />
+    <Compile Include="lsr\Locations\Other\LocationType.cs" />
+    <Compile Include="lsr\Locations\Other\Street.cs" />
+    <Compile Include="lsr\Locations\Other\ZoneJurisdiction.cs" />
     <Compile Include="lsr\Ped\Demographics\NameType.cs" />
     <Compile Include="lsr\UI\UI.cs" />
     <Compile Include="lsr\Civilians\Civilians.cs" />
@@ -1049,7 +1050,7 @@
     <Compile Include="lsr\Ped\PedExt.cs" />
     <Compile Include="lsr\Weapon\Variation\WeaponComponent.cs" />
     <Compile Include="lsr\Weapon\Variation\WeaponVariation.cs" />
-    <Compile Include="lsr\Locations\Zone.cs" />
+    <Compile Include="lsr\Locations\Other\Zone.cs" />
     <Compile Include="lsr\Data\Agencies\Agencies.cs" />
     <Compile Include="lsr\Data\Weapons\Weapons.cs" />
     <Compile Include="lsr\Data\Peds\Names.cs" />
@@ -1087,7 +1088,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="lsr\Crimes\" />
-    <Folder Include="lsr\Dispatcher\Civilian\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

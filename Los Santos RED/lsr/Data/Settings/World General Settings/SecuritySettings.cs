@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,7 +20,7 @@ public class SecuritySettings : ISettingsDefaultable
 
 
 
-
+    public int TotalSpawnedMembersLimit { get; set; }
 
 
 
@@ -75,6 +76,12 @@ public class SecuritySettings : ISettingsDefaultable
     public bool AllowReactionsToBodies { get; set; }
     public bool AllowShootingInvestigations { get; set; }
     public bool AllowAlerts { get; set; }
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
     public SecuritySettings()
     {
         SetDefault();
@@ -114,5 +121,6 @@ public class SecuritySettings : ISettingsDefaultable
         AllowReactionsToBodies = true;
         AllowShootingInvestigations = true;
         AllowAlerts = true;
+        TotalSpawnedMembersLimit = 3;
     }
 }

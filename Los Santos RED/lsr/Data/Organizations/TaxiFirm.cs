@@ -8,11 +8,10 @@ using System.Threading.Tasks;
 public class TaxiFirm : Organization
 {
     public bool IsDefault { get; set; } = false;
-    public int BaseFare { get; set; } = 20;
+    public int BaseFare { get; set; } = 10;
     public int PricePerMile { get; set; } = 5;
     public int FastSpeedFee { get; set; } = 20;
-    public int CrazySpeedFee { get; set; } = 50;
-    public int TeleportFee { get; set; } = 75;
+    public int CrazySpeedFee { get; set; } = 100;
     public TaxiFirm()
     {
     }

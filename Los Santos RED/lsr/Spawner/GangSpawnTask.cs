@@ -94,6 +94,13 @@ public class GangSpawnTask : SpawnTask
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"GangSpawn: ERROR DELETED PERSON {ex.Message} {ex.StackTrace}", 0);
+            foreach (Entity entity in Rage.World.GetEntities(Position, 3.0f, GetEntitiesFlags.ConsiderAllPeds | GetEntitiesFlags.ExcludePlayerPed).ToList())
+            {
+                if (entity.Exists())
+                {
+                    entity.Delete();
+                }
+            }
             return null;
         }
     }
@@ -101,7 +108,7 @@ public class GangSpawnTask : SpawnTask
     {
         try
         {
-            if (ClearArea)
+            if (ClearVehicleArea)
             {
                 NativeFunction.Natives.CLEAR_AREA(Position.X, Position.Y, Position.Z, 3f, true, false, false, false);
             }
@@ -140,6 +147,13 @@ public class GangSpawnTask : SpawnTask
             {
                 SpawnedVehicle.Delete();
             }
+            foreach (Entity entity in Rage.World.GetEntities(Position, 3.0f, GetEntitiesFlags.ConsiderAllVehicles).ToList())
+            {
+                if (entity.Exists())
+                {
+                    entity.Delete();
+                }
+            }
             GameFiber.Yield();
             return null;
         }
@@ -161,8 +175,14 @@ public class GangSpawnTask : SpawnTask
         {
             return null;
         }
-        ped.IsPersistent = true;
-        EntryPoint.PersistentPedsCreated++;//TR
+
+        if (Settings.SettingsManager.GangSettings.SetPersistent)
+        {
+            ped.IsPersistent = true;
+            EntryPoint.PersistentPedsCreated++;//TR
+        }
+
+
         RelationshipGroup rg = new RelationshipGroup(Gang.ID);
         ped.RelationshipGroup = rg;
         bool isMale = PersonType.IsMale(ped);

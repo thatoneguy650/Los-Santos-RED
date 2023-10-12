@@ -27,10 +27,10 @@ public class LEConditionalLocation : ConditionalLocation
         {
             return false;
         }
-        //if(World.TotalWantedLevel > Settings.SettingsManager.PoliceSpawnSettings.StationSpawning_MaxWanted)
-        //{
-        //    return false;
-        //}
+        if (World.Pedestrians.TotalSpawnedAmbientPolice > Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted3)
+        {
+            return false;
+        }
         return base.DetermineRun(force);
     }
     public override void RunSpawnTask()
@@ -41,7 +41,7 @@ public class LEConditionalLocation : ConditionalLocation
             LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddOptionalPassengerPercentage), World, ModItems, false);
             spawnTask.AllowAnySpawn = true;
             spawnTask.AllowBuddySpawn = false;
-            spawnTask.ClearArea = true;
+            spawnTask.ClearVehicleArea = true;
             spawnTask.SpawnRequirement = TaskRequirements;
             spawnTask.PlacePedOnGround = DispatchableVehicle == null;// true;
             spawnTask.AttemptSpawn();

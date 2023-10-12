@@ -283,7 +283,16 @@ public class TaxiDispatcher : DefaultDispatcher
             }
             PersonType = TaxiFirm.GetRandomPed(Player.WantedLevel, RequiredGroup);
         }
-        CallSpawnTask();
+
+        for(int i = 0;i<2; i++)
+        {
+            if (CallSpawnTask())
+            {
+                break;
+            }
+            GameFiber.Yield();
+        }
+        
     }
     public void DebugSpawnTaxi(TaxiFirm taxiFirm, bool onFoot, bool isEmpty)
     {

@@ -49,7 +49,7 @@ public abstract class SpawnTask
     public DispatchablePerson PersonType { get; set; }
     public bool AllowAnySpawn { get; set; } = false;
     public bool AllowBuddySpawn { get; set; } = true;
-    public bool ClearArea { get; set; } = false;
+    public bool ClearVehicleArea { get; set; } = false;
     public bool PlacePedOnGround { get; set; } = false;
     public bool WillAddDriver { get; set; } = true;
     public bool AddEmptyVehicleBlip { get; set; } = false;

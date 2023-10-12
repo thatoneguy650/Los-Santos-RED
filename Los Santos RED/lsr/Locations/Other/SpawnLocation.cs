@@ -20,7 +20,6 @@ public class SpawnLocation
     }
     public bool HasStreetPosition { get; private set; }
     public bool HasSideOfRoadPosition { get; private set; }
-
     public bool HasSpawns => InitialPosition != Vector3.Zero && (IsWater || StreetPosition != Vector3.Zero);
     public float Heading { get; set; }
     public Vector3 InitialPosition { get; set; } = Vector3.Zero;
@@ -29,10 +28,6 @@ public class SpawnLocation
     public bool HasSidewalk => SidewalkPosition != Vector3.Zero;
     public bool IsWater { get; private set; } = false;
     public Vector3 FinalPosition => IsWater || !HasStreetPosition ? InitialPosition : StreetPosition;
-
-    //public bool HasSideOfRoadPosition { get; set; }
-    //public Vector3 SideOfRoadPosition { get; set; }
-
     public void GetWaterHeight()
     {
         if (IsWater = NativeFunction.Natives.GET_WATER_HEIGHT_NO_WAVES<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out float height))
@@ -44,17 +39,6 @@ public class SpawnLocation
             WaterHeight = 0.0f;
         }
     }
-    //public void GetClosestStreetCheckWater(bool favorPlayer)
-    //{
-    //    GetWaterHeight();
-    //    if (IsWater)
-    //    {
-    //        StreetPosition = InitialPosition;
-    //        EntryPoint.WriteToConsole($"waterHeight > 0.0 SETTING STREET TO INITIAL {WaterHeight}");
-    //        return;
-    //    }
-    //    GetClosestStreet(favorPlayer);
-    //}
     public void GetClosestStreet(bool favorPlayer)
     {
         Vector3 streetPosition;

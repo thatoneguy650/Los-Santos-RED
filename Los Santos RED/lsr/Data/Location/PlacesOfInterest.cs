@@ -1109,7 +1109,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(-351.3789f, -51.64762f, 49.03649f), 336.6109f),
                 },
                 ActivateCells = 3,
-                ActivateDistance = 150f,
+                ActivateDistance = 75f,
             },
             new Bank(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f,  "Fleeca Bank", "")
             {
@@ -1120,7 +1120,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(149.4326f, -1042.337f, 29.368f), 340.193f),
                 },
                 ActivateCells = 3,
-                ActivateDistance = 150f,
+                ActivateDistance = 75f,
             },
             new Bank(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f,  "Fleeca Bank", "")
             {
@@ -1131,7 +1131,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(312.5256f, -280.4068f, 54.1647f), 338.1261f),
                 },
                 ActivateCells = 3,
-                ActivateDistance = 150f,
+                ActivateDistance = 75f,
             },
             new Bank(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f,  "Fleeca Bank", "")
             {
@@ -1141,7 +1141,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(-2960.644f, 482.839f, 15.69701f), 81.83675f),
                 },
                 ActivateCells = 3,
-                ActivateDistance = 150f,
+                ActivateDistance = 75f,
             },
             new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", "")
             {
@@ -1151,7 +1151,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(1175.087f, 2708.431f, 38.08793f), 177.2366f),
                 },
                 ActivateCells = 3,
-                ActivateDistance = 150f,
+                ActivateDistance = 75f,
             },
             new Bank(new Vector3(-1214.902f, -327.0157f, 37.6686f), 26.31765f, "Fleeca Bank", "")
             {
@@ -1162,7 +1162,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(-1213.225f, -333.1036f, 37.78089f), 22.51491f),
                 },
                 ActivateCells = 3,
-                ActivateDistance = 150f,
+                ActivateDistance = 75f,
             },
 
 
@@ -1175,7 +1175,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(253.0091f, 223.5203f, 106.2868f), 151.6559f),
                 },
                 ActivateCells = 3,
-                ActivateDistance = 150f,
+                ActivateDistance = 100f,
             },
 
             new Bank(new Vector3(-3142.849f, 1131.727f, 20.84295f), 247.9002f, "Blaine County Savings", "")
@@ -1189,7 +1189,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TellerLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-111.1494f, 6470.298f, 31.6267f), 133.0098f),
                 },
-                ActivateCells = 3,
+                ActivateCells = 4,
                 ActivateDistance = 150f,
             },
 
@@ -1625,44 +1625,44 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             new Hospital(new Vector3(359.6708f, -584.4868f, 28.81813f), 255.1885f, "Pill Box Hill Medical Center","Some of the most famous people of LS have died here") { OpenTime = 0,CloseTime = 24, InteriorID = -787, PossiblePedSpawns = new List<ConditionalLocation>() {
 
-                new EMSConditionalLocation(new Vector3(355.4031f, -598.8352f, 28.77448f), 250.9611f, 50f),
-                new EMSConditionalLocation(new Vector3(364.3289f, -579.7377f, 28.84095f), 227.9576f, 50f),
-                new EMSConditionalLocation(new Vector3(299.7511f, -579.8925f, 43.26084f), 72.9278f, 50f),
+                new EMSConditionalLocation(new Vector3(355.4031f, -598.8352f, 28.77448f), 250.9611f, 15f),
+                new EMSConditionalLocation(new Vector3(364.3289f, -579.7377f, 28.84095f), 227.9576f, 15f),
+                new EMSConditionalLocation(new Vector3(299.7511f, -579.8925f, 43.26084f), 72.9278f, 15f),
             }
             ,RespawnLocation = new Vector3(364.7124f, -583.1641f, 28.69318f),RespawnHeading = 280.637f
             ,CameraPosition = new Vector3(396.9802f, -582.7473f, 40.12638f), CameraDirection = new Vector3(-0.948761f, -0.1335131f, -0.2864031f), CameraRotation = new Rotator(-16.64274f, 1.069323E-05f, 98.01027f) },
 
             new Hospital(new Vector3(343.5177f, -1399.408f, 32.50927f), 49.67379f, "Central LS Medical Center","Gang Related Injury? We take Fleeca and Limit cards") {OpenTime = 0,CloseTime = 24, ScannerFilePath= "01_specific_location\\0x13583D6F.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
 
-                new EMSConditionalLocation(new Vector3(333.7716f, -1381.868f, 32.50922f), 80.20363f, 50f),
-                new EMSConditionalLocation(new Vector3(327.9682f, -1393.585f, 32.50924f), 23.40009f, 50f),
-                new EMSConditionalLocation(new Vector3(297.9529f, -1448.031f, 29.96662f), 306.945f, 50f),
-                new EMSConditionalLocation(new Vector3(361.8272f, -1465.073f, 29.28194f), 178.0938f, 50f),
+                new EMSConditionalLocation(new Vector3(333.7716f, -1381.868f, 32.50922f), 80.20363f, 15f),
+                new EMSConditionalLocation(new Vector3(327.9682f, -1393.585f, 32.50924f), 23.40009f, 15f),
+                new EMSConditionalLocation(new Vector3(297.9529f, -1448.031f, 29.96662f), 306.945f, 15f),
+                new EMSConditionalLocation(new Vector3(361.8272f, -1465.073f, 29.28194f), 178.0938f, 15f),
             }
             ,RespawnLocation = new Vector3(338.208f, -1396.154f, 32.50927f), RespawnHeading = 77.07102f
             ,CameraPosition = new Vector3(304.5882f, -1362.572f, 45.39756f), CameraDirection = new Vector3(0.2721124f, -0.907807f, -0.3191258f), CameraRotation = new Rotator(-18.61007f, 2.792723E-05f, -163.3141f) },
 
             new Hospital(new Vector3(1839.211f, 3673.892f, 34.27668f), 215.6462f, "Sandy Shores Medical Center","Just as good as those REAL hospitals in LS") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
 
-                new EMSConditionalLocation(new Vector3(1835.39f, 3670.011f, 34.27673f), 172.621f, 50f),
-                new EMSConditionalLocation(new Vector3(1844.322f, 3672.015f, 33.67998f), 196.141f, 50f),
+                new EMSConditionalLocation(new Vector3(1835.39f, 3670.011f, 34.27673f), 172.621f, 15f),
+                new EMSConditionalLocation(new Vector3(1844.322f, 3672.015f, 33.67998f), 196.141f, 15f),
             }
             ,RespawnLocation = new Vector3(1842.057f, 3668.679f, 33.67996f),RespawnHeading = 228.3818f
             ,CameraPosition = new Vector3(1851.532f, 3664.737f, 39.15179f), CameraDirection = new Vector3(-0.7719535f, 0.5178522f, -0.3686691f), CameraRotation = new Rotator(-21.63356f, -3.67388E-06f, 56.14497f) },
 
             new Hospital(new Vector3(-248.4412f, 6332.721f, 32.42618f), 225.41f, "The Bay Care Center","One stop shopping! Funeral Home and Crematorium on site") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
 
-                new EMSConditionalLocation(new Vector3(-242.6317f, 6324.892f, 32.42618f), 318.8682f, 50f),
-                new EMSConditionalLocation(new Vector3(-238.915f, 6314.112f, 31.48628f), 227.0187f, 50f),
+                new EMSConditionalLocation(new Vector3(-242.6317f, 6324.892f, 32.42618f), 318.8682f, 15f),
+                new EMSConditionalLocation(new Vector3(-238.915f, 6314.112f, 31.48628f), 227.0187f, 15f),
             }
             ,RespawnLocation = new Vector3(-244.3214f, 6328.575f, 32.42618f),RespawnHeading = 219.7734f
             ,CameraPosition = new Vector3(-229.6282f, 6315.992f, 36.41383f), CameraDirection = new Vector3(-0.9177954f, 0.3135513f, -0.2435924f), CameraRotation = new Rotator(-14.09866f, -7.922609E-06f, 71.13802f) },
 
             new Hospital(new Vector3(1151.386f, -1529.34f, 35.36609f), 337.4726f, "St. Fiacre Hospital", "Come see the most expensive specialists in LS") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
 
-                new EMSConditionalLocation(new Vector3(1150.269f, -1524.425f, 34.84344f), 316.4077f, 50f),
-                new EMSConditionalLocation(new Vector3(1137.925f, -1514.329f, 34.84341f), 327.5841f, 50f),
-                new EMSConditionalLocation(new Vector3(1171.36f, -1520.041f, 34.8434f), 319.8948f, 50f),
+                new EMSConditionalLocation(new Vector3(1150.269f, -1524.425f, 34.84344f), 316.4077f, 15f),
+                new EMSConditionalLocation(new Vector3(1137.925f, -1514.329f, 34.84341f), 327.5841f, 15f),
+                new EMSConditionalLocation(new Vector3(1171.36f, -1520.041f, 34.8434f), 319.8948f, 15f),
             }
             ,RespawnLocation = new Vector3(1151.386f, -1529.34f, 35.36609f),RespawnHeading = 337.4726f
             ,CameraPosition = new Vector3(1152.484f, -1510.302f, 41.42735f), CameraDirection = new Vector3(-0.1392823f, -0.9661027f, -0.2173616f), CameraRotation = new Rotator(-12.55411f, 2.186715E-07f, 171.7962f) },
@@ -1670,11 +1670,11 @@ public class PlacesOfInterest : IPlacesOfInterest
 
             new Hospital(new Vector3(-449.76f, -341.03f, 35.5f), 106f, "Mount Zonah Medical Center", "The hospital with the largest advertising budget") { OpenTime = 0,CloseTime = 24,
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new EMSConditionalLocation(new Vector3(-448.7528f, -334.6505f, 33.5019f), 161.25828389f, 50f),
-                    new EMSConditionalLocation(new Vector3(-447.4306f, -328.7594f, 33.50186f), 190.084495712696f,50f),
-                    new EMSConditionalLocation(new Vector3(-447.0008f, -329.9945f, 33.50186f), 27.4845562493075f,50f),
-                    new EMSConditionalLocation(new Vector3(-496.9766f, -331.2807f, 33.50167f), 223.606079066179f,50f),
-                    new EMSConditionalLocation(new Vector3(-464.4201f, -353.7608f, 33.39479f), 111.44917199877f,50f),
+                    new EMSConditionalLocation(new Vector3(-448.7528f, -334.6505f, 33.5019f), 161.25828389f, 15f),
+                    new EMSConditionalLocation(new Vector3(-447.4306f, -328.7594f, 33.50186f), 190.084495712696f,15f),
+                    new EMSConditionalLocation(new Vector3(-447.0008f, -329.9945f, 33.50186f), 27.4845562493075f,15f),
+                    new EMSConditionalLocation(new Vector3(-496.9766f, -331.2807f, 33.50167f), 223.606079066179f,15f),
+                    new EMSConditionalLocation(new Vector3(-464.4201f, -353.7608f, 33.39479f), 111.44917199877f,15f),
             }
             ,RespawnLocation = new Vector3(-449.76f, -341.03f, 35.5f),RespawnHeading = 106f
             ,CameraPosition = new Vector3(-461.4951f, -347.7999f, 36.37646f), CameraDirection = new Vector3(0.8014859f, 0.59798f, 0.006344283f), CameraRotation = new Rotator(0.3635031f, -9.738551E-07f, -53.27378f) },
@@ -1714,14 +1714,14 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
                 //
-                new LEConditionalLocation(new Vector3(1846.473f, 2584.199f, 44.67195f), 295f, 75f) { TaskRequirements = TaskRequirements.Guard,LongGunAlwaysEquipped = true },//front of prison
-                new LEConditionalLocation(new Vector3(1845.851f, 2587.203f, 44.67231f), 290f, 75f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipSidearmWhenIdle },
+                new LEConditionalLocation(new Vector3(1846.473f, 2584.199f, 44.67195f), 295f, 40f) { TaskRequirements = TaskRequirements.Guard,LongGunAlwaysEquipped = true },//front of prison
+                new LEConditionalLocation(new Vector3(1845.851f, 2587.203f, 44.67231f), 290f, 40f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipSidearmWhenIdle },
             },PossibleVehicleSpawns = new List<ConditionalLocation>() {
 
-                new LEConditionalLocation(new Vector3(1855.314f, 2578.854f, 46.42464f), 92f, 75f),//facing towards prison
-                new LEConditionalLocation(new Vector3(1869.82f, 2588.359f, 46.42464f), 269f, 75f),//facing away from prison
-                 new LEConditionalLocation(new Vector3(1854.312f, 2620.756f, 46.42464f), 92f, 75f),//facing towards prison
-                 new LEConditionalLocation( new Vector3(1869.65f, 2577.781f, 45.18463f), 269f, 75f),//facing away from prison
+                new LEConditionalLocation(new Vector3(1855.314f, 2578.854f, 46.42464f), 92f, 35f),//facing towards prison
+                new LEConditionalLocation(new Vector3(1869.82f, 2588.359f, 46.42464f), 269f, 35f),//facing away from prison
+                 new LEConditionalLocation(new Vector3(1854.312f, 2620.756f, 46.42464f), 92f, 35f),//facing towards prison
+                 new LEConditionalLocation( new Vector3(1869.65f, 2577.781f, 45.18463f), 269f, 35f),//facing away from prison
 
 
                 
@@ -1732,7 +1732,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     }
     private void DefaultConfig_PoliceStations()
     {
-        float DavisPercentage = 50f;
+        float DavisPercentage = 20f;
 
         Vector2[] davisImpoundLot = new Vector2[]
                 {
@@ -1783,9 +1783,9 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(388.9854f, -1612.977f, 29.21355f), 50f,20f),
-                    new LEConditionalLocation(new Vector3(392.7548f, -1608.376f, 29.21355f), 50f,50f),
-                    new LEConditionalLocation(new Vector3(399.393f, -1621.396f, 29.20119f), 50f,50f),
-                    new LEConditionalLocation(new Vector3(351.3006f, -1556.711f, 29.24393f), 230f,50f),
+                    new LEConditionalLocation(new Vector3(392.7548f, -1608.376f, 29.21355f), 50f,20f),
+                    new LEConditionalLocation(new Vector3(399.393f, -1621.396f, 29.20119f), 50f,20f),
+                    new LEConditionalLocation(new Vector3(351.3006f, -1556.711f, 29.24393f), 230f,20f),
                 },
                 VehicleImpoundLot = new VehicleImpoundLot("Impound Lot 1",new List<SpawnPlace>()
                 {
@@ -1819,13 +1819,13 @@ public class PlacesOfInterest : IPlacesOfInterest
                // CameraRotation = new Rotator(-15.07086f, 3.53674E-06f, 64.03703f),
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(1873.62f, 3690.187f, 33.55123f), 199.1265f),
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(1851.615f, 3679.759f, 34.26711f), 167.1253f, 50f),
-                    new LEConditionalLocation(new Vector3(1866.224f, 3684.685f, 33.78798f), 229.2713f, 50f),
+                    new LEConditionalLocation(new Vector3(1851.615f, 3679.759f, 34.26711f), 167.1253f, 25f),
+                    new LEConditionalLocation(new Vector3(1866.224f, 3684.685f, 33.78798f), 229.2713f, 25f),
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(1831.629f, 3662.91f, 33.92607f), 32f,50f),
-                    new LEConditionalLocation(new Vector3(1835.127f, 3664.892f, 33.92607f), 32f,50f),
-                    new LEConditionalLocation(new Vector3(1847.131f, 3672.587f, 33.92607f), 32f,50f),
+                    new LEConditionalLocation(new Vector3(1831.629f, 3662.91f, 33.92607f), 32f,20f),
+                    new LEConditionalLocation(new Vector3(1835.127f, 3664.892f, 33.92607f), 32f,20f),
+                    new LEConditionalLocation(new Vector3(1847.131f, 3672.587f, 33.92607f), 32f,20f),
                 } },
             new PoliceStation(new Vector3(-443.3767f, 6016.792f, 31.71221f), 310.4416f, "Paleto Bay Sheriff's Office","A Tradition of Suppression") {
                 BannerImagePath = "agencies\\lssdmain.png", 
@@ -1865,24 +1865,24 @@ public class PlacesOfInterest : IPlacesOfInterest
                // CameraDirection = new Vector3(0.6072524f, 0.7701081f, -0.1953922f), 
                // CameraRotation = new Rotator(-11.26764f, 1.262302E-05f, -38.25679f),
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(427.7032f, -982.3438f, 30.7101f), 46.43887f, 80f),
-                    new LEConditionalLocation(new Vector3(432.3652f, -973.1894f, 30.71074f), 60.75554f, 80f),
-                    new LEConditionalLocation(new Vector3(441.3313f, -977.6323f, 30.68966f), 167.8129f, 80f),
-                    new LEConditionalLocation(new Vector3(426.1106f, -1003.349f, 30.71002f), 159.3153f, 80f),
-                    new LEConditionalLocation(new Vector3(480.1246f, -974.9543f, 27.98389f), 332.2961f, 80f),
+                    new LEConditionalLocation(new Vector3(427.7032f, -982.3438f, 30.7101f), 46.43887f, 35f),
+                    new LEConditionalLocation(new Vector3(432.3652f, -973.1894f, 30.71074f), 60.75554f, 35f),
+                    new LEConditionalLocation(new Vector3(441.3313f, -977.6323f, 30.68966f), 167.8129f, 35f),
+                    new LEConditionalLocation(new Vector3(426.1106f, -1003.349f, 30.71002f), 159.3153f, 35f),
+                    new LEConditionalLocation(new Vector3(480.1246f, -974.9543f, 27.98389f), 332.2961f, 35f),
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(407.7554f, -984.2084f, 29.89806f), 228f,20f),
-                    new LEConditionalLocation(new Vector3(408.0923f, -988.8488f, 29.85523f), 228f,20f),
-                    new LEConditionalLocation(new Vector3(407.9883f, -998.3094f, 29.81112f), 228f,20f),
-                    new LEConditionalLocation(new Vector3(427.5909f, -1027.707f, 29.22805f), 185f,20f),
-                    new LEConditionalLocation(new Vector3(434.9848f, -1027.103f, 29.12844f), 185f,20f),
-                    new LEConditionalLocation(new Vector3(442.5143f, -1026.687f, 28.98147f), 185f,20f),
-                    new LEConditionalLocation(new Vector3(446.3985f, -1026.087f, 28.92508f), 185f,20f),
-                    new LEConditionalLocation(new Vector3(496.3687f, -996.015f, 28.3387f), 178.4318f,20f),
-                    new LEConditionalLocation(new Vector3(496.3721f, -1016.798f, 28.687f), 178.4318f,20f),
+                    new LEConditionalLocation(new Vector3(407.7554f, -984.2084f, 29.89806f), 228f,15f),
+                    new LEConditionalLocation(new Vector3(408.0923f, -988.8488f, 29.85523f), 228f,15f),
+                    new LEConditionalLocation(new Vector3(407.9883f, -998.3094f, 29.81112f), 228f,15f),
+                    new LEConditionalLocation(new Vector3(427.5909f, -1027.707f, 29.22805f), 185f,15f),
+                    new LEConditionalLocation(new Vector3(434.9848f, -1027.103f, 29.12844f), 185f,15f),
+                    new LEConditionalLocation(new Vector3(442.5143f, -1026.687f, 28.98147f), 185f,15f),
+                    new LEConditionalLocation(new Vector3(446.3985f, -1026.087f, 28.92508f), 185f,15f),
+                    new LEConditionalLocation(new Vector3(496.3687f, -996.015f, 28.3387f), 178.4318f,15f),
+                    new LEConditionalLocation(new Vector3(496.3721f, -1016.798f, 28.687f), 178.4318f,15f),
 
-                     new LEConditionalLocation(new Vector3(449.7793f, -981.5451f, 43.69165f), 83.32257f,100f) { AllowAirVehicle = true,AssociationID = "LSPD-ASD" },
+                     new LEConditionalLocation(new Vector3(449.7793f, -981.5451f, 43.69165f), 83.32257f,15f) { AllowAirVehicle = true,AssociationID = "LSPD-ASD" },
 
 
                 } },
@@ -1903,25 +1903,25 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new LEConditionalLocation(new Vector3(843.4933f, -1314.606f, 26.25885f), 126.1716f, 30f),
                 }
                 ,PossibleVehicleSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(822.8635f, -1258.039f, 26.34347f), 0f,20f),
-                    new LEConditionalLocation(new Vector3(828.0373f, -1258.039f, 26.34347f), 0f,20f),
-                    new LEConditionalLocation(new Vector3(833.577f, -1258.954f, 26.34347f), 180f,20f),
-                    new LEConditionalLocation(new Vector3(838.7137f, -1271.55f, 26.34347f), 180f,20f),
-                    new LEConditionalLocation(new Vector3(833.4279f, -1271.55f, 26.34347f), 0f,20f),
-                    new LEConditionalLocation(new Vector3(822.5837f, -1271.55f, 26.34347f), 0f,20f),
-                    new LEConditionalLocation(new Vector3(828.1719f, -1333.792f, 26.18776f), 242f,20f),
-                    new LEConditionalLocation(new Vector3(828.1719f, -1339.649f, 26.18776f), 242f,20f),
-                    new LEConditionalLocation(new Vector3(828.1719f, -1345.815f, 26.18776f), 242f,20f),
-                    new LEConditionalLocation(new Vector3(828.362f, -1351.482f, 26.21234f), 65f,20f),
-                    new LEConditionalLocation(new Vector3(843.9627f, -1334.354f, 26.17253f), 65f,20f),
-                    new LEConditionalLocation(new Vector3(843.874f, -1340.518f, 26.18776f), 242f,20f),
-                    new LEConditionalLocation(new Vector3(844.3544f, -1346.3f, 26.21234f), 65f,20f),
-                    new LEConditionalLocation(new Vector3(843.7897f, -1352.283f, 26.21234f), 65f,20f),
-                    new LEConditionalLocation(new Vector3(865.7624f, -1378.407f, 26.21234f), 216f,20f),
-                    new LEConditionalLocation(new Vector3(862.8425f, -1383.55f, 26.21234f), 216f,20f),
-                    new LEConditionalLocation(new Vector3(859.8381f, -1388.58f, 26.21234f), 216f,20f),
-                    new LEConditionalLocation(new Vector3(857.2202f, -1393.802f, 26.21234f), 216f,20f),
-                    new LEConditionalLocation(new Vector3(854.2248f, -1398.952f, 26.21234f), 216f,20f),
+                    new LEConditionalLocation(new Vector3(822.8635f, -1258.039f, 26.34347f), 0f,10f),
+                    new LEConditionalLocation(new Vector3(828.0373f, -1258.039f, 26.34347f), 0f,10f),
+                    new LEConditionalLocation(new Vector3(833.577f, -1258.954f, 26.34347f), 180f,10f),
+                    new LEConditionalLocation(new Vector3(838.7137f, -1271.55f, 26.34347f), 180f,10f),
+                    new LEConditionalLocation(new Vector3(833.4279f, -1271.55f, 26.34347f), 0f,10f),
+                    new LEConditionalLocation(new Vector3(822.5837f, -1271.55f, 26.34347f), 0f,10f),
+                    new LEConditionalLocation(new Vector3(828.1719f, -1333.792f, 26.18776f), 242f,10f),
+                    new LEConditionalLocation(new Vector3(828.1719f, -1339.649f, 26.18776f), 242f,10f),
+                    new LEConditionalLocation(new Vector3(828.1719f, -1345.815f, 26.18776f), 242f,10f),
+                    new LEConditionalLocation(new Vector3(828.362f, -1351.482f, 26.21234f), 65f,10f),
+                    new LEConditionalLocation(new Vector3(843.9627f, -1334.354f, 26.17253f), 65f,10f),
+                    new LEConditionalLocation(new Vector3(843.874f, -1340.518f, 26.18776f), 242f,10f),
+                    new LEConditionalLocation(new Vector3(844.3544f, -1346.3f, 26.21234f), 65f,10f),
+                    new LEConditionalLocation(new Vector3(843.7897f, -1352.283f, 26.21234f), 65f,10f),
+                    new LEConditionalLocation(new Vector3(865.7624f, -1378.407f, 26.21234f), 216f,10f),
+                    new LEConditionalLocation(new Vector3(862.8425f, -1383.55f, 26.21234f), 216f,10f),
+                    new LEConditionalLocation(new Vector3(859.8381f, -1388.58f, 26.21234f), 216f,10f),
+                    new LEConditionalLocation(new Vector3(857.2202f, -1393.802f, 26.21234f), 216f,10f),
+                    new LEConditionalLocation(new Vector3(854.2248f, -1398.952f, 26.21234f), 216f,10f),
                 } },
             new PoliceStation(new Vector3(638.4491f, 1.559977f, 82.78642f), 247.7514f,"Vinewood Police Station","Obey and Survive") {
                 BannerImagePath = "agencies\\lspdmain.png",
@@ -1934,68 +1934,68 @@ public class PlacesOfInterest : IPlacesOfInterest
                // CameraRotation = new Rotator(-13.98198f, 4.399209E-06f, 59.34634f),
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(536.6809f, -38.35585f, 70.72294f), 210.4488f),
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(641.4031f, 0.478787f, 82.78651f), 235.3406f, 50f),
-                    new LEConditionalLocation(new Vector3(647.2952f, -11.50604f, 82.60114f), 223.3047f, 50f),
-                    new LEConditionalLocation(new Vector3(624.8208f, 20.23717f, 87.97021f), 345.2158f, 50f),
+                    new LEConditionalLocation(new Vector3(641.4031f, 0.478787f, 82.78651f), 235.3406f, 30f),
+                    new LEConditionalLocation(new Vector3(647.2952f, -11.50604f, 82.60114f), 223.3047f, 30f),
+                    new LEConditionalLocation(new Vector3(624.8208f, 20.23717f, 87.97021f), 345.2158f, 30f),
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(666.4646f, -11.79645f, 82.76681f), 144f,20f),
-                    new LEConditionalLocation(new Vector3(621.6934f, 26.27448f, 88.66011f), 193f,20f),
-                    new LEConditionalLocation(new Vector3(615.3292f, 28.48364f, 89.28476f), 193f,20f),
-                    new LEConditionalLocation(new Vector3(609.7616f, 30.84756f, 89.91243f), 193f,20f),
-                    new LEConditionalLocation(new Vector3(597.8726f, 34.8121f, 91.07567f), 193f,20f),
-                    new LEConditionalLocation(new Vector3(586.7384f, 37.78894f, 92.30818f), 193f,20f),
-                    new LEConditionalLocation(new Vector3(580.8351f, 38.85468f, 92.82274f), 193f,20f),
+                    new LEConditionalLocation(new Vector3(666.4646f, -11.79645f, 82.76681f), 144f,15f),
+                    new LEConditionalLocation(new Vector3(621.6934f, 26.27448f, 88.66011f), 193f,15f),
+                    new LEConditionalLocation(new Vector3(615.3292f, 28.48364f, 89.28476f), 193f,15f),
+                    new LEConditionalLocation(new Vector3(609.7616f, 30.84756f, 89.91243f), 193f,15f),
+                    new LEConditionalLocation(new Vector3(597.8726f, 34.8121f, 91.07567f), 193f,15f),
+                    new LEConditionalLocation(new Vector3(586.7384f, 37.78894f, 92.30818f), 193f,15f),
+                    new LEConditionalLocation(new Vector3(580.8351f, 38.85468f, 92.82274f), 193f,15f),
                 } },
             new PoliceStation(new Vector3(-557.0687f, -134.7315f, 38.20231f), 214.5968f, "Rockford Hills Police Station","Obey and Survive") {
                 BannerImagePath = "agencies\\lspdmain.png",
                 OpenTime = 0,
                 CloseTime = 24, 
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(-560.6538f, -134.251f, 38.11069f), 180.7514f, 50f),
-                    new LEConditionalLocation(new Vector3(-563.0671f, -141.727f, 38.32593f), 192.5406f, 50f),
-                    new LEConditionalLocation(new Vector3(-541.8491f, -134.7859f, 38.55503f), 208.2207f, 50f),
+                    new LEConditionalLocation(new Vector3(-560.6538f, -134.251f, 38.11069f), 180.7514f, 30f),
+                    new LEConditionalLocation(new Vector3(-563.0671f, -141.727f, 38.32593f), 192.5406f, 30f),
+                    new LEConditionalLocation(new Vector3(-541.8491f, -134.7859f, 38.55503f), 208.2207f, 30f),
 
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(-574.256f, -168.7862f, 38.49216f), 291f,20f),
-                    new LEConditionalLocation(new Vector3(-557.7739f, -161.9565f, 38.62593f), 291f,20f),
-                    new LEConditionalLocation(new Vector3(-559.7783f, -147.1107f, 38.65532f), 58f,20f),
-                    new LEConditionalLocation(new Vector3(-555.6528f, -145.4567f, 38.72502f), 58f,20f),
-                    new LEConditionalLocation(new Vector3(-551.0397f, -144.0132f, 38.65663f), 58f,20f),
+                    new LEConditionalLocation(new Vector3(-574.256f, -168.7862f, 38.49216f), 291f,15f),
+                    new LEConditionalLocation(new Vector3(-557.7739f, -161.9565f, 38.62593f), 291f,15f),
+                    new LEConditionalLocation(new Vector3(-559.7783f, -147.1107f, 38.65532f), 58f,15f),
+                    new LEConditionalLocation(new Vector3(-555.6528f, -145.4567f, 38.72502f), 58f,15f),
+                    new LEConditionalLocation(new Vector3(-551.0397f, -144.0132f, 38.65663f), 58f,15f),
                 } },
             new PoliceStation(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, "Vespucci Police Station","Obey and Survive") {
                 BannerImagePath = "agencies\\lspdmain.png",
                 OpenTime = 0,
                 CloseTime = 24, 
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(-1114.355f, -822.5755f, 19.3168f), 14.61082f, 50f),
-                    new LEConditionalLocation(new Vector3(-1135.939f, -847.7239f, 19.34725f), 31.25465f, 50f),
-                    new LEConditionalLocation(new Vector3(-1056.813f, -820.9451f, 19.23504f), 300.4652f, 50f),
+                    new LEConditionalLocation(new Vector3(-1114.355f, -822.5755f, 19.3168f), 14.61082f, 30f),
+                    new LEConditionalLocation(new Vector3(-1135.939f, -847.7239f, 19.34725f), 31.25465f, 30f),
+                    new LEConditionalLocation(new Vector3(-1056.813f, -820.9451f, 19.23504f), 300.4652f, 30f),
 
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(-1072.822f, -880.3561f, 4.809089f), 208f,20f),
-                    new LEConditionalLocation(new Vector3(-1075.95f, -882.3492f, 4.809089f), 208f,20f),
-                    new LEConditionalLocation(new Vector3(-1051.726f, -867.1277f, 4.809089f), 230f,20f),
-                    new LEConditionalLocation(new Vector3(-1045.53f, -861.5321f, 4.809089f), 230f,20f),
-                    new LEConditionalLocation(new Vector3(-1042.226f, -857.9979f, 4.809089f), 230f,20f),
-                    new LEConditionalLocation(new Vector3(-1047.814f, -846.7044f, 4.809089f), 37f,20f),
-                    new LEConditionalLocation(new Vector3(-1052.352f, -846.8544f, 4.809089f), 37f,20f),
-                    new LEConditionalLocation(new Vector3(-1055.076f, -849.5068f, 4.809089f), 37f,20f),
-                    new LEConditionalLocation(new Vector3(-1058.752f, -851.4465f, 4.809089f), 37f,20f),
-                    new LEConditionalLocation(new Vector3(-1126.5f, -864.8307f, 13.63185f), 220f,20f),
-                    new LEConditionalLocation(new Vector3(-1122.896f, -863.4746f, 13.6122f), 220f,20f),
-                    new LEConditionalLocation(new Vector3(-1115.937f, -857.7859f, 13.65187f), 220f,20f),
-                    new LEConditionalLocation(new Vector3(-1138.613f, -845.7916f, 13.98058f), 220f,20f),
+                    new LEConditionalLocation(new Vector3(-1072.822f, -880.3561f, 4.809089f), 208f,10f),
+                    new LEConditionalLocation(new Vector3(-1075.95f, -882.3492f, 4.809089f), 208f,10f),
+                    new LEConditionalLocation(new Vector3(-1051.726f, -867.1277f, 4.809089f), 230f,10f),
+                    new LEConditionalLocation(new Vector3(-1045.53f, -861.5321f, 4.809089f), 230f,10f),
+                    new LEConditionalLocation(new Vector3(-1042.226f, -857.9979f, 4.809089f), 230f,10f),
+                    new LEConditionalLocation(new Vector3(-1047.814f, -846.7044f, 4.809089f), 37f,10f),
+                    new LEConditionalLocation(new Vector3(-1052.352f, -846.8544f, 4.809089f), 37f,10f),
+                    new LEConditionalLocation(new Vector3(-1055.076f, -849.5068f, 4.809089f), 37f,10f),
+                    new LEConditionalLocation(new Vector3(-1058.752f, -851.4465f, 4.809089f), 37f,10f),
+                    new LEConditionalLocation(new Vector3(-1126.5f, -864.8307f, 13.63185f), 220f,10f),
+                    new LEConditionalLocation(new Vector3(-1122.896f, -863.4746f, 13.6122f), 220f,10f),
+                    new LEConditionalLocation(new Vector3(-1115.937f, -857.7859f, 13.65187f), 220f,10f),
+                    new LEConditionalLocation(new Vector3(-1138.613f, -845.7916f, 13.98058f), 220f,10f),
                 } },
             new PoliceStation(new Vector3(-1633.314f, -1010.025f, 13.08503f), 351.7007f, "Del Perro Police Station","Obey and Survive") {
                 BannerImagePath = "agencies\\lspdmain.png",
                 OpenTime = 0,
                 CloseTime = 24, 
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(-1629.069f, -1013.071f, 13.11924f), 298.982f, 50f),
-                    new LEConditionalLocation(new Vector3(-1639.286f, -1011.673f, 13.12066f), 24.4451f, 50f),
+                    new LEConditionalLocation(new Vector3(-1629.069f, -1013.071f, 13.11924f), 298.982f, 30f),
+                    new LEConditionalLocation(new Vector3(-1639.286f, -1011.673f, 13.12066f), 24.4451f, 30f),
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(-1625.343f, -1013.629f, 13.89048f), 0f,50f),
@@ -2006,8 +2006,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24, 
                 ScannerFilePath = "01_specific_location\\0x13CBAB64.wav", 
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(-1314.879f, -1532.083f, 4.423616f), 190.5698f, 50f),
-                    new LEConditionalLocation(new Vector3(-1307.496f, -1526.527f, 4.359179f), 244.9207f, 50f),
+                    new LEConditionalLocation(new Vector3(-1314.879f, -1532.083f, 4.423616f), 190.5698f, 30f),
+                    new LEConditionalLocation(new Vector3(-1307.496f, -1526.527f, 4.359179f), 244.9207f, 30f),
 
                 } },
             new PoliceStation(new Vector3(102.9145f, -743.9487f, 45.75473f), 79.8266f, "FIB Headquarters","We're corrupt in a good way") { 
@@ -2017,38 +2017,38 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24, 
                 ScannerFilePath = "01_specific_location\\0x1667D63F.wav", 
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(101.3534f, -745.8216f, 45.75475f), 76.27069f, 50f),
-                    new LEConditionalLocation(new Vector3(117.8028f, -747.0616f, 45.75158f), 102.5501f, 50f),
-                    new LEConditionalLocation(new Vector3(113.9787f, -758.2271f, 45.75474f), 21.6145f, 50f),
+                    new LEConditionalLocation(new Vector3(101.3534f, -745.8216f, 45.75475f), 76.27069f, 30f),
+                    new LEConditionalLocation(new Vector3(117.8028f, -747.0616f, 45.75158f), 102.5501f, 30f),
+                    new LEConditionalLocation(new Vector3(113.9787f, -758.2271f, 45.75474f), 21.6145f, 30f),
                 } },
             new PoliceStation(new Vector3(387.16f, 789.96f, 188.23f), 178f, "Beaver Bush Ranger Station","You won't get this bush!") { 
                 AssignedAssociationID = "SAPR", 
                 OpenTime = 0,
                 CloseTime = 24, 
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(391.3105f, 789.5917f, 186.6761f), 178f,75f),
-                    new LEConditionalLocation(new Vector3(381.8302f, 789.8931f, 186.6757f), 178f,75f),
+                    new LEConditionalLocation(new Vector3(391.3105f, 789.5917f, 186.6761f), 178f,40f),
+                    new LEConditionalLocation(new Vector3(381.8302f, 789.8931f, 186.6757f), 178f,40f),
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>(){ 
-                    new LEConditionalLocation(new Vector3(374.2932f, 795.6959f, 186.5305f), 178f,100f), } },
+                    new LEConditionalLocation(new Vector3(374.2932f, 795.6959f, 186.5305f), 178f,40f), } },
             new PoliceStation(new Vector3(-893.9146f, -2401.547f, 14.02436f), 148.8757f, "NOoSE LSIA","Let's tighten the noose!") { 
                 AssignedAssociationID = "NOOSE", 
                 OpenTime = 0,
                 CloseTime = 24, 
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(-896.5345f, -2388.417f, 14.02436f), 63.63145f, 75f){ AssociationID = "NOOSE-BP", TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario ,LongGunAlwaysEquipped = true},
-                    new LEConditionalLocation(new Vector3(-897.6145f, -2398.739f, 14.02436f), 117.328f, 100f){ AssociationID = "NOOSE-PIA", TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario,LongGunAlwaysEquipped = true },
-                    new LEConditionalLocation(new Vector3(-889.1294f, -2405.644f, 14.02639f), 117.7686f, 100f){ TaskRequirements = TaskRequirements.Patrol,LongGunAlwaysEquipped = true },
-                    new LEConditionalLocation(new Vector3(-868.955f, -2417.757f, 14.02489f), 200.5734f, 100f){ AssociationID = "NOOSE-PIA",TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol | TaskRequirements.StandardScenario,LongGunAlwaysEquipped = true },
+                    new LEConditionalLocation(new Vector3(-896.5345f, -2388.417f, 14.02436f), 63.63145f, 35f){ AssociationID = "NOOSE-BP", TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario ,LongGunAlwaysEquipped = true},
+                    new LEConditionalLocation(new Vector3(-897.6145f, -2398.739f, 14.02436f), 117.328f, 35f){ AssociationID = "NOOSE-PIA", TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario,LongGunAlwaysEquipped = true },
+                    new LEConditionalLocation(new Vector3(-889.1294f, -2405.644f, 14.02639f), 117.7686f, 35f){ TaskRequirements = TaskRequirements.Patrol,LongGunAlwaysEquipped = true },
+                    new LEConditionalLocation(new Vector3(-868.955f, -2417.757f, 14.02489f), 200.5734f, 35f){ AssociationID = "NOOSE-PIA",TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol | TaskRequirements.StandardScenario,LongGunAlwaysEquipped = true },
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
 
-                    new LEConditionalLocation(new Vector3(-900.9653f, -2391.173f, 13.47696f), 148.7623f, 75f) { AssociationID = "NOOSE-PIA" },
-                    new LEConditionalLocation(new Vector3(-862.1013f, -2414.928f, 13.47701f), 147.4044f, 75f),
-                    new LEConditionalLocation(new Vector3(-858.2088f, -2397.289f, 13.47724f), 161.3987f, 75f) { AssociationID = "NOOSE-BP" },
-                    new LEConditionalLocation(new Vector3(-890.4263f, -2377.496f, 13.47698f), 70.6132f, 75f),
-                    new LEConditionalLocation(new Vector3(-873.713f, -2419.414f, 13.94444f), 53.94463f, 75f) { AssociationID = "NOOSE-PIA" },
+                    new LEConditionalLocation(new Vector3(-900.9653f, -2391.173f, 13.47696f), 148.7623f, 35f) { AssociationID = "NOOSE-PIA" },
+                    new LEConditionalLocation(new Vector3(-862.1013f, -2414.928f, 13.47701f), 147.4044f, 35f),
+                    new LEConditionalLocation(new Vector3(-858.2088f, -2397.289f, 13.47724f), 161.3987f, 35f) { AssociationID = "NOOSE-BP" },
+                    new LEConditionalLocation(new Vector3(-890.4263f, -2377.496f, 13.47698f), 70.6132f, 35f),
+                    new LEConditionalLocation(new Vector3(-873.713f, -2419.414f, 13.94444f), 53.94463f, 35f) { AssociationID = "NOOSE-PIA" },
                 } },
             new PoliceStation(new Vector3(3142.471f, -4840.832f, 112.0291f), 349.9769f, "NYSP Office Ludendorff","The return of the Keystone Cops") { 
                 StateID = StaticStrings.NorthYanktonStateID,
@@ -2308,10 +2308,10 @@ public class PlacesOfInterest : IPlacesOfInterest
             //HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
-                new GangConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 70f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipSidearmWhenIdle | TaskRequirements.EquipLongGunWhenIdle, LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
-                new GangConditionalLocation(new Vector3(1383.559f, 1156.695f, 114.3345f), 170.1522f, 70f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipSidearmWhenIdle | TaskRequirements.EquipLongGunWhenIdle, LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
-                new GangConditionalLocation(new Vector3(1375.004f, 1149.209f, 113.9089f), 91.94662f, 70f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.CanMoveWhenGuarding | TaskRequirements.EquipSidearmWhenIdle | TaskRequirements.EquipLongGunWhenIdle, LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
-                new GangConditionalLocation(new Vector3(1412.588f, 1138.611f, 114.3341f), 196.4261f, 70f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.CanMoveWhenGuarding | TaskRequirements.EquipSidearmWhenIdle | TaskRequirements.EquipLongGunWhenIdle, LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
+                new GangConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 45f) { TaskRequirements = TaskRequirements.Guard },
+                new GangConditionalLocation(new Vector3(1383.559f, 1156.695f, 114.3345f), 170.1522f, 45f) { TaskRequirements = TaskRequirements.Guard },
+                new GangConditionalLocation(new Vector3(1375.004f, 1149.209f, 113.9089f), 91.94662f, 45f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.CanMoveWhenGuarding | TaskRequirements.EquipSidearmWhenIdle | TaskRequirements.EquipLongGunWhenIdle, LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
+                new GangConditionalLocation(new Vector3(1412.588f, 1138.611f, 114.3341f), 196.4261f, 45f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.CanMoveWhenGuarding | TaskRequirements.EquipSidearmWhenIdle | TaskRequirements.EquipLongGunWhenIdle, LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
             },
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
@@ -2370,16 +2370,16 @@ public class PlacesOfInterest : IPlacesOfInterest
             IsEnabled = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
-                new GangConditionalLocation(new Vector3(-1155.236f, -1450.92f, 4.508356f), 203.7991f, 70f),
-                new GangConditionalLocation(new Vector3(-1158.698f, -1454.306f, 4.346763f), 192.8651f, 70f),
-                new GangConditionalLocation(new Vector3(-1166.395f, -1453.536f, 4.367522f), 122.2634f, 70f),
-                new GangConditionalLocation(new Vector3(-1177.108f, -1437.649f, 4.379432f), 75.27589f, 70f),
-                new GangConditionalLocation(new Vector3(-1171.944f, -1470.263f, 4.382764f), 290.1982f, 70f),
+                new GangConditionalLocation(new Vector3(-1155.236f, -1450.92f, 4.508356f), 203.7991f, 35f),
+                new GangConditionalLocation(new Vector3(-1158.698f, -1454.306f, 4.346763f), 192.8651f, 35f),
+                new GangConditionalLocation(new Vector3(-1166.395f, -1453.536f, 4.367522f), 122.2634f, 35f),
+                new GangConditionalLocation(new Vector3(-1177.108f, -1437.649f, 4.379432f), 75.27589f, 35f),
+                new GangConditionalLocation(new Vector3(-1171.944f, -1470.263f, 4.382764f), 290.1982f, 35f),
             },
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(-1156.718f, -1462.597f, 3.70943f), 210.7057f, 75f),
-                new GangConditionalLocation(new Vector3(-1150.134f, -1456.732f, 3.955124f), 215.4072f, 75f),
+                new GangConditionalLocation(new Vector3(-1156.718f, -1462.597f, 3.70943f), 210.7057f, 45f),
+                new GangConditionalLocation(new Vector3(-1150.134f, -1456.732f, 3.955124f), 215.4072f, 45f),
             }
         };//near shops on del perro beach
         GangDens.Add(Den1);
@@ -2629,7 +2629,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new GangConditionalLocation(new Vector3(-3229.512f, 1077.396f, 10.19788f), 260.5915f, 75f),
             }
         };//beachhousein chumash
-        float spawnChance = 65f;
+        float spawnChance = 45f;
         GangDen GambettiDen1 = new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "", "GambettiDenMenu", "AMBIENT_GANG_GAMBETTI")
         {
             IsPrimaryGangDen = true,
@@ -3119,18 +3119,18 @@ public class PlacesOfInterest : IPlacesOfInterest
             //HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
-                new GangConditionalLocation(new Vector3(987.3098f, -107.0706f, 74.32984f), 138.8955f, 55f),
-                new GangConditionalLocation(new Vector3(975.0338f, -112.2333f, 74.35313f), 188.1823f, 55f),
-                new GangConditionalLocation(new Vector3(960.2211f, -123.5155f, 74.35313f), 181.6973f, 55f),
-                new GangConditionalLocation(new Vector3(981.1419f, -142.9071f, 74.23688f), 80.7939f, 55f),
-                new GangConditionalLocation(new Vector3(976.2161f, -144.2681f, 74.24052f), 0.7361088f, 55f),
+                new GangConditionalLocation(new Vector3(987.3098f, -107.0706f, 74.32984f), 138.8955f, 35f),
+                new GangConditionalLocation(new Vector3(975.0338f, -112.2333f, 74.35313f), 188.1823f, 35f),
+                new GangConditionalLocation(new Vector3(960.2211f, -123.5155f, 74.35313f), 181.6973f, 35f),
+                new GangConditionalLocation(new Vector3(981.1419f, -142.9071f, 74.23688f), 80.7939f, 35f),
+                new GangConditionalLocation(new Vector3(976.2161f, -144.2681f, 74.24052f), 0.7361088f, 35f),
             },
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(976.4726f, -132.778f, 73.21405f), 58.86649f, 55f),
-                new GangConditionalLocation(new Vector3(960.3214f, -132.2091f, 73.69121f), 189.5355f, 55f),
-                new GangConditionalLocation(new Vector3(972.7709f, -142.4676f, 73.60614f), 239.6191f, 55f),
-                new GangConditionalLocation(new Vector3(972.8246f, -155.1686f, 72.8443f), 52.89192f, 55f),
+                new GangConditionalLocation(new Vector3(976.4726f, -132.778f, 73.21405f), 58.86649f, 35f),
+                new GangConditionalLocation(new Vector3(960.3214f, -132.2091f, 73.69121f), 189.5355f, 35f),
+                new GangConditionalLocation(new Vector3(972.7709f, -142.4676f, 73.60614f), 239.6191f, 35f),
+                new GangConditionalLocation(new Vector3(972.8246f, -155.1686f, 72.8443f), 52.89192f, 35f),
             },
             //CameraPosition = new Vector3(961.1312f, -131.4942f, 76.40847f),
            // CameraDirection = new Vector3(-0.7768034f, 0.5811784f, -0.2425037f),
@@ -3154,20 +3154,20 @@ public class PlacesOfInterest : IPlacesOfInterest
            // HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(84.73796f, 3718.092f, 40.33084f), 60.53624f, 45f),
-                new GangConditionalLocation(new Vector3(80.1135f, 3721.855f, 39.74522f), 150.8561f, 45f),
-                new GangConditionalLocation(new Vector3(78.30386f, 3722.036f, 39.74952f), 266.9375f, 45f),
-                new GangConditionalLocation(new Vector3(67.40894f, 3703.18f, 39.75497f), 338.0555f, 45f),
-                new GangConditionalLocation(new Vector3(68.87956f, 3704.888f, 39.75497f), 120.9388f, 45f),
-                new GangConditionalLocation(new Vector3(47.73441f, 3704.631f, 39.75497f), 302.5045f, 45f),
-                new GangConditionalLocation(new Vector3(47.20625f, 3705.412f, 39.75497f), 269.3896f, 45f),
-                new GangConditionalLocation(new Vector3(46.69005f, 3715.68f, 39.73444f), 245.4069f, 45f),
-                new GangConditionalLocation(new Vector3(57.10126f, 3724.255f, 39.72771f), 196.2136f, 45f),
-                new GangConditionalLocation(new Vector3(58.31903f, 3724.607f, 39.72731f), 176.8168f, 45f),
-                new GangConditionalLocation(new Vector3(66.5742f, 3726.808f, 39.71051f), 173.2846f, 45f),
-                new GangConditionalLocation(new Vector3(64.92879f, 3726.43f, 39.7145f), 256.0423f, 45f),
-                new GangConditionalLocation(new Vector3(58.89564f, 3698.918f, 39.75497f), 319.3528f, 45f),
-                new GangConditionalLocation(new Vector3(57.78175f, 3699.333f, 39.75499f), 307.2412f, 45f),
+                new GangConditionalLocation(new Vector3(84.73796f, 3718.092f, 40.33084f), 60.53624f, 15f),
+                new GangConditionalLocation(new Vector3(80.1135f, 3721.855f, 39.74522f), 150.8561f, 15f),
+                new GangConditionalLocation(new Vector3(78.30386f, 3722.036f, 39.74952f), 266.9375f, 15f),
+                new GangConditionalLocation(new Vector3(67.40894f, 3703.18f, 39.75497f), 338.0555f, 15f),
+                new GangConditionalLocation(new Vector3(68.87956f, 3704.888f, 39.75497f), 120.9388f, 15f),
+                new GangConditionalLocation(new Vector3(47.73441f, 3704.631f, 39.75497f), 302.5045f, 15f),
+                new GangConditionalLocation(new Vector3(47.20625f, 3705.412f, 39.75497f), 269.3896f, 15f),
+                new GangConditionalLocation(new Vector3(46.69005f, 3715.68f, 39.73444f), 245.4069f, 15f),
+                new GangConditionalLocation(new Vector3(57.10126f, 3724.255f, 39.72771f), 196.2136f, 15f),
+                new GangConditionalLocation(new Vector3(58.31903f, 3724.607f, 39.72731f), 176.8168f, 15f),
+                new GangConditionalLocation(new Vector3(66.5742f, 3726.808f, 39.71051f), 173.2846f, 15f),
+                new GangConditionalLocation(new Vector3(64.92879f, 3726.43f, 39.7145f), 256.0423f, 15f),
+                new GangConditionalLocation(new Vector3(58.89564f, 3698.918f, 39.75497f), 319.3528f, 15f),
+                new GangConditionalLocation(new Vector3(57.78175f, 3699.333f, 39.75499f), 307.2412f, 15f),
             },
            // CameraPosition = new Vector3(88.20795f, 3694.343f, 40.96601f),
            // CameraDirection = new Vector3(-0.2029471f, 0.9696398f, -0.1364228f),

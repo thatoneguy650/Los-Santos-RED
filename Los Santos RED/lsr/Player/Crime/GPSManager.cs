@@ -18,14 +18,16 @@ public class GPSManager
     private IDestinateable Player;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
+    private ITimeControllable Time;
     private uint GameTimeLastCheckedRouteBlip;
 
     public Blip CurrentGPSBlip { get; private set; }
-    public GPSManager(IDestinateable player, IEntityProvideable world, ISettingsProvideable settings)
+    public GPSManager(IDestinateable player, IEntityProvideable world, ISettingsProvideable settings, ITimeControllable time)
     {
         Player = player;
         World = world;
         Settings = settings;
+        Time = time;
     }
     public void Setup()
     {
@@ -112,7 +114,7 @@ public class GPSManager
 
 
     //Adapted from TomGrobbe
-    public void TeleportToCoords(Vector3 pos, float heading, bool forceRoadNode, bool safeModeDisabled)
+    public void TeleportToCoords(Vector3 pos, float heading, bool forceRoadNode, bool safeModeDisabled, int hoursToAdvance)
     {
         EntryPoint.WriteToConsole($"STARTING TELEPORT TO COORDS {pos} {heading}");
         if (!safeModeDisabled)
@@ -121,9 +123,8 @@ public class GPSManager
             var veh = Game.LocalPlayer.Character.CurrentVehicle;
             bool inVehicle() => veh != null && veh.Exists();// && Game.LocalPlayer.Character == veh.Driver;
 
-            bool vehicleRestoreVisibility = inVehicle() && veh.IsVisible;
-            bool pedRestoreVisibility = Game.LocalPlayer.Character.IsVisible;
-
+            //bool vehicleRestoreVisibility = inVehicle() && veh.IsVisible;
+            //bool pedRestoreVisibility = Game.LocalPlayer.Character.IsVisible;
 
             // Fade out the screen and wait for it to be faded out completely.
             Game.FadeScreenOut(500, true);
@@ -133,29 +134,16 @@ public class GPSManager
                 GameFiber.Yield();
             }
 
-
-
-
             // Freeze vehicle or player location and fade out the entity to the network.
             if (inVehicle())
             {
                 veh.IsPositionFrozen = true;
-                //if (veh.IsVisible)
-                //{
-                //    NetworkFadeOutEntity(veh.Handle, true, false);
-                //}
             }
             else
             {
                 NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Game.LocalPlayer.Character);
                 Game.LocalPlayer.Character.IsPositionFrozen = true;
-                //if (Game.LocalPlayer.Character.IsVisible)
-                //{
-                //    NetworkFadeOutEntity(Game.LocalPlayer.Character.Handle, true, false);
-                //}
             }
-
-
 
             // This will be used to get the return value from the groundz native.
             float groundZ = 850.0f;
@@ -263,17 +251,17 @@ public class GPSManager
             if (!found)
             {
                 var safePos = pos;
-                NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE<bool>(pos.X, pos.Y, pos.Z, 0, ref safePos, 0, 0, 0);
-
+                float safeHeading = 0.0f;
+                float valNumLanes;
+               // NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(pos.X, pos.Y, pos.Z, 0, ref safePos, ref safeHeading, 0, 0, 0);
+                NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(pos.X, pos.Y, pos.Z, 1, out safePos, out safeHeading, out valNumLanes, 1, 3.0f, 0);
                 // Notify the user that the ground z coord couldn't be found, so we will place them on a nearby road instead.
                 EntryPoint.WriteToConsole("Could not find a safe ground coord. Placing you on the nearest road instead.");
-                EntryPoint.WriteToConsole("Could not find a safe ground coord. Placing you on the nearest road instead.");
-
                 // Teleport vehicle, or player.
                 if (inVehicle())
                 {
                     NativeFunction.Natives.SET_ENTITY_COORDS(veh, safePos.X, safePos.Y, safePos.Z, false, false, false, true);
-                    veh.Heading = heading;
+                    veh.Heading = safeHeading;
                     veh.IsPositionFrozen = false;
                     NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY(veh);
                     veh.IsPositionFrozen = true;
@@ -281,41 +269,27 @@ public class GPSManager
                 else
                 {
                     NativeFunction.Natives.SET_ENTITY_COORDS(Game.LocalPlayer.Character, safePos.X, safePos.Y, safePos.Z, false, false, false, true);
-                    Game.LocalPlayer.Character.Heading = heading;
+                    Game.LocalPlayer.Character.Heading = safeHeading;
                 }
             }
-
             // Once the teleporting is done, unfreeze vehicle or player and fade them back in.
             if (inVehicle())
             {
-                if (vehicleRestoreVisibility)
-                {
-                    //NetworkFadeInEntity(veh.Handle, true);
-                    //if (!pedRestoreVisibility)
-                    //{
-                    //    Game.LocalPlayer.Character.IsVisible = false;
-                    //}
-                }
                 veh.IsPositionFrozen = false;
             }
             else
             {
-                //if (pedRestoreVisibility)
-                //{
-                //    NetworkFadeInEntity(Game.LocalPlayer.Character.Handle, true);
-                //}
                 Game.LocalPlayer.Character.IsPositionFrozen = false;
             }
-
             // Fade screen in and reset the camera angle.
-
-
+            if (hoursToAdvance > 0)
+            {
+                Time.SetDateTime(Time.CurrentDateTime.AddHours(hoursToAdvance));
+            }
             GameFiber.Sleep(1000);
-
             Game.FadeScreenIn(500, true);
             NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(0.0f, 1.0f);
         }
-
         // Disable safe teleporting and go straight to the specified coords.
         else
         {
@@ -625,7 +599,7 @@ public class GPSManager
             Game.DisplaySubtitle("No Marker Set");
             return;
         }
-        TeleportToCoords(markerPos,0f, false, false);
+        TeleportToCoords(markerPos,0f, false, false, 0);
         //TeleportToDestination(new SpawnLocation(markerPos));
     }
 

@@ -27,7 +27,6 @@ public class GameLocation : ILocationDispatchable
     protected Transaction Transaction;
     protected uint NotificationHandle;
     protected readonly List<string> FallBackVendorModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
-
     protected float currentblipAlpha = 0.25f;
     protected Color currentBlipColor = Color.White;
     protected Blip createdBlip;
@@ -46,11 +45,15 @@ public class GameLocation : ILocationDispatchable
             }
             else if (DistanceToPlayer >= 500)
             {
-                return 5000;
+                return 4000;// 5000;
+            }
+            else if (DistanceToPlayer >= 250)
+            {
+                return 2000;// 5000;
             }
             else if (DistanceToPlayer >= 35)//20)
             {
-                return 2000;
+                return 1000;// 2000;
             }
             else
             {
@@ -107,7 +110,7 @@ public class GameLocation : ILocationDispatchable
     public virtual float MapIconRadius { get; set; } = 1.0f;
     public virtual float MapOpenIconAlpha { get; set; } = 1.0f;
     public virtual float MapClosedIconAlpha { get; set; } = 0.25f;
-    public Vector3 EntrancePosition { get; set; } = Vector3.Zero;
+    public Vector3 EntrancePosition { get; set; } = Vector3.Zero;//ConditionalLocation
     public float EntranceHeading { get; set; }
     public int OpenTime { get; set; } = 6;
     public int CloseTime { get; set; } = 20;
@@ -116,31 +119,37 @@ public class GameLocation : ILocationDispatchable
     public bool IsOnSPMap { get; set; } = true;
     public bool IsOnMPMap { get; set; } = true;
     public virtual bool ShowsOnDirectory { get; set; } = true;
-
     public virtual bool ShowsOnTaxi { get; set; } = true;
-
     public virtual string TypeName { get; set; } = "Location";
     public virtual int SortOrder { get; set; } = 999;
     public string StateID { get; set; }
     public string ScannerFilePath { get; set; } = "";
-    public virtual int ActivateCells { get; set; } = 5;
+    public virtual int ActivateCells { get; set; } = 4;//5;
+    public virtual float ActivateDistance { get; set; } = 150f;//225;
     public virtual RestrictedAreas RestrictedAreas { get; set; }
     public virtual string AssociationID => AssignedAssociationID;
     public string AssignedAssociationID { get; set; }
     public string MenuID { get; set; }
-    public Vector3 VendorPosition { get; set; } = Vector3.Zero;
-    public float VendorHeading { get; set; } = 0f;
-    public List<string> VendorModels { get; set; }
+
     public Vector3 CameraPosition { get; set; } = Vector3.Zero;
     public Vector3 CameraDirection { get; set; } = Vector3.Zero;
     public Rotator CameraRotation { get; set; }
     public virtual string BlipName => TypeName;
     public virtual bool CanInteractWhenWanted { get; set; } = false;
     public virtual bool ShowsMarker { get; set; } = true;
-    public virtual float ActivateDistance { get; set; } = 225;
     public List<ConditionalGroup> PossibleGroupSpawns { get; set; }
     public List<ConditionalLocation> PossiblePedSpawns { get; set; }
     public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
+
+
+
+  //  public List<ConditionalLocation> PossibleMerchantSpawns { get; set; }
+    public Vector3 VendorPosition { get; set; } = Vector3.Zero;
+    public float VendorHeading { get; set; } = 0f;
+    public List<string> VendorModels { get; set; }
+
+
+
     public Vector3 VehiclePreviewCameraPosition { get; set; } = Vector3.Zero;
     public Vector3 VehiclePreviewCameraDirection { get; set; } = Vector3.Zero;
     public Rotator VehiclePreviewCameraRotation { get; set; }
@@ -208,7 +217,7 @@ public class GameLocation : ILocationDispatchable
         if (HasVendor)
         {
             CanInteract = false;
-            if (isOpen && settings.SettingsManager.CivilianSettings.ManageDispatching)
+            if (isOpen && settings.SettingsManager.CivilianSettings.ManageDispatching && world.Pedestrians.TotalSpawnedServiceWorkers < settings.SettingsManager.CivilianSettings.TotalSpawnedServiceMembersLimit)
             {
                 SpawnVendor(settings, crimes, weapons, true);// InteractsWithVendor);
             }
@@ -320,21 +329,20 @@ public class GameLocation : ILocationDispatchable
             AssignedAgency = agencies.GetAgency(AssignedAssociationID);
         }
         Menu = shopMenus.GetSpecificMenu(MenuID);
-
-        if (PossiblePedSpawns != null)
-        {
-            foreach (ConditionalLocation cl in PossiblePedSpawns)
-            {
-                cl.Setup(agencies, gangs, zones, jurisdictions, gangTerritories, Settings, World, AssociationID, Weapons, Names, Crimes, PedGroups, shopMenus, Time, ModItems);
-            }
-        }
-        if (PossibleVehicleSpawns != null)
-        {
-            foreach (ConditionalLocation cl in PossibleVehicleSpawns)
-            {
-                cl.Setup(agencies, gangs, zones, jurisdictions, gangTerritories, Settings, World, AssociationID, Weapons, Names, Crimes, PedGroups, shopMenus, Time, ModItems);
-            }
-        }     
+        //if (PossiblePedSpawns != null)
+        //{
+        //    foreach (ConditionalLocation cl in PossiblePedSpawns)
+        //    {
+        //        cl.Setup(agencies, gangs, zones, jurisdictions, gangTerritories, Settings, World, AssociationID, Weapons, Names, Crimes, PedGroups, shopMenus, Time, ModItems);
+        //    }
+        //}
+        //if (PossibleVehicleSpawns != null)
+        //{
+        //    foreach (ConditionalLocation cl in PossibleVehicleSpawns)
+        //    {
+        //        cl.Setup(agencies, gangs, zones, jurisdictions, gangTerritories, Settings, World, AssociationID, Weapons, Names, Crimes, PedGroups, shopMenus, Time, ModItems);
+        //    }
+        //}     
     }
     public virtual void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
@@ -755,34 +763,35 @@ public class GameLocation : ILocationDispatchable
         {
             ModelName = FallBackVendorModels.PickRandom();
         }
-        NativeFunction.Natives.CLEAR_AREA(VendorPosition.X, VendorPosition.Y, VendorPosition.Z, 2f, true, false, false, false);
         EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {ModelName}");
+        NativeFunction.Natives.CLEAR_AREA(VendorPosition.X, VendorPosition.Y, VendorPosition.Z, 2f, true, false, false, false);
         Ped ped = new Ped(ModelName, VendorPosition, VendorHeading);
         GameFiber.Yield();
-        if (ped.Exists())
+        if (!ped.Exists())
         {
-            Vendor = new Merchant(ped, settings, "Vendor", crimes, weapons, World);
-            if (!World.Pedestrians.Merchants.Any(x => x.Handle == Vendor.Handle))
-            {
-                World.Pedestrians.Merchants.Add(Vendor);
-            }
-            ped.IsPersistent = true;//THIS IS ON FOR NOW!
-            ped.RandomizeVariation();
-            NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", ped, "WORLD_HUMAN_STAND_IMPATIENT", 0, true);
-            ped.KeepTasks = true;
-            EntryPoint.SpawnedEntities.Add(ped);
-            GameFiber.Yield();
-            if (ped.Exists())
-            {
-                if (addMenu)
-                {
-                    Vendor.SetupTransactionItems(Menu);
-                }
-                Vendor.AssociatedStore = this;
-                Vendor.SpawnPosition = VendorPosition;
-                EntryPoint.WriteToConsole($"SPAWNED WORKED VENDOR AT {Name}");
-            }
+            return;
         }
+        EntryPoint.SpawnedEntities.Add(ped);
+        Vendor = new Merchant(ped, settings, "Vendor", crimes, weapons, World);
+        if (!World.Pedestrians.Merchants.Any(x => x.Handle == Vendor.Handle))
+        {
+            World.Pedestrians.Merchants.Add(Vendor);
+        }
+        ped.IsPersistent = true;//THIS IS ON FOR NOW!
+        ped.RandomizeVariation();
+        Vendor.LocationTaskRequirements = new LocationTaskRequirements() { TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_STAND_IMPATIENT" } };
+        GameFiber.Yield();
+        if (!ped.Exists())
+        {
+            return;
+        }
+        if (addMenu)
+        {
+            Vendor.SetupTransactionItems(Menu);
+        }
+        Vendor.AssociatedStore = this;
+        Vendor.SpawnPosition = VendorPosition;
+        EntryPoint.WriteToConsole($"SPAWNED WORKED VENDOR AT {Name}");
     }
     protected bool IsLocationClosed()
     {

@@ -31,6 +31,12 @@ public class SecurityConditionalLocation : ConditionalLocation
         //{
         //    return false;
         //}
+
+        if (World.Pedestrians.TotalSpawnedSecurityGuards > Settings.SettingsManager.SecuritySettings.TotalSpawnedMembersLimit)
+        {
+            return false;
+        }
+
         return base.DetermineRun(force);
     }
 
@@ -41,7 +47,7 @@ public class SecurityConditionalLocation : ConditionalLocation
             SecurityGuardSpawnTask securitySpawnTask = new SecurityGuardSpawnTask(Agency, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, Crimes, ModItems);
             securitySpawnTask.AllowAnySpawn = true;
             securitySpawnTask.AllowBuddySpawn = false;
-            securitySpawnTask.ClearArea = true;
+            securitySpawnTask.ClearVehicleArea = true;
             securitySpawnTask.SpawnRequirement = TaskRequirements;
             securitySpawnTask.PlacePedOnGround = DispatchableVehicle == null; //true;
             securitySpawnTask.AttemptSpawn();

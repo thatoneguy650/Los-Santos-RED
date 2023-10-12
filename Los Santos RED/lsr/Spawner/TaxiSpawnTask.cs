@@ -7,7 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.ArrayExtensions;
+using System.Security.Cryptography.X509Certificates;
 
 public class TaxiSpawnTask : CivilianSpawnTask
 {
@@ -41,7 +42,7 @@ public class TaxiSpawnTask : CivilianSpawnTask
     {
         try
         {
-            if (ClearArea)
+            if (ClearVehicleArea)
             {
                 NativeFunction.Natives.CLEAR_AREA(Position.X, Position.Y, Position.Z, 3f, true, false, false, false);
             }
@@ -70,10 +71,18 @@ public class TaxiSpawnTask : CivilianSpawnTask
         }
         catch (Exception ex)
         {
-            EntryPoint.WriteToConsole($"CivilianSpawn: ERROR DELETED VEHICLE {ex.Message} {ex.StackTrace} ATTEMPTING {VehicleType.ModelName}", 0);
+            EntryPoint.WriteToConsole($"TaxiSpawn: ERROR DELETED VEHICLE {ex.Message} {ex.StackTrace} ATTEMPTING {VehicleType.ModelName}", 0);
             if (SpawnedVehicle.Exists())
             {
                 SpawnedVehicle.Delete();
+            }
+            foreach(Entity entity in Rage.World.GetEntities(Position, 3.0f, GetEntitiesFlags.ConsiderAllVehicles).ToList())
+            {
+                if(entity.Exists())
+                {
+                    EntryPoint.WriteToConsole("ERROR ENTITY EXISTS, DELETING");
+                    entity.Delete();
+                }
             }
             GameFiber.Yield();
             return null;
