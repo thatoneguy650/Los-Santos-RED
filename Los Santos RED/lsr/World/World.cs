@@ -54,6 +54,7 @@ namespace Mod
             Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus, Gangs, GangTerritories, this);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes, modItems, this, associations);
             Places = new Places(this,zones,jurisdictions,settings,placesOfInterest,weapons,crimes,time,shopMenus,interiors,gangs,gangTerritories,streets, agencies, names, pedGroups, locationTypes, plateTypes, associations, contacts);
+            SpawnErrors = new List<SpawnError>();
         }
         public bool IsMPMapLoaded { get; private set; }
         public bool IsZombieApocalypse { get; set; } = false;
@@ -68,7 +69,7 @@ namespace Mod
 
         public bool AnyFiresNearPlayer { get; private set; }
 
-
+        public List<SpawnError> SpawnErrors { get; private set; }
 
         public string DebugString => "";
         public void Setup()
@@ -193,7 +194,10 @@ namespace Mod
         }
         public void SetDensity()
         {
-            CurrentSpawnMultiplier = 1.0f;
+
+
+
+            CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.DefaultSpawnMultiplier;// 1.0f;
 
             if (TotalWantedLevel >= 10)
             {
@@ -228,7 +232,7 @@ namespace Mod
             if(CurrentSpawnMultiplier != 1.0f && !isSettingDensity)
             {
                 isSettingDensity = true;
-                //EntryPoint.WriteToConsoleTestLong($"World - START Setting Population Density {CurrentSpawnMultiplier}");
+                EntryPoint.WriteToConsole($"World - START Setting Population Density {CurrentSpawnMultiplier}");
                 GameFiber.StartNew(delegate
                 {
                     try

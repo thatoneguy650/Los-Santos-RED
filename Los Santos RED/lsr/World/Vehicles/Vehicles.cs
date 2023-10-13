@@ -136,13 +136,28 @@ public class Vehicles
         RageVehicles = Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
         GameFiber.Yield();
         int updated = 0;
+        World.SpawnErrors.RemoveAll(x => x.HasCleared);
+        bool hasSpawnErrors = World.SpawnErrors.Any();
         foreach (Vehicle vehicle in RageVehicles.Where(x => x.Exists()))//take 20 is new
         {
+            bool shouldAdd = true;
             if (Settings.SettingsManager.VehicleSettings.UseBetterLightStateOnAI)//move into a controller proc?
             {
                 NativeFunction.Natives.SET_VEHICLE_USE_PLAYER_LIGHT_SETTINGS(vehicle, true);
             }
-            if (AddEntity(vehicle))
+
+            if(hasSpawnErrors)
+            {
+                foreach(SpawnError spawnError in World.SpawnErrors)
+                {
+                    if(spawnError.CheckVehicle(vehicle))
+                    {
+                        shouldAdd = false;
+                    }
+                }
+            }
+
+            if (shouldAdd && AddEntity(vehicle))
             {   
                 GameFiber.Yield();
             }

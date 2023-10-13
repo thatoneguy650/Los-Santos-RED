@@ -1003,6 +1003,7 @@
     <Compile Include="lsr\World\Places\DynamicPlaces.cs" />
     <Compile Include="lsr\World\Places\Places.cs" />
     <Compile Include="lsr\World\Places\StaticPlaces.cs" />
+    <Compile Include="lsr\World\SpawnError.cs" />
     <Compile Include="lsr\World\Vehicles\PlateController.cs" />
     <Compile Include="lsr\World\WeatherReporting.cs" />
     <Compile Include="ModController.cs" />

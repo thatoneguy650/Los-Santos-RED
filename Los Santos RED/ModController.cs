@@ -132,8 +132,6 @@ namespace LosSantosRED.lsr
             DisplayLoadSuccessfulMessage();
             //Test
         }
-
-
         public void SetupFileOnly()
         {
             while (Game.IsLoading)
@@ -468,6 +466,18 @@ namespace LosSantosRED.lsr
             {
                 return $"~{InstructionalButton.GetButtonId((GameControl)control)}~";
             }
+        }
+        public void AddSpawnError(SpawnError spawnError)
+        {
+            if(spawnError == null)
+            {
+                return;
+            }
+
+            int Totalvehicles = World.Vehicles.AllVehicleList.Count();
+            int TotalPeds = World.Pedestrians.PedExts.Count();
+            EntryPoint.WriteToConsole($"ADDED NEW SPAWN ERROR {spawnError.ModelHash} {spawnError.SpawnLocation} {spawnError.GameTimeSpawned} Totalvehicles {Totalvehicles} TotalPeds {TotalPeds}");
+            World.SpawnErrors.Add(spawnError);
         }
     }
 }

@@ -1461,21 +1461,10 @@ HighlightProp();
         Vector3 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
         try
         {
-            SpawnedVehicle = NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(Game.GetHashKey("taxi"), Position.X, Position.Y, Position.Z,0f, false, false, false);//   new Vehicle("taxi", Position, 0f) { IsPersistent = false };
+            SpawnedVehicle = SpawnedVehicle = new Vehicle("taxi", Position, 0f);//NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(Game.GetHashKey("taxi"), Position.X, Position.Y, Position.Z,0f, false, false, false);//   new Vehicle("taxi", Position, 0f) { IsPersistent = false };
             if (!SpawnedVehicle.Exists())
             {
                 Game.DisplaySubtitle($"SPAWNED VEHICLE DOESNT EXIST? {Game.GameTime}");
-
-                GameFiber.Sleep(2000);
-                foreach (Entity entity in Rage.World.GetAllEntities().ToList())
-                {
-                    if (entity.Exists() && entity.DistanceTo2D(Position) <= 3.0f)
-                    {
-                        EntryPoint.WriteToConsole($"DebugNumpad7: PAWNED VEHICLE DOESNT EXIST? IS IT THIS? {entity.Handle}", 0);
-                    }
-                }
-
-
                 return;
             }
             GameFiber.Sleep(2000);
@@ -1493,15 +1482,7 @@ HighlightProp();
                 EntryPoint.WriteToConsole($"DebugNumpad7: ERROR DELETED VEHICLE ACTUALLY STILL GOT THE HANDLE", 0);
                 SpawnedVehicle.Delete();
             }
-            GameFiber.Sleep(2000);
-            foreach (Entity entity in Rage.World.GetEntities(Position, 5.0f, GetEntitiesFlags.ConsiderAllVehicles).ToList())
-            {
-                if (entity.Exists())
-                {
-                    EntryPoint.WriteToConsole($"DebugNumpad7: ERROR DELETED VEHICLE GOT NEW HANDLE FROM GROUP {entity.Handle}", 0);
-                    entity.Delete();
-                }
-            }
+            EntryPoint.ModController.AddSpawnError(new SpawnError(Game.GetHashKey("taxi"), Position, Game.GameTime));
             GameFiber.Yield();
             return;
         }
@@ -4330,7 +4311,7 @@ private void contacttest()
         //}
         //EntryPoint.WriteToConsole($"============================================ VEHICLES END", 5);
         EntryPoint.WriteToConsole($"============================================ CIVIES START", 5);
-        foreach (PedExt ped in World.Pedestrians.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f).OrderBy(x => x.DistanceToPlayer))
+        foreach (PedExt ped in World.Pedestrians.CivilianList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
         {
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
@@ -4339,7 +4320,7 @@ private void contacttest()
         }
         EntryPoint.WriteToConsole($"============================================ CIVIES END", 5);
         EntryPoint.WriteToConsole($"============================================ SECURITY START", 5);
-        foreach (SecurityGuard ped in World.Pedestrians.SecurityGuardList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f).OrderBy(x => x.DistanceToPlayer))
+        foreach (SecurityGuard ped in World.Pedestrians.SecurityGuardList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
         {
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);

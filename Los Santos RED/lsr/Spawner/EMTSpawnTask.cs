@@ -133,12 +133,9 @@ public class EMTSpawnTask : SpawnTask
             {
                 SpawnedVehicle.Delete();
             }
-            foreach (Entity entity in Rage.World.GetEntities(Position, 3.0f, GetEntitiesFlags.ConsiderAllVehicles).ToList())
+            else
             {
-                if (entity.Exists())
-                {
-                    entity.Delete();
-                }
+                EntryPoint.ModController.AddSpawnError(new SpawnError(Game.GetHashKey(VehicleType.ModelName), Position, Game.GameTime));
             }
             GameFiber.Yield();
             return null;

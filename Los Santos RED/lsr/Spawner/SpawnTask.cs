@@ -149,6 +149,10 @@ public abstract class SpawnTask
             LastCreatedVehicle.Vehicle.Delete();
             EntryPoint.WriteToConsole($"Spawn Task: ERROR DELETED VEHICLE", 0);
         }
+        else
+        {
+            EntryPoint.ModController.AddSpawnError(new SpawnError(Game.GetHashKey(VehicleType.ModelName), Position, Game.GameTime));
+        }
         if (includePeople)
         {
             foreach (PedExt person in CreatedPeople)

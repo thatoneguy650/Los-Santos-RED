@@ -39,11 +39,9 @@ public static class EntryPoint
     public static uint NotificationID { get; set; }
     public static void Main()
     {
-
 #if DEBUG
         LogLevel = 5;
-        #endif
-
+#endif
         while (Game.IsLoading)
         {
             GameFiber.Yield();
@@ -54,9 +52,6 @@ public static class EntryPoint
     }
     private static void Startup()
     {
-
-
-
         GetVersionInfo();
         CheckDependencies();
         CheckForUpdates();
@@ -72,9 +67,7 @@ public static class EntryPoint
                 {
                     Game.RemoveNotification(NotificationID);
                 }
-
                 Game.FadeScreenOut(500, true);
-
                 ModController = new ModController();
                 ModController.Setup();
             }
@@ -97,9 +90,6 @@ public static class EntryPoint
             PreStartMessage = $"{PreStartMessage} ~n~~n~{RageNativeUIChecker.GameMessage}~s~";
         }
         WriteToConsole($"{RageNativeUIChecker.LogMessage}",0);
-
-
-
         NaudioChecker = new DependencyChecker("NAudio.dll", "1.9.0.0");
         NaudioChecker.Verify();
         if (!NaudioChecker.IsValid)
@@ -107,7 +97,6 @@ public static class EntryPoint
             PreStartMessage = $"{PreStartMessage} ~n~~n~{NaudioChecker.GameMessage}~s~";
         }
         WriteToConsole($"{NaudioChecker.LogMessage}", 0);
-
     }
     private static void CheckForUpdates()
     {
@@ -155,7 +144,6 @@ public static class EntryPoint
                 fixedString += c;
             }
             Character++;
-          // EntryPoint.WriteToConsole(fixedString);
         }
         return fixedString;
     }
@@ -181,8 +169,6 @@ public static class EntryPoint
             return wr;
         }
     }
-
-
 #if DEBUG
     [ConsoleCommand]
     public static void Command_CreateConfig()

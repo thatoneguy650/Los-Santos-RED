@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -45,6 +46,12 @@ public class WorldSettings : ISettingsDefaultable
     public bool ReplaceVanillaShopKeepers { get; set; }
     [Description("If enabled all locations will be visible on the in game directoy (Messages or Player Info Menu). Disabled will show only legal locations.")]
     public bool ShowAllLocationsOnDirectory { get; set; }
+
+    [Description("Sets the default spawn multiplier when LSR is active. Vanilla/Default is 1.0")]
+    public float DefaultSpawnMultiplier { get; set; }
+
+
+
     [Description("If enabled, the civilian ped population will be lessened at 4+ stars.")]
     public bool LowerPedSpawnsAtHigherWantedLevels { get; set; }
     [Description("Civilian ped density multiplier at 4 stars.")]
@@ -107,6 +114,11 @@ public class WorldSettings : ISettingsDefaultable
     public bool AllowSettingSirenState { get; set; }
 
 
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
     public WorldSettings()
     {
         SetDefault();
@@ -123,6 +135,9 @@ public class WorldSettings : ISettingsDefaultable
         ShowAllLocationsOnDirectory = false;
 
         LowerPedSpawnsAtHigherWantedLevels = true;
+
+        DefaultSpawnMultiplier = 1.0f;
+
         LowerPedSpawnsAtHigherWantedLevels_Wanted4Multiplier = 0.5f;
         LowerPedSpawnsAtHigherWantedLevels_Wanted5Multiplier = 0.3f;
         LowerPedSpawnsAtHigherWantedLevels_Wanted6Multiplier = 0.1f;

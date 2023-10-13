@@ -210,7 +210,7 @@ public class TaxiDispatcher : DefaultDispatcher
         {
             return false;
         }
-        VehicleType = TaxiFirm.Vehicles.PickRandom();
+        VehicleType = TaxiFirm.GetRandomVehicle(0, false, false, false, "", Settings);//.Vehicles.PickRandom();
         if (VehicleType == null)
         {
             return false;

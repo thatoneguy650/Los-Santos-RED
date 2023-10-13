@@ -76,13 +76,9 @@ public class TaxiSpawnTask : CivilianSpawnTask
             {
                 SpawnedVehicle.Delete();
             }
-            foreach(Entity entity in Rage.World.GetEntities(Position, 3.0f, GetEntitiesFlags.ConsiderAllVehicles).ToList())
+            else
             {
-                if(entity.Exists())
-                {
-                    EntryPoint.WriteToConsole("ERROR ENTITY EXISTS, DELETING");
-                    entity.Delete();
-                }
+                EntryPoint.ModController.AddSpawnError(new SpawnError(Game.GetHashKey(VehicleType.ModelName), Position, Game.GameTime));
             }
             GameFiber.Yield();
             return null;
