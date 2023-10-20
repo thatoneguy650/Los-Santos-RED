@@ -61,19 +61,18 @@ namespace Mod
         public Vehicles Vehicles { get; private set; }
         public Pedestrians Pedestrians { get; private set; }
         public Places Places { get; private set; }
-
-
         public int CitizenWantedLevel { get; set; }
         public int TotalWantedLevel { get; set; } = 0;
         public Vector3 PoliceBackupPoint { get; set; }
-
         public bool AnyFiresNearPlayer { get; private set; }
-
         public List<SpawnError> SpawnErrors { get; private set; }
-
         public string DebugString => "";
         public void Setup()
         {
+            //if (Settings.SettingsManager.WorldSettings.SetReducedPropsOnMap)
+            //{
+            //    NativeFunction.Natives.SET_INSTANCE_PRIORITY_MODE(1);
+            //}
             DetermineMap();
             Pedestrians.Setup();
             Places.Setup();
@@ -131,6 +130,10 @@ namespace Mod
         }
         public void Dispose()
         {
+            //if (Settings.SettingsManager.WorldSettings.SetReducedPropsOnMap)
+            //{
+            //    NativeFunction.Natives.SET_INSTANCE_PRIORITY_MODE(0);
+            //}
             Places.Dispose();
             Pedestrians.Dispose();
             Vehicles.Dispose();
@@ -151,15 +154,16 @@ namespace Mod
                 Game.FadeScreenIn(1500, true);
                 IsMPMapLoaded = true;
             }
-
-            
         }
         public void LoadSPMap()
         {
             if (IsMPMapLoaded)
             {
                 Game.FadeScreenOut(1500, true);
-                NativeFunction.Natives.SET_INSTANCE_PRIORITY_MODE(0);
+                //if (!Settings.SettingsManager.WorldSettings.SetReducedPropsOnMap)
+                //{
+                    NativeFunction.Natives.SET_INSTANCE_PRIORITY_MODE(0);
+                //}
                 NativeFunction.Natives.xD7C10C4A637992C9();// ON_ENTER_SP();
                 Game.FadeScreenIn(1500, true);
                 IsMPMapLoaded = false;
@@ -265,6 +269,10 @@ namespace Mod
             GameFiber.Sleep(100);
             IsMPMapLoaded = NativeFunction.Natives.IS_IPL_ACTIVE<bool>(iplName);
             //EntryPoint.WriteToConsoleTestLong($"MP Map Loaded: {IsMPMapLoaded}");
+
+
+
+
         }
         private void CreateTotalWantedBlip()
         {
@@ -311,6 +319,13 @@ namespace Mod
             //EntryPoint.WriteToConsoleTestLong($"OnTotalWantedLevelAdded {TotalWantedLevel}");
         }
 
-
+        public void StoreEntities()
+        {
+            EntryPoint.ModController.AllObjects = Rage.World.GetAllObjects().ToList();
+            GameFiber.Yield();
+            EntryPoint.ModController.AllPeds = Rage.World.GetAllPeds().ToList();
+            GameFiber.Yield();
+            EntryPoint.ModController.AllVehicles = Rage.World.GetAllVehicles().ToList();
+        }
     }
 }

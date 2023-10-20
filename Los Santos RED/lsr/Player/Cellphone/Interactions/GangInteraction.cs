@@ -125,7 +125,7 @@ public class GangInteraction : IContactMenuInteraction
             GangTaskCancel = new UIMenuItem("Cancel Task", "Tell the gang you can't complete the task.") { RightLabel = "~o~$?~s~" };
             GangTaskCancel.Activated += (sender, selectedItem) =>
             {
-                Player.PlayerTasks.CancelTask(ActiveGang?.ContactName);
+                Player.PlayerTasks.CancelTask(ActiveGang?.Contact);
                 sender.Visible = false;
             };
             GangMenu.AddItem(GangTaskCancel);

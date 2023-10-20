@@ -374,7 +374,7 @@ public class VehicleItem : ModItem
         SpawnPlace ChosenSpawn = null;
         foreach (SpawnPlace sp in transaction.VehicleDeliveryLocations.OrderBy(x => RandomItems.GetRandomNumber(0f, 1f)))
         {
-            ItemInDeliveryBay = Rage.World.GetEntities(sp.Position, 7f, GetEntitiesFlags.ConsiderAllVehicles).Any();
+            ItemInDeliveryBay = false;// Rage.World.GetEntities(sp.Position, 7f, GetEntitiesFlags.ConsiderAllVehicles).Any();
             if (!ItemInDeliveryBay)
             {
                 ChosenSpawn = sp;
@@ -383,6 +383,7 @@ public class VehicleItem : ModItem
         }
         if (!ItemInDeliveryBay && ChosenSpawn != null)
         {
+            world.Vehicles.CleanupAmbient();
             Vehicle NewVehicle = new Vehicle(ModelItem.ModelName, ChosenSpawn.Position, ChosenSpawn.Heading);
             if (NewVehicle.Exists())
             {

@@ -125,7 +125,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         protected virtual void AddTask()
         {
-            PlayerTasks.AddTask(HiringGang.ContactName, PaymentAmount, RepOnCompletion, DebtOnFail, RepOnFail, DaysToComplete, DebugName, false);
+            PlayerTasks.AddTask(HiringGang.Contact, PaymentAmount, RepOnCompletion, DebtOnFail, RepOnFail, DaysToComplete, DebugName, false);
         }
         protected virtual void Loop()
         {
@@ -155,7 +155,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             Cleanup();
             GangTasks.SendGenericFailMessage(HiringContact);
-            PlayerTasks.FailTask(HiringGang.ContactName);
+            PlayerTasks.FailTask(HiringGang.Contact);
         }
         protected virtual void Cleanup()
         {

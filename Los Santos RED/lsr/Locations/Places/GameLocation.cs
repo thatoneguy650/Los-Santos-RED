@@ -765,6 +765,7 @@ public class GameLocation : ILocationDispatchable
         }
         EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {ModelName}");
         NativeFunction.Natives.CLEAR_AREA(VendorPosition.X, VendorPosition.Y, VendorPosition.Z, 2f, true, false, false, false);
+        World.Pedestrians.CleanupAmbient();
         Ped ped = new Ped(ModelName, VendorPosition, VendorHeading);
         GameFiber.Yield();
         if (!ped.Exists())
@@ -791,6 +792,9 @@ public class GameLocation : ILocationDispatchable
         }
         Vendor.AssociatedStore = this;
         Vendor.SpawnPosition = VendorPosition;
+        Vendor.WasModSpawned = true;
+        Vendor.CanBeAmbientTasked = true;
+        Vendor.CanBeTasked = true;
         EntryPoint.WriteToConsole($"SPAWNED WORKED VENDOR AT {Name}");
     }
     protected bool IsLocationClosed()

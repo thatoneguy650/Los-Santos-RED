@@ -1437,11 +1437,11 @@ namespace Mod
             {
                 if (!RecentlySetWanted)//only allow my process to set the wanted level
                 {
-                    if (Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
-                    {
-                        //EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING TO {PreviousWantedLevel}", 3);
-                        SetWantedLevel(PreviousWantedLevel, "GAME AUTO SET WANTED", true);
-                    }
+                    //if (Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
+                    //{
+                    //    EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING TO {PreviousWantedLevel}", 3);
+                    //    SetWantedLevel(PreviousWantedLevel, "GAME AUTO SET WANTED", true);
+                    //}
                 }
                 else
                 {
@@ -1463,7 +1463,7 @@ namespace Mod
                 {
                     if (Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
                     {
-                        //EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING", 3);
+                        EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING", 3);
                         SetWantedLevel(0, "GAME AUTO SET WANTED", true);
                     }
                 }
@@ -1482,13 +1482,13 @@ namespace Mod
             else if (IsWanted && PreviousWantedLevel < WantedLevel)//Increased Wanted Level (can't decrease only remove for now.......)
             {
                 PoliceResponse.OnWantedLevelIncreased();
-               // EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL INCREASED", 3);
+                EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL INCREASED", 3);
             }
             else if (IsWanted && PreviousWantedLevel > WantedLevel)
             {
-               // EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL DECREASED", 3);
+                EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL DECREASED", 3);
             }
-           // EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
+             EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
             PreviousWantedLevel = wantedLevel;// NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>();//PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
         }
 

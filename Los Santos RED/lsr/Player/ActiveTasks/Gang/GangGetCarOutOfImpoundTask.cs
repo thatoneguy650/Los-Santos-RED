@@ -191,7 +191,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 ImpoundLocation.IsPlayerInterestedInLocation = false;
             }
             GangTasks.SendGenericFailMessage(PhoneContact);
-            PlayerTasks.FailTask(HiringGang.ContactName);
+            PlayerTasks.FailTask(HiringGang.Contact);
         }
         private void GetTaskData()
         {
@@ -216,7 +216,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 ImpoundLocation.IsPlayerInterestedInLocation = true;
             }
-            PlayerTasks.AddTask(HiringGang.ContactName, MoneyToRecieve, 2000, 0, -500, 3, "Lockup Theft", false);
+            PlayerTasks.AddTask(HiringGang.Contact, MoneyToRecieve, 2000, 0, -500, 3, "Lockup Theft", false);
         }
         private void SendInitialInstructionsMessage()
         {

@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -17,7 +18,7 @@ public class Vehicles
     private IJurisdictions Jurisdictions;
     private ISettingsProvideable Settings;
     private IModItems ModItems;
-    private Entity[] RageVehicles;
+    private List<Vehicle> RageVehicles;
     private IEntityProvideable World;
     private uint GameTimeLastCreatedVehicles;
     private bool TaxiModelIsDefault = false;
@@ -51,6 +52,20 @@ public class Vehicles
         {
             List<VehicleExt> myList = new List<VehicleExt>();
             myList.AddRange(PoliceVehicles);
+            myList.AddRange(CivilianVehicles);
+            myList.AddRange(FireVehicles);
+            myList.AddRange(EMSVehicles);
+            myList.AddRange(GangVehicles);
+            myList.AddRange(SecurityVehicles);
+            myList.AddRange(TaxiVehicles);
+            return myList;
+        }
+    }
+    public List<VehicleExt> NonPoliceList
+    {
+        get
+        {
+            List<VehicleExt> myList = new List<VehicleExt>();
             myList.AddRange(CivilianVehicles);
             myList.AddRange(FireVehicles);
             myList.AddRange(EMSVehicles);
@@ -133,7 +148,7 @@ public class Vehicles
     }
     public void CreateNew()
     {
-        RageVehicles = Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
+        RageVehicles = EntryPoint.ModController.AllVehicles.ToList();////Rage.World.GetAllVehicles().ToList(); Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
         GameFiber.Yield();
         int updated = 0;
         World.SpawnErrors.RemoveAll(x => x.HasCleared);
@@ -191,7 +206,7 @@ public class Vehicles
         }
         else
         {
-            if (!CivilianVehicles.Any(x => x.Handle == vehicle.Handle) && !TaxiVehicles.Any(x => x.Handle == vehicle.Handle))
+            if (!NonPoliceList.Any(x => x.Handle == vehicle.Handle))
             {
                 CreateCivilianVehicleFromAmbient(vehicle);
                 return true;
@@ -556,5 +571,20 @@ public class Vehicles
             TaxiVehicles.Add(vehicleExt);
             CivilianVehicles.RemoveAll(x => x.Handle == vehicleExt.Handle);
         }
+    }
+
+    public void CleanupAmbient()
+    {
+        if(CivilianVehicles.Count() < 50)
+        {
+            return;
+        }
+        VehicleExt Car = CivilianVehicles.Where(x => x.Vehicle.Exists() && !x.WasModSpawned && !x.Vehicle.IsPersistent && !x.Vehicle.IsOnScreen).FirstOrDefault();
+        if(Car == null)
+        {
+            return;
+        }
+        EntryPoint.WriteToConsole($"CleanupAmbient RAN DELETED CIVILIAN CAR");
+        Car.FullyDelete();
     }
 }

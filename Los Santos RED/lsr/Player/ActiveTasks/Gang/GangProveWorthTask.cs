@@ -128,7 +128,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
             {
-                PlayerTasks.CompleteTask(HiringGang.ContactName, true);
+                PlayerTasks.CompleteTask(HiringGang.Contact, true);
             }
             else
             {
@@ -167,7 +167,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             WillAddComplications = false;
             GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(TargetGang);
             KilledMembersAtStart = gr.MembersKilled;
-            PlayerTasks.AddTask(HiringGang.ContactName, MoneyToRecieve, 2000, 0, -50000, 7, "Rival Gang Hit", JoinGangOnComplete);
+            PlayerTasks.AddTask(HiringGang.Contact, MoneyToRecieve, 2000, 0, -50000, 7, "Rival Gang Hit", JoinGangOnComplete);
         }
         private void SendInitialInstructionsMessage()
         {

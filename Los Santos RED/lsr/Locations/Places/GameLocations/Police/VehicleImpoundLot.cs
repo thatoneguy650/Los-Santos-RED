@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Helper;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
@@ -46,7 +47,7 @@ public class VehicleImpoundLot
             EntryPoint.WriteToConsole("IMPOUND VEHICLE FAIL SUB 1");
             return false;
         }
-        SpawnPlace ParkingSpot = null;
+        SpawnPlace ParkingSpot = null;// ParkingSpots.PickRandom();// TR NOTE REMOVED ENTITY CHECK
         foreach (SpawnPlace sp in ParkingSpots)
         {
             if (!Rage.World.GetEntities(sp.Position, 5f, GetEntitiesFlags.ConsiderAllVehicles).Any())

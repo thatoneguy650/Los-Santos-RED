@@ -19,7 +19,7 @@ public class Pedestrians : ITaskerReportable
     private IZones Zones;
     private INameProvideable Names;
     private IPedGroups RelationshipGroups;
-    private List<Entity> WorldPeds = new List<Entity>();
+    private List<Ped> WorldPeds = new List<Ped>();
     private IWeapons Weapons;
     private ICrimes Crimes;
     private IShopMenus ShopMenus;
@@ -235,8 +235,7 @@ public class Pedestrians : ITaskerReportable
     }
     public void CreateNew()
     {
-        
-        WorldPeds = Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
+        WorldPeds = EntryPoint.ModController.AllPeds.ToList();// Rage.World.GetAllPeds().ToList();// Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
         GameFiber.Yield();
         int updated = 0;
         foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.MaxHealth != 1 && s.Handle != Game.LocalPlayer.Character.Handle))//take 20 is new
@@ -1127,6 +1126,20 @@ public class Pedestrians : ITaskerReportable
             PossibleTargets = TotalList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && !x.IsUnconscious && (x.IsWanted || (x.IsBusted && !x.IsArrested)) && x.DistanceToPlayer <= 200f).ToList();//150f
         }
         ClosestCopToPlayer = World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists() && !x.IsInVehicle && x.DistanceToPlayer <= 30f && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+    }
+    public void CleanupAmbient()
+    {
+        if (Civilians.Count() < 50)
+        {
+            return;
+        }
+        PedExt ped = Civilians.Where(x => x.Pedestrian.Exists() && !x.WasModSpawned && !x.Pedestrian.IsPersistent && !x.Pedestrian.IsOnScreen).FirstOrDefault();
+        if (ped == null)
+        {
+            return;
+        }
+        EntryPoint.WriteToConsole($"CleanupAmbient RAN DELETED CIVILIAN PED");
+        ped.FullyDelete();
     }
 
 }

@@ -154,7 +154,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void AddTask()
         {
-            PlayerTasks.AddTask(HiringGang.ContactName, MoneyToRecieve, 500, -1 * MoneyToPickup, -1000, 2, "Pickup for Gang");
+            PlayerTasks.AddTask(HiringGang.Contact, MoneyToRecieve, 500, -1 * MoneyToPickup, -1000, 2, "Pickup for Gang");
             DeadDrop.SetupDrop(MoneyToPickup, false);
             ActiveDrops.Add(DeadDrop);
             HiringGangDen.ExpectedMoney = MoneyToPickup;

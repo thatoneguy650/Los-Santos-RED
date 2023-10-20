@@ -27,10 +27,10 @@ public class DebugRelationshipSubMenu : DebugSubMenu
             UIMenuItem contactAdd = new UIMenuItem($"Add {phoneContact.Name}", $"Add {phoneContact.Name} contact and set relationship to friendly");
             contactAdd.Activated += (menu, item) =>
             {
-                Player.RelationshipManager.Add(phoneContact.GetRelationship());// new ContactRelationship(phoneContact.Name));
-                Player.RelationshipManager.ResetRelationship(phoneContact.Name, false);
-                Player.RelationshipManager.SetMaxReputation(phoneContact.Name, false);
-                Player.RelationshipManager.SetMoneySpent(phoneContact.Name, 90000, false);
+                Player.RelationshipManager.Add(phoneContact.CreateRelationship());// new ContactRelationship(phoneContact.Name));
+                Player.RelationshipManager.ResetRelationship(phoneContact, false);
+                Player.RelationshipManager.SetMaxReputation(phoneContact, false);
+                Player.RelationshipManager.SetMoneySpent(phoneContact, 90000, false);
                 Player.CellPhone.AddContact(phoneContact, false);/// new CorruptCopContact(StaticStrings.OfficerFriendlyContactName), false);
                 menu.Visible = false;
             };

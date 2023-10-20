@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 public class CorruptCopContact : PhoneContact
 {
+
+
+
+
     public CorruptCopContact()
     {
 
@@ -23,13 +27,9 @@ public class CorruptCopContact : PhoneContact
         MenuInteraction = new CorruptCopInteraction(player, gangs, placesOfInterest, settings, this);
         MenuInteraction.Start(this);       
     }
-    public override ContactRelationship GetRelationship()
+    public override ContactRelationship CreateRelationship()
     {
-        if (contactRelationship == null)
-        {
-            contactRelationship = new OfficerFriendlyRelationship(Name);
-        }
-        return contactRelationship;
+        return new OfficerFriendlyRelationship(Name);
     }
 }
 

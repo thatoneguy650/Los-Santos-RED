@@ -283,8 +283,18 @@ public class TaxiDispatcher : DefaultDispatcher
             }
             PersonType = TaxiFirm.GetRandomPed(Player.WantedLevel, RequiredGroup);
         }
+        if(VehicleType == null)
+        {
+            EntryPoint.WriteToConsole("ForceTaxiSpawn FAIL NO TAXI VEHICLE");
+            return;
+        }
 
-        for(int i = 0;i<2; i++)
+        if (PersonType == null)
+        {
+            EntryPoint.WriteToConsole("ForceTaxiSpawn FAIL NO TAXI PERSON");
+            return;
+        }
+        for (int i = 0;i<2; i++)
         {
             if (CallSpawnTask())
             {

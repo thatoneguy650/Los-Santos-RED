@@ -59,36 +59,43 @@ public class InteriorDoor
     }
     private void ForceRotateOpenDoor()
     {
-        //Rage.Object doorEntity = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Position.X, Position.Y, Position.Z, 3.0f, ModelHash, true, false, true);
-        //if (!doorEntity.Exists())
-        //{
-        //    return;
-        //}
-        //doorEntity.Delete();
-        //if (!HasOriginalHeading)
-        //{
-        //    originalHeading = doorEntity.Rotation.Yaw;
-        //    HasOriginalHeading = true;
-        //}
-        //NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, false);
-        //doorEntity.Rotation = new Rotator(0f, 0f, originalHeading - 100f);
-        //NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, true);
+        Rage.Object doorEntity = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Position.X, Position.Y, Position.Z, 3.0f, ModelHash, true, false, true);
+        if (!doorEntity.Exists())
+        {
+            return;
+        }
+       // doorEntity.Delete();
+        if (!HasOriginalHeading)
+        {
+            originalHeading = doorEntity.Rotation.Yaw;
+            HasOriginalHeading = true;
+            EntryPoint.WriteToConsole($"originalHeading{originalHeading}");
+        }
+        NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, false);
+        doorEntity.Rotation = new Rotator(0f, 0f, originalHeading - 100f);
+        NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, true);
+       // doorEntity.IsPersistent = false;
+
+        EntryPoint.WriteToConsole($"ForceRotateOpenDoor {originalHeading - 100f}");
     }
     private void ForceRotateCloseDoor()
     {
-        //Rage.Object doorEntity = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Position.X, Position.Y, Position.Z, 3.0f, ModelHash, true, false, true);
-        //if (!doorEntity.Exists())
-        //{
-        //    return;
-        //}
-        //if(!HasOriginalHeading)
-        //{
-        //    originalHeading = doorEntity.Rotation.Yaw;
-        //    HasOriginalHeading = true;
-        //}
-        //NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, false);
-        //doorEntity.Rotation = new Rotator(0f, 0f, originalHeading);
-        //NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, true);
+        Rage.Object doorEntity = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Position.X, Position.Y, Position.Z, 3.0f, ModelHash, true, false, true);
+        if (!doorEntity.Exists())
+        {
+            return;
+        }
+        if (!HasOriginalHeading)
+        {
+            originalHeading = doorEntity.Rotation.Yaw;
+            HasOriginalHeading = true;
+        }
+        NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, false);
+        doorEntity.Rotation = new Rotator(0f, 0f, originalHeading);
+        NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, true);
+        doorEntity.IsPersistent = false;
+
+        EntryPoint.WriteToConsole($"ForceRotateCloseDoor {originalHeading}");
     }
 }
 

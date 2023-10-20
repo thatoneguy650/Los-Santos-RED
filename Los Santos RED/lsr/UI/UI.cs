@@ -437,6 +437,9 @@ public class UI : IMenuProvideable
             NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_NAME);
             NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_CLASS);
         }
+
+
+        NativeFunction.Natives.HIDE_HUD_COMPONENT_THIS_FRAME((int)GTAHudComponent.HUD_WANTED_STARS);
         NativeFunction.Natives.FLASH_WANTED_DISPLAY(DisplayablePlayer.IsWanted && DisplayablePlayer.IsInSearchMode);
     }
     private void Show(ModUIMenu toShow)

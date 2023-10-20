@@ -82,14 +82,14 @@ public class TaxiSettings : ISettingsDefaultable
         TotalSpawnedMembersLimit = 2;//5
         TotalSpawnedAmbientMembersLimit = 1;// 8;
 
-        TotalSpawnedAmbientMembersLimit_Downtown = 2;
-        TotalSpawnedAmbientMembersLimit_Wilderness = 1;
+        TotalSpawnedAmbientMembersLimit_Downtown = 1;
+        TotalSpawnedAmbientMembersLimit_Wilderness = 0;
         TotalSpawnedAmbientMembersLimit_Rural = 1;
         TotalSpawnedAmbientMembersLimit_Suburb = 1;
         TotalSpawnedAmbientMembersLimit_Industrial = 1;
 
         AmbientSpawnPercentage = 10;
-        AmbientSpawnPercentage_Wilderness = 2;
+        AmbientSpawnPercentage_Wilderness = 0;
         AmbientSpawnPercentage_Rural = 5;
         AmbientSpawnPercentage_Suburb = 5;
         AmbientSpawnPercentage_Industrial = 5;
@@ -100,6 +100,7 @@ public class TaxiSettings : ISettingsDefaultable
 #else
 
 #endif
+
     }
 
 }

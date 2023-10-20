@@ -78,7 +78,6 @@ public class GunDealerRelationship : ContactRelationship
     public override void Activate()
     {
         SetLocations(false);
-        //EntryPoint.WriteToConsole($"GUN DEALER REAL UPDATE RAN TotalMoneySpent {TotalMoneySpent}");
         base.Activate();
     }
     public override void Deactivate()

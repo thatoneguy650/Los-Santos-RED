@@ -22,15 +22,9 @@ public class GunDealerContact : PhoneContact, IPhoneContact
         MenuInteraction.Start(this);
     }
 
-    public override ContactRelationship GetRelationship()
+    public override ContactRelationship CreateRelationship()
     {
-        if (contactRelationship == null)
-        {
-            contactRelationship = new GunDealerRelationship(Name, this);
-        }
-        return contactRelationship;
+        return new GunDealerRelationship(Name, this);
     }
-
-
 }
 

@@ -27,14 +27,15 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private Gang TargetGang;
         private PlayerTask CurrentTask;
         private int MoneyToRecieve;
-        private DispatchableVehicle VehicleToSteal;
+       // private DispatchableVehicle VehicleToSteal;
         private string VehicleToStealMakeName;
         private string VehicleToStealModelName;
         private PhoneContact PhoneContact;
         private GangTasks GangTasks;
+        private uint VehicleToStealHash;
 
-        private bool HasTargetGangVehicleAndHiringDen => TargetGang != null && HiringGangDen != null && VehicleToSteal != null;
-        private bool IsInStolenGangCar => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.Model.Name.ToLower() == VehicleToSteal.ModelName.ToLower() && Player.CurrentVehicle.WasModSpawned && Player.CurrentVehicle.AssociatedGang != null && Player.CurrentVehicle.AssociatedGang.ID == TargetGang.ID;
+        private bool HasTargetGangVehicleAndHiringDen => TargetGang != null && HiringGangDen != null && VehicleToStealHash != 0;
+        private bool IsInStolenGangCar => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.Model.Hash == VehicleToStealHash && Player.CurrentVehicle.WasModSpawned && Player.CurrentVehicle.AssociatedGang != null && Player.CurrentVehicle.AssociatedGang.ID == TargetGang.ID;
         public RivalGangVehicleTheftTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes,
             PhoneContact phoneContact, GangTasks gangTasks, Gang targetGang)
         {
@@ -123,7 +124,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void GetTargetGang()
         {
             //TargetGang = null;
-            VehicleToSteal = null;
+            DispatchableVehicle VehicleToSteal = null;
+            VehicleToStealHash = 0;
             VehicleToStealMakeName = "";
             VehicleToStealModelName = "";
             //if (HiringGang.EnemyGangs != null && HiringGang.EnemyGangs.Any())
@@ -141,8 +143,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     VehicleToStealMakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(VehicleToSteal.ModelName));
                     VehicleToStealModelName = NativeHelper.VehicleModelName(Game.GetHashKey(VehicleToSteal.ModelName));
+                    VehicleToStealHash = Game.GetHashKey(VehicleToSteal.ModelName);
                 }
+
             }
+
+            EntryPoint.WriteToConsole($"VehicleSteal {VehicleToStealMakeName} {VehicleToStealModelName} {VehicleToStealHash} {TargetGang?.ID}");
         }
         private void GetHiringDen()
         {
@@ -158,7 +164,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void AddTask()
         {
-            PlayerTasks.AddTask(HiringGang.ContactName, MoneyToRecieve, 1000, 0, -500, 5, "Auto Theft for Gang");
+            PlayerTasks.AddTask(HiringGang.Contact, MoneyToRecieve, 1000, 0, -500, 5, "Auto Theft for Gang");
         }
         private void SendInitialInstructionsMessage()
         {

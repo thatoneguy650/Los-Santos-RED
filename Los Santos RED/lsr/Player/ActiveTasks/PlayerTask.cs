@@ -43,6 +43,9 @@ public class PlayerTask
 
     public bool JoinGangOnComplete { get; set; } = false;
 
+
+    public PhoneContact PhoneContact { get; set; }
+
     public void OnReadyForPayment(bool displayHelp, string helpText)
     {
         //EntryPoint.WriteToConsoleTestLong($"OnReadyForPayment {ContactName} displayHelp {displayHelp} helpText {helpText}");

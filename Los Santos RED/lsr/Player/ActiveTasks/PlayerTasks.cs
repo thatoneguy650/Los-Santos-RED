@@ -103,24 +103,28 @@ public class PlayerTasks
     }
     public void OnStandardRespawn()
     {
-        List<string> contacts = PlayerTaskList.Where(x => x.FailOnStandardRespawn).Select(y => y.ContactName).ToList();
+        List<PhoneContact> contacts = PlayerTaskList.Where(x => x.FailOnStandardRespawn).Select(y => y.PhoneContact).ToList();
         contacts.ForEach(x => FailTask(x));
     }
-    public void CancelTask(string contactName)
+    public void CancelTask(PhoneContact phoneContact)
     {
-        PlayerTask currentAssignment = GetTask(contactName);
+        PlayerTask currentAssignment = GetTask(phoneContact.Name);
         if (currentAssignment != null)
         {
-            FailTask(contactName);
-            SendTaskFailMessage(contactName);
+            FailTask(phoneContact);
+            SendTaskFailMessage(phoneContact.Name);
         }
     }
-    public void CompleteTask(string contactName, bool addToLast)
+    public void CompleteTask(PhoneContact phoneContact, bool addToLast)
     {
-        PlayerTask myTask = PlayerTaskList.FirstOrDefault(x => x.ContactName == contactName && x.IsActive);
+        if(phoneContact == null)
+        {
+            return;
+        }
+        PlayerTask myTask = PlayerTaskList.FirstOrDefault(x => x.ContactName == phoneContact.Name && x.IsActive);
         if(myTask != null)
         {
-            Player.RelationshipManager.SetCompleteTask(contactName, myTask.RepAmountOnCompletion, myTask.JoinGangOnComplete);
+            Player.RelationshipManager.SetCompleteTask(phoneContact, myTask.RepAmountOnCompletion, myTask.JoinGangOnComplete);
             if (myTask.PaymentAmountOnCompletion != 0)
             {
                 Player.BankAccounts.GiveMoney(myTask.PaymentAmountOnCompletion, false);
@@ -133,22 +137,26 @@ public class PlayerTasks
             //EntryPoint.WriteToConsoleTestLong($"Task Completed for {contactName}");
             if (Settings.SettingsManager.TaskSettings.DisplayHelpPrompts)
             {
-                Game.DisplayHelp($"Task Completed for {contactName}");
+                Game.DisplayHelp($"Task Completed for {phoneContact.Name}");
             }
-            LastContactTask.RemoveAll(x => x.ContactName == contactName);
+            LastContactTask.RemoveAll(x => x.ContactName == phoneContact.Name);
             if (addToLast)
             {
                 LastContactTask.Add(myTask);
             }
         }
-        PlayerTaskList.RemoveAll(x => x.ContactName == contactName);
+        PlayerTaskList.RemoveAll(x => x.ContactName == phoneContact.Name);
     }
-    public void FailTask(string contactName)
+    public void FailTask(PhoneContact phoneContact)
     {
-        PlayerTask myTask = PlayerTaskList.FirstOrDefault(x => x.ContactName == contactName && x.IsActive);
+        if (phoneContact == null)
+        {
+            return;
+        }
+        PlayerTask myTask = PlayerTaskList.FirstOrDefault(x => x.ContactName == phoneContact.Name && x.IsActive);
         if (myTask != null)
         {
-            Player.RelationshipManager.SetFailedTask(contactName, myTask.RepAmountOnFail, myTask.DebtAmountOnFail);    
+            Player.RelationshipManager.SetFailedTask(phoneContact, myTask.RepAmountOnFail, myTask.DebtAmountOnFail);    
             
             myTask.IsActive = false;
             myTask.IsReadyForPayment = false;
@@ -157,43 +165,43 @@ public class PlayerTasks
             //EntryPoint.WriteToConsoleTestLong($"Task Failed for {contactName}");
             if (Settings.SettingsManager.TaskSettings.DisplayHelpPrompts)
             {
-                Game.DisplayHelp($"Task Failed for {contactName}");
+                Game.DisplayHelp($"Task Failed for {phoneContact.Name}");
             }
-            LastContactTask.RemoveAll(x => x.ContactName == contactName);
+            LastContactTask.RemoveAll(x => x.ContactName == phoneContact.Name);
             LastContactTask.Add(myTask);
         }
-        PlayerTaskList.RemoveAll(x => x.ContactName == contactName);
+        PlayerTaskList.RemoveAll(x => x.ContactName == phoneContact.Name);
     }
     public bool HasTask(string contactName)
     {
         return PlayerTaskList.Any(x => x.ContactName.ToLower() == contactName.ToLower() && x.IsActive);
     }
-    public void AddTask(string contactName, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, string taskName)
+    //public void AddTask(string contactName, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, string taskName)
+    //{
+    //    if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
+    //    {
+    //        PlayerTaskList.Add(new PlayerTask(contactName, true, Settings) { Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, StartTime = Time.CurrentDateTime });
+    //    }
+    //}
+    public void AddTask(PhoneContact phoneContact, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, int daysToComplete, string taskName, bool joinGangOnComplete)
     {
-        if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
+        if (!PlayerTaskList.Any(x => x.ContactName == phoneContact.Name && x.IsActive))
         {
-            PlayerTaskList.Add(new PlayerTask(contactName, true, Settings) { Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, StartTime = Time.CurrentDateTime });
+            PlayerTaskList.Add(new PlayerTask(phoneContact.Name, true, Settings) { PhoneContact = phoneContact, JoinGangOnComplete = joinGangOnComplete, Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddDays(daysToComplete), StartTime = Time.CurrentDateTime });
         }
     }
-    public void AddTask(string contactName, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, int daysToComplete, string taskName, bool joinGangOnComplete)
+    public void AddTask(PhoneContact phoneContact, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, int daysToComplete, string taskName)
     {
-        if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
+        if (!PlayerTaskList.Any(x => x.ContactName == phoneContact.Name && x.IsActive))
         {
-            PlayerTaskList.Add(new PlayerTask(contactName, true, Settings) { JoinGangOnComplete = joinGangOnComplete, Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddDays(daysToComplete), StartTime = Time.CurrentDateTime });
+            PlayerTaskList.Add(new PlayerTask(phoneContact.Name, true, Settings) { PhoneContact = phoneContact, Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddDays(daysToComplete), StartTime = Time.CurrentDateTime });
         }
     }
-    public void AddTask(string contactName, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, int daysToComplete, string taskName)
+    public void AddQuickTask(PhoneContact phoneContact, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, int hoursToComplete, string taskName)
     {
-        if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
+        if (!PlayerTaskList.Any(x => x.ContactName == phoneContact.Name && x.IsActive))
         {
-            PlayerTaskList.Add(new PlayerTask(contactName, true, Settings) { Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddDays(daysToComplete), StartTime = Time.CurrentDateTime });
-        }
-    }
-    public void AddQuickTask(string contactName, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, int hoursToComplete, string taskName)
-    {
-        if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
-        {
-            PlayerTaskList.Add(new PlayerTask(contactName, true, Settings) { Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddHours(hoursToComplete), StartTime = Time.CurrentDateTime });
+            PlayerTaskList.Add(new PlayerTask(phoneContact.Name, true, Settings) { PhoneContact = phoneContact, Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddHours(hoursToComplete), StartTime = Time.CurrentDateTime });
         }
     }
     public void RemoveTask(string contactName)
@@ -259,7 +267,8 @@ public class PlayerTasks
     {
         if (pt != null)
         {
-            FailTask(pt.ContactName);
+
+            FailTask(pt.PhoneContact);
             SendTaskExpiredMessage(pt);
         }
     }

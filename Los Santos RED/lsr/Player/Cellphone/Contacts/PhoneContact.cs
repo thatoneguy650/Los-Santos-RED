@@ -45,14 +45,18 @@ public class PhoneContact
     }
     public virtual void OnAnswered(IContactInteractable player, CellPhone cellPhone, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IJurisdictions jurisdictions, ICrimes crimes, IEntityProvideable world, IModItems modItems, IWeapons weapons, INameProvideable names, IShopMenus shopMenus)
     {
-        cellPhone.Close(0);
+        GameFiber.Sleep(1000);
+
+
+       // player.CellPhone.BurnerPhone.ReturnHome(0);
+
+
+        player.CellPhone.Close(250);
+
+
     }
-    public virtual ContactRelationship GetRelationship()
+    public virtual ContactRelationship CreateRelationship()
     {
-        if(contactRelationship == null)
-        {
-            contactRelationship = new ContactRelationship(Name);
-        }
-        return contactRelationship;
+        return new ContactRelationship(Name);
     }
 }

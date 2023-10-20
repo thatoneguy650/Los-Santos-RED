@@ -1,4 +1,6 @@
-﻿using LosSantosRED.lsr;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
+using LSR.Vehicles;
 using Rage;
 using Rage.Attributes;
 using Rage.Native;

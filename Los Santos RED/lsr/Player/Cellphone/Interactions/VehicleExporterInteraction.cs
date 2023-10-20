@@ -175,7 +175,7 @@ public class VehicleExporterInteraction : IContactMenuInteraction
         UIMenuItem TaskCancel = new UIMenuItem("Cancel Task", "Tell the gun dealer you can't complete the task.") { RightLabel = "~o~$?~s~" };
         TaskCancel.Activated += (sender, selectedItem) =>
         {
-            Player.PlayerTasks.CancelTask(VehicleExporterContact.Name);
+            Player.PlayerTasks.CancelTask(VehicleExporterContact);
             sender.Visible = false;
         };
         if (Player.PlayerTasks.HasTask(VehicleExporterContact.Name))

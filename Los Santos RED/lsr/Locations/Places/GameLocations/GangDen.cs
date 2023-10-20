@@ -227,7 +227,7 @@ public class GangDen : GameLocation//, ILocationGangAssignable
             {
                 Player.BankAccounts.GiveMoney(-1*ExpectedMoney, false);
                 ExpectedMoney = 0;
-                Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName, true);
+                Player.PlayerTasks.CompleteTask(AssociatedGang.Contact, true);
                 //InteractionMenu.Visible = false;
                 dropoffCash.Enabled = false;
                 PlaySuccessSound();
@@ -248,7 +248,7 @@ public class GangDen : GameLocation//, ILocationGangAssignable
                 DisplayMessage("~g~Reply", $"Thanks for bringing us {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s) of {ExpectedItem.Name}. Have something for your time.");
                 ExpectedItem = null;
                 ExpectedItemAmount = 0;
-                Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName, true);
+                Player.PlayerTasks.CompleteTask(AssociatedGang.Contact, true);
                 dropoffItem.Enabled = false;
                 //InteractionMenu.Visible = false;
             }
@@ -264,7 +264,7 @@ public class GangDen : GameLocation//, ILocationGangAssignable
             PlaySuccessSound();
             DisplayMessage("~g~Reply", "Thanks for taking care of that thing. Here's your share.");
             ExpectedMoney = 0;
-            Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName, true);
+            Player.PlayerTasks.CompleteTask(AssociatedGang.Contact, true);
             completeTask.Enabled = false;
             //InteractionMenu.Visible = false;
         }

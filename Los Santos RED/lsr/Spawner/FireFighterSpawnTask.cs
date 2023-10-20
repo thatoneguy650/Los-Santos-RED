@@ -60,6 +60,7 @@ public class FireFighterSpawnTask : SpawnTask
                 CreatePos.Z += 1.0f;
                 //EntryPoint.WriteToConsole("ADDED HIEGHT TO SPAWN");
             }
+            World.Pedestrians.CleanupAmbient();
             Ped createdPed = new Ped(PersonType.ModelName, new Vector3(CreatePos.X, CreatePos.Y, CreatePos.Z), SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(createdPed);
             GameFiber.Yield();
@@ -81,13 +82,13 @@ public class FireFighterSpawnTask : SpawnTask
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"FireFighterSpawn: ERROR DELETED PERSON {ex.Message} {ex.StackTrace}", 0);
-            foreach (Entity entity in Rage.World.GetEntities(Position, 3.0f, GetEntitiesFlags.ConsiderAllPeds | GetEntitiesFlags.ExcludePlayerPed).ToList())
-            {
-                if (entity.Exists())
-                {
-                    entity.Delete();
-                }
-            }
+            //foreach (Entity entity in Rage.World.GetEntities(Position, 3.0f, GetEntitiesFlags.ConsiderAllPeds | GetEntitiesFlags.ExcludePlayerPed).ToList())
+            //{
+            //    if (entity.Exists())
+            //    {
+            //        entity.Delete();
+            //    }
+            //}
             return null;
         }
     }
@@ -99,6 +100,7 @@ public class FireFighterSpawnTask : SpawnTask
             {
                 NativeFunction.Natives.CLEAR_AREA(Position.X, Position.Y, Position.Z, 3f, true, false, false, false);
             }
+            World.Vehicles.CleanupAmbient();
             SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(SpawnedVehicle);
             GameFiber.Yield();

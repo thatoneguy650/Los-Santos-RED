@@ -467,7 +467,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
             }
             GangTasks.SendGenericFailMessage(PhoneContact);
-            PlayerTasks.FailTask(HiringGang.ContactName);
+            PlayerTasks.FailTask(HiringGang.Contact);
         }
         private void SetCompleted()
         {
@@ -563,7 +563,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 RobberyLocation.IsPlayerInterestedInLocation = true;
             }
-            PlayerTasks.AddTask(HiringGang.ContactName, MoneyToRecieve, 2000, 2000, -500, 7, "Gang Wheelman");
+            PlayerTasks.AddTask(HiringGang.Contact, MoneyToRecieve, 2000, 2000, -500, 7, "Gang Wheelman");
             CurrentTask = PlayerTasks.GetTask(HiringGang.ContactName);
             CurrentTask.FailOnStandardRespawn = true;
         }

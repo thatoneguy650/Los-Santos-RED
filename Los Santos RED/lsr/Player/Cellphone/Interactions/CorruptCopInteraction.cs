@@ -127,7 +127,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
             TaskCancel = new UIMenuItem("Cancel Task", "Tell the officer you can't complete the task.") { RightLabel = "~o~$?~s~" };
             TaskCancel.Activated += (sender, e) =>
             {
-                Player.PlayerTasks.CancelTask(Contact.Name);
+                Player.PlayerTasks.CancelTask(Contact);
                 sender.Visible = false;
             };
             JobsSubMenu.AddItem(TaskCancel);

@@ -113,6 +113,8 @@ public class WorldSettings : ISettingsDefaultable
     [Description("If enabled, LSR set the siren state for any vehicle an AI Cop is in.")]
     public bool AllowSettingSirenState { get; set; }
 
+    //[Description("If enabled, the reduced props of the MP map will be loaded. THIS OPTION IS REQUIRED FOR THE TIME BEING, UNLESS YOU ARE RUNNING A CUSTOM GAMECONFIG (most should work)!")]
+    //public bool SetReducedPropsOnMap { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -175,6 +177,10 @@ public class WorldSettings : ISettingsDefaultable
         AllowSettingSirenState = true;
         OfficerMIAStartPercentage_Alterted = 80f;
         OfficerMIAStartPercentage_Regular = 40f;
+
+
+
+       // SetReducedPropsOnMap = true;
     }
 
 }

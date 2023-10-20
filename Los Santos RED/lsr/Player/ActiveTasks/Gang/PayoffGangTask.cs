@@ -127,7 +127,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SetComplete()
         {
             SendCompletedMessage();
-            PlayerTasks.CompleteTask(HiringGang.ContactName,false);         
+            PlayerTasks.CompleteTask(HiringGang.Contact,false);         
         }
         private void GetDeadDrop()
         {
@@ -157,7 +157,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void AddTask()
         {
-            PlayerTasks.AddTask(HiringGang.ContactName, 0, RepToNextLevel, 0, -200, 2, "Dead Drop");
+            PlayerTasks.AddTask(HiringGang.Contact, 0, RepToNextLevel, 0, -200, 2, "Dead Drop");
             DeadDrop.SetupDrop(CostToPayoff, true);
             ActiveDrops.Add(DeadDrop);
             GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);

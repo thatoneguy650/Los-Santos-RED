@@ -75,10 +75,7 @@ public class GunStore : GameLocation
                     Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
                     InteractionMenu.Visible = true;
                     Transaction.ProcessTransactionMenu();
-
-                    Player.RelationshipManager.Add(PhoneContact.GetRelationship());// new GunDealerRelationship(ContactName));
-                    Player.RelationshipManager.OnInteracted(ContactName, Transaction.MoneySpent, (Transaction.MoneySpent) / 5);
-
+                    Player.RelationshipManager.OnInteracted(PhoneContact, Transaction.MoneySpent, (Transaction.MoneySpent) / 5);
                     Transaction.DisposeTransactionMenu();
                     DisposeInteractionMenu();
                     StoreCamera.Dispose();

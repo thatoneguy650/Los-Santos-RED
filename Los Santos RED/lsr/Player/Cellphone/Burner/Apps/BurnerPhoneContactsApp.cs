@@ -140,35 +140,65 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
         {
             BurnerPhone.MoveFinger(1);
             BurnerPhone.NavigateMenu(1);
+            EntryPoint.WriteToConsole($"UP BEFORE Col:{CurrentColumn} Row:{CurrentRow}");
             CurrentRow = CurrentRow - 1;
+            if(CurrentRow < 0)
+            {
+                CurrentRow = 3;
+            }
+            if(CurrentRow > 3)
+            {
+                CurrentRow = 0;
+            }
+            EntryPoint.WriteToConsole($"UP AFTER Col:{CurrentColumn} Row:{CurrentRow}");
         }
         else if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 173))//DOWN
         {
             BurnerPhone.MoveFinger(2);
             BurnerPhone.NavigateMenu(3);
+            EntryPoint.WriteToConsole($"DOWN BEFORE Col:{CurrentColumn} Row:{CurrentRow}");
             CurrentRow = CurrentRow + 1;
+            if(CurrentRow < 0)
+            {
+                CurrentRow = 3;
+            }
+            if (CurrentRow > 3)
+            {
+                CurrentRow = 0;
+            }
+            EntryPoint.WriteToConsole($"DOWN AFTER Col:{CurrentColumn} Row:{CurrentRow}");
         }
         else if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 174))//LEFT
         {
             BurnerPhone.NavigateMenu(4);
             BurnerPhone.MoveFinger(4);
-            int prevColumn = CurrentColumn;
+            EntryPoint.WriteToConsole($"LEFT BEFORE Col:{CurrentColumn} Row:{CurrentRow}");
             CurrentColumn = CurrentColumn - 1;
             if (CurrentColumn < 0)
             {
-                CurrentColumn = ColMax;
+                CurrentColumn = 2;
             }
+            if (CurrentColumn > 2)
+            {
+                CurrentColumn = 0;
+            }
+            EntryPoint.WriteToConsole($"LEFT AFTER Col:{CurrentColumn} Row:{CurrentRow}");
         }
         else if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 175))//RIGHT
         {
             BurnerPhone.NavigateMenu(2);
             BurnerPhone.MoveFinger(4);
-            int prevColumn = CurrentColumn;
+            EntryPoint.WriteToConsole($"RIGHT BEFORE Col:{CurrentColumn} Row:{CurrentRow}");
             CurrentColumn = CurrentColumn + 1;
-            if (CurrentColumn > ColMax)
+            if (CurrentColumn < 0)
+            {
+                CurrentColumn = 2;
+            }
+            if (CurrentColumn > 2)
             {
                 CurrentColumn = 0;
             }
+            EntryPoint.WriteToConsole($"RIGHT AFTER Col:{CurrentColumn} Row:{CurrentRow}");
         }
         else if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 176))//SELECT
         {
@@ -176,10 +206,6 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
             BurnerPhone.PlayAcceptedSound();
             NumpadString += GetCurrentNumpad();
             //Game.DisplaySubtitle(NumpadString);
-
-
-
-
             BurnerPhone.SetHeader(FormatPhoneNumber(NumpadString));
         }
         else if (NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(3, 177))//CLOSE
@@ -195,7 +221,7 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
             PhoneContact tocall = Contacts.GetContactByNumber(NumpadString);
             if (tocall == null)
             {
-                tocall = new PhoneContact(NumpadString) { RandomizeDialTimeout = true, Active = false };
+                tocall = new PhoneContact(NumpadString) { Active = false };
             }
             else
             {
@@ -203,32 +229,8 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
             }
             IsDisplayingNumpad = false;
             Call(tocall);
-        }
-
-        if (CurrentRow >= 4)
-        {
-            CurrentRow = 0;
-        }
-        if (CurrentColumn >= 3)
-        {
-            CurrentColumn = 0;
-        }
-
-        
+        }        
     }
-    //private void HandleOnCallInput()
-    //{
-    //    if (NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(3, 177))//CLOSE
-    //    {
-    //        BurnerPhone.PlayBackSound();
-    //        IsDisplayingCall = false;
-    //        NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, false);      
-    //        OnLeftCall();
-    //        BurnerPhone.ReturnHome(Index);
-    //    }
-    //}
-
-
     public string FormatPhoneNumber(string phoneNumber)
     {
         if(phoneNumber.Length <= 2)
@@ -404,6 +406,7 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
             NativeFunction.Natives.RELEASE_SOUND_ID(busySoundID);
             busySoundID = -1;
             isBusyActive = false;
+            BurnerPhone.ReturnHome(Index);
         }
         // We are calling the contact
         if (isDialActive && Game.GameTime > callTimer)
@@ -418,7 +421,7 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
                 DisplayCallUI(contact.Name, "CELL_220", contact.IconName.ToUpper()); // Displays "BUSY"
                 busySoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
                 NativeFunction.Natives.PLAY_SOUND_FRONTEND(busySoundID, "Remote_Engaged", "Phone_SoundSet_Default", 1);
-                busyTimer = (int)Game.GameTime + 5000;
+                busyTimer = (int)Game.GameTime + 1000;
                 isBusyActive = true;
             }
             else

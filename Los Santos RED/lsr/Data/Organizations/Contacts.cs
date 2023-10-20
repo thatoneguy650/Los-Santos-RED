@@ -90,10 +90,10 @@ public class Contacts : IContacts
 
 
 
-        TaxiServiceContact hellCabContact = new TaxiServiceContact(StaticStrings.HellCabContactName, "CHAR_BLANK_ENTRY") { FullNumber = "8884355222",Number = "4355222" };
+        TaxiServiceContact hellCabContact = new TaxiServiceContact(StaticStrings.HellCabContactName, "CHAR_BLANK_ENTRY") { FullNumber = "8884355222", Number = "4355222" };
         PossibleContacts_FullExpanded.TaxiServiceContacts.Add(hellCabContact);
 
-        TaxiServiceContact purpleCabContact = new TaxiServiceContact(StaticStrings.PurpleCabContactName, "CHAR_BLANK_ENTRY") { FullNumber = "5558008",Number = "3235558008" };
+        TaxiServiceContact purpleCabContact = new TaxiServiceContact(StaticStrings.PurpleCabContactName, "CHAR_BLANK_ENTRY") { FullNumber = "5558008", Number = "3235558008" };
         PossibleContacts_FullExpanded.TaxiServiceContacts.Add(purpleCabContact);
 
         TaxiServiceContact shitiCabContact = new TaxiServiceContact(StaticStrings.ShitiCabContactName, "CHAR_BLANK_ENTRY") { FullNumber = "4484222", Number = "8874484222" };

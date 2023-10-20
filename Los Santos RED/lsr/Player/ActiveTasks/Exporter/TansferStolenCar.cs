@@ -115,7 +115,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 PickUpStore.IsPlayerInterestedInLocation = false;
                 DropOffStore.IsPlayerInterestedInLocation = false;
             }
-            PlayerTasks.CompleteTask(Contact.Name, true);
+            PlayerTasks.CompleteTask(Contact, true);
         }
         private void SetInactive()
         {
@@ -129,7 +129,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 PickUpStore.IsPlayerInterestedInLocation = false;
                 DropOffStore.IsPlayerInterestedInLocation = false;
             }
-            PlayerTasks.CancelTask(Contact.Name);
+            PlayerTasks.CancelTask(Contact);
         }
         private void FinishTask()
         {
@@ -235,7 +235,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void AddTask()
         {
-            PlayerTasks.AddTask(Contact.Name, MoneyToRecieve, 2000, 0, -500, 7, "Vehicle Transport");
+            PlayerTasks.AddTask(Contact, MoneyToRecieve, 2000, 0, -500, 7, "Vehicle Transport");
             CurrentTask = PlayerTasks.GetTask(Contact.Name);
             hasGottenInCar = false;
             hasSpawnedCar = false;
@@ -269,15 +269,15 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private bool SpawnVehicle(VehicleExporter PickUpStore)
         {
             SpawnLocation SpawnLocation = new SpawnLocation(PickUpStore.EntrancePosition);
-            SpawnPlace ParkingSpot = null;
-            foreach (SpawnPlace sp in PickUpStore.ParkingSpaces)
-            {
-                if (!Rage.World.GetEntities(sp.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Any())
-                {
-                    ParkingSpot = sp;
-                    break;
-                }
-            }
+            SpawnPlace ParkingSpot = PickUpStore.ParkingSpaces.PickRandom();// TR NOTE REMOVED ENTITY CHECK
+            //foreach (SpawnPlace sp in PickUpStore.ParkingSpaces)
+            //{
+            //    if (!Rage.World.GetEntities(sp.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Any())
+            //    {
+            //        ParkingSpot = sp;
+            //        break;
+            //    }
+            //}
             if (ParkingSpot == null)
             {
                 return false;
@@ -304,6 +304,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 return false;
             }
             uint modelHash = selectedItem.ModelItem.ModelHash;
+            World.Vehicles.CleanupAmbient();
             SpawnedVehicle = new Vehicle(modelHash, SpawnLocation.StreetPosition, SpawnLocation.Heading);
             GameFiber.Yield();
             if (!SpawnedVehicle.Exists())

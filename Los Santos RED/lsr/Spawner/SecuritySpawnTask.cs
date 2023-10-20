@@ -59,6 +59,7 @@ public class SecurityGuardSpawnTask : SpawnTask
                 CreatePos.Z += 1.0f;
                 //EntryPoint.WriteToConsole("ADDED HIEGHT TO SPAWN");
             }
+            World.Pedestrians.CleanupAmbient();
             Ped createdPed = new Ped(PersonType.ModelName, new Vector3(CreatePos.X, CreatePos.Y, CreatePos.Z), SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(createdPed);
             GameFiber.Yield();
@@ -91,6 +92,7 @@ public class SecurityGuardSpawnTask : SpawnTask
             {
                 NativeFunction.Natives.CLEAR_AREA(Position.X, Position.Y, Position.Z, 3f, true, false, false, false);
             }
+            World.Vehicles.CleanupAmbient();
             SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(SpawnedVehicle);
             GameFiber.Yield();

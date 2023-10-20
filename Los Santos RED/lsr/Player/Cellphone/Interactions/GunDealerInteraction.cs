@@ -103,7 +103,7 @@ public class GunDealerInteraction : IContactMenuInteraction
         UIMenuItem TaskCancel = new UIMenuItem("Cancel Task", "Tell the gun dealer you can't complete the task.") { RightLabel = "~o~$?~s~" };
         TaskCancel.Activated += (sender, selectedItem) =>
         {
-            Player.PlayerTasks.CancelTask(AnsweredContact.Name);
+            Player.PlayerTasks.CancelTask(AnsweredContact);
             sender.Visible = false;
         };
         if (Player.PlayerTasks.HasTask(AnsweredContact.Name))

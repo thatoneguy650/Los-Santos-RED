@@ -231,13 +231,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             //EntryPoint.WriteToConsoleTestLong("Witness Elimination COMPLETED");
             SendCompletedMessage();
-            PlayerTasks.CompleteTask(Contact.Name, true);
+            PlayerTasks.CompleteTask(Contact, true);
         }
         private void SetFailed()
         {
             //EntryPoint.WriteToConsoleTestLong("Witness Elimination FAILED");
             SendFailMessage();
-            PlayerTasks.FailTask(Contact.Name);
+            PlayerTasks.FailTask(Contact);
         }
         private void StartDeadDropPayment()
         {
@@ -264,19 +264,19 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
                 {
-                    PlayerTasks.CompleteTask(Contact.Name, true);
+                    PlayerTasks.CompleteTask(Contact, true);
                 }
             }
             else
             {
                 SendQuickPaymentMessage();
-                PlayerTasks.CompleteTask(Contact.Name, true);
+                PlayerTasks.CompleteTask(Contact, true);
             }
         }
         private void AddTask()
         {
             //EntryPoint.WriteToConsoleTestLong($"You are hired to kill a witness!");
-            PlayerTasks.AddTask(Contact.Name, 0, 2000, 0, -500, 7,"Witness Elimination");
+            PlayerTasks.AddTask(Contact, 0, 2000, 0, -500, 7,"Witness Elimination");
             CurrentTask = PlayerTasks.GetTask(Contact.Name);
             IsWitnessSpawned = false;
             GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);
@@ -334,6 +334,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             if (WitnessSpawnPosition != Vector3.Zero)
             {
+                World.Pedestrians.CleanupAmbient();
                 Ped ped = new Ped(WitnessModel, WitnessSpawnPosition, WitnessSpawnHeading);
                 GameFiber.Yield();
                 if (ped.Exists())

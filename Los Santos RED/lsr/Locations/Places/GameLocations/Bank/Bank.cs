@@ -353,6 +353,7 @@ public class Bank : GameLocation
         }
         EntryPoint.WriteToConsole($"ATTEMPTING TELLER AT {Name} {ModelName}");
         NativeFunction.Natives.CLEAR_AREA(spawnPlace.Position.X, spawnPlace.Position.Y, spawnPlace.Position.Z, 2f, true, false, false, false);
+        World.Pedestrians.CleanupAmbient();
         Ped ped = new Ped(ModelName, spawnPlace.Position, spawnPlace.Heading);
         GameFiber.Yield();
         if (!ped.Exists())

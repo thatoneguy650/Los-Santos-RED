@@ -153,7 +153,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             WillAddComplications = false;// RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.RivalGangHitComplicationsPercentage);
             GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(TargetGang);
             KilledMembersAtStart = gr.MembersKilled;
-            PlayerTasks.AddTask(HiringGang.ContactName, MoneyToRecieve, 2000, 0, -500, 7, "Rival Gang Hit");
+            PlayerTasks.AddTask(HiringGang.Contact, MoneyToRecieve, 2000, 0, -500, 7, "Rival Gang Hit");
         }
         private void SendInitialInstructionsMessage()
         {

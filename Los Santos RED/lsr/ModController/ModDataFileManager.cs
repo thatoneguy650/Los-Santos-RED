@@ -258,17 +258,17 @@ public class ModDataFileManager
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
             ""
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
-            "Model Credits:" 
+            "Model Credits:"
             + Environment.NewLine +
-            "Stanier - Model by Rockstar Games, UV-Map by LtMattJeter, template by Lt.Caine, mirror lights by Netman, lightbars, assembly and skins by Yard1" 
+            "Stanier - Model by Rockstar Games, UV-Map by LtMattJeter, template by Lt.Caine, mirror lights by Netman, lightbars, assembly and skins by Yard1"
             + Environment.NewLine +
-            "Buffalo - Model by Rockstar Games, UV-Map, template, lightbar, assembly and skins by Yard1." 
+            "Buffalo - Model by Rockstar Games, UV-Map, template, lightbar, assembly and skins by Yard1."
             + Environment.NewLine +
-            "Interceptor - Base GTAV vehicle model made by Rockstar Games and modified by Lt.Caine. Vehicle body remapped by Lt.Caine. Yard1 for fixing vehicle glass collision issues." 
+            "Interceptor - Base GTAV vehicle model made by Rockstar Games and modified by Lt.Caine. Vehicle body remapped by Lt.Caine. Yard1 for fixing vehicle glass collision issues."
             + Environment.NewLine +
-            "Granger - Base GTAV vehicle model made by Rockstar Games and modified by Lt.Caine. Vehicle body remapped by Lt.Caine. Yard1 for fixing vehicle glass collision issues" 
+            "Granger - Base GTAV vehicle model made by Rockstar Games and modified by Lt.Caine. Vehicle body remapped by Lt.Caine. Yard1 for fixing vehicle glass collision issues"
             + Environment.NewLine +
-            "Gresley - Model by Rockstar Games, UV-Map, template, lightbar, assembly and skins by Yard1." 
+            "Gresley - Model by Rockstar Games, UV-Map, template, lightbar, assembly and skins by Yard1."
             + Environment.NewLine +
             "Torrence - AllenKennedy - Everything, except the front bumper and the spotlight. actuallyтoхιc - Front bumper and the spotlight. Jacobmaate - LED spotlight texture and vital assistance with figuring out audio files. Vx5 Voltage - For creating the Original Torrence SSO mod which inspired me to develop this one. 11john11 - Help finding good civilian wheels from Watch Dogs to use. Boywond - Converting Watch Dogs wheels. w/ - Help figuring out how to do 3D text in Blender."
             + Environment.NewLine +

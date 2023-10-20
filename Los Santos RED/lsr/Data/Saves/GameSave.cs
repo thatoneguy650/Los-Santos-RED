@@ -433,10 +433,12 @@ namespace LosSantosRED.lsr.Data
                 Vehicle NewVehicle = null;
                 if (OwnedVehicleVariation.ModelName != "")
                 {
+                    World.Vehicles.CleanupAmbient();
                     NewVehicle = new Vehicle(OwnedVehicleVariation.ModelName, OwnedVehicleVariation.LastPosition, OwnedVehicleVariation.LastHeading);
                 }
                 else if (OwnedVehicleVariation.ModelHash != 0)
                 {
+                    World.Vehicles.CleanupAmbient();
                     NewVehicle = new Vehicle(OwnedVehicleVariation.ModelHash, OwnedVehicleVariation.LastPosition, OwnedVehicleVariation.LastHeading);
                 }
                 if (!NewVehicle.Exists())
@@ -594,14 +596,14 @@ namespace LosSantosRED.lsr.Data
                     player.Character.WarpIntoVehicle(closestVehicle.Vehicle, -1);
                     return;
                 }
-                List<Entity> BlockingVehicles = Rage.World.GetEntities(PlayerPosition, 3f, GetEntitiesFlags.ConsiderAllVehicles).ToList();
-                foreach(Entity vehicle in BlockingVehicles)
-                {
-                    if(vehicle.Exists() && !vehicle.IsPersistent)
-                    {
-                        vehicle.Delete();
-                    }
-                }
+                //List<Entity> BlockingVehicles = Rage.World.GetEntities(PlayerPosition, 3f, GetEntitiesFlags.ConsiderAllVehicles).ToList();//TR NOTE REMOVED ENTITY CHECK
+                //foreach(Entity vehicle in BlockingVehicles)
+                //{
+                //    if(vehicle.Exists() && !vehicle.IsPersistent)
+                //    {
+                //        vehicle.Delete();
+                //    }
+                //}
                 player.Character.Position = PlayerPosition;
                 player.Character.Heading = PlayerHeading;   
             }

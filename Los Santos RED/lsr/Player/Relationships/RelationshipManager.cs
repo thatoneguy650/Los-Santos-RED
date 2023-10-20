@@ -33,6 +33,8 @@ public class RelationshipManager
         {
             relationship.Dispose();
         }
+
+        ContactRelationships.Clear();
     }
     public void Reset(bool sendText)
     {
@@ -61,30 +63,44 @@ public class RelationshipManager
         contactRelationship.Setup(ContactRelateable, PlacesOfInterest);
         ContactRelationships.Add(contactRelationship);
     }
-    public void OnInteracted(string contactName, int moneySpent, int repGained)
+    public void OnInteracted(PhoneContact phoneContact, int moneySpent, int repGained)
     {
-        ContactRelationship contactRelationship = GetOrCreate(contactName);
-        if(contactRelationship == null)
+        if (phoneContact == null)
         {
             return;
+        }
+        ContactRelationship contactRelationship = GetOrCreate(phoneContact);// ContactRelationships.FirstOrDefault(x => x.ContactName.ToLower() == contactName.ToLower());
+        if (contactRelationship == null)
+        {
+            contactRelationship = phoneContact.CreateRelationship();
+            contactRelationship.Setup(ContactRelateable, PlacesOfInterest);
+            ContactRelationships.Add(contactRelationship);
         }
         contactRelationship.AddMoneySpent(moneySpent);
         contactRelationship.SetReputation(repGained, false);
     }
-    private ContactRelationship GetOrCreate(string contactName)
+    private ContactRelationship GetOrCreate(PhoneContact phoneContact)// string contactName)
     {
-        ContactRelationship contactRelationship = ContactRelationships.FirstOrDefault(x => x.ContactName.ToLower() == contactName.ToLower());
+        if(phoneContact == null)
+        {
+            return null;
+        }
+        ContactRelationship contactRelationship = ContactRelationships.FirstOrDefault(x => x.ContactName.ToLower() == phoneContact.Name.ToLower());
         if (contactRelationship == null)
         {
-            contactRelationship = new ContactRelationship(contactName);
+            contactRelationship = phoneContact.CreateRelationship();
             contactRelationship.Setup(ContactRelateable, PlacesOfInterest);
             ContactRelationships.Add(contactRelationship);
         }
         return contactRelationship;
     }
-    public void SetCompleteTask(string contactName, int repAmountOnCompletion, bool joinGangOnComplete)
+    public void SetCompleteTask(PhoneContact phoneContact, int repAmountOnCompletion, bool joinGangOnComplete)
     {
-        Gang myGang = Gangs.GetGangByContact(contactName);
+        if (phoneContact == null)
+        {
+            return;
+        }
+        Gang myGang = Gangs.GetGangByContact(phoneContact.Name);
         if (myGang != null)
         {
             if (repAmountOnCompletion != 0)
@@ -98,7 +114,7 @@ public class RelationshipManager
                 GangRelationships.SetGang(myGang, true);
             }
         }
-       ContactRelationship contactRelationship = GetOrCreate(contactName);
+       ContactRelationship contactRelationship = GetOrCreate(phoneContact);
         if (contactRelationship == null)
         {
             return;
@@ -109,9 +125,13 @@ public class RelationshipManager
         }
         contactRelationship.SetDebt(0);  
     }
-    public void SetFailedTask(string contactName, int repAmountOnFail, int debtAmountOnFail)
+    public void SetFailedTask(PhoneContact phoneContact, int repAmountOnFail, int debtAmountOnFail)
     {
-        Gang myGang = Gangs.GetGangByContact(contactName);
+        if (phoneContact == null)
+        {
+            return;
+        }
+        Gang myGang = Gangs.GetGangByContact(phoneContact.Name);
         if (myGang != null)
         {
             if (repAmountOnFail != 0)
@@ -124,7 +144,7 @@ public class RelationshipManager
             }
             GangRelationships.SetFailedTask(myGang);
         }
-        ContactRelationship contactRelationship = GetOrCreate(contactName);
+        ContactRelationship contactRelationship = GetOrCreate(phoneContact);
         if (contactRelationship == null)
         {
             return;
@@ -139,27 +159,27 @@ public class RelationshipManager
         }     
     }
 
-    public void ResetRelationship(string contactName, bool sendText)
+    public void ResetRelationship(PhoneContact phoneContact, bool sendText)
     {
-        ContactRelationship contactRelationship = GetOrCreate(contactName);
+        ContactRelationship contactRelationship = GetOrCreate(phoneContact);
         if(contactRelationship == null)
         {
             return;
         }
         contactRelationship.Reset(sendText);
     }
-    public void SetMaxReputation(string contactName, bool sendText)
+    public void SetMaxReputation(PhoneContact phoneContact, bool sendText)
     {
-        ContactRelationship contactRelationship = GetOrCreate(contactName);
+        ContactRelationship contactRelationship = GetOrCreate(phoneContact);
         if (contactRelationship == null)
         {
             return;
         }
         contactRelationship.SetReputation(contactRelationship.RepMaximum,sendText);
     }
-    public void SetMoneySpent(string contactName, int moneySpent, bool sendText)
+    public void SetMoneySpent(PhoneContact phoneContact, int moneySpent, bool sendText)
     {
-        ContactRelationship contactRelationship = GetOrCreate(contactName);
+        ContactRelationship contactRelationship = GetOrCreate(phoneContact);
         if (contactRelationship == null)
         {
             return;

@@ -51,7 +51,7 @@ public class VanillaCopManager
 
     private void SupressCopCrimes()
     {
-        List<int> crimes = new List<int>() { 12,14,16,24,27,32,33,34,41, };
+        List<int> crimes = new List<int>() { 12,14,16,24,27,32,33,34,41, 40,13, };
         foreach(int crimeId in crimes)
         {
             NativeFunction.Natives.SUPPRESS_CRIME_THIS_FRAME(Game.LocalPlayer, crimeId);

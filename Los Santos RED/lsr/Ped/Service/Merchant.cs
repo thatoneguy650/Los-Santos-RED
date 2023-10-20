@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 public class Merchant : PedExt
 {
     public GameLocation AssociatedStore { get; set; }
-   // public GameLocation Store { get; set; }
     public Merchant(Ped _Pedestrian, ISettingsProvideable settings, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world) : base(_Pedestrian, settings, crimes, weapons, _Name, "Vendor", world)
     {
         WasModSpawned = true;
