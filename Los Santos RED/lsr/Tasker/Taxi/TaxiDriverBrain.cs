@@ -70,6 +70,7 @@ public class TaxiDriverBrain : PedBrain
             PedExt.PedReactions.Update(Player);
             if (PedExt.PedReactions.HasSeenScaryCrime || PedExt.PedReactions.HasSeenAngryCrime)
             {
+                TaxiDriver.TaxiRide?.Cancel();
                 if (PedExt.WillFight && PedExt.PedReactions.HasSeenAngryCrime && Player.IsNotWanted)
                 {
                     SetFight();
@@ -83,10 +84,10 @@ public class TaxiDriverBrain : PedBrain
             {
                 SetFight();
             }
-            else if (PedExt.HasCellPhone && PedExt.PedReactions.HasSeenMundaneCrime && PedExt.WillCallPolice)
-            {
-                SetCalmCallIn();
-            }
+            //else if (PedExt.HasCellPhone && PedExt.PedReactions.HasSeenMundaneCrime && PedExt.WillCallPolice)
+            //{
+            //    SetCalmCallIn();
+            //}
             else
             {
                 HandleIdle();

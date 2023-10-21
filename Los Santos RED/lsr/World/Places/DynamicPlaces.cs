@@ -110,7 +110,7 @@ public class DynamicPlaces
     {
         if (EntryPoint.ModController.IsRunning)
         {
-            List<Rage.Object> Objects = EntryPoint.ModController.AllObjects.ToList();//Rage.World.GetAllObjects().ToList();
+            List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList(); //EntryPoint.ModController.AllObjects.ToList();//Rage.World.GetAllObjects().ToList();
             GameFiber.Yield();
             int checkedObjects = 0;
             foreach (Rage.Object obj in Objects)

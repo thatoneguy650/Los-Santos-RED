@@ -60,7 +60,7 @@ public class TaxiServiceInteraction : IContactMenuInteraction
         TaxiServiceMenu.RemoveBanner();
         MenuPool.Add(TaxiServiceMenu);
         AddRequestItems();
-        AddLocationItems();
+        //AddLocationItems();
         TaxiServiceMenu.Visible = true;
         InteractionLoop();
     }

@@ -193,15 +193,15 @@ public class PoliceSettings : ISettingsDefaultable
         OverrideAccuracy = true;
         AutoRecognizeDistance = 15f;
         AlwaysRecognizeDistance = 7f;
-        RecentlySeenTime = 15000;
+        RecentlySeenTime = 17000;// 15000;
         ManageLoadout = true;
         BustDistance = 4f;//5f;
         OverrideHealth = true;
 
         WantedLevelIncreasesByKillingPolice = true;
-        KillLimit_Wanted4 = 5;
-        KillLimit_Wanted5 = 10;
-        KillLimit_Wanted6 = 20;
+        KillLimit_Wanted4 = 3;// 5;
+        KillLimit_Wanted5 = 5;// 10;
+        KillLimit_Wanted6 = 10;// 20;
         KillLimit_Wanted7 = 30;
         KillLimit_Wanted8 = 40;
         KillLimit_Wanted9 = 50;

@@ -284,7 +284,7 @@ namespace LosSantosRED.lsr.Player
             }
 
 
-            List<Rage.Object> Objects = EntryPoint.ModController.AllObjects.ToList();// World.GetAllObjects().ToList();
+            List<Rage.Object> Objects = World.GetAllObjects().ToList(); //EntryPoint.ModController.AllObjects.ToList();// World.GetAllObjects().ToList();
             foreach (Rage.Object obj in Objects)
             {
                 if (obj.Exists())
@@ -448,7 +448,7 @@ namespace LosSantosRED.lsr.Player
         private void SetCollisionDisabled()
         {
            CollisionObjects = new List<Rage.Object>();
-            List<Rage.Object> Objects = EntryPoint.ModController.AllObjects.ToList();//World.GetAllObjects().ToList();
+            List<Rage.Object> Objects = World.GetAllObjects().ToList(); //EntryPoint.ModController.AllObjects.ToList();//World.GetAllObjects().ToList();
             foreach (Rage.Object obj in Objects)
             {
                 if (obj.Exists() && ClosestSittableEntity.Exists())

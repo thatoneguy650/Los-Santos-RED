@@ -63,7 +63,7 @@ public class ScannerSettings : ISettingsDefaultable
         DisableScannerWithoutRadioItem = false;
         EnableAudio = true;
         SetVolume = true;
-        AudioVolume = 0.25f;// 0.45f;
+        AudioVolume = 0.15f;// 0.45f;
         AudioVolumeBoostAmount = 0.05f;
         ApplyFilter = true;
         EnableSubtitles = false;

@@ -32,7 +32,7 @@ public class TaxiRide
         RespondingDriver = respondingDriver;
         TaxiDrivingStyle = new PedDrivingStyle("Normal", eCustomDrivingStyles.Taxi_StandardDrivingMode, 10f);
         PossibleTaxiDrivingStyles = new List<PedDrivingStyle>() {
-            new PedDrivingStyle("Normal", eCustomDrivingStyles.Taxi_StandardDrivingMode, 10f),
+            new PedDrivingStyle("Normal", eCustomDrivingStyles.Taxi_StandardDrivingMode, 15f),
             new PedDrivingStyle("Step On It", eCustomDrivingStyles.TaxiRushed_AvoidCarsObeyLights, 42f) { Fee = RequestedFirm == null ? 0 : RequestedFirm.FastSpeedFee },
             new PedDrivingStyle("Crazy", eCustomDrivingStyles.TaxiCrazy_AvoidCars, 90f) { Fee = RequestedFirm == null ? 0 : RequestedFirm.CrazySpeedFee },
         };
@@ -47,7 +47,7 @@ public class TaxiRide
         InitialPickupLocation = pickupLocation;
         TaxiDrivingStyle = new PedDrivingStyle("Normal", eCustomDrivingStyles.Taxi_StandardDrivingMode, 10f);
         PossibleTaxiDrivingStyles = new List<PedDrivingStyle>() {
-            new PedDrivingStyle("Drive Normal", eCustomDrivingStyles.Taxi_StandardDrivingMode, 10f),
+            new PedDrivingStyle("Drive Normal", eCustomDrivingStyles.Taxi_StandardDrivingMode, 15f),
             new PedDrivingStyle("Step On It", eCustomDrivingStyles.TaxiRushed_AvoidCarsObeyLights, 42f) { Fee = RequestedFirm == null ? 0 : RequestedFirm.FastSpeedFee },
             new PedDrivingStyle("Crazy", eCustomDrivingStyles.TaxiCrazy_AvoidCars, 90f) { Fee = RequestedFirm == null ? 0 : RequestedFirm.CrazySpeedFee },
         };
@@ -106,10 +106,8 @@ public class TaxiRide
     public bool HasArrivedAtDestination { get; set; } = false;
     public bool HasDestination => DestinationLocation != null && DestinationLocation.StreetPosition != Vector3.Zero;
     public bool HasPickup => PickupLocation != null && PickupLocation.StreetPosition != Vector3.Zero;
-
     public bool IsNearbyDestination { get; private set; }
     public bool IsNearbyPickup { get; private set; }
-
     public void Setup()
     {
         IsActive = false;
@@ -193,13 +191,10 @@ public class TaxiRide
                 OnIsNearbyDestination();
             }
         }
-
-
         if (IsWaitingOnPlayerAfterGetOut && Player.CurrentVehicle != null && Player.CurrentVehicle.Handle == RespondingVehicle.Handle)
         {
             OnPlayerReturnedToTaxi();
         }
-
     }
     public void Cancel()
     {
@@ -215,6 +210,7 @@ public class TaxiRide
             PickupBlip.Delete();
         }
         EntryPoint.WriteToConsole("TAXI RIDE HAS BEEN CANCELLED");
+        Game.DisplayHelp("Taxi Ride Cancelled");
         // RespondingDriver?.ReleaseTasking();     
     }
     public void Dispose()
@@ -283,9 +279,8 @@ public class TaxiRide
             Cancel();
             return;
         }
-        else
+        else if(HasPickedUpPlayer)
         {
-
             OnPlayerGotOutMidway();
         }
     }
@@ -342,7 +337,7 @@ public class TaxiRide
         IsNearbyPickup = true;
         EntryPoint.WriteToConsole("TAXI RIDE IS NEARBY PICKUP");
         GameTimeArrivedAtPickup = Game.GameTime;
-        
+        PickupBlip.Flash(1000, 15000);
     }
     private void OnWaitedAtPickup()
     {
@@ -381,7 +376,6 @@ public class TaxiRide
         {
             EntryPoint.WriteToConsole($"NEARBY DESTINATION UPDATED COULDNT FIND NEW POS");
         }
-
     }
     private void OnArrivedAtDestination()
     {
@@ -400,7 +394,7 @@ public class TaxiRide
     {
         if (!HasPickedUpPlayer)
         {
-            PickupBlip = new Blip(PickupLocation.FinalPosition) { Sprite = (BlipSprite)198, Scale = 0.5f };
+            PickupBlip = new Blip(PickupLocation.FinalPosition) { Sprite = (BlipSprite)198, Scale = 0.7f, Color = EntryPoint.LSRedColor };
             if (PickupBlip.Exists())
             {
                 NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)PickupBlip.Handle, true);

@@ -321,11 +321,11 @@ namespace Mod
 
         public void StoreEntities()
         {
-            EntryPoint.ModController.AllObjects = Rage.World.GetAllObjects().ToList();
-            GameFiber.Yield();
-            EntryPoint.ModController.AllPeds = Rage.World.GetAllPeds().ToList();
-            GameFiber.Yield();
-            EntryPoint.ModController.AllVehicles = Rage.World.GetAllVehicles().ToList();
+            //EntryPoint.ModController.AllObjects = Rage.World.GetAllObjects().ToList();
+            //GameFiber.Yield();
+            //EntryPoint.ModController.AllPeds = Rage.World.GetAllPeds().ToList();
+            //GameFiber.Yield();
+           // EntryPoint.ModController.AllVehicles = Rage.World.GetAllVehicles().ToList();
         }
     }
 }

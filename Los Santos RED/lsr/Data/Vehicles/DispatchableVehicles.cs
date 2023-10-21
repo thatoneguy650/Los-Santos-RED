@@ -435,8 +435,8 @@ public class DispatchableVehicles : IDispatchableVehicles
     {
         DispatchableVehicle baller4_PeterBadoingy_DLCDespawn = new DispatchableVehicle()
         {
-            DebugName = "superd_PeterBadoingy_DLCDespawn",
-            ModelName = "superd",
+            DebugName = "baller4_PeterBadoingy_DLCDespawn",
+            ModelName = "baller4",
             MaxOccupants = 4,
             AmbientSpawnChance = 75,
             WantedSpawnChance = 75,
@@ -9490,7 +9490,7 @@ Output = -1,
             DebugName = "BUCCANEER2_PeterBadoingy",
             ModelName = "BUCCANEER2",
             MinOccupants = 1,
-            MaxOccupants = 4,
+            MaxOccupants = 2,
             AmbientSpawnChance = 25,
             WantedSpawnChance = 25,
             RequiredPrimaryColorID = 63,

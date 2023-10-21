@@ -265,7 +265,7 @@ public class DebugHelperSubMenu : DebugSubMenu
             {
                 return;
             }
-            List<Rage.Object> Objects = EntryPoint.ModController.AllObjects.ToList();//Rage.World.GetAllObjects().ToList();
+            List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList(); //World.GetAllObjects().ToList(); //EntryPoint.ModController.AllObjects.ToList();//Rage.World.GetAllObjects().ToList();
             foreach (Rage.Object obj in Objects)
             {
                 if (obj.Exists() && obj.DistanceTo2D(pedExt.Pedestrian) <= 5f)

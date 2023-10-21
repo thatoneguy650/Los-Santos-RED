@@ -70,15 +70,14 @@ public class RegularGoToInVehicleTaskState : TaskState
 
     private void CheckTasks()
     {
-        //Rage.TaskStatus taskStatus = PedGeneral.Pedestrian.Tasks.CurrentTaskStatus;
-        //if (PedGeneral.IsDriver && (taskStatus == Rage.TaskStatus.NoTask || taskStatus == Rage.TaskStatus.Preparing) && Game.GameTime - GametimeLastRetasked >= 4000)
-        //{
-        //    TaskEntry();
-        //    GametimeLastRetasked = Game.GameTime;
-        //    EntryPoint.WriteToConsole($"RAGULAR GO TO  TASK: TAXI {PedGeneral?.Handle} RETASKED");
-        //}
+        Rage.TaskStatus taskStatus = PedGeneral.Pedestrian.Tasks.CurrentTaskStatus;
+        if (PedGeneral.IsDriver && (taskStatus == Rage.TaskStatus.NoTask) && Game.GameTime - GametimeLastRetasked >= 4000)
+        {
+            TaskEntry();
+            GametimeLastRetasked = Game.GameTime;
+            EntryPoint.WriteToConsole($"RAGULAR GO TO  TASK: TAXI {PedGeneral?.Handle} RETASKED");
+        }
     }
-
     private void TaskEntry()
     {
         if (!PedGeneral.Pedestrian.Exists())

@@ -170,6 +170,7 @@ public class BankAccounts
             if(bankAccount != null)
             {
                 bankAccount.Money += Amount;
+                return 0;//is positive and has added the money to the account, sent remaining to zero
             }
             return Amount;
         }

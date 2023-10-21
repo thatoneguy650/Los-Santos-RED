@@ -40,7 +40,7 @@ namespace LSR.Vehicles
         {
             if (!Vehicle.Exists() || VehicleInteractionMenu.IsShowingMenu)// || Vehicle.Speed >= 0.5f || !Vehicle.Driver.Exists() || Vehicle.Driver.IsFleeing)
             {
-                player.ButtonPrompts.RemovePrompts("Vehicle Interact");
+                player.ButtonPrompts.RemovePrompts("VehicleInteract");
                 return;
             }
             Ped driver = Vehicle.Driver;
@@ -81,7 +81,7 @@ namespace LSR.Vehicles
             {
                 if (!player.ButtonPrompts.HasPrompt($"VehicleInteractTaxiGetIn"))
                 {
-                    player.ButtonPrompts.RemovePrompts("Vehicle Interact");
+                    player.ButtonPrompts.RemovePrompts("VehicleInteract");
                     //EntryPoint.WriteToConsole($"UpdateInteractPrompts TAXI {hasDriver} GET IN AS PASS MENU");
                     Action action = () => { player.ActivityManager.EnterVehicleAsPassenger(false, true, true); };
                     player.ButtonPrompts.AttemptAddPrompt("VehicleInteract", "Get In Taxi", $"VehicleInteractTaxiGetIn", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999, action);
@@ -91,7 +91,7 @@ namespace LSR.Vehicles
             {
                 if (!player.ButtonPrompts.HasPrompt($"VehicleInteractTaxiMenu"))
                 {
-                    player.ButtonPrompts.RemovePrompts("Vehicle Interact");
+                    player.ButtonPrompts.RemovePrompts("VehicleInteract");
                    // EntryPoint.WriteToConsole($"UpdateInteractPrompts TAXI {hasDriver} OPEN TAXI MENU");
                     Action action = () => { player.ShowVehicleInteractMenu(false); };
                     player.ButtonPrompts.AttemptAddPrompt("VehicleInteract", "Taxi Menu", $"VehicleInteractTaxiMenu", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999, action);
@@ -104,7 +104,7 @@ namespace LSR.Vehicles
             }
             else
             {
-                player.ButtonPrompts.RemovePrompts("Vehicle Interact");
+                player.ButtonPrompts.RemovePrompts("VehicleInteract");
             }
         }
 

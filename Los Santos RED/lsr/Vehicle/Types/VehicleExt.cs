@@ -1466,18 +1466,21 @@ namespace LSR.Vehicles
         {
             if (!Vehicle.Exists() || (!HasBeenEnteredByPlayer && !IsOwnedByPlayer) || VehicleInteractionMenu.IsShowingMenu || Vehicle.Speed >= 0.5f)
             {
-                player.ButtonPrompts.RemovePrompts("Vehicle Interact");
+                player.ButtonPrompts.RemovePrompts("VehicleInteract");
+               // EntryPoint.WriteToConsole("UpdateInteractPrompts BASE REMOVE 1");
                 return;
             }
             if ((!Settings.SettingsManager.UIGeneralSettings.ShowVehicleInteractionPromptInVehicle && player.IsInVehicle) || player.ActivityManager.IsPerformingActivity)
             {
-                player.ButtonPrompts.RemovePrompts("Vehicle Interact");
+                player.ButtonPrompts.RemovePrompts("VehicleInteract");
+               //EntryPoint.WriteToConsole("UpdateInteractPrompts BASE REMOVE 2");
                 return;
             }
             if (!player.ButtonPrompts.HasPrompt($"VehicleInteract"))
             {
                 Action action = () => { player.ShowVehicleInteractMenu(true); };
                 player.ButtonPrompts.AttemptAddPrompt("VehicleInteract", "Vehicle Interact", $"VehicleInteract", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999, action);
+               // EntryPoint.WriteToConsole("UpdateInteractPrompts BASE ADD PROMPT 1");
             }
         }
         public virtual void AddVehicleToList(IEntityProvideable world)

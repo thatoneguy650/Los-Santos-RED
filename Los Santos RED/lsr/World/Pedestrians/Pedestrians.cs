@@ -235,7 +235,7 @@ public class Pedestrians : ITaskerReportable
     }
     public void CreateNew()
     {
-        WorldPeds = EntryPoint.ModController.AllPeds.ToList();// Rage.World.GetAllPeds().ToList();// Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
+        WorldPeds = Rage.World.GetAllPeds().ToList();// EntryPoint.ModController.AllPeds.ToList();// Rage.World.GetAllPeds().ToList();// Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
         GameFiber.Yield();
         int updated = 0;
         foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.MaxHealth != 1 && s.Handle != Game.LocalPlayer.Character.Handle))//take 20 is new
@@ -1129,17 +1129,17 @@ public class Pedestrians : ITaskerReportable
     }
     public void CleanupAmbient()
     {
-        if (Civilians.Count() < 50)
-        {
-            return;
-        }
-        PedExt ped = Civilians.Where(x => x.Pedestrian.Exists() && !x.WasModSpawned && !x.Pedestrian.IsPersistent && !x.Pedestrian.IsOnScreen).FirstOrDefault();
-        if (ped == null)
-        {
-            return;
-        }
-        EntryPoint.WriteToConsole($"CleanupAmbient RAN DELETED CIVILIAN PED");
-        ped.FullyDelete();
+        //if (Civilians.Count() < 50)
+        //{
+        //    return;
+        //}
+        //PedExt ped = Civilians.Where(x => x.Pedestrian.Exists() && !x.WasModSpawned && !x.Pedestrian.IsPersistent && !x.Pedestrian.IsOnScreen).FirstOrDefault();
+        //if (ped == null)
+        //{
+        //    return;
+        //}
+        //EntryPoint.WriteToConsole($"CleanupAmbient RAN DELETED CIVILIAN PED");
+        //ped.FullyDelete();
     }
 
 }

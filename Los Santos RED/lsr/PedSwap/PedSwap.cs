@@ -257,7 +257,38 @@ public class PedSwap : IPedSwap
         {
             Game.FadeScreenOut(500, true);
             ResetOffsetForCurrentModel();
-            Ped TargetPed = new Ped(Player.Character.Position.Around2D(15f), Game.LocalPlayer.Character.Heading);
+
+            Vector3 FinalSpawnLocation = Player.Character.Position;
+            SpawnLocation sl = new SpawnLocation(Player.Character.Position.Around2D(15f));
+            sl.GetClosestSidewalk();
+            if (sl.HasSidewalk)
+            {
+                FinalSpawnLocation = sl.SidewalkPosition;
+            }
+            else
+            {
+                sl.GetClosestStreet(true);
+                sl.GetClosestSideOfRoad();
+            }
+            if(sl.HasSideOfRoadPosition)
+            {
+                FinalSpawnLocation = sl.StreetPosition;
+            }
+
+
+            float finalSpawnGroundZ;
+            bool foundGround = NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(FinalSpawnLocation.X, FinalSpawnLocation.Y, FinalSpawnLocation.Z, out finalSpawnGroundZ, true, false);
+            if (foundGround)
+            {
+                FinalSpawnLocation = new Vector3(FinalSpawnLocation.X, FinalSpawnLocation.Y, finalSpawnGroundZ);
+            }
+            if(FinalSpawnLocation == Vector3.Zero)
+            {
+                FinalSpawnLocation = Player.Character.GetOffsetPositionFront(2f);
+            }
+           
+
+            Ped TargetPed = new Ped(FinalSpawnLocation, Game.LocalPlayer.Character.Heading);
             EntryPoint.SpawnedEntities.Add(TargetPed);
             GameFiber.Yield();
             if (!TargetPed.Exists())
@@ -863,7 +894,7 @@ public class PedSwap : IPedSwap
         {
             Player.CellPhone.RandomizeSettings();
         }
-        if (RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetRandomPhone))
+        if (RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetRandomBankAccount))
         {
             Player.BankAccounts.CreateRandomAccount(RandomItems.GetRandomNumberInt(Settings.SettingsManager.PedSwapSettings.RandomBankAccountMoneyMin, Settings.SettingsManager.PedSwapSettings.RandomBankAccountMoneyMax));
         }

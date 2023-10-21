@@ -156,7 +156,7 @@ public class Organizations : IOrganizations
         PossibleOrganizations PossibleOrganizations_FullExpanded = new PossibleOrganizations();
 
 
-        TaxiFirm DowntownCabCo = new TaxiFirm("~y~", "DTCAB", "Downtown Cab Co.", "Downtown Cab Co.", "Yellow", "TaxiDrivers", "TaxiVehicles", "DT ", "", "", "", "Cabbie")
+        TaxiFirm DowntownCabCo = new TaxiFirm("~y~", "DTCAB", "Downtown Cab Co.", "Downtown Cab Co.", "Yellow", "TaxiDrivers", "DowntownTaxiVehicles", "DT ", "", "", "", "Cabbie")
         {
             Description = "In transit since 1922",
             HeadDataGroupID = "AllHeads",

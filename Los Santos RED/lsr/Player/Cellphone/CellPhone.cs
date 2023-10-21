@@ -268,8 +268,8 @@ public class CellPhone
         {
             CustomTheme = CurrentCellphoneData.GetRandomTheme();
             CustomBackground = CurrentCellphoneData.GetRandomBackground();
-            CustomPhoneType = -1;
-            CustomPhoneOS = "";
+            CustomPhoneType = CurrentCellphoneData.PhoneType;// - 1;
+            CustomPhoneOS = CurrentCellphoneData.PhoneOS;// "";
         }
         else
         {

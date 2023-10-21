@@ -1111,8 +1111,11 @@ namespace Mod
                                 $"Letting you know they got some feds looking for you.",
                                 $"Feds on the prowl, watch your back.",
                                 $"I got words the feds are out to get you, be careful.",
-                                $"Guess you made someone really made, the feds are looking for you.",
+                                $"Guess you made someone really mad, the feds are looking for you.",
                                 $"Fed task force on the way to your position.",
+                                $"The feds are en route, get outta there.",
+                                $"Got wind of a task force being deployed to find you and its the feds.",
+
                                 };
             CellPhone.AddScheduledText(tosend, Replies.PickRandom(), 0, true);
         }

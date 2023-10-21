@@ -20,6 +20,7 @@ public class PlayerVoice
     private List<string> GenericCrashPossibilities;
     private List<string> GenericWonPossibilities;
     private List<string> GenericPoliceFightPossibilities;
+    private List<string> AnnoyedPossibilities;
 
     private bool CanSpeak => Player.IsAliveAndFree && !Player.IsIncapacitated && !Player.Stance.IsBeingStealthy && Game.GameTime - GameTimeLastSpoke >= (GameTimeBetweenSpeaking + TimeBetweenSpeakingRandomizer) && !Player.Character.IsCurrentWeaponSilenced;
     private uint GameTimeBetweenSpeaking
@@ -53,6 +54,9 @@ public class PlayerVoice
         GenericCrashPossibilities = new List<string>(){"BUMP","CRASH_CAR","CRASH_GENERIC","GENERIC_CURSE_HIGH","GENERIC_CURSE_MED","GENERIC_SHOCKED_MED","CHALLENGE_THREATEN"};
         GenericWonPossibilities = new List<string>(){ "WON_DISPUTE","GENERIC_WHATEVER" };
         GenericPoliceFightPossibilities = new List<string>(){"CHASED_BY_POLICE","FIGHT","FIGHT_RUN","GENERIC_CURSE_HIGH","GENERIC_CURSE_MED","GENERIC_SHOCKED_MED","PROVOKE_GENERIC","WON_DISPUTE","CHALLENGE_THREATEN"};
+
+        AnnoyedPossibilities = new List<string>() { "GENERIC_CURSE_MED", "GENERIC_CURSE_HIGH", "GENERIC_SHOCKED_MED" };
+
     }
     public void Update()
     {
@@ -74,7 +78,14 @@ public class PlayerVoice
     }
     public void OnBecameWanted()
     {
-        SayAvailableAmbient(GenericPoliceFightPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnBecameWantedPercentage);
+        if (Player.WantedLevel < 2)
+        {
+            SayAvailableAmbient(GenericPoliceFightPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnBecameWantedPercentage);
+        }
+        else
+        {
+            SayAvailableAmbient(GenericPoliceFightPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnBecameWantedPercentage);
+        }
         //EntryPoint.WriteToConsoleTestLong("Player Voice OnBecameWanted");
     }
     public void OnLostWanted()

@@ -47,9 +47,9 @@ namespace LosSantosRED.lsr
         public bool IsDisplayingAlertScreen { get; set; } = false;
 
 
-        public List<Vehicle> AllVehicles { get; set; } = new List<Vehicle>();
-        public List<Ped> AllPeds { get; set; } = new List<Ped>();
-        public List<Rage.Object> AllObjects { get; set; } = new List<Rage.Object>();
+      // public List<Vehicle> AllVehicles { get; set; } = new List<Vehicle>();
+      //  public List<Ped> AllPeds { get; set; } = new List<Ped>();
+      //  public List<Rage.Object> AllObjects { get; set; } = new List<Rage.Object>();
         public void Setup()
         {
             IsRunning = true;
@@ -272,10 +272,10 @@ namespace LosSantosRED.lsr
                     new ModTask(500, "Tasker.UpdatePolice", Tasker.UpdatePolice, 0),
                     new ModTask(500, "Tasker.UpdateCivilians", Tasker.UpdateCivilians, 1),
                 }),
-                new ModTaskGroup("RG12:Entities", new List<ModTask>()
-                {
-                    new ModTask(500, "Tasker.UpdatePolice", World.StoreEntities, 0),
-                })
+                //new ModTaskGroup("RG12:Entities", new List<ModTask>()
+                //{
+                //    new ModTask(500, "Tasker.UpdatePolice", World.StoreEntities, 0),
+                //})
             };
         }
         private void StartCoreLogic()

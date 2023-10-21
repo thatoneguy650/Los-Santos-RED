@@ -25,7 +25,6 @@ public class Vehicles
     private bool HasCheckedTaxiModel;
     private TaxiFirm DefaultTaxiFirm;
     private IOrganizations Organizations;
-
     public Vehicles(IAgencies agencies,IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes, IModItems modItems, IEntityProvideable world, IOrganizations organizations)
     {
         Zones = zones;
@@ -146,9 +145,10 @@ public class Vehicles
         GameFiber.Yield();//TR 29
         TaxiVehicles.RemoveAll(x => !x.Vehicle.Exists());
     }
+
     public void CreateNew()
     {
-        RageVehicles = EntryPoint.ModController.AllVehicles.ToList();////Rage.World.GetAllVehicles().ToList(); Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
+        RageVehicles = Rage.World.GetAllVehicles().ToList(); //EntryPoint.ModController.AllVehicles.ToList();////Rage.World.GetAllVehicles().ToList(); Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
         GameFiber.Yield();
         int updated = 0;
         World.SpawnErrors.RemoveAll(x => x.HasCleared);
@@ -214,8 +214,6 @@ public class Vehicles
         }    
         return false;
     }
-
-
     private void CreatePoliceFromAmbient(Vehicle vehicle)
     {
         PoliceVehicleExt Car = new PoliceVehicleExt(vehicle, Settings);
@@ -224,7 +222,6 @@ public class Vehicles
         Car.CanRandomlyHaveIllegalItems = false;
         PoliceVehicles.Add(Car);
     }
-
     private void CreateCivilianVehicleFromAmbient(Vehicle vehicle)
     {
         if (vehicle.Model.Hash == 3338918751)//.Name.ToLower() == "taxi")
@@ -255,7 +252,7 @@ public class Vehicles
         Taxi.TaxiFirm = taxiFirm;
         Taxi.Setup();
         Taxi.AddVehicleToList(World);
-        EntryPoint.WriteToConsole($" CreateTaxiVehicleFromAmbient {Taxi.Handle}");
+       // EntryPoint.WriteToConsole($" CreateTaxiVehicleFromAmbient {Taxi.Handle}");
     }
     private TaxiFirm GetSpecificTaxiFirm(Vehicle vehicle)
     {
@@ -280,13 +277,15 @@ public class Vehicles
         TaxiModelIsDefault = TotalLiveries == -1;
         HasCheckedTaxiModel = true;
     }
-
     private void CreateRegularCivilianVehicle(Vehicle vehicle)
     {
         VehicleExt Car = new VehicleExt(vehicle, Settings);
         Car.Setup();
         Car.AddVehicleToList(World);
     }
+
+
+
     public void AddPolice(PoliceVehicleExt vehicleExt)
     {
         if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
@@ -359,6 +358,83 @@ public class Vehicles
             CivilianVehicles.RemoveAll(x => x.Handle == vehicleExt.Handle);
         }
     }
+    public void AddTaxi(TaxiVehicleExt vehicleExt)
+    {
+        if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+        if (!TaxiVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
+        {
+            EntryPoint.WriteToConsole($"TAXI VEHICLE ADDING {vehicleExt.Handle}");
+            TaxiVehicles.Add(vehicleExt);
+            CivilianVehicles.RemoveAll(x => x.Handle == vehicleExt.Handle);
+        }
+    }
+
+    public VehicleExt GetClosestVehicleExt(Vector3 position, bool includeService, float maxDistance)
+    {
+        if (position == Vector3.Zero)
+        {
+            return null;
+        }
+        VehicleExt civilianCar = NonServiceVehicles.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(position)).FirstOrDefault();
+        float civilianDistance = 999f;
+        float serviceDistance = 999f;
+        if (civilianCar != null && civilianCar.Vehicle.Exists())
+        {
+            civilianDistance = civilianCar.Vehicle.DistanceTo2D(position);
+        }
+        if (includeService)
+        {
+            VehicleExt serviceVehicle = ServiceVehicles.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(position)).FirstOrDefault();
+            if (serviceVehicle != null && serviceVehicle.Vehicle.Exists())
+            {
+                serviceDistance = serviceVehicle.Vehicle.DistanceTo2D(position);
+            }
+            if (serviceDistance < civilianDistance)
+            {
+                if (serviceDistance <= maxDistance)
+                {
+                    return serviceVehicle;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+        if (civilianDistance <= maxDistance)
+        {
+            return civilianCar;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    public VehicleExt GetVehicleExt(Vehicle vehicle)
+    {
+        VehicleExt ToReturn = null;
+        if (vehicle.Exists())
+        {
+            ToReturn = ServiceVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == vehicle.Handle);
+            if (ToReturn == null)
+            {
+                ToReturn = NonServiceVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == vehicle.Handle);
+            }
+        }
+        return ToReturn;
+    }
+    public VehicleExt GetVehicleExt(uint handle)
+    {
+        VehicleExt ToReturn = ServiceVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == handle);
+        if (ToReturn == null)
+        {
+            ToReturn = NonServiceVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == handle);
+        }
+        return ToReturn;
+    }
     public PoliceVehicleExt GetPolice(Vehicle vehicle)
     {
         PoliceVehicleExt ToReturn = null;
@@ -404,6 +480,28 @@ public class Vehicles
         }
         return ToReturn;
     }
+
+
+    public void UpdatePoliceSonarBlips(bool setBlipped)
+    {
+        foreach (VehicleExt copCar in PoliceVehicles)
+        {
+            if (!copCar.Vehicle.Exists())
+            {
+                continue;
+            }
+            if (setBlipped)
+            {
+                copCar.SonarBlip.Update(World);
+            }
+            else
+            {
+                copCar.SonarBlip.Dispose();
+            }
+        }
+    }
+
+
     public void ClearPolice()
     {
         foreach (VehicleExt vehicleExt in PoliceVehicles)
@@ -477,114 +575,22 @@ public class Vehicles
             TaxiVehicles.Clear();
         }
     }
-    public VehicleExt GetClosestVehicleExt(Vector3 position, bool includeService, float maxDistance)
-    {
-        if(position == Vector3.Zero)
-        {
-            return null;
-        }
-        VehicleExt civilianCar = NonServiceVehicles.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(position)).FirstOrDefault();
-        float civilianDistance = 999f;
-        float serviceDistance = 999f;
-        if (civilianCar != null && civilianCar.Vehicle.Exists())
-        {
-            civilianDistance = civilianCar.Vehicle.DistanceTo2D(position);
-        }
-        if (includeService)
-        {
-            VehicleExt serviceVehicle = ServiceVehicles.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(position)).FirstOrDefault();
-            if(serviceVehicle != null && serviceVehicle.Vehicle.Exists())
-            {
-                serviceDistance = serviceVehicle.Vehicle.DistanceTo2D(position);
-            }
-            if (serviceDistance < civilianDistance)
-            {
-                if(serviceDistance <= maxDistance)
-                {
-                    return serviceVehicle;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-        if (civilianDistance <= maxDistance)
-        {
-            return civilianCar;
-        }
-        else
-        {
-            return null;
-        }
-    }
-    public VehicleExt GetVehicleExt(Vehicle vehicle)
-    {
-        VehicleExt ToReturn = null;
-        if (vehicle.Exists())
-        {
-            ToReturn = ServiceVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == vehicle.Handle);
-            if (ToReturn == null)
-            {
-                ToReturn = NonServiceVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == vehicle.Handle);
-            }
-        }
-        return ToReturn;
-    }
-    public VehicleExt GetVehicleExt(uint handle)
-    {
-        VehicleExt ToReturn = ServiceVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == handle);
-        if (ToReturn == null)
-        {
-            ToReturn = NonServiceVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == handle);
-        }
-        return ToReturn;
-    }
-    public void UpdatePoliceSonarBlips(bool setBlipped)
-    {
-        foreach(VehicleExt copCar in PoliceVehicles)
-        {
-            if (!copCar.Vehicle.Exists())
-            {
-                continue;
-            }
-            if (setBlipped)
-            {
-                copCar.SonarBlip.Update(World);
-            }
-            else
-            {
-                copCar.SonarBlip.Dispose();
-            }
-        }
-    }
 
-    public void AddTaxi(TaxiVehicleExt vehicleExt)
-    {
-        if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
-        {
-            return;
-        }
-        if (!TaxiVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
-        {
-            EntryPoint.WriteToConsole($"TAXI VEHICLE ADDING {vehicleExt.Handle}");
-            TaxiVehicles.Add(vehicleExt);
-            CivilianVehicles.RemoveAll(x => x.Handle == vehicleExt.Handle);
-        }
-    }
+
 
     public void CleanupAmbient()
     {
-        if(CivilianVehicles.Count() < 50)
-        {
-            return;
-        }
-        VehicleExt Car = CivilianVehicles.Where(x => x.Vehicle.Exists() && !x.WasModSpawned && !x.Vehicle.IsPersistent && !x.Vehicle.IsOnScreen).FirstOrDefault();
-        if(Car == null)
-        {
-            return;
-        }
-        EntryPoint.WriteToConsole($"CleanupAmbient RAN DELETED CIVILIAN CAR");
-        Car.FullyDelete();
+        //IS THIS NEEDED?
+        //if(CivilianVehicles.Count() < 50)
+        //{
+        //    return;
+        //}
+        //VehicleExt Car = CivilianVehicles.Where(x => x.Vehicle.Exists() && !x.WasModSpawned && !x.Vehicle.IsPersistent && !x.Vehicle.IsOnScreen).FirstOrDefault();
+        //if(Car == null)
+        //{
+        //    return;
+        //}
+        //EntryPoint.WriteToConsole($"CleanupAmbient RAN DELETED CIVILIAN CAR");
+        //Car.FullyDelete();
     }
 }

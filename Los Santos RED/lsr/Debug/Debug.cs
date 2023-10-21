@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -1677,7 +1678,7 @@ public void DebugNumpad8()
         {
             EntryPoint.WriteToConsole($"modelName: {Player.CurrentVehicle.Vehicle.Model.Name.ToLower()} modelHAsh{Player.CurrentVehicle.Vehicle.Model.Hash} modSpawned{Player.CurrentVehicle.WasModSpawned} gang{Player.CurrentVehicle.AssociatedGang?.ID}");
         }
-
+        EntryPoint.WriteToConsole($"CustomPhoneOS:{Player.CellPhone.CustomPhoneOS} CustomPhoneType:{Player.CellPhone.CustomPhoneType} PhoneOS{Player.CellPhone.PhoneOS} PhoneType{Player.CellPhone.PhoneType}");
 
 
          //&&  && Player.CurrentVehicle.Vehicle.Model.Name.ToLower() == VehicleToSteal.ModelName.ToLower() && Player.CurrentVehicle.WasModSpawned && Player.CurrentVehicle.AssociatedGang != null && Player.CurrentVehicle.AssociatedGang.ID == TargetGang.ID;
