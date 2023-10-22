@@ -115,7 +115,7 @@ public class EMSSettings : ISettingsDefaultable
         MinDistanceToSpawn = 350f;// 50f;
         MaxDistanceToSpawn = 750f;// 1000f;// 150f;
 
-        TotalSpawnedMembersLimit = 5;// 6;//5
+        TotalSpawnedMembersLimit = 3;// 6;//5
         TotalSpawnedAmbientMembersLimit = 2;// 8;
 
         TotalSpawnedAmbientMembersLimit_Downtown = 2;
@@ -125,13 +125,13 @@ public class EMSSettings : ISettingsDefaultable
         TotalSpawnedAmbientMembersLimit_Industrial = 2;
         TotalSpawnedAmbientMembersLimit_Investigation = 2;
 
-        AmbientSpawnPercentage = 15;// 30;
+        AmbientSpawnPercentage = 2;// 30;
         AmbientSpawnPercentage_Wilderness = 0;
-        AmbientSpawnPercentage_Rural = 5;
-        AmbientSpawnPercentage_Suburb = 10;// 15;
-        AmbientSpawnPercentage_Industrial = 15;// 25;
-        AmbientSpawnPercentage_Downtown = 20;// 40;
-        AmbientSpawnPercentage_Investigation = 45;// 70;
+        AmbientSpawnPercentage_Rural = 1;
+        AmbientSpawnPercentage_Suburb = 1;// 15;
+        AmbientSpawnPercentage_Industrial = 1;// 25;
+        AmbientSpawnPercentage_Downtown = 5;// 40;
+        AmbientSpawnPercentage_Investigation = 15;// 70;
 
         AllowStationSpawningWhenPlayerWanted = true;
         StationSpawningWhenPlayerWantedMaxWanted = 2;

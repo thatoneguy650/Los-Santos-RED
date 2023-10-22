@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Interface;
+using NAudio.CoreAudioApi.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ using System.Threading.Tasks;
 public class GunDealerRelationship : ContactRelationship
 {
     private GunDealerContact GunDealerContact;
+
+    public override string Stuff => GunDealerContact == null ? "GunDealerContact IS NULL" : GunDealerContact.Name;
     public GunDealerRelationship()
     {
 
@@ -20,6 +23,11 @@ public class GunDealerRelationship : ContactRelationship
     }
     public override void AddMoneySpent(int Amount)
     {
+        if(GunDealerContact == null)
+        {
+            EntryPoint.WriteToConsole("AddMoneySpent GunDealerContact IS NULL");
+            return;
+        }
         TotalMoneySpent += Amount;
         int TextToSend = 0;
         bool sendGroupText = false;
@@ -34,7 +42,7 @@ public class GunDealerRelationship : ContactRelationship
         if(TextToSend > 1)
         {
             sendGroupText = true;
-            Player.CellPhone.AddScheduledText(GunDealerContact, GroupReplies.PickRandom(),4, false);
+            Player.CellPhone.AddScheduledText(GunDealerContact, GroupReplies.PickRandom(),1, false);
         }
         foreach (GunStore gs in PlacesOfInterest.PossibleLocations.GunStores)
         {
@@ -79,6 +87,14 @@ public class GunDealerRelationship : ContactRelationship
     {
         SetLocations(false);
         base.Activate();
+    }
+    public override void SetupContact(IContacts contacts)
+    { 
+        if(contacts == null)
+        {
+            return;
+        }
+        GunDealerContact = contacts.PossibleContacts.GunDealerContacts.FirstOrDefault(x => x.Name == ContactName);
     }
     public override void Deactivate()
     {

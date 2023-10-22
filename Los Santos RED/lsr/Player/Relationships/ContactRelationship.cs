@@ -20,6 +20,10 @@ public class ContactRelationship
     public int PlayerDebt { get; set; } = 0;
     public int ReputationLevel { get; set; } = 200;//=> reputationLevel;
     public string ContactName { get; set; }
+
+
+    public virtual string Stuff => "NONE";
+
     public ContactRelationship()
     {
 
@@ -93,6 +97,11 @@ public class ContactRelationship
     }
 
     public virtual void Activate()
+    {
+
+    }
+
+    public virtual void SetupContact(IContacts contacts)
     {
 
     }

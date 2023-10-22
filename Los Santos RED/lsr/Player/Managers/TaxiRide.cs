@@ -198,6 +198,10 @@ public class TaxiRide
     }
     public void Cancel()
     {
+        if(IsActive)
+        {
+            Game.DisplayHelp("Taxi Ride Cancelled");
+        }
         IsActive = false;
         if (RespondingDriver != null)
         {
@@ -210,7 +214,7 @@ public class TaxiRide
             PickupBlip.Delete();
         }
         EntryPoint.WriteToConsole("TAXI RIDE HAS BEEN CANCELLED");
-        Game.DisplayHelp("Taxi Ride Cancelled");
+
         // RespondingDriver?.ReleaseTasking();     
     }
     public void Dispose()
@@ -276,7 +280,7 @@ public class TaxiRide
         }
         if (HasArrivedAtDestination || IsNearbyDestination)
         {
-            Cancel();
+            FinishRide();
             return;
         }
         else if(HasPickedUpPlayer)
@@ -284,6 +288,27 @@ public class TaxiRide
             OnPlayerGotOutMidway();
         }
     }
+
+    private void FinishRide()
+    {
+        if (IsActive)
+        {
+            Game.DisplayHelp("Taxi Ride Completed");
+        }
+        IsActive = false;
+        if (RespondingDriver != null)
+        {
+            RespondingDriver.TaxiRide = null;
+            RespondingDriver.ClearTasks(true);
+            RespondingDriver.SetNonPersistent();
+        }
+        if (PickupBlip.Exists())
+        {
+            PickupBlip.Delete();
+        }
+        EntryPoint.WriteToConsole("TAXI RIDE HAS BEEN CANCELLED");
+    }
+
     private void OnPlayerReturnedToTaxi()
     {
         IsWaitingOnPlayerAfterGetOut = false;

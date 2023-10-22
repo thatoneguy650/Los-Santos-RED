@@ -52,7 +52,7 @@ public class CellPhone
     private ICrimes Crimes;
     private IModItems ModItems;
     private uint GameTimeLastCheckedScheduledItems;
-    private uint GameTimeBetweenCheckScheduledItems = 15000;
+    private uint GameTimeBetweenCheckScheduledItems = 1000;
     private NAudioPlayer phoneAudioPlayer;
     private IWeapons Weapons;
     private INameProvideable Names;
@@ -288,7 +288,6 @@ public class CellPhone
             {
                 CheckScheduledContacts();
             }
-            GameTimeBetweenCheckScheduledItems = 1000;// RandomItems.GetRandomNumber(5000, 7000);
             GameTimeLastCheckedScheduledItems = Game.GameTime;
         }
     }
@@ -571,7 +570,6 @@ public class CellPhone
             return Contacts.PossibleContacts.CorruptCopContact;
         }
     }
-
     private class ScheduledContact
     {
         public ScheduledContact(DateTime timeToSend, PhoneContact phoneContact, string message)

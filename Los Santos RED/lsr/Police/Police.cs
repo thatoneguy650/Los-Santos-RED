@@ -302,7 +302,23 @@ namespace LosSantosRED.lsr
             if (Player.PlacePoliceShouldSearchForPlayer.DistanceTo(prevPlacePoliceShouldSearchForPlayer) >= 5f)
             {
                 //EntryPoint.WriteToConsole("POLICE PlacePoliceShouldSearchForPlayer CHANGED");
-                Player.StreetPlacePoliceShouldSearchForPlayer = NativeHelper.GetStreetPosition(Player.PlacePoliceShouldSearchForPlayer, true);
+
+
+                Vector3 streetPos = NativeHelper.GetStreetPosition(Player.PlacePoliceShouldSearchForPlayer, true);
+                if(streetPos == Vector3.Zero || streetPos.DistanceTo(Player.PlacePoliceShouldSearchForPlayer) >= 30f)
+                {
+                    Player.StreetPlacePoliceShouldSearchForPlayer = Player.PlacePoliceShouldSearchForPlayer;
+                }
+                else
+                {
+                    Player.StreetPlacePoliceShouldSearchForPlayer = streetPos;
+                }
+
+
+
+
+
+
                 prevPlacePoliceShouldSearchForPlayer = Player.PlacePoliceShouldSearchForPlayer;
             }
 

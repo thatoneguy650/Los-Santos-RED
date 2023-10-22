@@ -376,6 +376,12 @@ public class Roadblock
                 World.Pedestrians.AddEntity(person);
                 CreatedRoadblockPeds.Add(person);
             }
+
+            foreach (Cop cop in pedSpawn.SpawnedCops)
+            {
+                cop.IsRoadblockSpawned = true;
+            }
+
         }
         spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
         foreach (VehicleExt created in spawnTask.CreatedVehicles)
@@ -497,7 +503,7 @@ public class Roadblock
         {
             if (veh.Exists())
             {
-                if (veh.DistanceTo2D(Player.Character) >= 250f)
+                if (veh.DistanceTo2D(Player.Character) >= 150f)// 250f)
                 {
                     veh.Delete();
                     EntryPoint.PersistentVehiclesDeleted++;
@@ -513,7 +519,7 @@ public class Roadblock
         {
             if (pedext != null && pedext.Pedestrian.Exists())
             {
-                if (pedext.DistanceToPlayer >= 250f)
+                if (pedext.DistanceToPlayer >= 150f)//250f)
                 {
                     pedext.Pedestrian.Delete();
                     EntryPoint.PersistentPedsDeleted++;

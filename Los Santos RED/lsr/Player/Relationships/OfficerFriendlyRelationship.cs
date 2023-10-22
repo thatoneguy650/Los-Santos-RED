@@ -17,6 +17,15 @@ public class OfficerFriendlyRelationship : ContactRelationship
     {
 
     }
-
+    public override void SetupContact(IContacts contacts)
+    {
+        if (contacts == null)
+        {
+            return;
+        }
+        ///GunDealerContact = contacts.PossibleContacts.GunDealerContacts.FirstOrDefault(x => x.Name == ContactName);
+        ///
+        //DO THIS LIKE U GUN IF YOU NEED TO ADD SOME CONTACT STUFF HERE?
+    }
 }
 

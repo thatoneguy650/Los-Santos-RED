@@ -286,7 +286,7 @@ namespace LosSantosRED.lsr.Data
             CellPhoneSave = new CellPhoneSave(player.CellPhone.CustomRingtone, player.CellPhone.CustomTextTone, player.CellPhone.CustomTheme, player.CellPhone.CustomBackground, player.CellPhone.CustomVolume, player.CellPhone.SleepMode, player.CellPhone.CustomPhoneType, player.CellPhone.CustomPhoneOS);
         }
         //Load
-        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, IAgencies agencies, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
+        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, IAgencies agencies, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems, IContacts contacts)
         {
             try
             {
@@ -299,7 +299,7 @@ namespace LosSantosRED.lsr.Data
                 LoadLicenses(player);
                 LoadVehicles(player, world,settings, modItems, placesOfInterest, time);
                 LoadPosition(player);
-                LoadRelationships(player, gangs);
+                LoadRelationships(player, gangs, contacts);
                 LoadContacts(player, gangs);
                 
                 LoadResidences(player, placesOfInterest, modItems, settings);
@@ -486,7 +486,7 @@ namespace LosSantosRED.lsr.Data
                 }
             }
         }
-        private void LoadRelationships(IInventoryable player, IGangs gangs)
+        private void LoadRelationships(IInventoryable player, IGangs gangs, IContacts contacts)
         {
             player.RelationshipManager.GangRelationships.ResetGang(false);
 
@@ -513,8 +513,14 @@ namespace LosSantosRED.lsr.Data
             foreach (ContactRelationship contactRelationship in ContactRelationships)
             {
                 EntryPoint.WriteToConsole($"RELATIONSHIP LOAD {contactRelationship.ContactName} MONEY:{contactRelationship.TotalMoneySpent} REP:{contactRelationship.ReputationLevel}");
+
+                contactRelationship.SetupContact(contacts);
+
                 player.RelationshipManager.Add(contactRelationship);
                 contactRelationship.Activate();
+
+
+
             }
         }
         private void LoadContacts(IInventoryable player, IGangs gangs)

@@ -149,7 +149,7 @@ public class FootChase
             TaskLookAtSimple();
             //EntryPoint.WriteToConsole("TaskLookAtSimple");
         }
-        else if (LocalDistance < CloseDistance && !shouldAttackWithLessLethal && !shouldAimWeapon)
+        else if (LocalDistance < CloseDistance && !shouldAttackWithLessLethal && !shouldAimWeapon && Player.IsBusted)
         {
             if (Player.ClosestCopToPlayer != null && Player.ClosestCopToPlayer.Handle == Ped.Handle)
             {

@@ -316,7 +316,7 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
         PedSpawnLimit_Investigation = 6;
         PedSpawnLimit_Wanted1 = 7;// 8;
-        PedSpawnLimit_Wanted2 = 8;// 9;
+        PedSpawnLimit_Wanted2 = 9;// 9;
         PedSpawnLimit_Wanted3 = 12;// 14;
         PedSpawnLimit_Wanted4 = 16;// 18;
         PedSpawnLimit_Wanted5 = 20;// 22;
@@ -338,7 +338,7 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
         VehicleSpawnLimit_Investigation = 6;
         VehicleSpawnLimit_Wanted1 = 7;// 8;
-        VehicleSpawnLimit_Wanted2 = 8;// 9;
+        VehicleSpawnLimit_Wanted2 = 9;// 9;
         VehicleSpawnLimit_Wanted3 = 12;// 13;
         VehicleSpawnLimit_Wanted4 = 14;// 15;
         VehicleSpawnLimit_Wanted5 = 15;// 16;

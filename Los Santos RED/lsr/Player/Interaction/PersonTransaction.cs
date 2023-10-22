@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Media;
 
 public class PersonTransaction : Interaction
 {
@@ -115,8 +116,11 @@ public class PersonTransaction : Interaction
         Transaction?.DisposeTransactionMenu();
         DisposeInteractionMenu();
         Player.LastFriendlyVehicle = null;
-
-        if(PedCanBeTasked && Ped != null)
+        if (SellingProp.Exists())
+        {
+            SellingProp.Delete();
+        }
+        if (PedCanBeTasked && Ped != null)
         {
             Ped.CanBeTasked = true;
         }
@@ -178,7 +182,13 @@ public class PersonTransaction : Interaction
         Transaction.PreviewItems = false;
         Transaction.PersonTransaction = this;
 
-        Transaction.UseAccounts = Ped.ShopMenu == null || !Ped.ShopMenu.Items.Any(x => x.IsIllicilt);
+        bool useAccounts = true;
+        if (Ped.ShopMenu == null || Ped.ShopMenu.Items.Any(x => x.IsIllicilt))
+        {
+            useAccounts = false;
+        }
+
+        Transaction.UseAccounts = useAccounts;// Ped.ShopMenu != null || !Ped.ShopMenu.Items.Any(x => x.IsIllicilt);
 
 
         Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);

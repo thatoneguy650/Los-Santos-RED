@@ -1681,6 +1681,12 @@ public void DebugNumpad8()
         EntryPoint.WriteToConsole($"CustomPhoneOS:{Player.CellPhone.CustomPhoneOS} CustomPhoneType:{Player.CellPhone.CustomPhoneType} PhoneOS{Player.CellPhone.PhoneOS} PhoneType{Player.CellPhone.PhoneType}");
 
 
+
+       foreach(ContactRelationship cr in Player.RelationshipManager.ContactRelationships)
+        {
+            EntryPoint.WriteToConsole($"{cr.ContactName} {cr.ReputationLevel} {cr.TotalMoneySpent} {cr.Stuff}");
+        }
+
          //&&  && Player.CurrentVehicle.Vehicle.Model.Name.ToLower() == VehicleToSteal.ModelName.ToLower() && Player.CurrentVehicle.WasModSpawned && Player.CurrentVehicle.AssociatedGang != null && Player.CurrentVehicle.AssociatedGang.ID == TargetGang.ID;
 
 

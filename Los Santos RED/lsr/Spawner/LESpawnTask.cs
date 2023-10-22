@@ -21,7 +21,7 @@ public class LESpawnTask : SpawnTask
         AddCanine = addCanine;
     }
 
-
+    public List<Cop> SpawnedCops { get; set; } = new List<Cop>();
     private bool HasAgency => Agency != null;
     public bool IsMarshalMember { get; set; } = false;
     public override void AttemptSpawn()
@@ -291,7 +291,7 @@ public class LESpawnTask : SpawnTask
         {
             PrimaryCop.IsMarshalTaskForceMember = true;
         }
-
+        SpawnedCops.Add(PrimaryCop);
         World.Pedestrians.AddEntity(PrimaryCop);
         PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode);//TASKING IS BROKEN FOR ALL COPS FAR FROM PLAYER AND ALL OTHER PEDS
         if (Pedestrian.Exists())
@@ -315,6 +315,9 @@ public class LESpawnTask : SpawnTask
         //NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
         bool isMale = true;
         CanineUnit PrimaryCop = new CanineUnit(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomDogName(isMale), PersonType.ModelName, World);
+
+        SpawnedCops.Add(PrimaryCop);
+
         World.Pedestrians.AddEntity(PrimaryCop);
         PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode);
         //PrimaryCop.TaskRequirements = SpawnRequirement;

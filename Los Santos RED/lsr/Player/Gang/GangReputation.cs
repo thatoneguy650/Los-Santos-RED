@@ -450,7 +450,7 @@ public class GangReputation
             //}
             string MessageToSend;
             MessageToSend = Replies.PickRandom();
-            Player.CellPhone.AddScheduledText(phoneContact, MessageToSend,4, false);
+            Player.CellPhone.AddScheduledText(phoneContact, MessageToSend, 1, false);
         }
     }
 

@@ -138,7 +138,7 @@ class GoToInVehicleTaskState : TaskState
     }
     private void CheckGoToDistances()
     {
-        float DistanceToCoordinates = PedGeneral.Pedestrian.DistanceTo2D(PlaceToDriveTo);
+        float DistanceToCoordinates = PedGeneral.Pedestrian.DistanceTo(PlaceToDriveTo); //PedGeneral.Pedestrian.DistanceTo2D(PlaceToDriveTo);
         if (PedGeneral.Pedestrian.IsInAirVehicle)
         {
             if (DistanceToCoordinates <= 150f)

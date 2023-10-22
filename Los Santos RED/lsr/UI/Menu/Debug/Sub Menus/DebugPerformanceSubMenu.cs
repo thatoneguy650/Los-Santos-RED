@@ -118,7 +118,7 @@ public class DebugPerformanceSubMenu : DebugSubMenu
 
 
 
-       // List<Entity> AllEntities = Rage.World.GetAllEntities().ToList();
+        List<Entity> AllEntities = Rage.World.GetAllEntities().ToList();
 
 
 
@@ -126,29 +126,29 @@ public class DebugPerformanceSubMenu : DebugSubMenu
 
 
         EntryPoint.WriteToConsole($"PERSISTENT ENTITIES ===============================", 0);
-        //foreach (Entity ent in AllEntities)
-        //{
-        //    if (ent.Exists() && ent.IsPersistent)
-        //    {
-        //        TotalEntities++;
-        //        EntryPoint.WriteToConsole($"PERSISTENT ENTITY STILL EXISTS {ent.Handle} {ent.GetType()}  {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 0);
-        //    }
-        //}
+        foreach (Entity ent in AllEntities)
+        {
+            if (ent.Exists() && ent.IsPersistent)
+            {
+                TotalEntities++;
+                EntryPoint.WriteToConsole($"PERSISTENT ENTITY STILL EXISTS {ent.Handle} {ent.GetType()}  {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 0);
+            }
+        }
         EntryPoint.WriteToConsole($"PERSISTENT ENTITIES =============================== TOTAL: {TotalEntities}", 0);
     }
     private void PrintAllEntities()
     {
         int TotalEntities = 0;
-        //List<Entity> AllEntities = Rage.World.GetAllEntities().ToList();
+        List<Entity> AllEntities = Rage.World.GetAllEntities().ToList();
         EntryPoint.WriteToConsole($"ENTITIES ===============================", 0);
-        //foreach (Entity ent in AllEntities)
-        //{
-        //    if (ent.Exists())
-        //    {
-        //        TotalEntities++;
-        //        EntryPoint.WriteToConsole($"ENTITY {ent.Handle} {ent.GetType()}  {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position} Heading {ent.Heading}", 0);
-        //    }
-        //}
+        foreach (Entity ent in AllEntities)
+        {
+            if (ent.Exists())
+            {
+                TotalEntities++;
+                EntryPoint.WriteToConsole($"ENTITY {ent.Handle} {ent.GetType()}  {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position} Heading {ent.Heading}", 0);
+            }
+        }
         EntryPoint.WriteToConsole($"ENTITIES =============================== TOTAL: {TotalEntities}", 0);
     }
 }

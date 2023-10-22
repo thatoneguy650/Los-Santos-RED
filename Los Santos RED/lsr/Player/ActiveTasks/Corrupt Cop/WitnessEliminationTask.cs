@@ -565,7 +565,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"Sending ${MoneyToRecieve}",
                         $"Heard you were done. We owe you ${MoneyToRecieve}",
                         };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 2, false);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1, false);
         }
         private void SendFailMessage()
         {
@@ -576,7 +576,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"How did you fuck this up so bad, they are squealing everything",
                         $"Since you fucked that up, they went right to the cops.",
                         };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 2, false);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1, false);
         }
     }
 

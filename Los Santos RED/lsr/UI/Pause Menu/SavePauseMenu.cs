@@ -34,10 +34,10 @@ public class SavePauseMenu
     private ISaveable Saveable;
     private ISettingsProvideable Settings;
     private IAgencies Agencies;
-
+    private IContacts Contacts;
     public SavePauseMenu(ISaveable player, ITimeControllable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, 
         IInteriors interiors, IEntityProvideable world, IShopMenus shopMenus, IModItems modItems, IWeapons weapons, ISettingsProvideable settings, IGameSaves gameSaves,
-        IPedSwap pedSwap, IInventoryable inventoryable, ISaveable saveable, IAgencies agencies)
+        IPedSwap pedSwap, IInventoryable inventoryable, ISaveable saveable, IAgencies agencies, IContacts contacts)
     {
         Player = player;
         Time = time;
@@ -57,6 +57,7 @@ public class SavePauseMenu
         Inventoryable = inventoryable;
         Saveable = saveable;
         Agencies = agencies;
+        Contacts = contacts;
     }
     public void Setup()
     {
@@ -68,7 +69,7 @@ public class SavePauseMenu
             Game.IsPaused = false;
         };
         Game.RawFrameRender += (s, e) => tabView.DrawTextures(e.Graphics);
-        NewSaveGameTab = new SaveGameTab(Player, PlacesOfInterest, ShopMenus, ModItems, Weapons, GangTerritories, Zones, tabView, Time, Settings, GameSaves, Gangs, PedSwap, Inventoryable, World, Saveable, Agencies);
+        NewSaveGameTab = new SaveGameTab(Player, PlacesOfInterest, ShopMenus, ModItems, Weapons, GangTerritories, Zones, tabView, Time, Settings, GameSaves, Gangs, PedSwap, Inventoryable, World, Saveable, Agencies, Contacts);
     }
     public void Toggle()
     {

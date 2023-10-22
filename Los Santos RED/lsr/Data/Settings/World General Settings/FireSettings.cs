@@ -112,7 +112,7 @@ public class FireSettings : ISettingsDefaultable
         MinDistanceToSpawn = 350f;// 50f;
         MaxDistanceToSpawn = 750f;// 1000f;// 150f;
 
-        TotalSpawnedMembersLimit = 5;// 6;//5
+        TotalSpawnedMembersLimit = 4;// 6;//5
         TotalSpawnedAmbientMembersLimit = 2;// 8;
 
         TotalSpawnedAmbientMembersLimit_Downtown = 2;
@@ -122,13 +122,13 @@ public class FireSettings : ISettingsDefaultable
         TotalSpawnedAmbientMembersLimit_Industrial = 2;
         TotalSpawnedAmbientMembersLimit_Investigation = 2;
 
-        AmbientSpawnPercentage = 10;// 30;
+        AmbientSpawnPercentage = 2;// 30;
         AmbientSpawnPercentage_Wilderness = 0;
-        AmbientSpawnPercentage_Rural = 5;
-        AmbientSpawnPercentage_Suburb = 10;// 15;
-        AmbientSpawnPercentage_Industrial = 15;// 25;
-        AmbientSpawnPercentage_Downtown = 25;// 40;
-        AmbientSpawnPercentage_Investigation = 25;// 70;
+        AmbientSpawnPercentage_Rural = 0;
+        AmbientSpawnPercentage_Suburb = 1;// 10;// 15;
+        AmbientSpawnPercentage_Industrial = 1;// 15;// 25;
+        AmbientSpawnPercentage_Downtown = 2;// 25;// 40;
+        AmbientSpawnPercentage_Investigation = 15;// 25;// 70;
 
         AllowStationSpawningWhenPlayerWanted = true;
         StationSpawningWhenPlayerWantedMaxWanted = 2;

@@ -818,7 +818,7 @@ public class LEDispatcher
                             EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles 2 NONPERS isNearLimit{isNearLimit} TotalPoliceCars{TotalPoliceCars} PossibleSpawnedPoliceCars{PossibleSpawnedPoliceCars}");
                             GameFiber.Yield();
                         }
-                        else if (distanceTo >= 250f)
+                        else if (distanceTo >= 175f)//250f)
                         {
                             if (PoliceCar.Vehicle.IsPersistent)
                             {
@@ -1224,7 +1224,12 @@ public class LEDispatcher
             //EntryPoint.WriteToConsoleTestLong($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, IN VEHICLE DELETE");
             return true;
         }
-        else if (!cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDeleteOnFoot) //Beyond Caring
+        else if (!cop.IsInVehicle && !cop.IsRoadblockSpawned && cop.DistanceToPlayer > DistanceToDeleteOnFoot) //Beyond Caring
+        {
+            //EntryPoint.WriteToConsoleTestLong($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, NOT IN VEHICLE DELETE");
+            return true;
+        }
+        else if (cop.IsRoadblockSpawned && cop.DistanceToPlayer > 350f) //Beyond Caring
         {
             //EntryPoint.WriteToConsoleTestLong($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, NOT IN VEHICLE DELETE");
             return true;

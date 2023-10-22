@@ -248,7 +248,7 @@ public class Interiors : IInteriors
                , Doors =  new List<InteriorDoor>() {
                     new InteriorDoor(3142793112,new Vector3(149.6298f, -1037.231f, 29.71915f)){ LockWhenClosed = true, } ,//Front Door1
                     new InteriorDoor(73386408,new Vector3(152.0632f, -1038.124f, 29.71909f)) { LockWhenClosed = true, } ,//Front Door2
-                    new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)) { LockWhenClosed = true,ForceRotateOpen = true },//teller door
+                    new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)) { ForceRotateOpen = true },//teller door
                 } },
             new Interior(11266,"Fleeca Bank") { 
                 IsWeaponRestricted = true,

@@ -367,7 +367,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"Sending ${MoneyToRecieve}",
                         $"Heard you were done. We owe you ${MoneyToRecieve}",
                         };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 2, false);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1, false);
         }
         private void SendTaskAbortMessage()
         {

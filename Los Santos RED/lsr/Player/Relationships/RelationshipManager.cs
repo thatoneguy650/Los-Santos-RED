@@ -67,6 +67,7 @@ public class RelationshipManager
     {
         if (phoneContact == null)
         {
+            EntryPoint.WriteToConsole("phoneContact IS NULL");
             return;
         }
         ContactRelationship contactRelationship = GetOrCreate(phoneContact);// ContactRelationships.FirstOrDefault(x => x.ContactName.ToLower() == contactName.ToLower());
@@ -76,8 +77,15 @@ public class RelationshipManager
             contactRelationship.Setup(ContactRelateable, PlacesOfInterest);
             ContactRelationships.Add(contactRelationship);
         }
-        contactRelationship.AddMoneySpent(moneySpent);
-        contactRelationship.SetReputation(repGained, false);
+        if (contactRelationship == null)
+        {
+            EntryPoint.WriteToConsole("contactRelationship IS NULL");
+        }
+        else
+        {
+            contactRelationship.AddMoneySpent(moneySpent);
+            contactRelationship.ChangeReputation(repGained, false);
+        }
     }
     private ContactRelationship GetOrCreate(PhoneContact phoneContact)// string contactName)
     {
