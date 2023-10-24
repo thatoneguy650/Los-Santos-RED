@@ -1687,6 +1687,11 @@ public void DebugNumpad8()
             EntryPoint.WriteToConsole($"{cr.ContactName} {cr.ReputationLevel} {cr.TotalMoneySpent} {cr.Stuff}");
         }
 
+       foreach(GangDen gangDen in ModDataFileManager.PlacesOfInterest.PossibleLocations.GangDens)
+        {
+            EntryPoint.WriteToConsole($" {gangDen.AssociatedGang?.ShortName} hasBLip = {gangDen.Blip.Exists()} hasTerrBlip = {gangDen.TerritoryBlip.Exists()}");
+        }
+
          //&&  && Player.CurrentVehicle.Vehicle.Model.Name.ToLower() == VehicleToSteal.ModelName.ToLower() && Player.CurrentVehicle.WasModSpawned && Player.CurrentVehicle.AssociatedGang != null && Player.CurrentVehicle.AssociatedGang.ID == TargetGang.ID;
 
 

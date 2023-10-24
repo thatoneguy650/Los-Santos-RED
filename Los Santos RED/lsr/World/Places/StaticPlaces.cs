@@ -139,14 +139,14 @@ public class StaticPlaces
             gl.IsAvailableForPlayer = setEnabled;
            // gl.IsBlipEnabled = setEnabled;
 
-            if (setEnabled)
-            {
-                gl.ActivateBlip(Time, World);
-            }
-            else
-            {
-                gl.DeactivateBlip();
-            }
+            //if (setEnabled)
+            //{
+             //   gl.ActivateBlip(Time, World);
+            //}
+            //else
+            //{
+            //    gl.DeactivateBlip();
+            //}
             //gl.IsEnabled = setEnabled;
             //EntryPoint.WriteToConsole($"SetGangLocationActive {iD} setEnabled:{setEnabled}");
         }

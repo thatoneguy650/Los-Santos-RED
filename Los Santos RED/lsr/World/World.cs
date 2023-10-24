@@ -2,7 +2,7 @@
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
-using LosSantosRED.lsr.Util.Locations;
+//using LosSantosRED.lsr.Util.Locations;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -282,6 +282,7 @@ namespace Mod
                 Color = Color.Purple,
                 Alpha = 0.25f
             };
+            EntryPoint.WriteToConsole($"TOTAL WANTED BLIP CREATED");
             if (TotalWantedBlip.Exists())
             {
                 NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");

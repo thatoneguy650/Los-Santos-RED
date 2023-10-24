@@ -186,7 +186,9 @@ public class Investigation
                 NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(InvestigationBlip);
                 NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE((uint)InvestigationBlip.Handle, true);
                 GameFiber.Yield();
+                EntryPoint.WriteToConsole($"INVESTIGATION BLIP CREATED");
             }
+
             EntryPoint.WriteToConsole($"PLAYER EVENT: INVESTIGATION START {RequiresPolice} {RequiresEMS} {RequiresFirefighters}");
         }
         
@@ -480,6 +482,7 @@ public class Investigation
                 NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(InvestigationBlip);
                 NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE((uint)InvestigationBlip.Handle, true);
                 GameFiber.Yield();
+                EntryPoint.WriteToConsole($"INVESTIGATION BLIP CREATED");
             }
             else
             {

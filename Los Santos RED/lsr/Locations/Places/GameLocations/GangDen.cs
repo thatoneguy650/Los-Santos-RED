@@ -12,7 +12,7 @@ using System.Xml.Serialization;
 
 public class GangDen : GameLocation//, ILocationGangAssignable
 {
-    private Blip TerritoryBlip;
+    //private Blip TerritoryBlip;
     private UIMenuItem dropoffCash;
     private UIMenuItem dropoffItem;
     private UIMenuItem completeTask;
@@ -48,8 +48,8 @@ public class GangDen : GameLocation//, ILocationGangAssignable
         }
         if (!TerritoryBlip.Exists())
         {
-            TerritoryBlip = CreateGangTerritoryBlip();
-            world.AddBlip(TerritoryBlip);
+            EntryPoint.WriteToConsole($"GANG DEN ACTIVATE BLIP, TERRITORY BLIP DOESNT EXIST {AssociatedGang?.ShortName}");
+            CreateGangTerritoryBlip(world);
         }
         base.ActivateBlip(time, world);
     }
@@ -71,6 +71,11 @@ public class GangDen : GameLocation//, ILocationGangAssignable
     public int ExpectedItemAmount { get; set; }
     [XmlIgnore]
     public Gang AssociatedGang { get; set; }
+
+
+    [XmlIgnore]
+    public Blip TerritoryBlip { get; set; }
+
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Enter {AssociatedGang?.ShortName} {AssociatedGang?.DenName}";
@@ -391,24 +396,28 @@ public class GangDen : GameLocation//, ILocationGangAssignable
 
 
 
-    private Blip CreateGangTerritoryBlip()
+    private void CreateGangTerritoryBlip(IEntityProvideable world)
     {
         if(!Settings.SettingsManager.GangSettings.ShowGangTerritoryBlip || AssociatedGang == null)
         {
-            return null;
+            return;
         }
-        Blip locationBlip;
-        locationBlip = new Blip(EntrancePosition, Settings.SettingsManager.GangSettings.GangTerritoryBlipSize) 
+        if(TerritoryBlip.Exists())
+        {
+            return;
+        }
+        TerritoryBlip = new Blip(EntrancePosition, Settings.SettingsManager.GangSettings.GangTerritoryBlipSize) 
         { 
             Color = AssociatedGang.Color
-        };     
-        locationBlip.Color = AssociatedGang.Color;// currentBlipColor;
-        locationBlip.Alpha = Settings.SettingsManager.GangSettings.GangTerritoryBlipAlpha;/// currentblipAlpha;
-        NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)locationBlip.Handle, true);   
+        };
+        EntryPoint.WriteToConsole($"GANG TERRITORY BLIP CREATED");
+        TerritoryBlip.Color = AssociatedGang.Color;// currentBlipColor;
+        TerritoryBlip.Alpha = Settings.SettingsManager.GangSettings.GangTerritoryBlipAlpha;/// currentblipAlpha;
+        NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)TerritoryBlip.Handle, true);   
         NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
         NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(BlipName);
-        NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(locationBlip);
-        return locationBlip;
+        NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(TerritoryBlip);
+        world.AddBlip(TerritoryBlip);
     }
 
 }

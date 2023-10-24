@@ -1010,6 +1010,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             return;
         }
         Blip myBlip = Pedestrian.AttachBlip();
+
+        EntryPoint.WriteToConsole($"PEDEXT BLIP CREATED");
+
         NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
         NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(BlipName);
         NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);

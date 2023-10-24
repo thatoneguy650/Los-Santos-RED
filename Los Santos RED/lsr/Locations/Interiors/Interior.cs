@@ -186,6 +186,7 @@ public class Interior
                         door.LockDoor();
                         //NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, true, 0.0f, 50.0f); //NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, true, door.Rotation.Pitch, door.Rotation.Roll, door.Rotation.Yaw);
                         //door.IsLocked = true;
+                        door.Deactivate();
                         GameFiber.Yield();
                     }
                     if (DisabledInteriorCoords != Vector3.Zero)

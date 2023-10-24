@@ -25,7 +25,7 @@ public class TaxiDispatcher : DefaultDispatcher
     private bool IsTimeToAmbientDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;//15000;
     protected override float DistanceToDeleteInVehicle => Settings.SettingsManager.TaxiSettings.MaxDistanceToSpawnInVehicle + 150f;// 300f;
     protected override float DistanceToDeleteOnFoot => Settings.SettingsManager.TaxiSettings.MaxDistanceToSpawnOnFoot + 50f;// 200 + 50f grace = 250f;
-    private List<TaxiDriver> DeleteableTaxiDrivers => World.Pedestrians.TaxiDriverList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
+    private List<TaxiDriver> DeleteableTaxiDrivers => World.Pedestrians.TaxiDriverList.Where(x => (x.TaxiRide == null || x.TaxiRide.IsActive == false) && ((x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove)).ToList();
     private bool HasNeedToAmbientDispatch
     {
         get
@@ -260,7 +260,7 @@ public class TaxiDispatcher : DefaultDispatcher
         VehicleType = null;
         PersonType = null;
         TimesToTryLocation = 50;
-        if(!GetSpawnLocation())
+        if(!GetCloseSpawnLocation())
         {
             TimesToTryLocation = 3;
             EntryPoint.WriteToConsole("ForceTaxiSpawn FAIL NO SPAWN LOCATION");

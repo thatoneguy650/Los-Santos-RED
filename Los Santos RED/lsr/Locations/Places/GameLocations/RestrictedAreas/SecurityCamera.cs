@@ -59,8 +59,10 @@ public class SecurityCamera
         if (!securityCameraObject.Exists())
         {
             IsCreated = false;
+
             return;
         }
+        //securityCameraObject.IsPersistent = false;
         IsCreated = true;
         //EntryPoint.WriteToConsole($"{Name} Created");
     }
@@ -108,6 +110,8 @@ public class SecurityCamera
             return;
         }
         AttachedBlip = new Blip(Position) { Name = Name, Color = EntryPoint.LSRedColor, Sprite = (BlipSprite)629,Angle = (int)Heading,Scale = 0.55f };
+
+        EntryPoint.WriteToConsole($"SECURITY CAMERA BLIP CREATED");
         if (!AttachedBlip.Exists())
         {
             return;

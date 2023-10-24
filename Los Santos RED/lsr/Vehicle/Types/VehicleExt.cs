@@ -1010,6 +1010,7 @@ namespace LSR.Vehicles
             AttachedBlip = Vehicle.AttachBlip();
             AttachedBlip.Sprite = (BlipSprite)OwnedBlipID;
             AttachedBlip.Color = Color.Red;
+            EntryPoint.WriteToConsole($"OWNERSHIP BLIP CREATED");
             //EntryPoint.WriteToConsole($"PLAYER EVENT: AddOwnershipBlip", 5);
         }
         public void AddOwnership()
@@ -1251,6 +1252,7 @@ namespace LSR.Vehicles
             AttachedBlip.Scale = 0.25f;
             AttachedBlip.Sprite = (BlipSprite)225;
             AttachedBlip.Color = Color.Blue;
+            EntryPoint.WriteToConsole($"VEWHICLE BLIP CREATED");
             //EntryPoint.WriteToConsole($"PLAYER EVENT: AddOwnershipBlip", 5);
         }
         public void AddBlip()
@@ -1262,6 +1264,7 @@ namespace LSR.Vehicles
             AttachedBlip = Vehicle.AttachBlip();
             AttachedBlip.Scale = BlipSize;
             AttachedBlip.Color = BlipColor;
+            EntryPoint.WriteToConsole($"VEHICLE BLIP CREATED");
         }
         public void FullyDelete()
         {

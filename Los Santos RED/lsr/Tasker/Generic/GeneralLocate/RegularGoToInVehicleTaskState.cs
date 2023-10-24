@@ -70,13 +70,13 @@ public class RegularGoToInVehicleTaskState : TaskState
 
     private void CheckTasks()
     {
-        Rage.TaskStatus taskStatus = PedGeneral.Pedestrian.Tasks.CurrentTaskStatus;
-        if (PedGeneral.IsDriver && (taskStatus == Rage.TaskStatus.NoTask) && Game.GameTime - GametimeLastRetasked >= 4000)
-        {
-            TaskEntry();
-            GametimeLastRetasked = Game.GameTime;
-            EntryPoint.WriteToConsole($"RAGULAR GO TO  TASK: TAXI {PedGeneral?.Handle} RETASKED");
-        }
+        //Rage.TaskStatus taskStatus = PedGeneral.Pedestrian.Tasks.CurrentTaskStatus;
+        //if (PedGeneral.IsDriver && (taskStatus == Rage.TaskStatus.NoTask) && Game.GameTime - GametimeLastRetasked >= 4000)
+        //{
+        //    TaskEntry();
+        //    GametimeLastRetasked = Game.GameTime;
+        //    EntryPoint.WriteToConsole($"RAGULAR GO TO  TASK: TAXI {PedGeneral?.Handle} RETASKED");
+        //}
     }
     private void TaskEntry()
     {
@@ -115,7 +115,7 @@ public class RegularGoToInVehicleTaskState : TaskState
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_PARK", 0, PedGeneral.Pedestrian.CurrentVehicle, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, PlaceToDriveToHeading, 3, 20f, false);
 
 
-               // NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, PedGeneral.Pedestrian.CurrentVehicle, 27, 9999999);
+                NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, PedGeneral.Pedestrian.CurrentVehicle, 6, 9999999);
                // NativeFunction.CallByName<bool>("TASK_PAUSE", 0, 99999);
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);

@@ -139,5 +139,10 @@ public class TaxiManager
         }
         return tr;
     }
+
+    public void Pullover(TaxiRide taxiRide)
+    {
+
+    }
 }
 

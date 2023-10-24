@@ -255,6 +255,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 if (ped.Exists())
                 {
                     Blip myBlip = ped.AttachBlip();
+                    EntryPoint.WriteToConsole($"PEDEXT BLIP CREATED");
                     myBlip.Color = Color.DarkRed;
                     myBlip.Scale = 0.3f;
                     string GroupName = "Man";

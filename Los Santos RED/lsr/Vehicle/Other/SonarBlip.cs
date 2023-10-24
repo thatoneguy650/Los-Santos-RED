@@ -60,7 +60,8 @@ public class SonarBlip
         }
         RemoveExistingBlip();
         Blip = new Blip(VehicleExt.Vehicle.Position) { Name = "Police" };
-        if(!Blip.Exists())
+        EntryPoint.WriteToConsole($"SONAR BLIP CREATED");
+        if (!Blip.Exists())
         {
             return;
         }

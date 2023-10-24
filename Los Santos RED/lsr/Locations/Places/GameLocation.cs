@@ -599,7 +599,9 @@ public class GameLocation : ILocationDispatchable
                 locationBlip.Sprite = (BlipSprite)MapIcon;
             }
             locationBlip.Scale = MapIconScale;
+
         }
+        EntryPoint.WriteToConsole($"Locations BLIP CREATED {Name}");
         currentblipAlpha = GetCurrentIconAlpha(time);// IsOpen(time.CurrentHour) ? MapOpenIconAlpha : MapClosedIconAlpha;
         currentBlipColor = IsPlayerInterestedInLocation ? Color.Blue : MapIconColor;
         locationBlip.Color = currentBlipColor;

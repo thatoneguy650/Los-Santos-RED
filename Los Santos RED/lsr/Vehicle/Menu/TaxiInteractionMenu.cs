@@ -250,6 +250,40 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
     }
     private void AddOtherOptions()
     {
+
+
+
+        if(TaxiRide == null)
+        {
+            return;
+        }
+
+        if(TaxiRide.IsWaitingOnPlayer)
+        {
+            UIMenuItem continueRide = new UIMenuItem("Continue", "Tell the driver to continue the ride.");
+            continueRide.Activated += (sender, e) =>
+            {
+                TaxiRide.ContinueRide();
+                VehicleInteractMenu.Visible = false;
+            };
+            if (TaxiRide != null)
+            {
+                VehicleInteractMenu.AddItem(continueRide);
+            }
+        }
+        else
+        {
+            UIMenuItem StopVehicle = new UIMenuItem("Pullover", "Tell the driver to pullover here.");
+            StopVehicle.Activated += (sender, e) =>
+            {
+                TaxiRide.Pullover();
+                VehicleInteractMenu.Visible = false;
+            };
+            if (TaxiRide != null)
+            {
+                VehicleInteractMenu.AddItem(StopVehicle);
+            }
+        }
         UIMenuItem CancelRide = new UIMenuItem("Cancel Ride", "Cancel the current ride.");
         CancelRide.Activated += (sender, e) =>
         {
@@ -260,6 +294,7 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
         {
             VehicleInteractMenu.AddItem(CancelRide);
         }
+
     }
     private void SetMenuBanner(UIMenu toSet)
     {

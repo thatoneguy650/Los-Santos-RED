@@ -137,6 +137,7 @@ namespace Mod
                 if (Settings.SettingsManager.CivilianSettings.ShowRandomCriminalBlips && Criminal.Pedestrian.Exists())
                 {
                     Blip myBlip = Criminal.Pedestrian.AttachBlip();
+                    EntryPoint.WriteToConsole($"CRIME PED BLIP BLIP CREATED");
                     myBlip.Color = Color.Red;
                     myBlip.Sprite = BlipSprite.CriminalWanted;
                     myBlip.Scale = 1.0f;

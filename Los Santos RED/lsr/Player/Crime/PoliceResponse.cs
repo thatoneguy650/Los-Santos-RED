@@ -461,6 +461,7 @@ namespace LosSantosRED.lsr
                     NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Wanted Center");
                     NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(LastSeenLocationBlip);
                     NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)LastSeenLocationBlip.Handle, true);
+                    EntryPoint.WriteToConsole($"LAST SEEN LOCATION BLIP CREATED");
                 }
                 else if(LastSeenLocationBlip.Exists())
                 {

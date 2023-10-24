@@ -132,7 +132,7 @@ public class TaxiService : ComplexTask, ILocationReachable
         if (Ped.IsInVehicle)
         {
             NativeFunction.Natives.SET_DRIVER_ABILITY(1.0f);
-            CurrentTaskState = new RegularGoToInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, !TaxiDriver.WasModSpawned, PlaceToDriveTo, PlaceToDriveToHeading, this, TaxiDriver.TaxiRide.TaxiDrivingStyle.DrivingStyle, TaxiDriver.TaxiRide.TaxiDrivingStyle.Speed);
+            CurrentTaskState = new RegularGoToInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, true, PlaceToDriveTo, PlaceToDriveToHeading, this, TaxiDriver.TaxiRide.TaxiDrivingStyle.DrivingStyle, TaxiDriver.TaxiRide.TaxiDrivingStyle.Speed);
         }
         else
         {

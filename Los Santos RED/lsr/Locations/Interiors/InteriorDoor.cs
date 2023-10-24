@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 [Serializable]
 public class InteriorDoor
 {
+    private Entity doorEntity;
     private bool isLocked = true;
     private float originalHeading = 0f;
     private bool HasOriginalHeading = false;
@@ -53,15 +54,26 @@ public class InteriorDoor
             UnLockDoor();
         }
     }
+    public void Deactivate()
+    {
+        if (ForceRotateOpen)
+        {
+            ForceRotateCloseDoor();
+        }
+    }
     public void AddDistanceOffset(Vector3 offsetToAdd)
     {
         Position += offsetToAdd;
     }
     private void ForceRotateOpenDoor()
     {
-        Rage.Object doorEntity = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Position.X, Position.Y, Position.Z, 3.0f, ModelHash, true, false, true);
+        doorEntity = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Position.X, Position.Y, Position.Z, 3.0f, ModelHash, true, false, true);
+
+
+
         if (!doorEntity.Exists())
         {
+            EntryPoint.WriteToConsole($"ForceRotateOpenDoor DOES NOT EXIST OPEN");
             return;
         }
        // doorEntity.Delete();
@@ -74,15 +86,16 @@ public class InteriorDoor
         NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, false);
         doorEntity.Rotation = new Rotator(0f, 0f, originalHeading - 100f);
         NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, true);
-       // doorEntity.IsPersistent = false;
+        //doorEntity.IsPersistent = false;
 
         EntryPoint.WriteToConsole($"ForceRotateOpenDoor {originalHeading - 100f}");
     }
     private void ForceRotateCloseDoor()
     {
-        Rage.Object doorEntity = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Position.X, Position.Y, Position.Z, 3.0f, ModelHash, true, false, true);
+        //Rage.Object doorEntity = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Position.X, Position.Y, Position.Z, 3.0f, ModelHash, true, false, true);
         if (!doorEntity.Exists())
         {
+            EntryPoint.WriteToConsole($"ForceRotateOpenDoor DOES NOT EXIST CLOSE");
             return;
         }
         if (!HasOriginalHeading)

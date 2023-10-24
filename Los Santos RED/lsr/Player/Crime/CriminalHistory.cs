@@ -198,6 +198,8 @@ namespace LosSantosRED.lsr
                 NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("APB Center");
                 NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(CriminalHistoryBlip);
                 NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE((uint)CriminalHistoryBlip.Handle, true);
+
+                EntryPoint.WriteToConsole($"CRIMINAL HISORY BLIP CREATED");
                 //GameFiber.Yield();//TR Yield RemovedTest 1
             }
             else

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 
 public class TaxiRide
@@ -18,6 +19,7 @@ public class TaxiRide
     private uint GameTimeArrivedAtPickup;
     private bool HasDonePickupItems;
     private bool IsWaitingOnPlayerAfterGetOut;
+
     private SpawnLocation PulloverLocation;
     public TaxiRide(IEntityProvideable world, ITaxiRideable player, TaxiFirm requestedFirm, TaxiVehicleExt respondingVehicle, TaxiDriver respondingDriver, Vector3 pickupLocation)
     {
@@ -66,7 +68,15 @@ public class TaxiRide
             {
                 return PulloverLocation.StreetPosition;
             }
+            else if (HasPickedUpPlayer && IsWaitingOnPlayer && PulloverLocation.HasStreetPosition)
+            {
+                return PulloverLocation.StreetPosition;
+            }
             else if (HasPickedUpPlayer && HasDestination)
+            {
+                return DestinationLocation.StreetPosition;
+            }
+            else if(HasArrivedAtDestination)
             {
                 return DestinationLocation.StreetPosition;
             }
@@ -108,9 +118,12 @@ public class TaxiRide
     public bool HasPickup => PickupLocation != null && PickupLocation.StreetPosition != Vector3.Zero;
     public bool IsNearbyDestination { get; private set; }
     public bool IsNearbyPickup { get; private set; }
+    public bool IsWaitingOnPlayer { get; private set; }
     public void Setup()
     {
         IsActive = false;
+        IsWaitingOnPlayer = false;
+        EntryPoint.WriteToConsole("Taxi Ride IS ACTIVE SET TO FALSE SETUP");
         PickupLocation = new SpawnLocation(InitialPickupLocation);
         DestinationLocation = new SpawnLocation();
         PickupLocation.GetClosestStreet(true);
@@ -203,6 +216,7 @@ public class TaxiRide
             Game.DisplayHelp("Taxi Ride Cancelled");
         }
         IsActive = false;
+        EntryPoint.WriteToConsole("Taxi Ride IS ACTIVE SET TO FALSE");
         if (RespondingDriver != null)
         {
             RespondingDriver.TaxiRide = null;
@@ -281,7 +295,6 @@ public class TaxiRide
         if (HasArrivedAtDestination || IsNearbyDestination)
         {
             FinishRide();
-            return;
         }
         else if(HasPickedUpPlayer)
         {
@@ -296,6 +309,7 @@ public class TaxiRide
             Game.DisplayHelp("Taxi Ride Completed");
         }
         IsActive = false;
+        EntryPoint.WriteToConsole("Taxi Ride IS ACTIVE SET TO FALSE FINISH");
         if (RespondingDriver != null)
         {
             RespondingDriver.TaxiRide = null;
@@ -306,7 +320,7 @@ public class TaxiRide
         {
             PickupBlip.Delete();
         }
-        EntryPoint.WriteToConsole("TAXI RIDE HAS BEEN CANCELLED");
+        EntryPoint.WriteToConsole("TAXI RIDE HAS BEEN Completed");
     }
 
     private void OnPlayerReturnedToTaxi()
@@ -428,6 +442,8 @@ public class TaxiRide
                 NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(PickupBlip);
                 World.AddBlip(PickupBlip);
             }
+
+            EntryPoint.WriteToConsole($"PICKUP BLIP CREATED");
         }
     }
     private void SpawnVehicleAndDriver()
@@ -451,6 +467,23 @@ public class TaxiRide
         //RespondingDriver.SetTaskingActive(PickupLocation.StreetPosition);
         RespondingDriver.SetTaxiRide(this);
         return true;
+    }
+
+    public void Pullover()
+    {
+        SpawnLocation spawnLocation = new SpawnLocation(RespondingDriver.Position);
+        spawnLocation.GetClosestStreet(false);
+        spawnLocation.GetClosestSideOfRoad();
+        if (!spawnLocation.HasStreetPosition)
+        {
+            spawnLocation.StreetPosition = RespondingDriver.Position;
+        }
+        PulloverLocation = spawnLocation;
+        IsWaitingOnPlayer = true;
+    }
+    public void ContinueRide()
+    {
+        IsWaitingOnPlayer = false;
     }
 }
 
