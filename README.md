@@ -189,7 +189,7 @@ Enhanced Free Roam Mode
 ## Compatibility
 - Incompatible with
   - Menyoo can cause item duplication
-  - AAny police script or wanted level changing mod
+  - Any police script or wanted level changing mod
   - Can you make it work with XXX? No.
 - Do not save and turn off autosave
   
