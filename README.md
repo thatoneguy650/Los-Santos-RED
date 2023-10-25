@@ -17,7 +17,7 @@
   + RageNativeUI Version 1.9 or later required, be sure to update if you haven't
 + Download the latest release and drag into the root GTA V directory (NAudio is included in the package with LSR)
 + Requires a custom Gameconfig, Packfile Limit Adjuster, and Heap Adjuster!
-  + Download an install based on the instructions provided. Links: [Gameconfig](https://github.com/pnwparksfan/gameconfig/releases) [Packfile Limit Adjuster](https://www.gta5-mods.com/tools/packfile-limit-adjuster) [Heap Adjuster](https://www.lcpdfr.com/downloads/gta5mods/scripts/36665-los-santos-red/?tab=comments)
+  + Download an install based on the instructions provided. Links: [Gameconfig](https://github.com/pnwparksfan/gameconfig/releases) [Packfile Limit Adjuster](https://www.gta5-mods.com/tools/packfile-limit-adjuster) [Heap Adjuster](https://www.gta5-mods.com/tools/heapadjuster/)
 - Verify RAGE Plugin Hook is installed to the root GTA V directory
 - Verify NAudio.dll and NAudio.xml along with RageNativeUI.dll and RageNativeUI.xml are in the root GTA V directory
 - Verify the Los Santos RED.dll, Los Santos RED.pdb, and LosSantosRED folder  are in the plugins folder (in the root GTA V directory)
