@@ -16,7 +16,8 @@
 + Place all [RAGENativeUI](https://github.com/alexguirre/RAGENativeUI) files in the root GTA V directory
   + RageNativeUI Version 1.9 or later required, be sure to update if you haven't
 + Download the latest release and drag into the root GTA V directory (NAudio is included in the package with LSR)
-
++ Requires a custom Gameconfig, Packfile Limit Adjuster, and Heap Adjuster!
+  + Download an install based on the instructions provided. Links: [Gameconfig](https://github.com/pnwparksfan/gameconfig/releases) [Packfile Limit Adjuster](https://www.gta5-mods.com/tools/packfile-limit-adjuster) [Heap Adjuster](https://www.gta5-mods.com/tools/heapadjuster/)
 - Verify RAGE Plugin Hook is installed to the root GTA V directory
 - Verify NAudio.dll and NAudio.xml along with RageNativeUI.dll and RageNativeUI.xml are in the root GTA V directory
 - Verify the Los Santos RED.dll, Los Santos RED.pdb, and LosSantosRED folder  are in the plugins folder (in the root GTA V directory)
@@ -152,7 +153,6 @@ Enhanced Free Roam Mode
 - F11 - Debug Menu
 - Mouse4 - Action Wheel Menu
 - Shift + E - Surrender
-- Shift + G - Drop Weapon and Ammo
 - Shift + X - Change Fire Mode Selection
 - Z (When Running) - Start Sprinting
 - Shift + E (In Car) - Right Blinker
@@ -183,34 +183,22 @@ Enhanced Free Roam Mode
 - [Bob74](https://github.com/Bob74)
 - [DisapprovedByMe](https://github.com/DisapprovedByMe)
 - [Xinerki](https://github.com/Xinerki)
+- PeterBadoingy
+- box
 
 ## Compatibility
 - Incompatible with
-  - Any Police Script Mod
-  - Any Wanted Level Changing Mod
-  - Story Mode (Most Likely)
+  - Menyoo can cause item duplication
+  - Any police script or wanted level changing mod
   - Can you make it work with XXX? No.
 - Do not save and turn off autosave
-- Restart the game without the mod active before saving (does some memory editing)
-
+  
 ## Complementary Mods
-[Manual Transmission](https://www.gta5-mods.com/scripts/manual-transmission-ikt)  
-[Realistic Weapons Sounds](https://www.gta5-mods.com/weapons/realistic-weapons-sounds)  
-[Add On Plates (should be configured already)](https://www.gta5-mods.com/paintjobs/new-license-plates-add-on)  
-[Disable Red X Hitmarker Without Disabling the Crosshair](https://www.gta5-mods.com/misc/disable-red-x-hitmark-without-disabling-the-crossshair)
+[Add On Plates (AlternateConfigs\AddOnPlates_Wildbrick142)](https://www.gta5-mods.com/paintjobs/new-license-plates-add-on)  
+[True Realistic Driving V](https://www.gta5-mods.com/scripts/true-realistic-driving-v-realistic-mass-v0-1-beta)
 
 ## Issues
-- This is an alpha, expect crashes/low performance
-- Peds and Cops may react unexpectedly, AI programming is hard
-- Some settings are not implemented/ do not exist
-- Turning off some settings may cause other unexpected issues, mostly tested with everything ON
-- If the mod doesn't load/can't get to the settings page, Once you are successfully loaded into SinglePlayer with RagePluginHook press F4. Type: ReloadAllPlugins and press Enter.
-- If you delete the xml files, they will be recreated on next launch with the default settings.
-- If you have crashes, please post the contents of your RagePluginHook.log file (located in the root GTA V directory). This will allow me to quickly see the exact error.
-
-## Contact
-- For any questions, feedback, or assistance:
-
-[![](https://img.shields.io/badge/email-imnotphoon%40gmail-blue)](mailto:imnotphoon@gmail.com)
-
-[![](https://img.shields.io/badge/youtube-not%20phoon-red)](https://www.youtube.com/channel/UCztW17S8jNqJo6TqzmMbj8Q)
+- Running without a custom gameconfig can lead to issues with vehicle and ped spawning.
+- You will need to rebuy components if you remove them at the underground gunshops, gang dens, or drug dealers.
+- Vanilla taxi service is not available with LSR active (Downtown Cab Co on the vanilla cell will show Busy forever) use the burner cell to call the LSR taxi service.
+- Loading bodies in the trunk can fail or not attach properly.
