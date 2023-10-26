@@ -89,13 +89,11 @@ public class MarshalDispatcher
     {
 
     }
-
     private void OnSpawningValid()
     {
         GameTimeNotWantedToAttemptDispatch = RandomItems.GetRandomNumber(Settings.SettingsManager.PoliceSettings.MinTimeOfAPBBetweenMarshalsAPBResponse, Settings.SettingsManager.PoliceSettings.MaxTimeOfAPBBetweenMarshalsAPBResponse);
         EntryPoint.WriteToConsole($"Marshal Dispatcher GameTimeNotWantedToAttemptDispatch {GameTimeNotWantedToAttemptDispatch}");
     }
-
     private void HandleMarshalsSpawn()
     {
         if (!Settings.SettingsManager.PoliceSettings.AllowMarshalsAPBResponse || !IsTimeToDispatchMarshals || Player.IsWanted || !Player.CriminalHistory.HasDeadlyHistory || !HasNeedToDispatch || !Player.CriminalHistory.IsWithinMarshalDistance)
@@ -183,7 +181,6 @@ public class MarshalDispatcher
         while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
         return isValidSpawn && SpawnLocation.HasSpawns;
     }
-
     private bool GetMarshalTypes()
     {
         VehicleType = null;
@@ -231,7 +228,5 @@ public class MarshalDispatcher
         }
         return true;
     }
-
-
 }
 

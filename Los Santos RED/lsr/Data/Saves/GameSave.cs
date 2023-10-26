@@ -297,7 +297,7 @@ namespace LosSantosRED.lsr.Data
                 LoadWeapons(weapons);
                 LoadInventory(player, modItems);
                 LoadLicenses(player);
-                LoadVehicles(player, world,settings, modItems, placesOfInterest, time);
+                LoadVehicles(player, world,settings, modItems, placesOfInterest, time, weapons);
                 LoadPosition(player);
                 LoadRelationships(player, gangs, contacts);
                 LoadContacts(player, gangs);
@@ -421,7 +421,7 @@ namespace LosSantosRED.lsr.Data
                 //}
             }
         }
-        private void LoadVehicles(IInventoryable player, IEntityProvideable World, ISettingsProvideable settings, IModItems modItems,IPlacesOfInterest placesOfInterest, ITimeReportable time)
+        private void LoadVehicles(IInventoryable player, IEntityProvideable World, ISettingsProvideable settings, IModItems modItems,IPlacesOfInterest placesOfInterest, ITimeReportable time, IWeapons weapons)
         {
             player.VehicleOwnership.ClearVehicleOwnership();
             foreach (VehicleSaveStatus OwnedVehicleVariation in OwnedVehicleVariations)
@@ -478,7 +478,7 @@ namespace LosSantosRED.lsr.Data
                     MyVeh.TimesImpounded = OwnedVehicleVariation.TimesImpounded;
                     MyVeh.DateTimeImpounded = OwnedVehicleVariation.DateTimeImpounded;
                     ILocationImpoundable locationImpoundable = placesOfInterest.VehicleImpoundLocations().Where(x => x.Name == OwnedVehicleVariation.ImpoundedLocation).FirstOrDefault();
-                    if(locationImpoundable != null && locationImpoundable.HasImpoundLot && locationImpoundable.VehicleImpoundLot.ImpoundVehicle(MyVeh, time, player.Licenses.HasValidCCWLicense(time)))
+                    if(locationImpoundable != null && locationImpoundable.HasImpoundLot && locationImpoundable.VehicleImpoundLot.ImpoundVehicle(MyVeh, time, player.Licenses.HasValidCCWLicense(time), weapons))
                     {
                         //MyVeh.TimesImpounded = OwnedVehicleVariation.TimesImpounded;
                         //MyVeh.DateTimeImpounded = OwnedVehicleVariation.DateTimeImpounded;

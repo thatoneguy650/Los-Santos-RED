@@ -40,7 +40,7 @@ public class VehicleImpoundLot
             }
         }
     }
-    public bool ImpoundVehicle(VehicleExt toImpound, ITimeReportable time, bool hasValidCCW)
+    public bool ImpoundVehicle(VehicleExt toImpound, ITimeReportable time, bool hasValidCCW, IWeapons weapons)
     {
         if (toImpound == null || !toImpound.Vehicle.Exists() || ParkingSpots == null)
         {
@@ -63,7 +63,7 @@ public class VehicleImpoundLot
         }
         toImpound.Vehicle.Position = ParkingSpot.Position;
         toImpound.Vehicle.Heading = ParkingSpot.Heading;
-        toImpound.SetImpounded(time, Location.Name, hasValidCCW);
+        toImpound.SetImpounded(time, Location.Name, hasValidCCW, weapons);
         return true;
     }
 }

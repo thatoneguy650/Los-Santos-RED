@@ -268,7 +268,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             ImpoundedVehicle.IsAlwaysOpenForPlayer = true;
             startingHealth = ImpoundedVehicle.Vehicle.Health;
             startingEngineHealth = ImpoundedVehicle.Vehicle.EngineHealth;
-            if(!ImpoundLocation.VehicleImpoundLot.ImpoundVehicle(ImpoundedVehicle, Time, false))
+            if(!ImpoundLocation.VehicleImpoundLot.ImpoundVehicle(ImpoundedVehicle, Time, false, Weapons))
             {
                 return false;
             }

@@ -248,8 +248,45 @@ public class GangInteraction : IContactMenuInteraction
             ApologizeToGang();
             sender.Visible = false;
         };
+        UIMenuItem InsultGangMenu = new UIMenuItem("Insult Gang", "Let them know what you ~r~REALLY~s~ think about them");
+        InsultGangMenu.Activated += (sender, selectedItem) =>
+        {
+            InsultGang();
+            sender.Visible = false;
+        };
         GangMenu.AddItem(PayoffGangNeutral);
         GangMenu.AddItem(ApoligizeToGang);
+        GangMenu.AddItem(InsultGangMenu);
+    }
+
+    private void InsultGang()
+    {
+        List<string> Insults = new List<string>() {
+                    "Your mom raised you exactly like i expected",
+                    //"This is why mom doesnt FUCKING love you",
+                    "When your mother smiles, she looks like a horse",
+                    "You are one ugly motherfucker",
+                    "Fuck your wannabe crew",
+                    "Gonna fuck you up prick",
+                    "Eat any good books lately",
+                    "Gonna send you and your mickey-mouse crew straight to hell",
+                    "Aren't gangsters supposed to be tough?",
+                    "Heard you were a fucking snitch",
+                    "Gonna send your ass to the morgue",
+                    };
+        Game.DisplaySubtitle($"You: {Insults.PickRandom()}");
+        Player.PlayerVoice.SayInsult();
+        GameFiber.Sleep(4000);
+        List<string> Replies = new List<string>() {
+                    "Thats the best you got?",
+                    "Keep talking asshole, see where it leads",
+                    "Not wise to run your mouth to me",
+                    "Lets see if you are as tough in person",
+                    "You are a real telephone gangster, can't wait to meet in person",
+                    "I'll remeber that when you are bleeding out",
+                    };
+        Player.CellPhone.AddPhoneResponse(ActiveGang.Contact.Name, ActiveGang.Contact.IconName, Replies.PickRandom());
+        Player.RelationshipManager.GangRelationships.ChangeReputation(ActiveGang, -1000, false);
     }
 
     private void AddHasDebtItems()

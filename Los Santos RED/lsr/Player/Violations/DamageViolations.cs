@@ -37,7 +37,6 @@ public class DamageViolations
     public bool RecentlyKilledCivilian => GameTimeLastKilledCivilian != 0 && Game.GameTime - GameTimeLastKilledCivilian <= Settings.SettingsManager.ViolationSettings.RecentlyKilledCivilianTime;
     public bool RecentlyHurtCop => GameTimeLastHurtCop != 0 && Game.GameTime - GameTimeLastHurtCop <= Settings.SettingsManager.ViolationSettings.RecentlyHurtPoliceTime;
     public bool RecentlyKilledCop => GameTimeLastKilledCop != 0 && Game.GameTime - GameTimeLastKilledCop <= Settings.SettingsManager.ViolationSettings.RecentlyKilledPoliceTime;
-
     public DamageViolations(IViolateable player, Violations violations, ISettingsProvideable settings, ITimeReportable time, ICrimes crimes, IZones zones, IGangTerritories gangTerritories)
     {
         Player = player;
@@ -91,7 +90,6 @@ public class DamageViolations
         {
             GameTimeLastHurtCop = Game.GameTime;
             Player.AddCrime(Crimes.GetCrime(StaticStrings.HurtingPoliceCrimeID), true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
-            //EntryPoint.WriteToConsole($"VIOLATIONS: Hurting Police Added WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
         }
         else
         {
@@ -102,7 +100,6 @@ public class DamageViolations
             }
             GameTimeLastHurtCivilian = Game.GameTime; 
         }
-       // EntryPoint.WriteToConsole($"VIOLATIONS: Hurting WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
     }
     public void AddKilled(PedExt myPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle)
     {
@@ -114,7 +111,6 @@ public class DamageViolations
             GameTimeLastHurtCop = Game.GameTime;
             Player.AddCrime(Crimes.GetCrime(StaticStrings.KillingPoliceCrimeID), true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
             Player.OnKilledCop();
-            //EntryPoint.WriteToConsole($"VIOLATIONS: Killing Police Added WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
         }
         else
         {
@@ -128,7 +124,6 @@ public class DamageViolations
             GameTimeLastKilledCivilian = Game.GameTime;
             GameTimeLastHurtCivilian = Game.GameTime;       
         }
-       // EntryPoint.WriteToConsole($"VIOLATIONS: Killing WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
     }
     public void AddFakeKilled(PedExt myPed)
     {

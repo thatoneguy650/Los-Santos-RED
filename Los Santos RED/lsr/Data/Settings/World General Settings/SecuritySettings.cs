@@ -92,9 +92,7 @@ public class SecuritySettings : ISettingsDefaultable
         ManageTasking = true;
         ShowSpawnedBlips = false;
 
-#if DEBUG
-        ShowSpawnedBlips = true;
-#endif
+
         DetainDistance = 4.0f;
         AllowDetainment = true;
         AttachBlipsToAmbientPeds = false;

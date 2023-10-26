@@ -173,7 +173,7 @@ public class Investigation
         {
             IsActive = true;
             GameTimeStartedInvestigation = Game.GameTime;
-            if (Settings.SettingsManager.InvestigationSettings.CreateBlip)
+            if (Settings.SettingsManager.InvestigationSettings.CreateBlip && EntryPoint.ModController.IsRunning)
             {
                 InvestigationBlip = new Blip(Position, 250f)
                 {

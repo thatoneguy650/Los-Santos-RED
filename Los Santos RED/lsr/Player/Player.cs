@@ -14,6 +14,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
+using System.Windows.Media;
 
 namespace Mod
 {
@@ -89,6 +91,8 @@ namespace Mod
         private bool disableAutoEngineStart;
         private bool IsSirenOn;
         private uint GameTimeLastReportedCamera;
+        private bool ManuallyClosedDoor;
+        private bool IsRunningDoorCloseFlag;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -673,6 +677,8 @@ namespace Mod
             {
                 NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Game.LocalPlayer.Character, true, false);
             }
+
+           // NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Character, 313, false);
         }
         public void Dispose()
         {
@@ -713,6 +719,7 @@ namespace Mod
             NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
             NativeFunction.Natives.RESET_PED_MOVEMENT_CLIPSET<bool>(Game.LocalPlayer.Character);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
+            //NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, 313, false);
             if (Settings.SettingsManager.UIGeneralSettings.AllowScreenEffectReset)//this should be moved methinks
             {
                 NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
@@ -1334,6 +1341,7 @@ namespace Mod
                     NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
                 }
                 TaxiManager.OnGotOutOfVehicle();
+               // NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Character, 313, false);
             }
             //UpdateOwnedBlips();
             //EntryPoint.WriteToConsole($"PLAYER EVENT: IsInVehicle to {IsInVehicle}");
@@ -1654,7 +1662,19 @@ namespace Mod
             GetCurrentViewMode();
             PlayerTasks.Update();
             UpdateClosestLookedAtObject();
+            //UpdateDoorState();
         }
+
+        //private void UpdateDoorState()
+        //{
+        //    if(GameTimeLastManuallyOpenedDoor != 0 && Game.GameTime - GameTimeLastManuallyOpenedDoor >= 20000)
+        //    {
+        //        NativeFunction.Natives.SET_PED_CONFIG_FLAG(Character, 313, false);
+        //        GameTimeLastManuallyOpenedDoor = 0;
+        //        EntryPoint.WriteToConsole("REMOVING DONT CLOSE DOOR FLAG FROM PLAYER");
+        //    }
+        //}
+
         private void UpdateGeneralStatus()
         {
             if (Game.LocalPlayer.Character.IsDead && !IsDead)
@@ -2343,6 +2363,32 @@ namespace Mod
                 GameFiber.Yield();
                 OnWantedLevelChanged();
             }
+        }
+
+        public void OnManuallyOpenedDoor()
+        {
+            EntryPoint.WriteToConsole("ADDING DONT CLOSE DOOR FLAG FROM PLAYER");
+            ManuallyClosedDoor = false;
+            if(IsRunningDoorCloseFlag)
+            {
+                EntryPoint.WriteToConsole("ADDING DONT CLOSE DOOR FLAG FROM PLAYER BUT I AM ALREADY RUNNING IT SO STOP");
+                return;
+            }
+            GameFiber.StartNew(delegate
+            {
+                IsRunningDoorCloseFlag = true;
+                while (IsInVehicle && !ManuallyClosedDoor)
+                {
+                    NativeFunction.Natives.SET_PED_RESET_FLAG(Character, 313, true);
+                    GameFiber.Yield();
+                }
+                IsRunningDoorCloseFlag = false;
+                EntryPoint.WriteToConsole("STOPPING DONT CLOSE DOOR FLAG");
+            }, "Run Debug Logic");
+        }
+        public void OnManuallyClosedDoor()
+        {
+            ManuallyClosedDoor = true;
         }
     }
 }

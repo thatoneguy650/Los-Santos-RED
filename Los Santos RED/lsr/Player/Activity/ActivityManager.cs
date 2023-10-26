@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 using NAudio.Wave;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 public class ActivityManager
 {
@@ -1210,96 +1211,159 @@ public class ActivityManager
             }
         }
     }
+
+    public void ToggleDriverDoor()
+    {
+        if (Game.GameTime - GameTimeLastClosedDoor < 1500)
+        {
+            return;
+        }
+        if (IsPerformingActivity || !Player.IsDriver || Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        string animName = "d_close_in";
+        float doorAngle = Player.CurrentVehicle.Doors.GetDoorAngle(0);
+
+        if(doorAngle <= -1.0f)//Invalid door or something
+        {
+            return;
+        }
+
+        int TimeToWait = 250;
+        if(doorAngle <= 0.0f)
+        {
+            animName = "d_open_out";
+            TimeToWait = 500;
+        }
+        else if (doorAngle >= 0.7)
+        {
+            animName = "d_close_in";
+            TimeToWait = 500;
+        }
+        else
+        {
+            animName = "d_close_in_near";
+        }
+        EntryPoint.WriteToConsole($"doorAngle {doorAngle} animName{animName} TimeToWait{TimeToWait}");
+        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Doors.Toggle(0, Player)), "veh@std@ds@enter_exit", animName, TimeToWait);
+    }
+
     public void CloseDriverDoor()
     {
-        if (Game.GameTime - GameTimeLastClosedDoor >= 1500)
+        if (Game.GameTime - GameTimeLastClosedDoor < 1500)
         {
-            if (!IsPerformingActivity && Player.IsDriver && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())// Game.LocalPlayer.Character.CurrentVehicle.Exists() && )
-            {
-                bool isValid = NativeFunction.Natives.x645F4B6E8499F632<bool>(Player.CurrentVehicle.Vehicle, 0);
-                if (isValid)
-                {
-                    float DoorAngle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(Player.CurrentVehicle.Vehicle, 0);
-
-                    if (DoorAngle > 0.0f)
-                    {
-                        string toPlay = "";
-                        int TimeToWait = 250;
-                        if (DoorAngle >= 0.7)
-                        {
-                            toPlay = "d_close_in";
-                            TimeToWait = 500;
-                        }
-                        else
-                        {
-                            toPlay = "d_close_in_near";
-                        }
-                        //EntryPoint.WriteToConsole($"Player Event: Closing Door Manually Angle {DoorAngle} Dict veh@std@ds@enter_exit Animation {toPlay}");
-                        AnimationDictionary.RequestAnimationDictionay("veh@std@ds@enter_exit");
-                        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "veh@std@ds@enter_exit", toPlay, 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1
-                        GameFiber DoorWatcher = GameFiber.StartNew(delegate
-                        {
-                            try
-                            {
-                                GameFiber.Sleep(TimeToWait);
-                                if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
-                                {
-                                    NativeFunction.Natives.SET_VEHICLE_DOOR_SHUT(Game.LocalPlayer.Character.CurrentVehicle, 0, false);
-                                    GameFiber.Sleep(250);
-                                    NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
-                                }
-                                else
-                                {
-                                    NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                                EntryPoint.ModController.CrashUnload();
-                            }
-                        }, "DoorWatcher");
-                    }
-                    GameTimeLastClosedDoor = Game.GameTime;
-                }
-            }
+            return;
         }
+        if(IsPerformingActivity || !Player.IsDriver || Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        string animName = "d_close_in";
+        float doorAngle = Player.CurrentVehicle.Doors.GetDoorAngle(0);
+
+        if (doorAngle <= -1.0f)//Invalid door or something
+        {
+            return;
+        }
+        int TimeToWait = 250;
+        if (doorAngle >= 0.7)
+        {
+            animName = "d_close_in";
+            TimeToWait = 500;
+        }
+        else
+        {
+            animName = "d_close_in_near";
+        }
+
+        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Doors.SetState(0,true, Player)), "veh@std@ds@enter_exit", animName, TimeToWait);
     }
     public void ToggleLeftIndicator()
     {
-        if (Player.CurrentVehicle != null)
+        if (Player.CurrentVehicle == null || IsPerformingActivity || !Player.IsDriver)
         {
-            Player.CurrentVehicle.Indicators.ToggleLeft();
+            return;
         }
+        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Indicators.ToggleLeft()), "veh@std@ds@base", "change_station", 750);
     }
     public void ToggleHazards()
     {
-        if (Player.CurrentVehicle != null)
+        if (Player.CurrentVehicle == null || IsPerformingActivity || !Player.IsDriver)
         {
-            Player.CurrentVehicle.Indicators.ToggleHazards();
+            return;
         }
+        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Indicators.ToggleHazards()), "veh@std@ds@base", "change_station", 750);
     }
     public void ToggleRightIndicator()
     {
-        if (Player.CurrentVehicle != null)
+        if (Player.CurrentVehicle == null || IsPerformingActivity || !Player.IsDriver)
         {
-            Player.CurrentVehicle.Indicators.ToggleRight();
+            return;
         }
+        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Indicators.ToggleRight()), "veh@std@ds@base", "change_station", 750);
     }
     public void ToggleVehicleEngine()
     {
-        if (Player.CurrentVehicle != null)
+        if (Player.CurrentVehicle == null || IsPerformingActivity || !Player.IsDriver)
         {
-            Player.CurrentVehicle.Engine.Toggle();
+            return;
         }
+        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Engine.Toggle()), "veh@std@ds@base", "start_engine", 750);
+    }
+    public void SetVehicleEngine(bool desiredStatus)
+    {
+        if (Player.CurrentVehicle == null || IsPerformingActivity || !Player.IsDriver)
+        {
+            return;
+        }
+        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Engine.SetState(desiredStatus)), "veh@std@ds@base", "start_engine", 750);
     }
     public void ToggleDriverWindow()
     {
-        if (Player.CurrentVehicle != null)
+        if (Player.CurrentVehicle == null || IsPerformingActivity || !Player.IsDriver)
         {
-            Player.CurrentVehicle.SetDriverWindow(!Player.CurrentVehicle.ManuallyRolledDriverWindowDown);
+            return;
         }
+        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Windows.ToggleWindow(0)), "veh@std@ds@enter_exit", "d_close_in_near", 750);
     }
+    public void SetWindowState(int windowID, bool desiredStatus)
+    {
+        if (Player.CurrentVehicle == null || IsPerformingActivity || !Player.IsDriver)
+        {
+            return;
+        }
+        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Windows.SetState(windowID, desiredStatus)), "veh@std@ds@enter_exit", "d_close_in_near", 750);
+    }
+    public void ToggleDoorLocks()
+    {
+        if (Player.CurrentVehicle == null || IsPerformingActivity || !Player.IsDriver)
+        {
+            return;
+        }
+        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Doors.ToggleDoorLocks()), "veh@std@ds@enter_exit", "d_close_in_near", 750);
+    }
+
+
+    private void DoSimpleVehicleAnimation(Action action, string dictionary, string anim, int timeToWait)
+    {
+        AnimationDictionary.RequestAnimationDictionay(dictionary);
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, anim, 4.0f, -4.0f, -1, (int)(eAnimationFlags.AF_UPPERBODY | eAnimationFlags.AF_SECONDARY), 0, false, false, false);//-1
+        GameFiber animWatcher = GameFiber.StartNew(delegate
+        {
+            try
+            {
+                GameFiber.Sleep(timeToWait);
+                action();
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "VehicleAnimationWatcher");
+    }
+
     public void OnPlayerBusted()
     {
         ForceCancelAllActivities();
@@ -1319,9 +1383,6 @@ public class ActivityManager
         string animation = isTaking ? "givetake1_b" : "givetake1_a";
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", animation, 1.0f, -1.0f, 5000, (int)(AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);
     }
-
-
-
 
     public Rage.Object AttachScrewdriverToPed(ModItem screwdriverItem, bool allowGeneric)
     {
@@ -1357,12 +1418,10 @@ public class ActivityManager
             return Screwdriver;
         }
     }
-
     public void EnterVehicleGeneric()
     {
         NativeFunction.Natives.SET_CONTROL_VALUE_NEXT_FRAME<bool>(0, (int)GameControl.Enter, 1.0f);
     }
-
     public void LeaveVehicle(bool isRegular)
     {
         if(!Player.Character.CurrentVehicle.Exists())
@@ -1371,8 +1430,6 @@ public class ActivityManager
         }
         WatchVehicleLeave(Player.Character.CurrentVehicle, true);
     }
-
-
     private void WatchVehicleLeave(Vehicle vehicle, bool stopDriver)
     {
         if (!vehicle.Exists())
@@ -1419,6 +1476,12 @@ public class ActivityManager
             }
         }, "DoorWatcher");
     }
+
+    public void DebugPlayVehicleAnim(string dictionaryName, string animName)
+    {
+        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Windows.ToggleWindow(0)), dictionaryName, animName, 750);
+    }
+
 
 }
 

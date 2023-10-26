@@ -468,10 +468,6 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
         RemoveNonSpawnedPolice = false;
         RemoveAmbientPolice = true;
-#if DEBUG
-        ShowSpawnedBlips = true;
-
-#endif
         AllowLocationSpawning = true;
         //StationSpawning_MaxWanted = 3;
         // StationSpawningIgnoresLimits = true;

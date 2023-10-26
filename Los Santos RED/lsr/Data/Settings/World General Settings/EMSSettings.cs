@@ -97,9 +97,6 @@ public class EMSSettings : ISettingsDefaultable
         AllowStationSpawning = true;
         StationSpawningIgnoresLimits = true;
 
-#if DEBUG
-        ShowSpawnedBlips = true;
-#endif
         AllowAlerts = true;
 
 

@@ -52,6 +52,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsEMT { get; }
         bool CanBustPeds { get; }
 
+        void OnManuallyClosedDoor();
+        void OnManuallyOpenedDoor();
         void PlaySpeech(string v1, bool v2);
     }
 }

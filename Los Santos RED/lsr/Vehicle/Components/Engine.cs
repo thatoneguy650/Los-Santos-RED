@@ -40,19 +40,21 @@ public class Engine
     }
     public void Toggle()
     {
-        if (Game.GameTime - GameTimeLastToggleEngine >= 1500)
+        if (Game.GameTime - GameTimeLastToggleEngine < 1500)
         {
-            Toggle(!IsRunning);
-            GameTimeLastToggleEngine = Game.GameTime;
+            return;
         }
+        SetState(!IsRunning);
+        GameTimeLastToggleEngine = Game.GameTime;
     }
-    public void Toggle(bool DesiredStatus)
+    public void SetState(bool DesiredStatus)
     {     
-        if (CanToggle)
+        if (!CanToggle)
         {
-            IsRunning = DesiredStatus;
-            Update(null);
+            return;
         }
+        IsRunning = DesiredStatus;
+        Update(null);
     }
     private void UpdateDamage(IDriveable driver)
     {
@@ -118,12 +120,19 @@ public class Engine
             {
                 VehicleToMonitor.Vehicle.IsDriveable = false;
                 VehicleToMonitor.Vehicle.IsEngineOn = false;
+
+
+                //NativeFunction.Natives.SET_VEHICLE_ENGINE_ON(VehicleToMonitor.Vehicle, false, true, true);
+
                 //EntryPoint.WriteToConsole($"PLAYER EVENT: VEHICLE SET NOT DRIVEABLE 3");
             }
             else
             {
                 VehicleToMonitor.Vehicle.IsDriveable = true;
                 VehicleToMonitor.Vehicle.IsEngineOn = true;
+
+                //NativeFunction.Natives.SET_VEHICLE_ENGINE_ON(VehicleToMonitor.Vehicle, true, true, true);
+
                 //EntryPoint.WriteToConsole($"PLAYER EVENT: VEHICLE SET DRIVEABLE");
             }
         }
@@ -135,12 +144,12 @@ public class Engine
             }
         }
     }
-
     public void Synchronize()
     {
-        if(VehicleToMonitor.Vehicle.Exists())
+        if(!VehicleToMonitor.Vehicle.Exists())
         {
-            IsRunning = VehicleToMonitor.Vehicle.IsEngineOn;
+            return;
         }
+        IsRunning = VehicleToMonitor.Vehicle.IsEngineOn;
     }
 }

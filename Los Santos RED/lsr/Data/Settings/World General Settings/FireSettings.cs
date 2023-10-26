@@ -89,9 +89,7 @@ public class FireSettings : ISettingsDefaultable
         ManageDispatching = true;
         ManageTasking = true;
         ShowSpawnedBlips = false;
-#if DEBUG
-        ShowSpawnedBlips = true;
-#endif
+
 
         AllowStationSpawning = true;
         StationSpawningIgnoresLimits = true;

@@ -51,11 +51,7 @@ namespace LosSantosRED.lsr
         public bool CanBodyInteract => Player.IsEMT;
         public bool CanDriveRecklesslyWithSiren => Player.IsCop || Player.IsEMT || Player.IsFireFighter || Settings.SettingsManager.ViolationSettings.TreatAsCop;
         public bool CanIgnoreAllTrafficLaws => Player.IsCop || Settings.SettingsManager.ViolationSettings.TreatAsCop;
-
         public bool CanEnterRestrictedAreas => Player.IsCop || Settings.SettingsManager.ViolationSettings.TreatAsCop;
-
-
-
         public void Setup()
         {
             TrafficViolations.Setup();
@@ -97,14 +93,15 @@ namespace LosSantosRED.lsr
         public void AddViolating(string crimeID)
         {
             Crime crime = Crimes.GetCrime(crimeID);
-            if (crime != null && crime.Enabled && !Player.PoliceResponse.IsWithinGracePeriod(crime))
+            if(crime == null || !crime.Enabled || Player.PoliceResponse.IsWithinGracePeriod(crime))
             {
-                if (Settings.SettingsManager.ViolationSettings.ShowCrimeWarnings && Player.IsAliveAndFree && Player.IsNotWanted)
-                {
-                    crime.DisplayWarning();
-                }
-                CrimesViolating.Add(crime);
+                return;
             }
+            if (Settings.SettingsManager.ViolationSettings.ShowCrimeWarnings && Player.IsAliveAndFree && Player.IsNotWanted)
+            {
+                crime.DisplayWarning();
+            }
+            CrimesViolating.Add(crime);        
         }
         public void AddViolatingAndObserved(string crimeID) //for when the cops find a gun on you
         {
@@ -122,7 +119,6 @@ namespace LosSantosRED.lsr
                 if (Player.AnyPoliceCanSeePlayer)
                 {
                     Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
-                    //EntryPoint.WriteToConsole($"AddObservedAndReported {Violating.ID} AnyPoliceCanSeePlayer:{Player.AnyPoliceCanSeePlayer} AnyPoliceCanHearPlayer:{Player.AnyPoliceCanHearPlayer} CanReportBySound:{Violating.CanReportBySound}");
                 }
             }
         }

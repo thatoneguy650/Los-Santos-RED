@@ -56,6 +56,8 @@ namespace LSR.Vehicles
         public Indicators Indicators { get; set; }
         public Engine Engine { get; set; }
         public FuelTank FuelTank { get; set; }
+        public Windows Windows { get; set; }
+        public Doors Doors { get; set; }
         public VehicleBodyManager VehicleBodyManager { get; private set; }
         public WeaponStorage WeaponStorage { get; private set; }
         public Color DescriptionColor { get; set; }
@@ -300,6 +302,8 @@ namespace LSR.Vehicles
             Indicators = new Indicators(this);
             FuelTank = new FuelTank(this, Settings);
             Engine = new Engine(this, Settings);
+            Windows = new Windows(this, settings);
+            Doors = new Doors(this, settings);
             VehicleBodyManager = new VehicleBodyManager(this, Settings);
             VehicleInteractionMenu = new VehicleInteractionMenu(this);
             WeaponStorage = new WeaponStorage(Settings);
@@ -689,53 +693,52 @@ namespace LSR.Vehicles
             int color = PossibleColors.PickRandom();
             NativeFunction.Natives.SET_VEHICLE_COLOURS(Vehicle, color, color);
         }
-        public void SetDriverWindow(bool RollDown)
-        {
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Game.LocalPlayer.Character.CurrentVehicle, 0))
-            {
-                if (RollDown)
-                {
-                    NativeFunction.CallByName<bool>("ROLL_DOWN_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
-                    ManuallyRolledDriverWindowDown = true;
-                }
-                else
-                {
-                    ManuallyRolledDriverWindowDown = false;
-                    NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
-                }
-            }
-            else if (!RollDown)
-            {
-                if (Vehicle != null && ManuallyRolledDriverWindowDown)
-                {
-                    ManuallyRolledDriverWindowDown = false;
-                    NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
-                }
-            }
-        }
-        public void SetWindow(int windowID, bool RollDown)
-        {
-            if(!Vehicle.Exists())
-            {
-                return;
-            }
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Vehicle, windowID))
-            {
-                if (RollDown)
-                {
-                    NativeFunction.CallByName<bool>("ROLL_DOWN_WINDOW", Vehicle, windowID);
-                }
-                else
-                {
-                    NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Vehicle, windowID);
-                }
-            }
-            else if (!RollDown)
-            {
-                NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Vehicle, windowID);             
-            }
-        }
-        public void SetRadioStation(string stationName) => Radio.SetRadioStation(stationName);
+        //public void SetDriverWindow(bool RollDown)
+        //{
+        //    if (NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Game.LocalPlayer.Character.CurrentVehicle, 0))
+        //    {
+        //        if (RollDown)
+        //        {
+        //            NativeFunction.CallByName<bool>("ROLL_DOWN_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
+        //            ManuallyRolledDriverWindowDown = true;
+        //        }
+        //        else
+        //        {
+        //            ManuallyRolledDriverWindowDown = false;
+        //            NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
+        //        }
+        //    }
+        //    else if (!RollDown)
+        //    {
+        //        if (Vehicle != null && ManuallyRolledDriverWindowDown)
+        //        {
+        //            ManuallyRolledDriverWindowDown = false;
+        //            NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
+        //        }
+        //    }
+        //}
+        //public void SetWindow(int windowID, bool RollDown)
+        //{
+        //    if(!Vehicle.Exists())
+        //    {
+        //        return;
+        //    }
+        //    if (NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Vehicle, windowID))
+        //    {
+        //        if (RollDown)
+        //        {
+        //            NativeFunction.CallByName<bool>("ROLL_DOWN_WINDOW", Vehicle, windowID);
+        //        }
+        //        else
+        //        {
+        //            NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Vehicle, windowID);
+        //        }
+        //    }
+        //    else if (!RollDown)
+        //    {
+        //        NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Vehicle, windowID);             
+        //    }
+        //}
         public bool WasSpawnedEmpty { get; set; } = false;
         public bool IsOwnedByPlayer { get; internal set; }
         public bool AllowVanityPlates { get; set; } = true;
@@ -1199,14 +1202,14 @@ namespace LSR.Vehicles
             }
             HasAddedRandomWeapons = true;
         }
-        public void SetImpounded(ITimeReportable time, string locationName, bool hasValidCCW)
+        public void SetImpounded(ITimeReportable time, string locationName, bool hasValidCCW, IWeapons weapons)
         {
             IsImpounded = true;
             DateTimeImpounded = time.CurrentDateTime;
             TimesImpounded++;
             ImpoundedLocation = locationName;
             SimpleInventory.OnImpounded();
-            WeaponStorage.OnImpounded(hasValidCCW);
+            WeaponStorage.OnImpounded(hasValidCCW, weapons);
         }
         private void UnSetImpounded()
         {
@@ -1460,7 +1463,7 @@ namespace LSR.Vehicles
                     {
                         return;
                     }
-                    SetWindow(window.Item1, uIMenuListScrollerItem.SelectedItem == "Roll Down" ? true : false);
+                    player.ActivityManager.SetWindowState(window.Item1, uIMenuListScrollerItem.SelectedItem == "Roll Up");
                 };
                 windowAccessHeaderMenu.AddItem(uIMenuListScrollerItem);
             }

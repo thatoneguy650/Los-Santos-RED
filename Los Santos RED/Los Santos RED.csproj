@@ -337,14 +337,14 @@
     <Compile Include="lsr\Player\Inventory\Items\PipeItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\RollingPapersItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\ValuableItem.cs" />
-    <Compile Include="lsr\Player\Managers\TaxiManager.cs" />
-    <Compile Include="lsr\Player\Managers\TaxiRide.cs" />
+    <Compile Include="lsr\Player\Taxi\TaxiManager.cs" />
+    <Compile Include="lsr\Player\Taxi\TaxiRide.cs" />
     <Compile Include="lsr\Player\Money\BankAccount.cs" />
     <Compile Include="lsr\Player\Relationships\ContactRelationship.cs" />
     <Compile Include="lsr\Player\Respawning\PlayerPoliceSearch.cs" />
     <Compile Include="lsr\Player\Respawning\PossibleBribe.cs" />
     <Compile Include="lsr\Player\Respawning\SearchActivity.cs" />
-    <Compile Include="lsr\Player\SecurityResponse.cs" />
+    <Compile Include="lsr\Player\Security\SecurityResponse.cs" />
     <Compile Include="lsr\Player\Variation\OutfitManager.cs" />
     <Compile Include="lsr\Police\OfficerMIA.cs" />
     <Compile Include="lsr\Police\OfficerMIAWatcher.cs" />
@@ -494,6 +494,10 @@
     <Compile Include="lsr\UI\Stree Name Pop Ups\StreetNamePopUp.cs" />
     <Compile Include="lsr\UI\Stree Name Pop Ups\StreetNode.cs" />
     <Compile Include="lsr\UI\TopRightMenu.cs" />
+    <Compile Include="lsr\Vehicle\Components\Door.cs" />
+    <Compile Include="lsr\Vehicle\Components\Doors.cs" />
+    <Compile Include="lsr\Vehicle\Components\Window.cs" />
+    <Compile Include="lsr\Vehicle\Components\Windows.cs" />
     <Compile Include="lsr\Vehicle\Menu\TaxiInteractionMenu.cs" />
     <Compile Include="lsr\Vehicle\Types\TaxiVehicleExt.cs" />
     <Compile Include="lsr\Vehicle\Variation\DispatchableVehicleExtra.cs" />
@@ -1088,7 +1092,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="lsr\Crimes\" />
+    <Folder Include="lsr\Player\Managers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

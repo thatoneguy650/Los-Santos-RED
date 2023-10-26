@@ -1,6 +1,7 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -15,12 +16,14 @@ public class PlayerPoliceSearch
     private ITimeReportable Time;
     private IModItems ModItems;
     private VehicleExt CarToSearch;
-    public PlayerPoliceSearch(IRespawnable player, ITimeReportable time, IModItems modItems, VehicleExt carToSearch)
+    private IWeapons Weapons;
+    public PlayerPoliceSearch(IRespawnable player, ITimeReportable time, IModItems modItems, VehicleExt carToSearch, IWeapons weapons)
     {
         Player = player;
         Time = time;
         ModItems = modItems;
         CarToSearch = carToSearch;
+        Weapons = weapons;
     }
     public bool FoundIllegalDrugs { get; private set; }
     public bool FoundIllegalWeapons { get; private set; }
@@ -134,7 +137,7 @@ public class PlayerPoliceSearch
         {
             return;
         }
-        List<WeaponInformation> IllegalWeapons = CarToSearch.WeaponStorage.GetIllegalWeapons(hasCCW);
+        List<WeaponInformation> IllegalWeapons = CarToSearch.WeaponStorage.GetIllegalWeapons(hasCCW, Weapons);
         WeaponInformation worstWeapon = IllegalWeapons.OrderByDescending(x => x.WeaponLevel).FirstOrDefault();
         if (worstWeapon == null)
         {
@@ -160,7 +163,7 @@ public class PlayerPoliceSearch
                 Player.Violations.WeaponViolations.AddFoundWeapon(worstWeapon, hasCCW);
                 FoundVehicleIllegalWeapons = true;
                 FoundVehicleIllegalItems = true;
-                CarToSearch.WeaponStorage.RemoveIllegalWeapons(hasCCW);
+                CarToSearch.WeaponStorage.RemoveIllegalWeapons(hasCCW, Weapons);
                 //EntryPoint.WriteToConsoleTestLong($"SEARCH WEAPON {weapon.ModelName} PERCENTAGE MET, WEAPONS FOUND");
                 break;
             }

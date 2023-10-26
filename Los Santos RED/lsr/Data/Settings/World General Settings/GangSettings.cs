@@ -192,11 +192,6 @@ public class GangSettings : ISettingsDefaultable
         AllowDenSpawningWhenPlayerWanted = true;
 
 
-#if DEBUG
-        ShowSpawnedBlip = true;
-#else
-
-#endif
         EscortOffsetValue = 3.0f;
         EscortSpeed = 100f;
         DenSpawningWhenPlayerWantedMaxWanted = 4;

@@ -185,7 +185,7 @@ public class RepairGarage : GameLocation
             DisplayMessage("~r~Cash Only", "You do not have enough cash on hand.");
             return;
         }
-        Player.CurrentVehicle.Engine.Toggle(false);
+        Player.CurrentVehicle.Engine.SetState(false);
         GameFiber.Sleep(500);
         Time.FastForward(Time.CurrentDateTime.AddHours(WashHours));
         Time.ForceShowClock = true;
@@ -217,7 +217,7 @@ public class RepairGarage : GameLocation
             DisplayMessage("~r~Cash Only", "You do not have enough cash on hand.");
             return;
         }
-        Player.CurrentVehicle.Engine.Toggle(false);
+        Player.CurrentVehicle.Engine.SetState(false);
         GameFiber.Sleep(500);
         Time.FastForward(Time.CurrentDateTime.AddHours(RepairHours));
         Time.ForceShowClock = true;

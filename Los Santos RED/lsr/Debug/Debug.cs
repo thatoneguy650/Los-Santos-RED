@@ -1692,7 +1692,12 @@ public void DebugNumpad8()
             EntryPoint.WriteToConsole($" {gangDen.AssociatedGang?.ShortName} hasBLip = {gangDen.Blip.Exists()} hasTerrBlip = {gangDen.TerritoryBlip.Exists()}");
         }
 
-         //&&  && Player.CurrentVehicle.Vehicle.Model.Name.ToLower() == VehicleToSteal.ModelName.ToLower() && Player.CurrentVehicle.WasModSpawned && Player.CurrentVehicle.AssociatedGang != null && Player.CurrentVehicle.AssociatedGang.ID == TargetGang.ID;
+        string dictionaryName = NativeHelper.GetKeyboardInput("veh@std@ds@base");
+        string animName = NativeHelper.GetKeyboardInput("change_station");
+        Player.ActivityManager.DebugPlayVehicleAnim(dictionaryName, animName);
+
+
+        //&&  && Player.CurrentVehicle.Vehicle.Model.Name.ToLower() == VehicleToSteal.ModelName.ToLower() && Player.CurrentVehicle.WasModSpawned && Player.CurrentVehicle.AssociatedGang != null && Player.CurrentVehicle.AssociatedGang.ID == TargetGang.ID;
 
 
 

@@ -645,7 +645,7 @@ public class DispatchablePeople : IDispatchablePeople
                 DebugName = "USMSArmorMPMale"
                 ,GroupName = "Armored"
                 ,RandomizeHead = true
-                ,MaxWantedLevelSpawn = 3
+                ,MinWantedLevelSpawn = 3
                 ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
                 ,RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(2, 5, 3, 0), new PedComponent(3, 139, 4, 0), new PedComponent(4, 47, 0, 0), new PedComponent(5, 0, 0, 0), new PedComponent(6, 14, 0, 0), new PedComponent(7, 125, 0, 0), new PedComponent(8, 130, 0, 0), 
@@ -5621,7 +5621,7 @@ public class DispatchablePeople : IDispatchablePeople
         {
             //Suit
             new DispatchablePerson("mp_m_freemode_01", 30, 30) {
-                DebugName = "<Male USMS Suit>", RandomizeHead = true, OverrideVoice = new List < string > () {
+                DebugName = "<Male USMS Suit>", MaxWantedLevelSpawn = 2, RandomizeHead = true, OverrideVoice = new List < string > () {
                     "S_M_Y_COP_01_WHITE_FULL_01",
                     "S_M_Y_COP_01_WHITE_FULL_02",
                     "S_M_Y_COP_01_BLACK_FULL_01",
@@ -5641,7 +5641,7 @@ public class DispatchablePeople : IDispatchablePeople
                 })
             },
             new DispatchablePerson("mp_f_freemode_01", 30, 30) {
-                DebugName = "<Female USMS Suit>", RandomizeHead = true, OverrideVoice = new List < string > () {
+                DebugName = "<Female USMS Suit>", MaxWantedLevelSpawn = 2, RandomizeHead = true, OverrideVoice = new List < string > () {
                     "S_F_Y_COP_01_WHITE_FULL_01",
                     "S_F_Y_COP_01_WHITE_FULL_02",
                     "S_F_Y_COP_01_BLACK_FULL_01",
@@ -5662,7 +5662,7 @@ public class DispatchablePeople : IDispatchablePeople
             },
             //Regular
             new DispatchablePerson("mp_m_freemode_01", 30, 30) {
-                DebugName = "<Male USMS Marshal>", RandomizeHead = true, OverrideVoice = new List < string > () {
+                DebugName = "<Male USMS Marshal>", MaxWantedLevelSpawn = 2, RandomizeHead = true, OverrideVoice = new List < string > () {
                     "S_M_Y_COP_01_WHITE_FULL_01",
                     "S_M_Y_COP_01_WHITE_FULL_02",
                     "S_M_Y_COP_01_BLACK_FULL_01",
@@ -5682,7 +5682,7 @@ public class DispatchablePeople : IDispatchablePeople
                 })
             },
             new DispatchablePerson("mp_f_freemode_01", 30, 30) {
-                DebugName = "<Female USMS Marshal>", RandomizeHead = true, OverrideVoice = new List < string > () {
+                DebugName = "<Female USMS Marshal>", MaxWantedLevelSpawn = 2, RandomizeHead = true, OverrideVoice = new List < string > () {
                     "S_F_Y_COP_01_WHITE_FULL_01",
                     "S_F_Y_COP_01_WHITE_FULL_02",
                     "S_F_Y_COP_01_BLACK_FULL_01",
@@ -5703,8 +5703,7 @@ public class DispatchablePeople : IDispatchablePeople
             },
             //Response - Has Armor
             new DispatchablePerson("mp_m_freemode_01", 30, 30, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
-                ArmorMin = 50, ArmorMax = 50,MinWantedLevelSpawn = 2,CombatAbilityMin = 1,CombatAbilityMax = 2,
-                DebugName = "<Male USMS Response>", RandomizeHead = true, OverrideVoice = new List < string > () {
+                DebugName = "<Male USMS Response>",MinWantedLevelSpawn = 3, RandomizeHead = true, OverrideVoice = new List < string > () {
                     "S_M_Y_COP_01_WHITE_FULL_01",
                     "S_M_Y_COP_01_WHITE_FULL_02",
                     "S_M_Y_COP_01_BLACK_FULL_01",
@@ -5724,8 +5723,7 @@ public class DispatchablePeople : IDispatchablePeople
                 })
             },
             new DispatchablePerson("mp_f_freemode_01", 30, 30, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
-                ArmorMin = 50, ArmorMax = 50,MinWantedLevelSpawn = 2,CombatAbilityMin = 1,CombatAbilityMax = 2,
-                DebugName = "<Female USMS Response>", RandomizeHead = true, OverrideVoice = new List < string > () {
+                DebugName = "<Female USMS Response>",MinWantedLevelSpawn = 3, RandomizeHead = true, OverrideVoice = new List < string > () {
                     "S_F_Y_COP_01_WHITE_FULL_01",
                     "S_F_Y_COP_01_WHITE_FULL_02",
                     "S_F_Y_COP_01_BLACK_FULL_01",
@@ -5744,9 +5742,9 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 0, 0),
                 })
             },
-            //Windbreaker
-            new DispatchablePerson("mp_m_freemode_01", 30, 30) {
-                DebugName = "<Male USMS Windbreaker>", RandomizeHead = true, OverrideVoice = new List < string > () {
+            //Windbreaker has armor under
+            new DispatchablePerson("mp_m_freemode_01", 30, 30, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
+                DebugName = "<Male USMS Windbreaker>", MinWantedLevelSpawn = 3, RandomizeHead = true, OverrideVoice = new List < string > () {
                     "S_M_Y_COP_01_WHITE_FULL_01",
                     "S_M_Y_COP_01_WHITE_FULL_02",
                     "S_M_Y_COP_01_BLACK_FULL_01",
@@ -5767,8 +5765,7 @@ public class DispatchablePeople : IDispatchablePeople
             },
             //Field Agent - Has Armor
             new DispatchablePerson("mp_m_freemode_01", 30, 30, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
-                ArmorMin = 50, ArmorMax = 50,MinWantedLevelSpawn = 2,CombatAbilityMin = 1,CombatAbilityMax = 2,
-                DebugName = "<Male USMS Field Agent>", RandomizeHead = true, OverrideVoice = new List < string > () {
+                DebugName = "<Male USMS Field Agent>", MinWantedLevelSpawn = 3, RandomizeHead = true, OverrideVoice = new List < string > () {
                     "S_M_Y_COP_01_WHITE_FULL_01",
                     "S_M_Y_COP_01_WHITE_FULL_02",
                     "S_M_Y_COP_01_BLACK_FULL_01",

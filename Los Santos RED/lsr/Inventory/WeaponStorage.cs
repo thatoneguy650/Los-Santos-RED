@@ -120,17 +120,18 @@ public class WeaponStorage
         }
     }
 
-    public void OnImpounded(bool hasValidCCW)
+    public void OnImpounded(bool hasValidCCW, IWeapons weapons)
     {
-        RemoveIllegalWeapons(hasValidCCW);
+        RemoveIllegalWeapons(hasValidCCW, weapons);
     }
     //private void RemoveIllegalWeapons()
     //{
     //    StoredWeapons.Clear();
     //}
 
-    public List<WeaponInformation> GetIllegalWeapons(bool hasValidCCW)
+    public List<WeaponInformation> GetIllegalWeapons(bool hasValidCCW, IWeapons weapons)
     {
+        Weapons = weapons;
         List<WeaponInformation> illegalWeapons = new List<WeaponInformation>();
         foreach (StoredWeapon Weapon in StoredWeapons)
         {
@@ -143,8 +144,9 @@ public class WeaponStorage
         }
         return illegalWeapons;
     }
-    public bool RemoveIllegalWeapons(bool hasValidCCW)
+    public bool RemoveIllegalWeapons(bool hasValidCCW, IWeapons weapons)
     {
+        Weapons = weapons;
         bool foundItems = false;
         List<StoredWeapon> MyOldGuns = StoredWeapons.ToList();  
         StoredWeapons.Clear();

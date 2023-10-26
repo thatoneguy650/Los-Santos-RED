@@ -501,7 +501,7 @@ public class Respawning// : IRespawning
             EntryPoint.WriteToConsole("IMPOUND VEHICLE FAIL NO VEHICLE TO IMPOUND");
             return null;
         }
-        if(impoundLocation.VehicleImpoundLot.ImpoundVehicle(vehicleToImpound, Time, CurrentPlayer.Licenses.HasValidCCWLicense(Time)))
+        if(impoundLocation.VehicleImpoundLot.ImpoundVehicle(vehicleToImpound, Time, CurrentPlayer.Licenses.HasValidCCWLicense(Time), Weapons))
         {
             return new GTANotification(impoundLocation.Name, "~o~Vehicle Impounded~s~",vehicleToImpound.GetRegularDescription(true));
         }
@@ -763,7 +763,7 @@ public class Respawning// : IRespawning
         {
             vehicleToSearch = null;
         }
-        SearchActivity searchActivity = new SearchActivity(CurrentPlayer, World, PoliceRespondable, SeatAssignable, Settings, Time, ModItems, vehicleToSearch);
+        SearchActivity searchActivity = new SearchActivity(CurrentPlayer, World, PoliceRespondable, SeatAssignable, Settings, Time, ModItems, vehicleToSearch, Weapons);
         searchActivity.Setup();
         searchActivity.Start();
         GameFiber.StartNew(delegate

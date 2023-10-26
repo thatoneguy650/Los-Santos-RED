@@ -21,7 +21,7 @@ public class PlayerVoice
     private List<string> GenericWonPossibilities;
     private List<string> GenericPoliceFightPossibilities;
     private List<string> AnnoyedPossibilities;
-
+    private List<string> Insults;
     private bool CanSpeak => Player.IsAliveAndFree && !Player.IsIncapacitated && !Player.Stance.IsBeingStealthy && Game.GameTime - GameTimeLastSpoke >= (GameTimeBetweenSpeaking + TimeBetweenSpeakingRandomizer) && !Player.Character.IsCurrentWeaponSilenced;
     private uint GameTimeBetweenSpeaking
     {
@@ -54,7 +54,7 @@ public class PlayerVoice
         GenericCrashPossibilities = new List<string>(){"BUMP","CRASH_CAR","CRASH_GENERIC","GENERIC_CURSE_HIGH","GENERIC_CURSE_MED","GENERIC_SHOCKED_MED","CHALLENGE_THREATEN"};
         GenericWonPossibilities = new List<string>(){ "WON_DISPUTE","GENERIC_WHATEVER" };
         GenericPoliceFightPossibilities = new List<string>(){"CHASED_BY_POLICE","FIGHT","FIGHT_RUN","GENERIC_CURSE_HIGH","GENERIC_CURSE_MED","GENERIC_SHOCKED_MED","PROVOKE_GENERIC","WON_DISPUTE","CHALLENGE_THREATEN"};
-
+        Insults = new List<string>() { "GENERIC_CURSE_MED", "GENERIC_CURSE_HIGH", "GENERIC_INSULT_HIGH", "GENERIC_INSULT_MED", "GENERIC_FUCK_YOU" };
         AnnoyedPossibilities = new List<string>() { "GENERIC_CURSE_MED", "GENERIC_CURSE_HIGH", "GENERIC_SHOCKED_MED" };
 
     }
@@ -118,10 +118,14 @@ public class PlayerVoice
         SayAvailableAmbient(GenericFightPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnKilledCivilianPercentage);
         //EntryPoint.WriteToConsoleTestLong("Player Voice OnKilledCivilian");
     }
+    public void SayInsult()
+    {
+        SayAvailableAmbient(Insults, false, 100f);
+    }
     private bool SayAvailableAmbient(List<string> Possibilities, bool WaitForComplete, float percentage)
     {
         bool Spoke = false;
-        if (Settings.SettingsManager.PlayerSpeechSettings.EnableSpeech && CanSpeak && RandomItems.RandomPercent(percentage))
+        if (Settings.SettingsManager.PlayerSpeechSettings.EnableSpeech && CanSpeak && (percentage == 100f || RandomItems.RandomPercent(percentage)))
         {
             foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()).Take(3))
             {

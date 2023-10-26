@@ -278,12 +278,12 @@ namespace LosSantosRED.lsr
                 {
                     if (IsPressingEngineToggle && Settings.SettingsManager.VehicleSettings.AllowSetEngineState)
                     {
-                        Player.CurrentVehicle.Engine.Toggle();
+                        Player.ActivityManager.ToggleVehicleEngine();
                         GameTimeLastPressedEngineToggle = Game.GameTime;
                     }
                     else if (IsPressingVehicleAccelerate && !Player.CurrentVehicle.Engine.IsRunning && Settings.SettingsManager.VehicleSettings.AllowSetEngineState)
                     {
-                        Player.CurrentVehicle.Engine.Toggle(true);
+                        Player.ActivityManager.SetVehicleEngine(true);
                         GameTimeLastPressedEngineToggle = Game.GameTime;
                     }
 
@@ -294,17 +294,17 @@ namespace LosSantosRED.lsr
                     {
                         if (IsPressingHazards)
                         {
-                            Player.CurrentVehicle.Indicators.ToggleHazards();
+                            Player.ActivityManager.ToggleHazards();//Player.CurrentVehicle.Indicators.ToggleHazards();
                             GameTimeLastPressedIndicators = Game.GameTime;
                         }
                         if (IsPressingLeftIndicator)
                         {
-                            Player.CurrentVehicle.Indicators.ToggleLeft();
+                            Player.ActivityManager.ToggleLeftIndicator();
                             GameTimeLastPressedIndicators = Game.GameTime;
                         }
                         if (IsPressingRightIndicator)
                         {
-                            Player.CurrentVehicle.Indicators.ToggleRight();
+                            Player.ActivityManager.ToggleRightIndicator();
                             GameTimeLastPressedIndicators = Game.GameTime;
                         }
                     }

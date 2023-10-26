@@ -95,11 +95,7 @@ public class TaxiSettings : ISettingsDefaultable
         AmbientSpawnPercentage_Industrial = 0;
         AmbientSpawnPercentage_Downtown = 2;
 
-#if DEBUG
-        ShowSpawnedBlip = true;
-#else
 
-#endif
 
     }
 

@@ -54,16 +54,21 @@ public class DynamicPlaces
     public void Setup()
     {
         VendingMachinesModelNames = new List<string>() { "prop_vend_soda_01","prop_vend_soda_02","prop_vend_coffe_01","prop_vend_condom_01","prop_vend_fags_01","prop_vend_snak_01","prop_vend_water_01"};
-        VendingMachinessModelHashes = new List<uint>() {0x3b21c5e7,0x426a547c,0x418f055a};
-        GasPumpsModelNames = new List<string>()
-        { "prop_gas_pump_1a", //ron pump
-        "prop_gas_pump_1b",// globe oil
-        "prop_gas_pump_1c",// ltd
-        "prop_gas_pump_1d",// xero
-        "prop_gas_pump_old2",//old xero
-        "prop_gas_pump_old3",//old LTD
+        VendingMachinessModelHashes = new List<uint>() 
+        {
+            0x3b21c5e7,
+            0x426a547c,
+            0x418f055a
         };
-
+        GasPumpsModelNames = new List<string>()
+        { 
+            "prop_gas_pump_1a", //ron pump
+            "prop_gas_pump_1b",// globe oil
+            "prop_gas_pump_1c",// ltd
+            "prop_gas_pump_1d",// xero
+            "prop_gas_pump_old2",//old xero
+            "prop_gas_pump_old3",//old LTD
+        };
         GasPumpsModelHashes = new List<uint>()
         {
             0x7339e883,//ltd new
@@ -74,8 +79,13 @@ public class DynamicPlaces
             0xe469f8b3, //globe old
             0x64ff4c0e ///globe new
         };
-        ATMModelNames = new List<string>() {"prop_atm_01", "prop_fleeca_atm", "prop_atm_02", "prop_atm_03" };
-
+        ATMModelNames = new List<string>() 
+        {
+            "prop_atm_01", 
+            "prop_fleeca_atm",
+            "prop_atm_02", 
+            "prop_atm_03" 
+        };
         ATMModelHashes = new List<uint>()
         {
             3424098598,//prop_atm_01
@@ -87,9 +97,14 @@ public class DynamicPlaces
         //prop_atm_01 standalone ATM
         //prop_atm_02 LOM BANK
         //prop_atm_03 generic
-
-        CashRegisterModelNames = new List<string>() { "p_till_01_s", "prop_till_01_dam", "prop_till_01", "prop_till_02", "prop_till_03" };
-
+        CashRegisterModelNames = new List<string>()
+        { 
+            "p_till_01_s", 
+            "prop_till_01_dam", 
+            "prop_till_01",
+            "prop_till_02", 
+            "prop_till_03" 
+        };
         CashRegisterModelHashes = new List<uint>()
         {
             892543765,
@@ -98,9 +113,6 @@ public class DynamicPlaces
             534367705,
             759654580,
         };
-
-
-
     }
     public void Dispose()
     {
@@ -143,7 +155,7 @@ public class DynamicPlaces
                     }
                 }
                 checkedObjects++;
-                if (checkedObjects > 10)
+                if (checkedObjects > 20)//10
                 {
                     GameFiber.Yield();
                     checkedObjects = 0;

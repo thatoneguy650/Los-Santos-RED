@@ -47,7 +47,7 @@ public class SearchActivity
     public bool FoundIllegalItems => PlayerPoliceSearch.FoundIllegalItems ||PlayerPoliceSearch.FoundVehicleIllegalItems;
     public bool CompletedSearch { get; private set; } = false;
     public bool HasVehicle => CarToSearch != null && CarToSearch.Vehicle.Exists();
-    public SearchActivity(IRespawnable player, IEntityProvideable world, IPoliceRespondable policeRespondable, ISeatAssignable seatAssignable, ISettingsProvideable settings, ITimeReportable time, IModItems modItems, VehicleExt carToSearch)
+    public SearchActivity(IRespawnable player, IEntityProvideable world, IPoliceRespondable policeRespondable, ISeatAssignable seatAssignable, ISettingsProvideable settings, ITimeReportable time, IModItems modItems, VehicleExt carToSearch, IWeapons weapons)
     {
         Player = player;
         World = world;
@@ -57,7 +57,7 @@ public class SearchActivity
         Time = time;
         ModItems = modItems;
         CarToSearch = carToSearch;
-        PlayerPoliceSearch = new PlayerPoliceSearch(Player,Time,ModItems, CarToSearch);
+        PlayerPoliceSearch = new PlayerPoliceSearch(Player,Time,ModItems, CarToSearch, weapons);
     }
     public void Setup()
     {
@@ -389,6 +389,7 @@ public class SearchActivity
     private void CopMoveLoop(bool isVehicle)
     {
         isCopInPosition = false;
+        uint GameTimeStartedWalking = Game.GameTime;
         while (CanContinueSearch)
         {
             if (!isVehicle && CopTargetPosition.DistanceTo2D(Player.Character.GetOffsetPositionFront(-0.9f)) >= 0.1f)
@@ -406,11 +407,17 @@ public class SearchActivity
             }
             float distanceToPos = Cop.Pedestrian.DistanceTo2D(CopTargetPosition);
             float headingDiff = Math.Abs(Extensions.GetHeadingDifference(Cop.Pedestrian.Heading, CopTargetHeading));
-            if (distanceToPos <= 0.3f && headingDiff <= 0.5f)
+            if (distanceToPos <= 0.5f && headingDiff <= 0.5f)
             {
                 isCopInPosition = true;
                 break;
             }
+            if(Game.GameTime - GameTimeStartedWalking >= 15000 && distanceToPos <= 1.0f && headingDiff <= 5f)
+            {
+                isCopInPosition = true;
+                break;
+            }
+
 //#if DEBUG
 //            Game.DisplaySubtitle($"distanceToPos:{distanceToPos} headingDiff{headingDiff} isCopInPosition{isCopInPosition} {isVehicle}");
 //            Rage.Debug.DrawArrowDebug(CopTargetPosition + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.White);

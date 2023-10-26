@@ -124,8 +124,6 @@ public class PedInspect : DynamicActivity
             }
         }, "PedInspect");   
     }
-
-
     private void InspectPed()
     {
         if(!MoveToBody())
@@ -150,8 +148,6 @@ public class PedInspect : DynamicActivity
         UpdateMenuItems();
         PedInspectMenu.Visible = true;
         MenuUpdate();
-        //PlayAnimation(IdleAnimationDictionary, IdleAnimationList.PickRandom())
-        //FinishInspect();
     }
     private void MenuUpdate()
     {
@@ -285,10 +281,6 @@ public class PedInspect : DynamicActivity
         int CashAdded = 0;
         if (Ped.Pedestrian.Exists())
         {
-
-
-
-            
             if (RandomItems.RandomPercent(Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomItems))
             {
                 Ped.PedInventory.AddRandomItems(ModItems, false);
@@ -335,9 +327,6 @@ public class PedInspect : DynamicActivity
         Ped.ShowCustomDisplay(pedHeadshotHandle, "~r~Ped Searched", Description);
         EntryPoint.WriteToConsole($"LOOTING:{Ped.Name} {Description}");
     }
-
-
-
     private bool PlayAnimation(string dictionary, string animation)
     {
         NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, dictionary, animation, 8.0f, -8.0f, -1, 2, 0, false, false, false);
@@ -423,7 +412,6 @@ public class PedInspect : DynamicActivity
         var angle = (radian * (180 / Math.PI) + 360) % 360;
         return angle;
     }
-
     protected virtual void SetupVariables()
     {
         EnterAnimationDictionary = "amb@medic@standing@tendtodead@enter";
@@ -459,7 +447,6 @@ public class PedInspect : DynamicActivity
         }
         Player.ActivityManager.IsPerformingActivity = true;
     }
-
     protected virtual void ResetPed()
     {
 
@@ -489,9 +476,10 @@ public class PedInspect : DynamicActivity
     }
     private void RestorePlayerWeapons()
     {
-        if (WasSetUnArmed && LastWeapon != null)
+        if(!WasSetUnArmed || LastWeapon == null)
         {
-            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeapon.Hash, true);
+            return;
         }
+        NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeapon.Hash, true);     
     }
 }
