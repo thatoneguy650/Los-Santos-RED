@@ -37,25 +37,25 @@ public class PlacesOfInterest_Liberty
     private void DefaultConfig_Other()
     {
         //ALL THESE NEED -200 to the Z for the centeres
-        Bank BOL1 = new Bank(new Vector3(225.23f, 14.52f, 215.37f), 177.45f, "Bank Of Liberty", "Bleeding you dry") { StateID = StaticStrings.LibertyStateID, OpenTime = 6, CloseTime = 20};
+        Bank BOL1 = new Bank(new Vector3(225.23f, 14.52f, 215.37f), 177.45f, "Bank Of Liberty", "Bleeding you dry","BOL") { StateID = StaticStrings.LibertyStateID, OpenTime = 6, CloseTime = 20};
         LibertyCityLocations.Banks.Add(BOL1);
 
-        Bank BOL2 = new Bank(new Vector3(1388.10f, 259.31f, 223.59f), 0.02f, "Bank Of Liberty", "Bleeding you dry") { StateID = StaticStrings.LibertyStateID, OpenTime = 6, CloseTime = 20 };
+        Bank BOL2 = new Bank(new Vector3(1388.10f, 259.31f, 223.59f), 0.02f, "Bank Of Liberty", "Bleeding you dry", "BOL") { StateID = StaticStrings.LibertyStateID, OpenTime = 6, CloseTime = 20 };
         LibertyCityLocations.Banks.Add(BOL2);
 
-        Bank BOL3 = new Bank(new Vector3(1431.68f, 1137.02f, 238.78f), 90.68f, "Bank Of Liberty", "Bleeding you dry") { StateID = StaticStrings.LibertyStateID, OpenTime = 6, CloseTime = 20 };
+        Bank BOL3 = new Bank(new Vector3(1431.68f, 1137.02f, 238.78f), 90.68f, "Bank Of Liberty", "Bleeding you dry", "BOL") { StateID = StaticStrings.LibertyStateID, OpenTime = 6, CloseTime = 20 };
         LibertyCityLocations.Banks.Add(BOL3);
 
-        Bank BOL4 = new Bank(new Vector3(323.26f, 1012.09f, 213.23f), 270.99f, "Bank Of Liberty", "Bleeding you dry") { StateID = StaticStrings.LibertyStateID, OpenTime = 6, CloseTime = 20 };
+        Bank BOL4 = new Bank(new Vector3(323.26f, 1012.09f, 213.23f), 270.99f, "Bank Of Liberty", "Bleeding you dry", "BOL") { StateID = StaticStrings.LibertyStateID, OpenTime = 6, CloseTime = 20 };
         LibertyCityLocations.Banks.Add(BOL4);
 
-        Bank BOL5 = new Bank(new Vector3(83.71f, 318.04f, 214.76f), 358.65f, "Bank Of Liberty", "Bleeding you dry") { StateID = StaticStrings.LibertyStateID, OpenTime = 6, CloseTime = 20 };
+        Bank BOL5 = new Bank(new Vector3(83.71f, 318.04f, 214.76f), 358.65f, "Bank Of Liberty", "Bleeding you dry", "BOL") { StateID = StaticStrings.LibertyStateID, OpenTime = 6, CloseTime = 20 };
         LibertyCityLocations.Banks.Add(BOL5);
 
-        Bank BOL6 = new Bank(new Vector3(251.77f, -138.63f, 215.19f), 129.22f, "Bank Of Liberty", "Bleeding you dry") { StateID = StaticStrings.LibertyStateID, OpenTime = 6, CloseTime = 20 };
+        Bank BOL6 = new Bank(new Vector3(251.77f, -138.63f, 215.19f), 129.22f, "Bank Of Liberty", "Bleeding you dry", "BOL") { StateID = StaticStrings.LibertyStateID, OpenTime = 6, CloseTime = 20 };
         LibertyCityLocations.Banks.Add(BOL6);
 
-        Bank BOL7 = new Bank(new Vector3(-11.50f, 1863.38f, 225.02f), 90.65f, "Bank Of Liberty", "Bleeding you dry") { StateID = StaticStrings.LibertyStateID, OpenTime = 6, CloseTime = 20 };
+        Bank BOL7 = new Bank(new Vector3(-11.50f, 1863.38f, 225.02f), 90.65f, "Bank Of Liberty", "Bleeding you dry", "BOL") { StateID = StaticStrings.LibertyStateID, OpenTime = 6, CloseTime = 20 };
         LibertyCityLocations.Banks.Add(BOL7);
 
         List<DeadDrop> DeadDropList_4 = new List<DeadDrop>() {

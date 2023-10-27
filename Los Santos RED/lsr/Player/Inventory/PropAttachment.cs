@@ -30,5 +30,6 @@ public class PropAttachment
     public Vector3 Attachment { get; set; }
     public Rotator Rotation { get; set; }
     public string Gender { get; set; } = "U";
+    public bool IsMP { get; set; } = false;
 }
 

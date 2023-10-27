@@ -128,6 +128,10 @@ public class TaxiRide
         DestinationLocation = new SpawnLocation();
         PickupLocation.GetClosestStreet(true);
         PickupLocation.GetClosestSideOfRoad();
+
+
+
+
         if (!PickupLocation.HasStreetPosition)
         {
             EntryPoint.WriteToConsole("TAXI RIDE SETUP FAIL NO STREET POSITION");
@@ -484,6 +488,36 @@ public class TaxiRide
     public void ContinueRide()
     {
         IsWaitingOnPlayer = false;
+    }
+
+    public void UpdatePickupLocation()
+    {
+        SpawnLocation NewPickupLocation = new SpawnLocation(Player.Position);
+        NewPickupLocation.GetClosestStreet(true);
+        NewPickupLocation.GetClosestSideOfRoad();
+        if(!NewPickupLocation.HasStreetPosition)
+        {
+            Game.DisplayHelp("Could not find new pickup location");
+            return;
+        }
+        PickupLocation.InitialPosition = NewPickupLocation.InitialPosition;
+        PickupLocation.StreetPosition = NewPickupLocation.StreetPosition;
+        UpdatePickupBlip();
+    }
+
+    public void SetPickupLocationAtPlayer()
+    {
+        PickupLocation.InitialPosition = Player.Position;
+        PickupLocation.StreetPosition = Player.Position;
+        UpdatePickupBlip();
+    }
+    private void UpdatePickupBlip()
+    {
+        if(!PickupBlip.Exists())
+        {
+            return;
+        }
+        PickupBlip.Position = PickupLocation.StreetPosition;
     }
 }
 

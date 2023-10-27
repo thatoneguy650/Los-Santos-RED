@@ -69,12 +69,23 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public int MaxRandomItemsAmount { get; set; }
     [Description("Percentage of time you will get random weapons when looting a vehicle")]
     public float PercentageToGetRandomWeapons { get; set; }
+
     [Description("Max number of random weapons to get when looting a vehicle. Requires PercentageToGetRandomItems > 0")]
     public int MaxRandomWeaponsToGet { get; set; }
     [Description("Percentage of time you will get a random variation on a weapon when looting a vehicle")]
     public float PercentageToGetRandomWeaponVariation { get; set; }
     [Description("Percentage of time you will get a random component in the variation on a weapon when looting a vehicle")]
     public float PercentageToGetComponentInRandomVariation { get; set; }
+
+
+    [Description("Percentage of time you will get random cash when looting a vehicle")]
+    public float PercentageToGetRandomCash { get; set; }
+
+    [Description("Min amount of random cash when looting a vehicle")]
+    public int RandomCashMin { get; set; }
+    [Description("Max amount of random cash when looting a vehicle")]
+    public int RandomCashMax { get; set; }
+
     [Description("Not fully implemented.")]
     public bool AllowSetCharacterClipsets { get; set; }
     [Description("Not fully implemented.")]
@@ -147,6 +158,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
 
         PercentageToGetRandomWeapons = 20f;
         MaxRandomWeaponsToGet = 2;
+        PercentageToGetRandomCash = 35f;
         PercentageToGetRandomWeaponVariation = 35f;
         PercentageToGetComponentInRandomVariation = 35f;
         SeeBehindDistanceVehicle = 20f;
@@ -162,6 +174,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
 #else
     RemovePlayerFromVehicleWhenTeleporting = false;
 #endif
+        RandomCashMin = 5;
+        RandomCashMax = 550;
     }
 
 }

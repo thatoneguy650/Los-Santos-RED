@@ -15,15 +15,17 @@ public class BankAccount
     {
 
     }
-    public BankAccount(string bankContactName, int money)
+    public BankAccount(string bankContactName,string accountName, int money)
     {
         BankContactName = bankContactName;
         Money = money;
+        AccountName = accountName;
     }
     public string BankContactName { get; set; }
     public int Money { get; set; } = 0;
     public bool IsPrimary { get; set; } = false;
-
+    public string AccountName { get; set; } 
+    public string CashDisplay => $" ({(string.IsNullOrEmpty(AccountName) ? BankContactName : AccountName)} - ${Money})";
     public void SetSubMenu(UIMenu bankAccountSubMenu, UIMenuItem bankAccountSubMenuItem)
     {
         BankAccountSubMenu = bankAccountSubMenu;

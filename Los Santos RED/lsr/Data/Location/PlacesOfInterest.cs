@@ -889,7 +889,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         illicitMarketplaces = new List<IllicitMarketplace>() {
 
-            new IllicitMarketplace(new Vector3(-423.8026f, 185.627f, 80.80039f), 168.7502f, "Dealer Hangout 1", "Dealer Hangout 1","DealerHangoutMenu1") { VendorPosition = new Vector3(-423.8026f, 185.627f, 80.80039f), VendorHeading = 168.7502f,VendorModels = new List<string>() { "IG_DrugDealer", "S_M_Y_Dealer_01" } },
+            new IllicitMarketplace(new Vector3(-423.8026f, 185.627f, 80.80039f), 168.7502f, "Dealer Hangout 1", "Dealer Hangout 1","DealerHangoutMenu1") { OpenTime = 0, CloseTime = 24, VendorPosition = new Vector3(-423.8026f, 185.627f, 80.80039f), VendorHeading = 168.7502f,VendorModels = new List<string>() { "IG_DrugDealer", "S_M_Y_Dealer_01" } },
             //(-423.8026f, 185.627f, 80.80039f)
         };
     }
@@ -1092,16 +1092,16 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         Banks = new List<Bank>()
         {
-            new Bank(new Vector3(-1318f, -831.5065f, 16.97263f), 125.3848f, "Maze Bank", "")
+            new Bank(new Vector3(-1318f, -831.5065f, 16.97263f), 125.3848f, "Maze Bank", "Invest in the red", "Maze")
             {
                 BannerImagePath = "stores\\maze.png",
             },
 
-            new Bank(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, "Fleeca Bank", "")
+            new Bank(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, "Fleeca Bank", "Everything, at a price","Fleeca")
             {
                 BannerImagePath = "stores\\fleeca.png",
             },
-            new Bank(new Vector3(-350.1604f, -45.84864f, 49.03682f), 337.4063f, "Fleeca Bank", "")
+            new Bank(new Vector3(-350.1604f, -45.84864f, 49.03682f), 337.4063f, "Fleeca Bank", "Everything, at a price","Fleeca")
             {
                 BannerImagePath = "stores\\fleeca.png",
                 InteriorID = 71682,
@@ -1111,7 +1111,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ActivateCells = 3,
                 ActivateDistance = 75f,
             },
-            new Bank(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f,  "Fleeca Bank", "")
+            new Bank(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f,  "Fleeca Bank", "Everything, at a price","Fleeca")
             {
                 BannerImagePath = "stores\\fleeca.png",
                 InteriorID = 76802,
@@ -1122,7 +1122,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ActivateCells = 3,
                 ActivateDistance = 75f,
             },
-            new Bank(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f,  "Fleeca Bank", "")
+            new Bank(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f,  "Fleeca Bank", "Everything, at a price","Fleeca")
             {
                 BannerImagePath = "stores\\fleeca.png",
                 InteriorID = 11266,
@@ -1133,7 +1133,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ActivateCells = 3,
                 ActivateDistance = 75f,
             },
-            new Bank(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f,  "Fleeca Bank", "")
+            new Bank(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f,  "Fleeca Bank", "Everything, at a price","Fleeca")
             {
                 BannerImagePath = "stores\\fleeca.png",
                 InteriorID = 20226,
@@ -1143,7 +1143,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ActivateCells = 3,
                 ActivateDistance = 75f,
             },
-            new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", "")
+            new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", "Everything, at a price","Fleeca")
             {
                 BannerImagePath = "stores\\fleeca.png",
                 InteriorID = 90626,
@@ -1153,7 +1153,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ActivateCells = 3,
                 ActivateDistance = 75f,
             },
-            new Bank(new Vector3(-1214.902f, -327.0157f, 37.6686f), 26.31765f, "Fleeca Bank", "")
+            new Bank(new Vector3(-1214.902f, -327.0157f, 37.6686f), 26.31765f, "Fleeca Bank", "Everything, at a price","Fleeca")
             {
                 BannerImagePath = "stores\\fleeca.png",
                 InteriorID = 87810,
@@ -1166,7 +1166,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             },
 
 
-            new Bank(new Vector3(230.2334f, 214.4399f, 105.552f), 115.9025f, "Pacific Standard Bank", "")
+            new Bank(new Vector3(230.2334f, 214.4399f, 105.552f), 115.9025f, "Pacific Standard Bank", "Since 1903","Pacific Std")
             {
                 BannerImagePath = "stores\\pacificstandard.png",
                 InteriorID = 103170,
@@ -1178,11 +1178,11 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ActivateDistance = 100f,
             },
 
-            new Bank(new Vector3(-3142.849f, 1131.727f, 20.84295f), 247.9002f, "Blaine County Savings", "")
+            new Bank(new Vector3(-3142.849f, 1131.727f, 20.84295f), 247.9002f, "Blaine County Savings", "Your nest egg!","Blaine CS")
             {
                 BannerImagePath = "stores\\blainecountybank.png",
             },
-            new Bank(new Vector3(-111.82f, 6461.803f, 31.63924f), 134.2345f, "Blaine County Savings", "")
+            new Bank(new Vector3(-111.82f, 6461.803f, 31.63924f), 134.2345f, "Blaine County Savings", "Your nest egg!","Blaine CS")
             {
                 BannerImagePath = "stores\\blainecountybank.png",
                 InteriorID = 42754,
@@ -1193,15 +1193,15 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ActivateDistance = 150f,
             },
 
-            new Bank(new Vector3(-1103.88f, -1353.062f, 5.037252f), 206.2566f, "Lombank", "")
+            new Bank(new Vector3(-1103.88f, -1353.062f, 5.037252f), 206.2566f, "Lombank", "Our time is your money", "Lombank")
             {
                 BannerImagePath = "stores\\lombank.png" 
             },
-            new Bank(new Vector3(-863.493f, -193.3951f, 37.84323f), 299.7061f, "Lombank", "")
+            new Bank(new Vector3(-863.493f, -193.3951f, 37.84323f), 299.7061f, "Lombank", "Our time is your money", "Lombank")
             {
                 BannerImagePath = "stores\\lombank.png" 
             },
-            new Bank(new Vector3(6.928352f, -932.4435f, 29.905f), 111.645f, "Lombank", "")
+            new Bank(new Vector3(6.928352f, -932.4435f, 29.905f), 111.645f, "Lombank", "Our time is your money", "Lombank")
             {
                 BannerImagePath = "stores\\lombank.png" 
             },
@@ -1487,7 +1487,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(538.3118f, 101.4798f, 96.52515f), 159.4801f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\pizzathis.png" },
             new Restaurant(new Vector3(287.5003f, -964.0207f, 29.41863f), 357.0406f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\pizzathis.png" },
             new Restaurant(new Vector3(-1529.252f, -908.6689f, 10.16963f), 137.3273f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\pizzathis.png" },
-            new Restaurant(new Vector3(443.7377f, 135.1464f, 100.0275f), 161.2897f, "Guidos Takeout 24/7", "For the night owls","PizzaMenu", FoodType.Italian | FoodType.Pizza),
+            new Restaurant(new Vector3(443.7377f, 135.1464f, 100.0275f), 161.2897f, "Guidos Takeout 24/7", "For the night owls","PizzaMenu", FoodType.Italian | FoodType.Pizza) {OpenTime = 0, CloseTime = 24},
             new Restaurant(new Vector3(-1320.907f, -1318.505f, 4.784881f), 106.5257f, "Pebble Dash Pizza", "Overpriced shitty pizza, but by the beach","PizzaMenu", FoodType.Italian | FoodType.Pizza),
             new Restaurant(new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f, "Slice N Dice Pizza","Slice UP!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood),
             new Restaurant(new Vector3(-1296.815f, -1387.3f, 4.544102f), 112.4694f, "Sharkies Bites","Take A Bite Today!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood){ IsWalkup = true },

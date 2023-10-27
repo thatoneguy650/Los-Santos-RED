@@ -171,8 +171,24 @@ public class PhysicalItems : IPropItems
                 //new PropAttachment("Head", "BONETAG_HEAD", new Vector3(-0.007f, 0.13f, 0.01f),new Rotator(0.0f, -175f, 91f)) {Gender = "M" },//doesnt look so good on franklin
                 new PropAttachment("Head", "BONETAG_HEAD", new Vector3(-0.023f,0.087f,0.014f), new Rotator(50f, 0f, 90f)) { Gender = "M" },//a little close in for franklin
 
-                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(-0.015f,0.117f,0.01f),new Rotator(90f, 90f, 0f)) { Gender = "F" },
-                new PropAttachment("Head", "BONETAG_HEAD", new Vector3(-0.023f,0.087f,0.014f), new Rotator(50f, 0f, 90f)) { Gender = "F" }
+
+
+                ////OLD
+                //new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(-0.015f,0.117f,0.01f),new Rotator(90f, 90f, 0f)) { Gender = "F" },
+                //new PropAttachment("Head", "BONETAG_HEAD", new Vector3(-0.023f,0.087f,0.014f), new Rotator(50f, 0f, 90f)) { Gender = "F" },
+
+
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.01f,0.01f,0.01f),new Rotator(0f, 0f, -180f)) { Gender = "F",IsMP = true },
+                new PropAttachment("Head", "BONETAG_HEAD", new Vector3(-0.01f,0.1f,-0.01f), new Rotator(0f, 0f, 90f)) { Gender = "F",IsMP = true },
+
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(-0.01f,0.01f,-0.01f),new Rotator(0f, 0f, -180f)) { Gender = "F",IsMP = false },
+                new PropAttachment("Head", "BONETAG_HEAD", new Vector3(-0.02f,0.08f,-0.01f), new Rotator(0f, 0f, 90f)) { Gender = "F",IsMP = false },
+
+
+                new PropAttachment("Particle", "", new Vector3(0.072f,0.0f,0.0f), new Rotator(0f, 0f, 0f)) { Gender = "U" },
+
+
+
             }),//looksgood besides player mouth attach       
             //Other Drugs
             new PhysicalItem("p_cs_joint_01", new List<PropAttachment>() {

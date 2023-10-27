@@ -1218,7 +1218,7 @@ public class ActivityManager
         {
             return;
         }
-        if (IsPerformingActivity || !Player.IsDriver || Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
+        if (!Player.IsDriver || Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
         {
             return;
         }
@@ -1246,7 +1246,14 @@ public class ActivityManager
             animName = "d_close_in_near";
         }
         EntryPoint.WriteToConsole($"doorAngle {doorAngle} animName{animName} TimeToWait{TimeToWait}");
-        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Doors.Toggle(0, Player)), "veh@std@ds@enter_exit", animName, TimeToWait);
+        if (IsPerformingActivity)
+        {
+            Player.CurrentVehicle?.Doors.Toggle(0, Player);
+        }
+        else
+        {
+            DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Doors.Toggle(0, Player)), "veh@std@ds@enter_exit", animName, TimeToWait);
+        }
     }
 
     public void CloseDriverDoor()
@@ -1255,7 +1262,7 @@ public class ActivityManager
         {
             return;
         }
-        if(IsPerformingActivity || !Player.IsDriver || Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
+        if(!Player.IsDriver || Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
         {
             return;
         }
@@ -1276,72 +1283,134 @@ public class ActivityManager
         {
             animName = "d_close_in_near";
         }
-
-        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Doors.SetState(0,true, Player)), "veh@std@ds@enter_exit", animName, TimeToWait);
+        if (IsPerformingActivity)
+        {
+            Player.CurrentVehicle?.Doors.SetState(0, true, Player);
+        }
+        else
+        {
+            DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Doors.SetState(0, true, Player)), "veh@std@ds@enter_exit", animName, TimeToWait);
+        }
     }
     public void ToggleLeftIndicator()
     {
-        if (Player.CurrentVehicle == null || IsPerformingActivity || !Player.IsDriver)
+        if (Player.CurrentVehicle == null || !Player.IsDriver)
         {
             return;
         }
-        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Indicators.ToggleLeft()), "veh@std@ds@base", "change_station", 750);
+        if (IsPerformingActivity)
+        {
+            Player.CurrentVehicle?.Indicators.ToggleLeft();
+        }
+        else
+        {
+            DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Indicators.ToggleLeft()), "veh@std@ds@base", "change_station", 750);
+        }
     }
     public void ToggleHazards()
     {
-        if (Player.CurrentVehicle == null || IsPerformingActivity || !Player.IsDriver)
+        if (Player.CurrentVehicle == null || !Player.IsDriver)
         {
             return;
         }
-        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Indicators.ToggleHazards()), "veh@std@ds@base", "change_station", 750);
+        if (IsPerformingActivity)
+        {
+            Player.CurrentVehicle?.Indicators.ToggleHazards();
+        }
+        else
+        {
+            DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Indicators.ToggleHazards()), "veh@std@ds@base", "change_station", 750);
+        }
     }
     public void ToggleRightIndicator()
     {
-        if (Player.CurrentVehicle == null || IsPerformingActivity || !Player.IsDriver)
+        if (Player.CurrentVehicle == null || !Player.IsDriver)
         {
             return;
         }
-        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Indicators.ToggleRight()), "veh@std@ds@base", "change_station", 750);
+        if (IsPerformingActivity)
+        {
+            Player.CurrentVehicle?.Indicators.ToggleRight();
+        }
+        else
+        {
+            DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Indicators.ToggleRight()), "veh@std@ds@base", "change_station", 750);
+        }
     }
     public void ToggleVehicleEngine()
     {
-        if (Player.CurrentVehicle == null || IsPerformingActivity || !Player.IsDriver)
+        if (Player.CurrentVehicle == null || !Player.IsDriver)
         {
             return;
         }
-        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Engine.Toggle()), "veh@std@ds@base", "start_engine", 750);
+        if (IsPerformingActivity)
+        {
+            Player.CurrentVehicle?.Engine.Toggle();
+        }
+        else
+        {
+            DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Engine.Toggle()), "veh@std@ds@base", "start_engine", 750);
+        }
     }
     public void SetVehicleEngine(bool desiredStatus)
     {
-        if (Player.CurrentVehicle == null || IsPerformingActivity || !Player.IsDriver)
+        if (Player.CurrentVehicle == null || !Player.IsDriver)
         {
             return;
         }
-        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Engine.SetState(desiredStatus)), "veh@std@ds@base", "start_engine", 750);
+        if (IsPerformingActivity)
+        {
+            Player.CurrentVehicle?.Engine.SetState(desiredStatus);
+        }
+        else
+        {
+            DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Engine.SetState(desiredStatus)), "veh@std@ds@base", "start_engine", 750);
+        }
     }
     public void ToggleDriverWindow()
     {
-        if (Player.CurrentVehicle == null || IsPerformingActivity || !Player.IsDriver)
+        if (Player.CurrentVehicle == null || !Player.IsDriver)
         {
             return;
         }
-        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Windows.ToggleWindow(0)), "veh@std@ds@enter_exit", "d_close_in_near", 750);
+        if (IsPerformingActivity)
+        {
+            Player.CurrentVehicle?.Windows.ToggleWindow(0);
+        }
+        else
+        {
+            DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Windows.ToggleWindow(0)), "veh@std@ds@enter_exit", "d_close_in_near", 750);
+        }
     }
     public void SetWindowState(int windowID, bool desiredStatus)
     {
-        if (Player.CurrentVehicle == null || IsPerformingActivity || !Player.IsDriver)
+        if (Player.CurrentVehicle == null || !Player.IsDriver)
         {
             return;
         }
-        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Windows.SetState(windowID, desiredStatus)), "veh@std@ds@enter_exit", "d_close_in_near", 750);
+        if (IsPerformingActivity)
+        {
+            Player.CurrentVehicle?.Windows.SetState(windowID, desiredStatus);
+        }
+        else
+        {
+            DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Windows.SetState(windowID, desiredStatus)), "veh@std@ds@enter_exit", "d_close_in_near", 750);
+        }
     }
     public void ToggleDoorLocks()
     {
-        if (Player.CurrentVehicle == null || IsPerformingActivity || !Player.IsDriver)
+        if (Player.CurrentVehicle == null || !Player.IsDriver)
         {
             return;
         }
-        DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Doors.ToggleDoorLocks()), "veh@std@ds@enter_exit", "d_close_in_near", 750);
+        if (IsPerformingActivity)
+        {
+            Player.CurrentVehicle?.Doors.ToggleDoorLocks();
+        }
+        else
+        {
+            DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Doors.ToggleDoorLocks()), "veh@std@ds@enter_exit", "d_close_in_near", 750);
+        }
     }
 
 
@@ -1355,6 +1424,8 @@ public class ActivityManager
             {
                 GameFiber.Sleep(timeToWait);
                 action();
+                GameFiber.Sleep(1000);
+                NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             }
             catch (Exception ex)
             {

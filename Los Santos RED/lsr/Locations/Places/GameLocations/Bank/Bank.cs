@@ -23,9 +23,9 @@ public class Bank : GameLocation
     private List<BankDrawer> BankDrawers = new List<BankDrawer>();
     private bool IsStealingFromDrawer;
 
-    public Bank(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
+    public Bank(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string shortName) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
-
+        ShortName = shortName;
     }
     public Bank() : base()
     {
@@ -41,6 +41,7 @@ public class Bank : GameLocation
     public int DrawerCashMax { get; set; } = 9000;
     public int DrawerCashGainedPerAnimation { get; set; } = 500;
     public float ExtaTellerSpawnPercentage { get; set; } = 70f;
+    public string ShortName { get; set; }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Bank At {Name}";

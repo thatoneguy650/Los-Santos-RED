@@ -30,6 +30,7 @@ namespace LSR.Vehicles
         private uint GameTimeBecameEmpty;
         private bool HasAddedRandomItems = false;
         private bool HasAddedRandomWeapons = false;
+        private bool HasAddedRandomCash = false;
         private uint GameTimeLastAddedSonarBlip;
         public VehicleInteractionMenu VehicleInteractionMenu { get; set; }
         public SimpleInventory SimpleInventory { get; private set; }
@@ -184,6 +185,9 @@ namespace LSR.Vehicles
         public bool IsBicycle { get; private set; } = false;
         public bool IsMotorcycle { get; private set; } = false;
         public bool IsRandomlyLocked { get; set; } = false;
+
+        public virtual bool CanHaveRandomCash { get; set; } = true;
+
         public virtual bool CanHaveRandomWeapons { get; set; } = true;
         public virtual bool CanHaveRandomItems { get; set; } = true;
         public virtual bool CanRandomlyHaveIllegalItems { get; set; } = true;
@@ -1202,6 +1206,26 @@ namespace LSR.Vehicles
             }
             HasAddedRandomWeapons = true;
         }
+        public void HandleRandomCash()
+        {
+            if (HasAddedRandomCash)
+            {
+                EntryPoint.WriteToConsole("ALREADY ADDED RANDOM CASH");
+                return;
+            }
+            if (!CanHaveRandomCash)
+            {
+                HasAddedRandomCash = true;
+                EntryPoint.WriteToConsole("CANT HAVE RANDOM CASH");
+                return;
+            }
+            if (CashStorage.StoredCash == 0 && RandomItems.RandomPercent(Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomCash))
+            {
+                EntryPoint.WriteToConsole("ATTEMPT ADD RANDOM CASH");
+                CashStorage.StoredCash = RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.RandomCashMin, Settings.SettingsManager.PlayerOtherSettings.RandomCashMax);
+            }
+            HasAddedRandomCash = true;
+        }
         public void SetImpounded(ITimeReportable time, string locationName, bool hasValidCCW, IWeapons weapons)
         {
             IsImpounded = true;
@@ -1210,6 +1234,11 @@ namespace LSR.Vehicles
             ImpoundedLocation = locationName;
             SimpleInventory.OnImpounded();
             WeaponStorage.OnImpounded(hasValidCCW, weapons);
+            if(Vehicle.Exists())
+            {
+                Vehicle.IsEngineOn = false;
+                NativeFunction.Natives.SET_VEHICLE_DOORS_SHUT(Vehicle, true);
+            }
         }
         private void UnSetImpounded()
         {

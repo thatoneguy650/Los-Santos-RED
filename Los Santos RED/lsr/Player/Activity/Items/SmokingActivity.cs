@@ -45,6 +45,8 @@ namespace LosSantosRED.lsr.Player
         private int HandBoneID;
         private SmokeItem SmokeItem;
         private ConsumableRefresher ConsumableItemNeedGain;
+        private Vector3 ParticleOffset;
+        private Rotator ParticleRotation;
 
         public SmokingActivity(IActionable consumable, ISettingsProvideable settings, SmokeItem modItem, IIntoxicants intoxicants) : base()
         {
@@ -479,12 +481,18 @@ namespace LosSantosRED.lsr.Player
             }
 
 
+            ParticleOffset = new Vector3(-0.07f, 0.0f, 0f);
+            ParticleRotation = Rotator.Zero;
 
 
             if (ModItem != null && ModItem.ModelItem != null)
             {
                 PropModelName = ModItem.ModelItem.ModelName;
-                PropAttachment pa = ModItem.ModelItem.Attachments.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+                PropAttachment pa = ModItem.ModelItem.Attachments.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender) && x.IsMP == Player.CharacterModelIsFreeMode);
+                if (pa == null)
+                {
+                    pa = ModItem.ModelItem.Attachments.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+                }
                 if (pa != null)
                 {
                     HandOffset = pa.Attachment;
@@ -492,12 +500,23 @@ namespace LosSantosRED.lsr.Player
                     HandBoneName = pa.BoneName;
                     //EntryPoint.WriteToConsoleTestLong($"Smoking Activity Found Attachment (Hand) {HandOffset} {HandRotator} {HandBoneName}");
                 }
-                PropAttachment pa2 = ModItem.ModelItem.Attachments.FirstOrDefault(x => x.Name == "Head" && (x.Gender == "U" || x.Gender == Player.Gender));
+                PropAttachment pa2 = ModItem.ModelItem.Attachments.FirstOrDefault(x => x.Name == "Head" && (x.Gender == "U" || x.Gender == Player.Gender) && x.IsMP == Player.CharacterModelIsFreeMode);
+                if(pa2 == null)
+                {
+                    pa2 = ModItem.ModelItem.Attachments.FirstOrDefault(x => x.Name == "Head" && (x.Gender == "U" || x.Gender == Player.Gender));
+                }
                 if (pa2 != null)
                 {
                     MouthOffset = pa2.Attachment;
                     MouthRotator = pa2.Rotation;
                     MouthBoneName = pa2.BoneName;
+                    //EntryPoint.WriteToConsoleTestLong($"Smoking Activity Found Attachment (Mouth) {MouthOffset} {MouthRotator} {MouthBoneName}");
+                }
+                PropAttachment pa3 = ModItem.ModelItem.Attachments.FirstOrDefault(x => x.Name == "Particle");
+                if (pa3 != null)
+                {
+                    ParticleOffset = pa3.Attachment;
+                    ParticleRotation = pa3.Rotation;
                     //EntryPoint.WriteToConsoleTestLong($"Smoking Activity Found Attachment (Mouth) {MouthOffset} {MouthRotator} {MouthBoneName}");
                 }
             }
@@ -530,7 +549,6 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
-
 
 
 
@@ -609,7 +627,7 @@ namespace LosSantosRED.lsr.Player
                 {
                     if (IsSmokedItemNearMouth && IsSmokedItemLit && !IsEmittingSmoke)
                     {
-                        Smoke = new LoopedParticle("core", "ent_anim_cig_smoke", SmokedItem, new Vector3(-0.07f, 0.0f, 0f), Rotator.Zero, 1.5f);
+                        Smoke = new LoopedParticle("core", "ent_anim_cig_smoke", SmokedItem, ParticleOffset, ParticleRotation, 1.5f);
                         IsEmittingSmoke = true;
                     }
                     if (!IsSmokedItemNearMouth && IsEmittingSmoke && Smoke != null)
@@ -625,7 +643,7 @@ namespace LosSantosRED.lsr.Player
                         if (GameTimeToStopSmoke <= Game.GameTime && Game.GameTime >= GameTimeToStartSmoke)
                         {
                             IsEmittingSmoke = true;
-                            Smoke = new LoopedParticle("core", "ent_anim_cig_smoke", SmokedItem, new Vector3(-0.07f, 0.0f, 0f), Rotator.Zero, 1.5f);
+                            Smoke = new LoopedParticle("core", "ent_anim_cig_smoke", SmokedItem, ParticleOffset, ParticleRotation, 1.5f);
                             GameTimeToStopSmoke = Game.GameTime + (uint)RandomItems.MyRand.Next(1200, 1500);
                         }
                     }

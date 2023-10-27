@@ -22,6 +22,7 @@ public class TaxiServiceInteraction : IContactMenuInteraction
     private ISettingsProvideable Settings;
     private IModItems ModItems;
     private UIMenu LocationsSubMenu;
+    private UIMenu PickupSubMenu;
     private UIMenu JobsSubMenu;
     private TaxiServiceContact TaxiServiceContact;
     private UIMenu RequestSubMenu;
@@ -59,55 +60,93 @@ public class TaxiServiceInteraction : IContactMenuInteraction
         TaxiServiceMenu = new UIMenu("", "Select an Option");
         TaxiServiceMenu.RemoveBanner();
         MenuPool.Add(TaxiServiceMenu);
-        AddRequestItems();
+        AddGeneralItems();
         //AddLocationItems();
         TaxiServiceMenu.Visible = true;
         InteractionLoop();
     }
-    private void AddRequestItems()
+    private void AddGeneralItems()
     {
-        //RequestSubMenu = MenuPool.AddSubMenu(TaxiServiceMenu, "Request Taxi");
-        //RequestSubMenu.RemoveBanner();
-
-
         TaxiRide ExistingRide = Player.TaxiManager.ActiveRides.FirstOrDefault(x => x.RequestedFirm != null && x.RequestedFirm.ID == TaxiFirm.ID);
         if(ExistingRide == null)
         {
-            UIMenuItem requestTaxiMenuItem = new UIMenuItem("Request Taxi", "Ask for a taxi to be dispatched.");
-            requestTaxiMenuItem.Activated += (sender, selectedItem) =>
-            {
-
-                string fullText = "";
-                if (Player.TaxiManager.RequestService(TaxiFirm))
-                {
-                    fullText = $"{TaxiServiceContact.Name} is en route to ";
-                    fullText += Player.CurrentLocation?.GetStreetAndZoneString();
-                }
-                else
-                {
-                    fullText = "No service available to your current location. Please try again later.";
-                }
-                Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
-                sender.Visible = false;
-            };
-            TaxiServiceMenu.AddItem(requestTaxiMenuItem);
+            AddNewRideItems();
         }
         else
         {
-            UIMenuItem cancelTaxiMenu = new UIMenuItem("Cancel Ride", "Cancel the current ride.");
-            cancelTaxiMenu.Activated += (sender, selectedItem) =>
-            {
-                Player.TaxiManager.CancelRide(ExistingRide, false);
-                string fullText = "Ride has been cancelled";
-                Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
-                sender.Visible = false;
-            };
-            TaxiServiceMenu.AddItem(cancelTaxiMenu);
+            AddExistingRideItems(ExistingRide);
         }
-
-
-
     }
+    private void AddNewRideItems()
+    {
+        UIMenuItem requestTaxiMenuItem = new UIMenuItem("Request Taxi", "Ask for a taxi to be dispatched.");
+        requestTaxiMenuItem.Activated += (sender, selectedItem) =>
+        {
+
+            string fullText = "";
+            if (Player.TaxiManager.RequestService(TaxiFirm))
+            {
+                fullText = $"{TaxiServiceContact.Name} is en route to ";
+                fullText += Player.CurrentLocation?.GetStreetAndZoneString();
+            }
+            else
+            {
+                fullText = "No service available to your current location. Please try again later.";
+            }
+            Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
+            sender.Visible = false;
+        };
+        TaxiServiceMenu.AddItem(requestTaxiMenuItem);
+    }
+    private void AddExistingRideItems(TaxiRide ExistingRide)
+    {
+        if(ExistingRide == null || ExistingRide.HasPickedUpPlayer)
+        {
+            return;
+        }
+        AddPickupItems(ExistingRide);
+        UIMenuItem cancelTaxiMenu = new UIMenuItem("Cancel Ride", "Cancel the current ride.");
+        cancelTaxiMenu.Activated += (sender, selectedItem) =>
+        {
+            Player.TaxiManager.CancelRide(ExistingRide, false);
+            string fullText = "Ride has been cancelled";
+            Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
+            sender.Visible = false;
+        };
+        TaxiServiceMenu.AddItem(cancelTaxiMenu);
+    }
+
+    private void AddPickupItems(TaxiRide ExistingRide)
+    {
+        if (ExistingRide == null || ExistingRide.HasPickedUpPlayer)
+        {
+            return;
+        }
+        PickupSubMenu = MenuPool.AddSubMenu(TaxiServiceMenu, "Pickup Location");
+        PickupSubMenu.RemoveBanner();
+
+        UIMenuItem updatePickupRegular = new UIMenuItem("Update", "Update the pickup location to nearby street based on your current position.");
+        updatePickupRegular.Activated += (sender, selectedItem) =>
+        {
+            ExistingRide.UpdatePickupLocation();
+            string fullText = "Pickup Location Updated";
+            Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
+            sender.Visible = false;
+        };
+        PickupSubMenu.AddItem(updatePickupRegular);
+
+
+        UIMenuItem updatePickupHere = new UIMenuItem("Set Here", "Set the pickup location as your current position. Be sure there is vehicle access at your current position.");
+        updatePickupHere.Activated += (sender, selectedItem) =>
+        {
+            ExistingRide.SetPickupLocationAtPlayer();
+            string fullText = "Pickup Location Updated";
+            Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
+            sender.Visible = false;
+        };
+        PickupSubMenu.AddItem(updatePickupHere);
+    }
+
     private void AddLocationItems()
     {
         LocationsSubMenu = MenuPool.AddSubMenu(TaxiServiceMenu, "Locations");
@@ -130,7 +169,6 @@ public class TaxiServiceInteraction : IContactMenuInteraction
             locationsubMenu.AddItem(storeAddressRequest);
         }
     }
-
     private void InteractionLoop()
     {
         GameFiber.StartNew(delegate

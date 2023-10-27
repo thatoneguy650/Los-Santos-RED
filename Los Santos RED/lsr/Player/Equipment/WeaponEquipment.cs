@@ -155,27 +155,30 @@ public class WeaponEquipment
         bool foundItems = false;
         //Needed cuz for some reason the other weapon list just forgets your last gun in in there and it isnt applied, so until I can find it i can only remove all
         //Make a list of my old guns
-        List<StoredWeapon> MyOldGuns = new List<StoredWeapon>();
+        List<StoredWeapon> PreStoredWeaponsList = new List<StoredWeapon>();
         WeaponDescriptorCollection CurrentWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
         foreach (WeaponDescriptor Weapon in CurrentWeapons)
         {
             WeaponVariation DroppedGunVariation = Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Weapon.Hash);
             StoredWeapon MyGun = new StoredWeapon((uint)Weapon.Hash, Vector3.Zero, DroppedGunVariation, Weapon.Ammo);
-            MyOldGuns.Add(MyGun);
+            PreStoredWeaponsList.Add(MyGun);
         }
         //Totally clear our guns
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         //Add out guns back with variations
-        foreach (StoredWeapon MyNewGun in MyOldGuns)
+        foreach (StoredWeapon storedWeapon in PreStoredWeaponsList)
         {
-            WeaponInformation MyGTANewGun = Weapons.GetWeapon((ulong)MyNewGun.WeaponHash);
-            if (MyGTANewGun == null || MyGTANewGun.IsLegalWithoutCCW || (hasValidCCW && MyGTANewGun.IsLegal))//or its an addon gun
+            WeaponInformation weaponInformation = Weapons.GetWeapon((ulong)storedWeapon.WeaponHash);
+            if (weaponInformation == null || weaponInformation.IsLegalWithoutCCW || (hasValidCCW && weaponInformation.IsLegal))//or its an addon gun
             {
-                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyNewGun.WeaponHash, (short)MyNewGun.Ammo, false);
-                MyGTANewGun?.ApplyWeaponVariation(Game.LocalPlayer.Character, MyNewGun.Variation);
-                NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)MyNewGun.WeaponHash, MyNewGun.Ammo + 1);
+                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(storedWeapon.WeaponHash, (short)storedWeapon.Ammo, false);
+                if (storedWeapon.Variation != null)
+                {
+                    weaponInformation?.ApplyWeaponVariation(Game.LocalPlayer.Character, storedWeapon.Variation);
+                }
+                NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)storedWeapon.WeaponHash, storedWeapon.Ammo + 1);
             }
-            if (!MyGTANewGun.IsLegal)
+            if (weaponInformation != null && !weaponInformation.IsLegal)
             {
                 foundItems = true;
             }

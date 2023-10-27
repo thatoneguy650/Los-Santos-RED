@@ -220,13 +220,27 @@ public class BankAccounts
         currentMoney = Money;
     }
 
-    public string CashDisplay()
+    public string CashDisplay(bool showFull)
     {
         string toReturn = $"${Money}";
-        int totalAccount = TotalAccountMoney;
-        if(totalAccount > 0)
+
+        if (showFull)
         {
-            toReturn += $" (${totalAccount})";
+            if (BankAccountList != null && BankAccountList.Any())
+            {
+                foreach (BankAccount ba in BankAccountList)
+                {
+                    toReturn += ba.CashDisplay;
+                }
+            }
+        }
+        else
+        {
+            int totalAccount = TotalAccountMoney;
+            if (totalAccount > 0)
+            {
+                toReturn += $" (${totalAccount})";
+            }
         }
         return toReturn;
     }
@@ -266,7 +280,7 @@ public class BankAccounts
             EntryPoint.WriteToConsole("CANNOT GIVE RANDOM BANK ACCOUNT, NO BANKS FOUND");
             return;
         }
-        BankAccountList.Add(new BankAccount(randomBank.Name, amount));
+        BankAccountList.Add(new BankAccount(randomBank.Name,randomBank.ShortName, amount));
     }
 }
 

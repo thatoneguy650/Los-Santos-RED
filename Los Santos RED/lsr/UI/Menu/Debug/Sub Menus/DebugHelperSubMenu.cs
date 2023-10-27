@@ -372,7 +372,7 @@ public class DebugHelperSubMenu : DebugSubMenu
 
     private void SetPropAttachment()
     {
-        string PropName = NativeHelper.GetKeyboardInput("prop_holster_01");
+        string PropName = NativeHelper.GetKeyboardInput("prop_cigar_02");
         try
         {
             Rage.Object SmokedItem = new Rage.Object(Game.GetHashKey(PropName), Player.Character.GetOffsetPositionUp(50f));
@@ -386,7 +386,7 @@ public class DebugHelperSubMenu : DebugSubMenu
             string pelvisBoneName = "BONETAG_PELVIS";
             string spineRootBoneName = "BONETAG_SPINE_ROOT";
             string spineBoneName = "BONETAG_SPINE";
-            string wantedBone = NativeHelper.GetKeyboardInput("Head");
+            string wantedBone = NativeHelper.GetKeyboardInput("RHand");
             if (wantedBone == "RHand")
             {
                 boneName = handRBoneName;
@@ -415,6 +415,10 @@ public class DebugHelperSubMenu : DebugSubMenu
             {
                 boneName = spineBoneName;
             }
+            else if (wantedBone == "Head")
+            {
+                boneName = headBoneName;
+            }
             else
             {
                 boneName = wantedBone;
@@ -425,8 +429,8 @@ public class DebugHelperSubMenu : DebugSubMenu
             isPrecise = false;
             if (SmokedItem.Exists())
             {
-                string dictionary = NativeHelper.GetKeyboardInput("mp_safehousebong@");
-                string animation = NativeHelper.GetKeyboardInput("bong_fra");
+                string dictionary = NativeHelper.GetKeyboardInput("amb@world_human_smoking@female@idle_a");
+                string animation = NativeHelper.GetKeyboardInput("idle_c");
                 AnimationDictionary.RequestAnimationDictionay(dictionary);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(AnimationFlags.Loop | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
                 isRunning = true;
@@ -641,7 +645,7 @@ public class DebugHelperSubMenu : DebugSubMenu
     private void SetParticleAttachment()
     {
         //shovel replacing baseball bat?
-        string propName = NativeHelper.GetKeyboardInput("prop_bong_01");
+        string propName = NativeHelper.GetKeyboardInput("prop_cigar_02");
         string particleGroupName = NativeHelper.GetKeyboardInput("core");
         string particleName = NativeHelper.GetKeyboardInput("ent_anim_cig_smoke");
         Rage.Object weaponObject = null;
@@ -658,8 +662,8 @@ public class DebugHelperSubMenu : DebugSubMenu
             Rotator CoolRotation = new Rotator(0f, 0f, 0f);
             if (weaponObject.Exists())
             {
-                string dictionary = "safe@michael@ig_4";
-                string animation = "michael_short";
+                string dictionary = "amb@world_human_smoking@female@idle_a";
+                string animation = "idle_c";
 
                 AnimationDictionary.RequestAnimationDictionay(dictionary);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(AnimationFlags.Loop | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1

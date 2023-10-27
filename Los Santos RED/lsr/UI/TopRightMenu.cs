@@ -163,8 +163,7 @@ public class TopRightMenu
         }
         if (willShowCash)
         {
-
-            DisplayTextOnScreen(DisplayablePlayer.BankAccounts.CashDisplay(), CashPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
+            DisplayTextOnScreen(DisplayablePlayer.BankAccounts.CashDisplay(UI.IsDrawingWheelMenu), CashPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
         }
         if (willShowCashChange)
         {
