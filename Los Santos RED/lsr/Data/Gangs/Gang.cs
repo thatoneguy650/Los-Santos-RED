@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 [Serializable()]
@@ -106,7 +107,8 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public int BodyDisposalPaymentMax { get; set; } = 6500;
 
 
-
+    public int CopHitPaymentMin { get; set; } = 7500;
+    public int CopHitPaymentMax { get; set; } = 10500;
 
 
 
@@ -327,5 +329,13 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public override string ToString()
     {
         return ShortName.ToString();
+    }
+
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        CopHitPaymentMin= 7500;
+        CopHitPaymentMax = 10500;
     }
 }

@@ -26,8 +26,8 @@ public class DamageViolations
     private uint GameTimeLastKilledCop;
 
     private List<PedExt> PlayerKilledCivilians = new List<PedExt>();
-    private List<PedExt> PlayerKilledCops = new List<PedExt>();
-
+    private List<Cop> PlayerKilledCops = new List<Cop>();
+    public int CountKilledCopsByAgency(string agencyID) => PlayerKilledCops.Where(x => x.AssignedAgency != null && x.AssignedAgency.ID == agencyID).Count();
     public bool NearPoliceMurderVictim => CountNearPoliceMurderVictim > 0;
     public int CountNearPoliceMurderVictim => PlayerKilledCops.Count(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Player.Character) <= Settings.SettingsManager.ViolationSettings.MurderDistance);
     public bool NearCivilianMurderVictim => CountNearCivilianMurderVictim > 0;
@@ -104,9 +104,10 @@ public class DamageViolations
     public void AddKilled(PedExt myPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle)
     {
         myPed.GameTimeKilled = Game.GameTime;
-        if (myPed.IsCop)
+        if (myPed.IsCop && myPed.GetType() == typeof(Cop))
         {
-            PlayerKilledCops.Add(myPed);
+            Cop myCop = (Cop)myPed;
+            PlayerKilledCops.Add(myCop);
             GameTimeLastKilledCop = Game.GameTime;
             GameTimeLastHurtCop = Game.GameTime;
             Player.AddCrime(Crimes.GetCrime(StaticStrings.KillingPoliceCrimeID), true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
@@ -128,9 +129,10 @@ public class DamageViolations
     public void AddFakeKilled(PedExt myPed)
     {
         myPed.GameTimeKilled = Game.GameTime;
-        if (myPed.IsCop)
+        if (myPed.IsCop && myPed.GetType() == typeof(Cop))
         {
-            PlayerKilledCops.Add(myPed);
+            Cop myCop = (Cop)myPed;
+            PlayerKilledCops.Add(myCop);
         }
         else
         {

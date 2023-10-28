@@ -17,6 +17,7 @@ public class GangInteraction : IContactMenuInteraction
 {
     private IContactInteractable Player;
     private UIMenu GangMenu;
+    private IAgencies Agencies;
     private MenuPool MenuPool;
     private UIMenuItem PayoffGang;
     private UIMenuItem PayoffGangNeutral;
@@ -44,8 +45,9 @@ public class GangInteraction : IContactMenuInteraction
     private UIMenuItem GangJoinMenu;
     private UIMenuItem GangImpoundTheft;
     private UIMenuItem GangBodyDisposal;
+    private UIMenuListScrollerItem<Agency> CopHit;
 
-    public GangInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, GangContact gangContact, IEntityProvideable world, ISettingsProvideable settings)
+    public GangInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, GangContact gangContact, IEntityProvideable world, ISettingsProvideable settings, IAgencies agencies)
     {
         Player = player;
         Gangs = gangs;
@@ -54,6 +56,7 @@ public class GangInteraction : IContactMenuInteraction
         GangContact = gangContact;
         World = world;
         Settings = settings;
+        Agencies = agencies;
     }
     public void Start(PhoneContact phoneContact)
     {
@@ -176,6 +179,15 @@ public class GangInteraction : IContactMenuInteraction
             Player.PlayerTasks.GangTasks.StartGangHit(ActiveGang, 1, GangContact, GangHit.SelectedItem);
             sender.Visible = false;
         };
+
+
+        CopHit = new UIMenuListScrollerItem<Agency>("Cop Hit", $"Do a cop hit for the gang.~n~Payment: ~HUD_COLOUR_GREENDARK~{ActiveGang.CopHitPaymentMin:C0}-{ActiveGang.CopHitPaymentMax:C0}~s~", Agencies.GetAgenciesByResponse(ResponseType.LawEnforcement).Where(x=> x.ID != "UNK"));//.Where(x => x.ID != ActiveGang.ID).ToList());
+        CopHit.Activated += (sender, selectedItem) =>
+        {
+            Player.PlayerTasks.GangTasks.StartCopHit(ActiveGang, 1, GangContact, CopHit.SelectedItem);
+            sender.Visible = false;
+        };
+
         GangMoneyPickup = new UIMenuItem("Money Pickup", "Pickup some cash from a dead drop for the gang and bring it back.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.PickupPaymentMin:C0}-{ActiveGang.PickupPaymentMax:C0}~s~" };
         GangMoneyPickup.Activated += (sender, selectedItem) =>
         {
@@ -223,6 +235,7 @@ public class GangInteraction : IContactMenuInteraction
         };
         JobsSubMenu.AddItem(GangWheelman);
         JobsSubMenu.AddItem(GangHit);
+        JobsSubMenu.AddItem(CopHit);
         JobsSubMenu.AddItem(GangImpoundTheft);
         JobsSubMenu.AddItem(GangTheft);
         JobsSubMenu.AddItem(GangBodyDisposal);

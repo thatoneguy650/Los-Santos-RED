@@ -56,7 +56,14 @@ public class DebugTimeSubMenu : DebugSubMenu
         };
         TimeItems.AddItem(AdvanceHours);
 
-
+        UIMenuNumericScrollerItem<int> AdvanceDays = new UIMenuNumericScrollerItem<int>("Advance Days", "Moves the game time forwards by the set days", 1, 48, 1);
+        AdvanceDays.Activated += (menu, item) =>
+        {
+            Time.SetDateTime(Time.CurrentDateTime.AddDays(AdvanceDays.Value));
+            Game.DisplayHelp($"Date Set to {Time.CurrentDateTime.AddDays(AdvanceDays.Value)}");
+            menu.Visible = false;
+        };
+        TimeItems.AddItem(AdvanceDays);
     }
 }
 

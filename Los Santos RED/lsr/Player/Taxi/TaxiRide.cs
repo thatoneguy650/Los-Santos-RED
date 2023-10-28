@@ -128,10 +128,6 @@ public class TaxiRide
         DestinationLocation = new SpawnLocation();
         PickupLocation.GetClosestStreet(true);
         PickupLocation.GetClosestSideOfRoad();
-
-
-
-
         if (!PickupLocation.HasStreetPosition)
         {
             EntryPoint.WriteToConsole("TAXI RIDE SETUP FAIL NO STREET POSITION");

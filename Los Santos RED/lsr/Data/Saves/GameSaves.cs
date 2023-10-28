@@ -40,14 +40,14 @@ public class GameSaves : IGameSaves
         //EntryPoint.WriteToConsoleTestLong($"NEW SAVE GAME save number {saveNumber}");
         GameSave mySave = new GameSave();
         mySave.SaveNumber = saveNumber;
-        GameSaveList.Add(mySave);     
+        GameSaveList.Add(mySave);
         mySave.Save(player, weapons, time, placesOfInterest, modItems);
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
         PlayingSave = mySave;
     }
-    public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, 
+    public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest,
         IModItems modItems, IAgencies agencies, IContacts contacts)
-    {       
+    {
         gameSave.Load(weapons, pedSwap, player, settings, world, gangs, agencies, time, placesOfInterest, modItems, contacts);
         PlayingSave = gameSave;
     }
@@ -55,7 +55,7 @@ public class GameSaves : IGameSaves
     {
         if (toDelete != null)
         {
-            if(PlayingSave != null && PlayingSave == toDelete)
+            if (PlayingSave != null && PlayingSave == toDelete)
             {
                 PlayingSave = null;
             }
@@ -73,6 +73,11 @@ public class GameSaves : IGameSaves
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
     public bool IsPlaying(GameSave toCheck) => PlayingSave != null && toCheck != null && PlayingSave == toCheck;
+
+    public void OnChangedPlayer()
+    {
+        PlayingSave = null;
+    }
     private void DefaultConfig()
     {
         GameSaveList = new List<GameSave>();
@@ -172,7 +177,7 @@ public class GameSaves : IGameSaves
        // AlexisGameSave.InventoryItems.Add(new InventorySave("GASH Blue Umbrella", 1.0f));
        // AlexisGameSave.InventoryItems.Add(new InventorySave("SCHEISS DS Binoculars", 1.0f));
         AlexisGameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
-        AlexisGameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
+        //AlexisGameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
 
 
 
@@ -243,9 +248,6 @@ public class GameSaves : IGameSaves
         };
         GameSave ClaudeGameSave = new GameSave("Claude Speed", 9500, "MP_M_FREEMODE_01", true, Variation, Weapons, new List<VehicleSaveStatus>() {
             new VehicleSaveStatus("stalion", new Vector3(866.8428f, -1594.666f, 30.80709f), 84.34846f) { VehicleVariation = new VehicleVariation() {
-
-
-
                 PrimaryColor = 28, SecondaryColor = 120
                 ,WheelColor = 156
                 ,Mod1PaintType = 1
@@ -337,11 +339,6 @@ public class GameSaves : IGameSaves
 
                 }
                 , LicensePlate = new LSR.Vehicles.LicensePlate("5GNU769", 0, false)
-
-
-
-
-
             } }
                                                                                                                                                                  }); ;
 
@@ -354,7 +351,7 @@ public class GameSaves : IGameSaves
             
             
             
-            new GangRepSave("AMBIENT_GANG_MARABUNTE", 3000, 0, 0, 0, 0, 0, 0, 0, false, false,0),
+        new GangRepSave("AMBIENT_GANG_MARABUNTE", 3000, 0, 0, 0, 0, 0, 0, 0, false, false,0),
         new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false,0),
         new GangRepSave("AMBIENT_GANG_ARMENIAN", 3000, 0, 0, 0, 0, 0, 0, 0, false, false,0),
         new GangRepSave("AMBIENT_GANG_YARDIES", -3000, 3, 1, 0, 3, 1, 0, 0, false, false,0),
@@ -367,7 +364,7 @@ public class GameSaves : IGameSaves
         ClaudeGameSave.InventoryItems.Add(new InventorySave("Flint Flathead Screwdriver", 1.0f));
         ClaudeGameSave.InventoryItems.Add(new InventorySave("Flint Pliers", 1.0f));
         ClaudeGameSave.InventoryItems.Add(new InventorySave("SCHEISS DS Binoculars", 1.0f));
-        ClaudeGameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
+        //ClaudeGameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
 
         ClaudeGameSave.HungerValue = 85.0f;
         ClaudeGameSave.ThirstValue = 85.0f;
@@ -429,7 +426,7 @@ public class GameSaves : IGameSaves
         };
         ExampleGameSave.InventoryItems.Add(new InventorySave("Flint Flathead Screwdriver", 1.0f));
         ExampleGameSave.InventoryItems.Add(new InventorySave("SCHEISS BS Binoculars", 1.0f));
-        ExampleGameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
+        //ExampleGameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
         //Needs
         ExampleGameSave.HungerValue = 95.0f;
         ExampleGameSave.ThirstValue = 95.0f;
@@ -446,7 +443,7 @@ public class GameSaves : IGameSaves
         SetDefault(gameSave);
         gameSave.InventoryItems.Add(new InventorySave("Flint Flathead Screwdriver", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("SCHEISS BS Binoculars", 1.0f));
-        gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
+        //gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
         gameSave.SaveNumber = 4;
         GameSaveList.Add(gameSave);
     }
@@ -881,31 +878,31 @@ public class GameSaves : IGameSaves
 
         GameSaveList.Add(ExampleGameSave);
     }
-    public void DeleteSave_Obsolete(string playerName, string modelName)
-    {
-        GameSave toDelete = GameSaveList.FirstOrDefault(x => x.PlayerName == playerName && x.ModelName == modelName);
-        if (toDelete != null)
-        {
-            GameSaveList.Remove(toDelete);
-        }
-        Serialization.SerializeParams(GameSaveList, ConfigFileName);
-    }
-    public GameSave GetSave_Obsolete(ISaveable player)
-    {
-        GameSaveList = Serialization.DeserializeParams<GameSave>(ConfigFileName);
-        return GameSaveList.FirstOrDefault(x => x.PlayerName == player.PlayerName && x.ModelName == player.ModelName);
-    }
-    public void SaveSamePlayer_Obsolete(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
-    {
-        GameSave mySave = GetSave_Obsolete(player);
-        if (mySave == null)
-        {
-            mySave = new GameSave();
-            GameSaveList.Add(mySave);
-        }
-        mySave.Save(player, weapons, time, placesOfInterest, modItems);
-        Serialization.SerializeParams(GameSaveList, ConfigFileName);
-    }
+    //public void DeleteSave_Obsolete(string playerName, string modelName)
+    //{
+    //    GameSave toDelete = GameSaveList.FirstOrDefault(x => x.PlayerName == playerName && x.ModelName == modelName);
+    //    if (toDelete != null)
+    //    {
+    //        GameSaveList.Remove(toDelete);
+    //    }
+    //    Serialization.SerializeParams(GameSaveList, ConfigFileName);
+    //}
+    //public GameSave GetSave_Obsolete(ISaveable player)
+    //{
+    //    GameSaveList = Serialization.DeserializeParams<GameSave>(ConfigFileName);
+    //    return GameSaveList.FirstOrDefault(x => x.PlayerName == player.PlayerName && x.ModelName == player.ModelName);
+    //}
+    //public void SaveSamePlayer_Obsolete(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
+    //{
+    //    GameSave mySave = GetSave_Obsolete(player);
+    //    if (mySave == null)
+    //    {
+    //        mySave = new GameSave();
+    //        GameSaveList.Add(mySave);
+    //    }
+    //    mySave.Save(player, weapons, time, placesOfInterest, modItems);
+    //    Serialization.SerializeParams(GameSaveList, ConfigFileName);
+    //}
 
 }
 

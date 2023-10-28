@@ -27,6 +27,7 @@ public class GangTasks : IPlayerTaskGroup
     private INameProvideable Names;
     private IWeapons Weapons;
     private IPedGroups PedGroups;
+    private IAgencies Agencies;
 
     private List<RivalGangHitTask> RivalGangHits = new List<RivalGangHitTask>();
     private List<PayoffGangTask> PayoffGangTasks = new List<PayoffGangTask>();
@@ -41,7 +42,7 @@ public class GangTasks : IPlayerTaskGroup
 
     private List<GangTask> AllGenericGangTasks = new List<GangTask>();
 
-    public GangTasks(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems, IShopMenus shopMenus, IWeapons weapons, INameProvideable names, IPedGroups pedGroups)
+    public GangTasks(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems, IShopMenus shopMenus, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IAgencies agencies)
     {
         Player = player;
         Time = time;
@@ -57,6 +58,8 @@ public class GangTasks : IPlayerTaskGroup
         Names = names;
         Weapons = weapons;
         PedGroups = pedGroups;
+        Agencies = agencies;
+        Agencies = agencies;
     }
     public void Setup()
     {
@@ -97,6 +100,14 @@ public class GangTasks : IPlayerTaskGroup
         GangProveWorthTasks.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);
+    }
+    public void StartCopHit(Gang gang, int killRequirement, GangContact gangContact, Agency targetAgency)
+    {
+        GangCopHitTask newTask = new GangCopHitTask(Player, Time, Gangs, PlacesOfInterest, Settings, World, Crimes, Weapons, Names, PedGroups, ShopMenus, ModItems, PlayerTasks, this, gangContact, gang, targetAgency, Agencies);
+        newTask.KillRequirement = killRequirement;
+        AllGenericGangTasks.Add(newTask);
+        newTask.Setup();
+        newTask.Start();
     }
     public void StartGangHit(Gang gang, int killRequirement, GangContact gangContact, Gang targetGang)
     {

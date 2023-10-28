@@ -65,7 +65,7 @@ public class GunStore : GameLocation
             {
                 try
                 {
-                    StoreCamera = new LocationCamera(this, Player, Settings);
+                    StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
                     StoreCamera.SayGreeting = false;
                     StoreCamera.Setup();
 

@@ -1674,28 +1674,104 @@ HighlightProp();
 
 public void DebugNumpad8()
 {
-        if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        // if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        // {
+        //     EntryPoint.WriteToConsole($"modelName: {Player.CurrentVehicle.Vehicle.Model.Name.ToLower()} modelHAsh{Player.CurrentVehicle.Vehicle.Model.Hash} modSpawned{Player.CurrentVehicle.WasModSpawned} gang{Player.CurrentVehicle.AssociatedGang?.ID}");
+        // }
+        // EntryPoint.WriteToConsole($"CustomPhoneOS:{Player.CellPhone.CustomPhoneOS} CustomPhoneType:{Player.CellPhone.CustomPhoneType} PhoneOS{Player.CellPhone.PhoneOS} PhoneType{Player.CellPhone.PhoneType}");
+
+
+
+        //foreach(ContactRelationship cr in Player.RelationshipManager.ContactRelationships)
+        // {
+        //     EntryPoint.WriteToConsole($"{cr.ContactName} {cr.ReputationLevel} {cr.TotalMoneySpent} {cr.Stuff}");
+        // }
+
+        //foreach(GangDen gangDen in ModDataFileManager.PlacesOfInterest.PossibleLocations.GangDens)
+        // {
+        //     EntryPoint.WriteToConsole($" {gangDen.AssociatedGang?.ShortName} hasBLip = {gangDen.Blip.Exists()} hasTerrBlip = {gangDen.TerritoryBlip.Exists()}");
+        // }
+
+        // string dictionaryName = NativeHelper.GetKeyboardInput("veh@std@ds@base");
+        // string animName = NativeHelper.GetKeyboardInput("change_station");
+        // Player.ActivityManager.DebugPlayVehicleAnim(dictionaryName, animName);
+
+
+        GameFiber.StartNew(delegate
         {
-            EntryPoint.WriteToConsole($"modelName: {Player.CurrentVehicle.Vehicle.Model.Name.ToLower()} modelHAsh{Player.CurrentVehicle.Vehicle.Model.Hash} modSpawned{Player.CurrentVehicle.WasModSpawned} gang{Player.CurrentVehicle.AssociatedGang?.ID}");
-        }
-        EntryPoint.WriteToConsole($"CustomPhoneOS:{Player.CellPhone.CustomPhoneOS} CustomPhoneType:{Player.CellPhone.CustomPhoneType} PhoneOS{Player.CellPhone.PhoneOS} PhoneType{Player.CellPhone.PhoneType}");
+            while (!Game.IsKeyDownRightNow(Keys.Z))
+            {
+                if(Game.IsControlJustReleased(0, GameControl.Attack))
+                {
+                    EntryPoint.WriteToConsole($"GameControl.Attack:{Game.IsControlJustReleased(0, GameControl.Attack)}");
+                }
+                if(NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24))
+                {
+                    EntryPoint.WriteToConsole($"GameControl.Attack (Disabled):{NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24)}");
+                }
+                if(Game.IsControlJustReleased(0, GameControl.VehicleAttack))
+                {
+                    EntryPoint.WriteToConsole($"GameControl.VehicleAttack:{Game.IsControlJustReleased(0, GameControl.VehicleAttack)}");
+                }
+                if(NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 69))
+                {
+                    EntryPoint.WriteToConsole($"GameControl.VehicleAttack (Disabled):{NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 69)}");
+                }
+
+
+                if (Game.IsControlJustReleased(0, GameControl.VehicleFlyMouseControlOverride))
+                {
+                    EntryPoint.WriteToConsole($"GameControl.VehicleFlyMouseControlOverride:{Game.IsControlJustReleased(0, GameControl.VehicleFlyMouseControlOverride)}");
+                }
+                if (NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 122))
+                {
+                    EntryPoint.WriteToConsole($"GameControl.VehicleFlyMouseControlOverride (Disabled):{NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 122)}");
+                }
 
 
 
-       foreach(ContactRelationship cr in Player.RelationshipManager.ContactRelationships)
-        {
-            EntryPoint.WriteToConsole($"{cr.ContactName} {cr.ReputationLevel} {cr.TotalMoneySpent} {cr.Stuff}");
-        }
+                if (Game.IsControlJustPressed(0, GameControl.Aim))
+                {
+                    EntryPoint.WriteToConsole($"GameControl.Aim:{Game.IsControlJustPressed(0, GameControl.Aim)}");
+                }
+                if(NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25))
+                {
+                    EntryPoint.WriteToConsole($"GameControl.Aim (Disabled):{NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25)}");
+                }
+                if(Game.IsControlJustPressed(0, GameControl.VehicleAim))
+                {
+                    EntryPoint.WriteToConsole($"GameControl.VehicleAim:{Game.IsControlJustPressed(0, GameControl.VehicleAim)}");
+                }
+                if(NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 68))
+                {
+                    EntryPoint.WriteToConsole($"GameControl.VehicleAim (Disabled):{NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 68)}");
+                }
 
-       foreach(GangDen gangDen in ModDataFileManager.PlacesOfInterest.PossibleLocations.GangDens)
-        {
-            EntryPoint.WriteToConsole($" {gangDen.AssociatedGang?.ShortName} hasBLip = {gangDen.Blip.Exists()} hasTerrBlip = {gangDen.TerritoryBlip.Exists()}");
-        }
 
-        string dictionaryName = NativeHelper.GetKeyboardInput("veh@std@ds@base");
-        string animName = NativeHelper.GetKeyboardInput("change_station");
-        Player.ActivityManager.DebugPlayVehicleAnim(dictionaryName, animName);
 
+                Game.DisplayHelp($"Press Z to Exit");
+                GameFiber.Yield();
+            }
+
+
+        }, "Run Debug Logic");
+        GameFiber.Sleep(1000);
+
+
+        //EntryPoint.WriteToConsole($"GameControl.Attack:{Game.IsControlJustPressed(0, GameControl.Attack)}");
+        //EntryPoint.WriteToConsole($"GameControl.Attack (Disabled):{NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 24)}");
+        //EntryPoint.WriteToConsole($"GameControl.VehicleAttack:{Game.IsControlJustPressed(0, GameControl.VehicleAttack)}");
+        //EntryPoint.WriteToConsole($"GameControl.VehicleAttack (Disabled):{NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 69)}");
+
+
+        //EntryPoint.WriteToConsole($"GameControl.Aim:{Game.IsControlJustPressed(0, GameControl.Aim)}");
+        //EntryPoint.WriteToConsole($"GameControl.Aim (Disabled):{NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25)}");
+        //EntryPoint.WriteToConsole($"GameControl.VehicleAim:{Game.IsControlJustPressed(0, GameControl.VehicleAim)}");
+        //EntryPoint.WriteToConsole($"GameControl.VehicleAim (Disabled):{NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 68)}");
+
+
+
+        //NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25)
 
         //&&  && Player.CurrentVehicle.Vehicle.Model.Name.ToLower() == VehicleToSteal.ModelName.ToLower() && Player.CurrentVehicle.WasModSpawned && Player.CurrentVehicle.AssociatedGang != null && Player.CurrentVehicle.AssociatedGang.ID == TargetGang.ID;
 
@@ -1973,7 +2049,7 @@ public void DebugNumpad8()
 
 
     }
-private void DebugNumpad9()
+    private void DebugNumpad9()
 {
 World.Pedestrians.ClearSpawned();
 World.Vehicles.ClearSpawned(true);

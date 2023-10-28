@@ -131,7 +131,7 @@ public class GangBrain : PedBrain
                         WillFleeFromPlayer = true;
                     }
                 }
-                else if (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked || (GangMember.IsHitSquad && GangMember.EverSeenPlayer))
+                else if (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked || (GangMember.IsHitSquad && GangMember.CanSeePlayer))
                 {
                     if (GangMember.WillFight)
                     {
@@ -142,7 +142,7 @@ public class GangBrain : PedBrain
                         WillFleeFromPlayer = true;
                     }
                 }
-                else if (isHostile && GangMember.CanSeePlayer && isNearHomeTerritory && !arePoliceNearby && Player.IsNotWanted)
+                else if (isHostile && GangMember.CanRecognizePlayer && isNearHomeTerritory && !arePoliceNearby && Player.IsNotWanted)//changed from see to recognize, leave hit squads as is
                 {
                     if (GangMember.WillFight)
                     {

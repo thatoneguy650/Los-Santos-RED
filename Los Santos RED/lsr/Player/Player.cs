@@ -139,8 +139,8 @@ namespace Mod
             Intoxication = new Intoxication(this);
             Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings, this, this, ModItems);
             RelationshipManager = new RelationshipManager(gangs, Settings, PlacesOfInterest, TimeControllable, this, this);
-            CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories, Crimes, World, ModItems, Weapons, Names, shopMenus, cellphones, Contacts);
-            PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes, names, Weapons, shopMenus, ModItems, pedGroups);
+            CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories, Crimes, World, ModItems, Weapons, Names, shopMenus, cellphones, Contacts, Agencies);
+            PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes, names, Weapons, shopMenus, ModItems, pedGroups, Agencies);
             Licenses = new Licenses(this);
             Properties = new Properties(this, PlacesOfInterest, TimeControllable);
             ButtonPrompts = new ButtonPrompts(this, Settings, World);
@@ -560,7 +560,7 @@ namespace Mod
             IsBusted = false;
         }
         public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, 
-            bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod, bool resetBankAccounts)
+            bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod, bool resetBankAccounts, bool resetSavedGame)
         {
             IsDead = false;
             IsBusted = false;
@@ -664,6 +664,10 @@ namespace Mod
             if(resetBankAccounts)
             {
                 BankAccounts.Reset();
+            }
+            if(resetSavedGame)
+            {
+                GameSaves.OnChangedPlayer();
             }
             if (Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart)
             {

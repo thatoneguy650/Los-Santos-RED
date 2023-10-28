@@ -77,7 +77,7 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
         {
             try
             {
-                StoreCamera = new LocationCamera(this, Player, Settings);
+                StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
                 StoreCamera.Setup();         
                 CreateInteractionMenu();
                 if(Player.IsCop)

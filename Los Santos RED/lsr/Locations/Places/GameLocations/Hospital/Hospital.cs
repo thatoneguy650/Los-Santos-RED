@@ -83,7 +83,7 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
         {
             try
             {
-                StoreCamera = new LocationCamera(this, Player, Settings);
+                StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
                 StoreCamera.Setup();
                 CreateInteractionMenu();
                 if (Player.IsEMT)

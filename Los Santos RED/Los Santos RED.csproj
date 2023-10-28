@@ -141,6 +141,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\Machines\CashRegister.cs" />
     <Compile Include="lsr\Ped\Service\TaxiDriver.cs" />
     <Compile Include="lsr\Ped\Styles\PedDrivingStyle.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\Gang\GangCopHitTask.cs" />
     <Compile Include="lsr\Player\Cellphone\Data\CellphoneData.cs" />
     <Compile Include="lsr\Data\Items\Cellphones.cs" />
     <Compile Include="lsr\Data\Organizations\Organization.cs" />

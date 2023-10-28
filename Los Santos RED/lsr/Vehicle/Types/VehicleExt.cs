@@ -185,7 +185,7 @@ namespace LSR.Vehicles
         public bool IsBicycle { get; private set; } = false;
         public bool IsMotorcycle { get; private set; } = false;
         public bool IsRandomlyLocked { get; set; } = false;
-
+        public bool UsePlayerAnimations => VehicleClass != VehicleClass.Motorcycle && VehicleClass != VehicleClass.Cycle;
         public virtual bool CanHaveRandomCash { get; set; } = true;
 
         public virtual bool CanHaveRandomWeapons { get; set; } = true;
@@ -748,6 +748,8 @@ namespace LSR.Vehicles
         public bool AllowVanityPlates { get; set; } = true;
         public bool WasCrushed { get; set; }
         public bool IsAlwaysOpenForPlayer { get; set; } = false;
+        public bool CanAlwaysRollOver => VehicleClass == VehicleClass.Motorcycle || VehicleClass == VehicleClass.Cycle;
+
         private int ClosestColor(List<Color> colors, Color target)
         {
             var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);

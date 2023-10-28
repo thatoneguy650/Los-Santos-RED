@@ -432,7 +432,7 @@ public class PopUpMenu
                     //EntryPoint.WriteToConsole($"ACTION WHEEL POP UP BOX IS VALID {popUpBox.Description} ChildMenuID: {popUpBox.ChildMenuID} HasAction:{popUpBox.Action != null}");
                     if (PressedSelect())// && Game.GameTime - GameTimeLastClicked >= 50)//or is disbaled control just released.....//&& Environment.TickCount - GameTimeLastClicked >= 100)//or is disbaled control just released.....
                     {
-                        //EntryPoint.WriteToConsoleTestLong($"ACTION WHEEL PRESSED SELECT 2");
+                       // EntryPoint.WriteToConsole($"ACTION WHEEL PRESSED SELECT 2");
                         if (popUpBox.ClosesMenu)
                         {
                             CloseMenu();
@@ -442,7 +442,7 @@ public class PopUpMenu
                         if (popUpBox.Action != null)
                         {
                             popUpBox.Action();
-                            //EntryPoint.WriteToConsoleTestLong($"ACTION WHEEL PRESSED SELECT ACTION RAN");
+                            //EntryPoint.WriteToConsole($"ACTION WHEEL PRESSED SELECT ACTION RAN");
                         }
                         else if (popUpBox.ChildMenuID != "")
                         {
@@ -457,7 +457,7 @@ public class PopUpMenu
                                 max = MenuStack.Max(x => x.Item1);
                             }
                             MenuStack.Add(new Tuple<int, string>(max + 1, PrevPopUpBoxGroupID));
-                          //  EntryPoint.WriteToConsole($"ACTION WHEEL: ToMenu:{popUpBox?.ChildMenuID} PrevMenu:{PrevPopUpBoxGroupID}");
+                           // EntryPoint.WriteToConsole($"ACTION WHEEL: ToMenu:{popUpBox?.ChildMenuID} PrevMenu:{PrevPopUpBoxGroupID}");
                         }
                         //GameTimeLastClicked = Game.GameTime;//Environment.TickCount;
                     }
@@ -527,18 +527,69 @@ public class PopUpMenu
 
     private bool PressedSelect()
     {
+       // EntryPoint.WriteToConsole($"CHECKING PRESSED SELECT");
+        //return Game.IsControlJustReleased(0, GameControl.Attack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24);
+
+        //if (Game.IsControlJustReleased(0, GameControl.Attack))
+        //{
+        //    EntryPoint.WriteToConsole($"GameControl.Attack:{Game.IsControlJustReleased(0, GameControl.Attack)}");
+        //}
+        //if (NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24))
+        //{
+        //    EntryPoint.WriteToConsole($"GameControl.Attack (Disabled):{NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24)}");
+        //}
+        //if (Game.IsControlJustReleased(0, GameControl.VehicleAttack))
+        //{
+        //    EntryPoint.WriteToConsole($"GameControl.VehicleAttack:{Game.IsControlJustReleased(0, GameControl.VehicleAttack)}");
+        //}
+        //if (NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 69))
+        //{
+        //    EntryPoint.WriteToConsole($"GameControl.VehicleAttack (Disabled):{NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 69)}");
+        //}
+
+
+
+        //if (Game.IsControlJustPressed(0, GameControl.Aim))
+        //{
+        //    EntryPoint.WriteToConsole($"GameControl.Aim:{Game.IsControlJustPressed(0, GameControl.Aim)}");
+        //}
+        //if (NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25))
+        //{
+        //    EntryPoint.WriteToConsole($"GameControl.Aim (Disabled):{NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25)}");
+        //}
+        //if (Game.IsControlJustPressed(0, GameControl.VehicleAim))
+        //{
+        //    EntryPoint.WriteToConsole($"GameControl.VehicleAim:{Game.IsControlJustPressed(0, GameControl.VehicleAim)}");
+        //}
+        //if (NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 68))
+        //{
+        //    EntryPoint.WriteToConsole($"GameControl.VehicleAim (Disabled):{NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 68)}");
+        //}
+
+
+
+
         if (Player.IsInVehicle)
         {
-            return Game.IsControlJustReleased(0, GameControl.VehicleAttack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 69);
+            //if(Game.IsControlJustReleased(0, GameControl.VehicleAttack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 69) || Game.IsControlJustReleased(0, GameControl.Attack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24))
+            //{
+            //    EntryPoint.WriteToConsole("PRESSED SELECT 1");
+            //}
+            return Game.IsControlJustReleased(0, GameControl.VehicleAttack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 69) || Game.IsControlJustReleased(0,GameControl.VehicleFlyMouseControlOverride);
         }
         else
         {
+            //if (Game.IsControlJustReleased(0, GameControl.Attack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24))
+            //{
+            //    EntryPoint.WriteToConsole("PRESSED SELECT 2");
+            //}
             return Game.IsControlJustReleased(0, GameControl.Attack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24);
         }
     }
     private bool PressedReturn()
     {
-        if(Player.IsInVehicle)
+        //return Game.IsControlJustPressed(0, GameControl.Aim) || NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25);
+        if (Player.IsInVehicle)
         {
             return Game.IsControlJustPressed(0, GameControl.VehicleAim) || NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 68);
         }
@@ -589,9 +640,9 @@ public class PopUpMenu
         Game.DisableControlAction(0, GameControl.VehicleAim, true);
         Game.DisableControlAction(0, GameControl.AccurateAim, true);
         Game.DisableControlAction(0, GameControl.VehiclePassengerAim, true);
+        Game.DisableControlAction(0, GameControl.VehicleAttack, true);
 
-
-
+        Game.DisableControlAction(0, GameControl.VehicleFlyMouseControlOverride, true);
 
 
 

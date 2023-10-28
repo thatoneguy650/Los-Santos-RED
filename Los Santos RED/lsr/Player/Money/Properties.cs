@@ -30,7 +30,7 @@ public class Properties
         {
             if (!residence.IsOwned && residence.IsRented && residence.DateRentalPaymentDue != null && DateTime.Compare(Time.CurrentDateTime, residence.DateRentalPaymentDue) >= 0)
             {
-                residence.ReRent();
+                residence.ReRent(Player, Time);
             }
         }
     }

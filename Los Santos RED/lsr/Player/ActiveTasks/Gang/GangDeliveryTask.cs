@@ -75,8 +75,15 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 if (HasDen)
                 {
                     GetRequiredPayment();
-                    SendInitialInstructionsMessage();
-                    AddTask();
+                    if (ItemToDeliver != null)
+                    {
+                        SendInitialInstructionsMessage();
+                        AddTask();
+                    }
+                    else
+                    {
+                        Game.DisplayHelp("Could not find item");
+                    }
                 }
                 else
                 {

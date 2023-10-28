@@ -48,39 +48,39 @@ public class Morgue : GameLocation
             Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
 
-            LocationTeleporter locationTeleporter = null;
+            //LocationTeleporter locationTeleporter = null;
             if (Interior != null && Interior.IsTeleportEntry)
             {
-                locationTeleporter = new LocationTeleporter(Player, this,settings);
+                LocationTeleporter locationTeleporter = new LocationTeleporter(Player, this,settings);
                 locationTeleporter.Teleport();
             }
 
             //Player.IsTransacting = true;
 
-            GameFiber.StartNew(delegate
-            {
-                try
-                {
+            //GameFiber.StartNew(delegate
+            //{
+            //    try
+            //    {
 
 
 
-                    while (locationTeleporter?.IsInside == true)
-                    {
-                        locationTeleporter.Update();
-                        GameFiber.Yield();
-                    }
+            //        while (locationTeleporter?.IsInside == true)
+            //        {
+            //            locationTeleporter.Update();
+            //            GameFiber.Yield();
+            //        }
 
 
-                    Player.ActivityManager.IsInteractingWithLocation = false;
-                    CanInteract = true;
-                }
-                catch (Exception ex)
-                {
-                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
-                    EntryPoint.ModController.CrashUnload();
-                }
+            //        Player.ActivityManager.IsInteractingWithLocation = false;
+            //        CanInteract = true;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+            //        EntryPoint.ModController.CrashUnload();
+            //    }
 
-            }, "Interact");
+            //}, "Interact");
         }
     }
 

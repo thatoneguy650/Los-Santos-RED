@@ -156,6 +156,10 @@ public class GameLocation : ILocationDispatchable
     public SpawnPlace VehiclePreviewLocation { get; set; }
     public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
     public virtual int RegisterCash { get; set; } = 3500;
+
+    public bool NoEntryCam { get; set; } = false;
+
+
     [XmlIgnore]
     public bool IsActivated { get; set; } = false;
     [XmlIgnore]
@@ -366,7 +370,7 @@ public class GameLocation : ILocationDispatchable
             {
                 try
                 {
-                    StoreCamera = new LocationCamera(this, Player, Settings);
+                    StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
                     StoreCamera.Setup();
                     CreateInteractionMenu();
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
@@ -542,7 +546,7 @@ public class GameLocation : ILocationDispatchable
             createdBlip.Delete();
         }
     }
-    public void UpdateBlip(ITimeReportable time)
+    public virtual void UpdateBlip(ITimeReportable time)
     {
         if (!Blip.Exists())
         {
@@ -568,7 +572,7 @@ public class GameLocation : ILocationDispatchable
         {
             Blip.Color = newColor;
             currentBlipColor = newColor;
-            //EntryPoint.WriteToConsole($"CHANGING BLIP Color {Name} {currentBlipColor}");
+            EntryPoint.WriteToConsole($"CHANGING BLIP Color {Name} {currentBlipColor}");
         }
     }
     protected virtual float GetCurrentIconAlpha(ITimeReportable time)

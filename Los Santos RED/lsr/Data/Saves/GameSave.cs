@@ -300,8 +300,7 @@ namespace LosSantosRED.lsr.Data
                 LoadVehicles(player, world,settings, modItems, placesOfInterest, time, weapons);
                 LoadPosition(player);
                 LoadRelationships(player, gangs, contacts);
-                LoadContacts(player, gangs);
-                
+                LoadContacts(player, gangs);    
                 LoadResidences(player, placesOfInterest, modItems, settings);
                 LoadHumanState(player);
                 LoadCellPhoneSettings(player);
@@ -491,9 +490,7 @@ namespace LosSantosRED.lsr.Data
         private void LoadRelationships(IInventoryable player, IGangs gangs, IContacts contacts)
         {
             player.RelationshipManager.GangRelationships.ResetGang(false);
-
             player.RelationshipManager.Reset(false);
-
             foreach (GangRepSave gangRepSave in GangReputationsSave)
             {
                 Gang myGang = gangs.GetGang(gangRepSave.GangID);
@@ -511,18 +508,12 @@ namespace LosSantosRED.lsr.Data
                     }
                 }
             }
-
             foreach (ContactRelationship contactRelationship in ContactRelationships)
             {
                 EntryPoint.WriteToConsole($"RELATIONSHIP LOAD {contactRelationship.ContactName} MONEY:{contactRelationship.TotalMoneySpent} REP:{contactRelationship.ReputationLevel}");
-
                 contactRelationship.SetupContact(contacts);
-
                 player.RelationshipManager.Add(contactRelationship);
                 contactRelationship.Activate();
-
-
-
             }
         }
         private void LoadContacts(IInventoryable player, IGangs gangs)
@@ -750,7 +741,7 @@ namespace LosSantosRED.lsr.Data
             }
             return toreturn;
         }
-        public string Title => $"{SaveNumber.ToString("D2")} - {PlayerName} ({Money.ToString("C0")}) - {CurrentDateTime.ToString("MM/dd/yyyy HH:mm")}";
+        public string Title => $"{SaveNumber.ToString("D2")} - {PlayerName} ({(Money + (SavedBankAccounts == null ? 0 : SavedBankAccounts.Sum(x=> x.Money))).ToString("C0")}) - {CurrentDateTime.ToString("MM/dd/yyyy HH:mm")}";
         public string RightLabel => SaveDateTime.ToString("MM/dd/yyyy HH:mm");
     }
 

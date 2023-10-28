@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -83,6 +84,17 @@ public class VehicleSettings : ISettingsDefaultable
     [Description("If enabled, not having a license plate will mark the vehicle as non-roadworthy.")]
     public bool NonRoadworthyVehicleCheckNoPlate { get; set; }
     public bool AttachOwnedVehicleBlips { get; set; }
+
+
+    [Description("If enabled, the player will perform an animation when manipulating vehicle controls (engine off, opening/closing door, rolling windows up/down, etc.")]
+    public bool PlayControlAnimations { get; set; }
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
+
     public VehicleSettings()
     {
         SetDefault();
@@ -131,5 +143,6 @@ public class VehicleSettings : ISettingsDefaultable
         NonRoadworthyVehicleCheckNoHeadlights = true;
         NonRoadworthyVehicleCheckNoPlate = true;
         AttachOwnedVehicleBlips = true;
+        PlayControlAnimations = true;
     }
 }

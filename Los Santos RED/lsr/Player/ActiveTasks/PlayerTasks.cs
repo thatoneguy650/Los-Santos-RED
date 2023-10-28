@@ -31,7 +31,8 @@ public class PlayerTasks
     public UndergroundGunsTasks UndergroundGunsTasks { get; private set; }
     public VehicleExporterTasks VehicleExporterTasks { get; private set; }
     public List<PlayerTask> PlayerTaskList { get; set; } = new List<PlayerTask>();
-    public PlayerTasks(ITaskAssignable player, ITimeControllable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names, IWeapons weapons, IShopMenus shopMenus, IModItems modItems, IPedGroups pedGroups)
+    public PlayerTasks(ITaskAssignable player, ITimeControllable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world, 
+        ICrimes crimes, INameProvideable names, IWeapons weapons, IShopMenus shopMenus, IModItems modItems, IPedGroups pedGroups, IAgencies agencies)
     {
         Player = player;
         Time = time;
@@ -44,7 +45,7 @@ public class PlayerTasks
         Weapons = weapons;
         ShopMenus = shopMenus;
         PedGroups = pedGroups;
-        GangTasks = new GangTasks(Player,Time,Gangs,this,PlacesOfInterest, ActiveDrops, Settings,World,Crimes, modItems, ShopMenus, Weapons,Names,PedGroups);
+        GangTasks = new GangTasks(Player,Time,Gangs,this,PlacesOfInterest, ActiveDrops, Settings,World,Crimes, modItems, ShopMenus, Weapons,Names,PedGroups, agencies);
         CorruptCopTasks = new CorruptCopTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Names, Weapons, ShopMenus);
         UndergroundGunsTasks = new UndergroundGunsTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
         VehicleExporterTasks = new VehicleExporterTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, modItems);

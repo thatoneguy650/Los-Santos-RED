@@ -1222,6 +1222,11 @@ public class ActivityManager
         {
             return;
         }
+        bool isValid = NativeFunction.Natives.x645F4B6E8499F632<bool>(Player.CurrentVehicle.Vehicle, 0);
+        if (!isValid)
+        {
+            return;
+        }
         string animName = "d_close_in";
         float doorAngle = Player.CurrentVehicle.Doors.GetDoorAngle(0);
 
@@ -1246,7 +1251,7 @@ public class ActivityManager
             animName = "d_close_in_near";
         }
         EntryPoint.WriteToConsole($"doorAngle {doorAngle} animName{animName} TimeToWait{TimeToWait}");
-        if (IsPerformingActivity)
+        if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
         {
             Player.CurrentVehicle?.Doors.Toggle(0, Player);
         }
@@ -1255,7 +1260,6 @@ public class ActivityManager
             DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Doors.Toggle(0, Player)), "veh@std@ds@enter_exit", animName, TimeToWait);
         }
     }
-
     public void CloseDriverDoor()
     {
         if (Game.GameTime - GameTimeLastClosedDoor < 1500)
@@ -1263,6 +1267,11 @@ public class ActivityManager
             return;
         }
         if(!Player.IsDriver || Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        bool isValid = NativeFunction.Natives.x645F4B6E8499F632<bool>(Player.CurrentVehicle.Vehicle, 0);
+        if (!isValid)
         {
             return;
         }
@@ -1283,7 +1292,7 @@ public class ActivityManager
         {
             animName = "d_close_in_near";
         }
-        if (IsPerformingActivity)
+        if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
         {
             Player.CurrentVehicle?.Doors.SetState(0, true, Player);
         }
@@ -1298,7 +1307,7 @@ public class ActivityManager
         {
             return;
         }
-        if (IsPerformingActivity)
+        if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
         {
             Player.CurrentVehicle?.Indicators.ToggleLeft();
         }
@@ -1313,7 +1322,7 @@ public class ActivityManager
         {
             return;
         }
-        if (IsPerformingActivity)
+        if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
         {
             Player.CurrentVehicle?.Indicators.ToggleHazards();
         }
@@ -1328,7 +1337,7 @@ public class ActivityManager
         {
             return;
         }
-        if (IsPerformingActivity)
+        if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
         {
             Player.CurrentVehicle?.Indicators.ToggleRight();
         }
@@ -1343,7 +1352,7 @@ public class ActivityManager
         {
             return;
         }
-        if (IsPerformingActivity)
+        if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
         {
             Player.CurrentVehicle?.Engine.Toggle();
         }
@@ -1358,7 +1367,7 @@ public class ActivityManager
         {
             return;
         }
-        if (IsPerformingActivity)
+        if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
         {
             Player.CurrentVehicle?.Engine.SetState(desiredStatus);
         }
@@ -1373,7 +1382,7 @@ public class ActivityManager
         {
             return;
         }
-        if (IsPerformingActivity)
+        if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
         {
             Player.CurrentVehicle?.Windows.ToggleWindow(0);
         }
@@ -1388,7 +1397,7 @@ public class ActivityManager
         {
             return;
         }
-        if (IsPerformingActivity)
+        if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
         {
             Player.CurrentVehicle?.Windows.SetState(windowID, desiredStatus);
         }
@@ -1403,7 +1412,7 @@ public class ActivityManager
         {
             return;
         }
-        if (IsPerformingActivity)
+        if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
         {
             Player.CurrentVehicle?.Doors.ToggleDoorLocks();
         }
@@ -1412,10 +1421,17 @@ public class ActivityManager
             DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Doors.ToggleDoorLocks()), "veh@std@ds@enter_exit", "d_close_in_near", 750);
         }
     }
-
-
     private void DoSimpleVehicleAnimation(Action action, string dictionary, string anim, int timeToWait)
     {
+        if(Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        if(!Player.CurrentVehicle.UsePlayerAnimations)
+        {
+            action();
+            return;
+        }
         AnimationDictionary.RequestAnimationDictionay(dictionary);
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, anim, 4.0f, -4.0f, -1, (int)(eAnimationFlags.AF_UPPERBODY | eAnimationFlags.AF_SECONDARY), 0, false, false, false);//-1
         GameFiber animWatcher = GameFiber.StartNew(delegate
@@ -1454,7 +1470,6 @@ public class ActivityManager
         string animation = isTaking ? "givetake1_b" : "givetake1_a";
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", animation, 1.0f, -1.0f, 5000, (int)(AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);
     }
-
     public Rage.Object AttachScrewdriverToPed(ModItem screwdriverItem, bool allowGeneric)
     {
         Rage.Object Screwdriver = null;
@@ -1547,13 +1562,10 @@ public class ActivityManager
             }
         }, "DoorWatcher");
     }
-
     public void DebugPlayVehicleAnim(string dictionaryName, string animName)
     {
         DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Windows.ToggleWindow(0)), dictionaryName, animName, 750);
     }
-
-
 }
 
 

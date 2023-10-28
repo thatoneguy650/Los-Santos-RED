@@ -74,7 +74,7 @@ public class CityHall : GameLocation
             {
                 try
                 {
-                    StoreCamera = new LocationCamera(this, Player, Settings);
+                    StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
                     StoreCamera.Setup();
                     CreateInteractionMenu();
                     InteractionMenu.Visible = true;

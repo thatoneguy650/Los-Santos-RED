@@ -116,7 +116,7 @@ public class GangDen : GameLocation//, ILocationGangAssignable
             {
                 try
                 {
-                    StoreCamera = new LocationCamera(this, Player, Settings);
+                    StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
                     StoreCamera.SayGreeting = false;
 
                     StoreCamera.Setup();

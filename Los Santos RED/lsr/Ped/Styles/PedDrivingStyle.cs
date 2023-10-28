@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Xml.Serialization;
 
 public class PedDrivingStyle
 {
@@ -23,6 +23,7 @@ public class PedDrivingStyle
     public eCustomDrivingStyles DrivingStyle { get; set; }
     public float Speed { get; set; }
     public int Fee { get; set; } = 0;
+    [XmlIgnore]
     public bool HasBeenPurchased { get; set; }
     public override string ToString()
     {

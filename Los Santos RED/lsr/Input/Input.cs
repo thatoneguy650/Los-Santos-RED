@@ -45,18 +45,18 @@ namespace LosSantosRED.lsr
         private bool CanToggleAltMenu;
         private bool IsPressingActionWheelMenu;
         private uint GameTimeLastPressedStartTransaction;
-        private bool IsPressingSurrender => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKeyModifier);
-        private bool IsPressingSprint => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SprintKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SprintKeyModifier);
-        private bool IsPressingRightIndicator => IsKeyDownSafe(Settings.SettingsManager.KeySettings.RightIndicatorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.RightIndicatorKeyModifer);
-        public bool IsPressingEngineToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.EngineToggle) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.EngineToggleModifier);
-        private bool IsPressingDoorClose => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ManualDriverDoorClose) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ManualDriverDoorCloseModifier);
-        private bool IsPressingLeftIndicator => IsKeyDownSafe(Settings.SettingsManager.KeySettings.LeftIndicatorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.LeftIndicatorKeyModifer);
-        private bool IsPressingHazards => IsKeyDownSafe(Settings.SettingsManager.KeySettings.HazardKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.HazardKeyModifer);
-        private bool IsPressingGesture => IsKeyDownSafe(Settings.SettingsManager.KeySettings.GestureKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.GestureKeyModifier);
-        private bool IsPressingStopActivity => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActivityKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActivityKeyModifier);
-        private bool IsPressingSelectorToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SelectorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SelectorKeyModifier);
-        private bool IsPressingCrouchToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.CrouchKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.CrouchKeyModifier);
-        private bool IsPressingSimpleCellphone => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SimplePhoneKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SimplePhoneKeyModifer);
+        private bool IsPressingSurrender => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKeyModifier, true);
+        private bool IsPressingSprint => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SprintKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SprintKeyModifier, true);
+        private bool IsPressingRightIndicator => IsKeyDownSafe(Settings.SettingsManager.KeySettings.RightIndicatorKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.RightIndicatorKeyModifer, true);
+        public bool IsPressingEngineToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.EngineToggle, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.EngineToggleModifier, true);
+        private bool IsPressingDoorClose => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ManualDriverDoorClose, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ManualDriverDoorCloseModifier, true);
+        private bool IsPressingLeftIndicator => IsKeyDownSafe(Settings.SettingsManager.KeySettings.LeftIndicatorKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.LeftIndicatorKeyModifer, true);
+        private bool IsPressingHazards => IsKeyDownSafe(Settings.SettingsManager.KeySettings.HazardKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.HazardKeyModifer, true);
+        private bool IsPressingGesture => IsKeyDownSafe(Settings.SettingsManager.KeySettings.GestureKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.GestureKeyModifier, true);
+        private bool IsPressingStopActivity => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActivityKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActivityKeyModifier, true);
+        private bool IsPressingSelectorToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SelectorKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SelectorKeyModifier, true);
+        private bool IsPressingCrouchToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.CrouchKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.CrouchKeyModifier, true);
+        private bool IsPressingSimpleCellphone => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SimplePhoneKey,false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SimplePhoneKeyModifer, true);
         private bool ReleasedFireWeapon => NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.Attack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.Attack2) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehicleAttack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehicleAttack2) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehiclePassengerAttack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehiclePassengerAttack);
         private bool IsPressingFireWeapon => Game.IsControlPressed(0, GameControl.Attack) || Game.IsControlPressed(0, GameControl.Attack2) || Game.IsControlPressed(0, GameControl.VehicleAttack) || Game.IsControlPressed(0, GameControl.VehicleAttack2) || Game.IsControlPressed(0, GameControl.VehiclePassengerAttack) || Game.IsControlPressed(0, GameControl.VehiclePassengerAttack);
         private bool IsMoveControlPressed => Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft);
@@ -96,11 +96,11 @@ namespace LosSantosRED.lsr
         }
         private void ProcessWheelMenuInput()
         {
-            if (IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier))
+            if (IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier, true))
             {
                 MenuProvider.IsPressingActionWheelButton = true;
             }
-            else if (IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier))
+            else if (IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier, true))
             {
                 MenuProvider.IsPressingActionWheelButton = true;
             }
@@ -317,7 +317,7 @@ namespace LosSantosRED.lsr
                         GameTimeLastPressedDoorClose = Game.GameTime;
                     }
                 }
-                if (Player.IsInVehicle && (Player.CurrentVehicleIsRolledOver || Player.CurrentVehicleIsInAir) && Settings.SettingsManager.VehicleSettings.DisableRolloverFlip)
+                if (Settings.SettingsManager.VehicleSettings.DisableRolloverFlip && Player.IsInVehicle && (Player.CurrentVehicleIsRolledOver || Player.CurrentVehicleIsInAir) && Player.CurrentVehicle != null && !Player.CurrentVehicle.CanAlwaysRollOver)
                 {
                     Game.DisableControlAction(0, GameControl.VehicleMoveLeftRight, true);
                     Game.DisableControlAction(0, GameControl.VehicleMoveUpDown, true);
@@ -404,9 +404,9 @@ namespace LosSantosRED.lsr
             Game.DisplayHelp(helpText);
             HasShownControllerHelpPrompt = true;
         }
-        private bool IsKeyDownSafe(Keys key)
+        private bool IsKeyDownSafe(Keys key, bool isModifier)
         {
-            if(key == Keys.None)
+            if(key == Keys.None && isModifier)
             {
                 return true;
             }
@@ -427,9 +427,9 @@ namespace LosSantosRED.lsr
                 return Game.IsKeyDownRightNow(key);
             }
         }
-        private bool IsControllerButtonDownSafe(ControllerButtons buttons)
+        private bool IsControllerButtonDownSafe(ControllerButtons buttons, bool isModifier)
         {
-            if (buttons == ControllerButtons.None)
+            if (buttons == ControllerButtons.None && isModifier)
             {
                 return true;
             }

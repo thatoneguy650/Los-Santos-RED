@@ -760,21 +760,22 @@ public class LEDispatcher
                 {
                     GameFiber.Yield();
                     Delete(DeleteableCop);
-
                 }
                 GameFiber.Yield();
             }
             GameFiber.Yield();
-            if (Roadblock != null && Player.Position.DistanceTo2D(Roadblock.CenterPosition) >= 550f)
+            if (Roadblock != null)//550f)
             {
-                Roadblock.Dispose();
-                Roadblock = null;
-                //EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
-            }
-            
+                float distanceTo = Player.Position.DistanceTo2D(Roadblock.CenterPosition);
+                if((Player.IsInVehicle && distanceTo >= 350f) || (!Player.IsInVehicle && distanceTo >= 225f))//remove it a lot closer if you are on foot?//was 550f when in vehicle
+                {
+                    Roadblock.Dispose();
+                    Roadblock = null;
+                    //EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
+                }
+            }   
             GameTimeAttemptedRecall = Game.GameTime;
         }
-
         CleanUp();
     }
     public void CleanUp()
@@ -786,9 +787,6 @@ public class LEDispatcher
         RemoveAbandonedPoliceVehicles();
         FixDamagedPoliceVehicles();     
     }
-    
-
-
     private void RemoveAbandonedPoliceVehicles()
     {
         try
@@ -922,7 +920,7 @@ public class LEDispatcher
         if (IsTimeToDispatchRoadblock && HasNeedToDispatchRoadblock)
         {
             GameFiber.Yield();
-            SpawnRoadblock(false,300f);
+            SpawnRoadblock(false,225f);//300f
         }
     }
     private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement, bool forcek9)

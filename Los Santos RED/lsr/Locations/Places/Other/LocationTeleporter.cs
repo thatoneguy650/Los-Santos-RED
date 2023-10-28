@@ -29,8 +29,34 @@ public class LocationTeleporter
             Player.Character.Heading = InteractableLocation.Interior.InteriorEgressHeading;
             IsInside = true;
             Game.FadeScreenIn(1500, true);
+            UpdateInside();
         }
     }
+
+
+    private void UpdateInside()
+    {
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                while (IsInside)
+                {
+                    Update();
+                    GameFiber.Yield();
+                }
+                Player.ActivityManager.IsInteractingWithLocation = false;
+                InteractableLocation.CanInteract = true;
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+
+        }, "Interact");
+    }
+
     public void Update()
     {
         if (IsInside)

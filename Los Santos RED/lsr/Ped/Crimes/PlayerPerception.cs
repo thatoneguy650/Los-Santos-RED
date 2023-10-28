@@ -53,6 +53,7 @@ public class PlayerPerception
     public float HeightToTarget { get; private set; } = 999f;
     public float DistanceToTargetLastSeen { get; private set; } = 999f;
     public bool EverSeenTarget => CanSeeTarget || GameTimeLastSeenTarget > 0;
+    //public bool EverRecognizedTarget => CanRecognizeTarget || GameTimeLastSeenTarget > 0;
     public bool HasSpokenWithTarget { get; set; }
     public bool IsFedUpWithTarget => TimesInsultedByTarget >= Originator.InsultLimit;
     public bool NeedsDistanceCheck => true;

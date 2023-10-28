@@ -20,7 +20,6 @@ namespace Mod
         private IZones Zones;
         private IJurisdictions Jurisdictions;
         private ISettingsProvideable Settings;
-
         private ICrimes Crimes;
         private IWeapons Weapons;     
         private ITimeReportable Time;
@@ -69,10 +68,6 @@ namespace Mod
         public string DebugString => "";
         public void Setup()
         {
-            //if (Settings.SettingsManager.WorldSettings.SetReducedPropsOnMap)
-            //{
-            //    NativeFunction.Natives.SET_INSTANCE_PRIORITY_MODE(1);
-            //}
             DetermineMap();
             Pedestrians.Setup();
             Places.Setup();
@@ -85,7 +80,6 @@ namespace Mod
             {
                 SetDensity();
             }
-
             if (Settings.SettingsManager.WorldSettings.AllowPoliceBackupBlip)
             {
                 if (PoliceBackupPoint == Vector3.Zero)
@@ -97,7 +91,6 @@ namespace Mod
                 }
                 else
                 {
-
                     if (!TotalWantedBlip.Exists())
                     {
                         CreateTotalWantedBlip();
@@ -115,7 +108,6 @@ namespace Mod
                     TotalWantedBlip.Delete();
                 }
             }
-
             if(TotalWantedLevel != totalWantedLevel)
             {
                 OnTotalWantedLevelChanged();
@@ -124,16 +116,11 @@ namespace Mod
             {
                 NativeFunction.Natives.DISTANT_COP_CAR_SIRENS(false);
             }
-
             int numFires = NativeFunction.Natives.GET_NUMBER_OF_FIRES_IN_RANGE<int>(Game.LocalPlayer.Character.Position, 150f);
             AnyFiresNearPlayer = numFires > 0;
         }
         public void Dispose()
         {
-            //if (Settings.SettingsManager.WorldSettings.SetReducedPropsOnMap)
-            //{
-            //    NativeFunction.Natives.SET_INSTANCE_PRIORITY_MODE(0);
-            //}
             Places.Dispose();
             Pedestrians.Dispose();
             Vehicles.Dispose();
@@ -160,10 +147,7 @@ namespace Mod
             if (IsMPMapLoaded)
             {
                 Game.FadeScreenOut(1500, true);
-                //if (!Settings.SettingsManager.WorldSettings.SetReducedPropsOnMap)
-                //{
-                    NativeFunction.Natives.SET_INSTANCE_PRIORITY_MODE(0);
-                //}
+                NativeFunction.Natives.SET_INSTANCE_PRIORITY_MODE(0);
                 NativeFunction.Natives.xD7C10C4A637992C9();// ON_ENTER_SP();
                 Game.FadeScreenIn(1500, true);
                 IsMPMapLoaded = false;
@@ -189,20 +173,14 @@ namespace Mod
                     MyBlip.Delete();
                 }
             }
-
             if (TotalWantedBlip.Exists())
             {
                 TotalWantedBlip.Delete();
             }
-
         }
         public void SetDensity()
         {
-
-
-
             CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.DefaultSpawnMultiplier;// 1.0f;
-
             if (TotalWantedLevel >= 10)
             {
                 CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted10Multiplier;
@@ -231,8 +209,6 @@ namespace Mod
             {
                 CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted4Multiplier;
             }
-
-
             if(CurrentSpawnMultiplier != 1.0f && !isSettingDensity)
             {
                 isSettingDensity = true;
@@ -260,7 +236,6 @@ namespace Mod
                     }
                 }, $"Density Runner");
             }
-
         }
         private void DetermineMap()
         {
@@ -269,10 +244,6 @@ namespace Mod
             GameFiber.Sleep(100);
             IsMPMapLoaded = NativeFunction.Natives.IS_IPL_ACTIVE<bool>(iplName);
             //EntryPoint.WriteToConsoleTestLong($"MP Map Loaded: {IsMPMapLoaded}");
-
-
-
-
         }
         private void CreateTotalWantedBlip()
         {
@@ -320,13 +291,13 @@ namespace Mod
             //EntryPoint.WriteToConsoleTestLong($"OnTotalWantedLevelAdded {TotalWantedLevel}");
         }
 
-        public void StoreEntities()
-        {
-            //EntryPoint.ModController.AllObjects = Rage.World.GetAllObjects().ToList();
-            //GameFiber.Yield();
-            //EntryPoint.ModController.AllPeds = Rage.World.GetAllPeds().ToList();
-            //GameFiber.Yield();
-           // EntryPoint.ModController.AllVehicles = Rage.World.GetAllVehicles().ToList();
-        }
+        //public void StoreEntities()
+        //{
+        //    //EntryPoint.ModController.AllObjects = Rage.World.GetAllObjects().ToList();
+        //    //GameFiber.Yield();
+        //    //EntryPoint.ModController.AllPeds = Rage.World.GetAllPeds().ToList();
+        //    //GameFiber.Yield();
+        //   // EntryPoint.ModController.AllVehicles = Rage.World.GetAllVehicles().ToList();
+        //}
     }
 }

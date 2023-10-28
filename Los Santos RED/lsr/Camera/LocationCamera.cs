@@ -43,11 +43,13 @@ public class LocationCamera
 
 
     public bool StaysInVehicle { get; set; } = false;
-    public LocationCamera(GameLocation store, ILocationInteractable player, ISettingsProvideable settings)
+    public bool NoEntryCam { get; set; } = false;
+    public LocationCamera(GameLocation store, ILocationInteractable player, ISettingsProvideable settings, bool noEntryCam)
     {
         Store = store;
         Player = player;
         Settings = settings;
+        NoEntryCam = noEntryCam;
     }
 
     private enum eSetPlayerControlFlag
@@ -72,8 +74,6 @@ public class LocationCamera
         DisableControl();
         DoEntryCam();
         HighlightStoreWithCamera();
-
-
         if(StaysInVehicle)
         {
             return;
@@ -244,7 +244,7 @@ public class LocationCamera
     }
     private void DoEntryCam()
     {
-        if(StaysInVehicle)
+        if(StaysInVehicle || NoEntryCam)
         {
             return;
         }
@@ -298,7 +298,7 @@ public class LocationCamera
     }
     private void DoExitCam()
     {
-        if (StaysInVehicle)
+        if (StaysInVehicle || NoEntryCam)
         {
             return;
         }

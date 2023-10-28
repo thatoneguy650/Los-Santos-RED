@@ -124,10 +124,12 @@ public class Vehicles
     public void Setup()
     {
         DefaultTaxiFirm = Organizations.GetDefaultTaxiFirm();
+
     }
     public void Dispose()
     {
         ClearSpawned(true);
+        NativeFunction.Natives.SET_VEHICLE_MODEL_IS_SUPPRESSED(Game.GetHashKey("taxi"), false);      
     }
     public void Prune()
     {
@@ -144,6 +146,10 @@ public class Vehicles
         SecurityVehicles.RemoveAll(x => !x.Vehicle.Exists());
         GameFiber.Yield();//TR 29
         TaxiVehicles.RemoveAll(x => !x.Vehicle.Exists());
+        if (Settings.SettingsManager.WorldSettings.SetVanillaTaxiSuppressed)
+        {
+            NativeFunction.Natives.SET_VEHICLE_MODEL_IS_SUPPRESSED(Game.GetHashKey("taxi"), true);
+        }
     }
 
     public void CreateNew()

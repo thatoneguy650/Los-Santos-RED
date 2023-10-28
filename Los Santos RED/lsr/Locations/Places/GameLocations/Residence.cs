@@ -34,6 +34,8 @@ public class Residence : GameLocation, ILocationSetupable
     private string IsRentedRightLabel => Time == null ? $"Due Date: {DateRentalPaymentDue}" : "Remaining Days: " + Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0).ToString();
     private string CanRentRightLabel => $"{RentalFee:C0} for {RentalDays} days";
     private string CanPurchaseRightLabel => $"{PurchasePrice:C0}";
+    //public override string MapIconColorString => IsOwned ? "Green" : IsRented ? "Yellow": "White";
+    //public override Color MapIconColor => Color.FromName(IsOwned ? "Green" : IsRented ? "Yellow" : "White");
     public Residence() : base()
     {
 
@@ -90,11 +92,12 @@ public class Residence : GameLocation, ILocationSetupable
         Player.ActivityManager.IsInteractingWithLocation = true;
         CanInteract = false;
         Player.IsTransacting = true;
+
         GameFiber.StartNew(delegate
         {
             try
             {
-                StoreCamera = new LocationCamera(this, Player, Settings);
+                StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
                 StoreCamera.SayGreeting = false;
                 StoreCamera.Setup();
                 CreateInteractionMenu();
@@ -139,18 +142,24 @@ public class Residence : GameLocation, ILocationSetupable
         CashStorage.Reset();
 
     }
-    public void ReRent()
+    public void ReRent(IPropertyOwnable player, ITimeReportable time)
     {
         try
         {
-            if (Player.BankAccounts.GetMoney(true) >= RentalFee)
+            if(player == null)
             {
-                Player.BankAccounts.GiveMoney(-1 * RentalFee, true);
-                DateRentalPaymentPaid = Time.CurrentDateTime;
+                return;
+            }
+            if (player.BankAccounts.GetMoney(true) >= RentalFee)
+            {
+                player.BankAccounts.GiveMoney(-1 * RentalFee, true);
+                DateRentalPaymentPaid = time.CurrentDateTime;
                 DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
                 UpdateStoredData();
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Rent Paid", $"You have been charged the rental fee of {RentalFee:C0} for {Name}.~n~Next payment date: {DateRentalPaymentDue:d}");
 
+                EntryPoint.WriteToConsole($"IsRented{IsRented} IsOwned{IsOwned} DateRentalPaymentPaid{DateRentalPaymentPaid} DateRentalPaymentDue{DateRentalPaymentDue}");
+
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Rent Paid", $"You have been charged the rental fee of {RentalFee:C0} for {Name}.~n~Next payment date: {DateRentalPaymentDue:d}");
             }
             else
             {
@@ -306,7 +315,6 @@ public class Residence : GameLocation, ILocationSetupable
     {
         CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this);
     }
-
     private void UpdateOutfits()
     {
         outfitsSubMenu.Clear();
@@ -320,10 +328,6 @@ public class Residence : GameLocation, ILocationSetupable
             outfitsSubMenu.AddItem(uIMenuItem);
         }
     }
-
-
-
-
     private bool Rent()
     {
         if(CanRent && Player.BankAccounts.GetMoney(true) >= RentalFee)
@@ -435,38 +439,70 @@ public class Residence : GameLocation, ILocationSetupable
     private void UpdateStoredData()
     {
         ButtonPromptText = GetButtonPromptText();
-        if (IsOwned)
+        if (Blip.Exists())
         {
-            MapIcon = (int)BlipSprite.Garage;
-            MapIconColorString = "Green";
+            Blip.Sprite = IsOwned || IsRented ? BlipSprite.Garage : BlipSprite.PropertyForSale;
+        }
 
-            if (Blip.Exists())
-            {
-                Blip.Color = Color.Green;
-                Blip.Sprite = BlipSprite.Garage;
-            }
-        }
-        else if(IsRented)
-        {
-            MapIcon = (int)BlipSprite.Garage;
-            MapIconColorString = "Yellow";
+        //UpdateBlip(Time);
 
-            if (Blip.Exists())
-            {
-                Blip.Color = Color.Yellow;
-                Blip.Sprite = BlipSprite.Garage;
-            }
-        }
-        else
+
+        //if (IsOwned)
+        //{
+        //    EntryPoint.WriteToConsole("UPDATE STORED DATA OWNED");
+
+        //    MapIcon = (int)BlipSprite.Garage;
+        //    //MapIconColorString = "Green";
+
+        //    if (Blip.Exists())
+        //    {
+        //        Blip.Color = Color.Green;
+        //        Blip.Sprite = BlipSprite.Garage;
+
+
+        //        EntryPoint.WriteToConsole("UPDATE STORED DATA OWNED BLIP EXISTS");
+        //    }
+        //}
+        //else if(IsRented)
+        //{
+        //    //EntryPoint.WriteToConsole("UPDATE STORED DATA RENTED");
+        //    MapIcon = (int)BlipSprite.Garage;
+        //    //MapIconColorString = "Yellow";
+
+        //    if (Blip.Exists())
+        //    {
+        //        Blip.Color = Color.Yellow;
+        //        Blip.Sprite = BlipSprite.Garage;
+
+        //        //EntryPoint.WriteToConsole("UPDATE STORED DATA RENTED BLIP EXISTS");
+        //    }
+        //}
+        //else
+        //{
+        //    //EntryPoint.WriteToConsole("UPDATE STORED DATA NOT OWNED OR RENTED");
+        //    MapIcon = (int)BlipSprite.PropertyForSale;
+        //    //MapIconColorString = "White";
+        //    if (Blip.Exists())
+        //    {
+        //        Blip.Color = Color.White;
+        //        Blip.Sprite = BlipSprite.PropertyForSale;
+        //        //EntryPoint.WriteToConsole("UPDATE STORED DATA NONE BLIP EXISTS");
+        //    }
+        //}
+    }
+    public override void UpdateBlip(ITimeReportable time)
+    {
+        if (Blip.Exists())
         {
-            MapIcon = (int)BlipSprite.PropertyForSale;
-            MapIconColorString = "White";
-            if (Blip.Exists())
-            {
-                Blip.Color = Color.White;
-                Blip.Sprite = BlipSprite.PropertyForSale;
-            }
+            MapIconColorString = (IsOwned ? "Green" : IsRented ? "Yellow" : "White");
+           // Blip.Sprite = IsOwned || IsRented ? BlipSprite.Garage: BlipSprite.PropertyForSale;
+            Blip.Color = Color.FromName(IsOwned ? "Green" : IsRented ? "Yellow" : "White");//NEED TO SET THE COLOR AFTER THE SPRITE OR IT DOESNT WORK!
         }
+        if(IsOwnedOrRented)//shouldnt need blip updates?
+        {
+            return;
+        }
+        base.UpdateBlip(time);
     }
     private string GetButtonPromptText()
     {
