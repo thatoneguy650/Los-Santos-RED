@@ -383,7 +383,8 @@ public class PedCustomizer
             }
             else
             {
-                PedSwap.BecomeSamePed(WorkingModelName, WorkingName, WorkingMoney, WorkingVariation);
+                PedSwap.BecomeSamePed(WorkingModelName, WorkingName, WorkingMoney, WorkingVariation, WorkingVoice);
+
             }
 
 

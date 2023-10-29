@@ -4,6 +4,7 @@ using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ public class SmokeItem : ConsumableItem
 {
     public override bool CanConsume { get; set; } = true;
     public bool NeedsRollingPapers { get; set; } = false;
+    public uint Duration { get; set; } = 120000;
     public override string FullDescription(ISettingsProvideable Settings) => base.FullDescription(Settings) + $"~n~Requires: ~r~Lighter~s~" + (NeedsRollingPapers ? " and ~r~Rolling Papers~s~" : "");
     public SmokeItem()
     {
@@ -24,6 +26,13 @@ public class SmokeItem : ConsumableItem
     {
 
     }
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        Duration = 120000;
+    }
+
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
         LighterItem lighterItem = actionable.Inventory.ItemsList.Where(x => x.ModItem != null).Select(x => x.ModItem).OfType<LighterItem>().ToList().FirstOrDefault();

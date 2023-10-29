@@ -11,7 +11,7 @@ namespace LosSantosRED.lsr.Interface
     public interface IPedSwap
     {
         void BecomeExistingPed(Ped TargetPed, string modelName, string fullName, int money, PedVariation variation, int speechSkill, string voiceName);
-        void BecomeSamePed(string modelName, string fullName, int money, PedVariation variation);
+        void BecomeSamePed(string modelName, string fullName, int money, PedVariation variation, string voiceName);
 
 
 

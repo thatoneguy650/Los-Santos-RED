@@ -45,8 +45,10 @@ namespace LosSantosRED.lsr.Player
         private int HandBoneID;
         private SmokeItem SmokeItem;
         private ConsumableRefresher ConsumableItemNeedGain;
+        private uint GameTimeStartedSmoking;
         private Vector3 ParticleOffset;
         private Rotator ParticleRotation;
+        private uint Duration;
 
         public SmokingActivity(IActionable consumable, ISettingsProvideable settings, SmokeItem modItem, IIntoxicants intoxicants) : base()
         {
@@ -163,7 +165,7 @@ namespace LosSantosRED.lsr.Player
 
 
            ConsumableItemNeedGain = new ConsumableRefresher(Player, SmokeItem, Settings);
-
+            GameTimeStartedSmoking = Game.GameTime;
 
 
 
@@ -247,7 +249,8 @@ namespace LosSantosRED.lsr.Player
             isPaused = false;
             IsCancelled = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
-            //EntryPoint.WriteToConsole("SmokingActivity Exit End");
+            EntryPoint.WriteToConsole("SmokingActivity Exit End");
+            Player.ActivityManager.PausedActivites.Remove(this);
             GameFiber.Sleep(5000);
             if (SmokedItem.Exists())
             {
@@ -261,7 +264,7 @@ namespace LosSantosRED.lsr.Player
             PlayingAnim = Data.AnimIdle.PickRandom();
             //EntryPoint.WriteToConsole($"Smoking Activity Playing {PlayingDict} {PlayingAnim}");
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
-            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && !isPaused)
+            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && !isPaused && Game.GameTime - GameTimeStartedSmoking <= Duration)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim) >= 1.0f)
@@ -298,8 +301,8 @@ namespace LosSantosRED.lsr.Player
             AttachSmokedItemToMouth();
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             IsActivelySmoking = false;
-            uint GameTimeStartedIdle = Game.GameTime;
-            while (!IsCancelled && !ShouldContinue && Game.GameTime - GameTimeStartedIdle <= 120000)//two minutes and your ciggy burns out
+            //uint GameTimeStartedIdle = Game.GameTime;
+            while (!IsCancelled && !ShouldContinue && Game.GameTime - GameTimeStartedSmoking <= Duration)//two minutes and your ciggy burns out
             {
                 UpdatePosition();
                 UpdateSmoke();
@@ -354,6 +357,7 @@ namespace LosSantosRED.lsr.Player
             string AnimExitDictionary;
             List<string> AnimIdle;
             string AnimIdleDictionary;
+            Duration = 120000;
             
             string HandBoneName = "BONETAG_R_PH_HAND";
             Vector3 HandOffset = Vector3.Zero;
@@ -488,6 +492,13 @@ namespace LosSantosRED.lsr.Player
             if (ModItem != null && ModItem.ModelItem != null)
             {
                 PropModelName = ModItem.ModelItem.ModelName;
+                Duration = SmokeItem.Duration;
+                if(Duration == 0)
+                {
+                    Duration = 120000;
+                }
+
+
                 PropAttachment pa = ModItem.ModelItem.Attachments.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender) && x.IsMP == Player.CharacterModelIsFreeMode);
                 if (pa == null)
                 {

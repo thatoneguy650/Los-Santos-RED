@@ -293,7 +293,12 @@ public class LESpawnTask : SpawnTask
         }
         SpawnedCops.Add(PrimaryCop);
         World.Pedestrians.AddEntity(PrimaryCop);
-        PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode);//TASKING IS BROKEN FOR ALL COPS FAR FROM PLAYER AND ALL OTHER PEDS
+        float sightDistance = Settings.SettingsManager.PoliceSettings.SightDistance;
+        if(VehicleType != null && VehicleType.IsHelicopter)
+        {
+            sightDistance = Settings.SettingsManager.PoliceSettings.SightDistance_Helicopter;
+        }
+        PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode, sightDistance);//TASKING IS BROKEN FOR ALL COPS FAR FROM PLAYER AND ALL OTHER PEDS
         if (Pedestrian.Exists())
         {
             PrimaryCop.SpawnPosition = Pedestrian.Position;
@@ -317,9 +322,13 @@ public class LESpawnTask : SpawnTask
         CanineUnit PrimaryCop = new CanineUnit(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomDogName(isMale), PersonType.ModelName, World);
 
         SpawnedCops.Add(PrimaryCop);
-
+        float sightDistance = Settings.SettingsManager.PoliceSettings.SightDistance;
+        if (VehicleType != null && VehicleType.IsHelicopter)
+        {
+            sightDistance = Settings.SettingsManager.PoliceSettings.SightDistance_Helicopter;
+        }
         World.Pedestrians.AddEntity(PrimaryCop);
-        PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode);
+        PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode, sightDistance);
         //PrimaryCop.TaskRequirements = SpawnRequirement;
         if (ped.Exists())
         {

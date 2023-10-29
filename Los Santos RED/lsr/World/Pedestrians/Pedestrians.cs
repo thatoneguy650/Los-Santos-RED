@@ -934,7 +934,7 @@ public class Pedestrians : ITaskerReportable
             return;
         }
         Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.Model.Name, World);
-        myCop.SetStats(AssignedPerson, Weapons, Settings.SettingsManager.PoliceSettings.AttachBlipsToAmbientPeds, "Lincoln");
+        myCop.SetStats(AssignedPerson, Weapons, Settings.SettingsManager.PoliceSettings.AttachBlipsToAmbientPeds, "Lincoln", Settings.SettingsManager.PoliceSettings.SightDistance);
         if(!Pedestrian.Exists())
         {
             return;

@@ -786,6 +786,17 @@ namespace Mod
             }
             //EntryPoint.WriteToConsole($"PLAYER EVENT: SetDemographics MoneyToSet {money} Current: {BankAccounts.Money} {NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias)}");
         }
+        public void SetVoice(string voiceName)
+        {
+            if (voiceName == "")
+            {
+                FreeModeVoice = IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
+            }
+            else
+            {
+                FreeModeVoice = voiceName;
+            }
+        }
         public void LocationUpdate()
         {
             CurrentLocation.Update(Character, IsInVehicle);

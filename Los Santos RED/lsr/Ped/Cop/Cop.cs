@@ -183,7 +183,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         Voice.ResetSpeech();
         Voice.Speak(currentPlayer);
     }
-    public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip, string forceGroupName)
+    public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip, string forceGroupName, float sightDistance)
     {
         if (!Pedestrian.Exists())
         {
@@ -272,10 +272,16 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             NativeFunction.Natives.STOP_PED_WEAPON_FIRING_WHEN_DROPPED(Pedestrian);
         }
-        if (Settings.SettingsManager.PoliceSettings.SightDistance > 60f)
+
+        if (sightDistance > 60f)
         {
-            NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.PoliceSettings.SightDistance);
+            NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, sightDistance);
         }
+
+        //if (Settings.SettingsManager.PoliceSettings.SightDistance > 60f)
+        //{
+        //    NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.PoliceSettings.SightDistance);
+        //}
 
     }
     private void UpdateCombatFlags()

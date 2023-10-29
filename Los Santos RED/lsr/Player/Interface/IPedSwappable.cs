@@ -50,5 +50,6 @@ namespace LosSantosRED.lsr.Interface
         void UpdateVehicleData();
         void RemoveAgencyStatus();
         void SetAgencyStatus(Agency assignedAgency);
+        void SetVoice(string voiceName);
     }
 }

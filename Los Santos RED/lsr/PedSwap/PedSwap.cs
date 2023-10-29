@@ -631,11 +631,11 @@ public class PedSwap : IPedSwap
     }
 
 
-    public void BecomeSamePed(string modelName, string fullName, int money, PedVariation variation)
+    public void BecomeSamePed(string modelName, string fullName, int money, PedVariation variation, string voiceName)
     {
         try
         {
-            Player.RemoveAgencyStatus();
+            //Player.RemoveAgencyStatus();
             Player.ModelName = modelName;
             Player.CurrentModelVariation = variation.Copy();
             Player.PlayerName = fullName;
@@ -655,6 +655,7 @@ public class PedSwap : IPedSwap
             {
                 variation.ApplyToPed(Game.LocalPlayer.Character);
             }
+            Player.SetVoice(voiceName);
             Player.DisplayPlayerNotification();
         }
         catch (Exception e3)
