@@ -30,6 +30,7 @@ public class DebugLocationSubMenu : DebugSubMenu
     private Street CurrentStreet;
     private Street CurrentCrossStreet;
     private uint GameTimeLastUpdatedNodes;
+    private bool IsBigMapActive;
 
     public DebugLocationSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IEntityProvideable world, ISettingsProvideable settings, IStreets streets, IPlacesOfInterest placesOfInterest) : base(debug, menuPool, player)
     {
@@ -219,6 +220,18 @@ public class DebugLocationSubMenu : DebugSubMenu
             NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("VANGELICO", true);
         };
         LocationItemsMenu.AddItem(EnableScenarios);
+
+
+        UIMenuItem SetBigMap = new UIMenuItem("Toggle Big Map", "Toggle the big map (like gtao)");
+        SetBigMap.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+            NativeFunction.Natives.SET_BIGMAP_ACTIVE(!IsBigMapActive, false);
+            //Game.DisplaySubtitle($"IsBigMapActive:{IsBigMapActive}");
+            IsBigMapActive = !IsBigMapActive;
+        };
+        LocationItemsMenu.AddItem(SetBigMap);
+
 
 
 

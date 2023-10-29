@@ -36,10 +36,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private int NumberOfItemsToDeliver;
         private PhoneContact PhoneContact;
         private GangTasks GangTasks;
+        private string ModItemNameToDeliver;
         private bool HasDen => HiringGangDen != null;
 
         public GangDeliveryTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems, 
-            IShopMenus shopMenus, PhoneContact phoneContact, GangTasks gangTasks)
+            IShopMenus shopMenus, PhoneContact phoneContact, GangTasks gangTasks, string modItemNameToDeliver)
         {
             Player = player;
             Time = time;
@@ -54,6 +55,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             ShopMenus = shopMenus;
             PhoneContact = phoneContact;
             GangTasks = gangTasks;
+            ModItemNameToDeliver = modItemNameToDeliver;
         }
         public void Setup()
         {
@@ -98,19 +100,14 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void GetRequiredPayment()
         {
             int PaymentAmount = RandomItems.GetRandomNumberInt(HiringGang.DeliveryPaymentMin, HiringGang.DeliveryPaymentMax).Round(100);
-            List<string> PossibleItems = new List<string>() { "Marijuana", "SPANK", "Toilet Cleaner", "Cocaine", "Crack", "Heroin", "Methamphetamine" };
-            string ChosenItem = "";
             ItemToDeliver = null;
-            foreach(string possibleItem in PossibleItems.OrderBy(a => RandomItems.MyRand.Next()).ToList())
+            if(HiringGangDen.Menu.Items.Any(x => x.Purchaseable && x.ModItemName == ModItemNameToDeliver))
             {
-                if(!HiringGangDen.Menu.Items.Any(x => x.Purchaseable && x.ModItemName == possibleItem))
-                {
-                    ChosenItem = possibleItem;
-                }
+                return;
             }
-            if(ChosenItem != "")
+            if (ModItemNameToDeliver != "")
             {
-                ItemToDeliver = ModItems.Get(ChosenItem);
+                ItemToDeliver = ModItems.Get(ModItemNameToDeliver);
             }
             if(ItemToDeliver != null)
             {

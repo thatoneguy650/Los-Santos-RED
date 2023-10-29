@@ -61,11 +61,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private bool hasAddedButtonPrompt;
         private PhoneContact PhoneContact;
         private GangTasks GangTasks;
-
+        private string ForcedLocationType;
         private string ButtonPromptIdentifier => "RobberyStart" + RobberyLocation?.Name + HiringGang?.ID;
         private bool HasLocations => RobberyLocation != null && HiringGangDen != null;
         public GangWheelmanTask(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes,
-            IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus, IModItems modItems, PhoneContact phoneContact, GangTasks gangTasks)
+            IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus, IModItems modItems, PhoneContact phoneContact, GangTasks gangTasks, int robbersToSpawn, string locationType)
         {
             Player = player;
             Time = time;
@@ -83,6 +83,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             ModItems = modItems;
             PhoneContact = phoneContact;
             GangTasks = gangTasks;
+            RobbersToSpawn = robbersToSpawn;
+            ForcedLocationType = locationType;
         }
         public void Setup()
         {
@@ -514,14 +516,14 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetRobberyInformation()
         {
-            List<GameLocation> PossibleSpots = PlacesOfInterest.PossibleLocations.RobberyTaskLocations().Where(x=> x.IsCorrectMap(World.IsMPMapLoaded)).ToList();
+            List<GameLocation> PossibleSpots = PlacesOfInterest.PossibleLocations.RobberyTaskLocations().Where(x=> (string.IsNullOrEmpty(ForcedLocationType) || ForcedLocationType == "Random" || x.TypeName == ForcedLocationType) && x.IsCorrectMap(World.IsMPMapLoaded)).ToList();
             List<GameLocation> AvailableSpots = new List<GameLocation>();
             foreach (GameLocation possibleSpot in PossibleSpots)
             {
                 bool isNear = false;
                 foreach(GameLocation policeStation in PlacesOfInterest.PossibleLocations.PoliceStations)//do not want to do robberies outside the police stations.....
                 {
-                    if(possibleSpot.CheckIsNearby(policeStation.CellX,policeStation.CellY,3))
+                    if(possibleSpot.CheckIsNearby(policeStation.CellX,policeStation.CellY,6))
                     {
                         isNear = true;
                         break;
@@ -536,7 +538,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded);
             HoursToRobbery = RandomItems.GetRandomNumberInt(8, 12);
             RobberyTime = Time.CurrentDateTime.AddHours(HoursToRobbery);
-            RobbersToSpawn = RandomItems.GetRandomNumberInt(1, 3);
+            //RobbersToSpawn = RandomItems.GetRandomNumberInt(1, 3);
         }
         private void GetPayment()
         {

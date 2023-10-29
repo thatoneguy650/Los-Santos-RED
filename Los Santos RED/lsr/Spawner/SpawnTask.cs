@@ -108,7 +108,7 @@ public abstract class SpawnTask
         {
             if (WillAddDriver)
             {
-                PedExt Person = CreatePerson();
+                PedExt Person = CreatePerson(-1);
                 if (Person != null && Person.Pedestrian.Exists() && LastCreatedVehicleExists)
                 {
                     PutPedInVehicle(Person, -1);
@@ -177,7 +177,7 @@ public abstract class SpawnTask
             GetNewPersonType(requiredGroup);
             if (PersonType != null)
             {
-                PedExt Passenger = CreatePerson();
+                PedExt Passenger = CreatePerson(OccupantIndex - 1);
                 if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)
                 {
                     PutPedInVehicle(Passenger, OccupantIndex - 1);
@@ -192,7 +192,7 @@ public abstract class SpawnTask
     }
     protected virtual void AttemptPersonOnlySpawn()
     {
-        CreatePerson();
+        CreatePerson(-1);
         if (!AllowBuddySpawn)
         {
             return;
@@ -205,11 +205,11 @@ public abstract class SpawnTask
             {
                 SpawnLocation.InitialPosition = Position.Around2D(1f);
                 SpawnLocation.SidewalkPosition = Vector3.Zero;
-                CreatePerson();
+                CreatePerson(-1);
             }
         }    
     }
-    protected virtual PedExt CreatePerson()
+    protected virtual PedExt CreatePerson(int seat)
     {
         return null;
     }
@@ -219,7 +219,7 @@ public abstract class SpawnTask
     }
     protected virtual void PutPedInVehicle(PedExt Person, int Seat)
     {
-        Person.Pedestrian.WarpIntoVehicle(LastCreatedVehicle.Vehicle, Seat);
+       //Person.Pedestrian.WarpIntoVehicle(LastCreatedVehicle.Vehicle, Seat);
         Person.AssignedVehicle = LastCreatedVehicle;
         Person.AssignedSeat = Seat;
         if (VehicleType != null && VehicleType.ForceStayInSeats != null && VehicleType.ForceStayInSeats.Contains(Seat))
@@ -232,4 +232,8 @@ public abstract class SpawnTask
     {
 
     }
+
+
+
+
 }

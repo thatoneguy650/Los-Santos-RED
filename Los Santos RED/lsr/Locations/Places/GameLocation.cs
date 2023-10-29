@@ -521,6 +521,10 @@ public class GameLocation : ILocationDispatchable
             if(DistanceToPlayer <= 100f)
             {
                 UpdatePrompts();
+                if (IsActivated)
+                {
+                    Interior?.Update();
+                }
             }
             //RestrictedAreas?.Update(Player);
         }

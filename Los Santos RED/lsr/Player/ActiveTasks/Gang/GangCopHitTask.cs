@@ -12,42 +12,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 {
     public class GangCopHitTask : GangTask
     {
-       //private ITaskAssignable Player;
-       // private ITimeReportable Time;
-       // private IGangs Gangs;
         private IAgencies Agencies;
-       // private PlayerTasks PlayerTasks;
-      //  private IPlacesOfInterest PlacesOfInterest;
-        private List<DeadDrop> ActiveDrops = new List<DeadDrop>();
-       // private ISettingsProvideable Settings;
-      //  private IEntityProvideable World;
-      //  private ICrimes Crimes;
-     //   private Gang HiringGang;
         private GangDen HiringGangDen;
         private Agency TargetAgency;
-       // private PlayerTask CurrentTask;
-        private int GameTimeToWaitBeforeComplications;
         private int MoneyToRecieve;
-        private bool HasAddedComplications;
-        private bool WillAddComplications;
-
-
-
-
         private int KilledMembersAtStart;
-
-
-
-
-      //  private PhoneContact PhoneContact;
-      //  private GangTasks GangTasks;
         public int KillRequirement { get; set; } = 1;
         private bool HasTargetAgencyAndDen => TargetAgency != null && HiringGangDen != null;
-
-        public bool JoinGangOnComplete { get; set; } = false;
-
-
-
 
         public GangCopHitTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world,
     ICrimes crimes, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus, IModItems modItems, PlayerTasks playerTasks, GangTasks gangTasks, PhoneContact hiringContact, 
@@ -133,11 +104,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetTargetAgency()
         {
-            // TargetGang = null;
-            //if (HiringGang.EnemyGangs != null && HiringGang.EnemyGangs.Any())
-            //{
-            //    TargetGang = Gangs.GetGang(HiringGang.EnemyGangs.PickRandom());
-            //}
             if (TargetAgency == null)
             {
                 TargetAgency = Agencies.GetAgenciesByResponse(ResponseType.LawEnforcement).PickRandom();// Gangs.GetAllGangs().Where(x => x.ID != HiringGang.ID).PickRandom();
@@ -150,6 +116,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         protected override void GetPayment()
         {
             MoneyToRecieve = RandomItems.GetRandomNumberInt(HiringGang.CopHitPaymentMin, HiringGang.CopHitPaymentMax).Round(500);
+
+
+            MoneyToRecieve *= KillRequirement;
+
             if (MoneyToRecieve <= 0)
             {
                 MoneyToRecieve = 500;
@@ -157,22 +127,14 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         protected override void AddTask()
         {
-            GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);
-            HasAddedComplications = false;
-            WillAddComplications = false;// RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.RivalGangHitComplicationsPercentage);
             KilledMembersAtStart = Player.Violations.DamageViolations.CountKilledCopsByAgency(TargetAgency.ID);
-
-            //GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(TargetAgency);
-            //KilledMembersAtStart = gr.MembersKilled;
-
             EntryPoint.WriteToConsole($"Starting Gang Cop Hit, KilledMembersAtStart {KilledMembersAtStart}");
-
             PlayerTasks.AddTask(HiringGang.Contact, MoneyToRecieve, 2000, 0, -500, 7, "Cop Hit");
         }
         protected override void SendInitialInstructionsMessage()
         {
             List<string> Replies = new List<string>() {
-                $"The pigs at {TargetAgency.ColorPrefix}{TargetAgency.ShortName}~s~ have fucked with us for the last time? Be sure to waste {KillRequirement} of those pricks. Once you are done come back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. ${MoneyToRecieve} to you",
+                $"The pigs at {TargetAgency.ColorPrefix}{TargetAgency.ShortName}~s~ have fucked with us for the last time. Be sure to waste {KillRequirement} of those pricks. Once you are done come back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. ${MoneyToRecieve} to you",
                 $"{TargetAgency.ColorPrefix}{TargetAgency.ShortName}~s~ is starting to become an issue. Get rid of {KillRequirement} of those assholes. When you are finished, get back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. I'll have ${MoneyToRecieve} waiting for you.",
                 $"The pigs got their noses in our business, need you to waste {KillRequirement} of those {TargetAgency.ColorPrefix}{TargetAgency.ShortName}~s~ pricks. Come back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} for your payment of ${MoneyToRecieve}",
                     };

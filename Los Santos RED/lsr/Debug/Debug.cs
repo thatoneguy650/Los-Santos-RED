@@ -521,33 +521,33 @@ public class Debug
         //NativeFunction.Natives.REGISTER_OBJECT_SCRIPT_BRAIN("atm_trigger", 807411288, 100, 4f, -1, 1024);
         //NativeFunction.Natives.REGISTER_OBJECT_SCRIPT_BRAIN("atm_trigger", -639162137, 100, 4f, -1, 1024);
 
-        GameLocation location = World.Places.ActiveLocations.Where(x => x.IsActivated).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-        if (location == null)
-        {
-            return;
-        }
-        Game.DisplaySubtitle($"Found Location {location.Name}");
-        SpawnLocation spawnLocation = new SpawnLocation(location.EntrancePosition);
-        spawnLocation.GetClosestStreet(false);
-        spawnLocation.GetClosestSideOfRoad();
+        //GameLocation location = World.Places.ActiveLocations.Where(x => x.IsActivated).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        //if (location == null)
+        //{
+        //    return;
+        //}
+        //Game.DisplaySubtitle($"Found Location {location.Name}");
+        //SpawnLocation spawnLocation = new SpawnLocation(location.EntrancePosition);
+        //spawnLocation.GetClosestStreet(false);
+        //spawnLocation.GetClosestSideOfRoad();
 
-        GameFiber.StartNew(delegate
-        {
-            uint GameTimeStarted = Game.GameTime;
-            while (Game.GameTime - GameTimeStarted <= 20000)
-            {
-                if(spawnLocation.HasSideOfRoadPosition)
-                {
-                    Rage.Debug.DrawArrowDebug(spawnLocation.StreetPosition + new Vector3(0f, 0f, 3f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
-                }
-                else if (spawnLocation.HasStreetPosition)
-                {
-                    Rage.Debug.DrawArrowDebug(spawnLocation.StreetPosition + new Vector3(0f, 0f, 3f), Vector3.Zero, Rotator.Zero, 1f, Color.White);
-                }
-                GameFiber.Yield();
-            }
+        //GameFiber.StartNew(delegate
+        //{
+        //    uint GameTimeStarted = Game.GameTime;
+        //    while (Game.GameTime - GameTimeStarted <= 20000)
+        //    {
+        //        if(spawnLocation.HasSideOfRoadPosition)
+        //        {
+        //            Rage.Debug.DrawArrowDebug(spawnLocation.StreetPosition + new Vector3(0f, 0f, 3f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+        //        }
+        //        else if (spawnLocation.HasStreetPosition)
+        //        {
+        //            Rage.Debug.DrawArrowDebug(spawnLocation.StreetPosition + new Vector3(0f, 0f, 3f), Vector3.Zero, Rotator.Zero, 1f, Color.White);
+        //        }
+        //        GameFiber.Yield();
+        //    }
 
-        }, "Run Debug Logic");
+        //}, "Run Debug Logic");
 
 
 
@@ -578,10 +578,10 @@ public class Debug
         //{
         //    Game.DisplayHelp($"FOUND{lighterItem.Name}");
         //}
-        //NativeFunction.Natives.SET_BIGMAP_ACTIVE(!IsBigMapActive, false);
-        //Game.DisplaySubtitle($"IsBigMapActive:{IsBigMapActive}");
-        //GameFiber.Sleep(1000);
-        //IsBigMapActive = !IsBigMapActive;
+        NativeFunction.Natives.SET_BIGMAP_ACTIVE(!IsBigMapActive, false);
+        Game.DisplaySubtitle($"IsBigMapActive:{IsBigMapActive}");
+        GameFiber.Sleep(1000);
+        IsBigMapActive = !IsBigMapActive;
 
         //GarageDoor = new InteriorDoor(3082692265,new Vector3(5.644455f,0.1074037f, 2.158299f)) },
 

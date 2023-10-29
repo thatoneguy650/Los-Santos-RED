@@ -83,7 +83,7 @@ public class Kill : ComplexTask
                     Vector3 pedPos = Player.Character.Position;
                     if (Ped.Pedestrian.CurrentVehicle.Exists())
                     {
-                        NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -35f, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(30f, 50f));
+                        NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(50f, 70f));
                         //if (Player.Character.CurrentVehicle.Exists())
                         //{
                         //    NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, 0.0f, 0.0f, RandomItems.GetRandomNumber(70f, 80f));//NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, Player.Character.CurrentVehicle, Player.Character, pedPos.X, pedPos.Y, pedPos.Z, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);//NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, Player.Character.CurrentVehicle, Player.Character, pedPos.X, pedPos.Y, pedPos.Z, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);

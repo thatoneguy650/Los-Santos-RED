@@ -84,11 +84,11 @@ public class KeySettings : ISettingsDefaultable
         EngineToggle = Keys.Z;
         EngineToggleModifier = Keys.LShiftKey;
 
-        ManualDriverDoorClose = Keys.None;
-        ManualDriverDoorCloseModifier = Keys.LControlKey;
+        ManualDriverDoorClose = Keys.LControlKey;
+        ManualDriverDoorCloseModifier = Keys.None;
 
-        CrouchKey = Keys.None;
-        CrouchKeyModifier = Keys.LControlKey;
+        CrouchKey = Keys.LControlKey;
+        CrouchKeyModifier = Keys.None;
 
         SprintKey = Keys.Z;
         SprintKeyModifier = Keys.None;

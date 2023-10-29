@@ -6,6 +6,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static RAGENativeUI.Elements.UIMenuStatsPanel;
 
 public class LESpawnTask : SpawnTask
 {
@@ -74,7 +75,7 @@ public class LESpawnTask : SpawnTask
             {
                 continue;
             }
-            PedExt Passenger = CreateCanine();
+            PedExt Passenger = CreateCanine(seatIndex);
             if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists && LastCreatedVehicle.Vehicle.IsSeatFree(seatIndex))
             {
                 PutPedInVehicle(Passenger, seatIndex);
@@ -96,7 +97,7 @@ public class LESpawnTask : SpawnTask
             {
                 if (WillAddDriver)
                 {
-                    PedExt Person = CreatePerson();
+                    PedExt Person = CreatePerson(-1);
                     if (Person != null && Person.Pedestrian.Exists() && LastCreatedVehicleExists)
                     {
                         PutPedInVehicle(Person, -1);
@@ -131,18 +132,64 @@ public class LESpawnTask : SpawnTask
             }
         }
     }
-    protected override PedExt CreatePerson()
+
+
+    protected override void AddPassengers()
+    {
+        for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
+        {
+            string requiredGroup = "";
+            if (VehicleType != null)
+            {
+                requiredGroup = VehicleType.RequiredPedGroup;
+            }
+            GetNewPersonType(requiredGroup);
+            if (PersonType != null)
+            {
+                PedExt Passenger = CreatePerson(OccupantIndex - 1);
+                if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)
+                {
+                    PutPedInVehicle(Passenger, OccupantIndex - 1);
+                }
+                else
+                {
+                    Cleanup(false);
+                }
+            }
+            GameFiber.Yield();
+        }
+    }
+
+
+    protected override PedExt CreatePerson(int seat)
     {
         try
         {
             Vector3 CreatePos = Position;
             if(!PlacePedOnGround || VehicleType != null)
             {
-                CreatePos.Z += 1.0f;
+                CreatePos.Z += 1.0f;//1.0f;
+                //CreatePos = CreatePos.Around2D(10f);
                 //EntryPoint.WriteToConsole("ADDED HIEGHT TO SPAWN");
             }
             World.Pedestrians.CleanupAmbient();
-            Ped createdPed = new Ped(PersonType.ModelName, new Vector3(CreatePos.X, CreatePos.Y, CreatePos.Z), SpawnLocation.Heading);
+
+            Ped createdPed = null;
+            if (VehicleType != null && SpawnedVehicle.Exists())
+            {
+                uint GameTimeStarted = Game.GameTime;
+                NativeFunction.Natives.REQUEST_MODEL(Game.GetHashKey(PersonType.ModelName));
+                while (!NativeFunction.Natives.HAS_MODEL_LOADED<bool>(Game.GetHashKey(PersonType.ModelName)) && Game.GameTime - GameTimeStarted <= 1000)
+                {
+                    GameFiber.Yield();
+                }
+                createdPed = NativeFunction.Natives.CREATE_PED_INSIDE_VEHICLE<Ped>(SpawnedVehicle, 26, Game.GetHashKey(PersonType.ModelName), seat, true, true);
+            }
+            else
+            {
+                createdPed = new Ped(PersonType.ModelName, new Vector3(CreatePos.X, CreatePos.Y, CreatePos.Z), SpawnLocation.Heading);
+            }
+
             EntryPoint.SpawnedEntities.Add(createdPed);
             GameFiber.Yield();
             if (createdPed.Exists())
@@ -173,12 +220,35 @@ public class LESpawnTask : SpawnTask
             return null;
         }
     }
-    private PedExt CreateCanine()
+    private PedExt CreateCanine(int seat)
     {
         try
         {
+
+            Vector3 CreatePos = Position;
+            if (!PlacePedOnGround || VehicleType != null)
+            {
+                CreatePos.Z += 1.0f;//1.0f;
+                //CreatePos = CreatePos.Around2D(10f);
+                //EntryPoint.WriteToConsole("ADDED HIEGHT TO SPAWN");
+            }
+
+
             World.Pedestrians.CleanupAmbient();
             Ped createdPed = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z), SpawnLocation.Heading);
+
+            if (VehicleType != null && SpawnedVehicle.Exists())
+            {
+                createdPed = NativeFunction.Natives.CREATE_PED_INSIDE_VEHICLE<Ped>(SpawnedVehicle, 26, Game.GetHashKey(PersonType.ModelName), seat, true, true);
+            }
+            else
+            {
+                createdPed = new Ped(PersonType.ModelName, new Vector3(CreatePos.X, CreatePos.Y, CreatePos.Z), SpawnLocation.Heading);
+            }
+
+
+
+
             EntryPoint.SpawnedEntities.Add(createdPed);
             GameFiber.Yield();
             if (createdPed.Exists())
@@ -261,6 +331,20 @@ public class LESpawnTask : SpawnTask
             return null;
         }
     }
+
+
+    protected override void PutPedInVehicle(PedExt Person, int Seat)
+    {
+        //Person.Pedestrian.WarpIntoVehicle(LastCreatedVehicle.Vehicle, Seat);
+        Person.AssignedVehicle = LastCreatedVehicle;
+        Person.AssignedSeat = Seat;
+        if (VehicleType != null && VehicleType.ForceStayInSeats != null && VehicleType.ForceStayInSeats.Contains(Seat))
+        {
+            Person.StayInVehicle = true;
+        }
+        Person.UpdateVehicleState();
+    }
+
     private void Setup()
     {
         if (VehicleType != null)

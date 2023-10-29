@@ -74,7 +74,7 @@ public class LocationCamera
         DisableControl();
         DoEntryCam();
         HighlightStoreWithCamera();
-        if(StaysInVehicle)
+        if(StaysInVehicle || NoEntryCam)
         {
             return;
         }
@@ -113,7 +113,7 @@ public class LocationCamera
         {
             EntranceCam.Delete();
         }
-        if(StaysInVehicle)
+        if(StaysInVehicle || NoEntryCam)
         {
             NativeFunction.Natives.CLEAR_FOCUS();
             return;
@@ -467,7 +467,7 @@ public class LocationCamera
     }
     private void ReturnToGameplay()
     {
-        if(StaysInVehicle)
+        if(StaysInVehicle || NoEntryCam)
         {
             return;
         }

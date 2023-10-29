@@ -24,7 +24,7 @@ public class GangContact : PhoneContact, IPhoneContact
         {
             return;
         }
-        MenuInteraction = new GangInteraction(player, gangs, placesOfInterest, this, world, settings, agencies);
+        MenuInteraction = new GangInteraction(player, gangs, placesOfInterest, this, world, settings, agencies, modItems);
         MenuInteraction.Start(this);
     }
 

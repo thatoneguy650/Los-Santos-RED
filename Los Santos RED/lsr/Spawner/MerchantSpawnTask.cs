@@ -49,18 +49,34 @@ public class MerchantSpawnTask : SpawnTask
             Cleanup(true);
         }
     }
-    protected override PedExt CreatePerson()
+    protected override PedExt CreatePerson(int seat)
     {
         try
         {
             Vector3 CreatePos = Position;
             if (!PlacePedOnGround || VehicleType != null)
             {
-                CreatePos.Z += 1.0f;
+                CreatePos.Z += 1.0f;//1.0f;CreatePos.Z += 1.0f;
                 //EntryPoint.WriteToConsole("ADDED HIEGHT TO SPAWN");
             }
             World.Pedestrians.CleanupAmbient();
-            Ped createdPed = new Ped(PersonType.ModelName, new Vector3(CreatePos.X, CreatePos.Y, CreatePos.Z), SpawnLocation.Heading);
+            Ped createdPed = null;
+            if (VehicleType != null && SpawnedVehicle.Exists())
+            {
+                uint GameTimeStarted = Game.GameTime;
+                NativeFunction.Natives.REQUEST_MODEL(Game.GetHashKey(PersonType.ModelName));
+                while (!NativeFunction.Natives.HAS_MODEL_LOADED<bool>(Game.GetHashKey(PersonType.ModelName)) && Game.GameTime - GameTimeStarted <= 1000)
+                {
+                    GameFiber.Yield();
+                }
+                createdPed = NativeFunction.Natives.CREATE_PED_INSIDE_VEHICLE<Ped>(SpawnedVehicle, 26, Game.GetHashKey(PersonType.ModelName), seat, true, true);
+            }
+            else
+            {
+                createdPed = new Ped(PersonType.ModelName, new Vector3(CreatePos.X, CreatePos.Y, CreatePos.Z), SpawnLocation.Heading);
+            }
+
+            //Ped createdPed = new Ped(PersonType.ModelName, new Vector3(CreatePos.X, CreatePos.Y, CreatePos.Z), SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(createdPed);
             GameFiber.Yield();
             if (!createdPed.Exists())

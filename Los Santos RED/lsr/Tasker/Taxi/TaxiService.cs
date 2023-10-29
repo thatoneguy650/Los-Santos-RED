@@ -124,14 +124,14 @@ public class TaxiService : ComplexTask, ILocationReachable
     }
     private void GetNewTaskState()
     {
-        if(TaxiDriver == null || TaxiDriver.TaxiRide == null)
+        if(TaxiDriver == null || TaxiDriver.TaxiRide == null || !Ped.Pedestrian.Exists())
         {
             EntryPoint.WriteToConsole("TAXI BRAIN GetNewTaskState SOMETHING IS WRONG");
             return;
         }
         if (Ped.IsInVehicle)
         {
-            NativeFunction.Natives.SET_DRIVER_ABILITY(1.0f);
+            NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 1.0f);
             CurrentTaskState = new RegularGoToInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, true, PlaceToDriveTo, PlaceToDriveToHeading, this, TaxiDriver.TaxiRide.TaxiDrivingStyle.DrivingStyle, TaxiDriver.TaxiRide.TaxiDrivingStyle.Speed);
         }
         else

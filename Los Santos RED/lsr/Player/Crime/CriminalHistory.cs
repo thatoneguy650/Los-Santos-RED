@@ -138,6 +138,11 @@ namespace LosSantosRED.lsr
                 Clear();
                 //EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired (Calendar Time)");
             }    
+
+            if(Player.IsWanted && Player.PoliceResponse.WantedLevelHasBeenRadioedIn && HasHistory)
+            {
+                CurrentHistory = null;
+            }
         }
         private bool UpdateLastSeenDistance()
         {
@@ -170,7 +175,7 @@ namespace LosSantosRED.lsr
                 }
             }
             int highestWantedLevel = CurrentHistory.WantedLevel;
-            CurrentHistory = null;
+            //CurrentHistory = null;
             Player.OnAppliedWantedStats(highestWantedLevel);        
         }
         private void UpdateBlip()

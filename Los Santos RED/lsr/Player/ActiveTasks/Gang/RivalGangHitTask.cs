@@ -141,6 +141,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void GetPayment()
         {
             MoneyToRecieve = RandomItems.GetRandomNumberInt(HiringGang.HitPaymentMin, HiringGang.HitPaymentMax).Round(500);
+
+
+            MoneyToRecieve *= KillRequirement;
+
             if (MoneyToRecieve <= 0)
             {
                 MoneyToRecieve = 500;

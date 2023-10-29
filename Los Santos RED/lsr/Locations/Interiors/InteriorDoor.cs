@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 [Serializable]
 public class InteriorDoor
@@ -13,6 +14,8 @@ public class InteriorDoor
     private bool isLocked = true;
     private float originalHeading = 0f;
     private bool HasOriginalHeading = false;
+    //private bool WasForceRotatedOpen;
+
     public InteriorDoor()
     {
 
@@ -29,6 +32,9 @@ public class InteriorDoor
     public bool ForceRotateOpen { get; set; } = false;
     public bool NeedsDefaultUnlock { get; set; } = false;
     public bool LockWhenClosed { get; set; } = false;
+
+    [XmlIgnore]
+    public bool HasBeenForceRotatedOpen { get; set; }
     public void LockDoor()
     {
         NativeFunction.Natives.x9B12F9A24FABEDB0(ModelHash, Position.X, Position.Y, Position.Z, true, 1.0f);
@@ -88,11 +94,17 @@ public class InteriorDoor
         NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, true);
         //doorEntity.IsPersistent = false;
 
+        HasBeenForceRotatedOpen = true;
+
         EntryPoint.WriteToConsole($"ForceRotateOpenDoor {originalHeading - 100f}");
     }
     private void ForceRotateCloseDoor()
     {
         //Rage.Object doorEntity = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Position.X, Position.Y, Position.Z, 3.0f, ModelHash, true, false, true);
+
+
+        HasBeenForceRotatedOpen = false;
+
         if (!doorEntity.Exists())
         {
             EntryPoint.WriteToConsole($"ForceRotateOpenDoor DOES NOT EXIST CLOSE");

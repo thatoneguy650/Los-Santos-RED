@@ -27,17 +27,15 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private Gang TargetGang;
         private PlayerTask CurrentTask;
         private int MoneyToRecieve;
-       // private DispatchableVehicle VehicleToSteal;
-        private string VehicleToStealMakeName;
-        private string VehicleToStealModelName;
         private PhoneContact PhoneContact;
         private GangTasks GangTasks;
         private uint VehicleToStealHash;
-
+        private string VehicleModelName;
+        private string VehicleDisplayName;
         private bool HasTargetGangVehicleAndHiringDen => TargetGang != null && HiringGangDen != null && VehicleToStealHash != 0;
         private bool IsInStolenGangCar => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.Model.Hash == VehicleToStealHash && Player.CurrentVehicle.WasModSpawned && Player.CurrentVehicle.AssociatedGang != null && Player.CurrentVehicle.AssociatedGang.ID == TargetGang.ID;
         public RivalGangVehicleTheftTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes,
-            PhoneContact phoneContact, GangTasks gangTasks, Gang targetGang)
+            PhoneContact phoneContact, GangTasks gangTasks, Gang targetGang, string vehicleModelName, string vehicleDisplayName)
         {
             Player = player;
             Time = time;
@@ -51,6 +49,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             PhoneContact = phoneContact;
             GangTasks = gangTasks;
             TargetGang = targetGang;
+            VehicleModelName = vehicleModelName;
+            VehicleDisplayName = vehicleDisplayName;
         }
         public void Setup()
         {
@@ -123,32 +123,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetTargetGang()
         {
-            //TargetGang = null;
-            DispatchableVehicle VehicleToSteal = null;
             VehicleToStealHash = 0;
-            VehicleToStealMakeName = "";
-            VehicleToStealModelName = "";
-            //if (HiringGang.EnemyGangs != null && HiringGang.EnemyGangs.Any())
-            //{
-            //    TargetGang = Gangs.GetGang(HiringGang.EnemyGangs.PickRandom());
-            //}
-            if (TargetGang == null)
-            {
-                TargetGang = Gangs.GetAllGangs().Where(x => x.ID != HiringGang.ID).PickRandom();
-            }
-            if (TargetGang != null)
-            {
-                VehicleToSteal = TargetGang.GetRandomVehicle(0, false, false, true,"", Settings);
-                if (VehicleToSteal != null)
-                {
-                    VehicleToStealMakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(VehicleToSteal.ModelName));
-                    VehicleToStealModelName = NativeHelper.VehicleModelName(Game.GetHashKey(VehicleToSteal.ModelName));
-                    VehicleToStealHash = Game.GetHashKey(VehicleToSteal.ModelName);
-                }
-
-            }
-
-            EntryPoint.WriteToConsole($"VehicleSteal {VehicleToStealMakeName} {VehicleToStealModelName} {VehicleToStealHash} {TargetGang?.ID}");
+            VehicleToStealHash = Game.GetHashKey(VehicleModelName);
+            EntryPoint.WriteToConsole($"VehicleSteal {VehicleDisplayName} {VehicleModelName} {VehicleToStealHash} {TargetGang?.ID}");
         }
         private void GetHiringDen()
         {
@@ -169,8 +146,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendInitialInstructionsMessage()
         {
             List<string> Replies = new List<string>() {
-                    $"Go steal a ~p~{VehicleToStealMakeName} {VehicleToStealModelName}~s~ from those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ assholes. Once you are done come back to {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. ${MoneyToRecieve} on completion",
-                    $"Go get me a ~p~{VehicleToStealMakeName} {VehicleToStealModelName}~s~ with {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ gang colors. Bring it back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. Payment ${MoneyToRecieve}",
+                    $"Go steal a ~p~{VehicleDisplayName}~s~ from those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ assholes. Once you are done come back to {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. ${MoneyToRecieve} on completion",
+                    $"Go get me a ~p~{VehicleDisplayName}~s~ with {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ gang colors. Bring it back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. Payment ${MoneyToRecieve}",
                     };
             Player.CellPhone.AddPhoneResponse(HiringGang.Contact.Name, HiringGang.Contact.IconName, Replies.PickRandom());
         }
