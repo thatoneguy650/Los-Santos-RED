@@ -103,16 +103,14 @@ public class GangTasks : IPlayerTaskGroup
     }
     public void StartCopHit(Gang gang, int killRequirement, GangContact gangContact, Agency targetAgency)
     {
-        GangCopHitTask newTask = new GangCopHitTask(Player, Time, Gangs, PlacesOfInterest, Settings, World, Crimes, Weapons, Names, PedGroups, ShopMenus, ModItems, PlayerTasks, this, gangContact, gang, targetAgency, Agencies);
-        newTask.KillRequirement = killRequirement;
+        GangCopHitTask newTask = new GangCopHitTask(Player, Time, Gangs, PlacesOfInterest, Settings, World, Crimes, Weapons, Names, PedGroups, ShopMenus, ModItems, PlayerTasks, this, gangContact, gang, targetAgency, Agencies, killRequirement);
         AllGenericGangTasks.Add(newTask);
         newTask.Setup();
         newTask.Start();
     }
     public void StartGangHit(Gang gang, int killRequirement, GangContact gangContact, Gang targetGang)
     {
-        RivalGangHitTask newTask = new RivalGangHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this, targetGang);
-        newTask.KillRequirement = killRequirement;
+        RivalGangHitTask newTask = new RivalGangHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this, targetGang, killRequirement);
         RivalGangHits.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);
@@ -145,9 +143,9 @@ public class GangTasks : IPlayerTaskGroup
         newTask.Setup();
         newTask.Start(gang);
     }
-    public void StartGangWheelman(Gang gang, GangContact gangContact, int robbersToSpawn, string locationType)
+    public void StartGangWheelman(Gang gang, GangContact gangContact, int robbersToSpawn, string locationType, bool requireAllMembersToFinish)
     {
-        GangWheelmanTask newTask = new GangWheelmanTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Weapons, Names, PedGroups, ShopMenus, ModItems, gangContact, this, robbersToSpawn, locationType);
+        GangWheelmanTask newTask = new GangWheelmanTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Weapons, Names, PedGroups, ShopMenus, ModItems, gangContact, this, robbersToSpawn, locationType, requireAllMembersToFinish);
         GangWheelmanTasks.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);

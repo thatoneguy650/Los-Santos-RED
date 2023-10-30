@@ -62,10 +62,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private PhoneContact PhoneContact;
         private GangTasks GangTasks;
         private string ForcedLocationType;
+        private bool RequireAllMembersToFinish;
         private string ButtonPromptIdentifier => "RobberyStart" + RobberyLocation?.Name + HiringGang?.ID;
         private bool HasLocations => RobberyLocation != null && HiringGangDen != null;
         public GangWheelmanTask(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes,
-            IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus, IModItems modItems, PhoneContact phoneContact, GangTasks gangTasks, int robbersToSpawn, string locationType)
+            IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus, IModItems modItems, PhoneContact phoneContact, GangTasks gangTasks, int robbersToSpawn, string locationType, bool requireAllMembersToFinish)
         {
             Player = player;
             Time = time;
@@ -85,6 +86,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             GangTasks = gangTasks;
             RobbersToSpawn = robbersToSpawn;
             ForcedLocationType = locationType;
+            RequireAllMembersToFinish = requireAllMembersToFinish;
         }
         public void Setup()
         {
@@ -380,6 +382,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private bool AreRobbersNormal()
         {
+            if(!RequireAllMembersToFinish)
+            {
+                return true;
+            }
             foreach(GangMember gm in SpawnedRobbers)
             {
                 if(!gm.Pedestrian.Exists())

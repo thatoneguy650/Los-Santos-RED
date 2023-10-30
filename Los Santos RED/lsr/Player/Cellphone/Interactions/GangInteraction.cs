@@ -230,14 +230,23 @@ public class GangInteraction : IContactMenuInteraction
         locationTypes.Add("Random");
         UIMenuListScrollerItem<string> LocationType = new UIMenuListScrollerItem<string>("Location Type", "Set the location type", locationTypes);
         UIMenuNumericScrollerItem<int> WheelManAccomplices = new UIMenuNumericScrollerItem<int>("Accomplices", $"Select the number of accomplices", 1, 3, 1) {Value = 1 };
+
+        UIMenuCheckboxItem requireAllMembers = new UIMenuCheckboxItem("Completion Requires Accomplices",true,"If enabled, the robbery will fail if any or your accomplices are killed, busted, or left behind.");
+
+
         UIMenuItem GangWheelmanStart = new UIMenuItem("Start", $"Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.WheelmanPaymentMin:C0}-{ActiveGang.WheelmanPaymentMax:C0}~s~" };
         GangWheelmanStart.Activated += (sender, selectedItem) =>
         {
-            Player.PlayerTasks.GangTasks.StartGangWheelman(ActiveGang, GangContact, WheelManAccomplices.Value, LocationType.SelectedItem);
+            Player.PlayerTasks.GangTasks.StartGangWheelman(ActiveGang, GangContact, WheelManAccomplices.Value, LocationType.SelectedItem, requireAllMembers.Checked);
             sender.Visible = false;
         };
+        //WheelManAccomplices.IndexChanged += (sender, oldIndex, newIndex) =>
+        //{
+        //    GangWheelmanStart.RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.WheelmanPaymentMin * WheelManAccomplices.Value:C0}-{ActiveGang.WheelmanPaymentMax * WheelManAccomplices.Value:C0}~s~";
+        //};//doesnt pay more for more poeple, you just get a cut
         WheelManSubMenu.AddItem(LocationType);
         WheelManSubMenu.AddItem(WheelManAccomplices);
+        WheelManSubMenu.AddItem(requireAllMembers);
         WheelManSubMenu.AddItem(GangWheelmanStart);
     }
 
@@ -247,45 +256,44 @@ public class GangInteraction : IContactMenuInteraction
         JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].Description = $"Do a cop hit for the gang.";
         JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.CopHitPaymentMin:C0}-{ActiveGang.CopHitPaymentMax:C0}~s~";
         CopHitSubMenu.RemoveBanner();
-        UIMenuListScrollerItem<Agency> AgenciesMenu = new UIMenuListScrollerItem<Agency>("Target Agency", $"Choose a target agency.", Agencies.GetAgenciesByResponse(ResponseType.LawEnforcement).Where(x => x.ID != "UNK"));//.Where(x => x.ID != ActiveGang.ID).ToList());
-        UIMenuNumericScrollerItem<int> CopHitTargets = new UIMenuNumericScrollerItem<int>("Targets", $"Select the number of targets", 1, 3, 1) { Value = 1 };
-        UIMenuItem CopHitStart = new UIMenuItem("Start", $"Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.CopHitPaymentMin:C0}-{ActiveGang.CopHitPaymentMax:C0}~s~" };
-        CopHitStart.Activated += (sender, selectedItem) =>
+        UIMenuListScrollerItem<Agency> TargetMenu = new UIMenuListScrollerItem<Agency>("Target Agency", $"Choose a target agency.", Agencies.GetAgenciesByResponse(ResponseType.LawEnforcement).Where(x => x.ID != "UNK"));//.Where(x => x.ID != ActiveGang.ID).ToList());
+        UIMenuNumericScrollerItem<int> TargetCountMenu = new UIMenuNumericScrollerItem<int>("Targets", $"Select the number of targets", 1, 3, 1) { Value = 1 };
+        UIMenuItem StartTaskMenu = new UIMenuItem("Start", $"Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.CopHitPaymentMin:C0}-{ActiveGang.CopHitPaymentMax:C0}~s~" };
+        StartTaskMenu.Activated += (sender, selectedItem) =>
         {
-            Player.PlayerTasks.GangTasks.StartCopHit(ActiveGang, CopHitTargets.Value, GangContact, AgenciesMenu.SelectedItem);
+            Player.PlayerTasks.GangTasks.StartCopHit(ActiveGang, TargetCountMenu.Value, GangContact, TargetMenu.SelectedItem);
             sender.Visible = false;
         };
-        CopHitTargets.IndexChanged += (sender, oldIndex, newIndex) =>
+        TargetCountMenu.IndexChanged += (sender, oldIndex, newIndex) =>
         {
-            CopHitStart.RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.CopHitPaymentMin * CopHitTargets.Value:C0}-{ActiveGang.CopHitPaymentMax * CopHitTargets.Value:C0}~s~";
+            StartTaskMenu.RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.CopHitPaymentMin * TargetCountMenu.Value:C0}-{ActiveGang.CopHitPaymentMax * TargetCountMenu.Value:C0}~s~";
         };
-        CopHitSubMenu.AddItem(AgenciesMenu);
-        CopHitSubMenu.AddItem(CopHitTargets);
-        CopHitSubMenu.AddItem(CopHitStart);
+        CopHitSubMenu.AddItem(TargetMenu);
+        CopHitSubMenu.AddItem(TargetCountMenu);
+        CopHitSubMenu.AddItem(StartTaskMenu);
     }
     private void AddGangHitSubMenu()
-    {
-        
+    {  
         GangHitSubMenu = MenuPool.AddSubMenu(JobsSubMenu, "Gang Hit");
         JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].Description = $"Do a hit for the gang on a rival.";
         JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.HitPaymentMin:C0}-{ActiveGang.HitPaymentMax:C0}~s~";
         GangHitSubMenu.RemoveBanner();
-        UIMenuListScrollerItem<Gang> GangHitGangs = new UIMenuListScrollerItem<Gang>("Target Gang", $"Choose a target gang", Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID).ToList());
-        UIMenuNumericScrollerItem<int> GangHitTargets = new UIMenuNumericScrollerItem<int>("Targets", $"Select the number of targets", 1, 3, 1) { Value = 1 };
-        UIMenuItem GangHitStart = new UIMenuItem("Start", $"Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.HitPaymentMin * GangHitTargets.Value:C0}-{ActiveGang.HitPaymentMax * GangHitTargets.Value:C0}~s~" };
-        GangHitStart.Activated += (sender, selectedItem) =>
+        UIMenuListScrollerItem<Gang> TargetMenu = new UIMenuListScrollerItem<Gang>("Target Gang", $"Choose a target gang", Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID).ToList());
+        UIMenuNumericScrollerItem<int> TargetCountMenu = new UIMenuNumericScrollerItem<int>("Targets", $"Select the number of targets", 1, 3, 1) { Value = 1 };
+        UIMenuItem TaskStartMenu = new UIMenuItem("Start", $"Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.HitPaymentMin * TargetCountMenu.Value:C0}-{ActiveGang.HitPaymentMax * TargetCountMenu.Value:C0}~s~" };
+        TaskStartMenu.Activated += (sender, selectedItem) =>
         {
-            Player.PlayerTasks.GangTasks.StartGangHit(ActiveGang, GangHitTargets.Value, GangContact, GangHitGangs.SelectedItem);
+            Player.PlayerTasks.GangTasks.StartGangHit(ActiveGang, TargetCountMenu.Value, GangContact, TargetMenu.SelectedItem);
             sender.Visible = false;
         };
-        GangHitTargets.IndexChanged += (sender, oldIndex, newIndex) =>
+        TargetCountMenu.IndexChanged += (sender, oldIndex, newIndex) =>
         {
-            GangHitStart.RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.HitPaymentMin* GangHitTargets.Value:C0}-{ActiveGang.HitPaymentMax* GangHitTargets.Value:C0}~s~";
+            TaskStartMenu.RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.HitPaymentMin* TargetCountMenu.Value:C0}-{ActiveGang.HitPaymentMax* TargetCountMenu.Value:C0}~s~";
         };
 
-        GangHitSubMenu.AddItem(GangHitGangs);
-        GangHitSubMenu.AddItem(GangHitTargets);
-        GangHitSubMenu.AddItem(GangHitStart);
+        GangHitSubMenu.AddItem(TargetMenu);
+        GangHitSubMenu.AddItem(TargetCountMenu);
+        GangHitSubMenu.AddItem(TaskStartMenu);
     }
     private void AddGangTheftSubMenu()
     {
@@ -295,7 +303,7 @@ public class GangInteraction : IContactMenuInteraction
         GangTheftSubMenu.RemoveBanner();
         List<Gang> AllGangs = Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID).ToList();
         List<VehicleNameSelect> vehicleNameList = new List<VehicleNameSelect>();
-        foreach(DispatchableVehicle dv in AllGangs.FirstOrDefault().Vehicles)
+        foreach(DispatchableVehicle dv in AllGangs.FirstOrDefault().Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch))
         {
             VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName);
             vns.UpdateItems();
@@ -307,7 +315,7 @@ public class GangInteraction : IContactMenuInteraction
         {
             GangTheftVehicles.Items.Clear();
             List<VehicleNameSelect> vehicleNameList2 = new List<VehicleNameSelect>();
-            foreach (DispatchableVehicle dv in GangTheftTargets.SelectedItem.Vehicles)
+            foreach (DispatchableVehicle dv in GangTheftTargets.SelectedItem.Vehicles.Where(x=> !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch))
             {
                 VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName);
                 vns.UpdateItems();

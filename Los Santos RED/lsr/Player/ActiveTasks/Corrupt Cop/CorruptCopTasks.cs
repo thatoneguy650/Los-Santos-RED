@@ -60,16 +60,16 @@ public class CorruptCopTasks : IPlayerTaskGroup
         WitnessEliminationTask.Setup();
         WitnessEliminationTask.Start(contact);
     }
-    public void StartCopHitTask(CorruptCopContact contact)
+    public void StartCopHitTask(CorruptCopContact contact, Agency targetAgency, int killRequirement)
     {
-        CopHitTask CopHitTask = new CopHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Names, Weapons, contact);
+        CopHitCopTask CopHitTask = new CopHitCopTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, contact,targetAgency, killRequirement);
         AllTasks.Add(CopHitTask);
         CopHitTask.Setup();
         CopHitTask.Start(contact);
     }
-    public void StartCopGangHitTask(CorruptCopContact contact, Gang targetGang)
+    public void StartCopGangHitTask(CorruptCopContact contact, Gang targetGang, int killRequirement)
     {
-        CopGangHitTask CopGangHitTask = new CopGangHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, contact, targetGang);
+        CopGangHitTask CopGangHitTask = new CopGangHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, contact, targetGang, killRequirement);
         AllTasks.Add(CopGangHitTask);
         CopGangHitTask.Setup();
         CopGangHitTask.Start(contact);

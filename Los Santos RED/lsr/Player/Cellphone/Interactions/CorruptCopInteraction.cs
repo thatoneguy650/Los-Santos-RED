@@ -21,14 +21,15 @@ public class CorruptCopInteraction : IContactMenuInteraction
     private IGangs Gangs;
     private IPlacesOfInterest PlacesOfInterest;
     private ISettingsProvideable Settings;
-    private UIMenuListScrollerItem<Gang> GangHit;
+    //private UIMenuListScrollerItem<Gang> StartGangHitMenu;
     private UIMenuItem TaskCancel;
-    private UIMenuItem WitnessElimination;
-    private UIMenuItem CopHit;
+    //private UIMenuItem StartWitnessEliminationMenu;
+    //private UIMenuItem StartCopHitMenu;
     private UIMenu JobsSubMenu;
     private UIMenu ServicesSubMenu;
     private CorruptCopContact Contact;
     private UIMenuItem PayoffCopsAPB;
+    private IAgencies Agencies;
 
     private int CostToClearWanted
     {
@@ -51,13 +52,14 @@ public class CorruptCopInteraction : IContactMenuInteraction
             return Settings.SettingsManager.PlayerOtherSettings.CorruptCopAPBClearCost;
         }
     }
-    public CorruptCopInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, CorruptCopContact contact)
+    public CorruptCopInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, CorruptCopContact contact, IAgencies agencies)
     {
         Player = player;
         Gangs = gangs;
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
         Contact = contact;
+        Agencies = agencies;
         MenuPool = new MenuPool();
     }
     public void Start(PhoneContact contact)
@@ -115,9 +117,6 @@ public class CorruptCopInteraction : IContactMenuInteraction
         PayoffCopsInvestigation.Enabled = Player.Investigation.IsActive;
         PayoffCopsAPB.Enabled = Player.CriminalHistory.HasHistory;
     }
-
-
-
     private void AddJobs()
     {
         JobsSubMenu = MenuPool.AddSubMenu(CopMenu, "Jobs");
@@ -133,28 +132,69 @@ public class CorruptCopInteraction : IContactMenuInteraction
             JobsSubMenu.AddItem(TaskCancel);
             return;
         }
-        GangHit = new UIMenuListScrollerItem<Gang>("Gang Hit", $"Do a hit on a gang for the cops.~n~Payment: ~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax:C0}~s~", Gangs.AllGangs.ToList());
-        GangHit.Activated += (sender, e) =>
+        AddGangHitSubMenu();
+        AddCopHitSubMenu();
+        AddWitnessEliminationSubMenu();
+    }
+    private void AddGangHitSubMenu()
+    {
+        UIMenu gangHitSubMenu = MenuPool.AddSubMenu(JobsSubMenu, "Gang Hit");
+        JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].Description = $"Do a hit on a gang for the cops.";
+        JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax:C0}~s~";
+        gangHitSubMenu.RemoveBanner();
+        UIMenuListScrollerItem<Gang> TargetMenu = new UIMenuListScrollerItem<Gang>("Target Gang", $"Choose a target gang.", Gangs.AllGangs.ToList());
+        UIMenuNumericScrollerItem<int> TargetCountMenu = new UIMenuNumericScrollerItem<int>("Targets", $"Select the number of targets", 1, 3, 1) { Value = 1 };
+        UIMenuItem StartTaskMenu = new UIMenuItem("Start", "Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax:C0}~s~" };
+        StartTaskMenu.Activated += (sender, e) =>
         {
-            Player.PlayerTasks.CorruptCopTasks.StartCopGangHitTask(Contact, GangHit.SelectedItem);
+            Player.PlayerTasks.CorruptCopTasks.StartCopGangHitTask(Contact, TargetMenu.SelectedItem, TargetCountMenu.Value);
             sender.Visible = false;
         };
-        WitnessElimination = new UIMenuItem("Witness Elimination", "Probably some major federal indictment of somebody who majorly does not want to get indicted.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMax:C0}~s~" };
-        WitnessElimination.Activated += (sender, e) =>
+        TargetCountMenu.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            StartTaskMenu.RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin * TargetCountMenu.Value:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax * TargetCountMenu.Value:C0}~s~";
+        };
+        gangHitSubMenu.AddItem(TargetMenu);
+        gangHitSubMenu.AddItem(TargetCountMenu);
+        gangHitSubMenu.AddItem(StartTaskMenu);
+    }
+    private void AddWitnessEliminationSubMenu()
+    {
+        UIMenu witnessEliminationSubMenu = MenuPool.AddSubMenu(JobsSubMenu, "Witness Elimination");
+        JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].Description = $"Probably some major federal indictment of somebody who majorly does not want to get indicted.";
+        JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMax:C0}~s~";
+        witnessEliminationSubMenu.RemoveBanner();
+        UIMenuItem StartTaskMenu = new UIMenuItem("Start Task", "Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMax:C0}~s~" };
+        StartTaskMenu.Activated += (sender, e) =>
         {
             Player.PlayerTasks.CorruptCopTasks.StartWitnessEliminationTask(Contact);
             sender.Visible = false;
         };
-        CopHit = new UIMenuItem("Cop Hit", "Force the retirement of some of the LSPDs finest. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMax:C0}~s~" };
-        CopHit.Activated += (sender, e) =>
+        witnessEliminationSubMenu.AddItem(StartTaskMenu);
+    }
+    private void AddCopHitSubMenu()
+    {
+        UIMenu gangHitSubMenu = MenuPool.AddSubMenu(JobsSubMenu, "Cop Hit");
+        JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].Description = $"Give the boys-in-blue a forced retirement.";// Force the retirement of some of the boys in blue.";
+        JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMax:C0}~s~";
+        gangHitSubMenu.RemoveBanner();
+        UIMenuListScrollerItem<Agency> TargetMenu = new UIMenuListScrollerItem<Agency>("Target Agency", $"Choose a target agency.", Agencies.GetAgenciesByResponse(ResponseType.LawEnforcement).Where(x => x.ID != "UNK"));
+        UIMenuNumericScrollerItem<int> TargetCountMenu = new UIMenuNumericScrollerItem<int>("Targets", $"Select the number of targets", 1, 3, 1) { Value = 1 };
+        UIMenuItem StartTaskMenuItem = new UIMenuItem("Start", "Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMax:C0}~s~" };
+        StartTaskMenuItem.Activated += (sender, e) =>
         {
-            Player.PlayerTasks.CorruptCopTasks.StartCopHitTask(Contact);
+            Player.PlayerTasks.CorruptCopTasks.StartCopHitTask(Contact, TargetMenu.SelectedItem,TargetCountMenu.Value);
             sender.Visible = false;
         };
-        JobsSubMenu.AddItem(GangHit);
-        JobsSubMenu.AddItem(WitnessElimination);
-        //CopMenu.AddItem(CopHit);
+        TargetCountMenu.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            StartTaskMenuItem.RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMin * TargetCountMenu.Value:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMax * TargetCountMenu.Value:C0}~s~";
+        };
+        gangHitSubMenu.AddItem(TargetMenu);
+        gangHitSubMenu.AddItem(TargetCountMenu);
+        gangHitSubMenu.AddItem(StartTaskMenuItem);
     }
+
     public void Update()
     {
         MenuPool.ProcessMenus();

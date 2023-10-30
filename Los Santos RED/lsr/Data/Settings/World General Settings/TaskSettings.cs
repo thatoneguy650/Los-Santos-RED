@@ -71,11 +71,11 @@ public class TaskSettings : ISettingsDefaultable
     public void SetDefault()
     {
         OfficerFriendlyGangHitPaymentMin = 10000;
-        OfficerFriendlyGangHitPaymentMax = 35000;
+        OfficerFriendlyGangHitPaymentMax = 15000;
         OfficerFriendlyGangHitComplicationsPercentage = 10f;
 
-        OfficerFriendlyCopHitPaymentMin = 20000;
-        OfficerFriendlyCopHitPaymentMax = 45000;
+        OfficerFriendlyCopHitPaymentMin = 15000;
+        OfficerFriendlyCopHitPaymentMax = 20000;
         OfficerFriendlyCopHitComplicationsPercentage = 5f;
 
         OfficerFriendlyWitnessEliminationPaymentMin = 10000;

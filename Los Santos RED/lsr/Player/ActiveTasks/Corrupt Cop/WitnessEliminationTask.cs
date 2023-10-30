@@ -433,18 +433,18 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 if(WitnessIsCustomer && LookingForItem != "")
                 {
                     List<string> ItemReplies = new List<string>() {
-                    $" They are probably looking for ~p~{LookingForItem}.",
-                    $" They like ~p~{LookingForItem}.",
-                    $" Will be looking to buy ~p~{LookingForItem}.",
-                    $" They are interested in ~p~{LookingForItem}.",
-                    $" The target likes ~p~{LookingForItem}.",
+                    $" They are probably looking for ~p~{LookingForItem}~s~.",
+                    $" They like ~p~{LookingForItem}~s~.",
+                    $" Will be looking to buy ~p~{LookingForItem}~s~.",
+                    $" They are interested in ~p~{LookingForItem}~s~.",
+                    $" The target likes ~p~{LookingForItem}~s~.",
                      };
                     PickedReply += ItemReplies.PickRandom();
                 }
 
                 if(WillFight || WillFlee)
                 {
-                    PickedReply += " The target might have gotten wind, be careful.";
+                    PickedReply += " ~s~The target might have gotten wind, be careful.";
                 }
                 string str = NativeFunction.Natives.GET_PEDHEADSHOT_TXD_STRING<string>(pedHeadshotHandle);
                 EntryPoint.WriteToConsole($"WITNESS ELIM SENT PICTURE MESSAGE {str}");
@@ -463,18 +463,18 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 if (WitnessIsCustomer && LookingForItem != "")
                 {
                     List<string> ItemReplies = new List<string>() {
-                    $" They are probably looking for ~p~{LookingForItem}.",
-                    $" They like ~p~{LookingForItem}.",
-                    $" Will be looking to buy ~p~{LookingForItem}.",
-                    $" They are interested in ~p~{LookingForItem}.",
-                    $" The target likes ~p~{LookingForItem}.",
+                    $" They are probably looking for ~p~{LookingForItem}~s~.",
+                    $" They like ~p~{LookingForItem}~s~.",
+                    $" Will be looking to buy ~p~{LookingForItem}~s~.",
+                    $" They are interested in ~p~{LookingForItem}~s~.",
+                    $" The target likes ~p~{LookingForItem}~s~.",
                      };
                     PickedReply += ItemReplies.PickRandom();
                 }
 
                 if (WillFight || WillFlee)
                 {
-                    PickedReply += " The target might have gotten wind, be careful.";
+                    PickedReply += " ~s~The target might have gotten wind, be careful.";
                 }
                 EntryPoint.WriteToConsole("WITNESS ELIM SENT REGULAR MESSAGE");
                 Player.CellPhone.AddCustomScheduledText(Contact, PickedReply, Time.CurrentDateTime,null, true);

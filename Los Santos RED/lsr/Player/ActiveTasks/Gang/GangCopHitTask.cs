@@ -22,7 +22,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
         public GangCopHitTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world,
     ICrimes crimes, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus, IModItems modItems, PlayerTasks playerTasks, GangTasks gangTasks, PhoneContact hiringContact, 
-    Gang hiringGang, Agency targetAgency, IAgencies agencies) : base(player, time, gangs, placesOfInterest, settings, world, crimes, weapons, names, pedGroups, shopMenus, modItems, playerTasks, gangTasks, hiringContact, hiringGang)
+    Gang hiringGang, Agency targetAgency, IAgencies agencies, int killRequirement) : base(player, time, gangs, placesOfInterest, settings, world, crimes, weapons, names, pedGroups, shopMenus, modItems, playerTasks, gangTasks, hiringContact, hiringGang)
         {
             DebugName = "Cop Hit";
             RepOnCompletion = 2000;
@@ -31,6 +31,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             DaysToComplete = 7;
             TargetAgency = targetAgency;
             Agencies = agencies;
+            KillRequirement = killRequirement;
         }
 
         public override void Setup()
@@ -116,10 +117,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         protected override void GetPayment()
         {
             MoneyToRecieve = RandomItems.GetRandomNumberInt(HiringGang.CopHitPaymentMin, HiringGang.CopHitPaymentMax).Round(500);
-
-
             MoneyToRecieve *= KillRequirement;
-
             if (MoneyToRecieve <= 0)
             {
                 MoneyToRecieve = 500;
