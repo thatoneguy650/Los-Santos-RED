@@ -58,7 +58,7 @@ public class CorruptCopTasks : IPlayerTaskGroup
         WitnessEliminationTask WitnessEliminationTask = new WitnessEliminationTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Names, Weapons, ShopMenus, contact);
         AllTasks.Add(WitnessEliminationTask);
         WitnessEliminationTask.Setup();
-        WitnessEliminationTask.Start(contact);
+        WitnessEliminationTask.Start(contact); 
     }
     public void StartCopHitTask(CorruptCopContact contact, Agency targetAgency, int killRequirement)
     {
