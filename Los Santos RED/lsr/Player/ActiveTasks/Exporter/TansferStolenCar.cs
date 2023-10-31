@@ -293,7 +293,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             foreach(ModItem modint in PickUpStore.Menu.Items.Where(x=> x.ModItem != null).Select(x=>x.ModItem))
             {
                 VehicleItem vi = ModItems.PossibleItems.VehicleItems.FirstOrDefault(x => modint.Name == x.Name);
-                if(vi != null && (!vi.IsDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesInStores))
+                if(vi != null && (!vi.IsDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
                 {
                     PossibleVehicleItems.Add(vi);
                 }

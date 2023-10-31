@@ -139,6 +139,7 @@
     <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\MerchantConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankDrawer.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Machines\CashRegister.cs" />
+    <Compile Include="lsr\Other\NativeMemory.cs" />
     <Compile Include="lsr\Ped\Service\TaxiDriver.cs" />
     <Compile Include="lsr\Ped\Styles\PedDrivingStyle.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Corrupt Cop\CopHitCopTask.cs" />
@@ -1006,6 +1007,7 @@
     <Compile Include="lsr\Locations\Other\MapBlip.cs" />
     <Compile Include="lsr\Ped\Health\BodyLocation.cs" />
     <Compile Include="lsr\Ped\Health\Bone.cs" />
+    <Compile Include="lsr\World\NativeMemory.cs" />
     <Compile Include="lsr\World\Places\DynamicPlaces.cs" />
     <Compile Include="lsr\World\Places\Places.cs" />
     <Compile Include="lsr\World\Places\StaticPlaces.cs" />

@@ -132,7 +132,7 @@ public class PurchaseMenu : ModUIMenu
     private void CreateCategories()
     {
         List<MenuItem> WeaponItems = ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type == ePhysicalItemType.Weapon).ToList();
-        List<MenuItem> VehicleItems = ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type == ePhysicalItemType.Vehicle && (Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesInStores || !x.ModItem.IsDLC)).ToList();
+        List<MenuItem> VehicleItems = ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type == ePhysicalItemType.Vehicle && (Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles || !x.ModItem.IsDLC)).ToList();
         List<MenuItem> OtherItems = ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Vehicle && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Weapon).ToList();
         if (WeaponItems.Any())
         {

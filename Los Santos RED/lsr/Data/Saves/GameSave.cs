@@ -64,6 +64,7 @@ namespace LosSantosRED.lsr.Data
         public string VoiceName { get; set; }
         public int Health { get; set; }
         public int Armor { get; set; }
+        public int MaxHealth { get; set; }
         public PedVariation CurrentModelVariation { get; set; }
         public DriversLicense DriversLicense { get; set; }
         public CCWLicense CCWLicense { get; set; }
@@ -78,6 +79,16 @@ namespace LosSantosRED.lsr.Data
         public List<VehicleSaveStatus> OwnedVehicleVariations { get; set; } = new List<VehicleSaveStatus>();
         public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();
         public CellPhoneSave CellPhoneSave { get; set; } = new CellPhoneSave();
+
+
+        [OnDeserialized()]
+        private void SetValuesOnDeserialized(StreamingContext context)
+        {
+            MaxHealth = 200;
+        }
+
+
+
         //Save
         public void Save(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
@@ -105,6 +116,7 @@ namespace LosSantosRED.lsr.Data
             WeaponInventory = new List<StoredWeapon>();
 
             Health = player.Character.Health;
+            MaxHealth = player.Character.MaxHealth;
             Armor = player.Character.Armor;
 
             SpeechSkill = player.SpeechSkill;
@@ -347,8 +359,16 @@ namespace LosSantosRED.lsr.Data
         {
             if (Health > 0)
             {
-                player.Character.MaxHealth = Health;
+
                 player.Character.Health = Health;
+            }
+            if(MaxHealth > 0)
+            {
+                player.Character.MaxHealth = MaxHealth;
+            }
+            else
+            {
+                player.Character.MaxHealth = 200;
             }
             if (Armor > 0)
             {
@@ -743,6 +763,11 @@ namespace LosSantosRED.lsr.Data
         }
         public string Title => $"{SaveNumber.ToString("D2")} - {PlayerName} ({(Money + (SavedBankAccounts == null ? 0 : SavedBankAccounts.Sum(x=> x.Money))).ToString("C0")}) - {CurrentDateTime.ToString("MM/dd/yyyy HH:mm")}";
         public string RightLabel => SaveDateTime.ToString("MM/dd/yyyy HH:mm");
+
+
+
+
+
     }
 
 }

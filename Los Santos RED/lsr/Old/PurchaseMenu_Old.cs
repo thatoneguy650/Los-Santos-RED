@@ -374,7 +374,7 @@
 //    private void AddVehicleEntry(MenuItem cii, ModItem myItem)
 //    {
 //        VehicleItem vehicleItem = (VehicleItem)myItem;
-//        if (vehicleItem != null && (!vehicleItem.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesInStores))
+//        if (vehicleItem != null && (!vehicleItem.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
 //        {
 //            //Setup Menu
 //            string formattedPurchasePrice = cii.PurchasePrice.ToString("C0");

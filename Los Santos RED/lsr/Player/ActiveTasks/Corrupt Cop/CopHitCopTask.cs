@@ -30,7 +30,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private int KillRequirement;
         private Agency TargetAgency;
         private DeadDrop myDrop;
-        private List<DeadDrop> ActiveDrops;
+        private List<DeadDrop> ActiveDrops = new List<DeadDrop>();
 
         public CopHitCopTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes,
             CorruptCopContact corruptCopContact, Agency targetAgency, int killRequirement)

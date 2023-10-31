@@ -122,7 +122,7 @@ public class VehicleExporter : GameLocation
                 continue;
             }
             VehicleItem vehicleItem = modItems.PossibleItems.VehicleItems.Where(x => x.Name == menuItem1.ModItem?.Name).FirstOrDefault();
-            if (vehicleItem != null && vehicleItem.IsDLC && !Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesInStores)
+            if (vehicleItem != null && vehicleItem.IsDLC && !Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles)
             {
                 continue;
             }

@@ -168,7 +168,7 @@ public class VehicleItem : ModItem
         SetSecondaryColor = false;
         SetLivery1 = false;
         SetLivery2 = false;
-        if(RequiresDLC && !settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesInStores)
+        if(RequiresDLC && !settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles)
         {
             return;
         }

@@ -13,6 +13,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.LinkLabel;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 
 public class ShopMenus : IShopMenus
@@ -102,7 +104,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Grotti Cheetah (IV)",255000,167000),
                 new MenuItem("Grotti Turismo (IV)",150000,86000),
                 new MenuItem("Pfister Comet",100000,78000),
-                new MenuItem("Pfister Comet Retro Custom",13000,12000),
+                new MenuItem("Pfister Comet Retro Custom",130000,65000),
                 new MenuItem("Pegassi Bati 801",15000,7500),
                 new MenuItem("Pegassi Bati 801RR",16000,7000),
             }),
@@ -1494,7 +1496,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Grotti Turismo R",150000,86000),
                 new MenuItem("Grotti Visione",676500,450000),
                 new MenuItem("Pfister Comet",100000,78000),
-                new MenuItem("Pfister Comet Retro Custom",13000,12000),
+                new MenuItem("Pfister Comet Retro Custom",130000,65000),
                 new MenuItem("Pfister Comet Safari",135000,95000),
                 new MenuItem("Pfister Comet SR",155000,115000),
                 new MenuItem("Pfister Comet S2",165000,120000),
@@ -1782,7 +1784,42 @@ public class ShopMenus : IShopMenus
                 new MenuItem("BF Injection",0,2000),
             }),
 
+
+        new ShopMenu("JDM-X", "JDMX", new List<MenuItem>() {
+                new MenuItem("Karin Sultan RS Classic",0,18000),
+                new MenuItem("Karin Sultan RS",0,16000),
+                new MenuItem("Karin Sultan Classic",0,13000),
+                new MenuItem("Karin Sultan",0,11000),
+                new MenuItem("Karin Futo",0,5000),
+                new MenuItem("Karin Futo GTX",0,13000),
+                new MenuItem("Dinka Blista Kanjo",0,10000),
+                new MenuItem("Dinka Blista Compact",0,5500),
+                new MenuItem("Karin 190z",0,25000),
+                new MenuItem("Maibatsu Penumbra",0,5000),
+                new MenuItem("Maibatsu Penumbra FF",0,15000),
+                new MenuItem("Annis ZR350",0,35000),
+                new MenuItem("Dinka RT3000",0,18000),
+                new MenuItem("Annis Remus",0,16000),
+                new MenuItem("Karin Previon",0,10000),
+                new MenuItem("Annis Elegy RH8",0,75000),
+                new MenuItem("Annis Elegy Retro Custom",0,90000),
+                new MenuItem("Annis Euros",0,10000),
+                new MenuItem("Karin Kuruma",0,15000),
+                new MenuItem("Dinka Jester",0,100000),
+                new MenuItem("Dinka Jester (Racecar)",0,125000),
+                new MenuItem("Emperor ETR1",0,200000),
+                new MenuItem("Dinka Jester Classic",0,60000),
+                new MenuItem("Dinka Jester RR",0,40000),
+            }),
+
+
         });
+
+
+
+
+
+
     }
     private void SpecificVendingMachines()
     {

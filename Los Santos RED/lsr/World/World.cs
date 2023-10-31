@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 
+
 namespace Mod
 {
     public class World : IEntityLoggable, IEntityProvideable
@@ -73,7 +74,17 @@ namespace Mod
             Places.Setup();
             Vehicles.Setup();
             AddBlipsToMap();
+            SetMemoryItems();
         }
+
+        private void SetMemoryItems()
+        {
+            if (Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles)
+            {
+                NativeMemory.SetMPGlobals();
+            }
+        }
+
         public void Update()
         {
             if(Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels)

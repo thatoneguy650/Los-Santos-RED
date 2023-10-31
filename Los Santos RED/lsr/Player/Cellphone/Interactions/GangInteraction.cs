@@ -303,7 +303,7 @@ public class GangInteraction : IContactMenuInteraction
         GangTheftSubMenu.RemoveBanner();
         List<Gang> AllGangs = Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID).ToList();
         List<VehicleNameSelect> vehicleNameList = new List<VehicleNameSelect>();
-        foreach(DispatchableVehicle dv in AllGangs.FirstOrDefault().Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch))
+        foreach(DispatchableVehicle dv in AllGangs.FirstOrDefault().Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
         {
             VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName);
             vns.UpdateItems();
@@ -315,7 +315,7 @@ public class GangInteraction : IContactMenuInteraction
         {
             GangTheftVehicles.Items.Clear();
             List<VehicleNameSelect> vehicleNameList2 = new List<VehicleNameSelect>();
-            foreach (DispatchableVehicle dv in GangTheftTargets.SelectedItem.Vehicles.Where(x=> !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch))
+            foreach (DispatchableVehicle dv in GangTheftTargets.SelectedItem.Vehicles.Where(x=> !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
             {
                 VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName);
                 vns.UpdateItems();

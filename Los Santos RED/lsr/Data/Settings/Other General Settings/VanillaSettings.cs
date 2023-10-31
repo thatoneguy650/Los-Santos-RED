@@ -16,21 +16,19 @@ public class VanillaSettings : ISettingsDefaultable
     public bool TerminateWantedMusic { get; set; }
     public bool TerminateScanner { get; set; }
     public bool TerminateScenarioCops { get; set; }
-    //public bool SuppressVanillaGangPeds { get; set; }
-  //  public bool TerminateScenarioPeds { get; set; }
     public bool SupressRandomPoliceEvents { get; set; }
     public bool BlockGangScenarios { get; set; }
     public bool BlockVanillaPoliceCarGenerators { get; set; }
     public bool BlockVanillaPoliceAndSecurityScenarios { get; set; }
     public float BlockGangScenariosAroundDensDistance { get; set; }
-    [Description("Terminates all vanilla shops (LS Customs, Ammunation, Tattoo, Vending Machines) and allows DLC vehicles to be spawned without an external trailer. CANNOT BE RE-ENABLED, REQUIRES GAME RESTART.")]
+    [Description("Terminates all vanilla shops (LS Customs, Ammunation, Tattoo, Vending Machines). No longer needed to stop r* DLC car despawning. CANNOT BE RE-ENABLED, REQUIRES GAME RESTART.")]
     public bool TerminateVanillaShops { get; set; }
     [Description("Terminates all vanilla blips. CANNOT BE RE-ENABLED, REQUIRES GAME RESTART.")]
     public bool TerminateVanillaBlips { get; set; }
     [Description("Terminates the vanilla character select system (Michael, Franklin, Trevor Wheel). WILL DISABLE THE ROCKSTAR EDITOR WHICH CANNOT BE RE-ENABLED WITHOUT A GAME RESTART.")]
     public bool TerminateSelector { get; set; }
 
-    [Description("Terminates all vanilla vending machines (Soda, CashRegisters, and ATM). CANNOT BE RE-ENABLED, REQUIRES GAME RESTART.")]
+    [Description("Terminates all vanilla vending machines (Soda, CashRegisters, and ATM). NON-FUNCTIONING CURRENTLY! CANNOT BE RE-ENABLED, REQUIRES GAME RESTART.")]
     public bool TerminateVanillaVendingMachines { get; set; }
     public bool SupressVanillaCopCrimes { get; set; }
     [OnDeserialized()]
