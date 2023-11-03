@@ -230,6 +230,11 @@ public class Dispatcher
     {
         TaxiDispatcher.ForceTaxiSpawn(taxifirmID);
     }
+
+    public bool DispatchGangBackup(Gang requestedGang)
+    {
+        return GangDispatcher.DispatchGangBackup(requestedGang);
+    }
     public void DebugSpawnEMT(string agencyID, bool onFoot, bool isEmpty)
     {
         EMSDispatcher.DebugSpawnEMT(agencyID, onFoot, isEmpty);
@@ -250,5 +255,6 @@ public class Dispatcher
     {
         GangDispatcher.DebugSpawnHitSquad();
     }
+
 }
 

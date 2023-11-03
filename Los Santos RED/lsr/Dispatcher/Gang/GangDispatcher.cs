@@ -1,6 +1,7 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
+using NAudio.Wave;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -226,12 +227,33 @@ public class GangDispatcher
         if(GetFarVehicleSpawnLocation() && GetHitSquadSpawnTypes(enemyGang))
         {
             EntryPoint.WriteToConsole($"DispatchHitSquad Disptaching HitSquad from {enemyGang.ShortName}");
-            if(CallSpawnTask(false, true, false, false, TaskRequirements.None, true) && Settings.SettingsManager.GangSettings.SendHitSquadText)
+            if(CallSpawnTask(false, true, false, false, TaskRequirements.None, true, false) && Settings.SettingsManager.GangSettings.SendHitSquadText)
             {
                 Player.OnHitSquadDispatched(enemyGang);
             }
         }
     }
+
+
+    public bool DispatchGangBackup(Gang requestedGang)
+    {
+        if (requestedGang == null)
+        {
+            EntryPoint.WriteToConsole($"DispatchGangBackup Abort, No Requested Gang");
+            return false;
+        }
+        EntryPoint.WriteToConsole($"DispatchGangBackup Attempting to Dispatch {requestedGang.ShortName}");
+        if (GetCloseVehicleSpawnLocation() && GetHitSquadSpawnTypes(requestedGang))
+        {
+            EntryPoint.WriteToConsole($"DispatchGangBackup Disptaching Backup from {requestedGang.ShortName}");
+            if (CallSpawnTask(false, true, false, false, TaskRequirements.None, false, true))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void Dispose()
     {
 
@@ -291,7 +313,7 @@ public class GangDispatcher
         GameTimeAttemptedDispatch = Game.GameTime;
         GameFiber.Yield();
         //EntryPoint.WriteToConsoleTestLong($"AMBIENT GANG CALLED SPAWN TASK");
-        if (CallSpawnTask(false, true, false, false, TaskRequirements.None, false))
+        if (CallSpawnTask(false, true, false, false, TaskRequirements.None, false, false))
         {
             ShouldRunAmbientDispatch = false;
             //GameTimeAttemptedDispatch = Game.GameTime;
@@ -333,6 +355,26 @@ public class GangDispatcher
                 IsPedestrianOnlySpawn = false;
                // EntryPoint.WriteToConsole($"Gang Dispatcher attempted Ped Only spawn without sidewalks, changing to vehicle");
             }
+            GameFiber.Yield();
+            isValidSpawn = IsValidSpawn(SpawnLocation);
+            timesTried++;
+        }
+        while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
+        return isValidSpawn && SpawnLocation.HasSpawns;
+    }
+    private bool GetCloseVehicleSpawnLocation()
+    {
+        int timesTried = 0;
+        bool isValidSpawn;
+        GangDen = null;
+        IsDenSpawn = false;
+        IsPedestrianOnlySpawn = false;
+        SpawnLocation = new SpawnLocation();
+        do
+        {
+            IsPedestrianOnlySpawn = false;
+            SpawnLocation.InitialPosition = GetClosePositionAroundPlayer();
+            SpawnLocation.GetClosestStreet(false);
             GameFiber.Yield();
             isValidSpawn = IsValidSpawn(SpawnLocation);
             timesTried++;
@@ -413,7 +455,7 @@ public class GangDispatcher
         {
             return false;
         }
-        VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, HasNeedToSpawnHeli, false, true, "", Settings);   
+        VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, false, false, true, "", Settings);   
         GameFiber.Yield();
         string RequiredGroup = "";
         if (VehicleType != null)
@@ -428,7 +470,7 @@ public class GangDispatcher
         }
         return false;
     }
-    private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement, bool isHitSquad)
+    private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement, bool isHitSquad, bool isBackupSquad)
     {
         try
         {
@@ -439,6 +481,7 @@ public class GangDispatcher
             gangSpawnTask.ClearVehicleArea = clearArea;
             gangSpawnTask.PlacePedOnGround = VehicleType == null;
             gangSpawnTask.IsHitSquad = isHitSquad;
+            gangSpawnTask.IsBackupSquad = isBackupSquad;
             gangSpawnTask.AttemptSpawn();
             foreach (PedExt created in gangSpawnTask.CreatedPeople)
             {
@@ -549,6 +592,13 @@ public class GangDispatcher
         }
         return ToReturn;
     }
+    private Vector3 GetClosePositionAroundPlayer()
+    {
+        Vector3 Position;
+        Position = Player.Position;
+        Position = Position.Around2D(MinDistanceToSpawnOnFoot, MaxDistanceToSpawnOnFoot);
+        return Position;
+    }
     private Vector3 GetPositionAroundPlayer()
     {
         Vector3 Position;
@@ -639,12 +689,13 @@ public class GangDispatcher
             PersonType = null;
         }
 
-        CallSpawnTask(true, true, false, false, TaskRequirements.None, false);
+        CallSpawnTask(true, true, false, false, TaskRequirements.None, false, false);
     }
     public void DebugSpawnHitSquad()
     {
         GameTimeLastDispatchedHitSquad = 0;
         TimeBetweenHitSquads = 0;
     }
-    
+
+
 }

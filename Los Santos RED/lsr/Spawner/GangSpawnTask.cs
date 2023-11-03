@@ -31,6 +31,8 @@ public class GangSpawnTask : SpawnTask
     }
     private bool HasGang => Gang != null;
     public bool IsHitSquad { get; set; } = false;
+    public bool IsBackupSquad { get; set; } = false;
+
     public override void AttemptSpawn()
     {
         try
@@ -213,7 +215,14 @@ public class GangSpawnTask : SpawnTask
             GangMember = new GangMember(ped, Settings, Gang, true, Names.GetRandomName(isMale), Crimes, Weapons, World);
         }
         GangMember.IsHitSquad = IsHitSquad;
+        GangMember.IsBackupSquad = IsBackupSquad;
         World.Pedestrians.AddEntity(GangMember);
+        if(GangMember.IsHitSquad || GangMember.IsBackupSquad)
+        {
+            ForceMelee = true;
+            ForceSidearm = true;
+            ForceLongGun = true;
+        }
         GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip, ForceMelee,ForceSidearm,ForceLongGun);
         if (ped.Exists())
         {

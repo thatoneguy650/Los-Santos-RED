@@ -103,7 +103,7 @@ public class GangDen : GameLocation//, ILocationGangAssignable
 
         if (!IsAvailableForPlayer)
         {
-            Game.DisplayHelp($"{Name} is only availbe to associated and members");
+            Game.DisplayHelp($"{Name} is only available to associates and members");
             PlayErrorSound();
             return;
         }
@@ -118,9 +118,7 @@ public class GangDen : GameLocation//, ILocationGangAssignable
                 {
                     StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
                     StoreCamera.SayGreeting = false;
-
                     StoreCamera.Setup();
-
                     KeepInteractionGoing = false;
                     CreateInteractionMenu();
                     if (Player.IsWanted)
@@ -136,9 +134,6 @@ public class GangDen : GameLocation//, ILocationGangAssignable
                         }
                         InteractionMenu.OnItemSelect -= InteractionMenu_OnItemSelect;
                     }
-
-
-
                     CreateInteractionMenu();
                     if (Player.IsNotWanted)
                     {
@@ -175,16 +170,11 @@ public class GangDen : GameLocation//, ILocationGangAssignable
                             InteractionMenu.AddItem(completeTask);
                         }
                         RestMenuItem = new UIMenuNumericScrollerItem<int>("Relax", $"Relax at the {AssociatedGang?.DenName}. Recover ~g~health~s~ and increase ~s~rep~s~ a small amount. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
-
-
                         if (isPlayerMember && player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
                         {
-                            dropoffKick = new UIMenuItem("Pay Dues", "Drop of your member dues.") { RightLabel = $"${player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount}" };
+                            dropoffKick = new UIMenuItem("Pay Dues", "Drop off your member dues.") { RightLabel = $"${player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount}" };
                             InteractionMenu.AddItem(dropoffKick);
                         }
-
-
-
                         InteractionMenu.Visible = true;
                         InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
                         while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
@@ -363,7 +353,7 @@ public class GangDen : GameLocation//, ILocationGangAssignable
     }
     private void LayLow()
     {
-        int TimeToWait = RandomItems.GetRandomNumberInt(8, 12);
+        int TimeToWait = RandomItems.GetRandomNumberInt(3, 6);
         Time.FastForward(Time.CurrentDateTime.AddHours(TimeToWait));//  new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay, 11, 0, 0));
         InteractionMenu.Visible = false;
         KeepInteractionGoing = true;
@@ -376,7 +366,6 @@ public class GangDen : GameLocation//, ILocationGangAssignable
             Player.SetWantedLevel(0, "Gang Lay Low", true);
             LayLowMenuItem.Enabled = false;
             KeepInteractionGoing = false;
-            //RemoveLayLow();
         }, "LayLowWatcher");
     }
     public override void DisplayMessage(string header, string message)

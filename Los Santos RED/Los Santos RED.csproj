@@ -144,6 +144,8 @@
     <Compile Include="lsr\Ped\Styles\PedDrivingStyle.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Corrupt Cop\CopHitCopTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangCopHitTask.cs" />
+    <Compile Include="lsr\Player\BackupManager\GangBackup.cs" />
+    <Compile Include="lsr\Player\BackupManager\GangBackupManager.cs" />
     <Compile Include="lsr\Player\Cellphone\Data\CellphoneData.cs" />
     <Compile Include="lsr\Data\Items\Cellphones.cs" />
     <Compile Include="lsr\Data\Organizations\Organization.cs" />
@@ -331,6 +333,7 @@
     <Compile Include="lsr\Old\TreatmentActivity_Old.cs" />
     <Compile Include="lsr\Player\Interface\IArmorManageable.cs" />
     <Compile Include="lsr\Player\Interface\IClipsetManageable.cs" />
+    <Compile Include="lsr\Player\Interface\IGangBackupable.cs" />
     <Compile Include="lsr\Player\Interface\IOutfitManageable.cs" />
     <Compile Include="lsr\Player\Interface\IRestrictedAreaManagable.cs" />
     <Compile Include="lsr\Player\Interface\ITaxiRideable.cs" />

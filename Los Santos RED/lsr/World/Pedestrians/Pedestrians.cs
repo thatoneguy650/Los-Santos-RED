@@ -8,8 +8,10 @@ using Rage.Native;
 using System;
 using System.ArrayExtensions;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 
 public class Pedestrians : ITaskerReportable
 {
@@ -247,11 +249,16 @@ public class Pedestrians : ITaskerReportable
                 continue;
             }
             uint localHandle = Pedestrian.Handle;
+            int PedType = NativeFunction.Natives.GET_PED_TYPE<int>(Pedestrian);
             if (DeadPeds.Any(x => x.Handle == localHandle))
             {
                 continue;
             }
-            else if (Pedestrian.IsPoliceArmy())
+            else if (PedType == 28)//Animal
+            {
+                continue;//dont do anything yet, let the game just do nothing with them, what about killing animals? no big deal for now i guess
+            }
+            else if (Pedestrian.IsPoliceArmy(PedType))
             {
                 if (Police.Any(x => x.Handle == localHandle))
                 {

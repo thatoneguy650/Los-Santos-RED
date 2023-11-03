@@ -72,10 +72,10 @@ namespace ExtensionsMethods
             else if (val.CompareTo(max) > 0) return max;
             else return val;
         }
-        public static bool IsPoliceArmy(this Ped myPed)
+        public static bool IsPoliceArmy(this Ped myPed, int PedType)
         {
             string ModelName = myPed.Model.Name.ToLower();
-            int PedType = NativeFunction.Natives.GET_PED_TYPE<int>(myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
+            //int PedType = NativeFunction.Natives.GET_PED_TYPE<int>(myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
             if (PedType == (int)ePedType.PED_TYPE_COP || PedType == (int)ePedType.PED_TYPE_ARMY || PedType == (int)ePedType.PED_TYPE_SWAT || ModelName == "s_m_m_prisguard_01")//if ((PedType == (int)ePedType.PED_TYPE_COP || PedType == (int)ePedType.PED_TYPE_ARMY || PedType == (int)ePedType.PED_TYPE_SWAT || ModelName == "s_m_m_prisguard_01" || ModelName == "s_m_m_security_01") && ModelName != "Shepherd")
             {
                 return true;
@@ -85,30 +85,30 @@ namespace ExtensionsMethods
                 return false;
             }
         }
-        public static bool IsPolice(this Ped myPed)
-        {
-            string ModelName = myPed.Model.Name.ToLower();
-            int PedType = NativeFunction.Natives.GET_PED_TYPE<int>(myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
-            if (PedType == (int)ePedType.PED_TYPE_COP || PedType == (int)ePedType.PED_TYPE_SWAT || ModelName == "s_m_m_prisguard_01")// || ModelName == "s_m_m_security_01") && ModelName != "Shepherd")
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public static bool IsArmy(this Ped myPed)
-        {
-            if (NativeFunction.Natives.GET_PED_TYPE<int>(myPed) == (int)ePedType.PED_TYPE_ARMY)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        //public static bool IsPolice(this Ped myPed)
+        //{
+        //    string ModelName = myPed.Model.Name.ToLower();
+        //    int PedType = NativeFunction.Natives.GET_PED_TYPE<int>(myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
+        //    if (PedType == (int)ePedType.PED_TYPE_COP || PedType == (int)ePedType.PED_TYPE_SWAT || ModelName == "s_m_m_prisguard_01")// || ModelName == "s_m_m_security_01") && ModelName != "Shepherd")
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
+        //public static bool IsArmy(this Ped myPed)
+        //{
+        //    if (NativeFunction.Natives.GET_PED_TYPE<int>(myPed) == (int)ePedType.PED_TYPE_ARMY)
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
         public static bool IsGangMember(this Ped myPed)
         {
             string Nameo = myPed.RelationshipGroup.Name;

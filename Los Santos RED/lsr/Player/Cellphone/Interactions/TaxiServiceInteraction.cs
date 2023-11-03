@@ -145,6 +145,20 @@ public class TaxiServiceInteraction : IContactMenuInteraction
             sender.Visible = false;
         };
         PickupSubMenu.AddItem(updatePickupHere);
+
+
+        UIMenuItem updateSetAtPickup = new UIMenuItem("Quick Pickup", "Teleport the taxi to the current pickup location..");
+        updateSetAtPickup.Activated += (sender, selectedItem) =>
+        {
+            //ExistingRide.SetPickupLocationAtPlayer();
+            //string fullText = "Pickup Location Updated";
+            //Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
+            ExistingRide.TeleportToPickup();
+            sender.Visible = false;
+        };
+        PickupSubMenu.AddItem(updateSetAtPickup);
+
+
     }
 
     private void AddLocationItems()

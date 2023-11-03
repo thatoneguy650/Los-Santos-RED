@@ -175,7 +175,11 @@ public class GangBrain : PedBrain
             }
             else
             {
-                if (GangMember.IsHitSquad && !GangMember.PlayerPerception.EverSeenTarget && GangMember.ClosestDistanceToPlayer >= 20f)
+                if (GangMember.IsBackupSquad && !GangMember.PlayerPerception.EverSeenTarget && GangMember.ClosestDistanceToPlayer >= 20f)
+                {
+                    SetLocate(GangMember);
+                }
+                else if (GangMember.IsHitSquad && !GangMember.PlayerPerception.EverSeenTarget && GangMember.ClosestDistanceToPlayer >= 20f)
                 {
                     SetLocate(GangMember);
                 }

@@ -38,10 +38,14 @@ public class GangMember : PedExt, IWeaponIssuable
     public Gang Gang { get; set; } = new Gang();
     public override Color BlipColor => Gang != null ? Gang.Color : base.BlipColor;
     public override float BlipSize => 0.3f;
-
     public bool HasTaser { get; set; } = false;
     public override string BlipName => "Gang Member";
     public bool IsHitSquad { get; set; } = false;
+    public bool IsBackupSquad { get; set; } = false;
+
+
+    public bool IsAddedToPlayerGroup { get; set; } = false;
+
     public new string FormattedName => (PlayerKnownsName ? Name : GroupName);
     public override bool KnowsDrugAreas => true;
     public override bool KnowsGangAreas => true;
@@ -113,7 +117,7 @@ public class GangMember : PedExt, IWeaponIssuable
         WillCallPolice = false;
         WillFightPolice = RandomItems.RandomPercent(Gang.FightPolicePercentage);
         WillAlwaysFightPolice = RandomItems.RandomPercent(Gang.AlwaysFightPolicePercentage);
-        if (IsHitSquad)
+        if (IsHitSquad || IsBackupSquad)
         {
             WillFight = true;
             WillFightPolice = true;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LosSantosRED.lsr.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,27 +8,65 @@ using System.Threading.Tasks;
 
 public class GangBackupManager
 {
+    private IEntityProvideable World;
+    private IGangBackupable Player;
+
+    public GangBackupManager(IEntityProvideable world, IGangBackupable player)
+    {
+        World = world;
+        Player = player;
+    }
+    public List<GangBackup> ActiveBackup { get; private set; } = new List<GangBackup>();
+    public void Setup()
+    {
+
+    }
+    public void Update()
+    {
+        foreach (GangBackup gangBackup in ActiveBackup)
+        {
+            gangBackup.Update();
+        }
+        ActiveBackup.RemoveAll(x => !x.IsValid || !x.IsActive);
+    }
+    public void Reset()
+    {
+        foreach (GangBackup gangBackup in ActiveBackup)
+        {
+            gangBackup.Cancel();
+        }
+        ActiveBackup.Clear();
+        EntryPoint.WriteToConsole("GangBackupManager Reset");
+    }
+    public void Dispose()
+    {
+        foreach (GangBackup gangBackup in ActiveBackup)
+        {
+            gangBackup.Dispose();
+        }
+        ActiveBackup.Clear();
+    }
     public bool RequestBackup(Gang gang)
     {
         if (gang == null)
         {
-            EntryPoint.WriteToConsole($"RequestService FAIL, NO TAXI FIRM");
+            EntryPoint.WriteToConsole($"RequestBackup FAIL, NO GANG");
             return false;
         }
-        if (ActiveRides.Any(x => x.RequestedFirm.ID == taxiFirm.ID))
+        if (ActiveBackup.Any(x => x.RequestedGang.ID == gang.ID))
         {
-            EntryPoint.WriteToConsole($"RequestService FAIL, ALREADY ACTIVE RIDE");
+            EntryPoint.WriteToConsole($"RequestBackup FAIL, ALREADY ACTIVE BACKUP");
             return false;
         }
-        TaxiRide taxiRide = new TaxiRide(World, Player, taxiFirm, Player.Position);
-        taxiRide.Setup();
-        if (!taxiRide.IsActive)
+        GangBackup gangBackup = new GangBackup(World, Player, gang);
+        gangBackup.Setup();
+        if (!gangBackup.IsActive)
         {
-            EntryPoint.WriteToConsole($"RequestService FAIL, NOT ACTIVE");
+            EntryPoint.WriteToConsole($"RequestBackup FAIL, NOT ACTIVE");
             return false;
         }
-        ActiveRides.Add(taxiRide);
-        EntryPoint.WriteToConsole("TaxiManager RequestService Active Ride Added");
+        ActiveBackup.Add(gangBackup);
+        EntryPoint.WriteToConsole("GangBackupManager RequestBackup Active backup Added");
         return true;
     }
 }

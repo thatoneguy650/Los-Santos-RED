@@ -53,7 +53,9 @@ public class GangInteraction : IContactMenuInteraction
     private UIMenu GangTheftSubMenu;
     private UIMenu GangDeliverySubMenu;
     private IModItems ModItems;
-   // private UIMenuListScrollerItem<string> GangTheftVehicles;
+    private UIMenuItem RequestBackupMenu;
+
+    // private UIMenuListScrollerItem<string> GangTheftVehicles;
 
     public GangInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, GangContact gangContact, IEntityProvideable world, ISettingsProvideable settings, IAgencies agencies, IModItems modItems)
     {
@@ -165,6 +167,14 @@ public class GangInteraction : IContactMenuInteraction
         GangMenu.AddItem(RequestGangDen);
         if (ActiveGangReputation.IsMember)
         {
+            RequestBackupMenu = new UIMenuItem("Request Backup", "Request that some armed members come to your current location.");
+            RequestBackupMenu.Activated += (sender, selectedItem) =>
+            {
+                RequestBackup();
+                sender.Visible = false;         
+            };
+            GangMenu.AddItem(RequestBackupMenu);
+
             LeaveGangMenu = new UIMenuItem("Leave Gang", "Inform the gang that you no longer want to be a member");
             LeaveGangMenu.Activated += (sender, selectedItem) =>
             {
@@ -174,6 +184,29 @@ public class GangInteraction : IContactMenuInteraction
                 }
             };
             GangMenu.AddItem(LeaveGangMenu);
+        }
+    }
+
+    private void RequestBackup()
+    {
+        if(Player.GangBackupManager.RequestBackup(ActiveGang))
+        {
+            List<string> positiveReplies = new List<string>() { 
+                
+                "Got some guys on the way, hang on.",
+                "Sending some shooters to your location.",
+                "Some guys are on the way.",
+            };
+            Player.CellPhone.AddPhoneResponse(ActiveGang.Contact.Name, ActiveGang.Contact.IconName, positiveReplies.PickRandom());
+        }
+        else
+        {
+            List<string> failReplies = new List<string>() { 
+                "Can't spare anyone now.",
+                "Nobody around, sorry.",
+                "You're going to have to deal with it on your own."
+            };
+            Player.CellPhone.AddPhoneResponse(ActiveGang.Contact.Name, ActiveGang.Contact.IconName, failReplies.PickRandom());
         }
     }
 

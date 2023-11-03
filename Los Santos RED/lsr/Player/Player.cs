@@ -23,7 +23,7 @@ namespace Mod
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherAnnounceable,
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IContactRelateable, ILicenseable, IPropertyOwnable,
                           ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable, IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable,
-                          IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable, IRestrictedAreaManagable, ITaxiRideable
+                          IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable, IRestrictedAreaManagable, ITaxiRideable, IGangBackupable
     {
         public int UpdateState = 0;
         private float CurrentVehicleRoll;
@@ -165,6 +165,7 @@ namespace Mod
             OfficerMIAWatcher = new OfficerMIAWatcher(World, this, this, Settings, TimeControllable);
             RestrictedAreaManager = new RestrictedAreaManager(this, this, World, Settings);
             TaxiManager = new TaxiManager(this, World,PlacesOfInterest, Settings);
+            GangBackupManager = new GangBackupManager(World, this);
         }
         public RelationshipManager RelationshipManager { get; private set; }
         public GPSManager GPSManager { get; private set; }
@@ -204,6 +205,9 @@ namespace Mod
         public OfficerMIAWatcher OfficerMIAWatcher { get; private set; }
         public RestrictedAreaManager RestrictedAreaManager { get; private set; }
         public TaxiManager TaxiManager { get; private set; }
+
+        public GangBackupManager GangBackupManager { get; private set; }
+
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
@@ -516,6 +520,7 @@ namespace Mod
             }
             WeaponEquipment.Setup();
             CellPhone.Start();
+            GangBackupManager.Setup();
             SpeechSkill = RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max);
             Update();
             foreach(GameLocation bl in PlacesOfInterest.PossibleLocations.InteractableLocations())
@@ -553,6 +558,7 @@ namespace Mod
             OfficerMIAWatcher.Update();
             RestrictedAreaManager.Update();//yields in here
             TaxiManager.Update();
+            GangBackupManager.Update();
         }
         public void SetNotBusted()
         {
@@ -587,6 +593,7 @@ namespace Mod
             }
 
             TaxiManager.Reset();
+            GangBackupManager.Reset();
 
             if (resetWanted)
             {
@@ -716,6 +723,7 @@ namespace Mod
             OfficerMIAWatcher.Dispose();
             RestrictedAreaManager.Dispose();
             TaxiManager.Dispose();
+            GangBackupManager.Dispose();
 
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
@@ -1281,6 +1289,22 @@ namespace Mod
             {
                 CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
+                return true;
+            }
+            else if (CurrentVehicle.IsGang && CurrentVehicle.AssociatedGang != null && RelationshipManager.GangRelationships.CurrentGang != null && CurrentVehicle.AssociatedGang.ID == RelationshipManager.GangRelationships.CurrentGang.ID)
+            {
+                CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                CurrentVehicle.Vehicle.MustBeHotwired = false;
+                CurrentVehicle.IsStolen = false;
+                CurrentVehicle.CanBeConsideredStolen = false;
+                return true;
+            }
+            else if (CurrentVehicle.IsPolice && IsCop)
+            {
+                CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                CurrentVehicle.Vehicle.MustBeHotwired = false;
+                CurrentVehicle.IsStolen = false;
+                CurrentVehicle.CanBeConsideredStolen = false;
                 return true;
             }
             else if (CurrentVehicle.WasModSpawned && (CurrentVehicle.IsService || CurrentVehicle.IsGang) && CurrentVehicle.Vehicle.Exists())//maybe unlock friendly gang vehicles?maybe not
@@ -2098,7 +2122,7 @@ namespace Mod
                         GameFiber.Yield();//TR removed 4
                         if (vehicle.Exists())
                         {
-                            if (!existingVehicleExt.IsStolen)
+                            if (existingVehicleExt.CanBeConsideredStolen && !existingVehicleExt.IsStolen)
                             {
                                 if (IsDriver && !VehicleOwnership.OwnedVehicles.Any(x => x.Handle == existingVehicleExt.Handle))// == null || existingVehicleExt.Handle != OwnedVehicle.Handle))
                                 {
@@ -2106,7 +2130,6 @@ namespace Mod
                                 }
                             }
                             CurrentVehicle = existingVehicleExt;
-
                             //EntryPoint.WriteToConsole("PLAYER VEHICLE UPDATE Needed to re look up vehicle", 5);
                         }
                     }

@@ -82,6 +82,7 @@ namespace LSR.Vehicles
         public bool HasUpdatedPlateType { get; set; }
         public bool AreAllWindowsIntact { get; set; }
         public uint Handle { get; private set; }
+        public bool CanBeConsideredStolen { get; set; } = true;
         public int FuelTankCapacity { get; private set; } = 20;
         public bool AddedToReportedStolenQueue { get; set; }
         public bool CanBeExported { get; set; } = true;

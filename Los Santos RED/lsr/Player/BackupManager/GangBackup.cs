@@ -68,14 +68,19 @@ public class GangBackup
                 gangMember.IsAddedToPlayerGroup = false;
                 gangMember.IsBackupSquad = false;
                 Player.GroupManager.Remove(gangMember);
+                EntryPoint.WriteToConsole("REMOVED GROUP MEMBER");
             }
             else
             {
                 hasValidMembers = true;
-                if (!gangMember.IsAddedToPlayerGroup && gangMember.DistanceToPlayer <= 40f)
+                if (!gangMember.IsAddedToPlayerGroup && gangMember.DistanceToPlayer <= 20f)
                 {
                     Player.GroupManager.Add(gangMember);
+                    Player.GroupManager.ResetStatus(gangMember);
+                    //Player.GroupManager.SetFollow(gangMember);
                     gangMember.IsAddedToPlayerGroup = true;
+                    EntryPoint.WriteToConsole("ADDED GROUP MEMBER");
+                    //gangMember.IsBackupSquad = false;
                 }
             }
         }

@@ -1427,6 +1427,14 @@ public class ActivityManager
         {
             return;
         }
+        if(Player.CurrentVehicle.IsHotWireLocked)
+        {
+            return;
+        }
+        if(Player.CurrentVehicle.Vehicle.MustBeHotwired)
+        {
+            return;
+        }
         if(!Player.CurrentVehicle.UsePlayerAnimations)
         {
             action();
@@ -1438,10 +1446,36 @@ public class ActivityManager
         {
             try
             {
-                GameFiber.Sleep(timeToWait);
-                action();
-                GameFiber.Sleep(1000);
+                bool IsFinished = false;
+                uint GameTimeStarted = Game.GameTime;
+                bool performedAction = false;
+                while (!IsFinished)
+                {
+                    if(!performedAction && Game.GameTime - GameTimeStarted >= timeToWait)
+                    {
+                        performedAction = true;
+                        action();
+                    }
+                    if(Game.GameTime - GameTimeStarted >= timeToWait + 1000)
+                    {
+                        IsFinished = true;
+                    }
+                    if(!Player.Character.IsInAnyVehicle(false))
+                    {
+                        IsFinished = true;
+                    }
+                    if(Game.IsControlJustPressed(0,GameControl.VehicleExit))
+                    {
+                        IsFinished = true;
+                    }
+                    GameFiber.Yield();
+                }
                 NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
+
+                // GameFiber.Sleep(timeToWait);
+
+                //GameFiber.Sleep(1000);
+
             }
             catch (Exception ex)
             {

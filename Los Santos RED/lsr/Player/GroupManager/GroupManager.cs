@@ -181,6 +181,10 @@ public class GroupManager
         groupMember.IsGroupMember = true;
         groupMember.CanBeTasked = false;
         groupMember.CanBeAmbientTasked = false;
+
+
+        groupMember.CurrentTask = null;
+
         NativeFunction.Natives.CLEAR_PED_TASKS(groupMember.Pedestrian);
         //groupMember.Pedestrian.KeepTasks = true;
         groupMember.Pedestrian.BlockPermanentEvents = false;
@@ -189,6 +193,12 @@ public class GroupManager
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_AlwaysFight, true);
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
         NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(groupMember.Pedestrian, 0, false);
+
+       
+
+       // groupMember.ClearTasks(false);
+
+
 
         AddInternal(groupMember);
 
@@ -199,6 +209,10 @@ public class GroupManager
         // NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(groupMember.Pedestrian, 100f, 0);//TR
         // NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_IN_AREA(groupMember.Pedestrian, groupMember.Pedestrian.Position.X,groupMember.Pedestrian.Position.Y,groupMember.Pedestrian.Position.Z, 5000f, 0);//TR
         // groupMember.Pedestrian.KeepTasks = true;
+
+
+
+
 
         uint bestWeapon = NativeFunction.Natives.GET_BEST_PED_WEAPON<uint>(groupMember.Pedestrian, 0);
         WeaponInformation wi = Weapons.GetWeapon(bestWeapon);

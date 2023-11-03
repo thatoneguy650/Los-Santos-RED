@@ -515,5 +515,18 @@ public class TaxiRide
         }
         PickupBlip.Position = PickupLocation.StreetPosition;
     }
+
+    public void TeleportToPickup()
+    {
+        if(RespondingVehicle == null || !RespondingVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        Game.FadeScreenOut(1000, true);
+        RespondingVehicle.Vehicle.Position = PickupLocation.StreetPosition;
+        RespondingVehicle.Vehicle.Heading = PickupLocation.Heading;
+        GameFiber.Sleep(1000);
+        Game.FadeScreenIn(1000, true);
+    }
 }
 
