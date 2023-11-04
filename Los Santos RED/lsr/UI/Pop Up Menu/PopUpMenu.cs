@@ -348,7 +348,7 @@ public class PopUpMenu
             List<PopUpBox> GroupMemberSubMenu = new List<PopUpBox>();
             GroupMemberSubMenu.Add(new PopUpBox(0, "Give Weapon", new Action(() => Player.GroupManager.GiveCurrentWeapon(mi.PedExt)), "Give Current Weapon"));
             GroupMemberSubMenu.Add(new PopUpBox(1, "Remove Member", new Action(() => Player.GroupManager.Remove(mi.PedExt)), "Remove the Member"));
-            GroupMemberSubMenu.Add(new PopUpBox(2, "Rest Tasks", new Action(() => Player.GroupManager.ResetStatus(mi.PedExt)), "Reset the member's tasks"));
+            GroupMemberSubMenu.Add(new PopUpBox(2, "Rest Tasks", new Action(() => Player.GroupManager.ResetStatus(mi.PedExt, true)), "Reset the member's tasks"));
             GroupMemberSubMenu.Add(new PopUpBox(3, "Set Follow", new Action(() => Player.GroupManager.SetFollow(mi.PedExt)), "Tell the member to escort you around. Will use their own vehicle if it exists and is close"));
             GroupMemberSubMenu.Add(new PopUpBox(4, "Set Violent", new Action(() => Player.GroupManager.SetViolent(mi.PedExt)), "Set the group member to always fight police and other gang members"));
             GroupMemberSubMenu.Add(new PopUpBox(5, "Set Passive", new Action(() => Player.GroupManager.SetPassive(mi.PedExt)), "Set the group member to never fight police and other gang members"));

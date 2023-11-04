@@ -231,9 +231,9 @@ public class Dispatcher
         TaxiDispatcher.ForceTaxiSpawn(taxifirmID);
     }
 
-    public bool DispatchGangBackup(Gang requestedGang, int membersToSpawn)
+    public bool DispatchGangBackup(Gang requestedGang, int membersToSpawn, string requiredVehicleModel)
     {
-        return GangDispatcher.DispatchGangBackup(requestedGang, membersToSpawn);
+        return GangDispatcher.DispatchGangBackup(requestedGang, membersToSpawn, requiredVehicleModel);
     }
     public void DebugSpawnEMT(string agencyID, bool onFoot, bool isEmpty)
     {

@@ -20,8 +20,9 @@ public class GeneralFollow : ComplexTask
     private GroupManager GroupManager;
     private bool AllowEnteringVehicle => true;//!Ped.IsAmbientSpawn || PedGeneral.HasExistedFor >= 10000;
     public bool ShouldGetInVehicle => Player.IsInVehicle;
-    public bool ShouldGetOutOfVehicle => Player.IsOnFoot;
-    public GeneralFollow(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, GroupManager groupManager) : base(player, ped, 1500)//1500
+    public bool ShouldGetOutOfVehicle => Player.IsOnFoot && PedGeneral.DistanceToPlayer <= 20f;
+    public GeneralFollow(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, GroupManager groupManager) : 
+        base(player, ped, 1000)//1500
     {
         PedGeneral = pedGeneral;
         Name = "GeneralFollow";

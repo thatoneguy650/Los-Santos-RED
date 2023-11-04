@@ -57,39 +57,64 @@ class FollowInVehicleTaskState : TaskState
     }
     public void Update()
     {
-        bool isPlayerDrivingFast = false;
-        if(Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.Speed >= Settings.SettingsManager.GangSettings.EscortSpeedNormal)
+        //bool isPlayerDrivingFast = false;
+        //if(Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.Speed >= Settings.SettingsManager.GangSettings.EscortSpeedNormal)
+        //{
+        //    isPlayerDrivingFast = true;
+        //}
+        //IsFastDriving = Player.IsWanted || isPlayerDrivingFast || PedGeneral.IsWanted || PedGeneral.Pedestrian.IsInCombat;
+        //if(PrevIsFastDriving != IsFastDriving)
+        //{
+        //    SetEscortTask();
+        //    PrevIsFastDriving = IsFastDriving;
+        //}
+        UpdateChaseTask();
+    }
+    private void UpdateChaseTask()
+    {
+        if(PedGeneral == null || !PedGeneral.Pedestrian.Exists())
         {
-            isPlayerDrivingFast = true;
+            return;
         }
-        IsFastDriving = Player.IsWanted || isPlayerDrivingFast || PedGeneral.IsWanted || PedGeneral.Pedestrian.IsInCombat;
-        if(PrevIsFastDriving != IsFastDriving)
-        {
-            SetEscortTask();
-            PrevIsFastDriving = IsFastDriving;
-        }
+
+        NativeFunction.Natives.SET_DRIVER_ABILITY(PedGeneral.Pedestrian, 1.0f);
+        //NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(PedGeneral.Pedestrian, 1.0f);
+       // NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 70f);
+       // NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(PedGeneral.Pedestrian, (int)eCustomDrivingStyles.Code3);
     }
     private void SetEscortTask()
     {
         if (PedGeneral != null && PedGeneral.IsInVehicle && PedGeneral.Pedestrian.Exists() && PedGeneral.Pedestrian.CurrentVehicle.Exists())
         {
-            int drivingStyle = (int)eCustomDrivingStyles.Code3;
-            float drivingSpeed = Settings.SettingsManager.GangSettings.EscortSpeedFast;
-            if (IsFastDriving)
-            {
-                drivingStyle = (int)eCustomDrivingStyles.Code3;
-                drivingSpeed = Settings.SettingsManager.GangSettings.EscortSpeedFast;
-            }
-            unsafe
-            {
-                int lol = 0;
-                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_ESCORT", 0, PedGeneral.Pedestrian.CurrentVehicle, Player.Character, -1, drivingSpeed, drivingStyle, -1.0f * Math.Abs(Settings.SettingsManager.GangSettings.EscortOffsetValue) * GroupMemberNumber, 20, 20.0f);
-                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", PedGeneral.Pedestrian, lol);
-                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-            }
+            NativeFunction.Natives.SET_DRIVER_ABILITY(PedGeneral.Pedestrian, 1.0f);
+            //NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(PedGeneral.Pedestrian, 1.0f);
+
+
+            NativeFunction.Natives.TASK_VEHICLE_CHASE(PedGeneral.Pedestrian, Player.Character);
+
+            NativeFunction.Natives.SET_DRIVE_TASK_MAX_CRUISE_SPEED(PedGeneral.Pedestrian, 0.0f);//reset?
+
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(PedGeneral.Pedestrian, 15f);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(PedGeneral.Pedestrian, (int)eChaseBehaviorFlag.FullContact, false);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(PedGeneral.Pedestrian, (int)eChaseBehaviorFlag.MediumContact, false);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(PedGeneral.Pedestrian, (int)eChaseBehaviorFlag.LowContact, false);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(PedGeneral.Pedestrian, (int)eChaseBehaviorFlag.PIT, false);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(PedGeneral.Pedestrian, (int)eChaseBehaviorFlag.NoContact, true);
+            //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(PedGeneral.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, true);
+            //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(PedGeneral.Pedestrian, (int)eCombatAttributes.BF_DisableSpinOutDuringVehicleChase, true);
+            //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(PedGeneral.Pedestrian, (int)eCombatAttributes.BF_DisableBlockFromPursueDuringVehicleChase, true);
+            //NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 70f);
+            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(PedGeneral.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
+            //unsafe
+            //{
+            //    int lol = 0;
+            //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            //    NativeFunction.CallByName<bool>("TASK_VEHICLE_ESCORT", 0, PedGeneral.Pedestrian.CurrentVehicle, Player.Character, -1, drivingSpeed, drivingStyle, -1.0f * Math.Abs(Settings.SettingsManager.GangSettings.EscortOffsetValue) * GroupMemberNumber, 20, 20.0f);
+            //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+            //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", PedGeneral.Pedestrian, lol);
+            //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            //}
         }
     }
 }

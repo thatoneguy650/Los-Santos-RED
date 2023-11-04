@@ -183,7 +183,7 @@ public class GroupManager
             }
         }
     }
-    public void ResetStatus(PedExt groupMember)
+    public void ResetStatus(PedExt groupMember, bool clearTasks)
     {
         if(groupMember.IsBusted)
         {
@@ -191,7 +191,10 @@ public class GroupManager
         }
         if (groupMember.CurrentTask != null)
         {
-            groupMember.CurrentTask.Stop();
+            if (clearTasks)
+            {
+                groupMember.CurrentTask.Stop();
+            }
             groupMember.CurrentTask = null;
         }
         if (groupMember.Pedestrian.Exists())
@@ -206,7 +209,10 @@ public class GroupManager
             //NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(groupMember.Pedestrian, PlayerGroup);
             //NativeFunction.Natives.SET_PED_AS_GROUP_LEADER(Player.Character, PlayerGroup);
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
-            NativeFunction.Natives.CLEAR_PED_TASKS(groupMember.Pedestrian);
+            if (clearTasks)
+            {
+                NativeFunction.Natives.CLEAR_PED_TASKS(groupMember.Pedestrian);
+            }
         }
     }
     public void TryRecruitLookedAtPed()
@@ -267,7 +273,7 @@ public class GroupManager
         groupMember.IsGroupMember = false;
         groupMember.CanBeTasked = true;
         groupMember.CanBeAmbientTasked = true;
-        ResetStatus(groupMember);
+        ResetStatus(groupMember, true);
     }
     public void SetViolent(PedExt groupMember)
     {
@@ -304,7 +310,7 @@ public class GroupManager
     {
         foreach(GroupMember groupMember in CurrentGroupMembers)
         {
-            ResetStatus(groupMember.PedExt);
+            ResetStatus(groupMember.PedExt, true);
         }
     }
 

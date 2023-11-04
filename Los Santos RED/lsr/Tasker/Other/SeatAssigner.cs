@@ -225,8 +225,6 @@ public class SeatAssigner
         //{
         //    return true;
         //}
-
-
         if (vehicleToCheck != null && Ped != null)
         {
             if (vehicleToCheck.Vehicle.Exists())
@@ -246,8 +244,6 @@ public class SeatAssigner
                 }
             }
         }
-
-
         //IS_ENTRY_POINT_FOR_SEAT_CLEAR
         //GET_ENTRY_POINT_POSITION
         return false;
@@ -285,33 +281,6 @@ public class SeatAssigner
     public int GetDoorFromSeat(int seatToCheck)
     {
         return seatToCheck + 1;
-
-
-        //if(seatToCheck == -1)//driver
-        //{
-        //    return 0;
-        //}
-        //else if (seatToCheck == 0)//passenger
-        //{
-        //    return 2;
-        //}
-        //else if (seatToCheck == 1)//left rear
-        //{
-        //    return 1;
-        //}
-        //else if (seatToCheck == 2)//right rear
-        //{
-        //    return 3;
-        //}
-        //else if (seatToCheck == 3)//outside left
-        //{
-        //    return 4;
-        //}
-        //else if (seatToCheck == 4)//outside right
-        //{
-        //    return 5;
-        //}
-        //return -1;
     }
 
     public bool IsAssignmentValid()
@@ -322,13 +291,12 @@ public class SeatAssigner
             {
                 return false;
             }
-            //if(VehicleAssigned.Vehicle.IsSeatFree(SeatAssigned))
-            //{
-
-            //}
-
             Ped onSeat = VehicleAssigned.Vehicle.GetPedOnSeat(SeatAssigned);
             if (onSeat.Exists() && onSeat.Handle != Ped.Pedestrian.Handle)
+            {
+                return false;
+            }
+            if(SeatAssigned != -1 && !World.Pedestrians.IsSeatAssignedToAnyone(VehicleAssigned,-1))//no driver and isnt assigned driver seat
             {
                 return false;
             }

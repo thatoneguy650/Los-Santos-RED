@@ -54,6 +54,7 @@ public class GangInteraction : IContactMenuInteraction
     private UIMenu GangDeliverySubMenu;
     private IModItems ModItems;
     private UIMenuItem RequestBackupMenu;
+    private UIMenu BackupSubMenu;
 
     // private UIMenuListScrollerItem<string> GangTheftVehicles;
 
@@ -167,13 +168,35 @@ public class GangInteraction : IContactMenuInteraction
         GangMenu.AddItem(RequestGangDen);
         if (ActiveGangReputation.IsMember)
         {
-            UIMenuNumericScrollerItem<int> RequestBackupMenu = new UIMenuNumericScrollerItem<int>("Request Backup", "Request that some armed members come to your current location.", 1, 5, 1) { Value = 2 };
-            RequestBackupMenu.Activated += (sender, selectedItem) =>
+
+            BackupSubMenu = MenuPool.AddSubMenu(GangMenu, "Request Backup");
+            BackupSubMenu.RemoveBanner();
+
+
+
+            UIMenuNumericScrollerItem<int> backupCountMenu = new UIMenuNumericScrollerItem<int>("Requested Members", "Set the number of members you want to be dispatched to your location.", 1, 7, 1) { Value = 2 };
+            BackupSubMenu.AddItem(backupCountMenu);
+
+            List<VehicleNameSelect> vehicleNameList = new List<VehicleNameSelect>();
+            vehicleNameList.Add(new VehicleNameSelect("") { VehicleModelName = "Random" });
+            foreach (DispatchableVehicle dv in ActiveGang.Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
             {
-                RequestBackup(RequestBackupMenu.Value);
-                sender.Visible = false;         
+                VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName);
+                vns.UpdateItems();
+                vehicleNameList.Add(vns);
+            }
+            UIMenuListScrollerItem<VehicleNameSelect> BackupVehiclesMenu = new UIMenuListScrollerItem<VehicleNameSelect>("Vehicle", $"Request a specific vehicle.", vehicleNameList);
+            BackupSubMenu.AddItem(BackupVehiclesMenu);
+            UIMenuItem StartBackupMenu = new UIMenuItem("Request Backup", "Request gang backup using the parameters.");
+            StartBackupMenu.Activated += (sender, selectedItem) =>
+            {
+                RequestBackup(backupCountMenu.Value, BackupVehiclesMenu.SelectedItem.ModelName);
+                sender.Visible = false;
             };
-            GangMenu.AddItem(RequestBackupMenu);
+            BackupSubMenu.AddItem(StartBackupMenu);
+
+
+
 
             LeaveGangMenu = new UIMenuItem("Leave Gang", "Inform the gang that you no longer want to be a member");
             LeaveGangMenu.Activated += (sender, selectedItem) =>
@@ -186,30 +209,10 @@ public class GangInteraction : IContactMenuInteraction
             GangMenu.AddItem(LeaveGangMenu);
         }
     }
-
-    private void RequestBackup(int minMembers)
+    private void RequestBackup(int minMembers, string requiredModelName)
     {
-        if(Player.GangBackupManager.RequestBackup(ActiveGang, minMembers))
-        {
-            List<string> positiveReplies = new List<string>() { 
-                
-                "Got some guys on the way, hang on.",
-                "Sending some shooters to your location.",
-                "Some guys are on the way.",
-            };
-            Player.CellPhone.AddPhoneResponse(ActiveGang.Contact.Name, ActiveGang.Contact.IconName, positiveReplies.PickRandom());
-        }
-        else
-        {
-            List<string> failReplies = new List<string>() { 
-                "Can't spare anyone now.",
-                "Nobody around, sorry.",
-                "You're going to have to deal with it on your own."
-            };
-            Player.CellPhone.AddPhoneResponse(ActiveGang.Contact.Name, ActiveGang.Contact.IconName, failReplies.PickRandom());
-        }
+        Player.GangBackupManager.RequestBackup(ActiveGang, minMembers, requiredModelName);
     }
-
     private void AddJobItems()
     {
         JobsSubMenu = MenuPool.AddSubMenu(GangMenu, "Jobs");

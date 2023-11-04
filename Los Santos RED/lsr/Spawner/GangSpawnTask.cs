@@ -32,6 +32,7 @@ public class GangSpawnTask : SpawnTask
     private bool HasGang => Gang != null;
     public bool IsHitSquad { get; set; } = false;
     public bool IsBackupSquad { get; set; } = false;
+    public int PedSpawnLimit { get; set; } = 99;
 
     public override void AttemptSpawn()
     {
@@ -64,6 +65,34 @@ public class GangSpawnTask : SpawnTask
             Cleanup(true);
         }
     }
+
+    protected override void AddPassengers()
+    {
+        for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
+        {
+            string requiredGroup = "";
+            if (VehicleType != null)
+            {
+                requiredGroup = VehicleType.RequiredPedGroup;
+            }
+            GetNewPersonType(requiredGroup);
+            if (PersonType != null)
+            {
+                PedExt Passenger = CreatePerson(OccupantIndex - 1);
+                if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)
+                {
+                    PutPedInVehicle(Passenger, OccupantIndex - 1);
+                }
+                else
+                {
+                    Cleanup(false);
+                }
+            }
+            GameFiber.Yield();
+        }
+    }
+
+
     protected override PedExt CreatePerson(int seat)
     {
         try
@@ -181,6 +210,15 @@ public class GangSpawnTask : SpawnTask
         if (VehicleType != null)
         {
             OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
+
+            if(OccupantsToAdd + 1 > PedSpawnLimit)
+            {
+                OccupantsToAdd = PedSpawnLimit - 1;
+            }
+            if(OccupantsToAdd < 0)
+            {
+                OccupantsToAdd = 0;
+            }
         }
         else
         {

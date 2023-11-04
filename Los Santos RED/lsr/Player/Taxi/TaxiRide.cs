@@ -64,14 +64,14 @@ public class TaxiRide
             {
                 return PickupLocation.StreetPosition;
             }
-            else if (HasPickedUpPlayer && IsWaitingOnPlayerAfterGetOut && PulloverLocation.HasStreetPosition)
+            else if (HasPickedUpPlayer && (IsWaitingOnPlayerAfterGetOut || IsWaitingOnPlayer) && HasPullover)
             {
                 return PulloverLocation.StreetPosition;
             }
-            else if (HasPickedUpPlayer && IsWaitingOnPlayer && PulloverLocation.HasStreetPosition)
-            {
-                return PulloverLocation.StreetPosition;
-            }
+            //else if (HasPickedUpPlayer && IsWaitingOnPlayer && HasPullover)
+            //{
+            //    return PulloverLocation.StreetPosition;
+            //}
             else if (HasPickedUpPlayer && HasDestination)
             {
                 return DestinationLocation.StreetPosition;
@@ -114,6 +114,9 @@ public class TaxiRide
     public bool HasPickedUpPlayer { get; set; } = false;
     public bool HasDroppedOffPlayer { get; set; } = false;
     public bool HasArrivedAtDestination { get; set; } = false;
+
+    public bool HasPullover => PulloverLocation != null && PulloverLocation.HasStreetPosition && PulloverLocation.StreetPosition != Vector3.Zero;
+
     public bool HasDestination => DestinationLocation != null && DestinationLocation.StreetPosition != Vector3.Zero;
     public bool HasPickup => PickupLocation != null && PickupLocation.StreetPosition != Vector3.Zero;
     public bool IsNearbyDestination { get; private set; }

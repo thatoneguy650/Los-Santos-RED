@@ -816,7 +816,7 @@ public class LEDispatcher
                             EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles 2 NONPERS isNearLimit{isNearLimit} TotalPoliceCars{TotalPoliceCars} PossibleSpawnedPoliceCars{PossibleSpawnedPoliceCars}");
                             GameFiber.Yield();
                         }
-                        else if (distanceTo >= 175f)//250f)
+                        else if (TotalPoliceCars > 10 && distanceTo >= 175f && PoliceCar.HasBeenEmptyFor >= 20000)//250f)
                         {
                             if (PoliceCar.Vehicle.IsPersistent)
                             {

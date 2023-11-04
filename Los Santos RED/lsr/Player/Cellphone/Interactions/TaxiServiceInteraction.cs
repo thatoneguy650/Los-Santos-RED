@@ -131,7 +131,7 @@ public class TaxiServiceInteraction : IContactMenuInteraction
             ExistingRide.UpdatePickupLocation();
             string fullText = "Pickup Location Updated";
             Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
-            sender.Visible = false;
+            //sender.Visible = false;
         };
         PickupSubMenu.AddItem(updatePickupRegular);
 
@@ -142,7 +142,7 @@ public class TaxiServiceInteraction : IContactMenuInteraction
             ExistingRide.SetPickupLocationAtPlayer();
             string fullText = "Pickup Location Updated";
             Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
-            sender.Visible = false;
+            //sender.Visible = false;
         };
         PickupSubMenu.AddItem(updatePickupHere);
 
