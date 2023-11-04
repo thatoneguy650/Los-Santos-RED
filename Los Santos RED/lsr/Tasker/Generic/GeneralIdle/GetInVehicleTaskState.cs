@@ -63,11 +63,13 @@ class GetInVehicleTaskState : TaskState
         {
             TaskedVehicle = SeatAssigner.VehicleAssigned;
             TaskedSeat = SeatAssigner.SeatAssigned;
+            float moveRatio = PedGeneral.IsWanted || PedGeneral.Pedestrian.IsInCombat ? 3f : 2f;
+
             unsafe
             {
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, SeatAssigner.VehicleAssigned.Vehicle, -1, SeatAssigner.SeatAssigned, 1f, 9);
+                NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, SeatAssigner.VehicleAssigned.Vehicle, -1, SeatAssigner.SeatAssigned, moveRatio, 9);
                 //NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(8000, 16000));
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);

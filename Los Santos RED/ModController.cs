@@ -71,7 +71,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             World = new Mod.World(ModDataFileManager.Agencies, ModDataFileManager.Zones, ModDataFileManager.Jurisdictions, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest, ModDataFileManager.PlateTypes, ModDataFileManager.Names, ModDataFileManager.RelationshipGroups, ModDataFileManager.Weapons, 
                 ModDataFileManager.Crimes, Time, ModDataFileManager.ShopMenus, ModDataFileManager.Interiors, NAudioPlayer, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Streets, ModDataFileManager.ModItems, ModDataFileManager.RelationshipGroups, 
-                ModDataFileManager.LocationTypes, ModDataFileManager.Organizations, ModDataFileManager.Contacts);
+                ModDataFileManager.LocationTypes, ModDataFileManager.Organizations, ModDataFileManager.Contacts, ModDataFileManager);
             World.Setup();
             GameFiber.Yield();
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, ModDataFileManager.Names.GetRandomName(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale), World, Time, ModDataFileManager.Streets, 

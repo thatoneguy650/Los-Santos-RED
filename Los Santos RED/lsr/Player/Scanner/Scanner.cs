@@ -1533,12 +1533,15 @@ namespace LosSantosRED.lsr
             if (DispatchToPlay.MarkVehicleAsStolen && DispatchToPlay.LatestInformation != null && DispatchToPlay.LatestInformation.VehicleSeen != null && Player.CurrentVehicle != null)//temp current vehicle BS
             {
                 //THIS NEED TO NOT BE CURRENT VEHICLE, BUT OTHERWISE THE LINK GETS MESSED UP?
-                Player.CurrentVehicle.WasReportedStolen = true;
-                Player.CurrentVehicle.OriginalLicensePlate.IsWanted = true;
-                if (Player.CurrentVehicle.OriginalLicensePlate.PlateNumber == Player.CurrentVehicle.CarPlate.PlateNumber)
-                {
-                    Player.CurrentVehicle.CarPlate.IsWanted = true;
-                }
+
+                Player.CurrentVehicle.SetReportedStolen();
+
+                //Player.CurrentVehicle.WasReportedStolen = true;
+                //Player.CurrentVehicle.OriginalLicensePlate.IsWanted = true;
+                //if (Player.CurrentVehicle.OriginalLicensePlate.PlateNumber == Player.CurrentVehicle.CarPlate.PlateNumber)
+                //{
+                //    Player.CurrentVehicle.CarPlate.IsWanted = true;
+                //}
             }
             if (DispatchToPlay.IncludeCarryingWeapon && (DispatchToPlay.LatestInformation.WeaponSeen != null || DispatchToPlay.Name == "Carrying Weapon"))
             {

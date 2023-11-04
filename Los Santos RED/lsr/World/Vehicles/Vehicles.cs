@@ -225,7 +225,6 @@ public class Vehicles
         PoliceVehicleExt Car = new PoliceVehicleExt(vehicle, Settings);
         Car.Setup();
         Car.IsPolice = true;
-        Car.CanRandomlyHaveIllegalItems = false;
         PoliceVehicles.Add(Car);
     }
     private void CreateCivilianVehicleFromAmbient(Vehicle vehicle)

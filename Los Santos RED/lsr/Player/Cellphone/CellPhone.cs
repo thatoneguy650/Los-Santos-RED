@@ -564,6 +564,21 @@ public class CellPhone
         }
         return ContactList.FirstOrDefault(x => Contacts.PossibleContacts.CorruptCopContact.Name == x.Name);
     }
+    public void ClearPendingTexts()
+    {
+        ScheduledTexts.Clear();
+        ScheduledContacts.Clear();
+    }
+    public void ClearPendingGangTexts(Gang gang)
+    {
+        if(gang == null)
+        {
+            return;
+        }
+        ScheduledTexts.RemoveAll(x => x.ContactName == gang.ContactName);
+        ScheduledContacts.RemoveAll(x => x.ContactName == gang.ContactName);
+    }
+
     public CorruptCopContact DefaultCorruptCopContact
     {
         get

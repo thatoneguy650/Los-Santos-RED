@@ -268,7 +268,7 @@ public class HoldUp : Interaction
 
         if(RandomItems.RandomPercent(Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomItems))
         {
-            Target.PedInventory.AddRandomItems(ModItems, false);
+            Target.PedInventory.AddRandomItems(ModItems, false, true);
         }
         ItemsFound = Target.LootInventory(Player, ModItems, Cellphones);
 

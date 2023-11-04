@@ -21,6 +21,11 @@ class FollowInVehicleTaskState : TaskState
     private uint GameTimeLastStartedFootPatrol;
     private uint GameTimeBetweenFootPatrols;
 
+    private bool IsFastDriving = false;
+    private bool PrevIsFastDriving = false;
+    private float MoveSpeed = 1.0f;
+    private float PrevMoveSpeed = 1.0f;
+
     private bool isGuarding = false;
     private bool isPatrolling = false;
     private ISettingsProvideable Settings;
@@ -52,18 +57,34 @@ class FollowInVehicleTaskState : TaskState
     }
     public void Update()
     {
-
+        bool isPlayerDrivingFast = false;
+        if(Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.Speed >= Settings.SettingsManager.GangSettings.EscortSpeedNormal)
+        {
+            isPlayerDrivingFast = true;
+        }
+        IsFastDriving = Player.IsWanted || isPlayerDrivingFast || PedGeneral.IsWanted || PedGeneral.Pedestrian.IsInCombat;
+        if(PrevIsFastDriving != IsFastDriving)
+        {
+            SetEscortTask();
+            PrevIsFastDriving = IsFastDriving;
+        }
     }
     private void SetEscortTask()
     {
         if (PedGeneral != null && PedGeneral.IsInVehicle && PedGeneral.Pedestrian.Exists() && PedGeneral.Pedestrian.CurrentVehicle.Exists())
         {
-            //EntryPoint.WriteToConsoleTestLong($"SET FOLLOW IN VEHICLE GroupMemberNumber {GroupMemberNumber}");
+            int drivingStyle = (int)eCustomDrivingStyles.Code3;
+            float drivingSpeed = Settings.SettingsManager.GangSettings.EscortSpeedFast;
+            if (IsFastDriving)
+            {
+                drivingStyle = (int)eCustomDrivingStyles.Code3;
+                drivingSpeed = Settings.SettingsManager.GangSettings.EscortSpeedFast;
+            }
             unsafe
             {
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_ESCORT", 0, PedGeneral.Pedestrian.CurrentVehicle, Player.Character, -1, Settings.SettingsManager.GangSettings.EscortSpeed, (int)eCustomDrivingStyles.Code2, -1.0f * Math.Abs(Settings.SettingsManager.GangSettings.EscortOffsetValue) * GroupMemberNumber, 20, 20.0f);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_ESCORT", 0, PedGeneral.Pedestrian.CurrentVehicle, Player.Character, -1, drivingSpeed, drivingStyle, -1.0f * Math.Abs(Settings.SettingsManager.GangSettings.EscortOffsetValue) * GroupMemberNumber, 20, 20.0f);
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", PedGeneral.Pedestrian, lol);
@@ -71,18 +92,4 @@ class FollowInVehicleTaskState : TaskState
             }
         }
     }
-
 }
-
-/*                    unsafe
-                    {
-                        int lol = 0;
-                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Ped.Pedestrian.CurrentVehicle, 27, 1000);
-                        NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Ped.Pedestrian.CurrentVehicle, 256);
-                        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
-                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                    }*/

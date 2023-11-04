@@ -566,7 +566,7 @@ namespace Mod
             IsBusted = false;
         }
         public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, 
-            bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod, bool resetBankAccounts, bool resetSavedGame)
+            bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod, bool resetBankAccounts, bool resetSavedGame, bool resetMessages)
         {
             IsDead = false;
             IsBusted = false;
@@ -675,6 +675,10 @@ namespace Mod
             if(resetSavedGame)
             {
                 GameSaves.OnChangedPlayer();
+            }
+            if(resetMessages)
+            {
+                CellPhone.ClearPendingTexts();
             }
             if (Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart)
             {

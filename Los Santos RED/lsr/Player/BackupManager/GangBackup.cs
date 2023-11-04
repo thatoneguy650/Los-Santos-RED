@@ -10,14 +10,17 @@ using System.Threading.Tasks;
 
 public class GangBackup
 {
+    private int FoundMembers = 0;
+    private int MinMembers;
     private IEntityProvideable World;
     private IGangBackupable Player;
     private List<GangMember> BackupMembers = new List<GangMember>();
-    public GangBackup(IEntityProvideable world, IGangBackupable player, Gang gang)
+    public GangBackup(IEntityProvideable world, IGangBackupable player, Gang gang, int minMembers)
     {
         World = world;
         Player = player;
         RequestedGang = gang;
+        MinMembers = minMembers;
     }
     public Gang RequestedGang { get; set; }
     public bool IsActive { get; set; }
@@ -26,13 +29,16 @@ public class GangBackup
     {
         IsActive = false;
         EntryPoint.WriteToConsole("Gang Backup IS ACTIVE SET TO FALSE SETUP");
-        if (GetBackupMembers())//if there is an existing one
+
+        FoundMembers = GetBackupMembers();
+        if (FoundMembers >= MinMembers)//if there is an existing one
         {
             IsActive = true;
             return;
         }
         SpawnMembers();
-        if (GetBackupMembers())//if there is an existing one
+        FoundMembers = GetBackupMembers();
+        if (FoundMembers > 0)//if there is an existing one
         {
             IsActive = true;
             return;
@@ -42,20 +48,20 @@ public class GangBackup
 
     private void SpawnMembers()
     {
-        EntryPoint.WriteToConsole("GangBackup SETUP FORCING GANG SPAWN");
-        Player.Dispatcher.DispatchGangBackup(RequestedGang);// Dispatcher.ForceTaxiSpawn(RequestedFirm);
+        EntryPoint.WriteToConsole($"GangBackup SETUP FORCING GANG SPAWN {MinMembers - FoundMembers}");
+        Player.Dispatcher.DispatchGangBackup(RequestedGang, MinMembers - FoundMembers);// Dispatcher.ForceTaxiSpawn(RequestedFirm);
     }
 
-    private bool GetBackupMembers()
+    private int GetBackupMembers()
     {
-        bool foundOne = false;
+        int membersFound = 0;
         foreach(GangMember gangmember in World.Pedestrians.GangMemberList.Where(x => x.Gang != null && x.Gang.ID == RequestedGang.ID && (x.IsInVehicle || x.DistanceToPlayer <= 55f) && x.WasModSpawned))
         {
             gangmember.IsBackupSquad = true;
-            foundOne = true;
+            membersFound++;
             BackupMembers.Add(gangmember);
         }
-        return foundOne;
+        return membersFound;
     }
 
     public void Update()
@@ -77,6 +83,8 @@ public class GangBackup
                 {
                     Player.GroupManager.Add(gangMember);
                     Player.GroupManager.ResetStatus(gangMember);
+                    GameFiber.Sleep(500);
+                    Player.GroupManager.SetFollow(gangMember);
                     //Player.GroupManager.SetFollow(gangMember);
                     gangMember.IsAddedToPlayerGroup = true;
                     EntryPoint.WriteToConsole("ADDED GROUP MEMBER");
@@ -84,7 +92,8 @@ public class GangBackup
                 }
             }
         }
-        if(!hasValidMembers)
+        BackupMembers.RemoveAll(x => !x.IsBackupSquad && !x.IsAddedToPlayerGroup);
+        if (!hasValidMembers)
         {
             EntryPoint.WriteToConsole("Back Backup no valid members, setting inactive");
             IsValid = false;

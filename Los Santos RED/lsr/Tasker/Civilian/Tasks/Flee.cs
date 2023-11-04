@@ -39,6 +39,10 @@ public class Flee : ComplexTask
         ReTask();
         GameTimeStartedFlee = Game.GameTime;
         GameTimeLastRan = Game.GameTime;    
+        if(ShouldCallIn)
+        {
+            RunInterval = 1000;
+        }
     }
     public override void Update()
     {
@@ -92,15 +96,18 @@ public class Flee : ComplexTask
     }
     private void CheckCallIn()
     {
-        if(!ShouldCallIn)
+       // EntryPoint.WriteToConsole("FLEE CHECK CALL IN!");
+        if (!ShouldCallIn)
         {
+           // EntryPoint.WriteToConsole("FLEE CHECK CALL IN! NOT CHECKING CALL IN");
             return;
         }
+       // EntryPoint.WriteToConsole($"FLEE CHECK START1 {GameTimeStartedFlee} {GameTimeToCallIn}");
         if (!Ped.Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.AllowCallInIfPedDoesNotExist)
         {
             if (Settings.SettingsManager.CivilianSettings.AllowCallInIfPedDoesNotExist && Game.GameTime - GameTimeStartedCallIn >= Settings.SettingsManager.CivilianSettings.GameTimeToCallInIfPedDoesNotExist && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.PedAlerts.HasCrimeToReport))
             {
-                EntryPoint.WriteToConsole("NOT EXISTING PED CALLED IN CRIME");
+                //EntryPoint.WriteToConsole("NOT EXISTING PED CALLED IN CRIME");
                 Ped.ReportCrime(Player);
             }
             return;
@@ -111,10 +118,12 @@ public class Flee : ComplexTask
         }
         if (!HasStartedPhoneTask && Game.GameTime - GameTimeStartedFlee >= GameTimeToCallIn)
         {
+            EntryPoint.WriteToConsole($"FLEE START CALL {GameTimeStartedFlee} {GameTimeToCallIn}");
             TaskUsePhone();
         }
         if (HasStartedPhoneTask && Game.GameTime - GameTimeStartedCallIn >= GameTimeToCallIn + Settings.SettingsManager.CivilianSettings.GameTimeAfterCallInToReportCrime && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.PedAlerts.HasCrimeToReport))
         {
+            EntryPoint.WriteToConsole("FLEE REPORT CRIME!");
             Ped.ReportCrime(Player);
             EntryPoint.WriteToConsole($"{Ped.Handle} CALLED IN CRIME");
             if (Ped.Pedestrian.Exists())

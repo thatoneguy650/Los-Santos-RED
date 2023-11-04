@@ -57,6 +57,12 @@ public class GeneralFollow : ComplexTask
             SubTaskName = CurrentTaskState.DebugName;
             CurrentTaskState.Update();
         }
+
+        if (PedGeneral != null && PedGeneral.Pedestrian.Exists())
+        {
+            NativeFunction.Natives.SET_DRIVER_ABILITY(PedGeneral.Pedestrian, 1.0f);
+            NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(PedGeneral.Pedestrian, 1.0f);
+        }
     }
 
     private void GetNewTaskState()

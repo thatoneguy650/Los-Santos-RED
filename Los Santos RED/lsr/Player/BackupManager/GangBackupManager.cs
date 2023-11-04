@@ -46,7 +46,7 @@ public class GangBackupManager
         }
         ActiveBackup.Clear();
     }
-    public bool RequestBackup(Gang gang)
+    public bool RequestBackup(Gang gang, int minMembers)
     {
         if (gang == null)
         {
@@ -58,7 +58,7 @@ public class GangBackupManager
             EntryPoint.WriteToConsole($"RequestBackup FAIL, ALREADY ACTIVE BACKUP");
             return false;
         }
-        GangBackup gangBackup = new GangBackup(World, Player, gang);
+        GangBackup gangBackup = new GangBackup(World, Player, gang, minMembers);
         gangBackup.Setup();
         if (!gangBackup.IsActive)
         {

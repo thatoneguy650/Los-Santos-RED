@@ -290,17 +290,17 @@ public class CommitCrime : ComplexTask
                 List<string> AttackCrimes = new List<string>() { "AssaultingCivilians", "FiringWeapon", "AssaultingWithDeadlyWeapon", "GrandTheftAuto", "KillingCivilians", "TerroristActivity" };
                 if (AttackCrimes.Contains(SelectedCrime))
                 {
-                    //EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} AttackTarget Ran", 5);
+                    EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} AttackTarget Ran", 5);
                     AttackTarget();
                 }
                 else if (SelectedCrime == "DealingDrugs")
                 {
-                   // EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} DealDrugsToTarget Ran", 5);
+                    EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} DealDrugsToTarget Ran", 5);
                     DealDrugsToTarget();
                 }
                 else if (SelectedCrime == "Harassment")
                 {
-                   // EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} HarassTarget Ran", 5);
+                    EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} HarassTarget Ran", 5);
                     HarassTarget();
                 }
             }
@@ -309,27 +309,27 @@ public class CommitCrime : ComplexTask
         {
             if (SelectedCrime == "PublicIntoxication")
             {
-               // EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} WalkAroundDrunk Ran", 5);
+                EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} WalkAroundDrunk Ran", 5);
                 WalkAroundDrunk();
             }
             else if (SelectedCrime == "DrunkDriving")
             {
-                //EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} DrunkDriving Ran", 5);
+                EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} DrunkDriving Ran", 5);
                 DriveAroundDrunk();
             }
             else if (SelectedCrime == "HitCarWithCar" || SelectedCrime == "FelonySpeeding")
             {
-                //EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} DriveRecklessly Ran", 5);
+                EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} DriveRecklessly Ran", 5);
                 DriveRecklessly();
             }
             else if (SelectedCrime == "AttemptingSuicide")
             {
-               // EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} ShootYourself Ran", 5);
+                EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} ShootYourself Ran", 5);
                 ShootYourself();
             }
             else if (SelectedCrime == "BrandishingWeapon")
             {
-               // EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} WalkAroundWithGun Ran", 5);
+                EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} WalkAroundWithGun Ran", 5);
                 WalkAroundWithGun();
             }
         }

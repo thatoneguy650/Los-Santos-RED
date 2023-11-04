@@ -406,12 +406,14 @@ public class VehicleItem : ModItem
                     MyNewCar.HasUpdatedPlateType = false;
                     MyNewCar.AllowVanityPlates = false;
                     MyNewCar.CanHaveRandomItems = false;
+                    MyNewCar.CanHaveRandomWeapons = false;
+                    MyNewCar.CanHaveRandomCash = false;
                     //EntryPoint.WriteToConsoleTestLong("New Vehicle Created in PurchaseVehicle");
                 }
                 MyNewCar.AddVehicleToList(world);
                 //world.Vehicles.AddEntity(MyNewCar, ResponseType.None);
                 player.VehicleOwnership.TakeOwnershipOfVehicle(MyNewCar, false);
-
+                MyNewCar.UpdatePlateType(true, world.ModDataFileManager.Zones, world.ModDataFileManager.PlateTypes, false);
                 transaction.OnItemPurchased(this, CurrentMenuItem, 1);
                 return true;
             }
@@ -450,6 +452,8 @@ public class VehicleItem : ModItem
         Car.WasModSpawned = true;
         Car.WasSpawnedEmpty = true;
         Car.CanHaveRandomItems = false;
+        Car.CanHaveRandomItems = false;
+        Car.CanHaveRandomCash = false;
         Car.AddVehicleToList(world);
         //world.Vehicles.AddEntity(Car, ResponseType.None);
         Transaction.SellingVehicle.Wash();

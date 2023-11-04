@@ -65,8 +65,17 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public int MaxRandomItemsToGet { get; set; }
     [Description("Max amount to get for each random item when looting a random ped or vehicle. Requires PercentageToGetRandomItems > 0")]
     public int MaxRandomItemsAmount { get; set; }
-    [Description("Percentage of time you will get random weapons when looting a vehicle")]
+    [Description("Percentage of time you will get random weapons when looting a civilian vehicle")]
     public float PercentageToGetRandomWeapons { get; set; }
+
+
+    [Description("Percentage of time you will get random weapons when looting a gang vehicle")]
+    public float PercentageOfGangVehiclesToGetRandomWeapons { get; set; }
+
+    [Description("Percentage of time you will get random weapons when looting a police vehicle")]
+    public float PercentageOfPoliceVehiclesToGetRandomWeapons { get; set; }
+
+
 
     [Description("Max number of random weapons to get when looting a vehicle. Requires PercentageToGetRandomItems > 0")]
     public int MaxRandomWeaponsToGet { get; set; }
@@ -153,8 +162,13 @@ public class PlayerOtherSettings : ISettingsDefaultable
         MaxRandomItemsToGet = 6;
         MaxRandomItemsAmount = 2;
 
-        PercentageToGetRandomWeapons = 20f;
-        MaxRandomWeaponsToGet = 2;
+        PercentageToGetRandomWeapons = 45f;
+
+
+        PercentageOfGangVehiclesToGetRandomWeapons = 75f;
+        PercentageOfPoliceVehiclesToGetRandomWeapons = 90f;
+
+        MaxRandomWeaponsToGet = 4;
         PercentageToGetRandomCash = 35f;
         PercentageToGetRandomWeaponVariation = 35f;
         PercentageToGetComponentInRandomVariation = 35f;
@@ -167,7 +181,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         VehicleAutoCameraZDistance = 1f;
         RobberyCashPerSwipe = 500;
         RandomCashMin = 5;
-        RandomCashMax = 550;
+        RandomCashMax = 750;
     }
 
 }

@@ -120,6 +120,7 @@ public class FireFighterSpawnTask : SpawnTask
             SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(SpawnedVehicle);
             GameFiber.Yield();
+            NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(Game.GetHashKey(VehicleType.ModelName));
             if (!SpawnedVehicle.Exists())
             {
                 return null;

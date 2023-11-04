@@ -72,10 +72,10 @@ public class KeySettings : ISettingsDefaultable
         SurrenderKey = Keys.E;
         SurrenderKeyModifier = Keys.LShiftKey;
 
-        RightIndicatorKey = Keys.E;
+        RightIndicatorKey = Keys.Right;
         RightIndicatorKeyModifer = Keys.LShiftKey;
 
-        LeftIndicatorKey = Keys.Q;
+        LeftIndicatorKey = Keys.Left;
         LeftIndicatorKeyModifer = Keys.LShiftKey;
 
         HazardKey = Keys.Space;

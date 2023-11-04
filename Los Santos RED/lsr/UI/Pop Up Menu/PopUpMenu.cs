@@ -237,11 +237,6 @@ public class PopUpMenu
                 InventoryCategorySubMenu.Add(new PopUpBox(ItemID, ii.ModItem.Name, $"{ii.ModItem.Name}SubMenu", ii.Description) { ClosesMenu = false });
                 List<PopUpBox> InventoryActionSubMenu = new List<PopUpBox>();
                 InventoryActionSubMenu.Add(new PopUpBox(0, "Use", new Action(() => Player.ActivityManager.UseInventoryItem(ii.ModItem, true)), $"Use {ii.ModItem.Name}"));
-
-
-
-
-
                 InventoryActionSubMenu.Add(new PopUpBox(1, "Discard All", new Action(() => Player.ActivityManager.DropInventoryItem(ii.ModItem, ii.Amount)), $"Discard All {ii.ModItem.Name} ({ii.Amount})"));
                 InventoryActionSubMenu.Add(new PopUpBox(2, "Discard One", new Action(() => Player.ActivityManager.DropInventoryItem(ii.ModItem, 1)), $"Discard {ii.ModItem.Name}"));
                 if (ii.Amount > 5)
@@ -334,18 +329,29 @@ public class PopUpMenu
         PopUpMenuGroups.RemoveAll(x => x.Group == "Group");
         int GroupMemberID = 0;
         List<PopUpBox> GroupMembersSubMenu = new List<PopUpBox>();
+
+        GroupMembersSubMenu.Add(new PopUpBox(0, "Reset All Tasks", new Action(() => Player.GroupManager.ResetAllStatus()), "Reset all member's tasks"));
+        GroupMembersSubMenu.Add(new PopUpBox(1, "Set All Follow", new Action(() => Player.GroupManager.SetAllFollow()), "Tell all members to escort you around. Will use their own vehicle if it exists and is close"));
+
+
+        GroupMembersSubMenu.Add(new PopUpBox(2, "Disband", new Action(() => Player.GroupManager.Disband()), "Disband the group."));
+
+        int startingID = 3;
         foreach (GroupMember mi in Player.GroupManager.CurrentGroupMembers)
         {
-            GroupMembersSubMenu.Add(new PopUpBox(GroupMemberID, mi.PedExt.Name, $"{mi.PedExt.Name}SubMenu", $"Open the {mi} Sub Menu") { ClosesMenu = false });
 
 
 
 
+
+            GroupMembersSubMenu.Add(new PopUpBox(GroupMemberID+ startingID, mi.PedExt.Name, $"{mi.PedExt.Name}SubMenu", $"Open the {mi.PedExt.Name} Sub Menu") { ClosesMenu = false });
             List<PopUpBox> GroupMemberSubMenu = new List<PopUpBox>();
             GroupMemberSubMenu.Add(new PopUpBox(0, "Give Weapon", new Action(() => Player.GroupManager.GiveCurrentWeapon(mi.PedExt)), "Give Current Weapon"));
             GroupMemberSubMenu.Add(new PopUpBox(1, "Remove Member", new Action(() => Player.GroupManager.Remove(mi.PedExt)), "Remove the Member"));
             GroupMemberSubMenu.Add(new PopUpBox(2, "Rest Tasks", new Action(() => Player.GroupManager.ResetStatus(mi.PedExt)), "Reset the member's tasks"));
-            GroupMemberSubMenu.Add(new PopUpBox(3, "Set Follow", new Action(() => Player.GroupManager.SetFollow(mi.PedExt)), "Tell the member to escort you around"));
+            GroupMemberSubMenu.Add(new PopUpBox(3, "Set Follow", new Action(() => Player.GroupManager.SetFollow(mi.PedExt)), "Tell the member to escort you around. Will use their own vehicle if it exists and is close"));
+            GroupMemberSubMenu.Add(new PopUpBox(4, "Set Violent", new Action(() => Player.GroupManager.SetViolent(mi.PedExt)), "Set the group member to always fight police and other gang members"));
+            GroupMemberSubMenu.Add(new PopUpBox(5, "Set Passive", new Action(() => Player.GroupManager.SetPassive(mi.PedExt)), "Set the group member to never fight police and other gang members"));
             PopUpMenuGroups.Add(new PopUpBoxGroup($"{mi.PedExt.Name}SubMenu", GroupMemberSubMenu) { IsChild = true, Group = "Group" });
             GroupMemberID++;
         }

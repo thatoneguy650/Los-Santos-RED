@@ -11,6 +11,7 @@ namespace LSR.Vehicles
     public class GangVehicleExt : VehicleExt
     {
         public override bool CanRandomlyHaveIllegalItems { get; set; } = true;
+        public override float PercentageToGetRandomWeapons => Settings.SettingsManager.PlayerOtherSettings.PercentageOfGangVehiclesToGetRandomWeapons;
         public GangVehicleExt(Vehicle vehicle, ISettingsProvideable settings) : base(vehicle, settings)
         {
         }

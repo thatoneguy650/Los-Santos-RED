@@ -473,7 +473,7 @@ namespace LosSantosRED.lsr.Data
                     MyVeh.HasUpdatedPlateType = true;
                     MyVeh.CanHaveRandomItems = false;
                     MyVeh.CanHaveRandomCash = false;
-                    MyVeh.CanHaveRandomItems = false;
+                    MyVeh.CanHaveRandomWeapons = false;
                     MyVeh.AddVehicleToList(World);
                     //World.Vehicles.AddEntity(MyVeh, ResponseType.None);
                     OwnedVehicleVariation.VehicleVariation?.Apply(MyVeh);

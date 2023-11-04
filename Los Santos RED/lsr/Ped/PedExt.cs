@@ -36,6 +36,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     private ICrimes Crimes;
     private uint GameTimeFirstSeenDead;
     private uint GameTimeFirstSeenUnconscious;
+    private uint GameTimeLastReportedCrime;
 
     private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
     private bool CanYell => !IsYellingTimeOut;
@@ -87,6 +88,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public int AssignedSeat { get; set; }
     public VehicleExt AssignedVehicle { get; set; }
     public Vector3 Position => position;
+    public bool HasCalledInCrimesRecently => GameTimeLastReportedCrime != 0 && Game.GameTime - GameTimeLastReportedCrime <= 15000;
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool CanAttackPlayer => IsFedUpWithPlayer || HatesPlayer;
     public bool CanBeAmbientTasked { get; set; } = true;
@@ -944,6 +946,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             //{
             //    AddMedicalEventWitnessed(Player);
             //}
+            GameTimeLastReportedCrime = Game.GameTime;
+
         }
         else if (!Pedestrian.Exists())
         {
@@ -960,8 +964,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             //{
             //    AddMedicalEventWitnessed(Player);
             //}
+            GameTimeLastReportedCrime = Game.GameTime;
         }
-
+        
     }
     public virtual void SetPersistent()
     {

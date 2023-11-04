@@ -21,17 +21,17 @@ namespace LSR.Vehicles
 {
     public class VehicleExt
     {
-        private VehicleClass vehicleClass;
-        private uint GameTimeEntered = 0;
-        private bool HasAttemptedToLock;
+        protected VehicleClass vehicleClass;
+        protected uint GameTimeEntered = 0;
+        protected bool HasAttemptedToLock;
         protected ISettingsProvideable Settings;
-        private int Health = 1000;
-        private bool IsOnFire;
-        private uint GameTimeBecameEmpty;
-        private bool HasAddedRandomItems = false;
-        private bool HasAddedRandomWeapons = false;
-        private bool HasAddedRandomCash = false;
-        private uint GameTimeLastAddedSonarBlip;
+        protected int Health = 1000;
+        protected bool IsOnFire;
+        protected uint GameTimeBecameEmpty;
+        protected bool HasAddedRandomItems = false;
+        protected bool HasAddedRandomWeapons = false;
+        protected bool HasAddedRandomCash = false;
+        protected uint GameTimeLastAddedSonarBlip;
         public VehicleInteractionMenu VehicleInteractionMenu { get; set; }
         public SimpleInventory SimpleInventory { get; private set; }
         public CashStorage CashStorage { get; private set; }
@@ -91,7 +91,11 @@ namespace LSR.Vehicles
         {
             get
             {
-                if (HasBeenEnteredByPlayer && IsStolen && !WasReportedStolen && Game.GameTime > GameTimeToReportStolen)
+                if(!WasReportedStolen)
+                {
+                    return false;
+                }
+                if (HasBeenEnteredByPlayer && IsStolen && Game.GameTime > GameTimeToReportStolen)
                 {
                     return true;
                 }
@@ -188,7 +192,7 @@ namespace LSR.Vehicles
         public bool IsRandomlyLocked { get; set; } = false;
         public bool UsePlayerAnimations => VehicleClass != VehicleClass.Motorcycle && VehicleClass != VehicleClass.Cycle;
         public virtual bool CanHaveRandomCash { get; set; } = true;
-
+        public virtual float PercentageToGetRandomWeapons => Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomWeapons;
         public virtual bool CanHaveRandomWeapons { get; set; } = true;
         public virtual bool CanHaveRandomItems { get; set; } = true;
         public virtual bool CanRandomlyHaveIllegalItems { get; set; } = true;
@@ -619,20 +623,20 @@ namespace LSR.Vehicles
                 GameFiber.Yield();//TR Added 5
             }
         }
-        public void UpdateDescription()
+        public void OnPoliceSeenCar()
         {
             if (Vehicle.Exists() && DescriptionColor != Vehicle.PrimaryColor)
             {
                 DescriptionColor = Vehicle.PrimaryColor;
             }
-            if (IsStolen && CarPlate != null && !CarPlate.IsWanted)
+            if (IsStolen && WasReportedStolen && CarPlate != null && !CarPlate.IsWanted)
             {
                 CarPlate.IsWanted = true;
             }
-            if (IsStolen && !WasReportedStolen)
-            {
-                WasReportedStolen = true;
-            }
+            //if (IsStolen && !WasReportedStolen)
+            //{
+            //    WasReportedStolen = true;
+            //}
         }
         public void AttemptToLock()
         {
@@ -698,59 +702,12 @@ namespace LSR.Vehicles
             int color = PossibleColors.PickRandom();
             NativeFunction.Natives.SET_VEHICLE_COLOURS(Vehicle, color, color);
         }
-        //public void SetDriverWindow(bool RollDown)
-        //{
-        //    if (NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Game.LocalPlayer.Character.CurrentVehicle, 0))
-        //    {
-        //        if (RollDown)
-        //        {
-        //            NativeFunction.CallByName<bool>("ROLL_DOWN_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
-        //            ManuallyRolledDriverWindowDown = true;
-        //        }
-        //        else
-        //        {
-        //            ManuallyRolledDriverWindowDown = false;
-        //            NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
-        //        }
-        //    }
-        //    else if (!RollDown)
-        //    {
-        //        if (Vehicle != null && ManuallyRolledDriverWindowDown)
-        //        {
-        //            ManuallyRolledDriverWindowDown = false;
-        //            NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
-        //        }
-        //    }
-        //}
-        //public void SetWindow(int windowID, bool RollDown)
-        //{
-        //    if(!Vehicle.Exists())
-        //    {
-        //        return;
-        //    }
-        //    if (NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Vehicle, windowID))
-        //    {
-        //        if (RollDown)
-        //        {
-        //            NativeFunction.CallByName<bool>("ROLL_DOWN_WINDOW", Vehicle, windowID);
-        //        }
-        //        else
-        //        {
-        //            NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Vehicle, windowID);
-        //        }
-        //    }
-        //    else if (!RollDown)
-        //    {
-        //        NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Vehicle, windowID);             
-        //    }
-        //}
         public bool WasSpawnedEmpty { get; set; } = false;
         public bool IsOwnedByPlayer { get; internal set; }
         public bool AllowVanityPlates { get; set; } = true;
         public bool WasCrushed { get; set; }
         public bool IsAlwaysOpenForPlayer { get; set; } = false;
         public bool CanAlwaysRollOver => VehicleClass == VehicleClass.Motorcycle || VehicleClass == VehicleClass.Cycle;
-
         private int ClosestColor(List<Color> colors, Color target)
         {
             var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
@@ -1172,7 +1129,7 @@ namespace LSR.Vehicles
             SimpleInventory.Reset();
             WeaponStorage.Reset();
         }
-        public void HandleRandomItems(IModItems modItems)
+        public virtual void HandleRandomItems(IModItems modItems)
         {
             if(HasAddedRandomItems)
             {
@@ -1185,11 +1142,11 @@ namespace LSR.Vehicles
             }
             if (RandomItems.RandomPercent(Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomItems))
             {
-                SimpleInventory.AddRandomItems(modItems, true);
+                SimpleInventory.AddRandomItems(modItems, true, CanRandomlyHaveIllegalItems);
             }
             HasAddedRandomItems = true;
         }
-        public void HandleRandomWeapons(IModItems modItems, IWeapons weapons)
+        public virtual void HandleRandomWeapons(IModItems modItems, IWeapons weapons)
         {
             if (HasAddedRandomWeapons)
             {
@@ -1202,7 +1159,7 @@ namespace LSR.Vehicles
                 EntryPoint.WriteToConsole("CANT HAVE RANDOM WEAPONS");
                 return;
             }
-            if (RandomItems.RandomPercent(Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomWeapons))
+            if (RandomItems.RandomPercent(PercentageToGetRandomWeapons))
             {
                 EntryPoint.WriteToConsole("ATTEMPT ADD RANDOM WEAPON");
                 WeaponStorage.AddRandomWeapons(modItems, weapons);
@@ -1222,7 +1179,7 @@ namespace LSR.Vehicles
                 EntryPoint.WriteToConsole("CANT HAVE RANDOM CASH");
                 return;
             }
-            if (CashStorage.StoredCash == 0 && RandomItems.RandomPercent(Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomCash))
+            if (RandomItems.RandomPercent(Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomCash))
             {
                 EntryPoint.WriteToConsole("ATTEMPT ADD RANDOM CASH");
                 CashStorage.StoredCash = RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.RandomCashMin, Settings.SettingsManager.PlayerOtherSettings.RandomCashMax);
@@ -1535,6 +1492,26 @@ namespace LSR.Vehicles
             return vehicleText;
         }
 
-
+        public void SetReportedStolen()
+        {
+            WasReportedStolen = true;
+            if (OriginalLicensePlate != null)
+            {
+                OriginalLicensePlate.IsWanted = true;
+            }
+            if (CarPlate != null && OriginalLicensePlate != null && CarPlate.PlateNumber == OriginalLicensePlate.PlateNumber)
+            {
+                CarPlate.IsWanted = true;
+                Game.DisplayHelp($"Vehicle Reported Stolen {CarPlate.PlateNumber}");
+            }
+            else if (OriginalLicensePlate != null)
+            {
+                Game.DisplayHelp($"Vehicle Reported Stolen {OriginalLicensePlate.PlateNumber}");
+            }
+            else
+            {
+                Game.DisplayHelp($"Vehicle Reported Stolen");
+            }
+        }
     }
 }

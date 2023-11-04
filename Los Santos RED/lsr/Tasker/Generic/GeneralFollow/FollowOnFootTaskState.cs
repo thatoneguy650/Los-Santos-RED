@@ -48,6 +48,7 @@ class FollowOnFootTaskState : TaskState
         {
             NativeFunction.Natives.CLEAR_PED_TASKS(PedGeneral.Pedestrian);
         }
+        //let the group stuff handle this!
         //GroupManager.Add(PedGeneral);
     }
     public void Stop()

@@ -283,7 +283,7 @@ public class PedInspect : DynamicActivity
         {
             if (RandomItems.RandomPercent(Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomItems))
             {
-                Ped.PedInventory.AddRandomItems(ModItems, false);
+                Ped.PedInventory.AddRandomItems(ModItems, false, true);
             }
             ItemsFound = Ped.LootInventory(Player, ModItems, Cellphones);
 

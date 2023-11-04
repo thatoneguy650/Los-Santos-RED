@@ -277,7 +277,7 @@ namespace LosSantosRED.lsr
 
             if (Player.AnyPoliceCanSeePlayer && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
             {
-                Player.CurrentVehicle.UpdateDescription();
+                Player.CurrentVehicle.OnPoliceSeenCar();
             }
         }
         private void DeterimineInterestedLocation()

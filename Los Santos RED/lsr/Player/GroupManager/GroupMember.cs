@@ -15,5 +15,6 @@ public class GroupMember
 
     public PedExt PedExt { get; set; }
     public int Index { get; set; }
+   // public string Description => PedExt == null ? "Unknown" : $"{PedExt.Name} - {PedExt.willfi}";
 }
 

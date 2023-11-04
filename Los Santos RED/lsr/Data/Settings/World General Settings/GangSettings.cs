@@ -85,7 +85,12 @@ public class GangSettings : ISettingsDefaultable
     [Description("Max wanted level that dens will spawn gang peds.")]
     public int DenSpawningWhenPlayerWantedMaxWanted { get; set; }
     public float EscortOffsetValue { get; set; }
-    public float EscortSpeed { get; set; }
+   // public float EscortSpeed { get; set; }
+
+
+    public float EscortSpeedFast { get; set; }
+    public float EscortSpeedNormal { get; set; }
+
     public float DistanceToReportRepChanges { get; set; }
     public uint GameTimeToReportRepChanges { get; set; }
     public uint GameTimeToReportRepChangesInTerritory { get; set; }
@@ -193,7 +198,8 @@ public class GangSettings : ISettingsDefaultable
 
 
         EscortOffsetValue = 3.0f;
-        EscortSpeed = 100f;
+        EscortSpeedFast = 100f;
+        EscortSpeedNormal = 30f;
         DenSpawningWhenPlayerWantedMaxWanted = 4;
         AmbientSpawningWhenPlayerWantedMaxWanted = 4;
         AmbientSpawnPedestrianAttemptPercentage = 20f;

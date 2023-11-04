@@ -21,6 +21,7 @@ namespace LosSantosRED.lsr.Interface
         int CitizenWantedLevel { get; set; }
         bool AnyFiresNearPlayer { get; }
         List<SpawnError> SpawnErrors { get; }
+        ModDataFileManager ModDataFileManager { get; }
 
         void LoadMPMap();
         void LoadSPMap();

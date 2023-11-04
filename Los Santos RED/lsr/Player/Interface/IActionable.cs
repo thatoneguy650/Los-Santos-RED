@@ -76,7 +76,7 @@ namespace LosSantosRED.lsr.Interface
         void DisplayPlayerNotification();
         void SetWantedLevel(int selectedItem, string v1, bool v2);
         void Arrest();
-        void Reset(bool v1, bool v2, bool v3, bool v4, bool v5, bool v6, bool v7, bool v8, bool v9, bool v10, bool v11, bool v12, bool v13, bool v14, bool v15, bool resetACtivites, bool resetGracePeriod, bool resetBankAccounts, bool resetSavedGame);
+        void Reset(bool v1, bool v2, bool v3, bool v4, bool v5, bool v6, bool v7, bool v8, bool v9, bool v10, bool v11, bool v12, bool v13, bool v14, bool v15, bool resetACtivites, bool resetGracePeriod, bool resetBankAccounts, bool resetSavedGame, bool resetPendingMessages);
         void ToggleCopTaskable();
         void ShowVehicleInteractMenu(bool showDefault);
         void PlaySpeech(string v1, bool v2);

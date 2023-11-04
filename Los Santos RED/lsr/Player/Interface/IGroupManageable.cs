@@ -15,5 +15,6 @@ namespace LosSantosRED.lsr.Interface
         RelationshipManager RelationshipManager { get; }
         WeaponEquipment WeaponEquipment { get; }
         int WantedLevel { get; }
+        bool IsWanted { get; }
     }
 }

@@ -169,6 +169,8 @@ public class GangReputation
         IsMember = false;
         IsEnemy = false;
         SetReputation(DefaultRepAmount, sendText);
+        SetRelationshipGroupNeutral();
+        Player.CellPhone.ClearPendingGangTexts(Gang);
         MembersHurt = 0;
         MembersKilled = 0;
         MembersCarJacked = 0;

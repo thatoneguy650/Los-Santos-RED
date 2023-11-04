@@ -76,12 +76,7 @@ public class TheftViolations
     {
         foreach(VehicleExt stolenCar in Player.TrackedVehicles.Where(x => x.NeedsToBeReportedStolen))
         {
-            stolenCar.WasReportedStolen = true;
-            if(stolenCar.CarPlate != null && stolenCar.OriginalLicensePlate != null && stolenCar.CarPlate.PlateNumber == stolenCar.OriginalLicensePlate.PlateNumber)
-            {
-                stolenCar.CarPlate.IsWanted = true;
-            }
-            Game.DisplayHelp("Vehicle Reported Stolen");
+            stolenCar.SetReportedStolen();
         }
     }
     public void AddCarJacked(PedExt myPed)
@@ -92,5 +87,6 @@ public class TheftViolations
         }
         myPed.OnCarjackedByPlayer(Player,Zones,GangTerritories);
     }
+
 }
 

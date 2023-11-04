@@ -227,7 +227,7 @@ public class GangDispatcher
         if(GetFarVehicleSpawnLocation() && GetHitSquadSpawnTypes(enemyGang))
         {
             EntryPoint.WriteToConsole($"DispatchHitSquad Disptaching HitSquad from {enemyGang.ShortName}");
-            if(CallSpawnTask(false, true, false, false, TaskRequirements.None, true, false) && Settings.SettingsManager.GangSettings.SendHitSquadText)
+            if(CallSpawnTask(false, true, false, false, TaskRequirements.None, true, false) > 0 && Settings.SettingsManager.GangSettings.SendHitSquadText)
             {
                 Player.OnHitSquadDispatched(enemyGang);
             }
@@ -235,7 +235,7 @@ public class GangDispatcher
     }
 
 
-    public bool DispatchGangBackup(Gang requestedGang)
+    public bool DispatchGangBackup(Gang requestedGang, int membersToSpawn)
     {
         if (requestedGang == null)
         {
@@ -246,7 +246,20 @@ public class GangDispatcher
         if (GetCloseVehicleSpawnLocation() && GetHitSquadSpawnTypes(requestedGang))
         {
             EntryPoint.WriteToConsole($"DispatchGangBackup Disptaching Backup from {requestedGang.ShortName}");
-            if (CallSpawnTask(false, true, false, false, TaskRequirements.None, false, true))
+
+            int membersSpawned = 0;
+            for (int i = 0;i<4;i++)//try 5 times to spawn the member amount, can get a LOT
+            {
+                if (GetCloseVehicleSpawnLocation() && GetHitSquadSpawnTypes(requestedGang))
+                {
+                    membersSpawned += CallSpawnTask(false, true, false, false, TaskRequirements.None, false, true);
+                    if (membersSpawned >= membersToSpawn)
+                    {
+                        break;
+                    }
+                }
+            }
+            if (membersSpawned > 0)
             {
                 return true;
             }
@@ -313,7 +326,7 @@ public class GangDispatcher
         GameTimeAttemptedDispatch = Game.GameTime;
         GameFiber.Yield();
         //EntryPoint.WriteToConsoleTestLong($"AMBIENT GANG CALLED SPAWN TASK");
-        if (CallSpawnTask(false, true, false, false, TaskRequirements.None, false, false))
+        if (CallSpawnTask(false, true, false, false, TaskRequirements.None, false, false) > 0)
         {
             ShouldRunAmbientDispatch = false;
             //GameTimeAttemptedDispatch = Game.GameTime;
@@ -470,7 +483,7 @@ public class GangDispatcher
         }
         return false;
     }
-    private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement, bool isHitSquad, bool isBackupSquad)
+    private int CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement, bool isHitSquad, bool isBackupSquad)
     {
         try
         {
@@ -490,12 +503,12 @@ public class GangDispatcher
             gangSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });
             gangSpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));// World.Vehicles.AddEntity(x, ResponseType.None));;
             HasDispatchedThisTick = true;
-            return gangSpawnTask.CreatedPeople.Any(x => x.Pedestrian.Exists());
+            return gangSpawnTask.CreatedPeople.Count(x => x.Pedestrian.Exists());
         }
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"Gang Dispatcher Spawn Error: {ex.Message} : {ex.StackTrace}", 0);
-            return false;
+            return 0;
         }
     }
     private bool ShouldBeRecalled(GangMember gangMember)

@@ -84,6 +84,7 @@ public class CarJack
                             {
                                 Driver.CanBeTasked = true;
                             }
+                            WatchDriverToReport();
                         }
                     }
                     catch (Exception ex)
@@ -463,7 +464,8 @@ public class CarJack
                 {
                     Driver.CanBeTasked = true;
                 }
-                GameFiber.Sleep(4000);
+                //GameFiber.Sleep(4000);
+                WatchDriverToReport();
             }
             catch (Exception ex)
             {
@@ -471,5 +473,41 @@ public class CarJack
                 EntryPoint.ModController.CrashUnload();
             }
         }, "CarJackPed");
+    }
+    private void WatchDriverToReport()
+    {
+        uint GameTimeStartedWatching = Game.GameTime;
+        if(!Driver.WillCallPolice && !Driver.WillCallPoliceIntense && !Driver.HasCellPhone)
+        {
+            EntryPoint.WriteToConsole("Carjacked someone who wont call the cops or doesnt have a cellphone, ending");
+            return;
+        }
+        bool shouldReportStolen = false;
+        while (true)
+        {
+            if(Driver.IsDead)
+            {
+                EntryPoint.WriteToConsole("Carjacked driver dies DO NOT REPORT STOLEN YET");
+                shouldReportStolen = false;
+                break;
+            }
+            if(Driver.HasCalledInCrimesRecently)
+            {
+                EntryPoint.WriteToConsole("Carjacked has called in crimes, setting reported stolen");
+                shouldReportStolen = true;
+                break;
+            }
+            if(!Driver.Pedestrian.Exists() && !Driver.HasCalledInCrimesRecently)
+            {
+                EntryPoint.WriteToConsole("Carjacked driver does not exist and didnt call in any crimes");
+                shouldReportStolen = false;
+                break;
+            }
+            GameFiber.Yield();
+        }
+        if(shouldReportStolen && VehicleExt != null && VehicleExt.Vehicle.Exists())
+        {
+            VehicleExt.SetReportedStolen();
+        }
     }
 }

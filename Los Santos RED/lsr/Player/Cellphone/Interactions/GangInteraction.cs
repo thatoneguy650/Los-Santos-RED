@@ -167,10 +167,10 @@ public class GangInteraction : IContactMenuInteraction
         GangMenu.AddItem(RequestGangDen);
         if (ActiveGangReputation.IsMember)
         {
-            RequestBackupMenu = new UIMenuItem("Request Backup", "Request that some armed members come to your current location.");
+            UIMenuNumericScrollerItem<int> RequestBackupMenu = new UIMenuNumericScrollerItem<int>("Request Backup", "Request that some armed members come to your current location.", 1, 5, 1) { Value = 2 };
             RequestBackupMenu.Activated += (sender, selectedItem) =>
             {
-                RequestBackup();
+                RequestBackup(RequestBackupMenu.Value);
                 sender.Visible = false;         
             };
             GangMenu.AddItem(RequestBackupMenu);
@@ -187,9 +187,9 @@ public class GangInteraction : IContactMenuInteraction
         }
     }
 
-    private void RequestBackup()
+    private void RequestBackup(int minMembers)
     {
-        if(Player.GangBackupManager.RequestBackup(ActiveGang))
+        if(Player.GangBackupManager.RequestBackup(ActiveGang, minMembers))
         {
             List<string> positiveReplies = new List<string>() { 
                 

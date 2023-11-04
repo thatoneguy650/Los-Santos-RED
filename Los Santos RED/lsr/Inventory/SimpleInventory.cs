@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 public class SimpleInventory
 {
-    private ISettingsProvideable Settings;
+    protected ISettingsProvideable Settings;
     public List<InventoryItem> ItemsList { get; set; } = new List<InventoryItem>();
     public SimpleInventory(ISettingsProvideable settings)
     {
@@ -76,14 +76,14 @@ public class SimpleInventory
         }
         return false;
     }
-    public void AddRandomItems(IModItems modItems, bool allowCellphones)
+    public void AddRandomItems(IModItems modItems, bool allowCellphones, bool allowIllegal)
     {
         if (Settings.SettingsManager.PlayerOtherSettings.MaxRandomItemsToGet >= 1 && Settings.SettingsManager.PlayerOtherSettings.MaxRandomItemsAmount >= 1)
         {
             int ItemsToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.PlayerOtherSettings.MaxRandomItemsToGet);
             for (int i = 0; i < ItemsToGet; i++)
             {
-                ModItem toGet = modItems.GetRandomItem(true, allowCellphones);
+                ModItem toGet = modItems.GetRandomItem(allowIllegal, allowCellphones);
                 int AmountToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.PlayerOtherSettings.MaxRandomItemsAmount);
                 if (toGet != null)
                 {
@@ -200,19 +200,5 @@ public class SimpleInventory
         }
         return items;
     }
-
-    //public bool RemoveIllicitInventoryItems()
-    //{
-    //    bool foundItems = false;
-    //    foreach (InventoryItem ii in ItemsList.ToList())
-    //    {
-    //        if (ii.ModItem != null && ii.ModItem.IsPossessionIllicit)
-    //        {
-    //            Remove(ii.ModItem);
-    //            foundItems = true;
-    //        }
-    //    }
-    //    return foundItems;
-    //}
 }
 

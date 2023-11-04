@@ -19,6 +19,7 @@ public class GroupManager
     private IGangs Gangs;
     private IWeapons Weapons;
     private ITargetable Targetable;
+    private bool IsSetCombatSpacing = false;
     public List<GroupMember> CurrentGroupMembers { get; private set; } = new List<GroupMember>();
     public int PlayerGroup { get; private set; }
     public int MemberCount => CurrentGroupMembers.Count();
@@ -40,7 +41,7 @@ public class GroupManager
     public void Update()
     {
         CurrentGroupMembers.RemoveAll(x => x.PedExt == null || !x.PedExt.Pedestrian.Exists() || x.PedExt.Pedestrian.IsDead);
-
+        bool isAnyInCombat = false;
         for (int i = CurrentGroupMembers.Count - 1; i >= 0; i--)
         {
             GroupMember sc = CurrentGroupMembers[i];
@@ -49,6 +50,22 @@ public class GroupManager
                 Remove(sc.PedExt);
                 //EntryPoint.WriteToConsoleTestLong("Remove Group Member (Busted)");
             }
+            if(sc != null && (Player.IsWanted || sc.PedExt.IsWanted || (sc.PedExt.Pedestrian.Exists() && sc.PedExt.Pedestrian.IsInCombat)))
+            {
+                isAnyInCombat = true;
+            }
+        }
+        if(isAnyInCombat && !IsSetCombatSpacing)
+        {
+            NativeFunction.Natives.SET_GROUP_FORMATION_SPACING(PlayerGroup, 15f, -1.0f, 30f);
+            IsSetCombatSpacing = true;
+            EntryPoint.WriteToConsole("GROUP SET COMBAT SPACING");
+        }
+        else if(!isAnyInCombat && IsSetCombatSpacing)
+        {
+            NativeFunction.Natives.RESET_GROUP_FORMATION_DEFAULT_SPACING(PlayerGroup);
+            IsSetCombatSpacing = false;
+            EntryPoint.WriteToConsole("GROUP SET COMBAT REGULAR");
         }
     }
     public void AddInternal(PedExt groupMember)
@@ -103,7 +120,27 @@ public class GroupManager
         PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
         CurrentGroupMembers.Add(new GroupMember(groupMember, CurrentGroupMembers.Count+1));
         OnBecameGroupMember(groupMember);    
+
+        if(CurrentGroupMembers.Count() == 1)
+        {
+            OnStartedGroup();
+        }
+
     }
+    //private enum PEDGROUP_FORMATION
+    //{
+    //    FORMATION_LOOSE,
+    //    FORMATION_SURROUND_FACING_INWARDS,
+    //    FORMATION_SURROUND_FACING_AHEAD,
+    //    FORMATION_LINE_ABREAST,
+    //    FORMATION_FOLLOW_IN_LINE
+    //}
+    private void OnStartedGroup()
+    {
+        NativeFunction.Natives.SET_GROUP_FORMATION(PlayerGroup, 0);//LOOSE FORMATION
+        NativeFunction.Natives.SET_GROUP_FORMATION_SPACING(PlayerGroup, 5f, -1.0f, 15f);
+    }
+
     public void Disband()
     {
         PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
@@ -222,7 +259,7 @@ public class GroupManager
         {
             weaponString = $"Weapon: {wi.Category}";
         }
-        Game.DisplayHelp($"Recruited {Player.CurrentLookedAtPed?.FormattedName} {weaponString}");
+        Game.DisplayHelp($"Recruited {groupMember.FormattedName} {weaponString}");
 
     }
     private void OnLeftGroup(PedExt groupMember)
@@ -230,6 +267,23 @@ public class GroupManager
         groupMember.IsGroupMember = false;
         groupMember.CanBeTasked = true;
         groupMember.CanBeAmbientTasked = true;
+        ResetStatus(groupMember);
+    }
+    public void SetViolent(PedExt groupMember)
+    {
+        groupMember.WillCallPolice = false;
+        groupMember.WillCallPoliceIntense = false;
+        groupMember.WillFight = true;
+        groupMember.WillFightPolice = true;
+        groupMember.WillAlwaysFightPolice = true;
+    }
+    public void SetPassive(PedExt groupMember)
+    {
+        groupMember.WillCallPolice = false;
+        groupMember.WillCallPoliceIntense = false;
+        groupMember.WillFight = false;
+        groupMember.WillFightPolice = false;
+        groupMember.WillAlwaysFightPolice = false;
     }
     public void SetFollow(PedExt mi)
     {
@@ -244,6 +298,22 @@ public class GroupManager
         }
         mi.CurrentTask = new GeneralFollow(mi, mi, Targetable, World, new List<VehicleExt>() { mi.AssignedVehicle }, null, Settings, this);
         mi.CurrentTask.Start();
+    }
+
+    public void ResetAllStatus()
+    {
+        foreach(GroupMember groupMember in CurrentGroupMembers)
+        {
+            ResetStatus(groupMember.PedExt);
+        }
+    }
+
+    public void SetAllFollow()
+    {
+        foreach (GroupMember groupMember in CurrentGroupMembers)
+        {
+            SetFollow(groupMember.PedExt);
+        }
     }
 }
 

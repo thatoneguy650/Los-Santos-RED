@@ -218,7 +218,16 @@ public class ModDataFileManager
         SetupLosSantos2008();
         SetupLibertyCity();
         SetupSimple();
+        SetupFullModernTraffic();
     }
+
+    private void SetupFullModernTraffic()
+    {
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic");
+        string Description = "Adds DLC vehicles to the traffic by modifying the popgroups.ymt file. Adds most normal vehicles to the corresponding traffic. Works with MP or SP map (traffic groups are identical). Install the greskfullmoderntraffic.oiv file. Incompatible with Los Santos 2008 config.";
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\readme.txt", Description);
+    }
+
     private void SetupAddonPlatesConfig()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\AddOnPlates_Wildbrick142");

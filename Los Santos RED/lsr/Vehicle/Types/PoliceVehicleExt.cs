@@ -10,7 +10,10 @@ namespace LSR.Vehicles
 {
     public class PoliceVehicleExt : VehicleExt
     {
-        public override bool CanRandomlyHaveIllegalItems { get; set; } = false;
+        public override bool CanRandomlyHaveIllegalItems { get; set; } = true;
+
+
+        public override float PercentageToGetRandomWeapons => Settings.SettingsManager.PlayerOtherSettings.PercentageOfPoliceVehiclesToGetRandomWeapons;
         public PoliceVehicleExt(Vehicle vehicle, ISettingsProvideable settings) : base(vehicle, settings)
         {
         }
