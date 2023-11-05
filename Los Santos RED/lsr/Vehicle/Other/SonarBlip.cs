@@ -32,7 +32,7 @@ public class SonarBlip
     }
     private void UpdateBlip(IEntityProvideable world)
     {
-        if (VehicleExt.AttachedBlip.Exists() || VehicleExt == null || !VehicleExt.Vehicle.Exists())
+        if (VehicleExt.AttachedBlip.Exists() || VehicleExt == null || !VehicleExt.Vehicle.Exists() || !VehicleExt.HasSonarBlip)
         {
             return;
         }

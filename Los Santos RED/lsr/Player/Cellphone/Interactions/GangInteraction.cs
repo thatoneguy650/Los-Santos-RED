@@ -27,11 +27,7 @@ public class GangInteraction : IContactMenuInteraction
     private UIMenuItem PayoffGangFriendly;
     private UIMenu GangWorkMenu;
     private UIMenu JobsSubMenu;
-   // private UIMenuListScrollerItem<Gang> GangHit;
     private UIMenuItem GangMoneyPickup;
-    //private UIMenuListScrollerItem<Gang> GangTheft;
-   // private UIMenuItem GangDelivery;
-    //private UIMenuNumericScrollerItem<int> GangWheelman;
     private UIMenuItem GangPizza;
     private UIMenuItem GangTaskCancel;
     private Gang ActiveGang;
@@ -46,7 +42,6 @@ public class GangInteraction : IContactMenuInteraction
     private UIMenuItem GangJoinMenu;
     private UIMenuItem GangImpoundTheft;
     private UIMenuItem GangBodyDisposal;
-   // private UIMenuListScrollerItem<Agency> CopHit;
     private UIMenu WheelManSubMenu;
     private UIMenu CopHitSubMenu;
     private UIMenu GangHitSubMenu;
@@ -55,9 +50,6 @@ public class GangInteraction : IContactMenuInteraction
     private IModItems ModItems;
     private UIMenuItem RequestBackupMenu;
     private UIMenu BackupSubMenu;
-
-    // private UIMenuListScrollerItem<string> GangTheftVehicles;
-
     public GangInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, GangContact gangContact, IEntityProvideable world, ISettingsProvideable settings, IAgencies agencies, IModItems modItems)
     {
         Player = player;
@@ -425,8 +417,7 @@ public class GangInteraction : IContactMenuInteraction
     private void InsultGang()
     {
         List<string> Insults = new List<string>() {
-                    "Your mom raised you exactly like i expected",
-                    //"This is why mom doesnt FUCKING love you",
+                    "Your mom raised you exactly like I expected",
                     "When your mother smiles, she looks like a horse",
                     "You are one ugly motherfucker",
                     "Fuck your wannabe crew",

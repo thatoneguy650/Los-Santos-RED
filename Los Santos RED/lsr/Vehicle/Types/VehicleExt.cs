@@ -708,6 +708,9 @@ namespace LSR.Vehicles
         public bool WasCrushed { get; set; }
         public bool IsAlwaysOpenForPlayer { get; set; } = false;
         public bool CanAlwaysRollOver => VehicleClass == VehicleClass.Motorcycle || VehicleClass == VehicleClass.Cycle;
+
+        public virtual bool HasSonarBlip => true;
+
         private int ClosestColor(List<Color> colors, Color target)
         {
             var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);

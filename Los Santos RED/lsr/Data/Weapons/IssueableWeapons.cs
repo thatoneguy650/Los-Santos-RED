@@ -163,6 +163,22 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_marksmanrifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Large Scope"), new WeaponComponent("Tracer Rounds") })),
         };
 
+        //TAXI
+        List<IssuableWeapon> TaxiSidearms = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_ceramicpistol", new WeaponVariation()),
+            new IssuableWeapon("weapon_snspistol", new WeaponVariation()),
+            new IssuableWeapon("weapon_heavypistol", new WeaponVariation(),20),
+            new IssuableWeapon("weapon_vintagepistol", new WeaponVariation(),10),
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(),5),
+            new IssuableWeapon("weapon_revolver", new WeaponVariation(),5),
+        };
+        List<IssuableWeapon> TaxiLongGuns = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_sawnoffshotgun", new WeaponVariation()),
+            new IssuableWeapon("weapon_dbshotgun", new WeaponVariation()),
+        };
+
         IssuableWeaponsGroupLookup = new List<IssuableWeaponsGroup>
         {
             new IssuableWeaponsGroup("Tasers", Tasers),
@@ -177,7 +193,13 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeaponsGroup("HeliLongGuns", HeliLongGuns),
             new IssuableWeaponsGroup("LimitedSidearms", LimitedSidearms),
             new IssuableWeaponsGroup("LimitedLongGuns", LimitedLongGuns),
-            new IssuableWeaponsGroup("GoodSniperLongGuns", GoodSniperLongGuns)
+            new IssuableWeaponsGroup("GoodSniperLongGuns", GoodSniperLongGuns),
+
+
+
+            new IssuableWeaponsGroup("TaxiSidearms", TaxiSidearms),
+            new IssuableWeaponsGroup("TaxiLongGuns", TaxiLongGuns),
+
         };
 
 
@@ -614,6 +636,25 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_nightstick", new WeaponVariation(), 100),
         };
 
+
+
+        //TAXI
+        List<IssuableWeapon> TaxiSidearms = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_ceramicpistol", new WeaponVariation()),
+            new IssuableWeapon("weapon_snspistol", new WeaponVariation()),
+            new IssuableWeapon("weapon_heavypistol", new WeaponVariation(),20),
+            new IssuableWeapon("weapon_vintagepistol", new WeaponVariation(),10),
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(),5),
+            new IssuableWeapon("weapon_revolver", new WeaponVariation(),5),
+        };
+        List<IssuableWeapon> TaxiLongGuns = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_sawnoffshotgun", new WeaponVariation()),
+            new IssuableWeapon("weapon_dbshotgun", new WeaponVariation()),
+        };
+
+
         List<IssuableWeaponsGroup> IssuableWeaponsGroupLookup_Old = new List<IssuableWeaponsGroup>
         {
             new IssuableWeaponsGroup("Tasers", Tasers),
@@ -627,7 +668,10 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeaponsGroup("HeliSidearms", HeliSidearms),
             new IssuableWeaponsGroup("HeliLongGuns", HeliLongGuns),
             new IssuableWeaponsGroup("LimitedSidearms", LimitedSidearms),
-            new IssuableWeaponsGroup("LimitedLongGuns", LimitedLongGuns)
+            new IssuableWeaponsGroup("LimitedLongGuns", LimitedLongGuns),
+
+            new IssuableWeaponsGroup("TaxiSidearms", TaxiSidearms),
+            new IssuableWeaponsGroup("TaxiLongGuns", TaxiLongGuns),
         };
 
         //Gangs

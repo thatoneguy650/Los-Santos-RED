@@ -86,6 +86,7 @@ public class DispatchableVehicles : IDispatchableVehicles
     private List<DispatchableVehicle> NOOSEPIAVehicles;
     private List<DispatchableVehicle> NOOSESEPVehicles;
     private List<DispatchableVehicle> MarshalsServiceVehicles;
+    private List<DispatchableVehicle> OffDutyCopVehicles;
     private List<DispatchableVehicle> LCPDVehicles;
     private DispatchableVehicle TaxiBroadWay;
     private DispatchableVehicle TaxiEudora;
@@ -255,6 +256,18 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("fbi", 50, 50){ OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
             new DispatchableVehicle("fbi2", 50, 50) { OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
         };
+
+        OffDutyCopVehicles = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("buffalo", 20, 0) { MaxOccupants = 1, MaxWantedLevelSpawn = 0,RequiredPedGroup = "OffDuty", },
+            new DispatchableVehicle("stanier", 20, 0) { MaxOccupants = 1,MaxWantedLevelSpawn = 0,RequiredPedGroup = "OffDuty", },
+            new DispatchableVehicle("granger", 20, 0) { MaxOccupants = 1,MaxWantedLevelSpawn = 0,RequiredPedGroup = "OffDuty", },
+            new DispatchableVehicle("fugitive", 20, 0) { MaxOccupants = 1,MaxWantedLevelSpawn = 0,RequiredPedGroup = "OffDuty", },
+            new DispatchableVehicle("washington", 20, 0) { MaxOccupants = 1,MaxWantedLevelSpawn = 0,RequiredPedGroup = "OffDuty", },
+        };
+
+
+
         //Gangs
         GenericGangVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("buccaneer", 15, 15),
@@ -22709,6 +22722,8 @@ Output = -1,
             new DispatchableVehicleGroup("NOOSEPIAVehicles", NOOSEPIAVehicles),
             new DispatchableVehicleGroup("NOOSESEPVehicles", NOOSESEPVehicles),
             new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles),
+            new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
+
 
             new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles),
             new DispatchableVehicleGroup("AllGangVehicles", AllGangVehicles),
@@ -22755,13 +22770,15 @@ Output = -1,
 
 
             new DispatchableVehicle(PoliceTransporter, 0, 15) { MinOccupants = 3, MaxOccupants = 4,MinWantedLevelSpawn = 3},
-            new DispatchableVehicle(PoliceBike, 15, 10) {GroupName = "Motorcycle", MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 0 } }, };
+            //DONT HAVE A RIDER FOR THIS!//new DispatchableVehicle(PoliceBike, 15, 10) {GroupName = "Motorcycle", MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 0 } },
+         };
         List<DispatchableVehicle> LSSDVehicles_Old = new List<DispatchableVehicle>() {
             new DispatchableVehicle(PoliceStanier, 20,25){ MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 7 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1, true, 100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle(PoliceMerit, 25,25){ MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 7 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1, false, 100), new DispatchableVehicleExtra(2, true, 100) } },
             new DispatchableVehicle(PoliceBuffalo, 50, 25) {MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 7 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
             new DispatchableVehicle(PoliceGranger, 50, 25) { CaninePossibleSeats = new List<int>{ 1 },MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() {7 } },
-            new DispatchableVehicle(PoliceBike, 20, 10) { GroupName = "Motorcycle",MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 3 } },};
+            //new DispatchableVehicle(PoliceBike, 20, 10) { GroupName = "Motorcycle",MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 3 } },
+         };
         List<DispatchableVehicle> SAHPVehicles_Old = new List<DispatchableVehicle>() {
             new DispatchableVehicle(PoliceStanier, 20,15){ GroupName = "StandardSAHP", RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 },VehicleExtras = new List<DispatchableVehicleExtra>() { 
                 new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(2, false, 100), new DispatchableVehicleExtra(1, true, 70) } },
@@ -22831,6 +22848,7 @@ Output = -1,
             new DispatchableVehicleGroup("SecuroservVehicles", SecuroservVehicles),
             new DispatchableVehicleGroup("LCPDVehicles", LCPDVehicles),
             new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles),
+            new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
 
             //Gang
             new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles),
@@ -22893,6 +22911,7 @@ Output = -1,
             new DispatchableVehicleGroup("SecuroservVehicles", SecuroservVehicles),
             new DispatchableVehicleGroup("LCPDVehicles", LCPDVehicles),
             new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles),
+            new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
 
             //Gang
             new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles),
@@ -23232,6 +23251,7 @@ Output = -1,
             new DispatchableVehicleGroup("NOOSEPIAVehicles", NOOSEPIAVehicles_FEJ),
             new DispatchableVehicleGroup("NOOSESEPVehicles", NOOSESEPVehicles_FEJ),
             new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles_FEJ),
+            new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
 
             //Gang stuff
             new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles),

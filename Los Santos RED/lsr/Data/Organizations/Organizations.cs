@@ -104,7 +104,7 @@ public class Organizations : IOrganizations
     }
     private void SetupDefault()
     {
-        DowntownCabCoOld = new TaxiFirm("~y~", "DTCAB", "Downtown Cab Co.", "Downtown Cab Co.", "Yellow", "TaxiDrivers", "TaxiVehicles", "DT ", "", "", "", "Cabbie") {
+        DowntownCabCoOld = new TaxiFirm("~y~", "DTCAB", "Downtown Cab Co.", "Downtown Cab Co.", "Yellow", "TaxiDrivers", "TaxiVehicles", "DT ", "MeleeWeapons", "TaxiSidearms", "TaxiLongGuns", "Cabbie") {
             Description = "In transit since 1922",
             HeadDataGroupID = "AllHeads",
             ContactName = StaticStrings.DowntownCabCoContactName,
@@ -156,7 +156,7 @@ public class Organizations : IOrganizations
         PossibleOrganizations PossibleOrganizations_FullExpanded = new PossibleOrganizations();
 
 
-        TaxiFirm DowntownCabCo = new TaxiFirm("~y~", "DTCAB", "Downtown Cab Co.", "Downtown Cab Co.", "Yellow", "TaxiDrivers", "DowntownTaxiVehicles", "DT ", "", "", "", "Cabbie")
+        TaxiFirm DowntownCabCo = new TaxiFirm("~y~", "DTCAB", "Downtown Cab Co.", "Downtown Cab Co.", "Yellow", "TaxiDrivers", "DowntownTaxiVehicles", "DT ", "MeleeWeapons", "TaxiSidearms", "TaxiLongGuns", "Cabbie")
         {
             Description = "In transit since 1922",
             HeadDataGroupID = "AllHeads",
@@ -165,28 +165,28 @@ public class Organizations : IOrganizations
             BannerImagePath = "stores\\downtownnew.png",
         };
 
-        TaxiFirm HellCab = new TaxiFirm("~g~", "HELLCAB", "Hell Cab", "Hell Cab", "Green", "TaxiDrivers", "HellTaxiVehicles", "HC ", "", "", "", "Cabbie")
+        TaxiFirm HellCab = new TaxiFirm("~g~", "HELLCAB", "Hell Cab", "Hell Cab", "Green", "TaxiDrivers", "HellTaxiVehicles", "HC ", "MeleeWeapons", "TaxiSidearms", "TaxiLongGuns", "Cabbie")
         {
             Description = "Open the door to HELL and RIDE!",
             HeadDataGroupID = "AllHeads",
             ContactName = StaticStrings.HellCabContactName,
             BannerImagePath = "stores\\hellcab.png",
         };
-        TaxiFirm PurpleCabCo = new TaxiFirm("~y~", "PRPLCAB", "Purple Cab Co.", "Purple Cab Co.", "Yellow", "TaxiDrivers", "PurpleTaxiVehicles", "PC ", "", "", "", "Cabbie")
+        TaxiFirm PurpleCabCo = new TaxiFirm("~y~", "PRPLCAB", "Purple Cab Co.", "Purple Cab Co.", "Yellow", "TaxiDrivers", "PurpleTaxiVehicles", "PC ", "MeleeWeapons", "TaxiSidearms", "TaxiLongGuns", "Cabbie")
         {
             Description = "High Vis Meets High Class",
             HeadDataGroupID = "AllHeads",
             ContactName = StaticStrings.PurpleCabContactName,
             BannerImagePath = "stores\\purplecab.png",
         };
-        TaxiFirm ShitiCabCo = new TaxiFirm("~y~", "SHITICAB", "Shiti Cab", "Shiti Cab", "Yellow", "TaxiDrivers", "ShitiTaxiVehicles", "PC ", "", "", "", "Cabbie")
+        TaxiFirm ShitiCabCo = new TaxiFirm("~y~", "SHITICAB", "Shiti Cab", "Shiti Cab", "Yellow", "TaxiDrivers", "ShitiTaxiVehicles", "PC ", "MeleeWeapons", "TaxiSidearms", "TaxiLongGuns", "Cabbie")
         {
             Description = "Our service is anything BUT!",
             HeadDataGroupID = "AllHeads",
             ContactName = StaticStrings.ShitiCabContactName,
             BannerImagePath = "stores\\shiticab.png",
         };
-        TaxiFirm SunderedCab = new TaxiFirm("~y~", "SUNDERED", "Sundered Codependent Taxi", "Sundered Taxi", "Yellow", "TaxiDrivers", "SunderedTaxiVehicles", "SI ", "", "", "", "Cabbie")
+        TaxiFirm SunderedCab = new TaxiFirm("~y~", "SUNDERED", "Sundered Codependent Taxi", "Sundered Taxi", "Yellow", "TaxiDrivers", "SunderedTaxiVehicles", "SI ", "MeleeWeapons", "TaxiSidearms", "TaxiLongGuns", "Cabbie")
         {
             Description = "We contemptuously drive L.S.",
             HeadDataGroupID = "AllHeads",

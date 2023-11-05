@@ -29,6 +29,15 @@ public class TaxiSpawnTask : CivilianSpawnTask
         ped.RelationshipGroup = isMale ? new RelationshipGroup("CIVMALE") : new RelationshipGroup("CIVFEMALE");
         World.Pedestrians.AddEntity(CreatedPedExt);
         CreatedPedExt.SetBaseStats(PersonType, ShopMenus, Weapons, AddBlip);
+
+
+        if(TaxiFirm != null)
+        {
+            TaxiFirm.SetPedStats(CreatedPedExt);
+            CreatedPedExt.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(TaxiFirm.PercentageWithMelee), RandomItems.RandomPercent(TaxiFirm.PercentageWithSidearms), RandomItems.RandomPercent(TaxiFirm.PercentageWithLongGuns), PersonType);
+        }
+
+
         if (ped.Exists())
         {
             CreatedPedExt.SpawnPosition = ped.Position;

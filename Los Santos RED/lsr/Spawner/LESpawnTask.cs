@@ -15,16 +15,22 @@ public class LESpawnTask : SpawnTask
     private Vehicle SpawnedVehicle;
     private string UnitCode;
     private bool AddCanine;
+    //private IZones Zones;
+    //private IPlateTypes PlateTypes;
     public LESpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers,
         IEntityProvideable world, IModItems modItems, bool addCanine) : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
     {
         Agency = agency;
         AddCanine = addCanine;
+        //Zones = zones;
+        //PlateTypes = plateTypes;
     }
 
     public List<Cop> SpawnedCops { get; set; } = new List<Cop>();
     private bool HasAgency => Agency != null;
     public bool IsMarshalMember { get; set; } = false;
+    public bool IsOffDutySpawn { get; set; } = false;
+
     public override void AttemptSpawn()
     {
         try
@@ -306,6 +312,7 @@ public class LESpawnTask : SpawnTask
             }
             CreatedVehicle.IsPolice = true;
             CreatedVehicle.WasModSpawned = true;
+            CreatedVehicle.IsOffDuty = IsOffDutySpawn;
             GameFiber.Yield();
             if (!SpawnedVehicle.Exists())
             {
@@ -313,7 +320,14 @@ public class LESpawnTask : SpawnTask
             }
             VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, true);
             CreatedVehicle.UpgradePerformance();
-            CreatedVehicle.UpdatePlatePrefix(Agency);
+            if (IsOffDutySpawn)
+            {
+                CreatedVehicle.UpdatePlateType(true, World.ModDataFileManager.Zones, World.ModDataFileManager.PlateTypes,true);
+            }
+            else
+            {
+                CreatedVehicle.UpdatePlatePrefix(Agency);
+            }
             CreatedVehicles.Add(CreatedVehicle);
             return CreatedVehicle;
         }
@@ -375,6 +389,10 @@ public class LESpawnTask : SpawnTask
         if(IsMarshalMember)
         {
             PrimaryCop.IsMarshalTaskForceMember = true;
+        }
+        if(IsOffDutySpawn)
+        {
+            PrimaryCop.IsOffDuty = true;
         }
         SpawnedCops.Add(PrimaryCop);
         World.Pedestrians.AddEntity(PrimaryCop);

@@ -10,7 +10,6 @@ using System.Windows.Forms;
 
 public class GangMember : PedExt, IWeaponIssuable
 {
-
     public GangMember(Ped _Pedestrian, ISettingsProvideable settings, Gang gang, bool wasModSpawned, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world) : base(_Pedestrian, settings, crimes, weapons, _Name,gang.MemberName, world)
     {
         Gang = gang;
@@ -42,10 +41,7 @@ public class GangMember : PedExt, IWeaponIssuable
     public override string BlipName => "Gang Member";
     public bool IsHitSquad { get; set; } = false;
     public bool IsBackupSquad { get; set; } = false;
-
-
     public bool IsAddedToPlayerGroup { get; set; } = false;
-
     public new string FormattedName => (PlayerKnownsName ? Name : GroupName);
     public override bool KnowsDrugAreas => true;
     public override bool KnowsGangAreas => true;

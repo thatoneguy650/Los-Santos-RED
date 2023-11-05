@@ -127,6 +127,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
 
     public bool IsMarshalTaskForceMember { get; set; } = false;
     public bool IsRoadblockSpawned { get; set; } = false;
+    public bool IsOffDuty { get; set; } = false;
 
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {

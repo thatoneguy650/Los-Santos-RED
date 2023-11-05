@@ -40,6 +40,8 @@ public class LEDispatcher
     private Agency Agency;
     private DispatchableVehicle VehicleType;
     private DispatchablePerson PersonType;
+    private bool IsOffDutySpawn;
+
     private MarshalDispatcher MarshalDispatcher;
     private Vector3 RoadblockInitialPosition;
     private Vector3 RoadblockAwayPosition;
@@ -907,7 +909,7 @@ public class LEDispatcher
             GameFiber.Yield();
             GameTimeAttemptedDispatch = Game.GameTime;
             //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP CALLED SPAWN TASK");
-            if (CallSpawnTask(false, true, false, false, TaskRequirements.None, false))
+            if (CallSpawnTask(false, true, false, false, TaskRequirements.None, false, IsOffDutySpawn))
             {
                 //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP SPAWN TASK RAN");
                 ShouldRunAmbientDispatch = false;
@@ -923,7 +925,7 @@ public class LEDispatcher
             SpawnRoadblock(false,225f);//300f
         }
     }
-    private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement, bool forcek9)
+    private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement, bool forcek9, bool isOffDuty)
     {
         try
         {
@@ -936,10 +938,12 @@ public class LEDispatcher
             }
             LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, addOptionalPassengers, World, ModItems, forcek9);
             spawnTask.AllowAnySpawn = allowAny;
-            spawnTask.AllowBuddySpawn = allowBuddy;
+            spawnTask.AllowBuddySpawn = allowBuddy && !isOffDuty;
             spawnTask.ClearVehicleArea = clearArea;
             spawnTask.SpawnRequirement = spawnRequirement;
-           // spawnTask.PlacePedOnGround = VehicleType == null;
+            spawnTask.IsOffDutySpawn = isOffDuty;
+            // spawnTask.PlacePedOnGround = VehicleType == null;
+            EntryPoint.WriteToConsole($"DEBUG LE DISPATCH CallSpawnTask: VehicleType:{VehicleType?.ModelName} PersonType:{PersonType?.ModelName} RequiredPedGroup:{VehicleType?.RequiredPedGroup} GroupName:{PersonType?.GroupName}");
             spawnTask.AttemptSpawn();
             GameFiber.Yield();
             spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });
@@ -990,6 +994,7 @@ public class LEDispatcher
         Agency = null;
         VehicleType = null;
         PersonType = null;
+        IsOffDutySpawn = false;
         if (SpawnLocation.IsWater && !HasNeedToSpawnBoat && !HasNeedToSpawnHeli)
         {
             EntryPoint.WriteToConsole("Spawn Location is water and no need to spawn heli or boat, exit");
@@ -1002,9 +1007,13 @@ public class LEDispatcher
         {
             return false;
         }
-        if(SpawnLocation.IsWater)
+
+        IsOffDutySpawn = RandomItems.RandomPercent(Agency.OffDutyDispatchPercent) && World.TotalWantedLevel == 0 && Agency.OffDutyVehicles != null && Agency.OffDutyVehicles.Any() && Agency.OffDutyPersonnel != null && Agency.OffDutyPersonnel.Any();
+
+        if (SpawnLocation.IsWater)
         {
             VehicleType = Agency.GetRandomWaterVehicle(World.TotalWantedLevel, "", Settings);
+            IsOffDutySpawn = false;
         }
         else 
         {
@@ -1015,7 +1024,14 @@ public class LEDispatcher
             }          
             else
             {
-                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, HasNeedToSpawnHeli, false, true, "", Settings);
+                if (IsOffDutySpawn)
+                {
+                    VehicleType = Agency.GetRandomOffDutyVehicle(World.TotalWantedLevel, HasNeedToSpawnHeli, false, true, "", Settings);
+                }
+                else
+                {
+                    VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, HasNeedToSpawnHeli, false, true, "", Settings);
+                }
             }
         }
         GameFiber.Yield();
@@ -1029,7 +1045,14 @@ public class LEDispatcher
             RequiredGroup = VehicleType.RequiredPedGroup;
         }
         GameFiber.Yield();
-        PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
+        if (IsOffDutySpawn)
+        {
+            PersonType = Agency.GetRandomOffDutyPed(World.TotalWantedLevel, RequiredGroup);
+        }
+        else
+        {
+            PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
+        }
         return PersonType != null;
     }
     private void Delete(PedExt Cop)
@@ -1227,7 +1250,7 @@ public class LEDispatcher
             //EntryPoint.WriteToConsoleTestLong($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, NOT IN VEHICLE DELETE");
             return true;
         }
-        else if (cop.IsRoadblockSpawned && cop.DistanceToPlayer > 350f) //Beyond Caring
+        else if (!cop.IsInVehicle && cop.IsRoadblockSpawned && cop.HasBeenSpawnedFor >= 20000 && cop.DistanceToPlayer > 350f) //Beyond Caring
         {
             //EntryPoint.WriteToConsoleTestLong($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, NOT IN VEHICLE DELETE");
             return true;
@@ -1360,7 +1383,8 @@ public class LEDispatcher
     {
         VehicleType = null;
         PersonType = null;
-        Agency = null;           
+        Agency = null;
+        IsOffDutySpawn = false;
         //EntryPoint.WriteToConsoleTestLong($"DEBUG SPAWN COP agencyID: {agencyID} onFoot: {onFoot}");
         SpawnLocation = new SpawnLocation();
         SpawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
@@ -1392,11 +1416,28 @@ public class LEDispatcher
             //EntryPoint.WriteToConsoleTestLong($"DEBUG SPAWN COP NO AGENCY FOUND");
             return;
         }
-        if (!onFoot)
+
+        if (World.TotalWantedLevel == 0 && Agency.OffDutyDispatchPercent > 0 && RandomItems.RandomPercent(Agency.OffDutyDispatchPercent))
         {
-            VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, true, true, true, "", Settings);
+            IsOffDutySpawn = true;
+            //EntryPoint.WriteToConsole($"DEBUG LE DISPATCH IS OFF DUTY SPAWN");
         }
 
+
+
+        if (!onFoot)
+        {
+            if (IsOffDutySpawn)
+            {
+                VehicleType = Agency.GetRandomOffDutyVehicle(World.TotalWantedLevel, true, true, true, "", Settings);
+            }
+            else
+            {
+                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, true, true, true, "", Settings);
+            }
+        }
+
+        //EntryPoint.WriteToConsole($"DEBUG LE DISPATCH vehicleType: {VehicleType?.ModelName}");
 
         if (forcek9)
         {
@@ -1411,7 +1452,16 @@ public class LEDispatcher
             {
                 RequiredGroup = VehicleType.RequiredPedGroup;
             }
-            PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
+
+            if (IsOffDutySpawn)
+            {
+                PersonType = Agency.GetRandomOffDutyPed(World.TotalWantedLevel, RequiredGroup);
+            }
+            else
+            {
+                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
+            }
+            //EntryPoint.WriteToConsole($"DEBUG LE DISPATCH RequiredGroup: {RequiredGroup} HasOffDuty:{Agency.OffDutyPersonnel?.Any()}");
         }
         if(isEmpty)
         {
@@ -1425,16 +1475,18 @@ public class LEDispatcher
 
 
 
-
-        if(vehicleType != null)
+        if (vehicleType != null)
         {
             VehicleType = vehicleType;
         }
         if(personType != null) 
         { 
-            PersonType = personType; 
+            PersonType = personType;       
         }
 
-        CallSpawnTask(true, true, true, true, TaskRequirements.None, forcek9);
+      // EntryPoint.WriteToConsole($"DEBUG LE DISPATCH vehicleType: {VehicleType?.ModelName}");
+       // EntryPoint.WriteToConsole($"DEBUG LE DISPATCH PERSONTYTPE: {PersonType?.ModelName}");
+
+        CallSpawnTask(true, true, true, true, TaskRequirements.None, forcek9, IsOffDutySpawn);
     }
 }

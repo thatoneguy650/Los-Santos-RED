@@ -48,12 +48,18 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
     public bool SpawnsOnHighway { get; set; } = false;
     public uint MinWantedLevelSpawn { get; set; } = 0;
     public uint MaxWantedLevelSpawn { get; set; } = 6;
+    public bool CanDispatchOffDuty { get; set; } = true;
     public string HeadDataGroupID { get; set; }
     public string PersonnelID { get; set; }
     public string LessLethalWeaponsID { get; set; }
     public string SideArmsID { get; set; }
     public string LongGunsID { get; set; }
     public string VehiclesID { get; set; }
+
+    public float OffDutyDispatchPercent { get; set; } = 0f;
+    public string OffDutyPersonnelID { get; set; } //OffDutyCops
+    public string OffDutyVehiclesID { get; set; }//OffDutyCopVehicles
+
     [XmlIgnore]
     public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();
     [XmlIgnore]
@@ -66,6 +72,14 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
     public List<DispatchableVehicle> Vehicles { get; set; } = new List<DispatchableVehicle>();
     [XmlIgnore]
     public List<IssuableWeapon> LessLethalWeapons { get; set; } = new List<IssuableWeapon>();
+
+
+    [XmlIgnore]
+    public List<DispatchablePerson> OffDutyPersonnel { get; set; } = new List<DispatchablePerson>();
+    [XmlIgnore]
+    public List<DispatchableVehicle> OffDutyVehicles { get; set; } = new List<DispatchableVehicle>();
+
+
     public string ColorInitials => ColorPrefix + ShortName;
     public Color Color => Color.FromName(ColorString);
     public ResponseType ResponseType => Classification == Classification.EMS ? ResponseType.EMS : Classification == Classification.Fire ? ResponseType.Fire : Classification == Classification.Security ? ResponseType.Security : ResponseType.LawEnforcement;
@@ -98,6 +112,87 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
         }
         return null;
     }
+    public DispatchablePerson GetRandomOffDutyPed(int wantedLevel, string RequiredPedGroup)
+    {
+        if (OffDutyPersonnel == null || !OffDutyPersonnel.Any())
+        {
+            EntryPoint.WriteToConsole("OFF DUTY NO PERSONNEL 1!");
+            return null;
+        }
+        List<DispatchablePerson> ToPickFrom = OffDutyPersonnel.Where(x => wantedLevel >= x.MinWantedLevelSpawn && wantedLevel <= x.MaxWantedLevelSpawn && x.IsAnimal == false).ToList();
+
+        if(!ToPickFrom.Any())
+        {
+            EntryPoint.WriteToConsole("OFF DUTY NO PERSONNEL 2!");
+        }
+
+        if (RequiredPedGroup != "" && !string.IsNullOrEmpty(RequiredPedGroup))
+        {
+            ToPickFrom = ToPickFrom.Where(x => x.GroupName == RequiredPedGroup).ToList();
+        }
+
+
+        if (!ToPickFrom.Any())
+        {
+            EntryPoint.WriteToConsole("OFF DUTY NO PERSONNEL AFTER GROUP!");
+        }
+
+        int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(wantedLevel));
+        int RandomPick = RandomItems.MyRand.Next(wantedLevel, Total);
+        foreach (DispatchablePerson Cop in ToPickFrom)
+        {
+            int SpawnChance = Cop.CurrentSpawnChance(wantedLevel);
+            if (RandomPick < SpawnChance)
+            {
+                return Cop;
+            }
+            RandomPick -= SpawnChance;
+        }
+        if (ToPickFrom.Any())
+        {
+            return ToPickFrom.PickRandom();
+        }
+        return null;
+    }
+
+    public DispatchableVehicle GetRandomOffDutyVehicle(int wantedLevel, bool includeHelicopters, bool includeBoats, bool includeMotorcycles, string requiredGroup, ISettingsProvideable settings)
+    {
+        if (OffDutyVehicles == null || !OffDutyVehicles.Any())
+        {
+            return null;
+        }
+        List<DispatchableVehicle> ToPickFrom = OffDutyVehicles.Where(x => x.CanCurrentlySpawn(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles) && !x.IsHelicopter && !x.IsBoat && !x.IsMotorcycle).ToList();
+        if (includeBoats)
+        {
+            ToPickFrom.AddRange(OffDutyVehicles.Where(x => x.CanCurrentlySpawn(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles) && x.IsBoat).ToList());
+        }
+        if (includeHelicopters)
+        {
+            ToPickFrom.AddRange(OffDutyVehicles.Where(x => x.CanCurrentlySpawn(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles) && x.IsHelicopter).ToList());
+        }
+        if (includeMotorcycles)
+        {
+            ToPickFrom.AddRange(OffDutyVehicles.Where(x => x.CanCurrentlySpawn(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles) && x.IsMotorcycle).ToList());
+        }
+        if (requiredGroup != "" && !string.IsNullOrEmpty(requiredGroup))
+        {
+            ToPickFrom = ToPickFrom.Where(x => x.GroupName == requiredGroup).ToList();
+        }
+        int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles));
+        int RandomPick = RandomItems.MyRand.Next(0, Total);
+        foreach (DispatchableVehicle Vehicle in ToPickFrom)
+        {
+            int SpawnChance = Vehicle.CurrentSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles);
+            if (RandomPick < SpawnChance)
+            {
+                return Vehicle;
+            }
+            RandomPick -= SpawnChance;
+        }
+        return null;
+    }
+
+
     public DispatchablePerson GetRandomPed(int wantedLevel, string RequiredPedGroup) => GetRandomPed(wantedLevel, RequiredPedGroup, false);
     public DispatchablePerson GetRandomPed(int wantedLevel, string RequiredPedGroup, bool forceAnimal)// List<string> RequiredModels)
     {

@@ -377,10 +377,10 @@ public class Roadblock
                 CreatedRoadblockPeds.Add(person);
             }
 
-            //foreach (Cop cop in pedSpawn.SpawnedCops)//turned OFF for now!
-            //{
-            //    cop.IsRoadblockSpawned = true;
-            //}
+            foreach (Cop cop in pedSpawn.SpawnedCops)//turned OFF for now!
+            {
+                cop.IsRoadblockSpawned = true;
+            }
 
         }
         spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));

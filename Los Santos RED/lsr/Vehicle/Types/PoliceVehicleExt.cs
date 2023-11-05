@@ -14,6 +14,9 @@ namespace LSR.Vehicles
 
 
         public override float PercentageToGetRandomWeapons => Settings.SettingsManager.PlayerOtherSettings.PercentageOfPoliceVehiclesToGetRandomWeapons;
+
+        public bool IsOffDuty { get; set; } = false;
+        public override bool HasSonarBlip => IsOffDuty ? false : true;
         public PoliceVehicleExt(Vehicle vehicle, ISettingsProvideable settings) : base(vehicle, settings)
         {
         }

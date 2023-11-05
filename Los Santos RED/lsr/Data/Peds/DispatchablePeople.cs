@@ -25,6 +25,7 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> MilitaryPeds;
     private List<DispatchablePerson> PrisonPeds;
     private List<DispatchablePerson> MarshalsServicePeds;
+    private List<DispatchablePerson> OffDutyCops;
     private List<DispatchablePerson> SecurityPeds;
     private List<DispatchablePerson> GruppeSechsPeds;
     private List<DispatchablePerson> SecuroservPeds;
@@ -657,6 +658,18 @@ public class DispatchablePeople : IDispatchablePeople
 
 
         };
+
+        OffDutyCops = new List<DispatchablePerson>()
+        { 
+            new DispatchablePerson("a_f_y_bevhills_03",25,0) {  OverrideAgencyLongGuns = true,GroupName = "OffDuty", OverrideLongGunsID = "",OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, },
+            new DispatchablePerson("a_f_y_fitness_01",25,0) { OverrideAgencyLongGuns = true,GroupName = "OffDuty",OverrideLongGunsID = "",OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, },
+            new DispatchablePerson("a_f_y_soucent_02",25,0) { OverrideAgencyLongGuns = true,GroupName = "OffDuty",OverrideLongGunsID = "",OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, },
+            new DispatchablePerson("a_m_m_skidrow_01",25,0) { OverrideAgencyLongGuns = true,GroupName = "OffDuty",OverrideLongGunsID = "" ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },},
+            new DispatchablePerson("a_m_y_beachvesp_01",25,0) { OverrideAgencyLongGuns = true,GroupName = "OffDuty",OverrideLongGunsID = "" ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },},
+            new DispatchablePerson("a_m_y_busicas_01",25,0) { OverrideAgencyLongGuns = true, GroupName = "OffDuty",OverrideLongGunsID = "" ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },},
+        };
+
+
 
         //s_m_m_bouncer_01
         SecurityPeds = new List<DispatchablePerson>() {
@@ -1606,6 +1619,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("MarshalsServicePeds", MarshalsServicePeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("OffDutyCops", OffDutyCops));
         //Fire
         PeopleGroupLookup.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
         //EMT
@@ -1721,6 +1735,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("MarshalsServicePeds", MarshalsServicePeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("OffDutyCops", OffDutyCops));
         //Fire
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
         //EMT
@@ -1856,6 +1871,10 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("MarshalsServicePeds", MarshalsServicePeds_Simple));
+
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("OffDutyCops", OffDutyCops));
+
+        
         //Fire
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
         //EMTs
@@ -7702,7 +7721,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("NOOSESEPPeds", NOOSESEPPeds_FEJ));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("BorderPatrolPeds", BorderPatrolPeds_FEJ));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("MarshalsServicePeds", MarshalsServicePeds_FEJ));
-
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("OffDutyCops", OffDutyCops));
 
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("FIBPeds", FIBPeds_FEJ));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("ParkRangers", ParkRangers_FEJ));

@@ -90,6 +90,18 @@ public class Crime
             {
                 fullWarningMessage += "~n~~o~Citizens~s~ can report this ~r~violation~s~";
             }
+            if (ResultingWantedLevel >= 2)
+            {
+                fullWarningMessage += "~n~This is an ~r~Arrestable offense~s~";
+            }
+            else if (CanReleaseOnCite)
+            {
+                fullWarningMessage += "~n~This is a ~y~Citable offense~s~";
+            }
+            else if (CanReleaseOnCleanSearch)
+            {
+                fullWarningMessage += "~n~This is a ~o~Searchable offense~s~";
+            }
             Game.DisplayHelp(fullWarningMessage);
             GameTimeLastShownWarning = Game.GameTime;
             HasShownWarning = true;

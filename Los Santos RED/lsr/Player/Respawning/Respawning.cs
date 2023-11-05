@@ -764,6 +764,17 @@ public class Respawning// : IRespawning
         SearchActivity searchActivity = new SearchActivity(CurrentPlayer, World, PoliceRespondable, SeatAssignable, Settings, Time, ModItems, vehicleToSearch, Weapons);
         searchActivity.Setup();
         searchActivity.Start();
+        if(!searchActivity.IsActive)
+        {
+            Game.DisplayHelp("Search Failed");
+            if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnBusted)
+            {
+                Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnBustedSpeed;
+            }
+            menu?.Show();
+            return;
+        }
+
         GameFiber.StartNew(delegate
         {
             try
