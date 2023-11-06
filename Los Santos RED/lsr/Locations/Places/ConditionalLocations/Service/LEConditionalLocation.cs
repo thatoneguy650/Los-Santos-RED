@@ -3,13 +3,15 @@ using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
 public class LEConditionalLocation : ConditionalLocation
 {
     private Agency Agency;
-
+    public override int MinWantedLevelSpawn { get; set; } = 0;
+    public override int MaxWantedLevelSpawn { get; set; } = 4;
     public LEConditionalLocation(Vector3 location, float heading, float percentage) : base(location, heading, percentage)
     {
     }
@@ -27,8 +29,15 @@ public class LEConditionalLocation : ConditionalLocation
         {
             return false;
         }
-        if (World.Pedestrians.TotalSpawnedAmbientPolice > Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted3)
+
+        if(DispatchablePerson != null && World.Pedestrians.TotalSpawnedLocationPolice > Settings.SettingsManager.PoliceSpawnSettings.LocationSpawnedPedLimit)
         {
+            EntryPoint.WriteToConsole("LEConditionalLocation TOO MANY LOCATION PEDS");
+            return false;
+        }
+        if(DispatchableVehicle != null && World.Vehicles.SpawnedEmptyPoliceVehiclesCount >= Settings.SettingsManager.PoliceSpawnSettings.LocationSpawnedVehicleLimit)
+        {
+            EntryPoint.WriteToConsole("LEConditionalLocation TOO MANY LOCATION VEHCILES");
             return false;
         }
         return base.DetermineRun(force);
@@ -45,9 +54,12 @@ public class LEConditionalLocation : ConditionalLocation
             spawnTask.SpawnRequirement = TaskRequirements;
             spawnTask.PlacePedOnGround = DispatchableVehicle == null;// true;
             spawnTask.AttemptSpawn();
+
+
+
             GameFiber.Yield();
             spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
-            spawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));//World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
+            spawnTask.CreatedVehicles.ForEach(x => { x.AddVehicleToList(World); x.WasSpawnedEmpty = DispatchablePerson == null;   } ) ;//World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
             Player.OnLawEnforcementSpawn(Agency, DispatchableVehicle, DispatchablePerson);
         }
         catch (Exception ex)

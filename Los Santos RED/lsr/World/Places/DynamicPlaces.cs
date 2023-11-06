@@ -189,7 +189,7 @@ public class DynamicPlaces
         //ShopMenu vendingMenu = ShopMenus.GetVendingMenu(modelName);
         Vector3 EntrancePos = obj.GetOffsetPositionFront(0.5f);
 
-        GameLocation closestLocation = Places.ActiveLocations.OrderBy(x => x.EntrancePosition.DistanceTo2D(obj)).FirstOrDefault();//maybe store anyothe list of stations?
+        GameLocation closestLocation = Places.ActiveLocations.OrderBy(x => x.EntrancePosition.DistanceTo2D(obj.GetOffsetPositionFront(0.5f))).FirstOrDefault();//maybe store anyothe list of stations?
         int RegisterCash = 3500;
         if(closestLocation != null)
         {
@@ -199,6 +199,9 @@ public class DynamicPlaces
         newVend.CanInteractWhenWanted = true;
         newVend.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
         ActiveCashRegisters.Add(newVend);
+
+        EntryPoint.WriteToConsole($"Activate CashRegister {newVend.Name} {newVend.EntrancePosition}");
+
     }
     private void ActivateVendingMachine(Rage.Object obj, string modelName, Vector3 position, float heading)
     {
@@ -207,16 +210,22 @@ public class DynamicPlaces
         {
             return;
         }
-        if (ActiveVendingMachines.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
+        if (ActiveVendingMachines.Any(x => x.EntrancePosition.DistanceTo2D(obj.GetOffsetPositionFront(0.5f)) <= 0.2f))
         {
             return;
         }
+
         ShopMenu vendingMenu = ShopMenus.GetVendingMenu(modelName);
         Vector3 EntrancePos = obj.GetOffsetPositionFront(0.5f);
         VendingMachine newVend = new VendingMachine(EntrancePos, heading, vendingMenu.Name, vendingMenu.Name, vendingMenu.ID, obj) { Menu = vendingMenu, OpenTime = 0, CloseTime = 24 };
         newVend.CanInteractWhenWanted = true;
         newVend.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
         ActiveVendingMachines.Add(newVend);
+
+        EntryPoint.WriteToConsole($"Activate Vending {newVend.Name} {newVend.EntrancePosition}");
+
+
+
     }
     private void ActivateGasPump(Rage.Object obj, string modelName, Vector3 position, float heading, bool IsDoubleSided)
     {
@@ -243,6 +252,9 @@ public class DynamicPlaces
         newGasPump.CanInteractWhenWanted = true;
         newGasPump.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
         ActiveGasPumps.Add(newGasPump);
+
+        EntryPoint.WriteToConsole($"Activate GasPump {newGasPump.Name} {newGasPump.EntrancePosition}");
+
     }
 
     private void ActivateATMMachine(Rage.Object obj, string modelName, Vector3 position, float heading)
@@ -270,6 +282,9 @@ public class DynamicPlaces
         newATMMachine.CanInteractWhenWanted = true;
         newATMMachine.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
         ActiveATMMachines.Add(newATMMachine);
+
+
+        EntryPoint.WriteToConsole($"Activate ATM {newATMMachine.Name} {newATMMachine.EntrancePosition}");
     }
     private void RemoveInactiveVendingMachines()
     {

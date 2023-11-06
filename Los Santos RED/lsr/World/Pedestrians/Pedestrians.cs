@@ -172,6 +172,7 @@ public class Pedestrians : ITaskerReportable
     public bool AnyNooseUnitsSpawned => Police.Any(x => x.AssignedAgency.ID == "NOOSE" && x.WasModSpawned);
     public int TotalSpawnedPolice => Police.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedAmbientPolice => Police.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+    public int TotalSpawnedLocationPolice => Police.Where(x => x.WasModSpawned && x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedPoliceCanines => PoliceCanines.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedAmbientPoliceCanines => PoliceCanines.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedEMTs => EMTs.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();

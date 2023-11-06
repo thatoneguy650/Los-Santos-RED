@@ -84,7 +84,7 @@ public class Places
         {
             gl.Update(Time);
             updated++;
-            if (updated >= 15)//5
+            if (updated >= 5)//15)//5
             {
                 GameFiber.Yield();
                 updated = 0;
@@ -94,6 +94,7 @@ public class Places
                 break;
             }
         }
+        //EntryPoint.WriteToConsole($"UPDATE LOCATIONS RAN {updated}");
     }
     public void Reset()
     {

@@ -93,21 +93,64 @@ public class Dispatcher
             //EntryPoint.WriteToConsole("RECENTLY STARTED PLAYING222 NO DISPTACH");
             return;
         }
-        if (EntryPoint.ModController.IsRunning && !LEDispatcher.Dispatch())
-        {
-            if (EntryPoint.ModController.IsRunning && !EMSDispatcher.Dispatch())
-            {
-                if(EntryPoint.ModController.IsRunning && !FireDispatcher.Dispatch())
-                {
-                    if(EntryPoint.ModController.IsRunning && !SecurityDispatcher.Dispatch())
-                    {
 
-                    }
-                }
-            }
-        }
+
         GameFiber.Yield();
-        if(!EntryPoint.ModController.IsRunning)
+        if (!EntryPoint.ModController.IsRunning)
+        {
+            return;
+        }
+        if(LEDispatcher.Dispatch())
+        {
+            GameFiber.Yield();
+        }
+        if (!EntryPoint.ModController.IsRunning)
+        {
+            return;
+        }
+        if (EMSDispatcher.Dispatch())
+        {
+            GameFiber.Yield();
+        }
+        if (!EntryPoint.ModController.IsRunning)
+        {
+            return;
+        }
+        if (FireDispatcher.Dispatch())
+        {
+            GameFiber.Yield();
+        }
+        if (!EntryPoint.ModController.IsRunning)
+        {
+            return;
+        }
+        if (SecurityDispatcher.Dispatch())
+        {
+            GameFiber.Yield();
+        }
+        //if (EntryPoint.ModController.IsRunning && !LEDispatcher.Dispatch())
+        //{
+        //    if (EntryPoint.ModController.IsRunning && !EMSDispatcher.Dispatch())
+        //    {
+        //        if(EntryPoint.ModController.IsRunning && !FireDispatcher.Dispatch())
+        //        {
+        //            if(EntryPoint.ModController.IsRunning && !SecurityDispatcher.Dispatch())
+        //            {
+
+        //            }
+        //        }
+        //    }
+        //}
+
+        GameFiber.Yield();
+        if (!EntryPoint.ModController.IsRunning)
+        {
+            return;
+        }
+        LocationDispatcher.Dispatch();
+        GameFiber.Yield();
+
+        if (!EntryPoint.ModController.IsRunning)
         {
             return;
         }
@@ -126,11 +169,7 @@ public class Dispatcher
             return;
         }
         GameFiber.Yield();
-        if (!EntryPoint.ModController.IsRunning)
-        {
-            return;
-        }
-        LocationDispatcher.Dispatch();
+
         if (!EntryPoint.ModController.IsRunning)
         {
             return;

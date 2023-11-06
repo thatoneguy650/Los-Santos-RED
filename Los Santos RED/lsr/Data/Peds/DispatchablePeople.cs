@@ -3428,7 +3428,7 @@ public class DispatchablePeople : IDispatchablePeople
 
             //Sniper
             new DispatchablePerson("mp_m_freemode_01", 0,0){
-                MaxWantedLevelSpawn = 3, DebugName = "<Male RHPD Utility Class C Sniper>", RandomizeHead = true,
+                DebugName = "<Male RHPD Utility Class C Sniper>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedPropComponent>(){
@@ -3875,8 +3875,8 @@ public class DispatchablePeople : IDispatchablePeople
             },
 
             //Sniper
-            new DispatchablePerson("mp_m_freemode_01", 2, 10){
-                MaxWantedLevelSpawn = 3, DebugName = "<Male DPPD Utility Class C>", RandomizeHead = true,
+            new DispatchablePerson("mp_m_freemode_01", 0, 0){
+                DebugName = "<Male DPPD Utility Class C>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(new List<PedPropComponent>(){},
                                                         new List<PedComponent>(){
@@ -3890,7 +3890,8 @@ public class DispatchablePeople : IDispatchablePeople
                                                             new PedComponent(7, 8, 0),
                                                             new PedComponent(9, 37, 0),
                                                             new PedComponent(5, 65, 7),
-                                                        })            ,GroupName = "Sniper"
+                                                        })            
+            ,GroupName = "Sniper"
             ,OverrideAgencyLongGuns = true
             ,OverrideLongGunsID = "GoodSniperLongGuns"
             ,AlwaysHasLongGun = true

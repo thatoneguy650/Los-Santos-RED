@@ -59,6 +59,7 @@ public class ActivityManager
     private MenuPool MenuPool;
     private UIMenu continueActivityMenu;
     private uint GameTimeLastSetBlips;
+    private bool IsDoingVehileAnim;
 
     public bool IsUsingToolAsWeapon { get; set; }
 
@@ -1440,12 +1441,17 @@ public class ActivityManager
             action();
             return;
         }
+        if(IsDoingVehileAnim)
+        {
+            return;
+        }
         AnimationDictionary.RequestAnimationDictionay(dictionary);
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, anim, 4.0f, -4.0f, -1, (int)(eAnimationFlags.AF_UPPERBODY | eAnimationFlags.AF_SECONDARY), 0, false, false, false);//-1
         GameFiber animWatcher = GameFiber.StartNew(delegate
         {
             try
             {
+                IsDoingVehileAnim = true;
                 bool IsFinished = false;
                 uint GameTimeStarted = Game.GameTime;
                 bool performedAction = false;
@@ -1471,7 +1477,7 @@ public class ActivityManager
                     GameFiber.Yield();
                 }
                 NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
-
+                IsDoingVehileAnim = false;
                 // GameFiber.Sleep(timeToWait);
 
                 //GameFiber.Sleep(1000);

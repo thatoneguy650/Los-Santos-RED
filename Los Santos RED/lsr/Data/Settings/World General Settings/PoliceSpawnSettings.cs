@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.Serialization;
 
 public class PoliceSpawnSettings : ISettingsDefaultable
 {
@@ -16,8 +17,10 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public bool AllowLocationSpawning { get; set; }
     //[Description("Maximum wanted level to spawn ambient peds and vehicles around the station.")]
     //public int StationSpawning_MaxWanted { get; set; }
-
-
+    [Description("Ped limit on how many location police can spawn.")]
+    public int LocationSpawnedPedLimit { get; set; }
+    [Description("Vehicle limit on how many location police can spawn.")]
+    public int LocationSpawnedVehicleLimit { get; set; }
 
     [Description("Maximum distance (in meters) that police can spawn when you are wanted and seen by police.")]
     public float MaxDistanceToSpawn_WantedSeen { get; set; }
@@ -294,6 +297,13 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public float DistanceToRecallOnFoot_Wanted { get; set; }
     public float FootPatrolSpawnPercentage { get; set; }
 
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
+
+
     public PoliceSpawnSettings()
     {
         SetDefault();
@@ -313,8 +323,11 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         PedSpawnLimit_Default_Industrial = 5;
         PedSpawnLimit_Default_Downtown = 6;
 
+        LocationSpawnedPedLimit = 6;
+        LocationSpawnedVehicleLimit = 6;
 
-        PedSpawnLimit_Investigation = 6;
+
+        PedSpawnLimit_Investigation = 7;
         PedSpawnLimit_Wanted1 = 7;// 8;
         PedSpawnLimit_Wanted2 = 9;// 9;
         PedSpawnLimit_Wanted3 = 12;// 14;
@@ -338,8 +351,8 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
         VehicleSpawnLimit_Investigation = 6;
         VehicleSpawnLimit_Wanted1 = 7;// 8;
-        VehicleSpawnLimit_Wanted2 = 9;// 9;
-        VehicleSpawnLimit_Wanted3 = 12;// 13;
+        VehicleSpawnLimit_Wanted2 = 8;// 9;
+        VehicleSpawnLimit_Wanted3 = 10;// 13;
         VehicleSpawnLimit_Wanted4 = 14;// 15;
         VehicleSpawnLimit_Wanted5 = 15;// 16;
         VehicleSpawnLimit_Wanted6 = 16;// 18;
@@ -477,7 +490,7 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         DistanceToRecallInVehicle_NotWanted = 1000f;
         DistanceToRecallInVehicle_Wanted = 850f;
         DistanceToRecallOnFoot_NotWanted = 300f;
-        DistanceToRecallOnFoot_Wanted = 125f;
+        DistanceToRecallOnFoot_Wanted = 175f;
 
 
         FootPatrolSpawnPercentage = 55f;

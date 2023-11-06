@@ -327,12 +327,8 @@ public class Agencies : IAgencies
             agency.SideArms = issuableWeapons.GetWeaponData(agency.SideArmsID);
             agency.Personnel = dispatchablePeople.GetPersonData(agency.PersonnelID);
             agency.Vehicles = dispatchableVehicles.GetVehicleData(agency.VehiclesID);
-
-
             agency.OffDutyPersonnel = dispatchablePeople.GetPersonData(agency.OffDutyPersonnelID);
             agency.OffDutyVehicles = dispatchableVehicles.GetVehicleData(agency.OffDutyVehiclesID);
-
-
             agency.PossibleHeads = heads.GetHeadData(agency.HeadDataGroupID);
         }
     }

@@ -53,10 +53,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         CurrentHealthState = new HealthState(this, settings, false);
         Settings = settings;
 
-        if (WasModSpawned)
-        {
+        //if (WasModSpawned)
+        //{
             GameTimeSpawned = Game.GameTime;
-        }
+        //}
 
 
         PedViolations = new PedViolations(this, crimes, settings, weapons, world);

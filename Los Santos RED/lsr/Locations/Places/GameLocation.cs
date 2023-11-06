@@ -124,11 +124,12 @@ public class GameLocation : ILocationDispatchable
     public virtual int SortOrder { get; set; } = 999;
     public string StateID { get; set; }
     public string ScannerFilePath { get; set; } = "";
-    public virtual int ActivateCells { get; set; } = 4;//5;
-    public virtual float ActivateDistance { get; set; } = 150f;//225;
+    public virtual int ActivateCells { get; set; } = 4;//4;//5;
+    public virtual float ActivateDistance { get; set; } = 225f;//150f;//225;
     public virtual RestrictedAreas RestrictedAreas { get; set; }
     public virtual string AssociationID => AssignedAssociationID;
     public string AssignedAssociationID { get; set; }
+
     public string MenuID { get; set; }
 
     public Vector3 CameraPosition { get; set; } = Vector3.Zero;
@@ -216,6 +217,9 @@ public class GameLocation : ILocationDispatchable
     public Interior Interior => interior;
     public virtual void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
+
+        //EntryPoint.WriteToConsole($"Activate Location {Name} {DistanceToPlayer}");
+
         World = world;
         bool isOpen = IsOpen(time.CurrentHour);
         if (HasVendor)
@@ -237,6 +241,9 @@ public class GameLocation : ILocationDispatchable
                 interior.Load(isOpen);
             }
         }
+
+
+
         if (!ShouldAlwaysHaveBlip && IsBlipEnabled)
         {
             if (!Blip.Exists())
@@ -256,6 +263,8 @@ public class GameLocation : ILocationDispatchable
     }
     public virtual void Deactivate(bool deleteBlip)
     {
+
+       // EntryPoint.WriteToConsole($"Deactivate Location {Name}");
         if (Vendor != null && Vendor.Pedestrian.Exists())
         {
             Vendor.FullyDelete();

@@ -63,8 +63,8 @@ public class ConditionalLocation
     public float OverridePoorWeatherPercentage { get; set; } = -1.0f;
     public int MinHourSpawn { get; set; } = 0;
     public int MaxHourSpawn { get; set; } = 24;
-    public int MinWantedLevelSpawn { get; set; } = 0;
-    public int MaxWantedLevelSpawn { get; set; } = 3;
+    public virtual int MinWantedLevelSpawn { get; set; } = 0;
+    public virtual int MaxWantedLevelSpawn { get; set; } = 3;
     public bool LongGunAlwaysEquipped { get; set; } = false;
     public bool ForceMelee { get; set; } = false;
     public bool ForceSidearm { get; set; } = false;

@@ -61,6 +61,7 @@ public class LocationDispatcher
                 {
                     //EntryPoint.WriteToConsole($"ATTEMPTING GROUP SPAWN AT {ps.Name}");
                     cg.AttemptSpawn(Player, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems);
+                    GameFiber.Yield();
                 }
             }
             if (ps.PossiblePedSpawns != null)

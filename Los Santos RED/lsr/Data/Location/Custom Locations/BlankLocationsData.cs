@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 public class BlankLocationsData
 {
-    private float defaultSpawnPercentage = 40f;
+    private float defaultSpawnPercentage = 55f;
     public BlankLocationsData()
     {
     }
@@ -40,69 +40,83 @@ public class BlankLocationsData
     }
     private void RooftopSnipers()
     {
+        float sniperSpawnPercentage = 65f;
         List<BlankLocation> blankLocationPlaces = new List<BlankLocation>() {
-            new BlankLocation(new Vector3(-1004.588f,-2451.93f,25.63272f), 294.0977f, "RoofTopSniper1", "Rooftop Sniper 1") {  ActivateDistance = 400f,ActivateCells = 8,
-            PossiblePedSpawns = new List<ConditionalLocation>()
-            {
-                new LEConditionalLocation(new Vector3(-1004.588f,-2451.93f,25.63272f), 294.0977f, defaultSpawnPercentage) {
-                    MaxWantedLevelSpawn = 5,
-                    RequiredPedGroup = "Sniper",
-                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
-            },
-            new BlankLocation(new Vector3(-544.9591f, -2225.018f, 122.3655f), 56.47693f, "RoofTopSniper2", "Rooftop Sniper 2") {  ActivateDistance = 400f,ActivateCells = 8,
-            PossiblePedSpawns = new List<ConditionalLocation>()
-            {
-                new LEConditionalLocation(new Vector3(-544.9591f, -2225.018f, 122.3655f), 56.47693f, defaultSpawnPercentage) {
-                    MinWantedLevelSpawn = 2,
-                    MaxWantedLevelSpawn = 5,
-                    RequiredPedGroup = "Sniper",
-                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
-            },
-            new BlankLocation(new Vector3(132.3552f, -1032.493f, 57.79759f), 336.7522f, "RoofTopSniper3", "Rooftop Sniper 3") {  ActivateDistance = 400f,ActivateCells = 8,
-            PossiblePedSpawns = new List<ConditionalLocation>()
-            {
-                new LEConditionalLocation(new Vector3(132.3552f, -1032.493f, 57.79759f), 336.7522f, defaultSpawnPercentage) {
-                    MinWantedLevelSpawn = 2,
-                    MaxWantedLevelSpawn = 5,
-                    RequiredPedGroup = "Sniper",
-                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
-            },
-            new BlankLocation(new Vector3(-62.03125f, -707.9713f, 55.52032f), 94.052f, "RoofTopSniper4", "Rooftop Sniper 4") {  ActivateDistance = 400f,ActivateCells = 8,
-            PossiblePedSpawns = new List<ConditionalLocation>()
-            {
-                new LEConditionalLocation(new Vector3(-62.03125f, -707.9713f, 55.52032f), 94.052f, defaultSpawnPercentage) {
-                    MinWantedLevelSpawn = 2,
-                    MaxWantedLevelSpawn = 5,
-                    RequiredPedGroup = "Sniper",
-                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
-            },
-            new BlankLocation(new Vector3(-547.1264f, -625.6401f, 56.11749f), 172.5318f, "RoofTopSniper5", "Rooftop Sniper 5") {  ActivateDistance = 400f,ActivateCells = 8,
-            PossiblePedSpawns = new List<ConditionalLocation>()
-            {
-                new LEConditionalLocation(new Vector3(-547.1264f, -625.6401f, 56.11749f), 172.5318f, defaultSpawnPercentage) {
-                    MinWantedLevelSpawn = 2,
-                    MaxWantedLevelSpawn = 5,
-                    RequiredPedGroup = "Sniper",
-                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
-            },
-            new BlankLocation(new Vector3(-771.976f, -302.2982f, 54.00434f), 109.9027f, "RoofTopSniper6", "Rooftop Sniper 6") {  ActivateDistance = 400f,ActivateCells = 8,
-            PossiblePedSpawns = new List<ConditionalLocation>()
-            {
-                new LEConditionalLocation(new Vector3(-771.976f, -302.2982f, 54.00434f), 109.9027f, defaultSpawnPercentage) {
-                    MinWantedLevelSpawn = 2,
-                    MaxWantedLevelSpawn = 5,
-                    RequiredPedGroup = "Sniper",
-                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
-            },
-            new BlankLocation(new Vector3(-1332.035f, -500.6434f, 40.44254f), 260.7096f, "RoofTopSniper7", "Rooftop Sniper 7") {  ActivateDistance = 400f,ActivateCells = 8,
-            PossiblePedSpawns = new List<ConditionalLocation>()
-            {
-                new LEConditionalLocation(new Vector3(-1332.035f, -500.6434f, 40.44254f), 260.7096f, defaultSpawnPercentage) {
-                    MinWantedLevelSpawn = 2,
-                    MaxWantedLevelSpawn = 5,
-                    RequiredPedGroup = "Sniper",
-                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
-            },
+            new BlankLocation(new Vector3(-1004.588f,-2451.93f,25.63272f), 294.0977f, "RoofTopSniper1", "Rooftop Sniper 1") {  //Near LSIA
+                ActivateDistance = 400f,ActivateCells = 8,
+                AssignedAssociationID = "LSIAPD",
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(-1004.588f,-2451.93f,25.63272f), 294.0977f, sniperSpawnPercentage) {
+                        MaxWantedLevelSpawn = 4,
+                        RequiredPedGroup = "Sniper",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
+                },
+            new BlankLocation(new Vector3(-544.9591f, -2225.018f, 122.3655f), 56.47693f, "RoofTopSniper2", "Rooftop Sniper 2") {  //Top of Bridge outside LSIA
+                ActivateDistance = 400f,ActivateCells = 8,
+                AssignedAssociationID = "LSIAPD",
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(-544.9591f, -2225.018f, 122.3655f), 56.47693f, sniperSpawnPercentage) {
+                        MinWantedLevelSpawn = 2,
+                        MaxWantedLevelSpawn = 4,
+
+                        RequiredPedGroup = "Sniper",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
+                },
+            new BlankLocation(new Vector3(132.3552f, -1032.493f, 57.79759f), 336.7522f, "RoofTopSniper3", "Rooftop Sniper 3") {  //Pillbox hill rooftop
+                ActivateDistance = 400f,ActivateCells = 8,
+                AssignedAssociationID = "LSPD",
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(132.3552f, -1032.493f, 57.79759f), 336.7522f, sniperSpawnPercentage) {
+                        MinWantedLevelSpawn = 2,
+                        MaxWantedLevelSpawn = 4,
+                        RequiredPedGroup = "Sniper",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
+                },
+            new BlankLocation(new Vector3(-62.03125f, -707.9713f, 55.52032f), 94.052f, "RoofTopSniper4", "Rooftop Sniper 4") {  //Pillbox hill rooftop
+                ActivateDistance = 400f,ActivateCells = 8,
+                AssignedAssociationID = "LSPD",
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(-62.03125f, -707.9713f, 55.52032f), 94.052f, sniperSpawnPercentage) {
+                        MinWantedLevelSpawn = 2,
+                        MaxWantedLevelSpawn = 4,
+                        RequiredPedGroup = "Sniper",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
+                },
+            new BlankLocation(new Vector3(-547.1264f, -625.6401f, 56.11749f), 172.5318f, "RoofTopSniper5", "Rooftop Sniper 5") { //rockford hills rooftop
+                ActivateDistance = 400f,ActivateCells = 8,
+                //AssignedAssociationID = "RHPD",//what about NON FEJ "LSPD-RH"
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(-547.1264f, -625.6401f, 56.11749f), 172.5318f, sniperSpawnPercentage) {
+                        MinWantedLevelSpawn = 2,
+                        MaxWantedLevelSpawn = 4,
+                        RequiredPedGroup = "Sniper",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
+                },
+            new BlankLocation(new Vector3(-771.976f, -302.2982f, 54.00434f), 109.9027f, "RoofTopSniper6", "Rooftop Sniper 6") {  //rockford hills rooftop
+                ActivateDistance = 400f,ActivateCells = 8,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(-771.976f, -302.2982f, 54.00434f), 109.9027f, sniperSpawnPercentage) {
+                        MinWantedLevelSpawn = 2,
+                        MaxWantedLevelSpawn = 4,
+                        RequiredPedGroup = "Sniper",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
+                },
+            new BlankLocation(new Vector3(-1332.035f, -500.6434f, 40.44254f), 260.7096f, "RoofTopSniper7", "Rooftop Sniper 7") {  //del perro rooftop
+                ActivateDistance = 400f,ActivateCells = 8,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(-1332.035f, -500.6434f, 40.44254f), 260.7096f, sniperSpawnPercentage) {
+                        MinWantedLevelSpawn = 2,
+                        MaxWantedLevelSpawn = 4,
+                        RequiredPedGroup = "Sniper",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
+                },
         };
         BlankLocationPlaces.AddRange(blankLocationPlaces);
     }
@@ -113,6 +127,7 @@ public class BlankLocationsData
             {
                 ActivateDistance = 400f,
                 ActivateCells = 8,
+                AssignedAssociationID = "NOOSE",
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                     {
                         new ConditionalGroup(){
@@ -411,8 +426,8 @@ public class BlankLocationsData
                             MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 3,
                             LongGunAlwaysEquipped = false,
-                            ForceMelee = false,
-                            ForceSidearm = false,
+
+
                             ForceLongGun = false,
                     },
                 },
@@ -470,10 +485,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new LEConditionalLocation()
                                     {
@@ -501,10 +516,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -531,8 +546,8 @@ public class BlankLocationsData
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 3,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -593,8 +608,8 @@ public class BlankLocationsData
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 3,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -622,8 +637,8 @@ public class BlankLocationsData
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 3,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -739,10 +754,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -769,10 +784,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -798,8 +813,8 @@ public class BlankLocationsData
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -922,10 +937,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -951,10 +966,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -980,10 +995,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -1010,8 +1025,8 @@ public class BlankLocationsData
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -1072,10 +1087,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -1102,10 +1117,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -1171,10 +1186,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -1202,10 +1217,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -1233,10 +1248,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -1264,10 +1279,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -1293,10 +1308,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -1319,10 +1334,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                     },
@@ -1825,10 +1840,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -1856,10 +1871,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -1887,10 +1902,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -1918,10 +1933,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -1949,10 +1964,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -1978,10 +1993,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2004,10 +2019,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2030,10 +2045,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                     },
@@ -2093,10 +2108,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2123,10 +2138,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -2152,10 +2167,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2178,10 +2193,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                     },
@@ -2242,10 +2257,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2273,10 +2288,10 @@ public class BlankLocationsData
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -2303,8 +2318,8 @@ public class BlankLocationsData
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 3,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -2511,10 +2526,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2542,10 +2557,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2573,10 +2588,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2604,10 +2619,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2635,10 +2650,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2666,10 +2681,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2697,10 +2712,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2728,10 +2743,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2759,10 +2774,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2790,10 +2805,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -2819,10 +2834,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2845,10 +2860,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2871,10 +2886,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2897,10 +2912,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                     },
@@ -2962,10 +2977,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -2994,10 +3009,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -3026,10 +3041,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -3058,10 +3073,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -3089,8 +3104,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 3,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -3242,10 +3257,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -3272,10 +3287,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -3336,10 +3351,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -3366,10 +3381,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -3396,8 +3411,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -3457,10 +3472,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -3487,10 +3502,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -3517,8 +3532,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -3578,10 +3593,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -3608,10 +3623,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 4,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -3638,8 +3653,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -3699,10 +3714,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -3729,10 +3744,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -3759,10 +3774,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -3789,10 +3804,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -3816,10 +3831,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                     },
@@ -3882,10 +3897,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -3913,10 +3928,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -3943,10 +3958,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -3974,10 +3989,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -4005,10 +4020,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -4036,10 +4051,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -4067,10 +4082,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -4098,10 +4113,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -4127,10 +4142,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -4153,10 +4168,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -4179,10 +4194,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                     },
@@ -4242,10 +4257,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -4273,10 +4288,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -4304,10 +4319,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -4335,10 +4350,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -4365,10 +4380,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -4392,10 +4407,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -4419,10 +4434,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                     },
@@ -4483,10 +4498,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -4515,10 +4530,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -4547,10 +4562,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -4579,10 +4594,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -4609,10 +4624,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -4636,10 +4651,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                     },
@@ -5036,10 +5051,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -5066,10 +5081,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -5096,8 +5111,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -5156,10 +5171,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -5186,10 +5201,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -5215,10 +5230,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -5241,10 +5256,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                     },
@@ -5303,10 +5318,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -5333,10 +5348,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -5363,10 +5378,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -5393,8 +5408,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -5454,10 +5469,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -5484,10 +5499,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -5514,8 +5529,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -5575,10 +5590,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -5605,10 +5620,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -5635,8 +5650,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -5699,10 +5714,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -5728,10 +5743,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -5757,10 +5772,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -5786,10 +5801,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -5815,10 +5830,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -5844,10 +5859,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -5873,10 +5888,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -5902,10 +5917,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -5928,10 +5943,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -5954,10 +5969,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                     },
@@ -6302,10 +6317,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -6331,10 +6346,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -6361,8 +6376,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -6423,10 +6438,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -6453,10 +6468,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -6483,8 +6498,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -6545,10 +6560,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -6575,10 +6590,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -6639,10 +6654,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -6668,10 +6683,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -6698,8 +6713,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -6761,10 +6776,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -6790,10 +6805,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -6820,8 +6835,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -6880,10 +6895,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -6909,10 +6924,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -6939,8 +6954,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -7408,10 +7423,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -7438,10 +7453,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -7468,10 +7483,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -7497,10 +7512,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -7523,10 +7538,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                     },
@@ -7586,10 +7601,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -7617,10 +7632,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -7648,10 +7663,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -7679,10 +7694,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -7709,10 +7724,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -7739,10 +7754,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -7768,10 +7783,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -7794,10 +7809,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -7820,10 +7835,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 3,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                     },
@@ -7956,10 +7971,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -7986,10 +8001,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8016,10 +8031,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8046,10 +8061,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8076,10 +8091,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -8105,10 +8120,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8131,10 +8146,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                     },
@@ -8192,10 +8207,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8222,10 +8237,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8252,10 +8267,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8282,10 +8297,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8312,10 +8327,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -8341,10 +8356,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8367,10 +8382,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8393,10 +8408,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                     },
@@ -8455,10 +8470,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8485,10 +8500,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -8515,8 +8530,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -8576,10 +8591,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8606,10 +8621,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8636,10 +8651,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8666,10 +8681,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8696,10 +8711,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -8726,8 +8741,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -8787,10 +8802,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8817,10 +8832,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8847,10 +8862,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -8877,8 +8892,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -8938,10 +8953,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8967,10 +8982,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -8997,10 +9012,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -9027,10 +9042,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -9056,10 +9071,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -9082,10 +9097,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                     },
@@ -9144,10 +9159,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -9174,10 +9189,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -9204,10 +9219,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -9268,10 +9283,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -9298,10 +9313,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -9328,8 +9343,8 @@ new List<ConditionalGroup>() {
                                         MinWantedLevelSpawn = 0,
                                         MaxWantedLevelSpawn = 6,
                                         LongGunAlwaysEquipped = false,
-                                        ForceMelee = false,
-                                        ForceSidearm = false,
+            
+            
                                         ForceLongGun = false,
                                 },
                             },
@@ -9389,10 +9404,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -9419,10 +9434,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -9449,10 +9464,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -9513,10 +9528,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -9543,10 +9558,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -9573,10 +9588,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -9637,10 +9652,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -9667,10 +9682,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -9697,10 +9712,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -9761,10 +9776,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -9791,10 +9806,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                                     new GangConditionalLocation()
                                     {
@@ -9821,10 +9836,10 @@ new List<ConditionalGroup>() {
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
                                             MaxWantedLevelSpawn = 6,
-                                            LongGunAlwaysEquipped = false,
-                                            ForceMelee = false,
-                                            ForceSidearm = false,
-                                            ForceLongGun = false,
+
+                
+                
+
                                     },
                             },
                             PossibleVehicleSpawns = new List<ConditionalLocation>()

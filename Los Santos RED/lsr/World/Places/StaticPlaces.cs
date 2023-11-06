@@ -81,7 +81,7 @@ public class StaticPlaces
         {
             gl.CheckActivation(World, Interiors,Settings,Crimes,Weapons,Time);
             LocationsCalculated++;
-            if (LocationsCalculated >= 7)//7//20//50//20//5
+            if (LocationsCalculated >= 7)//7)//7//20//50//20//5
             {
                 LocationsCalculated = 0;
                 GameFiber.Yield();

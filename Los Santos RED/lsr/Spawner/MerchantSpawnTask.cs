@@ -64,10 +64,13 @@ public class MerchantSpawnTask : SpawnTask
             if (VehicleType != null && SpawnedVehicle.Exists())
             {
                 uint GameTimeStarted = Game.GameTime;
-                NativeFunction.Natives.REQUEST_MODEL(Game.GetHashKey(PersonType.ModelName));
-                while (!NativeFunction.Natives.HAS_MODEL_LOADED<bool>(Game.GetHashKey(PersonType.ModelName)) && Game.GameTime - GameTimeStarted <= 1000)
+                if (!NativeFunction.Natives.HAS_MODEL_LOADED<bool>(Game.GetHashKey(PersonType.ModelName)))
                 {
-                    GameFiber.Yield();
+                    NativeFunction.Natives.REQUEST_MODEL(Game.GetHashKey(PersonType.ModelName));
+                    while (!NativeFunction.Natives.HAS_MODEL_LOADED<bool>(Game.GetHashKey(PersonType.ModelName)) && Game.GameTime - GameTimeStarted <= 1000)
+                    {
+                        GameFiber.Yield();
+                    }
                 }
                 createdPed = NativeFunction.Natives.CREATE_PED_INSIDE_VEHICLE<Ped>(SpawnedVehicle, 26, Game.GetHashKey(PersonType.ModelName), seat, true, true);
             }

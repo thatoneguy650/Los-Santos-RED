@@ -118,9 +118,9 @@ public class PlayerOtherSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
-        Recognize_BaseTime = 2000;
-        Recognize_NightPenalty = 3500;
-        Recognize_VehiclePenalty = 750;
+        Recognize_BaseTime = 3000;//2000;
+        Recognize_NightPenalty = 3000;// 3500;
+        Recognize_VehiclePenalty = 1500;// 750;
 
         SetSlowMoOnDeath = true;
         SlowMoOnDeathSpeed = 0.4f;

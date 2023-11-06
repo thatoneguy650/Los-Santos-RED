@@ -95,6 +95,7 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
         SettingsUIMenu.AddItem(DefaultSettings);
         SettingsUIMenu.AddItem(MySettings);
         SettingsUIMenu.AddItem(HardSettings);
+        SettingsUIMenu.AddItem(EasySettings);
 
         SettingsUIMenu.OnItemSelect += OnItemSelect;
         SettingsUIMenu.OnListChange += OnListChange;

@@ -124,7 +124,7 @@ public class ActionWheelSettings : ISettingsDefaultable
         MessageScale = 0.25f;
         MessageBodySpacingY = 0.15f;//0.125f;
         MessageHeaderSpacingY = 0.04f;//0.02f;
-        MessagesToShow = 4;
+        MessagesToShow = 5;
         ItemDistanceFromCenterExtraItemScalar = -0.005f;//-0.01f;
         ItemScaleExtraItemScalar = 0.005f;// 0.01f;
 

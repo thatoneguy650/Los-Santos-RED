@@ -1674,6 +1674,30 @@ HighlightProp();
 
 public void DebugNumpad8()
 {
+
+
+        if (!Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips)
+        {
+            Settings.SettingsManager.GangSettings.ShowSpawnedBlip = true;
+            Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips = true;
+            Settings.SettingsManager.EMSSettings.ShowSpawnedBlips = true;
+            Settings.SettingsManager.FireSettings.ShowSpawnedBlips = true;
+            Settings.SettingsManager.TaxiSettings.ShowSpawnedBlip = true;
+            Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips = true;
+        }
+        else
+        {
+            Settings.SettingsManager.GangSettings.ShowSpawnedBlip = false;
+            Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips = false;
+            Settings.SettingsManager.EMSSettings.ShowSpawnedBlips = false;
+            Settings.SettingsManager.FireSettings.ShowSpawnedBlips = false;
+            Settings.SettingsManager.TaxiSettings.ShowSpawnedBlip = false;
+            Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips = false;
+        }
+        Game.DisplaySubtitle($"Toggled Blips Enabled:{Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips}");
+        GameFiber.Sleep(500);
+
+
         // if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         // {
         //     EntryPoint.WriteToConsole($"modelName: {Player.CurrentVehicle.Vehicle.Model.Name.ToLower()} modelHAsh{Player.CurrentVehicle.Vehicle.Model.Hash} modSpawned{Player.CurrentVehicle.WasModSpawned} gang{Player.CurrentVehicle.AssociatedGang?.ID}");
@@ -1697,65 +1721,65 @@ public void DebugNumpad8()
         // Player.ActivityManager.DebugPlayVehicleAnim(dictionaryName, animName);
 
 
-        GameFiber.StartNew(delegate
-        {
-            while (!Game.IsKeyDownRightNow(Keys.Z))
-            {
-                if(Game.IsControlJustReleased(0, GameControl.Attack))
-                {
-                    EntryPoint.WriteToConsole($"GameControl.Attack:{Game.IsControlJustReleased(0, GameControl.Attack)}");
-                }
-                if(NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24))
-                {
-                    EntryPoint.WriteToConsole($"GameControl.Attack (Disabled):{NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24)}");
-                }
-                if(Game.IsControlJustReleased(0, GameControl.VehicleAttack))
-                {
-                    EntryPoint.WriteToConsole($"GameControl.VehicleAttack:{Game.IsControlJustReleased(0, GameControl.VehicleAttack)}");
-                }
-                if(NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 69))
-                {
-                    EntryPoint.WriteToConsole($"GameControl.VehicleAttack (Disabled):{NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 69)}");
-                }
+        //GameFiber.StartNew(delegate
+        //{
+        //    while (!Game.IsKeyDownRightNow(Keys.Z))
+        //    {
+        //        if(Game.IsControlJustReleased(0, GameControl.Attack))
+        //        {
+        //            EntryPoint.WriteToConsole($"GameControl.Attack:{Game.IsControlJustReleased(0, GameControl.Attack)}");
+        //        }
+        //        if(NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24))
+        //        {
+        //            EntryPoint.WriteToConsole($"GameControl.Attack (Disabled):{NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24)}");
+        //        }
+        //        if(Game.IsControlJustReleased(0, GameControl.VehicleAttack))
+        //        {
+        //            EntryPoint.WriteToConsole($"GameControl.VehicleAttack:{Game.IsControlJustReleased(0, GameControl.VehicleAttack)}");
+        //        }
+        //        if(NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 69))
+        //        {
+        //            EntryPoint.WriteToConsole($"GameControl.VehicleAttack (Disabled):{NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 69)}");
+        //        }
 
 
-                if (Game.IsControlJustReleased(0, GameControl.VehicleFlyMouseControlOverride))
-                {
-                    EntryPoint.WriteToConsole($"GameControl.VehicleFlyMouseControlOverride:{Game.IsControlJustReleased(0, GameControl.VehicleFlyMouseControlOverride)}");
-                }
-                if (NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 122))
-                {
-                    EntryPoint.WriteToConsole($"GameControl.VehicleFlyMouseControlOverride (Disabled):{NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 122)}");
-                }
-
-
-
-                if (Game.IsControlJustPressed(0, GameControl.Aim))
-                {
-                    EntryPoint.WriteToConsole($"GameControl.Aim:{Game.IsControlJustPressed(0, GameControl.Aim)}");
-                }
-                if(NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25))
-                {
-                    EntryPoint.WriteToConsole($"GameControl.Aim (Disabled):{NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25)}");
-                }
-                if(Game.IsControlJustPressed(0, GameControl.VehicleAim))
-                {
-                    EntryPoint.WriteToConsole($"GameControl.VehicleAim:{Game.IsControlJustPressed(0, GameControl.VehicleAim)}");
-                }
-                if(NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 68))
-                {
-                    EntryPoint.WriteToConsole($"GameControl.VehicleAim (Disabled):{NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 68)}");
-                }
+        //        if (Game.IsControlJustReleased(0, GameControl.VehicleFlyMouseControlOverride))
+        //        {
+        //            EntryPoint.WriteToConsole($"GameControl.VehicleFlyMouseControlOverride:{Game.IsControlJustReleased(0, GameControl.VehicleFlyMouseControlOverride)}");
+        //        }
+        //        if (NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 122))
+        //        {
+        //            EntryPoint.WriteToConsole($"GameControl.VehicleFlyMouseControlOverride (Disabled):{NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 122)}");
+        //        }
 
 
 
-                Game.DisplayHelp($"Press Z to Exit");
-                GameFiber.Yield();
-            }
+        //        if (Game.IsControlJustPressed(0, GameControl.Aim))
+        //        {
+        //            EntryPoint.WriteToConsole($"GameControl.Aim:{Game.IsControlJustPressed(0, GameControl.Aim)}");
+        //        }
+        //        if(NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25))
+        //        {
+        //            EntryPoint.WriteToConsole($"GameControl.Aim (Disabled):{NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25)}");
+        //        }
+        //        if(Game.IsControlJustPressed(0, GameControl.VehicleAim))
+        //        {
+        //            EntryPoint.WriteToConsole($"GameControl.VehicleAim:{Game.IsControlJustPressed(0, GameControl.VehicleAim)}");
+        //        }
+        //        if(NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 68))
+        //        {
+        //            EntryPoint.WriteToConsole($"GameControl.VehicleAim (Disabled):{NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 68)}");
+        //        }
 
 
-        }, "Run Debug Logic");
-        GameFiber.Sleep(1000);
+
+        //        Game.DisplayHelp($"Press Z to Exit");
+        //        GameFiber.Yield();
+        //    }
+
+
+        //}, "Run Debug Logic");
+        //GameFiber.Sleep(1000);
 
 
         //EntryPoint.WriteToConsole($"GameControl.Attack:{Game.IsControlJustPressed(0, GameControl.Attack)}");
@@ -4805,7 +4829,7 @@ private void contacttest()
         }
         EntryPoint.WriteToConsole($"============================================ TAXI VEHICLE END", 5);
         EntryPoint.WriteToConsole($"============================================ CIVILIAN VEHICLE START", 5);
-        foreach (VehicleExt vehicleExt in World.Vehicles.CivilianVehicles)
+        foreach (VehicleExt vehicleExt in World.Vehicles.CivilianVehicles.Where(x=> x.WasModSpawned))
         {
             EntryPoint.WriteToConsole($"{vehicleExt.GetDebugString()}", 5);
         }

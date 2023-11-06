@@ -116,6 +116,7 @@ public class Vehicles
         }
     }
     public int SpawnedPoliceVehiclesCount => PoliceVehicles.Where(x=> x.WasModSpawned).Count();
+    public int SpawnedEmptyPoliceVehiclesCount => PoliceVehicles.Where(x => x.WasModSpawned && x.WasSpawnedEmpty).Count();
     public int SpawnedAmbientPoliceVehiclesCount => PoliceVehicles.Where(x => x.WasModSpawned && !x.WasSpawnedEmpty).Count();
     public int PoliceHelicoptersCount => PoliceVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsHelicopter);
     public int PoliceBoatsCount => PoliceVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsBoat);
