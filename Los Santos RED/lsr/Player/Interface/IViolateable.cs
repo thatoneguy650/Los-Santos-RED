@@ -69,6 +69,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsFireFighter { get; }
         RestrictedAreaManager RestrictedAreaManager { get; }
         List<VehicleExt> TrackedVehicles { get; }
+        VehicleOwnership VehicleOwnership { get; }
+        uint TimeInCurrentVehicle { get; }
 
         //  bool IsLootingBody { get; }
 

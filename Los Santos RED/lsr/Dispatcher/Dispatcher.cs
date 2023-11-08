@@ -88,13 +88,11 @@ public class Dispatcher
             //EntryPoint.WriteToConsole("RECENTLY STARTED PLAYING NO DISPTACH");
             return;
         }
-        if(Game.GameTime - GameTimeStartedDispatch <= 10000)
+        if(Game.GameTime - GameTimeStartedDispatch <= 8000)
         {
             //EntryPoint.WriteToConsole("RECENTLY STARTED PLAYING222 NO DISPTACH");
             return;
         }
-
-
         GameFiber.Yield();
         if (!EntryPoint.ModController.IsRunning)
         {
@@ -128,33 +126,18 @@ public class Dispatcher
         {
             GameFiber.Yield();
         }
-        //if (EntryPoint.ModController.IsRunning && !LEDispatcher.Dispatch())
-        //{
-        //    if (EntryPoint.ModController.IsRunning && !EMSDispatcher.Dispatch())
-        //    {
-        //        if(EntryPoint.ModController.IsRunning && !FireDispatcher.Dispatch())
-        //        {
-        //            if(EntryPoint.ModController.IsRunning && !SecurityDispatcher.Dispatch())
-        //            {
-
-        //            }
-        //        }
-        //    }
-        //}
-
-        GameFiber.Yield();
         if (!EntryPoint.ModController.IsRunning)
         {
             return;
         }
         LocationDispatcher.Dispatch();
         GameFiber.Yield();
-
         if (!EntryPoint.ModController.IsRunning)
         {
             return;
         }
         GangDispatcher.Dispatch();
+        GameFiber.Yield();
         if (!EntryPoint.ModController.IsRunning)
         {
             return;
@@ -162,14 +145,13 @@ public class Dispatcher
         if (World.IsZombieApocalypse)
         {
             GameFiber.Yield();
+            if (!EntryPoint.ModController.IsRunning)
+            {
+                return;
+            }
             ZombieDispatcher.Dispatch();
         }
-        if (!EntryPoint.ModController.IsRunning)
-        {
-            return;
-        }
         GameFiber.Yield();
-
         if (!EntryPoint.ModController.IsRunning)
         {
             return;
@@ -207,7 +189,7 @@ public class Dispatcher
                 {
                     continue;
                 }
-                if (civilianCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
+                if (civilianCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 275f)//250f)
                 {
                     if (civilianCar.Vehicle.IsPersistent)
                     {

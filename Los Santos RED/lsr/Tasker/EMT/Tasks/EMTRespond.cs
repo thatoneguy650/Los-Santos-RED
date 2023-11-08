@@ -72,7 +72,7 @@ public class EMTRespond : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
+            //NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);//tr cruise speed test
             Update();
         }
     }

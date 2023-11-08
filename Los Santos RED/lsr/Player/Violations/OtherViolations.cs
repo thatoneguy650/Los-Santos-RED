@@ -204,6 +204,40 @@ public class OtherViolations
         {
             Violations.AddViolating(StaticStrings.KillingCiviliansCrimeID);
         }
+        CheckVehicleInvasion();
+    }
+
+    private void CheckVehicleInvasion()
+    {
+        if(!Player.IsInVehicle || Player.CurrentVehicle == null || Player.IsDriver)
+        {
+            return;
+        }
+        if(Player.IsCop)
+        {
+            return;
+        }
+        if(Player.CurrentVehicle.IsTaxi)
+        {
+            return;
+        }
+        if(Player.VehicleOwnership.OwnedVehicles.Any(x=> x.Handle == Player.CurrentVehicle.Handle))
+        {
+            return;
+        }
+        if((Player.IsEMT || Player.IsFireFighter || Player.IsSecurityGuard) && Player.CurrentVehicle.IsService)
+        {
+            return;
+        }
+        if(Player.RelationshipManager.GangRelationships.CurrentGang != null && Player.CurrentVehicle.AssociatedGang != null && Player.CurrentVehicle.AssociatedGang.ID == Player.RelationshipManager.GangRelationships.CurrentGang.ID)
+        {
+            return;
+        }
+        if(Player.TimeInCurrentVehicle >= 5000)
+        {
+            return;
+        }
+        Violations.AddViolating(StaticStrings.VehicleInvasionCrimeID);
     }
 
     private void TrespassingUpdate()

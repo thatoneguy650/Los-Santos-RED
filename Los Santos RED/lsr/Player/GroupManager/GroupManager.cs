@@ -75,7 +75,7 @@ public class GroupManager
         {
             NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(groupMember.Pedestrian, PlayerGroup);
         }
-        //EntryPoint.WriteToConsole("Added Ped To GTA Group");
+        EntryPoint.WriteToConsole("Added Ped To GTA Group");
     }
     public void RemoveInternal(PedExt groupMember)
     {

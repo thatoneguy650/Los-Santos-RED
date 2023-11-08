@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -69,6 +70,14 @@ public class ActivitySettings : ISettingsDefaultable
     [Description("Human Shield Attach Extra Z Distance")]
     public float HumanShieldAttachZ { get; set; }
 
+
+
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
 
     public ActivitySettings()
     {

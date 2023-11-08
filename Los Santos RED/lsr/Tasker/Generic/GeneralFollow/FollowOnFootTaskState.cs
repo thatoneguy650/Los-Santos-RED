@@ -26,6 +26,8 @@ class FollowOnFootTaskState : TaskState
     private ISettingsProvideable Settings;
     private ITargetable Player;
     private GroupManager GroupManager;
+    private bool isSetCombat = false;
+    private bool isSetFollow = false;
     public FollowOnFootTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, GroupManager groupManager)
     {
         PedGeneral = pedGeneral;
@@ -44,10 +46,12 @@ class FollowOnFootTaskState : TaskState
     }
     public void Start()
     {
-        if (PedGeneral.Pedestrian.Exists())
+        if (!PedGeneral.Pedestrian.Exists())
         {
-            NativeFunction.Natives.CLEAR_PED_TASKS(PedGeneral.Pedestrian);
+            return;
+
         }
+        NativeFunction.Natives.CLEAR_PED_TASKS(PedGeneral.Pedestrian);
         //let the group stuff handle this!
         //GroupManager.Add(PedGeneral);
     }
@@ -57,7 +61,27 @@ class FollowOnFootTaskState : TaskState
     }
     public void Update()
     {
+        if (!PedGeneral.Pedestrian.Exists())
+        {
+            return;
+        }
+        //if(Player.Character.IsInCombat || PedGeneral.IsWanted)
+        //{
+        //    if (!isSetCombat)
+        //    {
+        //        NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(PedGeneral.Pedestrian, 100f, 0);//TR
+        //        isSetCombat = true;
+        //    }
+        //}
+        //else
+        //{
+        //    if(!isSetFollow)
+        //    {
 
+        //        NativeFunction.Natives.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(PedGeneral.Pedestrian, Player.Character, 5f, 5f, 0f, 3.0f, -1, 10f, true);
+        //        isSetFollow = true;
+        //    }
+        //}
     }
 }
 

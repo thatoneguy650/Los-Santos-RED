@@ -15,22 +15,17 @@ public class LESpawnTask : SpawnTask
     private Vehicle SpawnedVehicle;
     private string UnitCode;
     private bool AddCanine;
-    //private IZones Zones;
-    //private IPlateTypes PlateTypes;
     public LESpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers,
         IEntityProvideable world, IModItems modItems, bool addCanine) : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
     {
         Agency = agency;
         AddCanine = addCanine;
-        //Zones = zones;
-        //PlateTypes = plateTypes;
     }
 
     public List<Cop> SpawnedCops { get; set; } = new List<Cop>();
     private bool HasAgency => Agency != null;
     public bool IsMarshalMember { get; set; } = false;
     public bool IsOffDutySpawn { get; set; } = false;
-
     public override void AttemptSpawn()
     {
         try
@@ -138,8 +133,6 @@ public class LESpawnTask : SpawnTask
             }
         }
     }
-
-
     protected override void AddPassengers()
     {
         for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
@@ -165,8 +158,6 @@ public class LESpawnTask : SpawnTask
             GameFiber.Yield();
         }
     }
-
-
     protected override PedExt CreatePerson(int seat)
     {
         try
@@ -179,7 +170,6 @@ public class LESpawnTask : SpawnTask
                 //EntryPoint.WriteToConsole("ADDED HIEGHT TO SPAWN");
             }
             World.Pedestrians.CleanupAmbient();
-
             Ped createdPed = null;
             if (VehicleType != null && SpawnedVehicle.Exists())
             {
@@ -198,7 +188,6 @@ public class LESpawnTask : SpawnTask
             {
                 createdPed = new Ped(PersonType.ModelName, new Vector3(CreatePos.X, CreatePos.Y, CreatePos.Z), SpawnLocation.Heading);
             }
-
             EntryPoint.SpawnedEntities.Add(createdPed);
             GameFiber.Yield();
             if (createdPed.Exists())
@@ -212,8 +201,6 @@ public class LESpawnTask : SpawnTask
                 CreatedPeople.Add(Person);
                 GameFiber.Yield();
                 PersonType.SetPedVariation(createdPed, Agency.PossibleHeads, true);
-
-
                 return Person;
             }
             return null;
@@ -221,13 +208,6 @@ public class LESpawnTask : SpawnTask
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"LESpawn: ERROR DELETED PERSON {ex.Message} {ex.StackTrace}", 0);
-            //foreach (Entity entity in Rage.World.GetEntities(Position, 3.0f, GetEntitiesFlags.ConsiderAllPeds | GetEntitiesFlags.ExcludePlayerPed).ToList())
-            //{
-            //    if (entity.Exists())
-            //    {
-            //        entity.Delete();
-            //    }
-            //}
             return null;
         }
     }
@@ -235,7 +215,6 @@ public class LESpawnTask : SpawnTask
     {
         try
         {
-
             Vector3 CreatePos = Position;
             if (!PlacePedOnGround || VehicleType != null)
             {
@@ -243,11 +222,8 @@ public class LESpawnTask : SpawnTask
                 //CreatePos = CreatePos.Around2D(10f);
                 //EntryPoint.WriteToConsole("ADDED HIEGHT TO SPAWN");
             }
-
-
             World.Pedestrians.CleanupAmbient();
             Ped createdPed = null;// = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z), SpawnLocation.Heading);
-
             if (VehicleType != null && SpawnedVehicle.Exists())
             {
                 uint GameTimeStarted = Game.GameTime;
@@ -265,10 +241,6 @@ public class LESpawnTask : SpawnTask
             {
                 createdPed = new Ped(PersonType.ModelName, new Vector3(CreatePos.X, CreatePos.Y, CreatePos.Z), SpawnLocation.Heading);
             }
-
-
-
-
             EntryPoint.SpawnedEntities.Add(createdPed);
             GameFiber.Yield();
             if (createdPed.Exists())
@@ -289,13 +261,6 @@ public class LESpawnTask : SpawnTask
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"LESpawn: ERROR DELETED PERSON {ex.Message} {ex.StackTrace}", 0);
-            //foreach (Entity entity in Rage.World.GetEntities(Position, 3.0f, GetEntitiesFlags.ConsiderAllPeds | GetEntitiesFlags.ExcludePlayerPed).ToList())
-            //{
-            //    if (entity.Exists())
-            //    {
-            //        entity.Delete();
-            //    }
-            //}
             return null;
         }
     }

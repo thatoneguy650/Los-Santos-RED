@@ -49,7 +49,7 @@ public class Locate : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
+            //NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);//tr cruise speed test
             hasSixthSense = RandomItems.RandomPercent(Ped.IsInHelicopter ? Settings.SettingsManager.PoliceTaskSettings.SixthSenseHelicopterPercentage : Settings.SettingsManager.PoliceTaskSettings.SixthSensePercentage);
             if (!hasSixthSense && Ped.DistanceToPlayer <= 40f && RandomItems.RandomPercent(Settings.SettingsManager.PoliceTaskSettings.SixthSensePercentageClose))
             {
@@ -160,15 +160,15 @@ public class Locate : ComplexTask
         float DistanceToCoordinates = Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition);
         if (Ped.Pedestrian.IsInAirVehicle)
         {
-            if (DistanceToCoordinates <= 150f)
-            {
-                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
-            }
-            else
-            {
-                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 50f);
+            //if (DistanceToCoordinates <= 150f)
+            //{
+            //    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);//tr cruise speed test
+            //}
+            //else
+            //{
+            //    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 50f);//tr cruise speed test
 
-            }
+            //}
         }
         if (DistanceToCoordinates <= 25f)
         {

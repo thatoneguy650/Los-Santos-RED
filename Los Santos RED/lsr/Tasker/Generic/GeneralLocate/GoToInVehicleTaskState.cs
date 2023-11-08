@@ -141,29 +141,29 @@ class GoToInVehicleTaskState : TaskState
         float DistanceToCoordinates = PedGeneral.Pedestrian.DistanceTo(PlaceToDriveTo); //PedGeneral.Pedestrian.DistanceTo2D(PlaceToDriveTo);
         if (PedGeneral.Pedestrian.IsInAirVehicle)
         {
-            if (DistanceToCoordinates <= 150f)
-            {
-                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 10f);
-            }
-            else
-            {
-                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 50f);
-            }
+            //if (DistanceToCoordinates <= 150f)
+            //{
+            //    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 10f);//tr cruise speed test
+            //}
+            //else
+            //{
+            //    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 50f);
+            //}
         }
         else
         {
-            if (DistanceToCoordinates >= 70)
-            {
-                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 70f);
-            }
-            else if (DistanceToCoordinates >= 45f)
-            {
-                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 18f);
-            }
-            else
-            {
-                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 14f);
-            }
+            //if (DistanceToCoordinates >= 70)
+            //{
+            //    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 70f);//tr cruise speed test
+            //}
+            //else if (DistanceToCoordinates >= 45f)
+            //{
+            //    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 18f);
+            //}
+            //else
+            //{
+            //    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 14f);
+            //}
         }
         if (DistanceToCoordinates <= 20f)
         {

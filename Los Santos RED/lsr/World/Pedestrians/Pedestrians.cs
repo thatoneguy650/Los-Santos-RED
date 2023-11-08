@@ -595,6 +595,13 @@ public class Pedestrians : ITaskerReportable
         Tellers.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
         TaxiDrivers.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
         GameFiber.Yield();
+        foreach (PedExt Civilian in LivingPeople.Where(x => x.IsUnconscious && x.DistanceToPlayer >= 100f && x.Pedestrian.Exists()))
+        {
+            Civilian.DeleteBlip();
+            Civilian.Pedestrian.IsPersistent = false;
+            EntryPoint.PersistentPedsNonPersistent++;
+            EntryPoint.WriteToConsole($"Pedestrians: LivingPeople {Civilian.Pedestrian.Handle} Removed Blip Set Non Persistent since they are uncoscious", 5);
+        }
     }
     private void PruneGangMembers()
     {

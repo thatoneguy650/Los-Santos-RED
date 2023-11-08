@@ -778,16 +778,26 @@ public class LEDispatcher
             }   
             GameTimeAttemptedRecall = Game.GameTime;
         }
-        CleanUp();
+        CleanupAbandonedOrEmpty();
+        RepairDamagedVehicles();
     }
-    public void CleanUp()
+
+    private void RepairDamagedVehicles()
+    {
+        if (!Settings.SettingsManager.PoliceTaskSettings.AllowFixOffScreenVehiclesAssist)
+        {
+            return;
+        }
+        FixDamagedPoliceVehicles();
+    }
+
+    public void CleanupAbandonedOrEmpty()
     {
         if (!Settings.SettingsManager.WorldSettings.CleanupVehicles)
         {
             return;
         }
-        RemoveAbandonedPoliceVehicles();
-        FixDamagedPoliceVehicles();     
+        RemoveAbandonedPoliceVehicles(); 
     }
     private void RemoveAbandonedPoliceVehicles()
     {
@@ -818,7 +828,7 @@ public class LEDispatcher
                             EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles 2 NONPERS isNearLimit{isNearLimit} TotalPoliceCars{TotalPoliceCars} PossibleSpawnedPoliceCars{PossibleSpawnedPoliceCars}");
                             GameFiber.Yield();
                         }
-                        else if (TotalPoliceCars > 15 && distanceTo >= 200f && PoliceCar.HasBeenEmptyFor >= 35000)//250f)
+                        else if (TotalPoliceCars > 15 && distanceTo >= 200f && PoliceCar.HasBeenEmptyFor >= 20000)//250f)
                         {
                             if (PoliceCar.Vehicle.IsPersistent)
                             {
@@ -828,7 +838,7 @@ public class LEDispatcher
                             PoliceCar.FullyDelete();
                             GameFiber.Yield();
                         }
-                        else if (distanceTo >= 200f && PoliceCar.HasBeenEmptyFor >= 35000)
+                        else if (distanceTo >= 200f && PoliceCar.HasBeenEmptyFor >= 20000)
                         {
                             PoliceCar.Vehicle.IsPersistent = false;
                             EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles 4 NONPERS isNearLimit{isNearLimit} TotalPoliceCars{TotalPoliceCars} PossibleSpawnedPoliceCars{PossibleSpawnedPoliceCars}");
@@ -856,10 +866,16 @@ public class LEDispatcher
                     {
                         PoliceCar.SetBecameEmpty();
                         float distanceTo = PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character);
-                        if ((distanceTo >= 200f && PoliceCar.HasBeenEmptyFor >= 25000) || (distanceTo >= 450f && PoliceCar.HasBeenEmptyFor >= 10000))
+                        if (distanceTo >= 300f && PoliceCar.HasBeenEmptyFor >= 25000)//10000))
                         {
                             PoliceCar.Vehicle.IsPersistent = false;
                             EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles 1 SPAWNED EMPTY NONPERS isNearLimit{isNearLimit} TotalPoliceCars{TotalPoliceCars} PossibleSpawnedPoliceCars{PossibleSpawnedPoliceCars}");
+                            GameFiber.Yield();
+                        }
+                        else if (distanceTo >= 450f && PoliceCar.HasBeenEmptyFor >= 10000)//10000))
+                        {
+                            PoliceCar.Vehicle.IsPersistent = false;
+                            EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles 2 SPAWNED EMPTY NONPERS isNearLimit{isNearLimit} TotalPoliceCars{TotalPoliceCars} PossibleSpawnedPoliceCars{PossibleSpawnedPoliceCars}");
                             GameFiber.Yield();
                         }
                     }

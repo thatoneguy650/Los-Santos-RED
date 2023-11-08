@@ -138,6 +138,7 @@ public class CellPhone
     public void DeleteText(PhoneText text)
     {
         AddedTexts.Remove(text);
+        ReIndexTexts();
     }
     public void DeletePhoneRespone(PhoneResponse phoneResponse)
     {
@@ -388,13 +389,17 @@ public class CellPhone
             textA.TimeReceived = Time.CurrentDateTime;
             TextIndex++;
             AddedTexts.Add(textA);
+            ReIndexTexts();
 
-            int NewTextIndex = 0;
-            foreach (PhoneText ifta in TextList.OrderByDescending(x => x.TimeReceived))
-            {
-                ifta.Index = NewTextIndex;
-                NewTextIndex++;
-            }
+        }
+    }
+    public void ReIndexTexts()
+    {
+        int NewTextIndex = 0;
+        foreach (PhoneText ifta in TextList.OrderByDescending(x => x.TimeReceived))
+        {
+            ifta.Index = NewTextIndex;
+            NewTextIndex++;
         }
     }
     public void AddPhoneResponse(string Name, string IconName, string Message)

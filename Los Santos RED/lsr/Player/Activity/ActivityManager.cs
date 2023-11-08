@@ -72,8 +72,8 @@ public class ActivityManager
 
     //DO I NEED ALL 3?
     public bool CanPerformActivitesBase => Player.IsAliveAndFree && !Player.IsIncapacitated && !Player.IsGettingIntoAVehicle && !Player.RecentlyGotOutOfVehicle && !Player.IsBreakingIntoCar;// && (Interaction == null || Interaction.CanPerformActivities);
-    public bool CanPerformActivitiesExtended => CanPerformActivitesBase && (!Player.IsMovingFast || Player.IsInVehicle) && !Player.IsMovingDynamically;
-    public bool CanPerformActivitiesMiddle => CanPerformActivitesBase && (!Player.IsMovingFast || Player.IsInVehicle);
+    public bool CanPerformActivitiesExtended => CanPerformActivitesBase && (!Player.IsMovingFast || (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.CanPerformActivitiesInside == true)) && !Player.IsMovingDynamically;
+    public bool CanPerformActivitiesMiddle => CanPerformActivitesBase && (!Player.IsMovingFast || (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.CanPerformActivitiesInside == true));
     public bool CanPerformActivitiesOnFoot => CanPerformActivitesBase && !Player.IsInVehicle;
 
 
@@ -667,13 +667,27 @@ public class ActivityManager
             Game.DisplayHelp("Cancel existing activity to start");
             return;
         }
-        Drag drag = new Drag(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, World, VehicleSeatDoorData);
-        if (drag.CanPerform(Actionable))
+        if (Settings.SettingsManager.DragSettings.UseLegacyDragSystem)
         {
-            ForceCancelAllActive();
-            IsPerformingActivity = true;
-            LowerBodyActivity = drag;
-            LowerBodyActivity.Start();
+            Drag drag = new Drag(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, World, VehicleSeatDoorData);
+            if (drag.CanPerform(Actionable))
+            {
+                ForceCancelAllActive();
+                IsPerformingActivity = true;
+                LowerBodyActivity = drag;
+                LowerBodyActivity.Start();
+            }
+        }
+        else
+        {
+            NewDrag drag = new NewDrag(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, World, VehicleSeatDoorData);
+            if (drag.CanPerform(Actionable))
+            {
+                ForceCancelAllActive();
+                IsPerformingActivity = true;
+                LowerBodyActivity = drag;
+                LowerBodyActivity.Start();
+            }
         }
     }
     public void StartSleeping()

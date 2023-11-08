@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.Serialization;
 
 public class PoliceTaskSettings : ISettingsDefaultable
 {
@@ -30,7 +31,8 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public bool AllowReducedCollisionPenaltyAssist { get; set; }
     [Description("Enable or disable increased power for police vehicles")]
     public bool AllowPowerAssist { get; set; }
-
+    [Description("Enable or disable police vehicles being repaired when off screen")]
+    public bool AllowFixOffScreenVehiclesAssist { get; set; }
 
     [Description("Maximum amount of police that can respawn to an investigation when the most serious crime reported is 1 star.")]
     public int InvestigationRespondingOfficers_Wanted1 { get; set; }
@@ -115,6 +117,12 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public bool AllowAutoDispatchWhenCop { get; set; }
     public bool StopWeaponFiringWhenDropped { get; set; }
 
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
+
     public PoliceTaskSettings()
     {
         SetDefault();
@@ -129,6 +137,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
         AllowFrontVehicleClearAssist = true;
         AllowReducedCollisionPenaltyAssist = true;
         AllowPowerAssist = true;
+        AllowFixOffScreenVehiclesAssist = false;
 
         AllowDriveBySightDuringChase = true;
         DriveBySightDuringChaseDistance = 150f;

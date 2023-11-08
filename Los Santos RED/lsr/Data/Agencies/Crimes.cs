@@ -54,7 +54,7 @@ public class Crimes : ICrimes
     private Crime PublicVagrancy;
     private Crime OfficersNeeded;
     private Crime Trespassing;
-
+    private Crime VehicleInvasion;
 
 
 
@@ -133,8 +133,8 @@ public class Crimes : ICrimes
 
         Trespassing = new Crime(StaticStrings.TrespessingCrimeID, "Trespassing", 2, false, 27, true, false, false) { ShowsWarning = true, WarningMessage = "You are ~r~trespassing~s~~n~Leave the area or avoid being spotted" };
 
-
-
+        VehicleInvasion = new Crime(StaticStrings.VehicleInvasionCrimeID, "Vehicle Invasion", 2, false, 28, true, true, true) {  };
+        //VehicleInvasionCrimeID
 
 
 
@@ -187,6 +187,7 @@ public class Crimes : ICrimes
              BrandishingHeavyWeapon,
              TrespessingOnGovtProperty,
              Trespassing,
+             VehicleInvasion,
              SuspiciousVehicle,
              GotInAirVehicleDuringChase,
              FiringWeapon,
@@ -247,6 +248,7 @@ public class Crimes : ICrimes
              SuspiciousVehicle,
              BrandishingHeavyWeapon,
              Trespassing,
+             VehicleInvasion,
              TrespessingOnGovtProperty,
              GotInAirVehicleDuringChase,
              FiringWeapon,

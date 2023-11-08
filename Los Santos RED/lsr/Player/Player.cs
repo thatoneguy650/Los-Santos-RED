@@ -243,6 +243,9 @@ namespace Mod
         public VehicleExt CurrentSeenVehicle => CurrentVehicle ?? VehicleGettingInto;
         public PedExt CurrentTargetedPed { get; private set; }
         public VehicleExt CurrentVehicle { get; set; }
+
+
+
         public bool CurrentVehicleIsInAir { get; set; }
         public bool CurrentVehicleIsRolledOver { get; set; }
         public string DebugString { get; set; }

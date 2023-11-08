@@ -158,7 +158,7 @@ public class Chase : ComplexTask
                 IsFirstRun = true;
                 hasOwnFiber = false;
                 CurrentTask = UpdatedTask;
-                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
+                //NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);//tr cruise speed test
                 //EntryPoint.WriteToConsole($"TASKER: Chase SubTask Changed: {Ped.Pedestrian.Handle} to {CurrentTask} {CurrentDynamic}");
                 ExecuteCurrentSubTask();
             }
@@ -605,7 +605,7 @@ public class Chase : ComplexTask
             }
             if (Ped.IsInHelicopter)
             {
-                NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -35f, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(80f, 120f)); // NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -50f, 50f, 60f);
+                NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.GetRandomNumber(40f, 60f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -35f, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(80f, 120f)); // NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -50f, 50f, 60f);
             }
             //else if (Ped.IsInBoat)
             //{
@@ -663,7 +663,7 @@ public class Chase : ComplexTask
 
                     NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 0f);
                     //NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
-                    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 70f);//new
+                    //NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 70f);//tr cruise speed test
                 }
                 else
                 {
@@ -682,7 +682,7 @@ public class Chase : ComplexTask
 
 
 
-                    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 70f);
+                    //NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 70f);//tr cruise speed test
                 }
 
 
@@ -756,7 +756,7 @@ public class Chase : ComplexTask
             {
                 if (Ped.IsInHelicopter)
                 {
-                    NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -35f, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(50f, 80f));
+                    NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.GetRandomNumber(40f, 60f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -35f, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(50f, 80f));
                     //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, 25f, 0f, 25f);
                 }
                 else if (Ped.IsInBoat)
@@ -790,7 +790,7 @@ public class Chase : ComplexTask
                 }
                 if (Ped.IsInHelicopter)
                 {
-                    NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
+                    NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 1.0f);
                     //if (Ped.DistanceToPlayer <= 100f && Player.Character.Speed < 20f)//32f)//70 mph
                     //{
                     //    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
@@ -802,7 +802,7 @@ public class Chase : ComplexTask
                 }
                 else
                 {
-                    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, Speed);
+                    //NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, Speed);//tr cruise speed test
                 }
             }
             //NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION_PED_TARGET", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Player.Character, 7, 30f, 4 | 8 | 16 | 32 | 512 | 262144, 0f, 0f, true);

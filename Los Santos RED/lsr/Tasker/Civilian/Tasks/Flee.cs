@@ -77,7 +77,7 @@ public class Flee : ComplexTask
         }
         Ped.Pedestrian.BlockPermanentEvents = true;
         Ped.Pedestrian.KeepTasks = true;
-        if (isInVehicle && Ped.IsDriver)
+        if (isInVehicle)
         {
             TaskVehicleFlee();
         }
@@ -142,12 +142,32 @@ public class Flee : ComplexTask
     private void TaskVehicleFlee()
     {
         Vector3 CurrentPos = Ped.Pedestrian.Position;
-        NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 5000f, -1, true, false);
-        NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Vanilla_Alerted);
-        NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 100f);//new
-        NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 1.0f);
-        NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, 1.0f);
-        EntryPoint.WriteToConsole("FLEE SET PED FLEE IN VEHICLE");
+        if(Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Handle == Player.CurrentVehicle?.Handle)
+        {
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Ped.Pedestrian.CurrentVehicle, 27, 1000);
+                NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Ped.Pedestrian.CurrentVehicle, Ped.DefaultEnterExitFlag | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_CLOSE_DOOR | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_WAIT_FOR_VEHICLE_TO_STOP);// 256);
+
+                NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", 0, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 5000f, -1, true, false);
+
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+        }
+        else
+        {
+            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 5000f, -1, true, false);
+            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Vanilla_Alerted);
+            NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 100f);//new
+            NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 1.0f);
+            NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, 1.0f);
+            EntryPoint.WriteToConsole("FLEE SET PED FLEE IN VEHICLE");
+        }
     }
     private void TaskCowerOnFoot()
     {

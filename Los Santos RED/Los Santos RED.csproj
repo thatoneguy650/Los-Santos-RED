@@ -326,6 +326,7 @@
     <Compile Include="lsr\Player\Interaction\Conversation\AdvancedConversation.cs" />
     <Compile Include="lsr\Old\FullConversation_Old.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\IAdvancedConversationable.cs" />
+    <Compile Include="lsr\Player\Interaction\NewDrag.cs" />
     <Compile Include="lsr\Player\Interaction\PedGrab\PedCuff.cs" />
     <Compile Include="lsr\Player\Interaction\PedGrab\HumanShield.cs" />
     <Compile Include="lsr\Player\Interaction\PedGrab\PedGrab.cs" />

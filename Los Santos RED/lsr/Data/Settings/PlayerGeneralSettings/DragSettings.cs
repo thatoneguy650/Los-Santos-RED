@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.Serialization;
 
 public class DragSettings : ISettingsDefaultable
 {
@@ -38,7 +39,14 @@ public class DragSettings : ISettingsDefaultable
     public int RagdollRotationOrder { get; set; }
     public bool RagdollRunAttach { get; set; }
     public bool AllowRagdolling { get; set; }
+    public bool UseLegacyDragSystem { get; set; }
 
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
     public DragSettings()
     {
         SetDefault();
@@ -46,8 +54,8 @@ public class DragSettings : ISettingsDefaultable
     public void SetDefault()
     {
         AllowLoadingBodies = true;
-        RagdollAttach1X = 0.0f;// 0.1f;
-        RagdollAttach1Y = 0.0f;//0.3f;
+        RagdollAttach1X = -0.1f;// 0.1f;
+        RagdollAttach1Y = -0.4f;//0.3f;
         RagdollAttach1Z = 0.0f;//-0.1f;
         RagdollAttach2X = 0.0f;
         RagdollAttach2Y = 0.0f;
@@ -61,9 +69,9 @@ public class DragSettings : ISettingsDefaultable
         RagdollPhysicalAttachBone1 = "BONETAG_NECK"; //"BONETAG_R_CLAVICLE";// "BONETAG_SPINE3";
         RagdollRunAttach = true;
         RagdollFixedRotation = false;
-        RagdollDoInitialWarp = true;
+        RagdollDoInitialWarp = false;
         RagdollCollision = true;
-        RagdollTeleport = true;
+        RagdollTeleport = false;
         RagdollRotationOrder = 2;
         UseBasicAttachIfPed = false;
         Euler = 2;
@@ -77,6 +85,8 @@ public class DragSettings : ISettingsDefaultable
 
         AllowRagdolling = false;
         FadeOut = true;
+
+        UseLegacyDragSystem = true;
 
 //#if DEBUG
 //        AllowRagdolling = true;

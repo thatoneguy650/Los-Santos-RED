@@ -189,6 +189,10 @@ namespace LSR.Vehicles
         public bool IsCar { get; private set; }
         public bool IsBicycle { get; private set; } = false;
         public bool IsMotorcycle { get; private set; } = false;
+
+
+        public bool CanPerformActivitiesInside => !IsBicycle && !IsMotorcycle;
+
         public bool IsRandomlyLocked { get; set; } = false;
         public bool UsePlayerAnimations => VehicleClass != VehicleClass.Motorcycle && VehicleClass != VehicleClass.Cycle;
         public virtual bool CanHaveRandomCash { get; set; } = true;
@@ -1497,6 +1501,10 @@ namespace LSR.Vehicles
 
         public void SetReportedStolen()
         {
+            if(WasReportedStolen)
+            {
+                return;
+            }
             WasReportedStolen = true;
             if (OriginalLicensePlate != null)
             {
