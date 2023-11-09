@@ -356,6 +356,8 @@ namespace LosSantosRED.lsr.Helper
             Game.DisableControlAction(0, GameControl.LookLeftRight, false);
             Game.DisableControlAction(0, GameControl.LookUpDown, false);
 
+            Game.DisableControlAction(0, GameControl.VehicleExit, false);
+            Game.DisableControlAction(0, GameControl.Enter, false);
         }
         public static bool IsUsingKeyboard => NativeFunction.Natives.IS_USING_KEYBOARD_AND_MOUSE<bool>(2);
         public static bool IsUsingController => !NativeFunction.Natives.IS_USING_KEYBOARD_AND_MOUSE<bool>(2);

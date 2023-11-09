@@ -719,7 +719,15 @@ public class PersonTransaction : Interaction
         string HandBoneName = "BONETAG_R_PH_HAND";
         Vector3 HandOffset = Vector3.Zero;
         Rotator HandRotator = Rotator.Zero;
-        PropAttachment pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+        //PropAttachment pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+
+
+        PropAttachment pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHandPass" && (x.Gender == "U" || x.Gender == Player.Gender));
+        if (pa == null)
+        {
+            pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+        }
+
         if (pa != null)
         {
             HandOffset = pa.Attachment;
@@ -876,7 +884,12 @@ public class PersonTransaction : Interaction
         string HandBoneName = "BONETAG_R_PH_HAND";
         Vector3 HandOffset = Vector3.Zero;
         Rotator HandRotator = Rotator.Zero;
-        PropAttachment pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+        PropAttachment pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHandPass" && (x.Gender == "U" || x.Gender == Player.Gender));
+        if(pa == null)
+        {
+            pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+        }
+
         if (pa != null)
         {
             HandOffset = pa.Attachment;

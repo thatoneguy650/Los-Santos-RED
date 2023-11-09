@@ -372,7 +372,7 @@ public class DebugHelperSubMenu : DebugSubMenu
 
     private void SetPropAttachment()
     {
-        string PropName = NativeHelper.GetKeyboardInput("prop_cigar_02");
+        string PropName = NativeHelper.GetKeyboardInput("sf_prop_sf_bag_weed_01a");
         try
         {
             Rage.Object SmokedItem = new Rage.Object(Game.GetHashKey(PropName), Player.Character.GetOffsetPositionUp(50f));
@@ -429,8 +429,14 @@ public class DebugHelperSubMenu : DebugSubMenu
             isPrecise = false;
             if (SmokedItem.Exists())
             {
-                string dictionary = NativeHelper.GetKeyboardInput("amb@world_human_smoking@female@idle_a");
-                string animation = NativeHelper.GetKeyboardInput("idle_c");
+                string dictionary = NativeHelper.GetKeyboardInput("mp_common");
+                string animation = NativeHelper.GetKeyboardInput("givetake1_a");
+
+
+
+
+                //            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "mp_common", "givetake1_a", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
+                //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", "givetake1_b", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
                 AnimationDictionary.RequestAnimationDictionay(dictionary);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(AnimationFlags.Loop | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
                 isRunning = true;
@@ -449,6 +455,8 @@ public class DebugHelperSubMenu : DebugSubMenu
                             if (Game.IsKeyDown(Keys.B))
                             {
                                 //EntryPoint.WriteToConsoleTestLong($"Item {PropName} Attached to  {boneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+
+                                EntryPoint.WriteToConsole($"new PropAttachment(\"RightHandPass\", \"{boneName}\", new Vector3({Offset.X}f, {Offset.Y}f, {Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)),");
                                 GameFiber.Sleep(500);
                             }
                             if (Game.IsKeyDown(Keys.N))
@@ -551,7 +559,7 @@ public class DebugHelperSubMenu : DebugSubMenu
             Rotation = new Rotator(Rotation.Pitch, Rotation.Roll - rotatorOFfset, Rotation.Yaw);
             return true;
         }
-        else if (Game.IsKeyDownRightNow(Keys.P))//ZR Up?
+        else if (Game.IsKeyDownRightNow(Keys.OemOpenBrackets))//ZR Up?
         {
             Rotation = new Rotator(Rotation.Pitch, Rotation.Roll, Rotation.Yaw + rotatorOFfset);
             return true;

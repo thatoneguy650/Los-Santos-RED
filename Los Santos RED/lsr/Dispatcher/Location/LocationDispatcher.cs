@@ -60,16 +60,17 @@ public class LocationDispatcher
                 foreach (ConditionalGroup cg in ps.PossibleGroupSpawns)
                 {
                     //EntryPoint.WriteToConsole($"ATTEMPTING GROUP SPAWN AT {ps.Name}");
-                    cg.AttemptSpawn(Player, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems);
+                    cg.AttemptSpawn(Player, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, ps);
                     GameFiber.Yield();
                 }
             }
+            GameFiber.Yield();
             if (ps.PossiblePedSpawns != null)
             {
                 foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
                 {
                     //EntryPoint.WriteToConsole($"ATTEMPTING PED SPAWN AT {ps.Name}");
-                    cl.AttemptSpawn(Player, true, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups,ShopMenus, WeatherReporter, Time, ModItems);
+                    cl.AttemptSpawn(Player, true, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups,ShopMenus, WeatherReporter, Time, ModItems, ps);
                     GameFiber.Yield();
                 }
             }
@@ -79,14 +80,14 @@ public class LocationDispatcher
                 foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)
                 {
                     //EntryPoint.WriteToConsole($"ATTEMPTING VEHICLE SPAWN AT {ps.Name}");
-                    cl.AttemptSpawn(Player, false, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems);
+                    cl.AttemptSpawn(Player, false, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, ps);
                     GameFiber.Yield();
                 }
             }
             ps.IsDispatchFilled = true;
             GameFiber.Yield();
         }
-    
+        GameFiber.Yield();
         foreach (GameLocation ps in PlacesOfInterest.InteractableLocations().Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled).ToList())
         {
             //EntryPoint.WriteToConsole($"Location Dispatcher, CLEARED AT {ps.Name}");

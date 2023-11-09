@@ -72,6 +72,7 @@ namespace LSR.Vehicles
         public uint HasExistedFor => Game.GameTime - GameTimeSpawned;
         public uint HasBeenEmptyFor => Game.GameTime - GameTimeBecameEmpty;
         public uint GameTimeSpawned { get; set; }
+        public Vector3 PositionSpawned { get; set; } = Vector3.Zero;
         public bool WasModSpawned { get; set; } = false;
         public bool ManuallyRolledDriverWindowDown { get; set; }
         public bool HasBeenDescribedByDispatch { get; set; }
@@ -305,6 +306,7 @@ namespace LSR.Vehicles
                 Health = Vehicle.Health;
                 VehicleModelName = vehicle.Model.Name;
                 GameTimeSpawned = Game.GameTime;
+                PositionSpawned = vehicle.Position;
             }
             else
             {
@@ -715,6 +717,8 @@ namespace LSR.Vehicles
 
         public virtual bool HasSonarBlip => true;
 
+        public bool IsManualCleanup { get; internal set; }
+
         private int ClosestColor(List<Color> colors, Color target)
         {
             var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
@@ -873,7 +877,7 @@ namespace LSR.Vehicles
                 CarPlate.PlateType = index;
             }
         }
-        public void UpdatePlateType(bool force, IZones Zones, IPlateTypes PlateTypes, bool allowVanity)//this might need to come out of here.... along with the two bools
+        public void UpdatePlateType(bool force, IZones Zones, IPlateTypes PlateTypes, bool allowVanity, bool forceState)//this might need to come out of here.... along with the two bools
         {
             if (!Vehicle.Exists())
             {
@@ -883,9 +887,15 @@ namespace LSR.Vehicles
             PlateType CurrentType = PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle));
             Zone CurrentZone = Zones.GetZone(Vehicle.Position);
             PlateType NewType = null;
-            if (force)
+
+            if(forceState)
+            {
+                NewType = PlateTypes.GetPlateType(CurrentZone.StateID);
+            }
+            else if (force)
             {
                 NewType = PlateTypes.GetRandomPlateType();
+                //EntryPoint.WriteToConsole($"UPDATE PLATE TYPE FORCE {NewType?.StateID}");
             }
             else if (CanHavePlateRandomlyUpdated && CurrentZone != null && CurrentZone.StateID != StaticStrings.SanAndreasStateID && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.OutOfStateRandomVehiclePlatesPercent))//change the plates based on state
             {
@@ -900,8 +910,9 @@ namespace LSR.Vehicles
             }
             if (NewType != null)
             {
+                //EntryPoint.WriteToConsole($"UPDATE PLATE TYPE FORCE NEW TYPE IS NOT NULL {NewType?.StateID}");
                 string NewPlateNumber;
-                if (Settings.SettingsManager.WorldSettings.AllowRandomVanityPlates && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehicleVanityPlatesPercent))
+                if (allowVanity && Settings.SettingsManager.WorldSettings.AllowRandomVanityPlates && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehicleVanityPlatesPercent))
                 {
                     NewPlateNumber = PlateTypes.GetRandomVanityPlateText();
                 }
@@ -914,6 +925,7 @@ namespace LSR.Vehicles
                     Vehicle.LicensePlate = NewPlateNumber;
                     OriginalLicensePlate.PlateNumber = NewPlateNumber;
                     CarPlate.PlateNumber = NewPlateNumber;
+ 
                 }
                 else
                 {
@@ -921,6 +933,7 @@ namespace LSR.Vehicles
                     Vehicle.LicensePlate = NewPlateNumber;
                     OriginalLicensePlate.PlateNumber = NewPlateNumber;
                     CarPlate.PlateNumber = NewPlateNumber;
+
                 }
                 if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
                 {

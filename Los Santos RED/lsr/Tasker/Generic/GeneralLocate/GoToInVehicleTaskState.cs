@@ -113,7 +113,7 @@ class GoToInVehicleTaskState : TaskState
             //NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, JitterPlace.X, JitterPlace.Y, JitterPlace.Z, 70f, 0, "", (int)eCustomDrivingStyles.Code3, 15.0f, -1);
 
 
-            NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 70f, (int)eCustomDrivingStyles.Code3, 10f); //30f speed
+            NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 30.0f, (int)eCustomDrivingStyles.Code3, 10f); //30f speed
         }
         GametimeLastRetasked = Game.GameTime;
     }
@@ -152,18 +152,18 @@ class GoToInVehicleTaskState : TaskState
         }
         else
         {
-            //if (DistanceToCoordinates >= 70)
-            //{
-            //    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 70f);//tr cruise speed test
-            //}
-            //else if (DistanceToCoordinates >= 45f)
-            //{
-            //    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 18f);
-            //}
-            //else
-            //{
-            //    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 14f);
-            //}
+            if (DistanceToCoordinates >= 100)
+            {
+                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 30f);//tr cruise speed test
+            }
+            else if (DistanceToCoordinates >= 45f)
+            {
+                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 15f);
+            }
+            else
+            {
+                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 10f);
+            }
         }
         if (DistanceToCoordinates <= 20f)
         {

@@ -362,6 +362,7 @@ public class Roadblock
         foreach (VehicleExt roadblockCar in spawnTask.CreatedVehicles)
         {
             roadblockCar.WasSpawnedEmpty = true;
+            roadblockCar.IsManualCleanup = true;
         }
         if (addPed)
         {
@@ -376,12 +377,10 @@ public class Roadblock
                 World.Pedestrians.AddEntity(person);
                 CreatedRoadblockPeds.Add(person);
             }
-
             foreach (Cop cop in pedSpawn.SpawnedCops)//turned OFF for now!
             {
                 cop.IsRoadblockSpawned = true;
             }
-
         }
         spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
         foreach (VehicleExt created in spawnTask.CreatedVehicles)

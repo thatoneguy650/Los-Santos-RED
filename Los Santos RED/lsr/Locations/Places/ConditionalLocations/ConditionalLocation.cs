@@ -37,7 +37,7 @@ public class ConditionalLocation
     protected DispatchableVehicle DispatchableVehicle;
     protected string MasterAssociationID;
     protected bool IsPerson;
-
+    protected GameLocation GameLocation;
     public ConditionalLocation()
     {
     }
@@ -47,6 +47,10 @@ public class ConditionalLocation
         Heading = heading;
         Percentage = percentage;
     }
+    public bool HasDispatchablePerson => DispatchablePerson != null;
+
+
+    public bool IsEmptyVehicleSpawn => DispatchablePerson == null;
     public Vector3 Location { get; set; }
     public float Heading { get; set; }
     public float Percentage { get; set; }
@@ -96,7 +100,9 @@ public class ConditionalLocation
     //{
 
     //}
-    public virtual void AttemptSpawn(IDispatchable player, bool isPerson, bool force, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IWeatherReportable weatherReporter, ITimeControllable time, IModItems modItems)
+    public virtual void AttemptSpawn(IDispatchable player, bool isPerson, bool force, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, 
+        IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IWeatherReportable weatherReporter, ITimeControllable time,
+        IModItems modItems, GameLocation gameLocation)
     {
         Player = player;
         IsPerson = isPerson;
@@ -116,6 +122,7 @@ public class ConditionalLocation
         WeatherReporter = weatherReporter;
         Time = time;
         ModItems = modItems;
+        GameLocation = gameLocation;
         AttemptedSpawn = DetermineRun(force);
         if (!AttemptedSpawn)
         {
@@ -144,6 +151,10 @@ public class ConditionalLocation
             }
         }
         return false;
+    }
+    public virtual void OnLocationDeactivated()
+    {
+
     }
     public virtual bool DetermineRun(bool force)
     {

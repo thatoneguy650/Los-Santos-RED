@@ -265,6 +265,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             ImpoundedVehicle.SetRandomPlate();
             ImpoundedVehicle.WasModSpawned = true;
             ImpoundedVehicle.WasSpawnedEmpty = true;
+            ImpoundedVehicle.IsManualCleanup = true;
             ImpoundedVehicle.IsAlwaysOpenForPlayer = true;
             startingHealth = ImpoundedVehicle.Vehicle.Health;
             startingEngineHealth = ImpoundedVehicle.Vehicle.EngineHealth;
@@ -281,6 +282,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 return;
             }
             ImpoundedVehicle.WasSpawnedEmpty = false;
+            ImpoundedVehicle.IsManualCleanup = false;
             ImpoundedVehicle.Vehicle.LockStatus = (VehicleLockStatus)10;
             //ImpoundedVehicle.Vehicle.IsPersistent = false;
         }
@@ -291,6 +293,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 return;
             }
             ImpoundedVehicle.WasSpawnedEmpty = false;
+            ImpoundedVehicle.IsManualCleanup = false;
             ImpoundedVehicle.Vehicle.IsPersistent = false;        
         }
     }

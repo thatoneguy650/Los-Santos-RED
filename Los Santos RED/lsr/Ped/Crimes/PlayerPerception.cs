@@ -76,11 +76,18 @@ public class PlayerPerception
     {
         RanSightThisUpdate = false;
         Target = target;
-        if (Originator != null && !Originator.IsUnconscious && Originator.Pedestrian.Exists() && Originator.Pedestrian.IsAlive && Target != null && Target.Character.Exists())
+        if (Originator != null &&  Originator.Pedestrian.Exists() && Originator.Pedestrian.IsAlive && Target != null && Target.Character.Exists())
         {
             UpdateTargetDistance(placeLastSeen, target.Position);
-            UpdateTargetLineOfSight(Target.IsWanted);
-            UpdateWitnessedCrimes();
+            if (!Originator.IsUnconscious)
+            {
+                UpdateTargetLineOfSight(Target.IsWanted);
+                UpdateWitnessedCrimes();
+            }
+            else
+            {
+                SetTargetUnseen();
+            }
         }
         else
         {

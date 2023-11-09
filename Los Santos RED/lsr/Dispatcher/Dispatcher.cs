@@ -126,6 +126,7 @@ public class Dispatcher
         {
             GameFiber.Yield();
         }
+        GameFiber.Yield();
         if (!EntryPoint.ModController.IsRunning)
         {
             return;
@@ -183,19 +184,27 @@ public class Dispatcher
         }
         try
         {
-            foreach (VehicleExt civilianCar in World.Vehicles.NonServiceVehicles.Where(x => !x.IsOwnedByPlayer && x.WasModSpawned && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000 && x.Vehicle.Exists() && x.Vehicle.IsPersistent).ToList())
+            foreach (VehicleExt civilianCar in World.Vehicles.NonPoliceList.Where(x => !x.IsOwnedByPlayer && !x.IsManualCleanup && x.WasModSpawned  && x.HasExistedFor >= 12000 && x.Vehicle.Exists() && x.Vehicle.IsPersistent).ToList())//NonServiceVehicles//&& !x.WasSpawnedEmpty//15000
             {
                 if (!civilianCar.Vehicle.Exists() || civilianCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
                 {
                     continue;
                 }
-                if (civilianCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 275f)//250f)
+                float distanceTo = civilianCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character);
+                if (distanceTo >= 325f)//275f)//250f)
                 {
+                    //if (civilianCar.Vehicle.IsPersistent)
+                    //{
+                    //    EntryPoint.PersistentVehiclesDeleted++;
+                    //}
+                    //EntryPoint.WriteToConsole($"GENERAL DISPATCHER REMOVING EMPTY VEHICLE distanceTo{distanceTo} {civilianCar.Handle}");
+                    //civilianCar.FullyDelete();
                     if (civilianCar.Vehicle.IsPersistent)
                     {
-                        EntryPoint.PersistentVehiclesDeleted++;
+                        EntryPoint.PersistentVehiclesNonPersistent++;
                     }
-                    civilianCar.FullyDelete();
+                    EntryPoint.WriteToConsole($"GENERAL DISPATCHER NON PERSIST EMPTY VEHICLE distanceTo{distanceTo} {civilianCar.Handle}");
+                    civilianCar.Vehicle.IsPersistent = false;
                 }
                 GameFiber.Yield();
             }
@@ -251,7 +260,6 @@ public class Dispatcher
     {
         TaxiDispatcher.ForceTaxiSpawn(taxifirmID);
     }
-
     public bool DispatchGangBackup(Gang requestedGang, int membersToSpawn, string requiredVehicleModel)
     {
         return GangDispatcher.DispatchGangBackup(requestedGang, membersToSpawn, requiredVehicleModel);

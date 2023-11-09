@@ -1,6 +1,7 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -35,6 +36,7 @@ public class GameLocation : ILocationDispatchable
     protected int CellsAway = 99;
     protected uint GameTimeLastCheckedDistance;
     protected uint GameTimeLastCheckedNearby;
+
     protected uint DistanceUpdateIntervalTime
     {
         get
@@ -160,6 +162,10 @@ public class GameLocation : ILocationDispatchable
 
     public bool NoEntryCam { get; set; } = false;
 
+    [XmlIgnore]
+    public List<PedExt> LocationSpawnedPedExts { get; set; } = new List<PedExt>();
+    [XmlIgnore]
+    public List<VehicleExt> LocationSpawnedVehicleExts { get; set; } = new List<VehicleExt>();
 
     [XmlIgnore]
     public bool IsActivated { get; set; } = false;
@@ -865,5 +871,54 @@ public class GameLocation : ILocationDispatchable
     {
 
     }
+
+    //public virtual void AddSpawnedPed(PedExt pedExt)
+    //{
+    //    if (pedExt == null || !pedExt.Pedestrian.Exists())
+    //    {
+    //        return;
+    //    }
+    //    if (!LocationSpawnedPedExts.Any(x => x.Handle == pedExt.Handle))
+    //    {
+    //        LocationSpawnedPedExts.Add(pedExt);
+    //        EntryPoint.WriteToConsole($"LOCATION {Name} ADDED SPAWNED PED");
+    //    }
+    //}
+    //public virtual void AddSpawnedVehicle(VehicleExt vehicleExt)
+    //{
+    //    if(vehicleExt == null || !vehicleExt.Vehicle.Exists())
+    //    {
+    //        return;
+    //    }
+    //    if(!LocationSpawnedVehicleExts.Any(x=> x.Handle == vehicleExt.Handle))
+    //    {
+    //        LocationSpawnedVehicleExts.Add(vehicleExt);
+    //        EntryPoint.WriteToConsole($"LOCATION {Name} ADDED SPAWNED VEHICLE");
+    //    }
+
+    //}
+    //public virtual void OnPostDeactivate()
+    //{
+    //    RemoveSpawnedVehicles();
+    //}
+    //protected virtual void RemoveSpawnedVehicles()
+    //{
+    //    if (LocationSpawnedVehicleExts == null)
+    //    {
+    //        return;
+    //    }
+    //    foreach (VehicleExt vehicleExt in LocationSpawnedVehicleExts.ToList())
+    //    {
+    //        if (!vehicleExt.Vehicle.Exists())
+    //        {
+    //            continue;
+    //        }
+    //        if (vehicleExt.PositionSpawned == Vector3.Zero || vehicleExt.PositionSpawned.DistanceTo(vehicleExt.Vehicle) <= 2f)
+    //        {
+    //            vehicleExt.FullyDelete();
+    //            EntryPoint.WriteToConsole($"Location {Name} OnPostDeactivate REMOVING VEHICLE HASNT MOVED");
+    //        }
+    //    }
+    //}
 }
 

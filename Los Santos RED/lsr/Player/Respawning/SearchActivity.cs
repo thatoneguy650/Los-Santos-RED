@@ -101,7 +101,11 @@ public class SearchActivity
                     return;
                 }
                 MoveCopBehindPlayer();
-                if (isCopInPosition && CanContinueSearch)
+                //if(CanContinueSearch && !isCopInPosition)
+                //{
+                //    SetPlayerInFrontOfCop();
+                //}
+                if (CanContinueSearch)
                 {
                     PlayPlayerSearchAnimation();
                     if (HasVehicle && CanContinueSearch && Settings.SettingsManager.RespawnSettings.IncludeCarInSearch)
@@ -123,6 +127,21 @@ public class SearchActivity
             }
         }, "Booking");
     }
+
+    private void SetPlayerInFrontOfCop()
+    {
+        if (Cop == null || !Cop.Pedestrian.Exists() )
+        {
+            return;
+        }
+        //Game.FadeScreenOut(1000, true);
+        Player.Character.Position = Cop.Pedestrian.GetOffsetPositionFront(0.9f);
+        Player.Character.Heading = Cop.Pedestrian.Heading;
+        //GameFiber.Sleep(500);
+        //Game.FadeScreenIn(1000, true);
+        EntryPoint.WriteToConsole("SET PLAYER IN FRONT OF COP!");
+    }
+
     private void ToggleTrunkLoop(bool setOpen)
     {
         if (Cop == null || !Cop.Pedestrian.Exists() || CarToSearch == null || !CarToSearch.Vehicle.Exists())
@@ -339,11 +358,24 @@ public class SearchActivity
             return;
         }
         NativeFunction.Natives.TASK_LEAVE_VEHICLE(Player.Character, oldVehicle, (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_CLOSE_DOOR);
+        float vehicleHeading = oldVehicle.Heading;
+        unsafe
+        {
+            int lol = 0;
+            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, oldVehicle, (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_CLOSE_DOOR);
+            NativeFunction.CallByName<bool>("TASK_ACHIEVE_HEADING", 0, vehicleHeading, 5000);
+            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
+            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        }
         while (Player.Character.IsInAnyVehicle(false) && CanContinueSearch)
         {
             GameFiber.Yield();
         }
         Player.WeaponEquipment.SetUnarmed();
+        GameFiber.Sleep(1000);
     }
     private void ReleaseCop()
     {
@@ -379,6 +411,8 @@ public class SearchActivity
     {
         isCopInPosition = false;
         uint GameTimeStartedWalking = Game.GameTime;
+        float prevDistanceToPos = 0f;
+        bool isMoving = false;
         while (CanContinueSearch)
         {
             if (!isVehicle && CopTargetPosition.DistanceTo2D(Player.Character.GetOffsetPositionFront(-0.9f)) >= 0.1f)
@@ -395,7 +429,23 @@ public class SearchActivity
             }
             float distanceToPos = Cop.Pedestrian.DistanceTo2D(CopTargetPosition);
             float headingDiff = Math.Abs(Extensions.GetHeadingDifference(Cop.Pedestrian.Heading, CopTargetHeading));
-            if (distanceToPos <= 0.5f && headingDiff <= 0.5f)
+
+            if(distanceToPos != prevDistanceToPos)
+            {
+                isMoving = true;
+                prevDistanceToPos = distanceToPos;
+            }
+            else
+            {
+                isMoving = false;
+            }
+
+            if (distanceToPos <= 0.2f && headingDiff <= 0.5f)
+            {
+                isCopInPosition = true;
+                break;
+            }
+            if (!isMoving && distanceToPos <= 0.5f && headingDiff <= 0.5f)
             {
                 isCopInPosition = true;
                 break;
@@ -429,7 +479,18 @@ public class SearchActivity
         if (Settings.SettingsManager.RespawnSettings.UseCustomCameraWhenBooking)
         {
             CameraControl.Setup();
+            if (!isCopInPosition)
+            {
+                SetPlayerInFrontOfCop();
+            }
             CameraControl.HighlightEntity(Player.Character);
+        }
+        else
+        {
+            if (!isCopInPosition)
+            {
+                SetPlayerInFrontOfCop();
+            }
         }
         Cop.WeaponInventory.ShouldAutoSetWeaponState = false;
         Cop.WeaponInventory.SetUnarmed();

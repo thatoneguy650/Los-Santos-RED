@@ -1386,8 +1386,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Gallivanter Baller 2",90000,56000),
                 new MenuItem("Gallivanter Baller LE",149000,76000),
                 new MenuItem("Gallivanter Baller LE LWB",247000,125000),
-
                 new MenuItem("Gallivanter Baller LE (Armored)",320000,160000),
+
 
                 new MenuItem("Benefactor Schafter",65000,34000),
                 new MenuItem("Benefactor Schafter LWB",75000,52000),
@@ -1400,10 +1400,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Benefactor Dubsta",110000,78000),
                 new MenuItem("Benefactor Dubsta 2",120000,89000),
                 new MenuItem("Benefactor XLS",151000,11000),
-                new MenuItem("Benefactor XLS (Armored)",250000,125000),
-
-                
-
+                new MenuItem("Benefactor Stirling GT",250000,125000),
                 new MenuItem("Benefactor Streiter",156000,105000),
                 new MenuItem("Benefactor Schlagen GT",500000,250000),
                 new MenuItem("Benefactor Krieger",750000,500000),
@@ -1524,6 +1521,38 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Pegassi Toros",89000,62000),
                 new MenuItem("Pegassi Zentorno",725000,600000),
                 new MenuItem("Pegassi Zorrusso",1250000,1000000),
+
+                //Obey
+                new MenuItem("Obey 10F",89000,45000),
+                new MenuItem("Obey Tailgater",56000,24000),
+                new MenuItem("Obey Tailgater S",66000,26000),
+                new MenuItem("Obey Rocoto",34000,23000),
+                new MenuItem("Obey Omnis e-GT",89000,45000),
+                new MenuItem("Obey I-Wagen",99000,34000),
+                new MenuItem("Obey 9F",45000,19000),
+                new MenuItem("Obey 9F Cabrio",47000,20000),
+                new MenuItem("Obey 8F Drafter",90000,34000),
+
+                //Coil
+                new MenuItem("Coil Voltic",90000,45000),
+                new MenuItem("Coil Cyclone",120000,56000),
+                new MenuItem("Coil Raiden",135000,67000),
+
+                //Ubermacht
+                new MenuItem("Ubermacht Oracle XS",45000,20000),
+                new MenuItem("Ubermacht Oracle",40000,19000),
+                new MenuItem("Ubermacht Revolter",150000,67000),
+                new MenuItem("Ubermacht SC1",178000,100000),
+                new MenuItem("Ubermacht Sentinel XS",37000,21000),
+                new MenuItem("Ubermacht Sentinel 2",35000,19000),//regular
+                new MenuItem("Ubermacht Sentinel 3",25000,12000),//classic
+                new MenuItem("Ubermacht Zion",35000,17000),
+                new MenuItem("Ubermacht Zion Cabrio",37000,19000),
+                new MenuItem("Ubermacht Zion Classic",30000,20000),
+                new MenuItem("Ubermacht Cypher",124000,78000),
+                new MenuItem("Ubermacht Rebla GTS",87000,34000),
+                new MenuItem("Ubermacht Rhinehart",95000,34000),
+                new MenuItem("Ubermacht Sentinel Classic Widebody",50000),
             }),
             new ShopMenu("BravadoMenu","Bravado",new List<MenuItem>() {
                 new MenuItem("Bravado Youga",26000),
@@ -1562,6 +1591,10 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Bravado Buffalo S",65000,55000),
                 new MenuItem("Bravado Banshee",105000,78000),
                 new MenuItem("Bravado Banshee 900R",150000,89000),
+                new MenuItem("Bravado Gauntlet Hellfire",120000,56000),
+                new MenuItem("Bravado Buffalo EVX",178000,78000),
+                new MenuItem("Bravado Gauntlet Classic",89000,45000),
+                new MenuItem("Bravado Verlierer",250000,120000),
 
                 new MenuItem("Karin Futo",12000,8000),
                 new MenuItem("Karin Rebel",19000,9500),
@@ -1575,6 +1608,41 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Karin Previon",39000,34500),
                 new MenuItem("Karin Everon",44000,35000),
                 new MenuItem("Karin Kuruma",45000,36000),
+
+                //Emperor
+                new MenuItem("Emperor Habanero",19000,8000),
+                new MenuItem("Emperor Vectre",85000,35000),
+
+                //Imponte?
+                new MenuItem("Imponte Deluxo",48000,23000),
+                new MenuItem("Imponte Nightshade",45000,30000),
+                new MenuItem("Imponte Dukes",27000,18000),
+                new MenuItem("Imponte Phoenix",22000,10000),
+                new MenuItem("Imponte Ruiner",25000,12000),
+                new MenuItem("Imponte Ruiner ZZ-8",45000,13000),
+
+                //Invetero
+                new MenuItem("Invetero Coquette", 50000,20000),// { ModelName = "coquette" },
+                new MenuItem("Invetero Coquette Classic", 70000,30000),// { ModelName = "coquette2" },
+                new MenuItem("Invetero Coquette BlackFin", 80000,40000),// { ModelName = "coquette3" },
+                new MenuItem("Invetero Coquette D10", 150000,80000),// { ModelName = "coquette4" },
+
+                //Cheval
+                new MenuItem("Cheval Fugitive",25000,12000),
+                new MenuItem("Cheval Surge",29000,13000),
+                new MenuItem("Cheval Picador",19000,10000),
+
+                //Declasse
+                new MenuItem("Declasse Asea",19000,8000),
+                new MenuItem("Declasse Rancher XL",18000,9000),
+                new MenuItem("Declasse Vigero",20000,7000),
+                new MenuItem("Declasse Premier",23000,9000),
+                new MenuItem("Declasse Granger",39000,19000),
+                new MenuItem("Declasse Granger 3600LX",45000,23000),
+                new MenuItem("Declasse Stallion",34000,12000),
+                new MenuItem("Declasse Moonbeam",19000,3000),
+                new MenuItem("Declasse Vigero ZX",96000,56000),
+                new MenuItem("Declasse Walton L35",24000,12000),
             }),
             new ShopMenu("AlbanyMenu","Albany",new List<MenuItem>() {
                 new MenuItem("Albany Alpha",45000,27500),

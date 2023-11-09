@@ -181,7 +181,7 @@ public class WorldSettings : ISettingsDefaultable
         OfficerMIAStartPercentage_Regular = 40f;
 
 
-        SetVanillaTaxiSuppressed = true;
+        SetVanillaTaxiSuppressed = false;
        // SetReducedPropsOnMap = true;
     }
 

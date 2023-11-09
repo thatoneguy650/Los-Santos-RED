@@ -25,6 +25,7 @@ public class Vehicles
     private bool HasCheckedTaxiModel;
     private TaxiFirm DefaultTaxiFirm;
     private IOrganizations Organizations;
+    private bool IsSetTaxiSupressed = false;
     public Vehicles(IAgencies agencies,IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes, IModItems modItems, IEntityProvideable world, IOrganizations organizations)
     {
         Zones = zones;
@@ -130,7 +131,10 @@ public class Vehicles
     public void Dispose()
     {
         ClearSpawned(true);
-        NativeFunction.Natives.SET_VEHICLE_MODEL_IS_SUPPRESSED(Game.GetHashKey("taxi"), false);      
+        if (Settings.SettingsManager.WorldSettings.SetVanillaTaxiSuppressed)
+        {
+            NativeFunction.Natives.SET_VEHICLE_MODEL_IS_SUPPRESSED(Game.GetHashKey("taxi"), false);
+        }
     }
     public void Prune()
     {
@@ -147,12 +151,20 @@ public class Vehicles
         SecurityVehicles.RemoveAll(x => !x.Vehicle.Exists());
         GameFiber.Yield();//TR 29
         TaxiVehicles.RemoveAll(x => !x.Vehicle.Exists());
+        HandleVanillaTaxiSupression();
+    }
+    private void HandleVanillaTaxiSupression()
+    {
         if (Settings.SettingsManager.WorldSettings.SetVanillaTaxiSuppressed)
         {
+            IsSetTaxiSupressed = true;
             NativeFunction.Natives.SET_VEHICLE_MODEL_IS_SUPPRESSED(Game.GetHashKey("taxi"), true);
         }
+        if (IsSetTaxiSupressed && !Settings.SettingsManager.WorldSettings.SetVanillaTaxiSuppressed)
+        {
+            NativeFunction.Natives.SET_VEHICLE_MODEL_IS_SUPPRESSED(Game.GetHashKey("taxi"), false);
+        }
     }
-
     public void CreateNew()
     {
         RageVehicles = Rage.World.GetAllVehicles().ToList(); //EntryPoint.ModController.AllVehicles.ToList();////Rage.World.GetAllVehicles().ToList(); Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);

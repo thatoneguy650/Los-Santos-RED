@@ -74,12 +74,12 @@ public class PlateTypes : IPlateTypes
     private void DefaultConfig()
     {
         PlateTypeManager = new PlateTypeManager();
-        PlateTypeManager.PlateTypeList.Add(new PlateType(0, "Red on White California", StaticStrings.SanAndreasStateID, 0, "12ABC345"));
-        PlateTypeManager.PlateTypeList.Add(new PlateType(1, "Yellow on Black California", StaticStrings.SanAndreasStateID, 0, "12ABC345"));
-        PlateTypeManager.PlateTypeList.Add(new PlateType(2, "Yellow on Blue California", StaticStrings.SanAndreasStateID, 0, "12ABC345"));
-        PlateTypeManager.PlateTypeList.Add(new PlateType(3, "Classic California", StaticStrings.SanAndreasStateID, 0, "12ABC345"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(0, "Red on White California", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(1, "Yellow on Black California", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(2, "Yellow on Blue California", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(3, "Classic California", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
         PlateTypeManager.PlateTypeList.Add(new PlateType(4, "Exempt California", StaticStrings.SanAndreasStateID, 0, "12ABC345") { CanOverwrite = false });
-        PlateTypeManager.PlateTypeList.Add(new PlateType(5, "North Dakota Old", StaticStrings.NorthYanktonStateID, 0, "123 ABC"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(5, "North Dakota Old", StaticStrings.NorthYanktonStateID, 1, "123 ABC"));
 
         PlateTypeManager.VanityPlates.Add("AZZ KIKR");
         PlateTypeManager.VanityPlates.Add("STARK 4");
@@ -135,10 +135,10 @@ public class PlateTypes : IPlateTypes
     {
         PlateTypeManager FullPlateTypeManager = new PlateTypeManager();
         List<PlateType> FullPlateTypeList = new List<PlateType>();
-        FullPlateTypeList.Add(new PlateType(0, "Red on White California", StaticStrings.SanAndreasStateID, 0, "12ABC345"));
-        FullPlateTypeList.Add(new PlateType(1, "Yellow on Black California", StaticStrings.SanAndreasStateID, 0, "12ABC345"));
-        FullPlateTypeList.Add(new PlateType(2, "Yellow on Blue California", StaticStrings.SanAndreasStateID, 0, "12ABC345"));
-        FullPlateTypeList.Add(new PlateType(3, "Classic California", StaticStrings.SanAndreasStateID, 0, "12ABC345"));
+        FullPlateTypeList.Add(new PlateType(0, "Red on White California", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
+        FullPlateTypeList.Add(new PlateType(1, "Yellow on Black California", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
+        FullPlateTypeList.Add(new PlateType(2, "Yellow on Blue California", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
+        FullPlateTypeList.Add(new PlateType(3, "Classic California", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
         FullPlateTypeList.Add(new PlateType(4, "Exempt California", StaticStrings.SanAndreasStateID, 0, "12ABC345") { CanOverwrite = false });
         FullPlateTypeList.Add(new PlateType(5, "North Dakota Old", StaticStrings.NorthYanktonStateID, 3, "123 ABC"));
         FullPlateTypeList.Add(new PlateType(6, "New York 1", StaticStrings.LibertyStateID, 0, "ABC-1234"));

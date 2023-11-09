@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 public class BlankLocationsData
 {
-    private float defaultSpawnPercentage = 55f;
+    private float defaultSpawnPercentage = 60f;
     public BlankLocationsData()
     {
     }
@@ -43,17 +43,17 @@ public class BlankLocationsData
         float sniperSpawnPercentage = 65f;
         List<BlankLocation> blankLocationPlaces = new List<BlankLocation>() {
             new BlankLocation(new Vector3(-1004.588f,-2451.93f,25.63272f), 294.0977f, "RoofTopSniper1", "Rooftop Sniper 1") {  //Near LSIA
-                ActivateDistance = 400f,ActivateCells = 8,
+                ActivateDistance = 300f,ActivateCells = 8,
                 AssignedAssociationID = "LSIAPD",
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(-1004.588f,-2451.93f,25.63272f), 294.0977f, sniperSpawnPercentage) {
                         MaxWantedLevelSpawn = 4,
                         RequiredPedGroup = "Sniper",
-                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,LongGunAlwaysEquipped = true,},},
                 },
             new BlankLocation(new Vector3(-544.9591f, -2225.018f, 122.3655f), 56.47693f, "RoofTopSniper2", "Rooftop Sniper 2") {  //Top of Bridge outside LSIA
-                ActivateDistance = 400f,ActivateCells = 8,
+                ActivateDistance = 300f,ActivateCells = 8,
                 AssignedAssociationID = "LSIAPD",
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
@@ -62,10 +62,10 @@ public class BlankLocationsData
                         MaxWantedLevelSpawn = 4,
 
                         RequiredPedGroup = "Sniper",
-                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,LongGunAlwaysEquipped = true,},},
                 },
             new BlankLocation(new Vector3(132.3552f, -1032.493f, 57.79759f), 336.7522f, "RoofTopSniper3", "Rooftop Sniper 3") {  //Pillbox hill rooftop
-                ActivateDistance = 400f,ActivateCells = 8,
+                ActivateDistance = 300f,ActivateCells = 8,
                 AssignedAssociationID = "LSPD",
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
@@ -73,10 +73,10 @@ public class BlankLocationsData
                         MinWantedLevelSpawn = 2,
                         MaxWantedLevelSpawn = 4,
                         RequiredPedGroup = "Sniper",
-                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,LongGunAlwaysEquipped = true,},},
                 },
             new BlankLocation(new Vector3(-62.03125f, -707.9713f, 55.52032f), 94.052f, "RoofTopSniper4", "Rooftop Sniper 4") {  //Pillbox hill rooftop
-                ActivateDistance = 400f,ActivateCells = 8,
+                ActivateDistance = 300f,ActivateCells = 8,
                 AssignedAssociationID = "LSPD",
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
@@ -84,10 +84,10 @@ public class BlankLocationsData
                         MinWantedLevelSpawn = 2,
                         MaxWantedLevelSpawn = 4,
                         RequiredPedGroup = "Sniper",
-                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,LongGunAlwaysEquipped = true,},},
                 },
             new BlankLocation(new Vector3(-547.1264f, -625.6401f, 56.11749f), 172.5318f, "RoofTopSniper5", "Rooftop Sniper 5") { //rockford hills rooftop
-                ActivateDistance = 400f,ActivateCells = 8,
+                ActivateDistance = 300f,ActivateCells = 8,
                 //AssignedAssociationID = "RHPD",//what about NON FEJ "LSPD-RH"
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
@@ -95,27 +95,27 @@ public class BlankLocationsData
                         MinWantedLevelSpawn = 2,
                         MaxWantedLevelSpawn = 4,
                         RequiredPedGroup = "Sniper",
-                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,LongGunAlwaysEquipped = true,},},
                 },
             new BlankLocation(new Vector3(-771.976f, -302.2982f, 54.00434f), 109.9027f, "RoofTopSniper6", "Rooftop Sniper 6") {  //rockford hills rooftop
-                ActivateDistance = 400f,ActivateCells = 8,
+                ActivateDistance = 300f,ActivateCells = 8,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(-771.976f, -302.2982f, 54.00434f), 109.9027f, sniperSpawnPercentage) {
                         MinWantedLevelSpawn = 2,
                         MaxWantedLevelSpawn = 4,
                         RequiredPedGroup = "Sniper",
-                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,LongGunAlwaysEquipped = true,},},
                 },
             new BlankLocation(new Vector3(-1332.035f, -500.6434f, 40.44254f), 260.7096f, "RoofTopSniper7", "Rooftop Sniper 7") {  //del perro rooftop
-                ActivateDistance = 400f,ActivateCells = 8,
+                ActivateDistance = 300f,ActivateCells = 8,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(-1332.035f, -500.6434f, 40.44254f), 260.7096f, sniperSpawnPercentage) {
                         MinWantedLevelSpawn = 2,
                         MaxWantedLevelSpawn = 4,
                         RequiredPedGroup = "Sniper",
-                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,LongGunAlwaysEquipped = true},},
                 },
         };
         BlankLocationPlaces.AddRange(blankLocationPlaces);
@@ -125,7 +125,7 @@ public class BlankLocationsData
         List<BlankLocation> blankLocationPlaces = new List<BlankLocation>() {
             new BlankLocation(new Vector3(1561.604f, 2776.656f, 37.73339f), 25.09373f, "BPCheckpoint1", "BP Checkpoint 1")
             {
-                ActivateDistance = 400f,
+                ActivateDistance = 300f,
                 ActivateCells = 8,
                 AssignedAssociationID = "NOOSE",
                 PossibleGroupSpawns = new List<ConditionalGroup>()
@@ -162,7 +162,7 @@ public class BlankLocationsData
     {
         List<BlankLocation> blankLocationPlaces = new List<BlankLocation>() {
             new BlankLocation(new Vector3(-2453.876f, 3720.782f, 15.35273f), 348.2538f, "SpeedTrap1", "Speed Trap Great Ocean Highway 1") {
-                ActivateDistance = 400f,ActivateCells = 8,
+                ActivateDistance = 300f,ActivateCells = 8,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
                     new ConditionalGroup(){
@@ -187,7 +187,7 @@ public class BlankLocationsData
                 }
             },
             new BlankLocation(new Vector3(-732.3002f, 5503.62f, 36.00393f), 101.8113f, "SpeedTrap2", "Speed Trap Great Ocean Highway 2") {
-                ActivateDistance = 400f,
+                ActivateDistance = 300f,
                 ActivateCells = 8,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -213,7 +213,7 @@ public class BlankLocationsData
                 }
             },
             new BlankLocation(new Vector3(-22.44862f, 6405.367f, 30.99126f), 221.6609f, "SpeedTrap3", "Speed Trap In Paleto Bay") {
-                ActivateDistance = 400f,
+                ActivateDistance = 300f,
                 ActivateCells = 8,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
@@ -225,7 +225,7 @@ public class BlankLocationsData
                 },
             },
             new BlankLocation(new Vector3(2389.632f, 5837.942f, 46.33297f), 60.37991f, "SpeedTrap4", "Speed Trap Braddock Tunnel") {
-                ActivateDistance = 400f,
+                ActivateDistance = 300f,
                 ActivateCells = 8,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
@@ -239,7 +239,7 @@ public class BlankLocationsData
                 },
             },
             new BlankLocation(new Vector3(2806.941f, 4280.857f, 49.73266f), 199.6163f, "SpeedTrap5", "Speed Trap Great Ocean Highway 3") {
-                ActivateDistance = 400f,
+                ActivateDistance = 300f,
                 ActivateCells = 8,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -264,7 +264,7 @@ public class BlankLocationsData
                     },
                 }
             },
-            new BlankLocation(new Vector3(2716.348f, 3428.547f, 55.57796f), 248.8778f, "SpeedTrap6", "Speed Trap You Tool") {  ActivateDistance = 400f,ActivateCells = 8,
+            new BlankLocation(new Vector3(2716.348f, 3428.547f, 55.57796f), 248.8778f, "SpeedTrap6", "Speed Trap You Tool") {  ActivateDistance = 300f,ActivateCells = 8,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(2716.348f, 3428.547f, 55.57796f), 248.8778f, defaultSpawnPercentage) {
@@ -277,7 +277,7 @@ public class BlankLocationsData
                 },
             },
             new BlankLocation(new Vector3(2240.881f, 2742.619f, 44.46104f), 303.4088f, "SpeedTrap7", "Speed Trap Great Ocean Highway 4") {
-                ActivateDistance = 400f,
+                ActivateDistance = 300f,
                 ActivateCells = 8,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -303,7 +303,7 @@ public class BlankLocationsData
                 }
             },
             new BlankLocation(new Vector3(1896.709f, 1787.596f, 63.94535f), 199.7011f, "SpeedTrap8", "Speed Trap Great Ocean Highway 5") {
-                ActivateDistance = 400f,
+                ActivateDistance = 300f,
                 ActivateCells = 8,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -329,7 +329,7 @@ public class BlankLocationsData
                 }
             },
             new BlankLocation(new Vector3(2515.903f, 607.1796f, 108.1216f), 189.9624f, "SpeedTrap9", "Speed Trap Great Ocean Highway 6") {
-                ActivateDistance = 400f,
+                ActivateDistance = 300f,
                 ActivateCells = 8,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -355,7 +355,7 @@ public class BlankLocationsData
                 }
             },
             new BlankLocation(new Vector3(1863.335f, -754.3698f, 81.10484f), 223.2417f, "SpeedTrap10", "Speed Trap Train Bridge") {
-                ActivateDistance = 400f,
+                ActivateDistance = 300f,
                 ActivateCells = 8,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
@@ -369,7 +369,7 @@ public class BlankLocationsData
                 },
             },
             new BlankLocation(new Vector3(1290.652f, -2548.193f, 42.99783f), 8.77529f, "SpeedTrap11", "Speed Trap East LS") {
-                ActivateDistance = 400f,
+                ActivateDistance = 300f,
                 ActivateCells = 8,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {

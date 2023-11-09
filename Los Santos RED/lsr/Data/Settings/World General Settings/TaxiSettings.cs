@@ -88,12 +88,12 @@ public class TaxiSettings : ISettingsDefaultable
         TotalSpawnedAmbientMembersLimit_Suburb = 1;
         TotalSpawnedAmbientMembersLimit_Industrial = 1;
 
-        AmbientSpawnPercentage = 1;
+        AmbientSpawnPercentage = 4;
         AmbientSpawnPercentage_Wilderness = 0;
         AmbientSpawnPercentage_Rural = 0;
-        AmbientSpawnPercentage_Suburb = 0;
-        AmbientSpawnPercentage_Industrial = 0;
-        AmbientSpawnPercentage_Downtown = 2;
+        AmbientSpawnPercentage_Suburb = 1;
+        AmbientSpawnPercentage_Industrial = 2;
+        AmbientSpawnPercentage_Downtown = 7;
 
 
 

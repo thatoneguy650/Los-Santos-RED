@@ -137,13 +137,44 @@ public class SellMenu : ModUIMenu
         }
         if (VehicleItems.Any())
         {
-            UIMenu headerMenu = MenuPool.AddSubMenu(sellMenuRNUI, "Vehicles");
-            SetupVehicleCategoryMenu(headerMenu);
-            foreach (string category in VehicleItems.Select(x => x.ModItem.MenuCategory).Distinct().OrderBy(x => x))
+            UIMenu vehicleCategoryMenu = MenuPool.AddSubMenu(sellMenuRNUI, "Vehicles");
+            SetupVehicleCategoryMenu(vehicleCategoryMenu);
+            List<VehicleItemMakeAndCategories> MakeCategoryList = new List<VehicleItemMakeAndCategories>();
+            foreach (VehicleItem vehicleItem in VehicleItems.Select(x => (VehicleItem)x.ModItem))
             {
-                UIMenu categoryMenu = MenuPool.AddSubMenu(headerMenu, category);
-                SetupCategoryMenu(categoryMenu);
+                string makeName = vehicleItem.MakeName;
+                if (string.IsNullOrEmpty(makeName))
+                {
+                    makeName = "Unknown";
+                }
+                VehicleItemMakeAndCategories selected = MakeCategoryList.FirstOrDefault(x => x.MakeName == makeName);
+                if (selected == null)
+                {
+                    selected = new VehicleItemMakeAndCategories(makeName, new List<string>());
+                    MakeCategoryList.Add(selected);
+                }
+                if (!selected.TypeCategories.Any(x => x == vehicleItem.MenuCategory))
+                {
+                    selected.TypeCategories.Add(vehicleItem.MenuCategory);
+                }
             }
+            foreach (VehicleItemMakeAndCategories makeCategories in MakeCategoryList)
+            {
+                UIMenu MakeCategoryMenu = MenuPool.AddSubMenu(vehicleCategoryMenu, makeCategories.MakeName);
+                SetupCategoryMenu(MakeCategoryMenu);
+                foreach (string menuCategory in makeCategories.TypeCategories)
+                {
+                    UIMenu TypeCategoryMenu = MenuPool.AddSubMenu(MakeCategoryMenu, menuCategory);
+                    SetupCategoryMenu(TypeCategoryMenu);
+                }
+            }
+            //UIMenu headerMenu = MenuPool.AddSubMenu(sellMenuRNUI, "Vehicles");
+            //SetupVehicleCategoryMenu(headerMenu);
+            //foreach (string category in VehicleItems.Select(x => x.ModItem.MenuCategory).Distinct().OrderBy(x => x))
+            //{
+            //    UIMenu categoryMenu = MenuPool.AddSubMenu(headerMenu, category);
+            //    SetupCategoryMenu(categoryMenu);
+            //}
         }
         List<string> Categories = new List<string>();
         foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Sellable && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Weapon && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Vehicle))

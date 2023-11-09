@@ -221,7 +221,11 @@ public class OtherViolations
         {
             return;
         }
-        if(Player.VehicleOwnership.OwnedVehicles.Any(x=> x.Handle == Player.CurrentVehicle.Handle))
+        if (Player.TimeInCurrentVehicle >= 5000)
+        {
+            return;
+        }
+        if (Player.VehicleOwnership.OwnedVehicles.Any(x=> x.Handle == Player.CurrentVehicle.Handle))
         {
             return;
         }
@@ -233,7 +237,11 @@ public class OtherViolations
         {
             return;
         }
-        if(Player.TimeInCurrentVehicle >= 5000)
+        if(Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        if(!Player.CurrentVehicle.Vehicle.Occupants.Any(x=> x.Exists() && x.Handle != Player.Character.Handle))
         {
             return;
         }

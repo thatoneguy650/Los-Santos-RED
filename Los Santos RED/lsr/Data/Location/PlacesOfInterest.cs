@@ -1828,20 +1828,20 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new LEConditionalLocation(new Vector3(1847.131f, 3672.587f, 33.92607f), 32f,55f),
                 } },
             new PoliceStation(new Vector3(-443.3767f, 6016.792f, 31.71221f), 310.4416f, "Paleto Bay Sheriff's Office","A Tradition of Suppression") {
-                BannerImagePath = "agencies\\lssdmain.png", 
+                BannerImagePath = "agencies\\lssdmain.png",
                 OpenTime = 0,
                 CloseTime = 24 ,
-                InteriorID = 3842, 
+                InteriorID = 3842,
                 RespawnLocation = new Vector3(-438.0854f, 6021.318f, 31.49011f),
                 RespawnHeading = 310.0719f,
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(-468.9866f, 6019.28f, 31.34055f), 306.1413f),
               //  CameraPosition = new Vector3(-468.4744f, 6024.704f, 33.34053f), 
                // CameraDirection = new Vector3(-0.1096192f, -0.9549786f, -0.2756799f), 
                // CameraRotation = new Rotator(-16.00254f, -3.330718E-07f, 173.4518f),
-                ScannerFilePath = "01_specific_location\\0x0E94FE38.wav", 
+                ScannerFilePath = "01_specific_location\\0x0E94FE38.wav",
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(-438.606f, 6021.66f, 31.49011f), 358.9023f, 40f),
-                    new LEConditionalLocation(new Vector3(-448.8453f, 6011.864f, 31.71639f), 310.0714f, 40f),
+                    new LEConditionalLocation(new Vector3(-448.8453f, 6011.864f, 31.71639f), 310.0714f, 100f),//is front desk spawn, always if can
                     new LEConditionalLocation(new Vector3(-444.1118f, 6011.967f, 31.71639f), 359.0966f, 40f),
                     new LEConditionalLocation(new Vector3(-454.7975f, 6007.629f, 31.49011f), 131.4658f, 40f),
                 },
@@ -1855,7 +1855,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             }},
             new PoliceStation(new Vector3(434.3387f, -981.8954f, 30.70984f), 89.51098f, "Mission Row Police Station","Obey and Survive") {
                 OpenTime = 0,
-                CloseTime = 24, 
+                CloseTime = 24,
                 RespawnLocation = new Vector3(440.0835f, -982.3911f, 30.68966f),
                 RespawnHeading = 47.88088f,
                 ScannerFilePath = "01_specific_location\\0x0A45FA8A.wav",
@@ -1867,7 +1867,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(427.7032f, -982.3438f, 30.7101f), 46.43887f, 40f),
                     new LEConditionalLocation(new Vector3(432.3652f, -973.1894f, 30.71074f), 60.75554f, 40f),
-                    new LEConditionalLocation(new Vector3(441.3313f, -977.6323f, 30.68966f), 167.8129f, 40f),
+                    new LEConditionalLocation(new Vector3(441.3313f, -977.6323f, 30.68966f), 167.8129f, 100f),//Is front desk spawn, always if can
                     new LEConditionalLocation(new Vector3(426.1106f, -1003.349f, 30.71002f), 159.3153f, 40f),
                     new LEConditionalLocation(new Vector3(480.1246f, -974.9543f, 27.98389f), 332.2961f, 40f),
                 },
@@ -1886,10 +1886,10 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
                 } },
-            new PoliceStation(new Vector3(827.5469f, -1289.998f, 28.24066f), 86.95251f, "La Mesa Police Station","Obey and Survive") { 
+            new PoliceStation(new Vector3(827.5469f, -1289.998f, 28.24066f), 86.95251f, "La Mesa Police Station","Obey and Survive") {
                 BannerImagePath = "agencies\\lspdlamesa.png",
                 OpenTime = 0,
-                CloseTime = 24, 
+                CloseTime = 24,
                 RespawnLocation = new Vector3(815.8774f, -1290.531f, 26.28391f),
                 RespawnHeading = 74.91704f,
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(860.3976f, -1349.983f, 26.06512f),79.33445f),
@@ -1929,6 +1929,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24,
                 RespawnLocation = new Vector3(644.8676f, -5.218857f, 82.7738f),
                 RespawnHeading = 222.2603f,
+                ActivateCells = 5,
+                ActivateDistance = 300f,
                 //CameraPosition = new Vector3(543.0516f, -41.45242f, 72.72662f), 
                 //CameraDirection = new Vector3(-0.8347768f, 0.4947414f, -0.2416167f), 
                // CameraRotation = new Rotator(-13.98198f, 4.399209E-06f, 59.34634f),
@@ -2018,7 +2020,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ScannerFilePath = "01_specific_location\\0x1667D63F.wav", 
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(101.3534f, -745.8216f, 45.75475f), 76.27069f, 55f),
-                    new LEConditionalLocation(new Vector3(117.8028f, -747.0616f, 45.75158f), 102.5501f, 55f),
+                    new LEConditionalLocation(new Vector3(117.8028f, -747.0616f, 45.75158f), 102.5501f, 100f),//is front desk spawn
                     new LEConditionalLocation(new Vector3(113.9787f, -758.2271f, 45.75474f), 21.6145f, 55f),
                 } },
             new PoliceStation(new Vector3(387.16f, 789.96f, 188.23f), 178f, "Beaver Bush Ranger Station","You won't get this bush!") { 

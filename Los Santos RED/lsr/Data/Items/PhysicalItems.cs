@@ -78,33 +78,33 @@ public class PhysicalItems : IPropItems
         PhysicalItemsList.AddRange(new List<PhysicalItem> {
             //Drinks
             //Bottles
-            new PhysicalItem("ba_prop_club_water_bottle", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.05f), new Rotator(0.0f, 0.0f, 0.0f)) }),
-            new PhysicalItem("h4_prop_battle_waterbottle_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.05f), new Rotator(0.0f, 0.0f, 0.0f))}) { CleanupItemImmediately = true },
+            new PhysicalItem("ba_prop_club_water_bottle", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.05f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(-0.01f, -0.11f, -0.05999999f),new Rotator(-50f, 0f, 0f)), }),
+            new PhysicalItem("h4_prop_battle_waterbottle_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.05f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0f, -0.01f, 0.03f),new Rotator(-60f, 20f, 0f)),}) { CleanupItemImmediately = true },
 
-            new PhysicalItem("prop_energy_drink", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)) }),
+            new PhysicalItem("prop_energy_drink", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0f, 0.02f, 0.03f),new Rotator(-80f, 20f, 0f)), }),
 
 
-            new PhysicalItem("prop_ld_flow_bottle", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)) }),
+            new PhysicalItem("prop_ld_flow_bottle", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0f, 0.03f, 0.02f),new Rotator(-70f, 20f, 0f)), }),
 
-            new PhysicalItem("prop_amb_beer_bottle", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)) }),
-            new PhysicalItem("prop_beer_am", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f))}) { CleanupItemImmediately = true },
-            new PhysicalItem("prop_beer_bar", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f))}) { CleanupItemImmediately = true },
-            new PhysicalItem("prop_beer_blr", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f))}) { CleanupItemImmediately = true },
-            new PhysicalItem("prop_beer_jakey", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f))}) { CleanupItemImmediately = true },
-            new PhysicalItem("prop_beer_logger", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f))}) { CleanupItemImmediately = true },
-            new PhysicalItem("prop_beer_patriot", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f))}) { CleanupItemImmediately = true },
-            new PhysicalItem("prop_beer_pride", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f))}) { CleanupItemImmediately = true },
-            new PhysicalItem("prop_beer_stz", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f))}) { CleanupItemImmediately = true },
-            new PhysicalItem("prop_beerdusche", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f))}) { CleanupItemImmediately = true },
+            new PhysicalItem("prop_amb_beer_bottle", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0.05f, 0.03f),new Rotator(-70f, 20f, 0f)), }),
+            new PhysicalItem("prop_beer_am", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0.05f, 0.03f),new Rotator(-70f, 20f, 0f)),}) { CleanupItemImmediately = true },
+            new PhysicalItem("prop_beer_bar", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0.05f, 0.03f),new Rotator(-70f, 20f, 0f)),}) { CleanupItemImmediately = true },
+            new PhysicalItem("prop_beer_blr", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0.05f, 0.03f),new Rotator(-70f, 20f, 0f)),}) { CleanupItemImmediately = true },
+            new PhysicalItem("prop_beer_jakey", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0.05f, 0.03f),new Rotator(-70f, 20f, 0f)),}) { CleanupItemImmediately = true },
+            new PhysicalItem("prop_beer_logger", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0.05f, 0.03f),new Rotator(-70f, 20f, 0f)),}) { CleanupItemImmediately = true },
+            new PhysicalItem("prop_beer_patriot", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0.05f, 0.03f),new Rotator(-70f, 20f, 0f)),}) { CleanupItemImmediately = true },
+            new PhysicalItem("prop_beer_pride", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0.05f, 0.03f),new Rotator(-70f, 20f, 0f)),}) { CleanupItemImmediately = true },
+            new PhysicalItem("prop_beer_stz", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0.05f, 0.03f),new Rotator(-70f, 20f, 0f)),}) { CleanupItemImmediately = true },
+            new PhysicalItem("prop_beerdusche", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.15f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0.05f, 0.03f),new Rotator(-70f, 20f, 0f)),}) { CleanupItemImmediately = true },
 
             new PhysicalItem("prop_cs_beer_bot_40oz", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.05f), new Rotator(0.0f, 0.0f, 0.0f)) }),
 
             new PhysicalItem("h4_prop_h4_t_bottle_02a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }){ CleanupItemImmediately = true },
             new PhysicalItem("h4_prop_h4_t_bottle_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }){ CleanupItemImmediately = true },
 
-            new PhysicalItem("ng_proc_sodacan_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.1f), new Rotator(0.0f, 0.0f, 0.0f)) }),
-            new PhysicalItem("ng_proc_sodacan_01b", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.1f), new Rotator(0.0f, 0.0f, 0.0f)) }),
-            new PhysicalItem("prop_orang_can_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)) }),
+            new PhysicalItem("ng_proc_sodacan_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.1f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(-0.02f, -0.08999999f, -0.03f),new Rotator(-70f, 10f, 0f)), }),
+            new PhysicalItem("ng_proc_sodacan_01b", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.1f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(-0.02f, -0.08999999f, -0.03f),new Rotator(-70f, 10f, 0f)), }),
+            new PhysicalItem("prop_orang_can_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.01f, 0f, 0.02f),new Rotator(-80f, 20f, 0f)), }),
 
             new PhysicalItem("h4_prop_h4_can_beer_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.1f), new Rotator(0.0f, 0.0f, 0.0f)) }),
 
@@ -158,55 +158,78 @@ public class PhysicalItems : IPropItems
                 new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0f, 0f)),
                 new PropAttachment("Head", "BONETAG_HEAD", new Vector3(-0.007f, 0.13f, 0.01f),new Rotator(0.0f, -175f, 91f)) {Gender = "M" },
                 new PropAttachment("Head", "BONETAG_HEAD", new Vector3(-0.02f, 0.1f, 0.01f),new Rotator(0f, 0f, -80f)) {Gender = "F" },}),//looks good
+
+
+
                 //Packages
-                new PhysicalItem("v_ret_ml_cigs", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) }),
-                new PhysicalItem("v_ret_ml_cigs2", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) }),
-                new PhysicalItem("v_ret_ml_cigs3", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) }),
-                new PhysicalItem("v_ret_ml_cigs4", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) }),
-                new PhysicalItem("v_ret_ml_cigs5", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) }),
-                new PhysicalItem("v_ret_ml_cigs6", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) }),
-                new PhysicalItem("p_cigar_pack_02_s", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.17f, 0.02f, 0.0f),new Rotator(0.0f, -78f, 0f)) }),
+                new PhysicalItem("v_ret_ml_cigs", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0f, 0.02f),new Rotator(-70f, 20f, 0f)), }),
+                new PhysicalItem("v_ret_ml_cigs2", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0f, 0.02f),new Rotator(-70f, 20f, 0f)), }),
+                new PhysicalItem("v_ret_ml_cigs3", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0f, 0.02f),new Rotator(-70f, 20f, 0f)), }),
+                new PhysicalItem("v_ret_ml_cigs4", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0f, 0.02f),new Rotator(-70f, 20f, 0f)), }),
+                new PhysicalItem("v_ret_ml_cigs5", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0f, 0.02f),new Rotator(-70f, 20f, 0f)), }),
+                new PhysicalItem("v_ret_ml_cigs6", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0f, 0.02f),new Rotator(-70f, 20f, 0f)), }),
+                new PhysicalItem("p_cigar_pack_02_s", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.17f, 0.02f, 0.0f),new Rotator(0.0f, -78f, 0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.01f, 0.01f, 0.03f),new Rotator(-60f, 40f, 0f)), }),
+
+
+
             new PhysicalItem("prop_cigar_02", new List<PropAttachment>() { 
                 new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(-0.02f, 0.0f, 0.0f), new Rotator(0.0f, 180f, 0f)) {Gender = "M" },
                 //new PropAttachment("Head", "BONETAG_HEAD", new Vector3(-0.007f, 0.13f, 0.01f),new Rotator(0.0f, -175f, 91f)) {Gender = "M" },//doesnt look so good on franklin
                 new PropAttachment("Head", "BONETAG_HEAD", new Vector3(-0.023f,0.087f,0.014f), new Rotator(50f, 0f, 90f)) { Gender = "M" },//a little close in for franklin
-
-
-
                 ////OLD
                 //new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(-0.015f,0.117f,0.01f),new Rotator(90f, 90f, 0f)) { Gender = "F" },
                 //new PropAttachment("Head", "BONETAG_HEAD", new Vector3(-0.023f,0.087f,0.014f), new Rotator(50f, 0f, 90f)) { Gender = "F" },
-
-
                 new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.01f,0.01f,0.01f),new Rotator(0f, 0f, -180f)) { Gender = "F",IsMP = true },
                 new PropAttachment("Head", "BONETAG_HEAD", new Vector3(-0.01f,0.1f,-0.01f), new Rotator(0f, 0f, 90f)) { Gender = "F",IsMP = true },
-
                 new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(-0.01f,0.01f,-0.01f),new Rotator(0f, 0f, -180f)) { Gender = "F",IsMP = false },
                 new PropAttachment("Head", "BONETAG_HEAD", new Vector3(-0.02f,0.08f,-0.01f), new Rotator(0f, 0f, 90f)) { Gender = "F",IsMP = false },
-
-
                 new PropAttachment("Particle", "", new Vector3(0.072f,0.0f,0.0f), new Rotator(0f, 0f, 0f)) { Gender = "U" },
-
-
-
             }),//looksgood besides player mouth attach       
             //Other Drugs
             new PhysicalItem("p_cs_joint_01", new List<PropAttachment>() {
                 new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0f, 0f)),
                 new PropAttachment("Head", "BONETAG_HEAD", new Vector3(-0.007f, 0.13f, 0.01f),new Rotator(0.0f, -175f, 91f)) {Gender = "M" },
-                new PropAttachment("Head", "BONETAG_HEAD", new Vector3(-0.02f, 0.1f, 0.01f),new Rotator(0f, 0f, -80f)) {Gender = "F" },}),//looks good
-            new PhysicalItem("prop_weed_bottle", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0f, 0f)) }),
-            new PhysicalItem("prop_cs_pills", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0f, 0f)) }),
-            new PhysicalItem("sf_prop_sf_bag_weed_01a", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0f, 0f)) }),
-            new PhysicalItem("ba_prop_battle_sniffing_pipe", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) }),
-            new PhysicalItem("prop_meth_bag_01"),
-            new PhysicalItem("prop_cs_crackpipe", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)) }),
-            new PhysicalItem("prop_syringe_01", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)) }),//inject
-            new PhysicalItem("prop_cs_meth_pipe", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) }),//Doesnt attach right
-
+                new PropAttachment("Head", "BONETAG_HEAD", new Vector3(-0.02f, 0.1f, 0.01f),new Rotator(0f, 0f, -80f)) {Gender = "F" },
+                new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),
+            }),//looks good
+            new PhysicalItem("prop_weed_bottle", new List<PropAttachment>() {
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),
+                new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0f, 0f, 0.03f),new Rotator(-60f, 0f, 0f)),
+            }),
+            new PhysicalItem("prop_cs_pills", new List<PropAttachment>() { 
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0f, 0f)),
+                new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0.02f, 0.04f),new Rotator(-60.0f, 0f, 0f)),
+            }),
+            new PhysicalItem("sf_prop_sf_bag_weed_01a", new List<PropAttachment>() {
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),
+                new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.06f, 0.02f, 0.02f),new Rotator(30.0f, 20f, 0f)),
+            }),
+            new PhysicalItem("ba_prop_battle_sniffing_pipe", new List<PropAttachment>() { 
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),
+                new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),
+            }),
+            new PhysicalItem("prop_meth_bag_01", new List<PropAttachment>() {
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),
+                new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.01f, 0.04f, 0.05f),new Rotator(-60f, 0f, 0f)),
+            }),
+            new PhysicalItem("prop_cs_crackpipe", new List<PropAttachment>() { 
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)),
+                new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0f, 0f, 0f),new Rotator(60f, 200f, 0f)),
+            }),
+            new PhysicalItem("prop_syringe_01", new List<PropAttachment>() { 
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)),
+                new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0.02f, 0.05f),new Rotator(-60f, 20f, 0f)),
+            }),//inject
+            new PhysicalItem("prop_cs_meth_pipe", new List<PropAttachment>() {
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),
+                new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0f, 0.01f, 0.03f),new Rotator(50f, 180f, -10f)),
+            }),//Doesnt attach right
 
             //prop_cs_script_bottle_01.ydr
-            new PhysicalItem("prop_cs_script_bottle_01", new List<PropAttachment>() { new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0f, 0f)) }),
+            new PhysicalItem("prop_cs_script_bottle_01", new List<PropAttachment>() { 
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0f, 0f)),
+                new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0f, -0.02f, 0.01f),new Rotator(-60f, 0f, 0f)),
+            }),
         });
     }
     private void DefaultConfig_Food()
@@ -231,10 +254,10 @@ public class PhysicalItems : IPropItems
             new PhysicalItem("v_ret_ml_chips2", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(-77.0f, 23.0f, 0.0f)) }),
             new PhysicalItem("v_ret_ml_chips3", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(-77.0f, 23.0f, 0.0f)) }),
             new PhysicalItem("v_ret_ml_chips4", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(-77.0f, 23.0f, 0.0f)) }),
-            new PhysicalItem("prop_choc_ego", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(25f, -11f, -95f)) }),
-            new PhysicalItem("prop_candy_pqs", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(-178f, -169f, 169f)) }),
-            new PhysicalItem("prop_choc_pq", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(-178f, -169f, 79f)) }),
-            new PhysicalItem("prop_choc_meto", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(169f, 170f, 76f)) }),
+            new PhysicalItem("prop_choc_ego", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(25f, -11f, -95f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.03f, 0.07f, 0.05f),new Rotator(-40f, 20f, -100f)), }),
+            new PhysicalItem("prop_candy_pqs", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(-178f, -169f, 169f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.05f, 0.04f, 0.03f),new Rotator(30f, 20f, -20f)), }),
+            new PhysicalItem("prop_choc_pq", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(-178f, -169f, 79f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0f, 0f, 0.02f),new Rotator(-10f, 30f, 250f)), }),
+            new PhysicalItem("prop_choc_meto", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(169f, 170f, 76f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.03f, 0.04f, 0.04f),new Rotator(-10f, 20f, -120f)), }),
             new PhysicalItem("prop_food_bs_burg1", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(-77.0f, 23.0f, 0.0f)) }),
             new PhysicalItem("prop_food_bs_tray_02", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }),
             new PhysicalItem("prop_food_bs_burger2", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(-77.0f, 23.0f, 0.0f)) }),

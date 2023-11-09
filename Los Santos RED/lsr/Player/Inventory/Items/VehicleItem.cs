@@ -35,6 +35,7 @@ public class VehicleItem : ModItem
     public string ModelName { get; set; }
     public uint ModelHash { get; set; }
     public override bool IsDLC => RequiresDLC;
+    public string MakeName => NativeHelper.VehicleMakeName(Game.GetHashKey(ModelItem.ModelName));
     public VehicleItem()
     {
     }
@@ -86,14 +87,29 @@ public class VehicleItem : ModItem
         {
             ToCheckFirst = VehicleSubMenu;
         }
-        UIMenu CategoryMenu = ToCheckFirst.Children.Where(x => x.Value.SubtitleText == MenuCategory).FirstOrDefault().Value;
-        if(CategoryMenu != null)
+
+
+        string makeName = MakeName;
+        UIMenu MakeCategoryMenu = ToCheckFirst.Children.Where(x => x.Value.SubtitleText == MakeName).FirstOrDefault().Value;
+        UIMenu TypeCategoryMenu = null;
+        if (MakeCategoryMenu != null)
+        {
+            TypeCategoryMenu = MakeCategoryMenu.Children.Where(x => x.Value.SubtitleText == MenuCategory).FirstOrDefault().Value;
+        }
+        else
+        {
+            TypeCategoryMenu = ToCheckFirst.Children.Where(x => x.Value.SubtitleText == MenuCategory).FirstOrDefault().Value;
+        }
+
+
+        //UIMenu CategoryMenu = ToCheckFirst.Children.Where(x => x.Value.SubtitleText == MenuCategory).FirstOrDefault().Value;
+        if(TypeCategoryMenu != null)
         {
             FoundCategoryMenu = true;
-            VehicleMenu = Transaction.MenuPool.AddSubMenu(CategoryMenu, menuItem.ModItemName);
-            CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].Description = description;
-            CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
-            CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].Enabled = enabled;
+            VehicleMenu = Transaction.MenuPool.AddSubMenu(TypeCategoryMenu, menuItem.ModItemName);
+            TypeCategoryMenu.MenuItems[TypeCategoryMenu.MenuItems.Count() - 1].Description = description;
+            TypeCategoryMenu.MenuItems[TypeCategoryMenu.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
+            TypeCategoryMenu.MenuItems[TypeCategoryMenu.MenuItems.Count() - 1].Enabled = enabled;
             //EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {CategoryMenu.SubtitleText}");
         }
         if (!FoundCategoryMenu && VehicleMenu == null)
@@ -188,13 +204,25 @@ public class VehicleItem : ModItem
         {
             ToCheckFirst = VehicleSubMenu;
         }
-        UIMenu CategoryMenu = ToCheckFirst.Children.Where(x => x.Value.SubtitleText == MenuCategory).FirstOrDefault().Value;
-        if (CategoryMenu != null)
+        string makeName = MakeName;
+        UIMenu MakeCategoryMenu = ToCheckFirst.Children.Where(x => x.Value.SubtitleText == MakeName).FirstOrDefault().Value;
+        UIMenu TypeCategoryMenu = null;
+        if (MakeCategoryMenu != null)
+        {
+            TypeCategoryMenu = MakeCategoryMenu.Children.Where(x => x.Value.SubtitleText == MenuCategory).FirstOrDefault().Value;
+        }
+        else
+        {
+            TypeCategoryMenu = ToCheckFirst.Children.Where(x => x.Value.SubtitleText == MenuCategory).FirstOrDefault().Value;
+        }
+
+
+        if (TypeCategoryMenu != null)
         {
             FoundCategoryMenu = true;
-            VehicleMenu = Transaction.MenuPool.AddSubMenu(CategoryMenu, menuItem.ModItemName);
-            CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].Description = description;
-            CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+            VehicleMenu = Transaction.MenuPool.AddSubMenu(TypeCategoryMenu, menuItem.ModItemName);
+            TypeCategoryMenu.MenuItems[TypeCategoryMenu.MenuItems.Count() - 1].Description = description;
+            TypeCategoryMenu.MenuItems[TypeCategoryMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
             //EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {CategoryMenu.SubtitleText}");
         }
         if (!FoundCategoryMenu && VehicleMenu == null)
@@ -385,10 +413,21 @@ public class VehicleItem : ModItem
         {
             world.Vehicles.CleanupAmbient();
             Vehicle NewVehicle = new Vehicle(ModelItem.ModelName, ChosenSpawn.Position, ChosenSpawn.Heading);
+            GameFiber.Yield();
+            NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(Game.GetHashKey(ModelItem.ModelName));
             if (NewVehicle.Exists())
             {
+                VehicleExt MyNewCar = new VehicleExt(NewVehicle, settings);
+                MyNewCar.AddVehicleToList(world);
+                MyNewCar.Setup();
+                MyNewCar.HasUpdatedPlateType = false;
+                MyNewCar.AllowVanityPlates = false;
+                MyNewCar.CanHaveRandomItems = false;
+                MyNewCar.CanHaveRandomWeapons = false;
+                MyNewCar.CanHaveRandomCash = false;
+
                 //CurrentMenuItem.ItemsSoldToPlayer += 1;
-                if(SetPrimaryColor || SetSecondaryColor || !SetLivery1)
+                if (SetPrimaryColor || SetSecondaryColor || !SetLivery1)
                 {
                     NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, FinalPrimaryColor, FinalSecondaryColor);
                 }
@@ -398,22 +437,18 @@ public class VehicleItem : ModItem
                 }
                 NewVehicle.Wash();
                 //NewVehicle.LicensePlate = new PlateType(0, "", "San Andreas", 0, "12ABC345").GenerateNewLicensePlateNumber();
-                VehicleExt MyNewCar = world.Vehicles.GetVehicleExt(NewVehicle);
-                if (MyNewCar == null)
-                {
-                    MyNewCar = new VehicleExt(NewVehicle, settings);
-                    MyNewCar.Setup();
-                    MyNewCar.HasUpdatedPlateType = false;
-                    MyNewCar.AllowVanityPlates = false;
-                    MyNewCar.CanHaveRandomItems = false;
-                    MyNewCar.CanHaveRandomWeapons = false;
-                    MyNewCar.CanHaveRandomCash = false;
-                    //EntryPoint.WriteToConsoleTestLong("New Vehicle Created in PurchaseVehicle");
-                }
-                MyNewCar.AddVehicleToList(world);
+                //VehicleExt MyNewCar = world.Vehicles.GetVehicleExt(NewVehicle);
+                //if (MyNewCar == null)
+                //{
+                //    MyNewCar = new VehicleExt(NewVehicle, settings);
+                //    MyNewCar.Setup();
+
+                //    //EntryPoint.WriteToConsoleTestLong("New Vehicle Created in PurchaseVehicle");
+                //}
+                //MyNewCar.AddVehicleToList(world);
                 //world.Vehicles.AddEntity(MyNewCar, ResponseType.None);
                 player.VehicleOwnership.TakeOwnershipOfVehicle(MyNewCar, false);
-                MyNewCar.UpdatePlateType(true, world.ModDataFileManager.Zones, world.ModDataFileManager.PlateTypes, false);
+                MyNewCar.UpdatePlateType(true, world.ModDataFileManager.Zones, world.ModDataFileManager.PlateTypes, false, true);
                 transaction.OnItemPurchased(this, CurrentMenuItem, 1);
                 return true;
             }
@@ -437,6 +472,7 @@ public class VehicleItem : ModItem
         {
             NativeFunction.Natives.CLEAR_AREA(Transaction.VehiclePreviewPosition.Position.X, Transaction.VehiclePreviewPosition.Position.Y, Transaction.VehiclePreviewPosition.Position.Z, 4f, true, false, false, false);
             Transaction.SellingVehicle = new Vehicle(ModelItem.ModelName, Transaction.VehiclePreviewPosition.Position, Transaction.VehiclePreviewPosition.Heading);
+            NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(Game.GetHashKey(ModelItem.ModelName));
         }
         if (!Transaction.SellingVehicle.Exists())
         {
@@ -451,6 +487,7 @@ public class VehicleItem : ModItem
         }
         Car.WasModSpawned = true;
         Car.WasSpawnedEmpty = true;
+        Car.IsManualCleanup = true;
         Car.CanHaveRandomItems = false;
         Car.CanHaveRandomItems = false;
         Car.CanHaveRandomCash = false;

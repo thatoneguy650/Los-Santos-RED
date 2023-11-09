@@ -29,7 +29,8 @@ public class MerchantConditionalLocation : ConditionalLocation
             merchantSpawnTask.ClearVehicleArea = true;
             merchantSpawnTask.PlacePedOnGround = true;
             merchantSpawnTask.AttemptSpawn();
-            merchantSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
+            merchantSpawnTask.PostRun(this, GameLocation);
+            //merchantSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
         }
         catch (Exception ex)
         {

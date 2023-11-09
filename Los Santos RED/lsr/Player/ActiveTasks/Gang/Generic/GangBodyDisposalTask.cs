@@ -154,6 +154,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             DeadBodyVehicle.SetRandomPlate();
             DeadBodyVehicle.WasModSpawned = true;
             DeadBodyVehicle.WasSpawnedEmpty = true;
+            DeadBodyVehicle.IsManualCleanup = true;
             DeadBodyVehicle.IsAlwaysOpenForPlayer = true;
             return DeadBodyVehicle != null && DeadBodyVehicle.Vehicle.Exists();
         }
@@ -250,6 +251,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 return;
             }
             DeadBodyVehicle.WasSpawnedEmpty = false;
+            DeadBodyVehicle.IsManualCleanup = false;
             DeadBodyVehicle.Vehicle.LockStatus = (VehicleLockStatus)10;
         }
     }

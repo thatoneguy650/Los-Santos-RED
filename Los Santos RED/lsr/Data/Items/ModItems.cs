@@ -2430,7 +2430,7 @@ public class ModItems : IModItems
             new VehicleItem("HVY Apocalypse Scarab", true, ItemType.Vehicles) { ModelName = "scarab" },
             new VehicleItem("HVY Future Shock Scarab", true, ItemType.Vehicles) { ModelName = "scarab2" },
             new VehicleItem("HVY Nightmare Scarab", true, ItemType.Vehicles) { ModelName = "scarab3" },
-            new VehicleItem("Imponte Deluxo", true, ItemType.Vehicles) { ModelName = "deluxo" },
+            new VehicleItem("Imponte Deluxo", true, ItemType.Vehicles) { Description ="The future is here, and it has gull-wing doors.", ModelName = "deluxo" },
             new VehicleItem("Imponte Dukes", ItemType.Vehicles) { ModelName = "dukes" },
             new VehicleItem("Imponte Duke O'Death", ItemType.Vehicles) { ModelName = "dukes2" },
             new VehicleItem("Imponte Beater Dukes", true, ItemType.Vehicles) { ModelName = "dukes3" },

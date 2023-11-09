@@ -144,16 +144,66 @@ public class PurchaseMenu : ModUIMenu
                 SetupCategoryMenu(categoryMenu);
             }
         }
+        //if (VehicleItems.Any())
+        //{
+        //    UIMenu vehicleCategoryMenu = MenuPool.AddSubMenu(purchaseMenu, "Vehicles");
+        //    SetupVehicleCategoryMenu(vehicleCategoryMenu);
+        //    foreach (string category in VehicleItems.Select(x => x.ModItem.MenuCategory).Distinct().OrderBy(x=> x))
+        //    {
+        //        UIMenu categoryMenu = MenuPool.AddSubMenu(vehicleCategoryMenu, category);
+        //        SetupCategoryMenu(categoryMenu);
+        //    }
+        //}
+
         if (VehicleItems.Any())
         {
             UIMenu vehicleCategoryMenu = MenuPool.AddSubMenu(purchaseMenu, "Vehicles");
             SetupVehicleCategoryMenu(vehicleCategoryMenu);
-            foreach (string category in VehicleItems.Select(x => x.ModItem.MenuCategory).Distinct().OrderBy(x=> x))
+            List <VehicleItemMakeAndCategories> MakeCategoryList = new List<VehicleItemMakeAndCategories>();
+            foreach(VehicleItem vehicleItem in VehicleItems.Select(x=> (VehicleItem)x.ModItem))
             {
-                UIMenu categoryMenu = MenuPool.AddSubMenu(vehicleCategoryMenu, category);
-                SetupCategoryMenu(categoryMenu);
+                string makeName = vehicleItem.MakeName;
+                if(string.IsNullOrEmpty(makeName))
+                {
+                    makeName = "Unknown";
+                }
+                VehicleItemMakeAndCategories selected = MakeCategoryList.FirstOrDefault(x => x.MakeName == makeName);
+                if(selected == null)
+                {
+                    selected = new VehicleItemMakeAndCategories(makeName, new List<string>());
+                    MakeCategoryList.Add(selected);
+                }
+                if(!selected.TypeCategories.Any(x=> x == vehicleItem.MenuCategory))
+                {
+                    selected.TypeCategories.Add(vehicleItem.MenuCategory);
+                }
             }
+            foreach(VehicleItemMakeAndCategories makeCategories in MakeCategoryList)
+            {
+                UIMenu MakeCategoryMenu = MenuPool.AddSubMenu(vehicleCategoryMenu, makeCategories.MakeName);
+                SetupCategoryMenu(MakeCategoryMenu);
+                foreach(string menuCategory in makeCategories.TypeCategories)
+                {
+                    UIMenu TypeCategoryMenu = MenuPool.AddSubMenu(MakeCategoryMenu, menuCategory);
+                    SetupCategoryMenu(TypeCategoryMenu);
+                }
+            }
+
+            //foreach (string makeName in VehicleItems.Select(x => ((VehicleItem)x.ModItem).MakeName).Distinct().OrderBy(x => x))
+            //{
+            //    UIMenu categoryMenu = MenuPool.AddSubMenu(vehicleCategoryMenu, makeName);
+            //    SetupCategoryMenu(categoryMenu);
+            //}
+
+
+            //foreach (string category in VehicleItems.Select(x => x.ModItem.MenuCategory).Distinct().OrderBy(x => x))
+            //{
+            //    UIMenu categoryMenu = MenuPool.AddSubMenu(vehicleCategoryMenu, category);
+            //    SetupCategoryMenu(categoryMenu);
+            //}
         }
+
+
         List<string> Categories = new List<string>();
         foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Weapon && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Vehicle))
         {
@@ -272,4 +322,5 @@ public class PurchaseMenu : ModUIMenu
         }
         //menuItem.ModItem.UpdatePurchaseMenuItem(Transaction, menuItem, Settings, Player, Transaction.IsStealing);
     }
+
 }

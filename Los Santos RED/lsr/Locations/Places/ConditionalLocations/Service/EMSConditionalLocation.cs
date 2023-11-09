@@ -53,9 +53,11 @@ public class EMSConditionalLocation : ConditionalLocation
             eMTSpawnTask.ClearVehicleArea = true;
             eMTSpawnTask.PlacePedOnGround = DispatchableVehicle == null;// true;
             eMTSpawnTask.AttemptSpawn();
-            eMTSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
-            eMTSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
-            eMTSpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));
+
+            eMTSpawnTask.PostRun(this, GameLocation);
+            //eMTSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
+            //eMTSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
+            //eMTSpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));//why twice?
         }
         catch (Exception ex)
         {

@@ -182,7 +182,7 @@ public class DynamicPlaces
         {
             return;
         }
-        if (ActiveVendingMachines.Any(x => x.EntrancePosition.DistanceTo2D(obj.GetOffsetPositionFront(0.5f)) <= 0.2f))
+        if (ActiveCashRegisters.Any(x => x.EntrancePosition.DistanceTo2D(obj.GetOffsetPositionFront(0.5f)) <= 0.2f))
         {
             return;
         }
