@@ -29,7 +29,7 @@ class GetInVehicleTaskState : TaskState
         BlockPermanentEvents = blockPermanentEvents;
     }
     public bool IsGang { get; set; } = false;
-    public bool IsValid => PedGeneral != null && !PedGeneral.IsInVehicle && (!IsGang || Player.IsInVehicle) && PedGeneral.Pedestrian.Exists() && SeatAssigner != null && SeatAssigner.IsAssignmentValid();
+    public bool IsValid => PedGeneral != null && !PedGeneral.IsInVehicle && (!IsGang || Player.IsInVehicle) && PedGeneral.Pedestrian.Exists() && SeatAssigner != null && SeatAssigner.IsAssignmentValid(!IsGang);
     public string DebugName => $"GetInVehicleTaskState Vehicle {SeatAssigner?.VehicleAssigned?.Handle} Seat {SeatAssigner?.SeatAssigned}";
     public void Dispose()
     {
@@ -50,6 +50,7 @@ class GetInVehicleTaskState : TaskState
     }
     private void TaskEntry()
     {
+        EntryPoint.WriteToConsole("GET IN VEHICLE TASK STATE RAN");
         if(!PedGeneral.Pedestrian.Exists())
         {
             return;
@@ -77,6 +78,7 @@ class GetInVehicleTaskState : TaskState
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
         }
+        EntryPoint.WriteToConsole("GET IN VEHICLE TASK STATE FINISHED");
     }
 }
 

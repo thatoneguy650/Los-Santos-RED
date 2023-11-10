@@ -129,12 +129,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
             {
                 PlayerTasks.CompleteTask(HiringGang.Contact, true);
-            }
-            else
-            {
-                Dispose();
-            }
-            Rage.World.GetAllBlips().ToList().ForEach(x=> x?.Delete());
+            }//nothing to dispose
+
         }
         private void GetTargetGang()
         {

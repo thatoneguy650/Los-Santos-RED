@@ -71,7 +71,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 ImpoundLocation.IsPlayerInterestedInLocation = false;
             }
-            Delete();
+            if (ImpoundedVehicle == null || !ImpoundedVehicle.Vehicle.Exists())
+            {
+                return;
+            }
+            ImpoundedVehicle.WasSpawnedEmpty = false;
+            ImpoundedVehicle.IsManualCleanup = false;
+            ImpoundedVehicle.Vehicle.IsPersistent = false;
         }
         public void Start(Gang ActiveGang)
         {
@@ -177,21 +183,28 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void SetReadyToPickupMoney()
         {
-            Cleanup();
-            if (ImpoundLocation != null)
-            {
-                ImpoundLocation.IsPlayerInterestedInLocation = false;
-            }
+            OnCompletedOrFailed();
         }
         private void SetFailed()
         {
-            Cleanup();
+            OnCompletedOrFailed();
+            GangTasks.SendGenericFailMessage(PhoneContact);
+            PlayerTasks.FailTask(HiringGang.Contact);
+        }
+        private void OnCompletedOrFailed()
+        {
             if (ImpoundLocation != null)
             {
                 ImpoundLocation.IsPlayerInterestedInLocation = false;
             }
-            GangTasks.SendGenericFailMessage(PhoneContact);
-            PlayerTasks.FailTask(HiringGang.Contact);
+            if (ImpoundedVehicle == null || !ImpoundedVehicle.Vehicle.Exists())
+            {
+                return;
+            }
+            ImpoundedVehicle.WasSpawnedEmpty = false;
+            ImpoundedVehicle.IsManualCleanup = false;
+            ImpoundedVehicle.Vehicle.LockStatus = (VehicleLockStatus)10;
+            //ImpoundedVehicle.Vehicle.IsPersistent = false;
         }
         private void GetTaskData()
         {
@@ -260,7 +273,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 return false;
             }
-
             ImpoundedVehicle.Vehicle.IsPersistent = true;
             ImpoundedVehicle.SetRandomPlate();
             ImpoundedVehicle.WasModSpawned = true;
@@ -275,26 +287,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             return ImpoundedVehicle != null && ImpoundedVehicle.Vehicle.Exists();
         }
-        private void Cleanup()
-        {
-            if (ImpoundedVehicle == null || !ImpoundedVehicle.Vehicle.Exists())
-            {
-                return;
-            }
-            ImpoundedVehicle.WasSpawnedEmpty = false;
-            ImpoundedVehicle.IsManualCleanup = false;
-            ImpoundedVehicle.Vehicle.LockStatus = (VehicleLockStatus)10;
-            //ImpoundedVehicle.Vehicle.IsPersistent = false;
-        }
-        private void Delete()
-        {
-            if (ImpoundedVehicle == null || !ImpoundedVehicle.Vehicle.Exists())
-            {
-                return;
-            }
-            ImpoundedVehicle.WasSpawnedEmpty = false;
-            ImpoundedVehicle.IsManualCleanup = false;
-            ImpoundedVehicle.Vehicle.IsPersistent = false;        
-        }
+
+
     }
 }

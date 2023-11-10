@@ -149,15 +149,15 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         protected virtual void SetReadyToPickupMoney()
         {
-            Cleanup();
+            OnTaskCompletedOrFailed();
         }
         protected virtual void SetFailed()
         {
-            Cleanup();
+            OnTaskCompletedOrFailed();
             GangTasks.SendGenericFailMessage(HiringContact);
             PlayerTasks.FailTask(HiringGang.Contact);
         }
-        protected virtual void Cleanup()
+        protected virtual void OnTaskCompletedOrFailed()
         {
 
         }

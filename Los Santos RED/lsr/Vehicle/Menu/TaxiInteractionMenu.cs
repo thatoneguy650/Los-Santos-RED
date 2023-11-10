@@ -164,6 +164,13 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
         spawnLocation.GetClosestStreet(false);
         spawnLocation.GetClosestSideOfRoad();
 
+
+        spawnLocation.GetRoadBoundaryPosition();
+        if (spawnLocation.HasRoadBoundaryPosition)
+        {
+            spawnLocation.StreetPosition = spawnLocation.RoadBoundaryPosition;
+        }
+
         EntryPoint.WriteToConsole($"TAXI SetLocationMarker {gameLocation.Name} HasStreetPosition:{spawnLocation.HasStreetPosition} HasSideOfRoadPosition:{spawnLocation.HasSideOfRoadPosition}");
         if (!spawnLocation.HasStreetPosition)
         {
@@ -195,6 +202,13 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
         SpawnLocation spawnLocation = new SpawnLocation(MarkerPos);
         spawnLocation.GetClosestStreet(false);
         spawnLocation.GetClosestSideOfRoad();
+
+        spawnLocation.GetRoadBoundaryPosition();
+        if (spawnLocation.HasRoadBoundaryPosition)
+        {
+            spawnLocation.StreetPosition = spawnLocation.RoadBoundaryPosition;
+        }
+
         EntryPoint.WriteToConsole($"TAXI SetDestinationMarker MARKER HasStreetPosition:{spawnLocation.HasStreetPosition} HasSideOfRoadPosition:{spawnLocation.HasSideOfRoadPosition}");
         if (!spawnLocation.HasStreetPosition)
         {

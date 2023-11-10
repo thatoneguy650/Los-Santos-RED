@@ -20,7 +20,7 @@ public class CopGeneralIdle : GeneralIdle
 
     protected override void GetNewTaskState()
     {
-        if (AllowEnteringVehicle && !Ped.IsInVehicle && !SeatAssigner.IsAssignmentValid())
+        if (AllowEnteringVehicle && !Ped.IsInVehicle && !SeatAssigner.IsAssignmentValid(true))
         {
             SeatAssigner.AssignFrontSeat(PedGeneral.HasExistedFor >= 10000);
         }
@@ -48,7 +48,7 @@ public class CopGeneralIdle : GeneralIdle
         }
         else
         {
-            if (SeatAssigner.IsAssignmentValid())//Ped.ShouldGetInVehicle)
+            if (SeatAssigner.IsAssignmentValid(true))//Ped.ShouldGetInVehicle)
             {
                 CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents);
             }

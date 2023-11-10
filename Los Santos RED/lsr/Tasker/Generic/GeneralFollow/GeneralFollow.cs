@@ -18,10 +18,12 @@ public class GeneralFollow : ComplexTask
     private TaskState CurrentTaskState;
     private ISettingsProvideable Settings;
     private GroupManager GroupManager;
+    private IWeaponIssuable WeaponIssuable;
+    private bool IsSetPlayerVehicle;
     private bool AllowEnteringVehicle => true;//!Ped.IsAmbientSpawn || PedGeneral.HasExistedFor >= 10000;
     public bool ShouldGetInVehicle => Player.IsInVehicle;
     public bool ShouldGetOutOfVehicle => Player.IsOnFoot && PedGeneral.DistanceToPlayer <= 20f;
-    public GeneralFollow(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, GroupManager groupManager) : 
+    public GeneralFollow(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, GroupManager groupManager, IWeaponIssuable weaponIssuable) : 
         base(player, ped, 1000)//1500
     {
         PedGeneral = pedGeneral;
@@ -32,6 +34,7 @@ public class GeneralFollow : ComplexTask
         Settings = settings;
         SeatAssigner = new SeatAssigner(Ped, World, possibleVehicles);
         GroupManager = groupManager;
+        WeaponIssuable = weaponIssuable;
     }
     public override void ReTask()
     {
@@ -40,6 +43,7 @@ public class GeneralFollow : ComplexTask
     public override void Start()
     {
         CurrentTaskState?.Stop();
+        IsSetPlayerVehicle = PedGeneral.RideInPlayerVehicle;
         GetNewTaskState();
         CurrentTaskState?.Start();
     }
@@ -64,14 +68,34 @@ public class GeneralFollow : ComplexTask
             NativeFunction.Natives.SET_DRIVER_ABILITY(PedGeneral.Pedestrian, 1.0f);
             NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(PedGeneral.Pedestrian, 1.0f);
         }
+        //if(PedGeneral.RideInPlayerVehicle != IsSetPlayerVehicle)
+        //{
+        //    World.Pedestrians.RemoveSeatAssignment(PedGeneral);
+        //    IsSetPlayerVehicle = PedGeneral.RideInPlayerVehicle;
+        //    EntryPoint.WriteToConsole("RIDE WITH PLAYER CHANGED< RESET LOGIC");
+        //}
     }
 
     private void GetNewTaskState()
     {
-        if (ShouldGetInVehicle && AllowEnteringVehicle && !Ped.IsInVehicle && !SeatAssigner.IsAssignmentValid())
+        if (ShouldGetInVehicle && AllowEnteringVehicle && !Ped.IsInVehicle && !SeatAssigner.IsAssignmentValid(false))
         {
-            SeatAssigner.AssignFrontSeat(true);
+            if (!PedGeneral.RideInPlayerVehicle)
+            {
+                SeatAssigner.AssignFrontSeat(true);
+            }
+            else
+            {
+                SeatAssigner.AssignPlayerPassenger(Player.CurrentVehicle);
+                if(!SeatAssigner.IsAssignmentValid(false))
+                {
+                    SeatAssigner.AssignFrontSeat(true);
+                }
+            }
         }
+
+
+        EntryPoint.WriteToConsole($"SeatAssigner.IsAssignmentValid(){SeatAssigner.IsAssignmentValid(false)}");
         if (Ped.IsInVehicle)
         {
             if (ShouldGetOutOfVehicle)
@@ -105,14 +129,14 @@ public class GeneralFollow : ComplexTask
         }
         else
         {
-            if(ShouldGetInVehicle && SeatAssigner.IsAssignmentValid())
+            if(ShouldGetInVehicle && SeatAssigner.IsAssignmentValid(false))
             {
                 CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings,false) { IsGang = true };
 
             }
             else
             {
-                CurrentTaskState = new FollowOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, GroupManager);
+                CurrentTaskState = new FollowOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, GroupManager, WeaponIssuable);
             }
         }
         //if (CurrentTaskState != null)

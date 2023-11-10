@@ -131,6 +131,14 @@ public class TaxiRide
         DestinationLocation = new SpawnLocation();
         PickupLocation.GetClosestStreet(true);
         PickupLocation.GetClosestSideOfRoad();
+
+        PickupLocation.GetRoadBoundaryPosition();
+        if (PickupLocation.HasRoadBoundaryPosition)
+        {
+            PickupLocation.StreetPosition = PickupLocation.RoadBoundaryPosition;
+        }
+
+
         if (!PickupLocation.HasStreetPosition)
         {
             EntryPoint.WriteToConsole("TAXI RIDE SETUP FAIL NO STREET POSITION");
@@ -348,7 +356,12 @@ public class TaxiRide
         SpawnLocation spawnLocation = new SpawnLocation(RespondingDriver.Position);
         spawnLocation.GetClosestStreet(false);
         spawnLocation.GetClosestSideOfRoad();
-        if(!spawnLocation.HasStreetPosition)
+        spawnLocation.GetRoadBoundaryPosition();
+        if (spawnLocation.HasRoadBoundaryPosition)
+        {
+            spawnLocation.StreetPosition = spawnLocation.RoadBoundaryPosition;
+        }
+        if (!spawnLocation.HasStreetPosition)
         {
             spawnLocation.StreetPosition = RespondingDriver.Position;
         }
@@ -409,7 +422,17 @@ public class TaxiRide
         SpawnLocation spawnLocation = new SpawnLocation(DestinationLocation.StreetPosition);
         spawnLocation.GetClosestStreet(false);
         spawnLocation.GetClosestSideOfRoad();
-        if(spawnLocation.HasStreetPosition)
+
+
+        spawnLocation.GetRoadBoundaryPosition();
+        if (spawnLocation.HasRoadBoundaryPosition)
+        {
+            spawnLocation.StreetPosition = spawnLocation.RoadBoundaryPosition;
+        }
+
+
+
+        if (spawnLocation.HasStreetPosition)
         {
             EntryPoint.WriteToConsole($"NEARBY DESTINATION UPDATED WAS {DestinationLocation.StreetPosition} NOW {spawnLocation.StreetPosition}");
             DestinationLocation.StreetPosition = spawnLocation.StreetPosition;
@@ -494,7 +517,14 @@ public class TaxiRide
         SpawnLocation NewPickupLocation = new SpawnLocation(Player.Position);
         NewPickupLocation.GetClosestStreet(true);
         NewPickupLocation.GetClosestSideOfRoad();
-        if(!NewPickupLocation.HasStreetPosition)
+
+        NewPickupLocation.GetRoadBoundaryPosition();
+        if (NewPickupLocation.HasRoadBoundaryPosition)
+        {
+            NewPickupLocation.StreetPosition = NewPickupLocation.RoadBoundaryPosition;
+        }
+
+        if (!NewPickupLocation.HasStreetPosition)
         {
             Game.DisplayHelp("Could not find new pickup location");
             return;

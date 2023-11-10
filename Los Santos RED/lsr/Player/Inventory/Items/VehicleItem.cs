@@ -188,15 +188,12 @@ public class VehicleItem : ModItem
         {
             return;
         }
-
         string formattedPurchasePrice = menuItem.PurchasePrice.ToString("C0");
         if (menuItem.PurchasePrice == 0)
         {
             formattedPurchasePrice = "";
         }
-
         string description = GetGeneralDescription(menuItem);
-
         bool FoundCategoryMenu = false;
         UIMenu VehicleSubMenu = purchaseMenu.Children.Where(x => x.Value.SubtitleText.ToLower() == "vehicles").FirstOrDefault().Value;
         UIMenu ToCheckFirst = purchaseMenu;
@@ -215,8 +212,6 @@ public class VehicleItem : ModItem
         {
             TypeCategoryMenu = ToCheckFirst.Children.Where(x => x.Value.SubtitleText == MenuCategory).FirstOrDefault().Value;
         }
-
-
         if (TypeCategoryMenu != null)
         {
             FoundCategoryMenu = true;
@@ -241,55 +236,24 @@ public class VehicleItem : ModItem
             VehicleMenu.RemoveBanner();
         }
 
-
         //Purchase Stuff Here
-
         string PurchaseHeader = "Purchase";
         string PurchaseDescription = "Select to purchase this vehicle";
-
         if(!Transaction.IsPurchasing)
         {
             PurchaseHeader = "Acquire";
             PurchaseDescription = "Select to take possession of this vehicle";
         }
-
-
-
-
-
         UIMenuCheckboxItem StopRotation = new UIMenuCheckboxItem("Rotate Preview", Transaction.RotateVehiclePreview) { Description = "Toggle rotation of the preview" };
         StopRotation.CheckboxEvent += (sender, Checked) =>
         {
             Transaction.RotateVehiclePreview = StopRotation.Checked;
         };
         VehicleMenu.AddItem(StopRotation);
-
-
-
-        //UIMenuItem RotateCamera = new UIMenuItem("Rotate Camera", "Rotate the camera around");
-        //RotateCamera.Activated += (sender, selectedItem) =>
-        //{
-        //    //Transaction.RotatePreview = StopRotation.Checked;
-
-
-        //    Transaction.LocationCamera?.RotateCameraByMouse();
-
-        //};
-        //VehicleMenu.AddItem(RotateCamera);
-
-
-
-
-
-
-
-
         VehicleMenu.OnMenuOpen += (sender) =>
         {
             StopRotation.Checked = Transaction.RotateVehiclePreview;
         };
-
-
         UIMenuItem Purchase = new UIMenuItem(PurchaseHeader, PurchaseDescription) { RightLabel = formattedPurchasePrice };
         Purchase.Activated += (sender, selectedItem) =>
         {
@@ -393,9 +357,6 @@ public class VehicleItem : ModItem
         }
         liveryFullMenu = null;     
     }
-
-
-
     private bool PurchaseVehicle(Transaction transaction, MenuItem CurrentMenuItem, ILocationInteractable player, ISettingsProvideable settings, IEntityProvideable world)
     {
         bool ItemInDeliveryBay = true;
@@ -425,7 +386,6 @@ public class VehicleItem : ModItem
                 MyNewCar.CanHaveRandomItems = false;
                 MyNewCar.CanHaveRandomWeapons = false;
                 MyNewCar.CanHaveRandomCash = false;
-
                 //CurrentMenuItem.ItemsSoldToPlayer += 1;
                 if (SetPrimaryColor || SetSecondaryColor || !SetLivery1)
                 {
@@ -436,17 +396,6 @@ public class VehicleItem : ModItem
                     NativeFunction.Natives.SET_VEHICLE_LIVERY(NewVehicle, Livery1);
                 }
                 NewVehicle.Wash();
-                //NewVehicle.LicensePlate = new PlateType(0, "", "San Andreas", 0, "12ABC345").GenerateNewLicensePlateNumber();
-                //VehicleExt MyNewCar = world.Vehicles.GetVehicleExt(NewVehicle);
-                //if (MyNewCar == null)
-                //{
-                //    MyNewCar = new VehicleExt(NewVehicle, settings);
-                //    MyNewCar.Setup();
-
-                //    //EntryPoint.WriteToConsoleTestLong("New Vehicle Created in PurchaseVehicle");
-                //}
-                //MyNewCar.AddVehicleToList(world);
-                //world.Vehicles.AddEntity(MyNewCar, ResponseType.None);
                 player.VehicleOwnership.TakeOwnershipOfVehicle(MyNewCar, false);
                 MyNewCar.UpdatePlateType(true, world.ModDataFileManager.Zones, world.ModDataFileManager.PlateTypes, false, true);
                 transaction.OnItemPurchased(this, CurrentMenuItem, 1);
@@ -489,10 +438,9 @@ public class VehicleItem : ModItem
         Car.WasSpawnedEmpty = true;
         Car.IsManualCleanup = true;
         Car.CanHaveRandomItems = false;
-        Car.CanHaveRandomItems = false;
+        Car.CanHaveRandomWeapons = false;
         Car.CanHaveRandomCash = false;
         Car.AddVehicleToList(world);
-        //world.Vehicles.AddEntity(Car, ResponseType.None);
         Transaction.SellingVehicle.Wash();
         CreateLiveryMenuOne(Transaction);
         if (!HasLivery1)
@@ -524,16 +472,13 @@ public class VehicleItem : ModItem
             return;
         }
         HasLivery1 = true;
-
         if(VehicleMenu == null)
         {
             return;
         }
-
         liveryFullMenu = Transaction.MenuPool.AddSubMenu(VehicleMenu, "Liveries");
         liveryFullMenu.SubtitleText = "LIVERIES";
         VehicleMenu.MenuItems[VehicleMenu.MenuItems.Count() - 1].Description = "Pick Livery";
-
         if (Transaction.HasBannerImage) { liveryFullMenu.SetBannerType(Transaction.BannerImage); }
         for (int i = -1; i <= Livery1Count - 1; i++)
         {
@@ -542,11 +487,6 @@ public class VehicleItem : ModItem
             UIMenuItemExt liveryOneMenu = new UIMenuItemExt(MenuName);// { RightLabel = i.ToString() };
             liveryOneMenu.Activated += (sender, selectedItem) =>
             {
-                //int value = i;
-                //if (!int.TryParse(liveryOneMenu.RightLabel, out int value))
-                //{
-                //    return;
-                //}
                 if (selectedLivery == -1)
                 {
                     SetLivery1 = false;
@@ -556,7 +496,6 @@ public class VehicleItem : ModItem
                 {
                     SetLivery1 = true;
                     Livery1 = selectedLivery;
-                    //EntryPoint.WriteToConsoleTestLong($"Livery 1 Activated {Livery1}");
                     if (Transaction.SellingVehicle.Exists())
                     {
                         NativeFunction.Natives.SET_VEHICLE_LIVERY(Transaction.SellingVehicle, Livery1);

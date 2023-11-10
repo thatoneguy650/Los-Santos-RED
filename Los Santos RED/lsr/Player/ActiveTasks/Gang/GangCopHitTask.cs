@@ -95,13 +95,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
             {
-                GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 15000));
                 SendMoneyPickupMessage();
             }
-            else
-            {
-                Dispose();
-            }
+            //nothing to dispose, cant fail from inside, they can cancel the task from the phone, already handles the messages
         }
         private void GetTargetAgency()
         {

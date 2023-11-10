@@ -34,5 +34,6 @@ namespace LosSantosRED.lsr.Interface
 
         IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons);
         IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons);
+
     }
 }

@@ -136,7 +136,7 @@ public class TaxiService : ComplexTask, ILocationReachable
         }
         else
         {
-            if (SeatAssigner.IsAssignmentValid())
+            if (SeatAssigner.IsAssignmentValid(true))
             {
                 CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false);
             }

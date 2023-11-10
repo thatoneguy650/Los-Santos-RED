@@ -77,10 +77,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 GunProp.Delete();
             }
-            if (PickUpStore != null && DropOffStore != null)
+            if (DropOffStore != null)
             {
-                PickUpStore.IsPlayerInterestedInLocation = true;
-                DropOffStore.IsPlayerInterestedInLocation = true;
+                DropOffStore.IsPlayerInterestedInLocation = false;
+            }
+            if (PickUpStore != null)
+            {
+                PickUpStore.IsPlayerInterestedInLocation = false;
             }
         }
         public void Start()
@@ -117,14 +120,17 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SetCompleted()
         {
             SendCompletedMessage();
-            if (PickUpStore != null && DropOffStore != null)
+            if (DropOffStore != null)
+            {
+                DropOffStore.IsPlayerInterestedInLocation = false;
+            }
+            if (PickUpStore != null)
             {
                 PickUpStore.IsPlayerInterestedInLocation = false;
-                DropOffStore.IsPlayerInterestedInLocation = false;
             }
             PlayerTasks.CompleteTask(Contact, true);
         }
-        private void SetInactive()
+        private void SetFailed()
         {
             if (SpawnedVehicle.Exists())
             {
@@ -135,10 +141,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 GunProp.Delete();
             }
-            if (PickUpStore != null && DropOffStore != null)
+            if (DropOffStore != null)
             {
-                PickUpStore.IsPlayerInterestedInLocation = true;
-                DropOffStore.IsPlayerInterestedInLocation = true;
+                DropOffStore.IsPlayerInterestedInLocation = false;
+            }
+            if (PickUpStore != null)
+            {
+                PickUpStore.IsPlayerInterestedInLocation = false;
             }
             PlayerTasks.CancelTask(Contact);
         }
@@ -150,7 +159,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             else if (CurrentTask != null && CurrentTask.IsActive)
             {
-                SetInactive();
+                SetFailed();
             }
             else
             {
@@ -226,9 +235,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             hasGottenInCar = true;
             GameTimeGotInCar = Game.GameTime;
         }
-
-
-
         private void AddComplications()
         {
             GangReputation gr = Player.RelationshipManager.GangRelationships.GangReputations.Where(x => x.GangRelationship == GangRespect.Hostile).PickRandom();
@@ -270,10 +276,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 PickUpStore = PlacesOfInterest.PossibleLocations.GunStores.Where(x => x.ContactName == Contact.Name && x.Name != DropOffStore.Name && x.ParkingSpaces.Any() && x.IsCorrectMap(World.IsMPMapLoaded)).PickRandom();
             }
-            if (PickUpStore != null && DropOffStore != null)
+            if (DropOffStore != null)
+            {
+                DropOffStore.IsPlayerInterestedInLocation = true;
+            }
+            if (PickUpStore != null)
             {
                 PickUpStore.IsPlayerInterestedInLocation = true;
-                DropOffStore.IsPlayerInterestedInLocation = true;
             }
         }
         private bool SpawnVehicle(GunStore PickUpStore)

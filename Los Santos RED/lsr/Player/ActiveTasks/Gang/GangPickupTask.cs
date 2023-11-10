@@ -56,10 +56,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public void Dispose()
         {
-            if (DeadDrop != null)
+            if (HiringGang != null)
             {
-                DeadDrop.Deactivate(true);
+                HiringGangDen.ExpectedMoney = 0;
             }
+            DeadDrop?.Reset();
+            DeadDrop?.Deactivate(true);
         }
         public void Start(Gang ActiveGang)
         {
@@ -119,16 +121,18 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
             {
-                SetComplete();
+                DeadDrop?.Reset();
+                DeadDrop?.Deactivate(true);
+                SendMoneyDropOffMessage();
             }
-            else
+            else if (CurrentTask != null && !CurrentTask.IsActive)
             {
                 Dispose();
             }
-        }
-        private void SetComplete()
-        {
-            SendMoneyDropOffMessage();
+            else
+            {
+                Dispose();//the failing messages are handled above if they cancel
+            }
         }
         private void GetDeadDrop()
         {
@@ -143,9 +147,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             int PaymentAmount = RandomItems.GetRandomNumberInt(HiringGang.PickupPaymentMin, HiringGang.PickupPaymentMax).Round(100);
             MoneyToPickup = PaymentAmount * 10;
             float TenPercent = (float)MoneyToPickup / 10;
-
             MoneyToRecieve = (int)TenPercent;
-
             if (MoneyToRecieve <= 0)
             {
                 MoneyToRecieve = 500;

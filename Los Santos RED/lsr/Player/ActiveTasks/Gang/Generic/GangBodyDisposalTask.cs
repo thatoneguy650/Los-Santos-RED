@@ -32,7 +32,16 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public override void Dispose()
         {
-            Delete();
+            DeleteCar();
+            DeleteBody();
+            if (CrusherLocation != null)
+            {
+                CrusherLocation.IsPlayerInterestedInLocation = false;
+            }
+            if(SpawnLocation != null)
+            {
+                SpawnLocation.IsPlayerInterestedInLocation = false;
+            }
             base.Dispose();
         }
         protected override void GetPayment()
@@ -75,8 +84,14 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         protected override void AddTask()
         {
-            CrusherLocation.IsPlayerInterestedInLocation = true;
-            SpawnLocation.IsPlayerInterestedInLocation = true;
+            if (CrusherLocation != null)
+            {
+                CrusherLocation.IsPlayerInterestedInLocation = true;
+            }
+            if (SpawnLocation != null)
+            {
+                SpawnLocation.IsPlayerInterestedInLocation = true;
+            }
             base.AddTask();
         }
         protected override void Loop()
@@ -139,6 +154,14 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             toSpawn.Heading = Player.Character.Heading;
             toSpawn.GetClosestStreet(false);
             toSpawn.GetClosestSideOfRoad();
+
+
+            toSpawn.GetRoadBoundaryPosition();
+            if(toSpawn.HasRoadBoundaryPosition)
+            {
+                toSpawn.StreetPosition = toSpawn.RoadBoundaryPosition;
+            }
+
             GangSpawnTask gmSpawn = new GangSpawnTask(HiringGang, toSpawn, dispatchableVehicle, null, false, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World, ModItems, false, false, false);
             gmSpawn.AllowAnySpawn = true;
             gmSpawn.AddEmptyVehicleBlip = true;
@@ -152,6 +175,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             DeadBodyVehicle.Vehicle.IsPersistent = true;
             DeadBodyVehicle.SetRandomPlate();
+            DeadBodyVehicle.HasUpdatedPlateType = true;
+            DeadBodyVehicle.CanHavePlateRandomlyUpdated = false;
             DeadBodyVehicle.WasModSpawned = true;
             DeadBodyVehicle.WasSpawnedEmpty = true;
             DeadBodyVehicle.IsManualCleanup = true;
@@ -175,14 +200,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             gangSpawnTask.AllowAnySpawn = true;
             gangSpawnTask.AllowBuddySpawn = false;
             gangSpawnTask.AttemptSpawn();
-
-
-
-
            //gangSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); });
-
-
-
             DeadBody = gangSpawnTask.CreatedPeople.FirstOrDefault();
             if (DeadBody == null || !DeadBody.Pedestrian.Exists())
             {
@@ -195,7 +213,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             DeadBody.WasKilledByPlayer = true;
             DeadBody.HasBeenHurtByPlayer = true;
             DeadBody.IsManuallyDeleted = true;
-
             foreach (PedExt created in gangSpawnTask.CreatedPeople)
             {
                 World.Pedestrians.DeadPeds.Add(created);
@@ -206,18 +223,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 return false;
             }
             return DeadBody != null && DeadBody.Pedestrian.Exists();
-        }
-        protected override void Cleanup()
-        {
-            CleanupPed();
-            CleanupCar();
-            CrusherLocation.IsPlayerInterestedInLocation = false;
-            SpawnLocation.IsPlayerInterestedInLocation = false;
-        }
-        private void Delete()
-        {
-            DeleteCar();
-            DeleteBody();
         }
         private void DeleteCar()
         {
@@ -242,7 +247,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 return;
             }
             DeadBody.Pedestrian.IsPersistent = false;
-            DeadBody.IsManuallyDeleted = false;
+            DeadBody.IsManuallyDeleted = false;//this seems to delete it, w/e
         }
         private void CleanupCar()
         {
@@ -252,7 +257,22 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             DeadBodyVehicle.WasSpawnedEmpty = false;
             DeadBodyVehicle.IsManualCleanup = false;
+            DeadBodyVehicle.Vehicle.IsPersistent = false;
             DeadBodyVehicle.Vehicle.LockStatus = (VehicleLockStatus)10;
         }
+        protected override void OnTaskCompletedOrFailed()//called on failed and disposed?
+        {
+            CleanupPed();
+            CleanupCar();
+            if (CrusherLocation != null)
+            {
+                CrusherLocation.IsPlayerInterestedInLocation = false;
+            }
+            if (SpawnLocation != null)
+            {
+                SpawnLocation.IsPlayerInterestedInLocation = false;
+            }
+        }
+
     }
 }

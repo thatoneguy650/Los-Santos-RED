@@ -283,7 +283,7 @@ public class SeatAssigner
         return seatToCheck + 1;
     }
 
-    public bool IsAssignmentValid()
+    public bool IsAssignmentValid(bool checkDriver)
     {
         if(VehicleAssigned != null && SeatAssigned != -99 && VehicleAssigned.Vehicle.Exists() && Ped.Pedestrian.Exists())
         {
@@ -296,13 +296,39 @@ public class SeatAssigner
             {
                 return false;
             }
-            if(SeatAssigned != -1 && !World.Pedestrians.IsSeatAssignedToAnyone(VehicleAssigned,-1))//no driver and isnt assigned driver seat
+            if(checkDriver && SeatAssigned != -1 && !World.Pedestrians.IsSeatAssignedToAnyone(VehicleAssigned,-1))//no driver and isnt assigned driver seat
             {
                 return false;
             }
             return true;
         }
         return false;
+    }
+
+    public void AssignPlayerPassenger(VehicleExt playerVehicle)
+    {
+        VehicleAssigned = null;
+        SeatAssigned = -99;
+        if (playerVehicle ==null || !playerVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        int passengerCapacity = playerVehicle.Vehicle.PassengerCapacity;
+        for (int testSeatIndex = 0;testSeatIndex < passengerCapacity; testSeatIndex++)
+        {
+            if(IsSeatAvailable(playerVehicle, testSeatIndex))
+            {
+                VehicleAssigned = playerVehicle;
+                SeatAssigned = testSeatIndex;
+                break;
+            }
+        }
+        if (VehicleAssigned != null && SeatAssigned != -99)
+        {
+            World.Pedestrians.RemoveSeatAssignment(Ped);
+            World.Pedestrians.AddSeatAssignment(Ped, VehicleAssigned, SeatAssigned);
+            EntryPoint.WriteToConsole($"AssignPlayerPassenger veh{VehicleAssigned.Handle} SeatAssigned{SeatAssigned}");
+        }
     }
 
     //enum eDoorId//THIS IS BULLSHIT

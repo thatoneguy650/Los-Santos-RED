@@ -1,6 +1,7 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using NAudio.Wave;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -24,13 +25,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private IModItems ModItems;
         private IShopMenus ShopMenus;
         private Gang HiringGang;
-        private DeadDrop DeadDrop;
         private PlayerTask CurrentTask;
         private int GameTimeToWaitBeforeComplications;
         private bool HasAddedComplications;
         private bool WillAddComplications;
         private int MoneyToRecieve;
-        //private int MoneyToPickup;
         private GangDen HiringGangDen;
         private ModItem ItemToDeliver;
         private int NumberOfItemsToDeliver;
@@ -63,9 +62,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public void Dispose()
         {
-            if (DeadDrop != null)
+            if (HiringGangDen != null)
             {
-                DeadDrop.Deactivate(true);
+                HiringGangDen.ExpectedItem = null;
+                HiringGangDen.ExpectedItemAmount = 0;
             }
         }
         public void Start(Gang ActiveGang)
@@ -81,6 +81,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     {
                         SendInitialInstructionsMessage();
                         AddTask();
+                        WatchTaskLoop();
                     }
                     else
                     {
@@ -92,6 +93,29 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     GangTasks.SendGenericTooSoonMessage(PhoneContact);
                 }
             }
+        }
+        private void WatchTaskLoop()
+        {
+            GameFiber PayoffFiber = GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    while (true)
+                    {
+                        if (CurrentTask == null || !CurrentTask.IsActive)
+                        {
+                            break;
+                        }
+                        GameFiber.Sleep(1000);
+                    }
+                    Dispose();
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
+            }, "PayoffFiber");
         }
         private void GetHiringDen()
         {

@@ -55,10 +55,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public void Dispose()
         {
-            if(DeadDrop != null)
-            {
-                DeadDrop.Deactivate(true);
-            }
+            DeadDrop?.Reset();
+            DeadDrop?.Deactivate(true);
         }
         public void Start(Gang ActiveGang)
         {
@@ -126,6 +124,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void SetComplete()
         {
+            DeadDrop?.Reset();
+            DeadDrop?.Deactivate(true);
             SendCompletedMessage();
             PlayerTasks.CompleteTask(HiringGang.Contact,false);         
         }

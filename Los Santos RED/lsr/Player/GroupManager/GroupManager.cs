@@ -55,6 +55,10 @@ public class GroupManager
                 isAnyInCombat = true;
             }
         }
+        if(!Settings.SettingsManager.PlayerOtherSettings.UseVanillaGroup)
+        {
+            return;
+        }
         if(isAnyInCombat && !IsSetCombatSpacing)
         {
             NativeFunction.Natives.SET_GROUP_FORMATION_SPACING(PlayerGroup, 15f, -1.0f, 30f);
@@ -71,7 +75,7 @@ public class GroupManager
     public void AddInternal(PedExt groupMember)
     {
         PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
-        if (groupMember != null && groupMember.Pedestrian.Exists())
+        if (Settings.SettingsManager.PlayerOtherSettings.UseVanillaGroup && groupMember != null && groupMember.Pedestrian.Exists())
         {
             NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(groupMember.Pedestrian, PlayerGroup);
         }
@@ -80,7 +84,7 @@ public class GroupManager
     public void RemoveInternal(PedExt groupMember)
     {
         PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
-        if (groupMember.Pedestrian.Exists())
+        if (Settings.SettingsManager.PlayerOtherSettings.UseVanillaGroup && groupMember.Pedestrian.Exists())
         {
             if (NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(groupMember.Pedestrian, PlayerGroup))
             {
@@ -137,8 +141,11 @@ public class GroupManager
     //}
     private void OnStartedGroup()
     {
-        NativeFunction.Natives.SET_GROUP_FORMATION(PlayerGroup, 0);//LOOSE FORMATION
-        NativeFunction.Natives.SET_GROUP_FORMATION_SPACING(PlayerGroup, 5f, -1.0f, 15f);
+        if (Settings.SettingsManager.PlayerOtherSettings.UseVanillaGroup)
+        {
+            NativeFunction.Natives.SET_GROUP_FORMATION(PlayerGroup, 0);//LOOSE FORMATION
+            NativeFunction.Natives.SET_GROUP_FORMATION_SPACING(PlayerGroup, 5f, -1.0f, 15f);
+        }
     }
 
     public void Disband()
@@ -302,7 +309,13 @@ public class GroupManager
             mi.CurrentTask.Stop();
             mi.CurrentTask = null;
         }
-        mi.CurrentTask = new GeneralFollow(mi, mi, Targetable, World, new List<VehicleExt>() { mi.AssignedVehicle }, null, Settings, this);
+        GangMember gm = null;
+        if(mi.GetType() == typeof(GangMember))
+        {
+            gm = (GangMember)mi;
+        }
+
+        mi.CurrentTask = new GeneralFollow(mi, mi, Targetable, World, new List<VehicleExt>() { mi.AssignedVehicle }, null, Settings, this, gm);
         mi.CurrentTask.Start();
     }
 
@@ -313,6 +326,30 @@ public class GroupManager
             ResetStatus(groupMember.PedExt, true);
         }
     }
+    public void SetVehicle(bool value)
+    {
+        foreach (GroupMember groupMember in CurrentGroupMembers)
+        {
+            groupMember.PedExt.RideInPlayerVehicle = value;
+        }
+    }
+
+
+    public void SetAlwaysFollow(bool value)
+    {
+        foreach (GroupMember groupMember in CurrentGroupMembers)
+        {
+            groupMember.PedExt.AlwaysFollow = value;
+        }
+    }
+    public void SetAlwaysCombat(bool value)
+    {
+        foreach (GroupMember groupMember in CurrentGroupMembers)
+        {
+            groupMember.PedExt.AlwaysInCombat = value;
+        }
+    }
+
 
     public void SetAllFollow()
     {

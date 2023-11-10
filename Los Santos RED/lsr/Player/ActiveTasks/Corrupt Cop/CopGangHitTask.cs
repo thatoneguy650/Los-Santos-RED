@@ -141,6 +141,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     PlayerTasks.CompleteTask(Contact, true);
                 }
+                myDrop?.Reset();
+                myDrop?.Deactivate(true);
             }
             else
             {

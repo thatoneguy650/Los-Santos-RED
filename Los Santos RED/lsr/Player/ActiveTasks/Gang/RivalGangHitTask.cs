@@ -115,12 +115,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
             {
-                GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 15000));
+                //GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 15000));
                 SendMoneyPickupMessage();
-            }
-            else
-            {
-                Dispose();
             }
         }
         private void GetTargetGang()

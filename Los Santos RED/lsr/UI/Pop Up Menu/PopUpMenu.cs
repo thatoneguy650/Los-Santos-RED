@@ -333,17 +333,17 @@ public class PopUpMenu
         GroupMembersSubMenu.Add(new PopUpBox(0, "Reset All Tasks", new Action(() => Player.GroupManager.ResetAllStatus()), "Reset all member's tasks"));
         GroupMembersSubMenu.Add(new PopUpBox(1, "Set All Follow", new Action(() => Player.GroupManager.SetAllFollow()), "Tell all members to escort you around. Will use their own vehicle if it exists and is close"));
 
+        //GroupMembersSubMenu.Add(new PopUpBox(2, "Use Player Car", new Action(() => Player.GroupManager.SetVehicle(true)), "Tell all members to ride in the players car if available"));
+        //GroupMembersSubMenu.Add(new PopUpBox(3, "Use Own Car", new Action(() => Player.GroupManager.SetVehicle(false)), "Tell all members to ride in their own cars if available"));
+
+        //GroupMembersSubMenu.Add(new PopUpBox(4, "Set Only Combat", new Action(() => Player.GroupManager.SetVehicle(true)), "Set exclusively combat"));
+        //GroupMembersSubMenu.Add(new PopUpBox(5, "Set Only Follow", new Action(() => Player.GroupManager.SetVehicle(false)), "Set exclusively follow"));
 
         GroupMembersSubMenu.Add(new PopUpBox(2, "Disband", new Action(() => Player.GroupManager.Disband()), "Disband the group."));
 
         int startingID = 3;
         foreach (GroupMember mi in Player.GroupManager.CurrentGroupMembers)
         {
-
-
-
-
-
             GroupMembersSubMenu.Add(new PopUpBox(GroupMemberID+ startingID, mi.PedExt.Name, $"{mi.PedExt.Name}SubMenu", $"Open the {mi.PedExt.Name} Sub Menu") { ClosesMenu = false });
             List<PopUpBox> GroupMemberSubMenu = new List<PopUpBox>();
             GroupMemberSubMenu.Add(new PopUpBox(0, "Give Weapon", new Action(() => Player.GroupManager.GiveCurrentWeapon(mi.PedExt)), "Give Current Weapon"));

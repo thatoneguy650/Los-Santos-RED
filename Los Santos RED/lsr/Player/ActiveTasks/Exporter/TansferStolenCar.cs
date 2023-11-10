@@ -72,9 +72,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 SpawnedVehicle.IsPersistent = false;
                 SpawnedVehicle.Delete();
             }
-            if (PickUpStore != null && DropOffStore != null)
+            if (PickUpStore != null)
             {
                 PickUpStore.IsPlayerInterestedInLocation = false;
+            }
+            if (DropOffStore != null)
+            {
                 DropOffStore.IsPlayerInterestedInLocation = false;
             }
         }
@@ -110,23 +113,29 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SetCompleted()
         {
             SendCompletedMessage();
-            if (PickUpStore != null && DropOffStore != null)
+            if (PickUpStore != null)
             {
                 PickUpStore.IsPlayerInterestedInLocation = false;
+            }
+            if (DropOffStore != null)
+            {
                 DropOffStore.IsPlayerInterestedInLocation = false;
             }
             PlayerTasks.CompleteTask(Contact, true);
         }
-        private void SetInactive()
+        private void SetFailed()
         {
             if (SpawnedVehicle.Exists())
             {
                 SpawnedVehicleExt?.RemoveBlip();
                 SpawnedVehicle.IsPersistent = false;
             }
-            if (PickUpStore != null && DropOffStore != null)
+            if (PickUpStore != null)
             {
                 PickUpStore.IsPlayerInterestedInLocation = false;
+            }
+            if (DropOffStore != null)
+            {
                 DropOffStore.IsPlayerInterestedInLocation = false;
             }
             PlayerTasks.CancelTask(Contact);
@@ -139,7 +148,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             else if (CurrentTask != null && CurrentTask.IsActive)
             {
-                SetInactive();
+                SetFailed();
             }
             else
             {
@@ -260,24 +269,19 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 PickUpStore = PlacesOfInterest.PossibleLocations.VehicleExporters.Where(x => x.ContactName == Contact.Name && x.Name != DropOffStore.Name && x.ParkingSpaces.Any() && x.IsCorrectMap(World.IsMPMapLoaded)).PickRandom();
             }
-            if(PickUpStore != null && DropOffStore != null)
+            if (PickUpStore != null)
             {
                 PickUpStore.IsPlayerInterestedInLocation = true;
+            }
+            if (DropOffStore != null)
+            {
                 DropOffStore.IsPlayerInterestedInLocation = true;
-            }            
+            }
         }
         private bool SpawnVehicle(VehicleExporter PickUpStore)
         {
             SpawnLocation SpawnLocation = new SpawnLocation(PickUpStore.EntrancePosition);
             SpawnPlace ParkingSpot = PickUpStore.ParkingSpaces.PickRandom();// TR NOTE REMOVED ENTITY CHECK
-            //foreach (SpawnPlace sp in PickUpStore.ParkingSpaces)
-            //{
-            //    if (!Rage.World.GetEntities(sp.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Any())
-            //    {
-            //        ParkingSpot = sp;
-            //        break;
-            //    }
-            //}
             if (ParkingSpot == null)
             {
                 return false;
@@ -288,7 +292,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 return false;
             }
-
             List<VehicleItem> PossibleVehicleItems = new List<VehicleItem>();
             foreach(ModItem modint in PickUpStore.Menu.Items.Where(x=> x.ModItem != null).Select(x=>x.ModItem))
             {
@@ -320,11 +323,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             SpawnedVehicleExt.SetRandomPlate();
             SpawnedVehicleExt.AddBlip();
             SpawnedVehicleExt.SetRandomColor();
-
             SpawnedVehicleExt.CarPlate.IsWanted = true;
             SpawnedVehicleExt.IsStolen = true;
-            SpawnedVehicleExt.CanBeExported = false;
-            
+            SpawnedVehicleExt.CanBeExported = false;      
             CarName = SpawnedVehicleExt.GetCarName();
             SendVehicleSpawnedMessage();
             return true;

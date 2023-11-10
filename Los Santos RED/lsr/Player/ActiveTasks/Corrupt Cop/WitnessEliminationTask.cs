@@ -213,13 +213,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
             {
-                GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 10000));
+                //GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 10000));
                 
                 StartDeadDropPayment();//sets u teh whole dead drop thingamajic
             }
             else if (CurrentTask != null && CurrentTask.IsActive)
             {
-                GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 10000));
+                //GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 10000));
                 SetFailed();
             }
             else
@@ -266,6 +266,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     PlayerTasks.CompleteTask(Contact, true);
                 }
+                myDrop?.Reset();
+                myDrop?.Deactivate(true);
             }
             else
             {

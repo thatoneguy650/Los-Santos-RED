@@ -113,12 +113,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
             {
-                GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 15000));
+                //GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 15000));
                 GangTasks.SendGenericPickupMoneyMessage(PhoneContact, HiringGang.DenName, HiringGangDen, MoneyToRecieve);
-            }
-            else
-            {
-                Dispose();
             }
         }
         private void GetTargetGang()

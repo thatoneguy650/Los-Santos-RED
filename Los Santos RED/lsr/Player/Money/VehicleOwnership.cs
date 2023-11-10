@@ -118,14 +118,13 @@ public class VehicleOwnership
         }
         toOwn.SetNotWanted();
         toOwn.AddOwnership();
-        //toOwn.AddOwnershipBlip();
         OwnedVehicles.Add(toOwn);
         UpdateOwnedBlips();
         if (showNotification)
         {
             DisplayPlayerVehicleNotification(toOwn);
         }
-        //EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE ADDED {toOwn.Vehicle.Handle}");    
+        EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE ADDED {toOwn.Vehicle.Handle}");    
     }
     private void UpdateOwnedBlips()
     {
