@@ -17,6 +17,7 @@ public class VanillaWorldManager
     private bool isVanillaShopsActive = true;
     private bool isVanillaBlipsActive = true;
     private bool isVanillaVendingActive;
+    private bool hasSetMaxWanted;
 
     public VanillaWorldManager(ISettingsProvideable settings)
     {
@@ -98,32 +99,31 @@ public class VanillaWorldManager
         TerminateAudio();
 
 
-        if(Settings.SettingsManager.VanillaSettings.TerminateVanillaVendingMachines)
+        //if(Settings.SettingsManager.VanillaSettings.TerminateVanillaVendingMachines)
+        //{
+        //    if(isVanillaVendingActive)
+        //    {
+        //        TerminateVanillaMachines();
+        //    }
+        //}
+
+        if(Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
         {
-            if(isVanillaVendingActive)
+            if(!hasSetMaxWanted)
             {
-                TerminateVanillaMachines();
+                NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
+                hasSetMaxWanted = true;
+            }
+        }
+        else
+        {
+            if(hasSetMaxWanted)
+            {
+                NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 6);
+                hasSetMaxWanted = false;
             }
         }
     }
-
-    //private void SuppressRandomEvents()
-    //{
-    //    NativeFunction.Natives.SUPRESS_RANDOM_EVENT_THIS_FRAME((int)RANDOM_EVENT.RC_COP_PURSUE, true);
-    //    NativeFunction.Natives.SUPRESS_RANDOM_EVENT_THIS_FRAME((int)RANDOM_EVENT.RC_COP_PURSUE_VEHICLE_FLEE_SPAWNED, true);
-    //    NativeFunction.Natives.SUPRESS_RANDOM_EVENT_THIS_FRAME((int)RANDOM_EVENT.RC_COP_VEHICLE_DRIVING_FAST, true);
-
-    //}
-    //private void SetRandomEventsFlagEnabled()
-    //{
-    //    NativeFunction.Natives.SET_RANDOM_EVENT_FLAG(false);
-    //    isRandomEventsDisabled = false;
-    //}
-    //private void SetRandomEventsFlagDisabled()
-    //{
-    //    NativeFunction.Natives.SET_RANDOM_EVENT_FLAG(false);
-    //    isRandomEventsDisabled = true;
-    //}
     private void TerminateScenarioPeds()
     {
         NativeFunction.Natives.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME(0f);
@@ -141,19 +141,8 @@ public class VanillaWorldManager
     }
     private void TerminateHealthRecharge()
     {
-       // NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
-
         NativeFunction.Natives.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER(Game.LocalPlayer, 0.0f);
         NativeFunction.Natives.SET_PLAYER_HEALTH_RECHARGE_MAX_PERCENT(Game.LocalPlayer,0.0f);
-
-
-        //NativeFunction.Natives.DISABLE_PLAYER_HEALTH_RECHARGE
-
-       // NativeFunction.Natives.DISABLE_PLAYER_HEALTH_RECHARGE(Game.LocalPlayer);
-
-      //  NativeFunction.CallByName<bool>("DISABLE_PLAYER_HEALTH_RECHARGE", Game.LocalPlayer);
-      //  NativeFunction.Natives.xBCB06442F7E52666(Game.LocalPlayer);
-      //NativeFunction.Natives.DISABLE_PLAYER_HEALTH_RECHARGE(Game.LocalPlayer);
     }
     private void TerminateRespawnController()
     {
@@ -194,7 +183,7 @@ public class VanillaWorldManager
     }
     private void TerminateVanillaMachines()
     {
-        Game.TerminateAllScriptsWithName("ob_vend1");
+        Game.TerminateAllScriptsWithName("ob_vend1");//doesnt work, the brain is attached to the object, this doesnt actually stop it
         Game.TerminateAllScriptsWithName("ob_vend2");
         Game.TerminateAllScriptsWithName("atm_trigger");
         Game.TerminateAllScriptsWithName("ob_cashregister");

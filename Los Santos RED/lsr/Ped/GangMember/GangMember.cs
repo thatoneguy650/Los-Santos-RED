@@ -137,7 +137,7 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             return;
         }
-        WeaponInventory.IssueWeapons(weapons, IsHitSquad || forceMelee || RandomItems.RandomPercent(Gang.PercentageWithMelee), IsHitSquad || forceSidearm || RandomItems.RandomPercent(Gang.PercentageWithSidearms), IsHitSquad || forceLongGun || RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson);
+        WeaponInventory.IssueWeapons(weapons, IsHitSquad || IsBackupSquad || forceMelee || RandomItems.RandomPercent(Gang.PercentageWithMelee), IsHitSquad || IsBackupSquad || forceSidearm || RandomItems.RandomPercent(Gang.PercentageWithSidearms), IsHitSquad || IsBackupSquad || forceLongGun || RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson);
         if (Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.SightDistance > 60f)
         {
             NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.CivilianSettings.SightDistance);

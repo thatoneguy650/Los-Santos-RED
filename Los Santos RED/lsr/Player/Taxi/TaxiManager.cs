@@ -134,6 +134,10 @@ public class TaxiManager
             tr = new TaxiRide(World, Player, taxiVehicleExt.TaxiFirm, taxiVehicleExt, RespondingDriver, Player.Position);
             RespondingDriver.SetTaxiRide(tr);
             tr.SetActive();
+            if (taxiVehicleExt != null && taxiVehicleExt.TaxiFirm != null && taxiVehicleExt.TaxiFirm.PhoneContact != null)
+            {
+                Player.CellPhone.AddContact(taxiVehicleExt.TaxiFirm.PhoneContact, true);
+            }
             ActiveRides.Add(tr);
             EntryPoint.WriteToConsole($"CREATE NEW TAXI RIDE WITH DRIVER:{RespondingDriver.Handle} VEH:{taxiVehicleExt.Handle}");
         }

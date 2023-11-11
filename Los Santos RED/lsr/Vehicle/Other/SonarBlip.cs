@@ -13,6 +13,7 @@ public class SonarBlip
     private VehicleExt VehicleExt;
     private ISettingsProvideable Settings;
     private uint GameTimeLastAddedSonarBlip;
+    private bool isDisposed = false;
     public Blip Blip { get; private set; }
     public uint GameTimeBetweenBlips => Settings.SettingsManager.ScannerSettings.PoliceBlipUpdateTime;
     public float PercentElapsed => ((float)(Game.GameTime - GameTimeLastAddedSonarBlip) / (float)GameTimeBetweenBlips);
@@ -28,11 +29,12 @@ public class SonarBlip
     }
     public void Dispose()
     {
+        isDisposed = true;
         RemoveExistingBlip();
     }
     private void UpdateBlip(IEntityProvideable world)
     {
-        if (VehicleExt.AttachedBlip.Exists() || VehicleExt == null || !VehicleExt.Vehicle.Exists() || !VehicleExt.HasSonarBlip)
+        if (isDisposed || VehicleExt.AttachedBlip.Exists() || VehicleExt == null || !VehicleExt.Vehicle.Exists() || !VehicleExt.HasSonarBlip)
         {
             return;
         }

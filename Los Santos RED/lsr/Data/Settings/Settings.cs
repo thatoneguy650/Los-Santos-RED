@@ -125,6 +125,8 @@ public class Settings : ISettingsProvideable
         SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedHeadlights = false;
         SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedDoors = false;
         SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedWindows = false;
+
+        SettingsManager.ScannerSettings.ShowPoliceVehicleBlipsWithScanner = true;
     }
     public void SetPreferred()
     {

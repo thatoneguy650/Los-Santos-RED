@@ -341,7 +341,7 @@ public class PopUpMenu
 
         GroupMembersSubMenu.Add(new PopUpBox(2, "Disband", new Action(() => Player.GroupManager.Disband()), "Disband the group."));
 
-        int startingID = 3;
+        int startingID = GroupMembersSubMenu.Count();
         foreach (GroupMember mi in Player.GroupManager.CurrentGroupMembers)
         {
             GroupMembersSubMenu.Add(new PopUpBox(GroupMemberID+ startingID, mi.PedExt.Name, $"{mi.PedExt.Name}SubMenu", $"Open the {mi.PedExt.Name} Sub Menu") { ClosesMenu = false });

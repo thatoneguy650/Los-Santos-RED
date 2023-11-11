@@ -104,7 +104,7 @@ public class TopRightMenu
         bool willShowCashChange = willShowCash && DisplayablePlayer.BankAccounts.RecentlyChangedMoney;
         bool willShowNeeds = (UI.IsDrawingWheelMenu || DisplayablePlayer.HumanState.RecentlyChangedNeed || DisplayablePlayer.HealthManager.RecentlyDrainedHealth || DisplayablePlayer.HealthManager.RecentlyRegenedHealth || DisplayablePlayer.IsSleeping) && Settings.SettingsManager.NeedsSettings.ApplyNeeds;
         willShowCustomStars =  (DisplayablePlayer.IsAlive || UI.IsDrawingWheelMenu) 
-            && ((DisplayablePlayer.IsWanted && Settings.SettingsManager.UIGeneralSettings.UseCustomWantedLevelStars) || (DisplayablePlayer.Investigation.IsActive && Settings.SettingsManager.UIGeneralSettings.UseCustomInvestigationMarks));
+            && ((DisplayablePlayer.IsWanted && Settings.SettingsManager.UIGeneralSettings.UseCustomWantedLevelStars) || (DisplayablePlayer.Investigation.IsActive && DisplayablePlayer.Investigation.RequiresPolice && Settings.SettingsManager.UIGeneralSettings.UseCustomInvestigationMarks));
 
         CustomStarsPosition = 0.0f;
         float WeaponPosition = 0.0f;

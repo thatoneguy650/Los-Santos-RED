@@ -22,5 +22,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsInVehicle { get; }
         bool IsWanted { get; }
         bool IsDead { get; }
+        CellPhone CellPhone { get; }
     }
 }

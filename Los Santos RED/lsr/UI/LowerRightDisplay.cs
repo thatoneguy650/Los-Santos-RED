@@ -266,13 +266,19 @@ public class LowerRightDisplay
             {
                 if (DisplayablePlayer.Investigation.IsSuspicious)
                 {
-                    PlayerDisplay += $"~r~ Police Responding with Description";
-                    PlayerDisplay += $" ({DisplayablePlayer.Investigation.CurrentRespondingPoliceCount}){UI.CurrentDefaultTextColor}";
+                    PlayerDisplay += $"~r~ Police Responding with Description{UI.CurrentDefaultTextColor}";
+                    if (Settings.SettingsManager.LSRHUDSettings.PlayerStatusIncludePoliceCount)
+                    {
+                        PlayerDisplay += $" ({DisplayablePlayer.Investigation.CurrentRespondingPoliceCount}){UI.CurrentDefaultTextColor}";
+                    }
                 }
                 else if (DisplayablePlayer.Investigation.IsNearPosition)
                 {
-                    PlayerDisplay += $"~o~ Police Responding";
-                    PlayerDisplay += $" ({DisplayablePlayer.Investigation.CurrentRespondingPoliceCount}){UI.CurrentDefaultTextColor}";
+                    PlayerDisplay += $"~o~ Police Responding{UI.CurrentDefaultTextColor}";
+                    if (Settings.SettingsManager.LSRHUDSettings.PlayerStatusIncludePoliceCount)
+                    {
+                        PlayerDisplay += $" ({DisplayablePlayer.Investigation.CurrentRespondingPoliceCount}){UI.CurrentDefaultTextColor}";
+                    }
                 }
 
             }

@@ -105,6 +105,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public float VehicleAutoCameraZDistance { get; set; }
     public int RobberyCashPerSwipe { get; set; }
     public bool UseVanillaGroup { get; set; }
+    public bool SetCameraHintWhenConversing { get;  set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -184,6 +185,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
         RandomCashMin = 5;
         RandomCashMax = 750;
         UseVanillaGroup = true;
+
+        SetCameraHintWhenConversing = true;
 
     }
 

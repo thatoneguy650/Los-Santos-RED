@@ -87,7 +87,10 @@ public class Conversation : Interaction, IAdvancedConversationable
             return;
         }
         Player.ActivityManager.IsConversing = true;
-        NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
+        if (Settings.SettingsManager.PlayerOtherSettings.SetCameraHintWhenConversing)
+        {
+            NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
+        }
         pedHeadshotHandle = NativeFunction.Natives.RegisterPedheadshot<uint>(Ped.Pedestrian);
         GameFiber.StartNew(delegate
         {

@@ -482,7 +482,7 @@ namespace Mod
             HumanState.Setup();
             GPSManager.Setup();
             SetWantedLevel(0, "Initial", true);
-            //NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
+
             WeaponEquipment.SetUnarmed();
             
             VehicleOwnership.Setup();

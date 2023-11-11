@@ -296,7 +296,7 @@ public class SeatAssigner
             {
                 return false;
             }
-            if(checkDriver && SeatAssigned != -1 && !World.Pedestrians.IsSeatAssignedToAnyone(VehicleAssigned,-1))//no driver and isnt assigned driver seat
+            if(SeatAssigned != -1 && !World.Pedestrians.IsSeatAssignedToAnyone(VehicleAssigned,-1))//no driver and isnt assigned driver seat
             {
                 return false;
             }

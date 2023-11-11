@@ -177,7 +177,10 @@ public class PersonTransaction : Interaction
         Ped.CanBeAmbientTasked = false;
         AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");
         AnimationDictionary.RequestAnimationDictionay("mp_common");
-        NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
+        if (Settings.SettingsManager.PlayerOtherSettings.SetCameraHintWhenConversing)
+        {
+            NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
+        }
         Transaction = new Transaction(MenuPool, InteractionMenu, ShopMenu, AssociatedStore);
         Transaction.PreviewItems = false;
         Transaction.PersonTransaction = this;
@@ -199,7 +202,7 @@ public class PersonTransaction : Interaction
         {
             RemovePauseButtonPrompts();
             isPaused = false;
-            if (Ped != null && Ped.Pedestrian.Exists() && !Ped.IsInVehicle && !Player.IsInVehicle)
+            if (Ped != null && Ped.Pedestrian.Exists() && !Ped.IsInVehicle && !Player.IsInVehicle && Settings.SettingsManager.PlayerOtherSettings.SetCameraHintWhenConversing)
             {
                 NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
             }
@@ -661,20 +664,11 @@ public class PersonTransaction : Interaction
     }
     private void StartBuyAnimation(ModItem modItem, MenuItem menuItem, int totalItems)
     {
-
-       //MenuPool.CloseAllMenus();
-
-        //Hide();
         IsActivelyConversing = true;
-        //if (hideShowMenu)
-        //{
-        //    Hide();
-        //}
-
-
         string modelName = "";
         bool HasProp = false;
         bool isWeapon = false;
+        bool isPackage = false;
         if (modItem.PackageItem != null && modItem.PackageItem.ModelName != "")
         {
             modelName = modItem.PackageItem.ModelName;
@@ -683,6 +677,7 @@ public class PersonTransaction : Interaction
             {
                 isWeapon = true;
             }
+            isPackage = true;
         }
         else if (modItem.ModelItem != null && modItem.ModelItem.ModelName != "")
         {
@@ -715,17 +710,28 @@ public class PersonTransaction : Interaction
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", "givetake1_b", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
         }
         GameFiber.Sleep(500);
-
         string HandBoneName = "BONETAG_R_PH_HAND";
         Vector3 HandOffset = Vector3.Zero;
         Rotator HandRotator = Rotator.Zero;
-        //PropAttachment pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
 
-
-        PropAttachment pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHandPass" && (x.Gender == "U" || x.Gender == Player.Gender));
-        if (pa == null)
+        PropAttachment pa = null;
+        if (isPackage)
         {
-            pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+            pa = modItem?.PackageItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHandPass" && (x.Gender == "U" || x.Gender == Player.Gender));
+            if (pa == null)
+            {
+                EntryPoint.WriteToConsole("PERSON TRANSACTION RIGHTHANDPASS IS NULL FALLING BACK TO RIGHT HAND");
+                pa = modItem?.PackageItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+            }
+        }
+        else
+        {
+            pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHandPass" && (x.Gender == "U" || x.Gender == Player.Gender));
+            if (pa == null)
+            {
+                EntryPoint.WriteToConsole("PERSON TRANSACTION RIGHTHANDPASS IS NULL FALLING BACK TO RIGHT HAND");
+                pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+            }
         }
 
         if (pa != null)
@@ -735,6 +741,8 @@ public class PersonTransaction : Interaction
             HandBoneName = pa.BoneName;
         }
 
+
+        EntryPoint.WriteToConsole($"PERSON TRANSACTION FINAL BUY isPackage{isPackage} HandBoneName{HandBoneName} HandOffset{HandOffset} HandRotator{HandRotator}");
 
         if (!isWeapon && Ped.Pedestrian.Exists() && HasProp && modelName != "")
         {
@@ -753,48 +761,12 @@ public class PersonTransaction : Interaction
             }
         }
         GameFiber.Sleep(500);
-
-
-
-
-
-
-
-
-
         Transaction.DisplayItemPurchasedMessage(modItem, totalItems);
-
-
-        //if (isWeapon)
-        //{
-        //    NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
-        //}
-        //else
-        //{
-        //    NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-        //}
-        //Game.RemoveNotification(NotificationHandle);
-        //if (modItem.MeasurementName == "Item")
-        //{
-        //    NotificationHandle = Game.DisplayNotification($"You have purchased {totalItems} ~r~{modItem.Name}(s)~s~");
-        //}
-        //else
-        //{
-        //    NotificationHandle = Game.DisplayNotification($"You have purchased {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
-        //}
-
-
-
-
-
-
-
-
-
         if (Ped.Pedestrian.Exists())
         {
             if (SellingProp.Exists())
             {
+                SellingProp.Detach();
                 SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
             }
         }
@@ -822,25 +794,13 @@ public class PersonTransaction : Interaction
                 Ped.IsDealingDrugs = false;
             }
         }
-
-
- 
-
-        //Show();   
-        //if (hideShowMenu)
-        //{
-        //    Show();
-        //}
     }
     private void StartSellAnimation(ModItem modItem, MenuItem menuItem, int totalItems)
     {
-        //Hide();
-
-      //  MenuPool.CloseAllMenus();
-
         string modelName = "";
         bool HasProp = false;
         bool isWeapon = false;
+        bool isPackage = false;
         if (modItem.PackageItem != null && modItem.PackageItem.ModelName != "")
         {
             modelName = modItem.PackageItem.ModelName;
@@ -849,6 +809,7 @@ public class PersonTransaction : Interaction
             {
                 isWeapon = true;
             }
+            isPackage = true;
         }
         else if (modItem.ModelItem != null && modItem.ModelItem.ModelName != "")
         {
@@ -880,14 +841,29 @@ public class PersonTransaction : Interaction
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "mp_common", "givetake1_b", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", "givetake1_a", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
         }
+
         GameFiber.Sleep(500);
         string HandBoneName = "BONETAG_R_PH_HAND";
         Vector3 HandOffset = Vector3.Zero;
         Rotator HandRotator = Rotator.Zero;
-        PropAttachment pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHandPass" && (x.Gender == "U" || x.Gender == Player.Gender));
-        if(pa == null)
+        PropAttachment pa = null;
+        if (isPackage)
         {
-            pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+            pa = modItem?.PackageItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHandPass" && (x.Gender == "U" || x.Gender == Player.Gender));
+            if (pa == null)
+            {
+                EntryPoint.WriteToConsole("PERSON TRANSACTION RIGHTHANDPASS IS NULL FALLING BACK TO RIGHT HAND");
+                pa = modItem?.PackageItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+            }
+        }
+        else
+        {
+            pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHandPass" && (x.Gender == "U" || x.Gender == Player.Gender));
+            if (pa == null)
+            {
+                EntryPoint.WriteToConsole("PERSON TRANSACTION RIGHTHANDPASS IS NULL FALLING BACK TO RIGHT HAND");
+                pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+            }
         }
 
         if (pa != null)
@@ -896,6 +872,10 @@ public class PersonTransaction : Interaction
             HandRotator = pa.Rotation;
             HandBoneName = pa.BoneName;
         }
+
+
+        EntryPoint.WriteToConsole($"PERSON TRANSACTION FINAL SELL isPackage{isPackage} HandBoneName{HandBoneName} HandOffset{HandOffset} HandRotator{HandRotator}");
+
         if (!isWeapon && Ped.Pedestrian.Exists() && HasProp && modelName != "")
         {
             try
@@ -913,36 +893,12 @@ public class PersonTransaction : Interaction
             }
         }
         GameFiber.Sleep(500);
-
-
-
-        //if(isWeapon)
-        //{
-        //    NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
-        //}
-        //else
-        //{
-        //    NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-        //}   
-        //Game.RemoveNotification(NotificationHandle);
-        //if (modItem.MeasurementName == "Item")
-        //{
-        //    NotificationHandle = Game.DisplayNotification($"You have sold {totalItems} ~r~{modItem.Name}(s)~s~");
-        //}
-        //else
-        //{
-        //    NotificationHandle = Game.DisplayNotification($"You have sold {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
-        //}
-
         Transaction.DisplayItemSoldMessage(modItem, totalItems);
-
-
-
-
         if (Ped.Pedestrian.Exists())
         {
             if (SellingProp.Exists())
             {
+                SellingProp.Detach();
                 SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Ped.Pedestrian, HandBoneName), HandOffset, HandRotator);
             }
         }
@@ -954,7 +910,6 @@ public class PersonTransaction : Interaction
                 SellingProp.Delete();
             }
             SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, true);
-            //SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BYE", "GENERIC_THANKS", "PED_RANT" }, true);
         }
         IsActivelyConversing = false;
         if (menuItem.IsIllicilt)

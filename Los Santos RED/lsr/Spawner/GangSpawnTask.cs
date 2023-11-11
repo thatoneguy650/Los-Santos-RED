@@ -212,8 +212,15 @@ public class GangSpawnTask : SpawnTask
     {
         if (VehicleType != null)
         {
-            OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
 
+            if ((IsHitSquad || IsBackupSquad) && RandomItems.RandomPercent(80))
+            {
+                OccupantsToAdd = VehicleType.MaxOccupants - 1;
+            }
+            else
+            {
+                OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
+            }
             if(OccupantsToAdd + 1 > PedSpawnLimit)
             {
                 OccupantsToAdd = PedSpawnLimit - 1;

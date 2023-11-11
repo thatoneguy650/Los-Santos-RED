@@ -80,6 +80,10 @@ public class TaxiRide
             {
                 return DestinationLocation.StreetPosition;
             }
+            else if (RespondingVehicle != null && RespondingVehicle.Vehicle.Exists())
+            {
+                return RespondingVehicle.Vehicle.Position;
+            }
             return Vector3.Zero;
         }
     }
@@ -413,6 +417,11 @@ public class TaxiRide
             PickupBlip.Delete();
         }
         RespondingDriver?.PlaySpeech("TAXID_WHERE_TO", false);
+
+        if(RequestedFirm != null && RequestedFirm.PhoneContact != null)
+        {
+            Player.CellPhone.AddContact(RequestedFirm.PhoneContact, true);
+        }
     }
     private void OnIsNearbyDestination()
     {
@@ -503,6 +512,11 @@ public class TaxiRide
         if (!spawnLocation.HasStreetPosition)
         {
             spawnLocation.StreetPosition = RespondingDriver.Position;
+        }
+        spawnLocation.GetRoadBoundaryPosition();
+        if (spawnLocation.HasRoadBoundaryPosition)
+        {
+            spawnLocation.StreetPosition = spawnLocation.RoadBoundaryPosition;
         }
         PulloverLocation = spawnLocation;
         IsWaitingOnPlayer = true;

@@ -77,6 +77,17 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
             float DistanceToMiles = Player.Character.Position.DistanceTo2D(TaxiRide.DestinationLocation.StreetPosition) * 0.000621371f;
             int hoursToTake = (int)Math.Ceiling(DistanceToMiles / 5.0f);
             EntryPoint.WriteToConsole($"Teleporting to pos with taxi Distance (mi) {DistanceToMiles} hoursToTake {hoursToTake}");
+
+
+            TaxiRide.DestinationLocation.GetRoadBoundaryPosition();
+            if (TaxiRide.DestinationLocation.HasRoadBoundaryPosition)
+            {
+                TaxiRide.DestinationLocation.StreetPosition = TaxiRide.DestinationLocation.RoadBoundaryPosition;
+            }
+
+
+
+
             Player.GPSManager.TeleportToCoords(TaxiRide.DestinationLocation.StreetPosition,TaxiRide.CurrentDriveToHeading, true , false, hoursToTake);
         };
         VehicleInteractMenu.AddItem(teleportMenuItem);

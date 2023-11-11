@@ -39,14 +39,16 @@ public class ClothingShop : GameLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
+
+        if (CanInteract)
+        {
+            Game.DisplayHelp("LSR Location Closed. Use the Ped Update/Create under the PedSwap menu to change clothing items on other peds.");
+        }
         if (IsLocationClosed())
         {
             return;
         }
-        if (CanInteract)
-        {
-            Game.DisplayHelp("Closed for Renovations. Check back Later.~r~WIP~s~");
-        }
+
     }
 }
 

@@ -193,7 +193,7 @@ public class PoliceSettings : ISettingsDefaultable
         OverrideAccuracy = true;
         AutoRecognizeDistance = 15f;
         AlwaysRecognizeDistance = 7f;
-        RecentlySeenTime = 17000;// 15000;
+        RecentlySeenTime = 15000;// 15000;
         ManageLoadout = true;
         BustDistance = 4f;//5f;
         OverrideHealth = true;

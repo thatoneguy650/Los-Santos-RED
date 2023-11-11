@@ -76,7 +76,7 @@ public class ScannerSettings : ISettingsDefaultable
         AllowAmbientDispatches = false;
         AmbientDispatchesMinTimeBetween = 150000;
         AmbientDispatchesMaxTimeBetween = 800000;
-        ShowPoliceVehicleBlipsWithScanner = true;
+        ShowPoliceVehicleBlipsWithScanner = false;
         PoliceBlipUpdateTime = 10000;
     }
 
