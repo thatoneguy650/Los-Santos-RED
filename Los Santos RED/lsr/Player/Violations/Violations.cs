@@ -22,7 +22,7 @@ namespace LosSantosRED.lsr
         private IZones Zones;
         private IGangTerritories GangTerritories;
         private IEntityProvideable World;
-        public Violations(IViolateable currentPlayer, ITimeReportable timeReporter, ICrimes crimes, ISettingsProvideable settings, IZones zones, IGangTerritories gangTerritories, IEntityProvideable world)
+        public Violations(IViolateable currentPlayer, ITimeReportable timeReporter, ICrimes crimes, ISettingsProvideable settings, IZones zones, IGangTerritories gangTerritories, IEntityProvideable world, IInteractionable interactionable)
         {
             TimeReporter = timeReporter;
             Player = currentPlayer;
@@ -35,7 +35,7 @@ namespace LosSantosRED.lsr
             DamageViolations = new DamageViolations(Player, this, Settings, TimeReporter, Crimes, Zones, GangTerritories);
             WeaponViolations = new WeaponViolations(Player, this, Settings, TimeReporter);
             TheftViolations = new TheftViolations(Player, this, Settings, TimeReporter, Zones, GangTerritories);
-            OtherViolations = new OtherViolations(Player, this, Settings, TimeReporter);
+            OtherViolations = new OtherViolations(Player, this, Settings, TimeReporter, World, interactionable);
         }
         public readonly List<Crime> CrimesViolating = new List<Crime>();
         public TrafficViolations TrafficViolations { get; private set; }

@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -19,7 +20,7 @@ public class VehicleBodyManager
     public List<StoredBody> StoredBodies { get; private set; } = new List<StoredBody>();
 
     public bool RecentlyEjectedBody => GameTimeLastEjectedBody != 0 && Game.GameTime - GameTimeLastEjectedBody <= 5000;
-
+    public bool IsTrunkOpen { get; private set; } = false;
     public VehicleBodyManager(VehicleExt vehicleExt, ISettingsProvideable settings)
     {
         VehicleExt = vehicleExt;
@@ -64,6 +65,16 @@ public class VehicleBodyManager
                 StoredBodies.Add(storedBody);
             }
         }
+
+    }
+    public void UpdateData()
+    {
+
+        IsTrunkOpen = CheckIsTrunkOpen();
+        if (IsTrunkOpen)
+        {
+            EntryPoint.WriteToConsole("TRUNK IS OPEN, SUSPICION IS ON!");
+        }
     }
     public bool LoadBody(PedExt pedExt, VehicleDoorSeatData bone, bool withFade)
     {
@@ -88,6 +99,7 @@ public class VehicleBodyManager
             //EntryPoint.WriteToConsoleTestLong($"VehicleBodyManager LoadBody {bone} FINISHED SUCCESSFULLY");
             if (storedBody.IsAttachedToVehicle)
             {
+                storedBody.PedExt.IsLoadedInTrunk = bone.SeatID == -2;
                 StoredBodies.Add(storedBody);
             }
             return true;
@@ -124,6 +136,7 @@ public class VehicleBodyManager
             unloadBody.Activated += (menu, item) =>
             {
                 VehicleExt.VehicleBodyManager.StoredBodies.Remove(storedBody);
+
                 storedBody.Unload();
                 UnloadBodiesSubMenu.Visible = false;
             };
@@ -134,6 +147,52 @@ public class VehicleBodyManager
     public void OnEjectedBody()
     {
         GameTimeLastEjectedBody = Game.GameTime;
+    }
+
+    public bool CheckSuspicious()
+    {
+        if (RecentlyEjectedBody)
+        {
+            return true;
+        }
+        if (!StoredBodies.Any())
+        {
+            return false;
+        }
+        if (StoredBodies.Any(x => x.VehicleDoorSeatData.SeatID != -2))
+        {
+            return true;
+        }
+        if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
+        {
+            return false;
+        }
+        if (!StoredBodies.Any(x => x.VehicleDoorSeatData.SeatID == -2))
+        {
+            return false;
+        }
+        if (IsTrunkOpen)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private bool CheckIsTrunkOpen()
+    {
+        if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
+        {
+            return false;
+        }
+        //if (!VehicleExt.Vehicle.Doors[5].IsValid())
+        //{
+        //    return false;
+        //}
+        if (VehicleExt.Vehicle.Doors[5].AngleRatio >= 0.1f || VehicleExt.Vehicle.Doors[5].IsDamaged)
+        {
+            return true;
+        }
+        return false;
     }
 }
 

@@ -31,23 +31,29 @@ public class DeadBodyAlert : PedAlert
         {
             return;
         }
-        List<PedExt> deadBodyPeds = world.Pedestrians.DeadPeds.Where(x => !BodiesSeen.Any(y => y.PedBody?.Handle == x.Handle) && x.Pedestrian.Exists() && PedExt.Pedestrian.Exists()).ToList();
+        List<PedExt> deadBodyPeds = world.Pedestrians.DeadPeds.Where(x => !BodiesSeen.Any(y => y.PedBody?.Handle == x.Handle) && !x.IsLoadedInTrunk && x.Pedestrian.Exists() && PedExt.Pedestrian.Exists()).ToList();
         foreach (PedExt deadBody in deadBodyPeds)
         {
             float distanceToBody = PedExt.Pedestrian.DistanceTo2D(deadBody.Pedestrian);
             bool CanSeeBody = false;
+
+
+
             if (!deadBody.WasKilledByPlayer && distanceToBody <= 15f)
             {
                 CanSeeBody = true;
+                EntryPoint.WriteToConsole("CAN SEE BODY 1");
             }
             else if (distanceToBody <= 45f && world.TotalWantedLevel >= 3)
             {
                 CanSeeBody = true;
+                EntryPoint.WriteToConsole("CAN SEE BODY 2");
             }
             else if (distanceToBody <= 45f && deadBody.Pedestrian.IsThisPedInFrontOf(PedExt.Pedestrian) && (deadBody.HasBeenSeenDead || NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", PedExt.Pedestrian, deadBody.Pedestrian)))
             {
                 CanSeeBody = true;
                 GameFiber.Yield();
+                EntryPoint.WriteToConsole("CAN SEE BODY 3");
             }
             if (CanSeeBody)
             {

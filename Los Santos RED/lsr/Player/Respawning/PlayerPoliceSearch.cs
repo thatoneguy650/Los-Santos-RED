@@ -33,13 +33,17 @@ public class PlayerPoliceSearch
     public bool FoundVehicleIllegalDrugs { get; private set; }
     public bool FoundVehicleIllegalWeapons { get; private set; }
     public bool FoundVehicleIllegalItems { get; private set; }
-
+    public bool FoundVehicleStoredBody { get; private set; }
 
     public bool DidItemsSearch { get; private set; }
     public bool DidWeaponSearch { get; private set; }
 
     public bool DidVehicleItemsSearch { get; private set; }
     public bool DidVehicleWeaponSearch { get; private set; }
+
+
+    public bool DidVehicleBodySearch { get; private set; }
+
     public bool AlwaysFind { get; set; }
     public void DoWeaponSearch()
     {
@@ -167,6 +171,21 @@ public class PlayerPoliceSearch
                 //EntryPoint.WriteToConsoleTestLong($"SEARCH WEAPON {weapon.ModelName} PERCENTAGE MET, WEAPONS FOUND");
                 break;
             }
+        }
+    }
+
+    public void DoVehicleBodySearch()
+    {
+        DidVehicleBodySearch = true;
+        if (CarToSearch == null)
+        {
+            return;
+        }
+        if(CarToSearch.VehicleBodyManager.StoredBodies.Any())
+        {
+            FoundVehicleStoredBody = true;
+            FoundVehicleIllegalItems = true;
+            Player.Violations.DamageViolations.AddKilledCivilian();
         }
     }
 }

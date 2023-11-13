@@ -36,6 +36,7 @@ public class SearchActivity
     private float CopTargetHeading;
     private bool AnnouncedIllegalWeapons;
     private bool AnnouncedIllegalDrugs;
+    private bool AnnouncedFoundBody;
     private PlayerPoliceSearch PlayerPoliceSearch;
     private CameraControl CameraControl;
     private string animDict;
@@ -231,10 +232,26 @@ public class SearchActivity
         bool endLoop = false;
         AnnouncedIllegalWeapons = false;
         AnnouncedIllegalDrugs = false;
+        AnnouncedFoundBody = false;
         while (Cop.Pedestrian.Exists() && !endLoop && CanContinueSearch)
         {
             float animTime = NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Cop.Pedestrian, CopDoSearchDictionary, CopDoSearchAnimation);
-            if (animTime >= 0.4f)
+
+            if (animTime >= 0.2f)
+            {
+                if (!PlayerPoliceSearch.DidVehicleBodySearch)
+                {
+                    //EntryPoint.WriteToConsoleTestLong("Cop Search Do Weapons Search");
+                    PlayerPoliceSearch.DoVehicleBodySearch();
+                }
+                if (PlayerPoliceSearch.FoundVehicleStoredBody && !AnnouncedFoundBody)
+                {
+                    //EntryPoint.WriteToConsoleTestLong("Cop Search Announce Found Weapons");
+                    CopAnnounceFoundBody();
+                }
+            }
+
+            else if (animTime >= 0.4f)
             {
                 if (!PlayerPoliceSearch.DidVehicleWeaponSearch)
                 {
@@ -304,6 +321,20 @@ public class SearchActivity
             CameraControl.ReturnToGameplayCam();
         }
     }
+
+    private void CopAnnounceFoundBody()
+    {
+        AnnouncedFoundBody = true;
+        List<string> foundItemResponse = new List<string>()
+                {
+                    $"Is this a friend of yours?",
+                    $"Found a body",
+                    $"Got a body over here",
+                };
+        Game.DisplayHelp("Stored Body Found");
+        Game.DisplaySubtitle("~g~Cop: ~s~" + foundItemResponse.PickRandom());
+    }
+
     private void MoveCopToCar()
     {
         if (!Cop.Pedestrian.Exists() || CarToSearch == null || !CarToSearch.Vehicle.Exists())

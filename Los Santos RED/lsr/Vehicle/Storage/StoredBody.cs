@@ -97,6 +97,7 @@ public class StoredBody
         PedExt.Pedestrian.Detach();
         ResetPed();
         VehicleExt.VehicleBodyManager.OnEjectedBody();
+        PedExt.IsLoadedInTrunk = false;
         NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(PedExt.Pedestrian);
         NativeFunction.Natives.SET_PED_TO_RAGDOLL(PedExt.Pedestrian, -1, -1, 0, false, false, false);
         WasEjected = true;
@@ -312,6 +313,7 @@ public class StoredBody
         {
             PedExt.Pedestrian.Position = finalPos;
         }
+        PedExt.IsLoadedInTrunk = false;
         if (PedExt.IsUnconscious)
         { 
             NativeFunction.Natives.SET_PED_TO_RAGDOLL(PedExt.Pedestrian, -1, -1, 0, false, false, false);

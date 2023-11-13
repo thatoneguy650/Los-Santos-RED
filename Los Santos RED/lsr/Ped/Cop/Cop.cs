@@ -314,6 +314,11 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             player.SetAngeredCop();
         }
     }
+    public override void OnStoodTooClose(IInteractionable player)
+    {
+        player.SetAngeredCop();
+        EntryPoint.WriteToConsole("You angered the cop by standing too close!");
+    }
     private void PlayerViolationChecker(IPoliceRespondable policeRespondable, IEntityProvideable world)
     {
         if(policeRespondable.IsNotWanted && SawPlayerViolating)

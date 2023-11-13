@@ -29,6 +29,7 @@ class GetInVehicleTaskState : TaskState
         BlockPermanentEvents = blockPermanentEvents;
     }
     public bool IsGang { get; set; } = false;
+    
     public bool IsValid => PedGeneral != null && !PedGeneral.IsInVehicle && (!IsGang || Player.IsInVehicle) && PedGeneral.Pedestrian.Exists() && SeatAssigner != null && SeatAssigner.IsAssignmentValid(!IsGang);
     public string DebugName => $"GetInVehicleTaskState Vehicle {SeatAssigner?.VehicleAssigned?.Handle} Seat {SeatAssigner?.SeatAssigned}";
     public void Dispose()
@@ -46,7 +47,11 @@ class GetInVehicleTaskState : TaskState
     }
     public void Update()
     {
-
+        //if(PedGeneral == null || !PedGeneral.Pedestrian.Exists())
+        //{
+        //    return;
+        //}
+        //if()
     }
     private void TaskEntry()
     {
@@ -72,7 +77,7 @@ class GetInVehicleTaskState : TaskState
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                 NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, SeatAssigner.VehicleAssigned.Vehicle, -1, SeatAssigner.SeatAssigned, moveRatio, 9);
                 //NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(8000, 16000));
-                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, !IsGang);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", PedGeneral.Pedestrian, lol);
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);

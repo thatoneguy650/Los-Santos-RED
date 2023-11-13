@@ -65,6 +65,15 @@ public class DamageViolations
         PlayerKilledCops.Clear();
         PlayerKilledCivilians.Clear();
     }
+    public void AddKilledCivilian()
+    {
+        GameTimeLastKilledCivilian = Game.GameTime;
+        GameTimeLastHurtCivilian = Game.GameTime;
+
+
+        Violations.AddViolatingAndObserved(StaticStrings.KillingCiviliansCrimeID);
+
+    }
     public void Update()
     {
         if (RecentlyKilledCop || (NearPoliceMurderVictim && (Violations.IsViolatingSeriousCrime || Player.ActivityManager.IsDraggingBody)))

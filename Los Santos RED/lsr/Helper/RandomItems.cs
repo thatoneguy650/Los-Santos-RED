@@ -65,5 +65,10 @@ public static class RandomItems
     {
         return (float)(MyRand.NextDouble() * (maximum - minimum) + minimum);
     }
+
+    internal static float GetRandomNumber(object value, object groupDistance)
+    {
+        throw new NotImplementedException();
+    }
 }
 

@@ -184,7 +184,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         RobberyCashPerSwipe = 500;
         RandomCashMin = 5;
         RandomCashMax = 750;
-        UseVanillaGroup = true;
+        UseVanillaGroup = false;
 
         SetCameraHintWhenConversing = true;
 

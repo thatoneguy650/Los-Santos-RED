@@ -368,6 +368,7 @@
     <Compile Include="lsr\Tasker\Fire\GotToAndExtinguishTaskState.cs" />
     <Compile Include="lsr\Tasker\Gang\GangBrain.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralFlee\GeneralFlee.cs" />
+    <Compile Include="lsr\Tasker\Generic\GeneralFollow\RideInVehicleTaskState.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralIdle\StayWaitInVehicleTaskState.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralInvestigate\GeneralInvestigate.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralInvestigate\PoliceGeneralInvestigate.cs" />

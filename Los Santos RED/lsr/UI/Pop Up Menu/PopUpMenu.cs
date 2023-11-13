@@ -329,18 +329,40 @@ public class PopUpMenu
         PopUpMenuGroups.RemoveAll(x => x.Group == "Group");
         int GroupMemberID = 0;
         List<PopUpBox> GroupMembersSubMenu = new List<PopUpBox>();
+        //GroupMembersSubMenu.Add(new PopUpBox(0, "Reset All Tasks", new Action(() => Player.GroupManager.ResetAllStatus()), "Reset all member's tasks"));
+        //GroupMembersSubMenu.Add(new PopUpBox(1, "Set All Follow", new Action(() => Player.GroupManager.TaskAllFollow()), "Tell all members to escort you around. Will use their own vehicle if it exists and is close"));
+        GroupMembersSubMenu.Add(new PopUpBox(0, "Toggle Use Player Car", new Action(() => { Player.GroupManager.RideInPlayerVehicleIfPossible = !Player.GroupManager.RideInPlayerVehicleIfPossible; 
+            Game.DisplaySubtitle($"RideInPlayerVehicleIfPossible {(Player.GroupManager.RideInPlayerVehicleIfPossible ? "Enabled" : "Disabled")}");
+            Player.GroupManager.UpdateTasking();
+        }), $"Tell all members to ride in the players car if available. Currently {(Player.GroupManager.RideInPlayerVehicleIfPossible ? "Enabled" : "Disabled")}"));
+        GroupMembersSubMenu.Add(new PopUpBox(1, "Toggle Combat", new Action(() => {
+            Player.GroupManager.SetCombatIfPossible = !Player.GroupManager.SetCombatIfPossible;
 
-        GroupMembersSubMenu.Add(new PopUpBox(0, "Reset All Tasks", new Action(() => Player.GroupManager.ResetAllStatus()), "Reset all member's tasks"));
-        GroupMembersSubMenu.Add(new PopUpBox(1, "Set All Follow", new Action(() => Player.GroupManager.SetAllFollow()), "Tell all members to escort you around. Will use their own vehicle if it exists and is close"));
 
-        //GroupMembersSubMenu.Add(new PopUpBox(2, "Use Player Car", new Action(() => Player.GroupManager.SetVehicle(true)), "Tell all members to ride in the players car if available"));
-        //GroupMembersSubMenu.Add(new PopUpBox(3, "Use Own Car", new Action(() => Player.GroupManager.SetVehicle(false)), "Tell all members to ride in their own cars if available"));
 
-        //GroupMembersSubMenu.Add(new PopUpBox(4, "Set Only Combat", new Action(() => Player.GroupManager.SetVehicle(true)), "Set exclusively combat"));
-        //GroupMembersSubMenu.Add(new PopUpBox(5, "Set Only Follow", new Action(() => Player.GroupManager.SetVehicle(false)), "Set exclusively follow"));
+            Player.GroupManager.SetFollowIfPossible = false;
+            Player.GroupManager.UpdateTasking();
+            Game.DisplaySubtitle($"Encourage Combat {(Player.GroupManager.SetCombatIfPossible ? "Enabled" : "Disabled")}");
+        }), $"Set exclusively combat. Currently {(Player.GroupManager.SetCombatIfPossible ? "Enabled" : "Disabled")}"));
+        GroupMembersSubMenu.Add(new PopUpBox(2, "Toggle Follow", 
+            new Action(() => { Player.GroupManager.SetFollowIfPossible = !Player.GroupManager.SetFollowIfPossible;
 
-        GroupMembersSubMenu.Add(new PopUpBox(2, "Disband", new Action(() => Player.GroupManager.Disband()), "Disband the group."));
 
+
+                Player.GroupManager.SetCombatIfPossible = false;
+
+                Player.GroupManager.UpdateTasking();
+                Game.DisplaySubtitle($"Encourage Follow {(Player.GroupManager.SetFollowIfPossible ? "Enabled" : "Disabled")}"); 
+            }), $"Set exclusively follow. Currently {(Player.GroupManager.SetFollowIfPossible ? "Enabled" : "Disabled")}"));
+
+        GroupMembersSubMenu.Add(new PopUpBox(3, "Toggle Force Follow",
+            new Action(() => {
+                Player.GroupManager.SetForceTasking = !Player.GroupManager.SetForceTasking;
+                Player.GroupManager.UpdateTasking();
+                Game.DisplaySubtitle($"Forcing Follow {(Player.GroupManager.SetForceTasking ? "Enabled" : "Disabled")}");
+            }), $"Set force tasking. Currently {(Player.GroupManager.SetForceTasking ? "Enabled" : "Disabled")}"));
+
+        GroupMembersSubMenu.Add(new PopUpBox(4, "Disband", new Action(() => Player.GroupManager.Disband()), "Disband the group."));
         int startingID = GroupMembersSubMenu.Count();
         foreach (GroupMember mi in Player.GroupManager.CurrentGroupMembers)
         {
@@ -348,10 +370,14 @@ public class PopUpMenu
             List<PopUpBox> GroupMemberSubMenu = new List<PopUpBox>();
             GroupMemberSubMenu.Add(new PopUpBox(0, "Give Weapon", new Action(() => Player.GroupManager.GiveCurrentWeapon(mi.PedExt)), "Give Current Weapon"));
             GroupMemberSubMenu.Add(new PopUpBox(1, "Remove Member", new Action(() => Player.GroupManager.Remove(mi.PedExt)), "Remove the Member"));
-            GroupMemberSubMenu.Add(new PopUpBox(2, "Rest Tasks", new Action(() => Player.GroupManager.ResetStatus(mi.PedExt, true)), "Reset the member's tasks"));
-            GroupMemberSubMenu.Add(new PopUpBox(3, "Set Follow", new Action(() => Player.GroupManager.SetFollow(mi.PedExt)), "Tell the member to escort you around. Will use their own vehicle if it exists and is close"));
-            GroupMemberSubMenu.Add(new PopUpBox(4, "Set Violent", new Action(() => Player.GroupManager.SetViolent(mi.PedExt)), "Set the group member to always fight police and other gang members"));
-            GroupMemberSubMenu.Add(new PopUpBox(5, "Set Passive", new Action(() => Player.GroupManager.SetPassive(mi.PedExt)), "Set the group member to never fight police and other gang members"));
+            //GroupMemberSubMenu.Add(new PopUpBox(2, "Rest Tasks", new Action(() => Player.GroupManager.ResetStatus(mi.PedExt, true)), "Reset the member's tasks"));
+            //GroupMemberSubMenu.Add(new PopUpBox(3, "Set Follow", new Action(() => Player.GroupManager.SetFollow(mi.PedExt)), "Tell the member to escort you around. Will use their own vehicle if it exists and is close"));
+            GroupMemberSubMenu.Add(new PopUpBox(2, "Set Violent", new Action(() => Player.GroupManager.SetViolent(mi.PedExt)), "Set the group member to always fight police and other gang members"));
+            GroupMemberSubMenu.Add(new PopUpBox(3, "Set Passive", new Action(() => Player.GroupManager.SetPassive(mi.PedExt)), "Set the group member to never fight police and other gang members"));
+
+
+            GroupMemberSubMenu.Add(new PopUpBox(4, "Set Specialist", new Action(() => Player.GroupManager.SetSpecialist(mi.PedExt)), "Set the group member to be better at combat"));
+
             PopUpMenuGroups.Add(new PopUpBoxGroup($"{mi.PedExt.Name}SubMenu", GroupMemberSubMenu) { IsChild = true, Group = "Group" });
             GroupMemberID++;
         }

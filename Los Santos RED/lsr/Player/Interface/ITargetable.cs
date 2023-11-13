@@ -62,6 +62,7 @@ namespace LosSantosRED.lsr.Interface
         Vector3 StreetPlacePoliceLastSeenPlayer { get; }
         bool HasBustPowers { get; }
         CriminalHistory CriminalHistory { get; }
+        GroupManager GroupManager { get; }
         //bool IsHostile(Gang gang);
     }
 }

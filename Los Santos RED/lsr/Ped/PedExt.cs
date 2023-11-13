@@ -33,10 +33,11 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     private RelationshipGroup originalGroup;
     private bool HasDrugAreaKnowledge;
     private bool HasGangAreaKnowledge;
-    private ICrimes Crimes;
+    protected ICrimes Crimes;
     private uint GameTimeFirstSeenDead;
     private uint GameTimeFirstSeenUnconscious;
     private uint GameTimeLastReportedCrime;
+    private uint GameTimeLastTooCloseToPlayer;
 
     private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
     private bool CanYell => !IsYellingTimeOut;
@@ -458,9 +459,11 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsManuallyDeleted { get; set; } = false;
     public bool CanBeBuried => IsUnconscious || IsDead;
 
-    public bool RideInPlayerVehicle { get; set; } = false;
-    public bool AlwaysInCombat { get; set; } = false;
-    public bool AlwaysFollow { get; set; } = false;
+    public bool IsLoadedInTrunk { get; internal set; }
+
+    //public bool RideInPlayerVehicle { get; set; } = false;
+    //public bool AlwaysInCombat { get; set; } = false;
+    //public bool AlwaysFollow { get; set; } = false;
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
@@ -1360,5 +1363,28 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
         GameTimeFirstSeenUnconscious = Game.GameTime;
         EntryPoint.WriteToConsole($"{Handle} first time seen unconscious");
+    }
+
+    public void ResetPlayerStoodTooClose()
+    {
+        GameTimeLastTooCloseToPlayer = 0;
+    }
+
+    public void SetStoodTooClose(IInteractionable player)
+    {
+        if(GameTimeLastTooCloseToPlayer == 0)
+        {
+            GameTimeLastTooCloseToPlayer = Game.GameTime;
+        }
+        if(Game.GameTime - GameTimeLastTooCloseToPlayer >= 5000)
+        {
+            GameTimeLastTooCloseToPlayer = Game.GameTime;
+            OnStoodTooClose(player);
+        }
+    }
+    public virtual void OnStoodTooClose(IInteractionable player)
+    {
+        AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "Harassment"), player.Character.Position);
+        EntryPoint.WriteToConsole("You are harassing the target!");
     }
 }

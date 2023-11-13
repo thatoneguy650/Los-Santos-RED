@@ -42,7 +42,7 @@ public class UnconsciousBodyAlert : PedAlert
         {
             return;
         }
-        foreach (PedExt unconsciousPed in world.Pedestrians.PedExts.Where(x => !x.IsDead && (x.IsUnconscious || x.IsInWrithe) && !x.HasStartedEMTTreatment && !x.HasBeenTreatedByEMTs && !UnconsciousPedsSeen.Any(y => y.PedBody?.Handle == x.Handle) && NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, x.CellX, x.CellY, 4) && x.Pedestrian.Exists()))
+        foreach (PedExt unconsciousPed in world.Pedestrians.PedExts.Where(x => !x.IsDead && (x.IsUnconscious || x.IsInWrithe) && !x.IsLoadedInTrunk && !x.HasStartedEMTTreatment && !x.HasBeenTreatedByEMTs && !UnconsciousPedsSeen.Any(y => y.PedBody?.Handle == x.Handle) && NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, x.CellX, x.CellY, 4) && x.Pedestrian.Exists()))
         {
             float distanceToBody = PedExt.Pedestrian.DistanceTo2D(unconsciousPed.Pedestrian);
             bool CanSeeBody = false;

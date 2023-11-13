@@ -1,11 +1,14 @@
-﻿using LosSantosRED.lsr;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,13 +19,17 @@ public class OtherViolations
     private Violations Violations;
     private ISettingsProvideable Settings;
     private ITimeReportable Time;
-
-    public OtherViolations(IViolateable player, Violations violations, ISettingsProvideable settings, ITimeReportable time)
+    private IEntityProvideable World;
+    private IInteractionable Interactionable;
+    private PedExt PreviousClosestPed;
+    public OtherViolations(IViolateable player, Violations violations, ISettingsProvideable settings, ITimeReportable time, IEntityProvideable world, IInteractionable interactionable)
     {
         Player = player;
         Violations = violations;
         Settings = settings;
         Time = time;
+        World = world;
+        Interactionable = interactionable;
     }
     public void Setup()
     {
@@ -44,8 +51,12 @@ public class OtherViolations
         ResistingArrestUpdate();
         DealingUpdate();
         NonViolentUpdate();
+        SmallBodyCrimes();
     }
-
+    public void AddFoundBody()
+    {
+        Violations.AddViolating(StaticStrings.SuspiciousVehicleCrimeID);
+    }
     private void NonViolentUpdate()
     {
         if (Player.Intoxication.IsIntoxicated && Player.Intoxication.CurrentIntensity >= 2.0f && !Player.IsInVehicle)
@@ -67,6 +78,28 @@ public class OtherViolations
         if (!Violations.CanBodyInteract && Player.ActivityManager.IsLootingBody)
         {
             Violations.AddViolating(StaticStrings.MuggingCrimeID);
+        }
+    }
+    private void SmallBodyCrimes()
+    {
+        if(Player.IsInVehicle)
+        {
+            return;
+        }
+        PedExt closestPedExt = World.Pedestrians.PedExts.Where(x => x.DistanceToPlayer <= 0.65f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        if(closestPedExt == null)
+        {
+            PreviousClosestPed?.ResetPlayerStoodTooClose();
+            return;
+        }
+        if(PreviousClosestPed != null && closestPedExt.Handle != PreviousClosestPed.Handle)
+        {
+            PreviousClosestPed.ResetPlayerStoodTooClose();
+        }
+        if(closestPedExt.DistanceToPlayer <= 0.65f)
+        {
+            closestPedExt.SetStoodTooClose(Interactionable);
+            EntryPoint.WriteToConsole("TOO CLOSE TO PED, MAKING THEM ANGRY");
         }
     }
     private void DealingUpdate()
@@ -154,41 +187,14 @@ public class OtherViolations
 
     private void SuspiciousBodyUpdate()
     {
-        if(!Player.IsInVehicle || Player.CurrentVehicle == null || !Player.IsDriver)
+        if (!Player.IsInVehicle || Player.CurrentVehicle == null || !Player.IsDriver)
         {
             return;
         }
-        if(Player.CurrentVehicle.VehicleBodyManager.RecentlyEjectedBody)
-        {
-            Violations.AddViolating(StaticStrings.SuspiciousVehicleCrimeID);
-            return;
-        }
-        if(!Player.CurrentVehicle.VehicleBodyManager.StoredBodies.Any())
-        {
-            return;
-        }
-        if(Player.CurrentVehicle.VehicleBodyManager.StoredBodies.Any(x=> x.VehicleDoorSeatData.SeatID != -2))
+        if(Player.CurrentVehicle.VehicleBodyManager.CheckSuspicious())
         {
             Violations.AddViolating(StaticStrings.SuspiciousVehicleCrimeID);
-            return;
-        }
-        if(!Player.CurrentVehicle.Vehicle.Exists())
-        {
-            return;
-        }
-        if(!Player.CurrentVehicle.VehicleBodyManager.StoredBodies.Any(x=> x.VehicleDoorSeatData.SeatID == -2))
-        {
-            return;
-        }
-        if (!Player.CurrentVehicle.Vehicle.Doors[5].IsValid())
-        {
-            return;
-        }
-        if(Player.CurrentVehicle.Vehicle.Doors[5].AngleRatio >= 0.1f || Player.CurrentVehicle.Vehicle.Doors[5].IsDamaged)
-        {
-            Violations.AddViolating(StaticStrings.SuspiciousVehicleCrimeID);
-            return;
-        }
+        }     
     }
     private void ViolentUpdate()
     {

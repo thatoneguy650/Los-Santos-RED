@@ -1,13 +1,10 @@
-﻿using LosSantosRED.lsr.Helper;
-using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 public class GroupManager
@@ -23,6 +20,13 @@ public class GroupManager
     public List<GroupMember> CurrentGroupMembers { get; private set; } = new List<GroupMember>();
     public int PlayerGroup { get; private set; }
     public int MemberCount => CurrentGroupMembers.Count();
+
+    public float GroupFollowDistance { get; set; } = 3.0f;
+
+    public bool SetForceTasking { get; set; } = false;
+    public bool SetFollowIfPossible { get; set; } = true;
+    public bool SetCombatIfPossible { get; set; } = false;
+    public bool RideInPlayerVehicleIfPossible { get; set; } = true; 
     public GroupManager(IGroupManageable player, ITargetable targetable, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, IWeapons weapons)
     {
         Player = player;
@@ -124,21 +128,11 @@ public class GroupManager
         PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
         CurrentGroupMembers.Add(new GroupMember(groupMember, CurrentGroupMembers.Count+1));
         OnBecameGroupMember(groupMember);    
-
         if(CurrentGroupMembers.Count() == 1)
         {
             OnStartedGroup();
         }
-
     }
-    //private enum PEDGROUP_FORMATION
-    //{
-    //    FORMATION_LOOSE,
-    //    FORMATION_SURROUND_FACING_INWARDS,
-    //    FORMATION_SURROUND_FACING_AHEAD,
-    //    FORMATION_LINE_ABREAST,
-    //    FORMATION_FOLLOW_IN_LINE
-    //}
     private void OnStartedGroup()
     {
         if (Settings.SettingsManager.PlayerOtherSettings.UseVanillaGroup)
@@ -147,7 +141,6 @@ public class GroupManager
             NativeFunction.Natives.SET_GROUP_FORMATION_SPACING(PlayerGroup, 5f, -1.0f, 15f);
         }
     }
-
     public void Disband()
     {
         PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
@@ -210,11 +203,7 @@ public class GroupManager
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_AlwaysFight, true);
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
             NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(groupMember.Pedestrian, 0, false);
-
             AddInternal(groupMember);
-
-            //NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(groupMember.Pedestrian, PlayerGroup);
-            //NativeFunction.Natives.SET_PED_AS_GROUP_LEADER(Player.Character, PlayerGroup);
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
             if (clearTasks)
             {
@@ -231,49 +220,25 @@ public class GroupManager
         groupMember.IsGroupMember = true;
         groupMember.CanBeTasked = false;
         groupMember.CanBeAmbientTasked = false;
-
-
         groupMember.CurrentTask = null;
-
         NativeFunction.Natives.CLEAR_PED_TASKS(groupMember.Pedestrian);
-        //groupMember.Pedestrian.KeepTasks = true;
         groupMember.Pedestrian.BlockPermanentEvents = false;
-        //groupMember.Pedestrian.IsInvincible = true;
         NativeFunction.Natives.SET_PED_ALERTNESS(groupMember.Pedestrian, 3);
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_AlwaysFight, true);
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
         NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(groupMember.Pedestrian, 0, false);
-
-       
-
-       // groupMember.ClearTasks(false);
-
-
-
         AddInternal(groupMember);
-
-       // NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(groupMember.Pedestrian, PlayerGroup);
-      //  NativeFunction.Natives.SET_PED_AS_GROUP_LEADER(Player.Character, PlayerGroup);
-        //groupMember.Pedestrian.KeepTasks = true;
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
-        // NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(groupMember.Pedestrian, 100f, 0);//TR
-        // NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_IN_AREA(groupMember.Pedestrian, groupMember.Pedestrian.Position.X,groupMember.Pedestrian.Position.Y,groupMember.Pedestrian.Position.Z, 5000f, 0);//TR
-        // groupMember.Pedestrian.KeepTasks = true;
-
-
-
-
-
+        NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_CanDoDrivebys, true);
         uint bestWeapon = NativeFunction.Natives.GET_BEST_PED_WEAPON<uint>(groupMember.Pedestrian, 0);
         WeaponInformation wi = Weapons.GetWeapon(bestWeapon);
-
         string weaponString = "Unarmed";
         if (wi != null)
         {
             weaponString = $"Weapon: {wi.Category}";
         }
         Game.DisplayHelp($"Recruited {groupMember.FormattedName} {weaponString}");
-
+        SetFollow(groupMember);
     }
     private void OnLeftGroup(PedExt groupMember)
     {
@@ -298,6 +263,17 @@ public class GroupManager
         groupMember.WillFightPolice = false;
         groupMember.WillAlwaysFightPolice = false;
     }
+    public void SetSpecialist(PedExt groupMember)
+    {
+        if (groupMember == null || !groupMember.Pedestrian.Exists())
+        {
+            return;
+        }
+        groupMember.Pedestrian.Accuracy = 85;
+        NativeFunction.Natives.SET_PED_SHOOT_RATE(groupMember.Pedestrian, 300);
+        NativeFunction.Natives.SET_PED_COMBAT_ABILITY(groupMember.Pedestrian, 2);
+        NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(groupMember.Pedestrian, 1);
+    }
     public void SetFollow(PedExt mi)
     {
         if (mi.IsBusted)
@@ -314,47 +290,19 @@ public class GroupManager
         {
             gm = (GangMember)mi;
         }
-
         mi.CurrentTask = new GeneralFollow(mi, mi, Targetable, World, new List<VehicleExt>() { mi.AssignedVehicle }, null, Settings, this, gm);
         mi.CurrentTask.Start();
     }
 
-    public void ResetAllStatus()
-    {
-        foreach(GroupMember groupMember in CurrentGroupMembers)
-        {
-            ResetStatus(groupMember.PedExt, true);
-        }
-    }
-    public void SetVehicle(bool value)
+    public void UpdateTasking()
     {
         foreach (GroupMember groupMember in CurrentGroupMembers)
         {
-            groupMember.PedExt.RideInPlayerVehicle = value;
-        }
-    }
-
-
-    public void SetAlwaysFollow(bool value)
-    {
-        foreach (GroupMember groupMember in CurrentGroupMembers)
-        {
-            groupMember.PedExt.AlwaysFollow = value;
-        }
-    }
-    public void SetAlwaysCombat(bool value)
-    {
-        foreach (GroupMember groupMember in CurrentGroupMembers)
-        {
-            groupMember.PedExt.AlwaysInCombat = value;
-        }
-    }
-
-
-    public void SetAllFollow()
-    {
-        foreach (GroupMember groupMember in CurrentGroupMembers)
-        {
+            if(groupMember.PedExt == null || !groupMember.PedExt.Pedestrian.Exists())
+            {
+                continue;
+            }
+            groupMember.PedExt.Pedestrian.BlockPermanentEvents = SetForceTasking;
             SetFollow(groupMember.PedExt);
         }
     }

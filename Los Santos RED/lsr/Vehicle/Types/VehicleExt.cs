@@ -626,6 +626,8 @@ namespace LSR.Vehicles
                     Radio.Update(Settings.SettingsManager.VehicleSettings.AutoTuneRadioStation);
                     //GameFiber.Yield();//TR Removed 5
                 }
+
+                VehicleBodyManager.UpdateData();
                 GameFiber.Yield();//TR Added 5
             }
         }
