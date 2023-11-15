@@ -9,7 +9,7 @@ using System.Linq;
 
 public class GroupManager
 {
-    private int maxMembers = 7;
+    private int maxMembers => Settings.SettingsManager.PlayerOtherSettings.UseVanillaGroup ? 7 : 15;
     private IGroupManageable Player;
     private ISettingsProvideable Settings;
     private IEntityProvideable World;
@@ -24,9 +24,11 @@ public class GroupManager
     public float GroupFollowDistance { get; set; } = 3.0f;
 
     public bool SetForceTasking { get; set; } = false;
-    public bool SetFollowIfPossible { get; set; } = true;
+    public bool SetFollowIfPossible { get; set; } = false;
     public bool SetCombatIfPossible { get; set; } = false;
-    public bool RideInPlayerVehicleIfPossible { get; set; } = true; 
+    public bool RideInPlayerVehicleIfPossible { get; set; } = true;
+    public bool AlwaysArmed { get; set; } = false;
+    public bool NeverArmed { get; set; } = false;
     public GroupManager(IGroupManageable player, ITargetable targetable, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, IWeapons weapons)
     {
         Player = player;
@@ -231,6 +233,7 @@ public class GroupManager
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_CanDoDrivebys, true);
         uint bestWeapon = NativeFunction.Natives.GET_BEST_PED_WEAPON<uint>(groupMember.Pedestrian, 0);
+
         WeaponInformation wi = Weapons.GetWeapon(bestWeapon);
         string weaponString = "Unarmed";
         if (wi != null)
@@ -269,8 +272,8 @@ public class GroupManager
         {
             return;
         }
-        groupMember.Pedestrian.Accuracy = 85;
-        NativeFunction.Natives.SET_PED_SHOOT_RATE(groupMember.Pedestrian, 300);
+        groupMember.Pedestrian.Accuracy = 95;
+        NativeFunction.Natives.SET_PED_SHOOT_RATE(groupMember.Pedestrian, 700);
         NativeFunction.Natives.SET_PED_COMBAT_ABILITY(groupMember.Pedestrian, 2);
         NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(groupMember.Pedestrian, 1);
     }

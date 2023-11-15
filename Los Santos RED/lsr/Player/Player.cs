@@ -312,6 +312,7 @@ namespace Mod
         public bool IsDealingIllegalGuns { get; set; } = false;
         public bool IsDisplayingCustomMenus => IsTransacting || IsCustomizingPed || ActivityManager.IsConversing;
         public bool IsDoingSuspiciousActivity { get; set; } = false;
+        public int CurrentSeat { get; private set; }
         public bool IsDriver { get; private set; }
         public bool IsDuckingInVehicle { get; set; } = false;
         public bool IsGangMember => RelationshipManager.GangRelationships.CurrentGang != null;
@@ -1778,7 +1779,10 @@ namespace Mod
             {
                 isJacking = Character.IsJacking;
             }
-            IsDriver = Character.SeatIndex == -1;
+
+            CurrentSeat = Character.SeatIndex;
+
+            IsDriver = CurrentSeat == -1;
             IsInAirVehicle = Character.IsInAirVehicle;
 
             bool isModelBike = false;
@@ -1952,6 +1956,7 @@ namespace Mod
         private void UpdateOutOfVehicleData()
         {
             CurrentVehicleIsRolledOver = false;
+            CurrentSeat = -99;
             IsDriver = false;
             IsOnMotorcycle = false;
             IsInAutomobile = false;

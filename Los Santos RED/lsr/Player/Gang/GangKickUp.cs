@@ -4,6 +4,7 @@ using LosSantosRED.lsr.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -165,7 +166,7 @@ public class GangKickUp
     }
     public override string ToString()
     {
-        return $"Gang Dues: ${DueAmount} by {DueDate:g}";
+        return $"Gang Dues: ~r~${DueAmount}~s~ by {DueDate:g}~n~Days: {(DueDate.Date - Time.CurrentDateTime.Date).Days} ~n~Currently: {Time?.CurrentDateTime:g}";
     }
 }
 

@@ -337,32 +337,38 @@ public class PopUpMenu
         }), $"Tell all members to ride in the players car if available. Currently {(Player.GroupManager.RideInPlayerVehicleIfPossible ? "Enabled" : "Disabled")}"));
         GroupMembersSubMenu.Add(new PopUpBox(1, "Toggle Combat", new Action(() => {
             Player.GroupManager.SetCombatIfPossible = !Player.GroupManager.SetCombatIfPossible;
-
-
-
             Player.GroupManager.SetFollowIfPossible = false;
             Player.GroupManager.UpdateTasking();
             Game.DisplaySubtitle($"Encourage Combat {(Player.GroupManager.SetCombatIfPossible ? "Enabled" : "Disabled")}");
         }), $"Set exclusively combat. Currently {(Player.GroupManager.SetCombatIfPossible ? "Enabled" : "Disabled")}"));
         GroupMembersSubMenu.Add(new PopUpBox(2, "Toggle Follow", 
             new Action(() => { Player.GroupManager.SetFollowIfPossible = !Player.GroupManager.SetFollowIfPossible;
-
-
-
                 Player.GroupManager.SetCombatIfPossible = false;
-
                 Player.GroupManager.UpdateTasking();
                 Game.DisplaySubtitle($"Encourage Follow {(Player.GroupManager.SetFollowIfPossible ? "Enabled" : "Disabled")}"); 
             }), $"Set exclusively follow. Currently {(Player.GroupManager.SetFollowIfPossible ? "Enabled" : "Disabled")}"));
 
-        GroupMembersSubMenu.Add(new PopUpBox(3, "Toggle Force Follow",
+        GroupMembersSubMenu.Add(new PopUpBox(3, "Toggle Force Tasking",
             new Action(() => {
                 Player.GroupManager.SetForceTasking = !Player.GroupManager.SetForceTasking;
                 Player.GroupManager.UpdateTasking();
-                Game.DisplaySubtitle($"Forcing Follow {(Player.GroupManager.SetForceTasking ? "Enabled" : "Disabled")}");
-            }), $"Set force tasking. Currently {(Player.GroupManager.SetForceTasking ? "Enabled" : "Disabled")}"));
+                Game.DisplaySubtitle($"Force Tasking {(Player.GroupManager.SetForceTasking ? "Enabled" : "Disabled")}");
+            }), $"Set the ped to always do the requested item by force tasking. Currently {(Player.GroupManager.SetForceTasking ? "Enabled" : "Disabled")}"));
+        GroupMembersSubMenu.Add(new PopUpBox(4, "Toggle Always Armed",
+            new Action(() => {
+                Player.GroupManager.AlwaysArmed = !Player.GroupManager.AlwaysArmed;
+                Player.GroupManager.UpdateTasking();
+                Game.DisplaySubtitle($"Always Armed {(Player.GroupManager.AlwaysArmed ? "Enabled" : "Disabled")}");
+            }), $"Set always armed. Currently {(Player.GroupManager.AlwaysArmed ? "Enabled" : "Disabled")}"));
 
-        GroupMembersSubMenu.Add(new PopUpBox(4, "Disband", new Action(() => Player.GroupManager.Disband()), "Disband the group."));
+        GroupMembersSubMenu.Add(new PopUpBox(5, "Toggle Never Armed",
+            new Action(() => {
+                Player.GroupManager.NeverArmed = !Player.GroupManager.NeverArmed;
+                Player.GroupManager.UpdateTasking();
+                Game.DisplaySubtitle($"Never Armed {(Player.GroupManager.NeverArmed ? "Enabled" : "Disabled")}");
+            }), $"Set never armed. Currently {(Player.GroupManager.NeverArmed ? "Enabled" : "Disabled")}"));
+
+        GroupMembersSubMenu.Add(new PopUpBox(6, "Disband", new Action(() => Player.GroupManager.Disband()), "Disband the group."));
         int startingID = GroupMembersSubMenu.Count();
         foreach (GroupMember mi in Player.GroupManager.CurrentGroupMembers)
         {
@@ -374,10 +380,7 @@ public class PopUpMenu
             //GroupMemberSubMenu.Add(new PopUpBox(3, "Set Follow", new Action(() => Player.GroupManager.SetFollow(mi.PedExt)), "Tell the member to escort you around. Will use their own vehicle if it exists and is close"));
             GroupMemberSubMenu.Add(new PopUpBox(2, "Set Violent", new Action(() => Player.GroupManager.SetViolent(mi.PedExt)), "Set the group member to always fight police and other gang members"));
             GroupMemberSubMenu.Add(new PopUpBox(3, "Set Passive", new Action(() => Player.GroupManager.SetPassive(mi.PedExt)), "Set the group member to never fight police and other gang members"));
-
-
             GroupMemberSubMenu.Add(new PopUpBox(4, "Set Specialist", new Action(() => Player.GroupManager.SetSpecialist(mi.PedExt)), "Set the group member to be better at combat"));
-
             PopUpMenuGroups.Add(new PopUpBoxGroup($"{mi.PedExt.Name}SubMenu", GroupMemberSubMenu) { IsChild = true, Group = "Group" });
             GroupMemberID++;
         }
@@ -1296,10 +1299,14 @@ public class PopUpMenu
         {
             new PopUpBox(0,"Engine",Player.ActivityManager.ToggleVehicleEngine,"Toggle vehicle engine") { IsCurrentlyValid = new Func<bool>(() => Player.CurrentVehicle?.Engine.CanToggle == true)},
             new PopUpBox(1,"Indicators","IndicatorsSubMenu","Open Indicators Sub Menu") { ClosesMenu = false },
-            new PopUpBox(2,"Driver Window",Player.ActivityManager.ToggleDriverWindow,"Toggle driver window. Access other windows in the menu when inside the vehicle."),
-            new PopUpBox(3,"Driver Door",Player.ActivityManager.ToggleDriverDoor,"Toggle driver door. Access other doors in the menu when outside the vehicle"),
-            new PopUpBox(4,"Door Locks",Player.ActivityManager.ToggleDoorLocks,"Toggle door locks."),
-            new PopUpBox(5,"Menu",new Action(() => Player.ShowVehicleInteractMenu(true)),"Show Vehicle Interaction Menu"),
+
+            new PopUpBox(2,"Windows","WindowsSubMenu","Open the Windows Sub Menu.") { ClosesMenu = false },
+
+
+            new PopUpBox(3,"Driver Window",Player.ActivityManager.ToggleDriverWindow,"Toggle driver window. Access other windows in the menu when inside the vehicle."),
+            new PopUpBox(4,"Driver Door",Player.ActivityManager.ToggleDriverDoor,"Toggle driver door. Access other doors in the menu when outside the vehicle"),
+            new PopUpBox(5,"Door Locks",Player.ActivityManager.ToggleDoorLocks,"Toggle door locks."),
+            new PopUpBox(6,"Menu",new Action(() => Player.ShowVehicleInteractMenu(true)),"Show Vehicle Interaction Menu"),
         };
         List<PopUpBox> IndicatorsSubMenu = new List<PopUpBox>()
         {
@@ -1308,9 +1315,19 @@ public class PopUpMenu
             new PopUpBox(2,"Left Indicator",Player.ActivityManager.ToggleLeftIndicator,"Toggle the left vehicle indicator"),
         };
 
+        List<PopUpBox> WindowsSubMenu = new List<PopUpBox>()
+        {
+            new PopUpBox(0,"Driver",new Action(() => Player.ActivityManager.ToggleWindowState(0)),"Toggle the driver window"),
+            new PopUpBox(1,"Passenger",new Action(() => Player.ActivityManager.ToggleWindowState(1)),"Toggle the Passenger window"),
+            new PopUpBox(2,"Rear Driver",new Action(() => Player.ActivityManager.ToggleWindowState(2)),"Toggle the Rear Driver window"),
+            new PopUpBox(3,"Rear Passenger",new Action(() => Player.ActivityManager.ToggleWindowState(3)),"Toggle the Rear Passenger window"),
+            new PopUpBox(4,"Middle Driver",new Action(() => Player.ActivityManager.ToggleWindowState(4)),"Toggle the Middle Driver window"),
+            new PopUpBox(5,"Middle Passenger",new Action(() => Player.ActivityManager.ToggleWindowState(5)),"Toggle the Middle Passenger window"),
+            new PopUpBox(6,"Front Windshield",new Action(() => Player.ActivityManager.ToggleWindowState(6)),"Toggle the Front Windshield"),
+            new PopUpBox(7,"Rear Windshield",new Action(() => Player.ActivityManager.ToggleWindowState(7)),"Toggle the Rear Windshield"),
+        };
 
-
-
+ 
 
         //List<PopUpBox> GestureMenuMaps = new List<PopUpBox>();
         //int CatID = 0;

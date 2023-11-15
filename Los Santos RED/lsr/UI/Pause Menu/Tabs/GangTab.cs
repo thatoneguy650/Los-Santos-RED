@@ -307,6 +307,7 @@ public class GangTab
         {
             toReturn.Add(new Tuple<string, string>("Kick Up:", $"${Player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount}"));
             toReturn.Add(new Tuple<string, string>("Due:", $"{Player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueDate:g}"));
+            //toReturn.Add(new Tuple<string, string>("Currently:", $"{Time.CurrentDateTime:g}"));
         }
 
         return toReturn;

@@ -158,13 +158,39 @@ public class GangMember : PedExt, IWeaponIssuable
         base.OnInsultedByPlayer(player);
         PlayerToCheck.RelationshipManager.GangRelationships.ChangeReputation(Gang, -100, true);  
     }
+    public override void OnStandingTooClose(IInteractionable player)
+    {
+        if (Gang == null)
+        {
+            return;
+        }
+        if (player.RelationshipManager.GangRelationships.CurrentGang != null && player.RelationshipManager.GangRelationships.CurrentGang.ID == Gang.ID)
+        {
+            return;
+        }
+        if(IsGroupMember)
+        {
+            return;
+        }
+        base.OnStandingTooClose(player);
+    }
     public override void OnStoodTooClose(IInteractionable player)
     {
+        if(Gang == null)
+        {
+            return;
+        }
+        if(player.RelationshipManager.GangRelationships.CurrentGang != null && player.RelationshipManager.GangRelationships.CurrentGang.ID == Gang.ID)
+        {
+            return;
+        }
+        if (IsGroupMember)
+        {
+            return;
+        }
         PlayerToCheck.RelationshipManager.GangRelationships.ChangeReputation(Gang, -100, true);
-
         AddWitnessedPlayerCrime(Crimes.GetCrime(StaticStrings.BrandishingWeaponCrimeID), player.Character.Position);
         EntryPoint.WriteToConsole("set gang member brandisihg, to fight you!");
-
     }
     public override void OnKilledByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
     {

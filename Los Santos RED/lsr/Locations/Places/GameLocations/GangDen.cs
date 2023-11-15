@@ -169,12 +169,19 @@ public class GangDen : GameLocation//, ILocationGangAssignable
                             completeTask = new UIMenuItem($"Collect Money", $"Inform the higher ups that you have completed the assigment and collect your payment.") { RightLabel = $"${pt.PaymentAmountOnCompletion}" };
                             InteractionMenu.AddItem(completeTask);
                         }
-                        RestMenuItem = new UIMenuNumericScrollerItem<int>("Relax", $"Relax at the {AssociatedGang?.DenName}. Recover ~g~health~s~ and increase ~s~rep~s~ a small amount. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
+
+
+
                         if (isPlayerMember && player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
                         {
-                            dropoffKick = new UIMenuItem("Pay Dues", "Drop off your member dues.") { RightLabel = $"${player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount}" };
+                            dropoffKick = new UIMenuItem("Pay Dues", $"Drop off your member dues.~n~{player.RelationshipManager.GangRelationships.CurrentGangKickUp}") { RightLabel = $"${player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount}" };
                             InteractionMenu.AddItem(dropoffKick);
                         }
+                        RestMenuItem = new UIMenuNumericScrollerItem<int>("Relax", $"Relax at the {AssociatedGang?.DenName}. Recover ~g~health~s~ and increase ~s~rep~s~ a small amount. Select up to 12 hours.", 1, 12, 1)
+                        { Formatter = v => v.ToString() + " hours" };
+                        InteractionMenu.AddItem(RestMenuItem);
+
+
                         InteractionMenu.Visible = true;
                         InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
                         while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)

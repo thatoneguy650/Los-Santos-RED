@@ -413,6 +413,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             RobberRelationshipGroup = new RelationshipGroup("ROBBERS");
             RelationshipGroup.Cop.SetRelationshipWith(RobberRelationshipGroup, Relationship.Neutral);
             RobberRelationshipGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Neutral);
+
+            RobberRelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Companion);
+            RelationshipGroup.Player.SetRelationshipWith(RobberRelationshipGroup, Relationship.Companion);
+
+
             for (int i = 0; i < RobbersToSpawn; i++)
             {
                 if(SpawnRobber(i+2f))
@@ -451,6 +456,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         RobberAccomplice.CanBeAmbientTasked = false;
                         RobberAccomplice.Money = RandomItems.GetRandomNumberInt(2000, 5000);
                         RobberAccomplice.Pedestrian.RelationshipGroup = RobberRelationshipGroup;
+
+
+
+
                         NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(RobberAccomplice.Pedestrian, 500000, 0);//TR
                         Player.GroupManager.Add(RobberAccomplice);
                         RobberAccomplice.Pedestrian.KeepTasks = true;
@@ -529,7 +538,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 bool isNear = false;
                 foreach(GameLocation policeStation in PlacesOfInterest.PossibleLocations.PoliceStations)//do not want to do robberies outside the police stations.....
                 {
-                    if(possibleSpot.CheckIsNearby(policeStation.CellX,policeStation.CellY,6))
+                    if(possibleSpot.CheckIsNearby(policeStation.CellX,policeStation.CellY,10))
                     {
                         isNear = true;
                         break;

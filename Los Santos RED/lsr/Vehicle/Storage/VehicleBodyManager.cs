@@ -184,10 +184,10 @@ public class VehicleBodyManager
         {
             return false;
         }
-        //if (!VehicleExt.Vehicle.Doors[5].IsValid())
-        //{
-        //    return false;
-        //}
+        if (!VehicleExt.Vehicle.Doors[5].IsValid())
+        {
+            return false;
+        }
         if (VehicleExt.Vehicle.Doors[5].AngleRatio >= 0.1f || VehicleExt.Vehicle.Doors[5].IsDamaged)
         {
             return true;

@@ -238,12 +238,13 @@ public class DynamicPlaces
         {
             return;
         }
-        GasStation ClosestStation = (GasStation)Places.ActiveLocations.Where(x => x.GetType() == typeof(GasStation)).OrderBy(x => x.EntrancePosition.DistanceTo2D(obj)).FirstOrDefault();//maybe store anyothe list of stations?
+        //GasStation ClosestStation = (GasStation)Places.ActiveLocations.Where(x => x.GetType() == typeof(GasStation)).OrderBy(x => x.EntrancePosition.DistanceTo2D(obj)).FirstOrDefault();//maybe store anyothe list of stations?
+        IGasPumpable gasPumpable = Places.ActiveLocations.OfType<IGasPumpable>().ToList().OrderBy(x => x.EntrancePosition.DistanceTo2D(obj)).FirstOrDefault();
         Vector3 EntrancePos = obj.Position;
         GasPump newGasPump;
-        if (ClosestStation != null)
+        if (gasPumpable != null)
         {
-            newGasPump = new GasPump(EntrancePos, heading, ClosestStation.Name, ClosestStation.Description, "None", obj, ClosestStation) { BannerImagePath = ClosestStation.BannerImagePath, OpenTime = 0, CloseTime = 24 };
+            newGasPump = new GasPump(EntrancePos, heading, gasPumpable.Name, gasPumpable.Description, "None", obj, gasPumpable) { BannerImagePath = gasPumpable.BannerImagePath, OpenTime = 0, CloseTime = 24 };
         }
         else
         {
@@ -252,9 +253,7 @@ public class DynamicPlaces
         newGasPump.CanInteractWhenWanted = true;
         newGasPump.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
         ActiveGasPumps.Add(newGasPump);
-
         EntryPoint.WriteToConsole($"Activate GasPump {newGasPump.Name} {newGasPump.EntrancePosition}");
-
     }
 
     private void ActivateATMMachine(Rage.Object obj, string modelName, Vector3 position, float heading)
@@ -264,7 +263,7 @@ public class DynamicPlaces
         {
             return;
         }
-        if (ActiveATMMachines.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
+        if (ActiveATMMachines.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.4f))
         {
             return;
         }

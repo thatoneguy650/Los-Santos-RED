@@ -92,14 +92,19 @@ public class OtherViolations
             PreviousClosestPed?.ResetPlayerStoodTooClose();
             return;
         }
+
         if(PreviousClosestPed != null && closestPedExt.Handle != PreviousClosestPed.Handle)
         {
             PreviousClosestPed.ResetPlayerStoodTooClose();
         }
+        if(closestPedExt.IsGroupMember)
+        {
+            return;
+        }
         if(closestPedExt.DistanceToPlayer <= 0.65f)
         {
             closestPedExt.SetStoodTooClose(Interactionable);
-            EntryPoint.WriteToConsole("TOO CLOSE TO PED, MAKING THEM ANGRY");
+            //EntryPoint.WriteToConsole("TOO CLOSE TO PED, MAKING THEM ANGRY");
         }
     }
     private void DealingUpdate()

@@ -138,6 +138,7 @@
     <Compile Include="lsr\Inventory\CashStorage.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\MerchantConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankDrawer.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\IGasPumpable.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Machines\CashRegister.cs" />
     <Compile Include="lsr\Locations\Places\VehicleItemMakeAndCategories.cs" />
     <Compile Include="lsr\Other\NativeMemory.cs" />

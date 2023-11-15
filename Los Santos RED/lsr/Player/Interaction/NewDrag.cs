@@ -48,6 +48,7 @@ public class NewDrag : DynamicActivity
     private bool CloseTrunk = false;
     private VehicleDoorSeatData VehicleDoorSeatData;
     private IVehicleSeatAndDoorLookup VehicleSeatDoorData;
+    private Rage.Object rightHandObject;
 
     public NewDrag(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IEntityProvideable world, IVehicleSeatAndDoorLookup vehicleSeatDoorData)
     {
@@ -88,6 +89,10 @@ public class NewDrag : DynamicActivity
         if (leftHandObject.Exists())
         {
             leftHandObject.Delete();
+        }
+        if (rightHandObject.Exists())
+        {
+            rightHandObject.Delete();
         }
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         Player.ActivityManager.IsDraggingBody = false;
@@ -292,7 +297,7 @@ public class NewDrag : DynamicActivity
         Ped.Pedestrian.BlockPermanentEvents = true;
         Ped.Pedestrian.KeepTasks = true;
         IsAttached = true;
-        NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, Player.Character, 11816, 0f, 0.6f, 0f, 0f, 0f, 0f, false, false, false, false, 2, false);
+        //NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, Player.Character, 11816, 0f, 0.6f, 0f, 0f, 0f, 0f, false, false, false, false, 2, false);
     }
     private void DetachPeds()
     {
@@ -618,10 +623,45 @@ public class NewDrag : DynamicActivity
         }
 
 
+        if (Settings.SettingsManager.DebugSettings.DoBothAttachments && !rightHandObject.Exists())
+        {
+            rightHandObject = new Rage.Object("ng_proc_cigarette01a", Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
+            rightHandObject.Detach();
+        }
+
+
+
         if (leftHandObject.Exists() && Ped.Pedestrian.Exists())
         {
 
             leftHandObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Settings.SettingsManager.DebugSettings.PlayerAttachBoneName), new Vector3(Settings.SettingsManager.DebugSettings.PlayerItemAttachX, Settings.SettingsManager.DebugSettings.PlayerItemAttachY, Settings.SettingsManager.DebugSettings.PlayerItemAttachZ), Rotator.Zero);
+
+
+            if (Settings.SettingsManager.DebugSettings.DoBothAttachments && rightHandObject.Exists())
+            {
+                rightHandObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Settings.SettingsManager.DebugSettings.PlayerAttachBoneName2), new Vector3(Settings.SettingsManager.DebugSettings.PlayerItemAttach2X, Settings.SettingsManager.DebugSettings.PlayerItemAttach2Y, Settings.SettingsManager.DebugSettings.PlayerItemAttach2Z), Rotator.Zero);
+
+                if (Settings.SettingsManager.DebugSettings.DoPhysicalAttachment)
+                {
+                    NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(Ped.Pedestrian, rightHandObject,
+
+                NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Ped.Pedestrian, Settings.SettingsManager.DebugSettings.PedAttachBoneName2),//NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Ped.Pedestrian, Settings.SettingsManager.DebugSettings.PedAttachBoneName), //bone 1
+
+                      0,  //"SKEL_L_Forearm"
+
+                        Settings.SettingsManager.DebugSettings.RagdollAttach1X2, Settings.SettingsManager.DebugSettings.RagdollAttach1Y2, Settings.SettingsManager.DebugSettings.RagdollAttach1Z2,
+                        Settings.SettingsManager.DebugSettings.RagdollAttach2X2, Settings.SettingsManager.DebugSettings.RagdollAttach2Y2, Settings.SettingsManager.DebugSettings.RagdollAttach2Z2,
+                        Settings.SettingsManager.DebugSettings.RagdollAttach3X2, Settings.SettingsManager.DebugSettings.RagdollAttach3Y2, Settings.SettingsManager.DebugSettings.RagdollAttach3Z2,
+                100000f,//break force
+               Settings.SettingsManager.DebugSettings.RagdollFixedRotation,//Settings.SettingsManager.DragSettings.RagdollFixedRotation,//true, //fixed rotation
+              Settings.SettingsManager.DebugSettings.RagdollDoInitialWarp,//Settings.SettingsManager.DragSettings.RagdollDoInitialWarp,//true, //DoInitialWarp
+              Settings.SettingsManager.DebugSettings.RagdollCollision,// Settings.SettingsManager.DragSettings.RagdollCollision,//false, //collision
+                    Settings.SettingsManager.DebugSettings.RagdollTeleport,//Settings.SettingsManager.DragSettings.RagdollTeleport,//false, //teleport
+                    Settings.SettingsManager.DebugSettings.RagdollRotationOrder//Settings.SettingsManager.DragSettings.RagdollRotationOrder                                                                                                                             //2 //RotationORder
+                );// ; ;
+                }
+            }
+
             // NativeFunction.Natives.SET_PED_TO_RAGDOLL(Ped.Pedestrian, -1, -1, 0, false, false, false);
             // if (Settings.SettingsManager.DragSettings.RagdollRunAttach)
             //{
@@ -642,10 +682,14 @@ public class NewDrag : DynamicActivity
             //    );
 
             // leftHandObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Settings.SettingsManager.DragSettings.RagdollItemAttachBone), Vector3.Zero, Rotator.Zero);
-            NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(Ped.Pedestrian, leftHandObject,
+
+
+            if (Settings.SettingsManager.DebugSettings.DoPhysicalAttachment)
+            {
+                NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(Ped.Pedestrian, leftHandObject,
 
                     NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Ped.Pedestrian, Settings.SettingsManager.DebugSettings.PedAttachBoneName),//NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Ped.Pedestrian, Settings.SettingsManager.DebugSettings.PedAttachBoneName), //bone 1
-                    
+
                           0,  //"SKEL_L_Forearm"
 
                             Settings.SettingsManager.DebugSettings.RagdollAttach1X, Settings.SettingsManager.DebugSettings.RagdollAttach1Y, Settings.SettingsManager.DebugSettings.RagdollAttach1Z,
@@ -654,10 +698,11 @@ public class NewDrag : DynamicActivity
                     100000f,//break force
                    Settings.SettingsManager.DebugSettings.RagdollFixedRotation,//Settings.SettingsManager.DragSettings.RagdollFixedRotation,//true, //fixed rotation
                   Settings.SettingsManager.DebugSettings.RagdollDoInitialWarp,//Settings.SettingsManager.DragSettings.RagdollDoInitialWarp,//true, //DoInitialWarp
-                  Settings.SettingsManager.DebugSettings.RagdollCollision ,// Settings.SettingsManager.DragSettings.RagdollCollision,//false, //collision
-                        Settings.SettingsManager.DebugSettings.RagdollTeleport ,//Settings.SettingsManager.DragSettings.RagdollTeleport,//false, //teleport
+                  Settings.SettingsManager.DebugSettings.RagdollCollision,// Settings.SettingsManager.DragSettings.RagdollCollision,//false, //collision
+                        Settings.SettingsManager.DebugSettings.RagdollTeleport,//Settings.SettingsManager.DragSettings.RagdollTeleport,//false, //teleport
                         Settings.SettingsManager.DebugSettings.RagdollRotationOrder//Settings.SettingsManager.DragSettings.RagdollRotationOrder                                                                                                                             //2 //RotationORder
                     );// ; ;
+            }
           //  }
             //"BONETAG_SPINE3"
             //"BONETAG_PELVIS"

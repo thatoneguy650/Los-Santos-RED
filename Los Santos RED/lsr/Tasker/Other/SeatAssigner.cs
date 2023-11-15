@@ -215,6 +215,23 @@ public class SeatAssigner
             World.Pedestrians.AddSeatAssignment(Ped, VehicleAssigned, SeatAssigned);
         }
     }
+    public bool IsAssignedPlayersVehicle(VehicleExt playersVehicle)
+    {
+        if(VehicleAssigned == null)
+        {
+            return false;
+        }
+        if(playersVehicle == null)
+        {
+            return false;
+        }
+        if(playersVehicle.Handle == VehicleAssigned.Handle)
+        {
+            return true;
+        }
+        return false;
+    }
+
     private bool IsSeatAvailable(VehicleExt vehicleToCheck, int seatToCheck)
     {
         //if (vehicleToCheck != null && 
@@ -313,11 +330,15 @@ public class SeatAssigner
     {
         VehicleAssigned = null;
         SeatAssigned = -99;
-        if (playerVehicle ==null || !playerVehicle.Vehicle.Exists())
+        if (playerVehicle == null || !playerVehicle.Vehicle.Exists())
         {
+            EntryPoint.WriteToConsole("AssignPlayerPassenger player vehicle does not exists, returning");
             return;
         }
         int passengerCapacity = playerVehicle.Vehicle.PassengerCapacity;
+
+
+
         for (int testSeatIndex = 0;testSeatIndex < passengerCapacity; testSeatIndex++)
         {
             if(IsSeatAvailable(playerVehicle, testSeatIndex))
@@ -326,6 +347,7 @@ public class SeatAssigner
                 SeatAssigned = testSeatIndex;
                 break;
             }
+            EntryPoint.WriteToConsole($"AssignPlayerPassenger passengerCapacity{passengerCapacity} testSeatIndex{testSeatIndex}");
         }
         if (VehicleAssigned != null && SeatAssigned != -99)
         {

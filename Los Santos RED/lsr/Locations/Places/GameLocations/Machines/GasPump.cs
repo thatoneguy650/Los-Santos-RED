@@ -28,7 +28,7 @@ public class GasPump : GameLocation
    // private UIMenuItem FillMenuItem;
    //private UIMenuNumericScrollerItem<int> AddSomeMenuItem;
     private int pricePerUnit;
-    private GasStation AssociatedStation;
+    private IGasPumpable AssociatedStation;
     private bool KeepInteractionGoing;
    // private Refueling Refueling;
     private MachineInteraction MachineInteraction;
@@ -51,7 +51,7 @@ public class GasPump : GameLocation
         ButtonPromptText = $"Get Gas at {Name}";
         return PumpProp.Exists() && player.CurrentLookedAtObject.Exists() && PumpProp.Handle == player.CurrentLookedAtObject.Handle;
     }
-    public GasPump(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, Rage.Object machineProp, GasStation gasStation) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
+    public GasPump(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, Rage.Object machineProp, IGasPumpable gasStation) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
         PumpProp = machineProp;

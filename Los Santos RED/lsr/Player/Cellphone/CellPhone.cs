@@ -584,6 +584,16 @@ public class CellPhone
         ScheduledContacts.RemoveAll(x => x.ContactName == gang.ContactName);
     }
 
+    public void ClearPendingTexts(PhoneContact phoneContact)
+    {
+        if (phoneContact == null)
+        {
+            return;
+        }
+        ScheduledTexts.RemoveAll(x => x.ContactName == phoneContact.Name);
+        ScheduledContacts.RemoveAll(x => x.ContactName == phoneContact.Name);
+    }
+
     public CorruptCopContact DefaultCorruptCopContact
     {
         get

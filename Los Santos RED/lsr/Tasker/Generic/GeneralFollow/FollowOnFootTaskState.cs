@@ -107,7 +107,6 @@ class FollowOnFootTaskState : TaskState
                         NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                         NativeFunction.CallByName<bool>("TASK_FOLLOW_TO_OFFSET_OF_ENTITY", 0, Player.Character, offsetX, offsetY, 0f, GeneralFollow.RunSpeed, -1, 10.0f, true);//NativeFunction.Natives.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(0, Player.Character, 3.0f, 3.0f, 0f, 0.75f, 20000, 5f, true);
                         NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 2000);
-
                         NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
                         NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                         NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);

@@ -179,7 +179,7 @@ public class Refueling
     private void PurchaseSucceeded(int UnitsToAdd)
     {
         Shop.PlaySuccessSound();
-        Shop.DisplayMessage("~g~Purchased", $"Thank you for purchasing {UnitsToAdd} gallons of fuel for a total price of ~r~${UnitsToAdd * PricePerUnit}~s~ at {Name}");
+        Shop.DisplayMessage("~g~Purchased", $"Gallons: {UnitsToAdd}~n~Total price: ~r~${UnitsToAdd * PricePerUnit}~s~");
     }
     public void DisplayFuelingFailedReason()
     {

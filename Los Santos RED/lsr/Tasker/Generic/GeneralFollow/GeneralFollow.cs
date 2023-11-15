@@ -22,7 +22,7 @@ public class GeneralFollow : ComplexTask
     private bool IsSetPlayerVehicle;
 
     private bool AllowEnteringVehicle => true;//!Ped.IsAmbientSpawn || PedGeneral.HasExistedFor >= 10000;
-    public bool ShouldGetInVehicle => Player.IsInVehicle;
+    public bool ShouldGetInVehicle => Player.IsInVehicle && Player.CurrentVehicle != null;
     public bool ShouldGetOutOfVehicle => Player.IsOnFoot && PedGeneral.DistanceToPlayer <= 20f;
     public bool SetFollow { get; private set; } = true;
     public bool SetCombat { get; private set; } = false;
@@ -48,6 +48,7 @@ public class GeneralFollow : ComplexTask
     {
         CurrentTaskState?.Stop();
         IsSetPlayerVehicle = Player.GroupManager.RideInPlayerVehicleIfPossible;// PedGeneral.RideInPlayerVehicle;
+        World.Pedestrians.RemoveSeatAssignment(PedGeneral);
         GetNewTaskState();
         CurrentTaskState?.Start();
     }
@@ -77,23 +78,28 @@ public class GeneralFollow : ComplexTask
 
     private void GetNewTaskState()
     {
-        if (ShouldGetInVehicle && AllowEnteringVehicle && !Ped.IsInVehicle && !SeatAssigner.IsAssignmentValid(false))
+        if (ShouldGetInVehicle && AllowEnteringVehicle && !Ped.IsInVehicle && (!SeatAssigner.IsAssignmentValid(false) || (IsSetPlayerVehicle && !SeatAssigner.IsAssignedPlayersVehicle(Player.CurrentVehicle))))
         {
             if (!IsSetPlayerVehicle)
             {
                 SeatAssigner.AssignFrontSeat(true);
+                EntryPoint.WriteToConsole("GENERAL FOLLOW ASSIGNED FRONT SEAT 1");
             }
             else
             {
+                if (!SeatAssigner.IsAssignedPlayersVehicle(Player.CurrentVehicle))
+                {
+                    EntryPoint.WriteToConsole("GENERAL FOLLOW ASSIGNED PLAYER CHANGED VEHICLES, EXPIRING SEAT ASSIGNMENT");
+                    World.Pedestrians.RemoveSeatAssignment(PedGeneral);
+                }
                 SeatAssigner.AssignPlayerPassenger(Player.CurrentVehicle);
                 if(!SeatAssigner.IsAssignmentValid(false))
                 {
                     SeatAssigner.AssignFrontSeat(true);
+                    EntryPoint.WriteToConsole("GENERAL FOLLOW ASSIGNED FRONT SEAT 2 PLAYER PASSENGER IS NOT VALID");
                 }
             }
         }
-
-
         EntryPoint.WriteToConsole($"SeatAssigner.IsAssignmentValid(){SeatAssigner.IsAssignmentValid(false)}");
         if (Ped.IsInVehicle)
         {
@@ -123,18 +129,12 @@ public class GeneralFollow : ComplexTask
                 else
                 {
                     CurrentTaskState = new RideInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, GroupManager, WeaponIssuable, this);//can i get away with this?
-                    //Wait
                 }
             }
         }
         else
         {
             bool isAssignmentValid = SeatAssigner.IsAssignmentValid(false);
-            //if (PedGeneral.IsInVehicle && isAssignmentValid)
-            //{
-
-            //}
-            //else 
             if(ShouldGetInVehicle && isAssignmentValid)
             {
                 CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings,Player.GroupManager.SetForceTasking) { IsGang = true };
@@ -146,8 +146,6 @@ public class GeneralFollow : ComplexTask
             }
         }
     }
-
-
     private void UpdateParameters()
     {
         if (Player.GroupManager.SetFollowIfPossible)//PedGeneral.AlwaysFollow)
@@ -204,45 +202,35 @@ public class GeneralFollow : ComplexTask
     {
         if (WeaponIssuable != null)
         {
-
-            //if (WeaponIssuable.Pedestrian.Exists())
-            //{
-            //    NativeFunction.Natives.SET_PED_CAN_SWITCH_WEAPON(WeaponIssuable.Pedestrian, true);
-            //}
-            //return;
-
-
-            if (!SetCombat && Player.IsOnFoot && !Player.IsVisiblyArmed)
+            if(GroupManager.AlwaysArmed)
             {
-                EntryPoint.WriteToConsole("GENERAL FOLLOW SET UNARMED");
-                WeaponIssuable.WeaponInventory.SetUnarmed();
+                WeaponIssuable.WeaponInventory.SetSimpleArmed();
             }
-            else if (Player.IsOnFoot && Player.IsVisiblyArmed && !WeaponIssuable.IsInVehicle)
+            else if (GroupManager.NeverArmed)
             {
-                if (WeaponIssuable.Pedestrian.Exists())
-                {
-                    EntryPoint.WriteToConsole("GENERAL FOLLOW SET BEST WEAPON");
-                    uint bestWeapon = NativeFunction.Natives.GET_BEST_PED_WEAPON<uint>(WeaponIssuable.Pedestrian);
-                    uint currentWeapon;
-                    NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(WeaponIssuable.Pedestrian, out currentWeapon, true);
-                    if (currentWeapon != bestWeapon)
-                    {
-                        EntryPoint.WriteToConsole("GENERAL FOLLOW SET BEST WEAPON RESETTING WEAPON CUZ ITS NOT OUT");
-                        NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponIssuable.Pedestrian, bestWeapon, true);
-                    }
-                    NativeFunction.Natives.SET_PED_CAN_SWITCH_WEAPON(WeaponIssuable.Pedestrian, true);
-                }
+                WeaponIssuable.WeaponInventory.SetSimpleUnarmed();
+            }
+            else if (SetCombat)
+            {
+                WeaponIssuable.WeaponInventory.SetSimpleArmed();
+            }
+            else if (Player.IsOnFoot && Player.IsVisiblyArmed)
+            {
+                WeaponIssuable.WeaponInventory.SetSimpleArmed();
+            }
+            else if (Player.IsInVehicle && (SetCombat || WeaponIssuable.IsInVehicle))
+            {
+                WeaponIssuable.WeaponInventory.SetSimpleArmed();
+            }
+            else if (Player.IsOnFoot && !Player.IsVisiblyArmed)
+            {
+                WeaponIssuable.WeaponInventory.SetSimpleUnarmed();
             }
             else
             {
-                if (WeaponIssuable.Pedestrian.Exists())
-                {
-                    NativeFunction.Natives.SET_PED_CAN_SWITCH_WEAPON(WeaponIssuable.Pedestrian, true);
-                }
+                WeaponIssuable.WeaponInventory.SetSimpleUnarmed();
             }
         }
     }
-
-
 }
 

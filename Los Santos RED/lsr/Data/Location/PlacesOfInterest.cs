@@ -550,12 +550,12 @@ public class PlacesOfInterest : IPlacesOfInterest
         DriveThrus = new List<DriveThru>()
         {
             new DriveThru(new Vector3(95.41846f, 285.0295f, 110.2042f), 251.8247f, "Up-N-Atom Burger", "Never Frozen, Often Microwaved","UpNAtomMenu") {OpenTime = 0, CloseTime = 24, BannerImagePath = "stores\\upnatom.png"},
-            new DriveThru(new Vector3(15.48935f, -1595.832f, 29.28254f), 319.2816f, "The Taco Farmer", "Open All Hours!","TacoFarmerMenu") { BannerImagePath = "stores\\tacofarmer.png" },
-            new DriveThru(new Vector3(-576.9321f, -880.5195f, 25.70123f), 86.01214f, "Lucky Plucker", "Come be a real Lucky Plucker","LuckyPluckerMenu") { BannerImagePath = "stores\\luckyplucker.png",ScannerFilePath = "01_specific_location\\0x14B8A4DB.wav" } ,
-            new DriveThru(new Vector3(2591.213f, 478.8892f, 108.6423f), 270.9569f, "Bishop's Chicken", "Our chicken is a religious experience","BishopsChickenMenu") { BannerImagePath = "stores\\bishops.png" },
-            new DriveThru(new Vector3(144.34f, -1541.275f, 28.36799f), 139.819f, "La Vaca Loca", "Whats wrong with a few mad cows?","LaVacaLocaMenu"){ BannerImagePath = "stores\\vacaloca.png" },
-            new DriveThru(new Vector3(145.3499f, -1460.568f, 28.71129f), 49.75111f,  "Lucky Plucker", "Come be a real Lucky Plucker","LuckyPluckerMenu") { BannerImagePath = "stores\\luckyplucker.png" },
-            new DriveThru(new Vector3(1256.509f, -357.1387f, 68.52029f), 347.8622f, "Horny's Burgers", "The beef with the bone!","HornysBurgersMenu"){ BannerImagePath = "stores\\hornys.png" },
+            new DriveThru(new Vector3(15.48935f, -1595.832f, 29.28254f), 319.2816f, "The Taco Farmer", "Open All Hours!","TacoFarmerMenu") { OpenTime = 0, CloseTime = 24, BannerImagePath = "stores\\tacofarmer.png" },
+            new DriveThru(new Vector3(-576.9321f, -880.5195f, 25.70123f), 86.01214f, "Lucky Plucker", "Come be a real Lucky Plucker","LuckyPluckerMenu") { OpenTime = 5, CloseTime = 23,BannerImagePath = "stores\\luckyplucker.png",ScannerFilePath = "01_specific_location\\0x14B8A4DB.wav" } ,
+            new DriveThru(new Vector3(2591.213f, 478.8892f, 108.6423f), 270.9569f, "Bishop's Chicken", "Our chicken is a religious experience","BishopsChickenMenu") { OpenTime = 5, CloseTime = 23,BannerImagePath = "stores\\bishops.png" },
+            new DriveThru(new Vector3(144.34f, -1541.275f, 28.36799f), 139.819f, "La Vaca Loca", "Whats wrong with a few mad cows?","LaVacaLocaMenu"){ OpenTime = 5, CloseTime = 23,BannerImagePath = "stores\\vacaloca.png" },
+            new DriveThru(new Vector3(145.3499f, -1460.568f, 28.71129f), 49.75111f,  "Lucky Plucker", "Come be a real Lucky Plucker","LuckyPluckerMenu") { OpenTime = 5, CloseTime = 23,BannerImagePath = "stores\\luckyplucker.png" },
+            new DriveThru(new Vector3(1256.509f, -357.1387f, 68.52029f), 347.8622f, "Horny's Burgers", "The beef with the bone!","HornysBurgersMenu"){ OpenTime = 5, CloseTime = 23, BannerImagePath = "stores\\hornys.png" },
 
         };
     }
@@ -1495,17 +1495,17 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(-1814.037f, -1213.353f, 13.01751f), 43.14338f, "Sharkies Bites","Take A Bite Today!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood){ IsWalkup = true },
             new Restaurant(new Vector3(-1342.607f, -872.2929f, 16.87064f), 312.7196f, "Giovanni's Italian", "There are no pocket monsters here","PizzaMenu", FoodType.Italian | FoodType.Pizza),
             //Burger
-            new Restaurant(new Vector3(-1535.117f, -454.0615f, 35.92439f), 319.1095f, "Wigwam", "No need for reservations","WigwamMenu", FoodType.Burger | FoodType.FastFood) {BannerImagePath = "stores\\wigwam.png"},
-            new Restaurant(new Vector3(-860.8414f, -1140.393f, 7.39234f), 171.7175f, "Wigwam", "No need for reservations","WigwamMenu", FoodType.Burger | FoodType.FastFood) { BannerImagePath = "stores\\wigwam.png",ScannerFilePath = "01_specific_location\\0x15151AB5.wav" },
+            new Restaurant(new Vector3(-1535.117f, -454.0615f, 35.92439f), 319.1095f, "Wigwam", "No need for reservations","WigwamMenu", FoodType.Burger | FoodType.FastFood) { OpenTime = 5, CloseTime = 23,BannerImagePath = "stores\\wigwam.png"},
+            new Restaurant(new Vector3(-860.8414f, -1140.393f, 7.39234f), 171.7175f, "Wigwam", "No need for reservations","WigwamMenu", FoodType.Burger | FoodType.FastFood) { OpenTime = 5, CloseTime = 23,BannerImagePath = "stores\\wigwam.png",ScannerFilePath = "01_specific_location\\0x15151AB5.wav" },
             new Restaurant(new Vector3(-1540.86f, -454.866f, 40.51906f), 321.1314f, "Up-N-Atom", "Never Frozen, Often Microwaved","UpNAtomMenu", FoodType.Burger | FoodType.FastFood) {OpenTime = 0, CloseTime = 24,BannerImagePath = "stores\\upnatom.png"},
             new Restaurant(new Vector3(81.31124f, 275.1125f, 110.2102f), 162.7602f, "Up-N-Atom", "Never Frozen, Often Microwaved","UpNAtomMenu", FoodType.Burger | FoodType.FastFood) {OpenTime = 0, CloseTime = 24,BannerImagePath = "stores\\upnatom.png"},
             new Restaurant(new Vector3(1591.054f, 6451.071f, 25.31714f), 158.0088f, "Up-N-Atom Diner", "Never Frozen, Often Microwaved","UpNAtomMenu", FoodType.Burger | FoodType.FastFood) {OpenTime = 0, CloseTime = 24,BannerImagePath = "stores\\upnatom.png", ScannerFilePath = "01_specific_location\\0x035776E6.wav"},
-            new Restaurant(new Vector3(-1183.638f, -884.3126f, 13.79987f), 303.1936f, "Burger Shot", "Kill your hunger! It's bleedin' tasty","BurgerShotMenu", FoodType.Burger | FoodType.FastFood) { BannerImagePath = "stores\\burgershot.png", ScannerFilePath = "01_specific_location\\0x14C89994.wav" },
-            new Restaurant(new Vector3(-1687.276f, -1091.789f, 13.15192f), 132.5498f, "Burger Shot", "Kill your hunger! It's bleedin' tasty","BurgerShotMenu", FoodType.Burger | FoodType.FastFood) { BannerImagePath = "stores\\burgershot.png", },
-            new Restaurant(new Vector3(1241.453f, -366.7538f, 69.08221f), 164.3345f, "Horny's Burgers", "The beef with the bone!","HornysBurgersMenu", FoodType.Burger | FoodType.FastFood){ BannerImagePath = "stores\\hornys.png" },
+            new Restaurant(new Vector3(-1183.638f, -884.3126f, 13.79987f), 303.1936f, "Burger Shot", "Kill your hunger! It's bleedin' tasty","BurgerShotMenu", FoodType.Burger | FoodType.FastFood) { OpenTime = 5, CloseTime = 23,BannerImagePath = "stores\\burgershot.png", ScannerFilePath = "01_specific_location\\0x14C89994.wav" },
+            new Restaurant(new Vector3(-1687.276f, -1091.789f, 13.15192f), 132.5498f, "Burger Shot", "Kill your hunger! It's bleedin' tasty","BurgerShotMenu", FoodType.Burger | FoodType.FastFood) { OpenTime = 5, CloseTime = 23,BannerImagePath = "stores\\burgershot.png", },
+            new Restaurant(new Vector3(1241.453f, -366.7538f, 69.08221f), 164.3345f, "Horny's Burgers", "The beef with the bone!","HornysBurgersMenu", FoodType.Burger | FoodType.FastFood){ OpenTime = 5, CloseTime = 23,BannerImagePath = "stores\\hornys.png" },
             new Restaurant(new Vector3(-512.6821f, -683.3517f, 33.18555f), 3.720508f, "Snr. Buns", "Don't be a chump, taste our rump!","SnrBunsMenu", FoodType.Burger | FoodType.FastFood) {ScannerFilePath = "01_specific_location\\0x19532EA2.wav" },
             new Restaurant(new Vector3(-526.9481f, -679.6907f, 33.67113f), 35.17997f, "Snr. Muffin", "Don't be a chump, taste our rump!","SnrBunsMenu", FoodType.Burger | FoodType.FastFood),//??? 
-            new Restaurant(new Vector3(125.9558f, -1537.896f, 29.1772f), 142.693f, "La Vaca Loca", "Whats wrong with a few mad cows?","LaVacaLocaMenu", FoodType.Burger) { BannerImagePath = "stores\\vacaloca.png", CameraPosition = new Vector3(137.813f, -1561.211f, 37.43506f), CameraDirection = new Vector3(-0.1290266f, 0.9696004f, -0.2079113f), CameraRotation = new Rotator(-11.99998f, -2.182118E-07f, 7.579925f) },
+            new Restaurant(new Vector3(125.9558f, -1537.896f, 29.1772f), 142.693f, "La Vaca Loca", "Whats wrong with a few mad cows?","LaVacaLocaMenu", FoodType.Burger) {OpenTime = 5, CloseTime = 23, BannerImagePath = "stores\\vacaloca.png", CameraPosition = new Vector3(137.813f, -1561.211f, 37.43506f), CameraDirection = new Vector3(-0.1290266f, 0.9696004f, -0.2079113f), CameraRotation = new Rotator(-11.99998f, -2.182118E-07f, 7.579925f) },
             new Restaurant(new Vector3(-241.8231f, 279.747f, 92.04223f), 177.4421f, "Spitroasters Meathouse", "Come One, Come All","BeefyBillsMenu", FoodType.Burger),
 
             //Coffee
@@ -1554,9 +1554,9 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(-1689.895f, -1076.626f, 13.15219f), 52.58161f, "Cream Pie", "I just love getting creampied!","IceCreamMenu", FoodType.Dessert),
             new Restaurant(new Vector3(-1698.04f, -1105.689f, 13.15277f), 326.1168f, "The Cherry Popper", "You'll always remember your first","CherryPopperMenu", FoodType.Dessert),
             //Bagels&Donuts
-            new Restaurant(new Vector3(-1318.507f, -282.2458f, 39.98732f), 115.4663f, "Dickies Bagels", "Holy Dick!","CoffeeMenu", FoodType.Bagels),
-            new Restaurant(new Vector3(-1204.364f, -1146.246f, 7.699615f), 109.2444f, "Dickies Bagels", "Holy Dick!","CoffeeMenu", FoodType.Bagels),
-            new Restaurant(new Vector3(354.0957f, -1028.134f, 29.33102f), 182.3497f, "Rusty Brown's", "Ring lickin' good!","RustyBrownsMenu", FoodType.Bagels | FoodType.Donut) {BannerImagePath = "stores\\rustybrowns.png" },
+            new Restaurant(new Vector3(-1318.507f, -282.2458f, 39.98732f), 115.4663f, "Dickies Bagels", "Holy Dick!","CoffeeMenu", FoodType.Bagels) { OpenTime = 4, CloseTime = 20,},
+            new Restaurant(new Vector3(-1204.364f, -1146.246f, 7.699615f), 109.2444f, "Dickies Bagels", "Holy Dick!","CoffeeMenu", FoodType.Bagels) { OpenTime = 4, CloseTime = 20,},
+            new Restaurant(new Vector3(354.0957f, -1028.134f, 29.33102f), 182.3497f, "Rusty Brown's", "Ring lickin' good!","RustyBrownsMenu", FoodType.Bagels | FoodType.Donut) { OpenTime = 4, CloseTime = 20,BannerImagePath = "stores\\rustybrowns.png" },
 
             //Juice and Smoothies
             new Restaurant(new Vector3(-1137.926f, -1624.695f, 4.410712f), 127.6497f, "Seaside Juice", "Allegedly healthy!","FruitMenu", FoodType.Smoothies) { FullName = "Vitamin Seaside Juice Bar" },
@@ -1569,13 +1569,13 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(1791.592f, 4594.844f, 37.68291f), 182.8134f, "Alamo Fruit", "You'll remember our fruit!","FruitMenu", FoodType.Smoothies),
             new Restaurant(new Vector3(1199.951f, -501.2592f, 65.17791f), 113.7728f, "Squeeze One Out", "Always time for a quickie","FruitMenu", FoodType.Smoothies),
             //Chicken
-            new Restaurant(new Vector3(-584.761f, -872.753f, 25.91489f), 353.0746f, "Lucky Plucker", "Come be a real Lucky Plucker","LuckyPluckerMenu", FoodType.Chicken | FoodType.FastFood) {ScannerFilePath = "01_specific_location\\0x14B8A4DB.wav", BannerImagePath = "stores\\luckyplucker.png" },
-            new Restaurant(new Vector3(2580.543f, 464.6521f, 108.6232f), 176.5548f, "Bishop's Chicken", "Our chicken is a religious experience","BishopsChickenMenu", FoodType.Chicken | FoodType.FastFood){ BannerImagePath = "stores\\bishops.png" },
-            new Restaurant(new Vector3(169.3292f, -1634.163f, 29.29167f), 35.89598f, "Bishop's Chicken", "Our chicken is a religious experience","BishopsChickenMenu", FoodType.Chicken | FoodType.FastFood){ BannerImagePath = "stores\\bishops.png" },
-            new Restaurant(new Vector3(133.0175f, -1462.702f, 29.35705f), 48.47223f, "Lucky Plucker", "Come be a real Lucky Plucker","LuckyPluckerMenu", FoodType.Chicken | FoodType.FastFood){ BannerImagePath = "stores\\luckyplucker.png" },
-            new Restaurant(new Vector3(-138.4921f, -256.509f, 43.59497f), 290.1001f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood){ BannerImagePath = "stores\\cluckin.png", },
-            new Restaurant(new Vector3(-184.9376f, -1428.169f, 31.47968f), 33.8636f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood){ BannerImagePath = "stores\\cluckin.png", },
-            new Restaurant(new Vector3(-1681.603f, -1096.505f, 13.15227f), 180.3125f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood) { BannerImagePath = "stores\\cluckin.png", },
+            new Restaurant(new Vector3(-584.761f, -872.753f, 25.91489f), 353.0746f, "Lucky Plucker", "Come be a real Lucky Plucker","LuckyPluckerMenu", FoodType.Chicken | FoodType.FastFood) {OpenTime = 5, CloseTime = 23,ScannerFilePath = "01_specific_location\\0x14B8A4DB.wav", BannerImagePath = "stores\\luckyplucker.png" },
+            new Restaurant(new Vector3(2580.543f, 464.6521f, 108.6232f), 176.5548f, "Bishop's Chicken", "Our chicken is a religious experience","BishopsChickenMenu", FoodType.Chicken | FoodType.FastFood){OpenTime = 5, CloseTime = 23, BannerImagePath = "stores\\bishops.png" },
+            new Restaurant(new Vector3(169.3292f, -1634.163f, 29.29167f), 35.89598f, "Bishop's Chicken", "Our chicken is a religious experience","BishopsChickenMenu", FoodType.Chicken | FoodType.FastFood){ OpenTime = 5, CloseTime = 23,BannerImagePath = "stores\\bishops.png" },
+            new Restaurant(new Vector3(133.0175f, -1462.702f, 29.35705f), 48.47223f, "Lucky Plucker", "Come be a real Lucky Plucker","LuckyPluckerMenu", FoodType.Chicken | FoodType.FastFood){OpenTime = 5, CloseTime = 23, BannerImagePath = "stores\\luckyplucker.png" },
+            new Restaurant(new Vector3(-138.4921f, -256.509f, 43.59497f), 290.1001f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood){OpenTime = 5, CloseTime = 23, BannerImagePath = "stores\\cluckin.png", },
+            new Restaurant(new Vector3(-184.9376f, -1428.169f, 31.47968f), 33.8636f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood){ OpenTime = 5, CloseTime = 23,BannerImagePath = "stores\\cluckin.png", },
+            new Restaurant(new Vector3(-1681.603f, -1096.505f, 13.15227f), 180.3125f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood) { OpenTime = 5, CloseTime = 23,BannerImagePath = "stores\\cluckin.png", },
             //General    
             new Restaurant(new Vector3(-1222.546f, -807.5845f, 16.59777f), 305.3918f, "Lettuce Be", "A real meat free experience","GenericMenu", FoodType.Generic),
             new Restaurant(new Vector3(-1196.705f, -1167.969f, 7.695099f), 108.4535f, "Lettuce Be", "A real meat free experience","GenericMenu", FoodType.Generic),

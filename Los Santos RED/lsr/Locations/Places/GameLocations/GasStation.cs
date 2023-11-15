@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class GasStation : GameLocation
+public class GasStation : GameLocation, IGasPumpable
 {
     public GasStation() : base()
     {

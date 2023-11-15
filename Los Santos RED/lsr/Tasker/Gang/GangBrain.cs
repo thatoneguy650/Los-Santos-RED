@@ -113,7 +113,7 @@ public class GangBrain : PedBrain
                 HighestPriorityOtherCrime = null;
             }
 
-            if (isPlayerGang)
+            if (isPlayerGang || GangMember.IsGroupMember)
             {
                 WillAttackPlayer = false;
                 WillFleeFromPlayer = false;

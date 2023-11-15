@@ -1406,11 +1406,46 @@ public class ActivityManager
             DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Windows.ToggleWindow(0)), "veh@std@ds@enter_exit", "d_close_in_near", 750);
         }
     }
-    public void SetWindowState(int windowID, bool desiredStatus)
+    public void ToggleWindowState(int windowID)
     {
-        if (Player.CurrentVehicle == null || !Player.IsDriver)
+       
+        if (Player.CurrentVehicle == null)
         {
             return;
+        }
+        if (!Player.IsDriver)
+        {
+            if (!CanControlWindowFromSeat(windowID, Player.CurrentSeat))
+            {
+                Game.DisplayHelp("Cannot control window from current seat");
+                return;
+            }
+        }
+        if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
+        {
+            Player.CurrentVehicle?.Windows.ToggleWindow(windowID);
+        }
+        else
+        {
+            DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Windows.ToggleWindow(windowID)), "veh@std@ds@enter_exit", "d_close_in_near", 750);
+        }
+
+
+    }
+
+    public void SetWindowState(int windowID, bool desiredStatus)
+    {
+        if (Player.CurrentVehicle == null)// || (!Player.IsDriver || )
+        {
+            return;
+        }
+        if(!Player.IsDriver)
+        {
+            if(!CanControlWindowFromSeat(windowID, Player.CurrentSeat))
+            {
+                Game.DisplayHelp("Cannot control window from current seat");
+                return;
+            }
         }
         if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
         {
@@ -1421,6 +1456,25 @@ public class ActivityManager
             DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Windows.SetState(windowID, desiredStatus)), "veh@std@ds@enter_exit", "d_close_in_near", 750);
         }
     }
+
+    private bool CanControlWindowFromSeat(int windowID, int seatID)
+    {
+        if (seatID == -1 || seatID == 0)//driver or passenger can control ALL
+        {
+            return true;
+        }
+        else if (seatID == 1)//rear driver
+        {
+            return windowID == 2;
+        }
+        else if (seatID == 2)//rear passenger
+        {
+            return windowID == 3;
+        }
+        return false;
+    }
+
+
     public void ToggleDoorLocks()
     {
         if (Player.CurrentVehicle == null || !Player.IsDriver)

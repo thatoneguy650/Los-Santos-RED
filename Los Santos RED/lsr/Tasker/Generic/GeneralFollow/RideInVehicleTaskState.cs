@@ -78,8 +78,8 @@ class RideInVehicleTaskState : TaskState
             if (!isSetCombat || isSetForce != Player.GroupManager.SetForceTasking)
             {
                // PedGeneral.Pedestrian.BlockPermanentEvents = false;// Player.GroupManager.ForceTasking;
-                //NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(PedGeneral.Pedestrian, 100f, 0);//TR
-                NativeFunction.Natives.CLEAR_PED_TASKS(PedGeneral.Pedestrian);
+                NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(PedGeneral.Pedestrian, 100f, 0);//TR
+                //NativeFunction.Natives.CLEAR_PED_TASKS(PedGeneral.Pedestrian);
 
                 EntryPoint.WriteToConsole("GENERAL FOLLOW RideInVehicleTaskState COMBAT SET");
 
@@ -94,8 +94,8 @@ class RideInVehicleTaskState : TaskState
             {
                 //PedGeneral.Pedestrian.BlockPermanentEvents = Player.GroupManager.SetForceFollow;
                
-                                NativeFunction.Natives.CLEAR_PED_TASKS(PedGeneral.Pedestrian);
-                // NativeFunction.Natives.TASK_PAUSE(PedGeneral.Pedestrian, -1);
+                               // NativeFunction.Natives.CLEAR_PED_TASKS(PedGeneral.Pedestrian);
+                 NativeFunction.Natives.TASK_PAUSE(PedGeneral.Pedestrian, -1);
 
 
                 EntryPoint.WriteToConsole("GENERAL FOLLOW RideInVehicleTaskState PAUSE SET");

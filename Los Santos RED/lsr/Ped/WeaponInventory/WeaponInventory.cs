@@ -561,6 +561,37 @@ public class WeaponInventory
         DebugWeaponState = "Set Unarmed";
         GameTimeLastWeaponCheck = Game.GameTime;    
     }
+    public void SetSimpleUnarmed()
+    {
+        if(!WeaponOwner.Pedestrian.Exists() || !WeaponOwner.Pedestrian.IsAlive)
+        {
+            return;
+        }
+        GetCurrentWeapon();
+        if (CurrentWeapon != UnarmedHash)
+        {
+            NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, UnarmedHash, true);
+            NativeFunction.Natives.SET_PED_CAN_SWITCH_WEAPON(WeaponOwner.Pedestrian, false);
+        }
+        NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(WeaponOwner.Pedestrian, (int)eCombat_Attribute.CA_DO_DRIVEBYS, true);
+    }
+    public void SetSimpleArmed()
+    {
+        if (!WeaponOwner.Pedestrian.Exists() || !WeaponOwner.Pedestrian.IsAlive)
+        {
+            return;
+        }
+        EntryPoint.WriteToConsole("SetSimpleArmed");
+        uint bestWeapon = NativeFunction.Natives.GET_BEST_PED_WEAPON<uint>(WeaponOwner.Pedestrian);
+        uint currentWeapon;
+        NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(WeaponOwner.Pedestrian, out currentWeapon, true);
+        if (currentWeapon != bestWeapon)
+        {
+            NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, bestWeapon, true);
+        }
+        NativeFunction.Natives.SET_PED_CAN_SWITCH_WEAPON(WeaponOwner.Pedestrian, true);
+        NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(WeaponOwner.Pedestrian, (int)eCombat_Attribute.CA_DO_DRIVEBYS, true);
+    }
     public void SetCompletelyUnarmed()
     {
         if(!WeaponOwner.Pedestrian.Exists() || !WeaponOwner.Pedestrian.IsAlive)

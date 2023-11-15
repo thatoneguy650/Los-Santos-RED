@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class ConvenienceStore : GameLocation
+public class ConvenienceStore : GameLocation, IGasPumpable
 {
     public ConvenienceStore() : base()
     {
@@ -19,6 +19,7 @@ public class ConvenienceStore : GameLocation
     public override string TypeName { get; set; } = "Convenience Store";
     public override int MapIcon { get; set; } = (int)BlipSprite.CriminalHoldups;
     public override string ButtonPromptText { get; set; }
+    public int PricePerGallon { get; set; } = 3;
     public ConvenienceStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;

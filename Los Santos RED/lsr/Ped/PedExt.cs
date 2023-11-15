@@ -1376,11 +1376,22 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         {
             GameTimeLastTooCloseToPlayer = Game.GameTime;
         }
-        if(Game.GameTime - GameTimeLastTooCloseToPlayer >= 5000)
+        if (Game.GameTime - GameTimeLastTooCloseToPlayer >= 5000)
+        {
+            OnStandingTooClose(player);
+        }
+        if (Game.GameTime - GameTimeLastTooCloseToPlayer >= 8000)
         {
             GameTimeLastTooCloseToPlayer = Game.GameTime;
             OnStoodTooClose(player);
         }
+    }
+    public virtual void OnStandingTooClose(IInteractionable player)
+    {
+        //AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "Harassment"), player.Character.Position);
+        PlaySpeech(new List<string>() { "GENERIC_SHOCKED_HIGH", "GENERIC_FRUSTRATED_HIGH", "GET_OUT_OF_HERE" }, false, false);
+        EntryPoint.WriteToConsole("The target will warn your for harassing");
+        Game.DisplayHelp("You are crowding someone. Back off to avoid issues");
     }
     public virtual void OnStoodTooClose(IInteractionable player)
     {

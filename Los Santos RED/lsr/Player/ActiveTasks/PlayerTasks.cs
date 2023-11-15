@@ -146,6 +146,7 @@ public class PlayerTasks
                 LastContactTask.Add(myTask);
             }
         }
+        Player.CellPhone.ClearPendingTexts(phoneContact);
         PlayerTaskList.RemoveAll(x => x.ContactName == phoneContact.Name);
     }
     public void FailTask(PhoneContact phoneContact)
@@ -171,6 +172,7 @@ public class PlayerTasks
             LastContactTask.RemoveAll(x => x.ContactName == phoneContact.Name);
             LastContactTask.Add(myTask);
         }
+        Player.CellPhone.ClearPendingTexts(phoneContact);
         PlayerTaskList.RemoveAll(x => x.ContactName == phoneContact.Name);
     }
     public bool HasTask(string contactName)
