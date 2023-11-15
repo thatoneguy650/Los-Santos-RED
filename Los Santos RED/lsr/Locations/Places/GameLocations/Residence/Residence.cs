@@ -2,6 +2,7 @@
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
+using Microsoft.VisualBasic;
 using Rage;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
@@ -29,13 +30,12 @@ public class Residence : GameLocation, ILocationSetupable
     private IActivityPerformable ActivityPerformable;
     private UIMenuItem RentStopItem;
     private UIMenuItem SellHouseItem;
+    private bool HasTeleported = false;
 
     private string IsRentedDescription => $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~";
     private string IsRentedRightLabel => Time == null ? $"Due Date: {DateRentalPaymentDue}" : "Remaining Days: " + Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0).ToString();
     private string CanRentRightLabel => $"{RentalFee:C0} for {RentalDays} days";
     private string CanPurchaseRightLabel => $"{PurchasePrice:C0}";
-    //public override string MapIconColorString => IsOwned ? "Green" : IsRented ? "Yellow": "White";
-    //public override Color MapIconColor => Color.FromName(IsOwned ? "Green" : IsRented ? "Yellow" : "White");
     public Residence() : base()
     {
 
@@ -54,7 +54,6 @@ public class Residence : GameLocation, ILocationSetupable
     public WeaponStorage WeaponStorage { get; set; }
     [XmlIgnore]
     public CashStorage CashStorage { get; set; }
-
     public bool CanRent => !IsOwned && !IsRented && RentalFee > 0;
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
     public bool IsOwnedOrRented => IsOwned || IsRented;
@@ -62,16 +61,39 @@ public class Residence : GameLocation, ILocationSetupable
     public int RentalFee { get; set; }
     public int PurchasePrice { get; set; }
     public int SalesPrice { get; set; }
+    public bool HasHeaderApartmentBuilding { get; set; } = false;
     public override string TypeName => IsOwnedOrRented ? "Residence" : "For Sale/Rental";
     public override int MapIcon { get; set; } = (int)BlipSprite.PropertyForSale;
     public override string ButtonPromptText { get; set; }
     public override int SortOrder => IsOwnedOrRented ? 1 : 999;
+    public override bool ShowInteractPrompt => CanInteract && !HasHeaderApartmentBuilding;
+
+
+    public override bool IsBlipEnabled => base.IsBlipEnabled && !HasHeaderApartmentBuilding;
 
     public Residence(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         ButtonPromptText = GetButtonPromptText();
         OpenTime = 0;
         CloseTime = 24;
+    }
+    public void OnInteractFromMainBuilding(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, LocationCamera storeCamera)
+    {
+        Player = player;
+        ModItems = modItems;
+        World = world;
+        Settings = settings;
+        Weapons = weapons;
+        Time = time;
+        if (IsLocationClosed())
+        {
+            return;
+        }
+        if (!CanInteract)
+        {
+            return;
+        }
+        DoInteract(storeCamera);
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
@@ -89,17 +111,55 @@ public class Residence : GameLocation, ILocationSetupable
         {
             return;
         }
+        DoInteract(null);
+    }
+    private void DoInteract(LocationCamera locationCamera)
+    {
+        if (Interior != null && Interior.IsTeleportEntry && IsOwnedOrRented)
+        {
+            HandleTeleportEntry(locationCamera);
+        }
+        else
+        {
+            StandardInteract(false, locationCamera);
+        }
+    }
+
+    private void HandleTeleportEntry(LocationCamera locationCamera)
+    {
+        if (Interior != null && Interior.IsTeleportEntry && IsOwnedOrRented)
+        {
+            LocationTeleporter locationTeleporter = new LocationTeleporter(Player, this, Settings);
+            locationTeleporter.Teleport(locationCamera);
+        }
+    }
+    public override void StandardInteract(bool isInside, LocationCamera locationCamera)
+    {
         Player.ActivityManager.IsInteractingWithLocation = true;
         CanInteract = false;
         Player.IsTransacting = true;
-
+        HasTeleported = false;
         GameFiber.StartNew(delegate
         {
             try
             {
-                StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
-                StoreCamera.SayGreeting = false;
-                StoreCamera.Setup();
+                if(locationCamera == null)
+                {
+                    StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam || isInside);
+                    StoreCamera.SayGreeting = false;
+                    if (isInside && Interior != null)
+                    {
+                        StoreCamera.IsInterior = true;
+                        StoreCamera.Interior = Interior;
+                    }
+                    StoreCamera.Setup();
+                    EntryPoint.WriteToConsole("RESIDENCE STORE CAM RAN");
+                }
+                else
+                {
+                    StoreCamera = locationCamera;
+                    EntryPoint.WriteToConsole("RESIDENCE STORE CAM GOT PASSED IN");
+                }
                 CreateInteractionMenu();
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
@@ -113,12 +173,17 @@ public class Residence : GameLocation, ILocationSetupable
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();
                 }
-                //EntryPoint.WriteToConsole($"PLAYER EVENT: RESIDENCE LOOP CLOSING IsAnyMenuVisible {IsAnyMenuVisible} Time.IsFastForwarding {Time.IsFastForwarding}");
-                DisposeInteractionMenu();
-                StoreCamera.Dispose();
+
+                    //EntryPoint.WriteToConsole($"PLAYER EVENT: RESIDENCE LOOP CLOSING IsAnyMenuVisible {IsAnyMenuVisible} Time.IsFastForwarding {Time.IsFastForwarding}");
+                    DisposeInteractionMenu();
+                if (!HasTeleported)
+                {
+                    StoreCamera.Dispose();
+                }
                 Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
                 Player.IsTransacting = false;
+                
             }
             catch (Exception ex)
             {
@@ -126,7 +191,6 @@ public class Residence : GameLocation, ILocationSetupable
                 EntryPoint.ModController.CrashUnload();
             }
         }, "ResidenceInteract");
-        
     }
     public void RefreshUI()
     {
@@ -186,62 +250,64 @@ public class Residence : GameLocation, ILocationSetupable
     }
     private void GenerateResidenceMenu()
     {
-        if(!IsOwned || !IsRented)
+        InteractionMenu.Clear();
+        AddInquireItems();
+        AddInteractionItems();
+    }
+    private void AddInquireItems()
+    {
+        if ((!IsOwned && CanBuy) || (!IsRented && CanRent))
         {
-            if ((!IsOwned && CanBuy) || (!IsRented && CanRent))
+            OfferSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Make an Offer");
+            string offerDescription = "";
+            if (CanBuy)
             {
-                OfferSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Make an Offer");
-                string offerDescription = "";
-                if (CanBuy)
+                offerDescription += "buy ";
+            }
+            if (CanRent)
+            {
+                if (offerDescription != "")
                 {
-                    offerDescription += "buy ";
+                    offerDescription += "or ";
                 }
-                if (CanRent)
+                offerDescription += "rent ";
+            }
+            InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = $"Select to {offerDescription.Trim()}";
+            InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Lock;
+            if (HasBannerImage)
+            {
+                BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
+                OfferSubMenu.SetBannerType(BannerImage);
+            }
+            if (!HasBannerImage)
+            {
+                OfferSubMenu.SetBannerType(EntryPoint.LSRedColor);
+            }
+            PurchaseResidenceMenuItem = new UIMenuItem("Purchase", "Select to purchase this residence") { RightLabel = CanPurchaseRightLabel };
+            if (CanBuy)
+            {
+                PurchaseResidenceMenuItem.Activated += (sender, e) =>
                 {
-                    if (offerDescription != "")
+                    if (Purchase())
                     {
-                        offerDescription += "or ";
+                        OnRentedOrPurchased();
                     }
-                    offerDescription += "rent ";
-                }
-                InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = $"Select to {offerDescription.Trim()}";
-                InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Lock;
-                if (HasBannerImage)
+                };
+                OfferSubMenu.AddItem(PurchaseResidenceMenuItem);
+            }
+            RentResidenceMenuItem = new UIMenuItem("Rent", $"Select to rent this residence for {RentalDays} days") { RightLabel = CanRentRightLabel };
+            if (CanRent)
+            {
+                RentResidenceMenuItem.Activated += (sender, e) =>
                 {
-                    BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
-                    OfferSubMenu.SetBannerType(BannerImage);
-                }
-                if (!HasBannerImage)
-                {
-                    OfferSubMenu.SetBannerType(EntryPoint.LSRedColor);
-                }
-                PurchaseResidenceMenuItem = new UIMenuItem("Purchase", "Select to purchase this residence") { RightLabel = CanPurchaseRightLabel };
-                if (CanBuy)
-                {
-                    PurchaseResidenceMenuItem.Activated += (sender, e) =>
+                    if (Rent())
                     {
-                        if (Purchase())
-                        {
-                            MenuPool.CloseAllMenus();
-                        }
-                    };
-                    OfferSubMenu.AddItem(PurchaseResidenceMenuItem);
-                }
-                RentResidenceMenuItem = new UIMenuItem("Rent", $"Select to rent this residence for {RentalDays} days") { RightLabel = CanRentRightLabel };
-                if (CanRent)
-                {
-                    RentResidenceMenuItem.Activated += (sender, e) =>
-                    {
-                        if (Rent())
-                        {
-                            MenuPool.CloseAllMenus();
-                        }
-                    };
-                    OfferSubMenu.AddItem(RentResidenceMenuItem);
-                }
+                        OnRentedOrPurchased();
+                    }
+                };
+                OfferSubMenu.AddItem(RentResidenceMenuItem);
             }
         }
-        AddInteractionItems();
     }
     private void AddInteractionItems()
     {
@@ -287,12 +353,23 @@ public class Residence : GameLocation, ILocationSetupable
         UpdateStoredCash();
         UpdateConsumableItems();
     }
-
+    private void OnRentedOrPurchased()
+    {
+        if (Interior != null && Interior.IsTeleportEntry)
+        {
+            HandleTeleportEntry(StoreCamera);
+            HasTeleported = true;
+            MenuPool.CloseAllMenus();
+        }
+        else
+        {
+            GenerateResidenceMenu();
+        }
+    }
     private void UpdateConsumableItems()
     {
         //Player.Inventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu);
     }
-
     private void SellHouse()
     {
         OnSold();

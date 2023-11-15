@@ -140,6 +140,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankDrawer.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\IGasPumpable.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Machines\CashRegister.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Residence\ApartmentBuilding.cs" />
     <Compile Include="lsr\Locations\Places\VehicleItemMakeAndCategories.cs" />
     <Compile Include="lsr\Other\NativeMemory.cs" />
     <Compile Include="lsr\Ped\Service\TaxiDriver.cs" />
@@ -606,7 +607,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\LiquorStore.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\PawnShop.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Pharmacy.cs" />
-    <Compile Include="lsr\Locations\Places\GameLocations\Residence.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Residence\Residence.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Restaurant.cs" />
     <Compile Include="lsr\Camera\LocationCamera.cs" />
     <Compile Include="lsr\Old\PurchaseMenu_Old.cs" />

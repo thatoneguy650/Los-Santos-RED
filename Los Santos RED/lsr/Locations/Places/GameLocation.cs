@@ -221,6 +221,7 @@ public class GameLocation : ILocationDispatchable
     public bool HasInterior => InteriorID != -1;
     public bool HasBannerImage => BannerImagePath != "";
     public Interior Interior => interior;
+    public virtual bool ShowInteractPrompt => CanInteract;
     public virtual void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
 
@@ -461,6 +462,10 @@ public class GameLocation : ILocationDispatchable
         NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, header, message);
     }
     public virtual void Reset()
+    {
+
+    }
+    public virtual void StandardInteract(bool isInside, LocationCamera locationCamera)
     {
 
     }

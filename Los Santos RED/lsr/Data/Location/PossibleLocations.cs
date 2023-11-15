@@ -16,6 +16,7 @@ public class PossibleLocations
     public List<GangDen> GangDens { get; private set; } = new List<GangDen>();
     public List<GunStore> GunStores { get; private set; } = new List<GunStore>();
     public List<Hotel> Hotels { get; private set; } = new List<Hotel>();
+    public List<ApartmentBuilding> ApartmentBuildings { get; private set; } = new List<ApartmentBuilding>();
     public List<Residence> Residences { get; private set; } = new List<Residence>();
     public List<CityHall> CityHalls { get; private set; } = new List<CityHall>();
     public List<VendingMachine> VendingMachines { get; private set; } = new List<VendingMachine>();
@@ -72,6 +73,7 @@ public class PossibleLocations
         AllLocations.AddRange(GunStores);
         AllLocations.AddRange(Hotels);
         AllLocations.AddRange(Residences);
+        AllLocations.AddRange(ApartmentBuildings);
         AllLocations.AddRange(CityHalls);
         AllLocations.AddRange(VendingMachines);
         AllLocations.AddRange(Restaurants);
@@ -107,6 +109,7 @@ public class PossibleLocations
         AllLocations.AddRange(BeautyShops);
         AllLocations.AddRange(Hotels);
         AllLocations.AddRange(Residences);
+        AllLocations.AddRange(ApartmentBuildings);
         AllLocations.AddRange(Restaurants);
         AllLocations.AddRange(Pharmacies);
         AllLocations.AddRange(Dispensaries);

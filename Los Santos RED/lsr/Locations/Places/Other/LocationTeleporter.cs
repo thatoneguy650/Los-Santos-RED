@@ -13,6 +13,7 @@ public class LocationTeleporter
     private GameLocation InteractableLocation;
     private ISettingsProvideable Settings;
     public bool IsInside { get; private set; }
+
     public LocationTeleporter(ILocationInteractable player, GameLocation interactableLocation, ISettingsProvideable settings)
     {
         Player = player;
@@ -20,7 +21,7 @@ public class LocationTeleporter
         Settings = settings;
     }
 
-    public void Teleport()
+    public void Teleport(LocationCamera locationCamera)
     {
         if(InteractableLocation.Interior != null && InteractableLocation.Interior.IsTeleportEntry)
         {
@@ -28,6 +29,8 @@ public class LocationTeleporter
             Player.Character.Position = InteractableLocation.Interior.InteriorEgressPosition;
             Player.Character.Heading = InteractableLocation.Interior.InteriorEgressHeading;
             IsInside = true;
+            locationCamera?.StopImmediately();
+            GameFiber.Sleep(1000);
             Game.FadeScreenIn(1500, true);
             UpdateInside();
         }
@@ -61,37 +64,49 @@ public class LocationTeleporter
     {
         if (IsInside)
         {
-            //GameFiber CameraWatcher = GameFiber.StartNew(delegate
-            //{
-            //    while (IsInside)
-            //    {
-            if (Player.Character.DistanceTo(InteractableLocation.Interior.InteriorEgressPosition) <= 3f)
+            if (InteractableLocation.CanInteract && Player.Character.DistanceTo(InteractableLocation.Interior.InteriorEgressPosition) <= 3f)
             {
-                Player.ButtonPrompts.AddPrompt("ExitTeleport", "Exit", "ExitTeleport", Settings.SettingsManager.KeySettings.InteractStart, 999);
+                Player.ButtonPrompts.AddPrompt("ExitTeleport", "Exit", "ExitTeleport", Settings.SettingsManager.KeySettings.InteractCancel, 999);
             }
             else
             {
                 Player.ButtonPrompts.RemovePrompts("ExitTeleport");
             }
+
+            if (InteractableLocation.CanInteract && InteractableLocation.Interior.StandardInteractLocation != Vector3.Zero && Player.Character.DistanceTo(InteractableLocation.Interior.StandardInteractLocation) <= 3f)
+            {
+                Player.ButtonPrompts.AddPrompt("InteractInteriorLocation", "Interact", "InteractInteriorLocation", Settings.SettingsManager.KeySettings.InteractStart, 999);
+            }
+            else
+            {
+                Player.ButtonPrompts.RemovePrompts("InteractInteriorLocation");
+            }
+
+
             if (Player.ButtonPrompts.IsPressed("ExitTeleport"))
             {
                 Exit();
             }
-            //        GameFiber.Yield();
-            //    }
-            //    Exit();
-            //}, "CameraWatcher");
+            if (Player.ButtonPrompts.IsPressed("InteractInteriorLocation"))
+            {
+                Player.ButtonPrompts.RemovePrompts("ExitTeleport");
+                Player.ButtonPrompts.RemovePrompts("InteractInteriorLocation");
+                InteractableLocation.StandardInteract(true, null);
+            }
         }
     }
     public void Exit()
     {
         Player.ButtonPrompts.RemovePrompts("ExitTeleport");
+        Player.ButtonPrompts.RemovePrompts("InteractInteriorLocation");
+        IsInside = false;
         if (InteractableLocation != null)
         {
             Game.FadeScreenOut(1500, true);
             Player.Character.Position = InteractableLocation.EntrancePosition;
             Player.Character.Heading = InteractableLocation.EntranceHeading;
-            IsInside = false;
+
+            GameFiber.Sleep(1000);
             Game.FadeScreenIn(1500, true);
         }
     }

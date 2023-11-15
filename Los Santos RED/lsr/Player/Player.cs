@@ -2315,7 +2315,7 @@ namespace Mod
                 ClosestDistance = 999f;
                 foreach (GameLocation gl in World.Places.ActiveLocations)// PlacesOfInterest.GetAllStores())
                 {
-                    if (gl.DistanceToPlayer <= 15.0f && gl.CanInteract && !ActivityManager.IsInteractingWithLocation && gl.CanCurrentlyInteract(this))
+                    if (gl.DistanceToPlayer <= 15.0f && gl.ShowInteractPrompt && !ActivityManager.IsInteractingWithLocation && gl.CanCurrentlyInteract(this))
                     {
                         float liveDistance = gl.EntrancePosition.DistanceTo2D(Position);
                         if (liveDistance <= 4.0f && gl.DistanceToPlayer < ClosestDistance)

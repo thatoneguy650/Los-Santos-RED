@@ -44,6 +44,9 @@ public class LocationCamera
 
     public bool StaysInVehicle { get; set; } = false;
     public bool NoEntryCam { get; set; } = false;
+    public Interior Interior { get; set; }
+    public bool IsInterior { get; set; } = false;
+
     public LocationCamera(GameLocation store, ILocationInteractable player, ISettingsProvideable settings, bool noEntryCam)
     {
         Store = store;
@@ -89,8 +92,7 @@ public class LocationCamera
         if (isHighlightingLocation)
         {
             Game.FadeScreenOut(1500, true);
-            NativeFunction.Natives.CLEAR_FOCUS();
-            
+            NativeFunction.Natives.CLEAR_FOCUS();     
             ReturnToGameplay();
             Game.FadeScreenIn(1500, true);
             DoExitCam();
@@ -364,7 +366,27 @@ public class LocationCamera
         {
             StoreCam = new Camera(false);
         }
-        if (Store.HasCustomCamera && !ForceRegularCamera)
+        if(IsInterior && Interior != null)
+        {
+            if(Interior.StandardInteractCameraPosition != Vector3.Zero)
+            {
+                StoreCam.Position = Interior.StandardInteractCameraPosition;
+                StoreCam.Rotation = Interior.StandardInteractCameraRotation;
+                StoreCam.Direction = Interior.StandardInteractCameraDirection;
+            }
+            else
+            {
+                float distanceAway = 3f;
+                float distanceAbove = 4f;
+                Vector3 InitialCameraPosition = NativeHelper.GetOffsetPosition(Interior.StandardInteractLocation, Interior.StandardInteractHeading + 90f, distanceAway);
+                InitialCameraPosition = new Vector3(InitialCameraPosition.X, InitialCameraPosition.Y, InitialCameraPosition.Z + distanceAbove);
+                StoreCam.Position = InitialCameraPosition;
+                Vector3 ToLookAt = new Vector3(Interior.StandardInteractLocation.X, Interior.StandardInteractLocation.Y, Interior.StandardInteractLocation.Z + 2f);
+                _direction = (ToLookAt - InitialCameraPosition).ToNormalized();
+                StoreCam.Direction = _direction;
+            }
+        }
+        else if (Store.HasCustomCamera && !ForceRegularCamera)
         {
             StoreCam.Position = Store.CameraPosition;
             StoreCam.Rotation = Store.CameraRotation;

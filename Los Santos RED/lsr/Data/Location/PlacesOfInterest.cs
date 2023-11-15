@@ -60,6 +60,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     private List<Morgue> Morgues;
     private List<Airport> Airports;
     private List<BlankLocation> BlankLocationPlaces;
+    private List<ApartmentBuilding> ApartmentBuildings;
 
     public PossibleLocations PossibleLocations { get; private set; }
     public PlacesOfInterest(IShopMenus shopMenus, IGangs gangs)
@@ -195,6 +196,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.GangDens.AddRange(GangDens);
         PossibleLocations.GunStores.AddRange(GunStores);
         PossibleLocations.Hotels.AddRange(Hotels);
+        PossibleLocations.ApartmentBuildings.AddRange(ApartmentBuildings);
         PossibleLocations.Residences.AddRange(Residences);
         PossibleLocations.CityHalls.AddRange(CityHalls);
         PossibleLocations.PoliceStations.AddRange(PoliceStations);
@@ -2084,14 +2086,59 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         Residences = new List<Residence>()
         {
+
+                        //Apartments 
+
+            //new Residence(new Vector3(-773.63f, 313.08f, 85.70f), 180f, "Eclipse Towers Apt 401",""){ InteriorID = -669,OpenTime = 0,CloseTime = 24,RentalFee = 30000, RentalDays = 28,PurchasePrice = 2000000,SalesPrice = 1500000,},
+            new Residence(new Vector3(77.15f, -871.53f, 31.51f), 65f, "Elgin Ave Apt 340",""){ InteriorID = -669,OpenTime = 0,CloseTime = 24,RentalFee = 2150, RentalDays = 28},
+            new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Carcer Way Apt 343",""){ InteriorID = -669,OpenTime = 0,CloseTime = 24,RentalFee = 1950, RentalDays = 28,},
+            new Residence(new Vector3(76.05615f, -86.96131f, 63.00647f), 249.8842f, "1144 Apartment 2B", "") { InteriorID = -669,OpenTime = 0,CloseTime = 24, PurchasePrice = 380000,SalesPrice = 290000, RentalDays = 28, RentalFee = 1660  },
+            new Residence(new Vector3(-37.54279f, 170.3245f, 95.35922f), 303.8834f, "Elgin House Apartment 23E", "") { InteriorID = -669, OpenTime = 0,CloseTime = 24, PurchasePrice = 404000,SalesPrice = 350000, RentalDays = 28, RentalFee = 1650  },
+            new Residence(new Vector3(9.063264f, 52.93087f, 71.64354f), 344.3057f, "0605 Apartment 4F", "") { InteriorID = -669,OpenTime = 0,CloseTime = 24, PurchasePrice = 375000,SalesPrice = 280000, RentalDays = 28, RentalFee = 1570  },
+            new Residence(new Vector3(-780.21f, -784.22f, 27.87f), 85f, "Dream Tower Apt 31",""){ InteriorID = -669,OpenTime = 0,CloseTime = 24,RentalFee = 1550, RentalDays = 28},
+            new Residence(new Vector3(-116.35f, -37.69f, 62.20f), 70f, "Las Lagunas Blvd Apt 21",""){ InteriorID = -669,OpenTime = 0,CloseTime = 24,RentalFee = 1550, RentalDays = 28},
+            new Residence(new Vector3(-766.33f, -917.05f, 21.28f), 270f, "1068 Ginger St. Apt 4",""){ InteriorID = -668,OpenTime = 0,CloseTime = 24,RentalFee = 1450, RentalDays = 28,PurchasePrice = 350000,SalesPrice = 300000,},
+            new Residence(new Vector3(-131.3305f, -1665.597f, 32.56437f), 316.4919f, "20W Strawberry Apt 2", ""){ InteriorID = -667,OpenTime = 0,CloseTime = 24,RentalFee = 1200, RentalDays = 28,},
+            new Residence(new Vector3(-114.5114f, -1660.003f, 32.56433f), 52.34958f, "20W Strawberry Apt 1", ""){ InteriorID = -667,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
+
+
+
+
+
+
+            //Apartment With Matching With Interior
+            new Residence(new Vector3(-59.58021f, -617.4625f, 37.35678f), 69.24533f, "4 Integrity Way, Apt 28",""){
+                InteriorID = -670, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true
+            , CameraPosition = new Vector3(-103.6068f, -621.355f, 61.43004f), CameraDirection = new Vector3(0.9355325f, 0.094497f, -0.3403665f), CameraRotation = new Rotator(-19.89921f, -2.269968E-07f, -84.23219f)},
+
+            new Residence(new Vector3(-59.58021f, -617.4625f, 37.35678f), 69.24533f, "4 Integrity Way, Apt 30",""){
+                InteriorID = -671, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true
+            , CameraPosition = new Vector3(-103.6068f, -621.355f, 61.43004f), CameraDirection = new Vector3(0.9355325f, 0.094497f, -0.3403665f), CameraRotation = new Rotator(-19.89921f, -2.269968E-07f, -84.23219f)},
+
+            new Residence(new Vector3(-1442.846f, -544.5376f, 34.74181f), 213.3763f, "Dell Perro Heights, Apt 4",""){
+                InteriorID = -672, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true },
+
+            new Residence(new Vector3(-1442.846f, -544.5376f, 34.74181f), 213.3763f, "Dell Perro Heights, Apt 7",""){
+                InteriorID = -673, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true },
+
+            new Residence(new Vector3(-773.63f, 313.08f, 85.70f), 180f, "Eclipse Towers, Apt 3",""){
+                InteriorID = -674, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true },
+
+
+            new Residence(new Vector3(-936.8324f, -379.2408f, 38.96133f), 113.6606f, "Richard Majestic, Apt 2",""){
+                InteriorID = -675, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true },
+            //
+            new Residence(new Vector3(-593.1158f, 37.89521f, 43.60775f), 179.0897f, "Tinsel Towers, Apt 42",""){
+                InteriorID = -676, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true },
+
             //NEW
             //Vespucci
-            new Residence(new Vector3(-1035.18f, -1146.53f, 2.16f), 32.45f, "68 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 450000, SalesPrice = 350000, RentalDays = 28, RentalFee = 2400  },
-            new Residence(new Vector3(-960.14f, -1109.21f, 2.15f), 33.94f, "87 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 380000, SalesPrice = 300000,RentalDays = 28, RentalFee = 2000  },
-            new Residence(new Vector3(-951.51f, -1078.93f, 2.15f), 207.97f, "88 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 490000,SalesPrice = 350000, RentalDays = 28, RentalFee = 2500  },
-            new Residence(new Vector3(-1183.19f, -1064.55f, 2.15f), 114.64f, "42 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 400000,SalesPrice = 300000, RentalDays = 28, RentalFee = 2000  },
-            new Residence(new Vector3(-983.25f, -1065.88f, 2.15f), 30.08f, "86 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 440000,SalesPrice = 300000, RentalDays = 28, RentalFee = 2300  },
-            new Residence(new Vector3(-1064.27f, -1159.15f, 2.16f), 31.65f, "65 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 400000,SalesPrice = 300000, RentalDays = 28, RentalFee = 2000  },
+            new Residence(new Vector3(-1035.18f, -1146.53f, 2.16f), 32.45f, "68 Vespucci Canals", "") { OpenTime = 0,CloseTime = 24, PurchasePrice = 450000, SalesPrice = 350000, RentalDays = 28, RentalFee = 2400  },
+            new Residence(new Vector3(-960.14f, -1109.21f, 2.15f), 33.94f, "87 Vespucci Canals", "") { OpenTime = 0,CloseTime = 24, PurchasePrice = 380000, SalesPrice = 300000,RentalDays = 28, RentalFee = 2000  },
+            new Residence(new Vector3(-951.51f, -1078.93f, 2.15f), 207.97f, "88 Vespucci Canals", "") { OpenTime = 0,CloseTime = 24, PurchasePrice = 490000,SalesPrice = 350000, RentalDays = 28, RentalFee = 2500  },
+            new Residence(new Vector3(-1183.19f, -1064.55f, 2.15f), 114.64f, "42 Vespucci Canals", "") { OpenTime = 0,CloseTime = 24, PurchasePrice = 400000,SalesPrice = 300000, RentalDays = 28, RentalFee = 2000  },
+            new Residence(new Vector3(-983.25f, -1065.88f, 2.15f), 30.08f, "86 Vespucci Canals", "") { OpenTime = 0,CloseTime = 24, PurchasePrice = 440000,SalesPrice = 300000, RentalDays = 28, RentalFee = 2300  },
+            new Residence(new Vector3(-1064.27f, -1159.15f, 2.16f), 31.65f, "65 Vespucci Canals", "") { OpenTime = 0,CloseTime = 24, PurchasePrice = 400000,SalesPrice = 300000, RentalDays = 28, RentalFee = 2000  },
             
             //Mirror Park
             new Residence(new Vector3(987.9448f, -525.9558f, 60.69062f), 208.7025f, "114 Nikola Ave", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 390000,SalesPrice = 310000, RentalDays = 28, RentalFee = 2000  },
@@ -2131,9 +2178,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Residence(new Vector3(-407.2561f, 6314.223f, 28.94128f), 230.5133f, "1259N Procopio Dr", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 414000,SalesPrice = 390000, RentalDays = 28, RentalFee = 1870  },
             new Residence(new Vector3(-437.4564f, 6261.807f, 30.06895f), 228.8042f, "1252N Procopio Dr", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 520000,SalesPrice = 410000, RentalDays = 28, RentalFee = 2100  },
             new Residence(new Vector3(1880.423f, 3921.08f, 33.21722f), 100.0703f, "785N Niland Ave", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 224000,SalesPrice = 210000, RentalDays = 28, RentalFee = 1280  },
-            new Residence(new Vector3(-37.54279f, 170.3245f, 95.35922f), 303.8834f, "Elgin House Apartment 23E", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 404000,SalesPrice = 350000, RentalDays = 28, RentalFee = 1650  },
-            new Residence(new Vector3(9.063264f, 52.93087f, 71.64354f), 344.3057f, "0605 Apartment 4F", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 375000,SalesPrice = 280000, RentalDays = 28, RentalFee = 1570  },
-            new Residence(new Vector3(76.05615f, -86.96131f, 63.00647f), 249.8842f, "1144 Apartment 2B", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 380000,SalesPrice = 290000, RentalDays = 28, RentalFee = 1660  },
+
             new Residence(new Vector3(1683.038f, 4689.635f, 43.06602f), 269.7168f, "330E Grapeseed", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 200000,SalesPrice = 150000, RentalFee = 1200, RentalDays = 28,},
             new Residence(new Vector3(1674.201f, 4658.228f, 43.37114f), 270.4372f, "335E Grapeseed", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 200000,SalesPrice = 150000, RentalFee = 1200, RentalDays = 28,},
             new Residence(new Vector3(1725.289f, 4642.35f, 43.87548f), 115.7792f, "340E Grapeseed", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 250000,SalesPrice = 150000, RentalFee = 1350, RentalDays = 28,},
@@ -2150,33 +2195,82 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Residence(new Vector3(114.7368f, -1887.42f, 23.92823f), 333.4948f, "21E Covenant", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 275000,SalesPrice = 180000, RentalFee = 1000, RentalDays = 28,},
             new Residence(new Vector3(54.01227f, -1873.436f, 22.80583f), 128.9813f, "10E Grove Street", ""){OpenTime = 0,CloseTime = 24, PurchasePrice = 225000,SalesPrice = 170000, RentalFee = 1200, RentalDays = 28,},
             new Residence(new Vector3(-5.184085f, -1871.247f, 24.15101f), 317.3572f, "3E Grove St", ""){OpenTime = 0,CloseTime = 24, PurchasePrice = 325000,SalesPrice = 270000, RentalFee = 1500, RentalDays = 28,},
-            new Residence(new Vector3(-131.3305f, -1665.597f, 32.56437f), 316.4919f, "20W Strawberry Apt 2", ""){ OpenTime = 0,CloseTime = 24,RentalFee = 1200, RentalDays = 28,},
-            new Residence(new Vector3(-114.5114f, -1660.003f, 32.56433f), 52.34958f, "20W Strawberry Apt 1", ""){ OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
+
             new Residence(new Vector3(-64.19335f, -1450.097f, 32.52492f), 188.7294f, "280S Forum Dr No 1",""){ OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},//lamar house
             new Residence(new Vector3(863.4708f, -1585.503f, 31.4171f), 89.42107f, "310S Popular Street",""){ OpenTime = 0,CloseTime = 24,RentalFee = 950, RentalDays = 28,},//lamar house
-            new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Carcer Way Apt 343",""){ OpenTime = 0,CloseTime = 24,RentalFee = 1950, RentalDays = 28,},
-
 
             new Residence(new Vector3(-1597.134f, -352.3153f, 45.97645f), 230.207f, "Pacific Buff Manor",""){ OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,},
 
             //from box in discord
-            new Residence(new Vector3(-766.33f, -917.05f, 21.28f), 270f, "1068 Ginger St. Apt 4",""){ OpenTime = 0,CloseTime = 24,RentalFee = 1450, RentalDays = 28,PurchasePrice = 350000,SalesPrice = 300000,},
-            new Residence(new Vector3(-780.21f, -784.22f, 27.87f), 85f, "Dream Tower Apt 31",""){ OpenTime = 0,CloseTime = 24,RentalFee = 1550, RentalDays = 28},
             new Residence(new Vector3(-188.97f, 1008.84f, 232.13f), 87f, "202 Lake Vinewood Estate",""){ OpenTime = 0,CloseTime = 24,RentalFee = 12000, RentalDays = 28,PurchasePrice = 1550000,SalesPrice = 1200000,},
             new Residence(new Vector3(-232.71f, 588.12f, 190.54f), 355f, "3636 Kimble Hill Dr",""){ OpenTime = 0,CloseTime = 24,RentalFee = 9100, RentalDays = 28,PurchasePrice = 1250000,SalesPrice = 900000,},
             new Residence(new Vector3(-700.87f, 649.99f, 155.38f), 350f, "4057 Hillcrest Ave",""){ OpenTime = 0,CloseTime = 24,RentalFee = 8500, RentalDays = 28,PurchasePrice = 1100000,SalesPrice = 980000,},
             new Residence(new Vector3(-1009.54f, 479.05f, 79.60f), 330f, "2125 Cockingend Dr",""){ OpenTime = 0,CloseTime = 24,RentalFee = 14500, RentalDays = 28,PurchasePrice = 1800000,SalesPrice = 1200000,},
-            new Residence(new Vector3(-773.63f, 313.08f, 85.70f), 180f, "Eclipse Towers Apt 401",""){ OpenTime = 0,CloseTime = 24,RentalFee = 30000, RentalDays = 28,PurchasePrice = 2000000,SalesPrice = 1500000,},
-
-
-            new Residence(new Vector3(-116.35f, -37.69f, 62.20f), 70f, "Las Lagunas Blvd Apt 21",""){ OpenTime = 0,CloseTime = 24,RentalFee = 1550, RentalDays = 28},
-            new Residence(new Vector3(77.15f, -871.53f, 31.51f), 65f, "Elgin Ave Apt 340",""){ OpenTime = 0,CloseTime = 24,RentalFee = 2150, RentalDays = 28},
             new Residence(new Vector3(1289.23f, -1710.51f, 55.48f), 205f, "412 El Burro Heights",""){ OpenTime = 0,CloseTime = 24,RentalFee = 1200, RentalDays = 28,PurchasePrice = 200000,SalesPrice = 180000,},
            // new Residence(new Vector3(1336.86f, -2195.42f, 54.55f), 210f, "12 Sustancia Road",""){ OpenTime = 0,CloseTime = 24,RentalFee = 850, RentalDays = 28,PurchasePrice = 150000}, //maybe mp map, idk
           //  new Residence(new Vector3(968.16f, -352.3153f, 31.53f), 170f, "Cypress Flats Train",""){ OpenTime = 0,CloseTime = 24,RentalFee = 500, RentalDays = 28}, //maybe mp map, idk
-
             new Residence(new Vector3(-1243.89f, -1241.10f, 11.03f), 20f, "1533 Magellan Ave",""){ OpenTime = 0,CloseTime = 24,RentalFee = 500, RentalDays = 28},
+
+
+
+
         };
+
+        ApartmentBuildings = new List<ApartmentBuilding>()
+        {
+            new ApartmentBuilding(new Vector3(-59.58021f, -617.4625f, 37.35678f), 69.24533f, "4 Integrity Way","")
+                { 
+                ResidenceIDs = new List<string>() { "4 Integrity Way, Apt 28", "4 Integrity Way, Apt 30" },
+                OpenTime = 0,CloseTime = 24, 
+                CameraPosition = new Vector3(-103.6068f, -621.355f, 61.43004f), 
+                CameraDirection = new Vector3(0.9355325f, 0.094497f, -0.3403665f), 
+                CameraRotation = new Rotator(-19.89921f, -2.269968E-07f, -84.23219f),
+                
+                },
+            new ApartmentBuilding(new Vector3(-1442.846f, -544.5376f, 34.74181f), 213.3763f, "Dell Perro Heights","")
+                {
+                ResidenceIDs = new List<string>() { "Dell Perro Heights, Apt 4", "Dell Perro Heights, Apt 7" },
+                OpenTime = 0,CloseTime = 24,
+                CameraPosition = new Vector3(-1399.207f, -569.2247f, 54.83259f), 
+                CameraDirection = new Vector3(-0.870531f, 0.4425829f, -0.2151656f), 
+                CameraRotation = new Rotator(-12.42524f, 4.371253E-07f, 63.05096f),
+
+                },
+            new ApartmentBuilding(new Vector3(-773.63f, 313.08f, 85.70f), 180f, "Eclipse Towers","")
+                {
+                ResidenceIDs = new List<string>() { "Eclipse Towers, Apt 3" },
+                OpenTime = 0,CloseTime = 24,
+                CameraPosition = new Vector3(-759.3251f, 282.0685f, 92.48839f), 
+                CameraDirection = new Vector3(-0.3824778f, 0.9124349f, -0.1455103f), 
+                CameraRotation = new Rotator(-8.36683f, 9.061063E-06f, 22.74264f),
+
+                },
+
+            new ApartmentBuilding(new Vector3(-936.8324f, -379.2408f, 38.96133f), 113.6606f, "Richard Majestic","")
+                {
+                ResidenceIDs = new List<string>() { "Richard Majestic, Apt 2" },
+                OpenTime = 0,CloseTime = 24,
+                CameraPosition = new Vector3(-959.3054f, -437.9868f, 59.45272f), 
+                CameraDirection = new Vector3(0.3745578f, 0.8735601f, -0.3108042f), 
+                CameraRotation = new Rotator(-18.1077f, -8.533479E-06f, -23.20828f)
+
+                },
+
+
+            new ApartmentBuilding(new Vector3(-593.1158f, 37.89521f, 43.60775f), 179.0897f, "Tinsel Towers","")
+                {
+                ResidenceIDs = new List<string>() { "Tinsel Towers, Apt 42" },
+                OpenTime = 0,CloseTime = 24,
+                CameraPosition = new Vector3(-567.3261f, -4.869073f, 57.82005f), 
+                CameraDirection = new Vector3(-0.5004823f, 0.838339f, -0.216114f), 
+                CameraRotation = new Rotator(-12.48089f, 2.186096E-06f, 30.83689f)
+
+                },
+            //
+        };
+
+
+
     }
     private void DefaultConfig_Hotels()
     {

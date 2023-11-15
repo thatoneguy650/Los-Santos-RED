@@ -63,13 +63,18 @@ public class Interior
     public List<string> RequestIPLs { get; set; } = new List<string>();
     public List<string> RemoveIPLs { get; set; } = new List<string>();
     public List<string> InteriorSets { get; set; } = new List<string>();
-    //public bool IsActive { get; set; } = false;
     public Vector3 InteriorEgressPosition { get; set; }
     public float InteriorEgressHeading { get; set; }
     public bool NeedsActivation { get; set; } = false;
-
     public bool IsRestricted { get; set; } = false;
     public bool IsWeaponRestricted { get; set; } = false;
+    public Vector3 StandardInteractLocation { get; set; }
+    public float StandardInteractHeading { get; set; }
+
+    public Vector3 StandardInteractCameraPosition { get; set; } = Vector3.Zero;
+    public Vector3 StandardInteractCameraDirection { get; set; } = Vector3.Zero;
+    public Rotator StandardInteractCameraRotation { get; set; }
+
     public void DebugOpenDoors()
     {
         foreach (InteriorDoor door in Doors)
