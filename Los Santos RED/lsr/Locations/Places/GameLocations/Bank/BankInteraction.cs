@@ -21,9 +21,9 @@ public class BankInteraction
     private MenuPool MenuPool;
     private UIMenu InteractionMenu;
 
-    private UIMenuListScrollerItem<int> incrementScroller;
-    private UIMenuNumericScrollerItem<int> depositCashScroller;
-    private UIMenuNumericScrollerItem<int> withDrawCashScroller;
+    //private UIMenuListScrollerItem<int> incrementScroller;
+    //private UIMenuNumericScrollerItem<int> depositCashScroller;
+    //private UIMenuNumericScrollerItem<int> withDrawCashScroller;
     private int MaxAccountValue = 5000000;
     private uint NotificationHandle;
 
@@ -93,7 +93,6 @@ public class BankInteraction
         }
         if(added)
         {
-
             return;
         }
         AddNewAccount();
@@ -113,11 +112,6 @@ public class BankInteraction
             BankAccountSubMenu.SetBannerType(BannerImage);
         }
         bankAccount.SetSubMenu(BankAccountSubMenu, AccountsSubMenu.MenuItems[AccountsSubMenu.MenuItems.Count() - 1]);
-
-
-
-
-
         UIMenuItem setPrimary = new UIMenuItem("Set Primary", $"Set the account as primary. Electronic payments will first be debited from this account, then others as needed.") { RightLabel = bankAccount.IsPrimary ? "Primary" : "" };
         setPrimary.Activated += (sender, e) =>
         {
@@ -128,7 +122,20 @@ public class BankInteraction
         };
         BankAccountSubMenu.AddItem(setPrimary);
         UpdateDescription(bankAccount);
-        incrementScroller = new UIMenuListScrollerItem<int>("Increment", "Set the deposit/withdrawl increment.", new List<int>() { 1, 5, 25, 100, 500, 1000, 10000, 100000 }) 
+
+
+        UIMenuNumericScrollerItem<int> depositCashScroller = new UIMenuNumericScrollerItem<int>("Deposit", $"Deposit the selected amount of money. ~n~Max of ${MaxAccountValue}", 0, GetOnHandCash(), 100)
+        {
+            Value = 0,
+            Formatter = v => "~r~$" + v.ToString("N0") + "~s~",
+        };
+        UIMenuNumericScrollerItem<int> withDrawCashScroller = new UIMenuNumericScrollerItem<int>("Withdraw", "Withdraw the selected amount of money.", 0, bankAccount.Money, 100) 
+        { 
+            Value = 0, 
+            Formatter = v => "~g~$" + v.ToString("N0") + "~s~", 
+        };
+
+        UIMenuListScrollerItem<int> incrementScroller = new UIMenuListScrollerItem<int>("Increment", "Set the deposit/withdrawl increment.", new List<int>() { 1, 5, 25, 100, 500, 1000, 10000, 100000 }) 
         { 
             SelectedItem = 100, 
             Formatter = v => "$" + v.ToString("N0") 
@@ -141,10 +148,7 @@ public class BankInteraction
         BankAccountSubMenu.AddItem(incrementScroller);
         BankAccountSubMenu.RefreshIndex();
         int onHandCashNow = GetOnHandCash();
-        depositCashScroller = new UIMenuNumericScrollerItem<int>("Deposit", $"Deposit the selected amount of money. ~n~Max of ${MaxAccountValue}", 0, GetOnHandCash(), 100) { 
-            Value = 0, 
-            Formatter = v => "~r~$" + v.ToString("N0") + "~s~", 
-        };
+
         depositCashScroller.Activated += (sender, selectedItem) =>
         {
             int onHandCash = GetOnHandCash();
@@ -168,7 +172,7 @@ public class BankInteraction
             }
         };
         BankAccountSubMenu.AddItem(depositCashScroller);
-        withDrawCashScroller = new UIMenuNumericScrollerItem<int>("Withdraw", "Withdraw the selected amount of money.", 0, bankAccount.Money, 100) { Value = 0, Formatter = v => "~g~$" + v.ToString("N0") + "~s~", };
+
         withDrawCashScroller.Activated += (sender, selectedItem) =>
         {
             if (withDrawCashScroller.Value + Player.BankAccounts.GetMoney(false) > Int32.MaxValue)

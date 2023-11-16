@@ -126,7 +126,7 @@ public class VehicleExporter : GameLocation
             {
                 continue;
             }
-            UIMenuItem vehicleToExportItem = new UIMenuItem(menuItem1.ModItem.DisplayName, menuItem1.ModItem.DisplayDescription) { RightLabel = menuItem1.SalesPrice.ToString("C0") };
+            UIMenuItem vehicleToExportItem = new UIMenuItem(menuItem1.ModItem.DisplayName, menuItem1.ModItem.FullDescription(Settings)) { RightLabel = menuItem1.SalesPrice.ToString("C0") };
             toAdd.AddItem(vehicleToExportItem);
         }
     }

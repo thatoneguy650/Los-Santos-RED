@@ -194,7 +194,23 @@ public class PlateTheft : DynamicActivity
     {
         return value >= minimum && value <= maximum;
     }
+
+
+
+
     private Vector3 GetLicensePlateChangePosition(Vehicle VehicleToChange)
+    {
+        if (!VehicleToChange.Exists())
+        {
+            return Vector3.Zero;
+        }
+        float halfLength = VehicleToChange.Model.Dimensions.Y / 2.0f;
+        halfLength += 1.0f;
+        return VehicleToChange.GetOffsetPositionFront(-1.0f * halfLength);
+    }
+
+
+    private Vector3 GetLicensePlateChangePosition_Old(Vehicle VehicleToChange)
     {
         Vector3 Position;
         Vector3 Right;

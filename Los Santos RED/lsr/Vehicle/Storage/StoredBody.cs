@@ -22,7 +22,6 @@ public class StoredBody
     private readonly string AliveSeatAnimationDictionaryName = "random@crash_rescue@car_death@std_car";//"veh @std@ps@enter_exit";
     private readonly string AliveSeatAnimationName = "loop";//"dead_fall_out";
     public bool IsAttachedToVehicle { get; set; } = true;
-
     public StoredBody(PedExt pedExt, VehicleDoorSeatData vehicleDoorSeatData, VehicleExt vehicleExt, ISettingsProvideable settings)
     {
         PedExt = pedExt;
@@ -201,9 +200,27 @@ public class StoredBody
         {
             return false;
         }
-        Vector3 BootPosition = VehicleExt.Vehicle.GetBonePosition("boot");
-        Vector3 BedPositon = new Vector3(BootPosition.X + Settings.SettingsManager.DragSettings.LoadBodyXOffsetBed + Settings.SettingsManager.DragSettings.LoadBodyXOffset, BootPosition.Y + Settings.SettingsManager.DragSettings.LoadBodyYOffsetBed + Settings.SettingsManager.DragSettings.LoadBodyYOffset, BootPosition.Z + Settings.SettingsManager.DragSettings.LoadBodyZOffsetBed + Settings.SettingsManager.DragSettings.LoadBodyZOffset);
-        PedExt.Pedestrian.Position = BedPositon;
+
+
+        if (Settings.SettingsManager.DragSettings.UseLegacyAttachment)
+        {
+            if (!VehicleExt.Vehicle.HasBone("boot"))
+            {
+                return false;
+            }
+            Vector3 BootPosition = VehicleExt.Vehicle.GetBonePosition("boot");
+            Vector3 BedPositon = new Vector3(BootPosition.X + Settings.SettingsManager.DragSettings.LoadBodyXOffsetBed + Settings.SettingsManager.DragSettings.LoadBodyXOffset, BootPosition.Y + Settings.SettingsManager.DragSettings.LoadBodyYOffsetBed + Settings.SettingsManager.DragSettings.LoadBodyYOffset, BootPosition.Z + Settings.SettingsManager.DragSettings.LoadBodyZOffsetBed + Settings.SettingsManager.DragSettings.LoadBodyZOffset);
+            PedExt.Pedestrian.Position = BedPositon;
+        }
+        else
+        {
+
+            float halfLength = VehicleExt.Vehicle.Model.Dimensions.Y / 2.0f;
+            halfLength += Settings.SettingsManager.DragSettings.NewBedLoadBodyYOffset;
+            Vector3 almostFinal = VehicleExt.Vehicle.GetOffsetPositionFront(-1.0f * halfLength);
+            Vector3 BedPositon = new Vector3(almostFinal.X + Settings.SettingsManager.DragSettings.NewBedLoadBodyXOffset, almostFinal.Y, almostFinal.Z + Settings.SettingsManager.DragSettings.NewBedLoadBodyZOffset);
+            PedExt.Pedestrian.Position = BedPositon;
+        }
         if (PedExt.IsDead)
         {
             PedExt.Pedestrian.Kill();
@@ -238,7 +255,7 @@ public class StoredBody
     }
     private void AttachToTrunk()
     {
-        if (VehicleExt == null || !VehicleExt.Vehicle.Exists() || !VehicleExt.Vehicle.HasBone("boot"))
+        if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
         {
             return;
         }
@@ -246,18 +263,41 @@ public class StoredBody
         {
             return;
         }
-        Vector3 BootPosition = VehicleExt.Vehicle.GetBonePosition("boot");
-        Vector3 RootPosition = VehicleExt.Vehicle.GetBonePosition(0);
-        float YOffset = -1 * BootPosition.DistanceTo2D(RootPosition);
-        float ZOffset = BootPosition.Z - RootPosition.Z;
-        NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(PedExt.Pedestrian, VehicleExt.Vehicle, Settings.SettingsManager.DragSettings.BoneIndex,
-            Settings.SettingsManager.DragSettings.LoadBodyXOffset,
-            Settings.SettingsManager.DragSettings.LoadBodyYOffset + YOffset,
-            Settings.SettingsManager.DragSettings.LoadBodyZOffset + ZOffset,
-            Settings.SettingsManager.DragSettings.LoadBodyXRotation,
-            Settings.SettingsManager.DragSettings.LoadBodyYRotation,
-            Settings.SettingsManager.DragSettings.LoadBodyZRotation,
-            false, false, false, Settings.SettingsManager.DragSettings.UseBasicAttachIfPed, Settings.SettingsManager.DragSettings.Euler, Settings.SettingsManager.DragSettings.OffsetIsRelative, false);
+
+        if(Settings.SettingsManager.DragSettings.UseLegacyAttachment)
+        {
+            if (!VehicleExt.Vehicle.HasBone("boot"))
+            {
+                return;
+            }
+            Vector3 BootPosition = VehicleExt.Vehicle.GetBonePosition("boot");
+            Vector3 RootPosition = VehicleExt.Vehicle.GetBonePosition(0);
+            float YOffset = -1 * BootPosition.DistanceTo2D(RootPosition);
+            float ZOffset = BootPosition.Z - RootPosition.Z;
+            NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(PedExt.Pedestrian, VehicleExt.Vehicle, Settings.SettingsManager.DragSettings.BoneIndex,
+                Settings.SettingsManager.DragSettings.LoadBodyXOffset,
+                Settings.SettingsManager.DragSettings.LoadBodyYOffset + YOffset,
+                Settings.SettingsManager.DragSettings.LoadBodyZOffset + ZOffset,
+                Settings.SettingsManager.DragSettings.LoadBodyXRotation,
+                Settings.SettingsManager.DragSettings.LoadBodyYRotation,
+                Settings.SettingsManager.DragSettings.LoadBodyZRotation,
+                false, false, false, Settings.SettingsManager.DragSettings.UseBasicAttachIfPed, Settings.SettingsManager.DragSettings.Euler, Settings.SettingsManager.DragSettings.OffsetIsRelative, false);
+        }
+        else
+        {
+            float halfLength = VehicleExt.Vehicle.Model.Dimensions.Y / 2.0f;
+            halfLength += Settings.SettingsManager.DragSettings.NewLoadBodyYOffset;
+            float YOffset = -1.0f * halfLength;
+            float ZOffset = Settings.SettingsManager.DragSettings.NewLoadBodyZOffset;
+            NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(PedExt.Pedestrian, VehicleExt.Vehicle, Settings.SettingsManager.DragSettings.BoneIndex,
+                Settings.SettingsManager.DragSettings.NewLoadBodyXOffset,
+                YOffset,
+                ZOffset,
+                Settings.SettingsManager.DragSettings.LoadBodyXRotation,
+                Settings.SettingsManager.DragSettings.LoadBodyYRotation,
+                Settings.SettingsManager.DragSettings.LoadBodyZRotation,
+                false, false, false, Settings.SettingsManager.DragSettings.UseBasicAttachIfPed, Settings.SettingsManager.DragSettings.Euler, Settings.SettingsManager.DragSettings.OffsetIsRelative, false);
+        }
         IsAttachedToVehicle = true;
         GameFiber.Wait(100);
     }

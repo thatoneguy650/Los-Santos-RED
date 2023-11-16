@@ -680,7 +680,12 @@ public class PopUpMenu
         Game.DisableControlAction(0, GameControl.VehicleFlyMouseControlOverride, true);
 
 
+        Game.DisableControlAction(0, GameControl.VehicleAttack, true);
+        Game.DisableControlAction(0, GameControl.VehicleAttack2, true);
 
+
+        Game.DisableControlAction(0, GameControl.VehiclePassengerAim, true);
+        Game.DisableControlAction(0, GameControl.VehiclePassengerAttack, true);
     }
     private void UpdateDefaultMapping(bool force)
     {
@@ -1409,6 +1414,10 @@ public class PopUpMenu
         PopUpMenuGroups.Add(new PopUpBoxGroup("BodyArmorSubMenu", BodyArmorSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("EnterSeatSubMenu", EnterSeatSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("OpenDoorSubMenu", OpenDoorSubMenu) { IsChild = true });
+
+
+        PopUpMenuGroups.Add(new PopUpBoxGroup("WindowsSubMenu", WindowsSubMenu) { IsChild = true });
+
     }
     private void SetupTextures()
     {

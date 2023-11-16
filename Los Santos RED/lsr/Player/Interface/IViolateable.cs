@@ -71,6 +71,7 @@ namespace LosSantosRED.lsr.Interface
         List<VehicleExt> TrackedVehicles { get; }
         VehicleOwnership VehicleOwnership { get; }
         uint TimeInCurrentVehicle { get; }
+        Vehicle LastFriendlyVehicle { get; }
 
         //  bool IsLootingBody { get; }
 

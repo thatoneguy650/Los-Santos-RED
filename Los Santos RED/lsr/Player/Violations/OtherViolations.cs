@@ -240,6 +240,10 @@ public class OtherViolations
         {
             return;
         }
+        if(Player.CurrentVehicle.Vehicle.Exists() && Player.LastFriendlyVehicle.Exists() && Player.CurrentVehicle.Vehicle.Handle == Player.LastFriendlyVehicle.Handle)
+        {
+            return;
+        }
         if((Player.IsEMT || Player.IsFireFighter || Player.IsSecurityGuard) && Player.CurrentVehicle.IsService)
         {
             return;

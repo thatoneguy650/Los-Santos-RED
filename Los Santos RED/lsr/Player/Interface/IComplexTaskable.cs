@@ -74,6 +74,7 @@ namespace LosSantosRED.lsr.Interface
         bool WillCallPolice { get; }
         bool WillCallPoliceIntense { get; }
         PedReactions PedReactions { get; }
+        bool IsCowering { get; set; }
 
         void PlaySpeech(string name, bool v);
         void PlaySpeech(List<string> list, bool isInVehicle, bool v);

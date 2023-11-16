@@ -1233,8 +1233,13 @@ public class ActivityManager
         {
             return;
         }
-        if (!Player.IsDriver || Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
+        if (Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
         {
+            return;
+        }
+        if (!Player.IsDriver)
+        {
+            Game.DisplayHelp("Cannot toggle driver door from current seat");
             return;
         }
         bool isValid = NativeFunction.Natives.x645F4B6E8499F632<bool>(Player.CurrentVehicle.Vehicle, 0);
@@ -1281,8 +1286,13 @@ public class ActivityManager
         {
             return;
         }
-        if(!Player.IsDriver || Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
+        if(Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
         {
+            return;
+        }
+        if (!Player.IsDriver)
+        {
+            Game.DisplayHelp("Cannot close driver door from current seat");
             return;
         }
         bool isValid = NativeFunction.Natives.x645F4B6E8499F632<bool>(Player.CurrentVehicle.Vehicle, 0);
@@ -1318,8 +1328,13 @@ public class ActivityManager
     }
     public void ToggleLeftIndicator()
     {
-        if (Player.CurrentVehicle == null || !Player.IsDriver)
+        if (Player.CurrentVehicle == null)
         {
+            return;
+        }
+        if (!Player.IsDriver)
+        {
+            Game.DisplayHelp("Cannot toggle indicators from current seat");
             return;
         }
         if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
@@ -1333,8 +1348,13 @@ public class ActivityManager
     }
     public void ToggleHazards()
     {
-        if (Player.CurrentVehicle == null || !Player.IsDriver)
+        if (Player.CurrentVehicle == null)
         {
+            return;
+        }
+        if (!Player.IsDriver)
+        {
+            Game.DisplayHelp("Cannot toggle hazards from current seat");
             return;
         }
         if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
@@ -1348,8 +1368,13 @@ public class ActivityManager
     }
     public void ToggleRightIndicator()
     {
-        if (Player.CurrentVehicle == null || !Player.IsDriver)
+        if (Player.CurrentVehicle == null)
         {
+            return;
+        }
+        if (!Player.IsDriver)
+        {
+            Game.DisplayHelp("Cannot toggle indicators from current seat");
             return;
         }
         if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
@@ -1363,8 +1388,13 @@ public class ActivityManager
     }
     public void ToggleVehicleEngine()
     {
-        if (Player.CurrentVehicle == null || !Player.IsDriver)
+        if (Player.CurrentVehicle == null)
         {
+            return;
+        }
+        if (!Player.IsDriver)
+        {
+            Game.DisplayHelp("Cannot change engine status from current seat");
             return;
         }
         if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
@@ -1378,8 +1408,13 @@ public class ActivityManager
     }
     public void SetVehicleEngine(bool desiredStatus)
     {
-        if (Player.CurrentVehicle == null || !Player.IsDriver)
+        if (Player.CurrentVehicle == null)
         {
+            return;
+        }
+        if (!Player.IsDriver)
+        {
+            Game.DisplayHelp("Cannot change engine status from current seat");
             return;
         }
         if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
@@ -1393,8 +1428,13 @@ public class ActivityManager
     }
     public void ToggleDriverWindow()
     {
-        if (Player.CurrentVehicle == null || !Player.IsDriver)
+        if (Player.CurrentVehicle == null)
         {
+            return;
+        }
+        if(!Player.IsDriver)
+        {
+            Game.DisplayHelp("Cannot control driver window from current seat");
             return;
         }
         if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)
@@ -1477,8 +1517,13 @@ public class ActivityManager
 
     public void ToggleDoorLocks()
     {
-        if (Player.CurrentVehicle == null || !Player.IsDriver)
+        if (Player.CurrentVehicle == null)
         {
+            return;
+        }
+        if (!Player.IsDriver)
+        {
+            Game.DisplayHelp("Cannot change door locks from current seat");
             return;
         }
         if (IsPerformingActivity || !Settings.SettingsManager.VehicleSettings.PlayControlAnimations)

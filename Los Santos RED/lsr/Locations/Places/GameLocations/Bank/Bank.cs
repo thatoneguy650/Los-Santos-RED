@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
@@ -332,7 +333,7 @@ public class Bank : GameLocation
                     TellersSpawned++;
                 }
             }
-            BankDrawers.Add(new BankDrawer(spawnPlace.Position.Around2D(0.3f), spawnPlace.Heading, RandomItems.GetRandomNumberInt(DrawerCashMin, DrawerCashMax)));
+            BankDrawers.Add(new BankDrawer(NativeHelper.GetOffsetPosition(spawnPlace.Position, spawnPlace.Heading, 0.3f), spawnPlace.Heading, RandomItems.GetRandomNumberInt(DrawerCashMin, DrawerCashMax))); //BankDrawers.Add(new BankDrawer(spawnPlace.Position.Around2D(0.3f), spawnPlace.Heading, RandomItems.GetRandomNumberInt(DrawerCashMin, DrawerCashMax)));
         }
         if(HasTellers)
         {

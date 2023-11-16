@@ -97,6 +97,30 @@ public class TaxiServiceInteraction : IContactMenuInteraction
             sender.Visible = false;
         };
         TaxiServiceMenu.AddItem(requestTaxiMenuItem);
+
+
+
+        UIMenuItem requestQuickTaxiMenuItem = new UIMenuItem("Request Taxi (Quick)", "Ask for a taxi to be dispatched and have it immediatly arrive.");
+        requestQuickTaxiMenuItem.Activated += (sender, selectedItem) =>
+        {
+
+            string fullText = "";
+            if (Player.TaxiManager.RequestService(TaxiFirm))
+            {
+                //fullText = $"{TaxiServiceContact.Name} is en route to ";
+                //fullText += Player.CurrentLocation?.GetStreetAndZoneString();
+                Player.TaxiManager.ActiveRides.FirstOrDefault(x => x.RequestedFirm.ID == TaxiFirm.ID)?.TeleportToPickup();
+            }
+            else
+            {
+                fullText = "No service available to your current location. Please try again later.";
+            }
+            Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
+            sender.Visible = false;
+        };
+        TaxiServiceMenu.AddItem(requestQuickTaxiMenuItem);
+
+
     }
     private void AddExistingRideItems(TaxiRide ExistingRide)
     {

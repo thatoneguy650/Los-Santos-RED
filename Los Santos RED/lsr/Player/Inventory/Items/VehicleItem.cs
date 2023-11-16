@@ -69,7 +69,7 @@ public class VehicleItem : ModItem
         SellPrimaryColor = Color.Black;
         SellSecondaryColor = Color.Black;
         string formattedSalesPrice = menuItem.SalesPrice.ToString("C0");
-        string description = GetGeneralDescription(menuItem);
+        string description = GetGeneralDescription();
         bool enabled = false;
         VehicleExt ownedVersion = player.VehicleOwnership.OwnedVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(ModelItem.ModelName));
         if (ownedVersion != null)
@@ -156,6 +156,13 @@ public class VehicleItem : ModItem
         };
         VehicleMenu.AddItem(Sell);
     }
+
+
+    public override string FullDescription(ISettingsProvideable Settings)
+    {
+        return GetGeneralDescription();
+    }
+
     private bool SellVehicle(Transaction transaction, MenuItem CurrentMenuItem, ILocationInteractable player, ISettingsProvideable settings, IEntityProvideable world)
     {
         VehicleExt toSell = player.VehicleOwnership.OwnedVehicles.Where(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(ModelItem.ModelName)).OrderBy(x => x.Vehicle.DistanceTo2D(player.Position)).FirstOrDefault();
@@ -193,7 +200,7 @@ public class VehicleItem : ModItem
         {
             formattedPurchasePrice = "";
         }
-        string description = GetGeneralDescription(menuItem);
+        string description = GetGeneralDescription();
         bool FoundCategoryMenu = false;
         UIMenu VehicleSubMenu = purchaseMenu.Children.Where(x => x.Value.SubtitleText.ToLower() == "vehicles").FirstOrDefault().Value;
         UIMenu ToCheckFirst = purchaseMenu;
@@ -528,7 +535,7 @@ public class VehicleItem : ModItem
         }
         return LiveryName;
     }
-    private string GetGeneralDescription(MenuItem menuItem)
+    private string GetGeneralDescription()
     {
         string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(ModelItem.ModelName));
         string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(ModelItem.ModelName));

@@ -39,7 +39,24 @@ public class DragSettings : ISettingsDefaultable
     public int RagdollRotationOrder { get; set; }
     public bool RagdollRunAttach { get; set; }
     public bool AllowRagdolling { get; set; }
+
+
+
+
     public bool UseLegacyDragSystem { get; set; }
+
+    public bool UseLegacyAttachment { get; set; }
+
+
+
+    public float NewLoadBodyXOffset { get; set; }
+    public float NewLoadBodyYOffset { get; set; }
+    public float NewLoadBodyZOffset { get; set; }
+
+
+    public float NewBedLoadBodyXOffset { get; set; }
+    public float NewBedLoadBodyYOffset { get; set; }
+    public float NewBedLoadBodyZOffset { get; set; }
 
 
     [OnDeserialized()]
@@ -88,9 +105,18 @@ public class DragSettings : ISettingsDefaultable
 
         UseLegacyDragSystem = true;
 
-//#if DEBUG
-//        AllowRagdolling = true;
-//#endif
+
+        UseLegacyAttachment = false;
+        NewLoadBodyYOffset = -0.75f;
+        NewLoadBodyZOffset = 0.3f;
+
+
+        NewBedLoadBodyYOffset = -0.75f;
+        NewBedLoadBodyZOffset = 1.25f;
+
+        //#if DEBUG
+        //        AllowRagdolling = true;
+        //#endif
 
     }
 }

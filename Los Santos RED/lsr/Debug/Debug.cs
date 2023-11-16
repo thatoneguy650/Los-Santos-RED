@@ -1456,37 +1456,44 @@ HighlightProp();
 
     private void DebugNumpad7()
     {
+        ShowBodyLoadPosition();
+        //ShowCarChangePosition();
 
+        //if(Player.InterestedVehicle == null)
+        //{
+        //    return;
+        //}
+        //GetLicensePlateChangePosition(Player.InterestedVehicle.Vehicle);
 
-        Vehicle SpawnedVehicle = null;
-        Vector3 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
-        try
-        {
-            SpawnedVehicle = SpawnedVehicle = new Vehicle("taxi", Position, 0f);//NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(Game.GetHashKey("taxi"), Position.X, Position.Y, Position.Z,0f, false, false, false);//   new Vehicle("taxi", Position, 0f) { IsPersistent = false };
-            if (!SpawnedVehicle.Exists())
-            {
-                Game.DisplaySubtitle($"SPAWNED VEHICLE DOESNT EXIST? {Game.GameTime}");
-                return;
-            }
-            GameFiber.Sleep(2000);
-            if (SpawnedVehicle.Exists())
-            {
-                SpawnedVehicle.Delete();
-            }
-        }
-        catch (Exception ex)
-        {
-            Game.DisplaySubtitle($"SPAWN ERROR {Game.GameTime}");
-            EntryPoint.WriteToConsole($"DebugNumpad7: ERROR DELETED VEHICLE {ex.Message} {ex.StackTrace} ATTEMPTING TAXI", 0);
-            if (SpawnedVehicle.Exists())
-            {
-                EntryPoint.WriteToConsole($"DebugNumpad7: ERROR DELETED VEHICLE ACTUALLY STILL GOT THE HANDLE", 0);
-                SpawnedVehicle.Delete();
-            }
-            EntryPoint.ModController.AddSpawnError(new SpawnError(Game.GetHashKey("taxi"), Position, Game.GameTime));
-            GameFiber.Yield();
-            return;
-        }
+        //Vehicle SpawnedVehicle = null;
+        //Vector3 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
+        //try
+        //{
+        //    SpawnedVehicle = SpawnedVehicle = new Vehicle("taxi", Position, 0f);//NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(Game.GetHashKey("taxi"), Position.X, Position.Y, Position.Z,0f, false, false, false);//   new Vehicle("taxi", Position, 0f) { IsPersistent = false };
+        //    if (!SpawnedVehicle.Exists())
+        //    {
+        //        Game.DisplaySubtitle($"SPAWNED VEHICLE DOESNT EXIST? {Game.GameTime}");
+        //        return;
+        //    }
+        //    GameFiber.Sleep(2000);
+        //    if (SpawnedVehicle.Exists())
+        //    {
+        //        SpawnedVehicle.Delete();
+        //    }
+        //}
+        //catch (Exception ex)
+        //{
+        //    Game.DisplaySubtitle($"SPAWN ERROR {Game.GameTime}");
+        //    EntryPoint.WriteToConsole($"DebugNumpad7: ERROR DELETED VEHICLE {ex.Message} {ex.StackTrace} ATTEMPTING TAXI", 0);
+        //    if (SpawnedVehicle.Exists())
+        //    {
+        //        EntryPoint.WriteToConsole($"DebugNumpad7: ERROR DELETED VEHICLE ACTUALLY STILL GOT THE HANDLE", 0);
+        //        SpawnedVehicle.Delete();
+        //    }
+        //    EntryPoint.ModController.AddSpawnError(new SpawnError(Game.GetHashKey("taxi"), Position, Game.GameTime));
+        //    GameFiber.Yield();
+        //    return;
+        //}
 
 
 
@@ -1672,7 +1679,7 @@ HighlightProp();
 
 
 
-public void DebugNumpad8()
+    public void DebugNumpad8()
 {
 
 
@@ -2155,357 +2162,470 @@ GameFiber.Sleep(1000);
 }
 
 
-private void DoCops()
-{
-Vector3 PlaceToDriveTo = Game.LocalPlayer.Character.Position;
-foreach (Cop cop in World.Pedestrians.Police)
-{
-    if(cop.Pedestrian.Exists() && cop.Pedestrian.CurrentVehicle.Exists())
+    private void DoCops()
     {
-        cop.Pedestrian.BlockPermanentEvents = true;
-        cop.Pedestrian.KeepTasks = true;
-        NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(cop.Pedestrian, cop.Pedestrian.CurrentVehicle, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 70f, (int)eCustomDrivingStyles.Code3, 10f); //30f speed
-        EntryPoint.WriteToConsole($"COP {cop.Handle} SET TO DRIVE TO PLAYER");
-    }
-}
-}
-
-
-private void ResetCops()
-{
-foreach (Cop cop in World.Pedestrians.Police)
-{
-    if (cop.Pedestrian.Exists())
+    Vector3 PlaceToDriveTo = Game.LocalPlayer.Character.Position;
+    foreach (Cop cop in World.Pedestrians.Police)
     {
-        cop.ClearTasks(true);
-        EntryPoint.WriteToConsole($"COP {cop.Handle} CLEARED");
-    }
-}
-}
-private void PhoneTest()
-{
-
-GameFiber.StartNew(delegate
-{
-    Ped coolPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f), 0f);
-    GameFiber.Yield();
-    if (coolPed.Exists())
-    {
-        coolPed.BlockPermanentEvents = true;
-        coolPed.KeepTasks = true;
-        unsafe
+        if(cop.Pedestrian.Exists() && cop.Pedestrian.CurrentVehicle.Exists())
         {
-            int lol = 0;
-            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Player.Character, 50f, 10000, true,true);//100f
-            NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
-            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Player.Character, 1500f, -1, true, true);
-            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", coolPed, lol);
-            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            cop.Pedestrian.BlockPermanentEvents = true;
+            cop.Pedestrian.KeepTasks = true;
+            NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(cop.Pedestrian, cop.Pedestrian.CurrentVehicle, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 70f, (int)eCustomDrivingStyles.Code3, 10f); //30f speed
+            EntryPoint.WriteToConsole($"COP {cop.Handle} SET TO DRIVE TO PLAYER");
         }
     }
-    Game.DisplayHelp("PRESS Z TO CANCEL");
-    while (coolPed.Exists() && !Game.IsKeyDownRightNow(Keys.Z) && ModController.IsRunning)
-    {
-        GameFiber.Sleep(25);
-    }
-    if (coolPed.Exists())
-    {
-        coolPed.Delete();
     }
 
-}, "Run Debug Logic");
 
-
-
-
-
-
-
-}
-private void ShockTest()
-{
-
-GameFiber.StartNew(delegate
-{
-    Ped coolPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f), 0f);
-    GameFiber.Yield();
-    if (coolPed.Exists())
+    private void ResetCops()
     {
-        coolPed.BlockPermanentEvents = true;
-        coolPed.KeepTasks = true;
-        unsafe
+    foreach (Cop cop in World.Pedestrians.Police)
+    {
+        if (cop.Pedestrian.Exists())
         {
-            int lol = 0;
-            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-            NativeFunction.CallByName<bool>("TASK_SHOCKING_EVENT_BACK_AWAY", 0, 0);//100f
-            NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
-            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", coolPed, lol);
-            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            cop.ClearTasks(true);
+            EntryPoint.WriteToConsole($"COP {cop.Handle} CLEARED");
         }
     }
-    Game.DisplayHelp("PRESS Z TO CANCEL");
-    while (coolPed.Exists() && !Game.IsKeyDownRightNow(Keys.Z) && ModController.IsRunning)
-    {
-        GameFiber.Sleep(25);
     }
-    if (coolPed.Exists())
+    private void PhoneTest()
     {
-        coolPed.Delete();
-    }
 
-}, "Run Debug Logic");
-
-
-
-
-
-
-
-}
-private void ShuffleTest()
-{
-//spawn car, put me in, put them in passenger, kill them, shuffle seat, see what happens?
-//TASK_SHUFFLE_TO_NEXT_VEHICLE_SEAT
-bool isPassenger = RandomItems.RandomPercent(50f);
-int playerseat = isPassenger ? 0 : - 1;
-int pedseat = isPassenger ? -1: 0;
-
-VehicleExt chosenVehicle = Player.ActivityManager.GetInterestedVehicle();
-if (chosenVehicle == null || !chosenVehicle.Vehicle.Exists())
-{
-    return;
-}
-if(!Player.IsInVehicle)
-{
-    Player.Character.WarpIntoVehicle(chosenVehicle.Vehicle, playerseat);
-}
-Ped randomPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f));
-GameFiber.Yield();
-if (!randomPed.Exists())
-{
-    return;
-}
-randomPed.WarpIntoVehicle(chosenVehicle.Vehicle, pedseat);
-randomPed.Kill();
-GameFiber.Sleep(1000);
-if (chosenVehicle == null || !chosenVehicle.Vehicle.Exists() || !randomPed.Exists())
-{
-    return;
-}
-NativeFunction.Natives.TASK_SHUFFLE_TO_NEXT_VEHICLE_SEAT(Game.LocalPlayer.Character, chosenVehicle.Vehicle, false);
-}
-private void K9Test()
-{
-//spawn K9 give him attack me tasks, set him to not do the pre attack thiungo, wait until press button, despawn
-
-GameFiber.StartNew(delegate
-{
-    Ped attackDog = new Ped("a_c_shepherd",Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f),0f);
-    GameFiber.Yield();
-    if (attackDog.Exists())
+    GameFiber.StartNew(delegate
     {
-        attackDog.BlockPermanentEvents = true;
-        attackDog.KeepTasks = true;
-        // NativeFunction.Natives.SET_PED_CONFIG_FLAG(attackDog, 281, false);//Can Writhe
-        //NativeFunction.Natives.SET_PED_DIES_WHEN_INJURED(attackDog, false);
-        //attackDog.Tasks.FightAgainst(Game.LocalPlayer.Character);
-        VehicleExt chosenVehicle = Player.ActivityManager.GetInterestedVehicle();
-        if(chosenVehicle != null && chosenVehicle.Vehicle.Exists())
+        Ped coolPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f), 0f);
+        GameFiber.Yield();
+        if (coolPed.Exists())
         {
-            attackDog.WarpIntoVehicle(chosenVehicle.Vehicle, 1);
+            coolPed.BlockPermanentEvents = true;
+            coolPed.KeepTasks = true;
             unsafe
             {
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, attackDog.CurrentVehicle, 27, 1000);
-                NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, attackDog.CurrentVehicle, (int)(eEnter_Exit_Vehicle_Flags.ECF_WARP_PED | eEnter_Exit_Vehicle_Flags.ECF_DONT_CLOSE_DOOR));// 256);
-                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
+                NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Player.Character, 50f, 10000, true,true);//100f
+                NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
+                NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Player.Character, 1500f, -1, true, true);
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", attackDog, lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", coolPed, lol);
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
+        }
+        Game.DisplayHelp("PRESS Z TO CANCEL");
+        while (coolPed.Exists() && !Game.IsKeyDownRightNow(Keys.Z) && ModController.IsRunning)
+        {
+            GameFiber.Sleep(25);
+        }
+        if (coolPed.Exists())
+        {
+            coolPed.Delete();
+        }
+
+    }, "Run Debug Logic");
+
+
+
+
+
+
+
+    }
+    private void ShockTest()
+    {
+
+    GameFiber.StartNew(delegate
+    {
+        Ped coolPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f), 0f);
+        GameFiber.Yield();
+        if (coolPed.Exists())
+        {
+            coolPed.BlockPermanentEvents = true;
+            coolPed.KeepTasks = true;
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<bool>("TASK_SHOCKING_EVENT_BACK_AWAY", 0, 0);//100f
+                NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", coolPed, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+        }
+        Game.DisplayHelp("PRESS Z TO CANCEL");
+        while (coolPed.Exists() && !Game.IsKeyDownRightNow(Keys.Z) && ModController.IsRunning)
+        {
+            GameFiber.Sleep(25);
+        }
+        if (coolPed.Exists())
+        {
+            coolPed.Delete();
+        }
+
+    }, "Run Debug Logic");
+
+
+
+
+
+
+
+    }
+    private void ShuffleTest()
+    {
+    //spawn car, put me in, put them in passenger, kill them, shuffle seat, see what happens?
+    //TASK_SHUFFLE_TO_NEXT_VEHICLE_SEAT
+    bool isPassenger = RandomItems.RandomPercent(50f);
+    int playerseat = isPassenger ? 0 : - 1;
+    int pedseat = isPassenger ? -1: 0;
+
+    VehicleExt chosenVehicle = Player.ActivityManager.GetInterestedVehicle();
+    if (chosenVehicle == null || !chosenVehicle.Vehicle.Exists())
+    {
+        return;
+    }
+    if(!Player.IsInVehicle)
+    {
+        Player.Character.WarpIntoVehicle(chosenVehicle.Vehicle, playerseat);
+    }
+    Ped randomPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f));
+    GameFiber.Yield();
+    if (!randomPed.Exists())
+    {
+        return;
+    }
+    randomPed.WarpIntoVehicle(chosenVehicle.Vehicle, pedseat);
+    randomPed.Kill();
+    GameFiber.Sleep(1000);
+    if (chosenVehicle == null || !chosenVehicle.Vehicle.Exists() || !randomPed.Exists())
+    {
+        return;
+    }
+    NativeFunction.Natives.TASK_SHUFFLE_TO_NEXT_VEHICLE_SEAT(Game.LocalPlayer.Character, chosenVehicle.Vehicle, false);
+    }
+    private void K9Test()
+    {
+    //spawn K9 give him attack me tasks, set him to not do the pre attack thiungo, wait until press button, despawn
+
+    GameFiber.StartNew(delegate
+    {
+        Ped attackDog = new Ped("a_c_shepherd",Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f),0f);
+        GameFiber.Yield();
+        if (attackDog.Exists())
+        {
+            attackDog.BlockPermanentEvents = true;
+            attackDog.KeepTasks = true;
+            // NativeFunction.Natives.SET_PED_CONFIG_FLAG(attackDog, 281, false);//Can Writhe
+            //NativeFunction.Natives.SET_PED_DIES_WHEN_INJURED(attackDog, false);
+            //attackDog.Tasks.FightAgainst(Game.LocalPlayer.Character);
+            VehicleExt chosenVehicle = Player.ActivityManager.GetInterestedVehicle();
+            if(chosenVehicle != null && chosenVehicle.Vehicle.Exists())
+            {
+                attackDog.WarpIntoVehicle(chosenVehicle.Vehicle, 1);
+                unsafe
+                {
+                    int lol = 0;
+                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, attackDog.CurrentVehicle, 27, 1000);
+                    NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, attackDog.CurrentVehicle, (int)(eEnter_Exit_Vehicle_Flags.ECF_WARP_PED | eEnter_Exit_Vehicle_Flags.ECF_DONT_CLOSE_DOOR));// 256);
+                    NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
+                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", attackDog, lol);
+                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                }
+            }
+            else
+            {
+                unsafe
+                {
+                    int lol = 0;
+                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                    NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, 134217728, 16);
+                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", attackDog, lol);
+                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                }
+            }
+        }
+        Game.DisplayHelp("PRESS Z TO CANCEL");
+        while (attackDog.Exists() && !Game.IsKeyDownRightNow(Keys.Z) && ModController.IsRunning)
+        {
+            GameFiber.Sleep(25);
+        }
+        if (attackDog.Exists())
+        {
+            attackDog.Delete();
+        }
+
+    }, "Run Debug Logic");
+
+
+
+    }
+
+
+    private void OpenDoors()
+    {
+    Interior int1 = Interiors.GetInteriorByLocalID(-103);
+    if(int1 == null)
+    {
+        return;
+    }
+    foreach (InteriorDoor door in int1.Doors)
+    {
+        door.UnLockDoor();
+        //NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, 0.0f, 50.0f);
+        //door.IsLocked = false;
+    }
+    }
+    private void SpawnAttachedRagdoll()
+    {
+    //GameFiber.StartNew(delegate
+    //{
+    //    Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
+    //    Rage.Object leftHandObject = new Rage.Object("ng_proc_cigarette01a", Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
+    //    GameFiber.Yield();
+    //    if (coolguy.Exists())
+    //    {
+    //        coolguy.BlockPermanentEvents = true;
+    //        coolguy.KeepTasks = true;
+    //        coolguy.Kill();
+    //        GameFiber.Sleep(500);
+    //        if (coolguy.Exists() && leftHandObject.Exists())
+    //        {
+    //            AnimationDictionary.RequestAnimationDictionay("combat@drag_ped@");
+    //            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "combat@drag_ped@", "injured_drag_plyr", 2.0f, -2.0f, -1, (int)AnimationFlags.Loop, 0, false, false, false);
+
+    //            NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(coolguy, Player.Character, false);
+    //            leftHandObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_PELVIS"), Vector3.Zero, Rotator.Zero);
+    //            NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(coolguy, leftHandObject, 
+    //                NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", coolguy, "BONETAG_SPINE3"), //bone 1
+    //                NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", coolguy, "BONETAG_SPINE3"),// bone 2
+    //                Settings.SettingsManager.DragSettings.Attach1X, Settings.SettingsManager.DragSettings.Attach1Y, Settings.SettingsManager.DragSettings.Attach1Z,
+    //                Settings.SettingsManager.DragSettings.Attach2X, Settings.SettingsManager.DragSettings.Attach2Y, Settings.SettingsManager.DragSettings.Attach2Z,
+    //                Settings.SettingsManager.DragSettings.Attach3X, Settings.SettingsManager.DragSettings.Attach3Y, Settings.SettingsManager.DragSettings.Attach3Z,
+    //                100000.0f,//break force
+    //                Settings.SettingsManager.DragSettings.FixedRotation, //fixed rotation
+    //                true, //DoInitialWarp
+    //                false, //collision
+    //                false, //teleport
+    //                1 //RotationORder
+    //                );
+
+    //            //"BONETAG_SPINE3"
+    //            //"BONETAG_PELVIS"
+    //            //0.1,0.3,-0.1
+    //            //0,0,0
+    //            //180.90,0
+    //        }
+    //    }
+    //    while (coolguy.Exists() && leftHandObject.Exists() && !Game.IsKeyDownRightNow(Keys.Q) && ModController.IsRunning)
+    //    {
+    //        Game.DisplayHelp("Press Q to Stop");
+    //        GameFiber.Yield();
+    //    }
+    //    if (coolguy.Exists())
+    //    {
+    //        coolguy.Delete();
+    //    }
+    //    if (leftHandObject.Exists())
+    //    {
+    //        leftHandObject.Delete();
+    //    }
+    //}, "Run Debug Logic");
+    }
+
+
+    private void ShowBodyLoadPosition()
+    {
+        GameFiber.Sleep(200);
+        VehicleExt TargetVehicle = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, 10f);//GetTargetVehicle();
+        if (TargetVehicle != null && TargetVehicle.Vehicle.Exists())//make sure we found a vehicle to change the plates of
+        {
+            TargetVehicle.OpenDoor(5, true);
+            Vector3 ChangeSpot = GetBodyLoadPosition(TargetVehicle.Vehicle);
+            GameFiber.StartNew(delegate
+            {
+                while (!Game.IsKeyDownRightNow(Keys.Space))
+                {
+
+                    if (ChangeSpot != Vector3.Zero)
+                    {
+                        Rage.Debug.DrawArrowDebug(ChangeSpot, Vector3.Zero, Rotator.Zero, 1f, Color.White);
+                        Rage.Debug.DrawArrowDebug(new Vector3(ChangeSpot.X, ChangeSpot.Y, ChangeSpot.Z + 2.0f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+                    }
+                    Game.DisplayHelp($"Press SPACE to Stop");
+                    GameFiber.Yield();
+                }
+            }, "Run Debug Logic");
+        }
+    }
+    private Vector3 GetBodyLoadPosition(Vehicle VehicleToChange)
+    {
+        if (!VehicleToChange.Exists())
+        {
+            return Vector3.Zero;
+        }
+        float halfLength = VehicleToChange.Model.Dimensions.Y / 2.0f;
+        halfLength += Settings.SettingsManager.DragSettings.LoadBodyYOffset;
+        //y = -.75
+        //z = 0.1
+
+        Vector3 almostFinal = VehicleToChange.GetOffsetPositionFront(-1.0f * halfLength);
+
+        return new Vector3(almostFinal.X + Settings.SettingsManager.DragSettings.LoadBodyXOffset, almostFinal.Y, almostFinal.Z + Settings.SettingsManager.DragSettings.LoadBodyZOffset);
+    }
+
+
+    private void ShowCarChangePosition()
+    {
+        GameFiber.Sleep(200);
+        VehicleExt TargetVehicle = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, 10f);//GetTargetVehicle();
+        if (TargetVehicle != null && TargetVehicle.Vehicle.Exists())//make sure we found a vehicle to change the plates of
+        {
+            Vector3 ChangeSpot = GetLicensePlateChangePosition(TargetVehicle.Vehicle);
+            Vector3 NewChangeSpot = GetLicensePlateChangePositionNew(TargetVehicle.Vehicle);
+            GameFiber.StartNew(delegate
+            {
+                while (!Game.IsKeyDownRightNow(Keys.Space))
+                {
+
+                    if (ChangeSpot != Vector3.Zero)
+                    {
+                        Rage.Debug.DrawArrowDebug(ChangeSpot, Vector3.Zero, Rotator.Zero, 1f, Color.White);
+                    }
+                    if (NewChangeSpot != Vector3.Zero)
+                    {
+                        Rage.Debug.DrawArrowDebug(NewChangeSpot, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+                    }
+                    Game.DisplayHelp($"Press SPACE to Stop");
+                    GameFiber.Yield();
+                }
+            }, "Run Debug Logic");
+        }
+    }
+
+
+    private Vector3 GetLicensePlateChangePosition(Vehicle VehicleToChange)
+    {
+        if(!VehicleToChange.Exists())
+        {
+            EntryPoint.WriteToConsole("PLATE THEFT BONE: NO VEHICLE");
+            return Vector3.Zero;
+        }
+        Vector3 Position;
+        Vector3 Right;
+        Vector3 Forward;
+        Vector3 Up;
+        bool isFrontPlate = false;
+
+        if (VehicleToChange.HasBone("numberplate"))
+        {
+            float HeadingRotation = -90f;
+            EntryPoint.WriteToConsole("PLATE THEFT BONE: numberplate");
+            Position = VehicleToChange.GetBonePosition("numberplate");
+            if (Position.DistanceTo2D(VehicleToChange.GetOffsetPositionFront(2f)) < Position.DistanceTo2D(VehicleToChange.GetOffsetPositionFront(-2f)))
+            {
+                EntryPoint.WriteToConsole("PLATE THEFT BONE: numberplate IS FRONT PLATE");
+                HeadingRotation = 90f;
+            }
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading + HeadingRotation, 1.5f);
+            return SpawnPosition;
+        }
+        else if (VehicleToChange.IsBike)
+        {
+            EntryPoint.WriteToConsole("PLATE THEFT BONE: IS BIKE");
+            return VehicleToChange.GetOffsetPositionFront(-1.5f);
+        }
+        else if (VehicleToChange.HasBone("bumper_r"))
+        {
+            EntryPoint.WriteToConsole("PLATE THEFT BONE: bumper_r");
+            Position = VehicleToChange.GetBonePosition("bumper_r");
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, 1.5f);
+            SpawnPosition = NativeHelper.GetOffsetPosition(SpawnPosition, VehicleToChange.Heading, VehicleToChange.Model.Dimensions.X / 2);
+            return SpawnPosition;
         }
         else
         {
-            unsafe
-            {
-                int lol = 0;
-                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, 134217728, 16);
-                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", attackDog, lol);
-                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-            }
+            EntryPoint.WriteToConsole("PLATE THEFT BONE: NO BONE FOUND DISABLING");
+            return Vector3.Zero;
         }
     }
-    Game.DisplayHelp("PRESS Z TO CANCEL");
-    while (attackDog.Exists() && !Game.IsKeyDownRightNow(Keys.Z) && ModController.IsRunning)
+
+
+    private Vector3 GetLicensePlateChangePositionNew(Vehicle VehicleToChange)
     {
-        GameFiber.Sleep(25);
-    }
-    if (attackDog.Exists())
-    {
-        attackDog.Delete();
-    }
-
-}, "Run Debug Logic");
-
-
-
-}
-
-
-private void OpenDoors()
-{
-Interior int1 = Interiors.GetInteriorByLocalID(-103);
-if(int1 == null)
-{
-    return;
-}
-foreach (InteriorDoor door in int1.Doors)
-{
-    door.UnLockDoor();
-    //NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, 0.0f, 50.0f);
-    //door.IsLocked = false;
-}
-}
-private void SpawnAttachedRagdoll()
-{
-//GameFiber.StartNew(delegate
-//{
-//    Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
-//    Rage.Object leftHandObject = new Rage.Object("ng_proc_cigarette01a", Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
-//    GameFiber.Yield();
-//    if (coolguy.Exists())
-//    {
-//        coolguy.BlockPermanentEvents = true;
-//        coolguy.KeepTasks = true;
-//        coolguy.Kill();
-//        GameFiber.Sleep(500);
-//        if (coolguy.Exists() && leftHandObject.Exists())
-//        {
-//            AnimationDictionary.RequestAnimationDictionay("combat@drag_ped@");
-//            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "combat@drag_ped@", "injured_drag_plyr", 2.0f, -2.0f, -1, (int)AnimationFlags.Loop, 0, false, false, false);
-
-//            NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(coolguy, Player.Character, false);
-//            leftHandObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_PELVIS"), Vector3.Zero, Rotator.Zero);
-//            NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(coolguy, leftHandObject, 
-//                NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", coolguy, "BONETAG_SPINE3"), //bone 1
-//                NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", coolguy, "BONETAG_SPINE3"),// bone 2
-//                Settings.SettingsManager.DragSettings.Attach1X, Settings.SettingsManager.DragSettings.Attach1Y, Settings.SettingsManager.DragSettings.Attach1Z,
-//                Settings.SettingsManager.DragSettings.Attach2X, Settings.SettingsManager.DragSettings.Attach2Y, Settings.SettingsManager.DragSettings.Attach2Z,
-//                Settings.SettingsManager.DragSettings.Attach3X, Settings.SettingsManager.DragSettings.Attach3Y, Settings.SettingsManager.DragSettings.Attach3Z,
-//                100000.0f,//break force
-//                Settings.SettingsManager.DragSettings.FixedRotation, //fixed rotation
-//                true, //DoInitialWarp
-//                false, //collision
-//                false, //teleport
-//                1 //RotationORder
-//                );
-
-//            //"BONETAG_SPINE3"
-//            //"BONETAG_PELVIS"
-//            //0.1,0.3,-0.1
-//            //0,0,0
-//            //180.90,0
-//        }
-//    }
-//    while (coolguy.Exists() && leftHandObject.Exists() && !Game.IsKeyDownRightNow(Keys.Q) && ModController.IsRunning)
-//    {
-//        Game.DisplayHelp("Press Q to Stop");
-//        GameFiber.Yield();
-//    }
-//    if (coolguy.Exists())
-//    {
-//        coolguy.Delete();
-//    }
-//    if (leftHandObject.Exists())
-//    {
-//        leftHandObject.Delete();
-//    }
-//}, "Run Debug Logic");
-}
-
-private void CarChanePos()
-{
-GameFiber.Sleep(200);
-VehicleExt TargetVehicle = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, 10f);//GetTargetVehicle();
-if (TargetVehicle != null && TargetVehicle.Vehicle.Exists())//make sure we found a vehicle to change the plates of
-{
-    Vector3 ChangeSpot = GetLicensePlateChangePosition(TargetVehicle.Vehicle);
-    GameFiber.StartNew(delegate
-    {
-        while (!Game.IsKeyDownRightNow(Keys.Space))
+        if (!VehicleToChange.Exists())
         {
-            Rage.Debug.DrawArrowDebug(ChangeSpot, Vector3.Zero, Rotator.Zero, 1f, Color.White);
-            Game.DisplayHelp($"Press SPACE to Stop");
-            GameFiber.Yield();
+            return Vector3.Zero;
         }
-    }, "Run Debug Logic");
-}
-}
-private Vector3 GetLicensePlateChangePosition(Vehicle VehicleToChange)
-{
-Vector3 Position;
-Vector3 Right;
-Vector3 Forward;
-Vector3 Up;
-
-if (VehicleToChange.HasBone("numberplate"))
-{
-    //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: numberplate");
-    Position = VehicleToChange.GetBonePosition("numberplate");
+        float halfLength = VehicleToChange.Model.Dimensions.Y / 2.0f;
+        halfLength += 1.0f;
+        return VehicleToChange.GetOffsetPositionFront(-1.0f * halfLength);
+    }
 
 
-    Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, -1 * Settings.SettingsManager.ActivitySettings.PlateTheftFloat);
-    return SpawnPosition;
 
-    VehicleToChange.GetBoneAxes("numberplate", out Right, out Forward, out Up);
-    return Vector3.Add(Forward * -1.0f * Settings.SettingsManager.ActivitySettings.PlateTheftFloat, Position);
-}
-else if (VehicleToChange.HasBone("boot"))
-{
-    //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: boot");
-    Position = VehicleToChange.GetBonePosition("boot");
+    //private Vector3 GetLicensePlateChangePosition(Vehicle VehicleToChange)
+    //{
+    //Vector3 Position;
+    //Vector3 Right;
+    //Vector3 Forward;
+    //Vector3 Up;
 
-    Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading -90, -1 * Settings.SettingsManager.ActivitySettings.PlateTheftFloat);
-    return SpawnPosition;
-
-    VehicleToChange.GetBoneAxes("boot", out Right, out Forward, out Up);
-    return Vector3.Add(Forward * -1.75f * Settings.SettingsManager.ActivitySettings.PlateTheftFloat, Position);//return Vector3.Add(Forward * -1.75f, Position);
-}
-else if (VehicleToChange.IsBike)
-{
-    //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: IS BIKE");
-    return VehicleToChange.GetOffsetPositionFront(-1.5f);
-}
-else if (VehicleToChange.HasBone("bumper_r"))
-{
-    //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: bumper_r");
-    Position = VehicleToChange.GetBonePosition("bumper_r");
+    //if (VehicleToChange.HasBone("numberplate"))
+    //{
+    //    //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: numberplate");
+    //    Position = VehicleToChange.GetBonePosition("numberplate");
 
 
-    Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, -1 * Settings.SettingsManager.ActivitySettings.PlateTheftFloat);
-    return SpawnPosition;
+    //    Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, -1 * Settings.SettingsManager.ActivitySettings.PlateTheftFloat);
+    //    return SpawnPosition;
+
+    //    VehicleToChange.GetBoneAxes("numberplate", out Right, out Forward, out Up);
+    //    return Vector3.Add(Forward * -1.0f * Settings.SettingsManager.ActivitySettings.PlateTheftFloat, Position);
+    //}
+    //else if (VehicleToChange.HasBone("boot"))
+    //{
+    //    //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: boot");
+    //    Position = VehicleToChange.GetBonePosition("boot");
+
+    //    Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading -90, -1 * Settings.SettingsManager.ActivitySettings.PlateTheftFloat);
+    //    return SpawnPosition;
+
+    //    VehicleToChange.GetBoneAxes("boot", out Right, out Forward, out Up);
+    //    return Vector3.Add(Forward * -1.75f * Settings.SettingsManager.ActivitySettings.PlateTheftFloat, Position);//return Vector3.Add(Forward * -1.75f, Position);
+    //}
+    //else if (VehicleToChange.IsBike)
+    //{
+    //    //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: IS BIKE");
+    //    return VehicleToChange.GetOffsetPositionFront(-1.5f);
+    //}
+    //else if (VehicleToChange.HasBone("bumper_r"))
+    //{
+    //    //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: bumper_r");
+    //    Position = VehicleToChange.GetBonePosition("bumper_r");
 
 
-    VehicleToChange.GetBoneAxes("bumper_r", out Right, out Forward, out Up);
-    Position = Vector3.Add(Forward * -1.0f * Settings.SettingsManager.ActivitySettings.PlateTheftFloat, Position);
-    return Vector3.Add(Right * 0.25f, Position);
-}
-else
-{
-    return Vector3.Zero;
-}
-}
-private void DoUiCustomzierFont()
+    //    Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, -1 * Settings.SettingsManager.ActivitySettings.PlateTheftFloat);
+    //    return SpawnPosition;
+
+
+    //    VehicleToChange.GetBoneAxes("bumper_r", out Right, out Forward, out Up);
+    //    Position = Vector3.Add(Forward * -1.0f * Settings.SettingsManager.ActivitySettings.PlateTheftFloat, Position);
+    //    return Vector3.Add(Right * 0.25f, Position);
+    //}
+    //else
+    //{
+    //    return Vector3.Zero;
+    //}
+    //}
+    private void DoUiCustomzierFont()
 {
 
 GameFiber.Sleep(500);

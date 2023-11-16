@@ -142,6 +142,7 @@ public class Flee : ComplexTask
     private void TaskVehicleFlee()
     {
         Vector3 CurrentPos = Ped.Pedestrian.Position;
+        Ped.IsCowering = false;
         if(Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Handle == Player.CurrentVehicle?.Handle)
         {
             unsafe
@@ -171,11 +172,13 @@ public class Flee : ComplexTask
     }
     private void TaskCowerOnFoot()
     {
+        Ped.IsCowering = true;
         NativeFunction.Natives.TASK_COWER(Ped.Pedestrian, -1);
         EntryPoint.WriteToConsole("FLEE SET PED COWER");
     }
     private void TaskFleeOnFoot()
     {
+        Ped.IsCowering = false;
         Vector3 CurrentPos = Ped.Pedestrian.Position;
         NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 5000f, -1, true, false);
         EntryPoint.WriteToConsole("FLEE SET PED FLEE");
