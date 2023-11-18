@@ -51,8 +51,7 @@ public class Morgue : GameLocation
             //LocationTeleporter locationTeleporter = null;
             if (Interior != null && Interior.IsTeleportEntry)
             {
-                LocationTeleporter locationTeleporter = new LocationTeleporter(Player, this,settings);
-                locationTeleporter.Teleport(null);
+                Interior.Teleport(Player, this, null);
             }
 
             //Player.IsTransacting = true;

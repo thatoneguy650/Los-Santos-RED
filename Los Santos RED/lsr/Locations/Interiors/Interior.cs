@@ -1,15 +1,20 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 [Serializable()]
 public class Interior
 {
+   // private bool IsMenuInteracting = false;
+    private bool IsInside;
+    private IInteractionable Player;
+    protected GameLocation InteractableLocation;
+    protected ISettingsProvideable Settings;
+
     public Interior()
     {
 
@@ -52,6 +57,8 @@ public class Interior
     public int InternalID { get; private set; }
     [XmlIgnore]
     public int DisabledInteriorID { get; private set; }
+    [XmlIgnore]
+    public bool IsMenuInteracting { get; set; }
     public int LocalID { get; set; }
     public Vector3 InternalInteriorCoordinates { get; set; }
     public string Name { get; set; }
@@ -68,12 +75,17 @@ public class Interior
     public bool NeedsActivation { get; set; } = false;
     public bool IsRestricted { get; set; } = false;
     public bool IsWeaponRestricted { get; set; } = false;
-    public Vector3 StandardInteractLocation { get; set; }
-    public float StandardInteractHeading { get; set; }
+    public List<InteriorInteract> InteractPoints { get; set; } = new List<InteriorInteract>();
 
-    public Vector3 StandardInteractCameraPosition { get; set; } = Vector3.Zero;
-    public Vector3 StandardInteractCameraDirection { get; set; } = Vector3.Zero;
-    public Rotator StandardInteractCameraRotation { get; set; }
+
+    public virtual void Setup(ISettingsProvideable settings)
+    {
+        Settings = settings;
+        foreach (InteriorInteract interiorInteract in InteractPoints)
+        {
+            interiorInteract.Setup();
+        }
+    }
 
     public void DebugOpenDoors()
     {
@@ -135,10 +147,6 @@ public class Interior
                         door.LockDoor();
                     }
                 }
-
-
-
-
                 if (DisabledInteriorCoords != Vector3.Zero)
                 {
                     DisabledInteriorID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z);
@@ -203,6 +211,7 @@ public class Interior
                         GameFiber.Yield();
                     }
                     NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
+                    //SetInactive();
                     GameFiber.Yield();
                 }
                 catch (Exception ex)
@@ -212,13 +221,107 @@ public class Interior
                 }
             }, "Unload Interiors");
     }
-
     public void Update()
     {
         foreach (InteriorDoor door in Doors.Where(x=>x.ForceRotateOpen && !x.HasBeenForceRotatedOpen))
         {
             EntryPoint.WriteToConsole("ATTEMPTING TO FORCE ROTATE OPEN DOOR THAT WASNT THERE");
             door.UnLockDoor();
+        }
+    }
+    public virtual void Teleport(IInteractionable player, GameLocation interactableLocation, LocationCamera locationCamera)
+    {
+        InteractableLocation = interactableLocation;
+        Player = player;
+        if (InteractableLocation.Interior != null && InteractableLocation.Interior.IsTeleportEntry)
+        {
+            Game.FadeScreenOut(1500, true);
+            Player.Character.Position = InteractableLocation.Interior.InteriorEgressPosition;
+            Player.Character.Heading = InteractableLocation.Interior.InteriorEgressHeading;
+            IsInside = true;
+            IsMenuInteracting = false;
+            locationCamera?.StopImmediately();
+            GameFiber.Sleep(1000);
+            Game.FadeScreenIn(1500, true);
+            OnWentInside();
+        }
+    }
+    private void OnWentInside()
+    {
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                while (IsInside && EntryPoint.ModController.IsRunning)
+                {
+                    InsideLoopNew();
+                    GameFiber.Yield();
+                }
+                Player.ActivityManager.IsInteractingWithLocation = false;
+                InteractableLocation.CanInteract = true;
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+
+        }, "Interact");
+    }
+    public virtual void InsideLoopNew()
+    {
+        foreach(InteriorInteract interiorInteract in InteractPoints)
+        {
+            interiorInteract.Update(Player,Settings,InteractableLocation, this);
+        }
+    }
+    public void Exit()
+    {
+        IsMenuInteracting = false;
+        RemoveButtonPrompts();
+        TeleportOut();
+    }
+    private void SetInactive()
+    {
+        if (IsInside)
+        {
+            RemoveButtonPrompts();
+            IsInside = false;
+        }
+    }
+    public void ForceExitPlayer(IInteractionable player, GameLocation interactableLocation)
+    {
+        InteractableLocation = interactableLocation;
+        Player = player;
+        if (!IsInside)
+        {
+            return;
+        }
+        RemoveButtonPrompts();
+        TeleportOut();
+    }
+    public virtual void RemoveButtonPrompts()
+    {
+        EntryPoint.WriteToConsole("INTERIOR RemoveButtonPrompts RAN");
+        foreach (InteriorInteract interiorInteract in InteractPoints)
+        {
+            interiorInteract.RemovePrompt();
+        }
+    }
+    protected virtual void TeleportOut()
+    {
+        //Do exit cam here from the main location?
+        IsInside = false;
+        if (InteractableLocation != null)
+        {
+            Game.FadeScreenOut(1500, true);
+            Player.Character.Position = InteractableLocation.EntrancePosition;
+            Player.Character.Heading = InteractableLocation.EntranceHeading;
+            Player.Character.IsVisible = false;
+            GameFiber.Sleep(500);
+            Game.FadeScreenIn(1000, true);
+            InteractableLocation.DoExitCamera();
+            //GameFiber.Sleep(1000);
         }
     }
 }

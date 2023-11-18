@@ -25,9 +25,7 @@ public class ApartmentBuilding : GameLocation
     public List<string> ResidenceIDs { get; set; } = new List<string>();
     [XmlIgnore]
     public List<Residence> Residences { get; set; } = new List<Residence>();
-
     public override string TypeName => "Apartment Building";
-
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
@@ -45,21 +43,16 @@ public class ApartmentBuilding : GameLocation
         {
             return;
         }
-        DoInteract();
-    }
-    private void DoInteract()
-    {
         if (Interior != null && Interior.IsTeleportEntry)
         {
-            LocationTeleporter locationTeleporter = new LocationTeleporter(Player, this, Settings);
-            locationTeleporter.Teleport(null);
+            Interior.Teleport(Player, this, null);
         }
         else
         {
-            StandardInteract(false, null);
+            StandardInteract(null, false);
         }
     }
-    public override void StandardInteract(bool isInside, LocationCamera locationCamera)
+    public override void StandardInteract(LocationCamera locationCamera, bool isInside)
     {
         Player.ActivityManager.IsInteractingWithLocation = true;
         CanInteract = false;
@@ -69,17 +62,9 @@ public class ApartmentBuilding : GameLocation
         {
             try
             {
-                StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam || isInside);
-                StoreCamera.SayGreeting = false;
-                if (isInside && Interior != null)
-                {
-                    StoreCamera.IsInterior = true;
-                    StoreCamera.Interior = Interior;
-                }
-                StoreCamera.Setup();
+                SetupLocationCamera(locationCamera, isInside, false);
                 CreateInteractionMenu();
                 InteractionMenu.Visible = true;
-                //InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
                 if (!HasBannerImage)
                 {
                     InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
@@ -90,22 +75,21 @@ public class ApartmentBuilding : GameLocation
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();
                 }
-                //EntryPoint.WriteToConsole($"PLAYER EVENT: RESIDENCE LOOP CLOSING IsAnyMenuVisible {IsAnyMenuVisible} Time.IsFastForwarding {Time.IsFastForwarding}");
                 if (!HasTransitionedToResidence)
                 {
                     DisposeInteractionMenu();
                     StoreCamera.Dispose();
+                    Player.ActivityManager.IsInteractingWithLocation = false;
+                    CanInteract = true;
+                    Player.IsTransacting = false;
                 }
-                Player.ActivityManager.IsInteractingWithLocation = false;
-                CanInteract = true;
-                Player.IsTransacting = false;
             }
             catch (Exception ex)
             {
                 EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
                 EntryPoint.ModController.CrashUnload();
             }
-        }, "ResidenceInteract");
+        }, "ApartmentInteract");
     }
 
     private void GenerateResidenceMenu()
@@ -122,7 +106,7 @@ public class ApartmentBuilding : GameLocation
             {
                 HasTransitionedToResidence = true;
                 sender.Visible = false;
-                foundResidence.OnInteractFromMainBuilding(Player,ModItems,World,Settings,Weapons,Time, PlacesOfInterest, StoreCamera);
+                foundResidence.OnInteractFromApartment(Player,ModItems,World,Settings,Weapons,Time, PlacesOfInterest, StoreCamera);
             };
             InteractionMenu.AddItem(PurchaseResidenceMenuItem);       
         }

@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Microsoft.VisualBasic;
+using NAudio.Wave;
 using Rage;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
@@ -54,6 +55,8 @@ public class Residence : GameLocation, ILocationSetupable
     public WeaponStorage WeaponStorage { get; set; }
     [XmlIgnore]
     public CashStorage CashStorage { get; set; }
+    [XmlIgnore]
+    public ResidenceInterior ResidenceInterior { get; set; }
     public bool CanRent => !IsOwned && !IsRented && RentalFee > 0;
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
     public bool IsOwnedOrRented => IsOwned || IsRented;
@@ -67,17 +70,27 @@ public class Residence : GameLocation, ILocationSetupable
     public override string ButtonPromptText { get; set; }
     public override int SortOrder => IsOwnedOrRented ? 1 : 999;
     public override bool ShowInteractPrompt => CanInteract && !HasHeaderApartmentBuilding;
-
-
     public override bool IsBlipEnabled => base.IsBlipEnabled && !HasHeaderApartmentBuilding;
-
     public Residence(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         ButtonPromptText = GetButtonPromptText();
         OpenTime = 0;
         CloseTime = 24;
     }
-    public void OnInteractFromMainBuilding(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, LocationCamera storeCamera)
+
+
+    public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world,
+    IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors)
+    {
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors);
+        if (HasInterior)
+        {
+            ResidenceInterior = interiors.PossibleInteriors.ResidenceInteriors.Where(x => x.LocalID == InteriorID).FirstOrDefault();
+            interior = ResidenceInterior;
+        }
+    }
+
+    public void OnInteractFromApartment(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, LocationCamera storeCamera)
     {
         Player = player;
         ModItems = modItems;
@@ -93,8 +106,24 @@ public class Residence : GameLocation, ILocationSetupable
         {
             return;
         }
-        DoInteract(storeCamera);
+        if (ResidenceInterior != null && ResidenceInterior.IsTeleportEntry && IsOwnedOrRented)
+        {
+            ResidenceInterior.SetResidence(this);
+            ResidenceInterior.Teleport(Player, this, storeCamera);
+        }
+        else
+        {
+            StandardInteract(storeCamera, false);
+        }
     }
+    //Standard No Interior, Fake Camera Interact
+    //Interact from an apartment building
+    //Interact Rest Item, need to crawl into bed
+    //Interact Pantry Item with other restirctions (pantry or fridge)
+    //Interact Cash ITem, walk up and do give take anims
+    //Interact Outfit item, needs to walk up, turn around and face, then generate menu
+    //Interact Weapon Items, need to do came as cash, and pantry items for give and take, mayube do models later
+    //Interact General Item, does walkup, but allows all item types 
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
@@ -111,29 +140,18 @@ public class Residence : GameLocation, ILocationSetupable
         {
             return;
         }
-        DoInteract(null);
-    }
-    private void DoInteract(LocationCamera locationCamera)
-    {
-        if (Interior != null && Interior.IsTeleportEntry && IsOwnedOrRented)
+        if (ResidenceInterior != null && ResidenceInterior.IsTeleportEntry && IsOwnedOrRented)
         {
-            HandleTeleportEntry(locationCamera);
+            DoEntranceCamera();
+            ResidenceInterior.SetResidence(this);
+            ResidenceInterior.Teleport(Player, this, null);
         }
         else
         {
-            StandardInteract(false, locationCamera);
+            StandardInteract(null, false);
         }
     }
-
-    private void HandleTeleportEntry(LocationCamera locationCamera)
-    {
-        if (Interior != null && Interior.IsTeleportEntry && IsOwnedOrRented)
-        {
-            LocationTeleporter locationTeleporter = new LocationTeleporter(Player, this, Settings);
-            locationTeleporter.Teleport(locationCamera);
-        }
-    }
-    public override void StandardInteract(bool isInside, LocationCamera locationCamera)
+    public override void StandardInteract(LocationCamera locationCamera, bool isInside)
     {
         Player.ActivityManager.IsInteractingWithLocation = true;
         CanInteract = false;
@@ -143,23 +161,7 @@ public class Residence : GameLocation, ILocationSetupable
         {
             try
             {
-                if(locationCamera == null)
-                {
-                    StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam || isInside);
-                    StoreCamera.SayGreeting = false;
-                    if (isInside && Interior != null)
-                    {
-                        StoreCamera.IsInterior = true;
-                        StoreCamera.Interior = Interior;
-                    }
-                    StoreCamera.Setup();
-                    EntryPoint.WriteToConsole("RESIDENCE STORE CAM RAN");
-                }
-                else
-                {
-                    StoreCamera = locationCamera;
-                    EntryPoint.WriteToConsole("RESIDENCE STORE CAM GOT PASSED IN");
-                }
+                SetupLocationCamera(locationCamera, isInside, false);
                 CreateInteractionMenu();
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
@@ -173,17 +175,22 @@ public class Residence : GameLocation, ILocationSetupable
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();
                 }
-
-                    //EntryPoint.WriteToConsole($"PLAYER EVENT: RESIDENCE LOOP CLOSING IsAnyMenuVisible {IsAnyMenuVisible} Time.IsFastForwarding {Time.IsFastForwarding}");
-                    DisposeInteractionMenu();
-                if (!HasTeleported)
+                DisposeInteractionMenu();      
+                if (isInside)
+                {
+                    StoreCamera.StopImmediately();
+                }
+                else if (!HasTeleported)
                 {
                     StoreCamera.Dispose();
                 }
                 Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
                 Player.IsTransacting = false;
-                
+                if (Interior != null)
+                {
+                    Interior.IsMenuInteracting = false;
+                }
             }
             catch (Exception ex)
             {
@@ -192,6 +199,10 @@ public class Residence : GameLocation, ILocationSetupable
             }
         }, "ResidenceInteract");
     }
+
+
+   
+
     public void RefreshUI()
     {
         UpdateStoredData();
@@ -241,12 +252,16 @@ public class Residence : GameLocation, ILocationSetupable
             Game.DisplayNotification($"ERROR RERENTING {ex.Message}");
         }
     }
-    private void InteractionMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+
+    private void GenerateRestMenu()
     {
-        if(selectedItem == RestMenuItem)
+        if (!IsOwnedOrRented)
         {
-            Rest(RestMenuItem.Value);
+            return;
         }
+        InteractionMenu.Clear();
+        CreateOwnershipInteractionMenu();
+        CreateRestInteractionMenu();
     }
     private void GenerateResidenceMenu()
     {
@@ -254,6 +269,30 @@ public class Residence : GameLocation, ILocationSetupable
         AddInquireItems();
         AddInteractionItems();
     }
+    private void GenerateSpecificInteractMenu(bool createOwnershipInteraction, bool createRestInteraction, bool createOutfitInteraction, bool createInventoryInteraction, bool createWeaponInteraction, bool createCashInteractionMenu)//needs toa lready be bought, some sort of restrict parameter to determine which it is?
+    {
+        if(!IsOwnedOrRented)
+        {
+            return;
+        }
+        InteractionMenu.Clear();
+        CreateOwnershipInteractionMenu();
+        CreateRestInteractionMenu();
+        CreateOutfitInteractionMenu();
+        SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, false);
+        WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, false);
+        CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this);
+    }
+
+
+    private void InteractionMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    {
+        if(selectedItem == RestMenuItem)
+        {
+            Rest(RestMenuItem.Value);
+        }
+    }
+
     private void AddInquireItems()
     {
         if ((!IsOwned && CanBuy) || (!IsRented && CanRent))
@@ -315,6 +354,15 @@ public class Residence : GameLocation, ILocationSetupable
         {
             return;
         }
+        CreateOwnershipInteractionMenu();
+        CreateRestInteractionMenu();
+        CreateOutfitInteractionMenu();
+        SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, false);
+        WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, false);
+        CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this);
+    }
+    private void CreateOwnershipInteractionMenu()
+    {
         if (IsRented)
         {
             RentDisplayItem = new UIMenuItem("Rental Period", IsRentedDescription) { RightLabel = IsRentedRightLabel };
@@ -323,76 +371,40 @@ public class Residence : GameLocation, ILocationSetupable
             RentStopItem = new UIMenuItem("Stop Renting", "Stop renting the current location.");
             RentStopItem.Activated += (sender, e) =>
             {
-                StopRenting();
+                OnStopRenting();
+                MenuPool.CloseAllMenus();
+                Interior?.ForceExitPlayer(Player, this);
             };
             InteractionMenu.AddItem(RentStopItem);
-
         }
-        if(IsOwned)
+        if (IsOwned)
         {
             SellHouseItem = new UIMenuItem("Sell House", "Sell the current house.") { RightLabel = SalesPrice.ToString("C0") };
             SellHouseItem.Activated += (sender, e) =>
             {
-                SellHouse();
+                OnSold();
+                MenuPool.CloseAllMenus();
+                Interior?.ForceExitPlayer(Player, this);
             };
             InteractionMenu.AddItem(SellHouseItem);
         }
+    }
+    private void CreateRestInteractionMenu()
+    {
         RestMenuItem = new UIMenuNumericScrollerItem<int>("Rest", "Rest at your residence to recover health. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
         InteractionMenu.AddItem(RestMenuItem);
-
+    }
+    private void CreateOutfitInteractionMenu()
+    {
         outfitsSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Outfits");
         if (!HasBannerImage)
         {
             outfitsSubMenu.SetBannerType(EntryPoint.LSRedColor);
         }
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Set an outfit.";
-
-        UpdateOutfits();
-        UpdateInventory();
-        UpdateStoredWeapons();
-        UpdateStoredCash();
-        UpdateConsumableItems();
+        UpdateOutfitInteractionSubMenu();
     }
-    private void OnRentedOrPurchased()
-    {
-        if (Interior != null && Interior.IsTeleportEntry)
-        {
-            HandleTeleportEntry(StoreCamera);
-            HasTeleported = true;
-            MenuPool.CloseAllMenus();
-        }
-        else
-        {
-            GenerateResidenceMenu();
-        }
-    }
-    private void UpdateConsumableItems()
-    {
-        //Player.Inventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu);
-    }
-    private void SellHouse()
-    {
-        OnSold();
-        MenuPool.CloseAllMenus();
-    }
-    private void StopRenting()
-    {
-        OnStopRenting();
-        MenuPool.CloseAllMenus();
-    }
-    private void UpdateStoredWeapons()
-    {
-        WeaponStorage.CreateInteractionMenu(Player,MenuPool, InteractionMenu, Weapons, ModItems, false);
-    }
-    private void UpdateInventory()
-    {
-        SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, false);
-    }
-    private void UpdateStoredCash()
-    {
-        CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this);
-    }
-    private void UpdateOutfits()
+    private void UpdateOutfitInteractionSubMenu()
     {
         outfitsSubMenu.Clear();
         foreach (SavedOutfit so in Player.OutfitManager.CurrentPlayerOutfits)
@@ -403,6 +415,21 @@ public class Residence : GameLocation, ILocationSetupable
                 Player.OutfitManager.SetOutfit(so);
             };
             outfitsSubMenu.AddItem(uIMenuItem);
+        }
+    }
+
+    private void OnRentedOrPurchased()
+    {
+        if (ResidenceInterior != null && ResidenceInterior.IsTeleportEntry)
+        {
+            ResidenceInterior.SetResidence(this);
+            ResidenceInterior.Teleport(Player, this, StoreCamera);
+            HasTeleported = true;
+            MenuPool.CloseAllMenus();
+        }
+        else
+        {
+            GenerateResidenceMenu();
         }
     }
     private bool Rent()

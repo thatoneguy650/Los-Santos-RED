@@ -128,6 +128,7 @@
     <Compile Include="lsr\Data\Agencies\WantedLevels.cs" />
     <Compile Include="lsr\Data\Interface\ICellphones.cs" />
     <Compile Include="lsr\Data\Interface\IContacts.cs" />
+    <Compile Include="lsr\Data\Location\PossibleInteriors.cs" />
     <Compile Include="lsr\Data\Organizations\Contacts.cs" />
     <Compile Include="lsr\Data\Organizations\PossibleContacts.cs" />
     <Compile Include="lsr\Data\Organizations\PossibleOrganizations.cs" />
@@ -136,6 +137,12 @@
     <Compile Include="lsr\Dispatcher\LE\MarshalDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Civilian\TaxiDispatcher.cs" />
     <Compile Include="lsr\Inventory\CashStorage.cs" />
+    <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\InteriorInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\ResidenceInterior.cs" />
+    <Compile Include="lsr\Locations\Interiors\ResidenceInteriorInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\ResidenceInteriorRestInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\StandardInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\MerchantConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankDrawer.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\IGasPumpable.cs" />
@@ -575,7 +582,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\SportingGoodsStore.cs" />
     <Compile Include="lsr\Locations\Places\Other\BusRoute.cs" />
     <Compile Include="lsr\Locations\Places\Other\BusRouteStop.cs" />
-    <Compile Include="lsr\Locations\Places\Other\LocationTeleporter.cs" />
+    <Compile Include="lsr\Old\LocationTeleporter.cs" />
     <Compile Include="lsr\Locations\Other\RoadNode.cs" />
     <Compile Include="lsr\Locations\Other\SpawnPlace.cs" />
     <Compile Include="lsr\ModController\ModDataFileManager.cs" />

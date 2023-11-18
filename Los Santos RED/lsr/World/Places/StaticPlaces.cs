@@ -63,11 +63,15 @@ public class StaticPlaces
     {
         foreach (GameLocation tl in PlacesOfInterest.InteractableLocations())
         {
-            tl.StoreData(ShopMenus, Agencies, Gangs,Zones, Jurisdictions, GangTerritories, Names, Crimes, PedGroups, World, Streets, LocationTypes, Settings, PlateTypes, Associations, Contacts);
+            tl.StoreData(ShopMenus, Agencies, Gangs,Zones, Jurisdictions, GangTerritories, Names, Crimes, PedGroups, World, Streets, LocationTypes, Settings, PlateTypes, Associations, Contacts, Interiors);
         }
         foreach (ILocationSetupable ps in PlacesOfInterest.LocationsToSetup())
         {
             ps.Setup();
+        }
+        foreach(Interior interior in Interiors.PossibleInteriors.AllInteriors())
+        {
+            interior.Setup(Settings);
         }
     }
     public void ActivateLocations()
