@@ -11,10 +11,11 @@ public class Interior
 {
    // private bool IsMenuInteracting = false;
     private bool IsInside;
-    private IInteractionable Player;
+    protected IInteractionable Player;
     protected GameLocation InteractableLocation;
     protected ISettingsProvideable Settings;
-
+    private bool IsActive = false;
+    private bool IsRunningInteriorUpdate = false;
     public Interior()
     {
 
@@ -78,9 +79,14 @@ public class Interior
     public List<InteriorInteract> InteractPoints { get; set; } = new List<InteriorInteract>();
 
 
-    public virtual void Setup(ISettingsProvideable settings)
+    public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
     {
         Settings = settings;
+        Player = player;
+        if(!IsTeleportEntry)
+        {
+            InteractableLocation = placesOfInterest.AllLocations().Where(x=> x.InteriorID == LocalID).FirstOrDefault();
+        }
         foreach (InteriorInteract interiorInteract in InteractPoints)
         {
             interiorInteract.Setup();
@@ -156,6 +162,7 @@ public class Interior
                     GameFiber.Yield();
                 }
                 NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
+                IsActive = true;
                 GameFiber.Yield();
             }
             catch (Exception ex)
@@ -212,6 +219,7 @@ public class Interior
                     }
                     NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
                     //SetInactive();
+                    IsActive = false;
                     GameFiber.Yield();
                 }
                 catch (Exception ex)
@@ -227,6 +235,19 @@ public class Interior
         {
             EntryPoint.WriteToConsole("ATTEMPTING TO FORCE ROTATE OPEN DOOR THAT WASNT THERE");
             door.UnLockDoor();
+        }
+        if(IsTeleportEntry)
+        {
+            return;
+        }
+        if(InteractPoints== null || !InteractPoints.Any() || InteractableLocation == null)
+        {
+            return;
+        }
+
+        if(!IsRunningInteriorUpdate && InteractableLocation.DistanceToPlayer <= 100f)
+        {
+            OnBecameClose();
         }
     }
     public virtual void Teleport(IInteractionable player, GameLocation interactableLocation, LocationCamera locationCamera)
@@ -246,6 +267,42 @@ public class Interior
             OnWentInside();
         }
     }
+
+
+    public void OnBecameClose()
+    {
+        if(IsTeleportEntry || IsRunningInteriorUpdate)
+        {
+            return;
+        }
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                EntryPoint.WriteToConsole($"Interior OnBecameClose {Name}");
+                IsRunningInteriorUpdate = true;
+                IsMenuInteracting = false;
+                while (IsActive && EntryPoint.ModController.IsRunning)
+                {
+                    if (InteractableLocation.DistanceToPlayer <= 100f)
+                    {
+                        InsideLoopNew();
+                    }
+                    GameFiber.Yield();
+                }
+                IsRunningInteriorUpdate = false;
+                EntryPoint.WriteToConsole($"Interior StoppedBecomingClose {Name}");
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+
+        }, "Interact");
+    }
+
+
     private void OnWentInside()
     {
         GameFiber.StartNew(delegate

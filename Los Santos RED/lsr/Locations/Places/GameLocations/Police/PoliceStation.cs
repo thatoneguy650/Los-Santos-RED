@@ -1,6 +1,7 @@
 ﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
+using Microsoft.VisualBasic;
 using Mod;
 using Rage;
 using RAGENativeUI;
@@ -14,6 +15,7 @@ using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePreviewable, ILocationImpoundable, ILocationAreaRestrictable
 {
@@ -65,11 +67,23 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
         {
             return;        
         }
-        if(AssignedAgency == null)
+        if (AssignedAgency == null)
         {
             Game.DisplayHelp("No Agency Assigned");
             return;
         }
+        if (Interior != null && Interior.IsTeleportEntry)
+        {
+            DoEntranceCamera();
+            Interior.Teleport(Player, this, StoreCamera);
+        }
+        else
+        {
+            StandardInteract(null, false);
+        }     
+    }
+    public override void StandardInteract(LocationCamera locationCamera, bool isInside)
+    {
         Player.ActivityManager.IsInteractingWithLocation = true;
         CanInteract = false;
         Player.IsTransacting = true;
@@ -77,22 +91,25 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
         {
             try
             {
-                StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
-                StoreCamera.Setup();         
+                SetupLocationCamera(locationCamera, isInside, true);
                 CreateInteractionMenu();
-                if(Player.IsCop)
+                if (Player.IsCop)
                 {
-                    InteractAsCop(modItems,world,settings,weapons,time);
+                    InteractAsCop(ModItems, World, Settings, Weapons, Time);
                 }
                 else
                 {
                     InteractAsOther();
                 }
                 DisposeInteractionMenu();
-                StoreCamera.Dispose();
+                DisposeCamera(isInside);
                 Player.ActivityManager.IsInteractingWithLocation = false;
                 Player.IsTransacting = false;
                 CanInteract = true;
+                if (Interior != null)
+                {
+                    Interior.IsMenuInteracting = false;
+                }
             }
             catch (Exception ex)
             {
@@ -101,6 +118,7 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
             }
         }, "PoliceStationInteract");
     }
+
     private void InteractAsCop(IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         agencyMenu = AssignedAgency.GenerateMenu(ModItems);

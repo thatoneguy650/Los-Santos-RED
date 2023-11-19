@@ -72,12 +72,22 @@ namespace LosSantosRED.lsr
             World = new Mod.World(ModDataFileManager.Agencies, ModDataFileManager.Zones, ModDataFileManager.Jurisdictions, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest, ModDataFileManager.PlateTypes, ModDataFileManager.Names, ModDataFileManager.RelationshipGroups, ModDataFileManager.Weapons, 
                 ModDataFileManager.Crimes, Time, ModDataFileManager.ShopMenus, ModDataFileManager.Interiors, NAudioPlayer, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Streets, ModDataFileManager.ModItems, ModDataFileManager.RelationshipGroups, 
                 ModDataFileManager.LocationTypes, ModDataFileManager.Organizations, ModDataFileManager.Contacts, ModDataFileManager);
-            World.Setup();
+
+
+            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, ModDataFileManager.Names.GetRandomName(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale), World, Time, ModDataFileManager.Streets,
+    ModDataFileManager.Zones, ModDataFileManager.Settings, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.Scenarios, ModDataFileManager.Crimes, NAudioPlayer, NAudioPlayer2, ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors,
+    ModDataFileManager.ModItems, ModDataFileManager.Intoxicants, ModDataFileManager.Gangs, ModDataFileManager.Jurisdictions, ModDataFileManager.GangTerritories, ModDataFileManager.GameSaves, ModDataFileManager.Names, ModDataFileManager.ShopMenus,
+    ModDataFileManager.RelationshipGroups, ModDataFileManager.DanceList, ModDataFileManager.SpeechList, ModDataFileManager.Seats, ModDataFileManager.Agencies, ModDataFileManager.SavedOutfits, ModDataFileManager.VehicleSeatDoorData, ModDataFileManager.Cellphones, ModDataFileManager.Contacts);
+
+
+            World.Setup(Player);
             GameFiber.Yield();
-            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, ModDataFileManager.Names.GetRandomName(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale), World, Time, ModDataFileManager.Streets, 
-                ModDataFileManager.Zones, ModDataFileManager.Settings, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.Scenarios, ModDataFileManager.Crimes, NAudioPlayer, NAudioPlayer2, ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, 
-                ModDataFileManager.ModItems, ModDataFileManager.Intoxicants, ModDataFileManager.Gangs, ModDataFileManager.Jurisdictions, ModDataFileManager.GangTerritories, ModDataFileManager.GameSaves, ModDataFileManager.Names, ModDataFileManager.ShopMenus, 
-                ModDataFileManager.RelationshipGroups, ModDataFileManager.DanceList, ModDataFileManager.SpeechList, ModDataFileManager.Seats, ModDataFileManager.Agencies, ModDataFileManager.SavedOutfits, ModDataFileManager.VehicleSeatDoorData, ModDataFileManager.Cellphones, ModDataFileManager.Contacts);
+            
+            
+
+            
+            
+            
             Player.Setup();
 
             GameFiber.Yield();

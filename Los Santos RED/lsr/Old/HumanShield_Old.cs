@@ -252,6 +252,8 @@
 //            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", 8.0f, -8.0f, -1, (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_NOT_INTERRUPTABLE | eAnimationFlags.AF_UPPERBODY | eAnimationFlags.AF_SECONDARY | eAnimationFlags.AF_FORCE_START), 0, false, false, false);//-1
 //        }
 //    }
+
+
 //    private void SetupPrompts()
 //    {
 //        Player.ButtonPrompts.RemovePrompts("Grab");

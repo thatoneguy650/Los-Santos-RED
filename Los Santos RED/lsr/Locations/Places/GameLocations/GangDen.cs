@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class GangDen : GameLocation//, ILocationGangAssignable
+public class GangDen : GameLocation, IRestableLocation//, ILocationGangAssignable
 {
     //private Blip TerritoryBlip;
     private UIMenuItem dropoffCash;
@@ -416,5 +416,9 @@ public class GangDen : GameLocation//, ILocationGangAssignable
         world.AddBlip(TerritoryBlip);
     }
 
+    public void OnRestInteract(RestInteract restInteract)
+    {
+
+    }
 }
 

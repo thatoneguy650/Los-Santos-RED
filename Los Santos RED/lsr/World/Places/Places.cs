@@ -52,14 +52,14 @@ public class Places
     public List<GameLocation> ActiveLocations { get; private set; } = new List<GameLocation>();
     public DynamicPlaces DynamicPlaces { get; private set; }
     public StaticPlaces StaticPlaces { get; private set; }
-    public void Setup()
+    public void Setup(IInteractionable player)
     {
         foreach (Zone zone in Zones.ZoneList)
         {
             zone.StoreData(GangTerritories, Jurisdictions, ShopMenus);
             GameFiber.Yield();
         }
-        StaticPlaces.Setup();
+        StaticPlaces.Setup(player);
         DynamicPlaces.Setup();
     }
     public void Dispose()

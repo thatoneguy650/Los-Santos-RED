@@ -5,6 +5,7 @@ using LSR.Vehicles;
 using Microsoft.VisualBasic;
 using NAudio.Wave;
 using Rage;
+using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
@@ -18,7 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Residence : GameLocation, ILocationSetupable
+public class Residence : GameLocation, ILocationSetupable, IRestableLocation
 {
     private UIMenu OfferSubMenu;
     private UIMenuNumericScrollerItem<int> RestMenuItem;
@@ -69,7 +70,7 @@ public class Residence : GameLocation, ILocationSetupable
     public override int MapIcon { get; set; } = (int)BlipSprite.PropertyForSale;
     public override string ButtonPromptText { get; set; }
     public override int SortOrder => IsOwnedOrRented ? 1 : 999;
-    public override bool ShowInteractPrompt => CanInteract && !HasHeaderApartmentBuilding;
+    public override bool ShowInteractPrompt => !IgnoreEntranceInteract && CanInteract && !HasHeaderApartmentBuilding;
     public override bool IsBlipEnabled => base.IsBlipEnabled && !HasHeaderApartmentBuilding;
     public Residence(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -200,8 +201,106 @@ public class Residence : GameLocation, ILocationSetupable
         }, "ResidenceInteract");
     }
 
+    public void OnRestInteract(RestInteract restInteract)
+    {
+        if(restInteract != null && CameraPosition != Vector3.Zero)
+        {
+            if (StoreCamera == null)
+            {
+                StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
+            }
+            StoreCamera.MoveToPosition(restInteract.CameraPosition, restInteract.CameraDirection, restInteract.CameraRotation);
+        }
+        if(!MoveToRestPosition(restInteract))
+        {
+            Game.DisplayHelp("Resting Failed");
+            return;
+        }
+        if(!DoRestAnimation(restInteract))
+        {
+            Game.DisplayHelp("Resting Failed");
+            return;
+        }
+        RestInteract(StoreCamera, true);
+    }
+    private bool MoveToRestPosition(RestInteract restInteract)
+    {
+        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, restInteract.Position.X, restInteract.Position.Y, restInteract.Position.Z, 1.0f, -1, 0.1f, 0, restInteract.Heading);
+        GameFiber.Sleep(2000);
+        return true;
+    }
+    private bool DoRestAnimation(RestInteract restInteract)
+    {
+        Player.Character.Position = restInteract.Position;
+        Player.Character.Heading = restInteract.Heading;
+        if(!AnimationDictionary.RequestAnimationDictionayResult("savem_default@"))
+        {
+            return false;
+        }
+        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "savem_default@", "m_getin_l", 4.0f, -4.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 0, false, false, false);
+        GameFiber.Sleep(4000);
+        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "savem_default@", "m_sleep_l_loop", 4.0f, -4.0f, -1, (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_TURN_OFF_COLLISION), 0, false, false, false);
+        return true;
+    }
+    public bool DoGetUpAnimation()
+    {
+        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "savem_default@", "m_getout_l", 4.0f, -4.0f, -1, (int)(eAnimationFlags.AF_TURN_OFF_COLLISION), 0, false, false, false);
+        GameFiber.Sleep(5000);
+        return true;
+    }
+    public void RestInteract(LocationCamera locationCamera, bool isInside)
+    {
+        Player.ActivityManager.IsInteractingWithLocation = true;
+        CanInteract = false;
+        Player.IsTransacting = true;
+        HasTeleported = false;
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                SetupLocationCamera(locationCamera, isInside, false);
+                CreateInteractionMenu();
+                InteractionMenu.Visible = true;
+                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                if (!HasBannerImage)
+                {
+                    InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
+                }
+                InteractionMenu.Clear();
+                CreateRestInteractionMenu();
+                while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
+                {
+                    MenuPool.ProcessMenus();
+                    GameFiber.Yield();
+                }
+                DisposeInteractionMenu();
+                DoGetUpAnimation();
+                if (isInside)
+                {
+                    StoreCamera.StopImmediately();
+                }
+                else if (!HasTeleported)
+                {
+                    StoreCamera.Dispose();
+                }
 
-   
+
+
+                Player.ActivityManager.IsInteractingWithLocation = false;
+                CanInteract = true;
+                Player.IsTransacting = false;
+                if (Interior != null)
+                {
+                    Interior.IsMenuInteracting = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "ResidenceInteract");
+    }
 
     public void RefreshUI()
     {
@@ -662,5 +761,6 @@ public class Residence : GameLocation, ILocationSetupable
             CashStorage = new CashStorage();
         }
     }
+
 
 }

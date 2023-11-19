@@ -132,7 +132,7 @@ public class GameLocation : ILocationDispatchable
     public virtual RestrictedAreas RestrictedAreas { get; set; }
     public virtual string AssociationID => AssignedAssociationID;
     public string AssignedAssociationID { get; set; }
-
+    public bool DisableRegularInteract { get; set; } = false;
     public string MenuID { get; set; }
 
     public Vector3 CameraPosition { get; set; } = Vector3.Zero;
@@ -222,7 +222,8 @@ public class GameLocation : ILocationDispatchable
     public bool HasInterior => InteriorID != -1;
     public bool HasBannerImage => BannerImagePath != "";
     public Interior Interior => interior;
-    public virtual bool ShowInteractPrompt => CanInteract;
+    public bool IgnoreEntranceInteract { get; set; } = false;
+    public virtual bool ShowInteractPrompt => !IgnoreEntranceInteract && CanInteract;
     public virtual void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
         //EntryPoint.WriteToConsole($"Activate Location {Name} {DistanceToPlayer}");
@@ -235,6 +236,10 @@ public class GameLocation : ILocationDispatchable
             {
                 SpawnVendor(settings, crimes, weapons, true);// InteractsWithVendor);
             }
+        }
+        if(DisableRegularInteract)
+        {
+            CanInteract = false;
         }
         //World.Pedestrians.AddEntity(Vendor);
         IsActivated = true;
@@ -381,7 +386,7 @@ public class GameLocation : ILocationDispatchable
         StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
         StoreCamera.Dispose();
     }
-    public void InteractWithNewCamera(Vector3 desiredPosition, Vector3 desiredDirection, Rotator desiredRotation)
+    public void StandardInteractWithNewCamera(Vector3 desiredPosition, Vector3 desiredDirection, Rotator desiredRotation)
     {
         if(StoreCamera == null)
         {
@@ -400,26 +405,21 @@ public class GameLocation : ILocationDispatchable
             try
             {
                 SetupLocationCamera(locationCamera, isInside, true);
-                CreateInteractionMenu();
-                Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
 
+                CreateInteractionMenu();
+
+                Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
                 Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
                 Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
-
                 Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);
+
                 InteractionMenu.Visible = true;
                 Transaction.ProcessTransactionMenu();
                 Transaction.DisposeTransactionMenu();
 
+
                 DisposeInteractionMenu();
-                if (isInside)
-                {
-                    StoreCamera.StopImmediately();
-                }
-                else
-                {
-                    StoreCamera.Dispose();
-                }
+                DisposeCamera(isInside);
                 Player.IsTransacting = false;
                 Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
@@ -434,6 +434,17 @@ public class GameLocation : ILocationDispatchable
                 EntryPoint.ModController.CrashUnload();
             }
         }, "StandardInteract");
+    }
+    protected virtual void DisposeCamera(bool isInside)
+    {
+        if (isInside)
+        {
+            StoreCamera.StopImmediately();
+        }
+        else
+        {
+            StoreCamera.Dispose();
+        }
     }
     public virtual void OnItemSold(ModItem modItem, MenuItem menuItem, int totalItems)
     {
@@ -580,7 +591,7 @@ public class GameLocation : ILocationDispatchable
             if(DistanceToPlayer <= 100f)
             {
                 UpdatePrompts();
-                if (IsActivated)
+                if (IsActivated && HasInterior)
                 {
                     Interior?.Update();
                 }

@@ -1862,11 +1862,13 @@ public class PlacesOfInterest : IPlacesOfInterest
             new PoliceStation(new Vector3(434.3387f, -981.8954f, 30.70984f), 89.51098f, "Mission Row Police Station","Obey and Survive") {
                 OpenTime = 0,
                 CloseTime = 24,
+                InteriorID= 30978,
                 RespawnLocation = new Vector3(440.0835f, -982.3911f, 30.68966f),
                 RespawnHeading = 47.88088f,
                 ScannerFilePath = "01_specific_location\\0x0A45FA8A.wav",
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(439.3361f, -1017.903f, 28.2705f), 89.54115f),
                 BannerImagePath = "agencies\\lspdmain.png",
+                IgnoreEntranceInteract = true,
                 //CameraPosition = new Vector3(434.2917f, -1023.771f, 29.87288f), 
                // CameraDirection = new Vector3(0.6072524f, 0.7701081f, -0.1953922f), 
                // CameraRotation = new Rotator(-11.26764f, 1.262302E-05f, -38.25679f),

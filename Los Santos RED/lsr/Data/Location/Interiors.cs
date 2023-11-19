@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 
 public class Interiors : IInteriors
@@ -410,7 +411,19 @@ public class Interiors : IInteriors
         PossibleInteriors.GeneralInteriors.AddRange(new List<Interior>()
         {
             new Interior(81666,"LSCFD Fire Station 7"),
-            new Interior(30978,"Mission Row Police Station"),
+            new Interior(30978,"Mission Row Police Station"){
+
+            InteractPoints = new List<InteriorInteract>(){
+                    new StandardInteriorInteract(new Vector3(441.8724f, -981.4156f, 30.68966f), 0.7297109f,"Interact (Police)")
+                    {
+                        CameraPosition = new Vector3(437.5189f, -984.9877f, 32.48894f), 
+                        CameraDirection = new Vector3(0.6041811f, 0.7704815f, -0.2032817f), 
+                        CameraRotation = new Rotator(-11.72893f, -3.923911E-06f, -38.10214f),
+                    } ,
+                },
+
+
+            },
             new Interior(58882,"FIB Headquarters",new List<string>() { "FIBlobby" },new List<string>() { "FIBlobbyfake" },new List<InteriorDoor>() { new InteriorDoor(-1517873911, new Vector3(106.3793f, -742.6982f, 46.51962f)),new InteriorDoor(-90456267, new Vector3(105.7607f, -746.646f, 46.18266f))}),
             new Interior(-787,"Pill Box Hill Medical Center",new List<string>() { "RC12B_Default" },new List<string>() { "RC12B_Destroyed","RC12B_HospitalInterior","RC12B_Fixed" }),
             new Interior(60418,"Los Santos County Coroner Office",new List<string>() { "Coroner_Int_on","coronertrash" }) { IsTeleportEntry = true,InteriorEgressPosition = new Vector3(253.351f, -1364.622f, 39.53437f), InteriorEgressHeading = 327.1821f },
@@ -428,26 +441,57 @@ public class Interiors : IInteriors
                 InteriorEgressHeading = 340.2548f,
                 InteractPoints = new List<InteriorInteract>(){
                     new ExitInteriorInteract(new Vector3(151.817f, -1006.616f, -98.99998f),340.2548f,"Exit") ,
-                    new StandardInteriorInteract(new Vector3(152.0395f, -1001.007f, -98.99998f),89.01726f,"Interact")
+                    //new StandardInteriorInteract(new Vector3(152.0395f, -1001.007f, -98.99998f),89.01726f,"Interact")
+                    //{
+                    //    CameraPosition = new Vector3(154.3757f, -1006.959f, -97.54375f),
+                    //    CameraDirection = new Vector3(-0.3906728f, 0.8876943f, -0.2436668f),
+                    //    CameraRotation = new Rotator(-14.10306f, -3.961381E-06f, 23.75422f)
+                    //} ,
+                },
+
+
+                RestInteracts = new List<RestInteract>(){
+                    new RestInteract(new Vector3(152.0395f, -1001.007f, -98.99998f),89.01726f,"Rest")
                     {
+                        InteractDistance = 1.0f,
                         CameraPosition = new Vector3(154.3757f, -1006.959f, -97.54375f),
                         CameraDirection = new Vector3(-0.3906728f, 0.8876943f, -0.2436668f),
                         CameraRotation = new Rotator(-14.10306f, -3.961381E-06f, 23.75422f)
                     } ,
                 },
+
+
             },
             new ResidenceInterior(-668,"Low End Apartment") {
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(266.3692f, -1004.84f, -99.41235f),//new Vector3(261.4586f, -998.8196f, -99.00863f),
                 InteriorEgressHeading = 5.047247f,
                 InteractPoints = new List<InteriorInteract>(){
-                    new ExitInteriorInteract(new Vector3(266.3692f, -1004.84f, -99.41235f),5.047247f,"Exit") ,
-                    new StandardInteriorInteract(new Vector3(260.0411f, -1003.866f, -99.00858f),0f,"Interact")
-                    {
-                        CameraPosition = new Vector3(259.6914f, -1001.466f, -98.10947f),
-                        CameraDirection = new Vector3(0.6112908f, -0.737038f, -0.2882683f),
-                        CameraRotation = new Rotator(-16.75431f, 6.241364E-06f, -140.3281f)
+                    new ExitInteriorInteract(new Vector3(266.3692f, -1004.84f, -99.41235f),5.047247f,"Exit")  { InteractDistance = 1.0f, },
+                    new StandardInteriorInteract(new Vector3(265.8927f, -999.3979f, -99.00861f), 269.6088f,"General Interact")
+                    {                        
+                        InteractDistance = 1.0f,
+                        //CameraPosition = new Vector3(259.6914f, -1001.466f, -98.10947f),
+                        //CameraDirection = new Vector3(0.6112908f, -0.737038f, -0.2882683f),
+                        //CameraRotation = new Rotator(-16.75431f, 6.241364E-06f, -140.3281f)
                     },
+                    new StandardInteriorInteract(new Vector3(259.8724f, -1003.784f, -99.00861f), 345.9033f,"Change Outfit")
+                    {
+                        InteractDistance = 1.0f,
+                        //CameraPosition = new Vector3(264.1769f, -997.2905f, -97.87877f),
+                        //CameraDirection = new Vector3(0.6604161f, -0.659184f, -0.3596206f),
+                        //CameraRotation = new Rotator(-21.0769f, 4.574938E-06f, -134.9465f)
+                    },
+                    new StandardInteriorInteract(new Vector3(265.4756f, -997.2742f, -99.00861f), 274.2195f,"Open Fridge")
+                    {
+                        InteractDistance = 1.0f,
+                        //CameraPosition = new Vector3(263.4088f, -999.621f, -97.33189f),
+                        //CameraDirection = new Vector3(0.6594798f, 0.6394753f, -0.395168f),
+                        //CameraRotation = new Rotator(-23.27645f, 3.717681E-06f, -45.88231f)
+                    },
+                },
+                RestInteracts = new List<RestInteract>(){
+                    new RestInteract(new Vector3(262.5934f,-1002.507f,-99.0086f),182.0201f,"Sleep") { InteractDistance = 1.0f },                
                 },
             },
             new ResidenceInterior(-669,"Medium Apartment") {
@@ -463,7 +507,10 @@ public class Interiors : IInteriors
                         CameraRotation = new Rotator(-20.09752f, -1.181871E-05f, 154.2899f),
                     },
                 },
-
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract(new Vector3(305.5909f,-996.2227f,-98.99995f),180.8388f,"Sleep") { InteractDistance = 1.0f },
+                },
             },
             new ResidenceInterior(-670,"4 Integrity Way, Apt 28") {
                 IsTeleportEntry = true,

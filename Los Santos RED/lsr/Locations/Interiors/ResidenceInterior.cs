@@ -1,17 +1,11 @@
-﻿using LosSantosRED.lsr.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 
 public class ResidenceInterior : Interior
 {
     protected Residence residence;
     public Residence Residence => residence;
-    //public List<ResidenceInteriorInteract> ResidenceInteriorInteracts = new List<ResidenceInteriorInteract>();
+    public List<RestInteract> RestInteracts { get; set; } = new List<RestInteract>();
     public ResidenceInterior()
     {
        
@@ -24,10 +18,18 @@ public class ResidenceInterior : Interior
     public void SetResidence(Residence newResidence)
     {
         residence = newResidence;
-        foreach (InteriorInteract test in InteractPoints)
+        foreach (RestInteract test in RestInteracts)
         {
-            test.
+            test.RestableLocation = newResidence;
         }
+    }
+    public override void InsideLoopNew()
+    {
+        foreach (RestInteract interiorInteract in RestInteracts)
+        {
+            interiorInteract.Update(Player, Settings, InteractableLocation, this);
+        }
+        base.InsideLoopNew();
     }
 }
 
