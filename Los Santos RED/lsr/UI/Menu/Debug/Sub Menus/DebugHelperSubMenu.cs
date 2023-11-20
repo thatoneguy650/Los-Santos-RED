@@ -238,6 +238,36 @@ public class DebugHelperSubMenu : DebugSubMenu
         };
         HelperMenuItem.AddItem(killScripts);
         AddPhoneItems();
+
+
+
+        AddAnimationItems();
+
+
+    }
+
+    private void AddAnimationItems()
+    {
+        //dead_1
+        UIMenuItem playFacialAnimMenu = new UIMenuItem("Play Facial Anim", "Play a facial animation on the current ped!");
+        playFacialAnimMenu.Activated += (menu, item) =>
+        {
+            string animDictionary = NativeHelper.GetKeyboardInput("");//: facials@gen_male@base
+            string anim = NativeHelper.GetKeyboardInput("dead_1");
+            if(string.IsNullOrEmpty(anim))
+            {
+                return;
+            }
+            NativeFunction.Natives.SET_FACIAL_IDLE_ANIM_OVERRIDE(Player.Character, anim, string.IsNullOrEmpty(animDictionary) ? "" : animDictionary);
+        };
+        HelperMenuItem.AddItem(playFacialAnimMenu);
+
+        UIMenuItem stopFacialAnimation = new UIMenuItem("Stop Facial Anim", "Stop the facial animation on the current ped!");
+        stopFacialAnimation.Activated += (menu, item) =>
+        {
+            NativeFunction.Natives.CLEAR_FACIAL_IDLE_ANIM_OVERRIDE(Player.Character);
+        };
+        HelperMenuItem.AddItem(stopFacialAnimation);
     }
 
     private void AddPhoneItems()

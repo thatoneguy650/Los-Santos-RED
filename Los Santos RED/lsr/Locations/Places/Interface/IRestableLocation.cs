@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 public interface IRestableLocation
 {
-    void OnRestInteract(RestInteract restInteract);
+    void CreateRestMenu();
+    LocationCamera LocationCamera { get; }
+    GameLocation GameLocation { get; }
 }
 

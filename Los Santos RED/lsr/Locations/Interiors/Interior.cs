@@ -12,6 +12,7 @@ public class Interior
    // private bool IsMenuInteracting = false;
     private bool IsInside;
     protected IInteractionable Player;
+    protected ILocationInteractable LocationInteractable;
     protected GameLocation InteractableLocation;
     protected ISettingsProvideable Settings;
     private bool IsActive = false;
@@ -79,11 +80,12 @@ public class Interior
     public List<InteriorInteract> InteractPoints { get; set; } = new List<InteriorInteract>();
 
 
-    public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
+    public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ILocationInteractable locationInteractable)
     {
         Settings = settings;
         Player = player;
-        if(!IsTeleportEntry)
+        LocationInteractable = locationInteractable;
+        if (!IsTeleportEntry)
         {
             InteractableLocation = placesOfInterest.AllLocations().Where(x=> x.InteriorID == LocalID).FirstOrDefault();
         }
@@ -327,9 +329,27 @@ public class Interior
     }
     public virtual void InsideLoopNew()
     {
+        float closestDistanceTo = 999f;
+        InteriorInteract closestInteriorInteract = null;
         foreach(InteriorInteract interiorInteract in InteractPoints)
         {
-            interiorInteract.Update(Player,Settings,InteractableLocation, this);
+            interiorInteract.Update(Player,Settings,InteractableLocation, this, LocationInteractable);
+            if(interiorInteract.DistanceTo <= closestDistanceTo)
+            {
+                closestDistanceTo = interiorInteract.DistanceTo;
+                closestInteriorInteract = interiorInteract;
+            }
+        }
+        foreach (InteriorInteract interiorInteract in InteractPoints)
+        {
+            if(interiorInteract == closestInteriorInteract && interiorInteract.CanAddPrompt)
+            {
+                interiorInteract.AddPrompt();
+            }
+            else
+            {
+                interiorInteract.RemovePrompt();
+            }
         }
     }
     public void Exit()

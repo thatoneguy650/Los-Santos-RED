@@ -222,6 +222,7 @@ public class GameLocation : ILocationDispatchable
     public bool HasInterior => InteriorID != -1;
     public bool HasBannerImage => BannerImagePath != "";
     public Interior Interior => interior;
+    public LocationCamera LocationCamera => StoreCamera;
     public bool IgnoreEntranceInteract { get; set; } = false;
     public virtual bool ShowInteractPrompt => !IgnoreEntranceInteract && CanInteract;
     public virtual void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)

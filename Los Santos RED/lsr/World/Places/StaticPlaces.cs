@@ -59,7 +59,7 @@ public class StaticPlaces
         Associations = associations;
         Contacts = contacts;
     }
-    public void Setup(IInteractionable player)
+    public void Setup(IInteractionable player, ILocationInteractable locationInteractable)
     {
         foreach (GameLocation tl in PlacesOfInterest.InteractableLocations())
         {
@@ -71,7 +71,7 @@ public class StaticPlaces
         }
         foreach(Interior interior in Interiors.PossibleInteriors.AllInteriors())
         {
-            interior.Setup(player, PlacesOfInterest, Settings);
+            interior.Setup(player, PlacesOfInterest, Settings, locationInteractable);
         }
     }
     public void ActivateLocations()

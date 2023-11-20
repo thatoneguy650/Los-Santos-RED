@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using System.Linq;
 
 public class ResidenceInterior : Interior
 {
@@ -25,9 +25,27 @@ public class ResidenceInterior : Interior
     }
     public override void InsideLoopNew()
     {
+        float closestDistanceTo = 999f;
+        InteriorInteract closestInteriorInteract = null;
         foreach (RestInteract interiorInteract in RestInteracts)
         {
-            interiorInteract.Update(Player, Settings, InteractableLocation, this);
+            interiorInteract.Update(Player, Settings, InteractableLocation, this, LocationInteractable);
+            if (interiorInteract.DistanceTo <= closestDistanceTo)
+            {
+                closestDistanceTo = interiorInteract.DistanceTo;
+                closestInteriorInteract = interiorInteract;
+            }
+        }
+        foreach (RestInteract interiorInteract in RestInteracts)
+        {
+            if (interiorInteract == closestInteriorInteract && interiorInteract.CanAddPrompt)
+            {
+                interiorInteract.AddPrompt();
+            }
+            else
+            {
+                interiorInteract.RemovePrompt();
+            }
         }
         base.InsideLoopNew();
     }

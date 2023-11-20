@@ -31,6 +31,7 @@ public class GangDen : GameLocation, IRestableLocation//, ILocationGangAssignabl
     public override string AssociationID => AssignedAssociationID;
     public bool IsPrimaryGangDen { get; set; } = false;
     public override string BlipName => AssociatedGang != null ? AssociatedGang.ShortName : base.BlipName;
+    public GameLocation GameLocation => this;
     public bool HasVanillaGangSpawnedAroundToBeBlocked { get; set; } = false;
     protected override float GetCurrentIconAlpha(ITimeReportable time)
     {
@@ -177,9 +178,12 @@ public class GangDen : GameLocation, IRestableLocation//, ILocationGangAssignabl
                             dropoffKick = new UIMenuItem("Pay Dues", $"Drop off your member dues.~n~{player.RelationshipManager.GangRelationships.CurrentGangKickUp}") { RightLabel = $"${player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount}" };
                             InteractionMenu.AddItem(dropoffKick);
                         }
-                        RestMenuItem = new UIMenuNumericScrollerItem<int>("Relax", $"Relax at the {AssociatedGang?.DenName}. Recover ~g~health~s~ and increase ~s~rep~s~ a small amount. Select up to 12 hours.", 1, 12, 1)
-                        { Formatter = v => v.ToString() + " hours" };
-                        InteractionMenu.AddItem(RestMenuItem);
+                        //RestMenuItem = new UIMenuNumericScrollerItem<int>("Relax", $"Relax at the {AssociatedGang?.DenName}. Recover ~g~health~s~ and increase ~s~rep~s~ a small amount. Select up to 12 hours.", 1, 12, 1)
+                        //{ 
+                        //    Formatter = v => v.ToString() + " hours" 
+                        //};
+                        //InteractionMenu.AddItem(RestMenuItem);
+                        CreateRestInteractionMenu();
 
 
                         InteractionMenu.Visible = true;
@@ -187,9 +191,7 @@ public class GangDen : GameLocation, IRestableLocation//, ILocationGangAssignabl
                         while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
                         {
                             MenuPool.ProcessMenus();
-
                             Transaction?.Update();
-
                             //Transaction?.PurchaseMenu?.Update();
                             //Transaction?.SellMenu?.Update();
                             GameFiber.Yield();
@@ -416,9 +418,41 @@ public class GangDen : GameLocation, IRestableLocation//, ILocationGangAssignabl
         world.AddBlip(TerritoryBlip);
     }
 
-    public void OnRestInteract(RestInteract restInteract)
-    {
 
+    public void CreateRestMenu()
+    {
+        Player.ActivityManager.IsInteractingWithLocation = true;
+        Player.IsTransacting = true;
+        CreateInteractionMenu();
+        InteractionMenu.Visible = true;
+        InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+        if (!HasBannerImage)
+        {
+            InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
+        }
+        InteractionMenu.Clear();
+        CreateRestInteractionMenu();
+        while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
+        {
+            MenuPool.ProcessMenus();
+            GameFiber.Yield();
+        }
+        DisposeInteractionMenu();
+        Player.ActivityManager.IsInteractingWithLocation = false;
+        Player.IsTransacting = false;
+        if (Interior != null)
+        {
+            Interior.IsMenuInteracting = false;
+        }
+    }
+
+    private void CreateRestInteractionMenu()
+    {
+        RestMenuItem = new UIMenuNumericScrollerItem<int>("Relax", $"Relax at the {AssociatedGang?.DenName}. Recover ~g~health~s~ and increase ~s~rep~s~ a small amount. Select up to 12 hours.", 1, 12, 1)
+        {
+            Formatter = v => v.ToString() + " hours"
+        };
+        InteractionMenu.AddItem(RestMenuItem);
     }
 }
 

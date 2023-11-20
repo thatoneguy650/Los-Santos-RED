@@ -246,6 +246,13 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
             {
                 ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlySpawn(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles) && x.IsMotorcycle).ToList());
             }
+
+
+            if (requiredGroup != "" && !string.IsNullOrEmpty(requiredGroup))
+            {
+                ToPickFrom = ToPickFrom.Where(x => x.GroupName == requiredGroup).ToList();
+            }
+
             int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles));
             int RandomPick = RandomItems.MyRand.Next(0, Total);
             foreach (DispatchableVehicle Vehicle in ToPickFrom)

@@ -69,11 +69,11 @@ namespace Mod
         public List<SpawnError> SpawnErrors { get; private set; }
         public ModDataFileManager ModDataFileManager { get; private set; }
         public string DebugString => "";
-        public void Setup(IInteractionable player)
+        public void Setup(IInteractionable player, ILocationInteractable locationInteractable)
         {
             DetermineMap();
             Pedestrians.Setup();
-            Places.Setup(player);
+            Places.Setup(player, locationInteractable);
             Vehicles.Setup();
             AddBlipsToMap();
             SetMemoryItems();

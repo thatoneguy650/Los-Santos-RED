@@ -80,7 +80,7 @@ namespace LosSantosRED.lsr
     ModDataFileManager.RelationshipGroups, ModDataFileManager.DanceList, ModDataFileManager.SpeechList, ModDataFileManager.Seats, ModDataFileManager.Agencies, ModDataFileManager.SavedOutfits, ModDataFileManager.VehicleSeatDoorData, ModDataFileManager.Cellphones, ModDataFileManager.Contacts);
 
 
-            World.Setup(Player);
+            World.Setup(Player, Player);
             GameFiber.Yield();
             
             

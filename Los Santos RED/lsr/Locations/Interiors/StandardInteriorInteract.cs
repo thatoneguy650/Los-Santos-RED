@@ -19,10 +19,12 @@ public class StandardInteriorInteract : InteriorInteract
     }
     public override void OnInteract()
     {
+
+        EntryPoint.WriteToConsole("StandardInteriorInteract OnInteract");
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
+        MoveToPosition();
         Interior.IsMenuInteracting = true;
-        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, Position.X, Position.Y, Position.Z, 1.0f, -1, 0.1f, 0, Heading);
         if (CameraPosition != Vector3.Zero)
         {
             InteractableLocation?.StandardInteractWithNewCamera(CameraPosition,CameraDirection,CameraRotation);
@@ -32,7 +34,7 @@ public class StandardInteriorInteract : InteriorInteract
             InteractableLocation?.StandardInteract(null, true);
         }
     }
-    protected override void AddPrompt()
+    public override void AddPrompt()
     {
         ButtonPromptIndetifierText = "InteractInteriorLocation";
         if (Player == null)

@@ -475,7 +475,7 @@ public class Interiors : IInteriors
                         //CameraDirection = new Vector3(0.6112908f, -0.737038f, -0.2882683f),
                         //CameraRotation = new Rotator(-16.75431f, 6.241364E-06f, -140.3281f)
                     },
-                    new StandardInteriorInteract(new Vector3(259.8724f, -1003.784f, -99.00861f), 345.9033f,"Change Outfit")
+                    new StandardInteriorInteract(new Vector3(260.1581f, -1004.046f, -99.0086f), 328.1687f,"Change Outfit")
                     {
                         InteractDistance = 1.0f,
                         //CameraPosition = new Vector3(264.1769f, -997.2905f, -97.87877f),

@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,13 @@ using System.Xml.Serialization;
 public class InteriorInteract
 {
     protected IInteractionable Player;
+    protected ILocationInteractable LocationInteractable;
     protected ISettingsProvideable Settings;
     protected GameLocation InteractableLocation;
     protected Interior Interior;
     protected string ButtonPromptIndetifierText = "ButtonPromptText";
+    protected bool canAddPrompt = false;
+    protected float distanceTo;
     public InteriorInteract()
     {
 
@@ -33,30 +37,35 @@ public class InteriorInteract
     public Vector3 CameraDirection { get; set; } = Vector3.Zero;
     public Rotator CameraRotation { get; set; }
     public virtual string ButtonPromptText { get; set; } = "Interact";
+    public float DistanceTo => distanceTo;
+    public bool CanAddPrompt => canAddPrompt;
 
     public virtual void Setup()
     {
 
     }
 
-    public virtual void Update(IInteractionable player, ISettingsProvideable settings, GameLocation interactableLocation, Interior interior)
+    public virtual void Update(IInteractionable player, ISettingsProvideable settings, GameLocation interactableLocation, Interior interior, ILocationInteractable locationInteractable)
     {
         Player = player;
         Settings = settings;
         InteractableLocation = interactableLocation;
         Interior = interior;
+        LocationInteractable = locationInteractable;
         if (InteractableLocation == null)
         {
             return;
         }
-        float distanceTo = Player.Character.DistanceTo(Position);
+        distanceTo = Player.Character.DistanceTo(Position);
         //EntryPoint.WriteToConsole($"InteriorInteract UPDATE RAN {distanceTo}");
         if (!Interior.IsMenuInteracting && distanceTo <= InteractDistance)
         {
-            AddPrompt();
+            canAddPrompt = true;
+            //AddPrompt();
         }
         else
         {
+            canAddPrompt = false;
             RemovePrompt();
             return;
         }
@@ -77,9 +86,75 @@ public class InteriorInteract
         }
         Player.ButtonPrompts.RemovePrompts(ButtonPromptIndetifierText);
     }
-    protected virtual void AddPrompt()
+    public virtual void AddPrompt()
     {
 
+    }
+    protected virtual void WaitForAnimation(string animDict, string animName)
+    {
+        string PlayingDict = animDict;
+        string PlayingAnim = animName;
+        AnimationWatcher aw = new AnimationWatcher();
+        while (EntryPoint.ModController.IsRunning && Player.IsAliveAndFree)
+        {
+            Player.WeaponEquipment.SetUnarmed();
+            float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
+            if (AnimationTime >= 1.0f)
+            {
+                break;
+            }
+            if (!aw.IsAnimationRunning(AnimationTime))
+            {
+                break;
+            }
+            GameFiber.Yield();
+        }
+    }
+    protected virtual bool MoveToPosition()
+    {
+        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, Position.X, Position.Y, Position.Z, 1.0f, -1, 0.1f, 0, Heading);
+        uint GameTimeStartedMoving = Game.GameTime;
+        bool IsCancelled = false;
+        float prevDistanceToPos = 0f;
+        bool isMoving = false;
+        bool isInPosition = false;
+
+        while (Game.GameTime - GameTimeStartedMoving <= 15000 && !IsCancelled)
+        {
+            if (Player.IsMoveControlPressed)
+            {
+                IsCancelled = true;
+            }
+            float distanceToPos = Game.LocalPlayer.Character.DistanceTo2D(Position);
+            float headingDiff = Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(Game.LocalPlayer.Character.Heading, Heading));
+            if (distanceToPos != prevDistanceToPos)
+            {
+                isMoving = true;
+                prevDistanceToPos = distanceToPos;
+            }
+            else
+            {
+                isMoving = false;
+            }
+
+            if (distanceToPos <= 0.2f && headingDiff <= 0.5f)
+            {
+                isInPosition = true;
+                break;
+            }
+            if (!isMoving && distanceToPos <= 0.5f && headingDiff <= 0.5f)
+            {
+                isInPosition = true;
+                break;
+            }
+            if (Game.GameTime - GameTimeStartedMoving >= 15000 && distanceToPos <= 1.0f && headingDiff <= 5f)
+            {
+                isInPosition = true;
+                break;
+            }
+            GameFiber.Yield();
+        }
+        return isInPosition;
     }
 }
 
