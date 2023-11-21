@@ -401,4 +401,9 @@ public class Interior
             //GameFiber.Sleep(1000);
         }
     }
+
+    public void UpdateInteracts()
+    {
+        InsideLoopNew();
+    }
 }

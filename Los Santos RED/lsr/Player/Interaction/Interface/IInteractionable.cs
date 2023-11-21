@@ -39,6 +39,7 @@ namespace LosSantosRED.lsr.Interface
         TaxiManager TaxiManager { get; }
         GPSManager GPSManager { get; }
         LocationData CurrentLocation { get; }
+        string Gender { get; }
 
         void PlaySpeech(string v1, bool v2);
         void SetAngeredCop();

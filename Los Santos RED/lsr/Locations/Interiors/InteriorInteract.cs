@@ -95,6 +95,7 @@ public class InteriorInteract
         string PlayingDict = animDict;
         string PlayingAnim = animName;
         AnimationWatcher aw = new AnimationWatcher();
+        uint GameTimeStartedAnimation = Game.GameTime;
         while (EntryPoint.ModController.IsRunning && Player.IsAliveAndFree)
         {
             Player.WeaponEquipment.SetUnarmed();
@@ -104,6 +105,10 @@ public class InteriorInteract
                 break;
             }
             if (!aw.IsAnimationRunning(AnimationTime))
+            {
+                break;
+            }
+            if(Game.GameTime - GameTimeStartedAnimation >= 1000 && !aw.HasStartedAnimation)
             {
                 break;
             }
@@ -153,6 +158,10 @@ public class InteriorInteract
                 break;
             }
             GameFiber.Yield();
+        }
+        if(IsCancelled)
+        {
+            return false;
         }
         return isInPosition;
     }

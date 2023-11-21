@@ -133,6 +133,7 @@
     <Compile Include="lsr\Data\Organizations\PossibleContacts.cs" />
     <Compile Include="lsr\Data\Organizations\PossibleOrganizations.cs" />
     <Compile Include="lsr\Data\Organizations\TaxiFirm.cs" />
+    <Compile Include="lsr\Data\Peds\AnimationBundle.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\TaxiSettings.cs" />
     <Compile Include="lsr\Dispatcher\LE\MarshalDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Civilian\TaxiDispatcher.cs" />
@@ -346,6 +347,7 @@
     <Compile Include="lsr\Player\Interface\IArmorManageable.cs" />
     <Compile Include="lsr\Player\Interface\IClipsetManageable.cs" />
     <Compile Include="lsr\Player\Interface\IGangBackupable.cs" />
+    <Compile Include="lsr\Player\Interface\IInteriorManageable.cs" />
     <Compile Include="lsr\Player\Interface\IOutfitManageable.cs" />
     <Compile Include="lsr\Player\Interface\IRestrictedAreaManagable.cs" />
     <Compile Include="lsr\Player\Interface\ITaxiRideable.cs" />
@@ -355,6 +357,7 @@
     <Compile Include="lsr\Player\Inventory\Items\PipeItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\RollingPapersItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\ValuableItem.cs" />
+    <Compile Include="lsr\Player\Managers\InteriorManager.cs" />
     <Compile Include="lsr\Player\Taxi\TaxiManager.cs" />
     <Compile Include="lsr\Player\Taxi\TaxiRide.cs" />
     <Compile Include="lsr\Player\Money\BankAccount.cs" />
@@ -1111,8 +1114,6 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="lsr\Player\Managers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

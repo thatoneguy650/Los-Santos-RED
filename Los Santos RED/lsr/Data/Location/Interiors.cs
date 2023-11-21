@@ -475,20 +475,20 @@ public class Interiors : IInteriors
                         //CameraDirection = new Vector3(0.6112908f, -0.737038f, -0.2882683f),
                         //CameraRotation = new Rotator(-16.75431f, 6.241364E-06f, -140.3281f)
                     },
-                    new StandardInteriorInteract(new Vector3(260.1581f, -1004.046f, -99.0086f), 328.1687f,"Change Outfit")
-                    {
-                        InteractDistance = 1.0f,
-                        //CameraPosition = new Vector3(264.1769f, -997.2905f, -97.87877f),
-                        //CameraDirection = new Vector3(0.6604161f, -0.659184f, -0.3596206f),
-                        //CameraRotation = new Rotator(-21.0769f, 4.574938E-06f, -134.9465f)
-                    },
-                    new StandardInteriorInteract(new Vector3(265.4756f, -997.2742f, -99.00861f), 274.2195f,"Open Fridge")
-                    {
-                        InteractDistance = 1.0f,
-                        //CameraPosition = new Vector3(263.4088f, -999.621f, -97.33189f),
-                        //CameraDirection = new Vector3(0.6594798f, 0.6394753f, -0.395168f),
-                        //CameraRotation = new Rotator(-23.27645f, 3.717681E-06f, -45.88231f)
-                    },
+                    //new StandardInteriorInteract(new Vector3(260.1581f, -1004.046f, -99.0086f), 328.1687f,"Change Outfit")
+                    //{
+                    //    InteractDistance = 1.0f,
+                    //    //CameraPosition = new Vector3(264.1769f, -997.2905f, -97.87877f),
+                    //    //CameraDirection = new Vector3(0.6604161f, -0.659184f, -0.3596206f),
+                    //    //CameraRotation = new Rotator(-21.0769f, 4.574938E-06f, -134.9465f)
+                    //},
+                    //new StandardInteriorInteract(new Vector3(265.4756f, -997.2742f, -99.00861f), 274.2195f,"Open Fridge")
+                    //{
+                    //    InteractDistance = 1.0f,
+                    //    //CameraPosition = new Vector3(263.4088f, -999.621f, -97.33189f),
+                    //    //CameraDirection = new Vector3(0.6594798f, 0.6394753f, -0.395168f),
+                    //    //CameraRotation = new Rotator(-23.27645f, 3.717681E-06f, -45.88231f)
+                    //},
                 },
                 RestInteracts = new List<RestInteract>(){
                     new RestInteract(new Vector3(262.5934f,-1002.507f,-99.0086f),182.0201f,"Sleep") { InteractDistance = 1.0f },                

@@ -23,7 +23,7 @@ namespace Mod
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherAnnounceable,
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IContactRelateable, ILicenseable, IPropertyOwnable,
                           ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable, IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable,
-                          IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable, IRestrictedAreaManagable, ITaxiRideable, IGangBackupable
+                          IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable, IRestrictedAreaManagable, ITaxiRideable, IGangBackupable, IInteriorManageable
     {
         public int UpdateState = 0;
         private float CurrentVehicleRoll;
@@ -166,6 +166,7 @@ namespace Mod
             RestrictedAreaManager = new RestrictedAreaManager(this, this, World, Settings);
             TaxiManager = new TaxiManager(this, World,PlacesOfInterest, Settings);
             GangBackupManager = new GangBackupManager(World, this);
+            InteriorManager = new InteriorManager(World, PlacesOfInterest, Settings, this);
         }
         public RelationshipManager RelationshipManager { get; private set; }
         public GPSManager GPSManager { get; private set; }
@@ -207,7 +208,7 @@ namespace Mod
         public TaxiManager TaxiManager { get; private set; }
 
         public GangBackupManager GangBackupManager { get; private set; }
-
+        public InteriorManager InteriorManager { get; private set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
