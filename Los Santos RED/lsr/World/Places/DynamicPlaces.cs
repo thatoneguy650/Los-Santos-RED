@@ -118,54 +118,41 @@ public class DynamicPlaces
     {
 
     }
+
+    public void OnLookedAtObject(Rage.Object currentLookedAtObject)
+    {
+        if (!Settings.SettingsManager.WorldSettings.CreateObjectLocationsFromScanning)
+        { 
+            CheckObject(currentLookedAtObject);
+        }
+    }
+
+
     public void ActivateLocations()
     {
         if (EntryPoint.ModController.IsRunning)
         {
-            List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList(); //EntryPoint.ModController.AllObjects.ToList();//Rage.World.GetAllObjects().ToList();
-            GameFiber.Yield();
-            int checkedObjects = 0;
-            foreach (Rage.Object obj in Objects)
-            {
-                if (obj.Exists() && !NativeFunction.Natives.HAS_OBJECT_BEEN_BROKEN<bool>(obj, false))
+            if(Settings.SettingsManager.WorldSettings.CreateObjectLocationsFromScanning)
+            { 
+                List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList(); //EntryPoint.ModController.AllObjects.ToList();//Rage.World.GetAllObjects().ToList();
+                GameFiber.Yield();
+                int checkedObjects = 0;
+                foreach (Rage.Object obj in Objects)
                 {
-                    string modelName = obj.Model.Name.ToLower();
-                    Vector3 position = obj.Position;
-                    float heading = obj.Heading;
-                    uint hash = obj.Model.Hash;
-                    if (VendingMachinesModelNames.Contains(modelName) || VendingMachinessModelHashes.Contains(hash))
+                    CheckObject(obj);
+                    checkedObjects++;
+                    if (checkedObjects > 20)//10
                     {
-                        ActivateVendingMachine(obj, modelName, position, heading);
                         GameFiber.Yield();
+                        checkedObjects = 0;
                     }
-                    else if (GasPumpsModelNames.Contains(modelName) || GasPumpsModelHashes.Contains(hash))
+                    if (!EntryPoint.ModController.IsRunning)
                     {
-                        ActivateGasPump(obj, modelName, position, heading, true);
-                        GameFiber.Yield();
-                    }
-                    else if (ATMModelNames.Contains(modelName) || ATMModelHashes.Contains(hash))
-                    {
-                        ActivateATMMachine(obj, modelName, position, heading);
-                        GameFiber.Yield();
-                    }
-                    else if (CashRegisterModelNames.Contains(modelName) || CashRegisterModelHashes.Contains(hash))
-                    {
-                        ActiveCashRegister(obj, modelName, position, heading);
-                        GameFiber.Yield();
+                        break;
                     }
                 }
-                checkedObjects++;
-                if (checkedObjects > 20)//10
-                {
-                    GameFiber.Yield();
-                    checkedObjects = 0;
-                }
-                if(!EntryPoint.ModController.IsRunning)
-                {
-                    break;
-                }
+                GameFiber.Yield();
             }
-            GameFiber.Yield();
             RemoveInactiveVendingMachines();
             GameFiber.Yield();
             RemoveInactiveGasPumps();
@@ -173,6 +160,36 @@ public class DynamicPlaces
             RemoveInactiveATM();
             GameFiber.Yield();
             RemoveInactiveCashRegisters();
+        }
+    }
+    private void CheckObject(Rage.Object obj)
+    {
+        if (obj.Exists() && !NativeFunction.Natives.HAS_OBJECT_BEEN_BROKEN<bool>(obj, false))
+        {
+            string modelName = obj.Model.Name.ToLower();
+            Vector3 position = obj.Position;
+            float heading = obj.Heading;
+            uint hash = obj.Model.Hash;
+            if (VendingMachinesModelNames.Contains(modelName) || VendingMachinessModelHashes.Contains(hash))
+            {
+                ActivateVendingMachine(obj, modelName, position, heading);
+                GameFiber.Yield();
+            }
+            else if (GasPumpsModelNames.Contains(modelName) || GasPumpsModelHashes.Contains(hash))
+            {
+                ActivateGasPump(obj, modelName, position, heading, true);
+                GameFiber.Yield();
+            }
+            else if (ATMModelNames.Contains(modelName) || ATMModelHashes.Contains(hash))
+            {
+                ActivateATMMachine(obj, modelName, position, heading);
+                GameFiber.Yield();
+            }
+            else if (CashRegisterModelNames.Contains(modelName) || CashRegisterModelHashes.Contains(hash))
+            {
+                ActiveCashRegister(obj, modelName, position, heading);
+                GameFiber.Yield();
+            }
         }
     }
     private void ActiveCashRegister(Rage.Object obj, string modelName, Vector3 position, float heading)
@@ -363,5 +380,7 @@ public class DynamicPlaces
             }
         }
     }
+
+
 }
 

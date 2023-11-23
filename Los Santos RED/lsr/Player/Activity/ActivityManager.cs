@@ -211,7 +211,7 @@ public class ActivityManager
     public bool IsWavingHands { get; set; }
     public bool IsBuryingBody { get; set; }
 
-
+    public bool IsHailingTaxi { get; set; }
 
     public bool HasScannerOut { get; set; }
     public bool CanHearScanner => !Settings.SettingsManager.ScannerSettings.DisableScannerWithoutRadioItem || Player.Inventory.Has(typeof(RadioItem));
@@ -536,6 +536,22 @@ public class ActivityManager
             ForceCancelUpperBody();
             IsPerformingActivity = true;
             UpperBodyActivity = waveHandsActivity;
+            UpperBodyActivity.Start();
+        }
+    }
+    public void HailTaxi()
+    {
+        if (IsPerformingActivity)
+        {
+            Game.DisplayHelp("Cancel existing activity to start");
+            return;
+        }
+        HailCabActivity hailCabactivity = new HailCabActivity(Actionable, World, Settings);
+        if (hailCabactivity.CanPerform(Actionable))
+        {
+            ForceCancelUpperBody();
+            IsPerformingActivity = true;
+            UpperBodyActivity = hailCabactivity;
             UpperBodyActivity.Start();
         }
     }

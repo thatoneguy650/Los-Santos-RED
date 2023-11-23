@@ -126,6 +126,7 @@ public class TaxiRide
     public bool IsNearbyDestination { get; private set; }
     public bool IsNearbyPickup { get; private set; }
     public bool IsWaitingOnPlayer { get; private set; }
+    public bool CanSpawnRide { get; set; } = true;
     public void Setup()
     {
         IsActive = false;
@@ -153,6 +154,10 @@ public class TaxiRide
             IsActive = true;
             AddPickupBlip();
             //Player.GPSManager.AddGPSRoute("Taxi Pickup", PickupLocation.FinalPosition);
+            return;
+        }
+        if(!CanSpawnRide)
+        {
             return;
         }
         SpawnVehicleAndDriver();

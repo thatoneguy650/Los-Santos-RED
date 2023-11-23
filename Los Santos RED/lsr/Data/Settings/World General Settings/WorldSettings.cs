@@ -114,6 +114,7 @@ public class WorldSettings : ISettingsDefaultable
     public bool AllowSettingSirenState { get; set; }
     [Description("If enabled, LSR will set the vanilla taxi model as suppressed and only LSR will spawn them.")]
     public bool SetVanillaTaxiSuppressed { get; set; }
+    public bool CreateObjectLocationsFromScanning { get; set; }
 
     //[Description("If enabled, the reduced props of the MP map will be loaded. THIS OPTION IS REQUIRED FOR THE TIME BEING, UNLESS YOU ARE RUNNING A CUSTOM GAMECONFIG (most should work)!")]
     //public bool SetReducedPropsOnMap { get; set; }
@@ -182,7 +183,8 @@ public class WorldSettings : ISettingsDefaultable
 
 
         SetVanillaTaxiSuppressed = false;
-       // SetReducedPropsOnMap = true;
+        // SetReducedPropsOnMap = true;
+        CreateObjectLocationsFromScanning = false;
     }
 
 }

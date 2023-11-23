@@ -13,7 +13,7 @@ public class ExitInteriorInteract : InteriorInteract
     {
     }
 
-    public ExitInteriorInteract(Vector3 position, float heading, string buttonPromptText) : base(position, heading, buttonPromptText)
+    public ExitInteriorInteract(string name, Vector3 position, float heading, string buttonPromptText) : base(name, position, heading, buttonPromptText)
     {
 
     }
@@ -32,12 +32,11 @@ public class ExitInteriorInteract : InteriorInteract
     }
     public override void AddPrompt()
     {
-        ButtonPromptIndetifierText = "ExitTeleport";
         if (Player == null)
         {
             return;
         }
-        Player.ButtonPrompts.AddPrompt(ButtonPromptIndetifierText, ButtonPromptText, ButtonPromptIndetifierText, Settings.SettingsManager.KeySettings.InteractCancel, 999);
+        Player.ButtonPrompts.AddPrompt(Name, ButtonPromptText, Name, Settings.SettingsManager.KeySettings.InteractCancel, 999);
     }
 }
 

@@ -847,7 +847,7 @@ namespace LosSantosRED.lsr.Helper
                 case 21:
                     return "Train";
                 default:
-                    return "";
+                    return "Unknown";
             }
         }
 

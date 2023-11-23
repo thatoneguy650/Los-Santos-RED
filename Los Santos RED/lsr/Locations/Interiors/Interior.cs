@@ -17,6 +17,7 @@ public class Interior
     protected ISettingsProvideable Settings;
     private bool IsActive = false;
     private bool IsRunningInteriorUpdate = false;
+
     public Interior()
     {
 
@@ -79,7 +80,8 @@ public class Interior
     public bool IsWeaponRestricted { get; set; } = false;
     public List<InteriorInteract> InteractPoints { get; set; } = new List<InteriorInteract>();
 
-
+    public virtual List<InteriorInteract> AllInteractPoints => InteractPoints;
+    public InteriorInteract ClosestInteract => AllInteractPoints.Where(x => x.CanAddPrompt).OrderBy(x => x.DistanceTo).FirstOrDefault();
     public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ILocationInteractable locationInteractable)
     {
         Settings = settings;
@@ -238,19 +240,19 @@ public class Interior
             EntryPoint.WriteToConsole("ATTEMPTING TO FORCE ROTATE OPEN DOOR THAT WASNT THERE");
             door.UnLockDoor();
         }
-        if(IsTeleportEntry)
-        {
-            return;
-        }
-        if(InteractPoints== null || !InteractPoints.Any() || InteractableLocation == null)
-        {
-            return;
-        }
+        //if(IsTeleportEntry)
+        //{
+        //    return;
+        //}
+        //if(InteractPoints== null || !InteractPoints.Any() || InteractableLocation == null)
+        //{
+        //    return;
+        //}
 
-        if(!IsRunningInteriorUpdate && InteractableLocation.DistanceToPlayer <= 100f)
-        {
-            OnBecameClose();
-        }
+        //if(!IsRunningInteriorUpdate && InteractableLocation.DistanceToPlayer <= 100f)
+        //{
+        //    OnBecameClose();
+        //}
     }
     public virtual void Teleport(IInteractionable player, GameLocation interactableLocation, LocationCamera locationCamera)
     {
@@ -271,38 +273,38 @@ public class Interior
     }
 
 
-    public void OnBecameClose()
-    {
-        if(IsTeleportEntry || IsRunningInteriorUpdate)
-        {
-            return;
-        }
-        GameFiber.StartNew(delegate
-        {
-            try
-            {
-                EntryPoint.WriteToConsole($"Interior OnBecameClose {Name}");
-                IsRunningInteriorUpdate = true;
-                IsMenuInteracting = false;
-                while (IsActive && EntryPoint.ModController.IsRunning)
-                {
-                    if (InteractableLocation.DistanceToPlayer <= 100f)
-                    {
-                        InsideLoopNew();
-                    }
-                    GameFiber.Yield();
-                }
-                IsRunningInteriorUpdate = false;
-                EntryPoint.WriteToConsole($"Interior StoppedBecomingClose {Name}");
-            }
-            catch (Exception ex)
-            {
-                EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
-                EntryPoint.ModController.CrashUnload();
-            }
+    //public void OnBecameClose()
+    //{
+    //    if(IsTeleportEntry || IsRunningInteriorUpdate)
+    //    {
+    //        return;
+    //    }
+    //    GameFiber.StartNew(delegate
+    //    {
+    //        try
+    //        {
+    //            EntryPoint.WriteToConsole($"Interior OnBecameClose {Name}");
+    //            IsRunningInteriorUpdate = true;
+    //            IsMenuInteracting = false;
+    //            while (IsActive && EntryPoint.ModController.IsRunning)
+    //            {
+    //                if (InteractableLocation.DistanceToPlayer <= 100f)
+    //                {
+    //                    InsideLoopNew();
+    //                }
+    //                GameFiber.Yield();
+    //            }
+    //            IsRunningInteriorUpdate = false;
+    //            EntryPoint.WriteToConsole($"Interior StoppedBecomingClose {Name}");
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+    //            EntryPoint.ModController.CrashUnload();
+    //        }
 
-        }, "Interact");
-    }
+    //    }, "Interact");
+    //}
 
 
     private void OnWentInside()
@@ -352,6 +354,19 @@ public class Interior
             }
         }
     }
+
+
+    public virtual void UpdateInteractDistances()
+    {
+        foreach (InteriorInteract interiorInteract in AllInteractPoints)
+        {
+            interiorInteract.UpdateDistances(Player);
+        }
+    }
+
+
+
+
     public void Exit()
     {
         IsMenuInteracting = false;
@@ -402,8 +417,5 @@ public class Interior
         }
     }
 
-    public void UpdateInteracts()
-    {
-        InsideLoopNew();
-    }
+
 }

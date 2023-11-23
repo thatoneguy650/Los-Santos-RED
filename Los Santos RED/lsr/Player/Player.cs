@@ -166,7 +166,7 @@ namespace Mod
             RestrictedAreaManager = new RestrictedAreaManager(this, this, World, Settings);
             TaxiManager = new TaxiManager(this, World,PlacesOfInterest, Settings);
             GangBackupManager = new GangBackupManager(World, this);
-            InteriorManager = new InteriorManager(World, PlacesOfInterest, Settings, this);
+            InteriorManager = new InteriorManager(World, PlacesOfInterest, Settings, this, this, this);
         }
         public RelationshipManager RelationshipManager { get; private set; }
         public GPSManager GPSManager { get; private set; }
@@ -498,6 +498,7 @@ namespace Mod
             HealthState.Setup();
             OfficerMIAWatcher.Setup();
             RestrictedAreaManager.Setup();
+            InteriorManager.Setup();
             ModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
             FreeModeVoice = Game.LocalPlayer.Character.IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
@@ -564,6 +565,7 @@ namespace Mod
             RestrictedAreaManager.Update();//yields in here
             TaxiManager.Update();
             GangBackupManager.Update();
+            InteriorManager.Update();
         }
         public void SetNotBusted()
         {
@@ -733,7 +735,7 @@ namespace Mod
             RestrictedAreaManager.Dispose();
             TaxiManager.Dispose();
             GangBackupManager.Dispose();
-
+            InteriorManager.Dispose();
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
@@ -2343,6 +2345,11 @@ namespace Mod
                     {
                         CanSitOnCurrentLookedAtObject = false;
                     }
+
+
+                    World.Places.DynamicPlaces.OnLookedAtObject(CurrentLookedAtObject);
+
+
                     prevCurrentLookedAtObjectHandle = CurrentLookedAtObject.Handle;
                 }
             }

@@ -1664,6 +1664,10 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Declasse Burrito",35000, 25000),
                 new MenuItem("BF Surfer",65000, 45000),
                 new MenuItem("Brute Camper",145000, 95000),
+
+
+                new MenuItem("Vapid Tow Truck Full",34000,12000),
+                new MenuItem("Vapid Tow Truck Utility",31000,10000),
             }),
             new ShopMenu("GetAweighMenu","Get Aweigh",new List<MenuItem>() {
 

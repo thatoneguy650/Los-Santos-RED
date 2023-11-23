@@ -511,7 +511,10 @@ public class GameLocation : ILocationDispatchable
                 StoreCamera.IsInterior = true;
                 StoreCamera.Interior = Interior;
             }
-            StoreCamera.Setup();
+            if (!isInside)
+            {
+                StoreCamera.Setup();
+            }
             EntryPoint.WriteToConsole("RESIDENCE STORE CAM RAN");
         }
         else

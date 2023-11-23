@@ -2711,9 +2711,38 @@ public class ModItems : IModItems
             new VehicleItem("Zirconium Journey", ItemType.Vehicles) { ModelName = "journey" },
             new VehicleItem("Zirconium Stratum", ItemType.Vehicles) { ModelName = "stratum" },
 
-            new VehicleItem("Police Stanier", ItemType.Vehicles) { ModelName = "police" },
-            new VehicleItem("Police Buffalo", ItemType.Vehicles) { ModelName = "police2" },
-            new VehicleItem("Police Interceptor", ItemType.Vehicles) { ModelName = "police3" },
+            //Emergency
+            new VehicleItem("Vapid Sheriff Stanier", ItemType.Vehicles) { ModelName = "sheriff" },
+            new VehicleItem("Declasse Sheriff Granger", ItemType.Vehicles) { ModelName = "sheriff2" },
+            new VehicleItem("Vapid Police Stanier", ItemType.Vehicles) { ModelName = "police" },
+            new VehicleItem("Bravado Police Buffalo", ItemType.Vehicles) { ModelName = "police2" },
+            new VehicleItem("Vapid Police Interceptor", ItemType.Vehicles) { ModelName = "police3" },
+            new VehicleItem("Vapid Police Unmarked Stanier", ItemType.Vehicles) { ModelName = "police4" },
+            new VehicleItem("Declasse Police Transporter", ItemType.Vehicles) { ModelName = "policet" },
+            new VehicleItem("Buckingham Police Maverick", ItemType.Vehicles) { ModelName = "polmav" },
+            new VehicleItem("Brute Police Riot", ItemType.Vehicles) { ModelName = "riot" },
+            new VehicleItem("Western Police Bike", ItemType.Vehicles) { ModelName = "policeb" },
+            new VehicleItem("Declasse Park Ranger Granger", ItemType.Vehicles) { ModelName = "pranger" },
+            new VehicleItem("Declasse Lifeguard Granger", ItemType.Vehicles) { ModelName = "lguard" },
+            new VehicleItem("Declasse Police Unmarked Granger", ItemType.Vehicles) { ModelName = "fbi2" },
+            new VehicleItem("Bravado Police Unmarked Buffalo", ItemType.Vehicles) { ModelName = "fbi" },
+
+            new VehicleItem("MTL Fire Truck", ItemType.Vehicles) { ModelName = "firetruk" },
+            new VehicleItem("Brute Ambulance", ItemType.Vehicles) { ModelName = "ambulance" },
+            new VehicleItem("Police Predator", ItemType.Vehicles) { ModelName = "predator" },
+
+            new VehicleItem("Vapid Police Prison Bus", ItemType.Vehicles) { ModelName = "pbus" },
+
+
+
+            new VehicleItem("Albany Police Roadcruiser", ItemType.Vehicles) { ModelName = "policeold2" },
+            new VehicleItem("Declasse Police Rancher", ItemType.Vehicles) { ModelName = "policeold1" },
+
+            new VehicleItem("Speedophile Lifeguard Seashark", ItemType.Vehicles) { ModelName = "seashark2" },
+
+            //Industrial
+            new VehicleItem("Vapid Tow Truck Full", ItemType.Vehicles) { ModelName = "towtruck" },
+            new VehicleItem("Vapid Tow Truck Utility", ItemType.Vehicles) { ModelName = "towtruck2" },
 
             //Heli
             new VehicleItem("Buckingham SuperVolito", true, ItemType.Vehicles) { ModelName = "supervolito" },

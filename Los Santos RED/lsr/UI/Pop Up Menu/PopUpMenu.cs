@@ -1230,6 +1230,7 @@ public class PopUpMenu
             new PopUpBox(6,"Surrender",new Action(() => Player.Surrendering.ToggleSurrender()),"Toggle surrendering"),
             new PopUpBox(7,"BodyArmor","BodyArmorSubMenu","Open Body Armor Menu") { ClosesMenu = false },
             new PopUpBox(8,"Wave Hands",new Action(() => Player.ActivityManager.WaveHands()),"Get Nearby Attention"),
+            new PopUpBox(9,"Hail Cab",new Action(() => Player.ActivityManager.HailTaxi()),"Hail a nearby cab"),
         };
 
         List<PopUpBox> VehicleActionsSubMenu = new List<PopUpBox>()

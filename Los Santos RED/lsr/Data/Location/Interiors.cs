@@ -414,12 +414,21 @@ public class Interiors : IInteriors
             new Interior(30978,"Mission Row Police Station"){
 
             InteractPoints = new List<InteriorInteract>(){
-                    new StandardInteriorInteract(new Vector3(441.8724f, -981.4156f, 30.68966f), 0.7297109f,"Interact (Police)")
+                    new StandardInteriorInteract("mrpdStandard1",new Vector3(441.8724f, -981.4156f, 30.68966f), 0.7297109f,"Interact With Front Desk")
                     {
                         CameraPosition = new Vector3(437.5189f, -984.9877f, 32.48894f), 
                         CameraDirection = new Vector3(0.6041811f, 0.7704815f, -0.2032817f), 
                         CameraRotation = new Rotator(-11.72893f, -3.923911E-06f, -38.10214f),
                     } ,
+
+
+                    new StandardInteriorInteract("mrpdStandard2",new Vector3(447.2735f, -980.8964f, 30.68964f), 2.435939f,"Interact With Office")
+                    //{
+                    //    CameraPosition = new Vector3(437.5189f, -984.9877f, 32.48894f),
+                    //    CameraDirection = new Vector3(0.6041811f, 0.7704815f, -0.2032817f),
+                    //    CameraRotation = new Rotator(-11.72893f, -3.923911E-06f, -38.10214f),
+                    //} 
+                    ,
                 },
 
 
@@ -440,7 +449,7 @@ public class Interiors : IInteriors
                 InteriorEgressPosition = new Vector3(151.817f, -1006.616f, -98.99998f),//new Vector3(151.817f, -1006.616f, -98.99998f),
                 InteriorEgressHeading = 340.2548f,
                 InteractPoints = new List<InteriorInteract>(){
-                    new ExitInteriorInteract(new Vector3(151.817f, -1006.616f, -98.99998f),340.2548f,"Exit") ,
+                    new ExitInteriorInteract("motelExit1",new Vector3(151.817f, -1006.616f, -98.99998f),340.2548f,"Exit") ,
                     //new StandardInteriorInteract(new Vector3(152.0395f, -1001.007f, -98.99998f),89.01726f,"Interact")
                     //{
                     //    CameraPosition = new Vector3(154.3757f, -1006.959f, -97.54375f),
@@ -451,7 +460,7 @@ public class Interiors : IInteriors
 
 
                 RestInteracts = new List<RestInteract>(){
-                    new RestInteract(new Vector3(152.0395f, -1001.007f, -98.99998f),89.01726f,"Rest")
+                    new RestInteract("motelRest1",new Vector3(152.0395f, -1001.007f, -98.99998f),89.01726f,"Rest")
                     {
                         InteractDistance = 1.0f,
                         CameraPosition = new Vector3(154.3757f, -1006.959f, -97.54375f),
@@ -467,8 +476,8 @@ public class Interiors : IInteriors
                 InteriorEgressPosition = new Vector3(266.3692f, -1004.84f, -99.41235f),//new Vector3(261.4586f, -998.8196f, -99.00863f),
                 InteriorEgressHeading = 5.047247f,
                 InteractPoints = new List<InteriorInteract>(){
-                    new ExitInteriorInteract(new Vector3(266.3692f, -1004.84f, -99.41235f),5.047247f,"Exit")  { InteractDistance = 1.0f, },
-                    new StandardInteriorInteract(new Vector3(265.8927f, -999.3979f, -99.00861f), 269.6088f,"General Interact")
+                    new ExitInteriorInteract("lowEndExit1",new Vector3(266.3692f, -1004.84f, -99.41235f),5.047247f,"Exit")  { InteractDistance = 1.0f, },
+                    new StandardInteriorInteract("lowEndStandard1",new Vector3(265.8927f, -999.3979f, -99.00861f), 269.6088f,"General Interact")
                     {                        
                         InteractDistance = 1.0f,
                         //CameraPosition = new Vector3(259.6914f, -1001.466f, -98.10947f),
@@ -491,7 +500,7 @@ public class Interiors : IInteriors
                     //},
                 },
                 RestInteracts = new List<RestInteract>(){
-                    new RestInteract(new Vector3(262.5934f,-1002.507f,-99.0086f),182.0201f,"Sleep") { InteractDistance = 1.0f },                
+                    new RestInteract("motelRest1",new Vector3(262.5934f,-1002.507f,-99.0086f),182.0201f,"Sleep") { InteractDistance = 1.0f },                
                 },
             },
             new ResidenceInterior(-669,"Medium Apartment") {
@@ -499,8 +508,8 @@ public class Interiors : IInteriors
                 InteriorEgressPosition = new Vector3(289.1848f,-997.1297f,-92.79259f),//new Vector3(288.3021f, -998.6495f, -92.79259f),
                 InteriorEgressHeading = 288.6531f,
                 InteractPoints = new List<InteriorInteract>(){
-                    new ExitInteriorInteract(new Vector3(289.1848f,-997.1297f,-92.79259f),288.6531f,"Exit") ,
-                    new StandardInteriorInteract(new Vector3(302.9109f,-999.1298f,-94.19514f),128.1528f,"Interact")
+                    new ExitInteriorInteract("mediumaptExit1",new Vector3(289.1848f,-997.1297f,-92.79259f),288.6531f,"Exit") ,
+                    new StandardInteriorInteract("mediumaptStandard1",new Vector3(302.9109f,-999.1298f,-94.19514f),128.1528f,"Interact")
                     {
                         CameraPosition = new Vector3(304.4328f, -993.7673f, -91.80285f),
                         CameraDirection = new Vector3(-0.4074028f, -0.8461376f, -0.343619f),
@@ -509,7 +518,7 @@ public class Interiors : IInteriors
                 },
                 RestInteracts = new List<RestInteract>()
                 {
-                    new RestInteract(new Vector3(305.5909f,-996.2227f,-98.99995f),180.8388f,"Sleep") { InteractDistance = 1.0f },
+                    new RestInteract("mediumaptRest1", new Vector3(305.5909f,-996.2227f,-98.99995f),180.8388f,"Sleep") { InteractDistance = 1.0f },
                 },
             },
             new ResidenceInterior(-670,"4 Integrity Way, Apt 28") {
@@ -517,8 +526,8 @@ public class Interiors : IInteriors
                 InteriorEgressPosition = new Vector3(-16.20265f, -606.2855f, 100.2328f),//new Vector3(-18.07856f, -583.6725f, 79.46569f),
                 InteriorEgressHeading = 4.009807f,
                 InteractPoints = new List<InteriorInteract>(){
-                    new ExitInteriorInteract(new Vector3(-16.20265f, -606.2855f, 100.2328f),4.009807f,"Exit") ,
-                    new StandardInteriorInteract(new Vector3(-10.32665f, -591.5042f, 98.83028f),42.31462f,"Interact")
+                    new ExitInteriorInteract("4intapt28Exit1",new Vector3(-16.20265f, -606.2855f, 100.2328f),4.009807f,"Exit") ,
+                    new StandardInteriorInteract("4intapt28Standard1",new Vector3(-10.32665f, -591.5042f, 98.83028f),42.31462f,"Interact")
                     {
                         CameraPosition = new Vector3(-15.6437f, -588.6951f, 101.2196f),
                         CameraDirection = new Vector3(0.6824573f, -0.6314822f, -0.368079f),
@@ -534,8 +543,8 @@ public class Interiors : IInteriors
                 InteriorEgressPosition = new Vector3(-19.61186f, -581.8444f, 90.11483f), //new Vector3(-35.31277f, -580.4199f, 88.71221f),
                 InteriorEgressHeading = 91.7578f,
                 InteractPoints = new List<InteriorInteract>(){
-                    new ExitInteriorInteract(new Vector3(-19.61186f, -581.8444f, 90.11483f),91.7578f,"Exit") ,
-                    new StandardInteriorInteract(new Vector3(-33.56378f, -576.7966f, 88.71226f),276.5922f,"Interact")
+                    new ExitInteriorInteract("4intapt30Exit1",new Vector3(-19.61186f, -581.8444f, 90.11483f),91.7578f,"Exit") ,
+                    new StandardInteriorInteract("4intapt30Standard1",new Vector3(-33.56378f, -576.7966f, 88.71226f),276.5922f,"Interact")
                     {
                         CameraPosition = new Vector3(-36.54444f, -579.4444f, 90.46429f),
                         CameraDirection = new Vector3(0.7369682f, 0.5456903f, -0.3988734f),
@@ -551,8 +560,8 @@ public class Interiors : IInteriors
                 InteriorEgressPosition = new Vector3(-1458.708f, -522.3859f, 69.55659f),
                 InteriorEgressHeading = 151.7898f,
                 InteractPoints = new List<InteriorInteract>(){
-                    new ExitInteriorInteract(new Vector3(-1458.708f, -522.3859f, 69.55659f),151.7898f,"Exit") ,
-                    new StandardInteriorInteract(new Vector3(-1469.23f, -530.2661f, 68.15405f),32.30866f,"Interact")
+                    new ExitInteriorInteract("dpheightApt4Exit1",new Vector3(-1458.708f, -522.3859f, 69.55659f),151.7898f,"Exit") ,
+                    new StandardInteriorInteract("dpheightApt4Std1",new Vector3(-1469.23f, -530.2661f, 68.15405f),32.30866f,"Interact")
                     {
                         CameraPosition = new Vector3(-1468.288f, -537.0152f, 70.50282f),
                         CameraDirection = new Vector3(-0.2367817f, 0.938622f, -0.2508448f),
@@ -565,8 +574,8 @@ public class Interiors : IInteriors
                 InteriorEgressPosition = new Vector3(-1458.221f, -523.283f, 56.92899f),
                 InteriorEgressHeading = 144.4565f,
                 InteractPoints = new List<InteriorInteract>(){
-                    new ExitInteriorInteract(new Vector3(-1458.221f, -523.283f, 56.92899f),144.4565f,"Exit") ,
-                    new StandardInteriorInteract(new Vector3(-1469.766f, -529.8615f, 55.52639f),23.87169f,"Interact")
+                    new ExitInteriorInteract("dpheightApt7Exit1",new Vector3(-1458.221f, -523.283f, 56.92899f),144.4565f,"Exit") ,
+                    new StandardInteriorInteract("dpheightApt7Std1",new Vector3(-1469.766f, -529.8615f, 55.52639f),23.87169f,"Interact")
                     {
                         CameraPosition = new Vector3(-1469.822f, -535.2637f, 57.56692f),
                         CameraDirection = new Vector3(-0.08299411f, 0.9490341f, -0.3040497f),
@@ -579,8 +588,8 @@ public class Interiors : IInteriors
                 InteriorEgressPosition = new Vector3(-779.4249f, 339.4756f, 207.6208f),
                 InteriorEgressHeading = 113.7695f,
                 InteractPoints = new List<InteriorInteract>(){
-                    new ExitInteriorInteract(new Vector3(-779.4249f, 339.4756f, 207.6208f),113.7695f,"Exit") ,
-                    new StandardInteriorInteract(new Vector3(-792.1093f, 338.2278f, 206.2184f),11.25924f,"Interact")
+                    new ExitInteriorInteract("ecliApt3Exit1",new Vector3(-779.4249f, 339.4756f, 207.6208f),113.7695f,"Exit") ,
+                    new StandardInteriorInteract("ecliApt3Std1",new Vector3(-792.1093f, 338.2278f, 206.2184f),11.25924f,"Interact")
                     {
                         CameraPosition = new Vector3(-795.7065f, 332.019f, 208.7504f),
                         CameraDirection = new Vector3(0.3429281f, 0.8894085f, -0.3022463f),
@@ -595,8 +604,8 @@ public class Interiors : IInteriors
                 InteriorEgressPosition = new Vector3(-915.4658f, -367.6183f, 109.4403f),
                 InteriorEgressHeading = 142.9073f,
                 InteractPoints = new List<InteriorInteract>(){
-                    new ExitInteriorInteract(new Vector3(-915.4658f, -367.6183f, 109.4403f),142.9073f,"Exit") ,
-                    new StandardInteriorInteract(new Vector3(-926.6827f, -373.9506f, 108.0377f),29.87866f,"Interact")
+                    new ExitInteriorInteract("richMaj2Exit1",new Vector3(-915.4658f, -367.6183f, 109.4403f),142.9073f,"Exit") ,
+                    new StandardInteriorInteract("richMaj2Std1",new Vector3(-926.6827f, -373.9506f, 108.0377f),29.87866f,"Interact")
                     {
                         CameraPosition = new Vector3(-926.1729f, -380.4109f, 110.0456f),
                         CameraDirection = new Vector3(-0.1600053f, 0.9530545f, -0.2570709f),
@@ -610,8 +619,8 @@ public class Interiors : IInteriors
                 InteriorEgressPosition = new Vector3(-601.3342f, 63.16429f, 108.027f),
                 InteriorEgressHeading = 102.5944f,
                 InteractPoints = new List<InteriorInteract>(){
-                    new ExitInteriorInteract(new Vector3(-601.3342f, 63.16429f, 108.027f),102.5944f,"Exit") ,
-                    new StandardInteriorInteract(new Vector3(-614.5223f, 63.66457f, 106.6245f),350.1266f,"Interact")
+                    new ExitInteriorInteract("tinselApt42Exit1",new Vector3(-601.3342f, 63.16429f, 108.027f),102.5944f,"Exit") ,
+                    new StandardInteriorInteract("tinselApt42Std1",new Vector3(-614.5223f, 63.66457f, 106.6245f),350.1266f,"Interact")
                     {
                         CameraPosition = new Vector3(-617.3007f, 59.07885f, 109.0985f),
                         CameraDirection = new Vector3(0.3802197f, 0.8753764f, -0.2985786f),

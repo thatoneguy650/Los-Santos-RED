@@ -39,7 +39,7 @@ public class RestInteract : InteriorInteract
     {
     }
 
-    public RestInteract(Vector3 position, float heading, string buttonPromptText) : base(position, heading, buttonPromptText)
+    public RestInteract(string name, Vector3 position, float heading, string buttonPromptText) : base(name, position, heading, buttonPromptText)
     {
 
     }
@@ -68,12 +68,11 @@ public class RestInteract : InteriorInteract
     }
     public override void AddPrompt()
     {
-        ButtonPromptIndetifierText = "RestInteriorLocation";
         if (Player == null)
         {
             return;
         }
-        Player.ButtonPrompts.AddPrompt(ButtonPromptIndetifierText, ButtonPromptText, ButtonPromptIndetifierText, Settings.SettingsManager.KeySettings.InteractStart, 999);
+        Player.ButtonPrompts.AddPrompt(Name, ButtonPromptText, Name, Settings.SettingsManager.KeySettings.InteractStart, 999);
     }
     private void SetupCamera()
     {

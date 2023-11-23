@@ -156,6 +156,7 @@
     <Compile Include="lsr\Ped\Styles\PedDrivingStyle.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Corrupt Cop\CopHitCopTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangCopHitTask.cs" />
+    <Compile Include="lsr\Player\Activity\HailCabActivity.cs" />
     <Compile Include="lsr\Player\BackupManager\GangBackup.cs" />
     <Compile Include="lsr\Player\BackupManager\GangBackupManager.cs" />
     <Compile Include="lsr\Player\Cellphone\Data\CellphoneData.cs" />

@@ -14,20 +14,32 @@ public class InteriorManager
     private IPlacesOfInterest PlacesOfInterest;
     private ISettingsProvideable Settings;
     private IInteriorManageable Player;
+    private IInteractionable Interactionable;
+    private ILocationInteractable LocationInteractable;
+
     private bool IsRunningInteriorUpdate;
     private bool IsActive;
     private List<GameLocation> InteriorUpdateLocations = new List<GameLocation>();
 
-    public InteriorManager(IEntityProvideable world, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IInteriorManageable player)
+
+    private uint GameTimeLastUpdatedDistances;
+    private InteriorInteract PrevClosestInteriorInteract = null;
+    private InteriorInteract ClosestInteriorInteract = null;
+    private Interior ClosestInterior = null;
+    private GameLocation ClosestLocation = null;
+    private float closestDistance = 999f;
+    public InteriorManager(IEntityProvideable world, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IInteriorManageable player, IInteractionable interactionable, ILocationInteractable locationInteractable)
     {
         World = world;
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
         Player = player;
+        Interactionable = interactionable;
+        LocationInteractable = locationInteractable;
     }
     public void Setup()
     {
-
+        IsActive = true;
     }
     public void Update()
     {
@@ -59,7 +71,7 @@ public class InteriorManager
     }
     public void Dispose()
     {
-
+        IsActive = false;
     }
     private void StartInteriorChecking()
     {
@@ -75,10 +87,8 @@ public class InteriorManager
                 IsRunningInteriorUpdate = true;
                 while (IsActive && EntryPoint.ModController.IsRunning)
                 {
-                    foreach(GameLocation gameLocation in InteriorUpdateLocations.ToList())
-                    {
-                        gameLocation.Interior.UpdateInteracts();
-                    }
+                    UpdateClosestInteract();
+                    ClosestInteriorInteract?.UpdateActivated(Interactionable, Settings, ClosestLocation, ClosestInterior, LocationInteractable);
                     GameFiber.Yield();
                 }
                 IsRunningInteriorUpdate = false;
@@ -91,6 +101,64 @@ public class InteriorManager
             }
 
         }, "Interact");
+    }
+    private void UpdateClosestInteract()
+    {
+        if(Game.GameTime - GameTimeLastUpdatedDistances < 500)
+        {
+            return;
+        }
+        closestDistance = 999f;
+        ClosestInteriorInteract = null;
+        ClosestInterior = null;
+        ClosestLocation = null;
+        foreach (GameLocation gameLocation in InteriorUpdateLocations.ToList())
+        {
+            gameLocation.Interior.UpdateInteractDistances();
+            InteriorInteract closestIIForLocation = gameLocation.Interior.ClosestInteract;
+            if (closestIIForLocation == null)
+            {
+                continue;
+            }
+            if (closestIIForLocation.DistanceTo < closestDistance)
+            {
+                ClosestInteriorInteract = closestIIForLocation;
+                ClosestInterior = gameLocation.Interior;
+                ClosestLocation = gameLocation;
+                closestDistance = closestIIForLocation.DistanceTo;
+            }
+        }
+        GameTimeLastUpdatedDistances = Game.GameTime;
+        if(PrevClosestInteriorInteract == null && ClosestInteriorInteract != null)
+        {
+            OnClosestInteractChanged();
+            EntryPoint.WriteToConsole($"UpdateClosestInteract CHANGED FROM NULL TO {ClosestInteriorInteract.Position}");
+        }
+        else if (PrevClosestInteriorInteract != null && ClosestInteriorInteract != null && PrevClosestInteriorInteract != ClosestInteriorInteract)
+        {
+            OnClosestInteractChanged();
+            EntryPoint.WriteToConsole($"UpdateClosestInteract CHANGED FROM {PrevClosestInteriorInteract.Position} TO {ClosestInteriorInteract.Position}");
+        }
+        else if (PrevClosestInteriorInteract != null && ClosestInteriorInteract == null)
+        {
+            OnClosestInteractChanged();
+            EntryPoint.WriteToConsole($"UpdateClosestInteract CHANGED FROM {PrevClosestInteriorInteract.Position} TO NULL");
+        }
+        PrevClosestInteriorInteract = ClosestInteriorInteract;
+        GameFiber.Yield();
+    }
+
+    private void OnClosestInteractChanged()
+    {
+        if(PrevClosestInteriorInteract != null)
+        {
+            PrevClosestInteriorInteract.RemovePrompt();
+        }
+        if(ClosestInteriorInteract != null)
+        {
+            ClosestInteriorInteract.UpdateActivated(Interactionable, Settings, ClosestLocation, ClosestInterior, LocationInteractable);
+            ClosestInteriorInteract.AddPrompt();
+        }
     }
 }
 

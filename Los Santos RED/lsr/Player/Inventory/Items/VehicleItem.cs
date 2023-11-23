@@ -90,7 +90,12 @@ public class VehicleItem : ModItem
 
 
         string makeName = MakeName;
-        UIMenu MakeCategoryMenu = ToCheckFirst.Children.Where(x => x.Value.SubtitleText == MakeName).FirstOrDefault().Value;
+        if (string.IsNullOrEmpty(makeName))
+        {
+            makeName = "Unknown";
+        }
+        //EntryPoint.WriteToConsole($"CreateSellMenuItem makeName:{makeName} MakeName:{MakeName} MenuCategory:{MenuCategory}");
+        UIMenu MakeCategoryMenu = ToCheckFirst.Children.Where(x => x.Value.SubtitleText == makeName).FirstOrDefault().Value;
         UIMenu TypeCategoryMenu = null;
         if (MakeCategoryMenu != null)
         {
@@ -209,7 +214,14 @@ public class VehicleItem : ModItem
             ToCheckFirst = VehicleSubMenu;
         }
         string makeName = MakeName;
-        UIMenu MakeCategoryMenu = ToCheckFirst.Children.Where(x => x.Value.SubtitleText == MakeName).FirstOrDefault().Value;
+        if (string.IsNullOrEmpty(makeName))
+        {
+            makeName = "Unknown";
+        }
+
+        //EntryPoint.WriteToConsole($"CreatePurchaseMenuItem makeName:{makeName} MakeName:{MakeName} MenuCategory:{MenuCategory}");
+
+        UIMenu MakeCategoryMenu = ToCheckFirst.Children.Where(x => x.Value.SubtitleText == makeName).FirstOrDefault().Value;
         UIMenu TypeCategoryMenu = null;
         if (MakeCategoryMenu != null)
         {

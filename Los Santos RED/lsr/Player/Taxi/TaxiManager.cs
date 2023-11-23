@@ -15,6 +15,8 @@ public class TaxiManager
     private IEntityProvideable World;
     private IPlacesOfInterest PlacesOfInterest;
     private ISettingsProvideable Settings;
+    private uint GameTimeLastHailedCab;
+
     public List<TaxiRide> ActiveRides { get; private set; } = new List<TaxiRide>();
     public TaxiManager(ITaxiRideable player, IEntityProvideable world, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
     {
@@ -46,6 +48,17 @@ public class TaxiManager
         {
             taxiRide.Update();
         }
+
+
+        if(Player.ActivityManager.IsHailingTaxi && Game.GameTime - GameTimeLastHailedCab >= 1000)
+        {
+            TaxiFirm closestFirm = GetClosestTaxiFirm();
+            if (closestFirm != null && RequestService(closestFirm, false))
+            {
+                Game.DisplayHelp($"Hailed {closestFirm.ShortName}");
+            }
+            GameTimeLastHailedCab = Game.GameTime;
+        }
         ActiveRides.RemoveAll(x => !x.IsValid || !x.IsActive);
     }
     public void OnGotInVehicle()
@@ -63,7 +76,7 @@ public class TaxiManager
             taxiRide.OnGotOutOfVehicle();
         }
     }
-    public bool RequestService(TaxiFirm taxiFirm)
+    public bool RequestService(TaxiFirm taxiFirm, bool canSpawn)
     {
         if(taxiFirm == null)
         {
@@ -76,6 +89,7 @@ public class TaxiManager
             return false;
         }
         TaxiRide taxiRide = new TaxiRide(World, Player, taxiFirm, Player.Position);
+        taxiRide.CanSpawnRide = canSpawn;
         taxiRide.Setup();
         if(!taxiRide.IsActive)
         {
@@ -86,6 +100,17 @@ public class TaxiManager
         EntryPoint.WriteToConsole("TaxiManager RequestService Active Ride Added");
         return true;
     }
+    private TaxiFirm GetClosestTaxiFirm()
+    {
+        TaxiVehicleExt RespondingVehicle = World.Vehicles.TaxiVehicles.Where(x => x.Vehicle.Exists() && x.Vehicle.HasDriver && !x.Vehicle.HasPassengers && x.Vehicle.IsOnScreen && x.Vehicle.Position.DistanceTo2D(Player.Position) <= 50f).OrderBy(x => x.Vehicle.Position.DistanceTo2D(Player.Position)).FirstOrDefault();
+        if (RespondingVehicle == null || !RespondingVehicle.Vehicle.Exists() || !RespondingVehicle.Vehicle.Driver.Exists())
+        {
+            return null;
+        }
+        return RespondingVehicle.TaxiFirm;
+    }
+
+
     public void CancelRide(TaxiRide taxiRide, bool showNotification)
     {
         if (taxiRide == null)

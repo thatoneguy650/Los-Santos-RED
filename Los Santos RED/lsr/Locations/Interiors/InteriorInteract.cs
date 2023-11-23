@@ -17,19 +17,20 @@ public class InteriorInteract
     protected ISettingsProvideable Settings;
     protected GameLocation InteractableLocation;
     protected Interior Interior;
-    protected string ButtonPromptIndetifierText = "ButtonPromptText";
     protected bool canAddPrompt = false;
     protected float distanceTo;
     public InteriorInteract()
     {
 
     }
-    public InteriorInteract(Vector3 position, float heading, string buttonPromptText)
+    public InteriorInteract(string name, Vector3 position, float heading, string buttonPromptText)
     {
+        Name = name;
         Position = position;
         Heading = heading;
         ButtonPromptText = buttonPromptText;
     }
+    public string Name { get; set; }
     public Vector3 Position { get; set; }
     public float Heading { get; set; }
     public float InteractDistance { get; set; } = 3.0f;
@@ -39,11 +40,38 @@ public class InteriorInteract
     public virtual string ButtonPromptText { get; set; } = "Interact";
     public float DistanceTo => distanceTo;
     public bool CanAddPrompt => canAddPrompt;
-
     public virtual void Setup()
     {
 
     }
+
+
+
+    public virtual void UpdateDistances(IInteractionable player)
+    {
+        Player = player;
+        distanceTo = Player.Character.DistanceTo(Position);
+        canAddPrompt = distanceTo <= InteractDistance;     
+    }
+
+
+    public virtual void UpdateActivated(IInteractionable player, ISettingsProvideable settings, GameLocation interactableLocation, Interior interior, ILocationInteractable locationInteractable)
+    {
+        Player = player;
+        Settings = settings;
+        InteractableLocation = interactableLocation;
+        Interior = interior;
+        LocationInteractable = locationInteractable;
+        if (InteractableLocation == null)
+        {
+            return;
+        }
+        if (Player.ButtonPrompts.IsPressed(Name))
+        {
+            OnInteract();
+        }
+    }
+
 
     public virtual void Update(IInteractionable player, ISettingsProvideable settings, GameLocation interactableLocation, Interior interior, ILocationInteractable locationInteractable)
     {
@@ -69,7 +97,7 @@ public class InteriorInteract
             RemovePrompt();
             return;
         }
-        if (Player.ButtonPrompts.IsPressed(ButtonPromptIndetifierText))
+        if (Player.ButtonPrompts.IsPressed(Name))
         {
             OnInteract();
         }
@@ -84,7 +112,7 @@ public class InteriorInteract
         {
             return;
         }
-        Player.ButtonPrompts.RemovePrompts(ButtonPromptIndetifierText);
+        Player.ButtonPrompts.RemovePrompt(Name);
     }
     public virtual void AddPrompt()
     {
