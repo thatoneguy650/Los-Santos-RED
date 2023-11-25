@@ -19,9 +19,6 @@ public class ExitInteriorInteract : InteriorInteract
     }
     public override void OnInteract()
     {
-        //Interior.IsMenuInteracting = true;
-        //NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, Position.X, Position.Y, Position.Z, 1.0f, -1, 0.1f, 0, Heading);
-        //GameFiber.Sleep(500);
         MoveToPosition();
         RemovePrompt();
         if (Interior != null)

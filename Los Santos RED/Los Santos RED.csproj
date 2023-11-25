@@ -134,6 +134,8 @@
     <Compile Include="lsr\Data\Organizations\PossibleOrganizations.cs" />
     <Compile Include="lsr\Data\Organizations\TaxiFirm.cs" />
     <Compile Include="lsr\Data\Peds\AnimationBundle.cs" />
+    <Compile Include="lsr\Data\Peds\TestAnimation.cs" />
+    <Compile Include="lsr\Data\Peds\TestAnimations.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\TaxiSettings.cs" />
     <Compile Include="lsr\Dispatcher\LE\MarshalDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Civilian\TaxiDispatcher.cs" />
@@ -147,6 +149,8 @@
     <Compile Include="lsr\Locations\Interiors\ResidenceInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\RestInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\StandardInteriorInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\ToiletInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\UrinalInteract.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\MerchantConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankDrawer.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\IGasPumpable.cs" />
@@ -498,6 +502,7 @@
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\OverlayZoneComponent.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\TattooOverlay.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\PedFashionAlias.cs" />
+    <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugAnimationSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugCrimeSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugDispatcherSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugGangSubMenu.cs" />

@@ -31,6 +31,7 @@ public class InteriorManager
     private float closestDistance = 999f;
     private Interior TeleportInterior;
     private bool IsUpdatingSingleLocation;
+    public bool IsInsideTeleportInterior { get; private set; } = false;
 
     public InteriorManager(IEntityProvideable world, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IInteriorManageable player, IInteractionable interactionable, ILocationInteractable locationInteractable)
     {
@@ -174,6 +175,7 @@ public class InteriorManager
     public void OnTeleportedInside(GameLocation gameLocation)
     {
         IsUpdatingSingleLocation = true;
+        IsInsideTeleportInterior = true;
         InteriorUpdateLocations.Clear();
         InteriorUpdateLocations.Add(gameLocation);
         StartInteriorChecking();
@@ -181,6 +183,7 @@ public class InteriorManager
     public void OnTeleportedOutside(GameLocation gameLocation)
     {
         IsUpdatingSingleLocation = false;
+        IsInsideTeleportInterior = false;
         InteriorUpdateLocations.Clear();
     }
 }

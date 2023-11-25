@@ -334,6 +334,7 @@ public class LowerRightDisplay
                 StreetDisplay += $"{UI.CurrentDefaultTextColor} {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name}{UI.CurrentDefaultTextColor}";
             }
         }
+
         else if (DisplayablePlayer.CurrentLocation.CurrentStreet != null)
         {
             StreetDisplay = $"{UI.CurrentDefaultTextColor}";
@@ -456,6 +457,10 @@ public class LowerRightDisplay
     }
     private string GetZoneDisplay()
     {
+         if (DisplayablePlayer.InteriorManager.IsInsideTeleportInterior)
+        {
+            return "";
+        }
         return DisplayablePlayer.CurrentLocation.CurrentZone?.GetFullLocationName(DisplayablePlayer,Settings, UI.CurrentDefaultTextColor);
     }
     private string GetViolationsText()

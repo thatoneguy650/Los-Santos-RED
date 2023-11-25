@@ -60,5 +60,6 @@ namespace LosSantosRED.lsr.Interface
         int WantedLevel { get; }
         bool IsAlive { get; }
         bool IsNotShowingFrontEndMenus { get; set; }
+        InteriorManager InteriorManager { get; }
     }
 }

@@ -797,5 +797,65 @@ public class WeaponItem : ModItem
             Game.DisplayNotification($"Error Displaying Model {ex.Message} {ex.StackTrace}");
         }
     }
+
+    public override void PerformItemAnimation(IActivityManageable Player, bool isTake)
+    {
+        string anim = isTake ? "givetake1_b" : "givetake1_a";
+        AnimationDictionary.RequestAnimationDictionay("mp_common");
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", anim, 1.0f, -1.0f, 5000, 50, 0, false, false, false);
+        if (isTake)
+        {
+            GameFiber.Sleep(500);
+        }
+
+        string HandBoneName = "BONETAG_R_PH_HAND";
+        Vector3 HandOffset = Vector3.Zero;
+        Rotator HandRotator = Rotator.Zero;
+
+
+        if (isTake)
+        {
+            GameFiber.Sleep(500);
+        }
+
+
+        Rage.Object AttachProp = null;
+
+        try
+        {
+            if (NativeFunction.Natives.HAS_WEAPON_ASSET_LOADED<bool>(ModelItem.ModelHash))
+            {
+                Vector3 Position = Player.Character.GetOffsetPositionUp(50f);
+                AttachProp = NativeFunction.Natives.CREATE_WEAPON_OBJECT<Rage.Object>(ModelItem.ModelHash, 60, Position.X, Position.Y, Position.Z, true, 1.0f, 0, 0, 1);
+            }
+        }
+        catch (Exception ex)
+        {
+
+        }
+        GameFiber.Yield();
+        if (AttachProp.Exists())
+        {
+            AttachProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
+        }
+     
+
+        if (isTake)
+        {
+            GameFiber.Sleep(1000);
+        }
+        else
+        {
+            GameFiber.Sleep(1500);
+        }
+
+
+
+
+        if (AttachProp.Exists())
+        {
+            AttachProp.Delete();
+        }
+    }
 }
 

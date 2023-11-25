@@ -71,7 +71,7 @@ public class StoredWeapon
             weaponStorage.RemoveFromStorage(this, weapons);
             if (withAnimations)
             {
-                player.ActivityManager.PerformItemAnimation(true);
+                player.ActivityManager.PerformItemAnimation(WeaponItem, true);
             }
             UpdateInventoryScrollers(player, weaponStorage);
         };
@@ -83,7 +83,7 @@ public class StoredWeapon
             weaponStorage.PlaceInStorage(this, weapons);
             if (withAnimations)
             {
-                player.ActivityManager.PerformItemAnimation(false);
+                player.ActivityManager.PerformItemAnimation(WeaponItem, false);
             }
             UpdateInventoryScrollers(player, weaponStorage);
         };

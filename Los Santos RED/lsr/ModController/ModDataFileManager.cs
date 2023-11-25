@@ -50,6 +50,7 @@ public class ModDataFileManager
     public Organizations Organizations;
     public Cellphones Cellphones;
     public Contacts Contacts;
+    public TestAnimations TestAnimations;
 
     public ModDataFileManager()
     {
@@ -185,6 +186,11 @@ public class ModDataFileManager
         WantedLevels.ReadConfig();
         WantedLevels.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons);
         GameFiber.Yield();
+
+
+        TestAnimations = new TestAnimations();
+        TestAnimations.ReadConfig();
+
 #endif 
 
         //LanguageStrings = new LanguageStrings();

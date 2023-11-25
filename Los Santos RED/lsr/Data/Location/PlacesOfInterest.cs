@@ -2128,11 +2128,11 @@ public class PlacesOfInterest : IPlacesOfInterest
 
             //Apartment With Matching With Interior
             new Residence(new Vector3(-59.58021f, -617.4625f, 37.35678f), 69.24533f, "4 Integrity Way, Apt 28",""){
-                InteriorID = -670, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true
+                InteriorID = 21250, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true
             , CameraPosition = new Vector3(-103.6068f, -621.355f, 61.43004f), CameraDirection = new Vector3(0.9355325f, 0.094497f, -0.3403665f), CameraRotation = new Rotator(-19.89921f, -2.269968E-07f, -84.23219f)},
 
             new Residence(new Vector3(-59.58021f, -617.4625f, 37.35678f), 69.24533f, "4 Integrity Way, Apt 30",""){
-                InteriorID = -671, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true
+                InteriorID = 47362, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true
             , CameraPosition = new Vector3(-103.6068f, -621.355f, 61.43004f), CameraDirection = new Vector3(0.9355325f, 0.094497f, -0.3403665f), CameraRotation = new Rotator(-19.89921f, -2.269968E-07f, -84.23219f)},
 
             new Residence(new Vector3(-1442.846f, -544.5376f, 34.74181f), 213.3763f, "Dell Perro Heights, Apt 4",""){

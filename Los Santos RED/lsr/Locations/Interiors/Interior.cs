@@ -79,6 +79,7 @@ public class Interior
     public bool IsRestricted { get; set; } = false;
     public bool IsWeaponRestricted { get; set; } = false;
     public List<InteriorInteract> InteractPoints { get; set; } = new List<InteriorInteract>();
+    public List<Vector3> BlockedScenarios { get; set; }
 
     public virtual List<InteriorInteract> AllInteractPoints => InteractPoints;
     public InteriorInteract ClosestInteract => AllInteractPoints.Where(x => x.CanAddPrompt).OrderBy(x => x.DistanceTo).FirstOrDefault();
@@ -154,6 +155,7 @@ public class Interior
                 }
                 NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
                 IsActive = true;
+                BlockScenarios();
                 GameFiber.Yield();
             }
             catch (Exception ex)
@@ -229,6 +231,9 @@ public class Interior
                     //SetInactive();
                     IsActive = false;
                     GameFiber.Yield();
+
+
+                    //new Vector3(-19.51501f, -597.6929f, 94.02557f)
                 }
                 catch (Exception ex)
                 {
@@ -271,12 +276,25 @@ public class Interior
             IsMenuInteracting = false;
             locationCamera?.StopImmediately(true);
             GameFiber.Sleep(1000);
+            BlockScenarios();
             Game.FadeScreenIn(1500, true);
             Player.InteriorManager.OnTeleportedInside(InteractableLocation);
             //OnWentInside();
         }
     }
-
+    public virtual void BlockScenarios()
+    {
+        float ScenarioBlockingDistance = 5.0f;
+        if(BlockedScenarios == null)
+        {
+            return;
+        }
+        foreach (Vector3 vector3 in BlockedScenarios)
+        {
+            NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(vector3.X - ScenarioBlockingDistance, vector3.Y - ScenarioBlockingDistance, vector3.Z - ScenarioBlockingDistance, vector3.X + ScenarioBlockingDistance, vector3.Y + ScenarioBlockingDistance, vector3.Z + ScenarioBlockingDistance, false, true, true, true);
+            EntryPoint.WriteToConsole($"BLOCK SCENARIO RAN {vector3}");
+        }
+      }
 
     //public void OnBecameClose()
     //{

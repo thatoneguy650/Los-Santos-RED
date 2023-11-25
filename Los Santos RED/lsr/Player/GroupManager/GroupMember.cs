@@ -78,6 +78,7 @@ public class GroupMember
         }
         if (!PedExt.WasModSpawned)
         {
+            PedExt.WasEverSetPersistent = true;
             previousPedGroup = PedExt.Pedestrian.RelationshipGroup;
             PedExt.Pedestrian.IsPersistent = true;
             PedExt.Pedestrian.RelationshipGroup = previousPedGroup;

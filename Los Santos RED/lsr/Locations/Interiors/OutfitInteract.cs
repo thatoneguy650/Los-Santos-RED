@@ -9,7 +9,6 @@ using System.Xml.Serialization;
 
 public class OutfitInteract : InteriorInteract
 {
-    protected LocationCamera LocationCamera;
     [XmlIgnore]
     public IOutfitableLocation OutfitableLocation { get; set; }
     public OutfitInteract()
@@ -30,6 +29,7 @@ public class OutfitInteract : InteriorInteract
         {
             Interior.IsMenuInteracting = false;
             Game.DisplayHelp("Access Failed");
+            LocationCamera?.StopImmediately(true);
             return;
         }
         OutfitableLocation.CreateOutfitMenu();
@@ -43,17 +43,6 @@ public class OutfitInteract : InteriorInteract
             return;
         }
         Player.ButtonPrompts.AddPrompt(Name, ButtonPromptText, Name, Settings.SettingsManager.KeySettings.InteractStart, 999);
-    }
-    private void SetupCamera()
-    {
-        if (CameraPosition != Vector3.Zero)
-        {
-            if (LocationCamera == null)
-            {
-                LocationCamera = new LocationCamera(OutfitableLocation.GameLocation, LocationInteractable, Settings, true);
-            }
-            LocationCamera.MoveToPosition(CameraPosition, CameraDirection, CameraRotation, false);
-        }
     }
 }
 

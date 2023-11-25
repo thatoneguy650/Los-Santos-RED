@@ -843,5 +843,58 @@ public class LocationCamera
         cameraRotator.RotateCameraByMouse();
     }
 
+    public void AutoInterior(Vector3 focusPosition, float focusHeading, bool wait)
+    {
+        if (!StoreCam.Exists())
+        {
+            StoreCam = new Camera(false);
+        }
+
+        if (Camera.RenderingCamera != null)
+        {
+            StoreCam.Position = Camera.RenderingCamera.Position;
+            StoreCam.FOV = Camera.RenderingCamera.FOV;
+            StoreCam.Rotation = Camera.RenderingCamera.Rotation;
+        }
+        else
+        {
+            StoreCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+            StoreCam.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+            Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+            StoreCam.Rotation = new Rotator(r.X, r.Y, r.Z);
+            StoreCam.Active = true;
+        }
+
+
+
+        float distanceX = Settings.SettingsManager.PlayerOtherSettings.InteriorAutoCameraXDistance;// 5f;
+        float distanceAway = Settings.SettingsManager.PlayerOtherSettings.InteriorAutoCameraYDistance;// 5f;
+        float distanceAbove = Settings.SettingsManager.PlayerOtherSettings.InteriorAutoCameraZDistance;// 3f;
+
+        float HeadingOffset = Settings.SettingsManager.PlayerOtherSettings.InteriorAutoCameraHeadingOffset;// 3f;
+
+        Vector3 InitialCameraPosition = NativeHelper.GetOffsetPosition(focusPosition, focusHeading + HeadingOffset, distanceAway);
+        InitialCameraPosition = NativeHelper.GetOffsetPosition(InitialCameraPosition, focusHeading, distanceX);
+        InitialCameraPosition = new Vector3(InitialCameraPosition.X, InitialCameraPosition.Y, InitialCameraPosition.Z + distanceAbove);
+        Vector3 ToLookAt1 = new Vector3(focusPosition.X, focusPosition.Y, focusPosition.Z);
+        _direction = (ToLookAt1 - InitialCameraPosition).ToNormalized();
+
+
+        if (!CameraTo.Exists())
+        {
+            CameraTo = new Camera(false);
+        }
+        CameraTo.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+        CameraTo.Position = InitialCameraPosition;
+        CameraTo.Rotation = StoreCam.Rotation;// desiredRotation;
+        CameraTo.Direction = _direction;
+        CameraTo.Active = true;
+
+        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(CameraTo, StoreCam, 1500, true, true);
+        if (wait)
+        {
+            GameFiber.Sleep(1500);
+        }
+    }
 }
 

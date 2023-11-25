@@ -78,11 +78,19 @@ public class ApartmentBuilding : GameLocation
                 if (!HasTransitionedToResidence)
                 {
                     DisposeInteractionMenu();
-                    StoreCamera.Dispose();
+
+                    DisposeCamera(isInside);
+                    DisposeInterior();
+
+                    //StoreCamera.Dispose();
                     Player.ActivityManager.IsInteractingWithLocation = false;
-                    CanInteract = true;
+                    //CanInteract = true;
                     Player.IsTransacting = false;
                 }
+                Player.ActivityManager.IsInteractingWithLocation = false;
+
+                Player.IsTransacting = false;
+                CanInteract = true;
             }
             catch (Exception ex)
             {

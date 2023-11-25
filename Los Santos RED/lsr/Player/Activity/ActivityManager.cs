@@ -1628,16 +1628,21 @@ public class ActivityManager
     {
         ForceCancelAllActivities();
     }
-    public void PerformItemAnimation(bool isTaking)
+    public void PerformItemAnimation(ModItem modItem, bool isTaking)
     {
         //throw new NotImplementedException();
         if (IsPerformingActivity)
         {
             return;
         }
-        AnimationDictionary.RequestAnimationDictionay("mp_common");
-        string animation = isTaking ? "givetake1_b" : "givetake1_a";
-        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", animation, 1.0f, -1.0f, 5000, (int)(AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);
+        if(modItem == null)
+        {
+            return;
+        }
+        modItem.PerformItemAnimation(Player, isTaking);
+        //AnimationDictionary.RequestAnimationDictionay("mp_common");
+        //string animation = isTaking ? "givetake1_b" : "givetake1_a";
+       // NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", animation, 1.0f, -1.0f, 5000, (int)(AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);
     }
     public Rage.Object AttachScrewdriverToPed(ModItem screwdriverItem, bool allowGeneric)
     {

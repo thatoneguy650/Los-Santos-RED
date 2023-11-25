@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 public class InventoryInteract : InteriorInteract
 {
-    protected LocationCamera LocationCamera;
+
     public bool CanAccessItems { get; set; } = true;
     public bool CanAccessWeapons { get; set; } = true;
     public bool CanAccessCash { get; set; } = true;
@@ -34,6 +34,7 @@ public class InventoryInteract : InteriorInteract
         {
             Interior.IsMenuInteracting = false;
             Game.DisplayHelp("Access Failed");
+            LocationCamera?.StopImmediately(true);
             return;
         }
         InventoryableLocation.CreateInventoryMenu(CanAccessItems, CanAccessWeapons, CanAccessCash);
@@ -48,16 +49,6 @@ public class InventoryInteract : InteriorInteract
         }
         Player.ButtonPrompts.AddPrompt(Name, ButtonPromptText, Name, Settings.SettingsManager.KeySettings.InteractStart, 999);
     }
-    private void SetupCamera()
-    {
-        if (CameraPosition != Vector3.Zero)
-        {
-            if (LocationCamera == null)
-            {
-                LocationCamera = new LocationCamera(InventoryableLocation.GameLocation, LocationInteractable, Settings, true);
-            }
-            LocationCamera.MoveToPosition(CameraPosition, CameraDirection, CameraRotation, false);
-        }
-    }
+
 }
 

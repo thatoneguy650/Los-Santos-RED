@@ -107,6 +107,13 @@ public class PlayerOtherSettings : ISettingsDefaultable
    // public bool UseVanillaGroup { get; set; }
     public bool SetCameraHintWhenConversing { get;  set; }
 
+
+
+    public float InteriorAutoCameraXDistance { get; set; }
+    public float InteriorAutoCameraYDistance { get; set; }
+    public float InteriorAutoCameraZDistance { get; set; }
+    public float InteriorAutoCameraHeadingOffset { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -188,6 +195,11 @@ public class PlayerOtherSettings : ISettingsDefaultable
 
         SetCameraHintWhenConversing = true;
 
+
+        InteriorAutoCameraXDistance = 2f;
+        InteriorAutoCameraYDistance = 3f;
+        InteriorAutoCameraZDistance = 1f;
+        InteriorAutoCameraHeadingOffset = -90f;
     }
 
 }

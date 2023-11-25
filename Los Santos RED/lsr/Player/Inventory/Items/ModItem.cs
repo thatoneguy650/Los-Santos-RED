@@ -517,7 +517,7 @@ public class ModItem
             {
                 if(withAnimations)
                 {
-                    player.ActivityManager.PerformItemAnimation(true);
+                    player.ActivityManager.PerformItemAnimation(this, true);
                 }
                 player.Inventory.Add(this,takeScroller.Value);
             }
@@ -532,7 +532,7 @@ public class ModItem
             {
                 if(withAnimations)
                 {
-                    player.ActivityManager.PerformItemAnimation(false);
+                    player.ActivityManager.PerformItemAnimation(this, false);
                 }
                 simpleInventory.Add(this, giveScroller.Value);
             }
@@ -623,5 +623,138 @@ public class ModItem
     {
         menusToUpdate.Clear();
     }
+
+
+
+
+
+
+
+    public virtual void PerformItemAnimation(IActivityManageable Player, bool isTake)
+    {
+        string modelName = "";
+        bool HasProp = false;
+        bool isPackage = false;
+        if (PackageItem != null && PackageItem.ModelName != "")
+        {
+            modelName = PackageItem.ModelName;
+            HasProp = true;
+            isPackage = true;
+        }
+        else if (ModelItem != null && ModelItem.ModelName != "")
+        {
+            modelName = ModelItem.ModelName;
+            HasProp = true;
+        }
+
+
+
+
+
+        string anim = isTake ? "givetake1_b" : "givetake1_a";
+        AnimationDictionary.RequestAnimationDictionay("mp_common");
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", anim, 1.0f, -1.0f, 5000, 50, 0, false, false, false);
+        if (isTake)
+        {
+            GameFiber.Sleep(500);
+        }
+
+
+
+
+
+        string HandBoneName = "BONETAG_R_PH_HAND";
+        Vector3 HandOffset = Vector3.Zero;
+        Rotator HandRotator = Rotator.Zero;
+        PropAttachment pa = null;
+        if (isPackage)
+        {
+            pa = PackageItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHandPass" && (x.Gender == "U" || x.Gender == Player.Gender));
+            if (pa == null)
+            {
+                pa = PackageItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+            }
+        }
+        else
+        {
+            pa = ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHandPass" && (x.Gender == "U" || x.Gender == Player.Gender));
+            if (pa == null)
+            {
+                pa = ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+            }
+        }
+        if (pa != null)
+        {
+            HandOffset = pa.Attachment;
+            HandRotator = pa.Rotation;
+            HandBoneName = pa.BoneName;
+        }
+
+
+
+
+        if (isTake)
+        {
+            GameFiber.Sleep(500);
+        }
+
+
+
+
+
+
+
+        Rage.Object AttachProp = null;
+        if ( HasProp && modelName != "")
+        {
+            try
+            {
+                AttachProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));// new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
+            }
+            catch (Exception ex)
+            {
+
+            }
+            GameFiber.Yield();
+            if (AttachProp.Exists())
+            {
+                AttachProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+        if (isTake)
+        {
+            GameFiber.Sleep(1000);
+        }
+        else
+        {
+            GameFiber.Sleep(1500);
+        }
+
+
+
+
+
+        if (AttachProp.Exists())
+        {
+            AttachProp.Delete();
+        }
+    }
+
+
+
+
+
+
+
 }
 

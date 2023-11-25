@@ -19,19 +19,18 @@ public class StandardInteriorInteract : InteriorInteract
     }
     public override void OnInteract()
     {
-        EntryPoint.WriteToConsole("StandardInteriorInteract OnInteract");
+        Interior.IsMenuInteracting = true;
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
-        MoveToPosition();
-        Interior.IsMenuInteracting = true;
-        if (CameraPosition != Vector3.Zero)
+        SetupCamera();
+        if (!MoveToPosition())
         {
-            InteractableLocation?.StandardInteractWithNewCamera(CameraPosition,CameraDirection,CameraRotation);
+            Interior.IsMenuInteracting = false;
+            Game.DisplayHelp("Access Failed");
+            LocationCamera?.StopImmediately(true);
+            return;
         }
-        else
-        {
-            InteractableLocation?.StandardInteract(null, true);
-        }
+        InteractableLocation?.StandardInteract(LocationCamera, true);    
     }
     public override void AddPrompt()
     {

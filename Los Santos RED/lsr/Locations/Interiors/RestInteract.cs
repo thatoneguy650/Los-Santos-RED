@@ -13,9 +13,7 @@ using ExtensionsMethods;
 
 public class RestInteract : InteriorInteract
 {
-    protected LocationCamera LocationCamera;
     private AnimationBundle endBundle;
-
     [XmlIgnore]
     public IRestableLocation RestableLocation {get;set;}
     public List<AnimationBundle> StartAnimations { get;set;} = new List<AnimationBundle>() { 
@@ -27,14 +25,6 @@ public class RestInteract : InteriorInteract
     public List<AnimationBundle> EndAnimations { get; set; } = new List<AnimationBundle>() { 
         //new AnimationBundle("savebighouse@", "f_getout_l_bighouse", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "F" },
         new AnimationBundle("savem_default@", "m_getout_l", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" } };
-    //public string AnimationStartDictionaryName { get; set; } = "savem_default@";
-    //public string AnimationStartName { get; set; } = "m_getin_l";
-    //public string AnimationLoopDictionaryName { get; set; } = "savem_default@";
-    //public string AnimationLoopName { get; set; } = "m_sleep_l_loop";
-    //public string AnimationEndDictionaryName { get; set; } = "savem_default@";
-    //public string AnimationEndName { get; set; } = "m_getout_l";
-    //public bool PlayAnimation { get; set; } = true;
-    //public bool DisablePlayerVisibility { get; set; }
     public RestInteract()
     {
     }
@@ -76,17 +66,6 @@ public class RestInteract : InteriorInteract
             return;
         }
         Player.ButtonPrompts.AddPrompt(Name, ButtonPromptText, Name, Settings.SettingsManager.KeySettings.InteractStart, 999);
-    }
-    private void SetupCamera()
-    {
-        if (CameraPosition != Vector3.Zero)
-        {
-            if (LocationCamera == null)
-            {
-                LocationCamera = new LocationCamera(RestableLocation.GameLocation, LocationInteractable, Settings, true);
-            }
-            LocationCamera.MoveToPosition(CameraPosition, CameraDirection, CameraRotation, false);
-        }
     }
     private bool DoRestAnimation()
     {

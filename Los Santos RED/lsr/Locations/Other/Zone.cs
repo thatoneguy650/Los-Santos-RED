@@ -190,6 +190,8 @@ public class Zone
     }
     public string GetFullLocationName(IDisplayable Player, ISettingsProvideable settings, string CurrentDefaultTextColor)
     {
+
+
         string toDisplay = $"{CurrentDefaultTextColor}" + FullZoneName(settings);
         if (settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency && AssignedLEAgency != null)
         {

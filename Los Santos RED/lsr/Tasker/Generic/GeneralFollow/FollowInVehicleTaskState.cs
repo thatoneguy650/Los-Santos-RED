@@ -92,19 +92,19 @@ class FollowInVehicleTaskState : TaskState
 
             NativeFunction.Natives.TASK_VEHICLE_CHASE(PedGeneral.Pedestrian, Player.Character);
 
-            NativeFunction.Natives.SET_DRIVE_TASK_MAX_CRUISE_SPEED(PedGeneral.Pedestrian, 0.0f);//reset?
+            NativeFunction.Natives.SET_DRIVE_TASK_MAX_CRUISE_SPEED(PedGeneral.Pedestrian, 100.0f);//reset?
 
-            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(PedGeneral.Pedestrian, 15f);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(PedGeneral.Pedestrian, 8f);
             NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(PedGeneral.Pedestrian, (int)eChaseBehaviorFlag.FullContact, false);
             NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(PedGeneral.Pedestrian, (int)eChaseBehaviorFlag.MediumContact, false);
             NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(PedGeneral.Pedestrian, (int)eChaseBehaviorFlag.LowContact, false);
             NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(PedGeneral.Pedestrian, (int)eChaseBehaviorFlag.PIT, false);
             NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(PedGeneral.Pedestrian, (int)eChaseBehaviorFlag.NoContact, true);
-            //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(PedGeneral.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, true);
-            //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(PedGeneral.Pedestrian, (int)eCombatAttributes.BF_DisableSpinOutDuringVehicleChase, true);
-            //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(PedGeneral.Pedestrian, (int)eCombatAttributes.BF_DisableBlockFromPursueDuringVehicleChase, true);
+            NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(PedGeneral.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, true);
+            NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(PedGeneral.Pedestrian, (int)eCombatAttributes.BF_DisableSpinOutDuringVehicleChase, true);
+            NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(PedGeneral.Pedestrian, (int)eCombatAttributes.BF_DisableBlockFromPursueDuringVehicleChase, true);
             //NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 70f);
-            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(PedGeneral.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
+            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(PedGeneral.Pedestrian, (int)eCustomDrivingStyles.Code3);
             //unsafe
             //{
             //    int lol = 0;
