@@ -28,58 +28,31 @@ public class Morgue : GameLocation
         ButtonPromptText = $"Enter {Name}";
         return true;
     }
-    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        Player = player;
-        ModItems = modItems;
-        World = world;
-        Settings = settings;
-        Weapons = weapons;
-        Time = time;
+        //Player = player;
+        //ModItems = modItems;
+        //World = world;
+        //Settings = settings;
+        //Weapons = weapons;
+        //Time = time;
 
         if (IsLocationClosed())
         {
             return;
         }
-
-        if (CanInteract)
+        if (!CanInteract)
         {
-            
-            Player.ActivityManager.IsInteractingWithLocation = true;
-            CanInteract = false;
-
-            //LocationTeleporter locationTeleporter = null;
-            if (Interior != null && Interior.IsTeleportEntry)
-            {
-                Interior.Teleport(Player, this, null);
-            }
-
-            //Player.IsTransacting = true;
-
-            //GameFiber.StartNew(delegate
-            //{
-            //    try
-            //    {
-
-
-
-            //        while (locationTeleporter?.IsInside == true)
-            //        {
-            //            locationTeleporter.Update();
-            //            GameFiber.Yield();
-            //        }
-
-
-            //        Player.ActivityManager.IsInteractingWithLocation = false;
-            //        CanInteract = true;
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
-            //        EntryPoint.ModController.CrashUnload();
-            //    }
-
-            //}, "Interact");
+            return;
+        }
+        if (Interior != null && Interior.IsTeleportEntry)
+        {
+            DoEntranceCamera();
+            Interior.Teleport(Player, this, StoreCamera);
+        }
+        else
+        {
+            StandardInteract(null, false);
         }
     }
 

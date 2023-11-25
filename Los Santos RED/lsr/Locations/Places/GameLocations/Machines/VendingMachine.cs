@@ -45,14 +45,14 @@ public class VendingMachine : GameLocation
         MenuID = menuID;
         MachineProp = machineProp;     
     }
-    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        Player = player;
-        ModItems = modItems;
-        World = world;
-        Settings = settings;
-        Weapons = weapons;
-        Time = time;
+        //Player = player;
+        //ModItems = modItems;
+        //World = world;
+        //Settings = settings;
+        //Weapons = weapons;
+        //Time = time;
 
         if (IsLocationClosed())
         {
@@ -75,7 +75,7 @@ public class VendingMachine : GameLocation
                         CreateInteractionMenu();
                         Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
                         Transaction.PreviewItems = false;
-                        Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
+                        Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);
                         InteractionMenu.Visible = true;
                         Transaction.ProcessTransactionMenu();
                         Transaction.DisposeTransactionMenu();

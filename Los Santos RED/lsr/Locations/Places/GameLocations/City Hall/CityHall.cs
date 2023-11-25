@@ -51,52 +51,62 @@ public class CityHall : GameLocation
         ButtonPromptText = $"Enter {Name}";
         return true;
     }
-    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        Player = player;
-        ModItems = modItems;
-        World = world;
-        Settings = settings;
-        Weapons = weapons;
-        Time = time;
+        //Player = player;
+        //ModItems = modItems;
+        //World = world;
+        //Settings = settings;
+        //Weapons = weapons;
+        //Time = time;
 
         if (IsLocationClosed())
         {
             return;
         }
-
-        if (CanInteract)
+        if (!CanInteract)
         {
-            Player.ActivityManager.IsInteractingWithLocation = true;
-            CanInteract = false;
-            Player.IsTransacting = true;
-            GameFiber.StartNew(delegate
-            {
-                try
-                {
-                    StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
-                    StoreCamera.Setup();
-                    CreateInteractionMenu();
-                    InteractionMenu.Visible = true;
-                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-
-                    GenerateCityHallMenu();
-
-                    ProcessInteractionMenu();
-                    DisposeInteractionMenu();
-                    StoreCamera.Dispose();
-                    Player.ActivityManager.IsInteractingWithLocation = false;
-                    CanInteract = true;
-                    Player.IsTransacting = false;
-                }
-                catch (Exception ex)
-                {
-                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
-                    EntryPoint.ModController.CrashUnload();
-                }
-
-            }, "HotelInteract");
+            return;
         }
+        if (Interior != null && Interior.IsTeleportEntry)
+        {
+            DoEntranceCamera();
+            Interior.Teleport(Player, this, StoreCamera);
+        }
+        else
+        {
+            StandardInteract(null, false);
+        }
+    }
+    public override void StandardInteract(LocationCamera locationCamera, bool isInside)
+    {
+        Player.ActivityManager.IsInteractingWithLocation = true;
+        CanInteract = false;
+        Player.IsTransacting = true;
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                SetupLocationCamera(locationCamera, isInside, true);
+                CreateInteractionMenu();
+                InteractionMenu.Visible = true;
+                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                GenerateCityHallMenu();
+                ProcessInteractionMenu();
+                DisposeInteractionMenu();
+                DisposeCamera(isInside);
+                DisposeInterior();
+                Player.ActivityManager.IsInteractingWithLocation = false;
+                CanInteract = true;
+                Player.IsTransacting = false;
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+
+        }, "CityHallInteract");
     }
     private void GenerateCityHallMenu()
     {

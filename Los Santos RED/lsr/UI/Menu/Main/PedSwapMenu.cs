@@ -41,7 +41,7 @@ public class PedSwapMenu : ModUIMenu
     {
         Distances = new List<DistanceSelect> { new DistanceSelect("Closest", -1f), new DistanceSelect("20 M", 20f), new DistanceSelect("40 M", 40f), new DistanceSelect("100 M", 100f), new DistanceSelect("500 M", 500f), new DistanceSelect("Any", 1000f) };
         PedSwapUIMenu = MenuPool.AddSubMenu(ParentMenu, "Ped Swap");
-        ParentMenu.MenuItems[ParentMenu.MenuItems.Count() - 1].Description = "Change your character by taking over an existing ped, editting the current ped or creating a ped from scratch.";
+        ParentMenu.MenuItems[ParentMenu.MenuItems.Count() - 1].Description = "Change your character by taking over an existing ped, editing the current ped or creating a ped from scratch.";
         ParentMenu.MenuItems[ParentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
         PedSwapUIMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
         CreatePedSwap();

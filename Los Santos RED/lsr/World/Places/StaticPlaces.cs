@@ -23,9 +23,10 @@ public class StaticPlaces
     private IStreets Streets;
     private IGangs Gangs;
     private IAgencies Agencies;
-    private ITimeReportable Time;
+    private ITimeControllable Time;
     private INameProvideable Names;
     private IPlateTypes PlateTypes;
+    private IModItems ModItems;
 
     private IPedGroups PedGroups;
     private IJurisdictions Jurisdictions;
@@ -35,7 +36,7 @@ public class StaticPlaces
     private IContacts Contacts;
 
     public StaticPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, IZones zones, IStreets streets, IGangs gangs,
-        IAgencies agencies, ITimeReportable time, INameProvideable names, IPedGroups pedGroups, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ILocationTypes locationTypes, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts)
+        IAgencies agencies, ITimeControllable time, INameProvideable names, IPedGroups pedGroups, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ILocationTypes locationTypes, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IModItems modItems)
     {
         Places = places;
         PlacesOfInterest = placesOfInterest;
@@ -58,12 +59,13 @@ public class StaticPlaces
         PlateTypes = plateTypes;
         Associations = associations;
         Contacts = contacts;
+        ModItems = modItems;
     }
     public void Setup(IInteractionable player, ILocationInteractable locationInteractable)
     {
         foreach (GameLocation tl in PlacesOfInterest.InteractableLocations())
         {
-            tl.StoreData(ShopMenus, Agencies, Gangs,Zones, Jurisdictions, GangTerritories, Names, Crimes, PedGroups, World, Streets, LocationTypes, Settings, PlateTypes, Associations, Contacts, Interiors);
+            tl.StoreData(ShopMenus, Agencies, Gangs,Zones, Jurisdictions, GangTerritories, Names, Crimes, PedGroups, World, Streets, LocationTypes, Settings, PlateTypes, Associations, Contacts, Interiors, locationInteractable, ModItems, Weapons, Time, PlacesOfInterest);
         }
         foreach (ILocationSetupable ps in PlacesOfInterest.LocationsToSetup())
         {
@@ -141,6 +143,10 @@ public class StaticPlaces
         foreach (GangDen gl in PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.AssociatedGang?.ID == iD))
         {
             gl.IsAvailableForPlayer = setEnabled;
+            if(gl.IsActivated)
+            {
+                gl.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
+            }
            // gl.IsBlipEnabled = setEnabled;
 
             //if (setEnabled)

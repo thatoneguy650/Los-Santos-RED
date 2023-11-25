@@ -23,7 +23,7 @@ namespace Mod
         private ISettingsProvideable Settings;
         private ICrimes Crimes;
         private IWeapons Weapons;     
-        private ITimeReportable Time;
+        private ITimeControllable Time;
         private IInteriors Interiors;
         private IShopMenus ShopMenus;
         private IGangTerritories GangTerritories;
@@ -36,7 +36,7 @@ namespace Mod
         private bool isSettingDensity;
 
         public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups,
-            IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IAudioPlayable audio, IGangs gangs, IGangTerritories gangTerritories, IStreets streets, IModItems modItems, IPedGroups pedGroups, ILocationTypes locationTypes,
+            IWeapons weapons, ICrimes crimes, ITimeControllable time, IShopMenus shopMenus, IInteriors interiors, IAudioPlayable audio, IGangs gangs, IGangTerritories gangTerritories, IStreets streets, IModItems modItems, IPedGroups pedGroups, ILocationTypes locationTypes,
             IOrganizations associations, IContacts contacts, ModDataFileManager modDataFileManager)
         {
             PlacesOfInterest = placesOfInterest;
@@ -51,11 +51,11 @@ namespace Mod
             Gangs = gangs;
             GangTerritories = gangTerritories;
             Streets = streets;
+            ModDataFileManager = modDataFileManager;
             Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus, Gangs, GangTerritories, this);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes, modItems, this, associations);
-            Places = new Places(this, zones, jurisdictions, settings, placesOfInterest, weapons, crimes, time, shopMenus, interiors, gangs, gangTerritories, streets, agencies, names, pedGroups, locationTypes, plateTypes, associations, contacts);
+            Places = new Places(this, zones, jurisdictions, settings, placesOfInterest, weapons, crimes, time, shopMenus, interiors, gangs, gangTerritories, streets, agencies, names, pedGroups, locationTypes, plateTypes, associations, contacts, ModDataFileManager.ModItems);
             SpawnErrors = new List<SpawnError>();
-            ModDataFileManager = modDataFileManager;
         }
         public bool IsMPMapLoaded { get; private set; }
         public bool IsZombieApocalypse { get; set; } = false;
@@ -68,11 +68,13 @@ namespace Mod
         public bool AnyFiresNearPlayer { get; private set; }
         public List<SpawnError> SpawnErrors { get; private set; }
         public ModDataFileManager ModDataFileManager { get; private set; }
+        public ILocationInteractable LocationInteractable { get; private set; }
         public string DebugString => "";
         public void Setup(IInteractionable player, ILocationInteractable locationInteractable)
         {
             DetermineMap();
             Pedestrians.Setup();
+            LocationInteractable = locationInteractable;
             Places.Setup(player, locationInteractable);
             Vehicles.Setup();
             AddBlipsToMap();

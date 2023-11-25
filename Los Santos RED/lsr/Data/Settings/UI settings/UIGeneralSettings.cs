@@ -55,7 +55,7 @@ public class UIGeneralSettings : ISettingsDefaultable
     public bool UseCustomInvestigationMarks { get; set; }
     public float CustomInvestigationMarksScale { get; set; }
     public float CustomInvestigationMarksSpacingPixelReduction { get; set; }
-    public int CustomInvestigationMarksRedColorLimit { get; set; }
+
     public bool ShowVehicleInteractionPrompt { get; set; }
     public bool ShowVehicleInteractionPromptInVehicle { get; set; }
     [OnDeserialized()]
@@ -118,7 +118,7 @@ public class UIGeneralSettings : ISettingsDefaultable
        // ShowFakeWantedLevelStars = false;
         UseCustomWantedLevelStars = true;
         UseCustomInvestigationMarks = true;
-        CustomInvestigationMarksRedColorLimit = 3;
+
 
         CustomWantedLevelStarsRedColorLimit = 6;
         ShowVehicleInteractionPrompt = true;

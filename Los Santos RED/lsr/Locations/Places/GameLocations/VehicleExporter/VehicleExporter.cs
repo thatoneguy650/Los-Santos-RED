@@ -51,67 +51,81 @@ public class VehicleExporter : GameLocation
         base.Reset();
     }
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes,
-    IPedGroups PedGroups, IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors)
+    IPedGroups PedGroups, IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors,
+        ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
         PhoneContact = contacts.GetContactData(ContactName);
-        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors);
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest);
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Export Vehicle At {Name}";
         return true;
     }
-    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        Player = player;
-        ModItems = modItems;
-        World = world;
-        Settings = settings;
-        Weapons = weapons;
-        Time = time;
+        //Player = player;
+        //ModItems = modItems;
+        //World = world;
+        //Settings = settings;
+        //Weapons = weapons;
+        //Time = time;
         if (IsLocationClosed())
         {
             return;
         }
-        if (CanInteract)
+        if (!CanInteract)
         {
-            Player.ActivityManager.IsInteractingWithLocation = true;
-            CanInteract = false;
-            Player.IsTransacting = true;
-            GameFiber.StartNew(delegate
-            {
-                try
-                {
-                    StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
-                    StoreCamera.Setup();
-                    CreateInteractionMenu();
-                    InteractionMenu.Visible = true;
-                    GenerateExportMenu();
-                    ProcessInteractionMenu();
-                    if (HasExported)
-                    {
-                        Organization Association = Associations.GetOrganizationByContact(ContactName);
-                        EntryPoint.WriteToConsole($"ContactName {ContactName} NO Association FOUND: {Association == null}");
-                        if (Association != null && Association.PhoneContact != null)
-                        {
-                            EntryPoint.WriteToConsole($"Association.PhoneContact.Name: {Association.PhoneContact.Name}");
-                            Player.CellPhone.AddContact(Association.PhoneContact, true);
-                        }
-                        //Player.CellPhone.AddContact(new VehicleExporterContact(ContactName), true);
-                    }
-                    DisposeInteractionMenu();
-                    StoreCamera.Dispose();
-                    Player.ActivityManager.IsInteractingWithLocation = false;
-                    CanInteract = true;
-                    Player.IsTransacting = false;
-                }
-                catch (Exception ex)
-                {
-                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
-                    EntryPoint.ModController.CrashUnload();
-                }
-            }, "VehicleExporterInteract");
+            return;
         }
+        if (Interior != null && Interior.IsTeleportEntry)
+        {
+            DoEntranceCamera();
+            Interior.Teleport(Player, this, StoreCamera);
+        }
+        else
+        {
+            StandardInteract(null, false);
+        }
+    }
+    public override void StandardInteract(LocationCamera locationCamera, bool isInside)
+    {
+        Player.ActivityManager.IsInteractingWithLocation = true;
+        CanInteract = false;
+        Player.IsTransacting = true;
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                SetupLocationCamera(locationCamera, isInside, true);
+                CreateInteractionMenu();
+                InteractionMenu.Visible = true;
+                GenerateExportMenu();
+                ProcessInteractionMenu();
+                if (HasExported)
+                {
+                    Organization Association = Associations.GetOrganizationByContact(ContactName);
+                    EntryPoint.WriteToConsole($"ContactName {ContactName} NO Association FOUND: {Association == null}");
+                    if (Association != null && Association.PhoneContact != null)
+                    {
+                        EntryPoint.WriteToConsole($"Association.PhoneContact.Name: {Association.PhoneContact.Name}");
+                        Player.CellPhone.AddContact(Association.PhoneContact, true);
+                    }
+                    //Player.CellPhone.AddContact(new VehicleExporterContact(ContactName), true);
+                }
+                DisposeInteractionMenu();
+                DisposeCamera(isInside);
+                DisposeInterior();
+                Player.ActivityManager.IsInteractingWithLocation = false;
+                CanInteract = true;
+                Player.IsTransacting = false;
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "VehicleExporterInteract");
     }
     public void AddPriceListItems(UIMenu toAdd, IModItems modItems)
     {

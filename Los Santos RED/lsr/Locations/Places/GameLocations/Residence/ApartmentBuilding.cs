@@ -26,15 +26,15 @@ public class ApartmentBuilding : GameLocation
     [XmlIgnore]
     public List<Residence> Residences { get; set; } = new List<Residence>();
     public override string TypeName => "Apartment Building";
-    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        Player = player;
-        ModItems = modItems;
-        World = world;
-        Settings = settings;
-        Weapons = weapons;
-        Time = time;
-        PlacesOfInterest = placesOfInterest;
+        //Player = player;
+        //ModItems = modItems;
+        //World = world;
+        //Settings = settings;
+        //Weapons = weapons;
+        //Time = time;
+        //PlacesOfInterest = placesOfInterest;
         if (IsLocationClosed())
         {
             return;

@@ -219,21 +219,27 @@ class WanderOnFootTaskState : TaskState
                 ScenarioChosen = NonDealerScenarios.PickRandom();
             }
         }
+
+        //EntryPoint.WriteToConsole($"WANDER ON FOOT useLocal {useLocal}");
+
         if(PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.EquipLongGunWhenIdle) || PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.EquipSidearmWhenIdle) || PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.EquipMeleeWhenIdle))
         {
             NativeFunction.Natives.TASK_GUARD_CURRENT_POSITION(PedGeneral.Pedestrian, PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.CanMoveWhenGuarding) ? 15f : 0.0f, 5f, true);
+           // EntryPoint.WriteToConsole($"WANDER ON FOOT useLocal {useLocal} 111111");
         }
         else if (useLocal && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(PedGeneral.Pedestrian.Position.X, PedGeneral.Pedestrian.Position.Y, PedGeneral.Pedestrian.Position.Z, 3f, true))
         {
             NativeFunction.CallByName<bool>("TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP", PedGeneral.Pedestrian, PedGeneral.Pedestrian.Position.X, PedGeneral.Pedestrian.Position.Y, PedGeneral.Pedestrian.Position.Z, 3f, 0);
+            //EntryPoint.WriteToConsole($"WANDER ON FOOT useLocal {useLocal} 222222");
         }
         else
         {
             NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", PedGeneral.Pedestrian, ScenarioChosen, 0, true);
+            //EntryPoint.WriteToConsole($"WANDER ON FOOT useLocal {useLocal} 33333");
         }
         GameTimeBetweenScenarios = RandomItems.GetRandomNumber(MinGameTimeBetweenGuarding, MaxGameTimeBetweenGuarding);
         GameTimeLastStartedScenario = Game.GameTime;
-
+        
     }
     private void UpdateFootPatrol()
     {

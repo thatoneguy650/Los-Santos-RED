@@ -54,17 +54,20 @@ public class RestInteract : InteriorInteract
         {
             Interior.IsMenuInteracting = false;
             Game.DisplayHelp("Resting Failed");
+            LocationCamera?.StopImmediately(true);
             return;
         }
         if (!DoRestAnimation())
         {
             Interior.IsMenuInteracting = false;
             Game.DisplayHelp("Resting Failed");
+            LocationCamera?.StopImmediately(true);
             return;
         }
         RestableLocation.CreateRestMenu();
         Interior.IsMenuInteracting = false;
         DoGetUpAnimation();
+        LocationCamera?.StopImmediately(true);
     }
     public override void AddPrompt()
     {
@@ -82,7 +85,7 @@ public class RestInteract : InteriorInteract
             {
                 LocationCamera = new LocationCamera(RestableLocation.GameLocation, LocationInteractable, Settings, true);
             }
-            LocationCamera.MoveToPosition(CameraPosition, CameraDirection, CameraRotation);
+            LocationCamera.MoveToPosition(CameraPosition, CameraDirection, CameraRotation, false);
         }
     }
     private bool DoRestAnimation()

@@ -40,14 +40,14 @@ public class Forger : GameLocation
         ButtonPromptText = $"Enter {Name}";
         return true;
     }
-    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        Player = player;
-        ModItems = modItems;
-        World = world;
-        Settings = settings;
-        Weapons = weapons;
-        Time = time;
+        //Player = player;
+        //ModItems = modItems;
+        //World = world;
+        //Settings = settings;
+        //Weapons = weapons;
+        //Time = time;
         if (IsLocationClosed())
         {
             return;
@@ -56,6 +56,18 @@ public class Forger : GameLocation
         {
             return;
         }
+        if (Interior != null && Interior.IsTeleportEntry)
+        {
+            DoEntranceCamera();
+            Interior.Teleport(Player, this, StoreCamera);
+        }
+        else
+        {
+            StandardInteract(null, false);
+        }
+    }
+    public override void StandardInteract(LocationCamera locationCamera, bool isInside)
+    {
         Player.ActivityManager.IsInteractingWithLocation = true;
         CanInteract = false;
         Player.IsTransacting = true;
@@ -63,14 +75,14 @@ public class Forger : GameLocation
         {
             try
             {
-                StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
-                StoreCamera.Setup();
+                SetupLocationCamera(locationCamera, isInside, true);
                 CreateInteractionMenu();
                 InteractionMenu.Visible = true;
                 Interact();
                 ProcessInteractionMenu();
                 DisposeInteractionMenu();
-                StoreCamera.Dispose();
+                DisposeCamera(isInside);
+                DisposeInterior();
                 Player.IsTransacting = false;
                 Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
@@ -80,7 +92,7 @@ public class Forger : GameLocation
                 EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
                 EntryPoint.ModController.CrashUnload();
             }
-        }, "BarInteract");
+        }, "ForgerInteract");
     }
     private void Interact()
     {

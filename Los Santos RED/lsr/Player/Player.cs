@@ -93,6 +93,7 @@ namespace Mod
         private uint GameTimeLastReportedCamera;
         private bool ManuallyClosedDoor;
         private bool IsRunningDoorCloseFlag;
+        private bool prevAliasPedAsMainCharacter = true;//if change default setting
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -1036,7 +1037,7 @@ namespace Mod
                 }
                 else if (agency?.ID == "FIB" && WantedLevel >= 4)
                 {
-                    Scanner.OnFIBHRTDeployed();
+                    Scanner.OnFIBHETDeployed();
                 }
                 else if (vehicleType?.IsHelicopter == true)
                 {
@@ -1712,8 +1713,27 @@ namespace Mod
             GetCurrentViewMode();
             PlayerTasks.Update();
             UpdateClosestLookedAtObject();
+            //UpdateChangedSettings();
             //UpdateDoorState();
         }
+
+        //private void UpdateChangedSettings()
+        //{
+        //    if(Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter != prevAliasPedAsMainCharacter)
+        //    {
+        //        if(Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+        //        {
+
+        //        }
+        //        else
+        //        {
+        //            PedSwap.
+        //        }
+        //        EntryPoint.WriteToConsole($"SETTING PedSwapSettings.AliasPedAsMainCharacter changed from {prevAliasPedAsMainCharacter} to {Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter}");
+        //        prevAliasPedAsMainCharacter = Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter;
+        //    }
+        //}
+
 
         //private void UpdateDoorState()
         //{

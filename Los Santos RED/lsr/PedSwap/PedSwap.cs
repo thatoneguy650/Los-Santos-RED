@@ -49,6 +49,8 @@ public class PedSwap : IPedSwap
     private ITattooNames TattooNames;
     private IGameSaves GameSaves;
     private ISavedOutfits SavedOutfits;
+    private bool HasSetOffset;
+
     public PedSwap(ITimeControllable time, IPedSwappable player, ISettingsProvideable settings, IEntityProvideable entities, IWeapons weapons, ICrimes crimes, INameProvideable names, IModItems modItems, IEntityProvideable world, 
         IPedGroups pedGroups, IShopMenus shopMenus, IDispatchablePeople dispatchablePeople, IHeads heads, IClothesNames clothesNames, IGangs gangs, IAgencies agencies, ITattooNames tattooNames, IGameSaves gameSaves, ISavedOutfits savedOutfits)
     {
@@ -1184,7 +1186,7 @@ public class PedSwap : IPedSwap
     private void ResetOffsetForCurrentModel()
     {
         //EntryPoint.WriteToConsoleTestLong($"PEDSWAP ResetOffsetForCurrentModel START CurrentModelPlayerIs {CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
-        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && CurrentModelPlayerIs != 0)
+        if ((Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || HasSetOffset) && CurrentModelPlayerIs != 0)
         {
             //EntryPoint.WriteToConsoleTestLong($"PEDSWAP ResetOffsetForCurrentModel RAN CurrentModelPlayerIs {CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
             unsafe
@@ -1193,6 +1195,7 @@ public class PedSwap : IPedSwap
                 ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
                 *((ulong*)(SkinPtr + 0x18)) = CurrentModelPlayerIs.Hash;
             }
+            HasSetOffset = false;
         }
     }
     private void SetPlayerOffset(ulong ModelHash)
@@ -1240,6 +1243,7 @@ public class PedSwap : IPedSwap
                 ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
                 *((ulong*)(SkinPtr + 0x18)) = ModelHash;
             }
+            HasSetOffset = true;
         }
 
         //unsafe

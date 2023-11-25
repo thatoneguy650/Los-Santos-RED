@@ -19,7 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Residence : GameLocation, ILocationSetupable, IRestableLocation
+public class Residence : GameLocation, ILocationSetupable, IRestableLocation, IInventoryableLocation, IOutfitableLocation
 {
     private UIMenu OfferSubMenu;
     private UIMenuNumericScrollerItem<int> RestMenuItem;
@@ -72,29 +72,28 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation
     public override int SortOrder => IsOwnedOrRented ? 1 : 999;
     public override bool ShowInteractPrompt => !IgnoreEntranceInteract && CanInteract && !HasHeaderApartmentBuilding;
     public override bool IsBlipEnabled => base.IsBlipEnabled && !HasHeaderApartmentBuilding;
-
-
     public GameLocation GameLocation => this;
-
     public Residence(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         ButtonPromptText = GetButtonPromptText();
         OpenTime = 0;
         CloseTime = 24;
     }
-
-
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world,
-    IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors)
+    IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors,
+        ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors);
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest);
         if (HasInterior)
         {
             ResidenceInterior = interiors.PossibleInteriors.ResidenceInteriors.Where(x => x.LocalID == InteriorID).FirstOrDefault();
             interior = ResidenceInterior;
+            if (ResidenceInterior != null)
+            {
+                ResidenceInterior.SetResidence(this);
+            }
         }
     }
-
     public void OnInteractFromApartment(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, LocationCamera storeCamera)
     {
         Player = player;
@@ -121,22 +120,14 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation
             StandardInteract(storeCamera, false);
         }
     }
-    //Standard No Interior, Fake Camera Interact
-    //Interact from an apartment building
-    //Interact Rest Item, need to crawl into bed
-    //Interact Pantry Item with other restirctions (pantry or fridge)
-    //Interact Cash ITem, walk up and do give take anims
-    //Interact Outfit item, needs to walk up, turn around and face, then generate menu
-    //Interact Weapon Items, need to do came as cash, and pantry items for give and take, mayube do models later
-    //Interact General Item, does walkup, but allows all item types 
-    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        Player = player;
-        ModItems = modItems;
-        World = world;
-        Settings = settings;
-        Weapons = weapons;
-        Time = time;
+        //Player = player;
+        //ModItems = modItems;
+        //World = world;
+        //Settings = settings;
+        //Weapons = weapons;
+        //Time = time;
         if (IsLocationClosed())
         {
             return;
@@ -149,7 +140,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation
         {
             DoEntranceCamera();
             ResidenceInterior.SetResidence(this);
-            ResidenceInterior.Teleport(Player, this, null);
+            ResidenceInterior.Teleport(Player, this, StoreCamera);
         }
         else
         {
@@ -180,22 +171,12 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();
                 }
-                DisposeInteractionMenu();      
-                if (isInside)
-                {
-                    StoreCamera.StopImmediately();
-                }
-                else if (!HasTeleported)
-                {
-                    StoreCamera.Dispose();
-                }
+                DisposeInteractionMenu();
+                DisposeCamera(isInside);
+                DisposeInterior();
                 Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
                 Player.IsTransacting = false;
-                if (Interior != null)
-                {
-                    Interior.IsMenuInteracting = false;
-                }
             }
             catch (Exception ex)
             {
@@ -204,56 +185,17 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation
             }
         }, "ResidenceInteract");
     }
-
-    //public void OnRestInteract(RestInteract restInteract)
-    //{
-    //    if(restInteract != null && CameraPosition != Vector3.Zero)
-    //    {
-    //        if (StoreCamera == null)
-    //        {
-    //            StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
-    //        }
-    //        StoreCamera.MoveToPosition(restInteract.CameraPosition, restInteract.CameraDirection, restInteract.CameraRotation);
-    //    }
-    //    if(!MoveToRestPosition(restInteract))
-    //    {
-    //        Game.DisplayHelp("Resting Failed");
-    //        return;
-    //    }
-    //    if(!DoRestAnimation(restInteract))
-    //    {
-    //        Game.DisplayHelp("Resting Failed");
-    //        return;
-    //    }
-    //    RestInteract(StoreCamera, true);
-    //}
-    //private bool MoveToRestPosition(RestInteract restInteract)
-    //{
-    //    NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, restInteract.Position.X, restInteract.Position.Y, restInteract.Position.Z, 1.0f, -1, 0.1f, 0, restInteract.Heading);
-    //    GameFiber.Sleep(2000);
-    //    return true;
-    //}
-    //private bool DoRestAnimation(RestInteract restInteract)
-    //{
-    //    Player.Character.Position = restInteract.Position;
-    //    Player.Character.Heading = restInteract.Heading;
-    //    if(!AnimationDictionary.RequestAnimationDictionayResult("savem_default@"))
-    //    {
-    //        return false;
-    //    }
-    //    NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "savem_default@", "m_getin_l", 4.0f, -4.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 0, false, false, false);
-    //    GameFiber.Sleep(4000);
-    //    NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "savem_default@", "m_sleep_l_loop", 4.0f, -4.0f, -1, (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_TURN_OFF_COLLISION), 0, false, false, false);
-    //    return true;
-    //}
-    //public bool DoGetUpAnimation()
-    //{
-    //    NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "savem_default@", "m_getout_l", 4.0f, -4.0f, -1, (int)(eAnimationFlags.AF_TURN_OFF_COLLISION), 0, false, false, false);
-    //    GameFiber.Sleep(5000);
-    //    return true;
-    //}
-
-
+    protected override void DisposeCamera(bool isInside)
+    {
+        if (isInside)
+        {
+            StoreCamera.StopImmediately(true);
+        }
+        else if (!HasTeleported)
+        {
+            StoreCamera.Dispose();
+        }
+    }
     public void CreateRestMenu()
     {
         Player.ActivityManager.IsInteractingWithLocation = true;
@@ -273,6 +215,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation
             GameFiber.Yield();
         }
         DisposeInteractionMenu();
+       // StoreCamera?.StopImmediately(false);
         Player.ActivityManager.IsInteractingWithLocation = false;
         Player.IsTransacting = false;
         if (Interior != null)
@@ -280,61 +223,74 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation
             Interior.IsMenuInteracting = false;
         }
     }
+    public void CreateInventoryMenu(bool withItems, bool withWeapons, bool withCash)
+    {
+        Player.ActivityManager.IsInteractingWithLocation = true;
+        Player.IsTransacting = true;
+        CreateInteractionMenu();
+        InteractionMenu.Visible = true;
+        InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+        if (!HasBannerImage)
+        {
+            InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
+        }
 
-    //public void RestInteract(LocationCamera locationCamera, bool isInside)
-    //{
-    //    Player.ActivityManager.IsInteractingWithLocation = true;
-    //    CanInteract = false;
-    //    Player.IsTransacting = true;
-    //    HasTeleported = false;
-    //    GameFiber.StartNew(delegate
-    //    {
-    //        try
-    //        {
-    //            SetupLocationCamera(locationCamera, isInside, false);
-    //            CreateInteractionMenu();
-    //            InteractionMenu.Visible = true;
-    //            InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-    //            if (!HasBannerImage)
-    //            {
-    //                InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
-    //            }
-    //            InteractionMenu.Clear();
-    //            CreateRestInteractionMenu();
-    //            while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
-    //            {
-    //                MenuPool.ProcessMenus();
-    //                GameFiber.Yield();
-    //            }
-    //            DisposeInteractionMenu();
-    //            DoGetUpAnimation();
-    //            if (isInside)
-    //            {
-    //                StoreCamera.StopImmediately();
-    //            }
-    //            else if (!HasTeleported)
-    //            {
-    //                StoreCamera.Dispose();
-    //            }
+        InteractionMenu.Clear();
+        bool withAnimations = Interior?.IsTeleportEntry == true;
+        if (withItems)
+        {
+            SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, withAnimations);
+        }
+        if (withWeapons)
+        {
+            WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, withAnimations);
+        }
+        if (withCash)
+        {
+            CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this);
+        }
 
-
-
-    //            Player.ActivityManager.IsInteractingWithLocation = false;
-    //            CanInteract = true;
-    //            Player.IsTransacting = false;
-    //            if (Interior != null)
-    //            {
-    //                Interior.IsMenuInteracting = false;
-    //            }
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
-    //            EntryPoint.ModController.CrashUnload();
-    //        }
-    //    }, "ResidenceInteract");
-    //}
-
+        while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
+        {
+            MenuPool.ProcessMenus();
+            GameFiber.Yield();
+        }
+        DisposeInteractionMenu();
+        //StoreCamera?.StopImmediately(true);
+        Player.ActivityManager.IsInteractingWithLocation = false;
+        Player.IsTransacting = false;
+        if (Interior != null)
+        {
+            Interior.IsMenuInteracting = false;
+        }
+    }
+    public void CreateOutfitMenu()
+    {
+        Player.ActivityManager.IsInteractingWithLocation = true;
+        Player.IsTransacting = true;
+        CreateInteractionMenu();
+        InteractionMenu.Visible = true;
+        InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+        if (!HasBannerImage)
+        {
+            InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
+        }
+        InteractionMenu.Clear();
+        CreateOutfitInteractionMenu();
+        while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
+        {
+            MenuPool.ProcessMenus();
+            GameFiber.Yield();
+        }
+        DisposeInteractionMenu();
+        //StoreCamera?.StopImmediately(true);
+        Player.ActivityManager.IsInteractingWithLocation = false;
+        Player.IsTransacting = false;
+        if (Interior != null)
+        {
+            Interior.IsMenuInteracting = false;
+        }
+    }
     public void RefreshUI()
     {
         UpdateStoredData();
@@ -384,7 +340,6 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation
             Game.DisplayNotification($"ERROR RERENTING {ex.Message}");
         }
     }
-
     private void GenerateRestMenu()
     {
         if (!IsOwnedOrRented)
@@ -415,8 +370,6 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation
         WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, false);
         CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this);
     }
-
-
     private void InteractionMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if(selectedItem == RestMenuItem)
@@ -424,7 +377,6 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation
             Rest(RestMenuItem.Value);
         }
     }
-
     private void AddInquireItems()
     {
         if ((!IsOwned && CanBuy) || (!IsRented && CanRent))
@@ -489,8 +441,12 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation
         CreateOwnershipInteractionMenu();
         CreateRestInteractionMenu();
         CreateOutfitInteractionMenu();
-        SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, false);
-        WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, false);
+
+
+        bool withAnimations = Interior?.IsTeleportEntry == true;
+
+        SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, withAnimations);
+        WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, withAnimations);
         CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this);
     }
     private void CreateOwnershipInteractionMenu()
@@ -549,7 +505,6 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation
             outfitsSubMenu.AddItem(uIMenuItem);
         }
     }
-
     private void OnRentedOrPurchased()
     {
         if (ResidenceInterior != null && ResidenceInterior.IsTeleportEntry)
@@ -794,6 +749,4 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation
             CashStorage = new CashStorage();
         }
     }
-
-
 }

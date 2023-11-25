@@ -160,7 +160,7 @@ public class ActivityManager
     public bool CanRecruitLookedAtGangMember => 
         Player.CurrentLookedAtGangMember != null &&
         Player.CurrentTargetedPed == null && 
-        Player.CurrentLookedAtGangMember.WasModSpawned &&
+        //Player.CurrentLookedAtGangMember.WasModSpawned &&
         Player.RelationshipManager.GangRelationships.CurrentGang != null && 
         Player.CurrentLookedAtGangMember.Gang != null && 
         Player.RelationshipManager.GangRelationships.CurrentGang.ID == Player.CurrentLookedAtGangMember.Gang.ID &&
@@ -751,7 +751,7 @@ public class ActivityManager
             ForceCancelUpperBody();//was only if performing
             try
             {
-                Player.ClosestInteractableLocation.OnInteract(LocationInteractable, ModItems, World, Settings, Weapons, Time, PlacesOfInterest);
+                Player.ClosestInteractableLocation.OnInteract();// LocationInteractable, ModItems, World, Settings, Weapons, Time, PlacesOfInterest);
             }
             catch(Exception e) 
             {

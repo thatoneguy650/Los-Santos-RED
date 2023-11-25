@@ -25,7 +25,7 @@ public class DebugLocationSubMenu : DebugSubMenu
     private Camera FreeCam;
     private IStreets Streets;
     private string FreeCamString = "Regular";
-    private float FreeCamScale = 1.0f;
+    private float FreeCamScale = 0.5f;
     private bool isHidingHelp;
     private Street CurrentStreet;
     private Street CurrentCrossStreet;
@@ -274,12 +274,12 @@ public class DebugLocationSubMenu : DebugSubMenu
 
                     if (Game.IsKeyDownRightNow(Keys.O))
                     {
-                        FreeCamScale += 0.5f;
+                        FreeCamScale += 0.05f;
                         GameFiber.Sleep(100);
                     }
                     if (Game.IsKeyDownRightNow(Keys.L))
                     {
-                        FreeCamScale -= 0.5f;
+                        FreeCamScale -= 0.05f;
                         GameFiber.Sleep(100);
                     }
                     if (Game.IsKeyDownRightNow(Keys.J))

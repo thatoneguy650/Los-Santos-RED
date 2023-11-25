@@ -141,7 +141,7 @@ public class LocationCamera
 
     }
 
-    public void StopImmediately()
+    public void StopImmediately(bool clearTasks)
     {
         NativeFunction.Natives.SET_EVERYONE_IGNORE_PLAYER(Game.LocalPlayer, false);
         EnableControl();
@@ -159,7 +159,11 @@ public class LocationCamera
         {
             EntranceCam.Delete();
         }
-        Game.LocalPlayer.Character.Tasks.Clear();
+        if (clearTasks)
+        {
+            Game.LocalPlayer.Character.Tasks.Clear();
+        }
+        CurrentFocusPosition = Vector3.Zero;
     }
 
     //public void StopHighlightingPosition()
@@ -226,7 +230,7 @@ public class LocationCamera
             GameFiber.Sleep(1500);
         }
     }
-    public void MoveToPosition(Vector3 desiredPosition, Vector3 desiredDirection, Rotator desiredRotation)
+    public void MoveToPosition(Vector3 desiredPosition, Vector3 desiredDirection, Rotator desiredRotation, bool wait)
     {
         if (!StoreCam.Exists())
         {
@@ -271,7 +275,10 @@ public class LocationCamera
         CameraTo.Active = true;
 
         NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(CameraTo, StoreCam, 1500, true, true);
-        GameFiber.Sleep(1500);
+        if (wait)
+        {
+            GameFiber.Sleep(1500);
+        }
     }
     private void DisableControl()
     {

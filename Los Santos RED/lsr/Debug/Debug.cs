@@ -4,6 +4,7 @@ using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player.Activity;
 using LSR.Vehicles;
+using NAudio.Gui;
 using Rage;
 using Rage.Native;
 //using RNUIExamples;
@@ -81,6 +82,8 @@ public class Debug
     private bool isDoorLocked;
     private bool DoOne;
     private bool IsBigMapActive = false;
+    private string CurrentDictionary;
+    private string CurrentAnimation;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Mod.Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, WeatherReporting weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
@@ -443,8 +446,18 @@ public class Debug
         //Dispatcher.DebugSpawnCop();
 
 
-        Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth - 50;
+       // Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth - 50;
 
+
+
+       PedExt toControl = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        if (toControl == null)
+        {
+            return;
+        }
+        NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP(toControl.Pedestrian, toControl.Pedestrian.Position.X, toControl.Pedestrian.Position.Y, toControl.Pedestrian.Position.Z, 10f, 0);
+        GameFiber.Sleep(1000);
+        Game.DisplaySubtitle("RAN ONE");
     }
     private void DebugNumpad3()
     {
@@ -489,8 +502,9 @@ public class Debug
 			BRAIN::REGISTER_OBJECT_SCRIPT_BRAIN("atm_trigger", -639162137, 100, 4f, -1, 8);
          */
 
-
-
+        CurrentDictionary = NativeHelper.GetKeyboardInput("dict");
+        CurrentAnimation = NativeHelper.GetKeyboardInput("anim");
+        Game.DisplaySubtitle($"Updated Anims CurrentDict:{CurrentDictionary} CurrentAnimation:{CurrentAnimation}");
 
         //NativeFunction.Natives.REGISTER_OBJECT_SCRIPT_BRAIN("ob_vend1", Game.GetHashKey("prop_vend_soda_01"), 0, 0.01f, -1, 9);
         //NativeFunction.Natives.REGISTER_OBJECT_SCRIPT_BRAIN("ob_vend2", Game.GetHashKey("prop_vend_soda_02"), 0, 0.01f, -1, 9);
@@ -578,10 +592,10 @@ public class Debug
         //{
         //    Game.DisplayHelp($"FOUND{lighterItem.Name}");
         //}
-        NativeFunction.Natives.SET_BIGMAP_ACTIVE(!IsBigMapActive, false);
-        Game.DisplaySubtitle($"IsBigMapActive:{IsBigMapActive}");
-        GameFiber.Sleep(1000);
-        IsBigMapActive = !IsBigMapActive;
+        //NativeFunction.Natives.SET_BIGMAP_ACTIVE(!IsBigMapActive, false);
+        //Game.DisplaySubtitle($"IsBigMapActive:{IsBigMapActive}");
+        //GameFiber.Sleep(1000);
+        //IsBigMapActive = !IsBigMapActive;
 
         //GarageDoor = new InteriorDoor(3082692265,new Vector3(5.644455f,0.1074037f, 2.158299f)) },
 
@@ -891,7 +905,34 @@ public class Debug
     }
     private void DebugNumpad5()
 {
-        Game.DisplaySubtitle($" TotalCars: {Rage.World.EnumerateVehicles().Count()} Vehicle Capacity {Rage.World.VehicleCapacity}");
+
+        string dictionary = "savem_default@";
+        string animation = "m_getin_l";
+
+        if(!string.IsNullOrEmpty(CurrentDictionary))
+        {
+            dictionary = CurrentDictionary;
+        }
+        if(!string.IsNullOrEmpty(CurrentAnimation))
+        {
+            animation = CurrentAnimation;
+        }
+        Vector3 startingPos = Game.LocalPlayer.Character.Position;
+        float startingHeading = Game.LocalPlayer.Character.Heading;
+
+        AnimationDictionary.RequestAnimationDictionay(dictionary);
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 0, false, false, false);//-1
+        GameFiber.Sleep(1000);
+
+        while(!Game.IsKeyDownRightNow(Keys.O))
+        {
+            Game.DisplayHelp("PRESS O To Cancel");
+            GameFiber.Yield();
+        }
+        EntryPoint.WriteToConsole($"startingPos: new Vector3({startingPos.X}f, {startingPos.Y}f, {startingPos.Z}f), startingHeading: {startingHeading}f");
+        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+
+        //Game.DisplaySubtitle($" TotalCars: {Rage.World.EnumerateVehicles().Count()} Vehicle Capacity {Rage.World.VehicleCapacity}");
         //Game.DisplaySubtitle($"DOOR LOCK SET TO {isDoorLocked} ");
 
         //Vector3 Pos1 = new Vector3(413.364f, -1620.034f, 28.34158f);

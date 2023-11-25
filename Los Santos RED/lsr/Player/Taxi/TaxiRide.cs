@@ -127,23 +127,62 @@ public class TaxiRide
     public bool IsNearbyPickup { get; private set; }
     public bool IsWaitingOnPlayer { get; private set; }
     public bool CanSpawnRide { get; set; } = true;
-    public void Setup()
+
+
+    public void SetupHailedRide()
+    {
+        IsActive = false;
+        IsWaitingOnPlayer = false;
+        EntryPoint.WriteToConsole("Taxi Ride IS ACTIVE SET TO FALSE SETUP");
+        if(!GetVehicleAndDriver() || RespondingVehicle == null || !RespondingVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        PickupLocation = new SpawnLocation(RespondingVehicle.Vehicle.GetOffsetPositionFront(10f));
+        DestinationLocation = new SpawnLocation();
+        PickupLocation.GetClosestStreet(false);
+        PickupLocation.GetRoadBoundaryPosition();
+        if (PickupLocation.HasRoadBoundaryPosition)
+        {
+            PickupLocation.StreetPosition = PickupLocation.RoadBoundaryPosition;
+        }
+        if (!PickupLocation.HasStreetPosition)
+        {
+            EntryPoint.WriteToConsole("TAXI RIDE SETUP FAIL NO STREET POSITION");
+            return;
+        }
+        if (GetVehicleAndDriver())//if there is an existing one
+        {
+            IsActive = true;
+            AddPickupBlip();
+
+            if (RequestedFirm != null && RequestedFirm.PhoneContact != null)
+            {
+                Player.CellPhone.AddContact(RequestedFirm.PhoneContact, true);
+            }
+
+
+            return;
+        }
+        EntryPoint.WriteToConsole("TAXI RIDE SETUP FAIL NO DISPATCH");
+    }
+
+
+
+    public void SetupCalledRide()
     {
         IsActive = false;
         IsWaitingOnPlayer = false;
         EntryPoint.WriteToConsole("Taxi Ride IS ACTIVE SET TO FALSE SETUP");
         PickupLocation = new SpawnLocation(InitialPickupLocation);
         DestinationLocation = new SpawnLocation();
-        PickupLocation.GetClosestStreet(true);
+        PickupLocation.GetClosestStreet(false);
         PickupLocation.GetClosestSideOfRoad();
-
         PickupLocation.GetRoadBoundaryPosition();
         if (PickupLocation.HasRoadBoundaryPosition)
         {
             PickupLocation.StreetPosition = PickupLocation.RoadBoundaryPosition;
         }
-
-
         if (!PickupLocation.HasStreetPosition)
         {
             EntryPoint.WriteToConsole("TAXI RIDE SETUP FAIL NO STREET POSITION");

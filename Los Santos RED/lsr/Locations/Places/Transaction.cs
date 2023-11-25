@@ -49,6 +49,7 @@ public class Transaction
     public bool IsPurchasing { get; set; } = true;
     public bool UseAccounts { get; set; } = true;
     public LocationCamera LocationCamera { get; set; }
+    public bool IsInteriorInteract { get; internal set; }
 
     public Transaction(MenuPool menuPool, UIMenu parentMenu, ShopMenu menu, GameLocation store)
     {

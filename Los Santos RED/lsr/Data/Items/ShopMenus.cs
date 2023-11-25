@@ -1668,6 +1668,15 @@ public class ShopMenus : IShopMenus
 
                 new MenuItem("Vapid Tow Truck Full",34000,12000),
                 new MenuItem("Vapid Tow Truck Utility",31000,10000),
+
+
+
+                //new MenuItem("Vapid Sheriff Stanier",500,5),
+                //new MenuItem("Declasse Sheriff Granger",500,5),
+                //new MenuItem("Vapid Police Stanier",500,5),
+                //new MenuItem("Bravado Police Buffalo",500,5),
+                //
+
             }),
             new ShopMenu("GetAweighMenu","Get Aweigh",new List<MenuItem>() {
 

@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Mod;
 using Rage;
 using Rage.Native;
 using RAGENativeUI.Elements;
@@ -33,6 +34,8 @@ public class GangDen : GameLocation, IRestableLocation//, ILocationGangAssignabl
     public override string BlipName => AssociatedGang != null ? AssociatedGang.ShortName : base.BlipName;
     public GameLocation GameLocation => this;
     public bool HasVanillaGangSpawnedAroundToBeBlocked { get; set; } = false;
+    [XmlIgnore]
+    public GangDenInterior GangDenInterior { get; set; }
     protected override float GetCurrentIconAlpha(ITimeReportable time)
     {
         if(!IsAvailableForPlayer)
@@ -51,6 +54,10 @@ public class GangDen : GameLocation, IRestableLocation//, ILocationGangAssignabl
         {
             EntryPoint.WriteToConsole($"GANG DEN ACTIVATE BLIP, TERRITORY BLIP DOESNT EXIST {AssociatedGang?.ShortName}");
             CreateGangTerritoryBlip(world);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"GANG TERRITORY BLIP EXISTS ALREADY {Name}");
         }
         base.ActivateBlip(time, world);
     }
@@ -87,129 +94,152 @@ public class GangDen : GameLocation, IRestableLocation//, ILocationGangAssignabl
         AssignedAssociationID = assignedAssociationID;
         MenuID = menuID;
     }
-    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        Player = player;
-        ModItems = modItems;
-        World = world;
-        Settings = settings;
-        Weapons = weapons;
-        Time = time;
+        //Player = player;
+        //ModItems = modItems;
+        //World = world;
+        //Settings = settings;
+        //Weapons = weapons;
+        //Time = time;
 
         if (IsLocationClosed())
         {
             return;
         }
-
-
         if (!IsAvailableForPlayer)
         {
             Game.DisplayHelp($"{Name} is only available to associates and members");
             PlayErrorSound();
             return;
         }
-        if (CanInteract)
+        if (!CanInteract)
         {
-            bool isPlayerMember = player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang)?.IsMember == true;
-            Player.ActivityManager.IsInteractingWithLocation = true;
-            CanInteract = false;
-            GameFiber.StartNew(delegate
+            return;
+        }
+        if (GangDenInterior != null && GangDenInterior.IsTeleportEntry && IsAvailableForPlayer)
+        {
+            DoEntranceCamera();
+            GangDenInterior.SetGangDen(this);
+            GangDenInterior.Teleport(Player, this, StoreCamera);
+        }
+        else
+        {
+            StandardInteract(null, false);
+        }
+    }
+    public override void StandardInteract(LocationCamera locationCamera, bool isInside)
+    {
+        bool isPlayerMember = Player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang)?.IsMember == true;
+        Player.ActivityManager.IsInteractingWithLocation = true;
+        CanInteract = false;
+        GameFiber.StartNew(delegate
+        {
+            try
             {
-                try
+                SetupLocationCamera(locationCamera, isInside, false);
+                KeepInteractionGoing = false;
+                CreateInteractionMenu();
+                if (Player.IsWanted)
                 {
-                    StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
-                    StoreCamera.SayGreeting = false;
-                    StoreCamera.Setup();
+                    LayLowMenuItem = new UIMenuItem("Lay Low", "Wait out the cops.");
+                    InteractionMenu.AddItem(LayLowMenuItem);
+                    InteractionMenu.Visible = true;
+                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                    while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)// || Player.IsWanted)
+                    {
+                        MenuPool.ProcessMenus();
+                        GameFiber.Yield();
+                    }
+                    InteractionMenu.OnItemSelect -= InteractionMenu_OnItemSelect;
+                }
+                CreateInteractionMenu();
+                if (Player.IsNotWanted)
+                {
                     KeepInteractionGoing = false;
-                    CreateInteractionMenu();
-                    if (Player.IsWanted)
+                    Player.IsTransacting = true;
+                    Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+                    Transaction.UseAccounts = false;
+
+                    if (Player.RelationshipManager.GangRelationships.CurrentGang != null && Player.RelationshipManager.GangRelationships.CurrentGang.ID == AssignedAssociationID)
                     {
-                        LayLowMenuItem = new UIMenuItem("Lay Low", "Wait out the cops.");
-                        InteractionMenu.AddItem(LayLowMenuItem);
-                        InteractionMenu.Visible = true;
-                        InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                        while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)// || Player.IsWanted)
-                        {
-                            MenuPool.ProcessMenus();
-                            GameFiber.Yield();
-                        }
-                        InteractionMenu.OnItemSelect -= InteractionMenu_OnItemSelect;
+                        Transaction.IsFreeVehicles = Player.RelationshipManager.GangRelationships.CurrentGang.MembersGetFreeVehicles;// true;
+                        Transaction.IsFreeWeapons = Player.RelationshipManager.GangRelationships.CurrentGang.MembersGetFreeWeapons; //true;
                     }
-                    CreateInteractionMenu();
-                    if (Player.IsNotWanted)
+                    Transaction.IsInteriorInteract = isInside;
+                    Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);
+
+
+                    Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
+                    Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
+
+                    PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
+                    if (ExpectedMoney > 0 && pt.IsReadyForPayment)
                     {
-                        KeepInteractionGoing = false;
-                        Player.IsTransacting = true;
-                        Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-                        Transaction.UseAccounts = false;
-
-                        if (Player.RelationshipManager.GangRelationships.CurrentGang != null && Player.RelationshipManager.GangRelationships.CurrentGang.ID == AssignedAssociationID)
-                        {
-                            Transaction.IsFreeVehicles = Player.RelationshipManager.GangRelationships.CurrentGang.MembersGetFreeVehicles;// true;
-                            Transaction.IsFreeWeapons = Player.RelationshipManager.GangRelationships.CurrentGang.MembersGetFreeWeapons; //true;
-                        }
-
-                        Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-
-                        Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
-                        Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
-
-                        PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
-                        if (ExpectedMoney > 0 && pt.IsReadyForPayment)
-                        {
-                            dropoffCash = new UIMenuItem("Drop Cash", "Drop off the expected amount of cash.") { RightLabel = $"${ExpectedMoney}" };
-                            InteractionMenu.AddItem(dropoffCash);
-                        }
-                        else if (ExpectedItem != null && pt.IsReadyForPayment)
-                        {
-                            dropoffItem = new UIMenuItem($"Drop off item", $"Drop off {ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s).") { RightLabel = $"{ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s)" };
-                            InteractionMenu.AddItem(dropoffItem);
-                        }
-                        else if (pt != null && pt.IsActive && pt.IsReadyForPayment)
-                        {
-                            completeTask = new UIMenuItem($"Collect Money", $"Inform the higher ups that you have completed the assigment and collect your payment.") { RightLabel = $"${pt.PaymentAmountOnCompletion}" };
-                            InteractionMenu.AddItem(completeTask);
-                        }
-
-
-
-                        if (isPlayerMember && player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
-                        {
-                            dropoffKick = new UIMenuItem("Pay Dues", $"Drop off your member dues.~n~{player.RelationshipManager.GangRelationships.CurrentGangKickUp}") { RightLabel = $"${player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount}" };
-                            InteractionMenu.AddItem(dropoffKick);
-                        }
-                        //RestMenuItem = new UIMenuNumericScrollerItem<int>("Relax", $"Relax at the {AssociatedGang?.DenName}. Recover ~g~health~s~ and increase ~s~rep~s~ a small amount. Select up to 12 hours.", 1, 12, 1)
-                        //{ 
-                        //    Formatter = v => v.ToString() + " hours" 
-                        //};
-                        //InteractionMenu.AddItem(RestMenuItem);
-                        CreateRestInteractionMenu();
-
-
-                        InteractionMenu.Visible = true;
-                        InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                        while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
-                        {
-                            MenuPool.ProcessMenus();
-                            Transaction?.Update();
-                            //Transaction?.PurchaseMenu?.Update();
-                            //Transaction?.SellMenu?.Update();
-                            GameFiber.Yield();
-                        }
-                        Transaction.DisposeTransactionMenu();
-                        Player.IsTransacting = false;
+                        dropoffCash = new UIMenuItem("Drop Cash", "Drop off the expected amount of cash.") { RightLabel = $"${ExpectedMoney}" };
+                        InteractionMenu.AddItem(dropoffCash);
                     }
-                    DisposeInteractionMenu();
-                    StoreCamera.Dispose();
-                    Player.ActivityManager.IsInteractingWithLocation = false;
-                    CanInteract = true;
+                    else if (ExpectedItem != null && pt.IsReadyForPayment)
+                    {
+                        dropoffItem = new UIMenuItem($"Drop off item", $"Drop off {ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s).") { RightLabel = $"{ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s)" };
+                        InteractionMenu.AddItem(dropoffItem);
+                    }
+                    else if (pt != null && pt.IsActive && pt.IsReadyForPayment)
+                    {
+                        completeTask = new UIMenuItem($"Collect Money", $"Inform the higher ups that you have completed the assigment and collect your payment.") { RightLabel = $"${pt.PaymentAmountOnCompletion}" };
+                        InteractionMenu.AddItem(completeTask);
+                    }
+
+
+
+                    if (isPlayerMember && Player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
+                    {
+                        dropoffKick = new UIMenuItem("Pay Dues", $"Drop off your member dues.~n~{Player.RelationshipManager.GangRelationships.CurrentGangKickUp}") { RightLabel = $"${Player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount}" };
+                        InteractionMenu.AddItem(dropoffKick);
+                    }
+                    //RestMenuItem = new UIMenuNumericScrollerItem<int>("Relax", $"Relax at the {AssociatedGang?.DenName}. Recover ~g~health~s~ and increase ~s~rep~s~ a small amount. Select up to 12 hours.", 1, 12, 1)
+                    //{ 
+                    //    Formatter = v => v.ToString() + " hours" 
+                    //};
+                    //InteractionMenu.AddItem(RestMenuItem);
+                    CreateRestInteractionMenu();
+
+
+                    InteractionMenu.Visible = true;
+                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                    while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
+                    {
+                        MenuPool.ProcessMenus();
+                        Transaction?.Update();
+                        //Transaction?.PurchaseMenu?.Update();
+                        //Transaction?.SellMenu?.Update();
+                        GameFiber.Yield();
+                    }
+                    Transaction.DisposeTransactionMenu();
+                    Player.IsTransacting = false;
                 }
-                catch (Exception ex)
-                {
-                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
-                    EntryPoint.ModController.CrashUnload();
-                }
-            }, "GangDenInteract");       
+                DisposeInteractionMenu();
+                DisposeCamera(isInside);
+                DisposeInterior();
+                Player.ActivityManager.IsInteractingWithLocation = false;
+                CanInteract = true;
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "GangDenInteract");
+    }
+    protected override void LoadInterior(bool isOpen)
+    {
+        if(GangDenInterior != null)
+        {
+            GangDenInterior.Load(isOpen);
+        }
+        else if (HasInterior && interior != null)
+        {
+            interior.Load(isOpen);
         }
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
@@ -316,12 +346,22 @@ public class GangDen : GameLocation, IRestableLocation//, ILocationGangAssignabl
         ExpectedItemAmount = 0;
     }
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups, IEntityProvideable world, 
-        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors)
+        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors,
+        ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors);
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest);
         Menu = ShopMenus.GetSpecificMenu(MenuID);
         AssociatedGang = gangs.GetGang(AssignedAssociationID);
         ButtonPromptText = $"Enter {AssociatedGang?.ShortName} {AssociatedGang?.DenName}";
+        if (HasInterior)
+        {
+            GangDenInterior = interiors.PossibleInteriors.GangDenInteriors.Where(x => x.LocalID == InteriorID).FirstOrDefault();
+            interior = GangDenInterior;
+            if(GangDenInterior != null)
+            {
+                GangDenInterior.SetGangDen(this);
+            }
+        }
     }
     private void Rest(int Hours)
     {
@@ -396,7 +436,8 @@ public class GangDen : GameLocation, IRestableLocation//, ILocationGangAssignabl
 
     private void CreateGangTerritoryBlip(IEntityProvideable world)
     {
-        if(!Settings.SettingsManager.GangSettings.ShowGangTerritoryBlip || AssociatedGang == null)
+        EntryPoint.WriteToConsole($"GANG TERRITORY BLIP START");
+        if (!Settings.SettingsManager.GangSettings.ShowGangTerritoryBlip || AssociatedGang == null)
         {
             return;
         }

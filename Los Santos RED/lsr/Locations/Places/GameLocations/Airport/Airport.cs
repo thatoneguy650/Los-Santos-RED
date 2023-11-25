@@ -55,15 +55,15 @@ public class Airport : GameLocation, ILocationSetupable
         ButtonPromptText = $"Enter {Name}";
         return true;
     }
-    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        Player = player;
-        ModItems = modItems;
-        World = world;
-        Settings = settings;
-        Weapons = weapons;
-        Time = time;
-        PlacesOfInterest = placesOfInterest;
+        //Player = player;
+        //ModItems = modItems;
+        //World = world;
+        //Settings = settings;
+        //Weapons = weapons;
+        //Time = time;
+        //PlacesOfInterest = placesOfInterest;
         if(!IsOpen(Time.CurrentHour))
         {
             return;
@@ -71,43 +71,62 @@ public class Airport : GameLocation, ILocationSetupable
         if(!CanCurrentlyInteract(Player))
         {
             return;
-        }          
-        if (CanInteract)
-        {
-            Player.ActivityManager.IsInteractingWithLocation = true;
-            CanInteract = false;
-
-            GameFiber.StartNew(delegate
-            {
-                try
-                {
-                    IsFlyingToLocation = false;
-                    StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
-                    StoreCamera.Setup();
-                    CreateInteractionMenu();
-                    InteractionMenu.Visible = true;
-                    SetupMenu();
-                    ProcessInteractionMenu();
-                    DisposeInteractionMenu();
-
-                    if (IsFlyingToLocation)
-                    {
-                        StoreCamera.StopImmediately();
-                    }
-                    else
-                    {
-                        StoreCamera.Dispose();
-                    }
-                    Player.ActivityManager.IsInteractingWithLocation = false;
-                    CanInteract = true;
-                }
-                catch (Exception ex)
-                {
-                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                    EntryPoint.ModController.CrashUnload();
-                }
-            }, "HotelInteract");
         }
+        if (!CanInteract)
+        {
+            return;
+        }
+        if (Interior != null && Interior.IsTeleportEntry)
+        {
+            DoEntranceCamera();
+            Interior.Teleport(Player, this, StoreCamera);
+        }
+        else
+        {
+            StandardInteract(null, false);
+        }      
+    }
+    public override void StandardInteract(LocationCamera locationCamera, bool isInside)
+    {
+        if (!CanInteract)
+        {
+            return;
+        }
+        Player.ActivityManager.IsInteractingWithLocation = true;
+        CanInteract = false;
+        Player.IsTransacting = true;
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                IsFlyingToLocation = false;
+                SetupLocationCamera(locationCamera, isInside, true);
+                CreateInteractionMenu();
+                InteractionMenu.Visible = true;
+                SetupMenu();
+                ProcessInteractionMenu();
+                DisposeInteractionMenu();
+                DisposeCamera(isInside);
+                Player.ActivityManager.IsInteractingWithLocation = false;
+                CanInteract = true;
+                Player.IsTransacting = false;
+                DisposeInterior();
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "AirportInteract");     
+    }
+    protected override void DisposeCamera(bool isInside)
+    {
+        if(IsFlyingToLocation)
+        {
+            StoreCamera.StopImmediately(true);
+            return;
+        }
+        base.DisposeCamera(isInside);
     }
     public void OnSetDestination(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {

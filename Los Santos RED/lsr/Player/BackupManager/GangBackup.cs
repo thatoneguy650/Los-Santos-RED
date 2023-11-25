@@ -97,10 +97,14 @@ public class GangBackup
                 hasValidMembers = true;
                 if (!gangMember.IsAddedToPlayerGroup && gangMember.DistanceToPlayer <= 20f)
                 {
-                    Player.GroupManager.Add(gangMember);
+                    GroupMember grpMember = Player.GroupManager.Add(gangMember);
                     //Player.GroupManager.ResetStatus(gangMember, false);
                     //GameFiber.Sleep(500);
-                    Player.GroupManager.SetFollow(gangMember);
+                    if(grpMember != null)
+                    {
+                        grpMember.SetFollow();
+                    }
+                    //Player.GroupManager.SetFollow(gangMember);
                     //Player.GroupManager.SetFollow(gangMember);
                     gangMember.IsAddedToPlayerGroup = true;
                     EntryPoint.WriteToConsole("ADDED GROUP MEMBER");

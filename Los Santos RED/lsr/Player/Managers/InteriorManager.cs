@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Mod;
+using NAudio.Wave;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,9 @@ public class InteriorManager
     private Interior ClosestInterior = null;
     private GameLocation ClosestLocation = null;
     private float closestDistance = 999f;
+    private Interior TeleportInterior;
+    private bool IsUpdatingSingleLocation;
+
     public InteriorManager(IEntityProvideable world, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IInteriorManageable player, IInteractionable interactionable, ILocationInteractable locationInteractable)
     {
         World = world;
@@ -43,6 +47,11 @@ public class InteriorManager
     }
     public void Update()
     {
+
+        if (IsUpdatingSingleLocation)
+        {
+            return;
+        }
         foreach(GameLocation gameLocation in World.Places.ActiveLocations.ToList())
         {
             if(!gameLocation.HasInterior || gameLocation.Interior == null || gameLocation.Interior.IsTeleportEntry)
@@ -61,10 +70,10 @@ public class InteriorManager
                 }
                 StartInteriorChecking();
             }
-            else
-            {
-                gameLocation.Interior.RemoveButtonPrompts();
-            }
+            //else
+            //{
+            //    gameLocation.Interior.RemoveButtonPrompts();
+            //}
 
         }
         InteriorUpdateLocations.RemoveAll(x => !x.IsActivated || !x.IsNearby || x.DistanceToPlayer >= 50f);
@@ -79,13 +88,14 @@ public class InteriorManager
         {
             return;
         }
+        GameFiber.Yield();
         GameFiber.StartNew(delegate
         {
             try
             {
                 EntryPoint.WriteToConsole($"Interior StartInteriorChecking");
                 IsRunningInteriorUpdate = true;
-                while (IsActive && EntryPoint.ModController.IsRunning)
+                while (IsActive && EntryPoint.ModController.IsRunning && InteriorUpdateLocations.Any())
                 {
                     UpdateClosestInteract();
                     ClosestInteriorInteract?.UpdateActivated(Interactionable, Settings, ClosestLocation, ClosestInterior, LocationInteractable);
@@ -159,6 +169,19 @@ public class InteriorManager
             ClosestInteriorInteract.UpdateActivated(Interactionable, Settings, ClosestLocation, ClosestInterior, LocationInteractable);
             ClosestInteriorInteract.AddPrompt();
         }
+    }
+
+    public void OnTeleportedInside(GameLocation gameLocation)
+    {
+        IsUpdatingSingleLocation = true;
+        InteriorUpdateLocations.Clear();
+        InteriorUpdateLocations.Add(gameLocation);
+        StartInteriorChecking();
+    }
+    public void OnTeleportedOutside(GameLocation gameLocation)
+    {
+        IsUpdatingSingleLocation = false;
+        InteriorUpdateLocations.Clear();
     }
 }
 

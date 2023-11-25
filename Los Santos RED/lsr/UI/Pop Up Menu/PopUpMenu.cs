@@ -331,56 +331,132 @@ public class PopUpMenu
         List<PopUpBox> GroupMembersSubMenu = new List<PopUpBox>();
         //GroupMembersSubMenu.Add(new PopUpBox(0, "Reset All Tasks", new Action(() => Player.GroupManager.ResetAllStatus()), "Reset all member's tasks"));
         //GroupMembersSubMenu.Add(new PopUpBox(1, "Set All Follow", new Action(() => Player.GroupManager.TaskAllFollow()), "Tell all members to escort you around. Will use their own vehicle if it exists and is close"));
-        GroupMembersSubMenu.Add(new PopUpBox(0, "Toggle Use Player Car", new Action(() => { Player.GroupManager.RideInPlayerVehicleIfPossible = !Player.GroupManager.RideInPlayerVehicleIfPossible; 
+
+        GroupMembersSubMenu.Add(new PopUpBox(0, "All Tasking Menu", $"AllTaskingSubMenu", $"Open the All Tasking Sub Menu") { ClosesMenu = false });
+        List<PopUpBox> AllTaskingSubMenu = new List<PopUpBox>();
+        AllTaskingSubMenu.Add(new PopUpBox(0, "Toggle Use Player Car", new Action(() => {
+            Player.GroupManager.RideInPlayerVehicleIfPossible = !Player.GroupManager.RideInPlayerVehicleIfPossible;
             Game.DisplaySubtitle($"RideInPlayerVehicleIfPossible {(Player.GroupManager.RideInPlayerVehicleIfPossible ? "Enabled" : "Disabled")}");
-            Player.GroupManager.UpdateTasking();
+            Player.GroupManager.UpdateAllTasking();
         }), $"Tell all members to ride in the players car if available. Currently {(Player.GroupManager.RideInPlayerVehicleIfPossible ? "Enabled" : "Disabled")}"));
-        GroupMembersSubMenu.Add(new PopUpBox(1, "Toggle Combat", new Action(() => {
+
+
+
+
+
+        AllTaskingSubMenu.Add(new PopUpBox(1, "Toggle Combat", new Action(() => {
             Player.GroupManager.SetCombatIfPossible = !Player.GroupManager.SetCombatIfPossible;
             Player.GroupManager.SetFollowIfPossible = false;
-            Player.GroupManager.UpdateTasking();
+            Player.GroupManager.UpdateAllTasking();
             Game.DisplaySubtitle($"Encourage Combat {(Player.GroupManager.SetCombatIfPossible ? "Enabled" : "Disabled")}");
         }), $"Set exclusively combat. Currently {(Player.GroupManager.SetCombatIfPossible ? "Enabled" : "Disabled")}"));
-        GroupMembersSubMenu.Add(new PopUpBox(2, "Toggle Follow", 
-            new Action(() => { Player.GroupManager.SetFollowIfPossible = !Player.GroupManager.SetFollowIfPossible;
+        AllTaskingSubMenu.Add(new PopUpBox(2, "Toggle Follow",
+            new Action(() => {
+                Player.GroupManager.SetFollowIfPossible = !Player.GroupManager.SetFollowIfPossible;
                 Player.GroupManager.SetCombatIfPossible = false;
-                Player.GroupManager.UpdateTasking();
-                Game.DisplaySubtitle($"Encourage Follow {(Player.GroupManager.SetFollowIfPossible ? "Enabled" : "Disabled")}"); 
+                Player.GroupManager.UpdateAllTasking();
+                Game.DisplaySubtitle($"Encourage Follow {(Player.GroupManager.SetFollowIfPossible ? "Enabled" : "Disabled")}");
             }), $"Set exclusively follow. Currently {(Player.GroupManager.SetFollowIfPossible ? "Enabled" : "Disabled")}"));
 
-        GroupMembersSubMenu.Add(new PopUpBox(3, "Toggle Force Tasking",
+
+
+
+
+        AllTaskingSubMenu.Add(new PopUpBox(3, "Toggle Force Tasking",
             new Action(() => {
                 Player.GroupManager.SetForceTasking = !Player.GroupManager.SetForceTasking;
-                Player.GroupManager.UpdateTasking();
+                Player.GroupManager.UpdateAllTasking();
                 Game.DisplaySubtitle($"Force Tasking {(Player.GroupManager.SetForceTasking ? "Enabled" : "Disabled")}");
             }), $"Set the ped to always do the requested item by force tasking. Currently {(Player.GroupManager.SetForceTasking ? "Enabled" : "Disabled")}"));
-        GroupMembersSubMenu.Add(new PopUpBox(4, "Toggle Always Armed",
+
+
+
+
+
+        AllTaskingSubMenu.Add(new PopUpBox(4, "Toggle Always Armed",
             new Action(() => {
                 Player.GroupManager.AlwaysArmed = !Player.GroupManager.AlwaysArmed;
-                Player.GroupManager.UpdateTasking();
+                Player.GroupManager.NeverArmed = false;
+                Player.GroupManager.UpdateAllTasking();
                 Game.DisplaySubtitle($"Always Armed {(Player.GroupManager.AlwaysArmed ? "Enabled" : "Disabled")}");
             }), $"Set always armed. Currently {(Player.GroupManager.AlwaysArmed ? "Enabled" : "Disabled")}"));
 
-        GroupMembersSubMenu.Add(new PopUpBox(5, "Toggle Never Armed",
+        AllTaskingSubMenu.Add(new PopUpBox(5, "Toggle Never Armed",
             new Action(() => {
                 Player.GroupManager.NeverArmed = !Player.GroupManager.NeverArmed;
-                Player.GroupManager.UpdateTasking();
+                Player.GroupManager.AlwaysArmed = false;
+                Player.GroupManager.UpdateAllTasking();
                 Game.DisplaySubtitle($"Never Armed {(Player.GroupManager.NeverArmed ? "Enabled" : "Disabled")}");
             }), $"Set never armed. Currently {(Player.GroupManager.NeverArmed ? "Enabled" : "Disabled")}"));
+        PopUpMenuGroups.Add(new PopUpBoxGroup($"AllTaskingSubMenu", AllTaskingSubMenu) { IsChild = true, Group = "Group" });
 
-        GroupMembersSubMenu.Add(new PopUpBox(6, "Disband", new Action(() => Player.GroupManager.Disband()), "Disband the group."));
+
+
+
+
+
+
+        //GroupMembersSubMenu.Add(new PopUpBox(0, "Toggle Use Player Car", new Action(() => { Player.GroupManager.RideInPlayerVehicleIfPossible = !Player.GroupManager.RideInPlayerVehicleIfPossible; 
+        //    Game.DisplaySubtitle($"RideInPlayerVehicleIfPossible {(Player.GroupManager.RideInPlayerVehicleIfPossible ? "Enabled" : "Disabled")}");
+        //    Player.GroupManager.UpdateAllTasking();
+        //}), $"Tell all members to ride in the players car if available. Currently {(Player.GroupManager.RideInPlayerVehicleIfPossible ? "Enabled" : "Disabled")}"));
+        //GroupMembersSubMenu.Add(new PopUpBox(1, "Toggle Combat", new Action(() => {
+        //    Player.GroupManager.SetCombatIfPossible = !Player.GroupManager.SetCombatIfPossible;
+        //    Player.GroupManager.SetFollowIfPossible = false;
+        //    Player.GroupManager.UpdateAllTasking();
+        //    Game.DisplaySubtitle($"Encourage Combat {(Player.GroupManager.SetCombatIfPossible ? "Enabled" : "Disabled")}");
+        //}), $"Set exclusively combat. Currently {(Player.GroupManager.SetCombatIfPossible ? "Enabled" : "Disabled")}"));
+        //GroupMembersSubMenu.Add(new PopUpBox(2, "Toggle Follow", 
+        //    new Action(() => { Player.GroupManager.SetFollowIfPossible = !Player.GroupManager.SetFollowIfPossible;
+        //        Player.GroupManager.SetCombatIfPossible = false;
+        //        Player.GroupManager.UpdateAllTasking();
+        //        Game.DisplaySubtitle($"Encourage Follow {(Player.GroupManager.SetFollowIfPossible ? "Enabled" : "Disabled")}"); 
+        //    }), $"Set exclusively follow. Currently {(Player.GroupManager.SetFollowIfPossible ? "Enabled" : "Disabled")}"));
+
+        //GroupMembersSubMenu.Add(new PopUpBox(3, "Toggle Force Tasking",
+        //    new Action(() => {
+        //        Player.GroupManager.SetForceTasking = !Player.GroupManager.SetForceTasking;
+        //        Player.GroupManager.UpdateAllTasking();
+        //        Game.DisplaySubtitle($"Force Tasking {(Player.GroupManager.SetForceTasking ? "Enabled" : "Disabled")}");
+        //    }), $"Set the ped to always do the requested item by force tasking. Currently {(Player.GroupManager.SetForceTasking ? "Enabled" : "Disabled")}"));
+        //GroupMembersSubMenu.Add(new PopUpBox(4, "Toggle Always Armed",
+        //    new Action(() => {
+        //        Player.GroupManager.AlwaysArmed = !Player.GroupManager.AlwaysArmed;
+        //        Player.GroupManager.UpdateAllTasking();
+        //        Game.DisplaySubtitle($"Always Armed {(Player.GroupManager.AlwaysArmed ? "Enabled" : "Disabled")}");
+        //    }), $"Set always armed. Currently {(Player.GroupManager.AlwaysArmed ? "Enabled" : "Disabled")}"));
+
+        //GroupMembersSubMenu.Add(new PopUpBox(5, "Toggle Never Armed",
+        //    new Action(() => {
+        //        Player.GroupManager.NeverArmed = !Player.GroupManager.NeverArmed;
+        //        Player.GroupManager.UpdateAllTasking();
+        //        Game.DisplaySubtitle($"Never Armed {(Player.GroupManager.NeverArmed ? "Enabled" : "Disabled")}");
+        //    }), $"Set never armed. Currently {(Player.GroupManager.NeverArmed ? "Enabled" : "Disabled")}"));
+
+        GroupMembersSubMenu.Add(new PopUpBox(1, "Disband", new Action(() => Player.GroupManager.Disband()), "Disband the group."));
         int startingID = GroupMembersSubMenu.Count();
         foreach (GroupMember mi in Player.GroupManager.CurrentGroupMembers)
         {
             GroupMembersSubMenu.Add(new PopUpBox(GroupMemberID+ startingID, mi.PedExt.Name, $"{mi.PedExt.Name}SubMenu", $"Open the {mi.PedExt.Name} Sub Menu") { ClosesMenu = false });
             List<PopUpBox> GroupMemberSubMenu = new List<PopUpBox>();
-            GroupMemberSubMenu.Add(new PopUpBox(0, "Give Weapon", new Action(() => Player.GroupManager.GiveCurrentWeapon(mi.PedExt)), "Give Current Weapon"));
+
+            List<PopUpBox> GroupMemberTaskingSubMenu = new List<PopUpBox>();
+
+            GroupMemberSubMenu.Add(new PopUpBox(0, "Give Weapon", new Action(() => mi.GiveCurrentWeapon()), "Give Current Weapon"));
             GroupMemberSubMenu.Add(new PopUpBox(1, "Remove Member", new Action(() => Player.GroupManager.Remove(mi.PedExt)), "Remove the Member"));
+            GroupMemberSubMenu.Add(new PopUpBox(2, "Tasking Menu", $"{mi.PedExt.Name}TaskingSubMenu", $"Open the Tasking Sub Menu") { ClosesMenu = false });
+
             //GroupMemberSubMenu.Add(new PopUpBox(2, "Rest Tasks", new Action(() => Player.GroupManager.ResetStatus(mi.PedExt, true)), "Reset the member's tasks"));
             //GroupMemberSubMenu.Add(new PopUpBox(3, "Set Follow", new Action(() => Player.GroupManager.SetFollow(mi.PedExt)), "Tell the member to escort you around. Will use their own vehicle if it exists and is close"));
-            GroupMemberSubMenu.Add(new PopUpBox(2, "Set Violent", new Action(() => Player.GroupManager.SetViolent(mi.PedExt)), "Set the group member to always fight police and other gang members"));
-            GroupMemberSubMenu.Add(new PopUpBox(3, "Set Passive", new Action(() => Player.GroupManager.SetPassive(mi.PedExt)), "Set the group member to never fight police and other gang members"));
-            GroupMemberSubMenu.Add(new PopUpBox(4, "Set Specialist", new Action(() => Player.GroupManager.SetSpecialist(mi.PedExt)), "Set the group member to be better at combat"));
+            GroupMemberTaskingSubMenu.Add(new PopUpBox(0, "Set Violent", new Action(() => mi.SetViolent()), "Set the group member to always fight police and other gang members"));
+            GroupMemberTaskingSubMenu.Add(new PopUpBox(1, "Set Passive", new Action(() => mi.SetPassive()), "Set the group member to never fight police and other gang members"));
+            GroupMemberTaskingSubMenu.Add(new PopUpBox(2, "Set Specialist", new Action(() => mi.SetSpecialist()), "Set the group member to be better at combat"));
+
+
+            PopUpMenuGroups.Add(new PopUpBoxGroup($"{mi.PedExt.Name}TaskingSubMenu", GroupMemberTaskingSubMenu) { IsChild = true, Group = "Group" });
+
+
+
             PopUpMenuGroups.Add(new PopUpBoxGroup($"{mi.PedExt.Name}SubMenu", GroupMemberSubMenu) { IsChild = true, Group = "Group" });
             GroupMemberID++;
         }

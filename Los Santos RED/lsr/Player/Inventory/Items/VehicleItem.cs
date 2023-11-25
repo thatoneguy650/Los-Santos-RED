@@ -34,8 +34,11 @@ public class VehicleItem : ModItem
     public bool RequiresDLC { get; set; } = false;
     public string ModelName { get; set; }
     public uint ModelHash { get; set; }
+    public string OverrideMakeName { get; set; }
+    public string OverrideClassName { get; set; }
     public override bool IsDLC => RequiresDLC;
-    public string MakeName => NativeHelper.VehicleMakeName(Game.GetHashKey(ModelItem.ModelName));
+    public string MakeName => !string.IsNullOrEmpty(OverrideMakeName) ? OverrideMakeName : NativeHelper.VehicleMakeName(Game.GetHashKey(ModelItem.ModelName));
+    public string ClassName => !string.IsNullOrEmpty(OverrideClassName) ? OverrideClassName : NativeHelper.VehicleClassName(Game.GetHashKey(ModelItem.ModelName));
     public VehicleItem()
     {
     }
@@ -60,7 +63,7 @@ public class VehicleItem : ModItem
         //ModelItem = new PhysicalItem(ModelItemID, Game.GetHashKey(ModelItemID), ePhysicalItemType.Vehicle);
         ModelHash = ModelHash == 0 ? Game.GetHashKey(ModelName) : ModelHash;
         ModelItem = new PhysicalItem(ModelName, ModelHash == 0 ? Game.GetHashKey(ModelName) : ModelHash, ePhysicalItemType.Vehicle);
-        MenuCategory = NativeHelper.VehicleClassName(Game.GetHashKey(ModelItem.ModelName));
+        MenuCategory = !string.IsNullOrEmpty(OverrideClassName) ? OverrideClassName : NativeHelper.VehicleClassName(Game.GetHashKey(ModelItem.ModelName));
     }
     public override void CreateSellMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu sellMenuRNUI, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
@@ -549,9 +552,6 @@ public class VehicleItem : ModItem
     }
     private string GetGeneralDescription()
     {
-        string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(ModelItem.ModelName));
-        string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(ModelItem.ModelName));
-        string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(ModelItem.ModelName));
         string description;
         if (Description.Length >= 200)
         {
@@ -566,10 +566,10 @@ public class VehicleItem : ModItem
         {
             description += $"~n~Manufacturer: ~b~{MakeName}~s~";
         }
-        if (ModelName != "")
-        {
-            description += $"~n~Model: ~g~{ModelName}~s~";
-        }
+        //if (ModelName != "")
+        //{
+        //    description += $"~n~Model: ~g~{ModelName}~s~";
+        //}
         if (ClassName != "")
         {
             description += $"~n~Class: ~p~{ClassName}~s~";

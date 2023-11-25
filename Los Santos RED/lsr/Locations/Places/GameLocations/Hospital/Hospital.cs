@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Mod;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -30,9 +31,10 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
     public float RespawnHeading { get; set; }
     public string TreatmentOptionsID { get; set; } = "DefaultMedicalTreatments";
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world,
-        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors)
+        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors,
+        ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors);
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest);
         if (AssignedAgency == null)
         {
             AssignedAgency = zones.GetZone(EntrancePosition)?.AssignedEMSAgency;
@@ -55,14 +57,14 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
         ButtonPromptText = $"Enter {Name}";
         return true;
     }
-    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        Player = player;
-        ModItems = modItems;
-        World = world;
-        Settings = settings;
-        Weapons = weapons;
-        Time = time;
+        //Player = player;
+        //ModItems = modItems;
+        //World = world;
+        //Settings = settings;
+        //Weapons = weapons;
+        //Time = time;
         if (IsLocationClosed())
         {
             return;
@@ -76,6 +78,18 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
             Game.DisplayHelp("No Agency Assigned");
             return;
         }
+        if (Interior != null && Interior.IsTeleportEntry)
+        {
+            DoEntranceCamera();
+            Interior.Teleport(Player, this, StoreCamera);
+        }
+        else
+        {
+            StandardInteract(null, false);
+        }
+    }
+    public override void StandardInteract(LocationCamera locationCamera, bool isInside)
+    {
         Player.ActivityManager.IsInteractingWithLocation = true;
         CanInteract = false;
         Player.IsTransacting = true;
@@ -83,19 +97,19 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
         {
             try
             {
-                StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
-                StoreCamera.Setup();
+                SetupLocationCamera(locationCamera, isInside, true);
                 CreateInteractionMenu();
                 if (Player.IsEMT)
-                {            
-                    InteractAsEMT(modItems, world, settings, weapons, time);
+                {
+                    InteractAsEMT(ModItems, World, Settings, Weapons, Time);
                 }
                 else
                 {
                     InteractAsOther();
-                }    
+                }
                 DisposeInteractionMenu();
-                StoreCamera.Dispose();
+                DisposeCamera(isInside);
+                DisposeInterior();
                 Player.IsTransacting = false;
                 Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
@@ -105,9 +119,8 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
                 EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
                 EntryPoint.ModController.CrashUnload();
             }
-        }, "BarInteract");    
+        }, "HospitalInteract");
     }
-
     private void InteractAsEMT(IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         agencyMenu = AssignedAgency.GenerateMenu(ModItems);

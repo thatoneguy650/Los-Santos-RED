@@ -245,10 +245,7 @@ public class GameLocation : ILocationDispatchable
         //World.Pedestrians.AddEntity(Vendor);
         IsActivated = true;
         World = world;
-        if (HasInterior && interior != null)
-        {
-            interior.Load(isOpen);
-        }
+        LoadInterior(isOpen);
         if (!ShouldAlwaysHaveBlip && IsBlipEnabled)
         {
             if (!Blip.Exists())
@@ -265,6 +262,13 @@ public class GameLocation : ILocationDispatchable
         }
         world.AddBlip(Blip);
         RestrictedAreas?.Activate(world);
+    }
+    protected virtual void LoadInterior(bool isOpen)
+    {
+        if (HasInterior && interior != null)
+        {
+            interior.Load(isOpen);
+        }
     }
     public virtual void Deactivate(bool deleteBlip)
     {
@@ -330,7 +334,8 @@ public class GameLocation : ILocationDispatchable
         return toReturn;
     }
     public virtual void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups,
-        IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors)
+        IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors, 
+        ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
         ShopMenus = shopMenus;
         World = world;
@@ -339,6 +344,10 @@ public class GameLocation : ILocationDispatchable
         Settings = settings;
         PlateTypes = plateTypes;
         Associations = associations;
+        Player = player;
+        ModItems = modItems;
+        Weapons = weapons;
+        Time = time;
         StoreBasicData(zones, streets, locationTypes);
         if (AssignedAssociationID != null)
         {
@@ -350,14 +359,8 @@ public class GameLocation : ILocationDispatchable
             interior = interiors?.GetInteriorByLocalID(InteriorID);
         }  
     }
-    public virtual void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public virtual void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        Player = player;
-        ModItems = modItems;
-        World = world;
-        Settings = settings;
-        Weapons = weapons;
-        Time = time;
         if (IsLocationClosed())
         {
             return;
@@ -376,7 +379,38 @@ public class GameLocation : ILocationDispatchable
             StandardInteract(null, false);
         }
     }
-
+    public virtual void StandardInteract(LocationCamera locationCamera, bool isInside)
+    {
+        Player.ActivityManager.IsInteractingWithLocation = true;
+        CanInteract = false;
+        Player.IsTransacting = true;
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                SetupLocationCamera(locationCamera, isInside, true);
+                CreateInteractionMenu();
+                Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+                Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
+                Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
+                Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);
+                InteractionMenu.Visible = true;
+                Transaction.ProcessTransactionMenu();
+                Transaction.DisposeTransactionMenu();
+                DisposeInteractionMenu();
+                DisposeCamera(isInside);
+                DisposeInterior();
+                Player.IsTransacting = false;
+                Player.ActivityManager.IsInteractingWithLocation = false;
+                CanInteract = true;
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "StandardInteract");
+    }
     protected void DoEntranceCamera()
     {
         StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
@@ -393,54 +427,22 @@ public class GameLocation : ILocationDispatchable
         {
             StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
         }
-        StoreCamera.MoveToPosition(desiredPosition, desiredDirection, desiredRotation);
+        StoreCamera.MoveToPosition(desiredPosition, desiredDirection, desiredRotation, true);
         StandardInteract(StoreCamera, true);
     }
-    public virtual void StandardInteract(LocationCamera locationCamera, bool isInside)
+
+    protected virtual void DisposeInterior()
     {
-        Player.ActivityManager.IsInteractingWithLocation = true;
-        CanInteract = false;
-        Player.IsTransacting = true;
-        GameFiber.StartNew(delegate
+        if (Interior != null)
         {
-            try
-            {
-                SetupLocationCamera(locationCamera, isInside, true);
-
-                CreateInteractionMenu();
-
-                Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-                Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
-                Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
-                Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);
-
-                InteractionMenu.Visible = true;
-                Transaction.ProcessTransactionMenu();
-                Transaction.DisposeTransactionMenu();
-
-
-                DisposeInteractionMenu();
-                DisposeCamera(isInside);
-                Player.IsTransacting = false;
-                Player.ActivityManager.IsInteractingWithLocation = false;
-                CanInteract = true;
-                if (Interior != null)
-                {
-                    Interior.IsMenuInteracting = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
-                EntryPoint.ModController.CrashUnload();
-            }
-        }, "StandardInteract");
+            Interior.IsMenuInteracting = false;
+        }
     }
     protected virtual void DisposeCamera(bool isInside)
     {
         if (isInside)
         {
-            StoreCamera.StopImmediately();
+            StoreCamera.StopImmediately(true);
         }
         else
         {
@@ -520,6 +522,7 @@ public class GameLocation : ILocationDispatchable
         else
         {
             StoreCamera = locationCamera;
+            StoreCamera.SayGreeting = sayGreeting;
             EntryPoint.WriteToConsole("RESIDENCE STORE CAM GOT PASSED IN");
         }
     }
@@ -913,6 +916,7 @@ public class GameLocation : ILocationDispatchable
     {
         if (StoreCamera == null || VehiclePreviewLocation == null)
         {
+            EntryPoint.WriteToConsole("Highlight vehicle ERROR");
             return;
         }
         StoreCamera.HighlightVehicle();

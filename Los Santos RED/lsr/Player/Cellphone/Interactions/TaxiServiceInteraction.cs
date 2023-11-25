@@ -84,7 +84,7 @@ public class TaxiServiceInteraction : IContactMenuInteraction
         {
 
             string fullText = "";
-            if (Player.TaxiManager.RequestService(TaxiFirm, true))
+            if (Player.TaxiManager.RequestService(TaxiFirm, false))
             {
                 fullText = $"{TaxiServiceContact.Name} is en route to ";
                 fullText += Player.CurrentLocation?.GetStreetAndZoneString();
@@ -105,7 +105,7 @@ public class TaxiServiceInteraction : IContactMenuInteraction
         {
 
             string fullText = "";
-            if (Player.TaxiManager.RequestService(TaxiFirm, true))
+            if (Player.TaxiManager.RequestService(TaxiFirm, false))
             {
                 //fullText = $"{TaxiServiceContact.Name} is en route to ";
                 //fullText += Player.CurrentLocation?.GetStreetAndZoneString();

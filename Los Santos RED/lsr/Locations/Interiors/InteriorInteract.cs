@@ -33,7 +33,7 @@ public class InteriorInteract
     public string Name { get; set; }
     public Vector3 Position { get; set; }
     public float Heading { get; set; }
-    public float InteractDistance { get; set; } = 3.0f;
+    public float InteractDistance { get; set; } = 1.0f;
     public Vector3 CameraPosition { get; set; } = Vector3.Zero;
     public Vector3 CameraDirection { get; set; } = Vector3.Zero;
     public Rotator CameraRotation { get; set; }

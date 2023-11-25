@@ -1820,13 +1820,19 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24,
                 RespawnLocation = new Vector3(1858.19f, 3679.873f, 33.75724f),
                 RespawnHeading = 218.3256f,
+                InteriorID = -707,
                // CameraPosition = new Vector3(1880.906f, 3686.685f, 36.28576f),
               //  CameraDirection = new Vector3(-0.8681535f, 0.4227323f, -0.2600135f),
                // CameraRotation = new Rotator(-15.07086f, 3.53674E-06f, 64.03703f),
+
+                                IgnoreEntranceInteract = true,
+
+
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(1873.62f, 3690.187f, 33.55123f), 199.1265f),
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(1851.615f, 3679.759f, 34.26711f), 167.1253f, 65f),
                     new LEConditionalLocation(new Vector3(1866.224f, 3684.685f, 33.78798f), 229.2713f, 65f),
+                    new LEConditionalLocation(new Vector3(1852.652f, 3689.82f, 34.26704f), 206.5214f, 100f),
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(1831.629f, 3662.91f, 33.92607f), 32f,55f),
@@ -1841,6 +1847,9 @@ public class PlacesOfInterest : IPlacesOfInterest
                 RespawnLocation = new Vector3(-438.0854f, 6021.318f, 31.49011f),
                 RespawnHeading = 310.0719f,
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(-468.9866f, 6019.28f, 31.34055f), 306.1413f),
+
+                                IgnoreEntranceInteract = true,
+
               //  CameraPosition = new Vector3(-468.4744f, 6024.704f, 33.34053f), 
                // CameraDirection = new Vector3(-0.1096192f, -0.9549786f, -0.2756799f), 
                // CameraRotation = new Rotator(-16.00254f, -3.330718E-07f, 173.4518f),
@@ -2024,11 +2033,16 @@ public class PlacesOfInterest : IPlacesOfInterest
                 AssignedAssociationID = "FIB", 
                 InteriorID = 58882, 
                 OpenTime = 0,
-                CloseTime = 24, 
+                CloseTime = 24,
+                IgnoreEntranceInteract = true,
                 ScannerFilePath = "01_specific_location\\0x1667D63F.wav", 
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(101.3534f, -745.8216f, 45.75475f), 76.27069f, 55f),
-                    new LEConditionalLocation(new Vector3(117.8028f, -747.0616f, 45.75158f), 102.5501f, 100f),//is front desk spawn
+                    new LEConditionalLocation(new Vector3(117.8028f, -747.0616f, 45.75158f), 102.5501f, 100f),// { TaskRequirements = TaskRequirements.LocalScenario },//is front desk spawn
+
+                   // new LEConditionalLocation(new Vector3(117.8712f, -748.6705f, 45.75157f), 111.3529f, 100f) { TaskRequirements = TaskRequirements.LocalScenario | TaskRequirements.Guard },//is front desk spawn
+
+
                     new LEConditionalLocation(new Vector3(113.9787f, -758.2271f, 45.75474f), 21.6145f, 55f),
                 } },
             new PoliceStation(new Vector3(387.16f, 789.96f, 188.23f), 178f, "Beaver Bush Ranger Station","You won't get this bush!") { 
@@ -2096,13 +2110,13 @@ public class PlacesOfInterest : IPlacesOfInterest
                         //Apartments 
 
             //new Residence(new Vector3(-773.63f, 313.08f, 85.70f), 180f, "Eclipse Towers Apt 401",""){ InteriorID = -669,OpenTime = 0,CloseTime = 24,RentalFee = 30000, RentalDays = 28,PurchasePrice = 2000000,SalesPrice = 1500000,},
-            new Residence(new Vector3(77.15f, -871.53f, 31.51f), 65f, "Elgin Ave Apt 340",""){ InteriorID = -669,OpenTime = 0,CloseTime = 24,RentalFee = 2150, RentalDays = 28},
-            new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Carcer Way Apt 343",""){ InteriorID = -669,OpenTime = 0,CloseTime = 24,RentalFee = 1950, RentalDays = 28,},
-            new Residence(new Vector3(76.05615f, -86.96131f, 63.00647f), 249.8842f, "1144 Apartment 2B", "") { InteriorID = -669,OpenTime = 0,CloseTime = 24, PurchasePrice = 380000,SalesPrice = 290000, RentalDays = 28, RentalFee = 1660  },
-            new Residence(new Vector3(-37.54279f, 170.3245f, 95.35922f), 303.8834f, "Elgin House Apartment 23E", "") { InteriorID = -669, OpenTime = 0,CloseTime = 24, PurchasePrice = 404000,SalesPrice = 350000, RentalDays = 28, RentalFee = 1650  },
-            new Residence(new Vector3(9.063264f, 52.93087f, 71.64354f), 344.3057f, "0605 Apartment 4F", "") { InteriorID = -669,OpenTime = 0,CloseTime = 24, PurchasePrice = 375000,SalesPrice = 280000, RentalDays = 28, RentalFee = 1570  },
-            new Residence(new Vector3(-780.21f, -784.22f, 27.87f), 85f, "Dream Tower Apt 31",""){ InteriorID = -669,OpenTime = 0,CloseTime = 24,RentalFee = 1550, RentalDays = 28},
-            new Residence(new Vector3(-116.35f, -37.69f, 62.20f), 70f, "Las Lagunas Blvd Apt 21",""){ InteriorID = -669,OpenTime = 0,CloseTime = 24,RentalFee = 1550, RentalDays = 28},
+            new Residence(new Vector3(77.15f, -871.53f, 31.51f), 65f, "Elgin Ave Apt 340",""){ InteriorID = -668,OpenTime = 0,CloseTime = 24,RentalFee = 2150, RentalDays = 28},
+            new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Carcer Way Apt 343",""){ InteriorID = -668,OpenTime = 0,CloseTime = 24,RentalFee = 1950, RentalDays = 28,},
+            new Residence(new Vector3(76.05615f, -86.96131f, 63.00647f), 249.8842f, "1144 Apartment 2B", "") { InteriorID = -668,OpenTime = 0,CloseTime = 24, PurchasePrice = 380000,SalesPrice = 290000, RentalDays = 28, RentalFee = 1660  },
+            new Residence(new Vector3(-37.54279f, 170.3245f, 95.35922f), 303.8834f, "Elgin House Apartment 23E", "") { InteriorID = -668, OpenTime = 0,CloseTime = 24, PurchasePrice = 404000,SalesPrice = 350000, RentalDays = 28, RentalFee = 1650  },
+            new Residence(new Vector3(9.063264f, 52.93087f, 71.64354f), 344.3057f, "0605 Apartment 4F", "") { InteriorID = -668,OpenTime = 0,CloseTime = 24, PurchasePrice = 375000,SalesPrice = 280000, RentalDays = 28, RentalFee = 1570  },
+            new Residence(new Vector3(-780.21f, -784.22f, 27.87f), 85f, "Dream Tower Apt 31",""){ InteriorID = -668,OpenTime = 0,CloseTime = 24,RentalFee = 1550, RentalDays = 28},
+            new Residence(new Vector3(-116.35f, -37.69f, 62.20f), 70f, "Las Lagunas Blvd Apt 21",""){ InteriorID = -668,OpenTime = 0,CloseTime = 24,RentalFee = 1550, RentalDays = 28},
             new Residence(new Vector3(-766.33f, -917.05f, 21.28f), 270f, "1068 Ginger St. Apt 4",""){ InteriorID = -668,OpenTime = 0,CloseTime = 24,RentalFee = 1450, RentalDays = 28,PurchasePrice = 350000,SalesPrice = 300000,},
             new Residence(new Vector3(-131.3305f, -1665.597f, 32.56437f), 316.4919f, "20W Strawberry Apt 2", ""){ InteriorID = -667,OpenTime = 0,CloseTime = 24,RentalFee = 1200, RentalDays = 28,},
             new Residence(new Vector3(-114.5114f, -1660.003f, 32.56433f), 52.34958f, "20W Strawberry Apt 1", ""){ InteriorID = -667,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
@@ -2407,6 +2421,8 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            IsOnMPMap = false,
+            IsOnSPMap = true,
             //HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
@@ -2422,6 +2438,40 @@ public class PlacesOfInterest : IPlacesOfInterest
             }
         };
         GangDens.Add(Den1);
+
+
+
+        GangDen Den1MP = new GangDen(new Vector3(1389.966f, 1131.907f, 114.3344f), 91.72424f, "Madrazo Cartel Mansion", "", "MadrazoDenMenu", "AMBIENT_GANG_MADRAZO")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            //MapIcon = 78,
+
+            BannerImagePath = "gangs\\madrazo.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            IsOnMPMap = true,
+            IsOnSPMap = false,
+            InteriorID = -706,
+           // IgnoreEntranceInteract  =true,
+            //HasVanillaGangSpawnedAroundToBeBlocked = true,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 55f) { TaskRequirements = TaskRequirements.Guard },
+                new GangConditionalLocation(new Vector3(1383.559f, 1156.695f, 114.3345f), 170.1522f, 55f) { TaskRequirements = TaskRequirements.Guard },
+                new GangConditionalLocation(new Vector3(1375.004f, 1149.209f, 113.9089f), 91.94662f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.CanMoveWhenGuarding, ForceSidearm = true,ForceLongGun = true },
+                new GangConditionalLocation(new Vector3(1412.588f, 1138.611f, 114.3341f), 196.4261f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.CanMoveWhenGuarding, ForceSidearm = true,ForceLongGun = true },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(1410.701f, 1119.38f, 114.5649f), 89.85777f, 85f),
+                new GangConditionalLocation(new Vector3(1367.869f, 1147.611f, 113.4886f), 1.871943f, 85f),
+            }
+        };
+        GangDens.Add(Den1MP);
+
+
     }
     private void DefaultConfig_GangDens_Armenian()
     {
@@ -3218,6 +3268,8 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            IsOnMPMap = false,
+            IsOnSPMap = true,
             //HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
@@ -3245,6 +3297,51 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(968.5606f, -122.4432f, 74.35313f), 153.9187f),
                 }
         };
+
+
+        GangDen LostMainDenMP = new GangDen(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f, "Lost M.C. Clubhouse", "", "LostDenMenu", "AMBIENT_GANG_LOST")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            //MapIcon = 226,
+            BannerImagePath = "gangs\\lostmc.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            InteriorID = 245761,
+            IsOnMPMap = true,
+            IsOnSPMap = false,
+            IgnoreEntranceInteract = true,
+            //HasVanillaGangSpawnedAroundToBeBlocked = true,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(987.3098f, -107.0706f, 74.32984f), 138.8955f, 35f),
+                new GangConditionalLocation(new Vector3(975.0338f, -112.2333f, 74.35313f), 188.1823f, 35f),
+                new GangConditionalLocation(new Vector3(960.2211f, -123.5155f, 74.35313f), 181.6973f, 35f),
+                new GangConditionalLocation(new Vector3(981.1419f, -142.9071f, 74.23688f), 80.7939f, 35f),
+                new GangConditionalLocation(new Vector3(976.2161f, -144.2681f, 74.24052f), 0.7361088f, 35f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(976.4726f, -132.778f, 73.21405f), 58.86649f, 35f),
+                new GangConditionalLocation(new Vector3(960.3214f, -132.2091f, 73.69121f), 189.5355f, 35f),
+                new GangConditionalLocation(new Vector3(972.7709f, -142.4676f, 73.60614f), 239.6191f, 35f),
+                new GangConditionalLocation(new Vector3(972.8246f, -155.1686f, 72.8443f), 52.89192f, 35f),
+            },
+            //CameraPosition = new Vector3(961.1312f, -131.4942f, 76.40847f),
+            // CameraDirection = new Vector3(-0.7768034f, 0.5811784f, -0.2425037f),
+            // CameraRotation = new Rotator(-14.03436f, 4.840233E-06f, 53.19739f),
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(955.3662f, -127.888f, 74.37495f), 150.3339f),
+            VehicleDeliveryLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(955.2133f, -133.7419f, 74.44804f),239.5793f),
+                    new SpawnPlace(new Vector3(967.6667f, -141.4849f, 74.39858f), 239.8698f),
+                    new SpawnPlace(new Vector3(986.6042f, -138.3367f, 73.09078f), 59.13091f),
+                    new SpawnPlace(new Vector3(968.5606f, -122.4432f, 74.35313f), 153.9187f),
+                }
+        };
+
+
+
         GangDen LostDen2 = new GangDen(new Vector3(84.04226f, 3718.52f, 39.78923f), 50.35764f, "Lost M.C. The Range", "", "LostDenMenu", "AMBIENT_GANG_LOST")
         {
             CanInteractWhenWanted = true,
@@ -3280,6 +3377,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 }
         };
         GangDens.Add(LostMainDen);
+        GangDens.Add(LostMainDenMP);
         GangDens.Add(LostDen2);
     }
     private void DefaultConfig_GangDens_Triads()

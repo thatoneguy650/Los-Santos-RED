@@ -519,7 +519,7 @@ namespace LosSantosRED.lsr
             }
             //EntryPoint.WriteToConsole($"SCANNER EVENT: OnExcessiveSpeed", 5);
         }
-        public void OnFIBHRTDeployed()
+        public void OnFIBHETDeployed()
         {
             if (Player.IsWanted && Player.WantedLevel >= 5 && !RequestFIBUnits.HasBeenPlayedThisWanted)
             {
@@ -2764,14 +2764,14 @@ namespace LosSantosRED.lsr
             RequestFIBUnits = new Dispatch()
             {
                 IncludeAttentionAllUnits = false,
-                Name = "FIB-HRT Units Requested",
+                Name = "FIB-HET Units Requested",
                 IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 CanAddExtras = false,
                 LocationDescription = LocationSpecificity.Nothing,
                 MainAudioSet = new List<AudioSet>()
             {
-                new AudioSet(new List<string>() { dispatch_units_full.FIBteamdispatchingfromstation.FileName},"dispatching FIB-HRT units"),
+                new AudioSet(new List<string>() { dispatch_units_full.FIBteamdispatchingfromstation.FileName},"dispatching FIB-HET units"),
             },
             };
 

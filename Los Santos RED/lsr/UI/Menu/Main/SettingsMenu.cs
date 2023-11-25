@@ -86,16 +86,24 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
     {
         SettingsUIMenu.Clear();
         SaveSettingsToFile = new UIMenuItem("Save Settings To File", "Saves the Settings to XML");
+
+        UIMenu changePresets = MenuPool.AddSubMenu(SettingsUIMenu, "Presets");
+        changePresets.SetBannerType(EntryPoint.LSRedColor);
+
         DefaultSettings = new UIMenuItem("Set Default Settings", "Set all values back to default settings");
         MySettings = new UIMenuItem("Set Greskrendtregk Settings", "Set my personal settings");
         EasySettings = new UIMenuItem("Set Easy Settings", "Use the easy preset for settings");
         HardSettings = new UIMenuItem("Set Hard Settings", "Use the hard preset for settings");
 
         SettingsUIMenu.AddItem(SaveSettingsToFile);
-        SettingsUIMenu.AddItem(DefaultSettings);
-        SettingsUIMenu.AddItem(MySettings);
-        SettingsUIMenu.AddItem(HardSettings);
-        SettingsUIMenu.AddItem(EasySettings);
+        changePresets.AddItem(DefaultSettings);
+        changePresets.AddItem(MySettings);
+        changePresets.AddItem(HardSettings);
+        changePresets.AddItem(EasySettings);
+
+        changePresets.OnItemSelect += OnItemSelect;
+        changePresets.OnListChange += OnListChange;
+
 
         SettingsUIMenu.OnItemSelect += OnItemSelect;
         SettingsUIMenu.OnListChange += OnListChange;
@@ -106,15 +114,19 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
 
     private void CreateToggleSettingsMenu()
     {
-        UIMenu genericCategoryMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Change Other Settings SubMenu");
-        genericCategoryMenu.SetBannerType(EntryPoint.LSRedColor);
+
+        UIMenu changesettingsMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Change Settings Submenu");
+        changesettingsMenu.SetBannerType(EntryPoint.LSRedColor);
+
+        //UIMenu genericCategoryMenu = null;
+
         PropertyInfo[] properties = SettingsProvider.SettingsManager.GetType().GetProperties();
         List<Tuple<CategoryAttribute,UIMenu>> CategoryMenus = new List<Tuple<CategoryAttribute, UIMenu>>();
 
         List<CategoryAttribute> Categories = properties.Select(x=> (System.ComponentModel.CategoryAttribute)x.GetCustomAttribute(typeof(CategoryAttribute), true)).Distinct().ToList();
-        foreach(CategoryAttribute ca in Categories)
+        foreach(CategoryAttribute ca in Categories.OrderBy(x=> x.Category))
         {
-            UIMenu categorysubMenu = MenuPool.AddSubMenu(SettingsUIMenu, $"Change {ca.Category} Settings SubMenu");
+            UIMenu categorysubMenu = MenuPool.AddSubMenu(changesettingsMenu, $"{ca.Category} SubMenu");
             categorysubMenu.SetBannerType(EntryPoint.LSRedColor);
             CategoryMenus.Add(new Tuple<CategoryAttribute, UIMenu>(ca,categorysubMenu));
         }
@@ -131,7 +143,7 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
                 strippedPropertyName = propertyNameAlt.Description;
             }
 
-            UIMenu menuToAdd = genericCategoryMenu;
+            UIMenu menuToAdd = null;
             if (propertyCategory != null)
             {
                 UIMenu specificMenu = CategoryMenus.FirstOrDefault(x => x.Item1.Category == propertyCategory.Category)?.Item2;
@@ -139,6 +151,10 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
                 {
                     menuToAdd = specificMenu;
                 }
+            }
+            if(menuToAdd == null)
+            {
+                continue;
             }
             subMenu = MenuPool.AddSubMenu(menuToAdd, strippedPropertyName);
 
@@ -173,6 +189,8 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
                 }
             }
         }
+        //genericCategoryMenu = MenuPool.AddSubMenu(changesettingsMenu, "Other SubMenu");
+       // genericCategoryMenu.SetBannerType(EntryPoint.LSRedColor);
     }
 
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)

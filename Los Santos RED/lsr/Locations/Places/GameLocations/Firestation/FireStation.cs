@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
+using Mod;
 using Rage;
 using RAGENativeUI.Elements;
 using System;
@@ -25,9 +26,10 @@ public class FireStation : GameLocation, ILicensePlatePreviewable
     public override int MapIcon { get; set; } = 436;
     public string LicensePlatePreviewText { get; set; } = "UNIT1";
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world,
-        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors)
+        IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors,
+        ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors);
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors,player,modItems,weapons,time,placesOfInterest);
         if (AssignedAgency == null)
         {
             AssignedAgency = zones.GetZone(EntrancePosition)?.AssignedFireAgency;
@@ -38,14 +40,14 @@ public class FireStation : GameLocation, ILicensePlatePreviewable
         ButtonPromptText = $"Enter {Name}";
         return true;
     }
-    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        Player = player;
-        ModItems = modItems;
-        World = world;
-        Settings = settings;
-        Weapons = weapons;
-        Time = time;
+        //Player = player;
+        //ModItems = modItems;
+        //World = world;
+        //Settings = settings;
+        //Weapons = weapons;
+        //Time = time;
         if (IsLocationClosed())
         {
             return;
@@ -59,6 +61,18 @@ public class FireStation : GameLocation, ILicensePlatePreviewable
             Game.DisplayHelp("No Agency Assigned");
             return;
         }
+        if (Interior != null && Interior.IsTeleportEntry)
+        {
+            DoEntranceCamera();
+            Interior.Teleport(Player, this, StoreCamera);
+        }
+        else
+        {
+            StandardInteract(null, false);
+        }      
+    }
+    public override void StandardInteract(LocationCamera locationCamera, bool isInside)
+    {
         Player.ActivityManager.IsInteractingWithLocation = true;
         CanInteract = false;
         Player.IsTransacting = true;
@@ -66,19 +80,19 @@ public class FireStation : GameLocation, ILicensePlatePreviewable
         {
             try
             {
-                StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
-                StoreCamera.Setup();
+                SetupLocationCamera(locationCamera, isInside, true);
                 CreateInteractionMenu();
                 if (Player.IsFireFighter)
                 {
-                    InteractAsFireFighter(modItems, world, settings, weapons, time);
+                    InteractAsFireFighter(ModItems, World, Settings, Weapons, Time);
                 }
                 else
                 {
                     InteractAsOther();
                 }
                 DisposeInteractionMenu();
-                StoreCamera.Dispose();
+                DisposeCamera(isInside);
+                DisposeInterior();
                 Player.IsTransacting = false;
                 Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
@@ -88,8 +102,7 @@ public class FireStation : GameLocation, ILicensePlatePreviewable
                 EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
                 EntryPoint.ModController.CrashUnload();
             }
-        }, "BarInteract");
-        
+        }, "FireStationInteract");
     }
     private void InteractAsFireFighter(IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {

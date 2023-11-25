@@ -2712,37 +2712,37 @@ public class ModItems : IModItems
             new VehicleItem("Zirconium Stratum", ItemType.Vehicles) { ModelName = "stratum" },
 
             //Emergency
-            new VehicleItem("Vapid Sheriff Stanier", ItemType.Vehicles) { ModelName = "sheriff" },
-            new VehicleItem("Declasse Sheriff Granger", ItemType.Vehicles) { ModelName = "sheriff2" },
-            new VehicleItem("Vapid Police Stanier", ItemType.Vehicles) { ModelName = "police" },
-            new VehicleItem("Bravado Police Buffalo", ItemType.Vehicles) { ModelName = "police2" },
-            new VehicleItem("Vapid Police Interceptor", ItemType.Vehicles) { ModelName = "police3" },
-            new VehicleItem("Vapid Police Unmarked Stanier", ItemType.Vehicles) { ModelName = "police4" },
-            new VehicleItem("Declasse Police Transporter", ItemType.Vehicles) { ModelName = "policet" },
-            new VehicleItem("Buckingham Police Maverick", ItemType.Vehicles) { ModelName = "polmav" },
-            new VehicleItem("Brute Police Riot", ItemType.Vehicles) { ModelName = "riot" },
-            new VehicleItem("Western Police Bike", ItemType.Vehicles) { ModelName = "policeb" },
-            new VehicleItem("Declasse Park Ranger Granger", ItemType.Vehicles) { ModelName = "pranger" },
-            new VehicleItem("Declasse Lifeguard Granger", ItemType.Vehicles) { ModelName = "lguard" },
-            new VehicleItem("Declasse Police Unmarked Granger", ItemType.Vehicles) { ModelName = "fbi2" },
-            new VehicleItem("Bravado Police Unmarked Buffalo", ItemType.Vehicles) { ModelName = "fbi" },
+            new VehicleItem("Vapid Sheriff Stanier", ItemType.Vehicles) { ModelName = "sheriff",OverrideMakeName = "Vapid", OverrideClassName = "Sedan", },
+            new VehicleItem("Declasse Sheriff Granger", ItemType.Vehicles) { ModelName = "sheriff2",OverrideMakeName = "Declasse", OverrideClassName = "SUV", },
+            new VehicleItem("Vapid Police Stanier", ItemType.Vehicles) { ModelName = "police",OverrideMakeName = "Vapid", OverrideClassName = "Sedan", },
+            new VehicleItem("Bravado Police Buffalo", ItemType.Vehicles) { ModelName = "police2",OverrideMakeName = "Bravado", OverrideClassName = "Sedan", },
+            new VehicleItem("Vapid Police Interceptor", ItemType.Vehicles) { ModelName = "police3",OverrideMakeName = "Vapid", OverrideClassName = "Sedan", },
+            new VehicleItem("Vapid Police Unmarked Stanier", ItemType.Vehicles) { ModelName = "police4",OverrideMakeName = "Vapid", OverrideClassName = "Sedan", },
+            new VehicleItem("Declasse Police Transporter", ItemType.Vehicles) { ModelName = "policet",OverrideMakeName = "Declasse", OverrideClassName = "Van", },
+            new VehicleItem("Buckingham Police Maverick", ItemType.Vehicles) { ModelName = "polmav",OverrideMakeName = "Buckingham", OverrideClassName = "Helicopter", },
+            new VehicleItem("Brute Police Riot", ItemType.Vehicles) { ModelName = "riot",OverrideMakeName = "Brute", OverrideClassName = "Van", },
+            new VehicleItem("Western Police Bike", ItemType.Vehicles) { ModelName = "policeb",OverrideMakeName = "Western", OverrideClassName = "Motorcycle", },
+            new VehicleItem("Declasse Park Ranger Granger", ItemType.Vehicles) { ModelName = "pranger",OverrideMakeName = "Declasse", OverrideClassName = "SUV", },
+            new VehicleItem("Declasse Lifeguard Granger", ItemType.Vehicles) { ModelName = "lguard",OverrideMakeName = "Declasse", OverrideClassName = "SUV", },
+            new VehicleItem("Declasse Police Unmarked Granger", ItemType.Vehicles) { ModelName = "fbi2",OverrideMakeName = "Declasse", OverrideClassName = "SUV", },
+            new VehicleItem("Bravado Police Unmarked Buffalo", ItemType.Vehicles) { ModelName = "fbi",OverrideMakeName = "Bravado", OverrideClassName = "Sedan", },
 
-            new VehicleItem("MTL Fire Truck", ItemType.Vehicles) { ModelName = "firetruk" },
-            new VehicleItem("Brute Ambulance", ItemType.Vehicles) { ModelName = "ambulance" },
+            new VehicleItem("MTL Fire Truck", ItemType.Vehicles) { ModelName = "firetruk",OverrideMakeName = "MTL", OverrideClassName = "Utility", },
+            new VehicleItem("Brute Ambulance", ItemType.Vehicles) { ModelName = "ambulance" ,OverrideMakeName = "Brute", OverrideClassName = "Van",},
             new VehicleItem("Police Predator", ItemType.Vehicles) { ModelName = "predator" },
 
-            new VehicleItem("Vapid Police Prison Bus", ItemType.Vehicles) { ModelName = "pbus" },
+            new VehicleItem("Vapid Police Prison Bus", ItemType.Vehicles) { ModelName = "pbus",OverrideMakeName = "Vapid", OverrideClassName = "Van",},
 
 
 
-            new VehicleItem("Albany Police Roadcruiser", ItemType.Vehicles) { ModelName = "policeold2" },
-            new VehicleItem("Declasse Police Rancher", ItemType.Vehicles) { ModelName = "policeold1" },
+            new VehicleItem("Albany Police Roadcruiser", ItemType.Vehicles) { ModelName = "policeold2",OverrideMakeName = "Albany", OverrideClassName = "Sedan", },
+            new VehicleItem("Declasse Police Rancher", ItemType.Vehicles) { ModelName = "policeold1",OverrideMakeName = "Declasse", OverrideClassName = "SUV", },
 
-            new VehicleItem("Speedophile Lifeguard Seashark", ItemType.Vehicles) { ModelName = "seashark2" },
+            new VehicleItem("Speedophile Lifeguard Seashark", ItemType.Vehicles) { ModelName = "seashark2",OverrideMakeName = "Speedophile", OverrideClassName = "Jet Ski", },
 
             //Industrial
-            new VehicleItem("Vapid Tow Truck Full", ItemType.Vehicles) { ModelName = "towtruck" },
-            new VehicleItem("Vapid Tow Truck Utility", ItemType.Vehicles) { ModelName = "towtruck2" },
+            new VehicleItem("Vapid Tow Truck Full", ItemType.Vehicles) { ModelName = "towtruck",OverrideMakeName = "Vapid", OverrideClassName = "Utility", },
+            new VehicleItem("Vapid Tow Truck Utility", ItemType.Vehicles) { ModelName = "towtruck2",OverrideMakeName = "Vapid", OverrideClassName = "Utility", },
 
             //Heli
             new VehicleItem("Buckingham SuperVolito", true, ItemType.Vehicles) { ModelName = "supervolito" },

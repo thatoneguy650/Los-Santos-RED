@@ -370,7 +370,7 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("u_m_m_fibarchitect",10,0) { DebugName = "FIBOfficeMale3",MaxWantedLevelSpawn = 3 },
             new DispatchablePerson("s_m_y_swat_01", 0,0) {
                 DebugName = "FIBSWATMale"
-                ,GroupName = "FIBHRT"
+                ,GroupName = "FIBHET"
                 ,AllowRandomizeBeforeVariationApplied = true
                 ,MinWantedLevelSpawn = 5
                 ,MaxWantedLevelSpawn = 5
@@ -381,7 +381,7 @@ public class DispatchablePeople : IDispatchablePeople
 
             new DispatchablePerson("mp_m_freemode_01", 25, 25, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
                 DebugName = "FIBMPMale1"
-                ,GroupName = "FIBHRT"
+                ,GroupName = "FIBHET"
                 ,MinWantedLevelSpawn = 5
                 ,MaxWantedLevelSpawn = 5
                 ,RandomizeHead = true
@@ -392,7 +392,7 @@ public class DispatchablePeople : IDispatchablePeople
             },
             new DispatchablePerson("mp_m_freemode_01", 75,75, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
                 DebugName = "FIBMPMale2"
-                ,GroupName = "FIBHRT"
+                ,GroupName = "FIBHET"
                 ,MinWantedLevelSpawn = 5
                 ,MaxWantedLevelSpawn = 5
                 ,RandomizeHead = true
@@ -404,7 +404,7 @@ public class DispatchablePeople : IDispatchablePeople
 
             new DispatchablePerson("mp_f_freemode_01", 50,50, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
                 DebugName = "FIBMPFemale1"
-                ,GroupName = "FIBHRT"
+                ,GroupName = "FIBHET"
                 ,MinWantedLevelSpawn = 5
                 ,MaxWantedLevelSpawn = 5
                 ,RandomizeHead = true
@@ -415,7 +415,7 @@ public class DispatchablePeople : IDispatchablePeople
             },
             new DispatchablePerson("mp_f_freemode_01", 50,50, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
                 DebugName = "FIBMPFemale2"
-                ,GroupName = "FIBHRT"
+                ,GroupName = "FIBHET"
                 ,MinWantedLevelSpawn = 5
                 ,MaxWantedLevelSpawn = 5
                 ,RandomizeHead = true
@@ -1682,7 +1682,7 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("u_m_m_fibarchitect",10,0) { DebugName = "FIBNormalMale3", MaxWantedLevelSpawn = 3 },
             new DispatchablePerson("s_m_y_swat_01", 0,100) {
                 DebugName = "FIBSWATOldMale"
-                ,GroupName = "FIBHRT"
+                ,GroupName = "FIBHET"
                 ,MinWantedLevelSpawn = 5
                 ,MaxWantedLevelSpawn = 5
                 ,AllowRandomizeBeforeVariationApplied = true
@@ -1814,7 +1814,7 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("u_m_m_fibarchitect",10,0) { DebugName = "FIBNormalMale3", MaxWantedLevelSpawn = 3 },
             new DispatchablePerson("s_m_y_swat_01", 0, 100, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
                 DebugName = "FIBSWATDefaultMale"
-                ,GroupName = "FIBHRT"
+                ,GroupName = "FIBHET"
                 ,MinWantedLevelSpawn = 5
                 ,MaxWantedLevelSpawn = 5
                 ,AllowRandomizeBeforeVariationApplied = true
@@ -5893,7 +5893,7 @@ public class DispatchablePeople : IDispatchablePeople
                }) },
 
             //SWAT
-            new DispatchablePerson("mp_m_freemode_01",0,50) { ArmorMin = 50,ArmorMax = 50,GroupName = "FIBHRT",MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, DebugName = "<Male FIB SWAT Uniform>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
+            new DispatchablePerson("mp_m_freemode_01",0,50) { ArmorMin = 50,ArmorMax = 50,GroupName = "FIBHET",MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, DebugName = "<Male FIB SWAT Uniform>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               new PedPropComponent(0,39,0),
               new PedPropComponent(1,21,0),
               }, new List<PedComponent>() {
@@ -5908,7 +5908,7 @@ public class DispatchablePeople : IDispatchablePeople
               new PedComponent(9,25,3),
               new PedComponent(5,48,0),
                }) },
-            new DispatchablePerson("mp_f_freemode_01",0,50) {CombatAbilityMin = 2,CombatAbilityMax = 2, ArmorMin = 50,ArmorMax = 50,GroupName = "FIBHRT",MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, DebugName = "<Female FIB SWAT Uniform>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
+            new DispatchablePerson("mp_f_freemode_01",0,50) {CombatAbilityMin = 2,CombatAbilityMax = 2, ArmorMin = 50,ArmorMax = 50,GroupName = "FIBHET",MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, DebugName = "<Female FIB SWAT Uniform>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               new PedPropComponent(0,38,0),
               new PedPropComponent(1,22,0),
               }, new List<PedComponent>() {

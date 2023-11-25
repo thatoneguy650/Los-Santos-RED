@@ -74,9 +74,6 @@ public class InteriorDoor
     private void ForceRotateOpenDoor()
     {
         doorEntity = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Position.X, Position.Y, Position.Z, 3.0f, ModelHash, true, false, true);
-
-
-
         if (!doorEntity.Exists())
         {
             EntryPoint.WriteToConsole($"ForceRotateOpenDoor DOES NOT EXIST OPEN");

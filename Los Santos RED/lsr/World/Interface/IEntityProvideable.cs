@@ -22,6 +22,7 @@ namespace LosSantosRED.lsr.Interface
         bool AnyFiresNearPlayer { get; }
         List<SpawnError> SpawnErrors { get; }
         ModDataFileManager ModDataFileManager { get; }
+        ILocationInteractable LocationInteractable { get; }
 
         void LoadMPMap();
         void LoadSPMap();

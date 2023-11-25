@@ -40,6 +40,7 @@ namespace LosSantosRED.lsr.Interface
         GPSManager GPSManager { get; }
         LocationData CurrentLocation { get; }
         string Gender { get; }
+        InteriorManager InteriorManager { get; }
 
         void PlaySpeech(string v1, bool v2);
         void SetAngeredCop();

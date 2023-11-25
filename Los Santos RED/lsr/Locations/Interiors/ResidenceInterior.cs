@@ -6,14 +6,44 @@ public class ResidenceInterior : Interior
     protected Residence residence;
     public Residence Residence => residence;
     public List<RestInteract> RestInteracts { get; set; } = new List<RestInteract>();
+    public List<InventoryInteract> InventoryInteracts { get; set; } = new List<InventoryInteract>();
+    public List<OutfitInteract> OutfitInteracts { get; set; } = new List<OutfitInteract>();
+    public override List<InteriorInteract> AllInteractPoints
+    {
+        get
+        {
+            List<InteriorInteract> AllInteracts = new List<InteriorInteract>();
+            AllInteracts.AddRange(InteractPoints);
+            AllInteracts.AddRange(RestInteracts);
+            AllInteracts.AddRange(InventoryInteracts);
+            AllInteracts.AddRange(OutfitInteracts);
+            return AllInteracts;
+        }
+    }
     public ResidenceInterior()
     {
        
     }
-
     public ResidenceInterior(int iD, string name) : base(iD, name)
     {
 
+    }
+    protected override void LoadDoors(bool isOpen)
+    {
+        if (isOpen && Residence != null && Residence.IsOwnedOrRented)
+        {
+            foreach (InteriorDoor door in Doors)
+            {
+                door.UnLockDoor();
+            }
+        }
+        else
+        {
+            foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed))
+            {
+                door.LockDoor();
+            }
+        }
     }
     public void SetResidence(Residence newResidence)
     {
@@ -22,32 +52,14 @@ public class ResidenceInterior : Interior
         {
             test.RestableLocation = newResidence;
         }
-    }
-    public override void InsideLoopNew()
-    {
-        float closestDistanceTo = 999f;
-        InteriorInteract closestInteriorInteract = null;
-        foreach (RestInteract interiorInteract in RestInteracts)
+        foreach (InventoryInteract test in InventoryInteracts)
         {
-            interiorInteract.Update(Player, Settings, InteractableLocation, this, LocationInteractable);
-            if (interiorInteract.DistanceTo <= closestDistanceTo)
-            {
-                closestDistanceTo = interiorInteract.DistanceTo;
-                closestInteriorInteract = interiorInteract;
-            }
+            test.InventoryableLocation = newResidence;
         }
-        foreach (RestInteract interiorInteract in RestInteracts)
+        foreach (OutfitInteract test in OutfitInteracts)
         {
-            if (interiorInteract == closestInteriorInteract && interiorInteract.CanAddPrompt)
-            {
-                interiorInteract.AddPrompt();
-            }
-            else
-            {
-                interiorInteract.RemovePrompt();
-            }
+            test.OutfitableLocation = newResidence;
         }
-        base.InsideLoopNew();
     }
 }
 

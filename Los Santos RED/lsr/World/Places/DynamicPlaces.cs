@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Microsoft.VisualBasic.ApplicationServices;
+using Mod;
 using Rage;
 using Rage.Native;
 using System;
@@ -19,7 +20,7 @@ public class DynamicPlaces
     private ISettingsProvideable Settings;
     private ICrimes Crimes;
     private IWeapons Weapons;
-    private ITimeReportable Time;
+    private ITimeControllable Time;
 
     private List<VendingMachine> ActiveVendingMachines = new List<VendingMachine>();
     private List<string> VendingMachinesModelNames = new List<string>();
@@ -38,7 +39,7 @@ public class DynamicPlaces
     private List<string> CashRegisterModelNames = new List<string>();
     private List<uint> CashRegisterModelHashes = new List<uint>();
 
-    public DynamicPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time)
+    public DynamicPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeControllable time)
     {
         Places = places;
         PlacesOfInterest = placesOfInterest;
@@ -214,6 +215,9 @@ public class DynamicPlaces
         }
         CashRegister newVend = new CashRegister(EntrancePos, heading, "Cash Register", "Cash Register", "", obj, RegisterCash) { OpenTime = 0, CloseTime = 24 };
         newVend.CanInteractWhenWanted = true;
+        newVend.StoreData(ShopMenus, World.ModDataFileManager.Agencies, World.ModDataFileManager.Gangs, World.ModDataFileManager.Zones, World.ModDataFileManager.Jurisdictions, World.ModDataFileManager.GangTerritories, World.ModDataFileManager.Names,
+    World.ModDataFileManager.Crimes, World.ModDataFileManager.RelationshipGroups, World, World.ModDataFileManager.Streets, World.ModDataFileManager.LocationTypes, Settings, World.ModDataFileManager.PlateTypes, World.ModDataFileManager.Organizations, World.ModDataFileManager.Contacts, Interiors, World.LocationInteractable, World.ModDataFileManager.ModItems, World.ModDataFileManager.Weapons, Time, PlacesOfInterest);
+
         newVend.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
         ActiveCashRegisters.Add(newVend);
 
@@ -236,6 +240,11 @@ public class DynamicPlaces
         Vector3 EntrancePos = obj.GetOffsetPositionFront(0.5f);
         VendingMachine newVend = new VendingMachine(EntrancePos, heading, vendingMenu.Name, vendingMenu.Name, vendingMenu.ID, obj) { Menu = vendingMenu, OpenTime = 0, CloseTime = 24 };
         newVend.CanInteractWhenWanted = true;
+
+        newVend.StoreData(ShopMenus, World.ModDataFileManager.Agencies, World.ModDataFileManager.Gangs, World.ModDataFileManager.Zones, World.ModDataFileManager.Jurisdictions, World.ModDataFileManager.GangTerritories, World.ModDataFileManager.Names,
+            World.ModDataFileManager.Crimes, World.ModDataFileManager.RelationshipGroups, World, World.ModDataFileManager.Streets, World.ModDataFileManager.LocationTypes, Settings, World.ModDataFileManager.PlateTypes, World.ModDataFileManager.Organizations, World.ModDataFileManager.Contacts, Interiors, World.LocationInteractable, World.ModDataFileManager.ModItems, World.ModDataFileManager.Weapons, Time, PlacesOfInterest);
+
+
         newVend.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
         ActiveVendingMachines.Add(newVend);
 
@@ -268,6 +277,8 @@ public class DynamicPlaces
             newGasPump = new GasPump(EntrancePos, heading, "Gas Pump", "Gas Pump", "None", obj, null) { OpenTime = 0, CloseTime = 24 };
         }
         newGasPump.CanInteractWhenWanted = true;
+        newGasPump.StoreData(ShopMenus,World.ModDataFileManager.Agencies,World.ModDataFileManager.Gangs, World.ModDataFileManager.Zones,World.ModDataFileManager.Jurisdictions, World.ModDataFileManager.GangTerritories, World.ModDataFileManager.Names, 
+            World.ModDataFileManager.Crimes,World.ModDataFileManager.RelationshipGroups, World, World.ModDataFileManager.Streets, World.ModDataFileManager.LocationTypes, Settings, World.ModDataFileManager.PlateTypes,World.ModDataFileManager.Organizations,World.ModDataFileManager.Contacts,Interiors,World.LocationInteractable, World.ModDataFileManager.ModItems, World.ModDataFileManager.Weapons, Time, PlacesOfInterest);
         newGasPump.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
         ActiveGasPumps.Add(newGasPump);
         EntryPoint.WriteToConsole($"Activate GasPump {newGasPump.Name} {newGasPump.EntrancePosition}");
@@ -296,6 +307,9 @@ public class DynamicPlaces
             newATMMachine = new ATMMachine(EntrancePos, heading, "ATM", "ATM", "None", obj, null) { OpenTime = 0, CloseTime = 24 };
         }
         newATMMachine.CanInteractWhenWanted = true;
+        newATMMachine.StoreData(ShopMenus, World.ModDataFileManager.Agencies, World.ModDataFileManager.Gangs, World.ModDataFileManager.Zones, World.ModDataFileManager.Jurisdictions, World.ModDataFileManager.GangTerritories, World.ModDataFileManager.Names,
+            World.ModDataFileManager.Crimes, World.ModDataFileManager.RelationshipGroups, World, World.ModDataFileManager.Streets, World.ModDataFileManager.LocationTypes, Settings, World.ModDataFileManager.PlateTypes, World.ModDataFileManager.Organizations, World.ModDataFileManager.Contacts, Interiors, World.LocationInteractable, World.ModDataFileManager.ModItems, World.ModDataFileManager.Weapons, Time, PlacesOfInterest);
+
         newATMMachine.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
         ActiveATMMachines.Add(newATMMachine);
 

@@ -440,30 +440,18 @@ public class TopRightMenu
     }
     private void DisplayInvestigationMarks(GraphicsEventArgs args, float InitialPosX, float InitialPosY, float Scale)
     {    
-        for (int possibleWantedLevel = 1; possibleWantedLevel <= Settings.SettingsManager.PoliceSettings.MaxWantedLevel; possibleWantedLevel++)
+        for (int possibleWantedLevel = 1; possibleWantedLevel <= DisplayablePlayer.Investigation.InvestigationWantedLevel; possibleWantedLevel++)
         {
             Texture toShow;
             if (possibleWantedLevel <= DisplayablePlayer.Investigation.InvestigationWantedLevel)
             {   
-                if (possibleWantedLevel >= Settings.SettingsManager.UIGeneralSettings.CustomInvestigationMarksRedColorLimit)
-                {
-                    toShow = QuestionRed;
-                }
-                else if(DisplayablePlayer.Investigation.BlipColor == Color.Orange)
+                if(DisplayablePlayer.Investigation.IsSuspicious)
                 {
                     toShow = QuestionOrange;
                 }
-                else if (DisplayablePlayer.Investigation.BlipColor == Color.DarkOrange)
-                {
-                    toShow = QuestionDarkOrange;
-                }
-                else if (DisplayablePlayer.Investigation.BlipColor == Color.Yellow)
+                else 
                 {
                     toShow = QuestionYellow;
-                }
-                else
-                {
-                    toShow = QuestionWhite;
                 }
             }
             else

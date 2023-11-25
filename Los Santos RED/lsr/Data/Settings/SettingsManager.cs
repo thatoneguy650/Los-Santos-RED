@@ -137,7 +137,7 @@ public class SettingsManager
     [Description("Fire Settings")]
     public FireSettings FireSettings { get; set; } = new FireSettings();
     [Category("Civilian")]
-    [Description("Civilian Settings")]
+    [Description("Regular Civilian Settings")]
     public CivilianSettings CivilianSettings { get; set; } = new CivilianSettings();
     [Category("Civilian")]
     [Description("Taxi Settings")]

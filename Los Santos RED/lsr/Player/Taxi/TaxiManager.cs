@@ -53,7 +53,7 @@ public class TaxiManager
         if(Player.ActivityManager.IsHailingTaxi && Game.GameTime - GameTimeLastHailedCab >= 1000)
         {
             TaxiFirm closestFirm = GetClosestTaxiFirm();
-            if (closestFirm != null && RequestService(closestFirm, false))
+            if (closestFirm != null && RequestService(closestFirm, true))
             {
                 Game.DisplayHelp($"Hailed {closestFirm.ShortName}");
             }
@@ -76,7 +76,7 @@ public class TaxiManager
             taxiRide.OnGotOutOfVehicle();
         }
     }
-    public bool RequestService(TaxiFirm taxiFirm, bool canSpawn)
+    public bool RequestService(TaxiFirm taxiFirm, bool isHailed)
     {
         if(taxiFirm == null)
         {
@@ -88,9 +88,17 @@ public class TaxiManager
             EntryPoint.WriteToConsole($"RequestService FAIL, ALREADY ACTIVE RIDE");
             return false;
         }
+
         TaxiRide taxiRide = new TaxiRide(World, Player, taxiFirm, Player.Position);
-        taxiRide.CanSpawnRide = canSpawn;
-        taxiRide.Setup();
+        taxiRide.CanSpawnRide = !isHailed;
+        if (isHailed)
+        {
+            taxiRide.SetupHailedRide();
+        }
+        else
+        {
+            taxiRide.SetupCalledRide();
+        }
         if(!taxiRide.IsActive)
         {
             EntryPoint.WriteToConsole($"RequestService FAIL, NOT ACTIVE");

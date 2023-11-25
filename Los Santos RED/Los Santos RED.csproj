@@ -139,8 +139,11 @@
     <Compile Include="lsr\Dispatcher\Civilian\TaxiDispatcher.cs" />
     <Compile Include="lsr\Inventory\CashStorage.cs" />
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\GangDenInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\InteriorInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\InventoryInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\IRestableInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\OutfitInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ResidenceInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\RestInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\StandardInteriorInteract.cs" />
@@ -149,6 +152,8 @@
     <Compile Include="lsr\Locations\Places\GameLocations\IGasPumpable.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Machines\CashRegister.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Residence\ApartmentBuilding.cs" />
+    <Compile Include="lsr\Locations\Places\Interface\IInventoryableLocation.cs" />
+    <Compile Include="lsr\Locations\Places\Interface\IOutfitableLocation.cs" />
     <Compile Include="lsr\Locations\Places\Interface\IRestableLocation.cs" />
     <Compile Include="lsr\Locations\Places\VehicleItemMakeAndCategories.cs" />
     <Compile Include="lsr\Other\NativeMemory.cs" />

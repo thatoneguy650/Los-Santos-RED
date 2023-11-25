@@ -19,7 +19,6 @@ public class StandardInteriorInteract : InteriorInteract
     }
     public override void OnInteract()
     {
-
         EntryPoint.WriteToConsole("StandardInteriorInteract OnInteract");
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
