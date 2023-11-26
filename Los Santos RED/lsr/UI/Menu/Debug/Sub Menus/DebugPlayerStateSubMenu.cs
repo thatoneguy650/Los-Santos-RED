@@ -282,7 +282,7 @@ public class DebugPlayerStateSubMenu : DebugSubMenu
         UnSetArrested.Activated += (menu, item) =>
         {
             Game.TimeScale = 1.0f;
-            Player.Reset(true, false, true, true, true, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false);
+            Player.Reset(true, false, true, true, true, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
             Player.Surrendering.UnSetArrestedAnimation();
             menu.Visible = false;
         };

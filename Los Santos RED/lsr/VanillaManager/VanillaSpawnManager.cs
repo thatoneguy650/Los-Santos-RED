@@ -14,8 +14,13 @@ public class VanillaSpawnManager
     private bool isRandomEventsDisabled;
     private bool IsVanillaRespawnActive = true;
     private ISettingsProvideable Settings;
-    private List<Vector3> CarGeneratorsToDisable;
-    private List<Vector3> ScenariosToDisable;
+    private List<Vector3> PoliceCarGeneratorsToDisable;
+    private List<Vector3> PrisonCarGeneratorsToDisable;
+    private List<Vector3> PoliceScenariosToDisable;
+    private List<Vector3> PrisonScenariosToDisable;
+    private List<Vector3> SecurityScenariosToDisable;
+    private List<Vector3> OtherScenariosToDisable;
+
     private uint GameTimeLastDisabledVehicles;
 
     public VanillaSpawnManager(ISettingsProvideable settings)
@@ -24,7 +29,7 @@ public class VanillaSpawnManager
     }
     public void Setup()
     {
-        CarGeneratorsToDisable = new List<Vector3>()
+        PoliceCarGeneratorsToDisable = new List<Vector3>()
         {
         //POLICE
         //Mission Row
@@ -104,12 +109,17 @@ public class VanillaSpawnManager
         new Vector3(857.2202f, -1393.802f, 26.21234f),
         new Vector3(854.2248f, -1398.952f, 26.21234f),
 
+        };
+
+        PrisonCarGeneratorsToDisable = new List<Vector3>()
+        {
+
         //Boilingbroke
         new Vector3(1855.314f, 2578.854f, 46.42464f),
         new Vector3(1799.826f, 2600.908f, 45.58898f),
         };
 
-        ScenariosToDisable = new List<Vector3>()
+        PoliceScenariosToDisable = new List<Vector3>()
         {
             //Car Scenarios
             new Vector3(838.9286f, -1259.166f, 25.38143f),
@@ -138,6 +148,29 @@ public class VanillaSpawnManager
             new Vector3(-479.5346f, 6028.117f, 30.34054f),
             new Vector3(-437.7312f, 6087.632f, 30.42623f),
             new Vector3(-431.8985f, 6032.511f, 30.34053f),
+            new Vector3(374.2932f, 795.6959f, 187.5605f),//ranger station
+
+            //Maze Bank security
+            new Vector3(-256.2089f, -2029.314f, 28.94582f),
+            new Vector3(-252.9283f, -2025.2f, 28.94582f),
+            new Vector3(-241.3938f, -2023.062f, 28.94582f),
+            new Vector3(-285.3585f, -2056.294f, 28.94583f),
+            new Vector3(-336.9773f, -2046.85f, 28.94642f),
+            new Vector3(-372.0268f, -2018.85f, 28.94642f),
+            new Vector3(-395.8358f, -1997.162f, 28.94642f),
+            new Vector3(-402.0461f, -1905.517f, 28.94614f),
+            new Vector3(-337.9023f, -1880.646f, 28.94614f),
+            new Vector3(-309.1234f, -1891.761f, 28.94639f),
+            new Vector3(-283.2107f, -1913.418f, 28.94639f),
+            new Vector3(-277.8984f, -1918.732f, 28.94639f),
+            new Vector3(-233.965f, -1973.487f, 28.94639f),
+            //Luxury AUtos Security
+            new Vector3(-802.0435f, -225.7791f, 36.20076f),
+        };
+
+
+        PrisonScenariosToDisable = new List<Vector3>()
+        {
             new Vector3(1803.225f, 2623.1f, 44.5028f),///prison
             new Vector3(1727.828f, 2439.606f, 44.56514f),///prison
             new Vector3(1799.826f, 2600.908f, 45.58898f),//prison
@@ -145,7 +178,7 @@ public class VanillaSpawnManager
             new Vector3(1784.646f, 2626.016f, 44.56556f),//prison
             new Vector3(1727.828f, 2439.606f, 44.56514f),//prison
             new Vector3(1885.322f, 2626.629f, 44.6721f),//prison
-            new Vector3(374.2932f, 795.6959f, 187.5605f),//ranger station
+
 
             //Ped Scenarios
             new Vector3(1846.473f, 2584.199f, 44.67195f),//prison
@@ -198,7 +231,10 @@ public class VanillaSpawnManager
             new Vector3(1740.667f, 2504.186f, 54.35909f),//prison
             new Vector3(1759.357f, 2514.872f, 54.3591f),//prison
             new Vector3(1761.915f, 2521.84f, 54.39047f),//prison
+        };
 
+        SecurityScenariosToDisable = new List<Vector3>()
+        {
             //Maze Bank security
             new Vector3(-256.2089f, -2029.314f, 28.94582f),
             new Vector3(-252.9283f, -2025.2f, 28.94582f),
@@ -215,6 +251,12 @@ public class VanillaSpawnManager
             new Vector3(-233.965f, -1973.487f, 28.94639f),
             //Luxury AUtos Security
             new Vector3(-802.0435f, -225.7791f, 36.20076f),
+        };
+
+        OtherScenariosToDisable = new List<Vector3>()
+        {
+            //Apartment Peds
+            new Vector3(-19.51501f, -597.6929f, 94.02557f),//4 Integrity Way, Apt 28
         };
         DisableScenariosAndGenerators();
     }
@@ -237,7 +279,7 @@ public class VanillaSpawnManager
         int ran = 0;
         if (Settings.SettingsManager.VanillaSettings.BlockVanillaPoliceCarGenerators)
         {
-            foreach (Vector3 carGenSPot in CarGeneratorsToDisable)
+            foreach (Vector3 carGenSPot in PoliceCarGeneratorsToDisable)
             {
                 NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false, false);
                 NativeFunction.Natives.REMOVE_VEHICLES_FROM_GENERATORS_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false);
@@ -249,11 +291,56 @@ public class VanillaSpawnManager
                 }
             }
         }
-        if (Settings.SettingsManager.VanillaSettings.BlockVanillaPoliceAndSecurityScenarios)
+        if (Settings.SettingsManager.VanillaSettings.BlockVanillaPrisonCarGenerators)
+        {
+            foreach (Vector3 carGenSPot in PrisonCarGeneratorsToDisable)
+            {
+                NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false, false);
+                NativeFunction.Natives.REMOVE_VEHICLES_FROM_GENERATORS_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false);
+                ran++;
+                if (ran > 2)
+                {
+                    GameFiber.Yield();
+                    ran = 0;
+                }
+            }
+        }
+        if (Settings.SettingsManager.VanillaSettings.BlockVanillaPoliceScenarios)
         {
             ran = 0;
             float ScenarioBlockingDistance = 2f;
-            foreach (Vector3 scenario in ScenariosToDisable)
+            foreach (Vector3 scenario in PoliceScenariosToDisable)
+            {
+                NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(scenario.X - ScenarioBlockingDistance, scenario.Y - ScenarioBlockingDistance, scenario.Z - ScenarioBlockingDistance, scenario.X + ScenarioBlockingDistance, scenario.Y + ScenarioBlockingDistance, scenario.Z + ScenarioBlockingDistance, false, true, true, true);
+                ran++;
+                if (ran > 2)
+                {
+                    GameFiber.Yield();
+                    ran = 0;
+                }
+            }          
+        }
+        if (Settings.SettingsManager.VanillaSettings.BlockVanillaSecurityScenarios)
+        {
+            ran = 0;
+            float ScenarioBlockingDistance = 2f;
+            foreach (Vector3 scenario in SecurityScenariosToDisable)
+            {
+                NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(scenario.X - ScenarioBlockingDistance, scenario.Y - ScenarioBlockingDistance, scenario.Z - ScenarioBlockingDistance, scenario.X + ScenarioBlockingDistance, scenario.Y + ScenarioBlockingDistance, scenario.Z + ScenarioBlockingDistance, false, true, true, true);
+                ran++;
+                if (ran > 2)
+                {
+                    GameFiber.Yield();
+                    ran = 0;
+                }
+            }
+
+        }
+        if (Settings.SettingsManager.VanillaSettings.BlockVanillaPrisonScenarios)
+        {
+            ran = 0;
+            float ScenarioBlockingDistance = 2f;
+            foreach (Vector3 scenario in PrisonScenariosToDisable)
             {
                 NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(scenario.X - ScenarioBlockingDistance, scenario.Y - ScenarioBlockingDistance, scenario.Z - ScenarioBlockingDistance, scenario.X + ScenarioBlockingDistance, scenario.Y + ScenarioBlockingDistance, scenario.Z + ScenarioBlockingDistance, false, true, true, true);
                 ran++;
@@ -267,6 +354,22 @@ public class VanillaSpawnManager
             float largeBlockingRange = 50f;
             NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(PrisonMainBlock.X - largeBlockingRange, PrisonMainBlock.Y - largeBlockingRange, PrisonMainBlock.Z - largeBlockingRange, PrisonMainBlock.X + largeBlockingRange, PrisonMainBlock.Y + largeBlockingRange, PrisonMainBlock.Z + largeBlockingRange, false, true, true, true);
         }
+        if (Settings.SettingsManager.VanillaSettings.BlockVanillaOtherScenarios)
+        {
+            ran = 0;
+            float ScenarioBlockingDistance = 3f;
+            foreach (Vector3 scenario in OtherScenariosToDisable)
+            {
+                NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(scenario.X - ScenarioBlockingDistance, scenario.Y - ScenarioBlockingDistance, scenario.Z - ScenarioBlockingDistance, scenario.X + ScenarioBlockingDistance, scenario.Y + ScenarioBlockingDistance, scenario.Z + ScenarioBlockingDistance, false, true, true, true);
+                ran++;
+                if (ran > 2)
+                {
+                    GameFiber.Yield();
+                    ran = 0;
+                }
+            } 
+        }
     }
+
 }
 

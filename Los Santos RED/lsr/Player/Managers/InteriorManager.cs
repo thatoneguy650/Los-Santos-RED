@@ -33,6 +33,8 @@ public class InteriorManager
     private bool IsUpdatingSingleLocation;
     public bool IsInsideTeleportInterior { get; private set; } = false;
 
+    public GameLocation CurrentTeleportInteriorLocation { get; private set; }
+
     public InteriorManager(IEntityProvideable world, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IInteriorManageable player, IInteractionable interactionable, ILocationInteractable locationInteractable)
     {
         World = world;
@@ -44,6 +46,14 @@ public class InteriorManager
     }
     public void Setup()
     {
+        IsActive = true;
+    }
+    public void Reset()
+    {
+        IsUpdatingSingleLocation = false;
+        IsInsideTeleportInterior = false;
+        CurrentTeleportInteriorLocation = null;
+        InteriorUpdateLocations.Clear();
         IsActive = true;
     }
     public void Update()
@@ -81,6 +91,10 @@ public class InteriorManager
     }
     public void Dispose()
     {
+        IsUpdatingSingleLocation = false;
+        IsInsideTeleportInterior = false;
+        CurrentTeleportInteriorLocation = null;
+        InteriorUpdateLocations.Clear();
         IsActive = false;
     }
     private void StartInteriorChecking()
@@ -176,6 +190,7 @@ public class InteriorManager
     {
         IsUpdatingSingleLocation = true;
         IsInsideTeleportInterior = true;
+        CurrentTeleportInteriorLocation = gameLocation;
         InteriorUpdateLocations.Clear();
         InteriorUpdateLocations.Add(gameLocation);
         StartInteriorChecking();
@@ -184,7 +199,10 @@ public class InteriorManager
     {
         IsUpdatingSingleLocation = false;
         IsInsideTeleportInterior = false;
+        CurrentTeleportInteriorLocation = null;
         InteriorUpdateLocations.Clear();
     }
+
+
 }
 

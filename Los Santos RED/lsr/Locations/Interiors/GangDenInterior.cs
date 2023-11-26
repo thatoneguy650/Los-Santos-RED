@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
 
 public class GangDenInterior : Interior
 {
     protected GangDen gangDen;
     public GangDen GangDen => gangDen;
     public List<RestInteract> RestInteracts { get; set; } = new List<RestInteract>();
+    [XmlIgnore]
     public override List<InteriorInteract> AllInteractPoints
     {
         get

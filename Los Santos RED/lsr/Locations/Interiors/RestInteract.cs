@@ -40,12 +40,15 @@ public class RestInteract : InteriorInteract
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
         SetupCamera();
-        if (!MoveToPosition())
+        if (!WithWarp)
         {
-            Interior.IsMenuInteracting = false;
-            Game.DisplayHelp("Resting Failed");
-            LocationCamera?.StopImmediately(true);
-            return;
+            if (!MoveToPosition())
+            {
+                Interior.IsMenuInteracting = false;
+                Game.DisplayHelp("Resting Failed");
+                LocationCamera?.StopImmediately(true);
+                return;
+            }
         }
         if (!DoRestAnimation())
         {
@@ -57,6 +60,7 @@ public class RestInteract : InteriorInteract
         RestableLocation.CreateRestMenu();
         Interior.IsMenuInteracting = false;
         DoGetUpAnimation();
+        LocationCamera?.ReturnToGameplay(true);
         LocationCamera?.StopImmediately(true);
     }
     public override void AddPrompt()
@@ -71,11 +75,6 @@ public class RestInteract : InteriorInteract
     {
         Player.Character.Position = Position;
         Player.Character.Heading = Heading;
-        //if (!AnimationDictionary.RequestAnimationDictionayResult(AnimationStartDictionaryName) || !AnimationDictionary.RequestAnimationDictionayResult(AnimationLoopDictionaryName) || !AnimationDictionary.RequestAnimationDictionayResult(AnimationEndDictionaryName))
-        //{
-        //    return false;
-        //}
-
         HashSet<string> dictionaryList = new HashSet<string>();
         AnimationBundle startBundle = StartAnimations.Where(x => x.Gender == "U" || x.Gender == Player.Gender).PickRandom();
         if(startBundle != null)
@@ -99,9 +98,6 @@ public class RestInteract : InteriorInteract
                 return false;
             }
         }
-
-        //NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, AnimationStartDictionaryName, AnimationStartName, 4.0f, -4.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 0, false, false, false);
-        //WaitForAnimation(AnimationStartDictionaryName, AnimationStartName);
         if(startBundle != null)
         { 
             NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, startBundle.Dictionary, startBundle.Name, startBundle.BlendIn, startBundle.BlendOut, startBundle.Time, startBundle.Flags, 0, false, false, false);
@@ -111,7 +107,6 @@ public class RestInteract : InteriorInteract
         { 
             NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, loopBundle.Dictionary, loopBundle.Name, loopBundle.BlendIn, loopBundle.BlendOut, loopBundle.Time, loopBundle.Flags, 0, false, false, false);
         }
-        //NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, AnimationLoopDictionaryName, AnimationLoopName, 4.0f, -4.0f, -1, (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_TURN_OFF_COLLISION), 0, false, false, false);
         return true;
     }
     public bool DoGetUpAnimation()
@@ -121,8 +116,6 @@ public class RestInteract : InteriorInteract
             NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, endBundle.Dictionary, endBundle.Name, endBundle.BlendIn, endBundle.BlendOut, endBundle.Time, endBundle.Flags, 0, false, false, false);
             WaitForAnimation(endBundle.Dictionary, endBundle.Name);
         }
-        //NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, AnimationEndDictionaryName, AnimationEndName, 4.0f, -4.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 0, false, false, false);
-        //WaitForAnimation(AnimationEndDictionaryName, AnimationEndName);
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         return true;
     }

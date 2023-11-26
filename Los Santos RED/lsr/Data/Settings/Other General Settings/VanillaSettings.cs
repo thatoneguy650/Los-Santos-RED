@@ -18,9 +18,18 @@ public class VanillaSettings : ISettingsDefaultable
     public bool TerminateScenarioCops { get; set; }
     public bool SupressRandomPoliceEvents { get; set; }
     public bool BlockGangScenarios { get; set; }
+
+
+    public bool BlockVanillaPoliceScenarios { get; set; }
     public bool BlockVanillaPoliceCarGenerators { get; set; }
-    public bool BlockVanillaPoliceAndSecurityScenarios { get; set; }
-    public float BlockGangScenariosAroundDensDistance { get; set; }
+    public bool BlockVanillaPrisonScenarios { get; set; }
+    public bool BlockVanillaPrisonCarGenerators { get; set; }
+    public bool BlockVanillaSecurityScenarios { get; set; }
+    public bool BlockVanillaOtherScenarios { get; set; }
+
+
+
+
     [Description("Terminates all vanilla shops (LS Customs, Ammunation, Tattoo, Vending Machines). No longer needed to stop r* DLC car despawning. CANNOT BE RE-ENABLED, REQUIRES GAME RESTART.")]
     public bool TerminateVanillaShops { get; set; }
     [Description("Terminates all vanilla blips. CANNOT BE RE-ENABLED, REQUIRES GAME RESTART.")]
@@ -46,15 +55,34 @@ public class VanillaSettings : ISettingsDefaultable
         TerminateWantedMusic = true;
         TerminateScanner = true;
         TerminateScenarioCops = true;
+
         SupressRandomPoliceEvents = true;
-        BlockGangScenarios = false;
-        BlockGangScenariosAroundDensDistance = 50f;// 200f;
-        BlockVanillaPoliceCarGenerators = true;
-        BlockVanillaPoliceAndSecurityScenarios = true;
+
+
+
+
+
         TerminateVanillaShops = false;
         TerminateVanillaBlips = false;
         TerminateSelector = false;
+
         SupressVanillaCopCrimes = true;
+
+
+
+
+        BlockVanillaOtherScenarios = true;
+
+        BlockVanillaPoliceCarGenerators = true;
+        BlockVanillaPoliceScenarios = true;
+
+        BlockVanillaPoliceScenarios = true;
+        BlockVanillaPrisonCarGenerators = true;
+
+
+        BlockVanillaSecurityScenarios = true;
+
+
         //TerminateVanillaVendingMachines = true;
     }
 

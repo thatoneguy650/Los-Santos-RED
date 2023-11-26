@@ -149,7 +149,7 @@
     <Compile Include="lsr\Locations\Interiors\ResidenceInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\RestInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\StandardInteriorInteract.cs" />
-    <Compile Include="lsr\Locations\Interiors\ToiletInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\AnimationInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\UrinalInteract.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\MerchantConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankDrawer.cs" />
@@ -166,6 +166,7 @@
     <Compile Include="lsr\Player\ActiveTasks\Corrupt Cop\CopHitCopTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangCopHitTask.cs" />
     <Compile Include="lsr\Player\Activity\HailCabActivity.cs" />
+    <Compile Include="lsr\Player\Activity\DismissCabActivity.cs" />
     <Compile Include="lsr\Player\BackupManager\GangBackup.cs" />
     <Compile Include="lsr\Player\BackupManager\GangBackupManager.cs" />
     <Compile Include="lsr\Player\Cellphone\Data\CellphoneData.cs" />

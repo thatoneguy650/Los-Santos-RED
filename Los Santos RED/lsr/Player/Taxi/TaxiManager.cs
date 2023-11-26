@@ -91,6 +91,7 @@ public class TaxiManager
 
         TaxiRide taxiRide = new TaxiRide(World, Player, taxiFirm, Player.Position);
         taxiRide.CanSpawnRide = !isHailed;
+
         if (isHailed)
         {
             taxiRide.SetupHailedRide();
@@ -177,9 +178,10 @@ public class TaxiManager
         return tr;
     }
 
-    public void Pullover(TaxiRide taxiRide)
-    {
 
+    public void DismissHailedCabs()
+    {
+        ActiveRides.Where(x => x.IsHailed && x.RespondingDriver != null).OrderBy(x => x.RespondingDriver.DistanceToPlayer).FirstOrDefault()?.Cancel();
     }
 }
 

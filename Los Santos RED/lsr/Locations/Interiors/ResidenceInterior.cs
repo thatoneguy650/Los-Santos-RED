@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
 
 public class ResidenceInterior : Interior
 {
@@ -8,6 +9,7 @@ public class ResidenceInterior : Interior
     public List<RestInteract> RestInteracts { get; set; } = new List<RestInteract>();
     public List<InventoryInteract> InventoryInteracts { get; set; } = new List<InventoryInteract>();
     public List<OutfitInteract> OutfitInteracts { get; set; } = new List<OutfitInteract>();
+    [XmlIgnore]
     public override List<InteriorInteract> AllInteractPoints
     {
         get

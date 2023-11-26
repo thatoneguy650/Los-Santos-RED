@@ -132,5 +132,11 @@ public class GroupManager
             groupMember.UpdateTasking(SetForceTasking);
         }
     }
+
+    public void ToggleForceTasking()
+    {
+        SetForceTasking = !SetForceTasking;
+        UpdateAllTasking();
+    }
 }
 

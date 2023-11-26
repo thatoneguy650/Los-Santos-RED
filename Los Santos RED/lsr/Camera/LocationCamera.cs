@@ -574,7 +574,34 @@ public class LocationCamera
         CameraTo.Active = false;
     }
 
-
+    public void ReturnToGameplay(bool wait)
+    {
+        if(Camera.RenderingCamera == null)
+        {
+            return;
+        }
+        if (!StoreCam.Exists())
+        {
+            StoreCam = new Camera(false);
+        }
+        StoreCam.Position = Camera.RenderingCamera.Position;
+        StoreCam.FOV = Camera.RenderingCamera.FOV;
+        StoreCam.Rotation = Camera.RenderingCamera.Rotation;
+        if (!CameraTo.Exists())
+        {
+            CameraTo = new Camera(false);
+        }
+        CameraTo.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+        CameraTo.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+        Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+        CameraTo.Rotation = new Rotator(r.X, r.Y, r.Z);
+        CameraTo.Active = true;
+        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(CameraTo, StoreCam, 1500, true, true);//Destination first, then source
+        if (wait)
+        {
+            GameFiber.Sleep(1500);
+        }
+    }
 
     public void HighlightHome()
     {

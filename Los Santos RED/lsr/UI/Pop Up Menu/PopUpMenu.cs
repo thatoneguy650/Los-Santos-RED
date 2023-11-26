@@ -349,7 +349,7 @@ public class PopUpMenu
                 Player.GroupManager.SetCombatIfPossible = false;
                 Player.GroupManager.UpdateAllTasking();
                 Game.DisplaySubtitle($"Auto Tasking Enabled");
-            }), $"Set exclusively follow. Currently {(Player.GroupManager.SetFollowIfPossible ? "Enabled" : "Disabled")}"));
+            }), $"Set auto tasking. Currently {(!Player.GroupManager.SetFollowIfPossible && !Player.GroupManager.SetCombatIfPossible ? "Enabled" : "Disabled")}"));
         AllTaskingSubMenu.Add(new PopUpBox(2, "Set Combat", new Action(() => {
             Player.GroupManager.SetCombatIfPossible = true;
             Player.GroupManager.SetFollowIfPossible = false;
@@ -370,8 +370,7 @@ public class PopUpMenu
 
         AllTaskingSubMenu.Add(new PopUpBox(4, "Toggle Force Tasking",
             new Action(() => {
-                Player.GroupManager.SetForceTasking = !Player.GroupManager.SetForceTasking;
-                Player.GroupManager.UpdateAllTasking();
+                Player.GroupManager.ToggleForceTasking();
                 Game.DisplaySubtitle($"Force Tasking {(Player.GroupManager.SetForceTasking ? "Enabled" : "Disabled")}");
             }), $"Set the ped to always do the requested item by force tasking. Currently {(Player.GroupManager.SetForceTasking ? "Enabled" : "Disabled")}"));
 
@@ -1319,6 +1318,7 @@ public class PopUpMenu
             new PopUpBox(7,"BodyArmor","BodyArmorSubMenu","Open Body Armor Menu") { ClosesMenu = false },
             new PopUpBox(8,"Wave Hands",new Action(() => Player.ActivityManager.WaveHands()),"Get Nearby Attention"),
             new PopUpBox(9,"Hail Cab",new Action(() => Player.ActivityManager.HailTaxi()),"Hail a nearby cab"),
+            new PopUpBox(10,"Dismiss Hailed Cab",new Action(() => Player.ActivityManager.DismissTaxi()),"Dismiss a hailed nearby cab"),
         };
 
         List<PopUpBox> VehicleActionsSubMenu = new List<PopUpBox>()

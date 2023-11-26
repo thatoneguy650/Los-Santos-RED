@@ -70,20 +70,20 @@ public class Interiors : IInteriors
         PossibleInteriors.GeneralInteriors.AddRange(new List<Interior>()
         {
             //Clothes
-            new Interior(19458,"Sub Urban"),
+            new Interior(19458,"Sub Urban") { IsWeaponRestricted = true, },
             new Interior(22786, "BINCO Textile City",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3146141106, new Vector3(418.5713f,-808.674f,29.64108f)),
-                    new InteriorDoor(868499217, new Vector3(418.5713f,-806.3979f,29.64108f)) }),//doesntwork?
-            new Interior(10754,"Sub Urban"),
-            new Interior(1282,"Ponsonby"),
-            new Interior(14338,"Ponsonby"),
-            new Interior(22786,"Binco"),
-            new Interior(96266,"Suburban"),//suburban harmony
-            new Interior(17154,"Binco"),
-            new Interior(88066,"Discount Store"),
+                    new InteriorDoor(868499217, new Vector3(418.5713f,-806.3979f,29.64108f)) }) { IsWeaponRestricted = true, },//doesntwork?
+            new Interior(10754,"Sub Urban") { IsWeaponRestricted = true, },
+            new Interior(1282,"Ponsonby") { IsWeaponRestricted = true, },
+            new Interior(14338,"Ponsonby") { IsWeaponRestricted = true, },
+            new Interior(22786,"Binco") { IsWeaponRestricted = true, },
+            new Interior(96266,"Suburban") { IsWeaponRestricted = true, },//suburban harmony
+            new Interior(17154,"Binco") { IsWeaponRestricted = true, },
+            new Interior(88066,"Discount Store") { IsWeaponRestricted = true, },
 
             //Ammunations
             new Interior(-555,"Ammunation Vespucci Boulevard",
@@ -91,22 +91,22 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(-8873588, new Vector3(842.7685f, -1024.539f, 28.34478f)),
-                    new InteriorDoor(97297972, new Vector3(845.3694f, -1024.539f, 28.34478f)),}),
+                    new InteriorDoor(97297972, new Vector3(845.3694f, -1024.539f, 28.34478f)),}) { IsWeaponRestricted = true, },
             new Interior(-554,"Ammunation Lindsay Circus",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(-8873588, new Vector3(-662.6415f, -944.3256f, 21.97915f)),
-                    new InteriorDoor(97297972, new Vector3(-665.2424f, -944.3256f, 21.97915f)) }),
+                    new InteriorDoor(97297972, new Vector3(-665.2424f, -944.3256f, 21.97915f)) }) { IsWeaponRestricted = true, },
             new Interior(29698,"Ammu Nation Vinewood Plaza",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(-8873588, new Vector3(243.8379f, -46.52324f, 70.09098f)),
-                    new InteriorDoor(97297972, new Vector3(244.7275f, -44.07911f, 70.09098f)) }),
+                    new InteriorDoor(97297972, new Vector3(244.7275f, -44.07911f, 70.09098f)) }) { IsWeaponRestricted = true, },
             new Interior(80386,"Ammunation Cypress Flats"),
-            new Interior(48130,"Ammunation Pillbox Hill"),
-            new Interior(35586,"Ammunation"),
+            new Interior(48130,"Ammunation Pillbox Hill") { IsWeaponRestricted = true, },
+            new Interior(35586,"Ammunation") { IsWeaponRestricted = true, },
 
             //24/7
             new Interior(41474,"24/7 Route 68",
@@ -114,55 +114,55 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(545.504f,2672.745f,42.30644f)),//left door
-                    new InteriorDoor(997554217, new Vector3(542.9252f,2672.406f,42.30644f))}),//right door
+                    new InteriorDoor(997554217, new Vector3(542.9252f,2672.406f,42.30644f))}) { IsWeaponRestricted = true, },//right door
             new Interior(16386,"24/7 Chumash",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(-3240.128f,1003.157f,12.98064f)),//left door
-                    new InteriorDoor(997554217, new Vector3(-3239.905f,1005.749f,12.98064f))}),//right door
+                    new InteriorDoor(997554217, new Vector3(-3239.905f,1005.749f,12.98064f))}) { IsWeaponRestricted = true, },//right door
             new Interior(62722,"24/7 Palomino Freeway",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(2559.201f,384.0875f,108.7729f)),
-                    new InteriorDoor(997554217, new Vector3(2559.304f,386.6865f,108.7729f)),}),//right door
+                    new InteriorDoor(997554217, new Vector3(2559.304f,386.6865f,108.7729f)),}) { IsWeaponRestricted = true, },//right door
             new Interior(33282,"24/7 Strawberry",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(27.81761f,-1349.169f,29.64696f)),
-                    new InteriorDoor(997554217, new Vector3(30.4186f,-1349.169f,29.64696f)),}),//right door
+                    new InteriorDoor(997554217, new Vector3(30.4186f,-1349.169f,29.64696f)),}) { IsWeaponRestricted = true, },//right door
             new Interior(97538,"24/7 Banham Canyon",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(-3038.219f,588.2872f,8.058861f)),
-                    new InteriorDoor(997554217, new Vector3(-3039.012f,590.7643f,8.058861f)),}),//right door    
+                    new InteriorDoor(997554217, new Vector3(-3039.012f,590.7643f,8.058861f)),}) { IsWeaponRestricted = true, },//right door    
             new Interior(46850,"24/7 Downtown Vinewood",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(375.3528f,323.8015f,103.7163f)),
-                    new InteriorDoor(997554217, new Vector3(377.8753f,323.1672f,103.7163f)),}),//right door   
+                    new InteriorDoor(997554217, new Vector3(377.8753f,323.1672f,103.7163f)),}) { IsWeaponRestricted = true, },//right door   
             new Interior(36354,"24/7 Senora Freeway",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1437777724, new Vector3(1732.245f,6415.377f,34.76194f)),
-                    new InteriorDoor(1421582485, new Vector3(1734.097f,6413.048f,34.99545f)),}),//right door   
+                    new InteriorDoor(1421582485, new Vector3(1734.097f,6413.048f,34.99545f)),}) { IsWeaponRestricted = true, },//right door   
             new Interior(13826,"24/7 Senora Freeway",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(2681.292f,3281.427f,55.39108f)),
-                    new InteriorDoor(997554217, new Vector3(2682.558f,3283.698f,55.39108f)),}),//right door          
+                    new InteriorDoor(997554217, new Vector3(2682.558f,3283.698f,55.39108f)),}) { IsWeaponRestricted = true, },//right door          
             new Interior(55554,"24/7 Sandy Shores",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(1963.917f,3740.075f,32.49369f)),
-                    new InteriorDoor(997554217, new Vector3(1966.17f,3741.376f,32.49369f)),}),//right door 
+                    new InteriorDoor(997554217, new Vector3(1966.17f,3741.376f,32.49369f)),}) { IsWeaponRestricted = true, },//right door 
 
             //LtD
             new Interior(47874, "Ltd Little Seoul",
@@ -182,20 +182,20 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3426294393, new Vector3(-53.96111f,-1755.717f,29.57094f)),
-                    new InteriorDoor(2065277225, new Vector3(-51.96669f,-1757.387f,29.57094f)),}),//right door   
+                    new InteriorDoor(2065277225, new Vector3(-51.96669f,-1757.387f,29.57094f)),}) { IsWeaponRestricted = true, },//right door   
             new Interior(2050,"LtD Mirror Park",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3426294393, new Vector3(1158.364f,-326.8165f,69.35503f)),
-                    new InteriorDoor(2065277225, new Vector3(1160.925f,-326.3612f,69.35503f)),}),//right door   
+                    new InteriorDoor(2065277225, new Vector3(1160.925f,-326.3612f,69.35503f)),}) { IsWeaponRestricted = true, },//right door   
             new Interior(82178,"LtD Richman Glen",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3426294393, new Vector3(1158.364f,-326.8165f,69.35503f)),
-                    new InteriorDoor(2065277225, new Vector3(1160.925f,-326.3612f,69.35503f)),}),//right door  
-            new Interior(74874,"LtD Gas"),
+                    new InteriorDoor(2065277225, new Vector3(1160.925f,-326.3612f,69.35503f)),}) { IsWeaponRestricted = true, },//right door  
+            new Interior(74874,"LtD Gas") { IsWeaponRestricted = true, },
 
             //Liquor
             new Interior(33026,"Scoops Liquor Barn"),                
@@ -205,26 +205,26 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3082015943, new Vector3(-1226.894f,-903.1218f,12.47039f)){ LockWhenClosed = true },
-                }),
+                }) { IsWeaponRestricted = true, },
             new Interior(19202,"Rob's Liquors",//Route 1
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3082015943, new Vector3(-2973.535f,390.1414f,15.18735f)){ LockWhenClosed = true },
-                }),
+                }) { IsWeaponRestricted = true, },
             new Interior(98818,"Rob's Liquors",//Prosperity Street
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3082015943, new Vector3(-1490.411f,-383.8453f,40.30745f)){ LockWhenClosed = true },
-                }),
+                }) { IsWeaponRestricted = true, },
             new Interior(73986,"Rob's Liquors",//El Rancho Boulevard
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3082015943, new Vector3(1141.038f,-980.3225f,46.55986f)) { LockWhenClosed = true },
-                }),
-            new Interior(50178,"Rob's Liquors"),
+                }) { IsWeaponRestricted = true, },
+            new Interior(50178,"Rob's Liquors") { IsWeaponRestricted = true, },
 
             //Barber/Tattoo      
             new Interior(37378,"Bob Mullet Hair & Beauty"),
@@ -492,7 +492,8 @@ public class Interiors : IInteriors
                 //{
                 //    new InteriorDoor(3262795659,new Vector3(1390.666f, 1131.117f, 114.4808f)),
                 //},
-                InteractPoints = new List<InteriorInteract>(){
+                InteractPoints = new List<InteriorInteract>()
+                {
                     new ExitInteriorInteract("madrazoRanchExit1",new Vector3(1391.485f, 1132.229f, 114.3336f), 89.3185f,"Exit") ,
                     new StandardInteriorInteract("madrazoRanchStandard1",new Vector3(1397.711f, 1145.432f, 114.3336f), 98.00688f,"Interact") ,
                 },
@@ -507,17 +508,46 @@ public class Interiors : IInteriors
                         CameraDirection = new Vector3(-0.09414972f, 0.9557025f, -0.27887f), 
                         CameraRotation = new Rotator(-16.19277f, -1.322452E-05f, 5.626261f)
                     },
-                    new UrinalInteract("lostmxclubhouseUrinal1",new Vector3(981.5935f, -98.13846f, 74.97108f), 222.2108f,"Use Urinal"),
+                    new AnimationInteract("lostmxclubhouseUrinal1",new Vector3(981.5935f, -98.13846f, 74.97108f), 222.2108f,"Use Urinal") 
+                    { 
+                        IsScenario = false,
+                        LoopAnimations = new List<AnimationBundle>() 
+                        { 
+                            new AnimationBundle("missbigscore1switch_trevor_piss", "piss_loop", (int)(eAnimationFlags.AF_LOOPING), 2.0f, -2.0f) { Gender = "U" } 
+                        },
+                        CameraPosition = new Vector3(982.1099f, -96.15959f, 75.51414f), 
+                        CameraDirection = new Vector3(-0.4386229f, -0.8754325f, -0.2030466f), 
+                        CameraRotation = new Rotator(-11.71518f, -7.411464E-06f, 153.3875f),
+                    },
+
+                    //new AnimationInteract("lostmxclubhouseToiletl1",new Vector3(979.7599f, -98.66194f, 74.845f), 132.1026f,"Use Toilet")
+                    //{
+                    //    IsScenario = true,
+                    //    CameraPosition = new Vector3(982.1099f, -96.15959f, 75.51414f),
+                    //    CameraDirection = new Vector3(-0.4386229f, -0.8754325f, -0.2030466f),
+                    //    CameraRotation = new Rotator(-11.71518f, -7.411464E-06f, 153.3875f),
+                    //},
+                    //new AnimationInteract("lostmxclubhouseToiletl2",new Vector3(980.5167f, -99.33208f, 74.84503f), 135.7255f,"Use Toilet")
+                    //{
+                    //    IsScenario = true,
+                    //    CameraPosition = new Vector3(982.1099f, -96.15959f, 75.51414f),
+                    //    CameraDirection = new Vector3(-0.4386229f, -0.8754325f, -0.2030466f),
+                    //    CameraRotation = new Rotator(-11.71518f, -7.411464E-06f, 153.3875f),
+                    //},
+
+
                 },
                 Doors = new List<InteriorDoor>()
                 {
-                    new InteriorDoor(190770132,new Vector3(981.1505f, -103.2552f, 74.99358f)) { LockWhenClosed = true },
+                    new InteriorDoor(190770132,new Vector3(981.1505f, -103.2552f, 74.99358f)) 
+                    { 
+                        LockWhenClosed = true 
+                    },
                 },
                 RestInteracts = new List<RestInteract>()
                 {
                     new RestInteract("lostmcclubhouseRest1", new Vector3(989.5287f, -97.59096f, 74.84512f),220.7685f,"Sleep")
                     {
-                        InteractDistance = 1.0f,
                         CameraPosition = new Vector3(987.0359f, -98.15501f, 75.47958f), 
                         CameraDirection = new Vector3(0.981001f, -0.0696246f, -0.1810784f), 
                         CameraRotation = new Rotator(-10.43258f, 6.510937E-07f, -94.05965f),
@@ -534,9 +564,6 @@ public class Interiors : IInteriors
                             new AnimationBundle("savecouch@", "t_getout_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
                         }
                     },
-
-
-
                     //new Vector3(986.4575f, -92.5943f, 74.84595f), 224.0455f, "Name", "Description"),  //lostmclockerspost
 //new Vector3(976.914f, -103.794f, 74.84519f), 222.764f, "Name", "Description"),  //lostmcsafe1
 //new Vector3(981.5935f, -98.13846f, 74.97108f), 222.2108f, "Name", "Description"),  //lostmcpiss1
@@ -550,7 +577,7 @@ public class Interiors : IInteriors
         PossibleInteriors.ResidenceInteriors.AddRange(new List<ResidenceInterior>()
         {
 
-            new ResidenceInterior(-667,"Motel Inside 1") {
+            new ResidenceInterior(60162,"Apartment") {//Motel Interior
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(151.817f, -1006.616f, -98.99998f),
                 InteriorEgressHeading = 340.2548f,
@@ -566,7 +593,7 @@ public class Interiors : IInteriors
                     } ,
                 },
             },
-            new ResidenceInterior(-668,"Low End Apartment") {
+            new ResidenceInterior(-668,"Low End Apartment") {//Low End Apartment
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(266.3692f, -1004.84f, -99.41235f),
                 InteriorEgressHeading = 5.047247f,
@@ -637,10 +664,10 @@ public class Interiors : IInteriors
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(-16.20265f, -606.2855f, 100.2328f),//new Vector3(-18.07856f, -583.6725f, 79.46569f),
                 InteriorEgressHeading = 4.009807f,
-                BlockedScenarios = new List<Vector3>()
-                {
-                    new Vector3(-19.51501f, -597.6929f, 94.02557f),
-                },
+                //BlockedScenarios = new List<Vector3>()
+                //{
+                    
+                //},
                 InteractPoints = new List<InteriorInteract>(){
                     new ExitInteriorInteract("4intapt28Exit1",new Vector3(-16.20265f, -606.2855f, 100.2328f),4.009807f,"Exit") ,
                     new StandardInteriorInteract("4intapt28Standard1",new Vector3(-10.32665f, -591.5042f, 98.83028f),42.31462f,"Interact")
@@ -649,13 +676,13 @@ public class Interiors : IInteriors
                         CameraDirection = new Vector3(0.6824573f, -0.6314822f, -0.368079f),
                         CameraRotation = new Rotator(-21.59719f, -1.010063E-05f, -132.7783f),
                     },
-                    //new UrinalInteract("4intapt28Urinal",new Vector3(-19.51501f, -597.6929f, 94.02557f), 243.7846f,"Use Toilet") { 
+                    //new AnimationInteract("4intapt28Toilet1",new Vector3(-19.51501f, -597.6929f, 94.02557f), 243.7846f,"Use Toilet (Stand)") {
                     //    UseNavmesh = false,
-                    //    CameraPosition = new Vector3(-21.57672f, -595.4763f, 94.94376f), 
-                    //    CameraDirection = new Vector3(0.7354667f, -0.6025593f, -0.3098564f), 
+                    //    CameraPosition = new Vector3(-21.57672f, -595.4763f, 94.94376f),
+                    //    CameraDirection = new Vector3(0.7354667f, -0.6025593f, -0.3098564f),
                     //    CameraRotation = new Rotator(-18.05057f, 1.795937E-06f, -129.3274f)
                     //},
-                    new ToiletInteract("4intapt28Urinal",new Vector3(-19.51501f, -597.6929f, 94.02557f), 243.7846f,"Use Toilet") {
+                    new AnimationInteract("4intapt28Toilet2",new Vector3(-19.51501f, -597.6929f, 94.02557f), 243.7846f,"Use Toilet (Sit)") {
                         UseNavmesh = false,
                         IsScenario = true,
                         CameraPosition = new Vector3(-21.57672f, -595.4763f, 94.94376f),
@@ -685,7 +712,7 @@ public class Interiors : IInteriors
                 InventoryInteracts = new List<InventoryInteract>()
                 {
                     new InventoryInteract("4intapt28Inventory1",new Vector3(-24.43408f, -591.8068f, 98.83029f), 57.30276f,"Access Items") { CanAccessCash = false, CanAccessWeapons = false, },
-                    new InventoryInteract("4intapt28Inventory2",new Vector3(-20.73093f, -579.8246f, 98.83029f), 75.3243f,"Access Items")
+                    new InventoryInteract("4intapt28Inventory2",new Vector3(-20.73093f, -579.8246f, 98.83029f), 75.3243f,"Access Items") { CanAccessItems = false, }
                 }
 
                 /*new Vector3(-21.76747f, -604.6215f, 100.2328f), 68.71094f, "Name", "Description"),  //4 intergrity 28 CORNERBASE
@@ -716,7 +743,7 @@ new Vector3(-20.73093f, -579.8246f, 98.83029f), 75.3243f, "Name", "Description")
                 },
                 RestInteracts = new List<RestInteract>()
                 {
-                    new RestInteract("4intapt30Rest1", new Vector3(-37.85818f, -580.4131f, 83.90745f), 340.86966f,"Sleep")
+                    new RestInteract("4intapt30Rest1", new Vector3(-37.85818f, -580.4131f, 83.90745f), 340.86966f,"Sleep")//still not working
                     {
 
                     },
@@ -738,6 +765,15 @@ new Vector3(-20.73093f, -579.8246f, 98.83029f), 75.3243f, "Name", "Description")
                         CameraPosition = new Vector3(-1468.288f, -537.0152f, 70.50282f),
                         CameraDirection = new Vector3(-0.2367817f, 0.938622f, -0.2508448f),
                         CameraRotation = new Rotator(-14.52751f, 6.614796E-07f, 14.15833f),
+                    },
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract("dpheightApt4Rest1",new Vector3(-1471.324f, -534.1414f, 63.3493f),33.85654f,"Sleep")
+                    {
+                        //CameraPosition = new Vector3(-1468.288f, -537.0152f, 70.50282f),
+                        //CameraDirection = new Vector3(-0.2367817f, 0.938622f, -0.2508448f),
+                        //CameraRotation = new Rotator(-14.52751f, 6.614796E-07f, 14.15833f),
                     },
                 },
             },
@@ -879,9 +915,9 @@ new Vector3(-20.73093f, -579.8246f, 98.83029f), 75.3243f, "Name", "Description")
             new Interior(25602,"Dell Perro Heights, Apt 7") { IsSPOnly = true } ,
             new Interior(31490,"FIB Floor 47") { IsSPOnly = true } ,
             new Interior(135973,"FIB Floor 49") { IsSPOnly = true } ,
-            new Interior(60162,"Motel") { IsSPOnly = true } ,
+            //new Interior(60162,"Motel") { IsSPOnly = true } ,
             new Interior(69122,"Lester's House") { IsSPOnly = true } ,
-            new Interior(47362,"4 Integrity Way, Apt 30") { IsSPOnly = true } ,
+            //new Interior(47362,"4 Integrity Way, Apt 30") { IsSPOnly = true } ,
             new Interior(28418,"FIB Top Floor") { IsSPOnly = true } ,
             new Interior(70146,"10 Car Garage") { IsSPOnly = true } ,
             new Interior(85250,"Omega's Garage") { IsSPOnly = true } ,

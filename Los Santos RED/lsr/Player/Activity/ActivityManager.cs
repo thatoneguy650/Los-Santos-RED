@@ -555,6 +555,24 @@ public class ActivityManager
             UpperBodyActivity.Start();
         }
     }
+
+    public void DismissTaxi()
+    {
+        if (IsPerformingActivity)
+        {
+            Game.DisplayHelp("Cancel existing activity to start");
+            return;
+        }
+        DismissCabActivity releaseCabActivity = new DismissCabActivity(Actionable, World, Settings);
+        if (releaseCabActivity.CanPerform(Actionable))
+        {
+            ForceCancelUpperBody();
+            IsPerformingActivity = true;
+            UpperBodyActivity = releaseCabActivity;
+            UpperBodyActivity.Start();
+        }
+    }
+
     public void Dance(DanceData danceData)
     {
         if (IsPerformingActivity)
@@ -1740,6 +1758,8 @@ public class ActivityManager
     {
         DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Windows.ToggleWindow(0)), dictionaryName, animName, 750);
     }
+
+
 }
 
 

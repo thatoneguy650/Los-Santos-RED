@@ -79,8 +79,7 @@ public class Interior
     public bool IsRestricted { get; set; } = false;
     public bool IsWeaponRestricted { get; set; } = false;
     public List<InteriorInteract> InteractPoints { get; set; } = new List<InteriorInteract>();
-    public List<Vector3> BlockedScenarios { get; set; }
-
+    [XmlIgnore]
     public virtual List<InteriorInteract> AllInteractPoints => InteractPoints;
     public InteriorInteract ClosestInteract => AllInteractPoints.Where(x => x.CanAddPrompt).OrderBy(x => x.DistanceTo).FirstOrDefault();
     public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ILocationInteractable locationInteractable)
@@ -155,7 +154,6 @@ public class Interior
                 }
                 NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
                 IsActive = true;
-                BlockScenarios();
                 GameFiber.Yield();
             }
             catch (Exception ex)
@@ -276,109 +274,10 @@ public class Interior
             IsMenuInteracting = false;
             locationCamera?.StopImmediately(true);
             GameFiber.Sleep(1000);
-            BlockScenarios();
             Game.FadeScreenIn(1500, true);
             Player.InteriorManager.OnTeleportedInside(InteractableLocation);
-            //OnWentInside();
         }
     }
-    public virtual void BlockScenarios()
-    {
-        float ScenarioBlockingDistance = 5.0f;
-        if(BlockedScenarios == null)
-        {
-            return;
-        }
-        foreach (Vector3 vector3 in BlockedScenarios)
-        {
-            NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(vector3.X - ScenarioBlockingDistance, vector3.Y - ScenarioBlockingDistance, vector3.Z - ScenarioBlockingDistance, vector3.X + ScenarioBlockingDistance, vector3.Y + ScenarioBlockingDistance, vector3.Z + ScenarioBlockingDistance, false, true, true, true);
-            EntryPoint.WriteToConsole($"BLOCK SCENARIO RAN {vector3}");
-        }
-      }
-
-    //public void OnBecameClose()
-    //{
-    //    if(IsTeleportEntry || IsRunningInteriorUpdate)
-    //    {
-    //        return;
-    //    }
-    //    GameFiber.StartNew(delegate
-    //    {
-    //        try
-    //        {
-    //            EntryPoint.WriteToConsole($"Interior OnBecameClose {Name}");
-    //            IsRunningInteriorUpdate = true;
-    //            IsMenuInteracting = false;
-    //            while (IsActive && EntryPoint.ModController.IsRunning)
-    //            {
-    //                if (InteractableLocation.DistanceToPlayer <= 100f)
-    //                {
-    //                    InsideLoopNew();
-    //                }
-    //                GameFiber.Yield();
-    //            }
-    //            IsRunningInteriorUpdate = false;
-    //            EntryPoint.WriteToConsole($"Interior StoppedBecomingClose {Name}");
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
-    //            EntryPoint.ModController.CrashUnload();
-    //        }
-
-    //    }, "Interact");
-    //}
-
-
-    //private void OnWentInside()
-    //{
-    //    GameFiber.StartNew(delegate
-    //    {
-    //        try
-    //        {
-    //            while (IsInside && EntryPoint.ModController.IsRunning)
-    //            {
-    //                InsideLoopNew();
-    //                GameFiber.Yield();
-    //            }
-    //            Player.ActivityManager.IsInteractingWithLocation = false;
-    //            InteractableLocation.CanInteract = true;
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
-    //            EntryPoint.ModController.CrashUnload();
-    //        }
-
-    //    }, "Interact");
-    //}
-    //public virtual void InsideLoopNew()
-    //{
-    //    float closestDistanceTo = 999f;
-    //    InteriorInteract closestInteriorInteract = null;
-    //    foreach(InteriorInteract interiorInteract in InteractPoints)
-    //    {
-    //        interiorInteract.Update(Player,Settings,InteractableLocation, this, LocationInteractable);
-    //        if(interiorInteract.DistanceTo <= closestDistanceTo)
-    //        {
-    //            closestDistanceTo = interiorInteract.DistanceTo;
-    //            closestInteriorInteract = interiorInteract;
-    //        }
-    //    }
-    //    foreach (InteriorInteract interiorInteract in InteractPoints)
-    //    {
-    //        if(interiorInteract == closestInteriorInteract && interiorInteract.CanAddPrompt)
-    //        {
-    //            interiorInteract.AddPrompt();
-    //        }
-    //        else
-    //        {
-    //            interiorInteract.RemovePrompt();
-    //        }
-    //    }
-    //}
-
-
     public virtual void UpdateInteractDistances()
     {
         foreach (InteriorInteract interiorInteract in AllInteractPoints)
@@ -386,10 +285,6 @@ public class Interior
             interiorInteract.UpdateDistances(Player);
         }
     }
-
-
-
-
     public void Exit()
     {
         IsMenuInteracting = false;

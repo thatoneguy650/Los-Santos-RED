@@ -574,7 +574,7 @@ namespace Mod
             IsBusted = false;
         }
         public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, 
-            bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod, bool resetBankAccounts, bool resetSavedGame, bool resetMessages)
+            bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod, bool resetBankAccounts, bool resetSavedGame, bool resetMessages, bool resetInteriors)
         {
             IsDead = false;
             IsBusted = false;
@@ -687,6 +687,10 @@ namespace Mod
             if(resetMessages)
             {
                 CellPhone.ClearPendingTexts();
+            }
+            if(resetInteriors)
+            {
+                 InteriorManager.Reset();
             }
             if (Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart)
             {

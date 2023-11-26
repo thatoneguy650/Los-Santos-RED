@@ -33,7 +33,8 @@ public class GangDen : GameLocation, IRestableLocation//, ILocationGangAssignabl
     public bool IsPrimaryGangDen { get; set; } = false;
     public override string BlipName => AssociatedGang != null ? AssociatedGang.ShortName : base.BlipName;
     public GameLocation GameLocation => this;
-    public bool HasVanillaGangSpawnedAroundToBeBlocked { get; set; } = false;
+    public bool DisableNearbyScenarios { get; set; } = false;
+    public float DisableScenarioDistance { get; set; } = 50f;
     [XmlIgnore]
     public GangDenInterior GangDenInterior { get; set; }
     protected override float GetCurrentIconAlpha(ITimeReportable time)
@@ -202,8 +203,12 @@ public class GangDen : GameLocation, IRestableLocation//, ILocationGangAssignabl
                     //    Formatter = v => v.ToString() + " hours" 
                     //};
                     //InteractionMenu.AddItem(RestMenuItem);
-                    CreateRestInteractionMenu();
 
+
+                    if (!isInside)
+                    {
+                        CreateRestInteractionMenu();
+                    }
 
                     InteractionMenu.Visible = true;
                     InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;

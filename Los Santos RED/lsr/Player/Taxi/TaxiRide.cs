@@ -128,11 +128,12 @@ public class TaxiRide
     public bool IsWaitingOnPlayer { get; private set; }
     public bool CanSpawnRide { get; set; } = true;
 
-
+    public bool IsHailed { get; set; } = false;
     public void SetupHailedRide()
     {
         IsActive = false;
         IsWaitingOnPlayer = false;
+        IsHailed = true;
         EntryPoint.WriteToConsole("Taxi Ride IS ACTIVE SET TO FALSE SETUP");
         if(!GetVehicleAndDriver() || RespondingVehicle == null || !RespondingVehicle.Vehicle.Exists())
         {
@@ -155,13 +156,10 @@ public class TaxiRide
         {
             IsActive = true;
             AddPickupBlip();
-
-            if (RequestedFirm != null && RequestedFirm.PhoneContact != null)
-            {
-                Player.CellPhone.AddContact(RequestedFirm.PhoneContact, true);
-            }
-
-
+            //if (RequestedFirm != null && RequestedFirm.PhoneContact != null)
+            //{
+            //    Player.CellPhone.AddContact(RequestedFirm.PhoneContact, true);
+            //}
             return;
         }
         EntryPoint.WriteToConsole("TAXI RIDE SETUP FAIL NO DISPATCH");
@@ -173,6 +171,7 @@ public class TaxiRide
     {
         IsActive = false;
         IsWaitingOnPlayer = false;
+        IsHailed = false;
         EntryPoint.WriteToConsole("Taxi Ride IS ACTIVE SET TO FALSE SETUP");
         PickupLocation = new SpawnLocation(InitialPickupLocation);
         DestinationLocation = new SpawnLocation();
@@ -391,6 +390,7 @@ public class TaxiRide
             return;
         }
         RespondingDriver.PlaySpeech("GENERIC_HOWS_IT_GOING", false);
+        
     }
     private void OnPlayerGotOutMidway()
     {
@@ -436,7 +436,14 @@ public class TaxiRide
     }
     private void OnArrivedAtPickup()
     {
-        DisplayNotification("~g~Pick Up Ready", $"Your driver is about to arrive at ~p~{DestinationName}~s~ for the pickup. Please wait for the Taxi to come to a complete stop before entering.");
+        if (IsHailed)
+        {
+            DisplayNotification("~g~Taxi Hailed", $"Your driver will attempt to pull over at the nearest safe location. Please wait for the Taxi to come to a complete stop before entering.");
+        }
+        else
+        {
+            DisplayNotification("~g~Pick Up Ready", $"Your driver is about to arrive at ~p~{DestinationName}~s~ for the pickup. Please wait for the Taxi to come to a complete stop before entering.");
+        }
         IsNearbyPickup = true;
         EntryPoint.WriteToConsole("TAXI RIDE IS NEARBY PICKUP");
         GameTimeArrivedAtPickup = Game.GameTime;
@@ -512,7 +519,7 @@ public class TaxiRide
     {
         if (!HasPickedUpPlayer)
         {
-            PickupBlip = new Blip(PickupLocation.FinalPosition) { Sprite = (BlipSprite)198, Scale = 0.7f, Color = EntryPoint.LSRedColor };
+            PickupBlip = new Blip(PickupLocation.StreetPosition) { Sprite = (BlipSprite)198, Scale = 0.7f, Color = EntryPoint.LSRedColor };
             if (PickupBlip.Exists())
             {
                 NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)PickupBlip.Handle, true);

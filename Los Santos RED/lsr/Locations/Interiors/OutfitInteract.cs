@@ -33,6 +33,7 @@ public class OutfitInteract : InteriorInteract
             return;
         }
         OutfitableLocation.CreateOutfitMenu();
+        LocationCamera?.ReturnToGameplay(true);
         LocationCamera?.StopImmediately(true);
         Interior.IsMenuInteracting = false;
     }

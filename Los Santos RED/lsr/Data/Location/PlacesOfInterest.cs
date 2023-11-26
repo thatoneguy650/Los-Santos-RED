@@ -2118,8 +2118,8 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Residence(new Vector3(-780.21f, -784.22f, 27.87f), 85f, "Dream Tower Apt 31",""){ InteriorID = -668,OpenTime = 0,CloseTime = 24,RentalFee = 1550, RentalDays = 28},
             new Residence(new Vector3(-116.35f, -37.69f, 62.20f), 70f, "Las Lagunas Blvd Apt 21",""){ InteriorID = -668,OpenTime = 0,CloseTime = 24,RentalFee = 1550, RentalDays = 28},
             new Residence(new Vector3(-766.33f, -917.05f, 21.28f), 270f, "1068 Ginger St. Apt 4",""){ InteriorID = -668,OpenTime = 0,CloseTime = 24,RentalFee = 1450, RentalDays = 28,PurchasePrice = 350000,SalesPrice = 300000,},
-            new Residence(new Vector3(-131.3305f, -1665.597f, 32.56437f), 316.4919f, "20W Strawberry Apt 2", ""){ InteriorID = -667,OpenTime = 0,CloseTime = 24,RentalFee = 1200, RentalDays = 28,},
-            new Residence(new Vector3(-114.5114f, -1660.003f, 32.56433f), 52.34958f, "20W Strawberry Apt 1", ""){ InteriorID = -667,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
+            new Residence(new Vector3(-131.3305f, -1665.597f, 32.56437f), 316.4919f, "20W Strawberry Apt 2", ""){ InteriorID = 60162,OpenTime = 0,CloseTime = 24,RentalFee = 1200, RentalDays = 28,},
+            new Residence(new Vector3(-114.5114f, -1660.003f, 32.56433f), 52.34958f, "20W Strawberry Apt 1", ""){ InteriorID = 60162,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
 
 
 

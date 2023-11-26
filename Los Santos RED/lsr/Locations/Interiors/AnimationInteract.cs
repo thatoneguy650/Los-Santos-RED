@@ -11,21 +11,20 @@ using RAGENativeUI;
 using LosSantosRED.lsr;
 using ExtensionsMethods;
 
-public class ToiletInteract : InteriorInteract
+public class AnimationInteract : InteriorInteract
 {
     private AnimationBundle endBundle;
     public List<AnimationBundle> StartAnimations { get; set; } = new List<AnimationBundle>() { };
-    public List<AnimationBundle> LoopAnimations { get; set; } = new List<AnimationBundle>() { new AnimationBundle("missbigscore1switch_trevor_piss", "piss_loop", (int)(eAnimationFlags.AF_LOOPING), 2.0f, -2.0f) { Gender = "U" } };
+    public List<AnimationBundle> LoopAnimations { get; set; } = new List<AnimationBundle>() {  };
     public List<AnimationBundle> EndAnimations { get; set; } = new List<AnimationBundle>() { };
 
 
-
-    public bool IsScenario { get; set; } = true;
-    public ToiletInteract()
+    public bool IsScenario { get; set; } = false;
+    public AnimationInteract()
     {
     }
 
-    public ToiletInteract(string name, Vector3 position, float heading, string buttonPromptText) : base(name, position, heading, buttonPromptText)
+    public AnimationInteract(string name, Vector3 position, float heading, string buttonPromptText) : base(name, position, heading, buttonPromptText)
     {
 
     }
@@ -36,47 +35,44 @@ public class ToiletInteract : InteriorInteract
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
         SetupCamera();
-
-
-        if(IsScenario)
+        if (!WithWarp)
         {
-            if(!UseScenario())
+            if (!MoveToPosition())
             {
                 Interior.IsMenuInteracting = false;
-                Game.DisplayHelp("Interact Failed 1");
+                Game.DisplayHelp("Interact Failed");
+                LocationCamera?.StopImmediately(true);
+                return;
+            }
+        }
+        if (IsScenario)
+        {
+            if (!UseScenario())
+            {
+                Interior.IsMenuInteracting = false;
+                Game.DisplayHelp("Interact Failed");
                 LocationCamera?.StopImmediately(true);
                 return;
             }
         }
         else
         {
-            if (!MoveToPosition())
-            {
-                Interior.IsMenuInteracting = false;
-                Game.DisplayHelp("Interact Failed 1");
-                LocationCamera?.StopImmediately(true);
-                return;
-            }
             if (!PerformAnimation())
             {
                 Interior.IsMenuInteracting = false;
-                Game.DisplayHelp("Interact Failed 2");
+                Game.DisplayHelp("Interact Failed");
                 LocationCamera?.StopImmediately(true);
                 return;
             }
         }
-
-
-
         GameFiber.Sleep(2000);
-
         while(!Player.IsMoveControlPressed && Player.IsAliveAndFree)
         {
             GameFiber.Yield();
         }
-
         Interior.IsMenuInteracting = false;
         StopPerformingAnimation();
+        LocationCamera?.ReturnToGameplay(true);
         LocationCamera?.StopImmediately(true);
     }
     public override void AddPrompt()

@@ -329,8 +329,11 @@ public class Settings : ISettingsProvideable
         SettingsManager.VanillaSettings.TerminateVanillaBlips = true;
         SettingsManager.VanillaSettings.TerminateVanillaShops = true;
         SettingsManager.VanillaSettings.BlockVanillaPoliceCarGenerators = false;
-        SettingsManager.VanillaSettings.BlockGangScenarios = false;
-        SettingsManager.VanillaSettings.BlockVanillaPoliceAndSecurityScenarios = false;
+        SettingsManager.VanillaSettings.BlockVanillaPoliceScenarios = false;
+        SettingsManager.VanillaSettings.BlockVanillaPrisonCarGenerators = false;
+        SettingsManager.VanillaSettings.BlockVanillaPrisonScenarios = false;
+        SettingsManager.VanillaSettings.BlockVanillaOtherScenarios = false;
+        SettingsManager.VanillaSettings.BlockVanillaSecurityScenarios = false;
     }
 
 

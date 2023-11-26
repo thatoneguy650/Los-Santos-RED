@@ -10,8 +10,7 @@ using System.Xml.Serialization;
 
 [XmlInclude(typeof(StandardInteriorInteract))]
 [XmlInclude(typeof(ExitInteriorInteract))]
-[XmlInclude(typeof(UrinalInteract))]
-[XmlInclude(typeof(ToiletInteract))]
+[XmlInclude(typeof(AnimationInteract))]
 //UrinalInteract
 //ToiletInteract
 public class InteriorInteract

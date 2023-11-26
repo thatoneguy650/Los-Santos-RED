@@ -14,8 +14,9 @@ public class VanillaManager
     private VanillaGangManager VanillaGangManager;
     private VanillaCopManager VanillaCopManager;
     private VanillaWorldManager VanillaWorldManager;
-    private VanillaSpawnManager VanillaCarGeneratorManager;
+    private VanillaSpawnManager VanillaSpawnManager;
     private ISettingsProvideable Settings;
+    private uint GameTimeLastRan;
 
     public VanillaManager(ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
     {
@@ -23,31 +24,35 @@ public class VanillaManager
         VanillaWorldManager = new VanillaWorldManager(Settings);
         VanillaCopManager = new VanillaCopManager(Settings);
         VanillaGangManager = new VanillaGangManager(Settings, placesOfInterest);
-        VanillaCarGeneratorManager = new VanillaSpawnManager(Settings);
+        VanillaSpawnManager = new VanillaSpawnManager(Settings);
     }
     public void Setup()
     {
         VanillaWorldManager.Setup();
         VanillaCopManager.Setup();
         VanillaGangManager.Setup();
-        VanillaCarGeneratorManager.Setup();
+        VanillaSpawnManager.Setup();
     }
     public void Dispose()
     {
         VanillaWorldManager.Dispose();
         VanillaCopManager.Dispose();
         VanillaGangManager.Dispose();
-        VanillaCarGeneratorManager.Dispose();
+        VanillaSpawnManager.Dispose();
     }
     public void Tick()
     {
-        VanillaWorldManager.Tick();
-        GameFiber.Yield();
-        VanillaCopManager.Tick();
-        GameFiber.Yield();
-        VanillaGangManager.Tick();
-        GameFiber.Yield();
-        VanillaCarGeneratorManager.Tick();
+        if (Game.GameTime - GameTimeLastRan >= 1000)
+        {
+            VanillaWorldManager.Tick();//might not need at a tick level
+            GameFiber.Yield();
+            VanillaCopManager.Tick();//not needed at tick
+            GameFiber.Yield();
+            //VanillaGangManager.Tick();//not needed at tick AT ALL
+            //GameFiber.Yield();
+            VanillaSpawnManager.Tick();//not needed at tick at ALL
+            GameTimeLastRan = Game.GameTime;
+        }
     }
 
 }

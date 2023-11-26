@@ -44,7 +44,7 @@ namespace LosSantosRED.lsr.Interface
 
         void DisplayPlayerNotification();
         void Reset(bool v1, bool v2, bool v3, bool v4, bool v5, bool v6, bool v7, bool v8, bool v9, bool v10, bool v11, bool v12, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetACtivites, bool resetGracePeriod, bool resetBankAccounts, 
-            bool resetSavedGame, bool resetPendingMessages);
+            bool resetSavedGame, bool resetPendingMessages, bool resetInteriors);
         void SetDemographics(string modelName, bool isMale, string v1, int v2, int speechSkill, string voiceName);
         void SetWantedLevel(int v1, string v2, bool v3);
         void UpdateVehicleData();

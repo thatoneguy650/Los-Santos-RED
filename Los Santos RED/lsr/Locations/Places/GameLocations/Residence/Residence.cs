@@ -165,7 +165,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
                 {
                     InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
                 }
-                GenerateResidenceMenu();
+                GenerateResidenceMenu(isInside);
                 while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
                 {
                     MenuPool.ProcessMenus();
@@ -350,11 +350,11 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         CreateOwnershipInteractionMenu();
         CreateRestInteractionMenu();
     }
-    private void GenerateResidenceMenu()
+    private void GenerateResidenceMenu(bool isInside)
     {
         InteractionMenu.Clear();
         AddInquireItems();
-        AddInteractionItems();
+        AddInteractionItems(isInside);
     }
     private void GenerateSpecificInteractMenu(bool createOwnershipInteraction, bool createRestInteraction, bool createOutfitInteraction, bool createInventoryInteraction, bool createWeaponInteraction, bool createCashInteractionMenu)//needs toa lready be bought, some sort of restrict parameter to determine which it is?
     {
@@ -432,14 +432,17 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             }
         }
     }
-    private void AddInteractionItems()
+    private void AddInteractionItems(bool isInside)
     {
         if(!IsOwned && !IsRented)
         {
             return;
         }
         CreateOwnershipInteractionMenu();
-        CreateRestInteractionMenu();
+        if (!isInside)
+        {
+            CreateRestInteractionMenu();
+        }
         CreateOutfitInteractionMenu();
 
 
@@ -516,7 +519,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         }
         else
         {
-            GenerateResidenceMenu();
+            GenerateResidenceMenu(false);
         }
     }
     private bool Rent()
@@ -592,7 +595,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
         UpdateStoredData();
         Player.Properties.AddResidence(this);
-        AddInteractionItems();
+        AddInteractionItems(false);
         OfferSubMenu.Close(true);
         PlaySuccessSound();
         DisplayMessage("~g~Rented", $"Thank you for renting {Name}");
@@ -606,7 +609,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         Player.Properties.AddResidence(this);
         if (!IsRented)
         {
-            AddInteractionItems();
+            AddInteractionItems(false);
             OfferSubMenu.Close(true);
         }
         PlaySuccessSound();

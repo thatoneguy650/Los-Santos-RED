@@ -581,7 +581,7 @@ public class WeaponInventory
         {
             return;
         }
-        EntryPoint.WriteToConsole("SetSimpleArmed");
+        //EntryPoint.WriteToConsole("SetSimpleArmed");
         uint bestWeapon = NativeFunction.Natives.GET_BEST_PED_WEAPON<uint>(WeaponOwner.Pedestrian);
         uint currentWeapon;
         NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(WeaponOwner.Pedestrian, out currentWeapon, true);

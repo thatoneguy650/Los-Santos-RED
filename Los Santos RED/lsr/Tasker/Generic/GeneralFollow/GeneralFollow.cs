@@ -117,13 +117,7 @@ public class GeneralFollow : ComplexTask
                     }
                     else
                     {
-                        int index = 0;
-                        GroupMember gm = GroupManager.GetMember(PedGeneral);
-                        if(gm != null)
-                        {
-                            index = gm.Index;
-                        }
-                        CurrentTaskState = new FollowInVehicleTaskState(PedGeneral, World, SeatAssigner, Settings, Player, index);
+                        CurrentTaskState = new FollowInVehicleTaskState(PedGeneral, World, SeatAssigner, Settings, Player);
                     }
                 }
                 else
@@ -137,7 +131,7 @@ public class GeneralFollow : ComplexTask
             bool isAssignmentValid = SeatAssigner.IsAssignmentValid(false);
             if(ShouldGetInVehicle && isAssignmentValid)
             {
-                CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings,Player.GroupManager.SetForceTasking) { IsGang = true };
+                CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false) { IsGang = true };
 
             }
             else

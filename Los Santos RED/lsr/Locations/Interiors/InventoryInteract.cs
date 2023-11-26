@@ -38,6 +38,7 @@ public class InventoryInteract : InteriorInteract
             return;
         }
         InventoryableLocation.CreateInventoryMenu(CanAccessItems, CanAccessWeapons, CanAccessCash);
+        LocationCamera?.ReturnToGameplay(true);
         LocationCamera?.StopImmediately(true);
         Interior.IsMenuInteracting = false;
     }

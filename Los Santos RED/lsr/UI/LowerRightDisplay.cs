@@ -321,7 +321,14 @@ public class LowerRightDisplay
     private string GetStreetDisplay(bool includeAddress)
     {
         string StreetDisplay = "";
-        if (DisplayablePlayer.CurrentLocation.IsInside && !DisplayablePlayer.IsInVehicle)
+
+
+
+        if(DisplayablePlayer.InteriorManager.IsInsideTeleportInterior && DisplayablePlayer.InteriorManager.CurrentTeleportInteriorLocation != null && !DisplayablePlayer.IsInVehicle)
+        {
+            StreetDisplay += $"{UI.CurrentDefaultTextColor} {DisplayablePlayer.InteriorManager.CurrentTeleportInteriorLocation.Name} {UI.CurrentDefaultTextColor}";
+        }
+        else if (DisplayablePlayer.CurrentLocation.IsInside && !DisplayablePlayer.IsInVehicle)
         {
             if (DisplayablePlayer.CurrentLocation.CurrentInterior?.Name == "")
             {

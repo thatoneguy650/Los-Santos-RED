@@ -18,6 +18,7 @@ public class VanillaWorldManager
     private bool isVanillaBlipsActive = true;
     private bool isVanillaVendingActive;
     private bool hasSetMaxWanted;
+    private uint GameTimeLastTerminatedAudio;
 
     public VanillaWorldManager(ISettingsProvideable settings)
     {
@@ -96,16 +97,9 @@ public class VanillaWorldManager
             }
         }
 
+
         TerminateAudio();
 
-
-        //if(Settings.SettingsManager.VanillaSettings.TerminateVanillaVendingMachines)
-        //{
-        //    if(isVanillaVendingActive)
-        //    {
-        //        TerminateVanillaMachines();
-        //    }
-        //}
 
         if(Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
         {
@@ -130,13 +124,17 @@ public class VanillaWorldManager
     }
     private void TerminateAudio()
     {
-        if (Settings.SettingsManager.VanillaSettings.TerminateScanner)
+        if (Game.GameTime - GameTimeLastTerminatedAudio >= 2000)
         {
-            NativeFunction.Natives.xB9EFD5C25018725A("PoliceScannerDisabled", true);
-        }
-        if (Settings.SettingsManager.VanillaSettings.TerminateWantedMusic)
-        {
-            NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
+            if (Settings.SettingsManager.VanillaSettings.TerminateScanner)
+            {
+                NativeFunction.Natives.xB9EFD5C25018725A("PoliceScannerDisabled", true);
+            }
+            if (Settings.SettingsManager.VanillaSettings.TerminateWantedMusic)
+            {
+                NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
+            }
+            GameTimeLastTerminatedAudio = Game.GameTime;
         }
     }
     private void TerminateHealthRecharge()
