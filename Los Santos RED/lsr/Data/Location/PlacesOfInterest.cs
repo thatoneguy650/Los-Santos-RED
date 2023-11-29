@@ -2627,7 +2627,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             BannerImagePath = "gangs\\altruist.png", 
             OpenTime = 0, 
             CloseTime = 24, 
-            IsEnabled = true, 
+            IsEnabled = false, 
         };
         GangDens.Add(Den1);
     }

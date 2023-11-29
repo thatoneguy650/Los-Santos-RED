@@ -2397,6 +2397,18 @@ public class ShopMenus : IShopMenus
                     new MenuItem("Flint Heavy Duty Pipe Wrench",20),
                     new MenuItem("Pool Cue",30),
 
+                //Food
+                new MenuItem("Bottle of Barracho", 0) { IsFree = true },
+                new MenuItem("Bottle of PiBwasser", 0) { IsFree = true },
+                new MenuItem("Bottle of Blarneys", 0) { IsFree = true },
+                new MenuItem("Bottle of Logger", 0) { IsFree = true },
+                new MenuItem("Bottle of Patriot", 0) { IsFree = true },
+                new MenuItem("Bottle of Pride", 0) { IsFree = true },
+                new MenuItem("Bottle of Stronzo", 0) { IsFree = true },
+                new MenuItem("Bottle of A.M.", 0) { IsFree = true },
+                new MenuItem("Bottle of Jakeys", 0) { IsFree = true },
+                new MenuItem("Bottle of Dusche", 0) { IsFree = true },
+
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",400) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip",0),

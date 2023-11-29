@@ -47,13 +47,15 @@ public class GangDen : GameLocation, IRestableLocation//, ILocationGangAssignabl
     }
     public override void ActivateBlip(ITimeReportable time, IEntityProvideable world)
     {
-        if(AssociatedGang == null)
+       // EntryPoint.WriteToConsole($"GANG DEN ActivateBlip FOR {Name}");
+        if (AssociatedGang == null)
         {
+            EntryPoint.WriteToConsole($"GANG DEN ASSOCIATED GANG IS NULL {Name}");
             return;
         }
         if (!TerritoryBlip.Exists())
         {
-            EntryPoint.WriteToConsole($"GANG DEN ACTIVATE BLIP, TERRITORY BLIP DOESNT EXIST {AssociatedGang?.ShortName}");
+            //EntryPoint.WriteToConsole($"GANG DEN ACTIVATE BLIP, TERRITORY BLIP DOESNT EXIST {AssociatedGang?.ShortName} FOR {Name}");
             CreateGangTerritoryBlip(world);
         }
         else
@@ -441,7 +443,7 @@ public class GangDen : GameLocation, IRestableLocation//, ILocationGangAssignabl
 
     private void CreateGangTerritoryBlip(IEntityProvideable world)
     {
-        EntryPoint.WriteToConsole($"GANG TERRITORY BLIP START");
+       // EntryPoint.WriteToConsole($"GANG TERRITORY BLIP START");
         if (!Settings.SettingsManager.GangSettings.ShowGangTerritoryBlip || AssociatedGang == null)
         {
             return;
@@ -454,7 +456,7 @@ public class GangDen : GameLocation, IRestableLocation//, ILocationGangAssignabl
         { 
             Color = AssociatedGang.Color
         };
-        EntryPoint.WriteToConsole($"GANG TERRITORY BLIP CREATED");
+       // EntryPoint.WriteToConsole($"GANG TERRITORY BLIP CREATED");
         TerritoryBlip.Color = AssociatedGang.Color;// currentBlipColor;
         TerritoryBlip.Alpha = Settings.SettingsManager.GangSettings.GangTerritoryBlipAlpha;/// currentblipAlpha;
         NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)TerritoryBlip.Handle, true);   

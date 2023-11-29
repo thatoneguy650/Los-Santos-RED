@@ -162,6 +162,10 @@ public static class EntryPoint
     {
         ModController?.Dispose();
     }
+    public static void OnUnload(bool isTerminating)
+    {
+        ModController?.Dispose();
+    }
     public class WebClientWithTimeout : WebClient
     {
         protected override WebRequest GetWebRequest(Uri address)

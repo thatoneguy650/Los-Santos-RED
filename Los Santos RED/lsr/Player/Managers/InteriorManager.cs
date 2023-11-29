@@ -2,6 +2,7 @@
 using Mod;
 using NAudio.Wave;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -114,6 +115,7 @@ public class InteriorManager
                 {
                     UpdateClosestInteract();
                     ClosestInteriorInteract?.UpdateActivated(Interactionable, Settings, ClosestLocation, ClosestInterior, LocationInteractable);
+                    HandleMarkers();
                     GameFiber.Yield();
                 }
                 IsRunningInteriorUpdate = false;
@@ -127,6 +129,26 @@ public class InteriorManager
 
         }, "Interact");
     }
+
+    private void HandleMarkers()
+    {
+        if (!Settings.SettingsManager.WorldSettings.ShowMarkersInInteriors)
+        {
+            return;
+        }
+        foreach(GameLocation location in InteriorUpdateLocations)
+        {
+            foreach(InteriorInteract interiorInteract in location.Interior.AllInteractPoints)
+            {
+                interiorInteract.DisplayMarker();
+            }
+        }
+    }
+    private void DisplayMarkerAtPosition(InteriorInteract interiorInteract)
+    {
+
+    }
+
     private void UpdateClosestInteract()
     {
         if(Game.GameTime - GameTimeLastUpdatedDistances < 500)

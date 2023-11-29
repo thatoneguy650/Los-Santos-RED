@@ -1031,6 +1031,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
         myBlip.Color = BlipColor;
         myBlip.Scale = BlipSize;
+
+        NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)myBlip.Handle, true);
+
+
         AttachedLSRBlip = myBlip;
     }
     public void DeleteBlip()

@@ -202,7 +202,7 @@ public class BankInteraction
         UIMenuItem addAccount = new UIMenuItem("Create Account", $"Create a new account with {Bank.Name}.");
         addAccount.Activated += (sender, e) =>
         {
-            Player.BankAccounts.BankAccountList.Add(new BankAccount(Bank.Name,Bank.ShortName, 0));
+            Player.BankAccounts.CreateNewAccount(Bank);// .BankAccountList.Add(new BankAccount(Bank.Name,Bank.ShortName, 0));
             Bank.DisplayMessage("~g~Account Created", $"You have successfully create an account at {Bank.Name}");
             AddAccountItems();
         };

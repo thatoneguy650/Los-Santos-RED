@@ -216,7 +216,7 @@ namespace LosSantosRED.lsr.Helper
             {
                 if (CellX == 0)
                 {
-                    StreetNumber = "1E";
+                    StreetNumber += "1E";
                 }
                 else
                 {

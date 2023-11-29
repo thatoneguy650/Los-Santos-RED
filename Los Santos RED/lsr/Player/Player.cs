@@ -94,6 +94,7 @@ namespace Mod
         private bool ManuallyClosedDoor;
         private bool IsRunningDoorCloseFlag;
         private bool prevAliasPedAsMainCharacter = true;//if change default setting
+        private bool prevIsSleeping;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -1717,6 +1718,7 @@ namespace Mod
             GetCurrentViewMode();
             PlayerTasks.Update();
             UpdateClosestLookedAtObject();
+            UpdateSleeping();
             //UpdateChangedSettings();
             //UpdateDoorState();
         }
@@ -2473,5 +2475,68 @@ namespace Mod
         {
             ManuallyClosedDoor = true;
         }
+        private void UpdateSleeping()
+        {
+            if(prevIsSleeping != IsSleeping)
+            {
+                if(IsSleeping)
+                {
+                    EntryPoint.WriteToConsole("SLEEPING STARTED, CLOSING EYES");
+                }
+                else
+                {
+                    SetFaceNormal();
+                    EntryPoint.WriteToConsole("SLEEPING STOPPED, OPENING EYES");
+                }
+                prevIsSleeping = IsSleeping;
+            }
+            if (IsSleeping)
+            {
+                SetFaceSleeping();
+            }
+        }
+        private void SetFaceSleeping()
+        {
+            string selectedDict = "facials@gen_male@base";
+            string selectedAnim = "mood_sleeping_1";
+            if(ModelName.ToLower() == "player_zero")
+            {
+                selectedDict = "facials@p_m_zero@base";
+            }
+            else if (ModelName.ToLower() == "player_one")
+            {
+                selectedDict = "facials@p_m_one@base";
+            }
+            else if (ModelName.ToLower() == "player_two")
+            {
+                selectedDict = "facials@p_m_two@base";
+            }
+            else if (Gender == "M")
+            {
+                selectedDict = "facials@gen_male@base";
+            }
+            else if (Gender == "F")
+            {
+                selectedDict = "facials@gen_female@base";
+            }
+            if (!AnimationDictionary.RequestAnimationDictionayResult(selectedDict))
+            {
+                Game.DisplaySubtitle("Could not load animation dictionary");
+                return;
+            }
+            NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, selectedAnim, selectedDict);
+        }
+        private void SetFaceNormal()
+        {
+            string selectedDict = "facials@gestures@";
+            string selectedAnim = "mood_normal";
+            if (!AnimationDictionary.RequestAnimationDictionayResult(selectedDict))
+            {
+                Game.DisplaySubtitle("Could not load animation dictionary");
+                return;
+            }
+            NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, selectedAnim, selectedDict);
+        }
+       
     }
 }

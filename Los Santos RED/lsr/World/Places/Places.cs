@@ -71,6 +71,7 @@ public class Places
     }
     public void ActivateLocations()
     {
+
         StaticPlaces.ActivateLocations();
         GameFiber.Yield();
         DynamicPlaces.ActivateLocations();

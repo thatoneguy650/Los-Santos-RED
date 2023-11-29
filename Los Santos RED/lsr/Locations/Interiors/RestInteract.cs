@@ -16,15 +16,9 @@ public class RestInteract : InteriorInteract
     private AnimationBundle endBundle;
     [XmlIgnore]
     public IRestableLocation RestableLocation {get;set;}
-    public List<AnimationBundle> StartAnimations { get;set;} = new List<AnimationBundle>() { 
-        //new AnimationBundle("savebighouse@", "f_getin_l_bighouse", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "F" },
-        new AnimationBundle("savem_default@", "m_getin_l", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" } };
-    public List<AnimationBundle> LoopAnimations { get; set; } = new List<AnimationBundle>() { 
-        //new AnimationBundle("savebighouse@", "f_sleep_l_loop", (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "F" },
-        new AnimationBundle("savem_default@", "m_sleep_l_loop", (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" } };
-    public List<AnimationBundle> EndAnimations { get; set; } = new List<AnimationBundle>() { 
-        //new AnimationBundle("savebighouse@", "f_getout_l_bighouse", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "F" },
-        new AnimationBundle("savem_default@", "m_getout_l", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" } };
+    public List<AnimationBundle> StartAnimations { get;set;}
+    public List<AnimationBundle> LoopAnimations { get; set; }
+    public List<AnimationBundle> EndAnimations { get; set; } 
     public RestInteract()
     {
     }
@@ -36,6 +30,7 @@ public class RestInteract : InteriorInteract
 
     public override void OnInteract()
     {
+        EntryPoint.WriteToConsole($"ON INTERACT REST INTERACT {Position} {InteractableLocation?.Name}");
         Interior.IsMenuInteracting = true;
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
@@ -76,6 +71,14 @@ public class RestInteract : InteriorInteract
         Player.Character.Position = Position;
         Player.Character.Heading = Heading;
         HashSet<string> dictionaryList = new HashSet<string>();
+
+        if (StartAnimations == null && LoopAnimations == null && EndAnimations == null)
+        {
+            StartAnimations = new List<AnimationBundle>() { new AnimationBundle("savem_default@", "m_getin_l", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" } };
+            LoopAnimations = new List<AnimationBundle>() { new AnimationBundle("savem_default@", "m_sleep_l_loop", (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" } };
+            EndAnimations = new List<AnimationBundle>() { new AnimationBundle("savem_default@", "m_getout_l", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" } };
+        }
+
         AnimationBundle startBundle = StartAnimations.Where(x => x.Gender == "U" || x.Gender == Player.Gender).PickRandom();
         if(startBundle != null)
         {
@@ -99,12 +102,14 @@ public class RestInteract : InteriorInteract
             }
         }
         if(startBundle != null)
-        { 
+        {
+            EntryPoint.WriteToConsole($"START: {startBundle.Dictionary}-{startBundle.Name}");
             NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, startBundle.Dictionary, startBundle.Name, startBundle.BlendIn, startBundle.BlendOut, startBundle.Time, startBundle.Flags, 0, false, false, false);
             WaitForAnimation(endBundle.Dictionary, startBundle.Name);
         }
         if(loopBundle != null)
-        { 
+        {
+            EntryPoint.WriteToConsole($"LOOP: {loopBundle.Dictionary}-{loopBundle.Name}");
             NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, loopBundle.Dictionary, loopBundle.Name, loopBundle.BlendIn, loopBundle.BlendOut, loopBundle.Time, loopBundle.Flags, 0, false, false, false);
         }
         return true;
@@ -113,6 +118,7 @@ public class RestInteract : InteriorInteract
     {
         if (endBundle != null)
         {
+            EntryPoint.WriteToConsole($"END: {endBundle.Dictionary}-{endBundle.Name}");
             NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, endBundle.Dictionary, endBundle.Name, endBundle.BlendIn, endBundle.BlendOut, endBundle.Time, endBundle.Flags, 0, false, false, false);
             WaitForAnimation(endBundle.Dictionary, endBundle.Name);
         }

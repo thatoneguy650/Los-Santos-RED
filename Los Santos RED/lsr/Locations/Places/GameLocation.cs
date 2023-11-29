@@ -8,6 +8,7 @@ using Rage.Native;
 using RAGENativeUI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Xml.Serialization;
@@ -225,6 +226,7 @@ public class GameLocation : ILocationDispatchable
     public LocationCamera LocationCamera => StoreCamera;
     public bool IgnoreEntranceInteract { get; set; } = false;
     public virtual bool ShowInteractPrompt => !IgnoreEntranceInteract && CanInteract;
+    public string MapTeleportString => IsOnSPMap && !IsOnMPMap ? "(SP)" : IsOnMPMap && !IsOnSPMap ? "(MP)" : "";
     public virtual void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
         //EntryPoint.WriteToConsole($"Activate Location {Name} {DistanceToPlayer}");
@@ -232,7 +234,12 @@ public class GameLocation : ILocationDispatchable
         bool isOpen = IsOpen(time.CurrentHour);
         if (HasVendor)
         {
-            CanInteract = false;
+            EntryPoint.WriteToConsole($"{Name} NOINT:{Interior == null} ISTELE:{Interior?.IsTeleportEntry} ISTELE:{Interior?.Name}");
+            if (Interior == null || !Interior.IsTeleportEntry)
+            {
+
+                CanInteract = false;
+            }
             if (isOpen && settings.SettingsManager.CivilianSettings.ManageDispatching && world.Pedestrians.TotalSpawnedServiceWorkers < settings.SettingsManager.CivilianSettings.TotalSpawnedServiceMembersLimit)
             {
                 SpawnVendor(settings, crimes, weapons, true);// InteractsWithVendor);
@@ -248,11 +255,16 @@ public class GameLocation : ILocationDispatchable
         LoadInterior(isOpen);
         if (!ShouldAlwaysHaveBlip && IsBlipEnabled)
         {
-            if (!Blip.Exists())
-            {
-                createdBlip = CreateBlip(time, true);
-                GameFiber.Yield();
-            }
+
+            ActivateBlip(time, world);
+
+
+            //if (!Blip.Exists())
+            //{
+            //    EntryPoint.WriteToConsole($"CREATE BLIP RAN FROM REGULAR ACTIVATE {Name}");
+            //    createdBlip = CreateBlip(time, true);
+            //    GameFiber.Yield();
+            //}
         }
         SetNearby();
         Update(time);
@@ -262,6 +274,9 @@ public class GameLocation : ILocationDispatchable
         }
         world.AddBlip(Blip);
         RestrictedAreas?.Activate(world);
+
+        EntryPoint.WriteToConsole($"{Name} CanInteract:{CanInteract} DisableRegularInteract{DisableRegularInteract}");
+
     }
     protected virtual void LoadInterior(bool isOpen)
     {
@@ -615,6 +630,7 @@ public class GameLocation : ILocationDispatchable
     {
         if (!createdBlip.Exists())
         {
+            //EntryPoint.WriteToConsole($"CREATE BLIP RAN FROM ActivateBlip {Name}");
             createdBlip = CreateBlip(time, true);
             world.AddBlip(Blip);
         }
@@ -686,7 +702,7 @@ public class GameLocation : ILocationDispatchable
             locationBlip.Scale = MapIconScale;
 
         }
-        EntryPoint.WriteToConsole($"Locations BLIP CREATED {Name}");
+        //EntryPoint.WriteToConsole($"Locations BLIP CREATED {Name}");
         currentblipAlpha = GetCurrentIconAlpha(time);// IsOpen(time.CurrentHour) ? MapOpenIconAlpha : MapClosedIconAlpha;
         currentBlipColor = IsPlayerInterestedInLocation ? Color.Blue : MapIconColor;
         locationBlip.Color = currentBlipColor;

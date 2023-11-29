@@ -258,7 +258,7 @@ namespace Mod
             NativeFunction.Natives.REQUEST_IPL(iplName);
             GameFiber.Sleep(100);
             IsMPMapLoaded = NativeFunction.Natives.IS_IPL_ACTIVE<bool>(iplName);
-            //EntryPoint.WriteToConsoleTestLong($"MP Map Loaded: {IsMPMapLoaded}");
+            EntryPoint.WriteToConsole($"MP Map Loaded: {IsMPMapLoaded}");
         }
         private void CreateTotalWantedBlip()
         {

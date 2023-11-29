@@ -22,6 +22,8 @@ public class DebugMoneySubMenu : DebugSubMenu
     private IRadioStations RadioStations;
     private INameProvideable Names;
     private ModDataFileManager ModDataFileManager;
+    private UIMenu moneyItemsSubMenu;
+
     public DebugMoneySubMenu(UIMenu debug, MenuPool menuPool, IActionable player, ISettingsProvideable settings, ICrimes crimes, ITaskerable tasker, IEntityProvideable world, IWeapons weapons, IModItems modItems, ITimeControllable time,
         IRadioStations radioStations, INameProvideable names, ModDataFileManager modDataFileManager) : base(debug, menuPool, player)
     {
@@ -36,11 +38,25 @@ public class DebugMoneySubMenu : DebugSubMenu
         Names = names;
         ModDataFileManager = modDataFileManager;
     }
+
+
+
     public override void AddItems()
     {
-        UIMenu moneyItemsSubMenu = MenuPool.AddSubMenu(Debug, "Money Menu");
+        moneyItemsSubMenu = MenuPool.AddSubMenu(Debug, "Money Menu");
         moneyItemsSubMenu.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various money items.";
+        UpdateAccounts();
+
+    }
+
+    public override void Update()
+    {
+        UpdateAccounts();
+    }
+    private void UpdateAccounts()
+    {
+        moneyItemsSubMenu.Clear();
         UIMenuItem GiveMoney = new UIMenuItem("Give On Hand Cash", "Give the player $50K on hand cash");
         GiveMoney.Activated += (menu, item) =>
         {
@@ -73,14 +89,37 @@ public class DebugMoneySubMenu : DebugSubMenu
         };
         moneyItemsSubMenu.AddItem(RemoveSpecificAccountMenu);
 
-        UIMenuListScrollerItem<Bank> AddSpecificAccountMenu = new UIMenuListScrollerItem<Bank>("Add Account", "Add a new account from the selected bank", ModDataFileManager.PlacesOfInterest.PossibleLocations.Banks);
+
+        List<Bank> DistinctBanks = new List<Bank>();
+        foreach(Bank bank in ModDataFileManager.PlacesOfInterest.PossibleLocations.Banks.ToList())
+        {
+            if(!DistinctBanks.Any(x=> x.Name == bank.Name))
+            {
+                DistinctBanks.Add(bank);
+            }
+        }
+
+        UIMenuListScrollerItem<Bank> AddSpecificAccountMenu = new UIMenuListScrollerItem<Bank>("Add Account", "Add a new account from the selected bank", DistinctBanks);
         AddSpecificAccountMenu.Activated += (menu, item) =>
         {
-            Player.BankAccounts.CreateRandomAccount(AddSpecificAccountMenu.SelectedItem);
+            Player.BankAccounts.CreateNewAccount(AddSpecificAccountMenu.SelectedItem);
             menu.Visible = false;
         };
         moneyItemsSubMenu.AddItem(AddSpecificAccountMenu);
 
+
+        UIMenuListScrollerItem<BankAccount> SetSpecificAccountValueMenu = new UIMenuListScrollerItem<BankAccount>("Set Account Value", "Add a new account from the selected bank", Player.BankAccounts.BankAccountList);
+        SetSpecificAccountValueMenu.Activated += (menu, item) =>
+        {
+            if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int moneyToSet))
+            {
+                SetSpecificAccountValueMenu.SelectedItem.Money = moneyToSet;
+            }
+            menu.Visible = false;
+        };
+        moneyItemsSubMenu.AddItem(SetSpecificAccountValueMenu);
     }
+
+
 }
 

@@ -45,7 +45,8 @@ public class DebugMenu : ModUIMenu
     private ModDataFileManager ModDataFileManager;
     private List<DebugSubMenu> DebugSubMenus = new List<DebugSubMenu>();
     public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, 
-        IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems, ICrimes crimes, IPlateTypes plateTypes, INameProvideable names, ModDataFileManager modDataFileManager, IPoliceRespondable policeRespondable)
+        IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems, ICrimes crimes, IPlateTypes plateTypes, INameProvideable names, ModDataFileManager modDataFileManager, 
+        IPoliceRespondable policeRespondable, IInteractionable interactionable)
     {
         Gangs = gangs;
         Dispatcher = dispatcher;
@@ -71,7 +72,12 @@ public class DebugMenu : ModUIMenu
         menuPool.Add(Debug);
 
         DebugSubMenus.Add(new DebugPlayerStateSubMenu(Debug, MenuPool, Player, Settings, Crimes, Tasker, World, Weapons, ModItems, Time, RadioStations, Names));
-        DebugSubMenus.Add(new DebugTeleportSubMenu(Debug, MenuPool, Player, PlacesOfInterest));
+        DebugSubMenus.Add(new DebugTeleportSubMenu(Debug, MenuPool, Player, PlacesOfInterest, World, interactionable));
+
+        DebugSubMenus.Add(new DebugWeaponsSubMenu(Debug, MenuPool, Player, Settings, Crimes, Tasker, World, Weapons, ModItems, Time, RadioStations, Names));
+        DebugSubMenus.Add(new DebugMoneySubMenu(Debug, MenuPool, Player, Settings, Crimes, Tasker, World, Weapons, ModItems, Time, RadioStations, Names, ModDataFileManager));
+
+
         DebugSubMenus.Add(new DebugDispatcherSubMenu(Debug, MenuPool, Player, Agencies, Dispatcher, World, Gangs, ModDataFileManager.Organizations));
         DebugSubMenus.Add(new DebugGangSubMenu(Debug, MenuPool, Player, Gangs, Dispatcher));
         DebugSubMenus.Add(new DebugRelationshipSubMenu(Debug, MenuPool, Player, ModDataFileManager));

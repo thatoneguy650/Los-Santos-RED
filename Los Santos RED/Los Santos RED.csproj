@@ -510,6 +510,7 @@
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugHelperSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugLCYMAPSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugLocationSubMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugMoneySubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugMovementSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugOtherSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugOutfitSubMenu.cs" />
@@ -520,6 +521,7 @@
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugTeleportSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugTimeSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugVehicleSubMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugWeaponsSubMenu.cs" />
     <Compile Include="lsr\UI\Other\UIMenuItemExt.cs" />
     <Compile Include="lsr\UI\Other\VehicleShowcase.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\ContactsAddTab.cs" />

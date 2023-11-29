@@ -1330,118 +1330,130 @@ GameFiber.StartNew(delegate
 private void DebugNumpad6()
 {
 
-//PedExt chosen = World.Pedestrians.Civilians.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-//if(chosen == null || !chosen.Pedestrian.Exists())
-//{
-//    return;
-//}
 
-//int pedHeadshotHandle = NativeFunction.Natives.REGISTER_PEDHEADSHOT<int>(chosen.Pedestrian);
-//GameFiber.Sleep(2000);
-//string str = NativeFunction.Natives.GET_PEDHEADSHOT_TXD_STRING<string>(pedHeadshotHandle);
-//NativeHelper.DisplayNotificationCustom(str, str, "Test", "~g~Text Received~s~", "Test 1", NotificationIconTypes.ChatBox, false);
-//string AliveSeatAnimationDictionaryName = "veh@std@ps@enter_exit";
-//string AliveSeatAnimationName = "dead_fall_out";
+        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("lost_mc", true);
+        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("LOST_MC", true);
 
 
-//AliveSeatAnimationDictionaryName = NativeHelper.GetKeyboardInput("random@crash_rescue@car_death@std_car");
-//AliveSeatAnimationName = NativeHelper.GetKeyboardInput("loop");
-
-
-//AnimationDictionary.RequestAnimationDictionayResult(AliveSeatAnimationDictionaryName);
-
-//NativeFunction.Natives.TASK_PLAY_ANIM(Game.LocalPlayer.Character, AliveSeatAnimationDictionaryName, AliveSeatAnimationName, 1000.0f, -1000.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_NOT_INTERRUPTABLE | eAnimationFlags.AF_UPPERBODY | eAnimationFlags.AF_SECONDARY), 0, false, false, false);
-//NativeFunction.Natives.SET_ANIM_RATE(Game.LocalPlayer.Character, 0.0f, 2, false);
-
-//        List<string> CoolStuff = new List<string>() {
-
-//        "manhat09_stream7",
-//"manhat09_stream6",
-//"manhat09_stream5",
-//"manhat09_stream4",
-//"manhat09_stream3",
-//"manhat09_stream2",
-//"manhat09_stream1",
-//"manhat09_stream0",
-//"manhat09_strbig0",
-//"manhat09_lod",
-//"manhat09",
-
-//        };
+        foreach(GangDen gangden in ModDataFileManager.PlacesOfInterest.PossibleLocations.GangDens)
+        {
+            EntryPoint.WriteToConsole($"{gangden.Name} ISMPMAP:{World.IsMPMapLoaded} ISCORRECTMAP{gangden.IsCorrectMap(World.IsMPMapLoaded)}");
+        }
 
 
 
-//        if (IsOn)
-//        {
-//            foreach (string ipl in CoolStuff)
-//            {
-//                NativeFunction.Natives.REMOVE_IPL(ipl);
-//            }
-//            Game.DisplaySubtitle("IPLS REMOVED");
-//        }
-//        else
-//        {
-//            foreach (string ipl in CoolStuff)
-//            {
-//                NativeFunction.Natives.REQUEST_IPL(ipl);
-//            }
-//            Game.DisplaySubtitle("IPLS REQUESTED");
-//        }
-//        IsOn = !IsOn;
-//        //Vector3 position = Game.LocalPlayer.Character.Position;
-//        //bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, out Vector3 outPos, 0, 3.0f, 0f);
-//        //Vector3 ClosestNode = outPos;
+        //PedExt chosen = World.Pedestrians.Civilians.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        //if(chosen == null || !chosen.Pedestrian.Exists())
+        //{
+        //    return;
+        //}
+
+        //int pedHeadshotHandle = NativeFunction.Natives.REGISTER_PEDHEADSHOT<int>(chosen.Pedestrian);
+        //GameFiber.Sleep(2000);
+        //string str = NativeFunction.Natives.GET_PEDHEADSHOT_TXD_STRING<string>(pedHeadshotHandle);
+        //NativeHelper.DisplayNotificationCustom(str, str, "Test", "~g~Text Received~s~", "Test 1", NotificationIconTypes.ChatBox, false);
+        //string AliveSeatAnimationDictionaryName = "veh@std@ps@enter_exit";
+        //string AliveSeatAnimationName = "dead_fall_out";
+
+
+        //AliveSeatAnimationDictionaryName = NativeHelper.GetKeyboardInput("random@crash_rescue@car_death@std_car");
+        //AliveSeatAnimationName = NativeHelper.GetKeyboardInput("loop");
+
+
+        //AnimationDictionary.RequestAnimationDictionayResult(AliveSeatAnimationDictionaryName);
+
+        //NativeFunction.Natives.TASK_PLAY_ANIM(Game.LocalPlayer.Character, AliveSeatAnimationDictionaryName, AliveSeatAnimationName, 1000.0f, -1000.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_NOT_INTERRUPTABLE | eAnimationFlags.AF_UPPERBODY | eAnimationFlags.AF_SECONDARY), 0, false, false, false);
+        //NativeFunction.Natives.SET_ANIM_RATE(Game.LocalPlayer.Character, 0.0f, 2, false);
+
+        //        List<string> CoolStuff = new List<string>() {
+
+        //        "manhat09_stream7",
+        //"manhat09_stream6",
+        //"manhat09_stream5",
+        //"manhat09_stream4",
+        //"manhat09_stream3",
+        //"manhat09_stream2",
+        //"manhat09_stream1",
+        //"manhat09_stream0",
+        //"manhat09_strbig0",
+        //"manhat09_lod",
+        //"manhat09",
+
+        //        };
+
+
+
+        //        if (IsOn)
+        //        {
+        //            foreach (string ipl in CoolStuff)
+        //            {
+        //                NativeFunction.Natives.REMOVE_IPL(ipl);
+        //            }
+        //            Game.DisplaySubtitle("IPLS REMOVED");
+        //        }
+        //        else
+        //        {
+        //            foreach (string ipl in CoolStuff)
+        //            {
+        //                NativeFunction.Natives.REQUEST_IPL(ipl);
+        //            }
+        //            Game.DisplaySubtitle("IPLS REQUESTED");
+        //        }
+        //        IsOn = !IsOn;
+        //        //Vector3 position = Game.LocalPlayer.Character.Position;
+        //        //bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, out Vector3 outPos, 0, 3.0f, 0f);
+        //        //Vector3 ClosestNode = outPos;
 
 
 
 
-//        //int StreetHash = 0;
-//        //int CrossingHash = 0;
-//        //string CurrentStreetName;
-//        //unsafe
-//        //{
-//        //    NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", ClosestNode.X, ClosestNode.Y, ClosestNode.Z, &StreetHash, &CrossingHash);
-//        //}
-//        //string StreetName = string.Empty;
-//        //if (StreetHash != 0)
-//        //{
-//        //    unsafe
-//        //    {
-//        //        IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
-//        //        StreetName = Marshal.PtrToStringAnsi(ptr);
-//        //    }
-//        //    CurrentStreetName = StreetName;
-//        //    GameFiber.Yield();
-//        //}
-//        //else
-//        //{
-//        //    CurrentStreetName = "";
-//        //}
+        //        //int StreetHash = 0;
+        //        //int CrossingHash = 0;
+        //        //string CurrentStreetName;
+        //        //unsafe
+        //        //{
+        //        //    NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", ClosestNode.X, ClosestNode.Y, ClosestNode.Z, &StreetHash, &CrossingHash);
+        //        //}
+        //        //string StreetName = string.Empty;
+        //        //if (StreetHash != 0)
+        //        //{
+        //        //    unsafe
+        //        //    {
+        //        //        IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
+        //        //        StreetName = Marshal.PtrToStringAnsi(ptr);
+        //        //    }
+        //        //    CurrentStreetName = StreetName;
+        //        //    GameFiber.Yield();
+        //        //}
+        //        //else
+        //        //{
+        //        //    CurrentStreetName = "";
+        //        //}
 
 
-//        //Game.DisplaySubtitle($"StreetHash {StreetHash} CurrentStreetName {CurrentStreetName} StreetName {StreetName}");
-//        GameFiber.Sleep(200);
+        //        //Game.DisplaySubtitle($"StreetHash {StreetHash} CurrentStreetName {CurrentStreetName} StreetName {StreetName}");
+        //        GameFiber.Sleep(200);
 
 
 
-//        //Game.DisplaySubtitle("Disabling LS");
-//        //LSMapDisabler lSMapDisabler = new LSMapDisabler();
-//        //lSMapDisabler.DisableLS();
-//        //GameFiber.Sleep(500);
-//        //Game.DisplaySubtitle("LS Disabled");
-//        //ShockTest();
-//        //DateTime currentOffsetDateTime = new DateTime(2020, Time.CurrentDateTime.Month, Time.CurrentDateTime.Day, Time.CurrentDateTime.Hour, Time.CurrentDateTime.Minute, Time.CurrentDateTime.Second);
-//        //WeatherForecast closestForecast = ModDataFileManager.WeatherForecasts.WeatherForecastList.OrderBy(x => Math.Abs(x.DateTime.Ticks - currentOffsetDateTime.Ticks)).ThenBy(x => x.DateTime).FirstOrDefault();//WeatherForecasts.WeatherForecastList.OrderBy(x => (x.DateTime - currentOffsetDateTime).Duration()).ThenBy(y=>y.DateTime).FirstOrDefault();
-//        //if (closestForecast != null)
-//        //{
-//        //    Game.DisplaySubtitle($"DEBUG Time is {Time.CurrentDateTime} and the closest forcast is {closestForecast.DateTime} {closestForecast.AirTemperature} F {closestForecast.Description} ");
-//        //}
+        //        //Game.DisplaySubtitle("Disabling LS");
+        //        //LSMapDisabler lSMapDisabler = new LSMapDisabler();
+        //        //lSMapDisabler.DisableLS();
+        //        //GameFiber.Sleep(500);
+        //        //Game.DisplaySubtitle("LS Disabled");
+        //        //ShockTest();
+        //        //DateTime currentOffsetDateTime = new DateTime(2020, Time.CurrentDateTime.Month, Time.CurrentDateTime.Day, Time.CurrentDateTime.Hour, Time.CurrentDateTime.Minute, Time.CurrentDateTime.Second);
+        //        //WeatherForecast closestForecast = ModDataFileManager.WeatherForecasts.WeatherForecastList.OrderBy(x => Math.Abs(x.DateTime.Ticks - currentOffsetDateTime.Ticks)).ThenBy(x => x.DateTime).FirstOrDefault();//WeatherForecasts.WeatherForecastList.OrderBy(x => (x.DateTime - currentOffsetDateTime).Duration()).ThenBy(y=>y.DateTime).FirstOrDefault();
+        //        //if (closestForecast != null)
+        //        //{
+        //        //    Game.DisplaySubtitle($"DEBUG Time is {Time.CurrentDateTime} and the closest forcast is {closestForecast.DateTime} {closestForecast.AirTemperature} F {closestForecast.Description} ");
+        //        //}
 
 
-//        //Player.Scanner.DebugPlayDispatch();
+        //        //Player.Scanner.DebugPlayDispatch();
 
-//        //SpawnWithQuat();
-HighlightProp();
+        //        //SpawnWithQuat();
+        HighlightProp();
 //        //SetFlags();
 //        //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
 //        //{

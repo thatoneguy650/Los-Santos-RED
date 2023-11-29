@@ -552,6 +552,11 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         Player.IsResting = true;
         Player.IsSleeping = true;
         Player.ButtonPrompts.AddPrompt("ResidenceRest", "Cancel Rest", "ResidenceRest", Settings.SettingsManager.KeySettings.InteractCancel, 99);
+
+
+
+
+
         GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
         {
             try

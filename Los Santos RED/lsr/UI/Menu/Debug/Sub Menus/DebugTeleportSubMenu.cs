@@ -12,9 +12,13 @@ using System.Threading.Tasks;
 public class DebugTeleportSubMenu : DebugSubMenu
 {
     private IPlacesOfInterest PlacesOfInterest;
-    public DebugTeleportSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IPlacesOfInterest placesOfInterest) : base(debug, menuPool, player)
+    private IEntityProvideable World;
+    private IInteractionable Interactionable;
+    public DebugTeleportSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteractionable interactionable) : base(debug, menuPool, player)
     {
         PlacesOfInterest = placesOfInterest;
+        World = world;
+        Interactionable = interactionable;
     }
     public override void AddItems()
     {
@@ -22,8 +26,6 @@ public class DebugTeleportSubMenu : DebugSubMenu
         LocationItemsMenu.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Teleport to various locations";
         LocationItemsMenu.Width = 0.6f;
-
-
 
         UIMenuItem teleportToMarker = new UIMenuItem("Teleport To Marker", "Teleport to the current marker.");
         teleportToMarker.Activated += (sender, selectedItem) =>
@@ -34,44 +36,48 @@ public class DebugTeleportSubMenu : DebugSubMenu
         LocationItemsMenu.AddItem(teleportToMarker);
 
 
+        UIMenu InteriorsSubMenu = MenuPool.AddSubMenu(LocationItemsMenu, "Interiors");
+        InteriorsSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        LocationItemsMenu.MenuItems[LocationItemsMenu.MenuItems.Count() - 1].Description = "Teleport to various interior locations";
+        InteriorsSubMenu.Width = 0.6f;
 
-        List<GameLocation> DirectoryLocations = PlacesOfInterest.AllLocations().ToList();
-        foreach (string typeName in DirectoryLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
+        List<GameLocation> InteriorLocations = PlacesOfInterest.AllLocations().Where(x => x.HasInterior && x.Interior != null && x.Interior.IsTeleportEntry && x.IsCorrectMap(World.IsMPMapLoaded)).ToList();
+        foreach (string typeName in InteriorLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
         {
-            UIMenuListScrollerItem<GameLocation> myLocationType = new UIMenuListScrollerItem<GameLocation>($"{typeName}", "Teleports to A POI on the Map", DirectoryLocations.Where(x => x.TypeName == typeName));
+            UIMenuListScrollerItem<GameLocation> myLocationType = new UIMenuListScrollerItem<GameLocation>($"{typeName} - Int", "Teleports to an Interior Location on the Map", InteriorLocations.Where(x => x.TypeName == typeName));
+            myLocationType.Activated += (menu, item) =>
+            {
+                GameLocation toTele = myLocationType.SelectedItem;
+                if (toTele != null && toTele.Interior != null)
+                {
+                    toTele.Interior.Teleport(Interactionable, toTele, null);
+                }
+            };
+            InteriorsSubMenu.AddItem(myLocationType);
+        }
+
+        List<GameLocation> AllLocations = PlacesOfInterest.AllLocations().Where(x=> x.IsCorrectMap(World.IsMPMapLoaded)).ToList();
+        foreach (string typeName in AllLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
+        {
+            UIMenuListScrollerItem<GameLocation> myLocationType = new UIMenuListScrollerItem<GameLocation>($"{typeName}", "Teleports to a POI on the Map", AllLocations.Where(x => x.TypeName == typeName));
             myLocationType.Activated += (menu, item) =>
             {
                 GameLocation toTele = myLocationType.SelectedItem;
                 if (toTele != null)
                 {
-
-                    //SpawnLocation spawnLocation = new SpawnLocation(toTele.EntrancePosition);
-                    //spawnLocation.GetClosestStreet(false);
-                    //spawnLocation.GetClosestSideOfRoad();
-                    //if(spawnLocation.HasSideOfRoadPosition)
-                    //{
-                    //    spawnLocation.StreetPosition = Player.GPSManager.ForceGroundZ(spawnLocation.StreetPosition);
-                    //    EntryPoint.WriteToConsole($"TELE HAS SIDE OF ROAD POS");
-                    //    Game.LocalPlayer.Character.Position = spawnLocation.StreetPosition;
-                    //    Game.LocalPlayer.Character.Heading = spawnLocation.Heading;
-                    //    return;
-                    //}
-                    //if (spawnLocation.HasStreetPosition)
-                    //{
-                    //    spawnLocation.StreetPosition = Player.GPSManager.ForceGroundZ(spawnLocation.StreetPosition);
-                    //    EntryPoint.WriteToConsole($"TELE HAS STREET POS");
-                    //    Game.LocalPlayer.Character.Position = spawnLocation.StreetPosition;
-                    //    Game.LocalPlayer.Character.Heading = spawnLocation.Heading;
-                    //    return;
-                    //}
-                    EntryPoint.WriteToConsole($"TELE HAS ONLY ENTRANCE POS");
                     Game.LocalPlayer.Character.Position = toTele.EntrancePosition;
                     Game.LocalPlayer.Character.Heading = toTele.EntranceHeading;
                 }
-                //menu.Visible = false;
             };
             LocationItemsMenu.AddItem(myLocationType);
         }
+
+
+
+
+
+
+
     }
 }
 

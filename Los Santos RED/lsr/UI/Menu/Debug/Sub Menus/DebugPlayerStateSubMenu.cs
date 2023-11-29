@@ -45,21 +45,7 @@ public class DebugPlayerStateSubMenu : DebugSubMenu
             Game.LocalPlayer.Character.Kill();
             menu.Visible = false;
         };
-        UIMenuItem GiveMoney = new UIMenuItem("Give Money", "Give the player $50K");
-        GiveMoney.Activated += (menu, item) =>
-        {
-            Player.BankAccounts.GiveMoney(50000, false);
-            menu.Visible = false;
-        };
-        UIMenuItem SetMoney = new UIMenuItem("Set Money", "Sets the current player money");
-        SetMoney.Activated += (menu, item) =>
-        {
-            if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int moneyToSet))
-            {
-                Player.BankAccounts.SetCash(moneyToSet);
-            }
-            menu.Visible = false;
-        };
+
         UIMenuItem GetAllItems = new UIMenuItem("Get All Items", "Gets 10 of every item");
         GetAllItems.Activated += (menu, item) =>
         {
@@ -101,47 +87,6 @@ public class DebugPlayerStateSubMenu : DebugSubMenu
         ForceSober.Activated += (menu, item) =>
         {
             Player.Intoxication.Dispose();
-            menu.Visible = false;
-        };
-        UIMenuListScrollerItem<WeaponCategory> GetRandomWeapon = new UIMenuListScrollerItem<WeaponCategory>("Get Random Weapon", "Gives the Player a random weapon and ammo.", Enum.GetValues(typeof(WeaponCategory)).Cast<WeaponCategory>());
-        GetRandomWeapon.Activated += (menu, item) =>
-        {
-            WeaponInformation myGun = Weapons.GetRandomRegularWeapon(GetRandomWeapon.SelectedItem);
-            if (myGun != null)
-            {
-                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
-            }
-            menu.Visible = false;
-        };
-
-        UIMenuListScrollerItem<WeaponCategory> GetRandomUpgradedWeapon = new UIMenuListScrollerItem<WeaponCategory>("Get Random Upgraded Weapon", "Gives the Player a random upgraded weapon and ammo.", Enum.GetValues(typeof(WeaponCategory)).Cast<WeaponCategory>());
-        GetRandomUpgradedWeapon.Activated += (menu, item) =>
-        {
-            WeaponInformation myGun = Weapons.GetRandomRegularWeapon(GetRandomUpgradedWeapon.SelectedItem);
-            if (myGun != null)
-            {
-                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
-                WeaponComponent bestMagazineUpgrade = myGun.PossibleComponents.Where(x => x.ComponentSlot == ComponentSlot.Magazine).OrderBy(x => x.Name == "Box Magazine" ? 1 : x.Name == "Drum Magazine" ? 2 : x.Name == "Extended Clip" ? 3 : 4).FirstOrDefault();
-                if (bestMagazineUpgrade != null)
-                {
-                    myGun.AddComponent(Game.LocalPlayer.Character, bestMagazineUpgrade);
-                }
-            }
-            menu.Visible = false;
-        };
-        UIMenuListScrollerItem<WeaponCategory> GetRandomSuppressedWeapon = new UIMenuListScrollerItem<WeaponCategory>("Get Random Suppressed Weapon", "Gives the Player a random suppressed weapon and ammo.", Enum.GetValues(typeof(WeaponCategory)).Cast<WeaponCategory>());
-        GetRandomSuppressedWeapon.Activated += (menu, item) =>
-        {
-            WeaponInformation myGun = Weapons.GetRandomRegularWeapon(GetRandomSuppressedWeapon.SelectedItem);
-            if (myGun != null)
-            {
-                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
-                WeaponComponent bestMagazineUpgrade = myGun.PossibleComponents.Where(x => x.ComponentSlot == ComponentSlot.Muzzle).OrderBy(x => x.Name == "Suppressed" ? 1 : 4).FirstOrDefault();
-                if (bestMagazineUpgrade != null)
-                {
-                    myGun.AddComponent(Game.LocalPlayer.Character, bestMagazineUpgrade);
-                }
-            }
             menu.Visible = false;
         };
 
@@ -225,23 +170,8 @@ public class DebugPlayerStateSubMenu : DebugSubMenu
             menu.Visible = false;
         };
 
-        UIMenuItem RemoveButtonPrompts = new UIMenuItem("Remove Prompts", "Removes all the button prompts");
-        RemoveButtonPrompts.Activated += (menu, item) =>
-        {
-            Player.ButtonPrompts.Clear();
-            menu.Visible = false;
-        };
 
 
-        ////spawn taxi
-        //UIMenuItem TaxiSpawn = new UIMenuItem("Spawn Taxi", "Spawns a taxi in fron of player");
-        //TaxiSpawn.Activated += (menu, item) =>
-        //{
-        //    TaxiDropOff TaxiDropOff = new TaxiDropOff(Game.LocalPlayer.Character.GetOffsetPositionFront(10f), Settings, Crimes, Weapons, Names, World, ModItems, null);
-        //    TaxiDropOff.Setup();
-        //    TaxiDropOff.Start();
-        //    menu.Visible = false;
-        //};
 
         //spawn taxi
         UIMenuItem ScamText = new UIMenuItem("Scam Text", "Add a random scam text");
@@ -267,55 +197,26 @@ public class DebugPlayerStateSubMenu : DebugSubMenu
         };
 
 
-        UIMenuListScrollerItem<string> SetArrested = new UIMenuListScrollerItem<string>("Set Arrested", "Set the player ped as arrested.", new List<string>() { "Stay Standing", "Kneeling" });
-        SetArrested.Activated += (menu, item) =>
-        {
-            bool stayStanding = SetArrested.SelectedItem == "Stay Standing";
-            Player.Arrest();
-            Game.TimeScale = 1.0f;
-            Player.Surrendering.SetArrestedAnimation(stayStanding);
-            menu.Visible = false;
-        };
-        
-
-        UIMenuItem UnSetArrested = new UIMenuItem("UnSet Arrested", "Release the player from an arrest.");
-        UnSetArrested.Activated += (menu, item) =>
-        {
-            Game.TimeScale = 1.0f;
-            Player.Reset(true, false, true, true, true, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
-            Player.Surrendering.UnSetArrestedAnimation();
-            menu.Visible = false;
-        };
-
 
 
         PlayerStateItemsMenu.AddItem(FillHealthAndArmor);
         PlayerStateItemsMenu.AddItem(SetHealth);
         PlayerStateItemsMenu.AddItem(KillPlayer);
-
         PlayerStateItemsMenu.AddItem(ToggleInvisible);
-
-        PlayerStateItemsMenu.AddItem(GiveMoney);
-        PlayerStateItemsMenu.AddItem(SetMoney);
 
         PlayerStateItemsMenu.AddItem(ResetNeeds);
         PlayerStateItemsMenu.AddItem(SetRandomNeeds);
         PlayerStateItemsMenu.AddItem(ForceSober);
         PlayerStateItemsMenu.AddItem(GetAllItems);
         PlayerStateItemsMenu.AddItem(GetSomeItems);
-        PlayerStateItemsMenu.AddItem(GetRandomWeapon);
-        PlayerStateItemsMenu.AddItem(GetRandomUpgradedWeapon);
-        PlayerStateItemsMenu.AddItem(GetRandomSuppressedWeapon);
         PlayerStateItemsMenu.AddItem(GetDriversLicense);
         PlayerStateItemsMenu.AddItem(GetCCWLicense);
         PlayerStateItemsMenu.AddItem(GetPilotsLicense);
         PlayerStateItemsMenu.AddItem(AutoSetRadioStation);
-        //PlayerStateItemsMenu.AddItem(TaxiSpawn);
         PlayerStateItemsMenu.AddItem(ScamText);
         PlayerStateItemsMenu.AddItem(RandomizePhone);
-        PlayerStateItemsMenu.AddItem(SetArrested);
-        PlayerStateItemsMenu.AddItem(UnSetArrested);
-        PlayerStateItemsMenu.AddItem(RemoveButtonPrompts);
+
+
     }
 }
 

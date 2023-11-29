@@ -81,10 +81,6 @@ public class BankAccounts
             currentMoney = Money;
         }
     }
-
-
-
-
     public int GetMoney(bool useAccounts)
     {
         if(!useAccounts)
@@ -93,8 +89,6 @@ public class BankAccounts
         }
         return Money + TotalAccountMoney;
     }
-
-
     public int GetOnHandCashSafe()
     {
         int money = GetMoney(false);
@@ -104,7 +98,6 @@ public class BankAccounts
         }
         return money;
     }
-
     public void GiveMoney(int Amount, bool useAccounts)
     {
         if (Amount != 0)
@@ -118,9 +111,6 @@ public class BankAccounts
             Amount = GiveMoneyAccount(Amount);
             EntryPoint.WriteToConsole($"GiveMoney ACCOUNT STILL TO REMOVE {Amount}");
         }
-
-
-
  
         int CurrentCash;
         uint PlayerCashHash;
@@ -161,7 +151,6 @@ public class BankAccounts
         }
         //currentMoney = Money;
     }
-
     private int GiveMoneyAccount(int Amount)
     {
         if(Amount > 0)
@@ -195,7 +184,6 @@ public class BankAccounts
             return AccountMoneyTakenAlready;
         }
     }
-
     public void SetCash(int Amount)
     {
         uint PlayerCashHash;
@@ -219,7 +207,6 @@ public class BankAccounts
         }
         currentMoney = Money;
     }
-
     public string CashDisplay(bool showFull)
     {
         string toReturn = $"${Money}";
@@ -244,7 +231,6 @@ public class BankAccounts
         }
         return toReturn;
     }
-
     public BankAccount GetAccount(string name)
     {
         BankAccount bankAccount = BankAccountList.Where(x => x.BankContactName == name).FirstOrDefault();
@@ -259,7 +245,6 @@ public class BankAccounts
         }
         return ba.Money;
     }
-
     public void WriteToConsole()
     {
         EntryPoint.WriteToConsole("BANK ACCOUNTS---------------");
@@ -271,7 +256,6 @@ public class BankAccounts
         }
         EntryPoint.WriteToConsole("BANK ACCOUNTS---------------");
     }
-
     public void CreateRandomAccount(int amount)
     {
         Bank randomBank = PlacesOfInterest.PossibleLocations.Banks.PickRandom();
@@ -281,6 +265,26 @@ public class BankAccounts
             return;
         }
         BankAccountList.Add(new BankAccount(randomBank.Name,randomBank.ShortName, amount));
+    }
+    public void CreateNewAccount(Bank bank)
+    {
+        if(bank == null)
+        {
+            return;
+        }
+        if(!BankAccountList.Any(x=> x.BankContactName == bank.Name))
+        {
+            BankAccountList.Add(new BankAccount(bank.Name, bank.ShortName, 0));
+        }
+    }
+
+    public void Remove(BankAccount selectedItem)
+    {
+        if(selectedItem == null)
+        {
+            return;
+        }
+        BankAccountList.Remove(selectedItem);
     }
 }
 

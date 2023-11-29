@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Animation;
 
 
 public class DebugAnimationSubMenu : DebugSubMenu
@@ -24,6 +25,7 @@ public class DebugAnimationSubMenu : DebugSubMenu
     private int Time = -1;
     private int Flags = 0;
     private UIMenuItem playAnimationMenu;
+    private UIMenuCheckboxItem IsFacialMenu;
 
     public DebugAnimationSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, ModDataFileManager modDataFileManager) : base(debug, menuPool, player)
     {
@@ -61,12 +63,7 @@ public class DebugAnimationSubMenu : DebugSubMenu
                 Game.DisplaySubtitle("Select an animation first");
                 return;
             }
-            if(!AnimationDictionary.RequestAnimationDictionayResult(SelectedAnimation.Dictionary))
-            {
-                Game.DisplaySubtitle("Could not load animation dictionary");
-                return;
-            }
-            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, SelectedAnimation.Dictionary, SelectedAnimation.Name, BlendIn, BlendOut, Time, Flags, 0, false, false, false);
+            PlaySelectedAnimation();
         };
         PlayAnimationSubMenu.AddItem(playAnimationMenu);
 
@@ -124,6 +121,12 @@ public class DebugAnimationSubMenu : DebugSubMenu
         };
         PlayAnimationSubMenu.AddItem(SetFlagsMenu);
 
+
+
+        IsFacialMenu = new UIMenuCheckboxItem("Facial", false, "If checked the animation will play on the face");
+        PlayAnimationSubMenu.AddItem(IsFacialMenu);
+
+
     }
 
     private void CreateAnimationSearchMenuItems()
@@ -177,28 +180,33 @@ public class DebugAnimationSubMenu : DebugSubMenu
             UIMenuItem animationMenuItem = new UIMenuItem(testAnimation.Name);
             animationMenuItem.Activated += (sender, e) =>
             {
-
-
-
                 SelectedAnimation = testAnimation;
-
-
-
                 if(playAnimationMenu != null)
                 {
                     playAnimationMenu.Description = $"Selected: {testAnimation.Dictionary} {testAnimation.Name}";
                 }
-                Game.DisplaySubtitle($"ANIM SELECTED DICT: {testAnimation.Dictionary} NAME: {testAnimation.Name}");
-                if (!AnimationDictionary.RequestAnimationDictionayResult(SelectedAnimation.Dictionary))
-                {
-                    Game.DisplaySubtitle("Could not load animation dictionary");
-                    return;
-                }
-
-                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, SelectedAnimation.Dictionary, SelectedAnimation.Name, BlendIn, BlendOut, Time, Flags, 0, false, false, false);
+                PlaySelectedAnimation();
 
             };
             submenuToAdd.AddItem(animationMenuItem);
+        }
+    }
+    private void PlaySelectedAnimation()
+    {
+        Game.DisplaySubtitle($"ANIM SELECTED DICT: {SelectedAnimation.Dictionary} NAME: {SelectedAnimation.Name}");
+        if (!AnimationDictionary.RequestAnimationDictionayResult(SelectedAnimation.Dictionary))
+        {
+            Game.DisplaySubtitle("Could not load animation dictionary");
+            return;
+        }
+
+        if (IsFacialMenu.Checked)
+        {
+            NativeFunction.Natives.PLAY_FACIAL_ANIM(Player.Character, SelectedAnimation.Name, SelectedAnimation.Dictionary);
+        }
+        else
+        {
+            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, SelectedAnimation.Dictionary, SelectedAnimation.Name, BlendIn, BlendOut, Time, Flags, 0, false, false, false);
         }
     }
 

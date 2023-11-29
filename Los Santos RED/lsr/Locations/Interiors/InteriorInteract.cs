@@ -23,6 +23,8 @@ public class InteriorInteract
     protected LocationCamera LocationCamera;
     protected bool canAddPrompt = false;
     protected float distanceTo;
+    protected float GroundZ;
+    protected bool HasGroundZ = false;
     public InteriorInteract()
     {
 
@@ -52,6 +54,28 @@ public class InteriorInteract
     public virtual void Setup()
     {
 
+    }
+
+
+
+
+
+    public void DisplayMarker()
+    {
+        if(DistanceTo >= 30)
+        {
+            return;
+        }
+        if (!HasGroundZ)
+        {
+            float entranceZPosition = Position.Z;
+            NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD(Position.X, Position.Y, Position.Z, out entranceZPosition, false);
+            GroundZ = entranceZPosition;
+            HasGroundZ = true;
+        }
+        NativeFunction.Natives.DRAW_MARKER(1, Position.X, Position.Y, GroundZ, 0f, 0f, 0f, 0f, 0f, 0f, 1.0f, 1.0f, 1.0f,
+            EntryPoint.LSRedColor.R, EntryPoint.LSRedColor.G, EntryPoint.LSRedColor.B, EntryPoint.LSRedColor.A,
+            false, false, 2, true, 0, 0, false);//false, true, 2, true, 0, 0, false);
     }
 
 

@@ -31,6 +31,8 @@ public class VanillaWorldManager
         NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("AMMUNATION", true);
         NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("YellowJackInn", true);
         NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("VANGELICO", true);
+        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("lost_mc", true);
+        NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("lost_clubhouse", true);
     }
     public void Dispose()
     {

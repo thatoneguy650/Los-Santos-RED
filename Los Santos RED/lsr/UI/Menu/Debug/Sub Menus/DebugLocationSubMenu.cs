@@ -31,6 +31,7 @@ public class DebugLocationSubMenu : DebugSubMenu
     private Street CurrentCrossStreet;
     private uint GameTimeLastUpdatedNodes;
     private bool IsBigMapActive;
+    private bool IsWritingPosition;
 
     public DebugLocationSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IEntityProvideable world, ISettingsProvideable settings, IStreets streets, IPlacesOfInterest placesOfInterest) : base(debug, menuPool, player)
     {
@@ -62,6 +63,13 @@ public class DebugLocationSubMenu : DebugSubMenu
             LogGameLocationSimple();
             menu.Visible = false;
         };
+        UIMenuItem LogInteriorPositionMenu = new UIMenuItem("Log Interior Position", "Include a description");
+        LogInteriorPositionMenu.Activated += (menu, item) =>
+        {
+            LogInteriorPosition();
+            menu.Visible = false;
+        };
+
         UIMenuItem LogInteriorMenu = new UIMenuItem("Log Game Interior", "Interior Name");
         LogInteriorMenu.Activated += (menu, item) =>
         {
@@ -168,6 +176,7 @@ public class DebugLocationSubMenu : DebugSubMenu
             NativeFunction.Natives.SET_ALLOW_STREAM_HEIST_ISLAND_NODES(false);
 
         };
+        LocationItemsMenu.AddItem(LogInteriorPositionMenu);
         LocationItemsMenu.AddItem(LogSpawnPositionMenu);
         LocationItemsMenu.AddItem(LogLocationMenu);
         LocationItemsMenu.AddItem(LogLocationSimpleMenu);
@@ -250,54 +259,61 @@ public class DebugLocationSubMenu : DebugSubMenu
                 FreeCam.Active = true;
                 Game.LocalPlayer.HasControl = false;
                 //This is all adapted from https://github.com/CamxxCore/ScriptCamTool/blob/master/GTAV_ScriptCamTool/PositionSelector.cs#L59
-                while (!Game.IsKeyDownRightNow(Keys.Z))
+                while (true)
                 {
-                    if (Game.IsKeyDownRightNow(Keys.W))
+                    if (!IsWritingPosition)
                     {
-                        FreeCam.Position += NativeHelper.GetCameraDirection(FreeCam, FreeCamScale);
-                    }
-                    if (Game.IsKeyDownRightNow(Keys.S))
-                    {
-                        FreeCam.Position -= NativeHelper.GetCameraDirection(FreeCam, FreeCamScale);
-                    }
-                    if (Game.IsKeyDownRightNow(Keys.A))
-                    {
-                        FreeCam.Position = NativeHelper.GetOffsetPosition(FreeCam.Position, FreeCam.Rotation.Yaw, -1.0f * FreeCamScale);
-                    }
-                    if (Game.IsKeyDownRightNow(Keys.D))
-                    {
-                        FreeCam.Position = NativeHelper.GetOffsetPosition(FreeCam.Position, FreeCam.Rotation.Yaw, 1.0f * FreeCamScale);
-                    }
-                    FreeCam.Rotation += new Rotator(NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, 221) * -4f, 0, NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, 220) * -5f) * FreeCamScale;
+                        if(Game.IsKeyDownRightNow(Keys.Z))
+                        {
+                            break;
+                        }
+                        if (Game.IsKeyDownRightNow(Keys.W))
+                        {
+                            FreeCam.Position += NativeHelper.GetCameraDirection(FreeCam, FreeCamScale);
+                        }
+                        if (Game.IsKeyDownRightNow(Keys.S))
+                        {
+                            FreeCam.Position -= NativeHelper.GetCameraDirection(FreeCam, FreeCamScale);
+                        }
+                        if (Game.IsKeyDownRightNow(Keys.A))
+                        {
+                            FreeCam.Position = NativeHelper.GetOffsetPosition(FreeCam.Position, FreeCam.Rotation.Yaw, -1.0f * FreeCamScale);
+                        }
+                        if (Game.IsKeyDownRightNow(Keys.D))
+                        {
+                            FreeCam.Position = NativeHelper.GetOffsetPosition(FreeCam.Position, FreeCam.Rotation.Yaw, 1.0f * FreeCamScale);
+                        }
+                        FreeCam.Rotation += new Rotator(NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, 221) * -4f, 0, NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, 220) * -5f) * FreeCamScale;
 
-                    NativeFunction.Natives.SET_FOCUS_POS_AND_VEL(FreeCam.Position.X, FreeCam.Position.Y, FreeCam.Position.Z, 0f, 0f, 0f);
+                        NativeFunction.Natives.SET_FOCUS_POS_AND_VEL(FreeCam.Position.X, FreeCam.Position.Y, FreeCam.Position.Z, 0f, 0f, 0f);
 
-                    if (Game.IsKeyDownRightNow(Keys.O))
-                    {
-                        FreeCamScale += 0.05f;
-                        GameFiber.Sleep(100);
-                    }
-                    if (Game.IsKeyDownRightNow(Keys.L))
-                    {
-                        FreeCamScale -= 0.05f;
-                        GameFiber.Sleep(100);
-                    }
-                    if (Game.IsKeyDownRightNow(Keys.J))
-                    {
-                        Game.LocalPlayer.Character.Position = FreeCam.Position;
-                        Game.LocalPlayer.Character.Heading = FreeCam.Heading;
-                        GameFiber.Sleep(200);
-                    }
-                    if (Game.IsKeyDownRightNow(Keys.K))
-                    {
-                        isHidingHelp = !isHidingHelp;
-                        GameFiber.Sleep(200);
-                    }
+                        if (Game.IsKeyDownRightNow(Keys.O))
+                        {
+                            FreeCamScale += 0.05f;
+                            GameFiber.Sleep(100);
+                        }
+                        if (Game.IsKeyDownRightNow(Keys.L))
+                        {
+                            FreeCamScale -= 0.05f;
+                            GameFiber.Sleep(100);
+                        }
+                        if (Game.IsKeyDownRightNow(Keys.J))
+                        {
+                            Game.LocalPlayer.Character.Position = FreeCam.Position;
+                            Game.LocalPlayer.Character.Heading = FreeCam.Heading;
+                            GameFiber.Sleep(200);
+                        }
+                        if (Game.IsKeyDownRightNow(Keys.K))
+                        {
+                            isHidingHelp = !isHidingHelp;
+                            GameFiber.Sleep(200);
+                        }
 
-                    //string FreeCamString = FreeCamScale == 1.0f ? "Regular Scale" : "Slow Scale";
-                    if (!isHidingHelp)
-                    {
-                        Game.DisplayHelp($"Press Z to Exit~n~Press O To Increase Scale~n~Press L To Decrease Scale~n~Current Scale: {FreeCamScale}~n~Press J To Move Player to Position~n~Press K to Toggle Controls");
+                        //string FreeCamString = FreeCamScale == 1.0f ? "Regular Scale" : "Slow Scale";
+                        if (!isHidingHelp)
+                        {
+                            Game.DisplayHelp($"Press Z to Exit~n~Press O To Increase Scale~n~Press L To Decrease Scale~n~Current Scale: {FreeCamScale}~n~Press J To Move Player to Position~n~Press K to Toggle Controls");
+                        }
                     }
                     GameFiber.Yield();
                 }
@@ -314,36 +330,55 @@ public class DebugLocationSubMenu : DebugSubMenu
     }
     private void LogGameLocation()
     {
+        IsWritingPosition = true;
         Vector3 pos = Game.LocalPlayer.Character.Position;
         float Heading = Game.LocalPlayer.Character.Heading;
         string text1 = NativeHelper.GetKeyboardInput("LocationType");
         string text2 = NativeHelper.GetKeyboardInput("Name");
         WriteToLogLocations($"new GameLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f,new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, LocationType.{text1}, \"{text2}\", \"{text2}\"),");
+        IsWritingPosition = false;
     }
     private void LogGameLocationSimple()
     {
+        IsWritingPosition = true;
         Vector3 pos = Game.LocalPlayer.Character.Position;
         float Heading = Game.LocalPlayer.Character.Heading;
         string text1 = NativeHelper.GetKeyboardInput("LocationType");
         string text2 = NativeHelper.GetKeyboardInput("Name");
         string text3 = NativeHelper.GetKeyboardInput("Description");
         WriteToLogLocations($"new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, \"{text2}\", \"{text3}\"),  //{text1}");
+        IsWritingPosition = false;
     }
+
+
+    private void LogInteriorPosition()
+    {
+        IsWritingPosition = true;
+        Vector3 pos = Game.LocalPlayer.Character.Position;
+        float Heading = Game.LocalPlayer.Character.Heading;
+        string text1 = NativeHelper.GetKeyboardInput("LocationType");
+        WriteToLogLocations($"new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f  //{text1}");
+        IsWritingPosition = false;
+    }
+
     private void LogSpawnPosition()
     {
+        IsWritingPosition = true;
         Vector3 pos = Game.LocalPlayer.Character.Position;
         float Heading = Game.LocalPlayer.Character.Heading;
         WriteToLogLocations($"new ConditionalLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, 75f),");
+        IsWritingPosition = false;
     }
     private void LogCameraPosition()
     {
-
+        IsWritingPosition = true;
+        string text1 = NativeHelper.GetKeyboardInput("Description");
         if (FreeCam.Exists() && FreeCam.Active)
         {
             Vector3 pos = FreeCam.Position;
             Rotator r = FreeCam.Rotation;
             Vector3 direction = NativeHelper.GetCameraDirection(FreeCam);
-            WriteToLogCameraPosition($", CameraPosition = new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), CameraDirection = new Vector3({direction.X}f, {direction.Y}f, {direction.Z}f), CameraRotation = new Rotator({r.Pitch}f, {r.Roll}f, {r.Yaw}f);");
+            WriteToLogCameraPosition($", CameraPosition = new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), CameraDirection = new Vector3({direction.X}f, {direction.Y}f, {direction.Z}f), CameraRotation = new Rotator({r.Pitch}f, {r.Roll}f, {r.Yaw}f);//{text1}");
         }
         else
         {
@@ -351,14 +386,17 @@ public class DebugLocationSubMenu : DebugSubMenu
             Vector3 pos = NativeFunction.Natives.GET_CAM_COORD<Vector3>(CameraHAndle);
             Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
             Vector3 direction = NativeHelper.GetGameplayCameraDirection();
-            WriteToLogCameraPosition($", CameraPosition = new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), CameraDirection = new Vector3({direction.X}f, {direction.Y}f, {direction.Z}f), CameraRotation = new Rotator({r.X}f, {r.Y}f, {r.Z}f);");
+            WriteToLogCameraPosition($", CameraPosition = new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), CameraDirection = new Vector3({direction.X}f, {direction.Y}f, {direction.Z}f), CameraRotation = new Rotator({r.X}f, {r.Y}f, {r.Z}f);//{text1}");
         }
+        IsWritingPosition = false;
     }
     private void LogGameInterior()
     {
+        IsWritingPosition = true;
         string text1 = NativeHelper.GetKeyboardInput("Name");
         string toWrite = $"new Interior({Player.CurrentLocation?.CurrentInterior?.LocalID}, \"{text1}\"),";
         WriteToLogInteriors(toWrite);
+        IsWritingPosition = false;
     }
     private void TunOffInterior()
     {

@@ -60,7 +60,7 @@ public class VehicleBodyManager
             }
             if (pedExtOnSeat.IsDead || pedExtOnSeat.IsUnconscious || pedExtOnSeat.IsBusted)
             {
-                StoredBody storedBody = new StoredBody(pedExtOnSeat, vdsd, VehicleExt, Settings);
+                StoredBody storedBody = new StoredBody(pedExtOnSeat, vdsd, VehicleExt, Settings, world);
                 EntryPoint.WriteToConsole("Added Existng Stored Body to the data set");
                 StoredBodies.Add(storedBody);
             }
@@ -76,7 +76,7 @@ public class VehicleBodyManager
             EntryPoint.WriteToConsole("TRUNK IS OPEN, SUSPICION IS ON!");
         }
     }
-    public bool LoadBody(PedExt pedExt, VehicleDoorSeatData bone, bool withFade)
+    public bool LoadBody(PedExt pedExt, VehicleDoorSeatData bone, bool withFade, IEntityProvideable world)
     {
         //EntryPoint.WriteToConsoleTestLong($"VehicleBodyManager LoadBody {bone}");
         if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
@@ -93,7 +93,7 @@ public class VehicleBodyManager
             Game.DisplayHelp($"{bone} is Full");
             return false;
         }
-        StoredBody storedBody = new StoredBody(pedExt, bone, VehicleExt, Settings);
+        StoredBody storedBody = new StoredBody(pedExt, bone, VehicleExt, Settings, world);
         if (storedBody.Load(withFade))
         {
             //EntryPoint.WriteToConsoleTestLong($"VehicleBodyManager LoadBody {bone} FINISHED SUCCESSFULLY");

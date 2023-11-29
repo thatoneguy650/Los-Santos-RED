@@ -218,7 +218,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 World.Pedestrians.DeadPeds.Add(created);
             }
             Player.Violations.DamageViolations.AddFakeKilled(DeadBody);
-            if (!DeadBodyVehicle.VehicleBodyManager.LoadBody(DeadBody, new VehicleDoorSeatData("Trunk", "boot", 5, -2), false))
+            if (!DeadBodyVehicle.VehicleBodyManager.LoadBody(DeadBody, new VehicleDoorSeatData("Trunk", "boot", 5, -2), false, World))
             {
                 return false;
             }

@@ -36,5 +36,9 @@ public class BankAccount
         BankAccountSubMenuItem.Description = $"Balance: ${Money} {(IsPrimary ? " - ~r~Primary~s~" : "")}";
         BankAccountSubMenu.SubtitleText = $"Balance: ${Money} {(IsPrimary ? " - ~r~Primary~s~" : "")}";
     }
+    public override string ToString()
+    {
+        return AccountName;
+    }
 }
 

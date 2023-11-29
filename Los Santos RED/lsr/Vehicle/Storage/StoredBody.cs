@@ -14,20 +14,23 @@ public class StoredBody
 {
     private ISettingsProvideable Settings;
     private IVehicleSeatAndDoorLookup VehicleSeatDoorData;
+    private IEntityProvideable World;
     private bool PedCanBeTasked;
     private bool PedCanBeAmbientTasked;
+    private VehicleItem VehicleItem;
     private readonly string TrunkAnimationDictionaryName = "timetable@floyd@cryingonbed@base";
     private readonly string TrunkAnimationName = "base";
 
     private readonly string AliveSeatAnimationDictionaryName = "random@crash_rescue@car_death@std_car";//"veh @std@ps@enter_exit";
     private readonly string AliveSeatAnimationName = "loop";//"dead_fall_out";
     public bool IsAttachedToVehicle { get; set; } = true;
-    public StoredBody(PedExt pedExt, VehicleDoorSeatData vehicleDoorSeatData, VehicleExt vehicleExt, ISettingsProvideable settings)
+    public StoredBody(PedExt pedExt, VehicleDoorSeatData vehicleDoorSeatData, VehicleExt vehicleExt, ISettingsProvideable settings, IEntityProvideable world)
     {
         PedExt = pedExt;
         VehicleDoorSeatData = vehicleDoorSeatData;
         VehicleExt = vehicleExt;
         Settings = settings;
+        World = world;
     }
     public PedExt PedExt { get; private set; }
     public VehicleExt VehicleExt { get; private set; }
@@ -64,6 +67,7 @@ public class StoredBody
             Game.FadeScreenOut(500, true);
         }
         SetupPed();
+        SetupVehicle();
         bool Loaded;
         if (VehicleDoorSeatData.SeatBone == "boot")
         {
@@ -85,6 +89,12 @@ public class StoredBody
         }
         return Loaded;
     }
+
+    private void SetupVehicle()
+    {
+        VehicleItem = World?.ModDataFileManager.ModItems.GetVehicle(VehicleExt.Vehicle.Model.Hash);
+    }
+
     public bool OnVehicleCrashed()
     {
         if (VehicleDoorSeatData == null || VehicleDoorSeatData.SeatBone != "boot" || !PedExt.Pedestrian.Exists())
@@ -175,7 +185,11 @@ public class StoredBody
     }
     private bool DetermineAttachType()
     {
-        if(VehicleExt.VehicleClass == VehicleClass.Van)
+        if(VehicleItem?.OverrideLoadBodiesInBed == true)
+        {
+            return PlaceInBed();
+        }
+        else if(VehicleExt.VehicleClass == VehicleClass.Van)
         {
             return PlaceInBed();
         }
@@ -208,17 +222,40 @@ public class StoredBody
             {
                 return false;
             }
+            float OffsetX = Settings.SettingsManager.DragSettings.LoadBodyXOffsetBed + Settings.SettingsManager.DragSettings.LoadBodyXOffset;
+            float OffsetY = Settings.SettingsManager.DragSettings.LoadBodyYOffsetBed + Settings.SettingsManager.DragSettings.LoadBodyYOffset;
+            float OffsetZ = Settings.SettingsManager.DragSettings.LoadBodyZOffsetBed + Settings.SettingsManager.DragSettings.LoadBodyZOffset;
+
+            if(VehicleItem != null && VehicleItem.BedLoadOffsetOverride != Vector3.Zero)
+            {
+                OffsetX = VehicleItem.BedLoadOffsetOverride.X;
+                OffsetY = VehicleItem.BedLoadOffsetOverride.Y;
+                OffsetZ = VehicleItem.BedLoadOffsetOverride.Z;
+            }
+
             Vector3 BootPosition = VehicleExt.Vehicle.GetBonePosition("boot");
-            Vector3 BedPositon = new Vector3(BootPosition.X + Settings.SettingsManager.DragSettings.LoadBodyXOffsetBed + Settings.SettingsManager.DragSettings.LoadBodyXOffset, BootPosition.Y + Settings.SettingsManager.DragSettings.LoadBodyYOffsetBed + Settings.SettingsManager.DragSettings.LoadBodyYOffset, BootPosition.Z + Settings.SettingsManager.DragSettings.LoadBodyZOffsetBed + Settings.SettingsManager.DragSettings.LoadBodyZOffset);
+            Vector3 BedPositon = new Vector3(BootPosition.X + OffsetX, BootPosition.Y + OffsetY, BootPosition.Z + OffsetZ);
             PedExt.Pedestrian.Position = BedPositon;
         }
         else
         {
+            float OffsetX = Settings.SettingsManager.DragSettings.NewBedLoadBodyXOffset;
+            float OffsetY = Settings.SettingsManager.DragSettings.NewBedLoadBodyYOffset;
+            float OffsetZ = Settings.SettingsManager.DragSettings.NewBedLoadBodyZOffset;
+
+
+            if (VehicleItem != null && VehicleItem.BedLoadOffsetOverride != Vector3.Zero)
+            {
+                OffsetX = VehicleItem.BedLoadOffsetOverride.X;
+                OffsetY = VehicleItem.BedLoadOffsetOverride.Y;
+                OffsetZ = VehicleItem.BedLoadOffsetOverride.Z;
+            }
+
 
             float halfLength = VehicleExt.Vehicle.Model.Dimensions.Y / 2.0f;
-            halfLength += Settings.SettingsManager.DragSettings.NewBedLoadBodyYOffset;
+            halfLength += OffsetY;
             Vector3 almostFinal = VehicleExt.Vehicle.GetOffsetPositionFront(-1.0f * halfLength);
-            Vector3 BedPositon = new Vector3(almostFinal.X + Settings.SettingsManager.DragSettings.NewBedLoadBodyXOffset, almostFinal.Y, almostFinal.Z + Settings.SettingsManager.DragSettings.NewBedLoadBodyZOffset);
+            Vector3 BedPositon = new Vector3(almostFinal.X + OffsetX, almostFinal.Y, almostFinal.Z + OffsetZ);
             PedExt.Pedestrian.Position = BedPositon;
         }
         if (PedExt.IsDead)
@@ -274,10 +311,28 @@ public class StoredBody
             Vector3 RootPosition = VehicleExt.Vehicle.GetBonePosition(0);
             float YOffset = -1 * BootPosition.DistanceTo2D(RootPosition);
             float ZOffset = BootPosition.Z - RootPosition.Z;
+
+
+
+            float OffsetX = Settings.SettingsManager.DragSettings.LoadBodyXOffset;
+            float OffsetY = Settings.SettingsManager.DragSettings.LoadBodyYOffset;
+            float OffsetZ = Settings.SettingsManager.DragSettings.LoadBodyZOffset;
+
+
+            if (VehicleItem != null && VehicleItem.OverrideTrunkAttachment && VehicleItem.TrunkAttachOffsetOverride != Vector3.Zero)
+            {
+                OffsetX = VehicleItem.TrunkAttachOffsetOverride.X;
+                OffsetY = VehicleItem.TrunkAttachOffsetOverride.Y;
+                OffsetZ = VehicleItem.TrunkAttachOffsetOverride.Z;
+            }
+
+
+
+
             NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(PedExt.Pedestrian, VehicleExt.Vehicle, Settings.SettingsManager.DragSettings.BoneIndex,
-                Settings.SettingsManager.DragSettings.LoadBodyXOffset,
-                Settings.SettingsManager.DragSettings.LoadBodyYOffset + YOffset,
-                Settings.SettingsManager.DragSettings.LoadBodyZOffset + ZOffset,
+                OffsetX,
+                OffsetY + YOffset,
+                OffsetZ + ZOffset,
                 Settings.SettingsManager.DragSettings.LoadBodyXRotation,
                 Settings.SettingsManager.DragSettings.LoadBodyYRotation,
                 Settings.SettingsManager.DragSettings.LoadBodyZRotation,
@@ -285,12 +340,30 @@ public class StoredBody
         }
         else
         {
+
+
+
+            float OffsetX = Settings.SettingsManager.DragSettings.NewLoadBodyXOffset;
+            float OffsetY = Settings.SettingsManager.DragSettings.NewLoadBodyYOffset;
+            float OffsetZ = Settings.SettingsManager.DragSettings.NewLoadBodyZOffset;
+
+
+            if (VehicleItem != null && VehicleItem.OverrideTrunkAttachment && VehicleItem.TrunkAttachOffsetOverride != Vector3.Zero)
+            {
+                OffsetX = VehicleItem.TrunkAttachOffsetOverride.X;
+                OffsetY = VehicleItem.TrunkAttachOffsetOverride.Y;
+                OffsetZ = VehicleItem.TrunkAttachOffsetOverride.Z;
+            }
+
+
+
+
             float halfLength = VehicleExt.Vehicle.Model.Dimensions.Y / 2.0f;
-            halfLength += Settings.SettingsManager.DragSettings.NewLoadBodyYOffset;
+            halfLength += OffsetY;
             float YOffset = -1.0f * halfLength;
-            float ZOffset = Settings.SettingsManager.DragSettings.NewLoadBodyZOffset;
+            float ZOffset = OffsetZ;
             NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(PedExt.Pedestrian, VehicleExt.Vehicle, Settings.SettingsManager.DragSettings.BoneIndex,
-                Settings.SettingsManager.DragSettings.NewLoadBodyXOffset,
+                OffsetX,
                 YOffset,
                 ZOffset,
                 Settings.SettingsManager.DragSettings.LoadBodyXRotation,

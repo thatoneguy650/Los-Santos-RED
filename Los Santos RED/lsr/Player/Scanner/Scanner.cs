@@ -1182,6 +1182,7 @@ namespace LosSantosRED.lsr
                     {
                         dispatchEvent.SoundsToPlay.Add(crime_stolen_cop_car.Astolenpolicevehicle.FileName);
                     }
+                    dispatchEvent.NotificationText += " ~s~Stolen Police~s~";
                     dispatchEvent.Subtitles += " suspect is driving a stolen police vehicle ~s~";
                 }
                 else

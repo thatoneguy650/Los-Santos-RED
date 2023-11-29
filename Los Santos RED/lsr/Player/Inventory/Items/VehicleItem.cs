@@ -36,6 +36,10 @@ public class VehicleItem : ModItem
     public uint ModelHash { get; set; }
     public string OverrideMakeName { get; set; }
     public string OverrideClassName { get; set; }
+    public bool OverrideLoadBodiesInBed { get; set; } = false;
+    public Vector3 BedLoadOffsetOverride { get; set; }
+    public bool OverrideTrunkAttachment { get; set; } = false;
+    public Vector3 TrunkAttachOffsetOverride { get; set; }
     public override bool IsDLC => RequiresDLC;
     public string MakeName => !string.IsNullOrEmpty(OverrideMakeName) ? OverrideMakeName : NativeHelper.VehicleMakeName(Game.GetHashKey(ModelItem.ModelName));
     public string ClassName => !string.IsNullOrEmpty(OverrideClassName) ? OverrideClassName : NativeHelper.VehicleClassName(Game.GetHashKey(ModelItem.ModelName));

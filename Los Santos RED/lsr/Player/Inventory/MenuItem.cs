@@ -30,7 +30,7 @@ public class MenuItem
         SalesPrice = salesPrice;
     }
     public string ModItemName { get; set; }
-    public bool Purchaseable => PurchasePrice > 0 || isSetFree;
+    public bool Purchaseable => PurchasePrice > 0 || isSetFree || IsFree;
     public bool Sellable => SalesPrice > 0;
     public int PurchasePrice { get; set;} = 5;
     public int SalesPrice { get; set; } = -1;
@@ -45,6 +45,7 @@ public class MenuItem
     public int PurchaseIncrement { get; set; } = 1;
     public int NumberOfItemsToSellToPlayer { get; set; } = -1;
     public int NumberOfItemsToPurchaseFromPlayer { get; set; } = -1;
+    public bool IsFree { get; set; } = false;
 
     [XmlIgnore]
     public UIMenuNumericScrollerItem<int> PurchaseScroller { get; set; }
