@@ -95,6 +95,8 @@ namespace Mod
         private bool IsRunningDoorCloseFlag;
         private bool prevAliasPedAsMainCharacter = true;//if change default setting
         private bool prevIsSleeping;
+        private uint KillerHandle;
+
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -246,7 +248,7 @@ namespace Mod
         public VehicleExt CurrentSeenVehicle => CurrentVehicle ?? VehicleGettingInto;
         public PedExt CurrentTargetedPed { get; private set; }
         public VehicleExt CurrentVehicle { get; set; }
-
+        public PedExt PedLastKilledPlayer { get; private set; }
 
 
         public bool CurrentVehicleIsInAir { get; set; }
@@ -603,6 +605,9 @@ namespace Mod
 
             TaxiManager.Reset();
             GangBackupManager.Reset();
+
+            KillerHandle = 0;
+            PedLastKilledPlayer = null;
 
             if (resetWanted)
             {
@@ -1438,8 +1443,37 @@ namespace Mod
             }
             Scanner.OnSuspectWasted();
             ActivityManager.OnPlayerDied();
+
+            //GetKillingPed();
+
             //EntryPoint.WriteToConsole($"PLAYER EVENT: IsDead Changed to: {IsDead}");
         }
+
+        public void GetKillingPed()
+        {
+            try
+            {
+                KillerHandle = NativeFunction.Natives.GetPedSourceOfDeath<uint>(Game.LocalPlayer.Character);
+                EntryPoint.WriteToConsole($"PLAYER killed by {KillerHandle}");
+                if(KillerHandle == 0)
+                {
+                    PedLastKilledPlayer = null;
+                    EntryPoint.WriteToConsole($"COULD NOT FIND PLAYER KILLER HANDLE");
+                    return;
+                }
+                PedLastKilledPlayer = World.Pedestrians.GetPedExt(KillerHandle);
+                if(PedLastKilledPlayer == null)
+                {
+                    EntryPoint.WriteToConsole($"COULD NOT FIND PLAYER KILLER PEDEXT");
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole($"PLAYER LOG KILLER ERROR {ex.Message} {ex.StackTrace}", 5);
+            }
+        }
+
         private void OnIsShootingChanged()
         {
             if (IsShooting)

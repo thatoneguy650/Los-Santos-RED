@@ -86,7 +86,7 @@ public class OtherViolations
         {
             return;
         }
-        PedExt closestPedExt = World.Pedestrians.PedExts.Where(x => x.DistanceToPlayer <= 0.65f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        PedExt closestPedExt = World.Pedestrians.PedExts.Where(x => !x.IsDead && !x.IsUnconscious && x.DistanceToPlayer <= 0.65f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
         if(closestPedExt == null)
         {
             PreviousClosestPed?.ResetPlayerStoodTooClose();

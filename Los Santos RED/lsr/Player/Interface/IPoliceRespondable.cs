@@ -83,6 +83,7 @@ namespace LosSantosRED.lsr.Interface
         void AddOfficerMIACall(Vector3 positionLastReported);
         void Arrest();
         int FineAmount();
+        void GetKillingPed();
         void OnAppliedWantedStats(int wantedLevel);
         void OnInvestigationExpire();
         void OnLethalForceAuthorized();

@@ -86,7 +86,7 @@ public class Bank : GameLocation
                 SetupLocationCamera(locationCamera, isInside, true);
                 CreateInteractionMenu();
                 BankInteraction = new BankInteraction(Player, this);
-                BankInteraction.Start(MenuPool, InteractionMenu);
+                BankInteraction.Start(MenuPool, InteractionMenu, true);
                 while (IsAnyMenuVisible)
                 {
                     MenuPool.ProcessMenus();

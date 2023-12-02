@@ -84,6 +84,52 @@ public class Kill : ComplexTask
                     if (Ped.Pedestrian.CurrentVehicle.Exists())
                     {
                         NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.GetRandomNumber(40f, 60f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(50f, 70f));
+
+
+
+                        //NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle,
+                        //    0, Player.Character,//target vehicle and ped
+                        //    0f, 0f, 0f,//coordinated, shouldnt be needed
+                        //    Settings.SettingsManager.DebugSettings.HeliMission,//MISSION
+                        //    100f,//Cruise SPeed
+                        //    50f,//Target Reached DIst
+                        //    -1f,//Heli Orientation
+                        //    50,//flight height
+                        //    50, //min hiehg tabove terrain
+                        //    -1.0f,//slowdown distance
+                        //    0//HELIMODE heli flags, 0 is none
+                        //    );
+
+
+/*
+ENUM VEHICLE_MISSION
+    MISSION_NONE = 0,               // 0
+    MISSION_CRUISE,                 // 1
+    MISSION_RAM,                    // 2
+    MISSION_BLOCK,                  // 3
+    MISSION_GOTO,                   // 4
+    MISSION_STOP,                   // 5
+    MISSION_ATTACK,                 // 6
+    MISSION_FOLLOW,                 // 7
+    MISSION_FLEE,                   // 8
+    MISSION_CIRCLE,                 // 9
+    MISSION_ESCORT_LEFT,            // 10
+    MISSION_ESCORT_RIGHT,           // 11
+    MISSION_ESCORT_REAR,            // 12
+    MISSION_ESCORT_FRONT,           // 13
+    MISSION_GOTO_RACING,            // 14
+    MISSION_FOLLOW_RECORDING,       // 15
+    MISSION_POLICE_BEHAVIOUR,       // 16
+    MISSION_PARK_PERPENDICULAR,     // 17
+    MISSION_PARK_PARALLEL,          // 18
+    MISSION_LAND,                   // 19
+    MISSION_LAND_AND_WAIT,          // 20
+    MISSION_CRASH,                  // 21
+    MISSION_PULL_OVER,               // 22
+	MISSION_PROTECT					// 23
+ENDENUM */
+
+
                         //if (Player.Character.CurrentVehicle.Exists())
                         //{
                         //    NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, 0.0f, 0.0f, RandomItems.GetRandomNumber(70f, 80f));//NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, Player.Character.CurrentVehicle, Player.Character, pedPos.X, pedPos.Y, pedPos.Z, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);//NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, Player.Character.CurrentVehicle, Player.Character, pedPos.X, pedPos.Y, pedPos.Z, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);

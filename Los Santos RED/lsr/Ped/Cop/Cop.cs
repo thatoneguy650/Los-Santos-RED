@@ -129,6 +129,14 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public bool IsRoadblockSpawned { get; set; } = false;
     public bool IsOffDuty { get; set; } = false;
 
+
+    public override void MatchPlayerPedType(IPedSwappable Player)
+    {
+        Player.RemoveAgencyStatus();
+        Player.SetAgencyStatus(AssignedAgency);
+    }
+
+
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;

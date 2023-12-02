@@ -29,10 +29,14 @@ public class DeathMenu : ModUIMenu
     }
     public void Setup()
     {
-        Menu = new UIMenu("Wasted", "Choose Respawn");
+
+        string description = "Choose Respawn";
+        Distances = new List<DistanceSelect>();
+
+        Menu = new UIMenu("Wasted", description);
         Menu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
         MenuPool.Add(Menu);
-        Distances = new List<DistanceSelect> { new DistanceSelect("Closest", -1f), new DistanceSelect("20 M", 20f), new DistanceSelect("40 M", 40f), new DistanceSelect("100 M", 100f), new DistanceSelect("500 M", 500f), new DistanceSelect("Any", 1000f) };
+
     }
     public override void Hide()
     {
@@ -103,12 +107,27 @@ public class DeathMenu : ModUIMenu
     }
     private void CreateTakeoverItem()
     {
+        Distances.Clear();
+        if (Player.PedLastKilledPlayer != null && Player.PedLastKilledPlayer.Pedestrian.Exists())
+        {
+            Distances = new List<DistanceSelect>() { new DistanceSelect("Killer", -2f), };
+        }
+
+        List<DistanceSelect> RegularDistances = new List<DistanceSelect> { new DistanceSelect("Closest", -1f), new DistanceSelect("100 M", 100f), new DistanceSelect("500 M", 500f), new DistanceSelect("Any", 1000f) };
+        Distances.AddRange(RegularDistances);
+
+
+
         string takeoverRespawnText = "Takeover Pedestrian";
         string takeoverrespawnDescription = "Takeover a random pedestrian around the player.";
         UIMenuListScrollerItem<DistanceSelect> TakeoverRandomPed = new UIMenuListScrollerItem<DistanceSelect>(takeoverRespawnText, takeoverrespawnDescription, Distances);
         TakeoverRandomPed.Activated += (sender, selectedItem) =>
         {
-            if (TakeoverRandomPed.SelectedItem.Distance == -1f)
+            if (TakeoverRandomPed.SelectedItem.Distance == -2f)
+            {
+                PedSwap.BecomeKnownPed(Player.PedLastKilledPlayer, false, false);
+            }
+            else if (TakeoverRandomPed.SelectedItem.Distance == -1f)
             {
                 PedSwap.BecomeExistingPed(500f, true, false, true, true);
             }
@@ -123,5 +142,24 @@ public class DeathMenu : ModUIMenu
             Menu.Visible = false;
         };
         Menu.AddItem(TakeoverRandomPed);
+
+
+        //if (Player.PedLastKilledPlayer != null && Player.PedLastKilledPlayer.Pedestrian.Exists())
+        //{
+        //    //string takeoverKillerRespawnText = "Takeover Killer";
+        //    //string takeoverKillerrespawnDescription = $"Takeover your killer {Player.PedLastKilledPlayer.Name}";
+        //    //UIMenuItem TakeoverKillerPed = new UIMenuItem(takeoverKillerRespawnText, takeoverKillerrespawnDescription);
+        //    //TakeoverKillerPed.Activated += (sender, selectedItem) =>
+        //    //{
+        //    //    PedSwap.BecomeKnownPed(Player.PedLastKilledPlayer, false, false);
+        //    //    if (Settings.SettingsManager.RespawnSettings.PermanentDeathMode)//shouldnt be here!
+        //    //    {
+        //    //        GameSaves.DeleteSave();
+        //    //    }
+        //    //    Menu.Visible = false;
+        //    //};
+        //    //Menu.AddItem(TakeoverKillerPed);
+        //}
+
     }
 }

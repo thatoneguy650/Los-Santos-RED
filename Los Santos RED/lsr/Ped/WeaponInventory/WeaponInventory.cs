@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Media;
 
 public class WeaponInventory
 {
@@ -150,8 +150,11 @@ public class WeaponInventory
         }
         //EntryPoint.WriteToConsole($"{WeaponOwner.Handle} UPDATING LOADOUT");
         GetVehicleWeapon();
+
+
         if (HasVehicleWeapon && CurrentVehicleWeapon == 3450622333)//searchlight
         {
+           // EntryPoint.WriteToConsole($"{WeaponOwner.Handle} HANDLE SEARCHLIGHT IS RUNNING");
             HandleSearchlight(isNightTime);
             return;
         }
@@ -673,18 +676,43 @@ public class WeaponInventory
     {
         if (WeaponOwner.Pedestrian.Exists() && WeaponOwner.Pedestrian.CurrentVehicle.Exists())
         {
+            bool isChasingOtherPed = WeaponOwner.CurrentTask?.Name == "AIApprehend";
+            bool isChasingPlayer = !isChasingOtherPed && Player.IsWanted;
+            bool isChasingAnyone = isChasingOtherPed || Player.IsWanted;
             if (isNightTime)
             {
-                if (!NativeFunction.Natives.IS_VEHICLE_SEARCHLIGHT_ON<bool>(WeaponOwner.Pedestrian.CurrentVehicle))
+                if(isChasingAnyone)
                 {
-                    NativeFunction.Natives.SET_VEHICLE_SEARCHLIGHT(WeaponOwner.Pedestrian.CurrentVehicle, true, true);
-                    //EntryPoint.WriteToConsoleTestLong("TURNING SPOTLIGHT ON");
+                    if (!NativeFunction.Natives.IS_VEHICLE_SEARCHLIGHT_ON<bool>(WeaponOwner.Pedestrian.CurrentVehicle))
+                    {
+                        NativeFunction.Natives.SET_VEHICLE_SEARCHLIGHT(WeaponOwner.Pedestrian.CurrentVehicle, true, true);
+                        EntryPoint.WriteToConsole("TURNING SPOTLIGHT ON");
+                    }
+                    if (isChasingOtherPed)
+                    {
+                        if (WeaponOwner.CurrentTask.OtherTarget != null && WeaponOwner.CurrentTask.OtherTarget.Pedestrian.Exists() && WeaponOwner.CurrentTask.OtherTarget.WantedLevel > 0)
+                        {
+                            NativeFunction.Natives.SET_MOUNTED_WEAPON_TARGET(WeaponOwner.Pedestrian, WeaponOwner.CurrentTask.OtherTarget.Pedestrian, 0, 0f, 0f, 0f, 2, false);//2 == AIM
+                        }
+                    }
+                    else if (isChasingPlayer && WeaponOwner.RecentlySeenPlayer)
+                    {
+                        NativeFunction.Natives.SET_MOUNTED_WEAPON_TARGET(WeaponOwner.Pedestrian, Player.Character, 0, 0f, 0f, 0f, 2, false);//2 == AIM
+                    }
+                }
+                else
+                {
+                    if (NativeFunction.Natives.IS_VEHICLE_SEARCHLIGHT_ON<bool>(WeaponOwner.Pedestrian.CurrentVehicle))
+                    {
+                        NativeFunction.Natives.SET_VEHICLE_SEARCHLIGHT(WeaponOwner.Pedestrian.CurrentVehicle, false, true);
+                        EntryPoint.WriteToConsole("TURNING SPOTLIGHT OFF");
+                    }
                 }
             }
             else if (NativeFunction.Natives.IS_VEHICLE_SEARCHLIGHT_ON<bool>(WeaponOwner.Pedestrian.CurrentVehicle))
             {
                 NativeFunction.Natives.SET_VEHICLE_SEARCHLIGHT(WeaponOwner.Pedestrian.CurrentVehicle, false, true);
-                //EntryPoint.WriteToConsoleTestLong("TURNING SPOTLIGHT OFF");
+                EntryPoint.WriteToConsole("TURNING SPOTLIGHT OFF");
             }
         }
     }

@@ -66,11 +66,12 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     public int PurchasePrice { get; set; }
     public int SalesPrice { get; set; }
     public bool HasHeaderApartmentBuilding { get; set; } = false;
+    public bool DisableInteractAfterPurchase { get; set; } = false;
     public override string TypeName => IsOwnedOrRented ? "Residence" : "For Sale/Rental";
     public override int MapIcon { get; set; } = (int)BlipSprite.PropertyForSale;
     public override string ButtonPromptText { get; set; }
     public override int SortOrder => IsOwnedOrRented ? 1 : 999;
-    public override bool ShowInteractPrompt => !IgnoreEntranceInteract && CanInteract && !HasHeaderApartmentBuilding;
+    public override bool ShowInteractPrompt => !IgnoreEntranceInteract && CanInteract && !HasHeaderApartmentBuilding && (!IsOwnedOrRented || (IsOwnedOrRented && !DisableInteractAfterPurchase));
     public override bool IsBlipEnabled => base.IsBlipEnabled && !HasHeaderApartmentBuilding;
     public GameLocation GameLocation => this;
     public Residence(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
@@ -247,7 +248,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         }
         if (withCash)
         {
-            CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this);
+            CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this, withAnimations);
         }
 
         while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
@@ -368,7 +369,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         CreateOutfitInteractionMenu();
         SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, false);
         WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, false);
-        CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this);
+        CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this, false);
     }
     private void InteractionMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -450,7 +451,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
 
         SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, withAnimations);
         WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, withAnimations);
-        CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this);
+        CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this, withAnimations);
     }
     private void CreateOwnershipInteractionMenu()
     {
@@ -515,6 +516,11 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             ResidenceInterior.SetResidence(this);
             ResidenceInterior.Teleport(Player, this, StoreCamera);
             HasTeleported = true;
+            MenuPool.CloseAllMenus();
+        }
+        else if (DisableInteractAfterPurchase)
+        {
+            ResidenceInterior?.Load(true);
             MenuPool.CloseAllMenus();
         }
         else

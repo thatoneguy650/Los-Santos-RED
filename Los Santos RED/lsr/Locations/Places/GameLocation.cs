@@ -164,6 +164,7 @@ public class GameLocation : ILocationDispatchable
 
     public bool NoEntryCam { get; set; } = false;
 
+
     [XmlIgnore]
     public List<PedExt> LocationSpawnedPedExts { get; set; } = new List<PedExt>();
     [XmlIgnore]

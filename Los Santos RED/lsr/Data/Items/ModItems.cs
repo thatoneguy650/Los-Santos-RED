@@ -332,6 +332,10 @@ public class ModItems : IModItems
                 FindPercentage = 6,ItemSubType = ItemSubType.Ring },
             new ValuableItem("Silver Ring","Whats wrong with second place?", ItemType.Jewelry) {
                 FindPercentage = 5,ItemSubType = ItemSubType.Ring },
+
+
+            new ValuableItem("Cash Bundle","Cash", ItemType.Valuables) { ModelItemID = "prop_cash_pile_02",
+                ItemSubType = ItemSubType.Money },
         });
     }
     private void DefaultConfig_Drinks()

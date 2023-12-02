@@ -429,7 +429,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
 
 
 
-
+   
     public bool HasStartedEMTTreatment { get; set; } = false;
 
     public bool WasSeenInDistressByServicePed { get; set; } = false;
@@ -1036,6 +1036,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
 
 
         AttachedLSRBlip = myBlip;
+    }
+    public virtual void MatchPlayerPedType(IPedSwappable Player)
+    {
+        Player.RemoveAgencyStatus();
     }
     public void DeleteBlip()
     {

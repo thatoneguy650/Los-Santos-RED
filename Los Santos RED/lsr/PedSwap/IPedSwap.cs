@@ -14,7 +14,7 @@ namespace LosSantosRED.lsr.Interface
         void BecomeSamePed(string modelName, string fullName, int money, PedVariation variation, string voiceName);
 
 
-
+        void BecomeKnownPed(PedExt toBecome, bool deleteOld, bool clearNearPolice);
 
 
         void BecomeExistingPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice, bool createRandomPedIfNoneReturned);

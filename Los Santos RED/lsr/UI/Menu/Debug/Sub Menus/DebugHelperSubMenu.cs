@@ -962,9 +962,9 @@ public class DebugHelperSubMenu : DebugSubMenu
         {
             Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
             EntryPoint.WriteToConsole($"Closest Object = {ClosestEntity.Model.Name} {ClosestEntity.Model.Hash}", 5);
-            EntryPoint.WriteToConsole($"Closest Object X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
+            EntryPoint.WriteToConsole($"Closest Object Dimensions X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
 
-            EntryPoint.WriteToConsole($"Closest: {ClosestEntity.Model.Hash},new Vector3({ClosestEntity.Position.X}f, {ClosestEntity.Position.Y}f, {ClosestEntity.Position.Z}f)", 5);
+            EntryPoint.WriteToConsole($"Closest: {ClosestEntity.Model.Hash},new Vector3({ClosestEntity.Position.X}f, {ClosestEntity.Position.Y}f, {ClosestEntity.Position.Z}f) //{ClosestEntity.Heading}f", 5);
 
             uint GameTimeStartedDisplaying = Game.GameTime;
             while (Game.GameTime - GameTimeStartedDisplaying <= 2000)

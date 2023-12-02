@@ -41,7 +41,7 @@ public class DebugVehicleSubMenu : DebugSubMenu
     }
     private void CreateExtraMenuItem()
     {
-        UIMenuNumericScrollerItem<int> VehicleExtraMenuItem = new UIMenuNumericScrollerItem<int>("Set Extra", "Set the vehicle Extra", 1, 14, 1);
+        UIMenuNumericScrollerItem<int> VehicleExtraMenuItem = new UIMenuNumericScrollerItem<int>("Set Extra", "Set the vehicle Extra", 1, 14, 1) { Value = 1 };
         VehicleExtraMenuItem.Activated += (menu, item) =>
         {
             if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
@@ -56,6 +56,7 @@ public class DebugVehicleSubMenu : DebugSubMenu
     private void CreateColorMenuItem()//CreateColorMenuItem
     {
         UIMenuNumericScrollerItem<int> VehicleColorMenuItem = new UIMenuNumericScrollerItem<int>("Set Color", "Set the vehicle color", 0, 159, 1);
+        VehicleColorMenuItem.Value = VehicleColorMenuItem.Minimum;
         VehicleColorMenuItem.Activated += (menu, item) =>
         {
             if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
@@ -73,7 +74,8 @@ public class DebugVehicleSubMenu : DebugSubMenu
         {
             return;
         }
-        UIMenuNumericScrollerItem<int> LogLocationMenu = new UIMenuNumericScrollerItem<int>("Set Livery", "Set the vehicle Livery", 0, Total - 1, 1);
+        UIMenuNumericScrollerItem<int> LogLocationMenu = new UIMenuNumericScrollerItem<int>("Set Livery", "Set the vehicle Livery", 0, Total - 1, 1) ;
+        LogLocationMenu.Value = LogLocationMenu.Minimum;
         LogLocationMenu.Activated += (menu, item) =>
         {
             if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
@@ -93,6 +95,7 @@ public class DebugVehicleSubMenu : DebugSubMenu
             return;
         }
         UIMenuNumericScrollerItem<int> LogLocationMenu = new UIMenuNumericScrollerItem<int>("Set Livery 2", "Set the vehicle Livery 2", 0, Total - 1, 1);
+        LogLocationMenu.Value = LogLocationMenu.Minimum;
         LogLocationMenu.Activated += (menu, item) =>
         {
             if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())

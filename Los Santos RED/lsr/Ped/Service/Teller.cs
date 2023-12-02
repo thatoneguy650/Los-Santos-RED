@@ -30,7 +30,7 @@ public class Teller : PedExt
     public override void AddSpecificInteraction(ILocationInteractable player,MenuPool menuPool, UIMenu headerMenu, AdvancedConversation advancedConversation)
     {
         BankInteraction BankInteraction = new BankInteraction(player, AssociatedBank);
-        BankInteraction.Start(menuPool, headerMenu);
+        BankInteraction.Start(menuPool, headerMenu, true);
         base.AddSpecificInteraction(player, menuPool, headerMenu, advancedConversation);
     }
 }

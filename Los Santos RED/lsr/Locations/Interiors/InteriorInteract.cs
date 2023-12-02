@@ -276,7 +276,7 @@ public class InteriorInteract
         float prevDistanceToPos = 0f;
         bool isMoving = false;
         bool isInPosition = false;
-
+        uint GameTimeLastPrint = 0;
         while (Game.GameTime - GameTimeStartedMoving <= 15000 && !IsCancelled)
         {
             if (Player.IsMoveControlPressed)
@@ -300,7 +300,7 @@ public class InteriorInteract
                 isInPosition = true;
                 break;
             }
-            if (!isMoving && distanceToPos <= 0.5f && headingDiff <= 0.5f)
+            if (!isMoving && distanceToPos <= 0.7f && headingDiff <= 2.5f)
             {
                 isInPosition = true;
                 break;
@@ -310,6 +310,12 @@ public class InteriorInteract
                 isInPosition = true;
                 break;
             }
+
+            if (Game.GameTime - GameTimeLastPrint >= 500)
+            {
+                Game.DisplaySubtitle($"{distanceToPos} {headingDiff}");
+                GameTimeLastPrint = Game.GameTime;
+}
             GameFiber.Yield();
         }
         if(IsCancelled)

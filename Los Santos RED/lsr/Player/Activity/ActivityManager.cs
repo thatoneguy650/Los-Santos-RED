@@ -1662,6 +1662,22 @@ public class ActivityManager
         //string animation = isTaking ? "givetake1_b" : "givetake1_a";
        // NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", animation, 1.0f, -1.0f, 5000, (int)(AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);
     }
+    public void PerformCashAnimation(bool isTaking)
+    {
+        //prop_cash_pile_02.ydr
+
+        if (IsPerformingActivity)
+        {
+            return;
+        }
+
+        ModItem cashItem = ModItems.Get("Cash Bundle");
+        if(cashItem == null)
+        {
+            return;
+        }
+        cashItem.PerformItemAnimation(Player, isTaking);
+    }
     public Rage.Object AttachScrewdriverToPed(ModItem screwdriverItem, bool allowGeneric)
     {
         Rage.Object Screwdriver = null;

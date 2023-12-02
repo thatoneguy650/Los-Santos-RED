@@ -175,9 +175,12 @@ public class HealthState
             CurrentHealth = MyPed.Pedestrian.Health;
             CurrentArmor = MyPed.Pedestrian.Armor;
             CurrentTotal = CurrentHealth + CurrentArmor;
-            if (MyPed.Pedestrian.IsDead)
+            if (!HasLoggedDeath && MyPed.Pedestrian.IsDead)
             {
+
+                CurrentPlayer.GetKillingPed();
                 HasLoggedDeath = true;//need to check once after the ped died to see who killed them, but checking more is wasteful
+                return;
             }
             int prevHealth = Health;
             if (CurrentHealth < Health || CurrentArmor < Armor)
@@ -207,6 +210,9 @@ public class HealthState
             }
         }
     }
+
+
+
     public void Reset()
     {
         HasLoggedDeath = false;

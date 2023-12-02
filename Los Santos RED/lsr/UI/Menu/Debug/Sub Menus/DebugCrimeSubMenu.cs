@@ -38,7 +38,7 @@ public class DebugCrimeSubMenu : DebugSubMenu
         {
             if (SetWantedLevel.SelectedItem <= Settings.SettingsManager.PoliceSettings.MaxWantedLevel)
             {
-                Player.SetWantedLevel(SetWantedLevel.SelectedItem, "Debug Menu", true);
+                Player.PoliceResponse.ForceSetWanted(SetWantedLevel.SelectedItem);
                 menu.Visible = false;
             }
         };

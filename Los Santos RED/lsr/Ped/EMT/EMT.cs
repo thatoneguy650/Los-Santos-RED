@@ -85,4 +85,9 @@ public class EMT : PedExt
     {
         return $"Talk to {FormattedName}";
     }
+    public override void MatchPlayerPedType(IPedSwappable Player)
+    {
+        Player.RemoveAgencyStatus();
+        Player.SetAgencyStatus(AssignedAgency);
+    }
 }

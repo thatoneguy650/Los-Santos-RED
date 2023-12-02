@@ -9,6 +9,7 @@ using Rage;
 using LosSantosRED.lsr.Interface;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using Mod;
 
 public class CashStorage
 {
@@ -21,6 +22,7 @@ public class CashStorage
     private GameLocation GameLocation;
     private uint NotificationHandle;
     private UIMenuItem cashStorageSubMenuItem;
+    private bool WithAnimation;
     public CashStorage()
     {
 
@@ -33,21 +35,18 @@ public class CashStorage
         StoredCash = 0;
     }
 
-    public void CreateInteractionMenu(IInteractionable player, MenuPool MenuPool, UIMenu InteractionMenu, GameLocation gameLocation)//, IMessageDisplayable messageDisplayable)
+    public void CreateInteractionMenu(IInteractionable player, MenuPool MenuPool, UIMenu InteractionMenu, GameLocation gameLocation, bool withAnimation)//, IMessageDisplayable messageDisplayable)
     {
         Player = player;
         GameLocation = gameLocation;
+        WithAnimation = withAnimation;
         cashStorageSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Stored Cash");
         cashStorageSubMenuItem = InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1];
-
-
         cashStorageSubMenuItem.Description = "Manage stored cash.";
-
         if (GameLocation == null || !GameLocation.HasBannerImage)
         {
             cashStorageSubMenu.SetBannerType(EntryPoint.LSRedColor);
         }
-
         UpdateStoredCash();
     }
 
@@ -100,7 +99,16 @@ public class CashStorage
                 storeCashScroller.Value = 0;// Player.BankAccounts.GetOnHandCashSafe();
                 removeCashScroller.Value = 0;// StoredCash;
 
-                if(GameLocation != null)
+
+
+                if (WithAnimation)
+                {
+                    Player.ActivityManager.PerformCashAnimation(false);
+                }
+
+
+
+                if (GameLocation != null)
                 {
                     GameLocation.DisplayMessage("~g~Stored~s~", $"You have stored ${toStore}.~n~Current Balance: ${StoredCash}");
                 }
@@ -129,6 +137,14 @@ public class CashStorage
                 removeCashScroller.Maximum = StoredCash;
                 storeCashScroller.Value = 0;// Player.BankAccounts.GetOnHandCashSafe();
                 removeCashScroller.Value = 0;// StoredCash;
+
+
+                if (WithAnimation)
+                {
+                    Player.ActivityManager.PerformCashAnimation(true);
+                }
+
+
                 if (GameLocation != null)
                 {
                     GameLocation?.DisplayMessage("~g~Removed~s~", $"You have removed ${toRemove}.~n~Current Balance: ${StoredCash}");

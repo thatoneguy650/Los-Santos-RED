@@ -26,16 +26,18 @@ public class BankInteraction
     //private UIMenuNumericScrollerItem<int> withDrawCashScroller;
     private int MaxAccountValue = 5000000;
     private uint NotificationHandle;
+    private bool WithAnimation;
 
     public BankInteraction(ILocationInteractable player, Bank bank)
     {
         Player = player;
         Bank = bank;
     }
-    public void Start(MenuPool menuPool, UIMenu interactionMenu)
+    public void Start(MenuPool menuPool, UIMenu interactionMenu, bool withAnimation)
     {
         MenuPool = menuPool;
         InteractionMenu = interactionMenu;
+        WithAnimation = withAnimation;
         AddAccountsSubmenu();
         AddAccountItems();
         InteractionMenu.Visible = true;
@@ -167,6 +169,13 @@ public class BankInteraction
                 withDrawCashScroller.Maximum = bankAccount.Money;
                 depositCashScroller.Value = 0;// onHandCash;
                 withDrawCashScroller.Value = 0;//bankAccount.Money;
+
+                if (WithAnimation)
+                {
+                    Player.ActivityManager.PerformCashAnimation(true);
+                }
+
+
                 UpdateDescription(bankAccount);
                 DisplayMessage("~g~Deposit~s~", $"Deposit Amount: ${toDeposit}.~n~Balance: ${bankAccount.Money}");    
             }
@@ -189,6 +198,12 @@ public class BankInteraction
                 withDrawCashScroller.Maximum = bankAccount.Money;
                 depositCashScroller.Value = 0;//GetOnHandCash();
                 withDrawCashScroller.Value = 0;// bankAccount.Money;
+
+                if (WithAnimation)
+                {
+                    Player.ActivityManager.PerformCashAnimation(true);
+                }
+
                 UpdateDescription(bankAccount);
                 DisplayMessage("~g~Withdrawl~s~", $"Withdrawl Amount: ${towithdraw}.~n~Balance: ${bankAccount.Money}");
             }

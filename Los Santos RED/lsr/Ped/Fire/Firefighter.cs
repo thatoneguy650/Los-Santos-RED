@@ -100,5 +100,10 @@ public class Firefighter : PedExt, IWeaponIssuable
     {
         return $"Talk to {FormattedName}";
     }
+    public override void MatchPlayerPedType(IPedSwappable Player)
+    {
+        Player.RemoveAgencyStatus();
+        Player.SetAgencyStatus(AssignedAgency);
+    }
 
 }

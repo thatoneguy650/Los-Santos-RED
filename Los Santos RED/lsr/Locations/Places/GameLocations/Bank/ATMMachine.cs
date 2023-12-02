@@ -78,7 +78,7 @@ public class ATMMachine : GameLocation// i know m stand for machine, makes it ne
                         CreateInteractionMenu();
                         InteractionMenu.Visible = true;
                         BankInteraction = new BankInteraction(Player, AssociatedBank);
-                        BankInteraction.Start(MenuPool, InteractionMenu);
+                        BankInteraction.Start(MenuPool, InteractionMenu, true);
                         while (IsAnyMenuVisible || KeepInteractionGoing)
                         {
                             MenuPool.ProcessMenus();

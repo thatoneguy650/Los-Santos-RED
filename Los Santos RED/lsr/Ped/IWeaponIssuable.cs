@@ -31,6 +31,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsUsingMountedWeapon { get; set; }
         bool AlwaysHasLongGun { get; }
         LocationTaskRequirements LocationTaskRequirements { get; }
+        bool CanSeePlayer { get; }
+        bool RecentlySeenPlayer { get; }
 
         IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons);
         IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons);

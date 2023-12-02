@@ -160,6 +160,41 @@ public class PedSwap : IPedSwap
             EntryPoint.ModController.CrashUnload();
         }
     }
+
+
+
+
+    public void BecomeKnownPed(PedExt toBecome, bool deleteOld, bool clearNearPolice)
+    {
+        try
+        {
+            if(toBecome == null || !toBecome.Pedestrian.Exists())
+            {
+                return;
+            }
+            Game.FadeScreenOut(500, true);
+            ResetOffsetForCurrentModel();
+            Ped TargetPed = toBecome.Pedestrian;// FindPedToSwapWith(radius, nearest);
+            if (!TargetPed.Exists())
+            {
+                Game.FadeScreenIn(0);
+                return;
+            }
+            StoreTargetPedData(TargetPed);
+            NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
+            toBecome.MatchPlayerPedType(Player);
+            HandlePreviousPed(deleteOld, TargetPed);
+            PostTakeover(CurrentModelPlayerIs.Name, false, toBecome.Name, toBecome.Money, RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max), "");
+            GameFiber.Sleep(500);
+            Game.FadeScreenIn(500, true);
+            GiveHistory(false);
+        }
+        catch (Exception e3)
+        {
+            EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
+        }
+    }
+
     public void BecomeExistingPed(float radius, bool nearest, bool deleteOld, bool clearNearPolice, bool createRandomPedIfNoneReturned)
     {
         try

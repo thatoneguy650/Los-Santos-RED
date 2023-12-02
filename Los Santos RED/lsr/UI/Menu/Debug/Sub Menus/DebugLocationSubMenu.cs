@@ -194,6 +194,42 @@ public class DebugLocationSubMenu : DebugSubMenu
         LocationItemsMenu.AddItem(TurnOffCayo);
 
 
+
+
+        UIMenuItem RemoveIPL = new UIMenuItem("Remove IPL", "Remove an IPL by text entry");
+        RemoveIPL.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+            string iplName = NativeHelper.GetKeyboardInput("");
+            if(string.IsNullOrEmpty(iplName))
+            {
+                return;
+            }
+            NativeFunction.Natives.REMOVE_IPL(iplName);
+        };
+        LocationItemsMenu.AddItem(RemoveIPL);
+
+
+        UIMenuItem RequestIPL = new UIMenuItem("Request IPL", "Request an IPL by text entry");
+        RequestIPL.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+            string iplName = NativeHelper.GetKeyboardInput("");
+            if (string.IsNullOrEmpty(iplName))
+            {
+                return;
+            }
+            NativeFunction.Natives.REQUEST_IPL(iplName);
+        };
+        LocationItemsMenu.AddItem(RequestIPL);
+
+
+        //                    
+
+
+
+
+
         UIMenuItem DrawStreetTextMenu = new UIMenuItem("Draw Street Text", "Draw Street Text");
         DrawStreetTextMenu.Activated += (menu, item) =>
         {

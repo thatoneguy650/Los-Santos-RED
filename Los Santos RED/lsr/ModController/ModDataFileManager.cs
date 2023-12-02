@@ -188,10 +188,12 @@ public class ModDataFileManager
         GameFiber.Yield();
 
 
+
+
+#endif
+
         TestAnimations = new TestAnimations();
         TestAnimations.ReadConfig();
-
-#endif 
 
         //LanguageStrings = new LanguageStrings();
         //LanguageStrings.DefaultConfig();

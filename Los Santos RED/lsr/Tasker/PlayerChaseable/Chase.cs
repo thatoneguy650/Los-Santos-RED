@@ -606,6 +606,22 @@ public class Chase : ComplexTask
             if (Ped.IsInHelicopter)
             {
                 NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.GetRandomNumber(40f, 60f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -35f, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(80f, 120f)); // NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -50f, 50f, 60f);
+
+        //        NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle,
+        //0, Player.Character,//target vehicle and ped
+        //0f, 0f, 0f,//coordinated, shouldnt be needed
+        //Settings.SettingsManager.DebugSettings.HeliMission,//MISSION
+        //100f,//Cruise SPeed
+        //50f,//Target Reached DIst
+        //-1f,//Heli Orientation
+        //50,//flight height
+        //50, //min hiehg tabove terrain
+        //-1.0f,//slowdown distance
+        //0//HELIMODE heli flags, 0 is none
+        //);
+
+
+
             }
             //else if (Ped.IsInBoat)
             //{

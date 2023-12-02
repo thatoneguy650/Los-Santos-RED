@@ -41,4 +41,5 @@ public enum ItemSubType
     HealthPack,
     CellPhone,
     Paraphernalia,
+    Money,
 }

@@ -18,7 +18,8 @@ public class RestInteract : InteriorInteract
     public IRestableLocation RestableLocation {get;set;}
     public List<AnimationBundle> StartAnimations { get;set;}
     public List<AnimationBundle> LoopAnimations { get; set; }
-    public List<AnimationBundle> EndAnimations { get; set; } 
+    public List<AnimationBundle> EndAnimations { get; set; }
+    public bool UseDefaultAnimations { get; set; } = true;
     public RestInteract()
     {
     }
@@ -45,6 +46,7 @@ public class RestInteract : InteriorInteract
                 return;
             }
         }
+        EntryPoint.WriteToConsole("REST INTERACT GOT TO THE ANIMATION START");
         if (!DoRestAnimation())
         {
             Interior.IsMenuInteracting = false;
@@ -72,8 +74,9 @@ public class RestInteract : InteriorInteract
         Player.Character.Heading = Heading;
         HashSet<string> dictionaryList = new HashSet<string>();
 
-        if (StartAnimations == null && LoopAnimations == null && EndAnimations == null)
+        if (UseDefaultAnimations)
         {
+            EntryPoint.WriteToConsole("UseDefaultAnimations");
             StartAnimations = new List<AnimationBundle>() { new AnimationBundle("savem_default@", "m_getin_l", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" } };
             LoopAnimations = new List<AnimationBundle>() { new AnimationBundle("savem_default@", "m_sleep_l_loop", (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" } };
             EndAnimations = new List<AnimationBundle>() { new AnimationBundle("savem_default@", "m_getout_l", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" } };
