@@ -36,6 +36,9 @@ public class VehicleItem : ModItem
     public uint ModelHash { get; set; }
     public string OverrideMakeName { get; set; }
     public string OverrideClassName { get; set; }
+
+    public bool OverrideCannotLoadBodiesInRear { get; set; } = false;
+
     public bool OverrideLoadBodiesInBed { get; set; } = false;
     public Vector3 BedLoadOffsetOverride { get; set; }
     public bool OverrideTrunkAttachment { get; set; } = false;

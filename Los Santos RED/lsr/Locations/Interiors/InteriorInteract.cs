@@ -25,6 +25,7 @@ public class InteriorInteract
     protected float distanceTo;
     protected float GroundZ;
     protected bool HasGroundZ = false;
+   
     public InteriorInteract()
     {
 
@@ -51,6 +52,7 @@ public class InteriorInteract
 
     public bool UseNavmesh { get; set; } = true;
     public bool WithWarp { get; set; } = false;
+    public virtual bool ShouldAddPrompt => !Interior.IsMenuInteracting && distanceTo <= InteractDistance;
     public virtual void Setup()
     {
 
@@ -60,7 +62,7 @@ public class InteriorInteract
 
 
 
-    public void DisplayMarker()
+    public void DisplayMarker(int markerType, float zOffset, float markerScale)
     {
         if(DistanceTo >= 30)
         {
@@ -73,7 +75,11 @@ public class InteriorInteract
             GroundZ = entranceZPosition;
             HasGroundZ = true;
         }
-        NativeFunction.Natives.DRAW_MARKER(1, Position.X, Position.Y, GroundZ, 0f, 0f, 0f, 0f, 0f, 0f, 1.0f, 1.0f, 1.0f,
+        NativeFunction.Natives.DRAW_MARKER(markerType, 
+            Position.X, Position.Y, GroundZ + zOffset, 
+            0f, 0f, 0f, 
+            0f, 0f, 0f,
+            markerScale, markerScale, markerScale,
             EntryPoint.LSRedColor.R, EntryPoint.LSRedColor.G, EntryPoint.LSRedColor.B, EntryPoint.LSRedColor.A,
             false, false, 2, true, 0, 0, false);//false, true, 2, true, 0, 0, false);
     }
@@ -119,7 +125,7 @@ public class InteriorInteract
         }
         distanceTo = Player.Character.DistanceTo(Position);
         //EntryPoint.WriteToConsole($"InteriorInteract UPDATE RAN {distanceTo}");
-        if (!Interior.IsMenuInteracting && distanceTo <= InteractDistance)
+        if (ShouldAddPrompt)
         {
             canAddPrompt = true;
             //AddPrompt();
@@ -159,11 +165,11 @@ public class InteriorInteract
         }
         if (CameraPosition != Vector3.Zero)
         {
-            LocationCamera.MoveToPosition(CameraPosition, CameraDirection, CameraRotation, false);
+            LocationCamera.MoveToPosition(CameraPosition, CameraDirection, CameraRotation, false, true);
         }
         else if (CameraPosition == Vector3.Zero && AutoCamera)
         {
-            LocationCamera.AutoInterior(Position, Heading, false);
+            LocationCamera.AutoInterior(Position, Heading, false, true);
         }        
     }
     protected virtual void WaitForAnimation(string animDict, string animName)
@@ -311,11 +317,11 @@ public class InteriorInteract
                 break;
             }
 
-            if (Game.GameTime - GameTimeLastPrint >= 500)
-            {
-                Game.DisplaySubtitle($"{distanceToPos} {headingDiff}");
-                GameTimeLastPrint = Game.GameTime;
-}
+            //if (Game.GameTime - GameTimeLastPrint >= 500)
+            //{
+            //    Game.DisplaySubtitle($"{distanceToPos} {headingDiff}");
+            //    GameTimeLastPrint = Game.GameTime;
+            //}
             GameFiber.Yield();
         }
         if(IsCancelled)
@@ -324,5 +330,6 @@ public class InteriorInteract
         }
         return isInPosition;
     }
+
 }
 

@@ -98,6 +98,7 @@ public class DebugSettings : ISettingsDefaultable
     public bool DoBothAttachments { get; set; }
     public bool DoPhysicalAttachment { get; set; }
     public int HeliMission { get; set; }
+    public bool UseNewDrag { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -251,5 +252,8 @@ public class DebugSettings : ISettingsDefaultable
         //RagdollRotationOrder = 1;
 
         HeliMission = 6;
+
+
+        UseNewDrag = false;
     }
 }

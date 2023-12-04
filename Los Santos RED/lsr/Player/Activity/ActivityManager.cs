@@ -701,7 +701,7 @@ public class ActivityManager
             Game.DisplayHelp("Cancel existing activity to start");
             return;
         }
-        if (Settings.SettingsManager.DragSettings.UseLegacyDragSystem)
+        if (!Settings.SettingsManager.DebugSettings.UseNewDrag)
         {
             Drag drag = new Drag(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, World, VehicleSeatDoorData);
             if (drag.CanPerform(Actionable))

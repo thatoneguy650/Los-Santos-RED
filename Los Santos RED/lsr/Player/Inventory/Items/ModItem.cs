@@ -268,7 +268,7 @@ public class ModItem
             $"{(MeasurementName != "Item" || v > 1 ? MeasurementName : "")}" +
             $"{(v > 1 ? "(s)" : "")}" +
             $"{(MeasurementName != "Item" || v > 1 ? " - " : "")}" +
-            $"{(menuItem.PurchasePrice == 0 ? "" : $"${(v * menuItem.PurchasePrice)}")}",
+            $"{(menuItem.PurchasePrice == 0 ? "Free" : $"${(v * menuItem.PurchasePrice)}")}",
             Value = menuItem.MinimumPurchaseAmount
         };
         menuItem.PurchaseScroller = purchaseScroller;

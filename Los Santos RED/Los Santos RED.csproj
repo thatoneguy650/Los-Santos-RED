@@ -136,6 +136,7 @@
     <Compile Include="lsr\Data\Peds\AnimationBundle.cs" />
     <Compile Include="lsr\Data\Peds\TestAnimation.cs" />
     <Compile Include="lsr\Data\Peds\TestAnimations.cs" />
+    <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\PedLoadingSettings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\TaxiSettings.cs" />
     <Compile Include="lsr\Dispatcher\LE\MarshalDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Civilian\TaxiDispatcher.cs" />
@@ -520,6 +521,7 @@
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugTeleportSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugTimeSubMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugTrunkSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugVehicleSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugWeaponsSubMenu.cs" />
     <Compile Include="lsr\UI\Other\UIMenuItemExt.cs" />

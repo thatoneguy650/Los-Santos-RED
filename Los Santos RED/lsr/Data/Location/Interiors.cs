@@ -578,9 +578,9 @@ public class Interiors : IInteriors
     }
     private void Residence()
     {
+
         PossibleInteriors.ResidenceInteriors.AddRange(new List<ResidenceInterior>()
         {
-
             new ResidenceInterior(60162,"Apartment") {//Motel Interior
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(151.817f, -1006.616f, -98.99998f),
@@ -741,6 +741,7 @@ public class Interiors : IInteriors
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(-16.20265f, -606.2855f, 100.2328f),
                 InteriorEgressHeading = 4.009807f,
+                ClearPositions = new List<Vector3>() { new Vector3(-19.51501f, -597.6929f, 94.02557f) },
                 InteractPoints = new List<InteriorInteract>(){
                     new ExitInteriorInteract("4intapt28Exit1",new Vector3(-16.20265f, -606.2855f, 100.2328f),4.009807f,"Exit") ,
                     new StandardInteriorInteract("4intapt28Standard1",new Vector3(-10.32665f, -591.5042f, 98.83028f),42.31462f,"Interact")
@@ -799,6 +800,7 @@ public class Interiors : IInteriors
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(-19.61186f, -581.8444f, 90.11483f),
                 InteriorEgressHeading = 91.7578f,
+                ClearPositions = new List<Vector3>() { new Vector3(-28.41244f, -585.5016f, 83.90755f) },
                 InteractPoints = new List<InteriorInteract>(){
                     new ExitInteriorInteract("4intapt30Exit1",new Vector3(-19.61186f, -581.8444f, 90.11483f),91.7578f,"Exit") ,
                     new StandardInteriorInteract("4intapt30Standard1",new Vector3(-33.56378f, -576.7966f, 88.71226f),276.5922f,"Interact")
@@ -856,6 +858,7 @@ public class Interiors : IInteriors
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(-1458.708f, -522.3859f, 69.55659f),
                 InteriorEgressHeading = 151.7898f,
+                ClearPositions = new List<Vector3>() { new Vector3(-1460.642f, -530.532f, 63.34938f) },
                 InteractPoints = new List<InteriorInteract>(){
                     new ExitInteriorInteract("dpheightApt4Exit1",new Vector3(-1458.061f, -520.9923f, 69.5566f), 314.0058f,"Exit") ,
                     new StandardInteriorInteract("dpheightApt4Std1",new Vector3(-1469.23f, -530.2661f, 68.15405f),32.30866f,"Interact")
@@ -875,11 +878,11 @@ public class Interiors : IInteriors
                 },
                 OutfitInteracts = new List<OutfitInteract>()
                 {
-                    new OutfitInteract("dpheightApt4Outfit1",new Vector3(-17.02242f, -570.6223f, 83.91838f), 248.39576f,"Change Outfit")
+                    new OutfitInteract("dpheightApt4Outfit1",new Vector3(-1467.755f, -537.3607f, 63.36013f), 302.0378f,"Change Outfit")
                     {
-                        CameraPosition = new Vector3(-1463.482f, -534.4659f, 64.56602f), 
-                        CameraDirection = new Vector3(-0.8161901f, -0.5353594f, -0.217311f), 
-                        CameraRotation = new Rotator(-12.55115f, 4.810719E-06f, 123.2619f)
+                        CameraPosition = new Vector3(-1464.091f, -534.6213f, 64.05119f), 
+                        CameraDirection = new Vector3(-0.8109046f, -0.5583638f, -0.17511f), 
+                        CameraRotation = new Rotator(-10.08506f, 4.335862E-06f, 124.5501f)
                     },
                 },
                 InventoryInteracts = new List<InventoryInteract>()
@@ -914,6 +917,7 @@ public class Interiors : IInteriors
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(-1458.221f, -523.283f, 56.92899f),
                 InteriorEgressHeading = 144.4565f,
+                ClearPositions = new List<Vector3>() { new Vector3(-1460.75f, -530.77f, 50.73058f) },
                 InteractPoints = new List<InteriorInteract>(){
                     new ExitInteriorInteract("dpheightApt7Exit1",new Vector3(-1457.777f, -520.5983f, 56.92899f), 306.839f,"Exit") ,
                     new StandardInteriorInteract("dpheightApt7Std1",new Vector3(-1469.766f, -529.8615f, 55.52639f),23.87169f,"Interact")
@@ -972,66 +976,193 @@ public class Interiors : IInteriors
 
                 //RESTnew Vector3(-1471.296f, -534.1364f, 50.72165f), startingHeading: 33.67384f
             },
-            new ResidenceInterior(61186,"Eclipse Towers, Apt 3") {
+            new ResidenceInterior(61186, "Eclipse Towers, Apt 3")//SP from PB
+            {
+                IsSPOnly = true,
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(-779.4249f, 339.4756f, 207.6208f),
                 InteriorEgressHeading = 113.7695f,
-                InteractPoints = new List<InteriorInteract>(){
-                    new ExitInteriorInteract("ecliApt3Exit1",new Vector3(-777.7397f, 340.0569f, 207.6208f), 271.6255f,"Exit") ,
-                    new StandardInteriorInteract("ecliApt3Std1",new Vector3(-792.1093f, 338.2278f, 206.2184f),11.25924f,"Interact")
-                    {
-                        CameraPosition = new Vector3(-795.7065f, 332.019f, 208.7504f),
-                        CameraDirection = new Vector3(0.3429281f, 0.8894085f, -0.3022463f),
-                        CameraRotation = new Rotator(-17.59257f, -4.478318E-07f, -21.08508f),
-                    },
-                    new AnimationInteract("ecliApt3Toilet1",new Vector3(-785.7243f, 333.1788f, 201.4215f), 317.1673f,"Use Toilet")
-                    {
-                        UseNavmesh = false,
-                        IsScenario = true,
-                        CameraPosition = new Vector3(-788.5071f, 332.3035f, 202.3353f), 
-                        CameraDirection = new Vector3(0.9028393f, 0.3129103f, -0.2949041f), 
-                        CameraRotation = new Rotator(-17.15178f, -1.20624E-05f, -70.88447f)
-                    },
-                },
-                OutfitInteracts = new List<OutfitInteract>()
+                ClearPositions = new List<Vector3>() { new Vector3(-785.222f, 333.3687f, 201.4136f) },
+                RestInteracts = new List<RestInteract>()
                 {
-                    new OutfitInteract("ecliApt3Outfit1",new Vector3(-794.5327f, 331.9233f, 201.4244f), 268.0685f ,"Change Outfit")
+                    new RestInteract()
                     {
-                        CameraPosition = new Vector3(-790.35f, 331.6266f, 202.6446f), 
-                        CameraDirection = new Vector3(-0.9646187f, 0.0514039f, -0.2585893f), 
-                        CameraRotation = new Rotator(-14.98637f, -1.160034E-06f, 86.94963f)
+                        Name = "ecliApt3Rest1",
+                        Position = new Vector3(-796.193f, 336.6858f, 201.4136f),
+                        Heading = 4.0855f,
+                        InteractDistance = 1f,
+                        CameraPosition = new Vector3(-792.7014f, 336.5643f, 203.0321f),
+                        CameraDirection = new Vector3(-0.7737222f, 0.5073887f, -0.3793557f),
+                        CameraRotation = new Rotator(-22.29378f, -2.122321E-05f, 56.74408f),
+                        ButtonPromptText = "Sleep",
                     },
                 },
                 InventoryInteracts = new List<InventoryInteract>()
                 {
-                    new InventoryInteract("ecliApt3Inventory1",new Vector3(-788.9904f, 327.2951f, 206.2184f), 177.0418f ,"Access Items")
+                    new InventoryInteract()
                     {
-                        CanAccessCash = false,
                         CanAccessWeapons = false,
-                        CameraPosition = new Vector3(-792.4791f, 329.7375f, 207.2037f), 
-                        CameraDirection = new Vector3(0.6938594f, -0.7080619f, -0.1311772f), 
-                        CameraRotation = new Rotator(-7.537621f, -1.464066E-05f, -135.5804f)
+                        CanAccessCash = false,
+                        Name = "ecliApt3Inventory1",
+                        Position = new Vector3(-787.1135f, 326.8101f, 206.2184f),
+                        Heading = 233.2313f,
+                        CameraPosition = new Vector3(-791.9602f, 329.7868f, 207.9795f),
+                        CameraDirection = new Vector3(0.8108636f, -0.5609891f, -0.1667076f),
+                        CameraRotation = new Rotator(-9.596444f, 1.515308E-05f, -124.6771f),
+                        ButtonPromptText = "Access Items",
                     },
-                    new InventoryInteract("ecliApt3Inventory2",new Vector3(-801.4796f, 326.6167f, 206.2184f), 178.795f,"Access Cash/Weapons")
+                    new InventoryInteract()
                     {
                         CanAccessItems = false,
-                        CameraPosition = new Vector3(-797.5353f, 329.2945f, 207.1171f),
-                        CameraDirection = new Vector3(-0.8358095f, -0.5216284f, -0.1712493f),
-                        CameraRotation = new Rotator(-9.860467f, -1.646492E-05f, 121.9683f)
-                    }
+                        Name = "ecliApt3Inventory2",
+                        Position = new Vector3(-801.5412f, 326.3719f, 206.2184f),
+                        Heading = 180.9895f,
+                        CameraPosition = new Vector3(-799.5909f, 328.0801f, 207.6206f),
+                        CameraDirection = new Vector3(-0.5492002f, -0.7414261f, -0.3855729f),
+                        CameraRotation = new Rotator(-22.67931f, 2.590902E-05f, 143.4714f),
+                        ButtonPromptText = "Access Cash/Weapons",
+                    },
                 },
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract()
+                    {
+                        Name = "ecliApt3Outfit1",
+                        Position = new Vector3(-795.3344f, 331.6995f, 201.4244f),
+                        Heading = 270.0498f,
+                        CameraPosition = new Vector3(-791.5106f, 331.8639f, 202.628f),
+                        CameraDirection = new Vector3(-0.9758344f, 0.01968939f, -0.2176224f),
+                        CameraRotation = new Rotator(-12.56942f, -1.448785E-06f, 88.8441f),
+                        ButtonPromptText = "Change Outfit",
+                    },
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract()
+                    {
+                        Name = "ecliApt3Exit1",
+                        Position = new Vector3(-777.7397f, 340.0569f, 207.6208f),
+                        Heading = 271.6255f,
+                        ButtonPromptText = "Exit",
+                    },
+                    new StandardInteriorInteract()
+                    {
+                        Name = "ecliApt3Std1",
+                        Position = new Vector3(-792.1093f, 338.2278f, 206.2184f),
+                        Heading = 11.25924f,
+                        CameraPosition = new Vector3(-795.7065f, 332.019f, 208.7504f),
+                        CameraDirection = new Vector3(0.3429281f, 0.8894085f, -0.3022463f),
+                        CameraRotation = new Rotator(-17.59257f, -4.478318E-07f, -21.08508f),
+                    },
+                    new AnimationInteract()
+                    {
+                        IsScenario = true,
+                        Name = "ecliApt3Toilet1",
+                        Position = new Vector3(-785.222f, 333.3687f, 201.4136f),
+                        Heading = 176.2657f,
+                        CameraPosition = new Vector3(-787.2263f, 332.5878f, 202.7737f),
+                        CameraDirection = new Vector3(0.7613108f, 0.3867464f, -0.5204163f),
+                        CameraRotation = new Rotator(-31.36018f, 6.99886E-06f, -63.0694f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
+                    },
+                },
+            },
+            new ResidenceInterior(-674, "Eclipse Towers, Apt 3")//MP from PB
+            {
+                IsMPOnly = true,
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(-779.4249f, 339.4756f, 207.6208f),
+                InteriorEgressHeading = 113.7695f,
+                ClearPositions = new List<Vector3>() { new Vector3(-785.222f, 333.3687f, 201.4136f) },
                 RestInteracts = new List<RestInteract>()
                 {
-                    new RestInteract("ecliApt3Rest1",new Vector3(-796.3264f, 336.6161f, 201.4135f), 358.6736f,"Sleep")
+                    new RestInteract()
                     {
-                        CameraPosition = new Vector3(-792.834f, 335.8653f, 202.1105f), 
-                        CameraDirection = new Vector3(-0.6058555f, 0.7734321f, -0.1863919f),
-                        CameraRotation = new Rotator(-10.74229f, -9.993527E-06f, 38.0728f)
+                        Name = "ecliApt3Rest1",
+                        Position = new Vector3(-796.193f, 336.6858f, 201.4136f),
+                        Heading = 4.0855f,
+                        InteractDistance = 1.0f,
+                        CameraPosition = new Vector3(-792.7014f, 336.5643f, 203.0321f),
+                        CameraDirection = new Vector3(-0.7737222f, 0.5073887f, -0.3793557f),
+                        CameraRotation = new Rotator(-22.29378f, -2.122321E-05f, 56.74408f),
+                        ButtonPromptText = "Sleep",
+                    },
+                },
+                InventoryInteracts = new List<InventoryInteract>()
+                {
+                    new InventoryInteract()
+                    {
+                        CanAccessWeapons = false,
+                        CanAccessCash = false,
+                        Name = "ecliApt3Inventory1",
+                        Position = new Vector3(-787.1135f, 326.8101f, 206.2184f),
+                        Heading = 233.2313f,
+                        CameraPosition = new Vector3(-791.9602f, 329.7868f, 207.9795f),
+                        CameraDirection = new Vector3(0.8108636f, -0.5609891f, -0.1667076f),
+                        CameraRotation = new Rotator(-9.596444f, 1.515308E-05f, -124.6771f),
+                        ButtonPromptText = "Access Items",
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessItems = false,
+                        Name = "ecliApt3Inventory2",
+                        Position = new Vector3(-784.2221f, 330.7322f, 207.6296f),
+                        Heading = 97.70668f,
+                        CameraPosition = new Vector3(-781.3085f, 328.6723f, 209.324f),
+                        CameraDirection = new Vector3(-0.7612467f, 0.5483233f, -0.3461864f),
+                        CameraRotation = new Rotator(-20.25423f, 1.274064E-05f, 54.23493f),
+                        ButtonPromptText = "Access Cash/Weapons",
+                    },
+                },
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract()
+                    {
+                        Name = "ecliApt3Outfit1",
+                        Position = new Vector3(-795.3344f, 331.6995f, 201.4244f),
+                        Heading = 270.0498f,
+                        CameraPosition = new Vector3(-791.5106f, 331.8639f, 202.628f),
+                        CameraDirection = new Vector3(-0.9758344f, 0.01968939f, -0.2176224f),
+                        CameraRotation = new Rotator(-12.56942f, -1.448785E-06f, 88.8441f),
+                        ButtonPromptText = "Change Outfit",
+                    },
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract()
+                    {
+                        Name = "ecliApt3Exit1",
+                        Position = new Vector3(-777.7397f, 340.0569f, 207.6208f),
+                        Heading = 271.6255f,
+                        ButtonPromptText = "Exit",
+                    },
+                    new StandardInteriorInteract()
+                    {
+                        Name = "ecliApt3Std1",
+                        Position = new Vector3(-792.1093f, 338.2278f, 206.2184f),
+                        Heading = 11.25924f,
+                        CameraPosition = new Vector3(-795.7065f, 332.019f, 208.7504f),
+                        CameraDirection = new Vector3(0.3429281f, 0.8894085f, -0.3022463f),
+                        CameraRotation = new Rotator(-17.59257f, -4.478318E-07f, -21.08508f),
+                    },
+                    new AnimationInteract()
+                    {
+                        IsScenario = true,
+                        Name = "ecliApt3Toilet1",
+                        Position = new Vector3(-785.222f, 333.3687f, 201.4136f),
+                        Heading = 176.2657f,
+                        CameraPosition = new Vector3(-787.2263f, 332.5878f, 202.7737f),
+                        CameraDirection = new Vector3(0.7613108f, 0.3867464f, -0.5204163f),
+                        CameraRotation = new Rotator(-31.36018f, 6.99886E-06f, -63.0694f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
                     },
                 },
             },
             new ResidenceInterior(-675,"Richard Majestic, Apt 2") {
                 IsTeleportEntry = true,
+                ClearPositions = new List<Vector3>() { new Vector3(-918.4091f, -376.0463f, 103.2419f) },
                 InteriorEgressPosition = new Vector3(-915.4658f, -367.6183f, 109.4403f),
                 InteriorEgressHeading = 142.9073f,
                 InteractPoints = new List<InteriorInteract>(){
@@ -1092,6 +1223,7 @@ public class Interiors : IInteriors
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(-601.3342f, 63.16429f, 108.027f),
                 InteriorEgressHeading = 102.5944f,
+                ClearPositions = new List<Vector3>() { new Vector3(-608.015f, 58.23079f, 101.8285f) },
                 InteractPoints = new List<InteriorInteract>(){
                     new ExitInteriorInteract("tinselApt42Exit1",new Vector3(-600.2047f, 64.93344f, 108.027f), 271.8336f ,"Exit") ,
                     new StandardInteriorInteract("tinselApt42Std1",new Vector3(-614.5223f, 63.66457f, 106.6245f),350.1266f,"Interact")
@@ -1207,9 +1339,72 @@ public class Interiors : IInteriors
                     },
                 },
             },
-
-
         });
+
+
+
+
+        //new ResidenceInterior(61186,"Eclipse Towers, Apt 3") {
+        //    IsTeleportEntry = true,
+        //    InteriorEgressPosition = new Vector3(-779.4249f, 339.4756f, 207.6208f),
+        //    InteriorEgressHeading = 113.7695f,
+        //    InteractPoints = new List<InteriorInteract>(){
+        //        new ExitInteriorInteract("ecliApt3Exit1",new Vector3(-777.7397f, 340.0569f, 207.6208f), 271.6255f,"Exit") ,
+        //        new StandardInteriorInteract("ecliApt3Std1",new Vector3(-792.1093f, 338.2278f, 206.2184f),11.25924f,"Interact")
+        //        {
+        //            CameraPosition = new Vector3(-795.7065f, 332.019f, 208.7504f),
+        //            CameraDirection = new Vector3(0.3429281f, 0.8894085f, -0.3022463f),
+        //            CameraRotation = new Rotator(-17.59257f, -4.478318E-07f, -21.08508f),
+        //        },
+        //        new AnimationInteract("ecliApt3Toilet1",new Vector3(-785.7243f, 333.1788f, 201.4215f), 317.1673f,"Use Toilet")
+        //        {
+        //            UseNavmesh = false,
+        //            IsScenario = true,
+        //            CameraPosition = new Vector3(-788.5071f, 332.3035f, 202.3353f), 
+        //            CameraDirection = new Vector3(0.9028393f, 0.3129103f, -0.2949041f), 
+        //            CameraRotation = new Rotator(-17.15178f, -1.20624E-05f, -70.88447f)
+        //        },
+        //    },
+        //    OutfitInteracts = new List<OutfitInteract>()
+        //    {
+        //        new OutfitInteract("ecliApt3Outfit1",new Vector3(-794.5327f, 331.9233f, 201.4244f), 268.0685f ,"Change Outfit")
+        //        {
+        //            CameraPosition = new Vector3(-790.35f, 331.6266f, 202.6446f), 
+        //            CameraDirection = new Vector3(-0.9646187f, 0.0514039f, -0.2585893f), 
+        //            CameraRotation = new Rotator(-14.98637f, -1.160034E-06f, 86.94963f)
+        //        },
+        //    },
+        //    InventoryInteracts = new List<InventoryInteract>()
+        //    {
+        //        new InventoryInteract("ecliApt3Inventory1",new Vector3(-788.9904f, 327.2951f, 206.2184f), 177.0418f ,"Access Items")
+        //        {
+        //            CanAccessCash = false,
+        //            CanAccessWeapons = false,
+        //            CameraPosition = new Vector3(-792.4791f, 329.7375f, 207.2037f), 
+        //            CameraDirection = new Vector3(0.6938594f, -0.7080619f, -0.1311772f), 
+        //            CameraRotation = new Rotator(-7.537621f, -1.464066E-05f, -135.5804f)
+        //        },
+        //        new InventoryInteract("ecliApt3Inventory2",new Vector3(-801.4796f, 326.6167f, 206.2184f), 178.795f,"Access Cash/Weapons")
+        //        {
+        //            CanAccessItems = false,
+        //            CameraPosition = new Vector3(-797.5353f, 329.2945f, 207.1171f),
+        //            CameraDirection = new Vector3(-0.8358095f, -0.5216284f, -0.1712493f),
+        //            CameraRotation = new Rotator(-9.860467f, -1.646492E-05f, 121.9683f)
+        //        }
+        //    },
+        //    RestInteracts = new List<RestInteract>()
+        //    {
+        //        new RestInteract("ecliApt3Rest1",new Vector3(-796.3264f, 336.6161f, 201.4135f), 358.6736f,"Sleep")
+        //        {
+        //            CameraPosition = new Vector3(-792.834f, 335.8653f, 202.1105f), 
+        //            CameraDirection = new Vector3(-0.6058555f, 0.7734321f, -0.1863919f),
+        //            CameraRotation = new Rotator(-10.74229f, -9.993527E-06f, 38.0728f)
+        //        },
+        //    },
+        //},
+
+
+
     }
     private void Other()
     {

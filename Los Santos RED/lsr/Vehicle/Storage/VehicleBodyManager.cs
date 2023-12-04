@@ -69,7 +69,6 @@ public class VehicleBodyManager
     }
     public void UpdateData()
     {
-
         IsTrunkOpen = CheckIsTrunkOpen();
         if (IsTrunkOpen)
         {
@@ -118,10 +117,12 @@ public class VehicleBodyManager
     public void CreateInteractionMenu(MenuPool menuPool, UIMenu VehicleInteractMenu, IVehicleSeatAndDoorLookup vehicleSeatDoorData, IEntityProvideable world)
     {
         Update(vehicleSeatDoorData, world);
+
         if(VehicleExt.VehicleBodyManager.StoredBodies == null || !VehicleExt.VehicleBodyManager.StoredBodies.Any())
         {
             return;
         }
+
         UIMenu UnloadBodiesSubMenu = menuPool.AddSubMenu(VehicleInteractMenu, "Unload Peds");
         VehicleInteractMenu.MenuItems[VehicleInteractMenu.MenuItems.Count() - 1].Description = "Unload peds from the vehicle.";
         UnloadBodiesSubMenu.SetBannerType(EntryPoint.LSRedColor);

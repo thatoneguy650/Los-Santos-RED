@@ -91,6 +91,10 @@ public class DebugMenu : ModUIMenu
         DebugSubMenus.Add(new DebugAnimationSubMenu(Debug, MenuPool, Player, ModDataFileManager));
         DebugSubMenus.Add(new DebugHelperSubMenu(Debug, MenuPool, Player, World, PlacesOfInterest, Settings,Time,PoliceRespondable, ModDataFileManager, Gangs));
         //DebugSubMenus.Add(new DebugOtherSubMenu(Debug, MenuPool, Player));
+
+
+        DebugSubMenus.Add(new DebugTrunkSubMenu(Debug, MenuPool, Player, ModDataFileManager, World));
+
         DebugSubMenus.Add(new DebugPerformanceSubMenu(Debug, MenuPool, Player));
 #if DEBUG
         DebugSubMenus.Add(new DebugLCYMAPSubMenu(Debug, MenuPool, Player));

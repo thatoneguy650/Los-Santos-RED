@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IInteriorManageable
     {
+        Ped Character { get; }
     }
 }

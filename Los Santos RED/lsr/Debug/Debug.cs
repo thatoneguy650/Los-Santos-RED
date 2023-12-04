@@ -2496,43 +2496,43 @@ GameFiber.Sleep(1000);
 
     private void ShowBodyLoadPosition()
     {
-        GameFiber.Sleep(200);
-        VehicleExt TargetVehicle = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, 10f);//GetTargetVehicle();
-        if (TargetVehicle != null && TargetVehicle.Vehicle.Exists())//make sure we found a vehicle to change the plates of
-        {
-            TargetVehicle.OpenDoor(5, true);
-            Vector3 ChangeSpot = GetBodyLoadPosition(TargetVehicle.Vehicle);
-            GameFiber.StartNew(delegate
-            {
-                while (!Game.IsKeyDownRightNow(Keys.Space))
-                {
+        //GameFiber.Sleep(200);
+        //VehicleExt TargetVehicle = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, 10f);//GetTargetVehicle();
+        //if (TargetVehicle != null && TargetVehicle.Vehicle.Exists())//make sure we found a vehicle to change the plates of
+        //{
+        //    TargetVehicle.OpenDoor(5, true);
+        //    Vector3 ChangeSpot = GetBodyLoadPosition(TargetVehicle.Vehicle);
+        //    GameFiber.StartNew(delegate
+        //    {
+        //        while (!Game.IsKeyDownRightNow(Keys.Space))
+        //        {
 
-                    if (ChangeSpot != Vector3.Zero)
-                    {
-                        Rage.Debug.DrawArrowDebug(ChangeSpot, Vector3.Zero, Rotator.Zero, 1f, Color.White);
-                        Rage.Debug.DrawArrowDebug(new Vector3(ChangeSpot.X, ChangeSpot.Y, ChangeSpot.Z + 2.0f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
-                    }
-                    Game.DisplayHelp($"Press SPACE to Stop");
-                    GameFiber.Yield();
-                }
-            }, "Run Debug Logic");
-        }
+        //            if (ChangeSpot != Vector3.Zero)
+        //            {
+        //                Rage.Debug.DrawArrowDebug(ChangeSpot, Vector3.Zero, Rotator.Zero, 1f, Color.White);
+        //                Rage.Debug.DrawArrowDebug(new Vector3(ChangeSpot.X, ChangeSpot.Y, ChangeSpot.Z + 2.0f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+        //            }
+        //            Game.DisplayHelp($"Press SPACE to Stop");
+        //            GameFiber.Yield();
+        //        }
+        //    }, "Run Debug Logic");
+        //}
     }
-    private Vector3 GetBodyLoadPosition(Vehicle VehicleToChange)
-    {
-        if (!VehicleToChange.Exists())
-        {
-            return Vector3.Zero;
-        }
-        float halfLength = VehicleToChange.Model.Dimensions.Y / 2.0f;
-        halfLength += Settings.SettingsManager.DragSettings.LoadBodyYOffset;
-        //y = -.75
-        //z = 0.1
+    //private Vector3 GetBodyLoadPosition(Vehicle VehicleToChange)
+    //{
+    //    if (!VehicleToChange.Exists())
+    //    {
+    //        return Vector3.Zero;
+    //    }
+    //    float halfLength = VehicleToChange.Model.Dimensions.Y / 2.0f;
+    //    halfLength += Settings.SettingsManager.DragSettings.LoadBodyYOffset;
+    //    //y = -.75
+    //    //z = 0.1
 
-        Vector3 almostFinal = VehicleToChange.GetOffsetPositionFront(-1.0f * halfLength);
+    //    Vector3 almostFinal = VehicleToChange.GetOffsetPositionFront(-1.0f * halfLength);
 
-        return new Vector3(almostFinal.X + Settings.SettingsManager.DragSettings.LoadBodyXOffset, almostFinal.Y, almostFinal.Z + Settings.SettingsManager.DragSettings.LoadBodyZOffset);
-    }
+    //    return new Vector3(almostFinal.X + Settings.SettingsManager.DragSettings.LoadBodyXOffset, almostFinal.Y, almostFinal.Z + Settings.SettingsManager.DragSettings.LoadBodyZOffset);
+    //}
 
 
     private void ShowCarChangePosition()

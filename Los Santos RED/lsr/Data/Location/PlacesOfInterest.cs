@@ -2142,8 +2142,9 @@ public class PlacesOfInterest : IPlacesOfInterest
                 InteriorID = -673, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true },
 
             new Residence(new Vector3(-773.63f, 313.08f, 85.70f), 180f, "Eclipse Towers, Apt 3",""){
-                InteriorID = 61186, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true },
-
+                InteriorID = 61186, IsOnMPMap = false, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true },
+            new Residence(new Vector3(-773.63f, 313.08f, 85.70f), 180f, "Eclipse Towers, Apt 3",""){
+                InteriorID = -674, IsOnSPMap = false, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true },
 
             new Residence(new Vector3(-936.8324f, -379.2408f, 38.96133f), 113.6606f, "Richard Majestic, Apt 2",""){
                 InteriorID = -675, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true },
@@ -3326,27 +3327,27 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
                 //Interior
-                new GangConditionalLocation(new Vector3(971.816467f, -99.8478241f, 73.8474f), -91.0297010254408f, 15f),
-                new GangConditionalLocation(new Vector3(974.8826f, -102.941391f, 73.8451462f), -48.3885776299785f, 15f),
-                new GangConditionalLocation(new Vector3(975.626953f, -103.198563f, 73.8451462f), 12.9338919715037f, 15f),
-                new GangConditionalLocation(new Vector3(986.7446f, -96.68695f, 73.8463f), 173.034743819776f, 15f),
-                new GangConditionalLocation(new Vector3(986.6274f, -97.9422f, 73.84628f), -4.41515547349861f, 15f),
-                new GangConditionalLocation(new Vector3(972.4932f, -100.849388f, 73.8489456f), -48.7439833502982f, 15f),
-                new GangConditionalLocation(new Vector3(980.1498f, -96.69946f, 73.84508f), 22.6684449107764f, 15f),
-                new GangConditionalLocation(new Vector3(979.5529f, -97.06739f, 73.84508f), 87.3733135600339f, 15f),
-                new GangConditionalLocation(new Vector3(976.9317f, -102.2214f, 73.8451462f), -24.8327929818831f, 15f),
-                new GangConditionalLocation(new Vector3(978.093445f, -98.76374f, 73.84623f), 43.4646929301833f, 15f),
-                new GangConditionalLocation(new Vector3(977.76355f, -102.326866f, 73.8451462f), 44.4574569018065f, 15f),
-                new GangConditionalLocation(new Vector3(977.7962f, -101.360527f, 73.8451462f), 137.841613394778f, 15f),
-                new GangConditionalLocation(new Vector3(987.0077f, -96.86357f, 73.84618f), 132.933656921688f, 15f),
-                new GangConditionalLocation(new Vector3(972.1758f, -98.9215546f, 73.8468246f), -143.163302691733f, 15f),
-                new GangConditionalLocation(new Vector3(979.759766f, -92.25629f, 73.85039f), -137.889398074892f, 15f),
-                new GangConditionalLocation(new Vector3(978.332f, -92.69629f, 73.8880539f), 12.6807592176149f, 15f),
-                new GangConditionalLocation(new Vector3(974.4178f, -95.79578f, 73.84578f), -78.1144301822788f, 15f),
-                new GangConditionalLocation(new Vector3(974.7609f, -95.0500641f, 73.84506f), -171.647727589323f, 15f),
-                new GangConditionalLocation(new Vector3(978.042664f, -91.79474f, 73.845314f), -128.700243660805f, 15f),
-                new GangConditionalLocation(new Vector3(978.9906f, -92.40033f, 73.84508f), 57.2908520760442f, 15f),
-                new GangConditionalLocation(new Vector3(980.6458f, -92.52759f, 73.85923f), 135.731352539532f, 15f),
+                new GangConditionalLocation(new Vector3(971.816467f, -99.8478241f, 73.8474f), -91.0297010254408f, 15f)  { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(974.8826f, -102.941391f, 73.8451462f), -48.3885776299785f, 15f)  { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(975.626953f, -103.198563f, 73.8451462f), 12.9338919715037f, 15f)  { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(986.7446f, -96.68695f, 73.8463f), 173.034743819776f, 15f)  { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(986.6274f, -97.9422f, 73.84628f), -4.41515547349861f, 15f)  { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(972.4932f, -100.849388f, 73.8489456f), -48.7439833502982f, 15f)  { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(980.1498f, -96.69946f, 73.84508f), 22.6684449107764f, 15f)  { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(979.5529f, -97.06739f, 73.84508f), 87.3733135600339f, 15f)  { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(976.9317f, -102.2214f, 73.8451462f), -24.8327929818831f, 15f)  { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(978.093445f, -98.76374f, 73.84623f), 43.4646929301833f, 15f)  { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(977.76355f, -102.326866f, 73.8451462f), 44.4574569018065f, 15f)  { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(977.7962f, -101.360527f, 73.8451462f), 137.841613394778f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(987.0077f, -96.86357f, 73.84618f), 132.933656921688f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(972.1758f, -98.9215546f, 73.8468246f), -143.163302691733f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(979.759766f, -92.25629f, 73.85039f), -137.889398074892f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(978.332f, -92.69629f, 73.8880539f), 12.6807592176149f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(974.4178f, -95.79578f, 73.84578f), -78.1144301822788f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(974.7609f, -95.0500641f, 73.84506f), -171.647727589323f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(978.042664f, -91.79474f, 73.845314f), -128.700243660805f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(978.9906f, -92.40033f, 73.84508f), 57.2908520760442f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
+                new GangConditionalLocation(new Vector3(980.6458f, -92.52759f, 73.85923f), 135.731352539532f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario  },
 
 
             },

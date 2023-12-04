@@ -82,10 +82,14 @@ public class OtherViolations
     }
     private void SmallBodyCrimes()
     {
+
+        return;
         if(Player.IsInVehicle)
         {
             return;
         }
+
+       
         PedExt closestPedExt = World.Pedestrians.PedExts.Where(x => !x.IsDead && !x.IsUnconscious && x.DistanceToPlayer <= 0.65f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
         if(closestPedExt == null)
         {

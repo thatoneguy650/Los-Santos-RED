@@ -79,6 +79,10 @@ public class Interior
     public bool IsRestricted { get; set; } = false;
     public bool IsWeaponRestricted { get; set; } = false;
     public List<InteriorInteract> InteractPoints { get; set; } = new List<InteriorInteract>();
+
+
+    public List<Vector3> ClearPositions { get; set; } = new List<Vector3>();
+
     [XmlIgnore]
     public virtual List<InteriorInteract> AllInteractPoints => InteractPoints;
     public InteriorInteract ClosestInteract => AllInteractPoints.Where(x => x.CanAddPrompt).OrderBy(x => x.DistanceTo).FirstOrDefault();
@@ -274,10 +278,22 @@ public class Interior
             IsMenuInteracting = false;
             locationCamera?.StopImmediately(true);
             GameFiber.Sleep(1000);
+            RemoveExistingPeds();
+
+
             Game.FadeScreenIn(1500, true);
             Player.InteriorManager.OnTeleportedInside(InteractableLocation);
         }
     }
+
+    protected virtual void RemoveExistingPeds()
+    {
+        foreach(Vector3 position in ClearPositions)
+        {
+            NativeFunction.Natives.CLEAR_AREA(position.X, position.Y, position.Z, 5f, true, false, false, false);
+        }
+    }
+
     public virtual void UpdateInteractDistances()
     {
         foreach (InteriorInteract interiorInteract in AllInteractPoints)

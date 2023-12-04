@@ -31,6 +31,11 @@ public class LocationCamera
 
     private Vector3 CurrentFocusPosition;
 
+
+    private Vector3 HomePosition;
+    private Vector3 HomeDirection;
+    private Rotator HomeRotator;
+
     public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
     public float ItemPreviewHeading { get; set; } = 0f;
 
@@ -230,7 +235,7 @@ public class LocationCamera
             GameFiber.Sleep(1500);
         }
     }
-    public void MoveToPosition(Vector3 desiredPosition, Vector3 desiredDirection, Rotator desiredRotation, bool wait)
+    public void MoveToPosition(Vector3 desiredPosition, Vector3 desiredDirection, Rotator desiredRotation, bool wait, bool setHomePosition)
     {
         if (!StoreCam.Exists())
         {
@@ -273,6 +278,14 @@ public class LocationCamera
         CameraTo.Rotation = desiredRotation;
         CameraTo.Direction = desiredDirection;
         CameraTo.Active = true;
+
+
+        if(setHomePosition)
+        {
+            HomePosition = desiredPosition;
+            HomeRotator = desiredRotation;
+            HomeDirection = desiredDirection;
+        }
 
         NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(CameraTo, StoreCam, 1500, true, true);
         if (wait)
@@ -870,7 +883,7 @@ public class LocationCamera
         cameraRotator.RotateCameraByMouse();
     }
 
-    public void AutoInterior(Vector3 focusPosition, float focusHeading, bool wait)
+    public void AutoInterior(Vector3 focusPosition, float focusHeading, bool wait, bool setHomePosition)
     {
         if (!StoreCam.Exists())
         {
@@ -891,6 +904,7 @@ public class LocationCamera
             StoreCam.Rotation = new Rotator(r.X, r.Y, r.Z);
             StoreCam.Active = true;
         }
+
 
 
 
@@ -917,11 +931,113 @@ public class LocationCamera
         CameraTo.Direction = _direction;
         CameraTo.Active = true;
 
+
+
+        if (setHomePosition)
+        {
+            HomePosition = InitialCameraPosition;
+            HomeRotator = StoreCam.Rotation;
+            HomeDirection = _direction;
+        }
+
+
         NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(CameraTo, StoreCam, 1500, true, true);
         if (wait)
         {
             GameFiber.Sleep(1500);
         }
     }
+
+    public void RehighlightOriginalPosition()
+    {
+        Vector3 CurrentPosition = Vector3.Zero;
+        if (StoreCam.Exists())
+        {
+            CurrentPosition = StoreCam.Position;
+        }
+        //if (CurrentPosition.DistanceTo(HomePosition) <= 100f)
+        //{
+        //    TransitionFromLocation2();
+        //}
+        //else
+        //{
+            SetCamHome2();
+      //  }
+    }
+
+    private void TransitionFromLocation2()
+    {
+        EntryPoint.WriteToConsole("TRANSITION FROM LOCATION 2 RAN");
+        if (!StoreCam.Exists())
+        {
+            StoreCam = new Camera(false);
+        }
+
+        NativeFunction.Natives.CLEAR_FOCUS();
+
+
+
+        StoreCam.Position = HomePosition;
+        StoreCam.Rotation = HomeRotator;
+        StoreCam.Direction = HomeDirection;
+        StoreCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+
+
+        if (!CameraTo.Exists())
+        {
+            CameraTo = new Camera(false);
+        }
+        if (Camera.RenderingCamera != null)
+        {
+            CameraTo.Position = Camera.RenderingCamera.Position;
+            CameraTo.FOV = Camera.RenderingCamera.FOV;
+            CameraTo.Rotation = Camera.RenderingCamera.Rotation;
+        }
+        else
+        {
+            CameraTo.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+            CameraTo.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+            Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+            CameraTo.Rotation = new Rotator(r.X, r.Y, r.Z);
+            CameraTo.Active = true;
+        }
+        CameraTo.Active = true;
+        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(StoreCam, CameraTo, 1500, true, true);
+        GameFiber.Sleep(1500);
+        NativeFunction.Natives.CLEAR_FOCUS();
+        CurrentFocusPosition = Vector3.Zero;
+        isHighlightingLocation = false;
+    }
+
+
+    private void SetCamHome2()
+    {
+        EntryPoint.WriteToConsole("SET CAM HOME 2 RAN");
+        if (!StoreCam.Exists())
+        {
+            StoreCam = new Camera(false);
+        }
+        Game.FadeScreenOut(500, true);
+
+
+        StoreCam.Position = HomePosition;
+        StoreCam.Rotation = HomeRotator;
+        StoreCam.Direction = HomeDirection;
+        StoreCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+
+
+
+        NativeFunction.Natives.SET_FOCUS_POS_AND_VEL(StoreCam.Position.X, StoreCam.Position.Y, StoreCam.Position.Z, 0f, 0f, 0f);
+        StoreCam.Active = true;
+        isHighlightingLocation = false;
+        GameFiber.Sleep(500);
+        Game.FadeScreenIn(500, true);
+        CurrentFocusPosition = Vector3.Zero;
+
+
+        
+    }
+
+
 }
 

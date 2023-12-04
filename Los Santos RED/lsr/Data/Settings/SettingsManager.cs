@@ -70,6 +70,20 @@ public class SettingsManager
     [Category("Player Activity")]
     [Description("Drag Settings")]
     public DragSettings DragSettings { get; set; } = new DragSettings();
+
+    [Category("Player Activity")]
+    [Description("Ped Loading Settings")]
+    public PedLoadingSettings PedLoadingSettings { get; set; } = new PedLoadingSettings();
+
+
+
+
+
+
+
+
+
+
     [Category("Player Activity")]
     [Description("Binocular Settings")]
     public BinocularSettings BinocularSettings { get; set; } = new BinocularSettings();
@@ -192,7 +206,7 @@ public class SettingsManager
             RespawnSettings, VehicleSettings, PedSwapSettings, ActivitySettings, SprintSettings, ViolationSettings, RecoilSettings, SwaySettings, SelectorSettings, InvestigationSettings, CriminalHistorySettings, ScannerSettings, KeySettings, PlayerOtherSettings, CellphoneSettings,
             PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherSettings, VanillaSettings,DebugSettings,PerformanceSettings,TaxiSettings,
             UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings, NeedsSettings, RoadblockSettings, PoliceSpawnSettings,PoliceTaskSettings,PoliceSpeechSettings,PlayerSpeechSettings,FlashlightSettings, SecuritySettings,DragSettings,BinocularSettings
-            ,DoorToggleSettings,ShovelSettings
+            ,DoorToggleSettings,ShovelSettings,PedLoadingSettings
         };
     }
     public void SetDefault()

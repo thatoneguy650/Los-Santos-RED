@@ -138,7 +138,7 @@ public class HealthState
                 {
                     SetUnconscious(CurrentPlayer);
                 }
-                if(Settings.SettingsManager.DamageSettings.AllowAIPainYells && (HurtByPed || HurtByVehicle) && !MyPed.IsUnconscious && Health - prevHealth >= Settings.SettingsManager.DamageSettings.AIPainYellsDamageNeeded && MyPed.HasExistedFor >= 4000 && Game.GameTime - GameTimeLastYelledInPain >= 5000)
+                if(Settings.SettingsManager.DamageSettings.AllowAIPainYells && (HurtByPed || HurtByVehicle) && !MyPed.IsDead && !MyPed.IsUnconscious && Health - prevHealth >= Settings.SettingsManager.DamageSettings.AIPainYellsDamageNeeded && MyPed.HasExistedFor >= 4000 && Game.GameTime - GameTimeLastYelledInPain >= 5000)
                 {
                     MyPed.YellInPain(true);
                     MyPed.GameTimeLastInjured = Game.GameTime;
@@ -147,7 +147,7 @@ public class HealthState
                 }
             }
         }
-        if(MyPed.IsInWrithe && Settings.SettingsManager.DamageSettings.AllowAIPainYells)
+        if(!MyPed.IsUnconscious && !MyPed.IsDead && MyPed.IsInWrithe && Settings.SettingsManager.DamageSettings.AllowAIPainYells)
         {
             MyPed.YellInPain(false);
         }

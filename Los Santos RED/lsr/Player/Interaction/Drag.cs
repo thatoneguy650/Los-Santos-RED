@@ -589,7 +589,7 @@ public class Drag : DynamicActivity
             return;
         }
         Player.ButtonPrompts.RemovePrompts("Load");
-        if (Settings.SettingsManager.DragSettings.AllowLoadingBodies && !Player.ButtonPrompts.HasPrompt($"Load into {VehicleDoorSeatData.SeatName}"))
+        if (Settings.SettingsManager.PedLoadingSettings.AllowLoadingBodies && !Player.ButtonPrompts.HasPrompt($"Load into {VehicleDoorSeatData.SeatName}"))
         {
             Player.ButtonPrompts.AddPrompt("Load", $"Load into {VehicleDoorSeatData.SeatName}", $"Load into {VehicleDoorSeatData.SeatName}", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 1);
         }

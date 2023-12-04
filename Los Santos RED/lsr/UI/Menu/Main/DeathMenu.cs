@@ -108,7 +108,7 @@ public class DeathMenu : ModUIMenu
     private void CreateTakeoverItem()
     {
         Distances.Clear();
-        if (Player.PedLastKilledPlayer != null && Player.PedLastKilledPlayer.Pedestrian.Exists())
+        if (1==0 && Player.PedLastKilledPlayer != null && Player.PedLastKilledPlayer.Pedestrian.Exists())
         {
             Distances = new List<DistanceSelect>() { new DistanceSelect("Killer", -2f), };
         }

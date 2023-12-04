@@ -259,6 +259,10 @@ public class PurchaseMenu : ModUIMenu
         categoryMenu.OnMenuOpen += (sender) =>
         {
             Transaction.Store?.HighlightVehicle();
+
+
+
+
             GeneratePreview(categoryMenu, categoryMenu.CurrentSelection);
             EntryPoint.WriteToConsole("PURCHASE MENU ON MENU OPEN VEHICLE CATEGORY");
         };
@@ -266,7 +270,8 @@ public class PurchaseMenu : ModUIMenu
         {
             if(Transaction.IsInteriorInteract)
             {
-                Transaction.Store?.LocationCamera?.StopImmediately(false);
+                Transaction.Store?.LocationCamera?.RehighlightOriginalPosition();
+                //Transaction.Store?.LocationCamera?.StopImmediately(false);
             }
             else
             {

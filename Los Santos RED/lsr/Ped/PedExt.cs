@@ -804,12 +804,12 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                 int YellType = PossibleYells.PickRandom();
                 NativeFunction.Natives.PLAY_PAIN(Pedestrian, YellType, 0, 0);
 
-                //EntryPoint.WriteToConsoleTestLong($"YELL IN PAIN {Pedestrian.Handle} YellType {YellType}");
+                EntryPoint.WriteToConsole($"YELL IN PAIN {Pedestrian.Handle} YellType {YellType}");
             }
             else
             {
                 PlaySpeech("GENERIC_FRIGHTENED_HIGH", false);
-                //EntryPoint.WriteToConsoleTestLong($"CRY SPEECH FOR PAIN {Pedestrian.Handle}");
+                EntryPoint.WriteToConsole($"CRY SPEECH FOR PAIN {Pedestrian.Handle}");
             }
             GameTimeLastYelled = Game.GameTime;
         }

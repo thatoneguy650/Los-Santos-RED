@@ -704,8 +704,9 @@ public class WeaponInventory
                 {
                     if (NativeFunction.Natives.IS_VEHICLE_SEARCHLIGHT_ON<bool>(WeaponOwner.Pedestrian.CurrentVehicle))
                     {
-                        NativeFunction.Natives.SET_VEHICLE_SEARCHLIGHT(WeaponOwner.Pedestrian.CurrentVehicle, false, true);
-                        EntryPoint.WriteToConsole("TURNING SPOTLIGHT OFF");
+                        NativeFunction.Natives.SET_MOUNTED_WEAPON_TARGET(WeaponOwner.Pedestrian, 0, 0, 0f, 0f, 0f, 2, false);//2 == AIM
+                        //NativeFunction.Natives.SET_VEHICLE_SEARCHLIGHT(WeaponOwner.Pedestrian.CurrentVehicle, false, true);
+                        //EntryPoint.WriteToConsole("TURNING SPOTLIGHT OFF");
                     }
                 }
             }

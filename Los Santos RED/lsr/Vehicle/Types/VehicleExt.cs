@@ -999,6 +999,7 @@ namespace LSR.Vehicles
             AttachedBlip = Vehicle.AttachBlip();
             AttachedBlip.Sprite = (BlipSprite)OwnedBlipID;
             AttachedBlip.Color = Color.Red;
+            NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)AttachedBlip.Handle, true);
             EntryPoint.WriteToConsole($"OWNERSHIP BLIP CREATED");
             //EntryPoint.WriteToConsole($"PLAYER EVENT: AddOwnershipBlip", 5);
         }
@@ -1052,11 +1053,28 @@ namespace LSR.Vehicles
             VehicleDoorSeatData boneToReturn = null;
             foreach(VehicleDoorSeatData vdsd in vehicleSeatDoorData.VehicleDoorSeatDataList)
             {
-                if(!Vehicle.HasBone(vdsd.SeatBone))
+                Vector3 bonePositon = Vector3.Zero;
+                if (vdsd.SeatID == -2)//is trunk
                 {
-                    continue;
+                    if (Vehicle.HasBone(vdsd.SeatBone))
+                    {
+                        bonePositon = Vehicle.GetBonePosition(vdsd.SeatBone);
+                    }
+                    else
+                    {
+                        float halfLength = Vehicle.Model.Dimensions.Y / 2.0f;
+                        halfLength += 1.0f;
+                        bonePositon = Vehicle.GetOffsetPositionFront(-1.0f * halfLength);
+                    }
                 }
-                Vector3 bonePositon = Vehicle.GetBonePosition(vdsd.SeatBone);
+                else
+                {
+                    if (!Vehicle.HasBone(vdsd.SeatBone))
+                    {
+                        continue;
+                    }
+                    bonePositon = Vehicle.GetBonePosition(vdsd.SeatBone);
+                }
                 float currentBoneDistance = Player.Character.DistanceTo2D(bonePositon);
                 if(currentBoneDistance <= maxDistance && currentBoneDistance < closestBoneDistance)
                 {

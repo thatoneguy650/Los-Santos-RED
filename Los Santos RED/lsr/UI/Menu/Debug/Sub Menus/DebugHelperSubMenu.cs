@@ -133,6 +133,20 @@ public class DebugHelperSubMenu : DebugSubMenu
         };
         HelperMenuItem.AddItem(PrintLocClassStuffMenu);
 
+
+
+        UIMenuItem PrintInteriors = new UIMenuItem("Print Interiors Class", "Print some select class stuff to the log. Interiors.");
+        PrintInteriors.Activated += (menu, item) =>
+        {
+            PrintInteriorClasses(null);
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(PrintInteriors);
+
+
+
+
+
         UIMenuItem PrintLocBAseClassStuffMenu = new UIMenuItem("Print Location Class Base", "Print some select class stuff to the log. Locations Base.");
         PrintLocBAseClassStuffMenu.Activated += (menu, item) =>
         {
@@ -245,7 +259,10 @@ public class DebugHelperSubMenu : DebugSubMenu
 
 
     }
+    private void AddTrunkItems()
+    {
 
+    }
     private void AddAnimationItems()
     {
         //dead_1
@@ -803,8 +820,6 @@ public class DebugHelperSubMenu : DebugSubMenu
         int Number = 1;
         foreach (string locationType in ModDataFileManager.PlacesOfInterest.PossibleLocations.InteractableLocations().GroupBy(x => x.GetType().ToString()).Distinct().Select(x => x.Key))
         {
-            //WriteToClassCreator($"List<{locationType}> {locationType}List_{Number} = new List<{locationType}>()", 0, "Locations");
-            //WriteToClassCreator($"{{", 0, "Locations");
             foreach (GameLocation location2 in ModDataFileManager.PlacesOfInterest.PossibleLocations.InteractableLocations().Where(x => x.GetType().ToString() == locationType))
             {
                 string type = location2.GetType().ToString();
@@ -813,11 +828,28 @@ public class DebugHelperSubMenu : DebugSubMenu
                 WriteToClassCreator($"}};", 0, "Locations");
                 Number++;
             }
-            //WriteToClassCreator($"}};", 0, "Locations");
-            //WriteToClassCreator($"Locations.LocationTypeList.AddRange({locationType}List_{Number});", 0, "Locations");
-            //Number++;
         }
     }
+
+
+    private void PrintInteriorClasses(List<string> AllowedProperties)
+    {
+        File.WriteAllText(@"Plugins\\LosSantosRED\\Interiors.txt", string.Empty);
+        int Number = 1;
+        foreach (string locationType in ModDataFileManager.Interiors.PossibleInteriors.AllInteriors().GroupBy(x => x.GetType().ToString()).Distinct().Select(x => x.Key))
+        {
+            foreach (Interior location2 in ModDataFileManager.Interiors.PossibleInteriors.AllInteriors().Where(x => x.GetType().ToString() == locationType))
+            {
+                string type = location2.GetType().ToString();
+                WriteToClassCreator($"{type} {locationType}_{Number} = new {type}() {{", 0, "Interiors");
+                PrintClass(location2, AllowedProperties, "Interiors");
+                WriteToClassCreator($"}};", 0, "Interiors");
+                Number++;
+            }
+        }
+    }
+
+
     private void PrintClass(object dv, List<string> AllowedProperties, string fileName)
     {
         if (dv == null)
@@ -901,6 +933,16 @@ public class DebugHelperSubMenu : DebugSubMenu
                     WriteToClassCreator($"{property.Name} = new Vector3({propertyValue.X}f,{propertyValue.Y}f,{propertyValue.Z}f),", 0, fileName);
                 }
             }
+            else if (property.PropertyType == typeof(Rotator))
+            {
+                object main = property.GetValue(dv);
+                object secondary = property.GetValue(dvBase);
+                if (main == null || secondary == null || !main.Equals(secondary))
+                {
+                    Rotator propertyValue = (Rotator)property.GetValue(dv);
+                    WriteToClassCreator($"{property.Name} = new Rotator({propertyValue.Pitch}f,{propertyValue.Roll}f,{propertyValue.Yaw}f),", 0, fileName);
+                }
+            }
             else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(bool))
             {
                 object main = property.GetValue(dv);
@@ -934,9 +976,16 @@ public class DebugHelperSubMenu : DebugSubMenu
     }
     private void DoListItem(PropertyInfo property, object dv, string ListType, List<string> AllowedProperties, string fileName)
     {
+        if(property== null)
+        {
+            return;
+        }
         WriteToClassCreator($"{property.Name} = new {ListType}() {{", 0, fileName);
         var collection = (IEnumerable)property.GetValue(dv, null);
-
+        if(collection== null)
+        {
+            return;
+        }
 
         foreach (object obj in collection)
         {

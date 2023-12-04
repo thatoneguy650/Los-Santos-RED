@@ -59,9 +59,13 @@ public class InteriorManager
     }
     public void Update()
     {
-
         if (IsUpdatingSingleLocation)
         {
+            if(CurrentTeleportInteriorLocation != null && CurrentTeleportInteriorLocation.Interior != null && CurrentTeleportInteriorLocation.Interior.InteriorEgressPosition.DistanceTo(Player.Character) >= 50f)
+            {
+                EntryPoint.WriteToConsole($"YOU MOVED AWAY FROM {CurrentTeleportInteriorLocation.Name} TURNING OFF INTERIOR UPDATE");
+                OnTeleportedOutside(CurrentTeleportInteriorLocation);
+            }
             return;
         }
         foreach(GameLocation gameLocation in World.Places.ActiveLocations.ToList())
@@ -82,11 +86,6 @@ public class InteriorManager
                 }
                 StartInteriorChecking();
             }
-            //else
-            //{
-            //    gameLocation.Interior.RemoveButtonPrompts();
-            //}
-
         }
         InteriorUpdateLocations.RemoveAll(x => !x.IsActivated || !x.IsNearby || x.DistanceToPlayer >= 50f);
     }
@@ -138,17 +137,16 @@ public class InteriorManager
         }
         foreach(GameLocation location in InteriorUpdateLocations)
         {
+            if(location.Interior.IsMenuInteracting)
+            {
+                continue;
+            }
             foreach(InteriorInteract interiorInteract in location.Interior.AllInteractPoints)
             {
-                interiorInteract.DisplayMarker();
+                interiorInteract.DisplayMarker(Settings.SettingsManager.WorldSettings.InteriorMarkerType, Settings.SettingsManager.WorldSettings.InteriorMarkerZOffset, Settings.SettingsManager.WorldSettings.InteriorMarkerScale);
             }
         }
     }
-    private void DisplayMarkerAtPosition(InteriorInteract interiorInteract)
-    {
-
-    }
-
     private void UpdateClosestInteract()
     {
         if(Game.GameTime - GameTimeLastUpdatedDistances < 500)
@@ -191,8 +189,13 @@ public class InteriorManager
             OnClosestInteractChanged();
             EntryPoint.WriteToConsole($"UpdateClosestInteract CHANGED FROM {PrevClosestInteriorInteract.Position} TO NULL");
         }
+        else if (ClosestInteriorInteract != null && ClosestInteriorInteract.ShouldAddPrompt && !Interactionable.ButtonPrompts.HasPrompt(ClosestInteriorInteract.ButtonPromptText))
+        {
+            OnClosestInteractChanged();
+            EntryPoint.WriteToConsole($"UpdateClosestInteract NO PROMPT, READDING");
+        }
         PrevClosestInteriorInteract = ClosestInteriorInteract;
-        GameFiber.Yield();
+       // GameFiber.Yield();
     }
 
     private void OnClosestInteractChanged()

@@ -443,7 +443,7 @@ public class GameLocation : ILocationDispatchable
         {
             StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
         }
-        StoreCamera.MoveToPosition(desiredPosition, desiredDirection, desiredRotation, true);
+        StoreCamera.MoveToPosition(desiredPosition, desiredDirection, desiredRotation, true, true);
         StandardInteract(StoreCamera, true);
     }
 
