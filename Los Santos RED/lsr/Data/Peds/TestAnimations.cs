@@ -43,7 +43,7 @@ public class TestAnimations
                 }
 
             }
-            file.Close();
+            file.Close(); 
         }       
     }
 
