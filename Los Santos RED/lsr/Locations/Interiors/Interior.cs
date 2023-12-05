@@ -134,12 +134,18 @@ public class Interior
                 }
                 foreach (string iplName in RequestIPLs)
                 {
-                    NativeFunction.Natives.REQUEST_IPL(iplName);
+                    if (!NativeFunction.Natives.IS_IPL_ACTIVE<bool>(iplName))
+                    {
+                        NativeFunction.Natives.REQUEST_IPL(iplName);
+                    }
                     GameFiber.Yield();
                 }
                 foreach (string iplName in RemoveIPLs)
                 {
-                    NativeFunction.Natives.REMOVE_IPL(iplName);
+                    if (NativeFunction.Natives.IS_IPL_ACTIVE<bool>(iplName))
+                    {
+                        NativeFunction.Natives.REMOVE_IPL(iplName);
+                    }
                     GameFiber.Yield();
                 }
                 foreach (string interiorSet in InteriorSets)

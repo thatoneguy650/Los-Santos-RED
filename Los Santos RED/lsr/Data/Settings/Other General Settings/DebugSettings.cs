@@ -100,6 +100,12 @@ public class DebugSettings : ISettingsDefaultable
     public int HeliMission { get; set; }
     public bool UseNewDrag { get; set; }
 
+
+
+    public float SynchedSceneOffsetX { get; set; }
+    public float SynchedSceneOffsetY { get; set; }
+    public float SynchedSceneOffsetZ { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {

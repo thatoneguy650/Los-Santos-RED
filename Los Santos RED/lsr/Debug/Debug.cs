@@ -18,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Policy;
 using System.Security.Principal;
 using System.Text;
@@ -1509,7 +1510,39 @@ private void DebugNumpad6()
 
     private void DebugNumpad7()
     {
-        ShowBodyLoadPosition();
+
+
+        Camera StoreCam = Camera.RenderingCamera;
+
+        if (StoreCam.Exists())
+        {
+            EntryPoint.WriteToConsole($"RENDERING CAMERA EXISTS {StoreCam.Position}");
+        }
+
+
+        //  string PlayingDict = "timetable@trevor@on_the_toilet";
+        //  string PlayingAnim = "trevonlav_baseloop";
+
+
+        //  AnimationDictionary.RequestAnimationDictionay(PlayingDict);
+
+
+        //  Vector3 Position = Game.LocalPlayer.Character.Position;
+        //  float Heading = Game.LocalPlayer.Character.Heading;
+
+
+        ////  Position = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(Settings.SettingsManager.DebugSettings.SynchedSceneOffsetX, Settings.SettingsManager.DebugSettings.SynchedSceneOffsetY, Settings.SettingsManager.DebugSettings.SynchedSceneOffsetZ)); //new Vector3(Position.X, Position.Y, Position.Z);
+
+        //  int PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", Position.X, Position.Y, Game.LocalPlayer.Character.Position.Z + Settings.SettingsManager.DebugSettings.SynchedSceneOffsetZ, 0.0f, 0.0f, Heading, 2);//270f //old
+        //  NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
+        //  NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, PlayingDict, PlayingAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
+        //  NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
+        //  while(!Game.IsKeyDown(Keys.W))
+        //  {
+        //      GameFiber.Yield();
+        //  }
+        //  Game.LocalPlayer.Character.Tasks.Clear();
+        //ShowBodyLoadPosition();
         //ShowCarChangePosition();
 
         //if(Player.InterestedVehicle == null)

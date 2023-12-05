@@ -41,6 +41,7 @@ namespace LosSantosRED.lsr.Interface
         LocationData CurrentLocation { get; }
         string Gender { get; }
         InteriorManager InteriorManager { get; }
+        OutfitManager OutfitManager { get; }
 
         void PlaySpeech(string v1, bool v2);
         void SetAngeredCop();

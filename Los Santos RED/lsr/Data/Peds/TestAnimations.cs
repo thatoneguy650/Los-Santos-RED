@@ -11,6 +11,7 @@ using System.Linq;
 public class TestAnimations
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\PedAnimList.txt";
+    private readonly string ConfigFileName2 = "Plugins\\LosSantosRED\\debug\\PedAnimList.txt";
     public List<TestAnimation> Animations { get; private set; } = new List<TestAnimation>();
 
     public TestAnimations()
@@ -19,11 +20,20 @@ public class TestAnimations
     }
     public void ReadConfig()
     {
+        string configToUse = ConfigFileName;
         if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Loaded Test Animations {ConfigFileName}", 0);
+            configToUse = ConfigFileName;
+        }
+        else if (File.Exists(ConfigFileName2))
+        {
+            configToUse = ConfigFileName2;
+        }
+        if (File.Exists(configToUse))
+        {
+            EntryPoint.WriteToConsole($"Loaded Test Animations {configToUse}", 0);
             string line;
-            System.IO.StreamReader file = new System.IO.StreamReader(ConfigFileName);
+            System.IO.StreamReader file = new System.IO.StreamReader(configToUse);
             while ((line = file.ReadLine()) != null)
             {
                 string[] words = line.Split(' ');
@@ -34,8 +44,7 @@ public class TestAnimations
 
             }
             file.Close();
-        }
-       
+        }       
     }
 
 }

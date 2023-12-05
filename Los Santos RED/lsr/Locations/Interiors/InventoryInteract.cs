@@ -13,7 +13,9 @@ public class InventoryInteract : InteriorInteract
     public bool CanAccessItems { get; set; } = true;
     public bool CanAccessWeapons { get; set; } = true;
     public bool CanAccessCash { get; set; } = true;
-
+    public List<ItemType> AllowedItemTypes { get; set; }
+    public List<ItemType> DisallowedItemTypes { get; set; }
+    public bool RemoveMenuBanner { get; set; } = true;
     [XmlIgnore]
     public IInventoryableLocation InventoryableLocation { get; set; }
     public InventoryInteract()
@@ -29,7 +31,7 @@ public class InventoryInteract : InteriorInteract
         Interior.IsMenuInteracting = true;
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
-        SetupCamera();
+        SetupCamera(false);
         if (!MoveToPosition())
         {
             Interior.IsMenuInteracting = false;
@@ -37,7 +39,8 @@ public class InventoryInteract : InteriorInteract
             LocationCamera?.StopImmediately(true);
             return;
         }
-        InventoryableLocation.CreateInventoryMenu(CanAccessItems, CanAccessWeapons, CanAccessCash);
+        NativeFunction.Natives.TASK_PAUSE(Player.Character, -1);
+        InventoryableLocation.CreateInventoryMenu(CanAccessItems, CanAccessWeapons, CanAccessCash, AllowedItemTypes, DisallowedItemTypes, RemoveMenuBanner);
         LocationCamera?.ReturnToGameplay(true);
         LocationCamera?.StopImmediately(true);
         Interior.IsMenuInteracting = false;

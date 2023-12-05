@@ -35,7 +35,7 @@ public class CashStorage
         StoredCash = 0;
     }
 
-    public void CreateInteractionMenu(IInteractionable player, MenuPool MenuPool, UIMenu InteractionMenu, GameLocation gameLocation, bool withAnimation)//, IMessageDisplayable messageDisplayable)
+    public void CreateInteractionMenu(IInteractionable player, MenuPool MenuPool, UIMenu InteractionMenu, GameLocation gameLocation, bool withAnimation, bool removeBanner)//, IMessageDisplayable messageDisplayable)
     {
         Player = player;
         GameLocation = gameLocation;
@@ -43,6 +43,10 @@ public class CashStorage
         cashStorageSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Stored Cash");
         cashStorageSubMenuItem = InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1];
         cashStorageSubMenuItem.Description = "Manage stored cash.";
+        if (removeBanner)
+        {
+            cashStorageSubMenu.RemoveBanner();
+        }
         if (GameLocation == null || !GameLocation.HasBannerImage)
         {
             cashStorageSubMenu.SetBannerType(EntryPoint.LSRedColor);

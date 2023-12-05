@@ -743,12 +743,14 @@ public class WeaponItem : ModItem
                 if (StoreCam.Exists())
                 {
                     Position = StoreCam.Position + StoreCam.Direction / 2f;
+                    EntryPoint.WriteToConsole($"CREATE WEAPON PREVIEW STORECAM EXISTS {StoreCam.Position}");
                 }
                 else
                 {
                     Vector3 GPCamPos = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
                     Vector3 GPCamDir = NativeHelper.GetGameplayCameraDirection();
                     Position = GPCamPos + GPCamDir / 2f;
+                    EntryPoint.WriteToConsole("CREATE WEAPON PREVIEW STORECAM DOES NOT EXIST");
                 }
 
                
@@ -776,12 +778,14 @@ public class WeaponItem : ModItem
                     if (StoreCam.Exists())
                     {
                         Position = StoreCam.Position + (StoreCam.Direction.ToNormalized() * 0.5f) + (StoreCam.Direction.ToNormalized() * LargestSideLength / 2f);//
+                        EntryPoint.WriteToConsole($"CREATE WEAPON PREVIEW STORECAM EXISTS {StoreCam.Position} 1");
                     }
                     else
                     {
                         Vector3 GPCamPos = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
                         Vector3 GPCamDir = NativeHelper.GetGameplayCameraDirection();
                         Position = GPCamPos + (GPCamDir.ToNormalized() * 0.5f) + (GPCamDir.ToNormalized() * LargestSideLength / 2f);
+                        EntryPoint.WriteToConsole("CREATE WEAPON PREVIEW STORECAM DOES NOT EXIST 2");
                     }
                     Transaction.SellingProp.Position = Position;
                     Transaction.SellingProp.SetRotationYaw(Transaction.SellingProp.Rotation.Yaw + 45f);

@@ -57,7 +57,22 @@ public class PurchaseMenu : ModUIMenu
     public void Setup()
     {
         //EntryPoint.WriteToConsoleTestLong($"PurchaseMenu: HasBannerImage {Transaction.HasBannerImage} RemoveBanner {Transaction.RemoveBanner}");
+
+        if (StoreCam.Exists())
+        {
+            EntryPoint.WriteToConsole($"PURCHASE MENU SETUP STORECAM EXISTS 1 {StoreCam.Position}");
+        }
+
+
+
         StoreCam = Camera.RenderingCamera;
+
+        if(StoreCam.Exists())
+        {
+            EntryPoint.WriteToConsole($"PURCHASE MENU SETUP STORECAM EXISTS 2 {StoreCam.Position}");
+        }
+
+
         if (ParentMenu != null)
         {
             string HeaderText = "Buy";

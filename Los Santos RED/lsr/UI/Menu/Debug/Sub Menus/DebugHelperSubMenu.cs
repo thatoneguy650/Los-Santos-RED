@@ -251,6 +251,20 @@ public class DebugHelperSubMenu : DebugSubMenu
 
         };
         HelperMenuItem.AddItem(killScripts);
+
+
+
+        UIMenuItem dotoiletsittingmenu = new UIMenuItem("Sit On Toilet", "");
+        dotoiletsittingmenu.Activated += (menu, item) =>
+        {
+            Player.ActivityManager.StartSittingOnToilet(false, false);
+
+            menu.Visible = false;
+
+        };
+        HelperMenuItem.AddItem(dotoiletsittingmenu);
+
+
         AddPhoneItems();
 
 

@@ -34,7 +34,7 @@ public class DebugOutfitSubMenu : DebugSubMenu
             UIMenuItem uIMenuItem = new UIMenuItem(so.Name);
             uIMenuItem.Activated += (sender, e) =>
             {
-                Player.OutfitManager.SetOutfit(so);
+                Player.OutfitManager.SetOutfit(so, false);
             };
             SubMenu.AddItem(uIMenuItem);
         }

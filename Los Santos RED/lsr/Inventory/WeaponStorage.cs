@@ -67,23 +67,31 @@ public class WeaponStorage
         StoredWeapons.Remove(storedWeapon);
         storedWeapon.GiveToPlayer(Weapons);
     }
-    public void CreateInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu menuToAdd, IWeapons weapons, IModItems modItems, bool withAnimations)
+    public void CreateInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu menuToAdd, IWeapons weapons, IModItems modItems, bool withAnimations, bool removeBanner)
     {
         Weapons = weapons;
         UIMenu WeaponsHeaderMenu = menuPool.AddSubMenu(menuToAdd, "Stored Weapons");
         menuToAdd.MenuItems[menuToAdd.MenuItems.Count() - 1].Description = "Manage Stored Weapons. Place items within storage, or retrieve them for use.";
-        WeaponsHeaderMenu.SetBannerType(EntryPoint.LSRedColor);
+        if (removeBanner)
+        {
+            WeaponsHeaderMenu.RemoveBanner();
+        }
+        else
+        {
+            WeaponsHeaderMenu.SetBannerType(EntryPoint.LSRedColor);
+        }
+
         player.WeaponEquipment.StoreWeapons();
         List<StoredWeapon> PlayerStoredWeapons = player.WeaponEquipment.StoredWeapons.Where(x=> (int)x.WeaponHash != -72657034).ToList();//parachute?
         foreach (StoredWeapon storedWeapon in StoredWeapons)
         {
-            storedWeapon.CreateManagementMenu(player, menuPool, this, WeaponsHeaderMenu, weapons, modItems, withAnimations);
+            storedWeapon.CreateManagementMenu(player, menuPool, this, WeaponsHeaderMenu, weapons, modItems, withAnimations, removeBanner);
         }
         foreach (StoredWeapon storedWeapon in PlayerStoredWeapons)
         {
             if (!StoredWeapons.Any(x => x.WeaponHash == storedWeapon.WeaponHash))
             {
-                storedWeapon.CreateManagementMenu(player, menuPool, this, WeaponsHeaderMenu, weapons, modItems, withAnimations);
+                storedWeapon.CreateManagementMenu(player, menuPool, this, WeaponsHeaderMenu, weapons, modItems, withAnimations, removeBanner);
             }
         }
     }

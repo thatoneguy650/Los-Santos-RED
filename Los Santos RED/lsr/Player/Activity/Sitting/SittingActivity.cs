@@ -35,6 +35,7 @@ namespace LosSantosRED.lsr.Player
         private CameraControl CameraControl;
         private ICameraControllable CameraControllable;
         private List<Rage.Object> CollisionObjects = new List<Rage.Object>();
+        private uint GameTimeLastGotHealth;
 
         private bool UseMaleAnimations => Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale;
         public SittingActivity(IActionable player, ISettingsProvideable settings, bool findSittingProp, bool enterForward, ISeats seats, ICameraControllable cameraControllable) : base()
@@ -46,6 +47,7 @@ namespace LosSantosRED.lsr.Player
             Seats = seats;
             CameraControllable = cameraControllable;
         }
+        public bool IsSittingOnToilet { get; set; } = false;
         public override ModItem ModItem { get; set; }
         public override string DebugString => "";
         public override bool CanPause { get; set; } = false;
@@ -162,6 +164,14 @@ namespace LosSantosRED.lsr.Player
                 {
                     IsCancelled = true;
                 }
+                if (IsSittingOnToilet)
+                {
+                    if (Game.GameTime - GameTimeLastGotHealth >= 5000)
+                    {
+                        Player.HealthManager.ChangeHealth(1);
+                        GameTimeLastGotHealth = Game.GameTime;
+                    }
+                }
                 Player.WeaponEquipment.SetUnarmed();
                 GameFiber.Yield();
             }
@@ -195,6 +205,13 @@ namespace LosSantosRED.lsr.Player
                     Vector3 Position = Game.LocalPlayer.Character.Position;
                     float Heading = Game.LocalPlayer.Character.Heading;
                     uint GameTimeStartedExiting = Game.GameTime;
+
+                    if (IsSittingOnToilet)
+                    {
+                        Position = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(Settings.SettingsManager.DebugSettings.SynchedSceneOffsetX, Settings.SettingsManager.DebugSettings.SynchedSceneOffsetY, Settings.SettingsManager.DebugSettings.SynchedSceneOffsetZ)); //new Vector3(Position.X, Position.Y, Position.Z);
+                    }
+
+
                     PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", Position.X, Position.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, Heading, 2);//270f //old
                     NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
                     NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, PlayingDict, PlayingAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
@@ -485,6 +502,13 @@ namespace LosSantosRED.lsr.Player
 
             Vector3 Position = Game.LocalPlayer.Character.Position;
             float Heading = Game.LocalPlayer.Character.Heading;
+
+
+            //if (IsSittingOnToilet)
+            //{
+            //    Position = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(Settings.SettingsManager.DebugSettings.SynchedSceneOffsetX, Settings.SettingsManager.DebugSettings.SynchedSceneOffsetY, Settings.SettingsManager.DebugSettings.SynchedSceneOffsetZ)); //new Vector3(Position.X, Position.Y, Position.Z);
+            //}
+
             PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", Position.X, Position.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, Heading, 2);//270f //old
             NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
             NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, PlayingDict, PlayingAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
@@ -496,6 +520,12 @@ namespace LosSantosRED.lsr.Player
             PlayingAnim = Data.AnimBase;
             Vector3 Position = Game.LocalPlayer.Character.Position;
             float Heading = Game.LocalPlayer.Character.Heading;
+
+            //if(IsSittingOnToilet)
+            //{
+            //    Position = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(Settings.SettingsManager.DebugSettings.SynchedSceneOffsetX, Settings.SettingsManager.DebugSettings.SynchedSceneOffsetY, Settings.SettingsManager.DebugSettings.SynchedSceneOffsetZ)); //new Vector3(Position.X, Position.Y, Position.Z);
+            //}
+
             PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", Position.X, Position.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, Heading, 2);//270f //old
             NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
             NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, PlayingDict, PlayingAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
@@ -529,10 +559,15 @@ namespace LosSantosRED.lsr.Player
                 }        
                 AnimExit = "exit_forward";
                 AnimExitDictionary = "amb@prop_human_seat_chair@male@generic@exit";
+
+
                 AnimIdle = new List<string>() { "idle_a", "idle_b", "idle_c" };
                 AnimIdleDictionary = "amb@prop_human_seat_chair@male@generic@idle_a";
                 AnimIdle2 = new List<string>() { "idle_d", "idle_e" };
                 AnimIdleDictionary2 = "amb@prop_human_seat_chair@male@generic@idle_b";
+
+
+
             }
             else
             {
@@ -555,6 +590,21 @@ namespace LosSantosRED.lsr.Player
                 AnimIdle2 = new List<string>() { "idle_d", "idle_e" };
                 AnimIdleDictionary2 = "amb@prop_human_seat_chair@female@legs_crossed@idle_b";
             }
+
+
+            //if(IsSittingOnToilet)
+            //{
+            //    AnimBase = "trevonlav_baseloop";
+            //    AnimBaseDictionary = "timetable@trevor@on_the_toilet";
+            //    AnimIdle = new List<string>() { "trevonlav_comehere", "trevonlav_backedup", "trevonlav_midwife", "trevonlav_struggleloop" };
+            //    AnimIdleDictionary = "timetable@trevor@on_the_toilet";
+            //    AnimIdle2 = new List<string>() { "trevonlav_comehere", "trevonlav_backedup", "trevonlav_midwife", "trevonlav_struggleloop" };
+            //    AnimIdleDictionary2 = "timetable@trevor@on_the_toilet";
+            //    AnimExit = "trev_on_toilet_exit";
+            //    AnimExitDictionary = "switch@trevor@on_toilet";
+            //}
+
+
             AnimationDictionary.RequestAnimationDictionay(AnimBaseDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);

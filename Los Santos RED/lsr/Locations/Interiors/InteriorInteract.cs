@@ -11,6 +11,7 @@ using System.Xml.Serialization;
 [XmlInclude(typeof(StandardInteriorInteract))]
 [XmlInclude(typeof(ExitInteriorInteract))]
 [XmlInclude(typeof(AnimationInteract))]
+[XmlInclude(typeof(ToiletInteract))]
 //UrinalInteract
 //ToiletInteract
 public class InteriorInteract
@@ -40,7 +41,7 @@ public class InteriorInteract
     public string Name { get; set; }
     public Vector3 Position { get; set; }
     public float Heading { get; set; }
-    public float InteractDistance { get; set; } = 2.0f;
+    public float InteractDistance { get; set; } = 1f;
     public Vector3 CameraPosition { get; set; } = Vector3.Zero;
     public Vector3 CameraDirection { get; set; } = Vector3.Zero;
     public Rotator CameraRotation { get; set; }
@@ -157,7 +158,7 @@ public class InteriorInteract
     {
 
     }
-    protected virtual void SetupCamera()
+    protected virtual void SetupCamera(bool wait)
     {
         if (LocationCamera == null)
         {
@@ -165,11 +166,11 @@ public class InteriorInteract
         }
         if (CameraPosition != Vector3.Zero)
         {
-            LocationCamera.MoveToPosition(CameraPosition, CameraDirection, CameraRotation, false, true);
+            LocationCamera.MoveToPosition(CameraPosition, CameraDirection, CameraRotation, wait, true);
         }
         else if (CameraPosition == Vector3.Zero && AutoCamera)
         {
-            LocationCamera.AutoInterior(Position, Heading, false, true);
+            LocationCamera.AutoInterior(Position, Heading, wait, true);
         }        
     }
     protected virtual void WaitForAnimation(string animDict, string animName)

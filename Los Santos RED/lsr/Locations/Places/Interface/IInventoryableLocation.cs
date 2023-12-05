@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
     public interface IInventoryableLocation
     {
-        void CreateInventoryMenu(bool withitems, bool withweapons, bool withcash);
+        void CreateInventoryMenu(bool withitems, bool withweapons, bool withcash, List<ItemType> AllowedItemTypes, List<ItemType> DisallowedItemTypes, bool removeBanner);
         LocationCamera LocationCamera { get; }
         GameLocation GameLocation { get; }
     }

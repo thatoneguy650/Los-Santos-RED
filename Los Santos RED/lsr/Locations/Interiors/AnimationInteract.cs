@@ -34,7 +34,7 @@ public class AnimationInteract : InteriorInteract
         Interior.IsMenuInteracting = true;
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
-        SetupCamera();
+        SetupCamera(false);
         if (!WithWarp)
         {
             if (!MoveToPosition())
@@ -74,6 +74,7 @@ public class AnimationInteract : InteriorInteract
         StopPerformingAnimation();
         LocationCamera?.ReturnToGameplay(true);
         LocationCamera?.StopImmediately(true);
+        
     }
     public override void AddPrompt()
     {

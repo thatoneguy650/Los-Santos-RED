@@ -51,6 +51,7 @@ public class LocationCamera
     public bool NoEntryCam { get; set; } = false;
     public Interior Interior { get; set; }
     public bool IsInterior { get; set; } = false;
+    public bool HasHomeCam => HomePosition != Vector3.Zero;
 
     public LocationCamera(GameLocation store, ILocationInteractable player, ISettingsProvideable settings, bool noEntryCam)
     {
@@ -955,14 +956,14 @@ public class LocationCamera
         {
             CurrentPosition = StoreCam.Position;
         }
-        //if (CurrentPosition.DistanceTo(HomePosition) <= 100f)
-        //{
-        //    TransitionFromLocation2();
-        //}
-        //else
-        //{
+        if (CurrentPosition.DistanceTo(HomePosition) <= 100f)
+        {
+            TransitionFromLocation2();
+        }
+        else
+        {
             SetCamHome2();
-      //  }
+        }
     }
 
     private void TransitionFromLocation2()
@@ -973,7 +974,7 @@ public class LocationCamera
             StoreCam = new Camera(false);
         }
 
-        NativeFunction.Natives.CLEAR_FOCUS();
+        //NativeFunction.Natives.CLEAR_FOCUS();
 
 
 
@@ -1004,7 +1005,7 @@ public class LocationCamera
         CameraTo.Active = true;
         NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(StoreCam, CameraTo, 1500, true, true);
         GameFiber.Sleep(1500);
-        NativeFunction.Natives.CLEAR_FOCUS();
+        //NativeFunction.Natives.CLEAR_FOCUS();
         CurrentFocusPosition = Vector3.Zero;
         isHighlightingLocation = false;
     }

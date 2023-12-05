@@ -121,14 +121,8 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             StandardInteract(storeCamera, false);
         }
     }
-    public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public override void OnInteract()
     {
-        //Player = player;
-        //ModItems = modItems;
-        //World = world;
-        //Settings = settings;
-        //Weapons = weapons;
-        //Time = time;
         if (IsLocationClosed())
         {
             return;
@@ -161,7 +155,6 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
                 SetupLocationCamera(locationCamera, isInside, false);
                 CreateInteractionMenu();
                 InteractionMenu.Visible = true;
-                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
                 if (!HasBannerImage)
                 {
                     InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
@@ -190,6 +183,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     {
         if (isInside)
         {
+            StoreCamera.ReturnToGameplay(true);
             StoreCamera.StopImmediately(true);
         }
         else if (!HasTeleported)
@@ -203,7 +197,6 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         Player.IsTransacting = true;
         CreateInteractionMenu();
         InteractionMenu.Visible = true;
-        InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
         if (!HasBannerImage)
         {
             InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
@@ -224,40 +217,40 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             Interior.IsMenuInteracting = false;
         }
     }
-    public void CreateInventoryMenu(bool withItems, bool withWeapons, bool withCash)
+    public void CreateInventoryMenu(bool withItems, bool withWeapons, bool withCash, List<ItemType> AllowedItemTypes, List<ItemType> DisallowedItemTypes, bool removeBanner)
     {
         Player.ActivityManager.IsInteractingWithLocation = true;
         Player.IsTransacting = true;
         CreateInteractionMenu();
-        InteractionMenu.Visible = true;
-        InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-        if (!HasBannerImage)
+        if(removeBanner)
+        {
+            InteractionMenu.RemoveBanner();
+        }
+        else if (!HasBannerImage)
         {
             InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
         }
-
+        InteractionMenu.Visible = true;
         InteractionMenu.Clear();
         bool withAnimations = Interior?.IsTeleportEntry == true;
         if (withItems)
         {
-            SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, withAnimations);
+            SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, withAnimations, AllowedItemTypes, DisallowedItemTypes, removeBanner);
         }
         if (withWeapons)
         {
-            WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, withAnimations);
+            WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, withAnimations, removeBanner);
         }
         if (withCash)
         {
-            CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this, withAnimations);
+            CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this, withAnimations, removeBanner);
         }
-
         while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
         {
             MenuPool.ProcessMenus();
             GameFiber.Yield();
         }
         DisposeInteractionMenu();
-        //StoreCamera?.StopImmediately(true);
         Player.ActivityManager.IsInteractingWithLocation = false;
         Player.IsTransacting = false;
         if (Interior != null)
@@ -265,19 +258,22 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             Interior.IsMenuInteracting = false;
         }
     }
-    public void CreateOutfitMenu()
+    public void CreateOutfitMenu(bool removeBanner, bool isInside)
     {
         Player.ActivityManager.IsInteractingWithLocation = true;
         Player.IsTransacting = true;
         CreateInteractionMenu();
         InteractionMenu.Visible = true;
-        InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-        if (!HasBannerImage)
+        if(removeBanner)
+        {
+            InteractionMenu.RemoveBanner();
+        }
+        else if (!HasBannerImage)
         {
             InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
         }
         InteractionMenu.Clear();
-        CreateOutfitInteractionMenu();
+        CreateOutfitInteractionMenu(removeBanner, isInside);
         while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
         {
             MenuPool.ProcessMenus();
@@ -357,27 +353,20 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         AddInquireItems();
         AddInteractionItems(isInside);
     }
-    private void GenerateSpecificInteractMenu(bool createOwnershipInteraction, bool createRestInteraction, bool createOutfitInteraction, bool createInventoryInteraction, bool createWeaponInteraction, bool createCashInteractionMenu)//needs toa lready be bought, some sort of restrict parameter to determine which it is?
-    {
-        if(!IsOwnedOrRented)
-        {
-            return;
-        }
-        InteractionMenu.Clear();
-        CreateOwnershipInteractionMenu();
-        CreateRestInteractionMenu();
-        CreateOutfitInteractionMenu();
-        SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, false);
-        WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, false);
-        CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this, false);
-    }
-    private void InteractionMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        if(selectedItem == RestMenuItem)
-        {
-            Rest(RestMenuItem.Value);
-        }
-    }
+    //private void GenerateSpecificInteractMenu(bool createOwnershipInteraction, bool createRestInteraction, bool createOutfitInteraction, bool createInventoryInteraction, bool createWeaponInteraction, bool createCashInteractionMenu)//needs toa lready be bought, some sort of restrict parameter to determine which it is?
+    //{
+    //    if(!IsOwnedOrRented)
+    //    {
+    //        return;
+    //    }
+    //    InteractionMenu.Clear();
+    //    CreateOwnershipInteractionMenu();
+    //    CreateRestInteractionMenu();
+    //    CreateOutfitInteractionMenu();
+    //    SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, false);
+    //    WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, false);
+    //    CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this, false);
+    //}
     private void AddInquireItems()
     {
         if ((!IsOwned && CanBuy) || (!IsRented && CanRent))
@@ -444,14 +433,14 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         {
             CreateRestInteractionMenu();
         }
-        CreateOutfitInteractionMenu();
+        CreateOutfitInteractionMenu(isInside, isInside);
 
 
         bool withAnimations = Interior?.IsTeleportEntry == true;
 
-        SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, withAnimations);
-        WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, withAnimations);
-        CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this, withAnimations);
+        SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, withAnimations, null, null, !isInside);
+        WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, withAnimations, !isInside);
+        CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this, withAnimations, !isInside);
     }
     private void CreateOwnershipInteractionMenu()
     {
@@ -484,19 +473,27 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     private void CreateRestInteractionMenu()
     {
         RestMenuItem = new UIMenuNumericScrollerItem<int>("Rest", "Rest at your residence to recover health. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
+        RestMenuItem.Activated += (sender, selectedItem) =>
+        {
+            Rest(RestMenuItem.Value);
+        };
         InteractionMenu.AddItem(RestMenuItem);
     }
-    private void CreateOutfitInteractionMenu()
+    private void CreateOutfitInteractionMenu(bool removeBanner, bool isInside)
     {
         outfitsSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Outfits");
-        if (!HasBannerImage)
+        if (removeBanner)
+        {
+            outfitsSubMenu.RemoveBanner();
+        }
+        else if (!HasBannerImage)
         {
             outfitsSubMenu.SetBannerType(EntryPoint.LSRedColor);
         }
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Set an outfit.";
-        UpdateOutfitInteractionSubMenu();
+        UpdateOutfitInteractionSubMenu(isInside);
     }
-    private void UpdateOutfitInteractionSubMenu()
+    private void UpdateOutfitInteractionSubMenu(bool isInside)
     {
         outfitsSubMenu.Clear();
         foreach (SavedOutfit so in Player.OutfitManager.CurrentPlayerOutfits)
@@ -504,7 +501,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             UIMenuItem uIMenuItem = new UIMenuItem(so.Name);
             uIMenuItem.Activated += (sender, e) =>
             {
-                Player.OutfitManager.SetOutfit(so);
+                Player.OutfitManager.SetOutfit(so, isInside);
             };
             outfitsSubMenu.AddItem(uIMenuItem);
         }

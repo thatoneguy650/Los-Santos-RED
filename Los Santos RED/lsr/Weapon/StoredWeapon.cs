@@ -53,7 +53,7 @@ public class StoredWeapon
         NativeFunction.Natives.ADD_AMMO_TO_PED(Game.LocalPlayer.Character, (uint)WeaponHash, Ammo);
     }
 
-    public virtual void CreateManagementMenu(IInteractionable player, MenuPool menuPool, WeaponStorage weaponStorage, UIMenu headerMenu, IWeapons weapons, IModItems modItems, bool withAnimations)
+    public virtual void CreateManagementMenu(IInteractionable player, MenuPool menuPool, WeaponStorage weaponStorage, UIMenu headerMenu, IWeapons weapons, IModItems modItems, bool withAnimations, bool removeBanner)
     {
         WeaponInformation = weapons.GetWeapon((uint)WeaponHash);
         WeaponItem = WeaponInformation != null ? modItems.GetWeapon(WeaponInformation.ModelName) : modItems.GetWeapon(WeaponHash);
@@ -62,8 +62,14 @@ public class StoredWeapon
         weaponStorageSubMenu = menuPool.AddSubMenu(headerMenu, DisplayName);
         weaponStorageSubMenuItem = headerMenu.MenuItems[headerMenu.MenuItems.Count() - 1];
         weaponStorageSubMenuItem.Description = DisplayDesription;
-        weaponStorageSubMenu.SetBannerType(EntryPoint.LSRedColor);
-
+        if (removeBanner)
+        {
+            weaponStorageSubMenu.RemoveBanner();
+        }
+        else
+        {
+            weaponStorageSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        }
 
         takeWeaponMenu = new UIMenuItem("Take", "");
         takeWeaponMenu.Activated += (sender, selectedItem) =>

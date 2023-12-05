@@ -89,6 +89,16 @@ public class InteriorManager
         }
         InteriorUpdateLocations.RemoveAll(x => !x.IsActivated || !x.IsNearby || x.DistanceToPlayer >= 50f);
     }
+    public void OnStoppedInteracting()
+    {
+        GameTimeLastUpdatedDistances = 0;
+        UpdateClosestInteract();
+        if (ClosestInteriorInteract != null && ClosestInteriorInteract.ShouldAddPrompt && !Interactionable.ButtonPrompts.HasPrompt(ClosestInteriorInteract.ButtonPromptText))
+        {
+            OnClosestInteractChanged();
+            EntryPoint.WriteToConsole($"UpdateClosestInteract NO PROMPT, READDING");
+        }
+    }
     public void Dispose()
     {
         IsUpdatingSingleLocation = false;

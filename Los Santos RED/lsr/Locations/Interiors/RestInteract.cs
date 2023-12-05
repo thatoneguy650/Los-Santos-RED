@@ -35,7 +35,7 @@ public class RestInteract : InteriorInteract
         Interior.IsMenuInteracting = true;
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
-        SetupCamera();
+        SetupCamera(false);
         if (!WithWarp)
         {
             if (!MoveToPosition())

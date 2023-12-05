@@ -458,11 +458,12 @@ public class GameLocation : ILocationDispatchable
     {
         if (isInside)
         {
-            StoreCamera.StopImmediately(true);
+            StoreCamera?.ReturnToGameplay(true);
+            StoreCamera?.StopImmediately(true);
         }
         else
         {
-            StoreCamera.Dispose();
+            StoreCamera?.Dispose();
         }
     }
     public virtual void OnItemSold(ModItem modItem, MenuItem menuItem, int totalItems)
@@ -818,10 +819,6 @@ public class GameLocation : ILocationDispatchable
         //InteractionMenu.OnItemSelect += OnItemSelect;
         MenuPool.Add(InteractionMenu);
         CanInteract = false;
-
-
-
-
     }
     public void DisposeInteractionMenu()
     {
@@ -951,54 +948,5 @@ public class GameLocation : ILocationDispatchable
     {
 
     }
-
-    //public virtual void AddSpawnedPed(PedExt pedExt)
-    //{
-    //    if (pedExt == null || !pedExt.Pedestrian.Exists())
-    //    {
-    //        return;
-    //    }
-    //    if (!LocationSpawnedPedExts.Any(x => x.Handle == pedExt.Handle))
-    //    {
-    //        LocationSpawnedPedExts.Add(pedExt);
-    //        EntryPoint.WriteToConsole($"LOCATION {Name} ADDED SPAWNED PED");
-    //    }
-    //}
-    //public virtual void AddSpawnedVehicle(VehicleExt vehicleExt)
-    //{
-    //    if(vehicleExt == null || !vehicleExt.Vehicle.Exists())
-    //    {
-    //        return;
-    //    }
-    //    if(!LocationSpawnedVehicleExts.Any(x=> x.Handle == vehicleExt.Handle))
-    //    {
-    //        LocationSpawnedVehicleExts.Add(vehicleExt);
-    //        EntryPoint.WriteToConsole($"LOCATION {Name} ADDED SPAWNED VEHICLE");
-    //    }
-
-    //}
-    //public virtual void OnPostDeactivate()
-    //{
-    //    RemoveSpawnedVehicles();
-    //}
-    //protected virtual void RemoveSpawnedVehicles()
-    //{
-    //    if (LocationSpawnedVehicleExts == null)
-    //    {
-    //        return;
-    //    }
-    //    foreach (VehicleExt vehicleExt in LocationSpawnedVehicleExts.ToList())
-    //    {
-    //        if (!vehicleExt.Vehicle.Exists())
-    //        {
-    //            continue;
-    //        }
-    //        if (vehicleExt.PositionSpawned == Vector3.Zero || vehicleExt.PositionSpawned.DistanceTo(vehicleExt.Vehicle) <= 2f)
-    //        {
-    //            vehicleExt.FullyDelete();
-    //            EntryPoint.WriteToConsole($"Location {Name} OnPostDeactivate REMOVING VEHICLE HASNT MOVED");
-    //        }
-    //    }
-    //}
 }
 

@@ -748,7 +748,8 @@ public class ActivityManager
             return;
         }
         SittingActivity sitting = new SittingActivity(Actionable, Settings, findSittingProp, enterForward, Seats, CameraControllable);
-        if(sitting.CanPerform(Actionable))
+
+        if (sitting.CanPerform(Actionable))
         {
             ForceCancelAllActive();
             IsPerformingActivity = true;
@@ -756,6 +757,26 @@ public class ActivityManager
             LowerBodyActivity.Start();
         }
     }
+
+    public void StartSittingOnToilet(bool findSittingProp, bool enterForward)
+    {
+        if (IsPerformingActivity)
+        {
+            Game.DisplayHelp("Cancel existing activity to start");
+            return;
+        }
+        SittingActivity sitting = new SittingActivity(Actionable, Settings, findSittingProp, enterForward, Seats, CameraControllable);
+        sitting.IsSittingOnToilet = true;
+        if (sitting.CanPerform(Actionable))
+        {
+            ForceCancelAllActive();
+            IsPerformingActivity = true;
+            LowerBodyActivity = sitting;
+            LowerBodyActivity.Start();
+        }
+    }
+
+
     //Interactions
     public void StartLocationInteraction()
     {

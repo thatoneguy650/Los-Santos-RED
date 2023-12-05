@@ -96,11 +96,18 @@ public class SimpleInventory
 
 
 
-    public void CreateInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu menuToAdd, bool withAnimations)
+    public void CreateInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu menuToAdd, bool withAnimations, List<ItemType> AllowedItemTypes, List<ItemType> DisallowedItemTypes, bool removeBanner)
     {
         UIMenu VehicleInventoryItem = menuPool.AddSubMenu(menuToAdd, "Stored Inventory");
         menuToAdd.MenuItems[menuToAdd.MenuItems.Count() - 1].Description = "Manage stored inventory. Take or deposit items.";
-        VehicleInventoryItem.SetBannerType(EntryPoint.LSRedColor);
+        if (removeBanner)
+        {
+            VehicleInventoryItem.RemoveBanner();
+        }
+        else
+        {
+            VehicleInventoryItem.SetBannerType(EntryPoint.LSRedColor);
+        }
         UIMenuItem TakeAllItems = new UIMenuItem("Take All","Take all stored items.");
         TakeAllItems.Activated += (sender, selectedItem) =>
         {
@@ -115,21 +122,34 @@ public class SimpleInventory
             UpdateInventoryScrollers(player);
         };
         VehicleInventoryItem.AddItem(DepositAll);
-
-
-
+        List<InventoryItem> transferableItems = null;
+        if (AllowedItemTypes != null && AllowedItemTypes.Any())
+        {
+            transferableItems = player.Inventory.ItemsList.Where(x=> x.ModItem != null && AllowedItemTypes.Contains(x.ModItem.ItemType)).ToList();
+        }
+        else if (DisallowedItemTypes != null && DisallowedItemTypes.Any())
+        {
+            transferableItems = player.Inventory.ItemsList.Where(x => x.ModItem != null && !DisallowedItemTypes.Contains(x.ModItem.ItemType)).ToList();
+        }
+        else
+        {
+            transferableItems = player.Inventory.ItemsList.ToList();
+        }
         foreach (InventoryItem inventoryItem in ItemsList)
         {
-            inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem, withAnimations, Settings);
+            inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem, withAnimations, Settings, removeBanner);
         }
-        foreach (InventoryItem inventoryItem in player.Inventory.ItemsList.ToList())
+        if(transferableItems == null)
+        {
+            return;
+        }
+        foreach (InventoryItem inventoryItem in transferableItems)
         {
             if (!ItemsList.Any(x => x.ModItem.Name == inventoryItem.ModItem.Name))
             {
-                inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem, withAnimations, Settings);
+                inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem, withAnimations, Settings, removeBanner);
             }
         }
-
     }
     private void UpdateInventoryScrollers(IInteractionable player)
     {

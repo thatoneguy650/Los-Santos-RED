@@ -1,6 +1,7 @@
 ﻿using Rage;
 using Rage.Native;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +25,7 @@ public class OutfitInteract : InteriorInteract
         Interior.IsMenuInteracting = true;
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
-        SetupCamera();
+        SetupCamera(false);
         if (!MoveToPosition())
         {
             Interior.IsMenuInteracting = false;
@@ -32,7 +33,8 @@ public class OutfitInteract : InteriorInteract
             LocationCamera?.StopImmediately(true);
             return;
         }
-        OutfitableLocation.CreateOutfitMenu();
+        Player.OutfitManager.PlayIdleAnimation();
+        OutfitableLocation.CreateOutfitMenu(true, true);
         LocationCamera?.ReturnToGameplay(true);
         LocationCamera?.StopImmediately(true);
         Interior.IsMenuInteracting = false;

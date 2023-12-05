@@ -2228,10 +2228,12 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Residence(new Vector3(-700.87f, 649.99f, 155.38f), 350f, "4057 Hillcrest Ave",""){ OpenTime = 0,CloseTime = 24,RentalFee = 8500, RentalDays = 28,PurchasePrice = 1100000,SalesPrice = 980000,},
             new Residence(new Vector3(-1009.54f, 479.05f, 79.60f), 330f, "2125 Cockingend Dr",""){ OpenTime = 0,CloseTime = 24,RentalFee = 14500, RentalDays = 28,PurchasePrice = 1800000,SalesPrice = 1200000,},
             new Residence(new Vector3(1289.23f, -1710.51f, 55.48f), 205f, "412 El Burro Heights",""){ OpenTime = 0,CloseTime = 24,RentalFee = 1200, RentalDays = 28,PurchasePrice = 200000,SalesPrice = 180000,},
-           // new Residence(new Vector3(1336.86f, -2195.42f, 54.55f), 210f, "12 Sustancia Road",""){ OpenTime = 0,CloseTime = 24,RentalFee = 850, RentalDays = 28,PurchasePrice = 150000}, //maybe mp map, idk
-          //  new Residence(new Vector3(968.16f, -352.3153f, 31.53f), 170f, "Cypress Flats Train",""){ OpenTime = 0,CloseTime = 24,RentalFee = 500, RentalDays = 28}, //maybe mp map, idk
             new Residence(new Vector3(-1243.89f, -1241.10f, 11.03f), 20f, "1533 Magellan Ave",""){ OpenTime = 0,CloseTime = 24,RentalFee = 500, RentalDays = 28},
 
+            //MP Houses with Interiors
+            new Residence(new Vector3(346.3378f,440.5709f, 147.8333f),292.537f,"2044 North Conker Avenue","") { InteriorID = 206081, IsOnSPMap = false,OpenTime = 0,CloseTime = 24,RentalFee = 500, RentalDays = 28,PurchasePrice = 762000, SalesPrice = 381000, },
+            new Residence(new Vector3(373.9571f,427.8646f, 145.6842f),41.48535f,"2045 North Conker Avenue","") { InteriorID = 206337, IsOnSPMap = false,OpenTime = 0,CloseTime = 24,RentalFee = 500, RentalDays = 28,PurchasePrice = 727000, SalesPrice = 363500, },
+            new Residence(new Vector3(-174.7182f,502.512f, 137.4203f),79.66186f,"3655 Wild Oats Drive","") { InteriorID = 207105, IsOnSPMap = false,OpenTime = 0,CloseTime = 24,RentalFee = 500, RentalDays = 28,PurchasePrice = 800000, SalesPrice = 400000, },
 
 
 
@@ -2417,14 +2419,12 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
-            //MapIcon = 78,
             BannerImagePath = "gangs\\madrazo.png",
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
             IsOnMPMap = false,
             IsOnSPMap = true,
-            //HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
                 new GangConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 55f) { TaskRequirements = TaskRequirements.Guard },
@@ -2446,8 +2446,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
-            //MapIcon = 78,
-
             BannerImagePath = "gangs\\madrazo.png",
             OpenTime = 0,
             CloseTime = 24,
@@ -2455,8 +2453,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             IsOnMPMap = true,
             IsOnSPMap = false,
             InteriorID = -706,
-           // IgnoreEntranceInteract  =true,
-            //HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 55f) { TaskRequirements = TaskRequirements.Guard },

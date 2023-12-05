@@ -22,7 +22,8 @@ public class StandardInteriorInteract : InteriorInteract
         Interior.IsMenuInteracting = true;
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
-        SetupCamera();
+        uint GameTimeStarted = Game.GameTime;
+        SetupCamera(false);
         if (!MoveToPosition())
         {
             Interior.IsMenuInteracting = false;
@@ -30,6 +31,11 @@ public class StandardInteriorInteract : InteriorInteract
             LocationCamera?.StopImmediately(true);
             return;
         }
+        while(Game.GameTime - GameTimeStarted <= 1500)
+        {
+            GameFiber.Yield();
+        }
+        NativeFunction.Natives.TASK_PAUSE(Player.Character, -1);
         InteractableLocation?.StandardInteract(LocationCamera, true);    
     }
     public override void AddPrompt()
