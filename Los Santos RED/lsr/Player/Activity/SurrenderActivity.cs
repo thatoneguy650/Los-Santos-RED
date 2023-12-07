@@ -13,10 +13,9 @@ public class SurrenderActivity : DynamicActivity
     private ISettingsProvideable Settings;
     private uint GameTimeLastYelled;
     private uint GameTimeLastToggledSurrender;
-
-
     private bool IsSurrendering = false;
     private uint GameTimeLastRaiseHandsEmote;
+    private bool IsSetStandingArrested = false;
 
     public SurrenderActivity(IInputable currentPlayer, IEntityProvideable world, ISettingsProvideable settings)
     {
@@ -25,7 +24,6 @@ public class SurrenderActivity : DynamicActivity
         Settings = settings;
     }
     public bool CanSurrender => !HandsAreUp && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving);//&& Player.IsWanted;
-
     private bool IsSurrenderValid => Player.IsAliveAndFree && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving);//&& Player.IsWanted;
     public override ModItem ModItem { get; set; }
     public override string DebugString => "";
@@ -52,7 +50,6 @@ public class SurrenderActivity : DynamicActivity
     public override void Start()
     {
         RaiseHands();
-
     }
     public override bool CanPerform(IActionable player)
     {
@@ -78,67 +75,70 @@ public class SurrenderActivity : DynamicActivity
             GameTimeLastToggledSurrender = Game.GameTime;
         }
     }
-
-
-
     private void LowerHands()
     {
-        if (!Player.IsBusted)
+        if(Player.IsBusted)
         {
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: Lower Hands");
-            HandsAreUp = false; // You put your hands down
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-            Player.ActivityManager.IsPerformingActivity = false;
+            return;
         }
+        //EntryPoint.WriteToConsole($"PLAYER EVENT: Lower Hands");
+        HandsAreUp = false; // You put your hands down
+        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+        Player.ActivityManager.IsPerformingActivity = false;     
     }
     private void RaiseHands()
     {
-        if (CanSurrender)
+        if(!CanSurrender)
         {
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: Raise Hands");
-            if (Player.Character.IsWearingHelmet)
-            {
-                Player.Character.RemoveHelmet(true);
-            }
-            if (HandsAreUp)
-            {
-                return;
-            }
-            Player.WeaponEquipment.SetUnarmed();
-            HandsAreUp = true;
-            if (Player.IsInVehicle)
-            {
-                AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
-                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "veh@busted_std", "stay_in_car_crim", 2.0f, -2.0f, -1, 50, 0, false, false, false);
-            }
-            else
-            {
-                AnimationDictionary.RequestAnimationDictionay("ped");
-                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-            }
-            GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
-            {
-                try
-                {
-                    while (!Player.IsMoveControlPressed && HandsAreUp && Player.IsAliveAndFree)
-                    {
-                        GameFiber.Yield();
-                    }
-                    if (HandsAreUp)
-                    {
-                        LowerHands();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                    EntryPoint.ModController.CrashUnload();
-                }
-            }, "DrinkingWatcher");
+            return;
         }
+        if (Player.Character.IsWearingHelmet)
+        {
+            Player.Character.RemoveHelmet(true);
+        }
+        if (HandsAreUp)
+        {
+            return;
+        }
+        Player.WeaponEquipment.SetUnarmed();
+        HandsAreUp = true;
+        if (Player.IsInVehicle)
+        {
+            AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
+            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "veh@busted_std", "stay_in_car_crim", 2.0f, -2.0f, -1, 50, 0, false, false, false);
+        }
+        else
+        {
+            AnimationDictionary.RequestAnimationDictionay("ped");
+            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+        }
+        GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
+        {
+            try
+            {
+                while (!Player.IsMoveControlPressed && HandsAreUp && Player.IsAliveAndFree)
+                {
+                    GameFiber.Yield();
+                }
+                if (HandsAreUp)
+                {
+                    LowerHands();
+                }
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "DrinkingWatcher");
+        
     }
     public void SetArrestedAnimation(bool StayStanding)
     {
+        if (!Player.Character.Exists() || !Player.IsBusted || !Player.IsAlive)
+        {
+            return;
+        }
         GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
         {
             try
@@ -146,7 +146,7 @@ public class SurrenderActivity : DynamicActivity
                 AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
                 AnimationDictionary.RequestAnimationDictionay("busted");
                 AnimationDictionary.RequestAnimationDictionay("ped");
-                if (!Player.Character.Exists())
+                if (!Player.Character.Exists() || !Player.IsBusted)
                 {
                     return;
                 }
@@ -154,7 +154,7 @@ public class SurrenderActivity : DynamicActivity
                 {
                     GameFiber.Yield();
                 }
-                if (!Player.Character.Exists() || !Player.IsBusted)
+                if (!Player.Character.Exists() || !Player.IsBusted || !Player.IsAlive)
                 {
                     return;
                 }
@@ -162,17 +162,17 @@ public class SurrenderActivity : DynamicActivity
                 {
                     Player.WeaponEquipment.SetUnarmed();
                 }
-                if (Player.Character.IsInAnyVehicle(false))
+                if (Player.Character.IsInAnyVehicle(false))//get out of the vehicle andd wait
                 {
                     Vehicle oldVehicle = Player.Character.CurrentVehicle;
                     if (Player.Character.Exists() && oldVehicle.Exists())
                     {
-                        NativeFunction.Natives.TASK_LEAVE_VEHICLE(Player.Character, oldVehicle, 256);
+                        NativeFunction.Natives.TASK_LEAVE_VEHICLE(Player.Character, oldVehicle, 256);//dont close door
                         while (Player.Character.IsInAnyVehicle(false) && Player.IsBusted)
                         {
                             GameFiber.Yield();
                         }
-                        if (!Player.Character.Exists() || !Player.IsBusted)
+                        if (!Player.Character.Exists() || !Player.IsBusted || !Player.IsAlive)
                         {
                             return;
                         }
@@ -205,7 +205,7 @@ public class SurrenderActivity : DynamicActivity
                             NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_2_hands_up", 2.0f, -2.0f, -1, 2, 0, false, false, false);
                         }
                         GameFiber.Wait(1000);
-                        if (!Player.Character.Exists() || !Player.IsBusted)
+                        if (!Player.Character.Exists() || !Player.IsBusted || !Player.IsAlive)
                         {
                             if (Player.Character.Exists())
                             {
@@ -230,7 +230,7 @@ public class SurrenderActivity : DynamicActivity
                             }
                             GameFiber.Wait(3000);//was just 6000 here
                         }
-                        if (!Player.Character.Exists() || !Player.IsBusted)
+                        if (!Player.Character.Exists() || !Player.IsBusted || !Player.IsAlive)
                         {
                             if (Player.Character.Exists())
                             {
@@ -241,7 +241,7 @@ public class SurrenderActivity : DynamicActivity
                         NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                     }
                 }
-                NativeFunction.Natives.SET_PED_KEEP_TASK(Player.Character, true);
+                //NativeFunction.Natives.SET_PED_KEEP_TASK(Player.Character, true);
                 //Player.Character.KeepTasks = true;
             }
             catch (Exception ex)
@@ -279,37 +279,32 @@ public class SurrenderActivity : DynamicActivity
         {
             try
             {
-                //EntryPoint.WriteToConsoleTestLong("UnsetArrestedRan");
                 AnimationDictionary.RequestAnimationDictionay("random@arrests");
                 AnimationDictionary.RequestAnimationDictionay("busted");
                 AnimationDictionary.RequestAnimationDictionay("ped");
                 if (IsPlayingAnimation("busted", "idle_a") || IsPlayingAnimation("busted", "idle_2_hands_up") || IsPlayingAnimation("busted", "idle_2_hands_up_2h"))
                 {
-                    //EntryPoint.WriteToConsoleTestLong("UnsetArrestedRan Playing Kneeling");
-
                     NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "hands_up_2_idle", 2.0f, -2.0f, -1, 4096, 0, 0, 1, 0);
                     GameFiber.Wait(1500);//1250
-                    if (!Player.Character.Exists() || !Player.IsBusted)
-                    {
-                        if (Player.Character.Exists())
-                        {
-                            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                        }
-                        return;
-                    }
-                    if (Player.Character.Exists())
-                    {
+                    //if (!Player.Character.Exists() || !Player.IsBusted || !Player.IsAlive)
+                    //{
+                    //    if (Player.Character.Exists())
+                    //    {
+                    //        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                    //    }
+                    //    return;
+                    //}
+                    //if (Player.Character.Exists())
+                    //{
                         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                    }
+                    //}
                 }
-                else if (IsPlayingAnimation("ped", "handsup_enter"))// NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, "ped", "handsup_enter", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "ped", "handsup_enter") > 0f)
-                {
-                    //EntryPoint.WriteToConsoleTestLong("UnsetArrestedRan Playing HandsUp");
-                    NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                }
+                //else if (IsPlayingAnimation("ped", "handsup_enter"))
+                //{
+                //    NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                //}
                 else
                 {
-                    //EntryPoint.WriteToConsoleTestLong("UnsetArrestedRan No Animation Detected, Clearing Tasks");
                     NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                 }
             }
@@ -336,7 +331,6 @@ public class SurrenderActivity : DynamicActivity
             SetArrestedAnimation(Player.WantedLevel <= 2);//needs to move
         }
     }
-
     public void Update()
     {
         if (HandsAreUp)

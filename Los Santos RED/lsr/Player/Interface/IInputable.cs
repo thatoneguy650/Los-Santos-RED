@@ -50,6 +50,8 @@ namespace LosSantosRED.lsr.Interface
         ActivityManager ActivityManager { get; }
         bool IsUsingController { get; set; }
         VehicleExt CurrentLookedAtVehicle { get; }
+        bool IsAlive { get; }
+        bool IsSetDisabledControls { get; set; }
 
         //   void CancelCurrentActivity();
         //  void CloseDriverDoor();

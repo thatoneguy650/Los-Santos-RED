@@ -36,8 +36,9 @@ namespace LosSantosRED.lsr.Player
         private ICameraControllable CameraControllable;
         private List<Rage.Object> CollisionObjects = new List<Rage.Object>();
         private uint GameTimeLastGotHealth;
+        private bool HasStartedPoopAnim;
 
-        private bool UseMaleAnimations => Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale;
+        private bool UseMaleAnimations => Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale || IsSittingOnToilet;
         public SittingActivity(IActionable player, ISettingsProvideable settings, bool findSittingProp, bool enterForward, ISeats seats, ICameraControllable cameraControllable) : base()
         {
             Player = player;
@@ -61,6 +62,10 @@ namespace LosSantosRED.lsr.Player
             IsCancelled = true;
             Player.ActivityManager.IsSitting = false;
             Player.ActivityManager.IsPerformingActivity = false;
+            if (IsSittingOnToilet)
+            {
+                Player.ActivityManager.IsUrinatingDefecting = false;
+            }
             //Player.IsPerformingActivity = false;
         }
         public override void Pause()
@@ -102,11 +107,19 @@ namespace LosSantosRED.lsr.Player
         {
             Player.WeaponEquipment.SetUnarmed();
             Player.ActivityManager.IsSitting = true;
+            if (IsSittingOnToilet)
+            {
+                Player.ActivityManager.IsUrinatingDefecting = true;
+            }
             if (FindSittingProp)
             {
                 if (!GetSittableProp() || !GetSeatCoordinates() || !MoveToSeatCoordinates())
                 {
                     Player.ActivityManager.IsSitting = false;
+                    if (IsSittingOnToilet)
+                    {
+                        Player.ActivityManager.IsUrinatingDefecting = false;
+                    }
                     Player.ActivityManager.IsPerformingActivity = false;
                     if (ClosestSittableEntity.Exists())
                     {
@@ -121,19 +134,12 @@ namespace LosSantosRED.lsr.Player
                 SeatEntryHeading = Player.Character.Heading;
             }
             //GetPossibleBlockingProp();
-
-
-
             if (Settings.SettingsManager.ActivitySettings.UseAltCameraWhenSitting && !Settings.SettingsManager.ActivitySettings.TeleportWhenSitting)
             {
                 CameraControl = new CameraControl(CameraControllable);
                 CameraControl.Setup();
                 CameraControl.TransitionHighlightEntity(Player.Character, false);
             }
-
-
-
-
             SitDown();
             if (IsActivelySitting)
             {
@@ -147,36 +153,77 @@ namespace LosSantosRED.lsr.Player
         private void Idle()
         {
             //EntryPoint.WriteToConsoleTestLong("Sitting Activity Idle Start");
-
             Player.ActivityManager.IsPerformingActivity = false;
-
-
             StartNewBaseScene();
-            float AnimationTime;
+            if (IsSittingOnToilet)
+            {
+                StartToiletAnimation();
+            }
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
-                AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
-                if(AnimationTime >= 1.0f && !Player.ActivityManager.IsPerformingActivity)
-                {
-                    StartNewIdleScene();
-                }
-                if(Player.IsMoveControlPressed)
-                {
-                    IsCancelled = true;
-                }
                 if (IsSittingOnToilet)
                 {
-                    if (Game.GameTime - GameTimeLastGotHealth >= 5000)
-                    {
-                        Player.HealthManager.ChangeHealth(1);
-                        GameTimeLastGotHealth = Game.GameTime;
-                    }
+                    LoopToilet();
                 }
-                Player.WeaponEquipment.SetUnarmed();
+                else
+                {
+                    LoopRegular();
+                }
+                if(IsSittingOnToilet && Game.IsKeyDownRightNow(System.Windows.Forms.Keys.Z) && !HasStartedPoopAnim)
+                {
+                    EntryPoint.WriteToConsole("STARTING POOP ANIM");
+                    HasStartedPoopAnim = true;
+                    StartToiletAnimation();
+                }
                 GameFiber.Yield();
             }
             //EntryPoint.WriteToConsoleTestLong("Sitting Activity Idle End");
             Exit();
+        }
+
+        private void StartToiletAnimation()
+        {
+            string dictionary = "timetable@trevor@on_the_toilet";
+            string anim = new List<string>() { "trevonlav_backedup", "trevonlav_struggleloop", "trevonlav_midwife" }.PickRandom();
+            if (!AnimationDictionary.RequestAnimationDictionayResult(dictionary))
+            {
+                return;
+            }
+            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, dictionary, anim, 2.0f, -2.0f, -1, (int)(eAnimationFlags.AF_UPPERBODY | eAnimationFlags.AF_SECONDARY | eAnimationFlags.AF_LOOPING), 0, false, false, false);
+        }
+
+        private void LoopRegular()
+        {
+            float AnimationTime;
+            AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
+            if (AnimationTime >= 1.0f && !Player.ActivityManager.IsPerformingActivity)
+            {
+                StartNewIdleScene();
+            }
+            if (Player.IsMoveControlPressed)
+            {
+                IsCancelled = true;
+            }
+            Player.WeaponEquipment.SetUnarmed();
+        }
+        private void LoopToilet()
+        {
+            float AnimationTime;
+            AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
+            if (AnimationTime >= 1.0f && !Player.ActivityManager.IsPerformingActivity)
+            {
+                StartNewIdleScene();
+            }
+            if (Player.IsMoveControlPressed)
+            {
+                IsCancelled = true;
+            }
+            if (Game.GameTime - GameTimeLastGotHealth >= 5000)
+            {
+                Player.HealthManager.ChangeHealth(1);
+                GameTimeLastGotHealth = Game.GameTime;
+            }   
+            Player.WeaponEquipment.SetUnarmed();
         }
         private void Exit()
         {
@@ -190,6 +237,10 @@ namespace LosSantosRED.lsr.Player
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                 Game.FadeScreenIn(500, true);
                 Player.ActivityManager.IsSitting = false;
+                if (IsSittingOnToilet)
+                {
+                    Player.ActivityManager.IsUrinatingDefecting = false;
+                }
                 Player.ActivityManager.IsPerformingActivity = false;
             }
             else
@@ -205,13 +256,6 @@ namespace LosSantosRED.lsr.Player
                     Vector3 Position = Game.LocalPlayer.Character.Position;
                     float Heading = Game.LocalPlayer.Character.Heading;
                     uint GameTimeStartedExiting = Game.GameTime;
-
-                    if (IsSittingOnToilet)
-                    {
-                        Position = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(Settings.SettingsManager.DebugSettings.SynchedSceneOffsetX, Settings.SettingsManager.DebugSettings.SynchedSceneOffsetY, Settings.SettingsManager.DebugSettings.SynchedSceneOffsetZ)); //new Vector3(Position.X, Position.Y, Position.Z);
-                    }
-
-
                     PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", Position.X, Position.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, Heading, 2);//270f //old
                     NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
                     NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, PlayingDict, PlayingAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
@@ -238,6 +282,10 @@ namespace LosSantosRED.lsr.Player
                 GameFiber.Yield();
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                 Player.ActivityManager.IsSitting = false;
+                if (IsSittingOnToilet)
+                {
+                    Player.ActivityManager.IsUrinatingDefecting = false;
+                }
                 Player.ActivityManager.IsPerformingActivity = false;
                 GameFiber.Sleep(5000);
             }
@@ -592,7 +640,7 @@ namespace LosSantosRED.lsr.Player
             }
 
 
-            //if(IsSittingOnToilet)
+            //if (IsSittingOnToilet)
             //{
             //    AnimBase = "trevonlav_baseloop";
             //    AnimBaseDictionary = "timetable@trevor@on_the_toilet";

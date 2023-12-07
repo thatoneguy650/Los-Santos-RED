@@ -320,6 +320,7 @@ namespace Mod
         public int CurrentSeat { get; private set; }
         public bool IsDriver { get; private set; }
         public bool IsDuckingInVehicle { get; set; } = false;
+        public bool IsSetDisabledControls { get; set; } = false;
         public bool IsGangMember => RelationshipManager.GangRelationships.CurrentGang != null;
         public Gang CurrentGang => RelationshipManager.GangRelationships.CurrentGang;
         public bool IsGettingIntoAVehicle

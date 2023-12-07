@@ -96,10 +96,23 @@ public class SimpleInventory
 
 
 
-    public void CreateInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu menuToAdd, bool withAnimations, List<ItemType> AllowedItemTypes, List<ItemType> DisallowedItemTypes, bool removeBanner)
+    public void CreateInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu menuToAdd, bool withAnimations, List<ItemType> AllowedItemTypes, List<ItemType> DisallowedItemTypes, bool removeBanner, string overrideTitle, string overrideDescription)
     {
-        UIMenu VehicleInventoryItem = menuPool.AddSubMenu(menuToAdd, "Stored Inventory");
-        menuToAdd.MenuItems[menuToAdd.MenuItems.Count() - 1].Description = "Manage stored inventory. Take or deposit items.";
+        string title = "Stored Inventory";
+        string description = "Manage stored inventory. Take or deposit items.";
+
+
+        if(!string.IsNullOrEmpty(overrideTitle))
+        {
+            title = overrideTitle;
+        }
+        if (!string.IsNullOrEmpty(overrideDescription))
+        {
+            description = overrideDescription;
+        }
+
+        UIMenu VehicleInventoryItem = menuPool.AddSubMenu(menuToAdd, title);
+        menuToAdd.MenuItems[menuToAdd.MenuItems.Count() - 1].Description = description;
         if (removeBanner)
         {
             VehicleInventoryItem.RemoveBanner();

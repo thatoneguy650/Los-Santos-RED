@@ -92,7 +92,7 @@ public class SavedOutfits : ISavedOutfits
         new HeadBlendData(12, 31, 0, 12, 31, 0, 0.8f, 0.2f, 0.0f),
         11,
         12);
-        SavedOutfit AlexisDefaultOutfit = new SavedOutfit("Alexis Davis Default", "MP_F_FREEMODE_01",AlexisVariation);
+        SavedOutfit AlexisDefaultOutfit = new SavedOutfit("Alexis Davis Default", "MP_F_FREEMODE_01","Alexis Davis",AlexisVariation);
         SavedOutfitList.Add(AlexisDefaultOutfit);
 
         PedVariation AlexisVariation2 = new PedVariation(new List<PedComponent>()
@@ -132,7 +132,7 @@ public class SavedOutfits : ISavedOutfits
         new HeadBlendData(12, 31, 0, 12, 31, 0, 0.8f, 0.2f, 0.0f),
         11,
         12);
-        SavedOutfit AlexisDefaultOutfit2 = new SavedOutfit("Alexis Davis Classic", "MP_F_FREEMODE_01", AlexisVariation2);
+        SavedOutfit AlexisDefaultOutfit2 = new SavedOutfit("Alexis Davis Classic", "MP_F_FREEMODE_01", "Alexis Davis", AlexisVariation2);
         SavedOutfitList.Add(AlexisDefaultOutfit2);
 
         PedVariation AlexisVariation3 = new PedVariation(new List<PedComponent>()
@@ -173,7 +173,7 @@ public class SavedOutfits : ISavedOutfits
         new HeadBlendData(12, 31, 0, 12, 31, 0, 0.8f, 0.2f, 0.0f),
         11,
         12);
-        SavedOutfit AlexisDefaultOutfit3 = new SavedOutfit("Alexis Davis Coat", "MP_F_FREEMODE_01", AlexisVariation3);
+        SavedOutfit AlexisDefaultOutfit3 = new SavedOutfit("Alexis Davis Coat", "MP_F_FREEMODE_01", "Alexis Davis", AlexisVariation3);
         SavedOutfitList.Add(AlexisDefaultOutfit3);
 
         PedVariation AlexisVariation4 = new PedVariation(new List<PedComponent>()
@@ -214,7 +214,7 @@ public class SavedOutfits : ISavedOutfits
         new HeadBlendData(12, 31, 0, 12, 31, 0, 0.8f, 0.2f, 0.0f),
         4,
         3);
-        SavedOutfit AlexisDefaultOutfit4 = new SavedOutfit("Alexis Davis Summer", "MP_F_FREEMODE_01", AlexisVariation4);
+        SavedOutfit AlexisDefaultOutfit4 = new SavedOutfit("Alexis Davis Summer", "MP_F_FREEMODE_01", "Alexis Davis", AlexisVariation4);
         SavedOutfitList.Add(AlexisDefaultOutfit4);
     }
     private void AddClaude()
@@ -256,7 +256,7 @@ public class SavedOutfits : ISavedOutfits
         new HeadBlendData(42, 42, 0, 42, 42, 0, 1.0f, 0.0f, 0.0f),
         3,
         3);
-        SavedOutfit savedOutfit = new SavedOutfit("Claude Speed Default", "MP_M_FREEMODE_01", pedVariation);
+        SavedOutfit savedOutfit = new SavedOutfit("Claude Speed Default", "MP_M_FREEMODE_01", "Claude Speed", pedVariation);
         SavedOutfitList.Add(savedOutfit);
 
         PedVariation pedVariation2 = new PedVariation(
@@ -296,7 +296,7 @@ public class SavedOutfits : ISavedOutfits
         new HeadBlendData(42, 42, 0, 42, 42, 0, 1.0f, 0.0f, 0.0f),
         3,
         3);
-        SavedOutfit savedOutfit2 = new SavedOutfit("Claude Speed Classic", "MP_M_FREEMODE_01", pedVariation2);
+        SavedOutfit savedOutfit2 = new SavedOutfit("Claude Speed Classic", "MP_M_FREEMODE_01", "Claude Speed", pedVariation2);
         SavedOutfitList.Add(savedOutfit2);
 
     }
@@ -318,7 +318,7 @@ public class SavedOutfits : ISavedOutfits
             },
             new List<PedPropComponent>() { });
 
-        SavedOutfit savedOutfit = new SavedOutfit("Lamar Davis Default", "ig_lamardavis", pedVariation);
+        SavedOutfit savedOutfit = new SavedOutfit("Lamar Davis Default", "ig_lamardavis", "Lamar Davis", pedVariation);
         SavedOutfitList.Add(savedOutfit);
     }
     private void AddNicholasClark()
@@ -348,7 +348,7 @@ public class SavedOutfits : ISavedOutfits
                 new FaceFeature(0, "Nose Width") { Scale = 1.0f,RangeLow = -1.0f, RangeHigh = 1.0f },
             },
         };
-        SavedOutfit savedOutfit = new SavedOutfit("Nicholas Clark Default","mp_m_freemode_01", pedVariation);
+        SavedOutfit savedOutfit = new SavedOutfit("Nicholas Clark Default","mp_m_freemode_01", "Nicholas Clark", pedVariation);
         SavedOutfitList.Add(savedOutfit);
     }
 }

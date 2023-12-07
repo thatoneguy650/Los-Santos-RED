@@ -23,6 +23,7 @@ public class OutfitInteract : InteriorInteract
     public override void OnInteract()
     {
         Interior.IsMenuInteracting = true;
+
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
         SetupCamera(false);
@@ -33,11 +34,13 @@ public class OutfitInteract : InteriorInteract
             LocationCamera?.StopImmediately(true);
             return;
         }
-        Player.OutfitManager.PlayIdleAnimation();
+        Player.InteriorManager.OnStartedInteriorInteract();
+        //Player.OutfitManager.PlayIdleAnimation();
         OutfitableLocation.CreateOutfitMenu(true, true);
         LocationCamera?.ReturnToGameplay(true);
         LocationCamera?.StopImmediately(true);
         Interior.IsMenuInteracting = false;
+        Player.InteriorManager.OnEndedInteriorInteract();
     }
     public override void AddPrompt()
     {

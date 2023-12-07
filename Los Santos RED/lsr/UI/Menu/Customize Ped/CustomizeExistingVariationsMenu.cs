@@ -95,7 +95,7 @@ public class CustomizeExistingVariationsMenu
                 Game.DisplaySubtitle("No Outfit Name Set");
                 return;
             }
-            SavedOutfits.AddOutfit(new SavedOutfit(outfitName, PedCustomizer.WorkingModelName, PedCustomizer.WorkingVariation.Copy()));
+            SavedOutfits.AddOutfit(new SavedOutfit(outfitName, PedCustomizer.WorkingModelName,PedCustomizer.WorkingName, PedCustomizer.WorkingVariation.Copy()));
             SetOutfits();
             outfitsSubMenu.RefreshIndex();
         };

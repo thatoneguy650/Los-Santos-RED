@@ -507,13 +507,9 @@ public class Interiors : IInteriors
                         CameraDirection = new Vector3(-0.09414972f, 0.9557025f, -0.27887f), 
                         CameraRotation = new Rotator(-16.19277f, -1.322452E-05f, 5.626261f)
                     },
-                    new AnimationInteract("lostmxclubhouseUrinal1",new Vector3(981.5935f, -98.13846f, 74.97108f), 222.2108f,"Use Urinal") 
+                    new ToiletInteract("lostmxclubhouseUrinal1",new Vector3(981.5935f, -98.13846f, 74.97108f), 222.2108f,"Use Urinal") 
                     { 
-                        IsScenario = false,
-                        LoopAnimations = new List<AnimationBundle>() 
-                        { 
-                            new AnimationBundle("missbigscore1switch_trevor_piss", "piss_loop", (int)(eAnimationFlags.AF_LOOPING), 2.0f, -2.0f) { Gender = "U" } 
-                        },
+                        IsStanding = true,
                         CameraPosition = new Vector3(982.1099f, -96.15959f, 75.51414f), 
                         CameraDirection = new Vector3(-0.4386229f, -0.8754325f, -0.2030466f), 
                         CameraRotation = new Rotator(-11.71518f, -7.411464E-06f, 153.3875f),
@@ -1396,6 +1392,8 @@ public class Interiors : IInteriors
                         CameraDirection = new Vector3(0.895169f, -0.3380183f, -0.2905444f),
                         CameraRotation = new Rotator( - 16.89055f, 5.487425E-05f, -110.6867f),
                         ButtonPromptText = "Open Pantry",
+                        Title = "Pantry",
+                        Description = "Access food items",
                         UseNavmesh = false,
                     },
                     new InventoryInteract()
@@ -1420,7 +1418,8 @@ public class Interiors : IInteriors
                         Position = new Vector3(341.0717f, 433.2059f, 149.3806f),//new Vector3(341.269f, 433.4402f, 149.3806f),
                         Heading = 297.7491f,
                         AutoCamera = true,
-                        ButtonPromptText = "Open Fridge",
+                        Title = "Fridge",
+                        Description = "Access drink items",
                         UseNavmesh = false,
                     },
                     new InventoryInteract()

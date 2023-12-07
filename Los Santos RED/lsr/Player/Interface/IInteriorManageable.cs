@@ -10,5 +10,6 @@ namespace LosSantosRED.lsr.Interface
     public interface IInteriorManageable
     {
         Ped Character { get; }
+        bool IsSetDisabledControls { get; set; }
     }
 }

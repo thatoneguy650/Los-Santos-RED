@@ -13,7 +13,7 @@ using ExtensionsMethods;
 
 public class ToiletInteract : InteriorInteract
 {
-    
+    public bool IsStanding { get; set; } = false;
     public ToiletInteract()
     {
 
@@ -40,12 +40,26 @@ public class ToiletInteract : InteriorInteract
                 return;
             }
         }
-        Player.ActivityManager.StartSittingOnToilet(false, false);
-        GameFiber.Sleep(2000);
-        while (!Player.IsMoveControlPressed && Player.IsAliveAndFree && Player.ActivityManager.IsSitting)
+
+        if(IsStanding)
         {
-            GameFiber.Yield();
+            Player.ActivityManager.Urinate();
+            GameFiber.Sleep(2000);
+            while (!Player.IsMoveControlPressed && Player.IsAliveAndFree && Player.ActivityManager.IsUrinatingDefecting)
+            {
+                GameFiber.Yield();
+            }
         }
+        else
+        {
+            Player.ActivityManager.StartSittingOnToilet(false, false);
+            GameFiber.Sleep(2000);
+            while (!Player.IsMoveControlPressed && Player.IsAliveAndFree && Player.ActivityManager.IsSitting)
+            {
+                GameFiber.Yield();
+            }
+        }
+
         Interior.IsMenuInteracting = false;
         LocationCamera?.ReturnToGameplay(true);
         LocationCamera?.StopImmediately(true);

@@ -217,7 +217,8 @@ public class ActivityManager
     public bool CanHearScanner => !Settings.SettingsManager.ScannerSettings.DisableScannerWithoutRadioItem || Player.Inventory.Has(typeof(RadioItem));
     public bool CanSeePoliceBlips => !Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips && Settings.SettingsManager.ScannerSettings.ShowPoliceVehicleBlipsWithScanner && Player.Inventory.Has(typeof(RadioItem)) && (Player.IsInVehicle || HasScannerOut);
 
-    public bool IsEnteringAsPassenger { get; private set; }
+    public bool IsEnteringAsPassenger { get; set; }
+    public bool IsUrinatingDefecting { get; set; }
 
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
@@ -740,6 +741,44 @@ public class ActivityManager
             LowerBodyActivity.Start();
         }
     }
+
+
+    public void Urinate()
+    {
+        if (IsPerformingActivity)
+        {
+            Game.DisplayHelp("Cancel existing activity to start");
+            return;
+        }
+        UrinatingActivity urinating = new UrinatingActivity(Actionable, Settings);
+        if (urinating.CanPerform(Actionable))
+        {
+            ForceCancelAllActive();
+            IsPerformingActivity = true;
+            LowerBodyActivity = urinating;
+            LowerBodyActivity.Start();
+        }
+    }
+
+    public void Defecate()
+    {
+        if (IsPerformingActivity)
+        {
+            Game.DisplayHelp("Cancel existing activity to start");
+            return;
+        }
+        DefectingActivity defecating = new DefectingActivity(Actionable, Settings);
+        if (defecating.CanPerform(Actionable))
+        {
+            ForceCancelAllActive();
+            IsPerformingActivity = true;
+            LowerBodyActivity = defecating;
+            LowerBodyActivity.Start();
+        }
+    }
+
+
+
     public void StartSittingDown(bool findSittingProp, bool enterForward)
     {
         if (IsPerformingActivity)

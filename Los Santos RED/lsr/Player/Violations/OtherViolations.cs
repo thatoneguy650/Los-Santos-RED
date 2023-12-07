@@ -75,6 +75,10 @@ public class OtherViolations
         {
             Violations.AddViolating(StaticStrings.PublicVagrancyCrimeID);
         }
+        if (Player.ActivityManager.IsUrinatingDefecting && !Player.CurrentLocation.IsInside && Player.CurrentLocation.CurrentZone?.Type != eLocationType.Wilderness && (Player.CurrentLocation.CurrentZone?.Economy == eLocationEconomy.Rich || Player.CurrentLocation.CurrentZone?.Economy == eLocationEconomy.Middle))
+        {
+            Violations.AddViolating(StaticStrings.IndecentExposureCrimeID);
+        }
         if (!Violations.CanBodyInteract && Player.ActivityManager.IsLootingBody)
         {
             Violations.AddViolating(StaticStrings.MuggingCrimeID);

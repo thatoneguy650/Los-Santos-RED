@@ -35,8 +35,13 @@ public class StandardInteriorInteract : InteriorInteract
         {
             GameFiber.Yield();
         }
-        NativeFunction.Natives.TASK_PAUSE(Player.Character, -1);
-        InteractableLocation?.StandardInteract(LocationCamera, true);    
+        Player.InteriorManager.OnStartedInteriorInteract();
+        InteractableLocation?.StandardInteract(LocationCamera, true);   
+        while (Player.IsAliveAndFree && Player.ActivityManager.IsInteractingWithLocation)
+        {
+            GameFiber.Yield();
+        }
+        Player.InteriorManager.OnEndedInteriorInteract();
     }
     public override void AddPrompt()
     {

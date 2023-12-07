@@ -20,24 +20,11 @@ public class DebugOutfitSubMenu : DebugSubMenu
         SubMenu = MenuPool.AddSubMenu(Debug, "Outfit Menu");
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Quick set a variation for the current character.";
         SubMenu.SetBannerType(EntryPoint.LSRedColor);
-        UpdateOutfits();
+        Player.OutfitManager.CreateOutfitMenu(MenuPool, SubMenu, false, false);
     }
     public override void Update()
     {
-        UpdateOutfits();
-    }
-    private void UpdateOutfits()
-    {
-        SubMenu.Clear();
-        foreach (SavedOutfit so in Player.OutfitManager.CurrentPlayerOutfits)
-        {
-            UIMenuItem uIMenuItem = new UIMenuItem(so.Name);
-            uIMenuItem.Activated += (sender, e) =>
-            {
-                Player.OutfitManager.SetOutfit(so, false);
-            };
-            SubMenu.AddItem(uIMenuItem);
-        }
+        Player.OutfitManager.CreateOutfitMenu(MenuPool, SubMenu, false, false);
     }
 }
 

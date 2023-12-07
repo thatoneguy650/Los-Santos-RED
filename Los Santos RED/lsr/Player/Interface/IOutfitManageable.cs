@@ -12,5 +12,6 @@ namespace LosSantosRED.lsr.Interface
         string ModelName { get; }
         PedVariation CurrentModelVariation { get; set; }
         Ped Character { get; }
+        string PlayerName { get; }
     }
 }

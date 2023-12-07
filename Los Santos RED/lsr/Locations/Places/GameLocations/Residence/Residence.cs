@@ -217,7 +217,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             Interior.IsMenuInteracting = false;
         }
     }
-    public void CreateInventoryMenu(bool withItems, bool withWeapons, bool withCash, List<ItemType> AllowedItemTypes, List<ItemType> DisallowedItemTypes, bool removeBanner)
+    public void CreateInventoryMenu(bool withItems, bool withWeapons, bool withCash, List<ItemType> AllowedItemTypes, List<ItemType> DisallowedItemTypes, bool removeBanner, string overrideItemTitle, string overrideItemDescription)
     {
         Player.ActivityManager.IsInteractingWithLocation = true;
         Player.IsTransacting = true;
@@ -235,7 +235,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         bool withAnimations = Interior?.IsTeleportEntry == true;
         if (withItems)
         {
-            SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, withAnimations, AllowedItemTypes, DisallowedItemTypes, removeBanner);
+            SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, withAnimations, AllowedItemTypes, DisallowedItemTypes, removeBanner, overrideItemTitle, overrideItemDescription);
         }
         if (withWeapons)
         {
@@ -438,7 +438,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
 
         bool withAnimations = Interior?.IsTeleportEntry == true;
 
-        SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, withAnimations, null, null, !isInside);
+        SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, withAnimations, null, null, !isInside, null, null);
         WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, withAnimations, !isInside);
         CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this, withAnimations, !isInside);
     }
@@ -491,20 +491,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             outfitsSubMenu.SetBannerType(EntryPoint.LSRedColor);
         }
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Set an outfit.";
-        UpdateOutfitInteractionSubMenu(isInside);
-    }
-    private void UpdateOutfitInteractionSubMenu(bool isInside)
-    {
-        outfitsSubMenu.Clear();
-        foreach (SavedOutfit so in Player.OutfitManager.CurrentPlayerOutfits)
-        {
-            UIMenuItem uIMenuItem = new UIMenuItem(so.Name);
-            uIMenuItem.Activated += (sender, e) =>
-            {
-                Player.OutfitManager.SetOutfit(so, isInside);
-            };
-            outfitsSubMenu.AddItem(uIMenuItem);
-        }
+        Player.OutfitManager.CreateOutfitMenu(MenuPool, outfitsSubMenu, isInside, removeBanner);
     }
     private void OnRentedOrPurchased()
     {

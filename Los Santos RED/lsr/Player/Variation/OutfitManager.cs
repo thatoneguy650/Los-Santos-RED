@@ -1,6 +1,8 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
+using RAGENativeUI;
+using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +20,8 @@ public class OutfitManager
         Player = player;
         SavedOutfits = savedOutfits;
     }
-    public List<SavedOutfit> CurrentPlayerOutfits => SavedOutfits.SavedOutfitList.Where(x=> x.ModelName.ToLower() == Player.ModelName.ToLower()).ToList();
+    public List<SavedOutfit> CurrentCharactersOutfits => SavedOutfits.SavedOutfitList.Where(x => x.ModelName.ToLower() == Player.ModelName.ToLower() && x.CharacterName.ToLower() == Player.PlayerName.ToLower()).ToList();
+    public List<SavedOutfit> CurrentModelOutfits => SavedOutfits.SavedOutfitList.Where(x=> x.ModelName.ToLower() == Player.ModelName.ToLower()).ToList();
     public void Dispose()
     {
 
@@ -42,6 +45,7 @@ public class OutfitManager
         Player.CurrentModelVariation.ApplyToPed(Player.Character);
         if (doAnimation)
         {
+            GameFiber.Sleep(500);
             PlayDisplayItem();
             Game.FadeScreenIn(500, true);
         }
@@ -55,16 +59,53 @@ public class OutfitManager
         {
             return;
         }
-        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, dictionary, anim, 4.0f, -4.0f, -1, 0, 0, false, false, false);
+        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, dictionary, anim, 2.0f, -2.0f, -1, 0, 0, false, false, false);
     }
-    public void PlayIdleAnimation()
+    //public void PlayIdleAnimation()
+    //{
+    //    string dictionary = "anim@amb@business@cfid@cfid_photograph@";
+    //    string anim = "base_model";
+    //    if (!AnimationDictionary.RequestAnimationDictionayResult(dictionary))
+    //    {
+    //        return;
+    //    }
+    //    NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, dictionary, anim, 4.0f, -4.0f, -1, 1, 0, false, false, false);
+    //}
+
+    public void CreateOutfitMenu(MenuPool menuPool, UIMenu subMenu, bool doAnimations, bool removeBanner)
     {
-        string dictionary = "anim@amb@business@cfid@cfid_photograph@";
-        string anim = "base_model";
-        if (!AnimationDictionary.RequestAnimationDictionayResult(dictionary))
+        subMenu.Clear();
+        UIMenu ModelSubMenu = menuPool.AddSubMenu(subMenu, "By Model");
+        UIMenu CharacterSubMenu = menuPool.AddSubMenu(subMenu, "By Character");
+
+        if (removeBanner)
         {
-            return;
+            ModelSubMenu.RemoveBanner();
+            CharacterSubMenu.RemoveBanner();
         }
-        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, dictionary, anim, 4.0f, -4.0f, -1, 1, 0, false, false, false);
+        else
+        {
+            ModelSubMenu.SetBannerType(EntryPoint.LSRedColor);
+            CharacterSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        }
+
+        foreach (SavedOutfit so in CurrentModelOutfits.OrderBy(x=> x.CharacterName).ThenBy(x=> x.Name))
+        {
+            UIMenuItem uIMenuItem = new UIMenuItem(so.Name,$"Character: {so.CharacterName}");
+            uIMenuItem.Activated += (sender, e) =>
+            {
+                SetOutfit(so, doAnimations);
+            };
+            ModelSubMenu.AddItem(uIMenuItem);
+        }
+        foreach (SavedOutfit so in CurrentCharactersOutfits.OrderBy(x => x.Name))
+        {
+            UIMenuItem uIMenuItem = new UIMenuItem(so.Name);
+            uIMenuItem.Activated += (sender, e) =>
+            {
+                SetOutfit(so, doAnimations);
+            };
+            CharacterSubMenu.AddItem(uIMenuItem);
+        }
     }
 }

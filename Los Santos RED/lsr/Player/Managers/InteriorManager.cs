@@ -238,6 +238,14 @@ public class InteriorManager
         InteriorUpdateLocations.Clear();
     }
 
+    public void OnStartedInteriorInteract()
+    {
+        Player.IsSetDisabledControls = true;
+    }
 
+    public void OnEndedInteriorInteract()
+    {
+        Player.IsSetDisabledControls = false;
+    }
 }
 

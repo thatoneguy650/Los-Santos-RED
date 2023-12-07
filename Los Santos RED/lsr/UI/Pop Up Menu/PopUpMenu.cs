@@ -1317,9 +1317,24 @@ public class PopUpMenu
             new PopUpBox(6,"Surrender",new Action(() => Player.Surrendering.ToggleSurrender()),"Toggle surrendering"),
             new PopUpBox(7,"BodyArmor","BodyArmorSubMenu","Open Body Armor Menu") { ClosesMenu = false },
             new PopUpBox(8,"Wave Hands",new Action(() => Player.ActivityManager.WaveHands()),"Get Nearby Attention"),
-            new PopUpBox(9,"Hail Cab",new Action(() => Player.ActivityManager.HailTaxi()),"Hail a nearby cab"),
-            new PopUpBox(10,"Dismiss Hailed Cab",new Action(() => Player.ActivityManager.DismissTaxi()),"Dismiss a hailed nearby cab"),
+            new PopUpBox(9,"Taxi Actions","TaxiOptionsSubMenu","Access taxi items") { ClosesMenu = false },
+            new PopUpBox(10,"Bodily Functions","BodilyFunctionsSubMenu","Access bodily functions") { ClosesMenu = false },
         };
+
+        List<PopUpBox> TaxiOptionsSubMenu = new List<PopUpBox>()
+        {
+            new PopUpBox(0,"Hail Taxi",new Action(() => Player.ActivityManager.HailTaxi()),"Hail a nearby taxi"),
+            new PopUpBox(1,"Dismiss Hailed Taxi",new Action(() => Player.ActivityManager.DismissTaxi()),"Dismiss a hailed nearby taxi"),
+        };
+        List<PopUpBox> BodilyFunctionsSubMenu = new List<PopUpBox>()
+        {
+            new PopUpBox(0,"Urinate Here", new Action(() => Player.ActivityManager.Urinate()),"Urinite here"),
+            new PopUpBox(1,"Defecate Here", new Action(() => Player.ActivityManager.Defecate()),"Defecate here"),
+            new PopUpBox(2,"Use Toilet Here Facing Front", new Action(() => Player.ActivityManager.StartSittingOnToilet(false,true)),"Sit on toilet here facing forwards"),
+            new PopUpBox(3,"Use Toilet Here Facing Back", new Action(() => Player.ActivityManager.StartSittingOnToilet(false,false)),"Sit on toilet here facing forwards"),
+        };
+
+
 
         List<PopUpBox> VehicleActionsSubMenu = new List<PopUpBox>()
         {
@@ -1335,7 +1350,6 @@ public class PopUpMenu
         {
             new PopUpBox(0,"Toggle Auto Backup",new Action(() => Player.ToggleAutoBackup()),"Toggle automatic backup being called."),
         };
-
 
 
         List<PopUpBox> SitSubMenu = new List<PopUpBox>()
@@ -1504,6 +1518,9 @@ public class PopUpMenu
         PopUpMenuGroups.Add(new PopUpBoxGroup("EnterSeatSubMenu", EnterSeatSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("OpenDoorSubMenu", OpenDoorSubMenu) { IsChild = true });
 
+        PopUpMenuGroups.Add(new PopUpBoxGroup("TaxiOptionsSubMenu", TaxiOptionsSubMenu) { IsChild = true });
+        PopUpMenuGroups.Add(new PopUpBoxGroup("BodilyFunctionsSubMenu", BodilyFunctionsSubMenu) { IsChild = true });
+        //TaxiOptionsSubMenu
 
         PopUpMenuGroups.Add(new PopUpBoxGroup("WindowsSubMenu", WindowsSubMenu) { IsChild = true });
 
