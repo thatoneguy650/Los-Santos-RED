@@ -80,7 +80,7 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
         }
         if (Interior != null && Interior.IsTeleportEntry)
         {
-            DoEntranceCamera();
+            DoEntranceCamera(true);
             Interior.Teleport(Player, this, StoreCamera);
         }
         else

@@ -63,7 +63,7 @@ public class GunStore : GameLocation
         }
         if (Interior != null && Interior.IsTeleportEntry)
         {
-            DoEntranceCamera();
+            DoEntranceCamera(false);
             Interior.Teleport(Player, this, StoreCamera);
         }
         else

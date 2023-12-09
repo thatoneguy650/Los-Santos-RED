@@ -14,6 +14,8 @@ public class DebugTeleportSubMenu : DebugSubMenu
     private IPlacesOfInterest PlacesOfInterest;
     private IEntityProvideable World;
     private IInteractionable Interactionable;
+    private UIMenu LocationItemsMenu;
+
     public DebugTeleportSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteractionable interactionable) : base(debug, menuPool, player)
     {
         PlacesOfInterest = placesOfInterest;
@@ -22,11 +24,19 @@ public class DebugTeleportSubMenu : DebugSubMenu
     }
     public override void AddItems()
     {
-        UIMenu LocationItemsMenu = MenuPool.AddSubMenu(Debug, "Teleport Menu");
+        LocationItemsMenu = MenuPool.AddSubMenu(Debug, "Teleport Menu");
         LocationItemsMenu.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Teleport to various locations";
         LocationItemsMenu.Width = 0.6f;
-
+        CreateMenu();
+    }
+    public override void Update()
+    {
+        CreateMenu();
+    }
+    private void CreateMenu()
+    {
+        LocationItemsMenu.Clear();
         UIMenuItem teleportToMarker = new UIMenuItem("Teleport To Marker", "Teleport to the current marker.");
         teleportToMarker.Activated += (sender, selectedItem) =>
         {
@@ -56,7 +66,7 @@ public class DebugTeleportSubMenu : DebugSubMenu
             InteriorsSubMenu.AddItem(myLocationType);
         }
 
-        List<GameLocation> AllLocations = PlacesOfInterest.AllLocations().Where(x=> x.IsCorrectMap(World.IsMPMapLoaded)).ToList();
+        List<GameLocation> AllLocations = PlacesOfInterest.AllLocations().Where(x => x.IsCorrectMap(World.IsMPMapLoaded)).ToList();
         foreach (string typeName in AllLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
         {
             UIMenuListScrollerItem<GameLocation> myLocationType = new UIMenuListScrollerItem<GameLocation>($"{typeName}", "Teleports to a POI on the Map", AllLocations.Where(x => x.TypeName == typeName));
@@ -71,13 +81,6 @@ public class DebugTeleportSubMenu : DebugSubMenu
             };
             LocationItemsMenu.AddItem(myLocationType);
         }
-
-
-
-
-
-
-
     }
 }
 

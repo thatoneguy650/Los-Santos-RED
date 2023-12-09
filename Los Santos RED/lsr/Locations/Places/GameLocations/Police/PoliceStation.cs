@@ -75,7 +75,7 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
         }
         if (Interior != null && Interior.IsTeleportEntry)
         {
-            DoEntranceCamera();
+            DoEntranceCamera(true);
             Interior.Teleport(Player, this, StoreCamera);
         }
         else

@@ -133,7 +133,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         }
         if (ResidenceInterior != null && ResidenceInterior.IsTeleportEntry && IsOwnedOrRented)
         {
-            DoEntranceCamera();
+            DoEntranceCamera(false);
             ResidenceInterior.SetResidence(this);
             ResidenceInterior.Teleport(Player, this, StoreCamera);
         }
@@ -730,6 +730,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
                 BaseList.Add(Tuple.Create("Buy:", CanPurchaseRightLabel));
             }
         }
+        BaseList.Add(Tuple.Create("Has Interior:", $"{(ResidenceInterior != null ? "Yes" : "No")}"));    
         return BaseList;
     }
     public void Setup()

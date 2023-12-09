@@ -58,7 +58,7 @@ public class Forger : GameLocation
         }
         if (Interior != null && Interior.IsTeleportEntry)
         {
-            DoEntranceCamera();
+            DoEntranceCamera(false);
             Interior.Teleport(Player, this, StoreCamera);
         }
         else
@@ -75,7 +75,7 @@ public class Forger : GameLocation
         {
             try
             {
-                SetupLocationCamera(locationCamera, isInside, true);
+                SetupLocationCamera(locationCamera, isInside, false);
                 CreateInteractionMenu();
                 InteractionMenu.Visible = true;
                 Interact();

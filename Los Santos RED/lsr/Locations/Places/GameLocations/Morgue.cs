@@ -47,7 +47,7 @@ public class Morgue : GameLocation
         }
         if (Interior != null && Interior.IsTeleportEntry)
         {
-            DoEntranceCamera();
+            DoEntranceCamera(true);
             Interior.Teleport(Player, this, StoreCamera);
         }
         else

@@ -352,7 +352,7 @@ public class Interior
             Player.Character.IsVisible = false;
             GameFiber.Sleep(500);
             Game.FadeScreenIn(1000, true);
-            InteractableLocation.DoExitCamera();
+            InteractableLocation.DoExitCamera(false);
             Player.InteriorManager.OnTeleportedOutside(InteractableLocation);
             //GameFiber.Sleep(1000);
         }

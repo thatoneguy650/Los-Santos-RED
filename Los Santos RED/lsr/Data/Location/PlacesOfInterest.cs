@@ -2228,15 +2228,116 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Residence(new Vector3(-700.87f, 649.99f, 155.38f), 350f, "4057 Hillcrest Ave",""){ OpenTime = 0,CloseTime = 24,RentalFee = 8500, RentalDays = 28,PurchasePrice = 1100000,SalesPrice = 980000,},
             new Residence(new Vector3(-1009.54f, 479.05f, 79.60f), 330f, "2125 Cockingend Dr",""){ OpenTime = 0,CloseTime = 24,RentalFee = 14500, RentalDays = 28,PurchasePrice = 1800000,SalesPrice = 1200000,},
             new Residence(new Vector3(1289.23f, -1710.51f, 55.48f), 205f, "412 El Burro Heights",""){ OpenTime = 0,CloseTime = 24,RentalFee = 1200, RentalDays = 28,PurchasePrice = 200000,SalesPrice = 180000,},
-            new Residence(new Vector3(-1243.89f, -1241.10f, 11.03f), 20f, "1533 Magellan Ave",""){ OpenTime = 0,CloseTime = 24,RentalFee = 500, RentalDays = 28},
+            new Residence(new Vector3(-1243.89f, -1241.10f, 11.03f), 20f, "1533 Magellan Ave",""){ OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28},
 
             //MP Houses with Interiors
-            new Residence(new Vector3(346.3378f,440.5709f, 147.8333f),292.537f,"2044 North Conker Avenue","") { InteriorID = 206081, IsOnSPMap = false,OpenTime = 0,CloseTime = 24,RentalFee = 500, RentalDays = 28,PurchasePrice = 762000, SalesPrice = 381000, },
-            new Residence(new Vector3(373.9571f,427.8646f, 145.6842f),41.48535f,"2045 North Conker Avenue","") { InteriorID = 206337, IsOnSPMap = false,OpenTime = 0,CloseTime = 24,RentalFee = 500, RentalDays = 28,PurchasePrice = 727000, SalesPrice = 363500, },
-            new Residence(new Vector3(-174.7182f,502.512f, 137.4203f),79.66186f,"3655 Wild Oats Drive","") { InteriorID = 207105, IsOnSPMap = false,OpenTime = 0,CloseTime = 24,RentalFee = 500, RentalDays = 28,PurchasePrice = 800000, SalesPrice = 400000, },
+            new Residence(new Vector3(346.3378f,440.5709f, 147.8333f),292.537f,"2044 North Conker Avenue","") { InteriorID = 206081, IsOnSPMap = false,OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 762000, SalesPrice = 381000, },
+            new Residence(new Vector3(373.9571f,427.8646f, 145.6842f),41.48535f,"2045 North Conker Avenue","") { InteriorID = 206337, IsOnSPMap = false,OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 727000, SalesPrice = 363500, },
+            new Residence(new Vector3(-174.7182f,502.512f, 137.4203f),79.66186f,"3655 Wild Oats Drive","") { InteriorID = 207105, IsOnSPMap = false,OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 800000, SalesPrice = 400000, },
 
-
-
+            new Residence() {
+                RentalDays = 28,
+                RentalFee = 5000,
+                PurchasePrice = 478000,
+                SalesPrice = 239000,
+                Name = "3677 Whispymound Drive",
+                EntrancePosition = new Vector3(119.3867f,563.9431f,183.9595f),
+                EntranceHeading = 4.633287f,
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 206593,
+                IsOnSPMap = false,
+                },
+            new Residence()
+            {
+                RentalDays = 28,
+                RentalFee = 5000,
+                PurchasePrice = 571000,
+                SalesPrice = 285500,
+                Name = "2874 Hillcrest Avenue",
+                FullName = "2874 Hillcrest Avenue",
+                EntrancePosition = new Vector3(-853.1187f, 695.2803f, 148.7875f),
+                EntranceHeading = 0.8268144f,
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 207361,
+                IsOnSPMap = false,
+            },
+            new Residence()
+            {
+                RentalDays = 28,
+                RentalFee = 5000,
+                PurchasePrice = 672000,
+                SalesPrice = 336000,
+                Name = "2868 Hillcrest Avenue",
+                FullName = "2868 Hillcrest Avenue",
+                EntrancePosition = new Vector3(-753.1683f, 620.38f, 142.7604f),
+                EntranceHeading = 281.9315f,
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 207617,
+                IsOnSPMap = false,
+            },
+            new Residence()
+            {
+                RentalDays = 28,
+                RentalFee = 5000,
+                PurchasePrice = 525000,
+                SalesPrice = 262500,
+                Name = "2866 Hillcrest Avenue",
+                FullName = "2866 Hillcrest Avenue",
+                EntrancePosition = new Vector3(-733.7498f, 592.4382f, 142.526f),
+                EntranceHeading = 332.856f,
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 208641,
+                IsOnSPMap = false,
+            },
+            new Residence()
+            {
+                RentalDays = 28,
+                RentalFee = 5000,
+                PurchasePrice = 705000,
+                SalesPrice = 352500,
+                Name = "2862 Hillcrest Avenue",
+                FullName = "2862 Hillcrest Avenue",
+                EntrancePosition = new Vector3(373.9571f, 427.8646f, 145.6842f),
+                EntranceHeading = 41.48535f,
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 208129,
+                IsOnSPMap = false,
+            },
+            new Residence()
+            {
+                RentalDays = 28,
+                RentalFee = 5000,
+                PurchasePrice = 608000,
+                SalesPrice = 304000,
+                Name = "2117 Milton Road",
+                FullName = "2117 Milton Road",
+                EntrancePosition = new Vector3(-559.8577f, 662.7262f, 145.4829f),
+                EntranceHeading = 349.0018f,
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 207873,
+                IsOnSPMap = false,
+            },
+            new Residence()
+            {
+                RentalDays = 28,
+                RentalFee = 5000,
+                PurchasePrice = 449000,
+                SalesPrice = 224500,
+                Name = "2113 Mad Wayne Thunder Drive",
+                FullName = "2113 Mad Wayne Thunder Drive",
+                EntrancePosition = new Vector3(-1294.153f, 453.1571f, 97.64121f),
+                EntranceHeading = 1.065937f,
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 208385,
+                IsOnSPMap = false,
+            },
         };
 
         ApartmentBuildings = new List<ApartmentBuilding>()
@@ -2423,7 +2524,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
-            IsOnMPMap = false,
+            IsOnMPMap = true,
             IsOnSPMap = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
@@ -2441,32 +2542,33 @@ public class PlacesOfInterest : IPlacesOfInterest
         GangDens.Add(Den1);
 
 
+        //maybe in the future, kinda shitty tho 
 
-        GangDen Den1MP = new GangDen(new Vector3(1389.966f, 1131.907f, 114.3344f), 91.72424f, "Madrazo Cartel Mansion", "", "MadrazoDenMenu", "AMBIENT_GANG_MADRAZO")
-        {
-            IsPrimaryGangDen = true,
-            CanInteractWhenWanted = true,
-            BannerImagePath = "gangs\\madrazo.png",
-            OpenTime = 0,
-            CloseTime = 24,
-            IsEnabled = true,
-            IsOnMPMap = true,
-            IsOnSPMap = false,
-            InteriorID = -706,
-            PossiblePedSpawns = new List<ConditionalLocation>()
-            {
-                new GangConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 55f) { TaskRequirements = TaskRequirements.Guard },
-                new GangConditionalLocation(new Vector3(1383.559f, 1156.695f, 114.3345f), 170.1522f, 55f) { TaskRequirements = TaskRequirements.Guard },
-                new GangConditionalLocation(new Vector3(1375.004f, 1149.209f, 113.9089f), 91.94662f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.CanMoveWhenGuarding, ForceSidearm = true,ForceLongGun = true },
-                new GangConditionalLocation(new Vector3(1412.588f, 1138.611f, 114.3341f), 196.4261f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.CanMoveWhenGuarding, ForceSidearm = true,ForceLongGun = true },
-            },
-            PossibleVehicleSpawns = new List<ConditionalLocation>()
-            {
-                new GangConditionalLocation(new Vector3(1410.701f, 1119.38f, 114.5649f), 89.85777f, 85f),
-                new GangConditionalLocation(new Vector3(1367.869f, 1147.611f, 113.4886f), 1.871943f, 85f),
-            }
-        };
-        GangDens.Add(Den1MP);
+        //GangDen Den1MP = new GangDen(new Vector3(1389.966f, 1131.907f, 114.3344f), 91.72424f, "Madrazo Cartel Mansion", "", "MadrazoDenMenu", "AMBIENT_GANG_MADRAZO")
+        //{
+        //    IsPrimaryGangDen = true,
+        //    CanInteractWhenWanted = true,
+        //    BannerImagePath = "gangs\\madrazo.png",
+        //    OpenTime = 0,
+        //    CloseTime = 24,
+        //    IsEnabled = true,
+        //    IsOnMPMap = true,
+        //    IsOnSPMap = false,
+        //    InteriorID = -706,
+        //    PossiblePedSpawns = new List<ConditionalLocation>()
+        //    {
+        //        new GangConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 55f) { TaskRequirements = TaskRequirements.Guard },
+        //        new GangConditionalLocation(new Vector3(1383.559f, 1156.695f, 114.3345f), 170.1522f, 55f) { TaskRequirements = TaskRequirements.Guard },
+        //        new GangConditionalLocation(new Vector3(1375.004f, 1149.209f, 113.9089f), 91.94662f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.CanMoveWhenGuarding, ForceSidearm = true,ForceLongGun = true },
+        //        new GangConditionalLocation(new Vector3(1412.588f, 1138.611f, 114.3341f), 196.4261f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.CanMoveWhenGuarding, ForceSidearm = true,ForceLongGun = true },
+        //    },
+        //    PossibleVehicleSpawns = new List<ConditionalLocation>()
+        //    {
+        //        new GangConditionalLocation(new Vector3(1410.701f, 1119.38f, 114.5649f), 89.85777f, 85f),
+        //        new GangConditionalLocation(new Vector3(1367.869f, 1147.611f, 113.4886f), 1.871943f, 85f),
+        //    }
+        //};
+        //GangDens.Add(Den1MP);
 
 
     }

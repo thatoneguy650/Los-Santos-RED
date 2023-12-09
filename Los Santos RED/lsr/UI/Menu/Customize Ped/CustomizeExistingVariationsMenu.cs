@@ -7,6 +7,7 @@ using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,8 @@ public class CustomizeExistingVariationsMenu
     private IGameSaves GameSaves;
     private ISavedOutfits SavedOutfits;
     private UIMenu outfitsSubMenu;
+    //private UIMenu modeloutfitsSubMenu;
+    private bool IncludeAllOutfits = false;
 
     public CustomizeExistingVariationsMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, PedCustomizerMenu pedCustomizerMenu, 
         IDispatchablePeople dispatchablePeople, IHeads heads, IGameSaves gameSaves, ISavedOutfits savedOutfits)
@@ -84,7 +87,18 @@ public class CustomizeExistingVariationsMenu
     private void SetOutfits()
     {
         outfitsSubMenu.Clear();
-
+        UIMenuCheckboxItem includeAllOutfits = new UIMenuCheckboxItem("Include All", IncludeAllOutfits, "If enabled, you will see all outfits for the given model, if disabled you will only see outfits for the current character.");
+        includeAllOutfits.Activated += (sender, e) =>
+        {
+            IncludeAllOutfits = !IncludeAllOutfits;
+            SetOutfits();
+            outfitsSubMenu.RefreshIndex();
+        };
+        outfitsSubMenu.AddItem(includeAllOutfits);
+        SetByModel();
+    }
+    private void SetByModel()
+    {
 
         UIMenuItem saveOutfitMenuItem = new UIMenuItem("Save Outfit");
         saveOutfitMenuItem.Activated += (sender, e) =>
@@ -95,17 +109,15 @@ public class CustomizeExistingVariationsMenu
                 Game.DisplaySubtitle("No Outfit Name Set");
                 return;
             }
-            SavedOutfits.AddOutfit(new SavedOutfit(outfitName, PedCustomizer.WorkingModelName,PedCustomizer.WorkingName, PedCustomizer.WorkingVariation.Copy()));
+            SavedOutfits.AddOutfit(new SavedOutfit(outfitName, PedCustomizer.WorkingModelName, PedCustomizer.WorkingName, PedCustomizer.WorkingVariation.Copy()));
             SetOutfits();
             outfitsSubMenu.RefreshIndex();
         };
         outfitsSubMenu.AddItem(saveOutfitMenuItem);
-
-
-        foreach (SavedOutfit so in SavedOutfits.SavedOutfitList.Where(x=> x.ModelName.ToLower() == PedCustomizer.WorkingModelName.ToLower()))
+        foreach (SavedOutfit so in SavedOutfits.SavedOutfitList.Where(x => x.ModelName.ToLower() == PedCustomizer.WorkingModelName.ToLower() && (IncludeAllOutfits || x.CharacterName.ToLower() == PedCustomizer.WorkingName.ToLower())))
         {
             //EntryPoint.WriteToConsoleTestLong($"OUTFIT MANAGER:     ADDING OUTFIT {so.Name}");
-            UIMenuListScrollerItem<string> uIMenuItem = new UIMenuListScrollerItem<string>(so.Name,"",new List<string>() { "Set","Delete" });
+            UIMenuListScrollerItem<string> uIMenuItem = new UIMenuListScrollerItem<string>(so.Name, so.CharacterName, new List<string>() { "Set", "Delete" });
             uIMenuItem.Activated += (sender, e) =>
             {
                 if (uIMenuItem.SelectedItem == "Set")
@@ -131,6 +143,7 @@ public class CustomizeExistingVariationsMenu
             outfitsSubMenu.AddItem(uIMenuItem);
         }
     }
+   
     private void AddSaveGames()
     {
         UIMenu dispatchablePeopleSubMenu = MenuPool.AddSubMenu(savedVariationsMenu, "Save Games");

@@ -12,6 +12,7 @@ using System.Xml.Serialization;
 [XmlInclude(typeof(ExitInteriorInteract))]
 [XmlInclude(typeof(AnimationInteract))]
 [XmlInclude(typeof(ToiletInteract))]
+[XmlInclude(typeof(SinkInteract))]
 //UrinalInteract
 //ToiletInteract
 public class InteriorInteract

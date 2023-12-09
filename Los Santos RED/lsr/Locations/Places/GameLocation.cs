@@ -101,7 +101,7 @@ public class GameLocation : ILocationDispatchable
     }
     public string Name { get; set; }
     public string FullName { get; set; }
-    public string Description { get; set; }
+    public string Description { get; set; } = "";
     public bool IsEnabled { get; set; } = true;
     public bool IsTemporarilyClosed { get; set; } = false;
     public string BannerImagePath { get; set; } = "";
@@ -387,7 +387,7 @@ public class GameLocation : ILocationDispatchable
         }
         if (Interior != null && Interior.IsTeleportEntry)
         {
-            DoEntranceCamera();
+            DoEntranceCamera(true);
             Interior.Teleport(Player, this, StoreCamera);
         }
         else
@@ -427,14 +427,16 @@ public class GameLocation : ILocationDispatchable
             }
         }, "StandardInteract");
     }
-    protected void DoEntranceCamera()
+    protected void DoEntranceCamera(bool sayGreeting)
     {
         StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
+        StoreCamera.SayGreeting = sayGreeting;
         StoreCamera.DoEntranceOnly();
     }
-    public void DoExitCamera()
+    public void DoExitCamera(bool sayGreeting)
     {
         StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
+        StoreCamera.SayGreeting = sayGreeting;
         StoreCamera.Dispose();
     }
     public void StandardInteractWithNewCamera(Vector3 desiredPosition, Vector3 desiredDirection, Rotator desiredRotation)

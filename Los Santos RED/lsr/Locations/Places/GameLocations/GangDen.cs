@@ -93,7 +93,7 @@ public class GangDen : GameLocation, IRestableLocation
         }
         if (GangDenInterior != null && GangDenInterior.IsTeleportEntry && IsAvailableForPlayer)
         {
-            DoEntranceCamera();
+            DoEntranceCamera(false);
             GangDenInterior.SetGangDen(this);
             GangDenInterior.Teleport(Player, this, StoreCamera);
         }

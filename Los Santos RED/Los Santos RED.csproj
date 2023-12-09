@@ -149,6 +149,7 @@
     <Compile Include="lsr\Locations\Interiors\OutfitInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ResidenceInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\RestInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\SinkInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\StandardInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\AnimationInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ToiletInteract.cs" />

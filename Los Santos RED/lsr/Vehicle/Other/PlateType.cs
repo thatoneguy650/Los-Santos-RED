@@ -12,7 +12,7 @@ public class PlateType
     public string StateID { get; set; }
     public int SpawnChance { get; set; }
     public bool CanOverwrite { get; set; } = true;
-    public string SerialFormat { get; set; } = "";
+    public string SerialFormat { get; set; } = "12ABC345";
     public bool CanSpawn
     {
         get

@@ -47,7 +47,7 @@ public class CashStorage
         {
             cashStorageSubMenu.RemoveBanner();
         }
-        if (GameLocation == null || !GameLocation.HasBannerImage)
+        else if (GameLocation == null || !GameLocation.HasBannerImage)
         {
             cashStorageSubMenu.SetBannerType(EntryPoint.LSRedColor);
         }

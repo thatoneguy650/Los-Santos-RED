@@ -50,7 +50,7 @@ public class Dealership : GameLocation, ILicensePlatePreviewable
         }
         if (Interior != null && Interior.IsTeleportEntry)
         {
-            DoEntranceCamera();
+            DoEntranceCamera(true);
             Interior.Teleport(Player, this, StoreCamera);
         }
         else
