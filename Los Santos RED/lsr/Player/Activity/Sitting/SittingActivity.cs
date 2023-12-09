@@ -218,9 +218,10 @@ namespace LosSantosRED.lsr.Player
             {
                 IsCancelled = true;
             }
-            if (Game.GameTime - GameTimeLastGotHealth >= 5000)
+            if (Game.GameTime - GameTimeLastGotHealth >= 3000)
             {
-                Player.HealthManager.ChangeHealth(1);
+                Player.ActivityManager.PlaySpecificFacialAnimations(Player.IsMale ? new List<string>() { "effort_1", "effort_2", "effort_3", }.PickRandom() : "effort_1");
+                //Player.HealthManager.ChangeHealth(1);
                 GameTimeLastGotHealth = Game.GameTime;
             }   
             Player.WeaponEquipment.SetUnarmed();

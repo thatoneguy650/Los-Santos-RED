@@ -78,7 +78,17 @@ namespace LosSantosRED.lsr.Player
             }
             AnimationDictionary.RequestAnimationDictionay(PlayingDict);
             NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, PlayingDict, PlayingAnim, 2.0f, -2.0f, -1, (int)(eAnimationFlags.AF_LOOPING), 0, false, false, false);
+            LoopedParticle particle = null;
+            if (Player.IsMale)
+            {
+                particle = new LoopedParticle("core", "ent_amb_peeing", Player.Character, PedBoneId.Pelvis, new Vector3(0.0f, 0.27f, -0.21f), new Rotator(-90f, 0f, 0f), 1.5f);
+            }
+            else
+            {
+                particle = new LoopedParticle("core", "ent_amb_peeing", Player.Character, PedBoneId.Pelvis, new Vector3(0.0f, -0.07f, -0.54f), new Rotator(-180f, 0f, 0f), 1.5f);
+            }
             Player.ActivityManager.IsUrinatingDefecting = true;
+            uint GameTimeLastPlayedAnim = Game.GameTime;
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
                 if (Player.IsMoveControlPressed)
@@ -89,8 +99,14 @@ namespace LosSantosRED.lsr.Player
                 {
                     IsCancelled = true;
                 }
+                if (Game.GameTime - GameTimeLastPlayedAnim >= 3000)
+                {
+                    Player.ActivityManager.PlaySpecificFacialAnimations(Player.IsMale ? new List<string>() { "mood_happy_1", }.PickRandom() : "effort_1");
+                    GameTimeLastPlayedAnim = Game.GameTime;
+                }
                 GameFiber.Yield();
             }
+            particle.Stop();
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             Player.ActivityManager.IsPerformingActivity = false;
             Player.ActivityManager.IsUrinatingDefecting = false;

@@ -60,9 +60,16 @@ public class SinkInteract : InteriorInteract
                 return;
             }
         }
+        uint GameTimeStartedWashing = Game.GameTime;
         GameFiber.Sleep(2000);
+        bool HasCleaned = false;
         while (!Player.IsMoveControlPressed && Player.IsAliveAndFree)
         {
+            if(!HasCleaned && Game.GameTime - GameTimeStartedWashing >= 5000)
+            {
+                Player.Character.ClearBlood();
+                HasCleaned = true;
+            }
             GameFiber.Yield();
         }
         Interior.IsMenuInteracting = false;

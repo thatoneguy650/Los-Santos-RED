@@ -54,11 +54,13 @@ public class RestInteract : InteriorInteract
             LocationCamera?.StopImmediately(true);
             return;
         }
+        Player.InteriorManager.OnStartedInteriorInteract();
         RestableLocation.CreateRestMenu();
         Interior.IsMenuInteracting = false;
         DoGetUpAnimation();
         LocationCamera?.ReturnToGameplay(true);
         LocationCamera?.StopImmediately(true);
+        Player.InteriorManager.OnEndedInteriorInteract();
     }
     public override void AddPrompt()
     {

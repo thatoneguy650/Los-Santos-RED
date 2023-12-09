@@ -1331,7 +1331,7 @@ public class PopUpMenu
             new PopUpBox(0,"Urinate Here", new Action(() => Player.ActivityManager.Urinate()),"Urinite here"),
             new PopUpBox(1,"Defecate Here", new Action(() => Player.ActivityManager.Defecate()),"Defecate here"),
             new PopUpBox(2,"Sit On Toilet Here (Front)", new Action(() => Player.ActivityManager.StartSittingOnToilet(false,true)),"Sit on toilet here facing forwards"),
-            new PopUpBox(3,"Sit On Toilet Here (Back)", new Action(() => Player.ActivityManager.StartSittingOnToilet(false,false)),"Sit on toilet here facing forwards"),
+            new PopUpBox(3,"Sit On Toilet Here (Back)", new Action(() => Player.ActivityManager.StartSittingOnToilet(false,false)),"Sit on toilet here facing backwards"),
         };
 
 
@@ -1356,7 +1356,7 @@ public class PopUpMenu
         {
             new PopUpBox(0,"Sit (Nearest)", new Action(() => Player.ActivityManager.StartSittingDown(true,true)),"Sit down at nearest seat"),
             new PopUpBox(1,"Sit Here (Front)", new Action(() => Player.ActivityManager.StartSittingDown(false,true)),"Sit here facing forwards"),
-            new PopUpBox(2,"Sit Here (Back)", new Action(() => Player.ActivityManager.StartSittingDown(false,false)),"Sit here facing forwards"),
+            new PopUpBox(2,"Sit Here (Back)", new Action(() => Player.ActivityManager.StartSittingDown(false,false)),"Sit here facing backwards"),
         };
 
 

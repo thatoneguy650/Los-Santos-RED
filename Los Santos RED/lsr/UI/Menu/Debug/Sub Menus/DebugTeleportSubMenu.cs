@@ -60,6 +60,7 @@ public class DebugTeleportSubMenu : DebugSubMenu
                 GameLocation toTele = myLocationType.SelectedItem;
                 if (toTele != null && toTele.Interior != null)
                 {
+                    toTele.Interior.Load(true);
                     toTele.Interior.Teleport(Interactionable, toTele, null);
                 }
             };

@@ -92,10 +92,6 @@ public class SimpleInventory
             }
         }
     }
-
-
-
-
     public void CreateInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu menuToAdd, bool withAnimations, List<ItemType> AllowedItemTypes, List<ItemType> DisallowedItemTypes, bool removeBanner, string overrideTitle, string overrideDescription)
     {
         string title = "Stored Inventory";
@@ -124,53 +120,45 @@ public class SimpleInventory
         UIMenuItem TakeAllItems = new UIMenuItem("Take All","Take all stored items.");
         TakeAllItems.Activated += (sender, selectedItem) =>
         {
-            TakeAll(player);
-            UpdateInventoryScrollers(player);
+            TakeAll(player, AllowedItemTypes, DisallowedItemTypes);
+            UpdateInventoryScrollers(player, AllowedItemTypes, DisallowedItemTypes);
         };
         VehicleInventoryItem.AddItem(TakeAllItems);
         UIMenuItem DepositAll = new UIMenuItem("Store All", "Store all player items.");
         DepositAll.Activated += (sender, selectedItem) =>
         {
-            StoreAll(player);
-            UpdateInventoryScrollers(player);
+            StoreAll(player, AllowedItemTypes, DisallowedItemTypes);
+            UpdateInventoryScrollers(player, AllowedItemTypes, DisallowedItemTypes);
         };
         VehicleInventoryItem.AddItem(DepositAll);
-        List<InventoryItem> transferableItems = null;
-        if (AllowedItemTypes != null && AllowedItemTypes.Any())
-        {
-            transferableItems = player.Inventory.ItemsList.Where(x=> x.ModItem != null && AllowedItemTypes.Contains(x.ModItem.ItemType)).ToList();
-        }
-        else if (DisallowedItemTypes != null && DisallowedItemTypes.Any())
-        {
-            transferableItems = player.Inventory.ItemsList.Where(x => x.ModItem != null && !DisallowedItemTypes.Contains(x.ModItem.ItemType)).ToList();
-        }
-        else
-        {
-            transferableItems = player.Inventory.ItemsList.ToList();
-        }
-        foreach (InventoryItem inventoryItem in ItemsList)
+
+        List<InventoryItem> storedItems = GetAllowedItems(ItemsList.ToList(), AllowedItemTypes, DisallowedItemTypes);
+        foreach (InventoryItem inventoryItem in storedItems)
         {
             inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem, withAnimations, Settings, removeBanner);
         }
-        if(transferableItems == null)
+        List<InventoryItem> playerItems = GetAllowedItems(player.Inventory.ItemsList.ToList(), AllowedItemTypes, DisallowedItemTypes);
+        if (playerItems == null)
         {
             return;
         }
-        foreach (InventoryItem inventoryItem in transferableItems)
+        foreach (InventoryItem inventoryItem in playerItems)
         {
-            if (!ItemsList.Any(x => x.ModItem.Name == inventoryItem.ModItem.Name))
+            if (!storedItems.Any(x => x.ModItem.Name == inventoryItem.ModItem.Name))
             {
                 inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem, withAnimations, Settings, removeBanner);
             }
         }
     }
-    private void UpdateInventoryScrollers(IInteractionable player)
+    private void UpdateInventoryScrollers(IInteractionable player, List<ItemType> AllowedItemTypes, List<ItemType> DisallowedItemTypes)
     {
-        foreach (InventoryItem inventoryItem in ItemsList)
+        List<InventoryItem> storedItems = GetAllowedItems(ItemsList.ToList(), AllowedItemTypes, DisallowedItemTypes);
+        foreach (InventoryItem inventoryItem in storedItems)
         {
             inventoryItem.ModItem.UpdateInventoryScrollers(player, this, Settings);
         }
-        foreach (InventoryItem inventoryItem in player.Inventory.ItemsList.ToList())
+        List<InventoryItem> playerItems = GetAllowedItems(player.Inventory.ItemsList.ToList(), AllowedItemTypes, DisallowedItemTypes);
+        foreach (InventoryItem inventoryItem in playerItems)
         {
             if (!ItemsList.Any(x => x.ModItem.Name == inventoryItem.ModItem.Name))
             {
@@ -178,10 +166,28 @@ public class SimpleInventory
             }
         }
     }
-
-    private void TakeAll(IInteractionable player)
+    private List<InventoryItem> GetAllowedItems(List<InventoryItem> toCheck, List<ItemType> AllowedItemTypes, List<ItemType> DisallowedItemTypes)
     {
-        foreach(InventoryItem inventoryItem in ItemsList.ToList())
+        List<InventoryItem> allowedItems = null;
+        if (AllowedItemTypes != null && AllowedItemTypes.Any())
+        {
+            allowedItems = toCheck.Where(x => x.ModItem != null && AllowedItemTypes.Contains(x.ModItem.ItemType)).ToList();
+        }
+        else if (DisallowedItemTypes != null && DisallowedItemTypes.Any())
+        {
+            allowedItems = toCheck.Where(x => x.ModItem != null && !DisallowedItemTypes.Contains(x.ModItem.ItemType)).ToList();
+        }
+        else
+        {
+            allowedItems = toCheck.ToList();
+        }
+        return allowedItems;
+    }
+
+    private void TakeAll(IInteractionable player, List<ItemType> AllowedItemTypes, List<ItemType> DisallowedItemTypes)
+    {
+        List<InventoryItem> storedItems = GetAllowedItems(ItemsList.ToList(), AllowedItemTypes, DisallowedItemTypes);
+        foreach (InventoryItem inventoryItem in storedItems)
         {
             int amount = inventoryItem.Amount;
             if (Remove(inventoryItem.ModItem, amount))
@@ -190,9 +196,10 @@ public class SimpleInventory
             }
         }
     }
-    private void StoreAll(IInteractionable player)
+    private void StoreAll(IInteractionable player, List<ItemType> AllowedItemTypes, List<ItemType> DisallowedItemTypes)
     {
-        foreach (InventoryItem inventoryItem in player.Inventory.ItemsList.ToList())
+        List<InventoryItem> playerItems = GetAllowedItems(player.Inventory.ItemsList.ToList(), AllowedItemTypes, DisallowedItemTypes);
+        foreach (InventoryItem inventoryItem in playerItems)
         {
             int amount = inventoryItem.Amount;
             if (player.Inventory.Remove(inventoryItem.ModItem, amount))

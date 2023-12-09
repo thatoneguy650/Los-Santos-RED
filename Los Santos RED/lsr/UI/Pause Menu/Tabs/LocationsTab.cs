@@ -15,6 +15,7 @@ public class LocationsTab : ITabbableMenu
     private IGangRelateable Player;
     private ITimeReportable Time;
     private ISettingsProvideable Settings;
+    private IEntityProvideable World;
 
     private TabSubmenuItem dynamicLocationsTabSubmenuITem;
     private string FilterString = "";
@@ -22,13 +23,14 @@ public class LocationsTab : ITabbableMenu
     private TabView TabView;
     private TabTextItem removeGPSTTI;
 
-    public LocationsTab(IGangRelateable player, IPlacesOfInterest placesOfInterest, ITimeReportable time, ISettingsProvideable settings, TabView tabView)
+    public LocationsTab(IGangRelateable player, IPlacesOfInterest placesOfInterest, ITimeReportable time, ISettingsProvideable settings, TabView tabView, IEntityProvideable world)
     {
         Player = player;
         PlacesOfInterest = placesOfInterest;
         Time = time;
         Settings = settings;
         TabView = tabView;
+        World = world;
     }
 
     public void AddItems()
@@ -69,7 +71,7 @@ public class LocationsTab : ITabbableMenu
         {
             FilterString = "";
         }
-        List<GameLocation> DirectoryLocations = PlacesOfInterest.AllLocations().Where(x => (x.ShowsOnDirectory || Settings.SettingsManager.WorldSettings.ShowAllLocationsOnDirectory) && x.IsEnabled && (string.IsNullOrEmpty(FilterString) || FilterString == "" || x.Name.ToLower().Contains(FilterString.ToLower()))).ToList();
+        List<GameLocation> DirectoryLocations = PlacesOfInterest.AllLocations().Where(x => (x.ShowsOnDirectory || Settings.SettingsManager.WorldSettings.ShowAllLocationsOnDirectory) && x.IsEnabled && x.IsCorrectMap(World.IsMPMapLoaded) && (string.IsNullOrEmpty(FilterString) || FilterString == "" || x.Name.ToLower().Contains(FilterString.ToLower()))).ToList();
         foreach (string typeName in DirectoryLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
         {
             List<MissionInformation> missionInfoList = new List<MissionInformation>();

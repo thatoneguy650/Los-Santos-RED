@@ -9,6 +9,7 @@ using RAGENativeUI.Elements;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -714,14 +715,14 @@ public class DebugHelperSubMenu : DebugSubMenu
     private void SetParticleAttachment()
     {
         //shovel replacing baseball bat?
-        string propName = NativeHelper.GetKeyboardInput("prop_cigar_02");
+        //string propName = NativeHelper.GetKeyboardInput("prop_cigar_02");
         string particleGroupName = NativeHelper.GetKeyboardInput("core");
-        string particleName = NativeHelper.GetKeyboardInput("ent_anim_cig_smoke");
+        string particleName = NativeHelper.GetKeyboardInput("ent_amb_peeing");
         Rage.Object weaponObject = null;
         try
         {
-            weaponObject = new Rage.Object(propName, Player.Character.GetOffsetPositionUp(50f));
-            string HandBoneName = "BONETAG_R_PH_HAND";
+            //weaponObject = new Rage.Object(propName, Player.Character.GetOffsetPositionUp(50f));
+            //string HandBoneName = "BONETAG_R_PH_HAND";
 
             Offset = new Vector3(0.0f, 0.0f, 0.0f);
             Rotation = new Rotator(0f, 0f, 0f);
@@ -729,69 +730,106 @@ public class DebugHelperSubMenu : DebugSubMenu
 
             Vector3 CoolOffset = new Vector3(0.0f, 0.0f, 0.0f);
             Rotator CoolRotation = new Rotator(0f, 0f, 0f);
-            if (weaponObject.Exists())
+            string dictionary = NativeHelper.GetKeyboardInput("missfbi3ig_0");
+            string animation = NativeHelper.GetKeyboardInput("shit_loop_trev");
+            float scale = 1f;
+
+            AnimationDictionary.RequestAnimationDictionay(dictionary);
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(AnimationFlags.Loop), 0, false, false, false);//-1
+
+            bool isRunning = true;
+
+            //AttachItem(weaponObject, HandBoneName, CoolOffset, CoolRotation);
+            LoopedParticle particle = new LoopedParticle(particleGroupName, particleName, Player.Character, PedBoneId.Pelvis, new Vector3(0.0f, 0.0f, 0f), Rotator.Zero, scale);
+            GameFiber.StartNew(delegate
             {
-                string dictionary = "amb@world_human_smoking@female@idle_a";
-                string animation = "idle_c";
-
-                AnimationDictionary.RequestAnimationDictionay(dictionary);
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(AnimationFlags.Loop | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
-
-                bool isRunning = true;
-
-                AttachItem(weaponObject, HandBoneName, CoolOffset, CoolRotation);
-                LoopedParticle particle = new LoopedParticle(particleGroupName, particleName, weaponObject, new Vector3(0.0f, 0.0f, 0f), Rotator.Zero, 1.5f);
-                GameFiber.StartNew(delegate
+                try
                 {
-                    try
+                    while (!Game.IsKeyDownRightNow(Keys.Space))
                     {
-                        while (!Game.IsKeyDownRightNow(Keys.Space))
-                        {
-                            if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
-                            {
-                                particle.Stop();
-                                particle = new LoopedParticle(particleGroupName, particleName, weaponObject, Offset, Rotation, 1.5f);
-                                //AttachItem(weaponObject, HandBoneName, Offset, Rotation);
-                                GameTimeLastAttached = Game.GameTime;
-                            }
-                            if (Game.IsKeyDown(Keys.B))
-                            {
-                                //EntryPoint.WriteToConsoleTestLong($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
-                                GameFiber.Sleep(500);
-                            }
-                            if (Game.IsKeyDown(Keys.N))
-                            {
-                                isPrecise = !isPrecise;
-                                GameFiber.Sleep(500);
-                            }
-
-                            if (Game.IsKeyDown(Keys.D0))
-                            {
-                                isRunning = !isRunning;
-                                NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, dictionary, animation, isRunning ? 1.0f : 0.0f);
-                                GameFiber.Sleep(500);
-                            }
-
-                            Game.DisplaySubtitle($"{Offset.X}f,{Offset.Y}f,{Offset.Z}f -- {Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f");
-                            Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise}~n~Press 0 Pause{isRunning}");
-                            GameFiber.Yield();
-                        }
-                        if (weaponObject.Exists())
-                        {
-                            weaponObject.Delete();
-                        }
-                        if (particle != null)
+                        if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
                         {
                             particle.Stop();
+
+                            particle = new LoopedParticle(particleGroupName, particleName, Player.Character, PedBoneId.Pelvis, Offset, Rotation, scale);
+                            //AttachItem(weaponObject, HandBoneName, Offset, Rotation);
+                            GameTimeLastAttached = Game.GameTime;
                         }
+                        if (Game.IsKeyDown(Keys.B))
+                        {
+                            EntryPoint.WriteToConsole($"Attached to  new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                            GameFiber.Sleep(500);
+                        }
+                        if (Game.IsKeyDown(Keys.N))
+                        {
+                            isPrecise = !isPrecise;
+                            GameFiber.Sleep(500);
+                        }
+
+                        if (Game.IsKeyDown(Keys.D0))
+                        {
+                            isRunning = !isRunning;
+                            NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, dictionary, animation, isRunning ? 1.0f : 0.0f);
+                            GameFiber.Sleep(500);
+                        }
+
+
+                        if (Game.IsKeyDown(Keys.D1))
+                        {
+                            scale -= 0.1f;
+                            particle.Stop();
+
+                            particle = new LoopedParticle(particleGroupName, particleName, Player.Character, PedBoneId.Pelvis, Offset, Rotation, scale);
+                            //AttachItem(weaponObject, HandBoneName, Offset, Rotation);
+                            GameTimeLastAttached = Game.GameTime;
+                            GameFiber.Sleep(100);
+                        }
+                        if (Game.IsKeyDown(Keys.D2))
+                        {
+                            scale += 0.1f;
+                            particle.Stop();
+
+                            particle = new LoopedParticle(particleGroupName, particleName, Player.Character, PedBoneId.Pelvis, Offset, Rotation, scale);
+                            //AttachItem(weaponObject, HandBoneName, Offset, Rotation);
+                            GameTimeLastAttached = Game.GameTime;
+                            GameFiber.Sleep(100);
+                        }
+                        if (Game.IsKeyDown(Keys.D3))
+                        {
+
+                            string test = NativeHelper.GetKeyboardInput("");
+                            Color myCOlor = Color.FromName(test);
+                            if(myCOlor != null)
+                            {
+                                particle.SetColor(myCOlor);
+                            }
+                            GameFiber.Sleep(100);
+                        }
+
+
+
+
+
+                        Game.DisplaySubtitle($"{Offset.X}f,{Offset.Y}f,{Offset.Z}f -- {Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f");
+                        Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise}~n~Press 0 Pause{isRunning} 1 Scale-, 2 Scale+, 3 COlor");
+                        GameFiber.Yield();
                     }
-                    catch (Exception ex)
+                    if (weaponObject.Exists())
                     {
-                        EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                        EntryPoint.ModController.CrashUnload();
+                        weaponObject.Delete();
                     }
-                }, "Run Debug Logic");
-            }
+                    if (particle != null)
+                    {
+                        particle.Stop();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
+            }, "Run Debug Logic");
+            
         }
         catch (Exception ex)
         {
@@ -800,7 +838,94 @@ public class DebugHelperSubMenu : DebugSubMenu
 
     }
 
+    //private void SetParticleAttachment_Old()
+    //{
+    //    //shovel replacing baseball bat?
+    //    string propName = NativeHelper.GetKeyboardInput("prop_cigar_02");
+    //    string particleGroupName = NativeHelper.GetKeyboardInput("core");
+    //    string particleName = NativeHelper.GetKeyboardInput("veh_sub_leak");
+    //    Rage.Object weaponObject = null;
+    //    try
+    //    {
+    //        weaponObject = new Rage.Object(propName, Player.Character.GetOffsetPositionUp(50f));
+    //        string HandBoneName = "BONETAG_R_PH_HAND";
 
+    //        Offset = new Vector3(0.0f, 0.0f, 0.0f);
+    //        Rotation = new Rotator(0f, 0f, 0f);
+
+
+    //        Vector3 CoolOffset = new Vector3(0.0f, 0.0f, 0.0f);
+    //        Rotator CoolRotation = new Rotator(0f, 0f, 0f);
+    //        if (weaponObject.Exists())
+    //        {
+    //            string dictionary = "missbigscore1switch_trevor_piss";
+    //            string animation = "piss_loop";
+
+    //            AnimationDictionary.RequestAnimationDictionay(dictionary);
+    //            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(AnimationFlags.Loop), 0, false, false, false);//-1
+
+    //            bool isRunning = true;
+
+    //            AttachItem(weaponObject, HandBoneName, CoolOffset, CoolRotation);
+    //            LoopedParticle particle = new LoopedParticle(particleGroupName, particleName, weaponObject, new Vector3(0.0f, 0.0f, 0f), Rotator.Zero, 1.5f);
+    //            GameFiber.StartNew(delegate
+    //            {
+    //                try
+    //                {
+    //                    while (!Game.IsKeyDownRightNow(Keys.Space))
+    //                    {
+    //                        if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
+    //                        {
+    //                            particle.Stop();
+    //                            particle = new LoopedParticle(particleGroupName, particleName, weaponObject, Offset, Rotation, 1.5f);
+    //                            //AttachItem(weaponObject, HandBoneName, Offset, Rotation);
+    //                            GameTimeLastAttached = Game.GameTime;
+    //                        }
+    //                        if (Game.IsKeyDown(Keys.B))
+    //                        {
+    //                            //EntryPoint.WriteToConsoleTestLong($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+    //                            GameFiber.Sleep(500);
+    //                        }
+    //                        if (Game.IsKeyDown(Keys.N))
+    //                        {
+    //                            isPrecise = !isPrecise;
+    //                            GameFiber.Sleep(500);
+    //                        }
+
+    //                        if (Game.IsKeyDown(Keys.D0))
+    //                        {
+    //                            isRunning = !isRunning;
+    //                            NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, dictionary, animation, isRunning ? 1.0f : 0.0f);
+    //                            GameFiber.Sleep(500);
+    //                        }
+
+    //                        Game.DisplaySubtitle($"{Offset.X}f,{Offset.Y}f,{Offset.Z}f -- {Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f");
+    //                        Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise}~n~Press 0 Pause{isRunning}");
+    //                        GameFiber.Yield();
+    //                    }
+    //                    if (weaponObject.Exists())
+    //                    {
+    //                        weaponObject.Delete();
+    //                    }
+    //                    if (particle != null)
+    //                    {
+    //                        particle.Stop();
+    //                    }
+    //                }
+    //                catch (Exception ex)
+    //                {
+    //                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+    //                    EntryPoint.ModController.CrashUnload();
+    //                }
+    //            }, "Run Debug Logic");
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+    //    }
+
+    //}
 
     private void PrintVehicleClasses()
     {

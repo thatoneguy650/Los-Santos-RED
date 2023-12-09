@@ -175,6 +175,7 @@ public class CustomizeModelMenu
         }
         catch(Exception ex)
         {
+            EntryPoint.WriteToConsole($"SetModelFromInput ERROR {ex.Message} {ex.StackTrace}", 0);
             Rage.Game.DisplayNotification("Error Setting Model");
         }
     }
@@ -194,6 +195,7 @@ public class CustomizeModelMenu
         }
         catch(Exception ex)
         {
+            EntryPoint.WriteToConsole($"SetModelFromString ERROR {ex.Message} {ex.StackTrace}",0);
             Rage.Game.DisplayNotification("Error Setting Model");
         }
     }

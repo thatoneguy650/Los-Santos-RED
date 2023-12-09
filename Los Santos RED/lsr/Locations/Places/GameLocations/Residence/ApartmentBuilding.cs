@@ -22,7 +22,7 @@ public class ApartmentBuilding : GameLocation
         OpenTime = 0;
         CloseTime = 24;
     }
-    public List<string> ResidenceIDs { get; set; } = new List<string>();
+    public List<int> ResidenceIDs { get; set; } = new List<int>();
     [XmlIgnore]
     public List<Residence> Residences { get; set; } = new List<Residence>();
     public override string TypeName => "Apartment Building";
@@ -102,9 +102,9 @@ public class ApartmentBuilding : GameLocation
 
     private void GenerateResidenceMenu()
     {
-        foreach(string residenceID in ResidenceIDs)
+        foreach(int residenceID in ResidenceIDs)
         {
-            Residence foundResidence = World.ModDataFileManager.PlacesOfInterest.PossibleLocations.Residences.FirstOrDefault(x => x.Name == residenceID);
+            Residence foundResidence = World.ModDataFileManager.PlacesOfInterest.PossibleLocations.Residences.FirstOrDefault(x => x.ResidenceID == residenceID);
             if(foundResidence == null)
             {
                 continue;

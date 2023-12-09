@@ -27,10 +27,10 @@ namespace LosSantosRED.lsr.Player.Activity
             LoadAsset();
             Handle = NativeFunction.Natives.xC6EB449E33977F0B<uint>(particleName,entity,offset.X, offset.Y, offset.Z,rotation.Pitch, rotation.Roll, rotation.Yaw,boneIndex,scale,false, false, false); // _START_PARTICLE_FX_LOOPED_ON_ENTITY_BONE
         }
-        public LoopedParticle(string assetName, string particleName, Entity entity, string boneName, Vector3 offset, Rotator rotation, float scale): this(assetName, particleName, entity, entity.GetBoneIndex(boneName), offset, rotation, scale)
-        {
+        //public LoopedParticle(string assetName, string particleName, Entity entity, string boneName, Vector3 offset, Rotator rotation, float scale): this(assetName, particleName, entity, entity.GetBoneIndex(boneName), offset, rotation, scale)
+        //{
 
-        }
+        //}
         public LoopedParticle(string assetName, string particleName, Vector3 position, Rotator rotation, float scale)
         {
             AssetName = assetName;

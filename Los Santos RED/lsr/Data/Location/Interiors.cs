@@ -170,13 +170,13 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3426294393, new Vector3(-713.0732f,-916.5409f,19.36553f)),
-                    new InteriorDoor(2065277225, new Vector3(-710.4722f,-916.5372f,19.36553f)),}) { IsSPOnly = true},//right door  
+                    new InteriorDoor(2065277225, new Vector3(-710.4722f,-916.5372f,19.36553f)),}),// { IsSPOnly = true},//right door  
             new Interior(45570, "Ltd Grapeseed",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3426294393, new Vector3(1699.661f,4930.278f,42.21359f)),
-                    new InteriorDoor(2065277225, new Vector3(1698.172f,4928.146f,42.21359f)),}) { IsSPOnly = true},//right door  
+                    new InteriorDoor(2065277225, new Vector3(1698.172f,4928.146f,42.21359f)),}),// { IsSPOnly = true},//right door  
             new Interior(80642,"LtD Davis",
                 new List<string>() {  },
                 new List<string>() {  },
@@ -982,7 +982,6 @@ public class Interiors : IInteriors
             },
             new ResidenceInterior(61186, "Eclipse Towers, Apt 3")//SP from PB
             {
-                IsSPOnly = true,
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(-779.4249f, 339.4756f, 207.6208f),
                 InteriorEgressHeading = 113.7695f,
@@ -1073,7 +1072,6 @@ public class Interiors : IInteriors
             },
             new ResidenceInterior(-674, "Eclipse Towers, Apt 3")//MP from PB
             {
-                IsMPOnly = true,
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(-779.4249f, 339.4756f, 207.6208f),
                 InteriorEgressHeading = 113.7695f,
@@ -1339,11 +1337,103 @@ public class Interiors : IInteriors
                 },
             },
 
+            //SP Still?
+            new ResidenceInterior(55042,"Nice Medium Apartment") {//needs the blinds closed
+                IsTeleportEntry = true,
+                NeedsActivation = true,
+                NeedsSetDisabled = true,
+                InternalInteriorCoordinates = new Vector3(347.2686f,-999.2955f,-99.19622f),
+                RequestIPLs = new List<string>() { "Medium End Apartment" },
+                InteriorEgressPosition = new Vector3(346.9781f, -1001.959f, -99.19621f),//new Vector3(288.3021f, -998.6495f, -92.79259f),
+                InteriorEgressHeading = 1.692819f,
+                InteractPoints = new List<InteriorInteract>(){
+                    new ExitInteriorInteract("mediumaptExit1",new Vector3(346.538f, -1002.103f, -99.19621f), 175.579f,"Exit") ,
+                    new StandardInteriorInteract("mediumaptStandard1",new Vector3(339.6717f, -1000.131f, -99.19621f), 164.4039f ,"Interact")
+                    {
+                        CameraPosition = new Vector3(341.8449f, -997.2225f, -98.27441f),
+                        CameraDirection = new Vector3(-0.5587474f, -0.8046044f, -0.2010301f), 
+                        CameraRotation = new Rotator(-11.59721f, 7.844101E-06f, 145.2224f),
+
+                    },
+                    new ToiletInteract("mediumaptToilet1",new Vector3(347.1078f, -993.6047f, -99.19623f), 26.89262f,"Use Toilet") {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(347.9928f, -995.7236f, -98.23453f), 
+                        CameraDirection = new Vector3(-0.301568f, 0.8751476f, -0.3783827f), 
+                        CameraRotation = new Rotator(-22.23354f, -1.567997E-05f, 19.01349f),
+                    },
+                    new SinkInteract("mediumaptSink1",new Vector3(347.2266f, -994.1828f, -99.19623f), 91.86758f,"Use Sink")
+                    {
+                        CameraPosition = new Vector3(347.9928f, -995.7236f, -98.23453f), 
+                        CameraDirection = new Vector3(-0.301568f, 0.8751476f, -0.3783827f), 
+                        CameraRotation = new Rotator(-22.23354f, -1.567997E-05f, 19.01349f),
+                        UseNavmesh = false,
+                    },
+                },
+                InventoryInteracts = new List<InventoryInteract>()
+                {
+                    new InventoryInteract("mediumaptInventory1",new Vector3(343.5486f, -1001.16f, -99.19621f),264.7867f ,"Open Fridge")//fridge
+                    {
+                        AllowedItemTypes = new List<ItemType>() { ItemType.Drinks },
+                        CanAccessCash = false,
+                        CanAccessWeapons = false,
+                        Title = "Fridge",
+                        Description = "Access drink items",
+                        CameraPosition = new Vector3(342.0506f, -998.5658f, -98.08253f), 
+                        CameraDirection = new Vector3(0.5944998f, -0.7588475f, -0.2659332f), 
+                        CameraRotation = new Rotator(-15.42241f, 4.428326E-06f, -141.924f),
+                    },
+                    new InventoryInteract("mediumaptInventory2",new Vector3(342.2074f, -1003.222f, -99.19622f), 176.1618f,"Open Pantry")//Pantry
+                    {
+                        AllowedItemTypes = new List<ItemType>() { ItemType.Food, ItemType.Meals },
+                        CanAccessCash = false,
+                        CanAccessWeapons = false,                        
+                        Title = "Pantry",
+                        Description = "Access food items",
+                        CameraPosition = new Vector3(343.9472f, -1000.317f, -98.27441f), 
+                        CameraDirection = new Vector3(-0.5217595f, -0.8294323f, -0.1995222f), 
+                        CameraRotation = new Rotator(-11.50902f, 6.534693E-06f, 147.8278f),
+                    },
+                    new InventoryInteract("mediumaptInventory3",new Vector3(345.0375f, -996.074f, -99.19621f), 270.716f,"Access Items")//Shelving behind couch
+                    {
+                        CanAccessWeapons = false,
+                        CanAccessCash = false,
+                        DisallowedItemTypes = new List<ItemType>() { ItemType.Drinks,ItemType.Food, ItemType.Meals },
+                        CameraPosition = new Vector3(343.0483f, -998.4931f, -98.27441f), 
+                        CameraDirection = new Vector3(0.6651655f, 0.7349377f, -0.13199f), 
+                        CameraRotation = new Rotator(-7.584604f, 6.890473E-06f, -42.1471f)
+                    },
+                    new InventoryInteract("mediumaptInventory4",new Vector3(351.2565f, -999.094f, -99.19627f), 179.264f,"Access Weapons/Cash")//dresser in bedroom
+                    {
+                        CanAccessItems = false,
+                        CameraPosition = new Vector3(350.5187f, -996.0263f, -98.22089f), 
+                        CameraDirection = new Vector3(0.2043052f, -0.9459162f, -0.2519961f), 
+                        CameraRotation = new Rotator(-14.59566f, -1.102806E-06f, -167.8121f),
+                    },
+                },
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract("mediumaptChange1",new Vector3(350.4886f, -993.6788f, -99.19617f), 174.7643f ,"Change Outfit")
+                    {
+                        CameraPosition = new Vector3(349.9235f, -996.5236f, -98.30812f), 
+                        CameraDirection = new Vector3(0.2095511f, 0.922645f, -0.3237507f),
+                        CameraRotation = new Rotator(-18.8899f, 9.023732E-07f, -12.79594f)
+                    },
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract("mediumaptRest1", new Vector3(349.3769f, -998.2667f, -99.19629f), 357.6585f,"Sleep")
+                    {
+                        CameraPosition = new Vector3(352.3535f, -997.7198f, -98.33637f), 
+                        CameraDirection = new Vector3(-0.8584386f, 0.397912f, -0.3236498f), 
+                        CameraRotation = new Rotator(-18.88379f, -9.474573E-06f, 65.13087f)
+                    },
+                },
+            },
+
             //Houses
             new ResidenceInterior(206081,"2044 North Conker Avenue")
             {
                 InternalInteriorCoordinates = new Vector3(340.9412f, 437.1798f, 149.3925f),
-                IsMPOnly = true,
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(341.8584f, 437.655f, 149.3941f),
                 InteriorEgressHeading = 116.4628f,
@@ -1491,7 +1581,6 @@ public class Interiors : IInteriors
             new ResidenceInterior(206337, "2045 North Conker Avenue")
             {
                 InternalInteriorCoordinates = new Vector3(373.023f, 416.105f, 145.7006f),
-                IsMPOnly = true,
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(373.59f, 423.5691f, 145.9079f),
                 InteriorEgressHeading = 166.8477f,
@@ -1615,7 +1704,6 @@ public class Interiors : IInteriors
             new ResidenceInterior(207105, "3655 Wild Oats Drive")
             {
                 InternalInteriorCoordinates = new Vector3(-169.286f, 486.4938f, 137.4436f),
-                IsMPOnly = true,
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(-174.15f, 497.3787f, 137.667f),
                 InteriorEgressHeading = 192.5397f,
@@ -1822,7 +1910,6 @@ public class Interiors : IInteriors
                     },
                 },
                 InternalInteriorCoordinates = new Vector3(120.5f, 549.952f, 184.097f),
-                IsMPOnly = true,
                 IsTeleportEntry = true,
                 Doors = new List <InteriorDoor> () {},
                 RequestIPLs = new List <String> () {},
@@ -1968,7 +2055,6 @@ public class Interiors : IInteriors
             },
         },
                 InternalInteriorCoordinates = new Vector3(-857.798f, 682.563f, 152.6529f),
-                IsMPOnly = true,
                 IsTeleportEntry = true,
                 Doors = new List<InteriorDoor>() { },
                 RequestIPLs = new List<String>() { },
@@ -2114,7 +2200,6 @@ public class Interiors : IInteriors
             },
         },
                 InternalInteriorCoordinates = new Vector3(-763.107f, 615.906f, 144.1401f),
-                IsMPOnly = true,
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(-758.3497f, 618.9664f, 144.1531f),
                 InteriorEgressHeading = 105.945f,
@@ -2256,7 +2341,6 @@ public class Interiors : IInteriors
             },
         },
                 InternalInteriorCoordinates = new Vector3(-746.6974f, 576.9874f, 144.86f),
-                IsMPOnly = true,
                 IsTeleportEntry = true,
                 RequestIPLs = new List<string>() {
                         "apa_stilt_ch2_09c_int",
@@ -2401,7 +2485,6 @@ public class Interiors : IInteriors
             },
         },
                 InternalInteriorCoordinates = new Vector3(-676.127f, 588.612f, 145.1698f),
-                IsMPOnly = true,
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(-682.1874f, 592.3237f, 145.393f),
                 InteriorEgressHeading = 216.9307f,
@@ -2540,7 +2623,6 @@ public class Interiors : IInteriors
             },
         },
                 InternalInteriorCoordinates = new Vector3(-573.0324f, 643.7613f, 144.4316f),
-                IsMPOnly = true,
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(-571.8827f, 661.8361f, 145.8399f),
                 InteriorEgressHeading = 165.7903f,
@@ -2679,7 +2761,6 @@ public class Interiors : IInteriors
             },
         },
                 InternalInteriorCoordinates = new Vector3(120.5f, 549.952f, 184.097f),
-                IsMPOnly = true,
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(-1289.709f, 449.4589f, 97.90252f),
                 InteriorEgressHeading = 180.0762f,
@@ -2817,41 +2898,41 @@ public class Interiors : IInteriors
             //.
 
             //Old Generic Stuff, i dont think we are loading any of this 
-            new Interior(25090,"Mission Carpark") { IsSPOnly = true } ,
-            new Interior(39682,"Torture Room") { IsSPOnly = true } ,
+            new Interior(25090,"Mission Carpark"),// { IsSPOnly = true } ,
+            new Interior(39682,"Torture Room"),// { IsSPOnly = true } ,
             //new Interior(76290,"Dell Perro Heights, Apt 4") { IsSPOnly = true } ,
             //new Interior(108290,"Low End Apartment") { IsSPOnly = true } ,
-            new Interior(69890,"IAA Office") { IsSPOnly = true } ,
+            new Interior(69890,"IAA Office"),// { IsSPOnly = true } ,
            // new Interior(25602,"Dell Perro Heights, Apt 7") { IsSPOnly = true } ,
-            new Interior(31490,"FIB Floor 47") { IsSPOnly = true } ,
-            new Interior(135973,"FIB Floor 49") { IsSPOnly = true } ,
+            new Interior(31490,"FIB Floor 47"),// { IsSPOnly = true } ,
+            new Interior(135973,"FIB Floor 49"),// { IsSPOnly = true } ,
             //new Interior(60162,"Motel") { IsSPOnly = true } ,
-            new Interior(69122,"Lester's House") { IsSPOnly = true } ,
+            new Interior(69122,"Lester's House"),// { IsSPOnly = true } ,
             //new Interior(47362,"4 Integrity Way, Apt 30") { IsSPOnly = true } ,
-            new Interior(28418,"FIB Top Floor") { IsSPOnly = true } ,
-            new Interior(70146,"10 Car Garage") { IsSPOnly = true } ,
-            new Interior(85250,"Omega's Garage") { IsSPOnly = true } ,
+            new Interior(28418,"FIB Top Floor"),// { IsSPOnly = true } ,
+            new Interior(70146,"10 Car Garage"),// { IsSPOnly = true } ,
+            new Interior(85250,"Omega's Garage"),// { IsSPOnly = true } ,
             //new Interior(61186,"Eclipse Towers, Apt 3") { IsSPOnly = true } ,
-            new Interior(94722,"Booking Room") { IsSPOnly = true }
-            ,new Interior(146433, "10 Car") { IsMPOnly = true }
+            new Interior(94722,"Booking Room")// { IsSPOnly = true }
+            ,new Interior(146433, "10 Car")// { IsMPOnly = true }
            // ,new Interior(149761, "Low End Apartment") { IsMPOnly = true }
            // ,new Interior(141313, "4 Integrity Way, Apt 30") { IsMPOnly = true }
            // ,new Interior(145921, "Dell Perro Heights, Apt 4") { IsMPOnly = true }
             //,new Interior(145665, "Dell Perro Heights, Apt 7") { IsMPOnly = true }
            // ,new Interior(146945, "Eclipse Towers, Apt 3") { IsMPOnly = true }
-            ,new Interior(94722, "CharCreator") { IsMPOnly = true }
-            ,new Interior(25090, "Mission Carpark") { IsMPOnly = true }
-            ,new Interior(156929, "Torture Room") { IsMPOnly = true }
-            ,new Interior(178433, "Omega's Garage") { IsMPOnly = true }
+            ,new Interior(94722, "CharCreator")// { IsMPOnly = true }
+            ,new Interior(25090, "Mission Carpark")// { IsMPOnly = true }
+            ,new Interior(156929, "Torture Room")// { IsMPOnly = true }
+            ,new Interior(178433, "Omega's Garage")// { IsMPOnly = true }
            // ,new Interior(149505, "Motel") { IsMPOnly = true }
-            ,new Interior(250881, "Lester's House") { IsMPOnly = true }
-            ,new Interior(136449, "FBI Top Floor") { IsMPOnly = true }
-            ,new Interior(135937, "FBI Floor 47") { IsMPOnly = true }
-            ,new Interior(135937, "FBI Floor 49") { IsMPOnly = true }
-            ,new Interior(135681, "IAA Office") { IsMPOnly = true }
+            ,new Interior(250881, "Lester's House")// { IsMPOnly = true }
+            ,new Interior(136449, "FBI Top Floor")// { IsMPOnly = true }
+            ,new Interior(135937, "FBI Floor 47")// { IsMPOnly = true }
+            ,new Interior(135937, "FBI Floor 49")// { IsMPOnly = true }
+            ,new Interior(135681, "IAA Office")// { IsMPOnly = true }
 
-            ,new Interior(149249, "2 Car") { IsMPOnly = true }
-            ,new Interior(148737, "6 Car") { IsMPOnly = true }
+            ,new Interior(149249, "2 Car")// { IsMPOnly = true }
+            ,new Interior(148737, "6 Car")// { IsMPOnly = true }
          //  ,new Interior(148225, "Medium End Apartment") { IsMPOnly = true }
             //,new Interior(147201, "4 Integrity Way, Apt 28") { IsMPOnly = true }
           // ,new Interior(146177, "Richard Majestic, Apt 2") { IsMPOnly = true }
@@ -2864,20 +2945,20 @@ public class Interiors : IInteriors
            // ,new Interior(207361, "2874 Hillcrest Avenue") { IsMPOnly = true }
            // ,new Interior(206593, "2677 Whispymound Drive") { IsMPOnly = true }
           //  ,new Interior(208385, "2133 Mad Wayne Thunder") { IsMPOnly = true }
-            ,new Interior(258561, "Bunker Interior") { IsMPOnly = true }
-            ,new Interior(164865, "Solomon's Office") { IsMPOnly = true }
-            ,new Interior(170497, "Psychiatrist's Office") { IsMPOnly = true }
-            ,new Interior(165889, "Movie Theatre") { IsMPOnly = true }
+            ,new Interior(258561, "Bunker Interior")// { IsMPOnly = true }
+            ,new Interior(164865, "Solomon's Office")// { IsMPOnly = true }
+            ,new Interior(170497, "Psychiatrist's Office")// { IsMPOnly = true }
+            ,new Interior(165889, "Movie Theatre")// { IsMPOnly = true }
             //,new Interior(205825, "Madrazos Ranch") { IsMPOnly = true }
-            ,new Interior(260353, "Smuggler's Run Hangar") { IsMPOnly = true }
-            ,new Interior(262145, "Avenger Interior") { IsMPOnly = true }
-            ,new Interior(269313, "Facility") { IsMPOnly = true }
-            ,new Interior(270337, "Server Farm") { IsMPOnly = true }
-            ,new Interior(271105, "Submarine") { IsMPOnly = true }
-            ,new Interior(270081, "IAA Facility") { IsMPOnly = true }
-            ,new Interior(271617, "Nightclub") { IsMPOnly = true }
-            ,new Interior(271873, "Nightclub Warehouse") { IsMPOnly = true }
-            ,new Interior(272129, "Terrorbyte Interior") { IsMPOnly = true }
+            ,new Interior(260353, "Smuggler's Run Hangar")// { IsMPOnly = true }
+            ,new Interior(262145, "Avenger Interior")// { IsMPOnly = true }
+            ,new Interior(269313, "Facility")// { IsMPOnly = true }
+            ,new Interior(270337, "Server Farm")// { IsMPOnly = true }
+            ,new Interior(271105, "Submarine")// { IsMPOnly = true }
+            ,new Interior(270081, "IAA Facility")// { IsMPOnly = true }
+            ,new Interior(271617, "Nightclub")// { IsMPOnly = true }
+            ,new Interior(271873, "Nightclub Warehouse")// { IsMPOnly = true }
+            ,new Interior(272129, "Terrorbyte Interior")// { IsMPOnly = true }
         });
     }
 }

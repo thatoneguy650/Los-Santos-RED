@@ -65,6 +65,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     public int RentalFee { get; set; }
     public int PurchasePrice { get; set; }
     public int SalesPrice { get; set; }
+    public int ResidenceID { get; set; } = -999;
     public bool HasHeaderApartmentBuilding { get; set; } = false;
     public bool DisableInteractAfterPurchase { get; set; } = false;
     public override string TypeName => IsOwnedOrRented ? "Residence" : "For Sale/Rental";

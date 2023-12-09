@@ -114,7 +114,7 @@ public class CustomizeExistingVariationsMenu
             outfitsSubMenu.RefreshIndex();
         };
         outfitsSubMenu.AddItem(saveOutfitMenuItem);
-        foreach (SavedOutfit so in SavedOutfits.SavedOutfitList.Where(x => x.ModelName.ToLower() == PedCustomizer.WorkingModelName.ToLower() && (IncludeAllOutfits || x.CharacterName.ToLower() == PedCustomizer.WorkingName.ToLower())))
+        foreach (SavedOutfit so in SavedOutfits.SavedOutfitList.Where(x => x.ModelName.ToLower() == PedCustomizer.WorkingModelName.ToLower() && (string.IsNullOrEmpty(x.CharacterName) || IncludeAllOutfits || x.CharacterName.ToLower() == PedCustomizer.WorkingName.ToLower())))
         {
             //EntryPoint.WriteToConsoleTestLong($"OUTFIT MANAGER:     ADDING OUTFIT {so.Name}");
             UIMenuListScrollerItem<string> uIMenuItem = new UIMenuListScrollerItem<string>(so.Name, so.CharacterName, new List<string>() { "Set", "Delete" });

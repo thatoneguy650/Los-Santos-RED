@@ -65,8 +65,8 @@ public class Interior
     public int LocalID { get; set; }
     public Vector3 InternalInteriorCoordinates { get; set; }
     public string Name { get; set; }
-    public bool IsMPOnly { get; set; } = false;
-    public bool IsSPOnly { get; set; } = false;
+    //public bool IsMPOnly { get; set; } = false;
+    //public bool IsSPOnly { get; set; } = false;
     public bool IsTeleportEntry { get; set; } = false;
     public Vector3 DisabledInteriorCoords { get; set; } = Vector3.Zero;
     public List<InteriorDoor> Doors { get; set; } = new List<InteriorDoor>();
@@ -76,6 +76,7 @@ public class Interior
     public Vector3 InteriorEgressPosition { get; set; }
     public float InteriorEgressHeading { get; set; }
     public bool NeedsActivation { get; set; } = false;
+    public bool NeedsSetDisabled { get; set; } = false;
     public bool IsRestricted { get; set; } = false;
     public bool IsWeaponRestricted { get; set; } = false;
     public List<InteriorInteract> InteractPoints { get; set; } = new List<InteriorInteract>();
@@ -86,6 +87,9 @@ public class Interior
     [XmlIgnore]
     public virtual List<InteriorInteract> AllInteractPoints => InteractPoints;
     public InteriorInteract ClosestInteract => AllInteractPoints.Where(x => x.CanAddPrompt).OrderBy(x => x.DistanceTo).FirstOrDefault();
+
+
+
     public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ILocationInteractable locationInteractable)
     {
         Settings = settings;
@@ -122,6 +126,10 @@ public class Interior
                 else
                 {
                     InternalID = LocalID;
+                }
+                if(NeedsSetDisabled)
+                {
+                    NativeFunction.Natives.DISABLE_INTERIOR(InternalID, false);
                 }
                 if(NeedsActivation)
                 {
@@ -195,6 +203,10 @@ public class Interior
             {
                 try
                 {
+                    if (NeedsSetDisabled)
+                    {
+                        NativeFunction.Natives.DISABLE_INTERIOR(InternalID, true);
+                    }
                     if (NeedsActivation)
                     {
                         NativeFunction.Natives.UNPIN_INTERIOR(InternalID);

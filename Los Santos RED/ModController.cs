@@ -45,11 +45,6 @@ namespace LosSantosRED.lsr
         public bool RunVanilla { get; set; } = true;
         public bool RunMenuOnly { get; set; } = true;
         public bool IsDisplayingAlertScreen { get; set; } = false;
-
-
-      // public List<Vehicle> AllVehicles { get; set; } = new List<Vehicle>();
-      //  public List<Ped> AllPeds { get; set; } = new List<Ped>();
-      //  public List<Rage.Object> AllObjects { get; set; } = new List<Rage.Object>();
         public void Setup()
         {
             IsRunning = true;

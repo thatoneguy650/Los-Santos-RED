@@ -74,11 +74,17 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(PlayingDict);
             NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, PlayingDict, PlayingAnim, 2.0f, -2.0f, -1, (int)(eAnimationFlags.AF_LOOPING), 0, false, false, false);
             Player.ActivityManager.IsUrinatingDefecting = true;
+            uint GameTimeLastPlayedAnim = Game.GameTime;
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
                 if (Player.IsMoveControlPressed)
                 {
                     IsCancelled = true;
+                }
+                if (Game.GameTime - GameTimeLastPlayedAnim >= 3000)
+                {
+                    Player.ActivityManager.PlaySpecificFacialAnimations(Player.IsMale ? new List<string>() { "effort_1", "effort_2", "effort_3", }.PickRandom() : "effort_1");
+                    GameTimeLastPlayedAnim = Game.GameTime;
                 }
                 if (!Player.IsAliveAndFree)
                 {

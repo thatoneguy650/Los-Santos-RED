@@ -1207,6 +1207,34 @@ public class ActivityManager
         }
         return toToggleDoor;
     }
+
+
+    public void PlaySpecificFacialAnimations(string Animation)
+    {
+        if (Player.IsMale)
+        {
+            if (Player.ModelName.ToLower() == "player_zero")
+            {
+                NativeFunction.Natives.PLAY_FACIAL_ANIM(Player.Character, Animation, "facials@p_m_zero@base");
+            }
+            else if (Player.ModelName.ToLower() == "player_one")
+            {
+                NativeFunction.Natives.PLAY_FACIAL_ANIM(Player.Character, Animation, "facials@p_m_one@base");
+            }
+            else if (Player.ModelName.ToLower() == "player_two")
+            {
+                NativeFunction.Natives.PLAY_FACIAL_ANIM(Player.Character, Animation, "facials@p_m_two@base");
+            }
+            else
+            {
+                NativeFunction.Natives.PLAY_FACIAL_ANIM(Player.Character, Animation, "facials@gen_male@base");
+            }
+        }
+        else
+        {
+            NativeFunction.Natives.PLAY_FACIAL_ANIM(Player.Character, Animation, "facials@gen_female@base");
+        }
+    }
     public void YellInPain()
     {
         if (CanYell)
