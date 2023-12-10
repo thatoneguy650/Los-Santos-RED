@@ -16,6 +16,7 @@ namespace LosSantosRED.lsr.Player
         private bool IsCancelled;
         private IActionable Player;
         private ISettingsProvideable Settings;
+        private List<Rage.Object> SpawnedPoops = new List<Rage.Object>();
 
         public DefectingActivity(IActionable player, ISettingsProvideable settings) : base()
         {
@@ -75,6 +76,8 @@ namespace LosSantosRED.lsr.Player
             NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, PlayingDict, PlayingAnim, 2.0f, -2.0f, -1, (int)(eAnimationFlags.AF_LOOPING), 0, false, false, false);
             Player.ActivityManager.IsUrinatingDefecting = true;
             uint GameTimeLastPlayedAnim = Game.GameTime;
+            uint GameTimeLastCreatedPoop = Game.GameTime;
+            uint GameTimeBetweenPoops = RandomItems.GetRandomNumber(5000, 10000);
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
                 if (Player.IsMoveControlPressed)
@@ -86,6 +89,12 @@ namespace LosSantosRED.lsr.Player
                     Player.ActivityManager.PlaySpecificFacialAnimations(Player.IsMale ? new List<string>() { "effort_1", "effort_2", "effort_3", }.PickRandom() : "effort_1");
                     GameTimeLastPlayedAnim = Game.GameTime;
                 }
+                if(Game.GameTime - GameTimeLastCreatedPoop >= GameTimeBetweenPoops)
+                {
+                    SpawnPoop();
+                    GameTimeBetweenPoops = RandomItems.GetRandomNumber(5000, 10000);
+                    GameTimeLastCreatedPoop = Game.GameTime;
+                }
                 if (!Player.IsAliveAndFree)
                 {
                     IsCancelled = true;
@@ -95,6 +104,55 @@ namespace LosSantosRED.lsr.Player
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             Player.ActivityManager.IsPerformingActivity = false;
             Player.ActivityManager.IsUrinatingDefecting = false;
+            SetPoopNonPersist();
+            //GameFiber.Sleep(20000);
+
+
+
+
+
+            //DeletePoop();
+        }
+        private void SpawnPoop()
+        {
+            try
+            {
+                int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, 11816);//11816
+                Vector3 PoopCoordinates = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Player.Character, BoneIndexSpine, Settings.SettingsManager.ActivitySettings.PoopAttachX, Settings.SettingsManager.ActivitySettings.PoopAttachY, Settings.SettingsManager.ActivitySettings.PoopAttachZ);
+                Rage.Object poopObject = new Rage.Object(Game.GetHashKey("prop_big_shit_01"), PoopCoordinates);
+                GameFiber.Yield();
+                if(poopObject.Exists())
+                {
+                    poopObject.Rotation = new Rotator(Settings.SettingsManager.ActivitySettings.PoopRotatePitch, Settings.SettingsManager.ActivitySettings.PoopRotateRoll, Settings.SettingsManager.ActivitySettings.PoopRotateYaw);
+                    SpawnedPoops.Add(poopObject);
+                }
+            }
+            catch (Exception e)
+            {
+                Game.DisplayNotification($"Could Not Spawn Prop prop_big_shit_01");
+            }
+
+
+        }
+        private void SetPoopNonPersist()
+        {
+            foreach (Rage.Object poopObj in SpawnedPoops)
+            {
+                if (poopObj.Exists())
+                {
+                    poopObj.IsPersistent = false; ;
+                }
+            }
+        }
+        private void DeletePoop()
+        {
+            foreach(Rage.Object poopObj in SpawnedPoops)
+            {
+                if(poopObj.Exists())
+                {
+                    poopObj.Delete();
+                }
+            }
         }
     }
 }

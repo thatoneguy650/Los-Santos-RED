@@ -106,6 +106,13 @@ public class DebugSettings : ISettingsDefaultable
     public float SynchedSceneOffsetY { get; set; }
     public float SynchedSceneOffsetZ { get; set; }
 
+
+
+
+
+
+
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -261,5 +268,8 @@ public class DebugSettings : ISettingsDefaultable
 
 
         UseNewDrag = false;
+
+
+
     }
 }

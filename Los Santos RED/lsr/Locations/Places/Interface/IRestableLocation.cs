@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 public interface IRestableLocation
 {
-    void CreateRestMenu();
+    void CreateRestMenu(bool removeBanner);
     LocationCamera LocationCamera { get; }
     GameLocation GameLocation { get; }
 }

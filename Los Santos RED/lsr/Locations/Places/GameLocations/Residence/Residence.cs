@@ -70,6 +70,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     public bool DisableInteractAfterPurchase { get; set; } = false;
     public override string TypeName => IsOwnedOrRented ? "Residence" : "For Sale/Rental";
     public override int MapIcon { get; set; } = (int)BlipSprite.PropertyForSale;
+    [XmlIgnore]
     public override string ButtonPromptText { get; set; }
     public override int SortOrder => IsOwnedOrRented ? 1 : 999;
     public override bool ShowInteractPrompt => !IgnoreEntranceInteract && CanInteract && !HasHeaderApartmentBuilding && (!IsOwnedOrRented || (IsOwnedOrRented && !DisableInteractAfterPurchase));
@@ -192,13 +193,17 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             StoreCamera.Dispose();
         }
     }
-    public void CreateRestMenu()
+    public void CreateRestMenu(bool removeBanner)
     {
         Player.ActivityManager.IsInteractingWithLocation = true;
         Player.IsTransacting = true;
         CreateInteractionMenu();
         InteractionMenu.Visible = true;
-        if (!HasBannerImage)
+        if (removeBanner)
+        {
+            InteractionMenu.RemoveBanner();
+        }
+        else if (!HasBannerImage)
         {
             InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
         }

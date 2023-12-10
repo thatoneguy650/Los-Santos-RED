@@ -345,13 +345,17 @@ public class GangDen : GameLocation, IRestableLocation
             KeepInteractionGoing = false;
         }, "LayLowWatcher");
     }
-    public void CreateRestMenu()
+    public void CreateRestMenu(bool removeBanner)
     {
         Player.ActivityManager.IsInteractingWithLocation = true;
         Player.IsTransacting = true;
         CreateInteractionMenu();
         InteractionMenu.Visible = true;
-        if (!HasBannerImage)
+        if (removeBanner)
+        {
+            InteractionMenu.RemoveBanner();
+        }
+        else if (!HasBannerImage)
         {
             InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
         }

@@ -55,7 +55,7 @@ public class RestInteract : InteriorInteract
             return;
         }
         Player.InteriorManager.OnStartedInteriorInteract();
-        RestableLocation.CreateRestMenu();
+        RestableLocation.CreateRestMenu(true);
         Interior.IsMenuInteracting = false;
         DoGetUpAnimation();
         LocationCamera?.ReturnToGameplay(true);

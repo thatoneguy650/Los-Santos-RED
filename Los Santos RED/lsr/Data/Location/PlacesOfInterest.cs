@@ -2150,10 +2150,12 @@ public class PlacesOfInterest : IPlacesOfInterest
                 InteriorID = -675, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 7 },
             //
             new Residence(new Vector3(-593.1158f, 37.89521f, 43.60775f), 179.0897f, "Tinsel Towers, Apt 42",""){
-                InteriorID = 146689, IsOnMPMap = false, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 8 },
+                InteriorID = 90882, IsOnMPMap = false, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 8 },
 
-            new Residence(new Vector3(-593.1158f, 37.89521f, 43.60775f), 179.0897f, "Tinsel Towers, Apt 42",""){
-                InteriorID = -146689, IsOnSPMap = false, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 9 },
+
+
+
+
 
             //NEW
             //Vespucci
@@ -2341,6 +2343,98 @@ public class PlacesOfInterest : IPlacesOfInterest
                 InteriorID = 208385,
                 IsOnSPMap = false,
             },
+
+
+            //More MP Apartments
+            new Residence(new Vector3(-614.8517f, 37.52992f, 43.58273f), 177.6369f, "Tinsel Towers, Apt 42","")
+            { 
+                InteriorID = 146689, 
+                IsOnSPMap = false, 
+                OpenTime = 0,
+                CloseTime = 24,
+                RentalFee = 5000, 
+                RentalDays = 28,
+                PurchasePrice = 1200000,
+                SalesPrice = 980000,
+                HasHeaderApartmentBuilding = true,
+                ResidenceID = 9 
+            },
+            new Residence(new Vector3(-614.8517f, 37.52992f, 43.58273f), 177.6369f,"Tinsel Towers, Apt 45", "") 
+            {
+              RentalDays = 28,
+              RentalFee = 5000,
+              PurchasePrice = 270000,
+              SalesPrice = 135000,
+              HasHeaderApartmentBuilding = true,
+              EntrancePosition = new Vector3(-614.8517f, 37.52992f, 43.58273f),
+              EntranceHeading = 177.6369f,
+              OpenTime = 0,
+              CloseTime = 24,
+              InteriorID = 144897,
+              IsOnSPMap = false,
+              ResidenceID = 10,
+            },
+            new Residence(new Vector3(-593.1158f, 37.89521f, 43.60775f), 179.0897f, "Tinsel Towers, Apt 29", "") {
+                RentalDays = 28,
+                RentalFee = 5000,
+                PurchasePrice = 286000,
+                SalesPrice = 143000,
+                HasHeaderApartmentBuilding = true,
+                EntrancePosition = new Vector3(-593.1158f, 37.89521f, 43.60775f),
+                EntranceHeading = 179.0897f,
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 145153,
+                ResidenceID = 11,
+            },
+
+            //Weasel Plaza
+            new Residence(new Vector3(-913.8973f, -455.6648f, 39.59985f), 116.4933f,"Weazel Plaza Apartment 101", "") {
+              RentalDays = 28,
+              RentalFee = 5000,
+              PurchasePrice = 335000,
+              SalesPrice = 167500,
+              HasHeaderApartmentBuilding = true,
+              Name = "Weasel Plaza Apartment 101",
+              EntrancePosition = new Vector3(-913.8973f, -455.6648f, 39.59985f),
+              EntranceHeading = 116.4933f,
+              OpenTime = 0,
+              CloseTime = 24,
+              InteriorID = 143617,
+              IsOnSPMap = false,
+              ResidenceID = 12,
+            },
+            new Residence(new Vector3(-913.8973f, -455.6648f, 39.59985f), 116.4933f,"Weazel Plaza Apartment 26", "") {
+              RentalDays = 28,
+              RentalFee = 5000,
+              PurchasePrice = 304000,
+              SalesPrice = 152000,
+              HasHeaderApartmentBuilding = true,
+              Name = "Weasel Plaza Apartment 26",
+              EntrancePosition = new Vector3(-913.8973f, -455.6648f, 39.59985f),
+              EntranceHeading = 116.4933f,
+              OpenTime = 0,
+              CloseTime = 24,
+              InteriorID = 142593,
+              IsOnSPMap = false,
+              ResidenceID = 13,
+            },
+            new Residence(new Vector3(-913.8973f, -455.6648f, 39.59985f), 116.4933f,"Weazel Plaza Apartment 70", "") {
+              RentalDays = 28,
+              RentalFee = 5000,
+              PurchasePrice = 319000,
+              SalesPrice = 159500,
+              HasHeaderApartmentBuilding = true,
+              Name = "Weasel Plaza Apartment 70",
+              EntrancePosition = new Vector3(-913.8973f, -455.6648f, 39.59985f),
+              EntranceHeading = 116.4933f,
+              OpenTime = 0,
+              CloseTime = 24,
+              InteriorID = 143105,
+              IsOnSPMap = false,
+              ResidenceID = 14,
+            },
+
         };
 
         ApartmentBuildings = new List<ApartmentBuilding>()
@@ -2396,7 +2490,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 
             new ApartmentBuilding(new Vector3(-593.1158f, 37.89521f, 43.60775f), 179.0897f, "Tinsel Towers","")
                 {
-                ResidenceIDs = new List<int>() { 8 },
+                ResidenceIDs = new List<int>() { 8, 11 },
                 OpenTime = 0,CloseTime = 24,
                 IsOnMPMap = false,
                 CameraPosition = new Vector3(-567.3261f, -4.869073f, 57.82005f), 
@@ -2405,12 +2499,22 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
             new ApartmentBuilding(new Vector3(-593.1158f, 37.89521f, 43.60775f), 179.0897f, "Tinsel Towers","")
                 {
-                ResidenceIDs = new List<int>() { 9 },
+                ResidenceIDs = new List<int>() { 9, 10, 11 },
                 OpenTime = 0,CloseTime = 24,
                 IsOnSPMap = false,
                 CameraPosition = new Vector3(-567.3261f, -4.869073f, 57.82005f),
                 CameraDirection = new Vector3(-0.5004823f, 0.838339f, -0.216114f),
                 CameraRotation = new Rotator(-12.48089f, 2.186096E-06f, 30.83689f)
+                },
+
+            new ApartmentBuilding(new Vector3(-914.2256f, -455.1739f, 39.59988f), 116.7621f, "Weazel Plaza","")
+                {
+                ResidenceIDs = new List<int>() { 12,13,14 },
+                OpenTime = 0,CloseTime = 24,
+                IsOnSPMap = false,
+                CameraPosition = new Vector3(-931.6027f, -469.5208f, 43.69972f),
+                CameraDirection = new Vector3(0.6736355f, 0.7187704f, -0.1720006f),
+                CameraRotation = new Rotator(-9.904157f, 7.366865E-06f, -43.14341f)
                 },
         };
 

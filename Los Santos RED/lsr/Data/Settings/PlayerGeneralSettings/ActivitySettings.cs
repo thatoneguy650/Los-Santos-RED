@@ -70,7 +70,13 @@ public class ActivitySettings : ISettingsDefaultable
     [Description("Human Shield Attach Extra Z Distance")]
     public float HumanShieldAttachZ { get; set; }
 
+    public float PoopAttachX { get; set; }
+    public float PoopAttachY { get; set; }
+    public float PoopAttachZ { get; set; }
 
+    public float PoopRotatePitch { get; set; }
+    public float PoopRotateRoll { get; set; }
+    public float PoopRotateYaw { get; set; }
 
 
     [OnDeserialized()]
@@ -124,5 +130,9 @@ public class ActivitySettings : ISettingsDefaultable
         HumanShieldAttachY = 0.12f;
         HumanShieldAttachZ = 0.04f;
 
+        PoopAttachX = 0.0f;
+        PoopAttachY = -0.07f;
+        PoopAttachZ = -0.56f;
+        PoopRotatePitch = 90f;
     }
 }

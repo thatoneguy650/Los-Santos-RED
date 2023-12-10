@@ -962,9 +962,9 @@ public class DebugHelperSubMenu : DebugSubMenu
             foreach (GameLocation location2 in ModDataFileManager.PlacesOfInterest.PossibleLocations.InteractableLocations().Where(x => x.GetType().ToString() == locationType))
             {
                 string type = location2.GetType().ToString();
-                WriteToClassCreator($"{type} {locationType}_{Number} = new {type}() {{", 0, "Locations");
+                WriteToClassCreator($"new {type}(new Vector3({location2.EntrancePosition.X}f,{location2.EntrancePosition.Y}f,{location2.EntrancePosition.Z}f),{location2.EntranceHeading}f,\"{location2.Name}\",\"{(string.IsNullOrEmpty(location2.Description) ? "" : location2.Description)}\") {{", 0, "Locations");
                 PrintClass(location2, AllowedProperties, "Locations");
-                WriteToClassCreator($"}};", 0, "Locations");
+                WriteToClassCreator($"}},", 0, "Locations");
                 Number++;
             }
         }
@@ -980,9 +980,9 @@ public class DebugHelperSubMenu : DebugSubMenu
             foreach (Interior location2 in ModDataFileManager.Interiors.PossibleInteriors.AllInteriors().Where(x => x.GetType().ToString() == locationType))
             {
                 string type = location2.GetType().ToString();
-                WriteToClassCreator($"{type} {locationType}_{Number} = new {type}() {{", 0, "Interiors");
+                WriteToClassCreator($"new {type}({location2.LocalID},\"{location2.Name}\") {{", 0, "Interiors");
                 PrintClass(location2, AllowedProperties, "Interiors");
-                WriteToClassCreator($"}};", 0, "Interiors");
+                WriteToClassCreator($"}},", 0, "Interiors");
                 Number++;
             }
         }
@@ -1017,24 +1017,27 @@ public class DebugHelperSubMenu : DebugSubMenu
 
             if (!property.CanWrite)
             {
-                EntryPoint.WriteToConsole($"{property.Name} CANT WRITE");
+                //EntryPoint.WriteToConsole($"{property.Name} CANT WRITE");
                 continue;
             }
             if (property.GetSetMethod(false) == null)
             {
-                EntryPoint.WriteToConsole($"{property.Name} GETSETMETHOD IS NULL");
+                //EntryPoint.WriteToConsole($"{property.Name} GETSETMETHOD IS NULL");
                 continue;
             }
             if (property.GetCustomAttributes(false).Any(a => a is XmlIgnoreAttribute))
             {
-                EntryPoint.WriteToConsole($"{property.Name} XmlIgnoreAttribute");
+                //EntryPoint.WriteToConsole($"{property.Name} XmlIgnoreAttribute");
                 continue;
             }
             else if (AllowedProperties != null && !AllowedProperties.Any(x => x == property.Name))
             {
                 continue;
             }
-            else if (property.PropertyType == typeof(String) || property.PropertyType == typeof(string) || property.PropertyType == typeof(System.Drawing.Color))
+
+            EntryPoint.WriteToConsole($"{property.Name} {property.PropertyType}");
+
+            if (property.PropertyType == typeof(String) || property.PropertyType == typeof(string) || property.PropertyType == typeof(System.Drawing.Color))
             {
                 object main = property.GetValue(dv);
                 object secondary = property.GetValue(dvBase);
@@ -1055,6 +1058,7 @@ public class DebugHelperSubMenu : DebugSubMenu
             }
             else if (property.PropertyType == typeof(float))
             {
+                EntryPoint.WriteToConsole($"{property.Name} {property.PropertyType} TEST");
                 object main = property.GetValue(dv);
                 object secondary = property.GetValue(dvBase);
                 if (main == null || secondary == null || !main.Equals(secondary))
@@ -1133,6 +1137,12 @@ public class DebugHelperSubMenu : DebugSubMenu
             {
                 EntryPoint.WriteToConsole($"LIST ITEM IS STRING");
                 WriteToClassCreator($@"""{obj}"",", 0, fileName);
+            }
+            else if (obj.GetType() == typeof(Vector3))
+            {
+                Vector3 propertyValue = (Vector3)obj;
+                EntryPoint.WriteToConsole($"LIST ITEM IS VECTOR3");
+                WriteToClassCreator($"new Vector3({propertyValue.X}f,{propertyValue.Y}f,{propertyValue.Z}f),", 0, fileName);
             }
             else
             {
