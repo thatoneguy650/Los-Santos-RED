@@ -50,7 +50,7 @@ public class TaxiManager
         }
 
 
-        if(Player.ActivityManager.IsHailingTaxi && Game.GameTime - GameTimeLastHailedCab >= 1000)
+        if(Player.ActivityManager.IsHailingTaxi && Game.GameTime - GameTimeLastHailedCab >= 6000)
         {
             TaxiFirm closestFirm = GetClosestTaxiFirm();
             if (closestFirm != null && RequestService(closestFirm, true))
@@ -179,9 +179,9 @@ public class TaxiManager
     }
 
 
-    public void DismissHailedCabs()
+    public void DismissClosestCab()
     {
-        ActiveRides.Where(x => x.IsHailed && x.RespondingDriver != null).OrderBy(x => x.RespondingDriver.DistanceToPlayer).FirstOrDefault()?.Cancel();
+        ActiveRides.Where(x => x.RespondingDriver != null && (x.IsHailed || x.RespondingDriver.DistanceToPlayer <= 50f)).OrderBy(x => x.RespondingDriver.DistanceToPlayer).FirstOrDefault()?.Cancel();
     }
 }
 

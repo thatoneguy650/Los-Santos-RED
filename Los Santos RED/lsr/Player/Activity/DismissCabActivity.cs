@@ -82,7 +82,7 @@ public class DismissCabActivity : DynamicActivity
 
         Player.PlaySpeech("GENERIC_WHATEVER", false);
         bool releasedCab = false;
-        while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && Game.GameTime - GameTimeStartedWaving <= 5000)
+        while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && Game.GameTime - GameTimeStartedWaving <= 2000)
         {
             Player.WeaponEquipment.SetUnarmed();
             float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DictionaryName, Animation);
@@ -92,7 +92,7 @@ public class DismissCabActivity : DynamicActivity
             }
             if (AnimationTime >= 0.5f && !releasedCab)
             {
-                Player.TaxiManager.DismissHailedCabs();
+                Player.TaxiManager.DismissClosestCab();
                 releasedCab = true;
             }
             GameFiber.Yield();

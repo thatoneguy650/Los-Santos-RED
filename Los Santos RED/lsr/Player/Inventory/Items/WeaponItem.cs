@@ -808,6 +808,15 @@ public class WeaponItem : ModItem
         Vector3 HandOffset = Vector3.Zero;
         Rotator HandRotator = Rotator.Zero;
         string anim = isTake ? "givetake1_b" : "givetake1_a";
+
+
+
+        if (ModelItem != null && ModelItem.ModelHash != 0)
+        {
+            NativeFunction.Natives.REQUEST_WEAPON_ASSET(ModelItem.ModelHash, 31, 0);
+        }
+
+
         AnimationDictionary.RequestAnimationDictionay("mp_common");
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", anim, 1.0f, -1.0f, 5000, 50, 0, false, false, false);
         if (isTake)

@@ -24,16 +24,13 @@ public class TaxiGeneralIdle : GeneralIdle
             if (isLightOn && Ped.Pedestrian.CurrentVehicle.PassengerCount > 0)
             {
                 EntryPoint.WriteToConsole($"{Ped.Handle} TURNING TAXI LIGHT OFF");
-                NativeFunction.Natives.SET_TAXI_LIGHTS(Ped.Pedestrian.CurrentVehicle, true);
+                NativeFunction.Natives.SET_TAXI_LIGHTS(Ped.Pedestrian.CurrentVehicle, false);
             }
             else if(!isLightOn)
             {
                 EntryPoint.WriteToConsole($"{Ped.Handle} TURNING TAXI LIGHT ON");
                 NativeFunction.Natives.SET_TAXI_LIGHTS(Ped.Pedestrian.CurrentVehicle, true);
             }
-            
-
-            
         }
     }
 }

@@ -61,7 +61,7 @@ public class HailCabActivity : DynamicActivity
     }
     public override bool CanPerform(IActionable player)
     {
-        if (player.ActivityManager.CanPerformActivitesBase)
+        if (player.ActivityManager.CanPerformActivitesBase && Player.IsAliveAndFree)
         {
             return true;
         }
@@ -83,7 +83,7 @@ public class HailCabActivity : DynamicActivity
 
         Player.PlaySpeech("TAXI_HAIL", false);
 
-        while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && Game.GameTime - GameTimeStartedWaving <= 5000)
+        while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && Game.GameTime - GameTimeStartedWaving <= 2000)
         {
             Player.WeaponEquipment.SetUnarmed();
             float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DictionaryName, Animation);

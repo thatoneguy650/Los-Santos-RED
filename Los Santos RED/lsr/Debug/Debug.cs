@@ -1524,274 +1524,282 @@ private void DebugNumpad6()
     {
 
 
-        Camera StoreCam = Camera.RenderingCamera;
+        //Camera StoreCam = Camera.RenderingCamera;
 
-        if (StoreCam.Exists())
+        //if (StoreCam.Exists())
+        //{
+        //    EntryPoint.WriteToConsole($"RENDERING CAMERA EXISTS {StoreCam.Position}");
+        //}
+
+
+
+
+        //int interiorID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(347.2686f, -999.2955f, -99.19622f);
+
+        //if (interiorID != 0)
+        //{
+        //    NativeFunction.Natives.DISABLE_INTERIOR(interiorID, false);
+        //    NativeFunction.Natives.REQUEST_IPL("Medium End Apartment");
+        //    NativeFunction.Natives.SET_INTERIOR_ACTIVE(interiorID, true);
+
+
+        //    Game.DisplaySubtitle($"SET ACTIVE interiorID {interiorID}");
+        //    GameFiber.Sleep(500);
+        //}
+        while (!Game.IsKeyDown(Keys.W))
         {
-            EntryPoint.WriteToConsole($"RENDERING CAMERA EXISTS {StoreCam.Position}");
+            if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
+            {
+                NativeFunction.Natives.SET_TAXI_LIGHTS(Game.LocalPlayer.Character.CurrentVehicle, true);
+            }
+            GameFiber.Yield();
         }
+        Game.DisplayHelp("DONE");
+
+        
+
+        //  string PlayingDict = "timetable@trevor@on_the_toilet";
+        //  string PlayingAnim = "trevonlav_baseloop";
+
+
+        //  AnimationDictionary.RequestAnimationDictionay(PlayingDict);
+
+
+        //  Vector3 Position = Game.LocalPlayer.Character.Position;
+        //  float Heading = Game.LocalPlayer.Character.Heading;
+
+
+        ////  Position = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(Settings.SettingsManager.DebugSettings.SynchedSceneOffsetX, Settings.SettingsManager.DebugSettings.SynchedSceneOffsetY, Settings.SettingsManager.DebugSettings.SynchedSceneOffsetZ)); //new Vector3(Position.X, Position.Y, Position.Z);
+
+        //  int PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", Position.X, Position.Y, Game.LocalPlayer.Character.Position.Z + Settings.SettingsManager.DebugSettings.SynchedSceneOffsetZ, 0.0f, 0.0f, Heading, 2);//270f //old
+        //  NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
+        //  NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, PlayingDict, PlayingAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
+        //  NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
+        //  while(!Game.IsKeyDown(Keys.W))
+        //  {
+        //      GameFiber.Yield();
+        //  }
+        //  Game.LocalPlayer.Character.Tasks.Clear();
+        //ShowBodyLoadPosition();
+        //ShowCarChangePosition();
 
+        //if(Player.InterestedVehicle == null)
+        //{
+        //    return;
+        //}
+        //GetLicensePlateChangePosition(Player.InterestedVehicle.Vehicle);
 
+        //Vehicle SpawnedVehicle = null;
+        //Vector3 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
+        //try
+        //{
+        //    SpawnedVehicle = SpawnedVehicle = new Vehicle("taxi", Position, 0f);//NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(Game.GetHashKey("taxi"), Position.X, Position.Y, Position.Z,0f, false, false, false);//   new Vehicle("taxi", Position, 0f) { IsPersistent = false };
+        //    if (!SpawnedVehicle.Exists())
+        //    {
+        //        Game.DisplaySubtitle($"SPAWNED VEHICLE DOESNT EXIST? {Game.GameTime}");
+        //        return;
+        //    }
+        //    GameFiber.Sleep(2000);
+        //    if (SpawnedVehicle.Exists())
+        //    {
+        //        SpawnedVehicle.Delete();
+        //    }
+        //}
+        //catch (Exception ex)
+        //{
+        //    Game.DisplaySubtitle($"SPAWN ERROR {Game.GameTime}");
+        //    EntryPoint.WriteToConsole($"DebugNumpad7: ERROR DELETED VEHICLE {ex.Message} {ex.StackTrace} ATTEMPTING TAXI", 0);
+        //    if (SpawnedVehicle.Exists())
+        //    {
+        //        EntryPoint.WriteToConsole($"DebugNumpad7: ERROR DELETED VEHICLE ACTUALLY STILL GOT THE HANDLE", 0);
+        //        SpawnedVehicle.Delete();
+        //    }
+        //    EntryPoint.ModController.AddSpawnError(new SpawnError(Game.GetHashKey("taxi"), Position, Game.GameTime));
+        //    GameFiber.Yield();
+        //    return;
+        //}
 
 
-        int interiorID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(347.2686f, -999.2955f, -99.19622f);
 
-        if (interiorID != 0)
-        {
-            NativeFunction.Natives.DISABLE_INTERIOR(interiorID, false);
-            NativeFunction.Natives.REQUEST_IPL("Medium End Apartment");
-            NativeFunction.Natives.SET_INTERIOR_ACTIVE(interiorID, true);
 
 
-            Game.DisplaySubtitle($"SET ACTIVE interiorID {interiorID}");
-            GameFiber.Sleep(500);
-        }
 
 
 
+        //Game.DisplaySubtitle(Player.GPSManager.GetGPSRoutePosition().ToString());
+        // NativeFunction.Natives.SET_STATE_OF_CLOSEST_DOOR_OF_TYPE(4163212883, -355.3892f, -51.06768f, 49.31105f, false,1.0f,true);
 
-            //  string PlayingDict = "timetable@trevor@on_the_toilet";
-            //  string PlayingAnim = "trevonlav_baseloop";
 
 
-            //  AnimationDictionary.RequestAnimationDictionay(PlayingDict);
+        //Vector3 source = Game.LocalPlayer.Character.Position;
+        //Vector3 target = new Vector3(source.X, source.Y, source.Z + 1.0f);
+        //if (!NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(source.X, source.Y, source.Z, out float GroundZ, true, false))
+        //{
+        //    return;
+        //    //position = new Vector3(position.X, position.Y, GroundZ);
+        //}
+        //target = new Vector3(source.X, source.Y, GroundZ - 1.0f);
+        //int ShapeTestResultID = NativeFunction.Natives.START_SHAPE_TEST_CAPSULE<int>(source.X, source.Y, source.Z, target.X, target.Y, target.Z, 1.0f, 1, Game.LocalPlayer.Character, 7);
+        //if(ShapeTestResultID == 0)
+        //{
+        //    return;
+        //}
+        //Vector3 hitPositionArg;
+        //bool hitSomethingArg;
+        //int materialHashArg;
+        //int entityHandleArg;
+        //Vector3 surfaceNormalArg;
+        //int Result = 0;
+        //unsafe
+        //{
+        //    Result = NativeFunction.CallByName<int>("GET_SHAPE_TEST_RESULT_INCLUDING_MATERIAL", ShapeTestResultID, &hitSomethingArg, &hitPositionArg, &surfaceNormalArg, &materialHashArg, &entityHandleArg);
+        //}
+        //if(Result == 0)
+        //{ 
+        //    return;
+        //}
 
+        //bool DidHit = hitSomethingArg;
+        //Vector3 HitPosition = hitPositionArg;
+        //Vector3 SurfaceNormal = surfaceNormalArg;
+        //int MaterialHash = materialHashArg;
+        //Game.DisplaySubtitle($"{DidHit} {HitPosition} {SurfaceNormal} {(MaterialHash)MaterialHash}");
+        //EntryPoint.WriteToConsole($"{DidHit} {HitPosition} {SurfaceNormal} {MaterialHash} {(MaterialHash)MaterialHash}");
 
-            //  Vector3 Position = Game.LocalPlayer.Character.Position;
-            //  float Heading = Game.LocalPlayer.Character.Heading;
 
 
-            ////  Position = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(Settings.SettingsManager.DebugSettings.SynchedSceneOffsetX, Settings.SettingsManager.DebugSettings.SynchedSceneOffsetY, Settings.SettingsManager.DebugSettings.SynchedSceneOffsetZ)); //new Vector3(Position.X, Position.Y, Position.Z);
 
-            //  int PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", Position.X, Position.Y, Game.LocalPlayer.Character.Position.Z + Settings.SettingsManager.DebugSettings.SynchedSceneOffsetZ, 0.0f, 0.0f, Heading, 2);//270f //old
-            //  NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
-            //  NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, PlayingDict, PlayingAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
-            //  NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
-            //  while(!Game.IsKeyDown(Keys.W))
-            //  {
-            //      GameFiber.Yield();
-            //  }
-            //  Game.LocalPlayer.Character.Tasks.Clear();
-            //ShowBodyLoadPosition();
-            //ShowCarChangePosition();
 
-            //if(Player.InterestedVehicle == null)
-            //{
-            //    return;
-            //}
-            //GetLicensePlateChangePosition(Player.InterestedVehicle.Vehicle);
 
-            //Vehicle SpawnedVehicle = null;
-            //Vector3 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
-            //try
-            //{
-            //    SpawnedVehicle = SpawnedVehicle = new Vehicle("taxi", Position, 0f);//NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(Game.GetHashKey("taxi"), Position.X, Position.Y, Position.Z,0f, false, false, false);//   new Vehicle("taxi", Position, 0f) { IsPersistent = false };
-            //    if (!SpawnedVehicle.Exists())
-            //    {
-            //        Game.DisplaySubtitle($"SPAWNED VEHICLE DOESNT EXIST? {Game.GameTime}");
-            //        return;
-            //    }
-            //    GameFiber.Sleep(2000);
-            //    if (SpawnedVehicle.Exists())
-            //    {
-            //        SpawnedVehicle.Delete();
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Game.DisplaySubtitle($"SPAWN ERROR {Game.GameTime}");
-            //    EntryPoint.WriteToConsole($"DebugNumpad7: ERROR DELETED VEHICLE {ex.Message} {ex.StackTrace} ATTEMPTING TAXI", 0);
-            //    if (SpawnedVehicle.Exists())
-            //    {
-            //        EntryPoint.WriteToConsole($"DebugNumpad7: ERROR DELETED VEHICLE ACTUALLY STILL GOT THE HANDLE", 0);
-            //        SpawnedVehicle.Delete();
-            //    }
-            //    EntryPoint.ModController.AddSpawnError(new SpawnError(Game.GetHashKey("taxi"), Position, Game.GameTime));
-            //    GameFiber.Yield();
-            //    return;
-            //}
 
 
 
 
+        //GET_CLOSEST_OBJECT_OF_TYPE
 
+        //prop_cctv_pole_04, X: 411.6299 Y: -1619.302 Z: 28.30813,, 574160586
 
+        //Vector3 Coordinates = Vector3.Zero;
 
 
-            //Game.DisplaySubtitle(Player.GPSManager.GetGPSRoutePosition().ToString());
-            // NativeFunction.Natives.SET_STATE_OF_CLOSEST_DOOR_OF_TYPE(4163212883, -355.3892f, -51.06768f, 49.31105f, false,1.0f,true);
+        //if(DoOne)
+        //{
+        //    Coordinates = new Vector3(411.6299f, -1619.302f, 28.30813f);
+        //}
+        //else
+        //{
+        //    Coordinates = new Vector3(409.8848f, -1660.358f, 28.25814f);
+        //}
 
 
 
-            //Vector3 source = Game.LocalPlayer.Character.Position;
-            //Vector3 target = new Vector3(source.X, source.Y, source.Z + 1.0f);
-            //if (!NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(source.X, source.Y, source.Z, out float GroundZ, true, false))
-            //{
-            //    return;
-            //    //position = new Vector3(position.X, position.Y, GroundZ);
-            //}
-            //target = new Vector3(source.X, source.Y, GroundZ - 1.0f);
-            //int ShapeTestResultID = NativeFunction.Natives.START_SHAPE_TEST_CAPSULE<int>(source.X, source.Y, source.Z, target.X, target.Y, target.Z, 1.0f, 1, Game.LocalPlayer.Character, 7);
-            //if(ShapeTestResultID == 0)
-            //{
-            //    return;
-            //}
-            //Vector3 hitPositionArg;
-            //bool hitSomethingArg;
-            //int materialHashArg;
-            //int entityHandleArg;
-            //Vector3 surfaceNormalArg;
-            //int Result = 0;
-            //unsafe
-            //{
-            //    Result = NativeFunction.CallByName<int>("GET_SHAPE_TEST_RESULT_INCLUDING_MATERIAL", ShapeTestResultID, &hitSomethingArg, &hitPositionArg, &surfaceNormalArg, &materialHashArg, &entityHandleArg);
-            //}
-            //if(Result == 0)
-            //{ 
-            //    return;
-            //}
 
-            //bool DidHit = hitSomethingArg;
-            //Vector3 HitPosition = hitPositionArg;
-            //Vector3 SurfaceNormal = surfaceNormalArg;
-            //int MaterialHash = materialHashArg;
-            //Game.DisplaySubtitle($"{DidHit} {HitPosition} {SurfaceNormal} {(MaterialHash)MaterialHash}");
-            //EntryPoint.WriteToConsole($"{DidHit} {HitPosition} {SurfaceNormal} {MaterialHash} {(MaterialHash)MaterialHash}");
 
 
+        //Rage.Object myObject = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Coordinates.X, Coordinates.Y, Coordinates.Z,10f,Game.GetHashKey("prop_cctv_pole_04"),false,false,false);
 
+        //if(myObject.Exists())
+        //{
+        //    Game.DisplaySubtitle($"{(DoOne ? 1 : 2)}  {myObject.Handle} {myObject.Health} {myObject.MaxHealth}");
+        //}
 
+        //DoOne = !DoOne;
 
+        //PedExt closestPed = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        //if(closestPed == null || !closestPed.Pedestrian.Exists())
+        //{
+        //    EntryPoint.WriteToConsole("ERROR DEBUG7d");
+        //    return;
+        //}
 
+        ////DEFAULT,BASE,COP,EMPTY,GANG,FAMILY,PLAYER,Security, MEDIC,FIREMAN
+        //string descisionMakerName = NativeHelper.GetKeyboardInput("DEFAULT");
+        //if(!string.IsNullOrEmpty(descisionMakerName))
+        //{
+        //    NativeFunction.Natives.SET_DECISION_MAKER(closestPed.Pedestrian, Game.GetHashKey(descisionMakerName));
+        //    Game.DisplaySubtitle($"SET_DECISION_MAKER {descisionMakerName}");
+        //}
 
 
 
 
-            //GET_CLOSEST_OBJECT_OF_TYPE
 
-            //prop_cctv_pole_04, X: 411.6299 Y: -1619.302 Z: 28.30813,, 574160586
 
-            //Vector3 Coordinates = Vector3.Zero;
+        //unsafe
+        //{
+        //    ANIM_DATA aNIM_DATA = new ANIM_DATA();
+        //    aNIM_DATA.type = 0;
+        //    aNIM_DATA.dictionary0 = "random@arrests";
+        //    aNIM_DATA.anim0 = "radio_chatter";
+        //    aNIM_DATA.phase0 = 0.0f;
+        //    aNIM_DATA.weight0 = 1.0f;
 
 
-            //if(DoOne)
-            //{
-            //    Coordinates = new Vector3(411.6299f, -1619.302f, 28.30813f);
-            //}
-            //else
-            //{
-            //    Coordinates = new Vector3(409.8848f, -1660.358f, 28.25814f);
-            //}
+        //    aNIM_DATA.dictionary1 = "";
+        //    aNIM_DATA.anim1 = "";
+        //    aNIM_DATA.phase1 = 0.0f;
+        //    aNIM_DATA.weight1 = 0.0f;
 
+        //    aNIM_DATA.dictionary2 = "";
+        //    aNIM_DATA.anim2 = "";
+        //    aNIM_DATA.phase2 = 0.0f;
+        //    aNIM_DATA.weight2 = 0.0f;
 
+        //    aNIM_DATA.filter = (int)Game.GetHashKey("BONEMASK_ARMONLY_L");
+        //    aNIM_DATA.blendInDelta = 8.0f;
+        //    aNIM_DATA.blendOutDelta = -8.0f;
+        //    aNIM_DATA.timeToPlay = -1;
+        //    aNIM_DATA.flags = 16 | 32;
+        //    aNIM_DATA.ikFlags = 0;
 
+        //    IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf(aNIM_DATA)); //Marshal.AllocHGlobal(1024);
+        //    Marshal.StructureToPtr(aNIM_DATA, intPtr, true);
+        //    long* f = (long*)intPtr.ToInt64();
+        //    NativeFunction.CallByName<bool>("TASK_SCRIPTED_ANIMATION", closestCop.Pedestrian, &f, null, null, 8.0f, -8.0f);
+        //}
 
+        //unsafe
+        //{
+        //    int lol = 0;
+        //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_enter", 2.0f, -2.0f, 1000, 16 | 32, 0, false, "BONEMASK_ARMONLY_L", false);
+        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_chatter", 2.0f, -2.0f, 2000, 16 | 32, 0, false, "BONEMASK_ARMONLY_L", false);
+        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_exit", 2.0f, -2.0f, 1000, 16 | 32, 0, false, "BONEMASK_ARMONLY_L", false);
+        //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+        //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+        //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", closestCop.Pedestrian, lol);
+        //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        //}
 
 
-            //Rage.Object myObject = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Coordinates.X, Coordinates.Y, Coordinates.Z,10f,Game.GetHashKey("prop_cctv_pole_04"),false,false,false);
+        //TunOffInterior();
 
-            //if(myObject.Exists())
-            //{
-            //    Game.DisplaySubtitle($"{(DoOne ? 1 : 2)}  {myObject.Handle} {myObject.Health} {myObject.MaxHealth}");
-            //}
+        //ResetCops();
 
-            //DoOne = !DoOne;
+        //if (!Test)
+        //{
+        //    //NativeFunction.Natives.ADD_PED_DECORATION(Game.LocalPlayer.Character, "multiplayer_overlays", "FM_Tat_F_003");
+        //    NativeFunction.Natives.ADD_PED_DECORATION_FROM_HASHES(Game.LocalPlayer.Character, Game.GetHashKey("multiplayer_overlays"), Game.GetHashKey("FM_Tat_F_003"));
+        //    Game.DisplaySubtitle("added DECOR");
+        //}
+        //else
+        //{
+        //    NativeFunction.Natives.CLEAR_PED_DECORATIONS(Game.LocalPlayer.Character);
+        //    Game.DisplaySubtitle("removed DECOR");
+        //}
+        //Test = !Test;
+        //DoUiCustomzierFont();
+        //ParticleTest1();
+        //string AudioFilePath = Ringtones.STTHOMAS.FileName;// string.Format("Plugins\\LosSantosRED\\audio\\{0}", "gta4_cellphone\\STTHOMAS.wav");
+        //NAudioPlayer nAudio = new NAudioPlayer(Settings);
+        //nAudio.Play(AudioFilePath, false, false);
+        ////while (nAudio.IsAudioPlaying)
+        ////{
+        ////    GameFiber.Yield();
+        ////}
+        //Game.DisplaySubtitle("Audio Finished");
 
-            //PedExt closestPed = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-            //if(closestPed == null || !closestPed.Pedestrian.Exists())
-            //{
-            //    EntryPoint.WriteToConsole("ERROR DEBUG7d");
-            //    return;
-            //}
-
-            ////DEFAULT,BASE,COP,EMPTY,GANG,FAMILY,PLAYER,Security, MEDIC,FIREMAN
-            //string descisionMakerName = NativeHelper.GetKeyboardInput("DEFAULT");
-            //if(!string.IsNullOrEmpty(descisionMakerName))
-            //{
-            //    NativeFunction.Natives.SET_DECISION_MAKER(closestPed.Pedestrian, Game.GetHashKey(descisionMakerName));
-            //    Game.DisplaySubtitle($"SET_DECISION_MAKER {descisionMakerName}");
-            //}
-
-
-
-
-
-
-            //unsafe
-            //{
-            //    ANIM_DATA aNIM_DATA = new ANIM_DATA();
-            //    aNIM_DATA.type = 0;
-            //    aNIM_DATA.dictionary0 = "random@arrests";
-            //    aNIM_DATA.anim0 = "radio_chatter";
-            //    aNIM_DATA.phase0 = 0.0f;
-            //    aNIM_DATA.weight0 = 1.0f;
-
-
-            //    aNIM_DATA.dictionary1 = "";
-            //    aNIM_DATA.anim1 = "";
-            //    aNIM_DATA.phase1 = 0.0f;
-            //    aNIM_DATA.weight1 = 0.0f;
-
-            //    aNIM_DATA.dictionary2 = "";
-            //    aNIM_DATA.anim2 = "";
-            //    aNIM_DATA.phase2 = 0.0f;
-            //    aNIM_DATA.weight2 = 0.0f;
-
-            //    aNIM_DATA.filter = (int)Game.GetHashKey("BONEMASK_ARMONLY_L");
-            //    aNIM_DATA.blendInDelta = 8.0f;
-            //    aNIM_DATA.blendOutDelta = -8.0f;
-            //    aNIM_DATA.timeToPlay = -1;
-            //    aNIM_DATA.flags = 16 | 32;
-            //    aNIM_DATA.ikFlags = 0;
-
-            //    IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf(aNIM_DATA)); //Marshal.AllocHGlobal(1024);
-            //    Marshal.StructureToPtr(aNIM_DATA, intPtr, true);
-            //    long* f = (long*)intPtr.ToInt64();
-            //    NativeFunction.CallByName<bool>("TASK_SCRIPTED_ANIMATION", closestCop.Pedestrian, &f, null, null, 8.0f, -8.0f);
-            //}
-
-            //unsafe
-            //{
-            //    int lol = 0;
-            //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-            //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_enter", 2.0f, -2.0f, 1000, 16 | 32, 0, false, "BONEMASK_ARMONLY_L", false);
-            //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_chatter", 2.0f, -2.0f, 2000, 16 | 32, 0, false, "BONEMASK_ARMONLY_L", false);
-            //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_exit", 2.0f, -2.0f, 1000, 16 | 32, 0, false, "BONEMASK_ARMONLY_L", false);
-            //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-            //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-            //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", closestCop.Pedestrian, lol);
-            //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-            //}
-
-
-            //TunOffInterior();
-
-            //ResetCops();
-
-            //if (!Test)
-            //{
-            //    //NativeFunction.Natives.ADD_PED_DECORATION(Game.LocalPlayer.Character, "multiplayer_overlays", "FM_Tat_F_003");
-            //    NativeFunction.Natives.ADD_PED_DECORATION_FROM_HASHES(Game.LocalPlayer.Character, Game.GetHashKey("multiplayer_overlays"), Game.GetHashKey("FM_Tat_F_003"));
-            //    Game.DisplaySubtitle("added DECOR");
-            //}
-            //else
-            //{
-            //    NativeFunction.Natives.CLEAR_PED_DECORATIONS(Game.LocalPlayer.Character);
-            //    Game.DisplaySubtitle("removed DECOR");
-            //}
-            //Test = !Test;
-            //DoUiCustomzierFont();
-            //ParticleTest1();
-            //string AudioFilePath = Ringtones.STTHOMAS.FileName;// string.Format("Plugins\\LosSantosRED\\audio\\{0}", "gta4_cellphone\\STTHOMAS.wav");
-            //NAudioPlayer nAudio = new NAudioPlayer(Settings);
-            //nAudio.Play(AudioFilePath, false, false);
-            ////while (nAudio.IsAudioPlaying)
-            ////{
-            ////    GameFiber.Yield();
-            ////}
-            //Game.DisplaySubtitle("Audio Finished");
-
-        }
+    }
 
 
 

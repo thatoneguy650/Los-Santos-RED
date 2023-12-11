@@ -19,6 +19,7 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
     private IPlacesOfInterest PlacesOfInterest;
     private ITimeReportable Time;
     private UIMenuItem teleportMenuItem;
+    private IEntityProvideable World;
 
     public TaxiInteractionMenu(VehicleExt vehicleExt, TaxiVehicleExt taxiVehicleExt) : base(vehicleExt)
     {
@@ -36,6 +37,7 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
         Player = player;
         PlacesOfInterest = placesOfInterest;
         Time = time;
+        World = world;
         TaxiRide = Player.TaxiManager.GetOrCreateRide(TaxiVehicleExt);
         if(TaxiRide == null)
         {
@@ -126,7 +128,7 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
             List<UIMenu> SubMenus = new List<UIMenu>();
             foreach (GameLocation gameLocation in PlacesOfInterest.PossibleLocations.InteractableLocations().OrderBy(x => x.TypeName))
             {
-                if (!gameLocation.IsEnabled || !gameLocation.ShowsOnTaxi || !gameLocation.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState))
+                if (!gameLocation.IsEnabled || !gameLocation.ShowsOnTaxi || !gameLocation.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState) || !gameLocation.IsCorrectMap(World.IsMPMapLoaded))
                 {
                     continue;
                 }
@@ -140,7 +142,7 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
             }
             foreach (GameLocation gameLocation in PlacesOfInterest.PossibleLocations.InteractableLocations().OrderBy(x => Player.Character.Position.DistanceTo2D(x.EntrancePosition)))
             {
-                if (!gameLocation.IsEnabled || !gameLocation.ShowsOnTaxi || !gameLocation.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState))
+                if (!gameLocation.IsEnabled || !gameLocation.ShowsOnTaxi || !gameLocation.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState) || !gameLocation.IsCorrectMap(World.IsMPMapLoaded))
                 {
                     continue;
                 }

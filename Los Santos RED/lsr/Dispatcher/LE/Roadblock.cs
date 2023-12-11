@@ -84,14 +84,19 @@ public class Roadblock
     }
     public void SpawnRoadblock()
     {
+        GameFiber.Yield();
         AnimationDictionary.RequestAnimationDictionay("p_ld_stinger_s");
-        VehicleModel.LoadAndWait();
-        SpikeStripModel.LoadAndWait();
+       // GameFiber.Yield();
+       // VehicleModel.LoadAndWait();
+        //SpikeStripModel.LoadAndWait();
         if (GetPosition())
         {
+            GameFiber.Yield();
             ClearArea();
+            GameFiber.Yield();
             FillInBlockade();
         }
+        GameFiber.Yield();
         if (Settings.SettingsManager.RoadblockSettings.RoadblockSpikeStripsEnabled)
         {
             CheckSpikeStrips();
@@ -117,6 +122,7 @@ public class Roadblock
                     {
                         NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(obj);
                     }
+                    GameFiber.Yield();
                 }
                 float DistanceToRoadblock = Player.Position.DistanceTo2D(CenterPosition);
                 while (!IsDisposed && DistanceToRoadblock >= 125f)
@@ -237,7 +243,9 @@ public class Roadblock
         {
             NodeCenter = RoadNode.RoadPosition;
         }
+        GameFiber.Yield();
         DetermineVehiclesToAdd();
+        GameFiber.Yield();
         DeterminePositions();
         GameFiber.Yield();
         if (AddVehicles(LocationCreate.Middle, 1))//need at least one car to spawn?

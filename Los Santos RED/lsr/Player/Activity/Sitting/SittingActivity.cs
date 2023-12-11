@@ -169,12 +169,12 @@ namespace LosSantosRED.lsr.Player
                 {
                     LoopRegular();
                 }
-                if(IsSittingOnToilet && Game.IsKeyDownRightNow(System.Windows.Forms.Keys.Z) && !HasStartedPoopAnim)
-                {
-                    EntryPoint.WriteToConsole("STARTING POOP ANIM");
-                    HasStartedPoopAnim = true;
-                    StartToiletAnimation();
-                }
+                //if(IsSittingOnToilet && Game.IsKeyDownRightNow(System.Windows.Forms.Keys.Z) && !HasStartedPoopAnim)
+                //{
+                //    EntryPoint.WriteToConsole("STARTING POOP ANIM");
+                //    HasStartedPoopAnim = true;
+                //    StartToiletAnimation();
+                //}
                 GameFiber.Yield();
             }
             //EntryPoint.WriteToConsoleTestLong("Sitting Activity Idle End");
