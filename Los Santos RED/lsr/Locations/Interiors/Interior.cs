@@ -173,6 +173,7 @@ public class Interior
                 NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
                 IsActive = true;
                 GameFiber.Yield();
+                EntryPoint.WriteToConsole($"Load Interior {Name} isOpen{isOpen}");
             }
             catch (Exception ex)
             {
@@ -252,7 +253,7 @@ public class Interior
                     IsActive = false;
                     GameFiber.Yield();
 
-
+                    EntryPoint.WriteToConsole($"Unload Interior {Name}");
                     //new Vector3(-19.51501f, -597.6929f, 94.02557f)
                 }
                 catch (Exception ex)
@@ -290,17 +291,22 @@ public class Interior
         if (InteractableLocation.Interior != null && InteractableLocation.Interior.IsTeleportEntry)
         {
             Game.FadeScreenOut(1500, true);
+
+            InteractableLocation.Interior.Load(true);
+
+
             Player.Character.Position = InteractableLocation.Interior.InteriorEgressPosition;
             Player.Character.Heading = InteractableLocation.Interior.InteriorEgressHeading;
             IsInside = true;
             IsMenuInteracting = false;
             locationCamera?.StopImmediately(true);
+            Player.InteriorManager.OnTeleportedInside(InteractableLocation);
             GameFiber.Sleep(1000);
             RemoveExistingPeds();
 
 
             Game.FadeScreenIn(1500, true);
-            Player.InteriorManager.OnTeleportedInside(InteractableLocation);
+
         }
     }
 
@@ -362,6 +368,7 @@ public class Interior
             Player.Character.Position = InteractableLocation.EntrancePosition;
             Player.Character.Heading = InteractableLocation.EntranceHeading;
             Player.Character.IsVisible = false;
+            InteractableLocation.Interior?.Unload();
             GameFiber.Sleep(500);
             Game.FadeScreenIn(1000, true);
             InteractableLocation.DoExitCamera(false);

@@ -2126,7 +2126,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
 
-            //Apartment With Matching With Interior
+            //Apartment With Matching With Interior SP or BOTH!
             new Residence(new Vector3(-59.58021f, -617.4625f, 37.35678f), 69.24533f, "4 Integrity Way, Apt 28",""){
                 InteriorID = 21250, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 1
             , CameraPosition = new Vector3(-103.6068f, -621.355f, 61.43004f), CameraDirection = new Vector3(0.9355325f, 0.094497f, -0.3403665f), CameraRotation = new Rotator(-19.89921f, -2.269968E-07f, -84.23219f)},
@@ -2143,8 +2143,8 @@ public class PlacesOfInterest : IPlacesOfInterest
 
             new Residence(new Vector3(-773.63f, 313.08f, 85.70f), 180f, "Eclipse Towers, Apt 3",""){
                 InteriorID = 61186, IsOnMPMap = false, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 5 },
-            new Residence(new Vector3(-773.63f, 313.08f, 85.70f), 180f, "Eclipse Towers, Apt 3",""){
-                InteriorID = -674, IsOnSPMap = false, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 6 },
+            //new Residence(new Vector3(-773.63f, 313.08f, 85.70f), 180f, "Eclipse Towers, Apt 3",""){
+            //    InteriorID = -674, IsOnSPMap = false, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 6 },
 
             new Residence(new Vector3(-936.8324f, -379.2408f, 38.96133f), 113.6606f, "Richard Majestic, Apt 2",""){
                 InteriorID = -675, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 7 },
@@ -2190,7 +2190,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Residence(new Vector3(195.0935f, 3031.064f, 43.89068f), 273.1078f, "125 Joshua Rd", "") { InteriorID = 55042,OpenTime = 0,CloseTime = 24, PurchasePrice = 298000,SalesPrice = 210000, RentalDays = 28, RentalFee = 1580  },
             new Residence(new Vector3(191.0053f, 3082.26f, 43.47285f), 277.6117f, "610N Joshua Rd", "") { InteriorID = 55042,OpenTime = 0,CloseTime = 24, PurchasePrice = 289000,SalesPrice = 200000, RentalDays = 28, RentalFee = 1675  },
             new Residence(new Vector3(241.7666f, 3107.666f, 42.48719f), 93.76467f, "620N Joshua Rd", "") { InteriorID = 55042,OpenTime = 0,CloseTime = 24, PurchasePrice = 275000,SalesPrice = 190000, RentalDays = 28, RentalFee = 1610  },
-            new Residence(new Vector3(162.8214f, 3119.749f, 43.42594f), 192.0786f, "621N Joshua Rd", "") { InteriorID = 108290, OpenTime = 0,CloseTime = 24, PurchasePrice = 57000,SalesPrice = 35000, RentalDays = 28, RentalFee = 850  },
+            //new Residence(new Vector3(162.8214f, 3119.749f, 43.42594f), 192.0786f, "621N Joshua Rd", "") { InteriorID = 108290, OpenTime = 0,CloseTime = 24, PurchasePrice = 57000,SalesPrice = 35000, RentalDays = 28, RentalFee = 1550  },
             new Residence(new Vector3(247.5913f, 3169.535f, 42.78756f), 90.61945f, "630N Joshua Rd", "") { InteriorID = 55042,OpenTime = 0,CloseTime = 24, PurchasePrice = 267000, RentalDays = 28, RentalFee = 1580  },
             new Residence(new Vector3(-272.7155f, 6400.906f, 31.50496f), 215.1084f, "1275N Procopio Dr", "") { InteriorID = 55042,OpenTime = 0,CloseTime = 24, PurchasePrice = 470000,SalesPrice = 350000, RentalDays = 28, RentalFee = 1850  },
             new Residence(new Vector3(-247.7424f, 6370.079f, 31.84554f), 45.0573f, "1276N Procopio Dr", "") { InteriorID = 55042,OpenTime = 0,CloseTime = 24, PurchasePrice = 476000,SalesPrice = 350000, RentalDays = 28, RentalFee = 1790  },
@@ -2243,8 +2243,8 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Residence() {
                 RentalDays = 28,
                 RentalFee = 5000,
-                PurchasePrice = 478000,
-                SalesPrice = 239000,
+                PurchasePrice = 1800000,
+                SalesPrice = 1100000,
                 Name = "3677 Whispymound Drive",
                 EntrancePosition = new Vector3(119.3867f,563.9431f,183.9595f),
                 EntranceHeading = 4.633287f,
@@ -2435,6 +2435,131 @@ public class PlacesOfInterest : IPlacesOfInterest
               ResidenceID = 14,
             },
 
+            //Eclipse Towers
+            new Residence (new Vector3 (-773.63f, 313.08f, 85.7f), 180f,"Eclipse Towers, Apt 3", "") 
+            {
+              RentalDays = 28,
+              RentalFee = 5000,
+              PurchasePrice = 1200000,
+              SalesPrice = 980000,
+              ResidenceID = 21,
+              HasHeaderApartmentBuilding = true,
+              Name = "Eclipse Towers, Apt 3",
+              EntrancePosition = new Vector3 (-773.63f, 313.08f, 85.7f),
+              EntranceHeading = 180f,
+              OpenTime = 0,
+              CloseTime = 24,
+              InteriorID = 300313503,
+              IsOnSPMap = false,
+            },
+            new Residence (new Vector3 (-773.63f, 313.08f, 85.7f), 180f,"Eclipse Towers, Apt 31", "") 
+            {
+              RentalDays = 28,
+              RentalFee = 5000,
+              PurchasePrice = 1200000,
+              SalesPrice = 980000,
+              ResidenceID = 24,
+              HasHeaderApartmentBuilding = true,
+              Name = "Eclipse Towers, Apt 31",
+              EntrancePosition = new Vector3 (-773.63f, 313.08f, 85.7f),
+              EntranceHeading = 180f,
+              OpenTime = 0,
+              CloseTime = 24,
+              InteriorID = 144385,
+              IsOnSPMap = false,
+            },
+            new Residence (new Vector3 (-773.63f, 313.08f, 85.7f), 180f,"Eclipse Towers, Apt 40", "") {
+              RentalDays = 28,
+              RentalFee = 5000,
+              PurchasePrice = 1200000,
+              SalesPrice = 980000,
+              ResidenceID = 25,
+              HasHeaderApartmentBuilding = true,
+              Name = "Eclipse Towers, Apt 40",
+              EntrancePosition = new Vector3 (-773.63f, 313.08f, 85.7f),
+              EntranceHeading = 180f,
+              OpenTime = 0,
+              CloseTime = 24,
+              InteriorID = 144129,
+              IsOnSPMap = false,
+            },
+            new Residence (new Vector3 (-773.63f, 313.08f, 85.7f), 180f,"Eclipse Towers, Apt 5", "") {
+              RentalDays = 28,
+              RentalFee = 5000,
+              PurchasePrice = 1200000,
+              SalesPrice = 980000,
+              ResidenceID = 22,
+              HasHeaderApartmentBuilding = true,
+              Name = "Eclipse Towers, Apt 5",
+              EntrancePosition = new Vector3 (-773.63f, 313.08f, 85.7f),
+              EntranceHeading = 180f,
+              OpenTime = 0,
+              CloseTime = 24,
+              InteriorID = 300313505,
+              IsOnSPMap = false,
+            },
+            new Residence (new Vector3 (-773.63f, 313.08f, 85.7f), 180f,"Eclipse Towers, Apt 9", "") {
+              RentalDays = 28,
+              RentalFee = 5000,
+              PurchasePrice = 1200000,
+              SalesPrice = 980000,
+              ResidenceID = 23,
+              HasHeaderApartmentBuilding = true,
+              Name = "Eclipse Towers, Apt 9",
+              EntrancePosition = new Vector3 (-773.63f, 313.08f, 85.7f),
+              EntranceHeading = 180f,
+              OpenTime = 0,
+              CloseTime = 24,
+              InteriorID = 144641,
+              IsOnSPMap = false,
+            },
+            new Residence (new Vector3 (-773.63f, 313.08f, 85.7f), 180f,"Eclipse Towers Penthouse 1", "") {
+              RentalDays = 28,
+              RentalFee = 5000,
+              PurchasePrice = 1200000,
+              SalesPrice = 980000,
+              ResidenceID = 18,
+              HasHeaderApartmentBuilding = true,
+              Name = "Eclipse Towers Penthouse 1",
+              EntrancePosition = new Vector3 (-773.63f, 313.08f, 85.7f),
+              EntranceHeading = 180f,
+              OpenTime = 0,
+              CloseTime = 24,
+              InteriorID = 227329,
+              IsOnSPMap = false,
+            },
+            new Residence (new Vector3 (-773.63f, 313.08f, 85.7f), 180f,"Eclipse Towers Penthouse 2", "") 
+            {
+              RentalDays = 28,
+              RentalFee = 5000,
+              PurchasePrice = 1200000,
+              SalesPrice = 980000,
+              ResidenceID = 19,
+              HasHeaderApartmentBuilding = true,
+              Name = "Eclipse Towers Penthouse 2",
+              EntrancePosition = new Vector3 (-773.63f, 313.08f, 85.7f),
+              EntranceHeading = 180f,
+              OpenTime = 0,
+              CloseTime = 24,
+              InteriorID = 229889,
+              IsOnSPMap = false,
+            },
+            new Residence (new Vector3 (-773.63f, 313.08f, 85.7f), 180f,"Eclipse Towers Penthouse 3", "") 
+            {
+              RentalDays = 28,
+              RentalFee = 5000,
+              PurchasePrice = 1200000,
+              SalesPrice = 980000,
+              ResidenceID = 20,
+              HasHeaderApartmentBuilding = true,
+              Name = "Eclipse Towers Penthouse 3",
+              EntrancePosition = new Vector3 (-773.63f, 313.08f, 85.7f),
+              EntranceHeading = 180f,
+              OpenTime = 0,
+              CloseTime = 24,
+              InteriorID = 230913,
+              IsOnSPMap = false,
+            },
         };
 
         ApartmentBuildings = new List<ApartmentBuilding>()
@@ -2457,7 +2582,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-12.42524f, 4.371253E-07f, 63.05096f),
 
                 },
-            new ApartmentBuilding(new Vector3(-773.63f, 313.08f, 85.70f), 180f, "Eclipse Towers","")
+            new ApartmentBuilding(new Vector3(-773.63f, 313.08f, 85.70f), 180f, "Eclipse Towers","")//SP
                 {
                 ResidenceIDs = new List<int>() { 5 },
                 OpenTime = 0,CloseTime = 24,
@@ -2467,9 +2592,9 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-8.36683f, 9.061063E-06f, 22.74264f),
 
                 },
-            new ApartmentBuilding(new Vector3(-773.63f, 313.08f, 85.70f), 180f, "Eclipse Towers","")
+            new ApartmentBuilding(new Vector3(-773.63f, 313.08f, 85.70f), 180f, "Eclipse Towers","")//MP
                 {
-                ResidenceIDs = new List<int>() { 6 },
+                ResidenceIDs = new List<int>() { 18,19,20,21,22,23,24,25 },
                 OpenTime = 0,CloseTime = 24,
                 IsOnSPMap = false,
                 CameraPosition = new Vector3(-759.3251f, 282.0685f, 92.48839f),
@@ -2477,7 +2602,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-8.36683f, 9.061063E-06f, 22.74264f),
                 },
 
-            new ApartmentBuilding(new Vector3(-936.8324f, -379.2408f, 38.96133f), 113.6606f, "Richard Majestic","")
+            new ApartmentBuilding(new Vector3(-936.8324f, -379.2408f, 38.96133f), 113.6606f, "Richard Majestic","")//MP
                 {
                 ResidenceIDs = new List<int>() { 7 },
                 OpenTime = 0,CloseTime = 24,
@@ -2488,7 +2613,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
 
 
-            new ApartmentBuilding(new Vector3(-593.1158f, 37.89521f, 43.60775f), 179.0897f, "Tinsel Towers","")
+            new ApartmentBuilding(new Vector3(-593.1158f, 37.89521f, 43.60775f), 179.0897f, "Tinsel Towers","")//SP
                 {
                 ResidenceIDs = new List<int>() { 8, 11 },
                 OpenTime = 0,CloseTime = 24,
@@ -2497,7 +2622,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(-0.5004823f, 0.838339f, -0.216114f), 
                 CameraRotation = new Rotator(-12.48089f, 2.186096E-06f, 30.83689f)
                 },
-            new ApartmentBuilding(new Vector3(-593.1158f, 37.89521f, 43.60775f), 179.0897f, "Tinsel Towers","")
+            new ApartmentBuilding(new Vector3(-593.1158f, 37.89521f, 43.60775f), 179.0897f, "Tinsel Towers","")//MP
                 {
                 ResidenceIDs = new List<int>() { 9, 10, 11 },
                 OpenTime = 0,CloseTime = 24,
@@ -2507,7 +2632,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-12.48089f, 2.186096E-06f, 30.83689f)
                 },
 
-            new ApartmentBuilding(new Vector3(-914.2256f, -455.1739f, 39.59988f), 116.7621f, "Weazel Plaza","")
+            new ApartmentBuilding(new Vector3(-914.2256f, -455.1739f, 39.59988f), 116.7621f, "Weazel Plaza","")//MP
                 {
                 ResidenceIDs = new List<int>() { 12,13,14 },
                 OpenTime = 0,CloseTime = 24,

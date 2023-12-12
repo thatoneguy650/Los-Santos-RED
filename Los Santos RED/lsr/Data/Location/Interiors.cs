@@ -1338,7 +1338,7 @@ public class Interiors : IInteriors
             },
 
             //SP Still?
-            new ResidenceInterior(55042,"Nice Medium Apartment") {//needs the blinds closed
+            new ResidenceInterior(55042,"Nice Medium Apartment") {
                 IsTeleportEntry = true,
                 NeedsActivation = true,
                 NeedsSetDisabled = true,
@@ -4033,7 +4033,1592 @@ public class Interiors : IInteriors
                     },
             },
 
-
+            //More MP Apartments
+            new ResidenceInterior(300313503,"Eclipse Towers, Apt 3") 
+            {
+                RestInteracts = new List<RestInteract>() {
+                new RestInteract() {
+                StartAnimations = new List<AnimationBundle>() {
+                },
+                LoopAnimations = new List<AnimationBundle>() {
+                },
+                EndAnimations = new List<AnimationBundle>() {
+                },
+                Name = "EclTowApt3Rest1",
+                Position = new Vector3(-794.2382f,332.1173f,210.7966f),
+                Heading = 357.8991f,
+                CameraPosition = new Vector3(-790.9478f,332.1293f,211.5446f),
+                CameraDirection = new Vector3(-0.834198f,0.46145f,-0.3019564f),
+                CameraRotation = new Rotator(-17.57514f,6.269043E-06f,61.05012f),
+                ButtonPromptText = "Sleep",
+                },
+                },
+                InventoryInteracts = new List<InventoryInteract>() {
+                new InventoryInteract() {
+                CanAccessWeapons = false,
+                CanAccessCash = false,
+                AllowedItemTypes = new List<ItemType>() {
+                new ItemType() {
+                },
+                },
+                DisallowedItemTypes = new List<ItemType>() {
+                },
+                Title = "Fridge",
+                Description = "Access Drinks",
+                Name = "EclTowApt3Inventory1",
+                Position = new Vector3(-769.7903f,335.2822f,211.397f),
+                Heading = 179.8926f,
+                CameraPosition = new Vector3(-773.8968f,336.1825f,212.0204f),
+                CameraDirection = new Vector3(0.8932383f,-0.3579163f,-0.2720685f),
+                CameraRotation = new Rotator(-15.78739f,-3.726418E-05f,-111.8357f),
+                ButtonPromptText = "Open Fridge",
+                UseNavmesh = false,
+                },
+                new InventoryInteract() {
+                CanAccessWeapons = false,
+                CanAccessCash = false,
+                AllowedItemTypes = new List<ItemType>() {
+                new ItemType() {
+                },
+                new ItemType() {
+                },
+                },
+                DisallowedItemTypes = new List<ItemType>() {
+                },
+                Title = "Pantry",
+                Description = "Access Food",
+                Name = "EclTowApt3Inventory2",
+                Position = new Vector3(-771.836f,335.325f,211.397f),
+                Heading = 189.6519f,
+                CameraPosition = new Vector3(-773.8968f,336.1825f,212.0204f),
+                CameraDirection = new Vector3(0.8932383f,-0.3579163f,-0.2720685f),
+                CameraRotation = new Rotator(-15.78739f,-3.726418E-05f,-111.8357f),
+                ButtonPromptText = "Open Pantry",
+                UseNavmesh = false,
+                },
+                new InventoryInteract() {
+                CanAccessWeapons = false,
+                CanAccessCash = false,
+                AllowedItemTypes = new List<ItemType>() {
+                },
+                DisallowedItemTypes = new List<ItemType>() {
+                new ItemType() {
+                },
+                new ItemType() {
+                },
+                new ItemType() {
+                },
+                },
+                Title = "",
+                Description = "",
+                Name = "EclTowApt3Inventory3",
+                Position = new Vector3(-770.0435f,339.3617f,211.397f),
+                Heading = 87.64685f,
+                CameraPosition = new Vector3(-768.8466f,341.1152f,212.2362f),
+                CameraDirection = new Vector3(-0.5258477f,-0.7788754f,-0.3418148f),
+                CameraRotation = new Rotator(-19.98748f,3.633978E-06f,145.9753f),
+                ButtonPromptText = "Access Items",
+                UseNavmesh = false,
+                },
+                new InventoryInteract() {
+                CanAccessItems = false,
+                CanAccessWeapons = false,
+                AllowedItemTypes = new List<ItemType>() {
+                },
+                DisallowedItemTypes = new List<ItemType>() {
+                },
+                Title = "",
+                Description = "",
+                Name = "EclTowApt3Inventory4",
+                Position = new Vector3(-790.1963f,333.422f,210.8318f),
+                Heading = 272.4976f,
+                CameraPosition = new Vector3(-791.2614f,331.5301f,211.5391f),
+                CameraDirection = new Vector3(0.5184225f,0.7912914f,-0.3241852f),
+                CameraRotation = new Rotator(-18.91622f,-9.02515E-06f,-33.23122f),
+                ButtonPromptText = "Cash Drawer",
+                UseNavmesh = false,
+                },
+                new InventoryInteract() {
+                CanAccessItems = false,
+                CanAccessCash = false,
+                AllowedItemTypes = new List<ItemType>() {
+                },
+                DisallowedItemTypes = new List<ItemType>() {
+                },
+                Title = "",
+                Description = "",
+                Name = "EclTowApt3Inventory5",
+                Position = new Vector3(-765.2819f,326.6274f,211.3965f),
+                Heading = 186.2076f,
+                CameraPosition = new Vector3(-763.3954f,327.548f,212.0067f),
+                CameraDirection = new Vector3(-0.8535704f,-0.4325231f,-0.2904159f),
+                CameraRotation = new Rotator(-16.88286f,1.338342E-06f,116.8723f),
+                ButtonPromptText = "Weapons Locker",
+                UseNavmesh = false,
+                },
+                },
+                OutfitInteracts = new List<OutfitInteract>() {
+                new OutfitInteract() {
+                Name = "EclTowApt3Outfit1",
+                Position = new Vector3(-793.3536f,325.9384f,210.7965f),
+                Heading = 355.9424f,
+                CameraPosition = new Vector3(-793.3113f,328.365f,211.2841f),
+                CameraDirection = new Vector3(-0.02899069f,-0.9774232f,-0.2092928f),
+                CameraRotation = new Rotator(-12.08091f,-1.009534E-06f,178.3011f),
+                ButtonPromptText = "Change Outfit",
+                },
+                },
+                LocalID = 300313503,
+                InternalInteriorCoordinates = new Vector3(-791.294f,338.071f,200.4135f),
+                Name = "Eclipse Towers, Apt 3",
+                IsTeleportEntry = true,
+                Doors = new List<InteriorDoor>() {
+                },
+                RequestIPLs = new List<String>() {
+                "hei_dlc_apart_high_new",
+                },
+                RemoveIPLs = new List<String>() {
+                },
+                InteriorSets = new List<String>() {
+                },
+                InteriorEgressPosition = new Vector3(-776.9362f,323.6867f,211.9975f),
+                InteriorEgressHeading = 268.3861f,
+                InteractPoints = new List<InteriorInteract>() {
+                new ExitInteriorInteract() {
+                Name = "EclTowApt3Exit1",
+                Position = new Vector3(-776.9362f,323.6867f,211.9975f),
+                Heading = 92.63223f,
+                ButtonPromptText = "Exit",
+                },
+                new StandardInteriorInteract() {
+                Name = "EclTowApt3Std1",
+                Position = new Vector3(-779.4938f,335.7599f,211.1971f),
+                Heading = 45.97082f,
+                CameraPosition = new Vector3(-777.1794f,335.5338f,211.935f),
+                CameraDirection = new Vector3(-0.9467912f,0.1103402f,-0.3023434f),
+                CameraRotation = new Rotator(-17.59841f,-6.717697E-07f,83.35267f),
+                },
+                new ToiletInteract() {
+                Name = "EclTowApt3Toilet1",
+                Position = new Vector3(-799.9388f,330.1344f,210.7966f),
+                Heading = 177.472f,
+                CameraPosition = new Vector3(-798.165f,330.9734f,211.4549f),
+                CameraDirection = new Vector3(-0.7939164f,-0.5101756f,-0.3307833f),
+                CameraRotation = new Rotator(-19.31633f,4.523511E-06f,122.7251f),
+                ButtonPromptText = "Use Toilet",
+                UseNavmesh = false,
+                },
+                new SinkInteract() {
+                Name = "EclTowApt3Sink1",
+                Position = new Vector3(-797.4703f,330.1364f,210.7966f),
+                Heading = 178.7707f,
+                CameraPosition = new Vector3(-796.1561f,330.3595f,211.6637f),
+                CameraDirection = new Vector3(-0.8087228f,-0.4037162f,-0.4277623f),
+                CameraRotation = new Rotator(-25.32563f,3.872668E-05f,116.5285f),
+                ButtonPromptText = "Use Sink",
+                UseNavmesh = false,
+                },
+                new SinkInteract() {
+                Name = "EclTowApt3Sink2",
+                Position = new Vector3(-798.9324f,330.1334f,210.7966f),
+                Heading = 178.7051f,
+                CameraPosition = new Vector3(-796.1561f,330.3595f,211.6637f),
+                CameraDirection = new Vector3(-0.8087228f,-0.4037162f,-0.4277623f),
+                CameraRotation = new Rotator(-25.32563f,3.872668E-05f,116.5285f),
+                ButtonPromptText = "Use Sink",
+                UseNavmesh = false,
+                },
+                },
+                ClearPositions = new List<Vector3>() {
+                new Vector3(-799.9388f,330.1344f,210.7966f),
+                },
+                },
+            new ResidenceInterior(144385,"Eclipse Towers, Apt 31") {
+            RestInteracts = new List<RestInteract>() {
+            new RestInteract() {
+            StartAnimations = new List<AnimationBundle>() {
+            },
+            LoopAnimations = new List<AnimationBundle>() {
+            },
+            EndAnimations = new List<AnimationBundle>() {
+            },
+            Name = "EclTowApt31Rest1",
+            Position = new Vector3(-796.7646f,337.2329f,153.7943f),
+            Heading = 2.695368f,
+            CameraPosition = new Vector3(-793.9561f,337.593f,154.615f),
+            CameraDirection = new Vector3(-0.8179816f,0.4361713f,-0.3750476f),
+            CameraRotation = new Rotator(-22.02726f,-9.210016E-06f,61.93218f),
+            ButtonPromptText = "Sleep",
+            },
+            },
+            InventoryInteracts = new List<InventoryInteract>() {
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "Fridge",
+            Description = "Access Drinks",
+            Name = "EclTowApt31Inventory1",
+            Position = new Vector3(-787.473f,327.2547f,158.599f),
+            Heading = 271.1107f,
+            CameraPosition = new Vector3(-788.4828f,329.1906f,159.2095f),
+            CameraDirection = new Vector3(0.5769045f,-0.770802f,-0.270269f),
+            CameraRotation = new Rotator(-15.68028f,2.349954E-05f,-143.1871f),
+            ButtonPromptText = "Open Fridge",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "Pantry",
+            Description = "Access Food",
+            Name = "EclTowApt31Inventory2",
+            Position = new Vector3(-787.3885f,330.2854f,158.599f),
+            Heading = 275.8958f,
+            CameraPosition = new Vector3(-788.1501f,328.3446f,159.3437f),
+            CameraDirection = new Vector3(0.3849123f,0.8574076f,-0.3416062f),
+            CameraRotation = new Rotator(-19.97476f,1.589738E-05f,-24.17654f),
+            ButtonPromptText = "Open Pantry",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowApt31Inventory3",
+            Position = new Vector3(-791.473f,330.6137f,158.599f),
+            Heading = 1.556483f,
+            CameraPosition = new Vector3(-789.3279f,329.9838f,159.1079f),
+            CameraDirection = new Vector3(-0.8895684f,0.3828046f,-0.2492561f),
+            CameraRotation = new Rotator(-14.43349f,-4.407995E-06f,66.71652f),
+            ButtonPromptText = "Access Items",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessItems = false,
+            CanAccessWeapons = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowApt31Inventory4",
+            Position = new Vector3(-801.4374f,326.587f,158.599f),
+            Heading = 181.1285f,
+            CameraPosition = new Vector3(-803.3651f,327.2435f,159.3797f),
+            CameraDirection = new Vector3(0.8770649f,-0.3173487f,-0.3606202f),
+            CameraRotation = new Rotator(-21.13829f,5.949879E-06f,-109.8917f),
+            ButtonPromptText = "Cash Drawer",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessItems = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowApt31Inventory5",
+            Position = new Vector3(-784.5331f,331.0416f,160.0101f),
+            Heading = 90.93836f,
+            CameraPosition = new Vector3(-783.7991f,329.1977f,160.8094f),
+            CameraDirection = new Vector3(-0.4186683f,0.8321925f,-0.3635553f),
+            CameraRotation = new Rotator(-21.3187f,1.191432E-05f,26.70654f),
+            ButtonPromptText = "Weapons Locker",
+            UseNavmesh = false,
+            },
+            },
+            OutfitInteracts = new List<OutfitInteract>() {
+            new OutfitInteract() {
+            Name = "EclTowApt31Outfit1",
+            Position = new Vector3(-796.139f,332.1796f,153.805f),
+            Heading = 268.4612f,
+            CameraPosition = new Vector3(-793.8141f,332.1228f,154.232f),
+            CameraDirection = new Vector3(-0.9807909f,0.01977829f,-0.1940569f),
+            CameraRotation = new Rotator(-11.18964f,4.161208E-06f,88.84475f),
+            ButtonPromptText = "Change Outfit",
+            },
+            },
+            LocalID = 144385,
+            InternalInteriorCoordinates = new Vector3(-791.7613f,338.4633f,152.7941f),
+            Name = "Eclipse Towers, Apt 31",
+            IsTeleportEntry = true,
+            Doors = new List<InteriorDoor>() {
+            },
+            RequestIPLs = new List<String>() {
+            "hei_dlc_apart_high_new",
+            },
+            RemoveIPLs = new List<String>() {
+            },
+            InteriorSets = new List<String>() {
+            },
+            InteriorEgressPosition = new Vector3(-778.1878f,340.2737f,160.0016f),
+            InteriorEgressHeading = 84.02899f,
+            InteractPoints = new List<InteriorInteract>() {
+            new ExitInteriorInteract() {
+            Name = "EclTowApt31Exit1",
+            Position = new Vector3(-778.1878f,340.2737f,160.0016f),
+            Heading = 272.1511f,
+            ButtonPromptText = "Exit",
+            },
+            new StandardInteriorInteract() {
+            Name = "EclTowApt31Std1",
+            Position = new Vector3(-793.6388f,339.7443f,158.599f),
+            Heading = 312.999f,
+            CameraPosition = new Vector3(-793.589f,337.4945f,159.4298f),
+            CameraDirection = new Vector3(0.0420437f,0.9379429f,-0.3442316f),
+            CameraRotation = new Rotator(-20.1349f,4.603578E-06f,-2.56659f),
+            },
+            new ToiletInteract() {
+            Name = "EclTowApt31Toilet1",
+            Position = new Vector3(-785.6759f,333.7808f,153.7943f),
+            Heading = 359.5056f,
+            CameraPosition = new Vector3(-787.1832f,332.8556f,154.7406f),
+            CameraDirection = new Vector3(0.634066f,0.6208942f,-0.4609236f),
+            CameraRotation = new Rotator(-27.44672f,0f,-45.60135f),
+            ButtonPromptText = "Use Toilet",
+            UseNavmesh = false,
+            },
+            new SinkInteract() {
+            Name = "EclTowApt31Sink1",
+            Position = new Vector3(-788.1632f,333.7371f,153.7943f),
+            Heading = 358.2891f,
+            CameraPosition = new Vector3(-789.5087f,333.4411f,154.5853f),
+            CameraDirection = new Vector3(0.8060546f,0.4705779f,-0.3589324f),
+            CameraRotation = new Rotator(-21.03465f,6.403095E-06f,-59.72345f),
+            ButtonPromptText = "Use Sink",
+            UseNavmesh = false,
+            },
+            new SinkInteract() {
+            Name = "EclTowApt31Sink2",
+            Position = new Vector3(-786.7275f,333.6949f,153.7943f),
+            Heading = 354.8169f,
+            CameraPosition = new Vector3(-789.5087f,333.4411f,154.5853f),
+            CameraDirection = new Vector3(0.8060546f,0.4705779f,-0.3589324f),
+            CameraRotation = new Rotator(-21.03465f,6.403095E-06f,-59.72345f),
+            ButtonPromptText = "Use Sink",
+            UseNavmesh = false,
+            },
+            },
+            ClearPositions = new List<Vector3>() {
+            new Vector3(-785.6759f,333.7808f,153.7943f),
+            },
+            },
+            new ResidenceInterior(144129,"Eclipse Towers, Apt 40") {
+            RestInteracts = new List<RestInteract>() {
+            new RestInteract() {
+            StartAnimations = new List<AnimationBundle>() {
+            },
+            LoopAnimations = new List<AnimationBundle>() {
+            },
+            EndAnimations = new List<AnimationBundle>() {
+            },
+            Name = "EclTowApt40Rest1",
+            Position = new Vector3(-759.8313f,320.4859f,217.0504f),
+            Heading = 178.5156f,
+            CameraPosition = new Vector3(-763.0223f,320.148f,218.162f),
+            CameraDirection = new Vector3(0.852007f,-0.3778595f,-0.362362f),
+            CameraRotation = new Rotator(-21.24533f,2.381676E-05f,-113.917f),
+            ButtonPromptText = "Sleep",
+            },
+            },
+            InventoryInteracts = new List<InventoryInteract>() {
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "Fridge",
+            Description = "Access Drinks",
+            Name = "EclTowApt40Inventory1",
+            Position = new Vector3(-769.0975f,330.4489f,221.8551f),
+            Heading = 91.61729f,
+            CameraPosition = new Vector3(-768.2119f,328.7206f,222.7053f),
+            CameraDirection = new Vector3(-0.562227f,0.7253343f,-0.397229f),
+            CameraRotation = new Rotator(-23.40507f,-1.767609E-05f,37.78027f),
+            ButtonPromptText = "Open Fridge",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "Pantry",
+            Description = "Access Food",
+            Name = "EclTowApt40Inventory2",
+            Position = new Vector3(-769.1849f,327.4959f,221.8551f),
+            Heading = 97.14477f,
+            CameraPosition = new Vector3(-768.4092f,329.3842f,222.4565f),
+            CameraDirection = new Vector3(-0.3925921f,-0.8671825f,-0.3063756f),
+            CameraRotation = new Rotator(-17.84094f,2.556179E-05f,155.6427f),
+            ButtonPromptText = "Open Pantry",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowApt40Inventory3",
+            Position = new Vector3(-765.1456f,326.9809f,221.8551f),
+            Heading = 184.2697f,
+            CameraPosition = new Vector3(-767.1672f,327.7366f,222.6002f),
+            CameraDirection = new Vector3(0.8634499f,-0.3932828f,-0.3158842f),
+            CameraRotation = new Rotator(-18.4142f,1.214795E-05f,-114.4882f),
+            ButtonPromptText = "Access Items",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessItems = false,
+            CanAccessWeapons = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowApt40Inventory4",
+            Position = new Vector3(-755.1428f,331.1204f,221.8551f),
+            Heading = 0.3681362f,
+            CameraPosition = new Vector3(-753.2482f,330.2609f,222.6234f),
+            CameraDirection = new Vector3(-0.8156797f,0.4680566f,-0.3399848f),
+            CameraRotation = new Rotator(-19.87595f,-7.262827E-06f,60.15176f),
+            ButtonPromptText = "Cash Drawer",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessItems = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowApt40Inventory5",
+            Position = new Vector3(-772.0205f,326.5904f,223.2664f),
+            Heading = 268.113f,
+            CameraPosition = new Vector3(-772.7098f,328.4905f,224.1418f),
+            CameraDirection = new Vector3(0.4237343f,-0.8133291f,-0.3986791f),
+            CameraRotation = new Rotator(-23.49563f,-1.489534E-05f,-152.481f),
+            ButtonPromptText = "Weapons Locker",
+            UseNavmesh = false,
+            },
+            },
+            OutfitInteracts = new List<OutfitInteract>() {
+            new OutfitInteract() {
+            Name = "EclTowApt40Outfit1",
+            Position = new Vector3(-760.2075f,325.4823f,217.0611f),
+            Heading = 88.33512f,
+            CameraPosition = new Vector3(-762.427f,325.4265f,217.575f),
+            CameraDirection = new Vector3(0.9732847f,-0.02087267f,-0.2286509f),
+            CameraRotation = new Rotator(-13.21766f,-1.425136E-06f,-91.22855f),
+            ButtonPromptText = "Change Outfit",
+            },
+            },
+            LocalID = 144129,
+            InternalInteriorCoordinates = new Vector3(-764.8132f,319.1851f,216.0502f),
+            Name = "Eclipse Towers, Apt 40",
+            IsTeleportEntry = true,
+            Doors = new List<InteriorDoor>() {
+            },
+            RequestIPLs = new List<String>() {
+            "hei_dlc_apart_high_new",
+            },
+            RemoveIPLs = new List<String>() {
+            },
+            InteriorSets = new List<String>() {
+            },
+            InteriorEgressPosition = new Vector3(-778.4022f,317.3115f,223.2576f),
+            InteriorEgressHeading = 264.827f,
+            InteractPoints = new List<InteriorInteract>() {
+            new ExitInteriorInteract() {
+            Name = "EclTowApt40Exit1",
+            Position = new Vector3(-778.4022f,317.3115f,223.2576f),
+            Heading = 89.40898f,
+            ButtonPromptText = "Exit",
+            },
+            new StandardInteriorInteract() {
+            Name = "EclTowApt40Std1",
+            Position = new Vector3(-762.9221f,317.8928f,221.8551f),
+            Heading = 136.2631f,
+            CameraPosition = new Vector3(-762.9666f,320.1385f,222.4028f),
+            CameraDirection = new Vector3(-0.006415768f,-0.9667113f,-0.2557892f),
+            CameraRotation = new Rotator(-14.82035f,4.415769E-07f,179.6198f),
+            },
+            new ToiletInteract() {
+            Name = "EclTowApt40Toilet1",
+            Position = new Vector3(-770.9149f,323.8586f,217.0504f),
+            Heading = 176.3236f,
+            CameraPosition = new Vector3(-769.2155f,324.5547f,217.9612f),
+            CameraDirection = new Vector3(-0.739475f,-0.5053652f,-0.4447277f),
+            CameraRotation = new Rotator(-26.40592f,-9.532278E-06f,124.3491f),
+            ButtonPromptText = "Use Toilet",
+            UseNavmesh = false,
+            },
+            new SinkInteract() {
+            Name = "EclTowApt40Sink1",
+            Position = new Vector3(-768.416f,323.9488f,217.0504f),
+            Heading = 179.3142f,
+            CameraPosition = new Vector3(-767.1035f,324.1575f,217.8914f),
+            CameraDirection = new Vector3(-0.8139243f,-0.4065121f,-0.4150605f),
+            CameraRotation = new Rotator(-24.52312f,-2.721434E-05f,116.5397f),
+            ButtonPromptText = "Use Sink",
+            UseNavmesh = false,
+            },
+            new SinkInteract() {
+            Name = "EclTowApt40Sink2",
+            Position = new Vector3(-769.8866f,323.9201f,217.0504f),
+            Heading = 186.554f,
+            CameraPosition = new Vector3(-767.1035f,324.1575f,217.8914f),
+            CameraDirection = new Vector3(-0.8139243f,-0.4065121f,-0.4150605f),
+            CameraRotation = new Rotator(-24.52312f,-2.721434E-05f,116.5397f),
+            ButtonPromptText = "Use Sink",
+            UseNavmesh = false,
+            },
+            },
+            ClearPositions = new List<Vector3>() {
+            new Vector3(-770.9149f,323.8586f,217.0504f),
+            },
+            },
+            new ResidenceInterior(300313505,"Eclipse Towers, Apt 5") {
+            RestInteracts = new List<RestInteract>() {
+            new RestInteract() {
+            StartAnimations = new List<AnimationBundle>() {
+            },
+            LoopAnimations = new List<AnimationBundle>() {
+            },
+            EndAnimations = new List<AnimationBundle>() {
+            },
+            Name = "EclTowApt5Rest1",
+            Position = new Vector3(-796.2675f,336.9465f,201.4136f),
+            Heading = 359.5772f,
+            CameraPosition = new Vector3(-793.4705f,336.9409f,202.1637f),
+            CameraDirection = new Vector3(-0.8011839f,0.4945044f,-0.337001f),
+            CameraRotation = new Rotator(-19.69426f,-6.34773E-06f,58.31641f),
+            ButtonPromptText = "Sleep",
+            },
+            },
+            InventoryInteracts = new List<InventoryInteract>() {
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "Fridge",
+            Description = "Access Drinks",
+            Name = "EclTowApt5Inventory1",
+            Position = new Vector3(-787.0167f,326.7994f,206.2184f),
+            Heading = 270.546f,
+            CameraPosition = new Vector3(-787.9161f,328.6867f,206.8889f),
+            CameraDirection = new Vector3(0.4781071f,-0.8180887f,-0.3196007f),
+            CameraRotation = new Rotator(-18.63878f,2.252576E-05f,-149.6971f),
+            ButtonPromptText = "Open Fridge",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "Pantry",
+            Description = "Access Food",
+            Name = "EclTowApt5Inventory2",
+            Position = new Vector3(-786.8748f,329.7741f,206.2184f),
+            Heading = 269.4378f,
+            CameraPosition = new Vector3(-787.7747f,327.7558f,206.8424f),
+            CameraDirection = new Vector3(0.4007738f,0.8632554f,-0.306872f),
+            CameraRotation = new Rotator(-17.87083f,4.933806E-06f,-24.9035f),
+            ButtonPromptText = "Open Pantry",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowApt5Inventory3",
+            Position = new Vector3(-790.9933f,330.2722f,206.2184f),
+            Heading = 5.248404f,
+            CameraPosition = new Vector3(-789.0598f,329.4584f,206.8278f),
+            CameraDirection = new Vector3(-0.8337903f,0.4510108f,-0.3184069f),
+            CameraRotation = new Rotator(-18.56661f,4.503243E-06f,61.59032f),
+            ButtonPromptText = "Access Items",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessItems = false,
+            CanAccessWeapons = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowApt5Inventory4",
+            Position = new Vector3(-800.9472f,326.2192f,206.2184f),
+            Heading = 180.86f,
+            CameraPosition = new Vector3(-802.8814f,327.1565f,206.7833f),
+            CameraDirection = new Vector3(0.8668659f,-0.415243f,-0.2758927f),
+            CameraRotation = new Rotator(-16.01522f,-3.552992E-06f,-115.5952f),
+            ButtonPromptText = "Cash Drawer",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessItems = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowApt5Inventory5",
+            Position = new Vector3(-784.1207f,330.6962f,207.6296f),
+            Heading = 88.24436f,
+            CameraPosition = new Vector3(-783.1992f,328.7449f,208.2666f),
+            CameraDirection = new Vector3(-0.4636579f,0.8338131f,-0.2996281f),
+            CameraRotation = new Rotator(-17.43527f,1.029122E-05f,29.07709f),
+            ButtonPromptText = "Weapons Locker",
+            UseNavmesh = false,
+            },
+            },
+            OutfitInteracts = new List<OutfitInteract>() {
+            new OutfitInteract() {
+            Name = "EclTowApt5Outfit1",
+            Position = new Vector3(-795.8353f,331.7423f,201.4244f),
+            Heading = 267.5375f,
+            CameraPosition = new Vector3(-793.1301f,331.7907f,201.8254f),
+            CameraDirection = new Vector3(-0.9852995f,0.04226841f,-0.1655246f),
+            CameraRotation = new Rotator(-9.52771f,3.262665E-05f,87.54357f),
+            ButtonPromptText = "Change Outfit",
+            },
+            },
+            LocalID = 300313505,
+            InternalInteriorCoordinates = new Vector3(-791.2941f,338.071f,200.4135f),
+            Name = "Eclipse Towers, Apt 5",
+            IsTeleportEntry = true,
+            Doors = new List<InteriorDoor>() {
+            },
+            RequestIPLs = new List<String>() {
+            "hei_dlc_apart_high_new",
+            },
+            RemoveIPLs = new List<String>() {
+            },
+            InteriorSets = new List<String>() {
+            },
+            InteriorEgressPosition = new Vector3(-778.1547f,339.9178f,207.6209f),
+            InteriorEgressHeading = 96.86304f,
+            InteractPoints = new List<InteriorInteract>() {
+            new ExitInteriorInteract() {
+            Name = "EclTowApt5Exit1",
+            Position = new Vector3(-778.1547f,339.9178f,207.6209f),
+            Heading = 274.4365f,
+            ButtonPromptText = "Exit",
+            },
+            new StandardInteriorInteract() {
+            Name = "EclTowApt5Std1",
+            Position = new Vector3(-793.1989f,339.2793f,206.2184f),
+            Heading = 318.6518f,
+            CameraPosition = new Vector3(-793.2636f,336.8159f,206.8321f),
+            CameraDirection = new Vector3(0.02400343f,0.9748843f,-0.2214145f),
+            CameraRotation = new Rotator(-12.79213f,-3.009544E-07f,-1.410442f),
+            },
+            new ToiletInteract() {
+            Name = "EclTowApt5Toilet1",
+            Position = new Vector3(-785.2192f,333.4179f,201.4136f),
+            Heading = 2.141076f,
+            CameraPosition = new Vector3(-786.7215f,332.7502f,202.4797f),
+            CameraDirection = new Vector3(0.6797885f,0.512443f,-0.5246806f),
+            CameraRotation = new Rotator(-31.64674f,1.805232E-05f,-52.99002f),
+            ButtonPromptText = "Use Toilet",
+            UseNavmesh = false,
+            },
+            new SinkInteract() {
+            Name = "EclTowApt5Sink1",
+            Position = new Vector3(-787.7003f,333.3012f,201.4136f),
+            Heading = 3.767585f,
+            CameraPosition = new Vector3(-788.9994f,333.1211f,202.281f),
+            CameraDirection = new Vector3(0.8231035f,0.3953213f,-0.4077028f),
+            CameraRotation = new Rotator(-24.06061f,3.833551E-05f,-64.34589f),
+            ButtonPromptText = "Use Sink",
+            UseNavmesh = false,
+            },
+            new SinkInteract() {
+            Name = "EclTowApt5Sink2",
+            Position = new Vector3(-786.2582f,333.3006f,201.4136f),
+            Heading = 0.5754824f,
+            CameraPosition = new Vector3(-788.9994f,333.1211f,202.281f),
+            CameraDirection = new Vector3(0.8231035f,0.3953213f,-0.4077028f),
+            CameraRotation = new Rotator(-24.06061f,3.833551E-05f,-64.34589f),
+            ButtonPromptText = "Use Sink",
+            UseNavmesh = false,
+            },
+            },
+            ClearPositions = new List<Vector3>() {
+            new Vector3(-785.2192f,333.4179f,201.4136f),
+            },
+            },
+            new ResidenceInterior(144641,"Eclipse Towers, Apt 9") {
+            RestInteracts = new List<RestInteract>() {
+            new RestInteract() {
+            StartAnimations = new List<AnimationBundle>() {
+            },
+            LoopAnimations = new List<AnimationBundle>() {
+            },
+            EndAnimations = new List<AnimationBundle>() {
+            },
+            Name = "EclTowApt9Rest1",
+            Position = new Vector3(-759.7751f,320.5169f,170.5965f),
+            Heading = 178.3001f,
+            CameraPosition = new Vector3(-762.7606f,320.3342f,171.4513f),
+            CameraDirection = new Vector3(0.8491555f,-0.4438336f,-0.2862635f),
+            CameraRotation = new Rotator(-16.63439f,-8.910638E-06f,-117.595f),
+            ButtonPromptText = "Sleep",
+            },
+            },
+            InventoryInteracts = new List<InventoryInteract>() {
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "Fridge",
+            Description = "Access Drinks",
+            Name = "EclTowApt9Inventory1",
+            Position = new Vector3(-769.0279f,330.4546f,175.4012f),
+            Heading = 91.1314f,
+            CameraPosition = new Vector3(-767.8176f,328.8437f,176.0703f),
+            CameraDirection = new Vector3(-0.6583695f,0.6828285f,-0.3166935f),
+            CameraRotation = new Rotator(-18.46308f,3.150363E-05f,43.95523f),
+            ButtonPromptText = "Open Fridge",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "Pantry",
+            Description = "Access Food",
+            Name = "EclTowApt9Inventory2",
+            Position = new Vector3(-769.1045f,327.4637f,175.4012f),
+            Heading = 90.31756f,
+            CameraPosition = new Vector3(-768.2756f,329.2923f,176.0744f),
+            CameraDirection = new Vector3(-0.4034643f,-0.8529473f,-0.331206f),
+            CameraRotation = new Rotator(-19.34199f,9.048442E-07f,154.6847f),
+            ButtonPromptText = "Open Pantry",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowApt9Inventory3",
+            Position = new Vector3(-765.0401f,326.9443f,175.4012f),
+            Heading = 180.7144f,
+            CameraPosition = new Vector3(-766.9792f,327.808f,175.9585f),
+            CameraDirection = new Vector3(0.8664972f,-0.4190875f,-0.2711978f),
+            CameraRotation = new Rotator(-15.73555f,3.991571E-06f,-115.8111f),
+            ButtonPromptText = "Access Items",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessItems = false,
+            CanAccessWeapons = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowApt9Inventory4",
+            Position = new Vector3(-755.0518f,331.0305f,175.4012f),
+            Heading = 7.168064f,
+            CameraPosition = new Vector3(-753.1273f,330.3277f,176.0551f),
+            CameraDirection = new Vector3(-0.8814247f,0.3464822f,-0.3209994f),
+            CameraRotation = new Rotator(-18.72338f,1.307147E-05f,68.54054f),
+            ButtonPromptText = "Cash Drawer",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessItems = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowApt9Inventory5",
+            Position = new Vector3(-771.9211f,326.5256f,176.8123f),
+            Heading = 272.5923f,
+            CameraPosition = new Vector3(-772.8336f,328.4155f,177.5145f),
+            CameraDirection = new Vector3(0.5200376f,-0.7893677f,-0.3262812f),
+            CameraRotation = new Rotator(-19.04322f,3.703135E-05f,-146.623f),
+            ButtonPromptText = "Weapons Locker",
+            UseNavmesh = false,
+            },
+            },
+            OutfitInteracts = new List<OutfitInteract>() {
+            new OutfitInteract() {
+            Name = "EclTowApt9Outfit1",
+            Position = new Vector3(-759.87f,325.5014f,170.6072f),
+            Heading = 88.77864f,
+            CameraPosition = new Vector3(-762.1398f,325.4697f,171.131f),
+            CameraDirection = new Vector3(0.9698167f,-0.008127547f,-0.2436998f),
+            CameraRotation = new Rotator(-14.10501f,2.750983E-08f,-90.48016f),
+            ButtonPromptText = "Change Outfit",
+            },
+            },
+            LocalID = 144641,
+            InternalInteriorCoordinates = new Vector3(-764.7226f,319.1851f,169.5963f),
+            Name = "Eclipse Towers, Apt 9",
+            IsTeleportEntry = true,
+            Doors = new List<InteriorDoor>() {
+            },
+            RequestIPLs = new List<String>() {
+            "hei_dlc_apart_high_new",
+            },
+            RemoveIPLs = new List<String>() {
+            },
+            InteriorSets = new List<String>() {
+            },
+            InteriorEgressPosition = new Vector3(-778.2145f,317.3462f,176.8037f),
+            InteriorEgressHeading = 259.2614f,
+            InteractPoints = new List<InteriorInteract>() {
+            new ExitInteriorInteract() {
+            Name = "EclTowApt9Exit1",
+            Position = new Vector3(-778.2145f,317.3462f,176.8037f),
+            Heading = 89.75745f,
+            ButtonPromptText = "Exit",
+            },
+            new StandardInteriorInteract() {
+            Name = "EclTowApt9Std1",
+            Position = new Vector3(-762.8351f,317.9705f,175.4012f),
+            Heading = 139.311f,
+            CameraPosition = new Vector3(-762.8588f,320.4118f,175.993f),
+            CameraDirection = new Vector3(-0.007370871f,-0.9690693f,-0.2466787f),
+            CameraRotation = new Rotator(-14.28106f,-1.672521E-06f,179.5642f),
+            },
+            new ToiletInteract() {
+            Name = "EclTowApt9Toilet1",
+            Position = new Vector3(-770.7679f,323.913f,170.5965f),
+            Heading = 172.5276f,
+            CameraPosition = new Vector3(-768.9386f,324.5746f,171.2966f),
+            CameraDirection = new Vector3(-0.7926278f,-0.4993392f,-0.3498592f),
+            CameraRotation = new Rotator(-20.47871f,4.55685E-06f,122.2101f),
+            ButtonPromptText = "Use Toilet",
+            UseNavmesh = false,
+            },
+            new SinkInteract() {
+            Name = "EclTowApt9Sink1",
+            Position = new Vector3(-768.3495f,323.9526f,170.5964f),
+            Heading = 182.1414f,
+            CameraPosition = new Vector3(-767.1012f,324.1149f,171.4917f),
+            CameraDirection = new Vector3(-0.7833929f,-0.4272278f,-0.4514111f),
+            CameraRotation = new Rotator(-26.83426f,2.870419E-05f,118.6061f),
+            ButtonPromptText = "Use Sink",
+            UseNavmesh = false,
+            },
+            new SinkInteract() {
+            Name = "EclTowApt9Sink2",
+            Position = new Vector3(-769.7753f,323.9225f,170.5965f),
+            Heading = 176.7682f,
+            CameraPosition = new Vector3(-767.1012f,324.1149f,171.4917f),
+            CameraDirection = new Vector3(-0.7833929f,-0.4272278f,-0.4514111f),
+            CameraRotation = new Rotator(-26.83426f,2.870419E-05f,118.6061f),
+            ButtonPromptText = "Use Sink",
+            UseNavmesh = false,
+            },
+            },
+            ClearPositions = new List<Vector3>() {
+            new Vector3(-770.7679f,323.913f,170.5965f),
+            },
+            },
+            new ResidenceInterior(227329,"Eclipse Towers Penthouse 1") {
+            RestInteracts = new List<RestInteract>() {
+            new RestInteract() {
+            StartAnimations = new List<AnimationBundle>() {
+            },
+            LoopAnimations = new List<AnimationBundle>() {
+            },
+            EndAnimations = new List<AnimationBundle>() {
+            },
+            Name = "EclTowPentHo1Rest1",
+            Position = new Vector3(-795.7125f,335.2562f,220.4384f),
+            Heading = 91.37115f,
+            CameraPosition = new Vector3(-795.9611f,338.7694f,221.2617f),
+            CameraDirection = new Vector3(-0.4261923f,-0.8525692f,-0.3024664f),
+            CameraRotation = new Rotator(-17.6058f,0f,153.4399f),
+            ButtonPromptText = "Sleep",
+            },
+            },
+            InventoryInteracts = new List<InventoryInteract>() {
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "Fridge",
+            Description = "Access Drinks",
+            Name = "EclTowPentHo1Inventory1",
+            Position = new Vector3(-782.2148f,325.5936f,217.0381f),
+            Heading = 181.5688f,
+            CameraPosition = new Vector3(-786.2755f,326.5681f,217.7481f),
+            CameraDirection = new Vector3(0.8297734f,-0.4694648f,-0.3017928f),
+            CameraRotation = new Rotator(-17.56532f,-4.477645E-06f,-119.5001f),
+            ButtonPromptText = "Open Fridge",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "Pantry",
+            Description = "Access Food",
+            Name = "EclTowPentHo1Inventory2",
+            Position = new Vector3(-784.2417f,325.551f,217.0381f),
+            Heading = 184.3132f,
+            CameraPosition = new Vector3(-786.2755f,326.5681f,217.7481f),
+            CameraDirection = new Vector3(0.8297734f,-0.4694648f,-0.3017928f),
+            CameraRotation = new Rotator(-17.56532f,-4.477645E-06f,-119.5001f),
+            ButtonPromptText = "Open Pantry",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowPentHo1Inventory3",
+            Position = new Vector3(-782.6039f,329.5973f,217.0381f),
+            Heading = 90.738f,
+            CameraPosition = new Vector3(-781.3889f,331.1578f,217.9198f),
+            CameraDirection = new Vector3(-0.6233696f,-0.6689038f,-0.4049421f),
+            CameraRotation = new Rotator(-23.8875f,2.61452E-05f,137.018f),
+            ButtonPromptText = "Access Items",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessItems = false,
+            CanAccessWeapons = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowPentHo1Inventory4",
+            Position = new Vector3(-793.2962f,341.8432f,216.8385f),
+            Heading = 97.08846f,
+            CameraPosition = new Vector3(-792.295f,343.5441f,217.7679f),
+            CameraDirection = new Vector3(-0.585583f,-0.6942225f,-0.4185065f),
+            CameraRotation = new Rotator(-24.74033f,0f,139.8521f),
+            ButtonPromptText = "Cash Drawer",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessItems = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowPentHo1Inventory5",
+            Position = new Vector3(-796.4521f,328.0754f,217.0381f),
+            Heading = 1.848104f,
+            CameraPosition = new Vector3(-798.3832f,327.1673f,217.7296f),
+            CameraDirection = new Vector3(0.8450741f,0.4388361f,-0.3054056f),
+            CameraRotation = new Rotator(-17.78257f,0f,-62.55773f),
+            ButtonPromptText = "Weapons Locker",
+            UseNavmesh = false,
+            },
+            },
+            OutfitInteracts = new List<OutfitInteract>() {
+            new OutfitInteract() {
+            Name = "EclTowPentHo1Outfit1",
+            Position = new Vector3(-797.7591f,327.6851f,220.4384f),
+            Heading = 356.8394f,
+            CameraPosition = new Vector3(-797.7917f,329.8751f,220.9311f),
+            CameraDirection = new Vector3(-0.0176912f,-0.9712664f,-0.2373365f),
+            CameraRotation = new Rotator(-13.72939f,5.218384E-07f,178.9565f),
+            ButtonPromptText = "Change Outfit",
+            },
+            },
+            LocalID = 227329,
+            InternalInteriorCoordinates = new Vector3(-787.7805f,334.9232f,215.8384f),
+            Name = "Eclipse Towers Penthouse 1",
+            IsTeleportEntry = true,
+            Doors = new List<InteriorDoor>() {
+            },
+            RequestIPLs = new List<String>() {
+            "apa_v_mp_h_01_a",
+            },
+            RemoveIPLs = new List<String>() {
+            },
+            InteriorSets = new List<String>() {
+            },
+            InteriorEgressPosition = new Vector3(-781.8206f,318.1305f,217.6388f),
+            InteriorEgressHeading = 0.519394f,
+            InteractPoints = new List<InteriorInteract>() {
+            new ExitInteriorInteract() {
+            Name = "EclTowPentHo1Exit1",
+            Position = new Vector3(-781.8206f,318.1305f,217.6388f),
+            Heading = 180.7443f,
+            ButtonPromptText = "Exit",
+            },
+            new StandardInteriorInteract() {
+            Name = "EclTowPentHo1Std1",
+            Position = new Vector3(-784.41f,337.2825f,216.8385f),
+            Heading = 7.334802f,
+            CameraPosition = new Vector3(-782.5988f,335.9488f,217.5656f),
+            CameraDirection = new Vector3(-0.7117192f,0.6237311f,-0.3231336f),
+            CameraRotation = new Rotator(-18.85254f,3.698905E-05f,48.76957f),
+            },
+            new ToiletInteract() {
+            Name = "EclTowPentHo1Toilet1",
+            Position = new Vector3(-807.2225f,332.3022f,220.4384f),
+            Heading = 180.0627f,
+            CameraPosition = new Vector3(-805.597f,333.3304f,221.3964f),
+            CameraDirection = new Vector3(-0.7016724f,-0.5626833f,-0.437085f),
+            CameraRotation = new Rotator(-25.91804f,4.366545E-05f,128.7267f),
+            ButtonPromptText = "Use Toilet",
+            UseNavmesh = false,
+            },
+            new SinkInteract() {
+            Name = "EclTowPentHo1Sink1",
+            Position = new Vector3(-804.8425f,332.4015f,220.4384f),
+            Heading = 182.6802f,
+            CameraPosition = new Vector3(-803.5584f,332.7104f,221.2338f),
+            CameraDirection = new Vector3(-0.8271372f,-0.4430359f,-0.345779f),
+            CameraRotation = new Rotator(-20.22936f,7.279199E-06f,118.1746f),
+            ButtonPromptText = "Use Sink",
+            UseNavmesh = false,
+            },
+            new SinkInteract() {
+            Name = "EclTowPentHo1Sink2",
+            Position = new Vector3(-806.2828f,332.4015f,220.4384f),
+            Heading = 182.6212f,
+            CameraPosition = new Vector3(-803.5584f,332.7104f,221.2338f),
+            CameraDirection = new Vector3(-0.8271372f,-0.4430359f,-0.345779f),
+            CameraRotation = new Rotator(-20.22936f,7.279199E-06f,118.1746f),
+            ButtonPromptText = "Use Sink",
+            UseNavmesh = false,
+            },
+            },
+            ClearPositions = new List<Vector3>() {
+            new Vector3(-807.2225f,332.3022f,220.4384f),
+            },
+            },
+            new ResidenceInterior(229889,"Eclipse Towers Penthouse 2") {
+            RestInteracts = new List<RestInteract>() {
+            new RestInteract() {
+            StartAnimations = new List<AnimationBundle>() {
+            },
+            LoopAnimations = new List<AnimationBundle>() {
+            },
+            EndAnimations = new List<AnimationBundle>() {
+            },
+            Name = "EclTowPentHo2Rest1",
+            Position = new Vector3(-765.1819f,322.5501f,199.4886f),
+            Heading = 266.0385f,
+            CameraPosition = new Vector3(-765.3815f,319.2569f,200.43f),
+            CameraDirection = new Vector3(0.531084f,0.7818999f,-0.3264697f),
+            CameraRotation = new Rotator(-19.05464f,-9.032658E-06f,-34.18523f),
+            ButtonPromptText = "Sleep",
+            },
+            },
+            InventoryInteracts = new List<InventoryInteract>() {
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "Fridge",
+            Description = "Access Drinks",
+            Name = "EclTowPentHo2Inventory1",
+            Position = new Vector3(-778.8326f,332.2118f,196.0859f),
+            Heading = 3.658433f,
+            CameraPosition = new Vector3(-774.8258f,331.3178f,196.6861f),
+            CameraDirection = new Vector3(-0.8473494f,0.4478109f,-0.2854197f),
+            CameraRotation = new Rotator(-16.58394f,-1.158079E-05f,62.14425f),
+            ButtonPromptText = "Open Fridge",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "Pantry",
+            Description = "Access Food",
+            Name = "EclTowPentHo2Inventory2",
+            Position = new Vector3(-776.7656f,332.1692f,196.0859f),
+            Heading = 3.575011f,
+            CameraPosition = new Vector3(-774.8258f,331.3178f,196.6861f),
+            CameraDirection = new Vector3(-0.8473494f,0.4478109f,-0.2854197f),
+            CameraRotation = new Rotator(-16.58394f,-1.158079E-05f,62.14425f),
+            ButtonPromptText = "Open Pantry",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowPentHo2Inventory3",
+            Position = new Vector3(-778.4882f,328.1311f,196.0859f),
+            Heading = 271.208f,
+            CameraPosition = new Vector3(-779.8337f,326.3568f,197.0108f),
+            CameraDirection = new Vector3(0.644699f,0.7081782f,-0.2878313f),
+            CameraRotation = new Rotator(-16.72816f,6.240505E-06f,-42.31356f),
+            ButtonPromptText = "Access Items",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessItems = false,
+            CanAccessWeapons = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowPentHo2Inventory4",
+            Position = new Vector3(-761.1121f,319.3091f,199.4887f),
+            Heading = 273.1691f,
+            CameraPosition = new Vector3(-762.4534f,317.5468f,200.1399f),
+            CameraDirection = new Vector3(0.6407585f,0.7087319f,-0.2951737f),
+            CameraRotation = new Rotator(-17.16795f,-2.680766E-05f,-42.11647f),
+            ButtonPromptText = "Cash Drawer",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessItems = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowPentHo2Inventory5",
+            Position = new Vector3(-764.5304f,329.6714f,196.086f),
+            Heading = 181.1728f,
+            CameraPosition = new Vector3(-762.6255f,330.6657f,196.5674f),
+            CameraDirection = new Vector3(-0.8278742f,-0.5050099f,-0.2441091f),
+            CameraRotation = new Rotator(-14.12919f,3.961835E-06f,121.3835f),
+            ButtonPromptText = "Weapons Locker",
+            UseNavmesh = false,
+            },
+            },
+            OutfitInteracts = new List<OutfitInteract>() {
+            new OutfitInteract() {
+            Name = "EclTowPentHo2Outfit1",
+            Position = new Vector3(-763.2099f,329.8693f,199.4886f),
+            Heading = 178.8867f,
+            CameraPosition = new Vector3(-763.2371f,327.4721f,199.931f),
+            CameraDirection = new Vector3(0.02311611f,0.9824839f,-0.184908f),
+            CameraRotation = new Rotator(-10.65577f,-1.194538E-06f,-1.34782f),
+            ButtonPromptText = "Change Outfit",
+            },
+            },
+            LocalID = 229889,
+            InternalInteriorCoordinates = new Vector3(-773.2258f,322.8252f,194.8862f),
+            Name = "Eclipse Towers Penthouse 2",
+            IsTeleportEntry = true,
+            Doors = new List<InteriorDoor>() {
+            },
+            RequestIPLs = new List<String>() {
+            "apa_v_mp_h_04_b",
+            },
+            RemoveIPLs = new List<String>() {
+            },
+            InteriorSets = new List<String>() {
+            },
+            InteriorEgressPosition = new Vector3(-779.1475f,339.6216f,196.6867f),
+            InteriorEgressHeading = 180.8226f,
+            InteractPoints = new List<InteriorInteract>() {
+            new ExitInteriorInteract() {
+            Name = "EclTowPentHo2Exit1",
+            Position = new Vector3(-779.1475f,339.6216f,196.6867f),
+            Heading = 5.436052f,
+            ButtonPromptText = "Exit",
+            },
+            new StandardInteriorInteract() {
+            Name = "EclTowPentHo2Std1",
+            Position = new Vector3(-777.1835f,320.5009f,195.8864f),
+            Heading = 225.9723f,
+            CameraPosition = new Vector3(-779.3177f,320.5703f,196.6826f),
+            CameraDirection = new Vector3(0.9286628f,-0.07074887f,-0.3641154f),
+            CameraRotation = new Rotator(-21.35316f,-2.05112E-05f,-94.35658f),
+            },
+            new ToiletInteract() {
+            Name = "EclTowPentHo2Toilet1",
+            Position = new Vector3(-753.7158f,325.4533f,199.4887f),
+            Heading = 358.0818f,
+            CameraPosition = new Vector3(-755.5065f,324.4663f,200.1887f),
+            CameraDirection = new Vector3(0.7437922f,0.573843f,-0.3427498f),
+            CameraRotation = new Rotator(-20.0445f,-5.543828E-05f,-52.34946f),
+            ButtonPromptText = "Use Toilet",
+            UseNavmesh = false,
+            },
+            new SinkInteract() {
+            Name = "EclTowPentHo2Sink1",
+            Position = new Vector3(-756.1519f,325.429f,199.4887f),
+            Heading = 0.4883329f,
+            CameraPosition = new Vector3(-757.4041f,325.0437f,200.3608f),
+            CameraDirection = new Vector3(0.7618926f,0.4677287f,-0.4480508f),
+            CameraRotation = new Rotator(-26.61869f,-3.724482E-05f,-58.45408f),
+            ButtonPromptText = "Use Sink",
+            UseNavmesh = false,
+            },
+            new SinkInteract() {
+            Name = "EclTowPentHo2Sink2",
+            Position = new Vector3(-754.7568f,325.4339f,199.4887f),
+            Heading = 357.7901f,
+            CameraPosition = new Vector3(-757.4041f,325.0437f,200.3608f),
+            CameraDirection = new Vector3(0.7618926f,0.4677287f,-0.4480508f),
+            CameraRotation = new Rotator(-26.61869f,-3.724482E-05f,-58.45408f),
+            ButtonPromptText = "Use Sink",
+            UseNavmesh = false,
+            },
+            },
+            ClearPositions = new List<Vector3>() {
+            new Vector3(-753.7158f,325.4533f,199.4887f),
+            },
+            },
+            new ResidenceInterior(230913,"Eclipse Towers Penthouse 3") {
+            RestInteracts = new List<RestInteract>() {
+            new RestInteract() {
+            StartAnimations = new List<AnimationBundle>() {
+            },
+            LoopAnimations = new List<AnimationBundle>() {
+            },
+            EndAnimations = new List<AnimationBundle>() {
+            },
+            Name = "EclTowPentHo3Rest1",
+            Position = new Vector3(-795.6975f,335.1445f,190.7135f),
+            Heading = 89.64941f,
+            CameraPosition = new Vector3(-795.7505f,338.4409f,191.6141f),
+            CameraDirection = new Vector3(-0.5260338f,-0.776157f,-0.347662f),
+            CameraRotation = new Rotator(-20.34438f,1.274806E-05f,145.8729f),
+            ButtonPromptText = "Sleep",
+            },
+            },
+            InventoryInteracts = new List<InventoryInteract>() {
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "Fridge",
+            Description = "Access Drinks",
+            Name = "EclTowPentHo3Inventory1",
+            Position = new Vector3(-782.1838f,325.5741f,187.3131f),
+            Heading = 178.1269f,
+            CameraPosition = new Vector3(-786.0485f,326.5223f,187.989f),
+            CameraDirection = new Vector3(0.8242152f,-0.467704f,-0.3192526f),
+            CameraRotation = new Rotator(-18.61773f,1.711746E-05f,-119.5729f),
+            ButtonPromptText = "Open Fridge",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "Pantry",
+            Description = "Access Food",
+            Name = "EclTowPentHo3Inventory2",
+            Position = new Vector3(-784.17f,325.5173f,187.3131f),
+            Heading = 184.9404f,
+            CameraPosition = new Vector3(-786.0485f,326.5223f,187.989f),
+            CameraDirection = new Vector3(0.8242152f,-0.467704f,-0.3192526f),
+            CameraRotation = new Rotator(-18.61773f,1.711746E-05f,-119.5729f),
+            ButtonPromptText = "Open Pantry",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessWeapons = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            new ItemType() {
+            },
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowPentHo3Inventory3",
+            Position = new Vector3(-782.474f,329.582f,187.3131f),
+            Heading = 91.93946f,
+            CameraPosition = new Vector3(-781.5139f,331.5724f,188.1786f),
+            CameraDirection = new Vector3(-0.4784784f,-0.8034166f,-0.354373f),
+            CameraRotation = new Rotator(-20.75502f,-6.391176E-06f,149.2239f),
+            ButtonPromptText = "Access Items",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessItems = false,
+            CanAccessWeapons = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowPentHo3Inventory4",
+            Position = new Vector3(-800.0526f,338.4295f,190.7136f),
+            Heading = 92.91203f,
+            CameraPosition = new Vector3(-798.8828f,340.2088f,191.3691f),
+            CameraDirection = new Vector3(-0.5138673f,-0.7969967f,-0.3173903f),
+            CameraRotation = new Rotator(-18.50518f,2.700975E-06f,147.1879f),
+            ButtonPromptText = "Cash Drawer",
+            UseNavmesh = false,
+            },
+            new InventoryInteract() {
+            CanAccessItems = false,
+            CanAccessCash = false,
+            AllowedItemTypes = new List<ItemType>() {
+            },
+            DisallowedItemTypes = new List<ItemType>() {
+            },
+            Title = "",
+            Description = "",
+            Name = "EclTowPentHo3Inventory5",
+            Position = new Vector3(-796.3978f,328.1177f,187.3131f),
+            Heading = 359.2587f,
+            CameraPosition = new Vector3(-798.2268f,327.1035f,187.9133f),
+            CameraDirection = new Vector3(0.7887396f,0.5419886f,-0.2900658f),
+            CameraRotation = new Rotator(-16.86189f,6.244904E-06f,-55.50479f),
+            ButtonPromptText = "Weapons Locker",
+            UseNavmesh = false,
+            },
+            },
+            OutfitInteracts = new List<OutfitInteract>() {
+            new OutfitInteract() {
+            Name = "EclTowPentHo3Outfit1",
+            Position = new Vector3(-797.8123f,327.7688f,190.7135f),
+            Heading = 2.032324f,
+            CameraPosition = new Vector3(-797.8375f,330.1159f,191.1557f),
+            CameraDirection = new Vector3(-0.02868303f,-0.9799965f,-0.1969368f),
+            CameraRotation = new Rotator(-11.35789f,6.259074E-06f,178.3235f),
+            ButtonPromptText = "Change Outfit",
+            },
+            },
+            LocalID = 230913,
+            InternalInteriorCoordinates = new Vector3(-787.7805f,334.9232f,186.1134f),
+            Name = "Eclipse Towers Penthouse 3",
+            IsTeleportEntry = true,
+            Doors = new List<InteriorDoor>() {
+            },
+            RequestIPLs = new List<String>() {
+            "apa_v_mp_h_05_c",
+            },
+            RemoveIPLs = new List<String>() {
+            },
+            InteriorSets = new List<String>() {
+            },
+            InteriorEgressPosition = new Vector3(-781.8493f,318.2509f,187.9175f),
+            InteriorEgressHeading = 359.4961f,
+            InteractPoints = new List<InteriorInteract>() {
+            new ExitInteriorInteract() {
+            Name = "EclTowPentHo3Exit1",
+            Position = new Vector3(-781.8493f,318.2509f,187.9175f),
+            Heading = 182.963f,
+            ButtonPromptText = "Exit",
+            },
+            new StandardInteriorInteract() {
+            Name = "EclTowPentHo3Std1",
+            Position = new Vector3(-784.3889f,337.233f,187.1136f),
+            Heading = 1.341392f,
+            CameraPosition = new Vector3(-782.1384f,335.8456f,187.9009f),
+            CameraDirection = new Vector3(-0.7954648f,0.5279641f,-0.2974721f),
+            CameraRotation = new Rotator(-17.30583f,-1.967363E-05f,56.42706f),
+            },
+            new ToiletInteract() {
+            Name = "EclTowPentHo3Toilet1",
+            Position = new Vector3(-807.2319f,332.2801f,190.7134f),
+            Heading = 171.9976f,
+            CameraPosition = new Vector3(-805.4277f,333.2918f,191.3657f),
+            CameraDirection = new Vector3(-0.7593325f,-0.5652958f,-0.3222652f),
+            CameraRotation = new Rotator(-18.79997f,9.0189E-06f,126.6664f),
+            ButtonPromptText = "Use Toilet",
+            UseNavmesh = false,
+            },
+            new SinkInteract() {
+            Name = "EclTowPentHo3Sink1",
+            Position = new Vector3(-804.8542f,332.3999f,190.7134f),
+            Heading = 181.0351f,
+            CameraPosition = new Vector3(-803.6426f,332.6292f,191.4212f),
+            CameraDirection = new Vector3(-0.83117f,-0.4568655f,-0.3169074f),
+            CameraRotation = new Rotator(-18.476f,-1.800343E-05f,118.7961f),
+            ButtonPromptText = "Use Sink",
+            UseNavmesh = false,
+            },
+            new SinkInteract() {
+            Name = "EclTowPentHo3Sink2",
+            Position = new Vector3(-806.2471f,332.4004f,190.7134f),
+            Heading = 176.9023f,
+            CameraPosition = new Vector3(-803.6426f,332.6292f,191.4212f),
+            CameraDirection = new Vector3(-0.83117f,-0.4568655f,-0.3169074f),
+            CameraRotation = new Rotator(-18.476f,-1.800343E-05f,118.7961f),
+            ButtonPromptText = "Use Sink",
+            UseNavmesh = false,
+            },
+            },
+            ClearPositions = new List<Vector3>() {
+            new Vector3(-807.2319f,332.2801f,190.7134f),
+            },
+            },
         });
     }
     private void Other()

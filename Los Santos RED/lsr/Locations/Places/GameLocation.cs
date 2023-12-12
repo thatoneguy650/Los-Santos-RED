@@ -253,19 +253,13 @@ public class GameLocation : ILocationDispatchable
         //World.Pedestrians.AddEntity(Vendor);
         IsActivated = true;
         World = world;
-        LoadInterior(isOpen);
+        if (Interior != null && !Interior.IsTeleportEntry)
+        {
+            LoadInterior(isOpen);
+        }
         if (!ShouldAlwaysHaveBlip && IsBlipEnabled)
         {
-
             ActivateBlip(time, world);
-
-
-            //if (!Blip.Exists())
-            //{
-            //    EntryPoint.WriteToConsole($"CREATE BLIP RAN FROM REGULAR ACTIVATE {Name}");
-            //    createdBlip = CreateBlip(time, true);
-            //    GameFiber.Yield();
-            //}
         }
         SetNearby();
         Update(time);
@@ -306,7 +300,7 @@ public class GameLocation : ILocationDispatchable
                 createdBlip.Delete();
             }
         }
-        if (interior != null)
+        if (interior != null && !interior.IsTeleportEntry)
         {
             interior.Unload();
         }

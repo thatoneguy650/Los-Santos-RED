@@ -109,7 +109,7 @@ public class ApartmentBuilding : GameLocation
             {
                 continue;
             }
-            UIMenuItem PurchaseResidenceMenuItem = new UIMenuItem(foundResidence.Name, "Select to interact with this residence");
+            UIMenuItem PurchaseResidenceMenuItem = new UIMenuItem($"{foundResidence.Name}{(foundResidence.IsOwned ? " - Owned" : foundResidence.IsRented ? " - Rented" : "") }", (foundResidence.IsOwnedOrRented ? "Select to enter this residence" : "Select to inquire about this residence"));
             PurchaseResidenceMenuItem.Activated += (sender, e) =>
             {
                 HasTransitionedToResidence = true;
