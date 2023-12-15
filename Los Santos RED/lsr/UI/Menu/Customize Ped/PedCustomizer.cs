@@ -32,6 +32,8 @@ public class PedCustomizer
     private IGameSaves GameSaves;
     private ISavedOutfits SavedOutfits;
     private bool ShowDisplayName = true;
+    private GameLocation TeleportedFromLocation;
+    private IInteractionable Interactionable;
 
     //private CameraCycler CameraCycler;
 
@@ -64,7 +66,7 @@ public class PedCustomizer
     public IClothesNames ClothesNames { get; private set; }
     public ITattooNames TattooNames { get; private set; }
     public PedCustomizer(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, IDispatchablePeople dispatchablePeople, IHeads heads, IClothesNames clothesNames, IGangs gangs, 
-        IAgencies agencies, ITattooNames tattooNames, IGameSaves gameSaves, ISavedOutfits savedOutfits)
+        IAgencies agencies, ITattooNames tattooNames, IGameSaves gameSaves, ISavedOutfits savedOutfits, IInteractionable interactionable)
     {
         PedSwap = pedSwap;
         MenuPool = menuPool;
@@ -81,6 +83,7 @@ public class PedCustomizer
         TattooNames = tattooNames;
         GameSaves = gameSaves;
         SavedOutfits = savedOutfits;
+        Interactionable = interactionable;
     }   
     public bool SetupAsNewPlayer { get; private set; } = false;
     public bool ChoseToClose { get; private set; } = false;
@@ -129,6 +132,12 @@ public class PedCustomizer
             Player.ButtonPrompts.RemovePrompts("ChangeCamera");
             MenuPool.CloseAllMenus();
             CharCam.Active = false;
+
+
+            if(TeleportedFromLocation != null && TeleportedFromLocation.Interior != null)
+            {
+                TeleportedFromLocation.Interior.Teleport(Interactionable, TeleportedFromLocation, null);
+            }
             Game.LocalPlayer.Character.Position = PreviousPos;
             Game.LocalPlayer.Character.Heading = PreviousHeading;
             GameFiber.Sleep(1000);
@@ -263,6 +272,16 @@ public class PedCustomizer
     }
     private void MovePlayerToBookingRoom()
     {
+        if(Player.InteriorManager.IsInsideTeleportInterior)
+        {
+            TeleportedFromLocation = Player.InteriorManager.CurrentTeleportInteriorLocation;
+            Player.InteriorManager.OnTeleportedOutside(TeleportedFromLocation);
+        }
+        else
+        {
+            TeleportedFromLocation = null;
+        }
+
         PreviousPos = Player.Character.Position;
         PreviousHeading = Player.Character.Heading;
         Player.Character.Position = DefaultPlayerHoldingPosition;

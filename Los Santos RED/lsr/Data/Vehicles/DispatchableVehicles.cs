@@ -91,6 +91,9 @@ public class DispatchableVehicles : IDispatchableVehicles
     private DispatchableVehicle TaxiBroadWay;
     private DispatchableVehicle TaxiEudora;
     private List<DispatchableVehicle> TaxiVehicles;
+    private DispatchableVehicle GauntletUndercoverSAHP;
+    private DispatchableVehicle GauntletSAHP;
+    private DispatchableVehicle GauntletSAHPSlicktop;
 
     public List<DispatchableVehicleGroup> AllVehicles => VehicleGroupLookup;
     public void ReadConfig()
@@ -123,6 +126,7 @@ public class DispatchableVehicles : IDispatchableVehicles
     }
     private void SetupDefaults()
     {
+        SharedCopCars();
         //Cops
         UnmarkedVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police4", 100, 100),
@@ -158,8 +162,18 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("fbi2", 1,1),
             new DispatchableVehicle("policet", 0, 15) { MinOccupants = 3, MaxOccupants = 4, MinWantedLevelSpawn = 3,CaninePossibleSeats = new List<int>{ 1,2 } }};
         SAHPVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("policeb", 70, 70) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop", GroupName = "Motorcycle" },
-            new DispatchableVehicle("police4", 30, 30) {GroupName = "StandardSAHP",RequiredPedGroup = "StandardSAHP" }  };
+            new DispatchableVehicle("policeb", 30, 10) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop", GroupName = "Motorcycle" },
+            new DispatchableVehicle("police4", 10, 10) { GroupName = "StandardSAHP",RequiredPedGroup = "StandardSAHP" },
+            GauntletUndercoverSAHP,
+            GauntletSAHP,
+            GauntletSAHPSlicktop,
+        };
+
+
+
+
+
+
         LSSDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("sheriff", 50, 50) { MaxRandomDirtLevel = 10.0f,VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("sheriff2", 50, 50) { MaxRandomDirtLevel = 10.0f } };
@@ -455,6 +469,178 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("taxi", 92, 92),
             TaxiBroadWay,
             TaxiEudora,
+        };
+    }
+    private void SharedCopCars()
+    {
+        GauntletUndercoverSAHP = new DispatchableVehicle("polgauntlet", 5, 0) //Undercover Gauntlet
+        {
+            DebugName = "UCgauntlet_PeterBadoingy_DLC",
+            MaxWantedLevelSpawn = 0,
+            MaxOccupants = 1,
+            RequiresDLC = true,
+            GroupName = "SAHPUndercover",
+            RequiredPedGroup = "StandardSAHP",
+            RequiredPrimaryColorID = 28,
+            RequiredSecondaryColorID = 28,
+            RequiredVariation = new VehicleVariation()
+            {
+                PrimaryColor = 28,
+                SecondaryColor = 28,
+                Mod1PaintType = 7,
+                Mod2PaintType = 7,
+                WheelColor = 0,
+                WheelType = 1,
+                WindowTint = 0,
+                PearlescentColor = 0,
+                LicensePlate = new LSR.Vehicles.LicensePlate("CAN7 CM3",0, false),
+                VehicleExtras = new List<VehicleExtra>()
+                    {
+                        new VehicleExtra(0,false),
+                        new VehicleExtra(1,false),
+                        new VehicleExtra(2,false),
+                        new VehicleExtra(3,false),
+                        new VehicleExtra(4,false),
+                        new VehicleExtra(5,false),
+                        new VehicleExtra(6,false),
+                        new VehicleExtra(7,false),
+                        new VehicleExtra(8,false),
+                        new VehicleExtra(9,false),
+                        new VehicleExtra(10,false),
+                        new VehicleExtra(11,false),
+                        new VehicleExtra(12,false),
+                        new VehicleExtra(13,false),
+                        new VehicleExtra(14,false),
+                        new VehicleExtra(15,false),
+                    },
+                VehicleToggles = new List<VehicleToggle>()
+                    {
+                        new VehicleToggle(17,false),
+                        new VehicleToggle(18,false),
+                        new VehicleToggle(19,false),
+                        new VehicleToggle(20,false),
+                        new VehicleToggle(21,false),
+                        new VehicleToggle(22,false),
+                    },
+                VehicleMods = new List<VehicleMod>()
+                    {
+                        new VehicleMod(0,-1),
+                        new VehicleMod(1,-1),
+                        new VehicleMod(2,-1),
+                        new VehicleMod(3,-1),
+                        new VehicleMod(4,-1),
+                        new VehicleMod(5,-1),
+                        new VehicleMod(6,-1),
+                        new VehicleMod(7,-1),
+                        new VehicleMod(8,-1),
+                        new VehicleMod(9,-1),
+                        new VehicleMod(10,-1),
+                        new VehicleMod(11,-1),
+                        new VehicleMod(12,-1),
+                        new VehicleMod(13,-1),
+                        new VehicleMod(14,-1),
+                        new VehicleMod(15,-1),
+                        new VehicleMod(16,-1),
+                        new VehicleMod(23,12),
+                        new VehicleMod(24,-1),
+                        new VehicleMod(25,-1),
+                        new VehicleMod(26,-1),
+                        new VehicleMod(27,-1),
+                        new VehicleMod(28,-1),
+                        new VehicleMod(29,-1),
+                        new VehicleMod(30,-1),
+                        new VehicleMod(31,-1),
+                        new VehicleMod(32,-1),
+                        new VehicleMod(33,-1),
+                        new VehicleMod(34,-1),
+                        new VehicleMod(35,-1),
+                        new VehicleMod(36,-1),
+                        new VehicleMod(37,-1),
+                        new VehicleMod(38,-1),
+                        new VehicleMod(39,-1),
+                        new VehicleMod(40,-1),
+                        new VehicleMod(41,-1),
+                        new VehicleMod(42,-1),
+                        new VehicleMod(43,1),
+                        new VehicleMod(44,-1),
+                        new VehicleMod(45,-1),
+                        new VehicleMod(46,-1),
+                        new VehicleMod(47,-1),
+                        new VehicleMod(48,-1),
+                        new VehicleMod(49,-1),
+                        new VehicleMod(50,-1),
+                    },
+            }
+        };
+        GauntletSAHP = new DispatchableVehicle("polgauntlet", 30, 40) //Undercover Gauntlet
+        {
+            DebugName = "SAHPgauntlet_PeterBadoingy_DLC",
+            MaxOccupants = 2,
+            GroupName = "StandardSAHP",
+            RequiredPedGroup = "StandardSAHP",
+            RequiresDLC = true,
+            RequiredPrimaryColorID = 0,
+            RequiredSecondaryColorID = 111,
+            RequiredVariation = new VehicleVariation()
+            {
+                PrimaryColor = 0,
+                SecondaryColor = 111,
+                LicensePlate = new LSR.Vehicles.LicensePlate("",4,false),
+                VehicleExtras = new List<VehicleExtra>()
+                    {
+                        new VehicleExtra(0,false),
+                        new VehicleExtra(1,false),
+                        new VehicleExtra(2,true),
+                        new VehicleExtra(3,false),
+                        new VehicleExtra(4,false),
+                        new VehicleExtra(5,false),
+                    },
+                VehicleToggles = new List<VehicleToggle>()
+                    {
+                    },
+                VehicleMods = new List<VehicleMod>()
+                    {
+                        new VehicleMod(42,1),
+                        new VehicleMod(43,1),
+                        new VehicleMod(44,2),
+                        new VehicleMod(48,3),
+                    },
+            }
+        };
+        GauntletSAHPSlicktop = new DispatchableVehicle("polgauntlet", 20, 30) //Undercover Gauntlet
+        {
+            DebugName = "SAHPgauntlet_PeterBadoingy_DLC",
+            MaxOccupants = 2,
+            GroupName = "StandardSAHP",
+            RequiredPedGroup = "StandardSAHP",
+            RequiresDLC = true,
+            RequiredPrimaryColorID = 0,
+            RequiredSecondaryColorID = 111,
+            RequiredVariation = new VehicleVariation()
+            {
+                PrimaryColor = 0,
+                SecondaryColor = 111,
+                LicensePlate = new LSR.Vehicles.LicensePlate("", 4, false),
+                VehicleExtras = new List<VehicleExtra>()
+                    {
+                        new VehicleExtra(0,false),
+                        new VehicleExtra(1,false),
+                        new VehicleExtra(2,false),
+                        new VehicleExtra(3,false),
+                        new VehicleExtra(4,false),
+                        new VehicleExtra(5,false),
+                    },
+                VehicleToggles = new List<VehicleToggle>()
+                {
+                },
+                VehicleMods = new List<VehicleMod>()
+                    {
+                        new VehicleMod(42,1),
+                        new VehicleMod(43,1),
+                        new VehicleMod(44,2),
+                        new VehicleMod(48,3),
+                    },
+            }
         };
     }
     private void SetupDefaultGangSpecialVehicles_Gambetti()
@@ -1373,9 +1559,107 @@ public class DispatchableVehicles : IDispatchableVehicles
             },
             RequiresDLC = true,
         };
+        DispatchableVehicle baller8_PeterBadoingy_DLC = new DispatchableVehicle("baller8", 75, 75) //Undercover Gauntlet
+        {
+            DebugName = "baller8_PeterBadoingy_DLC",
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
+            MaxOccupants = 4,
+            RequiresDLC = true,
+            RequiredPrimaryColorID = 2,
+            RequiredSecondaryColorID = 0,
+            RequiredVariation = new VehicleVariation()
+            {
+                PrimaryColor = 2,
+                SecondaryColor = 0,
+                PearlescentColor = 4,
+                WheelColor = 147,
+                Mod1PaintType = 7,
+                Mod2PaintType = 7,
+                WheelType = 3,
+                WindowTint = 3,
+                VehicleExtras = new List<VehicleExtra>()
+                    {
+                        new VehicleExtra(0,false),
+                        new VehicleExtra(1,false),
+                        new VehicleExtra(2,false),
+                        new VehicleExtra(3,false),
+                        new VehicleExtra(4,false),
+                        new VehicleExtra(5,false),
+                        new VehicleExtra(6,false),
+                        new VehicleExtra(7,false),
+                        new VehicleExtra(8,false),
+                        new VehicleExtra(9,false),
+                        new VehicleExtra(10,false),
+                        new VehicleExtra(11,false),
+                        new VehicleExtra(12,false),
+                        new VehicleExtra(13,false),
+                        new VehicleExtra(14,false),
+                        new VehicleExtra(15,false),
+                    },
+                VehicleToggles = new List<VehicleToggle>()
+                    {
+                        new VehicleToggle(17,false),
+                        new VehicleToggle(18,false),
+                        new VehicleToggle(19,false),
+                        new VehicleToggle(20,false),
+                        new VehicleToggle(21,false),
+                        new VehicleToggle(22,false),
+                    },
+                VehicleMods = new List<VehicleMod>()
+                    {
+                        new VehicleMod(0,8),
+                        new VehicleMod(1,0),
+                        new VehicleMod(2,-1),
+                        new VehicleMod(3,0),
+                        new VehicleMod(4,-1),
+                        new VehicleMod(5,1),
+                        new VehicleMod(6,0),
+                        new VehicleMod(7,2),
+                        new VehicleMod(8,-1),
+                        new VehicleMod(9,0),
+                        new VehicleMod(10,0),
+                        new VehicleMod(11,3),
+                        new VehicleMod(12,-1),
+                        new VehicleMod(13,-1),
+                        new VehicleMod(14,-1),
+                        new VehicleMod(15,-1),
+                        new VehicleMod(16,-1),
+                        new VehicleMod(23,12),
+                        new VehicleMod(24,-1),
+                        new VehicleMod(25,-1),
+                        new VehicleMod(26,-1),
+                        new VehicleMod(27,-1),
+                        new VehicleMod(28,-1),
+                        new VehicleMod(29,-1),
+                        new VehicleMod(30,-1),
+                        new VehicleMod(31,-1),
+                        new VehicleMod(32,-1),
+                        new VehicleMod(33,-1),
+                        new VehicleMod(34,-1),
+                        new VehicleMod(35,-1),
+                        new VehicleMod(36,-1),
+                        new VehicleMod(37,-1),
+                        new VehicleMod(38,-1),
+                        new VehicleMod(39,-1),
+                        new VehicleMod(40,-1),
+                        new VehicleMod(41,-1),
+                        new VehicleMod(42,-1),
+                        new VehicleMod(43,1),
+                        new VehicleMod(44,-1),
+                        new VehicleMod(45,-1),
+                        new VehicleMod(46,-1),
+                        new VehicleMod(47,-1),
+                        new VehicleMod(48,-1),
+                        new VehicleMod(49,-1),
+                        new VehicleMod(50,-1),
+                    },
+            }
+        };
         GambettiVehicles.Add(baller4_PeterBadoingy_DLCDespawn);
         GambettiVehicles.Add(deity_PeterBadoingy_DLCDespawn);
         GambettiVehicles.Add(paragon_PeterBadoingy_DLCDespawn);
+        GambettiVehicles.Add(baller8_PeterBadoingy_DLC);
     }
     private void SetupDefaultGangSpecialVehicles_Pavano()
     {
@@ -22682,6 +22966,7 @@ Output = -1,
         ArmeniaVehicles.Add(ArmenianCustom4);
         ArmeniaVehicles.Add(ArmenianCustom5);
     }
+
     private void DefaultConfig()
     {
         VehicleGroupLookup = new List<DispatchableVehicleGroup>
@@ -23106,6 +23391,7 @@ Output = -1,
             new DispatchableVehicle(PoliceGresley, 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,GroupName = "StandardSAHP",RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } },
             new DispatchableVehicle(PoliceGranger, 5, 5) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,GroupName = "StandardSAHP",RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } },
             new DispatchableVehicle(PoliceBison, 5, 0) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,GroupName = "StandardSAHP",RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } },
+            GauntletUndercoverSAHP,
             new DispatchableVehicle(PoliceFugitive, 25,25){ RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,GroupName = "StandardSAHP",RequiredPedGroup = "StandardSAHP", RequiredLiveries = new List<int>() { 4 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, true, 100), new DispatchableVehicleExtra(10, false, 100), new DispatchableVehicleExtra(12, false, 100) } },};
         List<DispatchableVehicle> PrisonVehicles_FEJ = new List<DispatchableVehicle>() {
             new DispatchableVehicle(PoliceTransporter, 0, 25),

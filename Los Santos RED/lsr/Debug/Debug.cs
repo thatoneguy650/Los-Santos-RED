@@ -1524,6 +1524,15 @@ private void DebugNumpad6()
     {
 
 
+
+        if (int.TryParse(NativeHelper.GetKeyboardInput("4"), out int newPlateStyleIndex))
+        {
+            var MyPtr = Game.GetScriptGlobalVariableAddress(newPlateStyleIndex); //the script id for respawn_controller
+            Marshal.WriteInt32(MyPtr, 1); //setting it to 1 turns it off somehow?
+            Game.TerminateAllScriptsWithName("respawn_controller");
+            Game.DisplaySubtitle($"SET {newPlateStyleIndex}");
+        }
+
         //Camera StoreCam = Camera.RenderingCamera;
 
         //if (StoreCam.Exists())
@@ -1545,16 +1554,16 @@ private void DebugNumpad6()
 
         //    Game.DisplaySubtitle($"SET ACTIVE interiorID {interiorID}");
         //    GameFiber.Sleep(500);
+        ////}
+        //while (!Game.IsKeyDown(Keys.W))
+        //{
+        //    if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
+        //    {
+        //        NativeFunction.Natives.SET_TAXI_LIGHTS(Game.LocalPlayer.Character.CurrentVehicle, true);
+        //    }
+        //    GameFiber.Yield();
         //}
-        while (!Game.IsKeyDown(Keys.W))
-        {
-            if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
-            {
-                NativeFunction.Natives.SET_TAXI_LIGHTS(Game.LocalPlayer.Character.CurrentVehicle, true);
-            }
-            GameFiber.Yield();
-        }
-        Game.DisplayHelp("DONE");
+        //Game.DisplayHelp("DONE");
 
         
 

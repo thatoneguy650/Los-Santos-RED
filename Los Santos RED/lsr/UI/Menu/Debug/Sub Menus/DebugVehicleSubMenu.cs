@@ -1,4 +1,6 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -38,20 +40,154 @@ public class DebugVehicleSubMenu : DebugSubMenu
         CreateExtraMenuItem();
         CreateColorMenuItem();
         CreateInfoMenuItem();
+        CreateModificationItem();
     }
-    private void CreateExtraMenuItem()
+
+    private void CreateModificationItem()
     {
-        UIMenuNumericScrollerItem<int> VehicleExtraMenuItem = new UIMenuNumericScrollerItem<int>("Set Extra", "Set the vehicle Extra", 1, 14, 1) { Value = 1 };
+
+        UIMenuNumericScrollerItem<int> VehicleExtraMenuItem = new UIMenuNumericScrollerItem<int>("Set Extra", "Set the vehicle Extra", 1, 15, 1) { Value = 1 };
         VehicleExtraMenuItem.Activated += (menu, item) =>
         {
             if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
             {
+               if(!NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(Player.InterestedVehicle.Vehicle, VehicleExtraMenuItem.Value))
+                {
+                    Game.DisplaySubtitle($"EXTRA {VehicleExtraMenuItem.Value} DOES NOT EXIST");
+                    return;
+                }
                 bool isOn = NativeFunction.Natives.IS_VEHICLE_EXTRA_TURNED_ON<bool>(Player.InterestedVehicle.Vehicle, VehicleExtraMenuItem.Value);
                 NativeFunction.Natives.SET_VEHICLE_EXTRA(Player.InterestedVehicle.Vehicle, VehicleExtraMenuItem.Value, isOn);
                 Game.DisplaySubtitle($"SET EXTRA {VehicleExtraMenuItem.Value} Disabled:{isOn}");
             }
         };
         vehicleItemsMenu.AddItem(VehicleExtraMenuItem);
+
+
+        List<int> possibleToggles = new List<int>() { 17,18,19,20,21,22 };
+
+        UIMenuListScrollerItem<int> VehicleToggleMenuItem = new UIMenuListScrollerItem<int>("Set Toggle", "Set the vehicle toggle", possibleToggles);
+        VehicleToggleMenuItem.Activated += (menu, item) =>
+        {
+            if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+            {
+                bool isOn = NativeFunction.Natives.IS_TOGGLE_MOD_ON<bool>(Player.InterestedVehicle.Vehicle, VehicleToggleMenuItem.SelectedItem);
+                NativeFunction.Natives.TOGGLE_VEHICLE_MOD(Player.InterestedVehicle.Vehicle, VehicleToggleMenuItem.SelectedItem, isOn);
+                Game.DisplaySubtitle($"SET Toggle {VehicleToggleMenuItem.SelectedItem} Disabled:{isOn}");
+            }
+        };
+        vehicleItemsMenu.AddItem(VehicleToggleMenuItem);
+
+
+        UIMenuNumericScrollerItem<int> VehicleModMenuItem = new UIMenuNumericScrollerItem<int>("Set Mod", "Set the vehicle mod", 1, 50, 1) { Value = 1 };
+        VehicleModMenuItem.Activated += (menu, item) =>
+        {
+            if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+            {
+                if (!int.TryParse(NativeHelper.GetKeyboardInput("-1"), out int modID))
+                {
+                    return;
+                }
+                if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+                {
+                    NativeFunction.Natives.SET_VEHICLE_MOD(Player.InterestedVehicle.Vehicle, VehicleModMenuItem.Value, modID, false);
+                    Game.DisplaySubtitle($"SET MOD {VehicleModMenuItem.Value} modID:{modID}");
+                }
+            }
+        };
+        vehicleItemsMenu.AddItem(VehicleModMenuItem);
+
+        /*VehicleExtras = new List<VehicleExtra>()
+                    {
+                        new VehicleExtra(0,false),
+                        new VehicleExtra(1,false),
+                        new VehicleExtra(2,false),
+                        new VehicleExtra(3,false),
+                        new VehicleExtra(4,false),
+                        new VehicleExtra(5,false),
+                        new VehicleExtra(6,false),
+                        new VehicleExtra(7,false),
+                        new VehicleExtra(8,false),
+                        new VehicleExtra(9,false),
+                        new VehicleExtra(10,false),
+                        new VehicleExtra(11,false),
+                        new VehicleExtra(12,false),
+                        new VehicleExtra(13,false),
+                        new VehicleExtra(14,false),
+                        new VehicleExtra(15,false),
+                    },
+                VehicleToggles = new List<VehicleToggle>()
+                    {
+                        new VehicleToggle(17,false),
+                        new VehicleToggle(18,false),
+                        new VehicleToggle(19,false),
+                        new VehicleToggle(20,false),
+                        new VehicleToggle(21,false),
+                        new VehicleToggle(22,false),
+                    },
+                VehicleMods = new List<VehicleMod>()
+                    {
+                        new VehicleMod(0,8),
+                        new VehicleMod(1,0),
+                        new VehicleMod(2,-1),
+                        new VehicleMod(3,0),
+                        new VehicleMod(4,-1),
+                        new VehicleMod(5,1),
+                        new VehicleMod(6,0),
+                        new VehicleMod(7,2),
+                        new VehicleMod(8,-1),
+                        new VehicleMod(9,0),
+                        new VehicleMod(10,0),
+                        new VehicleMod(11,3),
+                        new VehicleMod(12,-1),
+                        new VehicleMod(13,-1),
+                        new VehicleMod(14,-1),
+                        new VehicleMod(15,-1),
+                        new VehicleMod(16,-1),
+                        new VehicleMod(23,12),
+                        new VehicleMod(24,-1),
+                        new VehicleMod(25,-1),
+                        new VehicleMod(26,-1),
+                        new VehicleMod(27,-1),
+                        new VehicleMod(28,-1),
+                        new VehicleMod(29,-1),
+                        new VehicleMod(30,-1),
+                        new VehicleMod(31,-1),
+                        new VehicleMod(32,-1),
+                        new VehicleMod(33,-1),
+                        new VehicleMod(34,-1),
+                        new VehicleMod(35,-1),
+                        new VehicleMod(36,-1),
+                        new VehicleMod(37,-1),
+                        new VehicleMod(38,-1),
+                        new VehicleMod(39,-1),
+                        new VehicleMod(40,-1),
+                        new VehicleMod(41,-1),
+                        new VehicleMod(42,-1),
+                        new VehicleMod(43,1),
+                        new VehicleMod(44,-1),
+                        new VehicleMod(45,-1),
+                        new VehicleMod(46,-1),
+                        new VehicleMod(47,-1),
+                        new VehicleMod(48,-1),
+                        new VehicleMod(49,-1),
+                        new VehicleMod(50,-1),
+                    },*/
+    }
+
+    private void CreateExtraMenuItem()
+    {
+        //UIMenuNumericScrollerItem<int> VehicleExtraMenuItem = new UIMenuNumericScrollerItem<int>("Set Extra", "Set the vehicle Extra", 1, 15, 1) { Value = 1 };
+        //VehicleExtraMenuItem.Activated += (menu, item) =>
+        //{
+        //    if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+        //    {
+        //        bool isOn = NativeFunction.Natives.IS_VEHICLE_EXTRA_TURNED_ON<bool>(Player.InterestedVehicle.Vehicle, VehicleExtraMenuItem.Value);
+        //        NativeFunction.Natives.SET_VEHICLE_EXTRA(Player.InterestedVehicle.Vehicle, VehicleExtraMenuItem.Value, isOn);
+        //        Game.DisplaySubtitle($"SET EXTRA {VehicleExtraMenuItem.Value} Disabled:{isOn}");
+        //    }
+        //};
+        //vehicleItemsMenu.AddItem(VehicleExtraMenuItem);
     }
     private void CreateColorMenuItem()//CreateColorMenuItem
     {

@@ -147,7 +147,7 @@ public class VanillaWorldManager
     }
     private void TerminateRespawnController()
     {
-        var MyPtr = Game.GetScriptGlobalVariableAddress(4); //the script id for respawn_controller
+        var MyPtr = Game.GetScriptGlobalVariableAddress(5);// 4); //the script id for respawn_controller
         Marshal.WriteInt32(MyPtr, 1); //setting it to 1 turns it off somehow?
         Game.TerminateAllScriptsWithName("respawn_controller");
         IsVanillaRespawnActive = false;
@@ -166,7 +166,7 @@ public class VanillaWorldManager
     }
     private void ActivateRespawn()
     {
-        var MyPtr = Game.GetScriptGlobalVariableAddress(4); //the script id for respawn_controller
+        var MyPtr = Game.GetScriptGlobalVariableAddress(5);// 4); //the script id for respawn_controller
         Marshal.WriteInt32(MyPtr, 0); //setting it to 0 turns it on somehow?
         Game.StartNewScript("respawn_controller");
         Game.StartNewScript("selector");

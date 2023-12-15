@@ -59,7 +59,7 @@ public class MainMenu : ModUIMenu
         ActivityPerformable = activityPerformable;
         Main = new UIMenu("Los Santos RED", "Select an Option");
         SettingsMenu = new SettingsMenu(MenuPool, Main, Settings, Crimes, intoxicants, shopMenus);
-        PedSwapMenu = new PedSwapMenu(MenuPool, Main, PedSwap, Gangs, agencies);
+        PedSwapMenu = new PedSwapMenu(MenuPool, Main, PedSwap, Gangs, agencies, ActionablePlayer);
     }
 
     public void Setup()

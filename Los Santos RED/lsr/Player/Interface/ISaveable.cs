@@ -34,5 +34,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsFireFighter { get; }
         bool IsEMT { get; }
         bool IsSecurityGuard { get; }
+        InteriorManager InteriorManager { get; }
     }
 }

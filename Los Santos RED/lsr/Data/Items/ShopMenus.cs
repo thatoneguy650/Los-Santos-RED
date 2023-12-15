@@ -1387,7 +1387,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Gallivanter Baller LE",149000,76000),
                 new MenuItem("Gallivanter Baller LE LWB",247000,125000),
                 new MenuItem("Gallivanter Baller LE (Armored)",320000,160000),
-
+                new MenuItem("Gallivanter Baller ST-D",145000,75000),
 
                 new MenuItem("Benefactor Schafter",65000,34000),
                 new MenuItem("Benefactor Schafter LWB",75000,52000),
@@ -1427,6 +1427,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Vapid Flash GT",65000,47000),
                 new MenuItem("Vapid FMJ",75000,58000),
                 new MenuItem("Vapid Bullet",155000,105050),
+                new MenuItem("Vapid Aleutian",55000,25000),
+                new MenuItem("Vapid Dominator GT",85000,45000),
             }),
             new ShopMenu("HelmutMenu","Helmut",new List<MenuItem>() {
                 new MenuItem("BF Surfer",11000, 6000),
@@ -1492,6 +1494,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Grotti Turismo Classic",100000,75000),
                 new MenuItem("Grotti Turismo R",150000,86000),
                 new MenuItem("Grotti Visione",676500,450000),
+                new MenuItem("Grotti Turismo Omaggio",325000,125000),
                 new MenuItem("Pfister Comet",100000,78000),
                 new MenuItem("Pfister Comet Retro Custom",130000,65000),
                 new MenuItem("Pfister Comet Safari",135000,95000),
@@ -1565,6 +1568,11 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Bravado Buffalo S",65000),
                 new MenuItem("Bravado Banshee",105000),
                 new MenuItem("Bravado Banshee 900R",150000),
+                new MenuItem("Bravado Gauntlet Hellfire",120000,56000),
+                new MenuItem("Bravado Buffalo EVX",178000,78000),
+                new MenuItem("Bravado Gauntlet Classic",89000,45000),
+                new MenuItem("Bravado Verlierer",250000,120000),
+                new MenuItem("Bravado Dorado",24000,12000),
             }),
             new ShopMenu("KarinMenu","Karin",new List<MenuItem>() {
                 new MenuItem("Karin Futo",12000,7800),
@@ -1579,6 +1587,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Karin Previon",39000,26000),
                 new MenuItem("Karin Everon",44000,28000),
                 new MenuItem("Karin Kuruma",45000,31000),
+                new MenuItem("Karin Vivanite",37000,12000),
+                new MenuItem("Karin Asterope GZ",38000,23500),
             }),
             new ShopMenu("PremiumDeluxeMenu","PremiumDeluxe",new List<MenuItem>() {
                 new MenuItem("Bravado Youga",26000, 16000),
@@ -1595,6 +1605,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Bravado Buffalo EVX",178000,78000),
                 new MenuItem("Bravado Gauntlet Classic",89000,45000),
                 new MenuItem("Bravado Verlierer",250000,120000),
+                new MenuItem("Bravado Dorado",24000,12000),
 
                 new MenuItem("Karin Futo",12000,8000),
                 new MenuItem("Karin Rebel",19000,9500),
@@ -1608,6 +1619,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Karin Previon",39000,34500),
                 new MenuItem("Karin Everon",44000,35000),
                 new MenuItem("Karin Kuruma",45000,36000),
+                new MenuItem("Karin Vivanite",37000,12000),
+                new MenuItem("Karin Asterope GZ",38000,23500),
 
                 //Emperor
                 new MenuItem("Emperor Habanero",19000,8000),
@@ -1643,6 +1656,15 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Declasse Moonbeam",19000,3000),
                 new MenuItem("Declasse Vigero ZX",96000,56000),
                 new MenuItem("Declasse Walton L35",24000,12000),
+                new MenuItem("Declasse Vigero ZX Convertible",75000,35000),
+                new MenuItem("Declasse Impaler SZ",34000,15000),
+                new MenuItem("Declasse Impaler LX",35000,16000),
+
+                //Fathom
+                new MenuItem("Fathom FR36",45000,23000),
+
+                //Canis
+                new MenuItem("Canis Terminus",49000,25000),
             }),
             new ShopMenu("AlbanyMenu","Albany",new List<MenuItem>() {
                 new MenuItem("Albany Alpha",45000,27500),
@@ -3692,6 +3714,10 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 125),
                     new MenuItemExtra("Drum Magazine", 200),} },
+                new MenuItem("Vom Feuer LAR",550, 145) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 75),
+                    new MenuItemExtra("Suppressor", 400),} },
                 //LMG
                 new MenuItem("Shrewsbury PDA",1200) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
@@ -5103,6 +5129,14 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Flashlight", 90),
                     new MenuItemExtra("Grip", 567),
                     new MenuItemExtra("Suppressor", 800),} },
+
+
+
+                new MenuItem("Vom Feuer LAR",750, 345) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 125),
+                    new MenuItemExtra("Suppressor", 800),} },
+                //
 
                 //LMG
                 new MenuItem("Vom Feuer BAT",4340, 3400) { Extras = new List<MenuItemExtra>() {

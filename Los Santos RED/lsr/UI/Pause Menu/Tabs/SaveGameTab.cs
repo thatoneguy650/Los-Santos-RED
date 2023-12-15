@@ -30,6 +30,7 @@ public class SaveGameTab
     private IEntityProvideable World;
     private IInventoryable Inventoryable;
     private ISaveable Saveable;
+    private IInteractionable Interactionable;
     private TabView TabView;
     private List<TabItem> items;
     private bool addedItems;
@@ -37,7 +38,7 @@ public class SaveGameTab
     private TabSubmenuItem myTab;
 
     public SaveGameTab(ISaveable player, IPlacesOfInterest placesOfInterest, IShopMenus shopMenus, IModItems modItems, IWeapons weapons, IGangTerritories gangTerritories, IZones zones, TabView tabView, ITimeControllable time, ISettingsProvideable settings, IGameSaves gameSaves,
-        IGangs gangs, IPedSwap pedSwap, IInventoryable inventoryable, IEntityProvideable world, ISaveable saveable, IAgencies agencies, IContacts contacts)
+        IGangs gangs, IPedSwap pedSwap, IInventoryable inventoryable, IEntityProvideable world, ISaveable saveable, IAgencies agencies, IContacts contacts, IInteractionable interactionable)
     {
         Player = player;
         PlacesOfInterest = placesOfInterest;
@@ -57,6 +58,7 @@ public class SaveGameTab
         Saveable = saveable;
         Agencies = agencies;
         Contacts = contacts;
+        Interactionable = interactionable;
     }
     public void AddSaveItems()
     {
@@ -153,7 +155,7 @@ public class SaveGameTab
                             TabView.Visible = false;
                             Game.IsPaused = false;
                             GameFiber.Sleep(500);
-                            GameSaves.Load(gs, Weapons, PedSwap, Inventoryable, Settings, World, Gangs, Time, PlacesOfInterest, ModItems, Agencies, Contacts);
+                            GameSaves.Load(gs, Weapons, PedSwap, Inventoryable, Settings, World, Gangs, Time, PlacesOfInterest, ModItems, Agencies, Contacts, Interactionable);
                         }
                     };
                 }

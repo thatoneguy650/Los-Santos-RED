@@ -896,6 +896,20 @@ public class Weapons : IWeapons
         WeaponsList.Add(new WeaponInformation("weapon_tacticalrifle", 120, WeaponCategory.AR, 3, 0xD1D5F52B, false, true, false, 0.35f, 0.55f, 0.2f, 0.3f, 0.5f, 0.5f, 0.5f, 0.5f,
             SelectorOptions.Safe | SelectorOptions.SemiAuto | SelectorOptions.FullAuto) 
         { PossibleComponents = TacticalRifleComponents });
+
+        List<WeaponComponent> BattleRifleComponenets = new List<WeaponComponent>
+        {
+            new WeaponComponent("Default Clip", 0xEE91D10E,ComponentSlot.Magazine),
+            new WeaponComponent("Extended Clip", 0x1D7E2EEA,ComponentSlot.Magazine),
+            new WeaponComponent("Suppressor", 0x837445AA,ComponentSlot.Muzzle),
+        };
+        WeaponsList.Add(new WeaponInformation("weapon_battlerifle", 120, WeaponCategory.AR, 3, 0x72B66B11, false, true, false, 0.35f, 0.55f, 0.2f, 0.3f, 0.5f, 0.5f, 0.5f, 0.5f,
+            SelectorOptions.Safe | SelectorOptions.SemiAuto | SelectorOptions.FullAuto)
+        { PossibleComponents = BattleRifleComponenets });
+
+
+
+        // Vom Feuer Battle Rifle
     }
     private void DefaultConfig_LMG()
     {

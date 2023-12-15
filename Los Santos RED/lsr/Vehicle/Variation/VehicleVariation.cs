@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -62,7 +63,12 @@ public class VehicleVariation
         }
         if(LicensePlate != null)
         {
-            vehicleExt.Vehicle.LicensePlate = LicensePlate.PlateNumber;
+            string plateNumber = LicensePlate.PlateNumber;
+            if (string.IsNullOrEmpty(LicensePlate.PlateNumber))
+            {
+                plateNumber = NativeHelper.GenerateNewLicensePlateNumber("12ABC345");
+            }
+            vehicleExt.Vehicle.LicensePlate = plateNumber;
             NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(vehicleExt.Vehicle, LicensePlate.PlateType);
             vehicleExt.HasUpdatedPlateType = true;
         }

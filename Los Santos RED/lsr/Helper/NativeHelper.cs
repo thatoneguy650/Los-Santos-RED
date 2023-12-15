@@ -889,7 +889,37 @@ namespace LosSantosRED.lsr.Helper
         }
 
 
+        public static string GenerateNewLicensePlateNumber(string SerialFormat)
+        {
+            if (SerialFormat != "")
+            {
+                string NewPlateNumber = "";
+                foreach (char c in SerialFormat)
+                {
+                    char NewChar = c;
+                    if (c == Convert.ToChar(" "))
+                    {
+                        NewChar = Convert.ToChar(" ");
+                    }
+                    else if (char.IsDigit(c))
+                    {
+                        NewChar = RandomItems.RandomNumber();
+                    }
+                    else if (char.IsLetter(c))
+                    {
+                        NewChar = RandomItems.RandomLetter();
+                    }
+                    NewPlateNumber += NewChar;
 
+                }
+                return NewPlateNumber.ToUpper();
+            }
+            else
+            {
+                return "";
+            }
+
+        }
 
 
 

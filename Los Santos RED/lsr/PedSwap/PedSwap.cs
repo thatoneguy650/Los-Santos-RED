@@ -49,10 +49,11 @@ public class PedSwap : IPedSwap
     private ITattooNames TattooNames;
     private IGameSaves GameSaves;
     private ISavedOutfits SavedOutfits;
+    private IInteractionable Interactionable;
     private bool HasSetOffset;
 
     public PedSwap(ITimeControllable time, IPedSwappable player, ISettingsProvideable settings, IEntityProvideable entities, IWeapons weapons, ICrimes crimes, INameProvideable names, IModItems modItems, IEntityProvideable world, 
-        IPedGroups pedGroups, IShopMenus shopMenus, IDispatchablePeople dispatchablePeople, IHeads heads, IClothesNames clothesNames, IGangs gangs, IAgencies agencies, ITattooNames tattooNames, IGameSaves gameSaves, ISavedOutfits savedOutfits)
+        IPedGroups pedGroups, IShopMenus shopMenus, IDispatchablePeople dispatchablePeople, IHeads heads, IClothesNames clothesNames, IGangs gangs, IAgencies agencies, ITattooNames tattooNames, IGameSaves gameSaves, ISavedOutfits savedOutfits, IInteractionable interactionable)
     {
         Time = time;
         Player = player;
@@ -72,7 +73,8 @@ public class PedSwap : IPedSwap
         Agencies = agencies;
         TattooNames = tattooNames;
         GameSaves = gameSaves;
-        SavedOutfits = savedOutfits;    
+        SavedOutfits = savedOutfits;
+        Interactionable = interactionable;
     }
     public int CurrentPedMoney { get; private set; }
     public void AddOffset()
@@ -123,7 +125,7 @@ public class PedSwap : IPedSwap
                     ResetOffsetForCurrentModel();
                     Player.IsCustomizingPed = true;
                     MenuPool menuPool = new MenuPool();
-                    PedCustomizer PedCustomizer = new PedCustomizer(menuPool, this, Names, Player, Entities, Settings, DispatchablePeople, Heads, ClothesNames, Gangs, Agencies, TattooNames, GameSaves, SavedOutfits);
+                    PedCustomizer PedCustomizer = new PedCustomizer(menuPool, this, Names, Player, Entities, Settings, DispatchablePeople, Heads, ClothesNames, Gangs, Agencies, TattooNames, GameSaves, SavedOutfits, Interactionable);
                     PedCustomizer.Setup();
                     PedCustomizer.Start();
                     GameFiber.Yield();

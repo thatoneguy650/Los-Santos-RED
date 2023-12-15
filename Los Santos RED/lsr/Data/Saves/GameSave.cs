@@ -65,6 +65,7 @@ namespace LosSantosRED.lsr.Data
         public int Health { get; set; }
         public int Armor { get; set; }
         public int MaxHealth { get; set; }
+        public string CurrentTeleportInterior { get; set; }
         public PedVariation CurrentModelVariation { get; set; }
         public DriversLicense DriversLicense { get; set; }
         public CCWLicense CCWLicense { get; set; }
@@ -224,6 +225,14 @@ namespace LosSantosRED.lsr.Data
         }
         private void SavePostition(ISaveable player)
         {
+            if(player.InteriorManager.IsInsideTeleportInterior && player.InteriorManager.CurrentTeleportInteriorLocation != null)
+            {
+                CurrentTeleportInterior = player.InteriorManager.CurrentTeleportInteriorLocation.Name;
+            }
+            else
+            {
+                CurrentTeleportInterior = null;
+            }
             PlayerPosition = player.Character.Position;
             PlayerHeading = player.Character.Heading;
         }
@@ -298,7 +307,7 @@ namespace LosSantosRED.lsr.Data
             CellPhoneSave = new CellPhoneSave(player.CellPhone.CustomRingtone, player.CellPhone.CustomTextTone, player.CellPhone.CustomTheme, player.CellPhone.CustomBackground, player.CellPhone.CustomVolume, player.CellPhone.SleepMode, player.CellPhone.CustomPhoneType, player.CellPhone.CustomPhoneOS);
         }
         //Load
-        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, IAgencies agencies, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems, IContacts contacts)
+        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, IAgencies agencies, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems, IContacts contacts, IInteractionable interactionable)
         {
             try
             {
@@ -310,7 +319,7 @@ namespace LosSantosRED.lsr.Data
                 LoadInventory(player, modItems);
                 LoadLicenses(player);
                 LoadVehicles(player, world,settings, modItems, placesOfInterest, time, weapons);
-                LoadPosition(player);
+                LoadPosition(player, placesOfInterest, world, interactionable);
                 LoadRelationships(player, gangs, contacts);
                 LoadContacts(player, gangs);    
                 LoadResidences(player, placesOfInterest, modItems, settings);
@@ -605,7 +614,7 @@ namespace LosSantosRED.lsr.Data
             player.HumanState.Hunger.Set(HungerValue, true);
             player.HumanState.Sleep.Set(SleepValue, true);
         }
-        private void LoadPosition(IInventoryable player)
+        private void LoadPosition(IInventoryable player, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteractionable interactionable)
         {
             if (PlayerPosition != Vector3.Zero)
             {
@@ -623,6 +632,17 @@ namespace LosSantosRED.lsr.Data
                 //        vehicle.Delete();
                 //    }
                 //}
+
+                else if(!string.IsNullOrEmpty(CurrentTeleportInterior))
+                {
+                    GameLocation toTele = placesOfInterest.PossibleLocations.InteractableLocations().Where(x => x.IsCorrectMap(world.IsMPMapLoaded) && x.Name == CurrentTeleportInterior).FirstOrDefault();
+                    if(toTele != null && toTele.Interior != null)
+                    {
+                        toTele.Interior.Teleport(interactionable, toTele, null);
+                    }
+                }
+
+
                 player.Character.Position = PlayerPosition;
                 player.Character.Heading = PlayerHeading;   
             }
