@@ -71,6 +71,7 @@ public class DebugVehicleSubMenu : DebugSubMenu
         {
             if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
             {
+                NativeFunction.Natives.SET_VEHICLE_MOD_KIT(Player.InterestedVehicle.Vehicle, 0);
                 bool isOn = NativeFunction.Natives.IS_TOGGLE_MOD_ON<bool>(Player.InterestedVehicle.Vehicle, VehicleToggleMenuItem.SelectedItem);
                 NativeFunction.Natives.TOGGLE_VEHICLE_MOD(Player.InterestedVehicle.Vehicle, VehicleToggleMenuItem.SelectedItem, isOn);
                 Game.DisplaySubtitle($"SET Toggle {VehicleToggleMenuItem.SelectedItem} Disabled:{isOn}");
@@ -90,6 +91,7 @@ public class DebugVehicleSubMenu : DebugSubMenu
                 }
                 if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
                 {
+                    NativeFunction.Natives.SET_VEHICLE_MOD_KIT(Player.InterestedVehicle.Vehicle, 0);
                     NativeFunction.Natives.SET_VEHICLE_MOD(Player.InterestedVehicle.Vehicle, VehicleModMenuItem.Value, modID, false);
                     Game.DisplaySubtitle($"SET MOD {VehicleModMenuItem.Value} modID:{modID}");
                 }

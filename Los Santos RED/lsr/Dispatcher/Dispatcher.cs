@@ -240,6 +240,10 @@ public class Dispatcher
     {
         LEDispatcher.DebugSpawnCop(agencyID,onFoot, isEmpty, null, null, false);
     }
+    public void DebugSpawnCop(string agencyID, bool onFoot, bool isEmpty, DispatchableVehicle dvtoSpawn)
+    {
+        LEDispatcher.DebugSpawnCop(agencyID, onFoot, isEmpty, dvtoSpawn, null, false);
+    }
     public void DebugSpawnK9Cop(string agencyID)
     {
         LEDispatcher.DebugSpawnCop(agencyID, false, false, null, null, true);

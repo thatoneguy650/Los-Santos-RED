@@ -15,19 +15,31 @@ public class DebugDispatcherSubMenu : DebugSubMenu
     private IEntityProvideable World;
     private IGangs Gangs;
     private IOrganizations Organizations;
-    public DebugDispatcherSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IAgencies agencies, Dispatcher dispatcher, IEntityProvideable world, IGangs gangs, IOrganizations organizations) : base(debug, menuPool, player)
+    private UIMenu DispatcherMenu;
+    private ISettingsProvideable Settings;
+
+    public DebugDispatcherSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IAgencies agencies, Dispatcher dispatcher, IEntityProvideable world, IGangs gangs, IOrganizations organizations, ISettingsProvideable settings) : base(debug, menuPool, player)
     {
         Agencies = agencies;
         Dispatcher = dispatcher;
         World = world;
         Gangs = gangs;
         Organizations = organizations;
+        Settings = settings;
     }
     public override void AddItems()
     {
-        UIMenu DispatcherMenu = MenuPool.AddSubMenu(Debug, "Dispatcher");
+        DispatcherMenu = MenuPool.AddSubMenu(Debug, "Dispatcher");
         DispatcherMenu.SetBannerType(EntryPoint.LSRedColor);
         DispatcherMenu.Width = 0.4f;
+
+
+        CreateNewSubMenu();
+
+
+
+
+
         UIMenuListScrollerItem<Agency> SpawnAgencyFoot = new UIMenuListScrollerItem<Agency>("Agency Random On-Foot Spawn", "Spawn a random agency ped on foot", Agencies.GetAgencies());
         SpawnAgencyFoot.Activated += (menu, item) =>
         {
@@ -180,6 +192,134 @@ public class DebugDispatcherSubMenu : DebugSubMenu
         DispatcherMenu.AddItem(PlayScanner);
         DispatcherMenu.AddItem(RemoveCops);
         DispatcherMenu.AddItem(ClearSpawned);
+    }
+
+    private void CreateNewSubMenu()
+    {
+        UIMenu NewSubDispatcherMenu = MenuPool.AddSubMenu(DispatcherMenu, "Agency Spawn Menu");
+        NewSubDispatcherMenu.SetBannerType(EntryPoint.LSRedColor);
+        NewSubDispatcherMenu.Width = 0.4f;
+
+
+
+
+
+
+
+
+        List<Agency> AllAgencies = Agencies.GetAgencies();
+        List<VehicleNameSelect> vehicleNameList = new List<VehicleNameSelect>();
+        vehicleNameList.Add(new VehicleNameSelect("") { VehicleModelName = "Random" });
+
+
+        foreach (DispatchableVehicle dv in AllAgencies.FirstOrDefault().Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
+        {
+            VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName);
+            vns.UpdateItems();
+            vehicleNameList.Add(vns);
+        }
+        UIMenuListScrollerItem<VehicleNameSelect> SpawnVehicleScroller = new UIMenuListScrollerItem<VehicleNameSelect>("Vehicle", $"Choose a vehicle to spawn.", vehicleNameList);
+        UIMenuListScrollerItem<Agency> SpawnAgencyScroller = new UIMenuListScrollerItem<Agency>("Agency", $"Choose an agency", AllAgencies);
+        SpawnAgencyScroller.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            SpawnVehicleScroller.Items.Clear();
+            List<VehicleNameSelect> vehicleNameList2 = new List<VehicleNameSelect>();
+            vehicleNameList.Add(new VehicleNameSelect("") { VehicleModelName = "Random" });
+
+            if (SpawnAgencyScroller.SelectedItem != null)
+            {
+
+
+                foreach (DispatchableVehicle dv in SpawnAgencyScroller.SelectedItem.Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
+                {
+                    VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName);
+                    vns.UpdateItems();
+                    vehicleNameList2.Add(vns);
+                }
+            }
+            SpawnVehicleScroller.Items = vehicleNameList2.ToList();
+        };
+        UIMenuItem SpawnItem = new UIMenuItem("Spawn", $"Spawn the item");// { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.TheftPaymentMin:C0}-{ActiveGang.TheftPaymentMax:C0}~s~" };
+        SpawnItem.Activated += (sender, selectedItem) =>
+        {
+            if(SpawnAgencyScroller.SelectedItem == null)
+            {
+                return;
+            }
+            //Player.PlayerTasks.GangTasks.StartGangVehicleTheft(ActiveGang, GangContact, GangTheftTargets.SelectedItem, GangTheftVehicles.SelectedItem.ModelName, GangTheftVehicles.SelectedItem.ToString());
+            if (SpawnAgencyScroller.SelectedItem.ResponseType == ResponseType.EMS)
+            {
+                if (SpawnVehicleScroller.SelectedItem.ModelName == "Random")
+                {
+                    Dispatcher.DebugSpawnEMT(SpawnAgencyScroller.SelectedItem.ID, false, true);
+                }
+            }
+            else if (SpawnAgencyScroller.SelectedItem.ResponseType == ResponseType.Fire)
+            {
+                if (SpawnVehicleScroller.SelectedItem.ModelName == "Random")
+                {
+                    Dispatcher.DebugSpawnFire(SpawnAgencyScroller.SelectedItem.ID, false, true);
+                }
+            }
+            else if (SpawnAgencyScroller.SelectedItem.ResponseType == ResponseType.Security)
+            {
+                if (SpawnVehicleScroller.SelectedItem.ModelName == "Random")
+                {
+                    Dispatcher.DebugSpawnSecurityGuard(SpawnAgencyScroller.SelectedItem.ID, false, true);
+                }
+            }
+            else
+            {
+                if (SpawnVehicleScroller.SelectedItem.ModelName == "Random")
+                {
+                    Dispatcher.DebugSpawnCop(SpawnAgencyScroller.SelectedItem.ID, false, true);
+                }
+                else
+                {
+                    
+                    Dispatcher.DebugSpawnCop(SpawnAgencyScroller.SelectedItem.ID, false, true, SpawnAgencyScroller.SelectedItem.Vehicles.FirstOrDefault(x => x.ModelName == SpawnVehicleScroller.SelectedItem.ModelName));
+                }
+            }
+            sender.Visible = false;
+        };
+        NewSubDispatcherMenu.AddItem(SpawnAgencyScroller);
+        NewSubDispatcherMenu.AddItem(SpawnVehicleScroller);
+        NewSubDispatcherMenu.AddItem(SpawnItem);
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //UIMenuListScrollerItem<Agency> chooseAgencyScrollerItem = new UIMenuListScrollerItem<Agency>("Agency To Spawn", "Select an agency", Agencies.GetAgencies());
+        //chooseAgencyScrollerItem.Activated += (menu, item) =>
+        //{
+        //    if (chooseAgencyScrollerItem.SelectedItem.ResponseType == ResponseType.EMS)
+        //    {
+        //        Dispatcher.DebugSpawnEMT(chooseAgencyScrollerItem.SelectedItem.ID, false, true);
+        //    }
+        //    else if (chooseAgencyScrollerItem.SelectedItem.ResponseType == ResponseType.Fire)
+        //    {
+        //        Dispatcher.DebugSpawnFire(chooseAgencyScrollerItem.SelectedItem.ID, false, true);
+        //    }
+        //    else if (SpawnAgencyVehicle.SelectedItem.ResponseType == ResponseType.Security)
+        //    {
+        //        Dispatcher.DebugSpawnSecurityGuard(chooseAgencyScrollerItem.SelectedItem.ID, false, true);
+        //    }
+        //    else
+        //    {
+        //        Dispatcher.DebugSpawnCop(chooseAgencyScrollerItem.SelectedItem.ID, false, true);
+        //    }
+        //    menu.Visible = false;
+        //};
+        //NewSubDispatcherMenu.AddItem(SpawnAgencyFoot);
     }
 }
 

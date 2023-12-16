@@ -1153,11 +1153,13 @@ public class ActivityManager
                 uint GameTimeStarted = Game.GameTime;
                 //EntryPoint.WriteToConsoleTestLong("WatchVehicleEntry START");
 
-                PedExt driverPed = World.Pedestrians.GetPedExt(toEnter.Vehicle.Driver.Handle);
+                PedExt driverPed = null;// World.Pedestrians.GetPedExt(toEnter.Vehicle.Driver.Handle);
 
                 if (stopDriver && toEnter != null && toEnter.Vehicle.Exists() && toEnter.Vehicle.Driver.Exists())
                 {
                     //toEnter.Vehicle.Driver.BlockPermanentEvents = true;
+
+                    driverPed = World.Pedestrians.GetPedExt(toEnter.Vehicle.Driver.Handle); 
                     driverPed?.SetPersistent();
 
 

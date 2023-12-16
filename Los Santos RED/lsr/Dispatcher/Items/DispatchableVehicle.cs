@@ -30,6 +30,15 @@ public class DispatchableVehicle
     public List<int> RequiredLiveries { get; set; } = new List<int>();
     public List<DispatchableVehicleExtra> VehicleExtras { get; set; } = new List<DispatchableVehicleExtra>();
 
+
+
+
+
+
+   // public List<DispatchableVehicleToggle> VehicleToggles { get; set; } = new List<DispatchableVehicleToggle>();
+    public List<DispatchableVehicleMod> VehicleMods { get; set; } = new List<DispatchableVehicleMod>();
+
+
     public List<int> OptionalColors { get; set; }
     public float MaxRandomDirtLevel { get; set; } = 5.0f;
     public VehicleVariation RequiredVariation { get; set; }
@@ -109,6 +118,23 @@ public class DispatchableVehicle
                     if (RandomItems.RandomPercent(extra.Percentage))
                     {
                         NativeFunction.Natives.SET_VEHICLE_EXTRA(vehicleExt.Vehicle, extra.ExtraID, toSet);
+                    }
+                }
+            }
+        }
+        if(VehicleMods != null)
+        {
+            NativeFunction.Natives.SET_VEHICLE_MOD_KIT(vehicleExt.Vehicle, 0);
+            foreach (DispatchableVehicleMod dispatchableVehicleMod in VehicleMods)
+            {
+               // EntryPoint.WriteToConsole($"VEHICLE MODS: ID: {dispatchableVehicleMod.ModID}");
+                if (RandomItems.RandomPercent(dispatchableVehicleMod.Percentage) && dispatchableVehicleMod.DispatchableVehicleModValues != null)
+                {
+                    DispatchableVehicleModValue value = dispatchableVehicleMod.PickValue();//.DispatchableVehicleModValues.PickValue();
+                    if (value != null)
+                    {
+                       // EntryPoint.WriteToConsole($"VEHICLE MODS: ID: {dispatchableVehicleMod.ModID} VALUE: {value.Value}");
+                        NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, dispatchableVehicleMod.ModID, value.Value, false);
                     }
                 }
             }

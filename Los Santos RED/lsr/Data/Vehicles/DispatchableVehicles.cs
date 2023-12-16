@@ -28,6 +28,8 @@ public class DispatchableVehicles : IDispatchableVehicles
 
     private string SecurityTorrence = "lurcher";
 
+    private string PoliceGauntlet = "polgauntlet";
+
 
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\DispatchableVehicles.xml";
     private List<DispatchableVehicleGroup> VehicleGroupLookup = new List<DispatchableVehicleGroup>();
@@ -473,7 +475,7 @@ public class DispatchableVehicles : IDispatchableVehicles
     }
     private void SharedCopCars()
     {
-        GauntletUndercoverSAHP = new DispatchableVehicle("polgauntlet", 5, 0) //Undercover Gauntlet
+        GauntletUndercoverSAHP = new DispatchableVehicle(PoliceGauntlet, 5, 0) //Undercover Gauntlet
         {
             DebugName = "UCgauntlet_PeterBadoingy_DLC",
             MaxWantedLevelSpawn = 0,
@@ -572,7 +574,7 @@ public class DispatchableVehicles : IDispatchableVehicles
                     },
             }
         };
-        GauntletSAHP = new DispatchableVehicle("polgauntlet", 30, 40) //Undercover Gauntlet
+        GauntletSAHP = new DispatchableVehicle(PoliceGauntlet, 30, 40)
         {
             DebugName = "SAHPgauntlet_PeterBadoingy_DLC",
             MaxOccupants = 2,
@@ -581,66 +583,130 @@ public class DispatchableVehicles : IDispatchableVehicles
             RequiresDLC = true,
             RequiredPrimaryColorID = 0,
             RequiredSecondaryColorID = 111,
-            RequiredVariation = new VehicleVariation()
-            {
-                PrimaryColor = 0,
-                SecondaryColor = 111,
-                LicensePlate = new LSR.Vehicles.LicensePlate("",4,false),
-                VehicleExtras = new List<VehicleExtra>()
-                    {
-                        new VehicleExtra(0,false),
-                        new VehicleExtra(1,false),
-                        new VehicleExtra(2,true),
-                        new VehicleExtra(3,false),
-                        new VehicleExtra(4,false),
-                        new VehicleExtra(5,false),
-                    },
-                VehicleToggles = new List<VehicleToggle>()
-                    {
-                    },
-                VehicleMods = new List<VehicleMod>()
-                    {
-                        new VehicleMod(42,1),
-                        new VehicleMod(43,1),
-                        new VehicleMod(44,2),
-                        new VehicleMod(48,3),
-                    },
-            }
-        };
-        GauntletSAHPSlicktop = new DispatchableVehicle("polgauntlet", 20, 30) //Undercover Gauntlet
-        {
-            DebugName = "SAHPgauntlet_PeterBadoingy_DLC",
-            MaxOccupants = 2,
-            GroupName = "StandardSAHP",
-            RequiredPedGroup = "StandardSAHP",
-            RequiresDLC = true,
-            RequiredPrimaryColorID = 0,
-            RequiredSecondaryColorID = 111,
-            RequiredVariation = new VehicleVariation()
-            {
-                PrimaryColor = 0,
-                SecondaryColor = 111,
-                LicensePlate = new LSR.Vehicles.LicensePlate("", 4, false),
-                VehicleExtras = new List<VehicleExtra>()
-                    {
-                        new VehicleExtra(0,false),
-                        new VehicleExtra(1,false),
-                        new VehicleExtra(2,false),
-                        new VehicleExtra(3,false),
-                        new VehicleExtra(4,false),
-                        new VehicleExtra(5,false),
-                    },
-                VehicleToggles = new List<VehicleToggle>()
+            VehicleExtras = new List<DispatchableVehicleExtra>()
                 {
+                    new DispatchableVehicleExtra(1,false,100,1),
+                    new DispatchableVehicleExtra(2,true,100,2),
+                    new DispatchableVehicleExtra(3,false,100,3),
+                    new DispatchableVehicleExtra(4,false,100,4),
+                    new DispatchableVehicleExtra(5,false,100,5),
                 },
-                VehicleMods = new List<VehicleMod>()
+            VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(42,100)
                     {
-                        new VehicleMod(42,1),
-                        new VehicleMod(43,1),
-                        new VehicleMod(44,2),
-                        new VehicleMod(48,3),
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
                     },
-            }
+                    new DispatchableVehicleMod(43,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(44,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(3,100),
+                        },
+                    },
+                },
+            RequiredVariation = new VehicleVariation() { PrimaryColor = 0, SecondaryColor = 111, LicensePlate = new LSR.Vehicles.LicensePlate("", 4, false) },
+        };
+        GauntletSAHPSlicktop = new DispatchableVehicle(PoliceGauntlet, 20, 30)
+        {
+            DebugName = "SAHPgauntlet_PeterBadoingy_DLC",
+            MaxOccupants = 2,
+            GroupName = "StandardSAHP",
+            RequiredPedGroup = "StandardSAHP",
+            RequiresDLC = true,
+            RequiredPrimaryColorID = 0,
+            RequiredSecondaryColorID = 111,
+            VehicleExtras = new List<DispatchableVehicleExtra>()
+                {
+                    new DispatchableVehicleExtra(1,false,100,1),
+                    new DispatchableVehicleExtra(2,false,100,2),
+                    new DispatchableVehicleExtra(3,false,100,3),
+                    new DispatchableVehicleExtra(4,false,100,4),
+                    new DispatchableVehicleExtra(5,false,100,5),
+                },
+            VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(42,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(43,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(44,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(3,100),
+                        },
+                    },
+                },
+            RequiredVariation = new VehicleVariation() { PrimaryColor = 0, SecondaryColor = 111, LicensePlate = new LSR.Vehicles.LicensePlate("", 4, false) },
         };
     }
     private void SetupDefaultGangSpecialVehicles_Gambetti()
@@ -23269,6 +23335,72 @@ Output = -1,
             new DispatchableVehicle(PoliceGranger, 15, 12){ RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,CaninePossibleSeats = new List<int>{ 1 }, RequiredLiveries = new List<int>() { 1 } },
             new DispatchableVehicle(PoliceFugitive, 10,5){ RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,RequiredLiveries = new List<int>() { 1 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, true, 100), new DispatchableVehicleExtra(10, false, 100), new DispatchableVehicleExtra(12, false, 100) } },
             new DispatchableVehicle(StanierUnmarked, 1,1),
+
+
+            new DispatchableVehicle(PoliceGauntlet, 5,5)
+            {
+                RequiredPrimaryColorID = 0,
+                RequiredSecondaryColorID = 111,
+                VehicleExtras = new List<DispatchableVehicleExtra>()
+                {
+                    new DispatchableVehicleExtra(1,false,100,1),
+                    new DispatchableVehicleExtra(2,true,100,2),
+                    new DispatchableVehicleExtra(3,false,100,3),
+                    new DispatchableVehicleExtra(4,false,100,4),
+                    new DispatchableVehicleExtra(5,false,100,5),
+                },
+                VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(42,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(43,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(44,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,100),
+                        },
+                    },
+                },
+                RequiredVariation = new VehicleVariation(){ PrimaryColor = 0,SecondaryColor = 111, LicensePlate = new LSR.Vehicles.LicensePlate("",4,false) },
+            },
+
+
             new DispatchableVehicle(PoliceBison, 10, 10)  {RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,RequiredLiveries = new List<int>() { 1 }, },
             new DispatchableVehicle(PoliceTransporter, 0, 15) { MinOccupants = 3, MaxOccupants = 4,MinWantedLevelSpawn = 3},
             new DispatchableVehicle(PoliceBike, 15, 10) {GroupName = "Motorcycle", MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 0 } }, };
@@ -23299,6 +23431,71 @@ Output = -1,
             new DispatchableVehicle(PoliceTorrence, 25, 25){RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,RequiredLiveries = new List<int>() { 5 } },
             new DispatchableVehicle(PoliceGresley, 25, 25){RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,RequiredLiveries = new List<int>() { 5 } },
             new DispatchableVehicle(PoliceBison, 5, 5){RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,RequiredLiveries = new List<int>() { 5 } },
+
+            new DispatchableVehicle(PoliceGauntlet, 5,5)
+            {
+                RequiredPrimaryColorID = 0,
+                RequiredSecondaryColorID = 111,
+                VehicleExtras = new List<DispatchableVehicleExtra>()
+                {
+                    new DispatchableVehicleExtra(1,false,100,1),
+                    new DispatchableVehicleExtra(2,true,100,2),
+                    new DispatchableVehicleExtra(3,false,100,3),
+                    new DispatchableVehicleExtra(4,false,100,4),
+                    new DispatchableVehicleExtra(5,false,100,5),
+                },
+                VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(42,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(43,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(44,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(7,100),
+                        },
+                    },
+                },
+                RequiredVariation = new VehicleVariation(){ PrimaryColor = 0,SecondaryColor = 111, LicensePlate = new LSR.Vehicles.LicensePlate("",4,false) },
+            },
+
+
             new DispatchableVehicle(PoliceGranger, 15, 15){RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,CaninePossibleSeats = new List<int>{ 1 },RequiredLiveries = new List<int>() { 5 } },
             new DispatchableVehicle(PoliceFugitive, 20,15){ RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,RequiredLiveries = new List<int>() { 5 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, true, 100), new DispatchableVehicleExtra(10, false, 100), new DispatchableVehicleExtra(12, false, 100) } },};
         List<DispatchableVehicle> DPPDVehicles_FEJ = new List<DispatchableVehicle>() {
@@ -23309,6 +23506,70 @@ Output = -1,
             new DispatchableVehicle(PoliceGresley, 50, 50){RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,RequiredLiveries = new List<int>() { 6 } },
             new DispatchableVehicle(PoliceGranger, 15, 15){RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,RequiredLiveries = new List<int>() { 6 } },
             new DispatchableVehicle(PoliceBison, 15, 15){RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,RequiredLiveries = new List<int>() { 6 } },
+
+            new DispatchableVehicle(PoliceGauntlet, 5,5)
+            {
+                RequiredPrimaryColorID = 0,
+                RequiredSecondaryColorID = 111,
+                VehicleExtras = new List<DispatchableVehicleExtra>()
+                {
+                    new DispatchableVehicleExtra(1,false,100,1),
+                    new DispatchableVehicleExtra(2,true,100,2),
+                    new DispatchableVehicleExtra(3,false,100,3),
+                    new DispatchableVehicleExtra(4,false,100,4),
+                    new DispatchableVehicleExtra(5,false,100,5),
+                },
+                VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(42,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(43,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(44,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(8,100),
+                        },
+                    },
+                },
+                RequiredVariation = new VehicleVariation(){ PrimaryColor = 0,SecondaryColor = 111, LicensePlate = new LSR.Vehicles.LicensePlate("",4,false) },
+            },
+
             new DispatchableVehicle(PoliceFugitive, 15,10){RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0, RequiredLiveries = new List<int>() { 6 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, true, 100), new DispatchableVehicleExtra(10, false, 100), new DispatchableVehicleExtra(12, false, 100) } },};
         //Sheriff
         List<DispatchableVehicle> BCSOVehicles_FEJ = new List<DispatchableVehicle>() {
@@ -23330,6 +23591,70 @@ Output = -1,
             new DispatchableVehicle(PoliceBison, 10, 10)  {RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 7 }, },
             new DispatchableVehicle(PoliceGranger, 25, 25) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,CaninePossibleSeats = new List<int>{ 1 },MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() {7 } },
             new DispatchableVehicle(PoliceFugitive, 2, 2){RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0, MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 7 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, true, 100), new DispatchableVehicleExtra(10, false, 100), new DispatchableVehicleExtra(12, false, 100) } },
+
+            new DispatchableVehicle(PoliceGauntlet, 2,2)
+            {
+                RequiredPrimaryColorID = 0,
+                RequiredSecondaryColorID = 111,
+                VehicleExtras = new List<DispatchableVehicleExtra>()
+                {
+                    new DispatchableVehicleExtra(1,false,100,1),
+                    new DispatchableVehicleExtra(2,true,100,2),
+                    new DispatchableVehicleExtra(3,false,100,3),
+                    new DispatchableVehicleExtra(4,false,100,4),
+                    new DispatchableVehicleExtra(5,false,100,5),
+                },
+                VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(42,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(43,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(44,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(4,100),
+                        },
+                    },
+                },
+                RequiredVariation = new VehicleVariation(){ PrimaryColor = 0,SecondaryColor = 111, LicensePlate = new LSR.Vehicles.LicensePlate("",4,false) },
+            },
+
             new DispatchableVehicle(PoliceBike, 20, 10) { GroupName = "Motorcycle",MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 3 } },};     
         List<DispatchableVehicle> MajesticLSSDVehicles_FEJ = new List<DispatchableVehicle>() {
             new DispatchableVehicle(PoliceStanier, 20, 15) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,MaxRandomDirtLevel = 10.0f,RequiredLiveries = new List<int>() { 8 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
@@ -23378,6 +23703,72 @@ Output = -1,
             new DispatchableVehicle(PoliceTorrence, 10, 10)  { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,RequiredLiveries = new List<int>() { 13 } },
             new DispatchableVehicle(PoliceGresley, 10, 10)  { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,RequiredLiveries = new List<int>() { 13 } },
             new DispatchableVehicle(PoliceBison, 5, 5)  { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,RequiredLiveries = new List<int>() { 13 } },
+
+
+            new DispatchableVehicle(PoliceGauntlet, 5,5) 
+            {          
+                RequiredPrimaryColorID = 0,
+                RequiredSecondaryColorID = 111,
+                VehicleExtras = new List<DispatchableVehicleExtra>() 
+                { 
+                    new DispatchableVehicleExtra(1,false,100,1),
+                    new DispatchableVehicleExtra(2,true,100,2),
+                    new DispatchableVehicleExtra(3,false,100,3),
+                    new DispatchableVehicleExtra(4,false,100,4),
+                    new DispatchableVehicleExtra(5,false,100,5),
+                },
+                VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(42,100) 
+                    { 
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>() 
+                        { 
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(43,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(44,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(10,100),
+                        },
+                    },
+                },
+                RequiredVariation = new VehicleVariation(){ PrimaryColor = 0,SecondaryColor = 111, LicensePlate = new LSR.Vehicles.LicensePlate("",4,false) },
+            },
+
+
             new DispatchableVehicle(PoliceGranger, 10, 10){ RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,CaninePossibleSeats = new List<int>{ 1 },RequiredLiveries = new List<int>() { 13 } },
             new DispatchableVehicle(PoliceFugitive, 2, 2){ RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,RequiredLiveries = new List<int>() { 13 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, true, 100), new DispatchableVehicleExtra(10, false, 100), new DispatchableVehicleExtra(12, false, 100) } },
             new DispatchableVehicle(PoliceBike, 10, 5) { GroupName = "Motorcycle",MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 4 } },};
@@ -23392,6 +23783,71 @@ Output = -1,
             new DispatchableVehicle(PoliceGranger, 5, 5) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,GroupName = "StandardSAHP",RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } },
             new DispatchableVehicle(PoliceBison, 5, 0) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,GroupName = "StandardSAHP",RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } },
             GauntletUndercoverSAHP,
+
+
+            new DispatchableVehicle(PoliceGauntlet, 15,15)
+            {
+                RequiredPrimaryColorID = 0,
+                RequiredSecondaryColorID = 111,
+                VehicleExtras = new List<DispatchableVehicleExtra>()
+                {
+                    new DispatchableVehicleExtra(1,false,100,1),
+                    new DispatchableVehicleExtra(2,true,100,2),
+                    new DispatchableVehicleExtra(3,false,100,3),
+                    new DispatchableVehicleExtra(4,false,100,4),
+                    new DispatchableVehicleExtra(5,false,100,5),
+                },
+                VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(42,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(43,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(44,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(3,100),
+                        },
+                    },
+                },
+                RequiredVariation = new VehicleVariation(){ PrimaryColor = 0,SecondaryColor = 111, LicensePlate = new LSR.Vehicles.LicensePlate("",4,false) },
+            },
+
             new DispatchableVehicle(PoliceFugitive, 25,25){ RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,GroupName = "StandardSAHP",RequiredPedGroup = "StandardSAHP", RequiredLiveries = new List<int>() { 4 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, true, 100), new DispatchableVehicleExtra(10, false, 100), new DispatchableVehicleExtra(12, false, 100) } },};
         List<DispatchableVehicle> PrisonVehicles_FEJ = new List<DispatchableVehicle>() {
             new DispatchableVehicle(PoliceTransporter, 0, 25),

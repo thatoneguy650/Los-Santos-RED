@@ -541,6 +541,7 @@
     <Compile Include="lsr\Vehicle\Components\Window.cs" />
     <Compile Include="lsr\Vehicle\Components\Windows.cs" />
     <Compile Include="lsr\Vehicle\Menu\TaxiInteractionMenu.cs" />
+    <Compile Include="lsr\Vehicle\Other\VehicleNameSelect.cs" />
     <Compile Include="lsr\Vehicle\Types\TaxiVehicleExt.cs" />
     <Compile Include="lsr\Vehicle\Variation\DispatchableVehicleExtra.cs" />
     <Compile Include="lsr\Vehicle\Variation\DispatchableVehicleGroup.cs" />
@@ -558,6 +559,9 @@
     <Compile Include="lsr\Vehicle\Storage\VehicleBodyManager.cs" />
     <Compile Include="lsr\Vehicle\Storage\VehicleDoorSeatData.cs" />
     <Compile Include="lsr\Inventory\WeaponStorage.cs" />
+    <Compile Include="lsr\Vehicle\Variation\DispatchableVehicleMod.cs" />
+    <Compile Include="lsr\Vehicle\Variation\DispatchableVehicleModValue.cs" />
+    <Compile Include="lsr\Vehicle\Variation\DispatchableVehicleToggle.cs" />
     <Compile Include="lsr\Vehicle\Variation\VehicleNeon.cs" />
     <Compile Include="lsr\Weapon\IssuableWeaponsGroup.cs" />
     <Compile Include="lsr\Data\Weapons\IssueableWeapons.cs" />
