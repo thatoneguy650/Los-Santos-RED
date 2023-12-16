@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static DispatchScannerFiles;
 
 
 public class DebugDispatcherSubMenu : DebugSubMenu
@@ -34,8 +35,8 @@ public class DebugDispatcherSubMenu : DebugSubMenu
         DispatcherMenu.Width = 0.4f;
 
 
-        CreateNewSubMenu();
-
+        CreateAgencySubMenu();
+        CreateGangSubMenu();
 
 
 
@@ -194,132 +195,249 @@ public class DebugDispatcherSubMenu : DebugSubMenu
         DispatcherMenu.AddItem(ClearSpawned);
     }
 
-    private void CreateNewSubMenu()
+    private void CreateAgencySubMenu()
     {
         UIMenu NewSubDispatcherMenu = MenuPool.AddSubMenu(DispatcherMenu, "Agency Spawn Menu");
         NewSubDispatcherMenu.SetBannerType(EntryPoint.LSRedColor);
-        NewSubDispatcherMenu.Width = 0.4f;
-
-
-
-
-
-
-
+        NewSubDispatcherMenu.Width = 0.6f;
 
         List<Agency> AllAgencies = Agencies.GetAgencies();
         List<VehicleNameSelect> vehicleNameList = new List<VehicleNameSelect>();
         vehicleNameList.Add(new VehicleNameSelect("") { VehicleModelName = "Random" });
-
-
         foreach (DispatchableVehicle dv in AllAgencies.FirstOrDefault().Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
         {
-            VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName);
+            VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName) { DispatchableVehicle = dv };
             vns.UpdateItems();
             vehicleNameList.Add(vns);
         }
         UIMenuListScrollerItem<VehicleNameSelect> SpawnVehicleScroller = new UIMenuListScrollerItem<VehicleNameSelect>("Vehicle", $"Choose a vehicle to spawn.", vehicleNameList);
+
+        List<DispatchablePerson> pedNameList = new List<DispatchablePerson>();
+        pedNameList.Add(new DispatchablePerson() { DebugName = "Random" });
+        foreach (DispatchablePerson dv in AllAgencies.FirstOrDefault().Personnel)
+        {
+            pedNameList.Add(dv);
+        }
+        UIMenuListScrollerItem<DispatchablePerson> SpawnPedScroller = new UIMenuListScrollerItem<DispatchablePerson>("Ped", $"Choose a ped to spawn.", pedNameList);
+
+        UIMenuCheckboxItem SpawnVehicleCheckboxItem = new UIMenuCheckboxItem("Include Vehicle",true, "If checked a vehicle will be spawned");
+        UIMenuCheckboxItem SpawnPedCheckboxItem = new UIMenuCheckboxItem("Include Ped", true, "If checked a ped will be spawned");
+
         UIMenuListScrollerItem<Agency> SpawnAgencyScroller = new UIMenuListScrollerItem<Agency>("Agency", $"Choose an agency", AllAgencies);
         SpawnAgencyScroller.IndexChanged += (sender, oldIndex, newIndex) =>
         {
             SpawnVehicleScroller.Items.Clear();
             List<VehicleNameSelect> vehicleNameList2 = new List<VehicleNameSelect>();
             vehicleNameList.Add(new VehicleNameSelect("") { VehicleModelName = "Random" });
-
             if (SpawnAgencyScroller.SelectedItem != null)
             {
-
-
                 foreach (DispatchableVehicle dv in SpawnAgencyScroller.SelectedItem.Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
                 {
-                    VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName);
+                    VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName) { DispatchableVehicle = dv };
                     vns.UpdateItems();
                     vehicleNameList2.Add(vns);
                 }
             }
             SpawnVehicleScroller.Items = vehicleNameList2.ToList();
+
+            SpawnPedScroller.Items.Clear();
+            List<DispatchablePerson> pedNameList2 = new List<DispatchablePerson>();
+            pedNameList2.Add(new DispatchablePerson() { DebugName = "Random" });
+            if (SpawnAgencyScroller.SelectedItem != null)
+            {
+                foreach (DispatchablePerson dv in SpawnAgencyScroller.SelectedItem.Personnel)
+                {
+                    pedNameList2.Add(dv);
+                }
+            }
+            SpawnPedScroller.Items = pedNameList2.ToList();
         };
-        UIMenuItem SpawnItem = new UIMenuItem("Spawn", $"Spawn the item");// { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.TheftPaymentMin:C0}-{ActiveGang.TheftPaymentMax:C0}~s~" };
+
+
+        SpawnPedScroller.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            if (SpawnPedScroller.SelectedItem == null)
+            {
+                return;
+            }
+            SpawnPedScroller.Description = SpawnPedScroller.SelectedItem.GetDescription();
+        };
+
+        SpawnVehicleScroller.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            if(SpawnVehicleScroller.SelectedItem == null || SpawnVehicleScroller.SelectedItem.DispatchableVehicle == null)
+            {
+                return;
+            }
+            SpawnVehicleScroller.Description = SpawnVehicleScroller.SelectedItem.DispatchableVehicle.GetDescription();
+
+        };
+
+
+        UIMenuItem SpawnItem = new UIMenuItem("Spawn", $"Spawn the item");
         SpawnItem.Activated += (sender, selectedItem) =>
         {
             if(SpawnAgencyScroller.SelectedItem == null)
             {
                 return;
             }
-            //Player.PlayerTasks.GangTasks.StartGangVehicleTheft(ActiveGang, GangContact, GangTheftTargets.SelectedItem, GangTheftVehicles.SelectedItem.ModelName, GangTheftVehicles.SelectedItem.ToString());
+            bool spawnPed = SpawnPedCheckboxItem.Checked;
+            bool spawnVehicle = SpawnVehicleCheckboxItem.Checked;
+            string selectedAgencyID = SpawnAgencyScroller.SelectedItem.ID;
+            ResponseType selectAgencyResponseType = SpawnAgencyScroller.SelectedItem.ResponseType;
+            DispatchableVehicle selectedDispatchableVehicle = null;
+            if(spawnVehicle && SpawnVehicleScroller.Items != null && SpawnVehicleScroller.Items.Any() && SpawnVehicleScroller.SelectedItem != null && SpawnVehicleScroller.SelectedItem.DispatchableVehicle != null && SpawnVehicleScroller.SelectedItem.DispatchableVehicle.ModelName != "Random")
+            {
+                selectedDispatchableVehicle = SpawnVehicleScroller.SelectedItem.DispatchableVehicle;
+            }
+            DispatchablePerson selectedDispatchablePerson = null;
+            if(spawnPed && SpawnPedScroller.Items != null && SpawnPedScroller.Items.Any() && SpawnPedScroller.SelectedItem != null && SpawnPedScroller.SelectedItem.ModelName != "Random")
+            {
+                selectedDispatchablePerson = SpawnPedScroller.SelectedItem;
+            }
+            EntryPoint.WriteToConsole($"selectedAgencyID {selectedAgencyID} spawnPed {spawnPed} spawnVehicle {spawnVehicle} onFoot: {!spawnVehicle} isEmpty: {!spawnPed} DV: {(selectedDispatchableVehicle != null ? selectedDispatchableVehicle.ModelName : "")} DP: {(selectedDispatchablePerson != null ? selectedDispatchablePerson.ModelName : "")}");
             if (SpawnAgencyScroller.SelectedItem.ResponseType == ResponseType.EMS)
             {
-                if (SpawnVehicleScroller.SelectedItem.ModelName == "Random")
-                {
-                    Dispatcher.DebugSpawnEMT(SpawnAgencyScroller.SelectedItem.ID, false, true);
-                }
+                Dispatcher.EMSDispatcher.DebugSpawnEMT(selectedAgencyID, !spawnVehicle, !spawnPed, selectedDispatchableVehicle, selectedDispatchablePerson);
             }
             else if (SpawnAgencyScroller.SelectedItem.ResponseType == ResponseType.Fire)
             {
-                if (SpawnVehicleScroller.SelectedItem.ModelName == "Random")
-                {
-                    Dispatcher.DebugSpawnFire(SpawnAgencyScroller.SelectedItem.ID, false, true);
-                }
+                Dispatcher.FireDispatcher.DebugSpawnFire(selectedAgencyID, !spawnVehicle, !spawnPed, selectedDispatchableVehicle, selectedDispatchablePerson);
             }
             else if (SpawnAgencyScroller.SelectedItem.ResponseType == ResponseType.Security)
             {
-                if (SpawnVehicleScroller.SelectedItem.ModelName == "Random")
-                {
-                    Dispatcher.DebugSpawnSecurityGuard(SpawnAgencyScroller.SelectedItem.ID, false, true);
-                }
+                Dispatcher.SecurityDispatcher.DebugSpawnSecurity(selectedAgencyID, !spawnVehicle, !spawnPed, selectedDispatchableVehicle, selectedDispatchablePerson);
             }
             else
             {
-                if (SpawnVehicleScroller.SelectedItem.ModelName == "Random")
-                {
-                    Dispatcher.DebugSpawnCop(SpawnAgencyScroller.SelectedItem.ID, false, true);
-                }
-                else
-                {
-                    
-                    Dispatcher.DebugSpawnCop(SpawnAgencyScroller.SelectedItem.ID, false, true, SpawnAgencyScroller.SelectedItem.Vehicles.FirstOrDefault(x => x.ModelName == SpawnVehicleScroller.SelectedItem.ModelName));
-                }
+                Dispatcher.LEDispatcher.DebugSpawnCop(SpawnAgencyScroller.SelectedItem.ID, !spawnVehicle, !spawnPed, selectedDispatchableVehicle, selectedDispatchablePerson, false);
             }
             sender.Visible = false;
         };
         NewSubDispatcherMenu.AddItem(SpawnAgencyScroller);
+        NewSubDispatcherMenu.AddItem(SpawnVehicleCheckboxItem);
         NewSubDispatcherMenu.AddItem(SpawnVehicleScroller);
+        NewSubDispatcherMenu.AddItem(SpawnPedCheckboxItem);
+        NewSubDispatcherMenu.AddItem(SpawnPedScroller);
         NewSubDispatcherMenu.AddItem(SpawnItem);
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //UIMenuListScrollerItem<Agency> chooseAgencyScrollerItem = new UIMenuListScrollerItem<Agency>("Agency To Spawn", "Select an agency", Agencies.GetAgencies());
-        //chooseAgencyScrollerItem.Activated += (menu, item) =>
-        //{
-        //    if (chooseAgencyScrollerItem.SelectedItem.ResponseType == ResponseType.EMS)
-        //    {
-        //        Dispatcher.DebugSpawnEMT(chooseAgencyScrollerItem.SelectedItem.ID, false, true);
-        //    }
-        //    else if (chooseAgencyScrollerItem.SelectedItem.ResponseType == ResponseType.Fire)
-        //    {
-        //        Dispatcher.DebugSpawnFire(chooseAgencyScrollerItem.SelectedItem.ID, false, true);
-        //    }
-        //    else if (SpawnAgencyVehicle.SelectedItem.ResponseType == ResponseType.Security)
-        //    {
-        //        Dispatcher.DebugSpawnSecurityGuard(chooseAgencyScrollerItem.SelectedItem.ID, false, true);
-        //    }
-        //    else
-        //    {
-        //        Dispatcher.DebugSpawnCop(chooseAgencyScrollerItem.SelectedItem.ID, false, true);
-        //    }
-        //    menu.Visible = false;
-        //};
-        //NewSubDispatcherMenu.AddItem(SpawnAgencyFoot);
     }
+
+
+
+
+    private void CreateGangSubMenu()
+    {
+        UIMenu NewSubDispatcherMenu = MenuPool.AddSubMenu(DispatcherMenu, "Gang Spawn Menu");
+        NewSubDispatcherMenu.SetBannerType(EntryPoint.LSRedColor);
+        NewSubDispatcherMenu.Width = 0.6f;
+
+        List<Gang> AllGangs = Gangs.GetAllGangs();// Agencies.GetAgencies();
+        List<VehicleNameSelect> vehicleNameList = new List<VehicleNameSelect>();
+        vehicleNameList.Add(new VehicleNameSelect("") { VehicleModelName = "Random" });
+        foreach (DispatchableVehicle dv in AllGangs.FirstOrDefault().Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
+        {
+            VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName) { DispatchableVehicle = dv };
+            vns.UpdateItems();
+            vehicleNameList.Add(vns);
+        }
+        UIMenuListScrollerItem<VehicleNameSelect> SpawnVehicleScroller = new UIMenuListScrollerItem<VehicleNameSelect>("Vehicle", $"Choose a vehicle to spawn.", vehicleNameList);
+
+        List<DispatchablePerson> pedNameList = new List<DispatchablePerson>();
+        pedNameList.Add(new DispatchablePerson() { DebugName = "Random" });
+        foreach (DispatchablePerson dv in AllGangs.FirstOrDefault().Personnel)
+        {
+            pedNameList.Add(dv);
+        }
+        UIMenuListScrollerItem<DispatchablePerson> SpawnPedScroller = new UIMenuListScrollerItem<DispatchablePerson>("Ped", $"Choose a ped to spawn.", pedNameList);
+
+        UIMenuCheckboxItem SpawnVehicleCheckboxItem = new UIMenuCheckboxItem("Include Vehicle", true, "If checked a vehicle will be spawned");
+        UIMenuCheckboxItem SpawnPedCheckboxItem = new UIMenuCheckboxItem("Include Ped", true, "If checked a ped will be spawned");
+
+        UIMenuListScrollerItem<Gang> SpawnGangScroller = new UIMenuListScrollerItem<Gang>("Gang", $"Choose an gang", AllGangs);
+        SpawnGangScroller.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            SpawnVehicleScroller.Items.Clear();
+            List<VehicleNameSelect> vehicleNameList2 = new List<VehicleNameSelect>();
+            vehicleNameList.Add(new VehicleNameSelect("") { VehicleModelName = "Random" });
+            if (SpawnGangScroller.SelectedItem != null)
+            {
+                foreach (DispatchableVehicle dv in SpawnGangScroller.SelectedItem.Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
+                {
+                    VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName) { DispatchableVehicle = dv };
+                    vns.UpdateItems();
+                    vehicleNameList2.Add(vns);
+                }
+            }
+            SpawnVehicleScroller.Items = vehicleNameList2.ToList();
+
+            SpawnPedScroller.Items.Clear();
+            List<DispatchablePerson> pedNameList2 = new List<DispatchablePerson>();
+            pedNameList.Add(new DispatchablePerson() { DebugName = "Random" });
+            if (SpawnGangScroller.SelectedItem != null)
+            {
+                foreach (DispatchablePerson dv in SpawnGangScroller.SelectedItem.Personnel)
+                {
+                    pedNameList.Add(dv);
+                }
+            }
+            SpawnPedScroller.Items = pedNameList2.ToList();
+        };
+
+
+        SpawnPedScroller.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            if (SpawnPedScroller.SelectedItem == null)
+            {
+                return;
+            }
+            SpawnPedScroller.Description = SpawnPedScroller.SelectedItem.GetDescription();
+        };
+
+        SpawnVehicleScroller.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            if (SpawnVehicleScroller.SelectedItem == null || SpawnVehicleScroller.SelectedItem.DispatchableVehicle == null)
+            {
+                return;
+            }
+            SpawnVehicleScroller.Description = SpawnVehicleScroller.SelectedItem.DispatchableVehicle.GetDescription();
+
+        };
+
+
+        UIMenuItem SpawnItem = new UIMenuItem("Spawn", $"Spawn the item");
+        SpawnItem.Activated += (sender, selectedItem) =>
+        {
+            if (SpawnGangScroller.SelectedItem == null)
+            {
+                return;
+            }
+            bool spawnPed = SpawnPedCheckboxItem.Checked;
+            bool spawnVehicle = SpawnVehicleCheckboxItem.Checked;
+            string selectedGangID = SpawnGangScroller.SelectedItem.ID;
+            DispatchableVehicle selectedDispatchableVehicle = null;
+            if(spawnVehicle && SpawnVehicleScroller.Items != null && SpawnVehicleScroller.Items.Any() && SpawnVehicleScroller.SelectedItem != null && SpawnVehicleScroller.SelectedItem.DispatchableVehicle != null && SpawnVehicleScroller.SelectedItem.DispatchableVehicle.ModelName != "Random")
+            {
+                selectedDispatchableVehicle = SpawnVehicleScroller.SelectedItem.DispatchableVehicle;
+            }
+            DispatchablePerson selectedDispatchablePerson = null;
+            if(spawnPed && SpawnPedScroller.Items != null && SpawnPedScroller.Items.Any() && SpawnPedScroller.SelectedItem != null && SpawnPedScroller.SelectedItem.ModelName != "Random")
+            {
+                selectedDispatchablePerson = SpawnPedScroller.SelectedItem;
+            }
+            EntryPoint.WriteToConsole($"selectedGangID {selectedGangID} spawnPed {spawnPed} spawnVehicle {spawnVehicle} onFoot: {!spawnVehicle} isEmpty: {!spawnPed} DV: {(selectedDispatchableVehicle != null ? selectedDispatchableVehicle.ModelName : "")} DP: {(selectedDispatchablePerson != null ? selectedDispatchablePerson.ModelName : "")}");
+            
+            Dispatcher.GangDispatcher.DebugSpawnGangMember(selectedGangID, !spawnVehicle, !spawnPed,selectedDispatchableVehicle,selectedDispatchablePerson);
+            sender.Visible = false;
+        };
+        NewSubDispatcherMenu.AddItem(SpawnGangScroller);
+        NewSubDispatcherMenu.AddItem(SpawnVehicleCheckboxItem);
+        NewSubDispatcherMenu.AddItem(SpawnVehicleScroller);
+        NewSubDispatcherMenu.AddItem(SpawnPedCheckboxItem);
+        NewSubDispatcherMenu.AddItem(SpawnPedScroller);
+        NewSubDispatcherMenu.AddItem(SpawnItem);
+    }
+
+
+
 }
 

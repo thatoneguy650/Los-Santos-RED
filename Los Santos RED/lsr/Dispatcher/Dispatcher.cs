@@ -18,21 +18,12 @@ public class Dispatcher
     private readonly IEntityProvideable World;
     private readonly IJurisdictions Jurisdictions;
     private readonly IZones Zones;
-    private LEDispatcher LEDispatcher;
-    private EMSDispatcher EMSDispatcher;
-    private FireDispatcher FireDispatcher;
-    private ZombieDispatcher ZombieDispatcher;
-    private SecurityDispatcher SecurityDispatcher;
-    private GangDispatcher GangDispatcher;
-    private LocationDispatcher LocationDispatcher;
-    private TaxiDispatcher TaxiDispatcher;
+
     private IWeapons Weapons;
     private INameProvideable Names;
     private IWeatherReportable WeatherReporter;
     private ITimeControllable Time;
     private IOrganizations Organizations;
-    //private List<RandomHeadData> RandomHeadList;
-
     private ICrimes Crimes;
     private IPedGroups PedGroups;
     private IGangs Gangs;
@@ -40,7 +31,16 @@ public class Dispatcher
     private IShopMenus ShopMenus;
     private IPlacesOfInterest PlacesOfInterest;
     private IModItems ModItems;
-    private bool hasLocationDispatched;
+
+
+    public LEDispatcher LEDispatcher { get; private set; }
+    public EMSDispatcher EMSDispatcher { get; private set; }
+    public FireDispatcher FireDispatcher { get; private set; }
+    public ZombieDispatcher ZombieDispatcher { get; private set; }
+    public SecurityDispatcher SecurityDispatcher { get; private set; }
+    public GangDispatcher GangDispatcher { get; private set; }
+    public LocationDispatcher LocationDispatcher { get; private set; }
+    public TaxiDispatcher TaxiDispatcher { get; private set; }
 
     public Dispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, ICrimes crimes,
         IPedGroups pedGroups, IGangs gangs, IGangTerritories gangTerritories, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IWeatherReportable weatherReporter, ITimeControllable time, IModItems modItems, IOrganizations organizations)
@@ -250,11 +250,11 @@ public class Dispatcher
     }
     public void DebugSpawnGang()
     {
-        GangDispatcher.DebugSpawnGangMember("",false, false);
+        GangDispatcher.DebugSpawnGangMember("",false, false, null, null);
     }
     public void DebugSpawnGang(string agencyID, bool onFoot, bool isEmpty)
     {
-        GangDispatcher.DebugSpawnGangMember(agencyID, onFoot, isEmpty);
+        GangDispatcher.DebugSpawnGangMember(agencyID, onFoot, isEmpty, null, null);
     }
     public void DebugSpawnTaxi(TaxiFirm taxifirmID, bool onFoot, bool isEmpty)
     {
@@ -270,15 +270,15 @@ public class Dispatcher
     }
     public void DebugSpawnEMT(string agencyID, bool onFoot, bool isEmpty)
     {
-        EMSDispatcher.DebugSpawnEMT(agencyID, onFoot, isEmpty);
+        EMSDispatcher.DebugSpawnEMT(agencyID, onFoot, isEmpty, null, null);
     }
     public void DebugSpawnFire(string agencyID, bool onFoot, bool isEmpty)
     {
-        FireDispatcher.DebugSpawnFire(agencyID, onFoot, isEmpty);
+        FireDispatcher.DebugSpawnFire(agencyID, onFoot, isEmpty, null, null);
     }
     public void DebugSpawnSecurityGuard(string agencyID, bool onFoot, bool isEmpty)
     {
-        SecurityDispatcher.DebugSpawnSecurity(agencyID, onFoot, isEmpty);
+        SecurityDispatcher.DebugSpawnSecurity(agencyID, onFoot, isEmpty, null, null);
     }
     public void DebugResetLocations()
     {

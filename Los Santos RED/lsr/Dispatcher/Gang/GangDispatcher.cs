@@ -674,7 +674,7 @@ public class GangDispatcher
         }
         return true;
     }
-    public void DebugSpawnGangMember(string gangID, bool onFoot, bool isEmpty)
+    public void DebugSpawnGangMember(string gangID, bool onFoot, bool isEmpty, DispatchableVehicle vehicleType, DispatchablePerson personType)
     {
         VehicleType = null;
         PersonType = null;
@@ -714,7 +714,14 @@ public class GangDispatcher
         {
             PersonType = null;
         }
-
+        if (vehicleType != null)
+        {
+            VehicleType = vehicleType;
+        }
+        if (personType != null)
+        {
+            PersonType = personType;
+        }
         CallSpawnTask(true, true, false, false, TaskRequirements.None, false, false,99);
     }
     public void DebugSpawnHitSquad()

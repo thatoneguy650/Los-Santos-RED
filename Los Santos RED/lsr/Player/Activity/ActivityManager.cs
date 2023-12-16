@@ -1361,6 +1361,10 @@ public class ActivityManager
         {
             return;
         }
+        if(Player.CurrentVehicle.IsMotorcycle || Player.CurrentVehicle.IsBicycle || Player.CurrentVehicle.IsBoat)
+        {
+            return;
+        }
         if (!Player.IsDriver)
         {
             Game.DisplayHelp("Cannot toggle driver door from current seat");
@@ -1411,6 +1415,10 @@ public class ActivityManager
             return;
         }
         if(Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        if (Player.CurrentVehicle.IsMotorcycle || Player.CurrentVehicle.IsBicycle || Player.CurrentVehicle.IsBoat)
         {
             return;
         }
@@ -1556,7 +1564,11 @@ public class ActivityManager
         {
             return;
         }
-        if(!Player.IsDriver)
+        if (Player.CurrentVehicle.IsMotorcycle || Player.CurrentVehicle.IsBicycle || Player.CurrentVehicle.IsBoat)
+        {
+            return;
+        }
+        if (!Player.IsDriver)
         {
             Game.DisplayHelp("Cannot control driver window from current seat");
             return;
@@ -1574,6 +1586,10 @@ public class ActivityManager
     {
        
         if (Player.CurrentVehicle == null)
+        {
+            return;
+        }
+        if (Player.CurrentVehicle.IsMotorcycle || Player.CurrentVehicle.IsBicycle || Player.CurrentVehicle.IsBoat)
         {
             return;
         }
@@ -1603,7 +1619,11 @@ public class ActivityManager
         {
             return;
         }
-        if(!Player.IsDriver)
+        if (Player.CurrentVehicle.IsMotorcycle || Player.CurrentVehicle.IsBicycle || Player.CurrentVehicle.IsBoat)
+        {
+            return;
+        }
+        if (!Player.IsDriver)
         {
             if(!CanControlWindowFromSeat(windowID, Player.CurrentSeat))
             {

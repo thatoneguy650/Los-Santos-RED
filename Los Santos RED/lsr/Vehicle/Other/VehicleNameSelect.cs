@@ -19,6 +19,7 @@ public class VehicleNameSelect
     public string ModelName { get; set; }
     public string VehicleModelName { get; set; }
     public string VehicleMakeName { get; set; }
+    public DispatchableVehicle DispatchableVehicle { get; set; }
     public override string ToString()
     {
         string toReturn = "";

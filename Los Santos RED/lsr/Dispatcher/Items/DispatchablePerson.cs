@@ -105,6 +105,21 @@ public class DispatchablePerson
 
     public bool IsAnimal { get; set; } = false;
 
+
+
+    public string GetDescription()
+    {
+        string description = "";
+
+        description += $"DebugName: {DebugName}";
+        description += $"~n~ModelName: {ModelName}";
+        description += $"~n~AmbientSpawnChance: {AmbientSpawnChance} WantedSpawnChance: {WantedSpawnChance}";
+        description += $"~n~MinWantedLevelSpawn: {MinWantedLevelSpawn} MaxWantedLevelSpawn: {MaxWantedLevelSpawn}";
+        return description;
+    }
+
+
+
     public bool CanCurrentlySpawn(int WantedLevel)
     {
         if (WantedLevel > 0)
@@ -545,8 +560,23 @@ public class DispatchablePerson
 
 
 
-
-
+    public override string ToString()
+    {
+        string toReturn = "";
+        if(!string.IsNullOrEmpty(DebugName))
+        {
+            toReturn = DebugName;
+        }
+        if (toReturn.Length > 0)
+        {
+            toReturn += $" - {ModelName}";
+        }
+        else
+        {
+            toReturn = ModelName;
+        }
+        return toReturn;
+    }
 
 
 }

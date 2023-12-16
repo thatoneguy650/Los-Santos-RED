@@ -50,7 +50,19 @@ public class DispatchableVehicle
     public bool IsMotorcycle => NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>(Game.GetHashKey(ModelName));
 
 
+    public string GetDescription()
+    {
+        string description = "";
 
+        description += $"DebugName: {DebugName}";
+        description += $"~n~ModelName: {ModelName}";
+        description += $"~n~RequiredPedGroup: {RequiredPedGroup}";
+        description += $"~n~MinOccupants: {MinOccupants} MaxOccupants: {MaxOccupants}";
+        description += $"~n~AmbientSpawnChance: {AmbientSpawnChance} WantedSpawnChance: {WantedSpawnChance}";
+        description += $"~n~MinWantedLevelSpawn: {MinWantedLevelSpawn} MaxWantedLevelSpawn: {MaxWantedLevelSpawn}";
+        description += $"~n~RequiresDLC: {RequiresDLC}";
+        return description;
+    }
     public bool CanCurrentlySpawn(int WantedLevel, bool allowDLC) => CurrentSpawnChance(WantedLevel, allowDLC) > 0;
     public int CurrentSpawnChance(int WantedLevel, bool allowDLC)
     {
@@ -162,6 +174,8 @@ public class DispatchableVehicle
         RequiredVariation?.Apply(vehicleExt);
         GameFiber.Yield();
     }
+
+
     //public void UpgradePerformance(VehicleExt vehicleExt)//should be an inherited class? VehicleExt and CopCar? For now itll stay in here 
     //{
     //    if (vehicleExt.Vehicle.Exists() || vehicleExt.Vehicle.IsHelicopter)

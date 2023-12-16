@@ -456,7 +456,7 @@ public class EMSDispatcher
         }
         return true;
     }
-    public void DebugSpawnEMT(string agencyID, bool onFoot, bool isEmpty)
+    public void DebugSpawnEMT(string agencyID, bool onFoot, bool isEmpty, DispatchableVehicle vehicleType, DispatchablePerson personType)
     {
         VehicleType = null;
         PersonType = null;
@@ -493,6 +493,14 @@ public class EMSDispatcher
         if(isEmpty)
         {
             PersonType = null;
+        }
+        if (vehicleType != null)
+        {
+            VehicleType = vehicleType;
+        }
+        if (personType != null)
+        {
+            PersonType = personType;
         }
         CallSpawnTask(true, false, false, false, TaskRequirements.None);
         EntryPoint.WriteToConsole("DebugSpawnEMT");

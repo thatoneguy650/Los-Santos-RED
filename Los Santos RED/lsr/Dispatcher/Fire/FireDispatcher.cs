@@ -450,7 +450,7 @@ public class FireDispatcher
         }
         return true;
     }
-    public void DebugSpawnFire(string agencyID, bool onFoot, bool isEmpty)
+    public void DebugSpawnFire(string agencyID, bool onFoot, bool isEmpty, DispatchableVehicle vehicleType, DispatchablePerson personType)
     {
         VehicleType = null;
         PersonType = null;
@@ -487,6 +487,14 @@ public class FireDispatcher
         if (isEmpty)
         {
             PersonType = null;
+        }
+        if (vehicleType != null)
+        {
+            VehicleType = vehicleType;
+        }
+        if (personType != null)
+        {
+            PersonType = personType;
         }
         CallSpawnTask(true, false, false, false, TaskRequirements.None);
         EntryPoint.WriteToConsole("DebugSpawnFire");

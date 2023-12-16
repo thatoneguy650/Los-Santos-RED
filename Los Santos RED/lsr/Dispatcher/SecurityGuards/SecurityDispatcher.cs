@@ -283,7 +283,7 @@ public class SecurityDispatcher
         }
         return true;
     }
-    public void DebugSpawnSecurity(string agencyID, bool onFoot, bool isEmpty)
+    public void DebugSpawnSecurity(string agencyID, bool onFoot, bool isEmpty, DispatchableVehicle vehicleType, DispatchablePerson personType)
     {
         VehicleType = null;
         PersonType = null;
@@ -330,6 +330,18 @@ public class SecurityDispatcher
         if (isEmpty)
         {
             PersonType = null;
+        }
+
+
+
+
+        if (vehicleType != null)
+        {
+            VehicleType = vehicleType;
+        }
+        if (personType != null)
+        {
+            PersonType = personType;
         }
         CallSpawnTask(true, false, false, true, TaskRequirements.None);
     }
