@@ -26,6 +26,8 @@ public class LESpawnTask : SpawnTask
     private bool HasAgency => Agency != null;
     public bool IsMarshalMember { get; set; } = false;
     public bool IsOffDutySpawn { get; set; } = false;
+    public bool CheckPosition { get; set; } = true;
+
     public override void AttemptSpawn()
     {
         try
@@ -273,6 +275,14 @@ public class LESpawnTask : SpawnTask
                 NativeFunction.Natives.CLEAR_AREA(Position.X, Position.Y, Position.Z, 3f, true, false, false, false);
             }
             World.Vehicles.CleanupAmbient();
+
+            if (Settings.SettingsManager.WorldSettings.CheckAreaBeforeVehicleSpawn && NativeFunction.Natives.IS_POINT_OBSCURED_BY_A_MISSION_ENTITY<bool>(Position.X, Position.Y, Position.Z, 0.1f, 0.5f, 1f, 0))//NativeFunction.Natives.IS_POSITION_OCCUPIED<bool>(Position.X, Position.Y, Position.Z, 0.1f, false, true, false, false, false, false, false))
+            {
+                EntryPoint.WriteToConsole("LE SPAWN TASK POSITION OCCUPIED");
+                return null;
+            }
+
+
             SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(SpawnedVehicle);
             GameFiber.Yield();

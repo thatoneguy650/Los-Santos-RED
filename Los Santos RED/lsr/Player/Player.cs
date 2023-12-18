@@ -90,13 +90,16 @@ namespace Mod
         private UIMenu VehicleInteractMenu;
         private bool disableAutoEngineStart;
         private bool IsSirenOn;
+
+
+
         private uint GameTimeLastReportedCamera;
         private bool ManuallyClosedDoor;
         private bool IsRunningDoorCloseFlag;
         private bool prevAliasPedAsMainCharacter = true;//if change default setting
         private bool prevIsSleeping;
         private uint KillerHandle;
-
+        private uint GameTimeLastDamagedVehicleOnFoot;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -304,7 +307,7 @@ namespace Mod
         public bool IsEMT { get; set; } = false;
         public bool IsFireFighter { get; set; } = false;
         public bool IsSecurityGuard { get; set; } = false;
-
+        public bool IsRidingOnTrain { get; private set; }
         public bool HasBustPowers => IsCop || IsSecurityGuard;
 
         public bool CanBustPeds => (IsCop || IsSecurityGuard) && !IsIncapacitated;
@@ -375,6 +378,7 @@ namespace Mod
         public bool IsPressingFireWeapon { get; set; }
         public bool IsRagdoll { get; private set; }
         public bool IsResting { get; set; } = false;
+        public bool IsStandingOnVehicle { get; private set; }
         public bool IsRidingBus { get; set; }
         public bool IsShooting
         {
@@ -423,6 +427,7 @@ namespace Mod
         public bool RecentlyShot => GameTimeLastShot != 0 && !RecentlyStartedPlaying && Game.GameTime - GameTimeLastShot <= 3000;
         public bool RecentlyStartedPlaying => GameTimeStartedPlaying != 0 && Game.GameTime - GameTimeStartedPlaying <= 3000;
         public bool ReleasedFireWeapon { get; set; }
+        public bool RecentlyDamagedVehicleOnFoot => GameTimeLastDamagedVehicleOnFoot != 0 && Game.GameTime - GameTimeLastDamagedVehicleOnFoot <= 5000;
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public float SearchModePercentage => SearchMode.SearchModePercentage;
         public bool ShouldCheckViolations => !Settings.SettingsManager.ViolationSettings.TreatAsCop && !IsCop && !RecentlyStartedPlaying;
@@ -1423,7 +1428,7 @@ namespace Mod
             {
                 Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnBustedSpeed;// 0.4f;
             }
-            NativeHelper.DisablePlayerControl();
+            //NativeHelper.DisablePlayerControl();
             //Game.LocalPlayer.HasControl = false;
             Scanner.OnPlayerBusted();
             //EntryPoint.WriteToConsole($"PLAYER EVENT: IsBusted Changed to: {IsBusted}");
@@ -1444,9 +1449,7 @@ namespace Mod
             }
             Scanner.OnSuspectWasted();
             ActivityManager.OnPlayerDied();
-
             //GetKillingPed();
-
             //EntryPoint.WriteToConsole($"PLAYER EVENT: IsDead Changed to: {IsDead}");
         }
 
@@ -1754,38 +1757,39 @@ namespace Mod
             PlayerTasks.Update();
             UpdateClosestLookedAtObject();
             UpdateSleeping();
-            //UpdateChangedSettings();
-            //UpdateDoorState();
+            GameFiber.Yield();
+            UpdateFootItems();
+            UpdateVehicleDamage();
         }
 
-        //private void UpdateChangedSettings()
-        //{
-        //    if(Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter != prevAliasPedAsMainCharacter)
-        //    {
-        //        if(Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
-        //        {
-
-        //        }
-        //        else
-        //        {
-        //            PedSwap.
-        //        }
-        //        EntryPoint.WriteToConsole($"SETTING PedSwapSettings.AliasPedAsMainCharacter changed from {prevAliasPedAsMainCharacter} to {Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter}");
-        //        prevAliasPedAsMainCharacter = Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter;
-        //    }
-        //}
-
-
-        //private void UpdateDoorState()
-        //{
-        //    if(GameTimeLastManuallyOpenedDoor != 0 && Game.GameTime - GameTimeLastManuallyOpenedDoor >= 20000)
-        //    {
-        //        NativeFunction.Natives.SET_PED_CONFIG_FLAG(Character, 313, false);
-        //        GameTimeLastManuallyOpenedDoor = 0;
-        //        EntryPoint.WriteToConsole("REMOVING DONT CLOSE DOOR FLAG FROM PLAYER");
-        //    }
-        //}
-
+        private void UpdateFootItems()
+        {
+            if(IsInVehicle)
+            {
+                IsStandingOnVehicle = false;
+                return;
+            }
+            IsStandingOnVehicle = NativeFunction.Natives.IS_PED_ON_VEHICLE<bool>(Character);
+        }
+        private void UpdateVehicleDamage()
+        {
+            if (IsInVehicle || RecentlyDamagedVehicleOnFoot || IsWanted || IsDead)//already checks crashes
+            {
+                return;
+            }
+            List<VehicleExt> CloseVehicles = World.Vehicles.AllVehicleList.Where(x => x.Vehicle.Exists() && x.Vehicle.DistanceTo(Character) <= 5.0f).ToList();
+            foreach (VehicleExt vehicle in CloseVehicles)
+            {
+                if(vehicle.CheckPlayerDamage(this))
+                {
+                    return;
+                }
+            }
+        }
+        public void OnDamagedVehicle()
+        {
+            GameTimeLastDamagedVehicleOnFoot = Game.GameTime;
+        }
         private void UpdateGeneralStatus()
         {
             if (Game.LocalPlayer.Character.IsDead && !IsDead)
@@ -1851,6 +1855,7 @@ namespace Mod
 
             bool isModelBike = false;
             bool isModelBicycle = false;
+            IsRidingOnTrain = false;
             //if (Character.CurrentVehicle.Exists())
             //{
             //    isModelBike = NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>((uint)Character.CurrentVehicle.Model.Hash);
@@ -2031,7 +2036,10 @@ namespace Mod
             CurrentVehicle = null;
             VehicleSpeed = 0f;
             IsSirenOn = false;
+            IsRidingOnTrain = NativeFunction.Natives.IS_PLAYER_RIDING_TRAIN<bool>(Game.LocalPlayer);
             float PlayerSpeed = Character.Speed;
+
+
             FootSpeed = PlayerSpeed;
             if (PlayerSpeed >= 0.1f)
             {

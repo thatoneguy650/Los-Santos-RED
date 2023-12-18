@@ -65,6 +65,7 @@ namespace LosSantosRED.lsr.Player
             if (IsSittingOnToilet)
             {
                 Player.ActivityManager.IsUrinatingDefecting = false;
+                Player.ActivityManager.IsUrinatingDefectingOnToilet = false;
             }
             //Player.IsPerformingActivity = false;
         }
@@ -110,6 +111,7 @@ namespace LosSantosRED.lsr.Player
             if (IsSittingOnToilet)
             {
                 Player.ActivityManager.IsUrinatingDefecting = true;
+                Player.ActivityManager.IsUrinatingDefectingOnToilet = true;
             }
             if (FindSittingProp)
             {
@@ -119,6 +121,7 @@ namespace LosSantosRED.lsr.Player
                     if (IsSittingOnToilet)
                     {
                         Player.ActivityManager.IsUrinatingDefecting = false;
+                        Player.ActivityManager.IsUrinatingDefectingOnToilet = false;
                     }
                     Player.ActivityManager.IsPerformingActivity = false;
                     if (ClosestSittableEntity.Exists())
@@ -241,6 +244,7 @@ namespace LosSantosRED.lsr.Player
                 if (IsSittingOnToilet)
                 {
                     Player.ActivityManager.IsUrinatingDefecting = false;
+                    Player.ActivityManager.IsUrinatingDefectingOnToilet = false;
                 }
                 Player.ActivityManager.IsPerformingActivity = false;
             }
@@ -286,6 +290,7 @@ namespace LosSantosRED.lsr.Player
                 if (IsSittingOnToilet)
                 {
                     Player.ActivityManager.IsUrinatingDefecting = false;
+                    Player.ActivityManager.IsUrinatingDefectingOnToilet = false;
                 }
                 Player.ActivityManager.IsPerformingActivity = false;
                 GameFiber.Sleep(5000);

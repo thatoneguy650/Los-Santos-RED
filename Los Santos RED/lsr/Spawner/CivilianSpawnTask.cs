@@ -130,6 +130,10 @@ public class CivilianSpawnTask : SpawnTask
                 NativeFunction.Natives.CLEAR_AREA(Position.X, Position.Y, Position.Z, 3f, true, false, false, false);
             }
             World.Vehicles.CleanupAmbient();
+            if (Settings.SettingsManager.WorldSettings.CheckAreaBeforeVehicleSpawn && NativeFunction.Natives.IS_POINT_OBSCURED_BY_A_MISSION_ENTITY<bool>(Position.X, Position.Y, Position.Z, 0.1f, 0.5f, 1f, 0))
+            {
+                return null;
+            }
             SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(SpawnedVehicle);
             GameFiber.Yield();

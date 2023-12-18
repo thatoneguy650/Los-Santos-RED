@@ -32,6 +32,8 @@ namespace LSR.Vehicles
         protected bool HasAddedRandomWeapons = false;
         protected bool HasAddedRandomCash = false;
         protected uint GameTimeLastAddedSonarBlip;
+        private uint GameTimeLastDamagedByPlayer;
+
         public VehicleInteractionMenu VehicleInteractionMenu { get; set; }
         public SimpleInventory SimpleInventory { get; private set; }
         public CashStorage CashStorage { get; private set; }
@@ -53,6 +55,7 @@ namespace LSR.Vehicles
         public Vehicle Vehicle { get; set; } = null;
         public Vector3 PlaceOriginallyEntered { get; set; }
         public virtual bool IsTaxi => false;
+        public bool RecentlyDamagedByPlayer => GameTimeLastDamagedByPlayer != 0 && Game.GameTime - GameTimeLastDamagedByPlayer <= 5000;
         public Radio Radio { get; set; }
         public Indicators Indicators { get; set; }
         public Engine Engine { get; set; }
@@ -1556,6 +1559,34 @@ namespace LSR.Vehicles
             {
                 Game.DisplayHelp($"Vehicle Reported Stolen");
             }
+        }
+
+        public virtual void OnDamagedByPlayer()
+        {
+            if(!Vehicle.Exists())
+            {
+                return;
+            }
+            string DamageString = $"I AM VEHICLE {Handle} AND I WAS JUST DAMAGED BY THE PLAYER";
+            EntryPoint.WriteToConsole(DamageString);
+            //Game.DisplaySubtitle(DamageString);
+            NativeFunction.Natives.CLEAR_ENTITY_LAST_DAMAGE_ENTITY(Vehicle);
+            GameTimeLastDamagedByPlayer = Game.GameTime;
+        }
+
+        public bool CheckPlayerDamage(IInteractionable player)
+        {
+            if (!Vehicle.Exists() || RecentlyDamagedByPlayer)
+            {
+                return false;
+            }
+            if (NativeFunction.Natives.HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY<bool>(Vehicle, player.Character, false))
+            {
+                OnDamagedByPlayer();
+                player.OnDamagedVehicle();
+                return true;
+            }
+            return false;
         }
     }
 }

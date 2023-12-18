@@ -79,7 +79,7 @@ public class PlateTypes : IPlateTypes
         PlateTypeManager.PlateTypeList.Add(new PlateType(2, "San Andreas Yellow on Blue", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
         PlateTypeManager.PlateTypeList.Add(new PlateType(3, "San Andreas Classic", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
         PlateTypeManager.PlateTypeList.Add(new PlateType(4, "San Andreas Exempt", StaticStrings.SanAndreasStateID, 0, "12ABC345") { CanOverwrite = false });
-        PlateTypeManager.PlateTypeList.Add(new PlateType(5, "North Yankton", StaticStrings.NorthYanktonStateID, 1, "123 ABC"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(5, "North Yankton", StaticStrings.NorthYanktonStateID, 1, "123  ABC"));
 
         PlateTypeManager.VanityPlates.Add("AZZ KIKR");
         PlateTypeManager.VanityPlates.Add("STARK 4");

@@ -23,6 +23,7 @@ using System.Security.Policy;
 using System.Security.Principal;
 using System.Text;
 using System.Windows.Forms;
+//using System.Windows.Media;
 using System.Xml.Linq;
 //using System.Windows.Media;
 //using System.Windows.Media;
@@ -1522,16 +1523,30 @@ private void DebugNumpad6()
 
     private void DebugNumpad7()
     {
-
-
-
-        if (int.TryParse(NativeHelper.GetKeyboardInput("4"), out int newPlateStyleIndex))
+        Vector3 Position = new Vector3(833.577f, -1258.954f, 26.34347f);
+        bool isObscured = false;
+        while (!Game.IsKeyDownRightNow(Keys.Space))
         {
-            var MyPtr = Game.GetScriptGlobalVariableAddress(newPlateStyleIndex); //the script id for respawn_controller
-            Marshal.WriteInt32(MyPtr, 1); //setting it to 1 turns it off somehow?
-            Game.TerminateAllScriptsWithName("respawn_controller");
-            Game.DisplaySubtitle($"SET {newPlateStyleIndex}");
+            Rage.Debug.DrawArrowDebug(Position, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+            isObscured = NativeFunction.Natives.IS_POINT_OBSCURED_BY_A_MISSION_ENTITY<bool>(Position.X, Position.Y, Position.Z, Settings.SettingsManager.DebugSettings.ObscuredX, Settings.SettingsManager.DebugSettings.ObscuredY, Settings.SettingsManager.DebugSettings.ObscuredZ, 0);// 0.5f, 2f, 1f, 0))//NativeFunction.Natives.IS_POSITION_OCCUPIED<bool>(Position.X, Position.Y, Position.Z, 0.1f, false, true, false, false, false, false, false))
+            Game.DisplayHelp($"Press SPACE to Stop");
+
+            float DistancetoPos = Game.LocalPlayer.Character.Position.DistanceTo(Position);
+            Game.DisplaySubtitle($"isObscured: {isObscured} DistancetoPos {Math.Round(DistancetoPos,2)}");
+            GameFiber.Yield();
         }
+       
+
+
+        //
+
+        //if (int.TryParse(NativeHelper.GetKeyboardInput("4"), out int newPlateStyleIndex))
+        //{
+        //    var MyPtr = Game.GetScriptGlobalVariableAddress(newPlateStyleIndex); //the script id for respawn_controller
+        //    Marshal.WriteInt32(MyPtr, 1); //setting it to 1 turns it off somehow?
+        //    Game.TerminateAllScriptsWithName("respawn_controller");
+        //    Game.DisplaySubtitle($"SET {newPlateStyleIndex}");
+        //}
 
         //Camera StoreCam = Camera.RenderingCamera;
 
@@ -1565,7 +1580,7 @@ private void DebugNumpad6()
         //}
         //Game.DisplayHelp("DONE");
 
-        
+
 
         //  string PlayingDict = "timetable@trevor@on_the_toilet";
         //  string PlayingAnim = "trevonlav_baseloop";

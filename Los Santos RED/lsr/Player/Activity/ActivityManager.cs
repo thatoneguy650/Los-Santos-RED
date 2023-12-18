@@ -219,7 +219,7 @@ public class ActivityManager
 
     public bool IsEnteringAsPassenger { get; set; }
     public bool IsUrinatingDefecting { get; set; }
-
+    public bool IsUrinatingDefectingOnToilet { get; set; }
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
         IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories,
@@ -767,7 +767,7 @@ public class ActivityManager
             Game.DisplayHelp("Cancel existing activity to start");
             return;
         }
-        DefectingActivity defecating = new DefectingActivity(Actionable, Settings);
+        DefecatingActivity defecating = new DefecatingActivity(Actionable, Settings);
         if (defecating.CanPerform(Actionable))
         {
             ForceCancelAllActive();

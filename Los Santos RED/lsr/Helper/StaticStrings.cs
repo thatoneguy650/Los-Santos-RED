@@ -95,6 +95,7 @@ public static class StaticStrings
     public static readonly string SuspiciousVehicleCrimeID = "CarryingBody";
     public static readonly string VehicleInvasionCrimeID = "VehicleInvasion";
     public static readonly string IndecentExposureCrimeID = "IndecentExposure";
+    public static readonly string MaliciousVehicleDamageCrimeID = "MaliciousVehicleDamage";
 
     //Air Carriers
     public static readonly string AirHerlerCarrierID = "AirHerler";

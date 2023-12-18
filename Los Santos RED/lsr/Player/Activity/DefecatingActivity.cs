@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace LosSantosRED.lsr.Player
 {
-    public class DefectingActivity : DynamicActivity
+    public class DefecatingActivity : DynamicActivity
     {
         private string PlayingAnim;
         private string PlayingDict;
@@ -18,7 +18,7 @@ namespace LosSantosRED.lsr.Player
         private ISettingsProvideable Settings;
         private List<Rage.Object> SpawnedPoops = new List<Rage.Object>();
 
-        public DefectingActivity(IActionable player, ISettingsProvideable settings) : base()
+        public DefecatingActivity(IActionable player, ISettingsProvideable settings) : base()
         {
             Player = player;
             Settings = settings;

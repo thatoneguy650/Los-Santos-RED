@@ -131,7 +131,7 @@ namespace LosSantosRED.lsr.Data
             SavedBankAccounts.Clear();
             foreach (BankAccount bankAccount in player.BankAccounts.BankAccountList)
             {
-                SavedBankAccounts.Add(bankAccount);
+                SavedBankAccounts.Add(new BankAccount(bankAccount.BankContactName, bankAccount.AccountName, bankAccount.Money) { IsPrimary = bankAccount.IsPrimary });
             }
         }
         private void SaveInventory(ISaveable player, IModItems modItems)
@@ -340,9 +340,10 @@ namespace LosSantosRED.lsr.Data
         }
         private void LoadMoney(IInventoryable player)
         {
+            player.BankAccounts.Reset();
             foreach (BankAccount bankAccount in SavedBankAccounts)
             {
-                player.BankAccounts.BankAccountList.Add(bankAccount);
+                player.BankAccounts.BankAccountList.Add(new BankAccount(bankAccount.BankContactName, bankAccount.AccountName, bankAccount.Money) { IsPrimary = bankAccount.IsPrimary });
             }
         }
         private void LoadAgencies(IAgencies agencies, IInventoryable player)

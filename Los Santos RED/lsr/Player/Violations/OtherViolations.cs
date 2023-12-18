@@ -67,7 +67,7 @@ public class OtherViolations
         {
             Violations.AddViolating(StaticStrings.InsultingOfficerCrimeID);
         }
-        if (Player.IsBeingANuisance)
+        if (Player.IsBeingANuisance || Player.IsStandingOnVehicle)
         {
             Violations.AddViolating(StaticStrings.PublicNuisanceCrimeID);
         }
@@ -75,13 +75,18 @@ public class OtherViolations
         {
             Violations.AddViolating(StaticStrings.PublicVagrancyCrimeID);
         }
-        if (Player.ActivityManager.IsUrinatingDefecting && !Player.CurrentLocation.IsInside && Player.CurrentLocation.CurrentZone?.Type != eLocationType.Wilderness && (Player.CurrentLocation.CurrentZone?.Economy == eLocationEconomy.Rich || Player.CurrentLocation.CurrentZone?.Economy == eLocationEconomy.Middle))
+        if (!Player.ActivityManager.IsUrinatingDefectingOnToilet && Player.ActivityManager.IsUrinatingDefecting && (Player.CurrentLocation.IsInside || Player.CurrentLocation.CurrentZone?.Type != eLocationType.Wilderness))// && (Player.CurrentLocation.CurrentZone?.Economy == eLocationEconomy.Rich || Player.CurrentLocation.CurrentZone?.Economy == eLocationEconomy.Middle))
         {
             Violations.AddViolating(StaticStrings.IndecentExposureCrimeID);
         }
         if (!Violations.CanBodyInteract && Player.ActivityManager.IsLootingBody)
         {
             Violations.AddViolating(StaticStrings.MuggingCrimeID);
+        }
+        if (Player.RecentlyDamagedVehicleOnFoot)
+        {
+            EntryPoint.WriteToConsole("VIOLATING MaliciousVehicleDamageCrimeID");
+            Violations.AddViolating(StaticStrings.MaliciousVehicleDamageCrimeID);
         }
     }
     private void SmallBodyCrimes()
@@ -197,7 +202,6 @@ public class OtherViolations
             SuspiciousBodyUpdate();
         }
     }
-
     private void SuspiciousBodyUpdate()
     {
         if (!Player.IsInVehicle || Player.CurrentVehicle == null || !Player.IsDriver)
@@ -225,7 +229,6 @@ public class OtherViolations
         }
         CheckVehicleInvasion();
     }
-
     private void CheckVehicleInvasion()
     {
         if(!Player.IsInVehicle || Player.CurrentVehicle == null || Player.IsDriver)
@@ -270,7 +273,6 @@ public class OtherViolations
         }
         Violations.AddViolating(StaticStrings.VehicleInvasionCrimeID);
     }
-
     private void TrespassingUpdate()
     {
         if (!Violations.CanEnterRestrictedAreas && Player.IsWanted && Player.CurrentLocation != null && Player.CurrentLocation.CurrentZone != null && Player.CurrentLocation.CurrentZone.IsRestrictedDuringWanted && Player.CurrentLocation.GameTimeInZone >= 15000 && (Player.WantedLevel >= 2 || Player.PoliceResponse.IsDeadlyChase))

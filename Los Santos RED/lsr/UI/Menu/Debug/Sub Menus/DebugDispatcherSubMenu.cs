@@ -229,7 +229,7 @@ public class DebugDispatcherSubMenu : DebugSubMenu
             SpawnVehicleScroller.Items.Clear();
             List<VehicleNameSelect> vehicleNameList2 = new List<VehicleNameSelect>();
             vehicleNameList.Add(new VehicleNameSelect("") { VehicleModelName = "Random" });
-            if (SpawnAgencyScroller.SelectedItem != null)
+            if (SpawnAgencyScroller.SelectedItem != null && SpawnAgencyScroller.SelectedItem.Vehicles != null)
             {
                 foreach (DispatchableVehicle dv in SpawnAgencyScroller.SelectedItem.Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
                 {
@@ -243,7 +243,7 @@ public class DebugDispatcherSubMenu : DebugSubMenu
             SpawnPedScroller.Items.Clear();
             List<DispatchablePerson> pedNameList2 = new List<DispatchablePerson>();
             pedNameList2.Add(new DispatchablePerson() { DebugName = "Random" });
-            if (SpawnAgencyScroller.SelectedItem != null)
+            if (SpawnAgencyScroller.SelectedItem != null && SpawnAgencyScroller.SelectedItem.Personnel != null)
             {
                 foreach (DispatchablePerson dv in SpawnAgencyScroller.SelectedItem.Personnel)
                 {
@@ -359,7 +359,7 @@ public class DebugDispatcherSubMenu : DebugSubMenu
             SpawnVehicleScroller.Items.Clear();
             List<VehicleNameSelect> vehicleNameList2 = new List<VehicleNameSelect>();
             vehicleNameList.Add(new VehicleNameSelect("") { VehicleModelName = "Random" });
-            if (SpawnGangScroller.SelectedItem != null)
+            if (SpawnGangScroller.SelectedItem != null && SpawnGangScroller.SelectedItem.Vehicles != null)
             {
                 foreach (DispatchableVehicle dv in SpawnGangScroller.SelectedItem.Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
                 {
@@ -373,7 +373,7 @@ public class DebugDispatcherSubMenu : DebugSubMenu
             SpawnPedScroller.Items.Clear();
             List<DispatchablePerson> pedNameList2 = new List<DispatchablePerson>();
             pedNameList.Add(new DispatchablePerson() { DebugName = "Random" });
-            if (SpawnGangScroller.SelectedItem != null)
+            if (SpawnGangScroller.SelectedItem != null && SpawnGangScroller.SelectedItem.Personnel != null)
             {
                 foreach (DispatchablePerson dv in SpawnGangScroller.SelectedItem.Personnel)
                 {

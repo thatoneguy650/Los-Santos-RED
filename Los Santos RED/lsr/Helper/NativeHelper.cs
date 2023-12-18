@@ -343,6 +343,11 @@ namespace LosSantosRED.lsr.Helper
         }
         public static void DisablePlayerControl()
         {
+
+            //NativeFunction.Natives.DISABLE_ALL_CONTROL_ACTIONS(0);
+
+
+
             Game.DisableControlAction(0, GameControl.LookLeftRight, true);
             Game.DisableControlAction(0, GameControl.LookUpDown, true);
             Game.DisableControlAction(0, GameControl.MoveUpDown, true);
@@ -353,18 +358,18 @@ namespace LosSantosRED.lsr.Helper
 
 
             NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, (int)(1 << 8), false);
-            Game.DisableControlAction(0, GameControl.LookLeftRight, false);
-            Game.DisableControlAction(0, GameControl.LookUpDown, false);
+            Game.DisableControlAction(0, GameControl.LookLeftRight, true);
+            Game.DisableControlAction(0, GameControl.LookUpDown, true);
 
-            Game.DisableControlAction(0, GameControl.VehicleExit, false);
-            Game.DisableControlAction(0, GameControl.Enter, false);
+            Game.DisableControlAction(0, GameControl.VehicleExit, true);
+            Game.DisableControlAction(0, GameControl.Enter, true);
 
 
-            Game.DisableControlAction(0, GameControl.Attack, false);
-            Game.DisableControlAction(0, GameControl.Attack2, false);
+            Game.DisableControlAction(0, GameControl.Attack, true);
+            Game.DisableControlAction(0, GameControl.Attack2, true);
 
-            Game.DisableControlAction(0, GameControl.MeleeAttack1, false);
-            Game.DisableControlAction(0, GameControl.MeleeAttack2, false);
+            Game.DisableControlAction(0, GameControl.MeleeAttack1, true);
+            Game.DisableControlAction(0, GameControl.MeleeAttack2, true);
 
         }
         public static bool IsUsingKeyboard => NativeFunction.Natives.IS_USING_KEYBOARD_AND_MOUSE<bool>(2);

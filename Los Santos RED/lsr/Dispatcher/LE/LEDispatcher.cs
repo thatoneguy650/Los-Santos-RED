@@ -781,7 +781,6 @@ public class LEDispatcher
         CleanupAbandonedOrEmpty();
         RepairDamagedVehicles();
     }
-
     private void RepairDamagedVehicles()
     {
         if (!Settings.SettingsManager.PoliceTaskSettings.AllowFixOffScreenVehiclesAssist)
@@ -790,7 +789,6 @@ public class LEDispatcher
         }
         FixDamagedPoliceVehicles();
     }
-
     public void CleanupAbandonedOrEmpty()
     {
         if (!Settings.SettingsManager.WorldSettings.CleanupVehicles)
@@ -1044,6 +1042,7 @@ public class LEDispatcher
             EntryPoint.WriteToConsole("Spawn Location is water and no need to spawn heli or boat, exit");
             return false;
         }
+
         Agency = GetRandomAgency(SpawnLocation);
         GameFiber.Yield();
         bool isAmbientPedSpawn = false;

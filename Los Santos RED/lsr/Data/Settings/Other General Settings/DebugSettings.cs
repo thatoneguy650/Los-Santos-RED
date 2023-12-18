@@ -105,13 +105,9 @@ public class DebugSettings : ISettingsDefaultable
     public float SynchedSceneOffsetX { get; set; }
     public float SynchedSceneOffsetY { get; set; }
     public float SynchedSceneOffsetZ { get; set; }
-
-
-
-
-
-
-
+    public float ObscuredX { get; set; }
+    public float ObscuredY { get; set; }
+    public float ObscuredZ { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -269,7 +265,9 @@ public class DebugSettings : ISettingsDefaultable
 
         UseNewDrag = false;
 
-
+        ObscuredX = 0.5f;
+        ObscuredY = 1.0f;
+        ObscuredZ = 1.0f;
 
     }
 }

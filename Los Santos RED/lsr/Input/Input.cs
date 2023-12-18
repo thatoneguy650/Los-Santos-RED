@@ -152,10 +152,6 @@ namespace LosSantosRED.lsr
             {
                 Player.GroupManager.TryRecruitLookedAtPed();
             }
-            //if (Player.ButtonPrompts.IsGroupPressed("VehicleInteract"))
-            //{
-            //    Player.ShowVehicleInteractMenu();
-            //}
             if (Player.ButtonPrompts.IsGroupPressed("Sit"))
             {
                 Player.ActivityManager.StartSittingDown(true, true);
@@ -204,33 +200,6 @@ namespace LosSantosRED.lsr
                 GameTimeLastPressedGesture = Game.GameTime;
             }
         }
-
-        //private void ProcessActivityControls()
-        //{
-        //    if (Player.ActivityManager.IsPerformingActivity)
-        //    {
-        //        if (Player.ButtonPrompts.IsPressed("ActivityControlCancel"))
-        //        {
-        //            Player.ActivityManager.CancelCurrentActivity();
-        //        }
-        //        else if (Player.ButtonPrompts.IsPressed("ActivityControlPause"))
-        //        {
-        //            Player.ActivityManager.PauseCurrentActivity();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (Player.ButtonPrompts.IsPressed("ActivityControlContinue"))
-        //        {
-        //            Player.ActivityManager.ContinueCurrentActivity();
-        //        }
-        //        if (Player.ButtonPrompts.IsPressed("ActivityControlCancel"))
-        //        {
-        //            Player.ActivityManager.CancelCurrentActivity();
-        //        }
-        //    }
-        //}
-
         private void ProcessBurnerControls()
         {
             if (IsPressingSimpleCellphone && !RecentlyPressedSimplePhone && !MenuProvider.IsDisplayingMenu && !Player.IsDisplayingCustomMenus)

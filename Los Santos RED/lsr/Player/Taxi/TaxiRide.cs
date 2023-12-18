@@ -221,7 +221,7 @@ public class TaxiRide
             IsValid = false;
             return;
         }
-        if (RespondingDriver.HasSeenPlayerCommitMajorCrime || RespondingDriver.Pedestrian.IsFleeing || Player.IsWanted || Player.IsDead)
+        if (RespondingDriver.WillCancelRide || Player.IsWanted || Player.IsDead)
         {
             Cancel();
             IsValid = false;
@@ -539,20 +539,28 @@ public class TaxiRide
     }
     private bool GetVehicleAndDriver()
     {
-        RespondingVehicle = World.Vehicles.TaxiVehicles.Where(x => x.TaxiFirm.ID == RequestedFirm.ID && x.Vehicle.Exists() && x.Vehicle.HasDriver).OrderBy(x=> x.Vehicle.Position.DistanceTo2D(Player.Position)).FirstOrDefault();
-        if(RespondingVehicle == null || !RespondingVehicle.Vehicle.Exists() || !RespondingVehicle.Vehicle.Driver.Exists())
+        foreach (TaxiVehicleExt RespondingVehicle in World.Vehicles.TaxiVehicles.Where(x => x.TaxiFirm.ID == RequestedFirm.ID && x.Vehicle.Exists() && x.Vehicle.HasDriver).OrderBy(x => x.Vehicle.Position.DistanceTo2D(Player.Position)))
         {
-            return false;
+            GameFiber.Yield();
+            if (RespondingVehicle == null || !RespondingVehicle.Vehicle.Exists() || !RespondingVehicle.Vehicle.Driver.Exists())
+            {
+                continue;//return false;
+            }
+            uint driverhandle = RespondingVehicle.Vehicle.Driver.Handle;
+            RespondingDriver = World.Pedestrians.TaxiDriverList.FirstOrDefault(x => x.Handle == driverhandle);
+            if (RespondingDriver == null || !RespondingDriver.Pedestrian.Exists())
+            {
+                continue; //return false;
+            }
+            if (RespondingDriver.WillCancelRide)
+            {
+                continue; //return false;
+            }
+            //RespondingDriver.SetTaskingActive(PickupLocation.StreetPosition);
+            RespondingDriver.SetTaxiRide(this);
+            return true;
         }
-        uint driverhandle = RespondingVehicle.Vehicle.Driver.Handle;
-        RespondingDriver = World.Pedestrians.TaxiDriverList.FirstOrDefault(x => x.Handle == driverhandle);
-        if(RespondingDriver == null || !RespondingDriver.Pedestrian.Exists())
-        {
-            return false;
-        }
-        //RespondingDriver.SetTaskingActive(PickupLocation.StreetPosition);
-        RespondingDriver.SetTaxiRide(this);
-        return true;
+        return false;
     }
 
     public void Pullover()

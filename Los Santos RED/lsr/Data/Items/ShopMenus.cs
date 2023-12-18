@@ -2401,7 +2401,7 @@ public class ShopMenus : IShopMenus
                new ShopMenu("LostDenMenu","LostDenMenu",new List<MenuItem>() {
 
 
-                   new MenuItem("Methamphetamine",50, 35),
+                   new MenuItem("Methamphetamine",50, 34),
                    new MenuItem("Methamphetamine",40) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
                    new MenuItem("Methamphetamine",35) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
                    new MenuItem("Meth Pipe",5),
@@ -2774,7 +2774,7 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("FamiliesDenMenu","FamiliesDenMenu",new List<MenuItem>() {
-                    new MenuItem("Marijuana", 15, 10),
+                    new MenuItem("Marijuana", 15, 9),
                     new MenuItem("Marijuana",12) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
                     new MenuItem("Marijuana",10) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
                     new MenuItem("Smoke Shop Rolling Papers",2),
@@ -2897,7 +2897,7 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("VagosDenMenu","VagosDenMenu",new List<MenuItem>() {
-                    new MenuItem("Marijuana",15, 10),
+                    new MenuItem("Marijuana",15, 9),
                     new MenuItem("Marijuana",12) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
                     new MenuItem("Marijuana",10) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
                     new MenuItem("Smoke Shop Rolling Papers",2),
@@ -2961,7 +2961,7 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("BallasDenMenu","BallasDenMenu",new List<MenuItem>() {
-                    new MenuItem("Crack",46, 40),
+                    new MenuItem("Crack",46, 39),
                     new MenuItem("Crack",42) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
                     new MenuItem("Crack",40) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
                     new MenuItem("Crack Pipe",5),
@@ -3020,7 +3020,7 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("VarriosDenMenu","VarriosDenMenu",new List<MenuItem>() {
-                    new MenuItem("Crack",45, 40),
+                    new MenuItem("Crack",45, 39),
                     new MenuItem("Crack",42) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
                     new MenuItem("Crack",40) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
                     new MenuItem("Crack Pipe",5),
@@ -3080,7 +3080,7 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
                 new ShopMenu("MarabunteDenMenu", "MarabunteDenMenu", new List<MenuItem>() {
-                    new MenuItem("Marijuana",14, 10),
+                    new MenuItem("Marijuana",14, 9),
                     new MenuItem("Marijuana",12) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
                     new MenuItem("Marijuana",10) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
                     new MenuItem("Smoke Shop Rolling Papers",2),
@@ -3387,7 +3387,7 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("DiablosDenMenu","DiablosDenMenu",new List<MenuItem>() {
-                    new MenuItem("SPANK", 45, 20),
+                    new MenuItem("SPANK", 45, 29),
                     new MenuItem("SPANK",40) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
                     new MenuItem("SPANK",30) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
                     new MenuItem("Flint Hatchet",80),
@@ -3507,7 +3507,7 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("YardiesDenMenu","YardiesDenMenu",new List<MenuItem>() {
-                    new MenuItem("Marijuana", 13, 10),
+                    new MenuItem("Marijuana", 13, 9),
                     new MenuItem("Marijuana",12) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
                     new MenuItem("Marijuana",10) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
                     new MenuItem("Smoke Shop Rolling Papers",2),
@@ -3628,7 +3628,7 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("ArmenianDenMenu","ArmenianDenMenu",new List<MenuItem>() {
-                    new MenuItem("Heroin",135, 90),
+                    new MenuItem("Heroin",135, 99),
                     new MenuItem("Heroin",120) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
                     new MenuItem("Heroin",100) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
                     new MenuItem("Flint Hatchet",80),
@@ -3757,7 +3757,7 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("MadrazoDenMenu","MadrazoDenMenu",new List<MenuItem>() {
-                    new MenuItem("Methamphetamine",45, 35),
+                    new MenuItem("Methamphetamine",45, 34),
 
 
                     new MenuItem("Methamphetamine",40) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
@@ -3881,7 +3881,7 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
                 new ShopMenu("GambettiDenMenu", "GambettiDenMenu", new List<MenuItem>() {
-                    new MenuItem("Cocaine",150, 110),
+                    new MenuItem("Cocaine",150, 109),
                     new MenuItem("Cocaine",130) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
                     new MenuItem("Cocaine",110) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
                     new MenuItem("Brass Knuckles",175),
@@ -3983,7 +3983,7 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
                 new ShopMenu("PavanoDenMenu", "PavanoDenMenu", new List<MenuItem>() {
-                    new MenuItem("Cocaine",150, 130),
+                    new MenuItem("Cocaine",150, 109),
                     new MenuItem("Cocaine",130) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
                     new MenuItem("Cocaine",110) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
                     new MenuItem("Brass Knuckles",175),
@@ -4085,7 +4085,7 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
                 new ShopMenu("LupisellaDenMenu", "LupisellaDenMenu", new List<MenuItem>() {
-                    new MenuItem("Cocaine",150, 130),
+                    new MenuItem("Cocaine",150, 109),
                     new MenuItem("Cocaine",130) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
                     new MenuItem("Cocaine",110) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
                     new MenuItem("Brass Knuckles",175),
@@ -4187,7 +4187,7 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
                 new ShopMenu("MessinaDenMenu", "MessinaDenMenu", new List<MenuItem>() {
-                    new MenuItem("Cocaine",150, 130),
+                    new MenuItem("Cocaine",150, 109),
                     new MenuItem("Cocaine",130) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
                     new MenuItem("Cocaine",110) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
                     new MenuItem("Brass Knuckles",175),
@@ -4289,7 +4289,7 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
                 new ShopMenu("AncelottiDenMenu", "AncelottiDenMenu", new List<MenuItem>() {
-                    new MenuItem("Cocaine",150, 130),
+                    new MenuItem("Cocaine",150, 109),
                     new MenuItem("Cocaine",130) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
                     new MenuItem("Cocaine",110) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
                     new MenuItem("Brass Knuckles",175),

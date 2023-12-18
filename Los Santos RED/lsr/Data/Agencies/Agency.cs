@@ -15,6 +15,7 @@ using static DispatchScannerFiles;
 public class Agency : IPlatePrefixable, IGeneratesDispatchables
 {
     private int beatNumber = 0;
+
     public Agency()
     {
     }
@@ -78,6 +79,15 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
     public List<DispatchablePerson> OffDutyPersonnel { get; set; } = new List<DispatchablePerson>();
     [XmlIgnore]
     public List<DispatchableVehicle> OffDutyVehicles { get; set; } = new List<DispatchableVehicle>();
+
+
+
+    [XmlIgnore]
+    public bool HasDispatchableHelicopters { get; set; } = false;
+    [XmlIgnore]
+    public bool HasDispatchableBoats { get; set; } = false;
+
+
 
 
     public string ColorInitials => ColorPrefix + ShortName;
@@ -218,6 +228,30 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
         if (ToPickFrom.Any())
         {
             return ToPickFrom.PickRandom();
+        }
+        return null;
+    }
+    public DispatchableVehicle GetRandomHeliVehicle(int wantedLevel, string requiredGroup, ISettingsProvideable settings)
+    {
+        if (Vehicles == null || !Vehicles.Any())
+        {
+            return null;
+        }
+        List<DispatchableVehicle> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles) && x.IsHelicopter && !x.IsBoat && !x.IsMotorcycle).ToList();
+        if (requiredGroup != "" && !string.IsNullOrEmpty(requiredGroup))
+        {
+            ToPickFrom = ToPickFrom.Where(x => x.GroupName == requiredGroup).ToList();
+        }
+        int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles));
+        int RandomPick = RandomItems.MyRand.Next(0, Total);
+        foreach (DispatchableVehicle Vehicle in ToPickFrom)
+        {
+            int SpawnChance = Vehicle.CurrentSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles);
+            if (RandomPick < SpawnChance)
+            {
+                return Vehicle;
+            }
+            RandomPick -= SpawnChance;
         }
         return null;
     }
@@ -441,5 +475,19 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
             EntryPoint.WriteToConsole($"ADDED {issuableWeapon.ModelName} TO MENU");
         }
         return new ShopMenu(ID + "Menu", ID + "Menu", menuItems);    
+    }
+
+    public void Setup(IHeads heads, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople, IIssuableWeapons issuableWeapons)
+    {
+        LessLethalWeapons = issuableWeapons.GetWeaponData(LessLethalWeaponsID);
+        LongGuns = issuableWeapons.GetWeaponData(LongGunsID);
+        SideArms = issuableWeapons.GetWeaponData(SideArmsID);
+        Personnel = dispatchablePeople.GetPersonData(PersonnelID);
+        Vehicles = dispatchableVehicles.GetVehicleData(VehiclesID);
+        OffDutyPersonnel = dispatchablePeople.GetPersonData(OffDutyPersonnelID);
+        OffDutyVehicles = dispatchableVehicles.GetVehicleData(OffDutyVehiclesID);
+        PossibleHeads = heads.GetHeadData(HeadDataGroupID);
+        HasDispatchableBoats = Vehicles != null && Vehicles.Any(x => x.IsBoat);
+        HasDispatchableHelicopters = Vehicles != null && Vehicles.Any(x => x.IsHelicopter);
     }
 }

@@ -56,8 +56,7 @@ public class Crimes : ICrimes
     private Crime OfficersNeeded;
     private Crime Trespassing;
     private Crime VehicleInvasion;
-
-
+    private Crime MaliciousVehicleDamage;
 
     public Crimes()
     {
@@ -139,6 +138,8 @@ public class Crimes : ICrimes
 
 
 
+        MaliciousVehicleDamage = new Crime(StaticStrings.MaliciousVehicleDamageCrimeID, "Malicious Vehicle Damage", 1, false, 29, true, false, false) { CanReleaseOnTalkItOut = true, CanReleaseOnCite = true,  ShowsWarning = true, WarningMessage = "You are ~r~causing malicious vehicle damage~s~" };
+
 
         HitCarWithCar = new Crime(StaticStrings.HitCarWithCarCrimeID, "Hit and Run", 1, false, 30, false, false, false) { CanReleaseOnTalkItOut = true, CanReleaseOnCite = true, IsTrafficViolation = true, ShowsWarning = true, WarningMessage = "You ~r~crashed your vehicle~s~" };
 
@@ -146,7 +147,7 @@ public class Crimes : ICrimes
         
 
         PublicIntoxication = new Crime(StaticStrings.PublicIntoxicationCrimeID, "Public Intoxication", 1, false, 31, true, false, false) { CanReleaseOnCite = true, CanReleaseOnTalkItOut = true, GracePeriod = 180000, ShowsWarning = true, WarningMessage = "You are ~r~intoxicated in public~s~~n~Sober up or avoid attention" };    
-        ChangingPlates = new Crime(StaticStrings.ChangingPlatesCrimeID, "Stealing License Plates", 1, false, 32, true, false, false) { CanReleaseOnCite = true, CanReleaseOnTalkItOut = true, MaxReportingDistance = 20f,ShowsWarning = true, WarningMessage = "You are ~r~Stealing License Plates~s~~n~Avoid removing plates in public" };
+        ChangingPlates = new Crime(StaticStrings.ChangingPlatesCrimeID, "Stealing License Plates", 1, false, 32, true, false, false) { CanReleaseOnCite = true, CanReleaseOnTalkItOut = true, MaxReportingDistance = 20f,ShowsWarning = true, WarningMessage = "You are ~r~ttealing license plates~s~~n~Avoid removing plates in public" };
 
        
         
@@ -159,7 +160,8 @@ public class Crimes : ICrimes
        
 
         DrivingStolenVehicle = new Crime(StaticStrings.DrivingStolenVehicleCrimeID, "Driving a Stolen Vehicle", 2, false, 38, false, false, false) { ShowsWarning = true, WarningMessage = "You are driving a ~r~stolen vehicle~s~~n~Reported vehicles attract police attention" };
-            
+
+
 
         SuspiciousActivity = new Crime(StaticStrings.SuspiciousActivityCrimeID, "Suspicious Activity", 1, false, 39, false, false, false) { GracePeriod = 180000, CanReleaseOnTalkItOut = true, CanReleaseOnCleanSearch = true, ShowsWarning = true, WarningMessage = "You are ~r~acting suspicious~s~~n~Leave the area to avoid issues" };
         
@@ -172,10 +174,10 @@ public class Crimes : ICrimes
         Speeding = new Crime(StaticStrings.SpeedingCrimeID, "Speeding", 1, false, 44, false, false, false) { CanReleaseOnTalkItOut = true, Enabled = false, IsTrafficViolation = true, CanReleaseOnCite = true, ShowsWarning = true, WarningMessage = "You are ~r~speeding~s~" };
 
 
-        IndecentExposure = new Crime(StaticStrings.IndecentExposureCrimeID, "Indecent Exposure", 1, false, 46, true, false, false) { MaxReportingDistance = 15f, CanReleaseOnCite = true, ShowsWarning = true, WarningMessage = "You are guilt of ~r~Indecent Exposure~s~" };
+        IndecentExposure = new Crime(StaticStrings.IndecentExposureCrimeID, "Indecent Exposure", 1, false, 46, true, false, false) { MaxReportingDistance = 15f, CanReleaseOnCite = true, ShowsWarning = true, WarningMessage = "You are guilt of ~r~indecent exposure~s~" };
 
 
-        PublicNuisance = new Crime(StaticStrings.PublicNuisanceCrimeID, "Public Nuisance", 1, false, 50, true, false, false) { CanReleaseOnTalkItOut = true, CanReleaseOnCleanSearch = true, MaxReportingDistance = 15f, CanReleaseOnCite = true, ShowsWarning = true, WarningMessage = "You are ~r~speeding~s~" };   
+        PublicNuisance = new Crime(StaticStrings.PublicNuisanceCrimeID, "Public Nuisance", 1, false, 50, true, false, false) { CanReleaseOnTalkItOut = true, CanReleaseOnCleanSearch = true, MaxReportingDistance = 15f, CanReleaseOnCite = true, ShowsWarning = true, WarningMessage = "You are ~r~being a nuisance~s~" };   
         PublicVagrancy = new Crime(StaticStrings.PublicVagrancyCrimeID, "Public Vagrancy", 1, false, 51, true, false, false) { CanReleaseOnTalkItOut = true, CanReleaseOnCleanSearch = true, MaxReportingDistance = 15f, CanReleaseOnCite = true, ShowsWarning = true, WarningMessage = "You are guilty of ~r~vagrancy~s~~n~Use hotels or residences to sleep" };
         OfficersNeeded = new Crime(StaticStrings.OfficersNeededCrimeID, "Officers Needed", 1, false, 60, false, false, false) { CanReleaseOnTalkItOut = true, CanReleaseOnCleanSearch = true };
     }
@@ -230,6 +232,7 @@ public class Crimes : ICrimes
              PublicVagrancy,
              OfficersNeeded,
              IndecentExposure,
+             MaliciousVehicleDamage,
         };
         Serialization.SerializeParams(CrimeList, ConfigFileName);
     }
@@ -292,6 +295,7 @@ public class Crimes : ICrimes
              PublicVagrancy,
              OfficersNeeded,
              IndecentExposure,
+             MaliciousVehicleDamage,
             });
 
         HitCarWithCar.CanBeReactedToByCivilians = false;

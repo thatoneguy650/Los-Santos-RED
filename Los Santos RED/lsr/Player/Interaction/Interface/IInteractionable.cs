@@ -43,6 +43,7 @@ namespace LosSantosRED.lsr.Interface
         InteriorManager InteriorManager { get; }
         OutfitManager OutfitManager { get; }
 
+        void OnDamagedVehicle();
         void PlaySpeech(string v1, bool v2);
         void SetAngeredCop();
     }

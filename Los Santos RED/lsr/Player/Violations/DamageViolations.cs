@@ -92,7 +92,12 @@ public class DamageViolations
         {
             Violations.AddViolating(StaticStrings.TerroristActivityCrimeID);
         }
+
+        //CheckVehicleDamage();
     }
+
+
+
     public void AddInjured(PedExt myPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle)
     {
         if (myPed.IsCop)

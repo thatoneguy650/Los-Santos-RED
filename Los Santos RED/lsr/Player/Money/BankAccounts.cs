@@ -66,11 +66,11 @@ public class BankAccounts
     }
     public void Dispose()
     {
-        BankAccountList.Clear();
+        BankAccountList = new List<BankAccount>();
     }
     public void Reset()
     {
-        BankAccountList.Clear();
+        BankAccountList = new List<BankAccount>();
     }
     public void Update()
     {

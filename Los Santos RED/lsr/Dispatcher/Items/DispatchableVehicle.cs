@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -41,6 +42,7 @@ public class DispatchableVehicle
 
     public List<int> OptionalColors { get; set; }
     public float MaxRandomDirtLevel { get; set; } = 5.0f;
+    public int ForcedPlateType { get; set; } = -1;
     public VehicleVariation RequiredVariation { get; set; }
 
     public bool RequiresDLC { get; set; } = false;
@@ -150,6 +152,12 @@ public class DispatchableVehicle
                     }
                 }
             }
+        }
+        if(ForcedPlateType != -1)
+        {
+            string plateNumber = NativeHelper.GenerateNewLicensePlateNumber("12ABC345");
+            vehicleExt.Vehicle.LicensePlate = plateNumber;
+            NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(vehicleExt.Vehicle, ForcedPlateType);
         }
         GameFiber.Yield();
         if (!vehicleExt.Vehicle.Exists())

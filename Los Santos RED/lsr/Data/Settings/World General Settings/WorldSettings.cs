@@ -119,6 +119,8 @@ public class WorldSettings : ISettingsDefaultable
     public int InteriorMarkerType { get; set; }
     public float InteriorMarkerZOffset { get; set; }
     public float InteriorMarkerScale { get; set; }
+    [Description("If enabled, LSR will cancel a vehicle spawn if there is a mission entity within a certain radius")]
+    public bool CheckAreaBeforeVehicleSpawn { get; set; }
 
     //[Description("If enabled, the reduced props of the MP map will be loaded. THIS OPTION IS REQUIRED FOR THE TIME BEING, UNLESS YOU ARE RUNNING A CUSTOM GAMECONFIG (most should work)!")]
     //public bool SetReducedPropsOnMap { get; set; }
@@ -193,6 +195,8 @@ public class WorldSettings : ISettingsDefaultable
         InteriorMarkerType = 0;
         InteriorMarkerZOffset = 0.2f;
         InteriorMarkerScale = 0.25f;
+
+        CheckAreaBeforeVehicleSpawn = true;
     }
 
 }

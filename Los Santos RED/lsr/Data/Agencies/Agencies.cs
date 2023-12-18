@@ -321,15 +321,9 @@ public class Agencies : IAgencies
     {
         foreach(Agency agency in AgenciesList)
         {
+            agency.Setup(heads, dispatchableVehicles, dispatchablePeople, issuableWeapons);
             //EntryPoint.WriteToConsole($"AGENCY NAME {agency.FullName} LongGunsID {agency.LongGunsID} SideArmsID {agency.SideArmsID} PersonnelID {agency.PersonnelID} VehiclesID {agency.VehiclesID} HeadDataGroupID {agency.HeadDataGroupID}");
-            agency.LessLethalWeapons = issuableWeapons.GetWeaponData(agency.LessLethalWeaponsID);
-            agency.LongGuns = issuableWeapons.GetWeaponData(agency.LongGunsID);
-            agency.SideArms = issuableWeapons.GetWeaponData(agency.SideArmsID);
-            agency.Personnel = dispatchablePeople.GetPersonData(agency.PersonnelID);
-            agency.Vehicles = dispatchableVehicles.GetVehicleData(agency.VehiclesID);
-            agency.OffDutyPersonnel = dispatchablePeople.GetPersonData(agency.OffDutyPersonnelID);
-            agency.OffDutyVehicles = dispatchableVehicles.GetVehicleData(agency.OffDutyVehiclesID);
-            agency.PossibleHeads = heads.GetHeadData(agency.HeadDataGroupID);
+
         }
     }
 

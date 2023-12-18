@@ -71,7 +71,7 @@ namespace LosSantosRED.lsr.Player
 
         public override bool CanPerform(IActionable player)
         {
-            if (player.ActivityManager.CanPerformActivitesBase)
+            if (player.ActivityManager.CanPerformActivitiesExtended)
             {
                 return true;
             }

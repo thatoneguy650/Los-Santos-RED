@@ -16,6 +16,7 @@ public class TaxiDriver : PedExt, IWeaponIssuable
     public bool IsUsingMountedWeapon { get; set; } = false;
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => TaxiFirm.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => TaxiFirm.GetRandomWeapon(v, weapons);
+    public bool WillCancelRide => HasSeenPlayerCommitMajorCrime || (Pedestrian.Exists() && Pedestrian.IsFleeing);
     public TaxiDriver(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, string _Name, string groupName, IEntityProvideable world, bool wasModSpawned) : base(_Pedestrian, settings, crimes, weapons, _Name, groupName, world)
     {
         WasModSpawned = wasModSpawned;
