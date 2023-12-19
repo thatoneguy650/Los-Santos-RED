@@ -18,6 +18,7 @@ public class Flee : ComplexTask
     private ITargetable Target;
     private bool isCowering = false;
     private ISettingsProvideable Settings;
+    private uint GameTimeLastCheckedSurrender;
     private bool IsWithinCowerDistance => Ped.DistanceToPlayer <= Ped.CowerDistance;
     private bool ShouldCower => Ped.WillCower && IsWithinCowerDistance && !Player.RecentlyShot;
     private bool ShouldCallIn => Ped.HasCellPhone && (Ped.WillCallPolice || (Ped.WillCallPoliceIntense && Ped.PedReactions.HasSeenIntenseCrime));
@@ -63,8 +64,45 @@ public class Flee : ComplexTask
             ReTask();
         }
         CheckCallIn();
+        
+        if(Ped.WantedLevel > 0)
+        {
+            HandleSurrendering();
+        }
+        
+        
         GameTimeLastRan = Game.GameTime;
+
+
+
+
     }
+
+    private void HandleSurrendering()
+    {
+        if(!Ped.CanSurrender)
+        {
+            return;
+        }
+        if(Game.GameTime - GameTimeStartedFlee < 10000)
+        {
+            return;
+        }
+        if(!Ped.PedViolations.HasCopsAround)
+        {
+            return;
+        }
+        if(Game.GameTime - GameTimeLastCheckedSurrender >= 15000)
+        {
+            if(RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.WantedPossibleSurrenderPercentage))
+            {
+                Ped.ShouldSurrender = true;
+                EntryPoint.WriteToConsole("FLEEING PED SET TO SURRENDER");
+            }
+            GameTimeLastCheckedSurrender = Game.GameTime;
+        }
+    }
+
     public override void Stop()
     {
 

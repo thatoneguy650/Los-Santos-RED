@@ -37,6 +37,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsArrested { get; set; }
         //uint Handle { get; }
         bool IsDrunk { get; set; }
+        bool IsSpeeding { get; set; }
+        bool IsDrivingRecklessly { get; set; }
         bool IsSuicidal { get; set; }
         VehicleExt AssignedVehicle { get; }
         //int AssignedSeat { get; }
@@ -75,6 +77,9 @@ namespace LosSantosRED.lsr.Interface
         bool WillCallPoliceIntense { get; }
         PedReactions PedReactions { get; }
         bool IsCowering { get; set; }
+        bool CanSurrender { get; }
+        PedViolations PedViolations { get; }
+        bool ShouldSurrender { get; set; }
 
         void PlaySpeech(string name, bool v);
         void PlaySpeech(List<string> list, bool isInVehicle, bool v);

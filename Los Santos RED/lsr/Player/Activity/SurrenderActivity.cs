@@ -34,6 +34,8 @@ public class SurrenderActivity : DynamicActivity
     public override string CancelPrompt { get; set; } = "Stop Surrendering";
     public override string ContinuePrompt { get; set; } = "Continue Activity";
     public bool HandsAreUp { get; private set; }
+    public bool HasPlayedSurrenderActivity { get; private set; } = false;
+
     public override void Cancel()
     {
         LowerHands();
@@ -143,6 +145,7 @@ public class SurrenderActivity : DynamicActivity
         {
             try
             {
+                HasPlayedSurrenderActivity = false;
                 AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
                 AnimationDictionary.RequestAnimationDictionay("busted");
                 AnimationDictionary.RequestAnimationDictionay("ped");
@@ -241,6 +244,7 @@ public class SurrenderActivity : DynamicActivity
                         NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                     }
                 }
+                HasPlayedSurrenderActivity = true;
                 //NativeFunction.Natives.SET_PED_KEEP_TASK(Player.Character, true);
                 //Player.Character.KeepTasks = true;
             }

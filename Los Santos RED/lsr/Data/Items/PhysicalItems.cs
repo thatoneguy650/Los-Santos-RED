@@ -285,7 +285,14 @@ public class PhysicalItems : IPropItems
 
             new PhysicalItem("prop_cash_pile_02", new List<PropAttachment>() {
                 new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)),
-                new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),
+                //new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),
+
+
+                new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.09f, 0.01f, -0.01f),new Rotator(10f, 0f, 0f)),
+
+
+
+
             }),
 
 

@@ -113,8 +113,6 @@ public class Respawning// : IRespawning
     public bool BribePolice(ModUIMenu menu, PossibleBribe possibleBribe)
     {
         CalculateBribe();
-
-
         if (Player.BankAccounts.GetMoney(false) < possibleBribe.Amount)
         {
             Game.DisplayNotification(BlankContactPicture, BlankContactPicture, StaticStrings.OfficerFriendlyContactName, "~r~Cash Only", "You do not have enough cash on hand.");
@@ -122,7 +120,14 @@ public class Respawning// : IRespawning
             NativeHelper.PlayErrorSound();
             return false;
         }
-        else if (possibleBribe.Amount < RequiredBribeAmount && !possibleBribe.AttemptBribe())//(CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
+
+
+
+        BribeActivity bribeActivity = new BribeActivity(Player,World,Settings, ModItems);
+        bribeActivity.Setup();
+        bribeActivity.Start();
+
+        if (possibleBribe.Amount < RequiredBribeAmount && !possibleBribe.AttemptBribe())//(CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
         {
             Game.DisplayNotification(BlankContactPicture, BlankContactPicture, StaticStrings.OfficerFriendlyContactName, "Expedited Service Fee", string.Format(BribeFailedResponse, possibleBribe.Amount));
             if (Settings.SettingsManager.RespawnSettings.DeductMoneyOnFailedBribe)
@@ -148,28 +153,16 @@ public class Respawning// : IRespawning
             "As long as you've got the cash, I can take care of the cops.",
 
             };
-
             Player.Scanner.OnBribedPolice();
-
-
-            //if (!CurrentPlayer.CellPhone.ContactList.Any(x => x.Name == StaticStrings.OfficerFriendlyContactName))
-            //{
-            //    CurrentPlayer.CellPhone.AddScheduledText(new CorruptCopContact(StaticStrings.OfficerFriendlyContactName), OfficerFriendlyResponses.PickRandom(), 1, false);
-            //}
-
-
             if (Player.CellPhone.GetCorruptCopContact() != null)
             {
                 return true;
             }
-
             CorruptCopContact toSend = Player.CellPhone.DefaultCorruptCopContact;
             if(toSend != null)
             {
                 Player.CellPhone.AddScheduledText(toSend, OfficerFriendlyResponses.PickRandom(), 1, false);
             }
-
-
             return true;
         }
     }

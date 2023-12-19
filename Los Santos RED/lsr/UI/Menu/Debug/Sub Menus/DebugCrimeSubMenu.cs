@@ -89,10 +89,15 @@ public class DebugCrimeSubMenu : DebugSubMenu
         UIMenuItem StartRandomCrime = new UIMenuItem("Start Random Crime", "Trigger a random crime around the map.");
         StartRandomCrime.Activated += (menu, item) =>
         {
-            Tasker.CreateCrime();
+            Tasker.CreateCrime(false);
             menu.Visible = false;
         };
-
+        UIMenuItem StartRandomTrafficCrime = new UIMenuItem("Start Random Traffic Crime", "Trigger a random traffic crime around the map.");
+        StartRandomTrafficCrime.Activated += (menu, item) =>
+        {
+            Tasker.CreateCrime(true);
+            menu.Visible = false;
+        };
 
         UIMenuItem GiveClosesetGun = new UIMenuItem("Give Gun", "Give a gun to the closest ped");
         GiveClosesetGun.Activated += (menu, item) =>
@@ -135,6 +140,7 @@ public class DebugCrimeSubMenu : DebugSubMenu
         CrimeItemsMenu.AddItem(SpawnGunAttackersMenu);
         CrimeItemsMenu.AddItem(SpawnNoGunAttackersMenu);
         CrimeItemsMenu.AddItem(StartRandomCrime);
+        CrimeItemsMenu.AddItem(StartRandomTrafficCrime);
         CrimeItemsMenu.AddItem(GiveClosesetGun);
         CrimeItemsMenu.AddItem(SetNearestWanted);
         CrimeItemsMenu.AddItem(ToggleCopTasking);

@@ -10,6 +10,6 @@ namespace LosSantosRED.lsr.Interface
     {
         string TaskerDebug { get; }
 
-        void CreateCrime();
+        void CreateCrime(bool isTrafficOnly);
     }
 }

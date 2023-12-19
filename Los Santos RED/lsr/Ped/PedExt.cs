@@ -121,6 +121,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsCowering { get; set; }
     public int CellX { get; set; }
     public int CellY { get; set; }
+    public bool CanSurrender { get; set; } = false;
     public float ClosestDistanceToPlayer => PlayerPerception.ClosestDistanceToTarget;
     public List<Crime> CrimesCurrentlyViolating => PedViolations.CrimesCurrentlyViolating;
     public int CurrentlyViolatingWantedLevel => PedViolations.CurrentlyViolatingWantedLevel;
@@ -218,7 +219,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public uint GameTimeLastUpdated { get; set; }
     public uint GameTimeLastUpdatedTask { get; set; }
     public uint Handle { get; private set; }
-
+    public bool ShouldSurrender { get; set; }
     public virtual ePedAlertType PedAlertTypes { get; set; } = ePedAlertType.UnconsciousBody;
     public virtual bool GenerateUnconsciousAlerts { get; set; } = true;
     public bool HasCellPhone { get; set; } = true;
@@ -243,6 +244,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsDeadlyChase => PedViolations.IsDeadlyChase;
     public bool IsDealingDrugs { get; set; } = false;
     public bool IsDealingIllegalGuns { get; set; } = false;
+    public bool IsSpeeding { get; set; } = false;
+    public bool IsDrivingRecklessly { get; set; } = false;
     public bool IsDriver { get; private set; } = false;
     public bool IsDrunk { get; set; } = false;
     public bool IsFedUpWithPlayer => TimesInsultedByPlayer >= InsultLimit;
@@ -460,7 +463,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsManuallyDeleted { get; set; } = false;
     public bool CanBeBuried => IsUnconscious || IsDead;
 
-    public bool IsLoadedInTrunk { get; internal set; }
+    public bool IsLoadedInTrunk { get; set; }
+
 
     //public bool RideInPlayerVehicle { get; set; } = false;
     //public bool AlwaysInCombat { get; set; } = false;
@@ -998,6 +1002,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         WillCallPoliceIntense = RandomItems.RandomPercent(CivilianSeriousCallPercentage());
         WillFightPolice = RandomItems.RandomPercent(CivilianFightPolicePercentage());
         WillCower = RandomItems.RandomPercent(CivilianCowerPercentage());
+        CanSurrender = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PossibleSurrenderPercentage);
         if (addBlip)
         {
             AddBlip();

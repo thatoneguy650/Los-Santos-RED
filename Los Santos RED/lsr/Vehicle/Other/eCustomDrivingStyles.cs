@@ -52,10 +52,9 @@ public enum eCustomDrivingStyles : int
 
 
 
-
-
-
-
+	DrunkDriving = VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | VanillaDrivingStyles.DF_UseWanderFallbackInsteadOfStraightLine | VanillaDrivingStyles.DF_DriveIntoOncomingTraffic | VanillaDrivingStyles.DF_SwerveAroundAllCars,
+    RecklessDriving = VanillaDrivingStyles.DF_SwerveAroundAllCars | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions,
+    SpeedingDriving = VanillaDrivingStyles.DF_SwerveAroundAllCars | VanillaDrivingStyles.DF_StopAtLights | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions,
 
 }
 

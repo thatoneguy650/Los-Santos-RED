@@ -34,8 +34,13 @@ public class CivilianSettings : ISettingsDefaultable
     public bool AllowMissionPedsToInteract { get; set; }
     [Description("Allows random crimes to happen in the world.")]
     public bool AllowRandomCrimes { get; set; }
-    [Description("Minumum time required between reandom crimes..")]
+    [Description("Minumum time required between random crimes..")]
     public uint MinimumTimeBetweenRandomCrimes { get; set; }
+
+    [Description("Minumum time required between random traffic crimes..")]
+    public uint MinimumTimeBetweenRandomTrafficCrimes { get; set; }
+
+
     [Description("Place a blip on the criminal when a random crime is generated.")]
     public bool ShowRandomCriminalBlips { get; set; }
     [Description("Check and enforce crimes committed by ambient citizens. Required for police to react to civilian crimes.")]
@@ -164,6 +169,14 @@ public class CivilianSettings : ISettingsDefaultable
     [Description("Total limit of spawned service peds (teller, vendor, etc.).")]
     public int TotalSpawnedServiceMembersLimit { get; set; }
 
+
+    public int PossibleSurrenderPercentage { get; set; } = 40;
+    public int WantedPossibleSurrenderPercentage { get; set; } = 10;
+
+
+
+
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -190,6 +203,10 @@ public class CivilianSettings : ISettingsDefaultable
         AllowMissionPedsToInteract = false;
         AllowRandomCrimes = true;
         MinimumTimeBetweenRandomCrimes = 1200000;
+
+
+        MinimumTimeBetweenRandomTrafficCrimes = 720000;
+
         CheckCivilianCrimes = true;
         AllowCivilinsToCallPoliceOnOtherCivilians = true;
         AllowAlerts = true;
@@ -251,6 +268,9 @@ public class CivilianSettings : ISettingsDefaultable
         DisableWritheShooting = true;
 
         TotalSpawnedServiceMembersLimit = 6;
+
+        PossibleSurrenderPercentage = 40;
+        WantedPossibleSurrenderPercentage = 10;
     }
 
 }

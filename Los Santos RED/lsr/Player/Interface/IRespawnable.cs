@@ -44,6 +44,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsWanted { get; }
         VehicleOwnership VehicleOwnership { get; }
         PedExt PedLastKilledPlayer { get; }
+        string Gender { get; }
 
         void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearVehicleOwnership, 
             bool resetCellphone, bool clearActiveTasks, bool clearProperties, bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetACtivites, bool resetGracePeriod, bool resetBankAccounts, bool resetSavedGame, 
@@ -51,5 +52,6 @@ namespace LosSantosRED.lsr.Interface
         void SetWantedLevel(int maxWantedLastLife, string v1, bool v2);
         int FineAmount();
         void SetNotBusted();
+        void PlaySpeech(string v1, bool v2);
     }
 }

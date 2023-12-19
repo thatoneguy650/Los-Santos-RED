@@ -218,6 +218,16 @@ public class PedViolations
             {
                 IsShootingCheckerActive = false;
             }
+
+            if(PedExt.IsSpeeding)
+            {
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.FelonySpeedingCrimeID));
+            }
+            if(PedExt.IsDrivingRecklessly)
+            {
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HitCarWithCarCrimeID));
+            }
+
             if (PedExt.IsDealingDrugs)//if (PedExt.WasEverSetPersistent && NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper") > 0f)
             {
                 AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DealingDrugs"));//lslife integration?

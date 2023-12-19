@@ -94,6 +94,10 @@ public class PedBrain
             {
                 SetFight();
             }
+            else if (PedExt.ShouldSurrender)
+            {
+                SetArrested();
+            }
             else
             {
                 SetFlee();

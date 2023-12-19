@@ -25,6 +25,7 @@ public class CommitCrime : ComplexTask
         World = world;
 
     }
+    public bool IsTrafficOnly { get; set; } = false;
     private bool IsPlayerTarget => Target.Exists() && Player.Character.Exists() && Target.Handle == Player.Character.Handle;
     public override void Start()
     {
@@ -125,7 +126,7 @@ public class CommitCrime : ComplexTask
         List<string> PossibleCrimes = new List<string>();
         if (Ped != null)
         {
-            if (Ped.IsInVehicle)
+            if (Ped.IsInVehicle || IsTrafficOnly)
             {
                 PossibleCrimes.AddRange(new List<string>() { "FelonySpeeding", "HitCarWithCar", "DrunkDriving" });
             }
@@ -155,7 +156,7 @@ public class CommitCrime : ComplexTask
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Ped.Pedestrian, (int)PedConfigFlags.PED_FLAG_DRUNK, true);
             if (Ped.Pedestrian.CurrentVehicle.Exists())
             {
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 20f, (int)eCustomDrivingStyles.Code3, 10f);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 35f, (int)eCustomDrivingStyles.DrunkDriving, 10f);
             }
         }
     }
@@ -163,7 +164,16 @@ public class CommitCrime : ComplexTask
     {
         if (Ped.Pedestrian.CurrentVehicle.Exists())
         {
-            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 20f, (int)eCustomDrivingStyles.Code3, 10f);
+            Ped.IsDrivingRecklessly= true;
+            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 90f, (int)eCustomDrivingStyles.RecklessDriving, 10f);
+        }
+    }
+    private void DriveAtSpeed()
+    {
+        if (Ped.Pedestrian.CurrentVehicle.Exists())
+        {
+            Ped.IsSpeeding = true;
+            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 42f, (int)eCustomDrivingStyles.SpeedingDriving, 10f);
         }
     }
     private void GetNewVictim()
@@ -317,10 +327,15 @@ public class CommitCrime : ComplexTask
                 EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} DrunkDriving Ran", 5);
                 DriveAroundDrunk();
             }
-            else if (SelectedCrime == "HitCarWithCar" || SelectedCrime == "FelonySpeeding")
+            else if (SelectedCrime == "HitCarWithCar")
             {
                 EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} DriveRecklessly Ran", 5);
                 DriveRecklessly();
+            }
+            else if (SelectedCrime == "FelonySpeeding")
+            {
+                EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} DriveAtSpeed Ran", 5);
+                DriveAtSpeed();
             }
             else if (SelectedCrime == "AttemptingSuicide")
             {

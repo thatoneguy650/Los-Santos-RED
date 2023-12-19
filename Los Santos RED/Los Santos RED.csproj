@@ -374,6 +374,8 @@
     <Compile Include="lsr\Player\Inventory\Items\RollingPapersItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\ValuableItem.cs" />
     <Compile Include="lsr\Player\Managers\InteriorManager.cs" />
+    <Compile Include="lsr\Player\Respawning\BribeActivity.cs" />
+    <Compile Include="lsr\Player\Respawning\PedInteractSetup.cs" />
     <Compile Include="lsr\Player\Taxi\TaxiManager.cs" />
     <Compile Include="lsr\Player\Taxi\TaxiRide.cs" />
     <Compile Include="lsr\Player\Money\BankAccount.cs" />
