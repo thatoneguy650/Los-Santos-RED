@@ -75,6 +75,10 @@ public static class StaticStrings
     public static readonly string AssaultingWithDeadlyWeaponCrimeID = "AssaultingWithDeadlyWeapon";
     public static readonly string AssaultingCiviliansCrimeID = "AssaultingCivilians";
     public static readonly string DealingDrugsCrimeID = "DealingDrugs";
+
+    public static readonly string DrugPossessionCrimeID = "DrugPossession";
+
+
     public static readonly string DealingGunsCrimeID = "DealingGuns";
     public static readonly string HitCarWithCarCrimeID = "HitCarWithCar";
     public static readonly string PublicIntoxicationCrimeID = "PublicIntoxication";

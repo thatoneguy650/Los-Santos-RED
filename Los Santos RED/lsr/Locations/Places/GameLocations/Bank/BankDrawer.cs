@@ -10,6 +10,7 @@ public class BankDrawer
 {
     public BankDrawer()
     {
+
     }
 
     public BankDrawer(Vector3 position, float heading, int totalCash)

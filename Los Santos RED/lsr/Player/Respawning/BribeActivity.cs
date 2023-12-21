@@ -37,6 +37,9 @@ public class BribeActivity
 
     public bool HasFinishedAnimation { get; private set; }
     public bool CanContinueBribe => EntryPoint.ModController.IsRunning && (Player.IsBusted || Player.IsArrested) && !Player.IsIncapacitated && Player.IsAlive && Cop != null && Cop.Pedestrian.Exists() && !Cop.Pedestrian.IsDead && !Cop.IsInWrithe && !Cop.IsUnconscious;
+
+    public bool IsFailed { get; set; } = false;
+
     public void Setup()
     {
         //PlayerGetSearchDictionary = "ped";
@@ -72,9 +75,11 @@ public class BribeActivity
     }
     public void Start()
     {
-        if(!Player.Surrendering.HasPlayedSurrenderActivity || Player.Character.IsRagdoll || Player.Character.IsStunned)
+        uint GameTimeStarted = Game.GameTime;
+        while(Player.IsBusted && Player.IsAlive && Game.GameTime - GameTimeStarted <= 8000 && (!Player.Surrendering.HasPlayedSurrenderActivity || Player.Character.IsRagdoll || Player.Character.IsStunned))
         {
-            GameFiber.Yield();
+            Game.DisplaySubtitle($"IS WAITING TO START BRIBE {Game.GameTime}");
+            GameFiber.Sleep(500);
         }
         GetCop();
         if (Cop == null || !Cop.Pedestrian.Exists())
@@ -90,9 +95,6 @@ public class BribeActivity
             return;
         }
         OfferBribe();
-
-        
-
         PedInteractSetup = new PedInteractSetup(Player, Cop, -0.9f);
         PedInteractSetup.Start();
         if(CanContinueBribe)
@@ -150,9 +152,14 @@ public class BribeActivity
 
         NativeFunction.Natives.TASK_PLAY_ANIM(Cop.Pedestrian, TakeCashDictionary, TakeCashAnimation, 2.0f, -2.0f, -1, 0, 0, false, false, false);
 
-
-        Cop.PlaySpeech(new List<string>() { "WON_DISPUTE", "GENERIC_THANKS", "GENERIC_BYE" }.PickRandom(), false);
-
+        if (IsFailed)
+        {
+            Cop.PlaySpeech(new List<string>() { "GENERIC_INSULT_HIGH", "CHALLENGE_THREATEN", "GENERIC_WHATEVER" }.PickRandom(), false);
+        }
+        else
+        {
+            Cop.PlaySpeech(new List<string>() { "WON_DISPUTE", "GENERIC_THANKS", "GENERIC_BYE" }.PickRandom(), false);
+        }
         bool endLoop = false;
         while (Cop.Pedestrian.Exists() && !endLoop && CanContinueBribe)
         {

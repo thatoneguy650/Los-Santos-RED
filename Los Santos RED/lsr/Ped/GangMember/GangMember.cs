@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Interface;
+using Mod;
 using Rage;
 using Rage.Native;
 using System.Collections.Generic;
@@ -45,6 +46,7 @@ public class GangMember : PedExt, IWeaponIssuable
     public new string FormattedName => (PlayerKnownsName ? Name : GroupName);
     public override bool KnowsDrugAreas => true;
     public override bool KnowsGangAreas => true;
+    public override int TouchLimit { get; set; } = 0;
     public override bool IsGangMember { get; set; } = true;
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
@@ -191,6 +193,41 @@ public class GangMember : PedExt, IWeaponIssuable
         PlayerToCheck.RelationshipManager.GangRelationships.ChangeReputation(Gang, -100, true);
         AddWitnessedPlayerCrime(Crimes.GetCrime(StaticStrings.BrandishingWeaponCrimeID), player.Character.Position);
         EntryPoint.WriteToConsole("set gang member brandisihg, to fight you!");
+    }
+    public override void OnTouchedByPlayer(IInteractionable player)
+    {
+        if (Gang == null)
+        {
+            return;
+        }
+        if (player.RelationshipManager.GangRelationships.CurrentGang != null && player.RelationshipManager.GangRelationships.CurrentGang.ID == Gang.ID)
+        {
+            return;
+        }
+        if (IsGroupMember)
+        {
+            return;
+        }
+        if (Game.GameTime - GameTimeLastTouchedPlayer < 3000)
+        {
+            return;
+        }
+        GameTimeLastTouchedPlayer = Game.GameTime;
+        TimesTouchedByPlayer++;
+        if (TimesTouchedByPlayer >= TouchLimit)
+        {
+            OnHitTouchLimit(player);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole("You are harassing the target!");
+        }
+    }
+    protected override void OnHitTouchLimit(IInteractionable player)
+    {
+        PlayerToCheck.RelationshipManager.GangRelationships.ChangeReputation(Gang, -100, true);
+        AddWitnessedPlayerCrime(Crimes.GetCrime(StaticStrings.BrandishingWeaponCrimeID), player.Character.Position);
+        base.OnHitTouchLimit(player);
     }
     public override void OnKilledByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
     {

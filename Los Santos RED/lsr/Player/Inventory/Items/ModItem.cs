@@ -88,6 +88,7 @@ public class ModItem
     public string ModelItemID { get; set; }
     public string PackageItemID { get; set; }
     public bool IsPossessionIllicit { get; set; } = false;
+    public bool IsPublicUseIllegal { get; set; } = false;
     public float PercentLostOnUse { get; set; } = 0.0f;
     public bool ConsumeOnPurchase { get; set; } = false;
     public virtual bool CanConsume { get; set; } = false;//no no

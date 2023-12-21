@@ -220,6 +220,8 @@ public class ActivityManager
     public bool IsEnteringAsPassenger { get; set; }
     public bool IsUrinatingDefecting { get; set; }
     public bool IsUrinatingDefectingOnToilet { get; set; }
+    public bool IsUsingIllegalItem { get; internal set; }
+
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
         IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories,
@@ -601,6 +603,7 @@ public class ActivityManager
         if(!performActivity)
         {
             Time.FastForward(Time.CurrentDateTime.AddMinutes(3));
+            GameFiber.Sleep(3000);
             modItem.ConsumeItem(Actionable, Settings.SettingsManager.NeedsSettings.ApplyNeeds);
         }
         else

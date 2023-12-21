@@ -141,6 +141,7 @@ public class SurrenderActivity : DynamicActivity
         {
             return;
         }
+        HasPlayedSurrenderActivity = false;
         GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
         {
             try
@@ -177,6 +178,7 @@ public class SurrenderActivity : DynamicActivity
                         }
                         if (!Player.Character.Exists() || !Player.IsBusted || !Player.IsAlive)
                         {
+                            HasPlayedSurrenderActivity = true;
                             return;
                         }
                     }
@@ -214,6 +216,7 @@ public class SurrenderActivity : DynamicActivity
                             {
                                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                             }
+                            HasPlayedSurrenderActivity = true;
                             return;
                         }
                         if (isOneHanded)
@@ -239,11 +242,13 @@ public class SurrenderActivity : DynamicActivity
                             {
                                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                             }
+                            HasPlayedSurrenderActivity = true;
                             return;
                         }
                         NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                     }
                 }
+                GameFiber.Sleep(2000);
                 HasPlayedSurrenderActivity = true;
                 //NativeFunction.Natives.SET_PED_KEEP_TASK(Player.Character, true);
                 //Player.Character.KeepTasks = true;

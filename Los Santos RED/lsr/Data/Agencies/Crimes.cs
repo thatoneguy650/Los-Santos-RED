@@ -57,6 +57,7 @@ public class Crimes : ICrimes
     private Crime Trespassing;
     private Crime VehicleInvasion;
     private Crime MaliciousVehicleDamage;
+    private Crime DrugPossession;
 
     public Crimes()
     {
@@ -127,6 +128,9 @@ public class Crimes : ICrimes
         AssaultingCivilians = new Crime(StaticStrings.AssaultingCiviliansCrimeID, "Assaulting", 2, false, 22, true, true, true);
         DealingDrugs = new Crime(StaticStrings.DealingDrugsCrimeID, "Dealing Drugs", 2, false, 23, true, false, false) { MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~dealing illegal drugs~s~~n~Avoid dealing in public" };
         DealingGuns = new Crime(StaticStrings.DealingGunsCrimeID, "Illegal Weapons Dealing", 2, false, 24, true, false, false) { MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~dealing illegal guns~s~~n~Avoid dealing in public" };
+
+
+        DrugPossession = new Crime(StaticStrings.DrugPossessionCrimeID, "Drug Possession", 2, false, 25, true, false, false) { MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~in possession of illegal drugs~s~~n~Avoid using in public" };
 
 
         SuspiciousVehicle = new Crime(StaticStrings.SuspiciousVehicleCrimeID, "Suspicious Vehicle", 2, false, 26, true, false, false) { MaxObservingDistance = 30f, MaxReportingDistance = 15f, ShowsWarning = true, WarningMessage = "This vehicle is ~r~suspicious~s~~n~Remove offending items" };
@@ -233,6 +237,7 @@ public class Crimes : ICrimes
              OfficersNeeded,
              IndecentExposure,
              MaliciousVehicleDamage,
+             DrugPossession,
         };
         Serialization.SerializeParams(CrimeList, ConfigFileName);
     }
@@ -296,6 +301,7 @@ public class Crimes : ICrimes
              OfficersNeeded,
              IndecentExposure,
              MaliciousVehicleDamage,
+             DrugPossession,
             });
 
         HitCarWithCar.CanBeReactedToByCivilians = false;

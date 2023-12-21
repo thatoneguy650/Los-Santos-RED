@@ -13,12 +13,14 @@ public class PossibleInteriors
     public List<Interior> GeneralInteriors { get; private set; } = new List<Interior>();
     public List<ResidenceInterior> ResidenceInteriors { get; private set; } = new List<ResidenceInterior>();
     public List<GangDenInterior> GangDenInteriors { get; private set; } = new List<GangDenInterior>();
+    public List<BankInterior> BankInteriors { get; private set; } = new List<BankInterior>();
     public List<Interior> AllInteriors()
     {
         List<Interior> Allinteriors = new List<Interior>();
         Allinteriors.AddRange(GeneralInteriors);
         Allinteriors.AddRange(ResidenceInteriors);
         Allinteriors.AddRange(GangDenInteriors);
+        Allinteriors.AddRange(BankInteriors);
         return Allinteriors;
     }
 }

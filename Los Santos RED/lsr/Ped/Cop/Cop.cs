@@ -63,7 +63,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public override int TurretAccuracy { get; set; } = 30;
     public override int TurretShootRate { get; set; } = 1000;
     public override bool AutoCallsInUnconsciousPeds { get; set; } = true;
-
+    public override int TouchLimit { get; set; } = 1;
     public override string BlipName => "Police";
 
     public CopAssistManager AssistManager { get; private set;}
@@ -326,6 +326,10 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     {
         player.SetAngeredCop();
         EntryPoint.WriteToConsole("You angered the cop by standing too close!");
+    }
+    protected override void OnHitTouchLimit(IInteractionable player)
+    {
+        player.SetAngeredCop();
     }
     private void PlayerViolationChecker(IPoliceRespondable policeRespondable, IEntityProvideable world)
     {

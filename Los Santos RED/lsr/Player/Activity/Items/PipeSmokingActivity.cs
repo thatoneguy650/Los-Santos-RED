@@ -78,6 +78,7 @@ namespace LosSantosRED.lsr.Player
         {
             IsCancelled = true;
             Player.ActivityManager.IsPerformingActivity = false;
+            Player.ActivityManager.IsUsingIllegalItem = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
         }
         public override void Continue()
@@ -92,6 +93,7 @@ namespace LosSantosRED.lsr.Player
         {
             isPaused = true;
             Player.ActivityManager.IsPerformingActivity = false;
+            Player.ActivityManager.IsUsingIllegalItem = false;
         }
         public override bool IsPaused() => isPaused;
         public override void Start()
@@ -168,6 +170,10 @@ namespace LosSantosRED.lsr.Player
         {
             Player.WeaponEquipment.SetUnarmed();
             Player.ActivityManager.IsPerformingActivity = true;
+            if (ModItem.IsPublicUseIllegal)
+            {
+                Player.ActivityManager.IsUsingIllegalItem = true;
+            }
             Idle();
         }
         private void Exit()
@@ -182,6 +188,7 @@ namespace LosSantosRED.lsr.Player
             }
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.ActivityManager.IsPerformingActivity = false;
+            Player.ActivityManager.IsUsingIllegalItem = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
             GameFiber.Sleep(5000);
             if (PipeObject.Exists())

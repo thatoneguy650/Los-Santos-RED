@@ -73,7 +73,8 @@ namespace LosSantosRED.lsr.Interface
         uint TimeInCurrentVehicle { get; }
         Vehicle LastFriendlyVehicle { get; }
         bool IsStandingOnVehicle { get; }
-        bool RecentlyDamagedVehicleOnFoot { get; }
+      //  bool RecentlyDamagedVehicleOnFoot { get; }
+        bool IsDead { get; }
 
         //  bool IsLootingBody { get; }
 

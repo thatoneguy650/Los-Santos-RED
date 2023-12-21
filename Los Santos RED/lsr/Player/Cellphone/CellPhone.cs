@@ -583,7 +583,14 @@ public class CellPhone
         ScheduledTexts.RemoveAll(x => x.ContactName == gang.ContactName);
         ScheduledContacts.RemoveAll(x => x.ContactName == gang.ContactName);
     }
-
+    public bool HasPendingItems(PhoneContact phoneContact)
+    {
+        if (phoneContact == null)
+        {
+            return false;
+        }
+        return ScheduledTexts.Any(x => x.ContactName == phoneContact.Name) || ScheduledContacts.Any(x => x.ContactName == phoneContact.Name);
+    }
     public void ClearPendingTexts(PhoneContact phoneContact)
     {
         if (phoneContact == null)

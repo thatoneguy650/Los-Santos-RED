@@ -1523,19 +1523,20 @@ private void DebugNumpad6()
 
     private void DebugNumpad7()
     {
-        Vector3 Position = new Vector3(833.577f, -1258.954f, 26.34347f);
-        bool isObscured = false;
-        while (!Game.IsKeyDownRightNow(Keys.Space))
-        {
-            Rage.Debug.DrawArrowDebug(Position, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
-            isObscured = NativeFunction.Natives.IS_POINT_OBSCURED_BY_A_MISSION_ENTITY<bool>(Position.X, Position.Y, Position.Z, Settings.SettingsManager.DebugSettings.ObscuredX, Settings.SettingsManager.DebugSettings.ObscuredY, Settings.SettingsManager.DebugSettings.ObscuredZ, 0);// 0.5f, 2f, 1f, 0))//NativeFunction.Natives.IS_POSITION_OCCUPIED<bool>(Position.X, Position.Y, Position.Z, 0.1f, false, true, false, false, false, false, false))
-            Game.DisplayHelp($"Press SPACE to Stop");
+        World.Vehicles.StopAllTrains();
+        //Vector3 Position = new Vector3(833.577f, -1258.954f, 26.34347f);
+        //bool isObscured = false;
+        //while (!Game.IsKeyDownRightNow(Keys.Space))
+        //{
+        //    Rage.Debug.DrawArrowDebug(Position, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+        //    isObscured = NativeFunction.Natives.IS_POINT_OBSCURED_BY_A_MISSION_ENTITY<bool>(Position.X, Position.Y, Position.Z, Settings.SettingsManager.DebugSettings.ObscuredX, Settings.SettingsManager.DebugSettings.ObscuredY, Settings.SettingsManager.DebugSettings.ObscuredZ, 0);// 0.5f, 2f, 1f, 0))//NativeFunction.Natives.IS_POSITION_OCCUPIED<bool>(Position.X, Position.Y, Position.Z, 0.1f, false, true, false, false, false, false, false))
+        //    Game.DisplayHelp($"Press SPACE to Stop");
 
-            float DistancetoPos = Game.LocalPlayer.Character.Position.DistanceTo(Position);
-            Game.DisplaySubtitle($"isObscured: {isObscured} DistancetoPos {Math.Round(DistancetoPos,2)}");
-            GameFiber.Yield();
-        }
-       
+        //    float DistancetoPos = Game.LocalPlayer.Character.Position.DistanceTo(Position);
+        //    Game.DisplaySubtitle($"isObscured: {isObscured} DistancetoPos {Math.Round(DistancetoPos,2)}");
+        //    GameFiber.Yield();
+        //}
+
 
 
         //

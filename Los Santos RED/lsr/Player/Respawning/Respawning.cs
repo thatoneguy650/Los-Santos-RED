@@ -122,12 +122,12 @@ public class Respawning// : IRespawning
         }
 
 
-
-        BribeActivity bribeActivity = new BribeActivity(Player,World,Settings, ModItems);
+        bool isFailedBribe = possibleBribe.Amount < RequiredBribeAmount && !possibleBribe.AttemptBribe();
+        BribeActivity bribeActivity = new BribeActivity(Player, World, Settings, ModItems) { IsFailed = isFailedBribe };
         bribeActivity.Setup();
         bribeActivity.Start();
 
-        if (possibleBribe.Amount < RequiredBribeAmount && !possibleBribe.AttemptBribe())//(CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
+        if (isFailedBribe)//(CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
         {
             Game.DisplayNotification(BlankContactPicture, BlankContactPicture, StaticStrings.OfficerFriendlyContactName, "Expedited Service Fee", string.Format(BribeFailedResponse, possibleBribe.Amount));
             if (Settings.SettingsManager.RespawnSettings.DeductMoneyOnFailedBribe)
@@ -159,7 +159,7 @@ public class Respawning// : IRespawning
                 return true;
             }
             CorruptCopContact toSend = Player.CellPhone.DefaultCorruptCopContact;
-            if(toSend != null)
+            if(toSend != null && !Player.CellPhone.HasPendingItems(toSend))
             {
                 Player.CellPhone.AddScheduledText(toSend, OfficerFriendlyResponses.PickRandom(), 1, false);
             }

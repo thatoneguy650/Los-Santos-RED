@@ -36,6 +36,7 @@ namespace LosSantosRED.lsr
             WeaponViolations = new WeaponViolations(Player, this, Settings, TimeReporter);
             TheftViolations = new TheftViolations(Player, this, Settings, TimeReporter, Zones, GangTerritories);
             OtherViolations = new OtherViolations(Player, this, Settings, TimeReporter, World, interactionable);
+            MinorViolations = new MinorViolations(Player, this, Settings, TimeReporter, World, interactionable);
         }
         public readonly List<Crime> CrimesViolating = new List<Crime>();
         public TrafficViolations TrafficViolations { get; private set; }
@@ -43,6 +44,7 @@ namespace LosSantosRED.lsr
         public WeaponViolations WeaponViolations { get; private set; }
         public TheftViolations TheftViolations { get; private set; }
         public OtherViolations OtherViolations { get; private set; }
+        public MinorViolations MinorViolations { get; private set; }
         public List<Crime> CivilianReportableCrimesViolating => CrimesViolating.Where(x => x.CanBeReactedToByCivilians).ToList();
         public string LawsViolatingDisplay => string.Join(", ", CrimesViolating.OrderBy(x=>x.Priority).Select(x => x.Name));
         public bool IsViolatingSeriousCrime => CrimesViolating.Any(x => x.ResultingWantedLevel >= 2);
@@ -59,6 +61,7 @@ namespace LosSantosRED.lsr
             WeaponViolations.Setup();
             TheftViolations.Setup();
             OtherViolations.Setup();
+            MinorViolations.Setup();
         }
         public void Update()
         {
@@ -70,6 +73,7 @@ namespace LosSantosRED.lsr
                 TheftViolations.Update();
                 OtherViolations.Update();
                 DamageViolations.Update();
+                MinorViolations.Update();
                 AddObservedAndReported();
             }
         }
@@ -81,6 +85,7 @@ namespace LosSantosRED.lsr
             OtherViolations.Reset();
             CrimesViolating.RemoveAll(x => !x.IsTrafficViolation);
             TrafficViolations.Reset();
+            MinorViolations.Reset();
         }
         public void Dispose()
         {
@@ -89,6 +94,7 @@ namespace LosSantosRED.lsr
             WeaponViolations.Dispose();
             TheftViolations.Dispose();
             OtherViolations.Dispose();
+            MinorViolations.Dispose();
         }
         public void AddViolating(string crimeID)
         {

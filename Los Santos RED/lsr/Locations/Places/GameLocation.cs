@@ -610,7 +610,7 @@ public class GameLocation : ILocationDispatchable
             }
             if(DistanceToPlayer <= 100f)
             {
-                UpdatePrompts();
+               /// UpdatePrompts();
                 if (IsActivated && HasInterior)
                 {
                     Interior?.Update();
@@ -940,9 +940,9 @@ public class GameLocation : ILocationDispatchable
         }
         StoreCamera.HighlightHome();
     }
-    public virtual void UpdatePrompts()
-    {
+    //public virtual void UpdatePrompts()
+    //{
 
-    }
+    //}
 }
 

@@ -42,8 +42,9 @@ namespace LosSantosRED.lsr.Interface
         string Gender { get; }
         InteriorManager InteriorManager { get; }
         OutfitManager OutfitManager { get; }
+        Violations Violations { get; }
 
-        void OnDamagedVehicle();
+       // void OnDamagedVehicle();
         void PlaySpeech(string v1, bool v2);
         void SetAngeredCop();
     }

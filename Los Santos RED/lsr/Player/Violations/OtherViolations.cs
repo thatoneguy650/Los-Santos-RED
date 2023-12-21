@@ -83,10 +83,9 @@ public class OtherViolations
         {
             Violations.AddViolating(StaticStrings.MuggingCrimeID);
         }
-        if (Player.RecentlyDamagedVehicleOnFoot)
+        if (Player.ActivityManager.IsUsingIllegalItem)
         {
-            EntryPoint.WriteToConsole("VIOLATING MaliciousVehicleDamageCrimeID");
-            Violations.AddViolating(StaticStrings.MaliciousVehicleDamageCrimeID);
+            Violations.AddViolating(StaticStrings.DrugPossessionCrimeID);
         }
     }
     private void SmallBodyCrimes()
@@ -286,7 +285,7 @@ public class OtherViolations
     }
     public bool AddFoundIllegalItem()
     {
-        Violations.AddViolatingAndObserved(StaticStrings.DealingDrugsCrimeID);
+        Violations.AddViolatingAndObserved(StaticStrings.DrugPossessionCrimeID);
         return true;
     }
 }

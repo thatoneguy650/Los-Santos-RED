@@ -6,6 +6,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using static DispatchScannerFiles;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
@@ -610,5 +611,25 @@ public class Vehicles
         //}
         //EntryPoint.WriteToConsole($"CleanupAmbient RAN DELETED CIVILIAN CAR");
         //Car.FullyDelete();
+    }
+
+    public void StopAllTrains()
+    {
+        foreach(VehicleExt vehicleExt in CivilianVehicles.ToList())
+        {
+            if(!vehicleExt.Vehicle.Exists())
+            {
+                continue;
+            }
+            if(NativeFunction.Natives.IS_THIS_MODEL_A_TRAIN<bool>(vehicleExt.Vehicle.Model.Hash))
+            {
+                if(vehicleExt.Vehicle.Driver.Exists())
+                {
+                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", vehicleExt.Vehicle.Driver, vehicleExt.Vehicle, 6, 999999);
+                }
+                //NativeFunction.Natives.SET_TRAIN_SPEED(vehicleExt.Vehicle, 0);
+                EntryPoint.WriteToConsole("SETTING TRAIN STOPPED");
+            }
+        }
     }
 }

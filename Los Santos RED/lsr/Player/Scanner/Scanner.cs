@@ -146,6 +146,7 @@ namespace LosSantosRED.lsr
         private Dispatch MaliciousVehicleDamage;
         private Dispatch WantedSuspectSpotted;
         private Dispatch WeaponsFree;
+        private Dispatch DrugPossession;
         private IEntityProvideable World;
         private ZoneScannerAudio ZoneScannerAudio;
         private Dispatch SuspectSpottedSimple;
@@ -1714,6 +1715,7 @@ namespace LosSantosRED.lsr
             new CrimeDispatch("PublicVagrancy",PublicVagrancy),
             new CrimeDispatch(StaticStrings.IndecentExposureCrimeID,IndecentExposure),
             new CrimeDispatch(StaticStrings.MaliciousVehicleDamageCrimeID,MaliciousVehicleDamage),
+            new CrimeDispatch(StaticStrings.DrugPossessionCrimeID,DrugPossession),
         };
             DispatchList = new List<Dispatch>
         {
@@ -1795,6 +1797,7 @@ namespace LosSantosRED.lsr
             ,PublicVagrancy
             ,IndecentExposure
             ,MaliciousVehicleDamage
+            ,DrugPossession
         };
         }
         private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)
@@ -2414,6 +2417,26 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_5_07.Apublicnuisance.FileName },"a public nuisance"),
             },
             };
+
+
+
+
+            DrugPossession = new Dispatch()
+            {
+                Name = "Drug Possession",
+                LocationDescription = LocationSpecificity.Street,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_11_357.Adrugpossessionincident.FileName },"a drug possession incident"),
+                new AudioSet(new List<string>() { crime_11_357.Adrugpossessionincident1.FileName },"a drug possession incident"),
+                new AudioSet(new List<string>() { crime_criminal_activity.Criminalactivity.FileName },"criminal activity"),
+                new AudioSet(new List<string>() { crime_criminal_activity.Illegalactivity.FileName },"criminal activity"),
+                new AudioSet(new List<string>() { crime_criminal_activity.Prohibitedactivity.FileName },"criminal activity"),
+            },
+            };
+
+
+
             MaliciousVehicleDamage = new Dispatch()
             {
                 Name = "Malicious Vehicle Damage",

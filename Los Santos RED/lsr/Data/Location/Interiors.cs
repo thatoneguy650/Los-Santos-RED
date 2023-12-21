@@ -50,6 +50,7 @@ public class Interiors : IInteriors
         Other();
         Residence();
         GangDens();
+        Banks();
         Serialization.SerializeParam(PossibleInteriors, ConfigFileName);
     }
     public List<Interior> GetAllPlaces()
@@ -239,71 +240,7 @@ public class Interiors : IInteriors
             new Interior(7170, "Premium Deluxe Motorsport",new List<string>() { "shr_int" },new List<string>() { "fakeint" },new List<string>() { "shutter_open","csr_beforeMission" }),
 
             //Banks
-            new Interior(71682,"Fleeca Bank") {
-               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
-                   new InteriorDoor(73386408,new Vector3(-348.8109f, -47.26213f, 49.38759f)) { LockWhenClosed = true },//Front Door1
-                   new InteriorDoor(3142793112,new Vector3(-351.2598f, -46.41221f, 49.38765f)) { LockWhenClosed = true },//Front Door1
-                    new InteriorDoor(4163212883, new Vector3(-355.3892f, -51.06768f, 49.31105f)) { ForceRotateOpen = true },//teller door
-                } },
-            new Interior(76802,"Fleeca Bank"){
-               IsWeaponRestricted = true
-               , Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(3142793112,new Vector3(149.6298f, -1037.231f, 29.71915f)){ LockWhenClosed = true, } ,//Front Door1
-                    new InteriorDoor(73386408,new Vector3(152.0632f, -1038.124f, 29.71909f)) { LockWhenClosed = true, } ,//Front Door2
-                    new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)) { ForceRotateOpen = true },//teller door
-                } },
-            new Interior(11266,"Fleeca Bank") { 
-                IsWeaponRestricted = true,
-                Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(73386408,new Vector3(316.3925f, -276.4888f, 54.5158f)) { LockWhenClosed = true }, //Front Door1
-                    new InteriorDoor(3142793112,new Vector3(313.9587f, -275.5965f, 54.51586f)) { LockWhenClosed = true }, //Front Door2
-                    new InteriorDoor(4163212883, new Vector3(309.7491f, -280.1797f, 54.43926f)) { ForceRotateOpen = true },//teller door
-                } },
-            new Interior(20226,"Fleeca Bank") {
-               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { LockWhenClosed = true }, //Front Door1
-                    new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { LockWhenClosed = true }, //Front Door2
-                    new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true },//teller door
-                } },
-            new Interior(90626,"Fleeca Bank") {
-               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
-                   new InteriorDoor(3142793112,new Vector3(1176.495f, 2703.613f, 38.43911f)) { LockWhenClosed = true },
-                   new InteriorDoor(73386408,new Vector3(1173.903f, 2703.613f, 38.43904f)) { LockWhenClosed = true },
-                    new InteriorDoor(4163212883, new Vector3(1178.87f, 2709.365f, 38.36251f)) { ForceRotateOpen = true },//teller door
-                } },
-            new Interior(87810,"Fleeca Bank") {
-               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
-                   new InteriorDoor(3142793112,new Vector3(-1215.386f, -328.5237f, 38.13211f)) { LockWhenClosed = true },
-                   new InteriorDoor(73386408,new Vector3(-1213.074f, -327.3524f, 38.13205f)) { LockWhenClosed = true },
-                    new InteriorDoor(4163212883, new Vector3(-1214.906f, -334.7281f, 38.05551f)) { ForceRotateOpen = true },//teller door
-                } },
-
-
-
-            //4163212883
-
-            new Interior(103170,"Pacific Standard Bank") {
-                IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
-
-                    new InteriorDoor(2253282288,new Vector3(232.6054f, 214.1584f, 106.4049f)) { LockWhenClosed = true },//FRONT LEFT
-                    new InteriorDoor(2253282288,new Vector3(231.5075f, 216.5148f, 106.4049f)) { LockWhenClosed = true },//FRONT RIGHT
-
-
-                    new InteriorDoor(1335309163,new Vector3(260.6518f, 203.2292f, 106.4328f)) { LockWhenClosed = true },//BACK LEFT
-                    new InteriorDoor(1335309163,new Vector3(258.2093f, 204.119f, 106.4328f)) { LockWhenClosed = true },//BACK RIGHT
-                    new InteriorDoor(4072696575, new Vector3(256.3116f,220.6579f,106.4296f)) { LockWhenClosed = true },//teller door
-                } },
-
-
-            new Interior(42754,"Blaine County Savings") {
-                IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(3110375179, new Vector3(-108.9147f,6469.105f,31.91028f)) { LockWhenClosed = true },//teller
-                    new InteriorDoor(2628496933, new Vector3(-109.65f,6462.11f,31.98499f)) { LockWhenClosed = true },//FRONT 1
-                    new InteriorDoor(3941780146, new Vector3(-111.48f,6463.94f,31.98499f)) { LockWhenClosed = true },//FRONT 2
-                    //new InteriorDoor(-1184592117, new Vector3(-108.9147f,6469.105f,31.91028f)),//teller
-                    //new InteriorDoor(-1666470363, new Vector3(-109.65f,6462.11f,31.98499f)),//FRONT 1
-                    //new InteriorDoor(-353187150, new Vector3(-111.48f,6463.94f,31.98499f)),//FRONT 2
-                } },
+            
 
 
             //103170
@@ -5619,6 +5556,109 @@ public class Interiors : IInteriors
             new Vector3(-807.2319f,332.2801f,190.7134f),
             },
             },
+        });
+    }
+    private void Banks()
+    {
+        PossibleInteriors.BankInteriors.AddRange(new List<BankInterior>()
+        {
+            new BankInterior(71682,"Fleeca Bank") {
+               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+                   new InteriorDoor(73386408,new Vector3(-348.8109f, -47.26213f, 49.38759f)) { LockWhenClosed = true },//Front Door1
+                   new InteriorDoor(3142793112,new Vector3(-351.2598f, -46.41221f, 49.38765f)) { LockWhenClosed = true },//Front Door1
+                    new InteriorDoor(4163212883, new Vector3(-355.3892f, -51.06768f, 49.31105f)) { ForceRotateOpen = true },//teller door
+                },
+                BankDrawerInteracts = new List<BankDrawerInteract>() 
+                {
+                    new BankDrawerInteract("fleeca1Drawer1",new Vector3(-351.3789f, -51.64762f, 49.03649f), 336.6109f,"Steal from Drawer") { AutoCamera = false },
+                }, },
+            new BankInterior(76802,"Fleeca Bank"){
+               IsWeaponRestricted = true
+               , Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(3142793112,new Vector3(149.6298f, -1037.231f, 29.71915f)){ LockWhenClosed = true, } ,//Front Door1
+                    new InteriorDoor(73386408,new Vector3(152.0632f, -1038.124f, 29.71909f)) { LockWhenClosed = true, } ,//Front Door2
+                    new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)) { ForceRotateOpen = true },//teller door
+                },
+                BankDrawerInteracts = new List<BankDrawerInteract>()
+                {
+                    new BankDrawerInteract("fleeca2Drawer1",new Vector3(147.8368f, -1041.57f, 29.36793f), 338.927f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("fleeca2Drawer2",new Vector3(149.4326f, -1042.337f, 29.368f), 340.193f,"Steal from Drawer") { AutoCamera = false },
+                }, },
+            new BankInterior(11266,"Fleeca Bank") {
+                IsWeaponRestricted = true,
+                Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(73386408,new Vector3(316.3925f, -276.4888f, 54.5158f)) { LockWhenClosed = true }, //Front Door1
+                    new InteriorDoor(3142793112,new Vector3(313.9587f, -275.5965f, 54.51586f)) { LockWhenClosed = true }, //Front Door2
+                    new InteriorDoor(4163212883, new Vector3(309.7491f, -280.1797f, 54.43926f)) { ForceRotateOpen = true },//teller door
+                },
+                BankDrawerInteracts = new List<BankDrawerInteract>()
+                {
+                    new BankDrawerInteract("fleeca3Drawer1",new Vector3(313.6212f, -280.8588f, 54.1647f), 335.8324f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("fleeca3Drawer2",new Vector3(312.5256f, -280.4068f, 54.1647f), 338.1261f,"Steal from Drawer") { AutoCamera = false },
+                }, },
+            new BankInterior(20226,"Fleeca Bank") {
+               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { LockWhenClosed = true }, //Front Door1
+                    new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { LockWhenClosed = true }, //Front Door2
+                    new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true },//teller door
+                },
+                BankDrawerInteracts = new List<BankDrawerInteract>()
+                {
+                    new BankDrawerInteract("fleeca4Drawer1",new Vector3(-2960.644f, 482.839f, 15.69701f), 81.83675f,"Steal from Drawer") { AutoCamera = false },
+                }, },
+            new BankInterior(90626,"Fleeca Bank") {
+               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+                   new InteriorDoor(3142793112,new Vector3(1176.495f, 2703.613f, 38.43911f)) { LockWhenClosed = true },
+                   new InteriorDoor(73386408,new Vector3(1173.903f, 2703.613f, 38.43904f)) { LockWhenClosed = true },
+                    new InteriorDoor(4163212883, new Vector3(1178.87f, 2709.365f, 38.36251f)) { ForceRotateOpen = true },//teller door
+                },
+                BankDrawerInteracts = new List<BankDrawerInteract>()
+                {
+                    new BankDrawerInteract("fleeca5Drawer1",new Vector3(1175.087f, 2708.431f, 38.08793f), 177.2366f,"Steal from Drawer") { AutoCamera = false },
+                }, },
+            new BankInterior(87810,"Fleeca Bank") {
+               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+                   new InteriorDoor(3142793112,new Vector3(-1215.386f, -328.5237f, 38.13211f)) { LockWhenClosed = true },
+                   new InteriorDoor(73386408,new Vector3(-1213.074f, -327.3524f, 38.13205f)) { LockWhenClosed = true },
+                    new InteriorDoor(4163212883, new Vector3(-1214.906f, -334.7281f, 38.05551f)) { ForceRotateOpen = true },//teller door
+                },
+                BankDrawerInteracts = new List<BankDrawerInteract>()
+                {
+                    new BankDrawerInteract("fleeca6Drawer1",new Vector3(-1211.815f, -332.2156f, 37.78094f), 25.86222f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("fleeca6Drawer2",new Vector3(-1213.225f, -333.1036f, 37.78089f), 22.51491f,"Steal from Drawer") { AutoCamera = false },
+                }, },
+
+
+            new BankInterior(103170,"Pacific Standard Bank") {
+                IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
+
+                    new InteriorDoor(2253282288,new Vector3(232.6054f, 214.1584f, 106.4049f)) { LockWhenClosed = true },//FRONT LEFT
+                    new InteriorDoor(2253282288,new Vector3(231.5075f, 216.5148f, 106.4049f)) { LockWhenClosed = true },//FRONT RIGHT
+
+
+                    new InteriorDoor(1335309163,new Vector3(260.6518f, 203.2292f, 106.4328f)) { LockWhenClosed = true },//BACK LEFT
+                    new InteriorDoor(1335309163,new Vector3(258.2093f, 204.119f, 106.4328f)) { LockWhenClosed = true },//BACK RIGHT
+                    new InteriorDoor(4072696575, new Vector3(256.3116f,220.6579f,106.4296f)) { LockWhenClosed = true },//teller door
+                },
+                BankDrawerInteracts = new List<BankDrawerInteract>()
+                {
+                    new BankDrawerInteract("pacstdDrawer1",new Vector3(249.3135f, 224.6261f, 106.287f), 147.2702f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("pacstdDrawer2",new Vector3(253.0091f, 223.5203f, 106.2868f), 151.6559f,"Steal from Drawer") { AutoCamera = false },
+                }, },
+
+            new BankInterior(42754,"Blaine County Savings") {
+                IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(3110375179, new Vector3(-108.9147f,6469.105f,31.91028f)) { LockWhenClosed = true },//teller
+                    new InteriorDoor(2628496933, new Vector3(-109.65f,6462.11f,31.98499f)) { LockWhenClosed = true },//FRONT 1
+                    new InteriorDoor(3941780146, new Vector3(-111.48f,6463.94f,31.98499f)) { LockWhenClosed = true },//FRONT 2
+                    //new InteriorDoor(-1184592117, new Vector3(-108.9147f,6469.105f,31.91028f)),//teller
+                    //new InteriorDoor(-1666470363, new Vector3(-109.65f,6462.11f,31.98499f)),//FRONT 1
+                    //new InteriorDoor(-353187150, new Vector3(-111.48f,6463.94f,31.98499f)),//FRONT 2
+                },
+                BankDrawerInteracts = new List<BankDrawerInteract>()
+                {
+                    new BankDrawerInteract("bcsDrawer1",new Vector3(-111.1494f, 6470.298f, 31.6267f), 133.0098f,"Steal from Drawer") { AutoCamera = false },
+                }, },
         });
     }
     private void Other()

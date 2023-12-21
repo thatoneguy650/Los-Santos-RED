@@ -1,6 +1,5 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
-using LosSantosRED.lsr.Data;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Locations;
@@ -9,13 +8,9 @@ using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
-using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
-using System.Windows.Media;
 
 namespace Mod
 {
@@ -99,7 +94,6 @@ namespace Mod
         private bool prevAliasPedAsMainCharacter = true;//if change default setting
         private bool prevIsSleeping;
         private uint KillerHandle;
-        private uint GameTimeLastDamagedVehicleOnFoot;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -427,7 +421,7 @@ namespace Mod
         public bool RecentlyShot => GameTimeLastShot != 0 && !RecentlyStartedPlaying && Game.GameTime - GameTimeLastShot <= 3000;
         public bool RecentlyStartedPlaying => GameTimeStartedPlaying != 0 && Game.GameTime - GameTimeStartedPlaying <= 3000;
         public bool ReleasedFireWeapon { get; set; }
-        public bool RecentlyDamagedVehicleOnFoot => GameTimeLastDamagedVehicleOnFoot != 0 && Game.GameTime - GameTimeLastDamagedVehicleOnFoot <= 5000;
+
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public float SearchModePercentage => SearchMode.SearchModePercentage;
         public bool ShouldCheckViolations => !Settings.SettingsManager.ViolationSettings.TreatAsCop && !IsCop && !RecentlyStartedPlaying;
@@ -478,6 +472,7 @@ namespace Mod
         public bool IsShowingActionWheel { get; set; }
         public bool IsInPoliceVehicle { get; private set; }
         public Dispatcher Dispatcher { get; set; }
+        public bool IsBlockingTraffic { get; set; }
 
         //Required
         public void Setup()
@@ -1759,8 +1754,11 @@ namespace Mod
             UpdateSleeping();
             GameFiber.Yield();
             UpdateFootItems();
-            UpdateVehicleDamage();
+            //UpdateVehicleDamage();
+            //UpdateCollideItems();
         }
+
+
 
         private void UpdateFootItems()
         {
@@ -1771,25 +1769,46 @@ namespace Mod
             }
             IsStandingOnVehicle = NativeFunction.Natives.IS_PED_ON_VEHICLE<bool>(Character);
         }
-        private void UpdateVehicleDamage()
-        {
-            if (IsInVehicle || RecentlyDamagedVehicleOnFoot || IsWanted || IsDead)//already checks crashes
-            {
-                return;
-            }
-            List<VehicleExt> CloseVehicles = World.Vehicles.AllVehicleList.Where(x => x.Vehicle.Exists() && x.Vehicle.DistanceTo(Character) <= 5.0f).ToList();
-            foreach (VehicleExt vehicle in CloseVehicles)
-            {
-                if(vehicle.CheckPlayerDamage(this))
-                {
-                    return;
-                }
-            }
-        }
-        public void OnDamagedVehicle()
-        {
-            GameTimeLastDamagedVehicleOnFoot = Game.GameTime;
-        }
+        //private void UpdateVehicleDamage()
+        //{
+        //    if (IsInVehicle || RecentlyDamagedVehicleOnFoot || IsWanted || IsDead)//already checks crashes
+        //    {
+        //        return;
+        //    }
+        //    List<VehicleExt> CloseVehicles = World.Vehicles.AllVehicleList.Where(x => x.Vehicle.Exists() && x.Vehicle.DistanceTo(Character) <= 5.0f).ToList();
+        //    foreach (VehicleExt vehicle in CloseVehicles)
+        //    {
+        //        if(vehicle.CheckPlayerDamage(this))
+        //        {
+        //            return;
+        //        }
+        //    }
+        //}
+        //private void UpdateCollideItems()
+        //{
+        //    if (IsInVehicle || IsWanted || IsDead)//already checks crashes
+        //    {
+        //        return;
+        //    }
+        //    List<PedExt> CloseVehicles = World.Pedestrians.LivingPeople.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 5.0f).ToList();
+        //    foreach (PedExt pedExt in CloseVehicles)
+        //    {
+        //        if(!pedExt.Pedestrian.Exists())
+        //        {
+        //            continue;
+        //        }
+        //        if(NativeFunction.Natives.IS_ENTITY_TOUCHING_ENTITY<bool>(Character,pedExt.Pedestrian))
+        //        {
+        //            pedExt.OnTouchedByPlayer(this);
+        //            Game.DisplaySubtitle($"YOU ARE TOUCHING {pedExt.Handle}");
+        //            EntryPoint.WriteToConsole($"YOU ARE TOUCHING {pedExt.Handle}");
+        //        }
+        //    }
+        //}
+        //public void OnDamagedVehicle()
+        //{
+        //    GameTimeLastDamagedVehicleOnFoot = Game.GameTime;
+        //}
         private void UpdateGeneralStatus()
         {
             if (Game.LocalPlayer.Character.IsDead && !IsDead)

@@ -38,6 +38,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     private uint GameTimeFirstSeenUnconscious;
     private uint GameTimeLastReportedCrime;
     private uint GameTimeLastTooCloseToPlayer;
+    protected uint GameTimeLastTouchedPlayer;
+    protected int TimesTouchedByPlayer;
+
 
     private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
     private bool CanYell => !IsYellingTimeOut;
@@ -116,6 +119,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public virtual bool IsTrustingOfPlayer { get; set; } = true;
     public virtual bool CanTransact => HasMenu;
+    public virtual int TouchLimit { get; set; } = 2;
     public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
     public bool RecentlySeenPlayer => PlayerPerception.RecentlySeenTarget;
     public bool IsCowering { get; set; }
@@ -1023,7 +1027,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public void AddBlip()
     {
-        if(!Pedestrian.Exists())
+        if(!Pedestrian.Exists() || AttachedLSRBlip.Exists())
         {
             return;
         }
@@ -1411,5 +1415,28 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     {
         AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "Harassment"), player.Character.Position);
         EntryPoint.WriteToConsole("You are harassing the target!");
+    }
+
+    public virtual void OnTouchedByPlayer(IInteractionable player)
+    {
+        if(Game.GameTime - GameTimeLastTouchedPlayer < 3000)
+        {
+            return;
+        }
+        GameTimeLastTouchedPlayer = Game.GameTime;
+        TimesTouchedByPlayer++;
+        if(TimesTouchedByPlayer >= TouchLimit)
+        {
+            OnHitTouchLimit(player);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole("You are harassing the target!");
+        }
+    }
+    protected virtual void OnHitTouchLimit(IInteractionable player)
+    {
+        AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "Harassment"), player.Character.Position);
+        EntryPoint.WriteToConsole("You have annoyed the target!");
     }
 }

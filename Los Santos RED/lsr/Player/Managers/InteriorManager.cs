@@ -74,7 +74,7 @@ public class InteriorManager
             {
                 continue;
             }
-            if (gameLocation.Interior.InteractPoints == null || !gameLocation.Interior.InteractPoints.Any())
+            if (gameLocation.Interior.AllInteractPoints == null || !gameLocation.Interior.AllInteractPoints.Any())
             {
                 continue;
             }

@@ -141,6 +141,8 @@
     <Compile Include="lsr\Dispatcher\LE\MarshalDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Civilian\TaxiDispatcher.cs" />
     <Compile Include="lsr\Inventory\CashStorage.cs" />
+    <Compile Include="lsr\Locations\Interiors\BankDrawerInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\BankInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\GangDenInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\InteriorInteract.cs" />
@@ -385,6 +387,7 @@
     <Compile Include="lsr\Player\Respawning\SearchActivity.cs" />
     <Compile Include="lsr\Player\Security\SecurityResponse.cs" />
     <Compile Include="lsr\Player\Variation\OutfitManager.cs" />
+    <Compile Include="lsr\Player\Violations\MinorViolations.cs" />
     <Compile Include="lsr\Police\OfficerMIA.cs" />
     <Compile Include="lsr\Police\OfficerMIAWatcher.cs" />
     <Compile Include="lsr\Spawner\MerchantSpawnTask.cs" />

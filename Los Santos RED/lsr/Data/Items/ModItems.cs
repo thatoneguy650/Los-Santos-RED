@@ -904,7 +904,7 @@ public class ModItems : IModItems
 
             new IngestItem("SPANK","You looking for some fun? a little.. hmmm? Some SPANK?", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "prop_cs_pills",IntoxicantName = "SPANK", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic, FindPercentage = 1, PoliceFindDuringPlayerSearchPercentage = 20 },
-            new IngestItem("Toilet Cleaner","The hot new legal high that takes you to places you never imagined and leaves you forever changed.", ItemType.Drugs) { IsPossessionIllicit = true,
+            new IngestItem("Toilet Cleaner","The hot new legal high that takes you to places you never imagined and leaves you forever changed.", ItemType.Drugs) { IsPossessionIllicit = true,IsPublicUseIllegal = true,
                 ModelItemID = "prop_cs_pills",IntoxicantName = "Toilet Cleaner", ItemSubType = ItemSubType.Narcotic, FindPercentage = 1, PoliceFindDuringPlayerSearchPercentage = 15 },
         });
         PossibleItems.InhaleItems.AddRange(new List<InhaleItem>
@@ -912,6 +912,7 @@ public class ModItems : IModItems
             new InhaleItem("Cocaine","Also known as coke, crack, girl, lady, charlie, caine, tepung, and snow", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "ba_prop_battle_sniffing_pipe"
                 ,PackageItemID = "prop_meth_bag_01"
+                ,IsPublicUseIllegal = true
                 ,IntoxicantName = "Cocaine", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic, FindPercentage = 1, PoliceFindDuringPlayerSearchPercentage = 12 },
         });
         PossibleItems.InjectItems.AddRange(new List<InjectItem>
@@ -919,6 +920,7 @@ public class ModItems : IModItems
             new InjectItem("Heroin","Heroin was first made by C. R. Alder Wright in 1874 from morphine, a natural product of the opium poppy. Things have gone downhill since then.", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "prop_syringe_01"
                 ,PackageItemID = "prop_meth_bag_01"
+                ,IsPublicUseIllegal = true
                 ,IntoxicantName = "Heroin", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic, FindPercentage = 1, PoliceFindDuringPlayerSearchPercentage = 25 },
         });
         PossibleItems.PipeSmokeItems.AddRange(new List<PipeSmokeItem>
@@ -926,10 +928,12 @@ public class ModItems : IModItems
             new PipeSmokeItem("Methamphetamine","Also referred to as Speed, Sabu, Crystal and Meth", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "prop_meth_bag_01"
                 ,PackageItemID = "prop_meth_bag_01"
+                ,IsPublicUseIllegal = true
                 ,IntoxicantName = "Methamphetamine", PercentLostOnUse = 0.25f, MeasurementName = "Gram",  ItemSubType = ItemSubType.Narcotic, FindPercentage = 1, PoliceFindDuringPlayerSearchPercentage = 15 },
             new PipeSmokeItem("Crack", "Too cheap for cocaine? Find out what it means when they say things are 'like crack'", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "prop_meth_bag_01"
                 ,PackageItemID = "prop_meth_bag_01"
+                ,IsPublicUseIllegal = true
                 ,IntoxicantName = "Crack", PercentLostOnUse = 0.5f, MeasurementName = "Gram",  ItemSubType = ItemSubType.Narcotic, FindPercentage = 1, PoliceFindDuringPlayerSearchPercentage = 15 },
         });
 

@@ -269,15 +269,17 @@ public class InteriorInteract
 
         return isInPosition;
     }
-    protected virtual bool MoveToPosition()
+    protected virtual bool MoveToPosition() => MoveToPosition(1.0f);
+
+    protected virtual bool MoveToPosition(float speed)
     {
         if (UseNavmesh)
         {
-            NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, Position.X, Position.Y, Position.Z, 1.0f, -1, 0.1f, 0, Heading);
+            NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, Position.X, Position.Y, Position.Z, speed, -1, 0.1f, 0, Heading);
         }
         else
         {
-            NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Player.Character, Position.X, Position.Y, Position.Z, 1.0f, 5000, Heading, 0.5f);
+            NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Player.Character, Position.X, Position.Y, Position.Z, speed, 5000, Heading, 0.5f);
         }
         uint GameTimeStartedMoving = Game.GameTime;
         bool IsCancelled = false;

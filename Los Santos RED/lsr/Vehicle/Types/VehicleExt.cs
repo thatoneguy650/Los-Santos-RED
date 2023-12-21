@@ -1583,7 +1583,7 @@ namespace LSR.Vehicles
             if (NativeFunction.Natives.HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY<bool>(Vehicle, player.Character, false))
             {
                 OnDamagedByPlayer();
-                player.OnDamagedVehicle();
+                player.Violations.MinorViolations.OnDamagedVehicle();
                 return true;
             }
             return false;

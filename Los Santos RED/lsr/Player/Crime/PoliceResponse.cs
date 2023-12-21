@@ -27,6 +27,7 @@ namespace LosSantosRED.lsr
         private ITimeReportable Time;
         private IEntityProvideable World;
         private HashSet<Crime> GracePeriodCrimes = new HashSet<Crime>();
+        private uint GameTimeSawOnTrain;
         private enum PoliceState
         {
             Normal = 0,
@@ -175,6 +176,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();//TR 05
             UpdateBlip();
             UpdateGracePeriod();
+
         }
         public void Dispose()
         {
@@ -331,6 +333,7 @@ namespace LosSantosRED.lsr
             WantedLevelHasBeenRadioedIn = false;
             CrimesObserved.Clear();
             CrimesReported.Clear();
+            GameTimeSawOnTrain = 0;
         }
         private void AssignCops()
         {
@@ -548,7 +551,37 @@ namespace LosSantosRED.lsr
                 Player.SetWantedLevel(Settings.SettingsManager.PoliceSettings.DeadlyChaseMinimumWantedLevel, $"Deadly chase requires {Settings.SettingsManager.PoliceSettings.DeadlyChaseMinimumWantedLevel}+ wanted level", true);
             }
             PoliceKilledUpdate();
+            UpdateTrains();
         }
+
+        private void UpdateTrains()
+        {
+            if(!Player.IsRidingOnTrain)
+            {
+                GameTimeSawOnTrain = 0;
+                return;
+            }
+            if(Player.IsRidingOnTrain && Player.AnyPoliceCanSeePlayer)
+            {
+                if(GameTimeSawOnTrain == 0)
+                {
+                    EntryPoint.WriteToConsole("YOU WERE SEEN BY POLICE RIDING ON A TRAIN!");
+                    GameTimeSawOnTrain = Game.GameTime;
+                }
+                if (Game.GameTime - GameTimeSawOnTrain >= 20000)
+                {
+                    EntryPoint.WriteToConsole("YOU WERE SEEN BY POLICE RIDING ON A TRAIN FOR 20 SECONDS, STOPPING ALL TRAINS!");
+                    World.Vehicles.StopAllTrains();
+                }
+            }
+            else
+            {
+                GameTimeSawOnTrain = 0;
+            }
+        }
+
+
+
         private void PoliceKilledUpdate()
         {
             if (!Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesByKillingPolice)

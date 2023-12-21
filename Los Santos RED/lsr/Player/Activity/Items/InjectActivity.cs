@@ -45,6 +45,7 @@ namespace LosSantosRED.lsr.Player
         {
             IsCancelled = true;
             Player.ActivityManager.IsPerformingActivity = false;
+            Player.ActivityManager.IsUsingIllegalItem = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
         }
         public override void Continue()
@@ -117,6 +118,10 @@ namespace LosSantosRED.lsr.Player
             Player.WeaponEquipment.SetUnarmed();
             AttachItemToHand();
             Player.ActivityManager.IsPerformingActivity = true;
+            if (ModItem.IsPublicUseIllegal)
+            {
+                Player.ActivityManager.IsUsingIllegalItem = true;
+            }
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
@@ -130,6 +135,7 @@ namespace LosSantosRED.lsr.Player
             }
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.ActivityManager.IsPerformingActivity = false;
+            Player.ActivityManager.IsUsingIllegalItem = false;
             if (CurrentIntoxicant != null && !CurrentIntoxicant.ContinuesWithoutCurrentUse)
             {
                 //EntryPoint.WriteToConsole("IngestActivity Exit, Stopping ingestion");

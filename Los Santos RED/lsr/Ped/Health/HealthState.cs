@@ -282,6 +282,7 @@ public class HealthState
                     MyPed.HasBeenHurtByPlayer = true;
                     CurrentPlayer.Violations.DamageViolations.AddInjured(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
                 }
+                EntryPoint.WriteToConsole($"YOU DAMAGED {MyPed.Handle} H1:{Health} H2:{CurrentHealth} HX:{Health - CurrentHealth} A1:{Armor} A2:{CurrentArmor} AX:{Armor - CurrentArmor}");
             }
         }
     }
