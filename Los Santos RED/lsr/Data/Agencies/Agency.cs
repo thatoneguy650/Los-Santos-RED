@@ -487,7 +487,7 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
         OffDutyPersonnel = dispatchablePeople.GetPersonData(OffDutyPersonnelID);
         OffDutyVehicles = dispatchableVehicles.GetVehicleData(OffDutyVehiclesID);
         PossibleHeads = heads.GetHeadData(HeadDataGroupID);
-        HasDispatchableBoats = Vehicles != null && Vehicles.Any(x => x.IsBoat);
-        HasDispatchableHelicopters = Vehicles != null && Vehicles.Any(x => x.IsHelicopter);
+        //HasDispatchableBoats = Vehicles != null && Vehicles.Any(x => x.IsBoat);
+        //HasDispatchableHelicopters = Vehicles != null && Vehicles.Any(x => x.IsHelicopter);
     }
 }

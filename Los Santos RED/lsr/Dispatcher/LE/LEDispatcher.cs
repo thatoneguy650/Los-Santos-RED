@@ -1511,7 +1511,10 @@ public class LEDispatcher
         {
             PersonType = null;
         }
-
+        if(!isEmpty && PersonType == null)
+        {
+            PersonType = Agency.GetRandomPed(World.TotalWantedLevel, "");
+        }
 
 
 

@@ -54,6 +54,10 @@ public class CivilianSpawnTask : SpawnTask
     {
         try
         {
+            if (string.IsNullOrEmpty(PersonType.ModelName))
+            {
+                return null;
+            }
             Vector3 CreatePos = Position;
             if (!PlacePedOnGround || VehicleType != null)
             {

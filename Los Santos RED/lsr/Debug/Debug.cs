@@ -368,8 +368,8 @@ public class Debug
             new InteriorPosition("10 Car",new Vector3(229.9559f, -981.7928f, -99.66071f))//works
             ,new InteriorPosition("Low End Apartment",new Vector3(261.4586f, -998.8196f, -99.00863f))//works
             ,new InteriorPosition("4 Integrity Way, Apt 30",new Vector3(-35.31277f, -580.4199f, 88.71221f))//works
-            ,new InteriorPosition("Dell Perro Heights, Apt 4",new Vector3(-1468.14f, -541.815f, 73.4442f))//works
-            ,new InteriorPosition("Dell Perro Heights, Apt 7",new Vector3(-1477.14f, -538.7499f, 55.5264f))//works
+            ,new InteriorPosition("Del Perro Heights, Apt 4",new Vector3(-1468.14f, -541.815f, 73.4442f))//works
+            ,new InteriorPosition("Del Perro Heights, Apt 7",new Vector3(-1477.14f, -538.7499f, 55.5264f))//works
             ,new InteriorPosition("Eclipse Towers, Apt 3",new Vector3(-773.407f, 341.766f, 211.397f))//works
             ,new InteriorPosition("CharCreator",new Vector3(402.5164f, -1002.847f, -99.2587f))//works
             ,new InteriorPosition("Mission Carpark",new Vector3(405.9228f, -954.1149f, -99.6627f))//works

@@ -929,20 +929,36 @@ public class DebugHelperSubMenu : DebugSubMenu
 
     private void PrintVehicleClasses()
     {
-        foreach (Gang gang in Gangs.AllGangs)
+
+
+        foreach (DispatchableVehicleGroup dvg in ModDataFileManager.DispatchableVehicles.AllVehicles)
         {
-            if (gang.Vehicles == null)
-            {
-                continue;
-            }
-            WriteToClassCreator($"--{gang.ShortName} {gang.VehiclesID}", 0, "DispatchableVehicles");
-            foreach (DispatchableVehicle dispatchableVehicle in gang.Vehicles)
-            {
-                WriteToClassCreator($"DispatchableVehicle {dispatchableVehicle.DebugName.Replace(" ", String.Empty)} = new DispatchableVehicle() {{", 0, "DispatchableVehicles");
-                PrintClass(dispatchableVehicle, null, "DispatchableVehicles");
-                WriteToClassCreator($"}};", 0, "DispatchableVehicles");
-            }
+            WriteToClassCreator($"new DispatchableVehicleGroup() {{", 0, "DispatchableVehicles");
+            PrintClass(dvg, null, "DispatchableVehicles");
+            WriteToClassCreator($"}},", 0, "DispatchableVehicles");
         }
+
+
+
+        //foreach (Gang gang in Gangs.AllGangs)
+        //{
+        //    if (gang.Vehicles == null)
+        //    {
+        //        continue;
+        //    }
+        //    WriteToClassCreator($"--{gang.ShortName} {gang.VehiclesID}", 0, "DispatchableVehicles");
+
+
+
+
+
+        //    //foreach (DispatchableVehicle dispatchableVehicle in gang.Vehicles)
+        //    //{
+        //    //    WriteToClassCreator($"DispatchableVehicle {dispatchableVehicle.DebugName.Replace(" ", String.Empty)} = new DispatchableVehicle() {{", 0, "DispatchableVehicles");
+        //    //    PrintClass(dispatchableVehicle, null, "DispatchableVehicles");
+        //    //    WriteToClassCreator($"}},", 0, "DispatchableVehicles");
+        //    //}
+        //}
     }
     private void PrintGangDens()
     {

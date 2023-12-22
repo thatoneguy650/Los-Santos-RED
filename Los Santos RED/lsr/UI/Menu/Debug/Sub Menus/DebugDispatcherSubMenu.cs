@@ -201,10 +201,21 @@ public class DebugDispatcherSubMenu : DebugSubMenu
         NewSubDispatcherMenu.SetBannerType(EntryPoint.LSRedColor);
         NewSubDispatcherMenu.Width = 0.6f;
 
-        List<Agency> AllAgencies = Agencies.GetAgencies();
+        List<Agency> AllAgencies = Agencies.GetAgencies().Where(x=> x.Personnel != null && x.Vehicles != null).ToList();
         List<VehicleNameSelect> vehicleNameList = new List<VehicleNameSelect>();
         vehicleNameList.Add(new VehicleNameSelect("") { VehicleModelName = "Random" });
-        foreach (DispatchableVehicle dv in AllAgencies.FirstOrDefault().Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
+
+        if(AllAgencies == null || !AllAgencies.Any())
+        {
+            return;
+        }
+        Agency first = AllAgencies.FirstOrDefault();
+        if(first== null || first.Vehicles == null || !first.Vehicles.Any() || first.Personnel == null || !first.Personnel.Any())
+        {
+            return;
+        }
+
+        foreach (DispatchableVehicle dv in first.Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
         {
             VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName) { DispatchableVehicle = dv };
             vns.UpdateItems();
@@ -214,7 +225,7 @@ public class DebugDispatcherSubMenu : DebugSubMenu
 
         List<DispatchablePerson> pedNameList = new List<DispatchablePerson>();
         pedNameList.Add(new DispatchablePerson() { DebugName = "Random" });
-        foreach (DispatchablePerson dv in AllAgencies.FirstOrDefault().Personnel)
+        foreach (DispatchablePerson dv in first.Personnel)
         {
             pedNameList.Add(dv);
         }
@@ -229,10 +240,21 @@ public class DebugDispatcherSubMenu : DebugSubMenu
             SpawnVehicleScroller.Items.Clear();
             List<VehicleNameSelect> vehicleNameList2 = new List<VehicleNameSelect>();
             vehicleNameList.Add(new VehicleNameSelect("") { VehicleModelName = "Random" });
-            if (SpawnAgencyScroller.SelectedItem != null && SpawnAgencyScroller.SelectedItem.Vehicles != null)
+
+            Agency selectedAgency = SpawnAgencyScroller.SelectedItem;
+            EntryPoint.WriteToConsole($"selectedAgency?{selectedAgency}");
+
+            if (selectedAgency != null && selectedAgency.Vehicles != null && selectedAgency.Vehicles.Any())
             {
-                foreach (DispatchableVehicle dv in SpawnAgencyScroller.SelectedItem.Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
+                EntryPoint.WriteToConsole($"I AM AGENCY {selectedAgency.FullName} VehiclesNulls?{selectedAgency.Vehicles == null}");
+                EntryPoint.WriteToConsole($"VehiclesNulls?{selectedAgency.Vehicles == null}");
+                EntryPoint.WriteToConsole($"VehiclesEMPTY?{selectedAgency.Vehicles.Any()}");
+                foreach (DispatchableVehicle dv in selectedAgency.Vehicles.ToList())//.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
                 {
+                    if(dv == null)
+                    { 
+                        continue;
+                    }
                     VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName) { DispatchableVehicle = dv };
                     vns.UpdateItems();
                     vehicleNameList2.Add(vns);
@@ -243,7 +265,7 @@ public class DebugDispatcherSubMenu : DebugSubMenu
             SpawnPedScroller.Items.Clear();
             List<DispatchablePerson> pedNameList2 = new List<DispatchablePerson>();
             pedNameList2.Add(new DispatchablePerson() { DebugName = "Random" });
-            if (SpawnAgencyScroller.SelectedItem != null && SpawnAgencyScroller.SelectedItem.Personnel != null)
+            if (SpawnAgencyScroller.SelectedItem != null && SpawnAgencyScroller.SelectedItem.Personnel != null && SpawnAgencyScroller.SelectedItem.Personnel.Any())
             {
                 foreach (DispatchablePerson dv in SpawnAgencyScroller.SelectedItem.Personnel)
                 {
@@ -331,10 +353,24 @@ public class DebugDispatcherSubMenu : DebugSubMenu
         NewSubDispatcherMenu.SetBannerType(EntryPoint.LSRedColor);
         NewSubDispatcherMenu.Width = 0.6f;
 
-        List<Gang> AllGangs = Gangs.GetAllGangs();// Agencies.GetAgencies();
+        List<Gang> AllGangs = Gangs.GetAllGangs().Where(x=> x.Personnel != null && x.Vehicles != null).ToList();;// Agencies.GetAgencies();
         List<VehicleNameSelect> vehicleNameList = new List<VehicleNameSelect>();
         vehicleNameList.Add(new VehicleNameSelect("") { VehicleModelName = "Random" });
-        foreach (DispatchableVehicle dv in AllGangs.FirstOrDefault().Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
+
+
+
+
+        if (AllGangs == null || !AllGangs.Any())
+        {
+            return;
+        }
+        Gang first = AllGangs.FirstOrDefault();
+        if (first == null || first.Vehicles == null || !first.Vehicles.Any() || first.Personnel == null || !first.Personnel.Any())
+        {
+            return;
+        }
+
+        foreach (DispatchableVehicle dv in first.Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
         {
             VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName) { DispatchableVehicle = dv };
             vns.UpdateItems();
@@ -344,7 +380,7 @@ public class DebugDispatcherSubMenu : DebugSubMenu
 
         List<DispatchablePerson> pedNameList = new List<DispatchablePerson>();
         pedNameList.Add(new DispatchablePerson() { DebugName = "Random" });
-        foreach (DispatchablePerson dv in AllGangs.FirstOrDefault().Personnel)
+        foreach (DispatchablePerson dv in first.Personnel)
         {
             pedNameList.Add(dv);
         }
@@ -359,7 +395,7 @@ public class DebugDispatcherSubMenu : DebugSubMenu
             SpawnVehicleScroller.Items.Clear();
             List<VehicleNameSelect> vehicleNameList2 = new List<VehicleNameSelect>();
             vehicleNameList.Add(new VehicleNameSelect("") { VehicleModelName = "Random" });
-            if (SpawnGangScroller.SelectedItem != null && SpawnGangScroller.SelectedItem.Vehicles != null)
+            if (SpawnGangScroller.SelectedItem != null && SpawnGangScroller.SelectedItem.Vehicles != null && SpawnGangScroller.SelectedItem.Vehicles.Any())
             {
                 foreach (DispatchableVehicle dv in SpawnGangScroller.SelectedItem.Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
                 {
@@ -373,7 +409,7 @@ public class DebugDispatcherSubMenu : DebugSubMenu
             SpawnPedScroller.Items.Clear();
             List<DispatchablePerson> pedNameList2 = new List<DispatchablePerson>();
             pedNameList.Add(new DispatchablePerson() { DebugName = "Random" });
-            if (SpawnGangScroller.SelectedItem != null && SpawnGangScroller.SelectedItem.Personnel != null)
+            if (SpawnGangScroller.SelectedItem != null && SpawnGangScroller.SelectedItem.Personnel != null && SpawnGangScroller.SelectedItem.Personnel.Any())
             {
                 foreach (DispatchablePerson dv in SpawnGangScroller.SelectedItem.Personnel)
                 {

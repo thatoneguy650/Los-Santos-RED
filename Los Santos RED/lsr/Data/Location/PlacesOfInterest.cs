@@ -2128,18 +2128,18 @@ public class PlacesOfInterest : IPlacesOfInterest
 
             //Apartment With Matching With Interior SP or BOTH!
             new Residence(new Vector3(-59.58021f, -617.4625f, 37.35678f), 69.24533f, "4 Integrity Way, Apt 28",""){
-                InteriorID = 21250, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 1
+                InteriorID = 21250, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 1, IsOnMPMap = false
             , CameraPosition = new Vector3(-103.6068f, -621.355f, 61.43004f), CameraDirection = new Vector3(0.9355325f, 0.094497f, -0.3403665f), CameraRotation = new Rotator(-19.89921f, -2.269968E-07f, -84.23219f)},
 
             new Residence(new Vector3(-59.58021f, -617.4625f, 37.35678f), 69.24533f, "4 Integrity Way, Apt 30",""){
-                InteriorID = 47362, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 2
+                InteriorID = 47362, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 2, IsOnMPMap = false
             , CameraPosition = new Vector3(-103.6068f, -621.355f, 61.43004f), CameraDirection = new Vector3(0.9355325f, 0.094497f, -0.3403665f), CameraRotation = new Rotator(-19.89921f, -2.269968E-07f, -84.23219f)},
 
-            new Residence(new Vector3(-1442.846f, -544.5376f, 34.74181f), 213.3763f, "Dell Perro Heights, Apt 4",""){
-                InteriorID = 76290, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 3 },
+            new Residence(new Vector3(-1442.846f, -544.5376f, 34.74181f), 213.3763f, "Del Perro Heights, Apt 4",""){
+                InteriorID = 76290, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 3, IsOnMPMap = false },
 
-            new Residence(new Vector3(-1442.846f, -544.5376f, 34.74181f), 213.3763f, "Dell Perro Heights, Apt 7",""){
-                InteriorID = -673, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 4 },
+            new Residence(new Vector3(-1442.846f, -544.5376f, 34.74181f), 213.3763f, "Del Perro Heights, Apt 7",""){
+                InteriorID = -673, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 4, IsOnMPMap = false, },
 
             new Residence(new Vector3(-773.63f, 313.08f, 85.70f), 180f, "Eclipse Towers, Apt 3",""){
                 InteriorID = 61186, IsOnMPMap = false, OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000,SalesPrice = 980000,HasHeaderApartmentBuilding = true,ResidenceID = 5 },
@@ -2560,25 +2560,163 @@ public class PlacesOfInterest : IPlacesOfInterest
               InteriorID = 230913,
               IsOnSPMap = false,
             },
+
+            //Del Perro Heights MP
+            new Residence(new Vector3(-1442.846f,-544.5376f,34.74181f),213.3763f,"Del Perro Heights Apt 4","")
+            {
+                RentalDays = 28,
+                RentalFee = 5000,
+                PurchasePrice = 1200000,
+                SalesPrice = 980000,
+                ResidenceID = 40,
+                HasHeaderApartmentBuilding = true,
+                Name = "Del Perro Heights Apt 4",
+                EntrancePosition = new Vector3(-1442.846f,-544.5376f,34.74181f),
+                EntranceHeading = 213.3763f,
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 145665,
+                IsOnSPMap = false,
+            },
+            new Residence(new Vector3(-1442.846f,-544.5376f,34.74181f),213.3763f,"Del Perro Heights Apt 20","")
+            {
+                RentalDays = 28,
+                RentalFee = 5000,
+                PurchasePrice = 1200000,
+                SalesPrice = 980000,
+                ResidenceID = 41,
+                HasHeaderApartmentBuilding = true,
+                Name = "Del Perro Heights Apt 20",
+                EntrancePosition = new Vector3(-1442.846f,-544.5376f,34.74181f),
+                EntranceHeading = 213.3763f,
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 145409,
+                IsOnSPMap = false,
+            },
+            //Alta Stret MP
+            new Residence(new Vector3(-261.9663f,-970.8594f,31.21996f),203.518f,"3 Alta Street Apt 57","")
+            {
+                RentalDays = 28,
+                RentalFee = 5000,
+                PurchasePrice = 1200000,
+                SalesPrice = 980000,
+                ResidenceID = 42,
+                HasHeaderApartmentBuilding = true,
+                Name = "3 Alta Street Apt 57",
+                EntrancePosition = new Vector3(-261.9663f,-970.8594f,31.21996f),
+                EntranceHeading = 203.518f,
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 141569,
+                IsOnSPMap = false,
+            },
+            new Residence(new Vector3(-261.9663f,-970.8594f,31.21996f),203.518f,"3 Alta Street Apt 10","")
+            {
+                RentalDays = 28,
+                RentalFee = 5000,
+                PurchasePrice = 1200000,
+                SalesPrice = 980000,
+                ResidenceID = 43,
+                HasHeaderApartmentBuilding = true,
+                Name = "3 Alta Street Apt 10",
+                EntrancePosition = new Vector3(-261.9663f,-970.8594f,31.21996f),
+                EntranceHeading = 203.518f,
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 141825,
+                IsOnSPMap = false,
+            },
+            //Intergrity Way MP
+            new Residence(new Vector3(-59.58021f,-617.4625f,37.35678f),69.24533f,"4 Intergrity Way Apt 28","")
+            {
+                RentalDays = 28,
+                RentalFee = 5000,
+                PurchasePrice = 1200000,
+                SalesPrice = 980000,
+                ResidenceID = 44,
+                HasHeaderApartmentBuilding = true,
+                Name = "4 Intergrity Way Apt 28",
+                EntrancePosition = new Vector3(-59.58021f,-617.4625f,37.35678f),
+                EntranceHeading = 69.24533f,
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 147201,
+                IsOnSPMap = false,
+            },
+            new Residence(new Vector3(-59.58021f,-617.4625f,37.35678f),69.24533f,"4 Intergrity Way Apt 35","")
+            {
+                RentalDays = 28,
+                RentalFee = 5000,
+                PurchasePrice = 1200000,
+                SalesPrice = 980000,
+                ResidenceID = 45,
+                HasHeaderApartmentBuilding = true,
+                Name = "4 Intergrity Way Apt 35",
+                EntrancePosition = new Vector3(-59.58021f,-617.4625f,37.35678f),
+                EntranceHeading = 69.24533f,
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 147969,
+                IsOnSPMap = false,
+            },
+
         };
 
         ApartmentBuildings = new List<ApartmentBuilding>()
         {
-            new ApartmentBuilding(new Vector3(-59.58021f, -617.4625f, 37.35678f), 69.24533f, "4 Integrity Way","")
-                { 
+
+
+            new ApartmentBuilding(new Vector3(-261.9663f, -970.8594f, 31.21996f), 203.518f, "3 Alta Street","")//MP
+                {
+                ResidenceIDs = new List<int>() { 42,43 },
+                OpenTime = 0,CloseTime = 24,
+                IsOnSPMap = false,
+                CameraPosition = new Vector3(-258.0724f, -993.9235f, 39.27498f),
+                CameraDirection = new Vector3(-0.08690932f, 0.9330165f, -0.3491804f),
+                CameraRotation = new Rotator(-20.43719f, 0f, 5.321674f),
+
+                },
+
+
+            new ApartmentBuilding(new Vector3(-59.58021f, -617.4625f, 37.35678f), 69.24533f, "4 Integrity Way","")//SP
+                {
                 ResidenceIDs = new List<int>() { 1,2 },
+                OpenTime = 0,CloseTime = 24,
+                IsOnMPMap = false,
+                CameraPosition = new Vector3(-103.6068f, -621.355f, 61.43004f),
+                CameraDirection = new Vector3(0.9355325f, 0.094497f, -0.3403665f),
+                CameraRotation = new Rotator(-19.89921f, -2.269968E-07f, -84.23219f),
+
+                },
+
+            new ApartmentBuilding(new Vector3(-59.58021f, -617.4625f, 37.35678f), 69.24533f, "4 Integrity Way","")//MP
+                { 
+                ResidenceIDs = new List<int>() { 44,45 },
                 OpenTime = 0,CloseTime = 24, 
+                IsOnSPMap = false,
                 CameraPosition = new Vector3(-103.6068f, -621.355f, 61.43004f), 
                 CameraDirection = new Vector3(0.9355325f, 0.094497f, -0.3403665f), 
                 CameraRotation = new Rotator(-19.89921f, -2.269968E-07f, -84.23219f),
                 
                 },
-            new ApartmentBuilding(new Vector3(-1442.846f, -544.5376f, 34.74181f), 213.3763f, "Dell Perro Heights","")
+            new ApartmentBuilding(new Vector3(-1442.846f, -544.5376f, 34.74181f), 213.3763f, "Del Perro Heights","")//SP
                 {
                 ResidenceIDs = new List<int>() { 3,4 },
                 OpenTime = 0,CloseTime = 24,
+                IsOnMPMap = false,
                 CameraPosition = new Vector3(-1399.207f, -569.2247f, 54.83259f), 
                 CameraDirection = new Vector3(-0.870531f, 0.4425829f, -0.2151656f), 
+                CameraRotation = new Rotator(-12.42524f, 4.371253E-07f, 63.05096f),
+
+                },
+            new ApartmentBuilding(new Vector3(-1442.846f, -544.5376f, 34.74181f), 213.3763f, "Del Perro Heights","")//MP
+                {
+                ResidenceIDs = new List<int>() { 40,41 },
+                OpenTime = 0,CloseTime = 24,
+                IsOnSPMap = false,
+                CameraPosition = new Vector3(-1399.207f, -569.2247f, 54.83259f),
+                CameraDirection = new Vector3(-0.870531f, 0.4425829f, -0.2151656f),
                 CameraRotation = new Rotator(-12.42524f, 4.371253E-07f, 63.05096f),
 
                 },

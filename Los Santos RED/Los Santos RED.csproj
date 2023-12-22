@@ -129,6 +129,7 @@
     <Compile Include="lsr\Data\Interface\ICellphones.cs" />
     <Compile Include="lsr\Data\Interface\IContacts.cs" />
     <Compile Include="lsr\Data\Location\PossibleInteriors.cs" />
+    <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_Gangs.cs" />
     <Compile Include="lsr\Data\Organizations\Contacts.cs" />
     <Compile Include="lsr\Data\Organizations\PossibleContacts.cs" />
     <Compile Include="lsr\Data\Organizations\PossibleOrganizations.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="lsr\Data\Peds\TestAnimations.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\PedLoadingSettings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\TaxiSettings.cs" />
+    <Compile Include="lsr\Data\Vehicles\OldDispatchableVehicles.cs" />
     <Compile Include="lsr\Dispatcher\LE\MarshalDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Civilian\TaxiDispatcher.cs" />
     <Compile Include="lsr\Inventory\CashStorage.cs" />
