@@ -1114,10 +1114,9 @@ public class DispatchableVehicles : IDispatchableVehicles
             }
         };
 
-
-        AsteropeSecurityBobCat = new DispatchableVehicle("asterope2", 20, 20)
+        AsteropeSecuritySECURO = new DispatchableVehicle("asterope2", 20, 20)
         {
-            DebugName = "AsteropeSecurity_BobCat_DLC",
+            DebugName = "AsteropeSecurity_SECURO_DLC",
             RequiresDLC = true,
             RequiredPrimaryColorID = 111,
             RequiredSecondaryColorID = 111,
@@ -1132,28 +1131,7 @@ public class DispatchableVehicles : IDispatchableVehicles
                 VehicleMods = new List<VehicleMod>()
                     {
                         new VehicleMod(23,10),
-                        new VehicleMod(48,8),//5,6,9 BC, G6, MW, SECURO
-                    },
-            }
-        };
-        AsteropeSecurityG6 = new DispatchableVehicle("asterope2", 20, 20)
-        {
-            DebugName = "AsteropeSecurity_G6_DLC",
-            RequiresDLC = true,
-            RequiredPrimaryColorID = 111,
-            RequiredSecondaryColorID = 111,
-            RequiredVariation = new VehicleVariation()
-            {
-                PrimaryColor = 111,
-                SecondaryColor = 111,
-                WheelColor = 156,
-                WheelType = 1,
-                WindowTint = 0,
-                PearlescentColor = 0,
-                VehicleMods = new List<VehicleMod>()
-                    {
-                        new VehicleMod(23,10),
-                        new VehicleMod(48,8),//5,6,9 BC, G6, MW, SECURO
+                        new VehicleMod(48,6),
                     },
             }
         };
@@ -1174,13 +1152,13 @@ public class DispatchableVehicles : IDispatchableVehicles
                 VehicleMods = new List<VehicleMod>()
                     {
                         new VehicleMod(23,10),
-                        new VehicleMod(48,8),//5,6,9 BC, G6, MW, SECURO
+                        new VehicleMod(48,7),
                     },
             }
         };
-        AsteropeSecuritySECURO = new DispatchableVehicle("asterope2", 20, 20)
+        AsteropeSecurityBobCat = new DispatchableVehicle("asterope2", 20, 20)
         {
-            DebugName = "AsteropeSecurity_SECURO_DLC",
+            DebugName = "AsteropeSecurity_BobCat_DLC",
             RequiresDLC = true,
             RequiredPrimaryColorID = 111,
             RequiredSecondaryColorID = 111,
@@ -1195,10 +1173,32 @@ public class DispatchableVehicles : IDispatchableVehicles
                 VehicleMods = new List<VehicleMod>()
                     {
                         new VehicleMod(23,10),
-                        new VehicleMod(48,8),//5,6,9 BC, G6, MW, SECURO
+                        new VehicleMod(48,8),
                     },
             }
         };
+        AsteropeSecurityG6 = new DispatchableVehicle("asterope2", 20, 20)
+        {
+            DebugName = "AsteropeSecurity_G6_DLC",
+            RequiresDLC = true,
+            RequiredPrimaryColorID = 111,
+            RequiredSecondaryColorID = 111,
+            RequiredVariation = new VehicleVariation()
+            {
+                PrimaryColor = 111,
+                SecondaryColor = 111,
+                WheelColor = 156,
+                WheelType = 1,
+                WindowTint = 0,
+                PearlescentColor = 0,
+                VehicleMods = new List<VehicleMod>()
+                    {
+                        new VehicleMod(23,10),
+                        new VehicleMod(48,9),
+                    },
+            }
+        };
+
 
     }
     private void DefaultConfig()
@@ -2405,7 +2405,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         };
         List<DispatchableVehicle> BobcatSecurityVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle(SecurityTorrence, 35, 35){  RequiredLiveries = new List<int>() { 2,3 } },
+            new DispatchableVehicle(SecurityTorrence, 35, 35){  RequiredLiveries = new List<int>() { 3 } },
             AleutianSecurityBobCat,
             AsteropeSecurityBobCat,
         };

@@ -569,8 +569,14 @@ public class PlacesOfInterest : IPlacesOfInterest
                 BannerImagePath = "stores\\benefactorgallivanter.png",
                 LicensePlatePreviewText = "BENE GALA",
                 AssignedAssociationID = "BOBCAT",
-                PossiblePedSpawns = new List<ConditionalLocation>() { new ConditionalLocation(new Vector3(-72.16306f, 64.89938f, 71.84079f), 150.1162f, 100f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" } },
-                PossibleVehicleSpawns = new List<ConditionalLocation>() { new ConditionalLocation(new Vector3(-97.9782f, 84.38512f, 71.20057f), 149.9098f, 75f), },
+                PossiblePedSpawns = new List<ConditionalLocation>() 
+                { 
+                    new SecurityConditionalLocation(new Vector3(-72.16306f, 64.89938f, 71.84079f), 150.1162f, 100f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" } 
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>() 
+                { 
+                    new SecurityConditionalLocation(new Vector3(-97.9782f, 84.38512f, 71.20057f), 149.9098f, 75f), 
+                },
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(226.205f, -992.613f, -98.99996f), 177.2006f),
                 VehicleDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-83.40893f, 80.80059f, 71.08399f),150.8571f),
@@ -586,22 +592,27 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(-76.91218f, 94.65022f, 72.13159f), 249.3525f),
                     new SpawnPlace(new Vector3(-62.50578f, 88.61669f, 72.6437f), 247.8105f),
                 } },
-            new Dealership(new Vector3(-176.7741f, -1158.648f, 23.81366f), 359.6327f, "Vapid of Los Santos", "Low quality mass produced vehicles","VapidMenu") { 
+            new Dealership(new Vector3(-176.7741f, -1158.648f, 23.81366f), 359.6327f, "Vapid of Los Santos", "Low quality mass produced vehicles","VapidMenu") 
+            { 
                 BannerImagePath = "stores\\vapid.png",
                 LicensePlatePreviewText = "VAPID LS",
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(226.205f, -992.613f, -98.99996f), 177.2006f),
-                VehicleDeliveryLocations = new List<SpawnPlace>() {
+                VehicleDeliveryLocations = new List<SpawnPlace>() 
+                {
                     new SpawnPlace(new Vector3(-223.3041f, -1166.967f, 22.99067f), 347.7626f),
                     new SpawnPlace(new Vector3(-237.1176f, -1176.55f, 22.12655f), 322.7791f),
                     new SpawnPlace(new Vector3(-237.2399f, -1165.014f, 22.14342f), 272.7086f),
                     new SpawnPlace(new Vector3(-224.3428f, -1177.964f, 22.16829f), 13.04972f),
-                } },
-            new Dealership(new Vector3(286.8117f, -1148.615f, 29.29189f), 0.5211872f,"Sanders Motorcycles", "Feeling Old? Buy a Bike!","SandersMenu") { 
+                } 
+            },
+            new Dealership(new Vector3(286.8117f, -1148.615f, 29.29189f), 0.5211872f,"Sanders Motorcycles", "Feeling Old? Buy a Bike!","SandersMenu") 
+            { 
                 BannerImagePath = "stores\\sanders.png", 
                 ScannerFilePath = "01_specific_location\\0x16677E71.wav",
                 LicensePlatePreviewText = "MOTO4YOU",
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(226.205f, -992.613f, -98.99996f), 177.2006f),
-                VehicleDeliveryLocations = new List<SpawnPlace>() {
+                VehicleDeliveryLocations = new List<SpawnPlace>() 
+                {
                     new SpawnPlace(new Vector3(259.3008f, -1150.141f, 29.29169f), 358.0416f),
                     new SpawnPlace(new Vector3(262.3277f, -1161.748f, 28.36098f), 177.7536f),
                     new SpawnPlace(new Vector3(262.2397f, -1149.571f, 28.46074f), 180.2331f),
@@ -610,21 +621,26 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(250.4825f, -1161.918f, 28.31437f), 175.5457f),
                     new SpawnPlace(new Vector3(250.2824f, -1150.506f, 28.44035f), 177.726f),
                     new SpawnPlace(new Vector3(247.0185f, -1162.408f, 28.32439f), 175.2579f),
-                } },
-            new Dealership(new Vector3(-247.2263f, 6213.266f, 31.93902f), 143.0866f, "Helmut's European Autos", "Only the best eurotrash","HelmutMenu") { 
+                } 
+            },
+            new Dealership(new Vector3(-247.2263f, 6213.266f, 31.93902f), 143.0866f, "Helmut's European Autos", "Only the best eurotrash","HelmutMenu") 
+            { 
                 BannerImagePath = "stores\\helmut.png",
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(226.205f, -992.613f, -98.99996f), 177.2006f),
                 LicensePlatePreviewText = "HELMUTEU", 
                 IsOnMPMap = false,
-                VehicleDeliveryLocations = new List<SpawnPlace>() {
+                VehicleDeliveryLocations = new List<SpawnPlace>() 
+                {
                     new SpawnPlace(new Vector3(-214.548f, 6195.725f, 31.48873f), 314.937f),
                     new SpawnPlace(new Vector3(-229.8454f, 6197.135f, 30.65802f), 312.3795f),
                     new SpawnPlace(new Vector3(-240.5559f, 6199.209f, 30.65911f), 320.0063f),
                     new SpawnPlace(new Vector3(-245.7337f, 6203.578f, 30.65917f), 312.8283f),
                     new SpawnPlace(new Vector3(-247.8804f, 6205.941f, 30.65889f), 317.6494f),
                     new SpawnPlace(new Vector3(-204.6075f, 6204.576f, 30.65833f), 312.9748f),
-                } },
-            new Dealership(new Vector3(-38.83289f, -1108.61f, 26.46652f), 158.283f, "Premium Deluxe Motorsport", "Let's make a deal","PremiumDeluxeMenu") { 
+                } 
+            },
+            new Dealership(new Vector3(-38.83289f, -1108.61f, 26.46652f), 158.283f, "Premium Deluxe Motorsport", "Let's make a deal","PremiumDeluxeMenu") 
+            { 
                 BannerImagePath = "stores\\pdx.png", 
                 ScannerFilePath = "01_specific_location\\0x122B5EFF.wav",
                 CameraPosition = new Vector3(-73.69526f, -1125.221f, 33.51564f), 
@@ -636,7 +652,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(-43.94203f, -1096.923f, 26.44f), 165.1469f),     
                 InteriorID = 7170,
                 LicensePlatePreviewText = "PDXMOTORS",
-                VehicleDeliveryLocations = new List<SpawnPlace>() {
+                VehicleDeliveryLocations = new List<SpawnPlace>() 
+                {
                     new SpawnPlace(new Vector3(-56.35966f, -1116.532f, 26.4349f), 2.403779f),
                     new SpawnPlace(new Vector3(-57.66466f, -1107.103f, 25.60543f), 65.5113f),
                     new SpawnPlace(new Vector3(-47.87741f, -1115.788f, 25.60351f), 3.64787f),
@@ -645,80 +662,103 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(-58.79285f, -1116.476f, 25.60338f), 2.648925f),
                     new SpawnPlace(new Vector3(-48.28887f, -1078.742f, 25.9386f), 260.1963f),
                     new SpawnPlace(new Vector3(-15.29717f, -1094.516f, 25.84302f), 173.1287f),
-                } },
-            new Dealership(new Vector3(-802.8875f, -223.7307f, 37.21824f), 117.6851f, "Luxury Autos", "You sure you can afford this?","LuxuryAutosMenu") {
+                } 
+            },
+            new Dealership(new Vector3(-802.8875f, -223.7307f, 37.21824f), 117.6851f, "Luxury Autos", "You sure you can afford this?","LuxuryAutosMenu") 
+            {
                 BannerImagePath = "stores\\luxuryautos.png",
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(226.205f, -992.613f, -98.99996f), 177.2006f),
                 LicensePlatePreviewText = "LUX AUTO",
                 AssignedAssociationID = "MERRY",
-                PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new ConditionalLocation(new Vector3(-802.0759f, -227.486f, 37.19593f), 120.1107f, 75f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
-                    new ConditionalLocation(new Vector3(-805.9191f, -220.9726f, 37.25732f), 121.415f, 75f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
+                PossiblePedSpawns = new List<ConditionalLocation>() 
+                {
+                    new SecurityConditionalLocation(new Vector3(-802.0759f, -227.486f, 37.19593f), 120.1107f, 75f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
+                    new SecurityConditionalLocation(new Vector3(-805.9191f, -220.9726f, 37.25732f), 121.415f, 75f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 { 
-                    new ConditionalLocation(new Vector3(-811.8248f, -220.6809f, 36.87595f), 27.60655f, 65f) { },
-                    new ConditionalLocation(new Vector3(-804.566f, -235.1782f, 36.70311f), 29.39835f, 35f) {IsEmpty = false, RequiredPedGroup = "UnarmedSecurity" }, },
-                VehicleDeliveryLocations = new List<SpawnPlace>() {
+                    new SecurityConditionalLocation(new Vector3(-811.8248f, -220.6809f, 36.87595f), 27.60655f, 65f) { },
+                    new SecurityConditionalLocation(new Vector3(-804.566f, -235.1782f, 36.70311f), 29.39835f, 35f) {IsEmpty = false, RequiredPedGroup = "UnarmedSecurity" }, },
+                VehicleDeliveryLocations = new List<SpawnPlace>() 
+                {
                     new SpawnPlace(new Vector3(-768.5347f, -245.1849f, 37.2452f), 197.8712f),
                     new SpawnPlace(new Vector3(-811.3596f, -221.3954f, 36.38088f), 30.76537f),
                     new SpawnPlace(new Vector3(-803.5298f, -234.8655f, 36.26606f), 29.17092f),
                     new SpawnPlace(new Vector3(-755.7492f, -242.3515f, 36.36629f), 281.1064f),
                     new SpawnPlace(new Vector3(-760.1515f, -232.0841f, 36.45313f), 204.9191f),
-                } },
-            new Dealership(new Vector3(1224.667f, 2728.353f, 38.00491f), 181.2344f, "Larry's RV Sales", "Need to disappear for a while?", "LarrysRVMenu"){
+                } 
+            },
+            new Dealership(new Vector3(1224.667f, 2728.353f, 38.00491f), 181.2344f, "Larry's RV Sales", "Need to disappear for a while?", "LarrysRVMenu")
+            {
                 BannerImagePath = "stores\\larrysrv.png",
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(226.205f, -992.613f, -98.99996f), 177.2006f),
                 LicensePlatePreviewText = "LARRYSRV",
-                VehicleDeliveryLocations = new List<SpawnPlace>() {
+                VehicleDeliveryLocations = new List<SpawnPlace>() 
+                {
                     new SpawnPlace(new Vector3(1236.887f, 2709.858f, 38.00579f), 201.5402f),
                     new SpawnPlace(new Vector3(1246.11f, 2712.359f, 37.17435f), 200.71f),
                     new SpawnPlace(new Vector3(1232.931f, 2699.977f, 37.18208f), 94.271f),
                     new SpawnPlace(new Vector3(1210.044f, 2706.118f, 37.17501f), 173.5784f),
                     new SpawnPlace(new Vector3(1254.536f, 2692.278f, 36.79386f), 224.2466f),
-                } },
-            new Dealership(new Vector3(-703.8819f, -1398.048f, 5.495286f), 137.6665f, "Elitás Travel", "There's first class and then there's Elitas","ElitasMenu") {
-                CameraPosition = new Vector3(-722.9339f, -1401.834f, 11.11265f), CameraDirection = new Vector3(0.956533f, 0.1323426f, -0.2598656f), CameraRotation = new Rotator(-15.06209f, -2.453513E-05f, -82.12276f),
+                } 
+            },
+            new Dealership(new Vector3(-703.8819f, -1398.048f, 5.495286f), 137.6665f, "Elitás Travel", "There's first class and then there's Elitas","ElitasMenu") 
+            {
+                CameraPosition = new Vector3(-722.9339f, -1401.834f, 11.11265f), 
+                CameraDirection = new Vector3(0.956533f, 0.1323426f, -0.2598656f), 
+                CameraRotation = new Rotator(-15.06209f, -2.453513E-05f, -82.12276f),
                 BannerImagePath = "stores\\elitastravel.png",
                 VehiclePreviewCameraPosition = new Vector3(-702.0489f, -1431.725f, 9.647567f),
                 VehiclePreviewCameraDirection = new Vector3(-0.9063408f, -0.336776f, -0.2552025f),
                 VehiclePreviewCameraRotation = new Rotator(-14.78558f, -0.03792449f, 110.3839f),
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(-714.89f, -1435.682f, 5.102043f), 227.1837f),
-                VehicleDeliveryLocations = new List<SpawnPlace>() {
+                VehicleDeliveryLocations = new List<SpawnPlace>() 
+                {
                     new SpawnPlace(new Vector3(-1015.187f, -3401.692f, 13.8351f), 327.5063f),
                     new SpawnPlace(new Vector3(-1066.172f, -3397.097f, 14.54819f), 330.6479f),
                     new SpawnPlace(new Vector3(-1091.473f, -3384.792f, 14.54814f), 330.6455f),
-                } },
-            new Dealership(new Vector3(396.8023f, -1170.86f, 29.39787f), 359.2079f, "Get Aweigh", "We can help you Get Aweigh!","GetAweighMenu") {
+                } 
+            },
+            new Dealership(new Vector3(396.8023f, -1170.86f, 29.39787f), 359.2079f, "Get Aweigh", "We can help you Get Aweigh!","GetAweighMenu") 
+            {
                 VehiclePreviewCameraPosition = new Vector3(-759.6039f, -1370.657f, 3.687305f),
                 BannerImagePath = "stores\\getaweigh.png",
                 VehiclePreviewCameraDirection = new Vector3(0.4598052f, 0.8650874f, -0.2005067f),
                 VehiclePreviewCameraRotation = new Rotator(-11.56659f, 2.701561E-05f, -27.99123f),
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(-755.6831f, -1361.648f, -0.0738305f),229.675f),
-                VehicleDeliveryLocations = new List<SpawnPlace>() {
+                VehicleDeliveryLocations = new List<SpawnPlace>() 
+                {
                     new SpawnPlace(new Vector3(-884.1031f, -1460.032f, 0.1196398f), 198.8394f),
                     new SpawnPlace(new Vector3(-892.0487f, -1464.138f, 0.1223292f), 200.6151f),
                     new SpawnPlace(new Vector3(-901.3271f, -1465.705f, 0.1061458f), 200.2641f),
                     new SpawnPlace(new Vector3(-832.6543f, -1406.055f, 0.09211653f), 293.3259f),
                     new SpawnPlace(new Vector3(-833.0579f, -1397.259f, 0.1287543f), 290.7657f),
-                } },
+                } 
+            },
             //From discord
-            new Dealership(new Vector3(1130.419f, -776.9326f, 57.60993f), 357.4348f, "Outlaw Motors", "Ride like an outlaw","OutlawMotorMenu") {
-                OpenTime = 6, CloseTime = 20,BannerImagePath = "stores\\outlaw.png",
+            new Dealership(new Vector3(1130.419f, -776.9326f, 57.60993f), 357.4348f, "Outlaw Motors", "Ride like an outlaw","OutlawMotorMenu") 
+            {
+                OpenTime = 6, 
+                CloseTime = 20,
+                BannerImagePath = "stores\\outlaw.png",
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(226.205f, -992.613f, -98.99996f), 177.2006f),
                 LicensePlatePreviewText = "OUTLAWMC",
-                VehicleDeliveryLocations = new List<SpawnPlace>() {
+                VehicleDeliveryLocations = new List<SpawnPlace>() 
+                {
                     new SpawnPlace(new Vector3(1122.58f, 784.47f, 57.68f), 91.32f),
                     new SpawnPlace(new Vector3(1121.96f, -773.24f, 57.75f), 359.68f),
                 } },
-            new Dealership(new Vector3(-41.04f, -1675.14f, 29.45f), 139.44f, "Albany", "From Liberty City with Love","AlbanyMenu") {
+            new Dealership(new Vector3(-41.04f, -1675.14f, 29.45f), 139.44f, "Albany", "From Liberty City with Love","AlbanyMenu") 
+            {
                 OpenTime = 6, CloseTime = 20,BannerImagePath = "stores\\albany.png",
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(226.205f, -992.613f, -98.99996f), 177.2006f),
                 LicensePlatePreviewText = "ALBANY",
-                VehicleDeliveryLocations = new List<SpawnPlace>() {
+                VehicleDeliveryLocations = new List<SpawnPlace>() 
+                {
                     new SpawnPlace(new Vector3(-45.12f, -1690.65f, 29.39f), 22.31f),
                     new SpawnPlace(new Vector3(-40.71f, -1687.56f, 29.39f), 20.33f),
-                } },
+                } 
+            },
         };
     }
     private void DefaultConfig_VehicleExporters()
@@ -1244,91 +1284,121 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         Landmarks = new List<Landmark>()
         {
-            new Landmark(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,"Maze Bank Arena","I heard Fame or Shame was filming there") {OpenTime = 0,CloseTime = 24, InteriorID = 78338,
+            //BOBCAT = BENEGALL
+            //MERRY = LUX
+            new Landmark(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,"Maze Bank Arena","I heard Fame or Shame was filming there") 
+            {
+                OpenTime = 0,
+                CloseTime = 24, 
+                InteriorID = 78338,
                 AssignedAssociationID = "GRP6",
-                PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new SecurityConditionalLocation(new Vector3(-259.8679f, -2034.324f, 29.94604f), 223.56f, 100f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
-                    new SecurityConditionalLocation(new Vector3(-247.7519f, -2021.055f, 29.94604f), 234.7717f, 100f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol| TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
-                    new SecurityConditionalLocation(new Vector3(-246.484f, -2050.29f, 27.75544f), 272.5661f, 100f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
+                PossiblePedSpawns = new List<ConditionalLocation>() 
+                {
+                    new SecurityConditionalLocation(new Vector3(-259.8679f, -2034.324f, 29.94604f), 223.56f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
+                    new SecurityConditionalLocation(new Vector3(-247.7519f, -2021.055f, 29.94604f), 234.7717f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol| TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
+                    new SecurityConditionalLocation(new Vector3(-246.484f, -2050.29f, 27.75544f), 272.5661f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
                 },
-                PossibleVehicleSpawns = new List<ConditionalLocation>() {
-                    new SecurityConditionalLocation(new Vector3(-217.3633f, -2046.552f, 27.62042f), 140.1676f, 100f) { IsEmpty = false, RequiredPedGroup = "UnarmedSecurity" },
+                PossibleVehicleSpawns = new List<ConditionalLocation>() 
+                {
+                    new SecurityConditionalLocation(new Vector3(-217.3633f, -2046.552f, 27.62042f), 140.1676f, 25f) { IsEmpty = false, RequiredPedGroup = "UnarmedSecurity" },
                     new SecurityConditionalLocation(new Vector3(-231.8785f, -2072.353f, 27.07749f), 215.4204f, 50f) {  },
                     new SecurityConditionalLocation(new Vector3(-217.1458f, -2034.899f, 27.0688f), 241.1897f, 50f) {  },
                     new SecurityConditionalLocation(new Vector3(-212.0767f, -2051.947f, 27.06881f), 238.1569f, 50f) {  },
-
+                },
+            },
+            new Landmark(new Vector3(-3022.02f, 83.00665f, 10.64196f), 0f,"Pacific Bluffs Country Club","Members only")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                ScannerFilePath = "01_specific_location\\0x0431FE2B.wav",
+                AssignedAssociationID = "MERRY",
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(-3018.087f, 82.32686f, 11.6775f), 342.6718f, 75f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(-2999.777f, 95.82683f, 11.26355f), 135.1711f, 55f),
+                    new SecurityConditionalLocation(new Vector3(-3000.569f, 79.49763f, 11.2639f), 331.7827f, 55f),
+                    new SecurityConditionalLocation(new Vector3(-3011.238f, 91.53729f, 11.26915f), 35.12966f, 35f) { IsEmpty = false,RequiredPedGroup = "UnarmedSecurity" },
+                },
+            },
+            new Landmark(new Vector3(-2297.172f, 291.5488f, 169.6022f), 114.109f, "Kortz Center", "The center of enlightenment")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                CanInteract = false,
+                AssignedAssociationID = "SECURO",
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(-2315.212f, 271.6342f, 169.602f), 21.87641f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol| TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
+                    new SecurityConditionalLocation(new Vector3(-2289.921f, 272.7345f, 169.602f), 108.5267f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol| TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(-2319.266f, 279.1095f, 169.1218f), 204.4258f, 55f),
+                    new SecurityConditionalLocation(new Vector3(-2333.276f, 303.1464f, 169.1215f), 110.639f, 55f),
+                    new SecurityConditionalLocation(new Vector3(-2321.64f, 294.0459f, 169.1222f), 23.37543f, 35f) { IsEmpty = false, RequiredPedGroup = "UnarmedSecurity" },
+                },
+            },
+            new Landmark(new Vector3(-159.2471f, -153.9811f, 43.62119f), 160.782f,"Rockford Plaza","High end fashion meets drug addicts")
+            { 
+                OpenTime = 0, 
+                CloseTime = 24,
+                AssignedAssociationID = "BOBCAT",
+                ActivateDistance = 100f,
+                ActivateCells = 3,
+                PossiblePedSpawns = new List<ConditionalLocation>() 
+                {
+                    new SecurityConditionalLocation(new Vector3(-163.7365f, -153.5678f, 43.6212f), 156.3999f, 65f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
+                    new SecurityConditionalLocation(new Vector3(-152.4925f, -169.1785f, 43.6212f), 71.1814f, 65f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>() 
+                {
+                    new SecurityConditionalLocation(new Vector3(-169.9185f, -153.0465f, 43.6212f), 70.66975f, 25f) { IsEmpty = false, RequiredPedGroup = "UnarmedSecurity" },
+                    new SecurityConditionalLocation(new Vector3(-179.7954f, -149.7704f, 43.6212f), 71.97058f, 50f) {  },
+                    new SecurityConditionalLocation(new Vector3(-187.0586f, -175.1785f, 43.62344f), 160.1578f, 50f) {  },
+                    new SecurityConditionalLocation(new Vector3(-180.5878f, -177.1243f, 43.62268f), 164.2659f, 50f) {  },
                 },
             },
 
 
+            new Landmark(new Vector3(-1490.359f, 4981.503f, 63.35722f), 87.43992f, "Raton Canyon Ranger Station", "Not just a shack and a shitter!")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(-1490.743f, 4984.296f, 63.20091f), 153.2589f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol| TaskRequirements.StandardScenario },
+                    new LEConditionalLocation(new Vector3(-1493.811f, 4971.682f, 63.89991f), 264.6635f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol| TaskRequirements.StandardScenario },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(-1491.661f, 4975.111f, 63.07887f), 43.19771f, 55f),
+                    new LEConditionalLocation(new Vector3(-1507.015f, 4973.019f, 61.8642f), 55.27364f, 55f),
+                },
+            },
             new Landmark(new Vector3(895.3204f, -179.2765f, 74.70034f), 237.3235f,"Downtown Cab Co.","In transit since 1922") { OpenTime = 0,CloseTime = 24,CameraPosition = new Vector3(924.0997f, -175.3463f, 83.62648f), CameraDirection = new Vector3(-0.9416905f, 0.03393731f, -0.3347644f), CameraRotation = new Rotator(-19.55821f, -1.698846E-07f, 87.93603f) },
-
-
             new Landmark(new Vector3(2469.03f, 4955.278f, 45.11892f), 0f,"O'Neil Ranch","Need some meth?") { OpenTime = 0,CloseTime = 24, InteriorID = 31746, ScannerFilePath = "01_specific_location\\0x1E2AE79B.wav" },
             new Landmark(new Vector3(-1045.065f, -230.3523f, 39.01435f), 294.2673f,"Lifeinvader","Get Stalked") {OpenTime = 0,CloseTime = 24, InteriorID = 3330 },
             new Landmark(new Vector3(2.69f, -667.01f, 16.13f), 0f,"Union Depository","") {IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24, InteriorID = 119042 },
-
             new Landmark(new Vector3(-34.58836f, 6287.814f, 31.38976f), 28.21855f,"Clucking Bell Farms","Know the saying about seeing how sausage is made?") {OpenTime = 0,CloseTime = 24, InteriorID = 28162, ScannerFilePath = "01_specific_location\\0x0D8D06A1.wav" },
             new Landmark(new Vector3(718.2269f, -976.7165f, 24.71099f), 181.558f,"Darnell Bros. Garments","We make more than just garments") {IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24, InteriorID = 92674 },
             new Landmark(new Vector3(-598.1064f, -1610.67f, 26.01035f), 0f,"Rogers Salvage & Scrap","Taking your scrap since 1924") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24, InteriorID = -103 },
-
             new Landmark(new Vector3(562.8467f, 2741.614f, 42.86892f), 184.4624f,"Animal Ark","We have two of everything!") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x147855FA.wav" },
             new Landmark(new Vector3(-232.18f, -914.93f, 32.77f), 338.4021f,"Post Op Headquarters","No longer just mail") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x02967EFD.wav" },
-            new Landmark(new Vector3(-3022.02f, 83.00665f, 10.64196f), 0f,"Pacific Bluffs Country Club","Members only") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0431FE2B.wav",
-                AssignedAssociationID = "GRP6",
-                PossiblePedSpawns = new List<ConditionalLocation>() { new SecurityConditionalLocation(new Vector3(-3018.087f, 82.32686f, 11.6775f), 342.6718f, 100f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" }, },
-                PossibleVehicleSpawns = new List<ConditionalLocation>() { new SecurityConditionalLocation(new Vector3(-2999.777f, 95.82683f, 11.26355f), 135.1711f, 55f),
-                    new SecurityConditionalLocation(new Vector3(-3000.569f, 79.49763f, 11.2639f), 331.7827f, 55f),
-                    new SecurityConditionalLocation(new Vector3(-3011.238f, 91.53729f, 11.26915f), 35.12966f, 35f) { IsEmpty = false,RequiredPedGroup = "UnarmedSecurity" }, },
-            },
-
-
-
-
-
-
             new Landmark(new Vector3(105.46f, 252.27f, 109.01f), 162.7602f,"Vinewood Star Tours","Stalk celebrities from the comfort of a bus") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x04F6FA01.wav" },
             new Landmark(new Vector3(-1261.62f, -347.33f, 37.22f), 53f,"Pump-N-Run Gym","Get ripped!") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x06AD518B.wav" },
             new Landmark(new Vector3(-247.62f, -1526.22f, 33.03f), 53f,"BJ Smith Rec Center","To win you have to annihilate everything in your path") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x05AB836E.wav" },
-
             new Landmark(new Vector3(3425.02f, 5174.67f, 8.13f), 0f,"El Gordo Lighthouse","Watch your step") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0761393B.wav" },
-            //new Landmark(new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f,"Los Santos County Coroner Office","Check out the gift shop!") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,InteriorID = 60418,ScannerFilePath = "01_specific_location\\0x04F66C50.wav" },
-
             new Landmark(new Vector3(-1234.788f, -768.6721f, 17.95432f), 0f,"Prosperity Street Promenade","Come spend money like a rich person!") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x077E335F.wav" },
             new Landmark(new Vector3(847.05f, -1992.77f, 30.11f), 0f,"Pisswasser Factory","You're In, For A Good Time") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x08AA4C64.wav" },
             new Landmark(new Vector3(436.0983f, -645.8003f, 27.75121f), 100f,"Dashound Bus Center","Long journeys need short legs") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x09A9666F.wav" },
             new Landmark(new Vector3(129.8f, -1300.28f, 30.05f), 0f,"Vanilla Unicorn","Seeing is relieving") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0D1B649D.wav" },
-
             new Landmark(new Vector3(712.96f, 1204.1f, 329.3f), 0f,"Vinewood Sign","Or was it Vinewoodland?") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0C57ACE0.wav" },
             new Landmark(new Vector3(-200.26f, -1380.72f, 32.83f), 0f,"Glass Heroes Auto Repairs","We never crack under pressure") { IsTemporarilyClosed = true, OpenTime = 8,CloseTime = 17,ScannerFilePath = "01_specific_location\\0x105B95C3.wav" },
             new Landmark(new Vector3(-2.34f, -1400.51f, 30.22f), 0f,"South LS Hand Car Wash","Let us give you a hand") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0CC361AF.wav" },
             new Landmark(new Vector3(-698.5507f, 46.47984f, 44.03382f), 204.1632f, "The Epsilon Program", "Kifflom!"){ OpenTime = 0,CloseTime = 24 },
-
-            new Landmark(new Vector3(-2297.172f, 291.5488f, 169.6022f), 114.109f, "Kortz Center", "The center of enlightenment"){ OpenTime = 0,CloseTime = 24,CanInteract = false
-                 ,AssignedAssociationID = "SECURO"
-            ,PossiblePedSpawns = new List<ConditionalLocation>() { 
-                new SecurityConditionalLocation(new Vector3(-2315.212f, 271.6342f, 169.602f), 21.87641f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol| TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
-                new SecurityConditionalLocation(new Vector3(-2289.921f, 272.7345f, 169.602f), 108.5267f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol| TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" }, } 
-            ,PossibleVehicleSpawns = new List<ConditionalLocation>() { 
-                new SecurityConditionalLocation(new Vector3(-2319.266f, 279.1095f, 169.1218f), 204.4258f, 55f),
-                new SecurityConditionalLocation(new Vector3(-2333.276f, 303.1464f, 169.1215f), 110.639f, 55f),
-                new SecurityConditionalLocation(new Vector3(-2321.64f, 294.0459f, 169.1222f), 23.37543f, 35f) { IsEmpty = false, RequiredPedGroup = "UnarmedSecurity" }, },
-            
-            
-            },
-
-
-
-            new Landmark(new Vector3(-1490.359f, 4981.503f, 63.35722f), 87.43992f, "Raton Canyon Ranger Station", "Not just a shack and a shitter!"){ 
-                OpenTime = 0,CloseTime = 24
-            ,PossiblePedSpawns = new List<ConditionalLocation>() {
-                new LEConditionalLocation(new Vector3(-1490.743f, 4984.296f, 63.20091f), 153.2589f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol| TaskRequirements.StandardScenario },
-                new LEConditionalLocation(new Vector3(-1493.811f, 4971.682f, 63.89991f), 264.6635f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol| TaskRequirements.StandardScenario },
-            }
-            ,PossibleVehicleSpawns = new List<ConditionalLocation>() {
-                new LEConditionalLocation(new Vector3(-1491.661f, 4975.111f, 63.07887f), 43.19771f, 55f),
-            new LEConditionalLocation(new Vector3(-1507.015f, 4973.019f, 61.8642f), 55.27364f, 55f),},
-            },
         };
     }
     private void DefaultConfig_PawnShops()
@@ -2090,10 +2160,16 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         CityHalls = new List<CityHall>()
         {
-            new CityHall(new Vector3(-609.1187f, -87.8642f, 42.93483f), 247.5173f, "Rockford Hills City Hall", "") {
-                OpenTime = 9,CloseTime = 18, CameraPosition = new Vector3(-591.665f, -98.11681f, 51.31879f), CameraDirection = new Vector3(-0.9335647f, -0.06657825f, -0.3521709f), CameraRotation = new Rotator(-20.62015f, -7.411738E-06f, 94.07921f),
+            new CityHall(new Vector3(-609.1187f, -87.8642f, 42.93483f), 247.5173f, "Rockford Hills City Hall", "") 
+            {
+                OpenTime = 9,
+                CloseTime = 18, 
+                CameraPosition = new Vector3(-591.665f, -98.11681f, 51.31879f), 
+                CameraDirection = new Vector3(-0.9335647f, -0.06657825f, -0.3521709f), 
+                CameraRotation = new Rotator(-20.62015f, -7.411738E-06f, 94.07921f),
                 AssignedAssociationID = "SECURO",
-                PossiblePedSpawns = new List<ConditionalLocation>() {
+                PossiblePedSpawns = new List<ConditionalLocation>() 
+                {
                     new SecurityConditionalLocation(new Vector3(-605.2585f, -94.14611f, 42.93483f), 241.535f, 100f){ TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol| TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
                 },
             },

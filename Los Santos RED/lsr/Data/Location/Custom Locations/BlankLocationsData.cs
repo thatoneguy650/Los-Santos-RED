@@ -385,6 +385,55 @@ public class BlankLocationsData
         };
         BlankLocationPlaces.AddRange(blankLocationPlaces);
     }
+    private void SecuritySpawns()
+    {
+        BlankLocation HornyBurgersCops = new BlankLocation()
+        {
+            Name = "HornyBurgersCops",
+            FullName = "HornyBurgersCops",
+            Description = "SpeedTrap Cops at the Horny Burgers shop",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(1245.835f, -334.4011f, 68.78214f),
+            EntranceHeading = 171.9635f,
+            OpenTime = 6,
+            CloseTime = 20,
+            StateID = StaticStrings.SanAndreasStateID,
+            AssignedAssociationID = "",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+            { },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation()
+                    {
+                        Location = new Vector3(1245.835f, -334.4011f, 68.78214f),
+                            Heading = 171.9635f,
+                            Percentage = defaultSpawnPercentage,
+                            //AssociationID = "LSPD-ELS",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            IsEmpty = false,
+
+                            AllowAirVehicle = false,
+                            AllowBoat = false,
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<string>()
+                            {},
+                            OverrideNightPercentage = 55f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = 0f,
+                            MinHourSpawn = 0,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 3,
+                            LongGunAlwaysEquipped = false,
+
+
+                            ForceLongGun = false,
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(HornyBurgersCops);
+    }
     private void OtherCops()
     {
         BlankLocation HornyBurgersCops = new BlankLocation()
