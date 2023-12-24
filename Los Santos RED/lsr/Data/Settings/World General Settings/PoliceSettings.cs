@@ -171,6 +171,8 @@ public class PoliceSettings : ISettingsDefaultable
 
     public bool SendMarshalsAPBResponseText { get; set; }
     public float MarshalsAPBResponseExtraRadiusDistance { get;  set; }
+    public bool AllowStoppingTrains { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -258,6 +260,7 @@ public class PoliceSettings : ISettingsDefaultable
         MinTimeOfAPBBetweenMarshalsAPBResponse = 20000;
         MaxTimeOfAPBBetweenMarshalsAPBResponse = 120000;
         MarshalsAPBResponseExtraRadiusDistance = 150f;
+        AllowStoppingTrains = true;
 
     }
 }

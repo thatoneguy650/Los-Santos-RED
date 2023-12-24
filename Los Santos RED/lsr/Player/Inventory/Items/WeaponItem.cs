@@ -1,6 +1,7 @@
 ﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
+using Microsoft.VisualBasic.Logging;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -8,8 +9,10 @@ using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,6 +25,7 @@ public class WeaponItem : ModItem
     public bool RequiresDLC { get; set; } = false;
     public string ModelName { get; set; }
     public uint ModelHash { get; set; }
+    public string VanillaName { get; set; }
     public override bool IsDLC => RequiresDLC;
     public WeaponItem()
     {
@@ -42,7 +46,25 @@ public class WeaponItem : ModItem
         {
             MenuCategory = WeaponInformation.Category.ToString();
         }
+        if(!string.IsNullOrEmpty(VanillaName))
+        {
+            Description += $" AKA {VanillaName}";
+        }
     }
+    [StructLayout(LayoutKind.Explicit, Size = 0x138)]
+    public struct DlcWeaponData
+    {
+        [FieldOffset(0x00)] public int emptyCheck; //use DLC1::IS_CONTENT_ITEM_LOCKED on this
+        [FieldOffset(0x08)] public int weaponHash;
+        [FieldOffset(0x18)] public int weaponCost;
+        [FieldOffset(0x20)] public int ammoCost;
+        [FieldOffset(0x28)] public int ammoType;
+        [FieldOffset(0x30)] public int defaultClipSize;
+        [FieldOffset(0x38)] public IntPtr nameLabel;
+        [FieldOffset(0x78)] public IntPtr descLabel;
+        [FieldOffset(0xB8)] public IntPtr desc2Label; // usually "the" + name
+        [FieldOffset(0xF8)] public IntPtr upperCaseNameLabel;
+    };
     public override void CreateSellMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu sellMenuRNUI, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
 

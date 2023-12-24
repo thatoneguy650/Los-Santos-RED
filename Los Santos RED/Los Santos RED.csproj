@@ -351,6 +351,7 @@
     <Compile Include="lsr\Player\Cellphone\Interactions\Taxi\AmbientSpawner.cs" />
     <Compile Include="lsr\Player\Cellphone\Interactions\VehicleExporterInteraction.cs" />
     <Compile Include="lsr\Player\Crime\BOLO.cs" />
+    <Compile Include="lsr\Player\Crime\Crimes\TrainStopper.cs" />
     <Compile Include="lsr\Player\Crime\RestrictedAreaManager.cs" />
     <Compile Include="lsr\Player\Crime\WantedLevel.cs" />
     <Compile Include="lsr\Player\Equipment\ClipsetManager.cs" />
@@ -389,7 +390,7 @@
     <Compile Include="lsr\Player\Respawning\SearchActivity.cs" />
     <Compile Include="lsr\Player\Security\SecurityResponse.cs" />
     <Compile Include="lsr\Player\Variation\OutfitManager.cs" />
-    <Compile Include="lsr\Player\Violations\MinorViolations.cs" />
+    <Compile Include="lsr\Player\Violations\Other\MinorViolations.cs" />
     <Compile Include="lsr\Police\OfficerMIA.cs" />
     <Compile Include="lsr\Police\OfficerMIAWatcher.cs" />
     <Compile Include="lsr\Spawner\MerchantSpawnTask.cs" />

@@ -402,6 +402,7 @@ public class VehicleItem : ModItem
         if (!ItemInDeliveryBay && ChosenSpawn != null)
         {
             world.Vehicles.CleanupAmbient();
+            NativeFunction.Natives.REQUEST_COLLISION_AT_COORD(ChosenSpawn.Position.X, ChosenSpawn.Position.Y, ChosenSpawn.Position.Z + 5.0f);
             Vehicle NewVehicle = new Vehicle(ModelItem.ModelName, ChosenSpawn.Position, ChosenSpawn.Heading);
             GameFiber.Yield();
             NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(Game.GetHashKey(ModelItem.ModelName));

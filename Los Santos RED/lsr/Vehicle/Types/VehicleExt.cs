@@ -1549,15 +1549,15 @@ namespace LSR.Vehicles
             if (CarPlate != null && OriginalLicensePlate != null && CarPlate.PlateNumber == OriginalLicensePlate.PlateNumber)
             {
                 CarPlate.IsWanted = true;
-                Game.DisplayHelp($"Vehicle Reported Stolen {CarPlate.PlateNumber}");
+                Game.DisplaySubtitle($"Vehicle Reported Stolen with plate {CarPlate.PlateNumber}");
             }
             else if (OriginalLicensePlate != null)
             {
-                Game.DisplayHelp($"Vehicle Reported Stolen {OriginalLicensePlate.PlateNumber}");
+                Game.DisplaySubtitle($"Vehicle Reported Stolen with plate {OriginalLicensePlate.PlateNumber}");
             }
             else
             {
-                Game.DisplayHelp($"Vehicle Reported Stolen");
+                Game.DisplaySubtitle($"Vehicle Reported Stolen");
             }
         }
 
@@ -1583,7 +1583,6 @@ namespace LSR.Vehicles
             if (NativeFunction.Natives.HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY<bool>(Vehicle, player.Character, false))
             {
                 OnDamagedByPlayer();
-                player.Violations.MinorViolations.OnDamagedVehicle();
                 return true;
             }
             return false;

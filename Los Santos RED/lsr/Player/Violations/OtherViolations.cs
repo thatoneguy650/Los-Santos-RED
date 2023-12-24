@@ -21,7 +21,6 @@ public class OtherViolations
     private ITimeReportable Time;
     private IEntityProvideable World;
     private IInteractionable Interactionable;
-    private PedExt PreviousClosestPed;
     public OtherViolations(IViolateable player, Violations violations, ISettingsProvideable settings, ITimeReportable time, IEntityProvideable world, IInteractionable interactionable)
     {
         Player = player;
@@ -51,12 +50,11 @@ public class OtherViolations
         ResistingArrestUpdate();
         DealingUpdate();
         NonViolentUpdate();
-        SmallBodyCrimes();
     }
-    public void AddFoundBody()
-    {
-        Violations.AddViolating(StaticStrings.SuspiciousVehicleCrimeID);
-    }
+    //public void AddFoundBody()
+    //{
+    //    Violations.AddViolating(StaticStrings.SuspiciousVehicleCrimeID);
+    //}
     private void NonViolentUpdate()
     {
         if (Player.Intoxication.IsIntoxicated && Player.Intoxication.CurrentIntensity >= 2.0f && !Player.IsInVehicle)
@@ -67,7 +65,7 @@ public class OtherViolations
         {
             Violations.AddViolating(StaticStrings.InsultingOfficerCrimeID);
         }
-        if (Player.IsBeingANuisance || Player.IsStandingOnVehicle)
+        if (Player.IsBeingANuisance)
         {
             Violations.AddViolating(StaticStrings.PublicNuisanceCrimeID);
         }
@@ -86,37 +84,6 @@ public class OtherViolations
         if (Player.ActivityManager.IsUsingIllegalItem)
         {
             Violations.AddViolating(StaticStrings.DrugPossessionCrimeID);
-        }
-    }
-    private void SmallBodyCrimes()
-    {
-
-        return;
-        if(Player.IsInVehicle)
-        {
-            return;
-        }
-
-       
-        PedExt closestPedExt = World.Pedestrians.PedExts.Where(x => !x.IsDead && !x.IsUnconscious && x.DistanceToPlayer <= 0.65f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-        if(closestPedExt == null)
-        {
-            PreviousClosestPed?.ResetPlayerStoodTooClose();
-            return;
-        }
-
-        if(PreviousClosestPed != null && closestPedExt.Handle != PreviousClosestPed.Handle)
-        {
-            PreviousClosestPed.ResetPlayerStoodTooClose();
-        }
-        if(closestPedExt.IsGroupMember)
-        {
-            return;
-        }
-        if(closestPedExt.DistanceToPlayer <= 0.65f)
-        {
-            closestPedExt.SetStoodTooClose(Interactionable);
-            //EntryPoint.WriteToConsole("TOO CLOSE TO PED, MAKING THEM ANGRY");
         }
     }
     private void DealingUpdate()
@@ -224,7 +191,7 @@ public class OtherViolations
         }
         if (Player.ActivityManager.IsBuryingBody)
         {
-            Violations.AddViolating(StaticStrings.KillingCiviliansCrimeID);
+            Violations.AddViolating(StaticStrings.BuringABodyCrimeID);
         }
         CheckVehicleInvasion();
     }

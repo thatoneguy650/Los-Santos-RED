@@ -81,6 +81,9 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public int MinimumRep { get; set; } = -2000;
     public int MaximumRep { get; set; } = 2000;
     public int StartingRep { get; set; } = 200;
+
+
+    public int HostileRepLevel { get; set; } = -200;
     public int NeutralRepLevel { get; set; } = 0;
     public int FriendlyRepLevel { get; set; } = 500;
     public int MemberOfferRepLevel { get; set; } = 2000;
@@ -344,5 +347,6 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     {
         CopHitPaymentMin= 7500;
         CopHitPaymentMax = 10500;
+        HostileRepLevel = -200;
     }
 }

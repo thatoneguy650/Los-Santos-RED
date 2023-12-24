@@ -92,6 +92,7 @@ namespace LosSantosRED.lsr
         private IPoliceRespondable Player;
         private Dispatch PublicIntoxication;
         private Dispatch PublicNuisance;
+        private Dispatch StandingOnVehicle;
         private List<string> RadioEnd;
         private List<string> RadioStart;
         private Dispatch RecklessDriving;
@@ -123,7 +124,7 @@ namespace LosSantosRED.lsr
         private Dispatch SuspectEvaded;
         private Dispatch SuspectEvadedSimple;
         private Dispatch SuspectSpotted;
-
+        private Dispatch UnlawfulBodyDisposal;
 
         private Dispatch CivilianReportUpdate;
 
@@ -151,6 +152,7 @@ namespace LosSantosRED.lsr
         private ZoneScannerAudio ZoneScannerAudio;
         private Dispatch SuspectSpottedSimple;
         private bool canHearScanner;
+        private Dispatch StoppingTrains;
 
 
         private uint GameTimeLastAddedAmbientDispatch;
@@ -571,6 +573,17 @@ namespace LosSantosRED.lsr
             }
            // EntryPoint.WriteToConsole($"SCANNER EVENT: OnFoot", 3);
         }
+
+
+        public void OnStoppingTrains()
+        {
+            if (!StoppingTrains.HasRecentlyBeenPlayed)
+            {
+                AddToQueue(StoppingTrains);
+            }
+
+        }
+
         public void OnHelicoptersDeployed()
         {
             if (Player.IsWanted && !ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && !RequestSwatAirSupport.HasBeenPlayedThisWanted && World.Pedestrians.AnyHelicopterUnitsSpawned)
@@ -1716,6 +1729,8 @@ namespace LosSantosRED.lsr
             new CrimeDispatch(StaticStrings.IndecentExposureCrimeID,IndecentExposure),
             new CrimeDispatch(StaticStrings.MaliciousVehicleDamageCrimeID,MaliciousVehicleDamage),
             new CrimeDispatch(StaticStrings.DrugPossessionCrimeID,DrugPossession),
+            new CrimeDispatch(StaticStrings.StandingOnVehicleCrimeID,StandingOnVehicle),
+            new CrimeDispatch(StaticStrings.BuringABodyCrimeID,UnlawfulBodyDisposal),
         };
             DispatchList = new List<Dispatch>
         {
@@ -1798,6 +1813,9 @@ namespace LosSantosRED.lsr
             ,IndecentExposure
             ,MaliciousVehicleDamage
             ,DrugPossession
+            ,StandingOnVehicle
+            ,UnlawfulBodyDisposal
+            ,StoppingTrains
         };
         }
         private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)
@@ -2395,6 +2413,30 @@ namespace LosSantosRED.lsr
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { crime_5_07.Apublicnuisance.FileName },"a public nuisance"),
+                    //},
+                },
+            };
+
+
+            StandingOnVehicle = new Dispatch()
+            {
+                Name = "Standing On Vehicle",
+                LocationDescription = LocationSpecificity.Street,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_5_94.Maliciousmischief.FileName },"malicious mischief"),
+                new AudioSet(new List<string>() { crime_5_94.Maliciousmischief1.FileName },"malicious mischief"),
+            },
+            };
+
+            UnlawfulBodyDisposal = new Dispatch()
+            {
+                Name = "Unlawful Disposal of Remains",
+                LocationDescription = LocationSpecificity.Street,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_4_19.Adeadbody.FileName },"a dead body"),
+                new AudioSet(new List<string>() { crime_4_19.Adeceasedperson.FileName },"a deceased person"),
             },
             };
 
@@ -2434,6 +2476,18 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_criminal_activity.Prohibitedactivity.FileName },"criminal activity"),
             },
             };
+
+            StoppingTrains = new Dispatch()
+            {
+                Name = "Stopping Local Trains",
+                LocationDescription = LocationSpecificity.Zone,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_hijacked_vehicle.Ahijackedvehicle.FileName },"a hijacked vehicle"),
+            },
+            };
+
+
 
 
 
@@ -3636,5 +3690,7 @@ namespace LosSantosRED.lsr
                 //}
             };
         }
+
+
     }
 }

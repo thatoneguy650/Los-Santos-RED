@@ -436,14 +436,14 @@ public class Conversation : Interaction, IAdvancedConversationable
         Ped.OnInsultedByPlayer(Player);
         if (Ped.IsFedUpWithPlayer)
         {
-            if (Ped.IsCop)
-            {
-                Player.SetAngeredCop();
-            }
-            else
-            {
-                Ped.AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "Harassment"), Player.Character.Position);
-            }
+            //if (Ped.IsCop)
+            //{
+            //    Player.SetAngeredCop();
+            //}
+            //else
+            //{
+            //    Ped.AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "Harassment"), Player.Character.Position);
+            //}
             CancelledConversation = true;
         }
         GameFiber.Sleep(200);

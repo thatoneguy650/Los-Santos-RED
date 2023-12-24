@@ -12,6 +12,7 @@ public class GangFight : ComplexTask
 {
     WeaponInformation ToIssue;
     ITargetable Player;
+    public bool ForceCombatPlayer = false;
     public GangFight(IComplexTaskable ped, ITargetable player, WeaponInformation toIssue) : base(player, ped, 5000)
     {
         Name = "GangFight";
@@ -28,6 +29,10 @@ public class GangFight : ComplexTask
             if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
             {
                 NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, OtherTarget.Pedestrian, Ped.DefaultCombatFlag, 16);
+            }
+            else if(ForceCombatPlayer)
+            {
+                NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, Player.Character, Ped.DefaultCombatFlag, 16);
             }
             else
             {

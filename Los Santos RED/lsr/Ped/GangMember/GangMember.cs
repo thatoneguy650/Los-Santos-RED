@@ -31,6 +31,9 @@ public class GangMember : PedExt, IWeaponIssuable
     public override int VehicleShootRate { get; set; } = 100;
     public override int TurretAccuracy { get; set; } = 10;
     public override int TurretShootRate { get; set; } = 1000;
+    public override int InsultLimit => 2;
+    public override int CollideWithPlayerLimit => 0;
+    public override int PlayerStandTooCloseLimit => 1;
     public bool IsUsingMountedWeapon { get; set; } = false;
     public WeaponInventory WeaponInventory { get; private set; }
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => Gang.GetRandomMeleeWeapon(weapons);
@@ -46,7 +49,7 @@ public class GangMember : PedExt, IWeaponIssuable
     public new string FormattedName => (PlayerKnownsName ? Name : GroupName);
     public override bool KnowsDrugAreas => true;
     public override bool KnowsGangAreas => true;
-    public override int TouchLimit { get; set; } = 0;
+
     public override bool IsGangMember { get; set; } = true;
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
@@ -101,6 +104,22 @@ public class GangMember : PedExt, IWeaponIssuable
         }
         PedViolations.Reset();
         //EntryPoint.WriteToConsoleTestLong($"{Pedestrian.Handle} LOST WANTED (GANG MEMBER)");
+    }
+    public bool IsPlayerMember(IInteractionable player)
+    {
+        if (Gang == null)
+        {
+            return false;
+        }
+        if (player.RelationshipManager.GangRelationships.CurrentGang != null && player.RelationshipManager.GangRelationships.CurrentGang.ID == Gang.ID)
+        {
+            return true;
+        }
+        if (IsGroupMember)
+        {
+            return true;
+        }
+        return false;
     }
     public void SetStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons weapons, bool addBlip, bool forceMelee, bool forceSidearm, bool forceLongGun)
     {
@@ -158,76 +177,40 @@ public class GangMember : PedExt, IWeaponIssuable
     public override void OnInsultedByPlayer(IInteractionable player)
     {
         base.OnInsultedByPlayer(player);
+        if(IsPlayerMember(player) || Gang == null)
+        {
+            return;
+        }
         PlayerToCheck.RelationshipManager.GangRelationships.ChangeReputation(Gang, -100, true);  
     }
-    public override void OnStandingTooClose(IInteractionable player)
+    public override void OnPlayerIsClose(IInteractionable player)
     {
-        if (Gang == null)
+        if (IsPlayerMember(player) || Gang == null)
         {
             return;
         }
-        if (player.RelationshipManager.GangRelationships.CurrentGang != null && player.RelationshipManager.GangRelationships.CurrentGang.ID == Gang.ID)
-        {
-            return;
-        }
-        if(IsGroupMember)
-        {
-            return;
-        }
-        base.OnStandingTooClose(player);
+        base.OnPlayerIsClose(player);
     }
-    public override void OnStoodTooClose(IInteractionable player)
+    public override void OnCollidedWithPlayer(IInteractionable player)
     {
-        if(Gang == null)
+        if (IsPlayerMember(player) || Gang == null)
         {
             return;
         }
-        if(player.RelationshipManager.GangRelationships.CurrentGang != null && player.RelationshipManager.GangRelationships.CurrentGang.ID == Gang.ID)
-        {
-            return;
-        }
-        if (IsGroupMember)
-        {
-            return;
-        }
-        PlayerToCheck.RelationshipManager.GangRelationships.ChangeReputation(Gang, -100, true);
-        AddWitnessedPlayerCrime(Crimes.GetCrime(StaticStrings.BrandishingWeaponCrimeID), player.Character.Position);
-        EntryPoint.WriteToConsole("set gang member brandisihg, to fight you!");
+        base.OnCollidedWithPlayer(player);
     }
-    public override void OnTouchedByPlayer(IInteractionable player)
+    public override void OnPlayerDidBodilyFunctionsNear(IInteractionable player)
     {
-        if (Gang == null)
+        if (Game.GameTime - GameTimePlayerLastDidBodilyFunctionsNear < 3000)
         {
             return;
         }
-        if (player.RelationshipManager.GangRelationships.CurrentGang != null && player.RelationshipManager.GangRelationships.CurrentGang.ID == Gang.ID)
+        GameTimePlayerLastDidBodilyFunctionsNear = Game.GameTime;
+        if (IsPlayerMember(player) || Gang == null)
         {
             return;
         }
-        if (IsGroupMember)
-        {
-            return;
-        }
-        if (Game.GameTime - GameTimeLastTouchedPlayer < 3000)
-        {
-            return;
-        }
-        GameTimeLastTouchedPlayer = Game.GameTime;
-        TimesTouchedByPlayer++;
-        if (TimesTouchedByPlayer >= TouchLimit)
-        {
-            OnHitTouchLimit(player);
-        }
-        else
-        {
-            EntryPoint.WriteToConsole("You are harassing the target!");
-        }
-    }
-    protected override void OnHitTouchLimit(IInteractionable player)
-    {
-        PlayerToCheck.RelationshipManager.GangRelationships.ChangeReputation(Gang, -100, true);
-        AddWitnessedPlayerCrime(Crimes.GetCrime(StaticStrings.BrandishingWeaponCrimeID), player.Character.Position);
-        base.OnHitTouchLimit(player);
+        TimesInsultedByPlayer += 10;
     }
     public override void OnKilledByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
     {

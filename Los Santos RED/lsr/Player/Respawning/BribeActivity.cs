@@ -198,7 +198,7 @@ public class BribeActivity
     private void CreateAndAttachCash()
     {
         ModItem cashItem = ModItems.Get("Cash Bundle");
-        if(cashItem== null)
+        if(cashItem == null)
         {
             return;
         }

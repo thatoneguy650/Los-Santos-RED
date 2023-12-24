@@ -290,6 +290,10 @@ public class WeaponEquipment
         {
             Player.IsVisiblyArmed = false;
         }
+        else if (CurrentWeapon != null && CurrentWeapon.DoesNotTriggerBrandishing)
+        {
+            Player.IsVisiblyArmed = false;
+        }
         else
         {
             Player.IsVisiblyArmed = true;

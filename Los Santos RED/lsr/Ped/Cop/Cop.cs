@@ -63,9 +63,10 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public override int TurretAccuracy { get; set; } = 30;
     public override int TurretShootRate { get; set; } = 1000;
     public override bool AutoCallsInUnconsciousPeds { get; set; } = true;
-    public override int TouchLimit { get; set; } = 1;
+    public override int CollideWithPlayerLimit => 1;
+    public override int PlayerStandTooCloseLimit => 1;
+    public override int InsultLimit => 2;
     public override string BlipName => "Police";
-
     public CopAssistManager AssistManager { get; private set;}
     public CopVoice Voice { get; private set; }
     public WeaponInventory WeaponInventory { get; private set; }
@@ -182,10 +183,6 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
         Voice.Speak(currentPlayer);
-        //if (Settings.SettingsManager.PoliceSettings.AllowRadioInAnimations)
-        //{
-        //    Voice.RadioIn(currentPlayer);
-        //}
     }
     public void ForceSpeech(IPoliceRespondable currentPlayer)
     {
@@ -281,17 +278,10 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             NativeFunction.Natives.STOP_PED_WEAPON_FIRING_WHEN_DROPPED(Pedestrian);
         }
-
         if (sightDistance > 60f)
         {
             NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, sightDistance);
         }
-
-        //if (Settings.SettingsManager.PoliceSettings.SightDistance > 60f)
-        //{
-        //    NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.PoliceSettings.SightDistance);
-        //}
-
     }
     private void UpdateCombatFlags()
     {
@@ -314,23 +304,26 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             }
         }
     }
-    public override void OnInsultedByPlayer(IInteractionable player)
-    {
-        base.OnInsultedByPlayer(player);
-        if (IsFedUpWithPlayer)
-        {
-            player.SetAngeredCop();
-        }
-    }
-    public override void OnStoodTooClose(IInteractionable player)
-    {
-        player.SetAngeredCop();
-        EntryPoint.WriteToConsole("You angered the cop by standing too close!");
-    }
-    protected override void OnHitTouchLimit(IInteractionable player)
+    protected override void OnHitInsultLimit(IInteractionable player)
     {
         player.SetAngeredCop();
     }
+    protected override void OnHitCollideWithPlayerLimit(IInteractionable player)
+    {
+        player.SetAngeredCop();
+    }
+    protected override void OnHitPlayerStoodTooCloseLimit(IInteractionable player)
+    {
+        player.SetAngeredCop();
+    }
+
+
+    public override void OnPlayerDidBodilyFunctionsNear(IInteractionable player)
+    {
+        player.SetAngeredCop();
+    }
+
+
     private void PlayerViolationChecker(IPoliceRespondable policeRespondable, IEntityProvideable world)
     {
         if(policeRespondable.IsNotWanted && SawPlayerViolating)

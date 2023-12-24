@@ -91,6 +91,7 @@ public class GangBrain : PedBrain
         {
             bool WillAttackPlayer = false;
             bool WillFleeFromPlayer = false;
+            bool IsFedUp = false;
             bool SeenPlayerReactiveCrime = GangMember.PlayerCrimesWitnessed.Any(x => (x.Crime.ScaresCivilians || x.Crime.AngersCivilians) && x.Crime.CanBeReactedToByCivilians);
             bool SeenOtherReactiveCrime = GangMember.OtherCrimesWitnessed.Any(x => (x.Crime.ScaresCivilians || x.Crime.AngersCivilians) && x.Crime.CanBeReactedToByCivilians);
 
@@ -153,10 +154,29 @@ public class GangBrain : PedBrain
                         WillFleeFromPlayer = true;
                     }
                 }
+                else if (GangMember.IsFedUpWithPlayer && !arePoliceNearby)
+                {
+                    IsFedUp = true;
+                    if (GangMember.WillFight)
+                    {
+                        WillAttackPlayer = true;
+                    }
+                    else
+                    {
+                        WillFleeFromPlayer = true;
+                    }
+                }
             }
             if (WillAttackPlayer)
             {
-                SetFight(GangMember, null);
+                if (IsFedUp)
+                {
+                    SetFightPlayer(GangMember);
+                }
+                else
+                {
+                    SetFight(GangMember, null);
+                }
             }
             else if (SeenOtherReactiveCrime)
             {
@@ -175,6 +195,9 @@ public class GangBrain : PedBrain
             }
             else
             {
+
+
+
                 if (GangMember.IsBackupSquad && !GangMember.PlayerPerception.EverSeenTarget && GangMember.ClosestDistanceToPlayer >= 20f)
                 {
                     SetLocate(GangMember);
@@ -209,6 +232,17 @@ public class GangBrain : PedBrain
         if (GangMember.CurrentTask?.Name != "GangFight")
         {
             GangMember.CurrentTask = new GangFight(GangMember, Player, null) { OtherTarget = HighestPriority?.Perpetrator };
+
+            GameFiber.Yield();//TR Added back 7
+            GangMember.CurrentTask?.Start();
+        }
+    }
+    private void SetFightPlayer(GangMember GangMember)
+    {
+        if (GangMember.CurrentTask?.Name != "GangFight")
+        {
+            GangMember.CurrentTask = new GangFight(GangMember, Player, null) { ForceCombatPlayer = true };
+
             GameFiber.Yield();//TR Added back 7
             GangMember.CurrentTask?.Start();
         }

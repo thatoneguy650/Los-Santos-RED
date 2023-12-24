@@ -301,7 +301,7 @@ namespace Mod
         public bool IsEMT { get; set; } = false;
         public bool IsFireFighter { get; set; } = false;
         public bool IsSecurityGuard { get; set; } = false;
-        public bool IsRidingOnTrain { get; private set; }
+        public bool IsRidingOnTrain { get; set; }
         public bool HasBustPowers => IsCop || IsSecurityGuard;
 
         public bool CanBustPeds => (IsCop || IsSecurityGuard) && !IsIncapacitated;
@@ -372,7 +372,7 @@ namespace Mod
         public bool IsPressingFireWeapon { get; set; }
         public bool IsRagdoll { get; private set; }
         public bool IsResting { get; set; } = false;
-        public bool IsStandingOnVehicle { get; private set; }
+        public bool IsStandingOnVehicle { get; set; }
         public bool IsRidingBus { get; set; }
         public bool IsShooting
         {
@@ -1724,7 +1724,6 @@ namespace Mod
 
             }
             HealthState.UpdatePlayer(this);
-
             IsStunned = Game.LocalPlayer.Character.IsStunned;
             IsRagdoll = Game.LocalPlayer.Character.IsRagdoll;
             IsInCover = Game.LocalPlayer.Character.IsInCover;
@@ -1753,62 +1752,8 @@ namespace Mod
             UpdateClosestLookedAtObject();
             UpdateSleeping();
             GameFiber.Yield();
-            UpdateFootItems();
-            //UpdateVehicleDamage();
-            //UpdateCollideItems();
+            Violations.MinorViolations.UpdateData();
         }
-
-
-
-        private void UpdateFootItems()
-        {
-            if(IsInVehicle)
-            {
-                IsStandingOnVehicle = false;
-                return;
-            }
-            IsStandingOnVehicle = NativeFunction.Natives.IS_PED_ON_VEHICLE<bool>(Character);
-        }
-        //private void UpdateVehicleDamage()
-        //{
-        //    if (IsInVehicle || RecentlyDamagedVehicleOnFoot || IsWanted || IsDead)//already checks crashes
-        //    {
-        //        return;
-        //    }
-        //    List<VehicleExt> CloseVehicles = World.Vehicles.AllVehicleList.Where(x => x.Vehicle.Exists() && x.Vehicle.DistanceTo(Character) <= 5.0f).ToList();
-        //    foreach (VehicleExt vehicle in CloseVehicles)
-        //    {
-        //        if(vehicle.CheckPlayerDamage(this))
-        //        {
-        //            return;
-        //        }
-        //    }
-        //}
-        //private void UpdateCollideItems()
-        //{
-        //    if (IsInVehicle || IsWanted || IsDead)//already checks crashes
-        //    {
-        //        return;
-        //    }
-        //    List<PedExt> CloseVehicles = World.Pedestrians.LivingPeople.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 5.0f).ToList();
-        //    foreach (PedExt pedExt in CloseVehicles)
-        //    {
-        //        if(!pedExt.Pedestrian.Exists())
-        //        {
-        //            continue;
-        //        }
-        //        if(NativeFunction.Natives.IS_ENTITY_TOUCHING_ENTITY<bool>(Character,pedExt.Pedestrian))
-        //        {
-        //            pedExt.OnTouchedByPlayer(this);
-        //            Game.DisplaySubtitle($"YOU ARE TOUCHING {pedExt.Handle}");
-        //            EntryPoint.WriteToConsole($"YOU ARE TOUCHING {pedExt.Handle}");
-        //        }
-        //    }
-        //}
-        //public void OnDamagedVehicle()
-        //{
-        //    GameTimeLastDamagedVehicleOnFoot = Game.GameTime;
-        //}
         private void UpdateGeneralStatus()
         {
             if (Game.LocalPlayer.Character.IsDead && !IsDead)
@@ -1874,7 +1819,7 @@ namespace Mod
 
             bool isModelBike = false;
             bool isModelBicycle = false;
-            IsRidingOnTrain = false;
+            //IsRidingOnTrain = false;
             //if (Character.CurrentVehicle.Exists())
             //{
             //    isModelBike = NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>((uint)Character.CurrentVehicle.Model.Hash);
@@ -2055,7 +2000,7 @@ namespace Mod
             CurrentVehicle = null;
             VehicleSpeed = 0f;
             IsSirenOn = false;
-            IsRidingOnTrain = NativeFunction.Natives.IS_PLAYER_RIDING_TRAIN<bool>(Game.LocalPlayer);
+            //IsRidingOnTrain = NativeFunction.Natives.IS_PLAYER_RIDING_TRAIN<bool>(Game.LocalPlayer);
             float PlayerSpeed = Character.Speed;
 
 

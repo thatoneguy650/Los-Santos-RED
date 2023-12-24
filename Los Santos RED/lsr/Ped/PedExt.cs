@@ -1,5 +1,4 @@
 ﻿using ExtensionsMethods;
-using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Mod;
@@ -9,7 +8,6 @@ using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 public class PedExt : IComplexTaskable, ISeatAssignable
@@ -38,9 +36,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     private uint GameTimeFirstSeenUnconscious;
     private uint GameTimeLastReportedCrime;
     private uint GameTimeLastTooCloseToPlayer;
-    protected uint GameTimeLastTouchedPlayer;
-    protected int TimesTouchedByPlayer;
-
+    protected uint GameTimeLastCollidedWithPlayer;
+    protected uint GameTimePlayerLastDidBodilyFunctionsNear;
+    private bool HasGivenTooCloseWarning;
 
     private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
     private bool CanYell => !IsYellingTimeOut;
@@ -119,7 +117,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public virtual bool IsTrustingOfPlayer { get; set; } = true;
     public virtual bool CanTransact => HasMenu;
-    public virtual int TouchLimit { get; set; } = 2;
+
     public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
     public bool RecentlySeenPlayer => PlayerPerception.RecentlySeenTarget;
     public bool IsCowering { get; set; }
@@ -241,7 +239,23 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool PlayerKnownsName { get; set; }
     public bool HatesPlayer { get; set; } = false;
     public int Health { get; set; }
-    public int InsultLimit => IsGangMember || IsCop ? 2 : 3;
+
+
+
+
+    public virtual int InsultLimit => 3;
+    public virtual int CollideWithPlayerLimit => 2;
+    public virtual int PlayerStandTooCloseLimit => 2;
+    public bool IsFedUpWithPlayer => TimesInsultedByPlayer >= InsultLimit || TimesCollidedWithPlayer > CollideWithPlayerLimit || TimesPlayerStoodTooClose > PlayerStandTooCloseLimit;
+    public int TimesInsultedByPlayer { get; protected set; }
+    public int TimesCollidedWithPlayer { get; private set; }
+    public int TimesPlayerStoodTooClose { get; private set; }
+
+
+
+
+
+
     public bool IsArrested { get; set; }
     public bool IsBusted { get; set; } = false;
     public bool IsCop { get; set; } = false;
@@ -252,7 +266,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsDrivingRecklessly { get; set; } = false;
     public bool IsDriver { get; private set; } = false;
     public bool IsDrunk { get; set; } = false;
-    public bool IsFedUpWithPlayer => TimesInsultedByPlayer >= InsultLimit;
+
     public bool IsFreeModePed { get; set; } = false;
     public virtual bool IsGangMember { get; set; } = false;
     public bool IsInAPC { get; private set; }
@@ -353,7 +367,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
     }
     public uint TimeContinuoslySeenPlayer => PlayerPerception.TimeContinuoslySeenTarget;
-    public int TimesInsultedByPlayer { get; private set; }
+
     public ShopMenu ShopMenu { get; private set; }
     public VehicleExt VehicleLastSeenPlayerIn => PlayerPerception.VehicleLastSeenTargetIn;
     public int WantedLevel => PedViolations.WantedLevel;
@@ -606,20 +620,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             //return false;
         }
     }
-    public virtual void OnInsultedByPlayer(IInteractionable player)
-    {
-        if (GameTimeLastInsultedByPlayer == 0 || Game.GameTime - GameTimeLastInsultedByPlayer >= 1000)
-        {
-            TimesInsultedByPlayer += 1;
-            GameTimeLastInsultedByPlayer = Game.GameTime;
-            if(IsFedUpWithPlayer && player != null && Crimes != null)
-            {
-                AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "Harassment"), player.Character.Position);
-                //EntryPoint.WriteToConsoleTestLong("Insulted by Player FED UP Adding Crime");
-            }
 
-        }
-    }
     public void LogSourceOfDeath()
     {
         if (Pedestrian.Exists() && Pedestrian.IsDead)
@@ -1388,55 +1389,96 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         GameTimeLastTooCloseToPlayer = 0;
     }
 
-    public void SetStoodTooClose(IInteractionable player)
+
+
+    public virtual void OnInsultedByPlayer(IInteractionable player)
+    {
+        if (GameTimeLastInsultedByPlayer == 0 || Game.GameTime - GameTimeLastInsultedByPlayer >= 1000)
+        {
+            TimesInsultedByPlayer += 1;
+            GameTimeLastInsultedByPlayer = Game.GameTime;
+            if(TimesInsultedByPlayer >= InsultLimit)
+            {
+                OnHitInsultLimit(player);
+            }
+        }
+    }
+
+    protected virtual void OnHitInsultLimit(IInteractionable player)
+    {
+        PlaySpeech(new List<string>() { "GENERIC_SHOCKED_HIGH", "GENERIC_FRUSTRATED_HIGH", "GET_OUT_OF_HERE" }, false, false);
+        AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
+        EntryPoint.WriteToConsole($"OnHitInsultLimit triggered {Handle}");
+    }
+    protected virtual void OnHitPlayerStoodTooCloseLimit(IInteractionable player)
+    {
+        PlaySpeech(new List<string>() { "GENERIC_SHOCKED_HIGH", "GENERIC_FRUSTRATED_HIGH", "GET_OUT_OF_HERE" }, false, false);
+        AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
+        EntryPoint.WriteToConsole($"OnHitPlayerStoodTooCloseLimit triggered {Handle}");
+    }
+    protected virtual void OnHitCollideWithPlayerLimit(IInteractionable player)
+    {
+        PlaySpeech(new List<string>() { "GENERIC_SHOCKED_HIGH", "GENERIC_FRUSTRATED_HIGH", "GET_OUT_OF_HERE" }, false, false);
+        AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
+        EntryPoint.WriteToConsole($"OnHitCollideWithPlayerLimit triggered {Handle}");
+    }
+
+    public virtual void OnPlayerIsClose(IInteractionable player)
     {
         if(GameTimeLastTooCloseToPlayer == 0)
         {
             GameTimeLastTooCloseToPlayer = Game.GameTime;
         }
-        if (Game.GameTime - GameTimeLastTooCloseToPlayer >= 5000)
+        if (Game.GameTime - GameTimeLastTooCloseToPlayer >= 5000 && !HasGivenTooCloseWarning)
         {
-            OnStandingTooClose(player);
+            OnPlayerStandingTooClose(player);
+            HasGivenTooCloseWarning = true;
         }
-        if (Game.GameTime - GameTimeLastTooCloseToPlayer >= 8000)
+        if (Game.GameTime - GameTimeLastTooCloseToPlayer >= 10000)
         {
             GameTimeLastTooCloseToPlayer = Game.GameTime;
-            OnStoodTooClose(player);
+            HasGivenTooCloseWarning = false;
+            OnPlayerStoodTooClose(player);
         }
     }
-    public virtual void OnStandingTooClose(IInteractionable player)
+    private void OnPlayerStandingTooClose(IInteractionable player)
     {
-        //AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "Harassment"), player.Character.Position);
         PlaySpeech(new List<string>() { "GENERIC_SHOCKED_HIGH", "GENERIC_FRUSTRATED_HIGH", "GET_OUT_OF_HERE" }, false, false);
-        EntryPoint.WriteToConsole("The target will warn your for harassing");
-        Game.DisplayHelp("You are crowding someone. Back off to avoid issues");
+        EntryPoint.WriteToConsole($"OnPlayerStandingTooClose  triggered {Handle}");
+       // Game.DisplayHelp("You are crowding someone. Back off to avoid issues");
     }
-    public virtual void OnStoodTooClose(IInteractionable player)
+    private void OnPlayerStoodTooClose(IInteractionable player)
     {
-        AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "Harassment"), player.Character.Position);
-        EntryPoint.WriteToConsole("You are harassing the target!");
+        EntryPoint.WriteToConsole($"OnPlayerStoodTooClose triggered {Handle}");
+        TimesPlayerStoodTooClose++;
+        if(TimesPlayerStoodTooClose > PlayerStandTooCloseLimit)
+        {
+            OnHitPlayerStoodTooCloseLimit(player);
+        }
     }
-
-    public virtual void OnTouchedByPlayer(IInteractionable player)
+    public virtual void OnCollidedWithPlayer(IInteractionable player)
     {
-        if(Game.GameTime - GameTimeLastTouchedPlayer < 3000)
+        if(Game.GameTime - GameTimeLastCollidedWithPlayer < 3000)
         {
             return;
         }
-        GameTimeLastTouchedPlayer = Game.GameTime;
-        TimesTouchedByPlayer++;
-        if(TimesTouchedByPlayer >= TouchLimit)
+        GameTimeLastCollidedWithPlayer = Game.GameTime;
+        TimesCollidedWithPlayer++;
+        EntryPoint.WriteToConsole($"OnCollidedWithPlayer triggered {Handle} TimeCollidedWithPlayer:{TimesCollidedWithPlayer} ");
+        if (TimesCollidedWithPlayer > CollideWithPlayerLimit)
         {
-            OnHitTouchLimit(player);
-        }
-        else
-        {
-            EntryPoint.WriteToConsole("You are harassing the target!");
+            OnHitCollideWithPlayerLimit(player);
         }
     }
-    protected virtual void OnHitTouchLimit(IInteractionable player)
+
+    public virtual void OnPlayerDidBodilyFunctionsNear(IInteractionable player)
     {
-        AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "Harassment"), player.Character.Position);
-        EntryPoint.WriteToConsole("You have annoyed the target!");
+        if (Game.GameTime - GameTimePlayerLastDidBodilyFunctionsNear < 3000)
+        {
+            return;
+        }
+        GameTimePlayerLastDidBodilyFunctionsNear = Game.GameTime;
+        AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
+        EntryPoint.WriteToConsole($"OnPlayerDidBodilyFunctionsNear triggered {Handle}");
     }
 }

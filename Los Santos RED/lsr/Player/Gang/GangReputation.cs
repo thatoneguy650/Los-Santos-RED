@@ -16,6 +16,7 @@ public class GangReputation
     private uint GameTimeLastAddedAmbientRep;
     private uint GameTimeLastAttacked;
     public int NeutralRepLevel = 0;
+    public int HostileRepLevel = -200;
     public int FriendlyRepLevel = 500;
     public bool CanAskToJoin => !IsMember && ReputationLevel >= Gang.MemberOfferRepLevel;
 
@@ -77,6 +78,7 @@ public class GangReputation
         reputationLevel = Gang.StartingRep;
         NeutralRepLevel = Gang.NeutralRepLevel;
         FriendlyRepLevel = Gang.FriendlyRepLevel;
+        HostileRepLevel = Gang.HostileRepLevel;
     }
     public Gang Gang { get; set; }
     public GangRespect GangRelationship
@@ -91,11 +93,11 @@ public class GangReputation
             {
                 return GangRespect.Hostile;
             }
-            else if(ReputationLevel < NeutralRepLevel)
+            else if(ReputationLevel <= HostileRepLevel)
             {
                 return GangRespect.Hostile;
             }
-            else if(ReputationLevel >= NeutralRepLevel && ReputationLevel < FriendlyRepLevel)
+            else if(ReputationLevel > HostileRepLevel && ReputationLevel < FriendlyRepLevel)
             {
                 return GangRespect.Neutral;
             }

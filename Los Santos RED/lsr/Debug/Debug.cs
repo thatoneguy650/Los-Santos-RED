@@ -1523,7 +1523,9 @@ private void DebugNumpad6()
 
     private void DebugNumpad7()
     {
-        World.Vehicles.StopAllTrains();
+        //World.Vehicles.StopAllTrains();
+
+        Player.PoliceResponse.TrainStopper.StopAllTrains();
         //Vector3 Position = new Vector3(833.577f, -1258.954f, 26.34347f);
         //bool isObscured = false;
         //while (!Game.IsKeyDownRightNow(Keys.Space))

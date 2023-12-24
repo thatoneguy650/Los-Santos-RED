@@ -90,7 +90,7 @@ public class WeaponInformation
         }
     }
 
-
+    public bool DoesNotTriggerBrandishing { get; set; } = false;
 
     public void ApplyWeaponVariation(Ped WeaponOwner, WeaponVariation weaponVariation)
     {

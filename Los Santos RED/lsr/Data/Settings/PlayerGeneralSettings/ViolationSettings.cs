@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -48,6 +49,16 @@ public class ViolationSettings : ISettingsDefaultable
     public float OverLimitFelonySpeedingAmount { get; set; }
     [Description("Speed required (MPH) over the speed limit to trigger speeding")]
     public float OverLimitSpeedingAmount { get; set; }
+    public bool AllowCollisionReactions { get; set; }
+    public bool AllowVehicleStandingReactions { get; set; }
+    public bool AllowBodilyFunctionReactions { get; set; }
+    public bool AllowVehicleDamageReactions { get; set; }
+    public bool AllowStandingCloseReactions { get; set; }
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
     public ViolationSettings()
     {
         SetDefault();
@@ -75,5 +86,11 @@ public class ViolationSettings : ISettingsDefaultable
         OverLimitFelonySpeedingAmount = 20f;
         OverLimitSpeedingAmount = 10f;
         ShowCrimeWarnings = true;
+
+        AllowCollisionReactions = true;
+        AllowVehicleStandingReactions = true;
+        AllowBodilyFunctionReactions = true;
+        AllowVehicleDamageReactions = true;
+        AllowStandingCloseReactions = true;
     }
 }
