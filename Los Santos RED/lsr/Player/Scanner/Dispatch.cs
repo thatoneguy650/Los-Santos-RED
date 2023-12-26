@@ -1,6 +1,7 @@
 ﻿using Rage;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 public class Dispatch
 {
@@ -33,7 +34,11 @@ public class Dispatch
             {
                 TimeBetween = 60000;
             }
-            if (Game.GameTime - GameTimeLastPlayed <= TimeBetween)
+            if(GameTimeLastPlayed == 0)
+            {
+                return false;
+            }
+            else if (Game.GameTime - GameTimeLastPlayed <= TimeBetween)
             {
                 return true;
             }
@@ -47,7 +52,11 @@ public class Dispatch
     {
         get
         {
-            if (Game.GameTime - GameTimeLastPlayed <= 15000)
+            if (GameTimeLastPlayed == 0)
+            {
+                return false;
+            }
+            else if (Game.GameTime - GameTimeLastPlayed <= 15000)
             {
                 return true;
             }
@@ -57,7 +66,7 @@ public class Dispatch
             }
         }
     }
-    public bool HasntBeenPlayedForAWhile => Game.GameTime - GameTimeLastPlayed <= 90000;
+    public bool HasntBeenPlayedForAWhile => GameTimeLastPlayed == 0 || Game.GameTime - GameTimeLastPlayed <= 90000;
     public bool IncludeAttentionAllUnits { get; set; }
     public bool IncludeCarryingWeapon { get; set; }
     public bool IncludeDrivingSpeed { get; set; }

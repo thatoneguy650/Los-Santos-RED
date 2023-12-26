@@ -1561,7 +1561,7 @@ namespace LSR.Vehicles
             }
         }
 
-        public virtual void OnDamagedByPlayer()
+        public virtual void OnDamagedByPlayer(IInteractionable player, IEntityProvideable world)
         {
             if(!Vehicle.Exists())
             {
@@ -1571,10 +1571,19 @@ namespace LSR.Vehicles
             EntryPoint.WriteToConsole(DamageString);
             //Game.DisplaySubtitle(DamageString);
             NativeFunction.Natives.CLEAR_ENTITY_LAST_DAMAGE_ENTITY(Vehicle);
+            PedExt Driver = null;
+            if (Vehicle.Driver.Exists())
+            {
+                Driver = world.Pedestrians.GetPedExt(Vehicle.Driver.Handle);
+            }
+            if(Driver != null)
+            {
+                Driver.OnPlayerDamagedCarOnFoot(player);
+            }
             GameTimeLastDamagedByPlayer = Game.GameTime;
         }
 
-        public bool CheckPlayerDamage(IInteractionable player)
+        public bool CheckPlayerDamage(IInteractionable player, IEntityProvideable world)
         {
             if (!Vehicle.Exists() || RecentlyDamagedByPlayer)
             {
@@ -1582,7 +1591,7 @@ namespace LSR.Vehicles
             }
             if (NativeFunction.Natives.HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY<bool>(Vehicle, player.Character, false))
             {
-                OnDamagedByPlayer();
+                OnDamagedByPlayer(player,world);
                 return true;
             }
             return false;

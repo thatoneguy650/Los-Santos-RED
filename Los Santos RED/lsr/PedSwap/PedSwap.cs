@@ -51,6 +51,7 @@ public class PedSwap : IPedSwap
     private ISavedOutfits SavedOutfits;
     private IInteractionable Interactionable;
     private bool HasSetOffset;
+    private bool IsDisposed;
 
     public PedSwap(ITimeControllable time, IPedSwappable player, ISettingsProvideable settings, IEntityProvideable entities, IWeapons weapons, ICrimes crimes, INameProvideable names, IModItems modItems, IEntityProvideable world, 
         IPedGroups pedGroups, IShopMenus shopMenus, IDispatchablePeople dispatchablePeople, IHeads heads, IClothesNames clothesNames, IGangs gangs, IAgencies agencies, ITattooNames tattooNames, IGameSaves gameSaves, ISavedOutfits savedOutfits, IInteractionable interactionable)
@@ -733,6 +734,11 @@ public class PedSwap : IPedSwap
     }
     public void Dispose()
     {
+        if(IsDisposed)
+        {
+            return;
+        }
+        IsDisposed = true;
         Vehicle Car = Game.LocalPlayer.Character.CurrentVehicle;
         bool WasInCar = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         int SeatIndex = 0;
@@ -773,6 +779,7 @@ public class PedSwap : IPedSwap
         InitialPlayerModel = Game.LocalPlayer.Character.Model;
         InitialPlayerVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
         CurrentModelPlayerIs = InitialPlayerModel;
+        IsDisposed = false;
     }
     public void TreatAsCivilian()
     {

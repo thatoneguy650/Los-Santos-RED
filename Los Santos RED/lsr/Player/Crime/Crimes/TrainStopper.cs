@@ -16,7 +16,9 @@ public class TrainStopper
     private ISettingsProvideable Settings;
     private ITimeReportable Time;
     private IEntityProvideable World;
+    private uint GameTimeBetweenTrainStop;
     private uint GameTimeSawOnTrain;
+
 
     public bool IsStoppingTrains { get; private set; }
     public TrainStopper(IPoliceRespondable player, ISettingsProvideable settings, ITimeReportable time, IEntityProvideable world)
@@ -25,6 +27,7 @@ public class TrainStopper
         Settings = settings;
         Time = time;
         World = world;
+        GameTimeBetweenTrainStop = RandomItems.GetRandomNumber(Settings.SettingsManager.PoliceSettings.MinTimeToStopTrains, Settings.SettingsManager.PoliceSettings.MaxTimeToStopTrains);
     }
 
     public void Dispose()
@@ -52,10 +55,10 @@ public class TrainStopper
                 EntryPoint.WriteToConsole("YOU WERE SEEN BY POLICE RIDING ON A TRAIN!");
                 GameTimeSawOnTrain = Game.GameTime;
             }
-            if (Game.GameTime - GameTimeSawOnTrain >= 20000)
+            if (Game.GameTime - GameTimeSawOnTrain >= GameTimeBetweenTrainStop)
             {
-                //EntryPoint.WriteToConsole("YOU WERE SEEN BY POLICE RIDING ON A TRAIN FOR 20 SECONDS, STOPPING ALL TRAINS!");
                 StopAllTrains();
+                GameTimeBetweenTrainStop = RandomItems.GetRandomNumber(Settings.SettingsManager.PoliceSettings.MinTimeToStopTrains, Settings.SettingsManager.PoliceSettings.MaxTimeToStopTrains);
             }
         }
         else
@@ -79,7 +82,7 @@ public class TrainStopper
                 List<VehicleExt> TrainVehicles = new List<VehicleExt>();
                 GetAllTrains(TrainVehicles);
                 uint GameTimeLastGotAllTrains = Game.GameTime;
-                while (IsStoppingTrains && EntryPoint.ModController.IsRunning)
+                while (IsStoppingTrains && EntryPoint.ModController.IsRunning && Player.IsWanted)
                 {
                     TrainVehicles.RemoveAll(x => !x.Vehicle.Exists());
                     if(Game.GameTime - GameTimeLastGotAllTrains >= 3000)
@@ -118,11 +121,6 @@ public class TrainStopper
                 EntryPoint.ModController.CrashUnload();
             }
         }, "StopAllTrains");
-
-
-
-
-
     }
     private void GetAllTrains(List<VehicleExt> TrainVehicles)
     {
@@ -138,12 +136,6 @@ public class TrainStopper
                 {
                     TrainVehicles.Add(vehicleExt);
                 }
-                //if (vehicleExt.Vehicle.Driver.Exists())
-                //{
-                //    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", vehicleExt.Vehicle.Driver, vehicleExt.Vehicle, 6, 999999);
-                //}
-                ////NativeFunction.Natives.SET_TRAIN_SPEED(vehicleExt.Vehicle, 0);
-                //EntryPoint.WriteToConsole("SETTING TRAIN STOPPED");
             }
         }
     }

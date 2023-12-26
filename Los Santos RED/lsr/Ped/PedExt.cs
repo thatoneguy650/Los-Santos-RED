@@ -38,7 +38,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     private uint GameTimeLastTooCloseToPlayer;
     protected uint GameTimeLastCollidedWithPlayer;
     protected uint GameTimePlayerLastDidBodilyFunctionsNear;
-    private bool HasGivenTooCloseWarning;
+    protected bool HasGivenTooCloseWarning;
+    protected uint GameTimePlayerLastDamagedCarOnFoot;
+    protected uint GameTimePlayerLastStoodOnCar;
 
     private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
     private bool CanYell => !IsYellingTimeOut;
@@ -1389,7 +1391,17 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         GameTimeLastTooCloseToPlayer = 0;
     }
 
-
+    public virtual void OnPlayerStoodOnCar(IInteractionable player)
+    {
+        if (Game.GameTime - GameTimePlayerLastStoodOnCar < 3000)
+        {
+            return;
+        }
+        GameTimePlayerLastStoodOnCar = Game.GameTime;
+        PlaySpeech(new List<string>() { "GENERIC_SHOCKED_HIGH", "GENERIC_FRUSTRATED_HIGH", "GET_OUT_OF_HERE" }, false, false);
+        AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
+        EntryPoint.WriteToConsole($"OnHitInsultLimit triggered {Handle}");
+    }
 
     public virtual void OnInsultedByPlayer(IInteractionable player)
     {
@@ -1427,6 +1439,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     {
         if(GameTimeLastTooCloseToPlayer == 0)
         {
+           // HasGivenTooCloseWarning = false;
             GameTimeLastTooCloseToPlayer = Game.GameTime;
         }
         if (Game.GameTime - GameTimeLastTooCloseToPlayer >= 5000 && !HasGivenTooCloseWarning)
@@ -1445,7 +1458,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     {
         PlaySpeech(new List<string>() { "GENERIC_SHOCKED_HIGH", "GENERIC_FRUSTRATED_HIGH", "GET_OUT_OF_HERE" }, false, false);
         EntryPoint.WriteToConsole($"OnPlayerStandingTooClose  triggered {Handle}");
-       // Game.DisplayHelp("You are crowding someone. Back off to avoid issues");
+        Game.DisplayHelp("You are crowding. Back off to avoid issues");
     }
     private void OnPlayerStoodTooClose(IInteractionable player)
     {
@@ -1471,6 +1484,19 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
     }
 
+    public virtual void OnPlayerDamagedCarOnFoot(IInteractionable player)
+    {
+        if (Game.GameTime - GameTimePlayerLastDamagedCarOnFoot < 3000)
+        {
+            return;
+        }
+        GameTimePlayerLastDamagedCarOnFoot = Game.GameTime;
+        AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
+        EntryPoint.WriteToConsole($"OnPlayerDamagedCarOnFoot triggered {Handle}");
+    }
+
+
+
     public virtual void OnPlayerDidBodilyFunctionsNear(IInteractionable player)
     {
         if (Game.GameTime - GameTimePlayerLastDidBodilyFunctionsNear < 3000)
@@ -1481,4 +1507,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
         EntryPoint.WriteToConsole($"OnPlayerDidBodilyFunctionsNear triggered {Handle}");
     }
+
+
 }

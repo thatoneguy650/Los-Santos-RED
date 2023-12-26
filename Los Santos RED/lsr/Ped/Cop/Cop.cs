@@ -184,11 +184,11 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     {
         Voice.Speak(currentPlayer);
     }
-    public void ForceSpeech(IPoliceRespondable currentPlayer)
-    {
-        Voice.ResetSpeech();
-        Voice.Speak(currentPlayer);
-    }
+    //public void ForceSpeech(IPoliceRespondable currentPlayer)
+    //{
+    //    Voice.ResetSpeech();
+    //    Voice.Speak(currentPlayer);
+    //}
     public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip, string forceGroupName, float sightDistance)
     {
         if (!Pedestrian.Exists())
@@ -307,20 +307,33 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     protected override void OnHitInsultLimit(IInteractionable player)
     {
         player.SetAngeredCop();
+        EntryPoint.WriteToConsole($"OnHitInsultLimit triggered {Handle}");
     }
     protected override void OnHitCollideWithPlayerLimit(IInteractionable player)
     {
         player.SetAngeredCop();
+        EntryPoint.WriteToConsole($"OnHitCollideWithPlayerLimit triggered {Handle}");
     }
     protected override void OnHitPlayerStoodTooCloseLimit(IInteractionable player)
     {
         player.SetAngeredCop();
+        EntryPoint.WriteToConsole($"OnHitPlayerStoodTooCloseLimit triggered {Handle}");
     }
 
-
+    public override void OnPlayerDamagedCarOnFoot(IInteractionable player)
+    {
+        player.SetAngeredCop();
+        EntryPoint.WriteToConsole($"OnPlayerDamagedCarOnFoot triggered {Handle}");
+    }
     public override void OnPlayerDidBodilyFunctionsNear(IInteractionable player)
     {
         player.SetAngeredCop();
+        EntryPoint.WriteToConsole($"OnPlayerDidBodilyFunctionsNear triggered {Handle}");
+    }
+    public override void OnPlayerStoodOnCar(IInteractionable player)
+    {
+        player.SetAngeredCop();
+        EntryPoint.WriteToConsole($"OnPlayerStoodOnCar triggered {Handle}");
     }
 
 

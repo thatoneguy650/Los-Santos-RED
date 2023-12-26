@@ -249,6 +249,10 @@ public class Civilians
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
+                if (Settings.SettingsManager.GangSettings.AllowAmbientSpeech)
+                {
+                    ped.UpdateSpeech(PoliceRespondable);
+                }
                 if (yield)
                 {
                     ped.WeaponInventory.UpdateSettings();

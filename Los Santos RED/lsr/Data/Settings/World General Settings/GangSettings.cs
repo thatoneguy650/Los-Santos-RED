@@ -117,6 +117,7 @@ public class GangSettings : ISettingsDefaultable
     public float GangTerritoryBlipSize { get; set; }
     public float GangTerritoryBlipAlpha { get; set; }
     public bool SetPersistent { get; set; }
+    public bool AllowAmbientSpeech { get; set; }
 
     public GangSettings()
     {
@@ -225,6 +226,7 @@ public class GangSettings : ISettingsDefaultable
         GangTerritoryBlipAlpha = 0.15f;//HAS DESERIALIZED VALUES
 
         SetPersistent = false;
+        AllowAmbientSpeech = true;
     }
 
 }

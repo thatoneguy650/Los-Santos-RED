@@ -168,6 +168,7 @@
     <Compile Include="lsr\Locations\Places\Interface\IRestableLocation.cs" />
     <Compile Include="lsr\Locations\Places\VehicleItemMakeAndCategories.cs" />
     <Compile Include="lsr\Other\NativeMemory.cs" />
+    <Compile Include="lsr\Ped\GangMember\GangVoice.cs" />
     <Compile Include="lsr\Ped\Service\TaxiDriver.cs" />
     <Compile Include="lsr\Ped\Styles\PedDrivingStyle.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Corrupt Cop\CopHitCopTask.cs" />

@@ -24,6 +24,7 @@ public class PedInteractSetup
         Offset = offset;
     }
     public bool ForcePosition { get; set; } = true;
+    public uint GameTimeLimit { get; set; } = 60000;
     private bool IsValid => EntryPoint.ModController.IsRunning && (Player.IsBusted || Player.IsArrested) && !Player.IsIncapacitated && Player.IsAlive && PedExt != null && PedExt.Pedestrian.Exists() && !PedExt.Pedestrian.IsDead && !PedExt.IsInWrithe && !PedExt.IsUnconscious;
     public bool IsInPosition { get; private set; }
     public void Start()
@@ -97,6 +98,10 @@ public class PedInteractSetup
             if (Game.GameTime - GameTimeStartedWalking >= 15000 && distanceToPos <= 1.0f && headingDiff <= 5f)
             {
                 IsInPosition = true;
+                break;
+            }
+            if(Game.GameTime - GameTimeStartedWalking >= GameTimeLimit)
+            {
                 break;
             }
             GameFiber.Yield();

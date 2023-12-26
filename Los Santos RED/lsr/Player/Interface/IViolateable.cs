@@ -72,10 +72,11 @@ namespace LosSantosRED.lsr.Interface
         VehicleOwnership VehicleOwnership { get; }
         uint TimeInCurrentVehicle { get; }
         Vehicle LastFriendlyVehicle { get; }
-        bool IsStandingOnVehicle { get; set; }
+        bool IsStandingOnNonTrainVehicle { get; set; }
       //  bool RecentlyDamagedVehicleOnFoot { get; }
         bool IsDead { get; }
         bool IsRidingOnTrain { get; set; }
+        bool RecentlyGotOutOfVehicle { get; }
 
         //  bool IsLootingBody { get; }
 

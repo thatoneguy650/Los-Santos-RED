@@ -26,7 +26,6 @@ public class BribeActivity
     private string OfferCashDictionary;
     private string OfferCashAnimation;
     private Rage.Object MoneyProp;
-
     public BribeActivity(IRespawnable player, IEntityProvideable world, ISettingsProvideable settings, IModItems modItems)
     {
         Player = player;
@@ -34,36 +33,18 @@ public class BribeActivity
         Settings = settings;
         ModItems = modItems;
     }
-
     public bool HasFinishedAnimation { get; private set; }
     public bool CanContinueBribe => EntryPoint.ModController.IsRunning && (Player.IsBusted || Player.IsArrested) && !Player.IsIncapacitated && Player.IsAlive && Cop != null && Cop.Pedestrian.Exists() && !Cop.Pedestrian.IsDead && !Cop.IsInWrithe && !Cop.IsUnconscious;
-
     public bool IsFailed { get; set; } = false;
-
     public void Setup()
     {
-        //PlayerGetSearchDictionary = "ped";
-        //PlayerGetSearchedAnimation = "handsup_enter";
         OfferCashDictionary = "cellphone@self";
         OfferCashAnimation = "selfie_in";
-
         TakeCashDictionary = "mp_common_miss";
         TakeCashAnimation = "card_swipe";
-
-
-        //cellphone@self selfie_in -- TO OFFER
-
-
-        //mp_common_miss card_swipe -- TO TAKE
-
-        //PlayerCuffedDictionary = "ped"; //"mp_arresting";
-        //PlayerCuffedAnimation = "handsup_enter"; //"idle";
-
         AnimationWatcher = new AnimationWatcher();
-        //AnimationDictionary.RequestAnimationDictionay(PlayerGetSearchDictionary);
         AnimationDictionary.RequestAnimationDictionay(TakeCashDictionary);
         AnimationDictionary.RequestAnimationDictionay(OfferCashDictionary);
-        //AnimationDictionary.RequestAnimationDictionay(PlayerCuffedDictionary);
     }
     public void Dispose()
     {
@@ -75,12 +56,23 @@ public class BribeActivity
     }
     public void Start()
     {
+        bool IsCancelled = false;
         uint GameTimeStarted = Game.GameTime;
-        while(Player.IsBusted && Player.IsAlive && Game.GameTime - GameTimeStarted <= 8000 && (!Player.Surrendering.HasPlayedSurrenderActivity || Player.Character.IsRagdoll || Player.Character.IsStunned))
+        while(Player.IsBusted && Player.IsAlive && Game.GameTime - GameTimeStarted <= 20000 && (!Player.Surrendering.HasPlayedSurrenderActivity || Player.Character.IsRagdoll || Player.Character.IsStunned))
         {
-            Game.DisplaySubtitle($"IS WAITING TO START BRIBE {Game.GameTime}");
-            GameFiber.Sleep(500);
+            //Game.DisplaySubtitle($"IS WAITING TO START BRIBE {Game.GameTime}");
+            if(Player.IsMoveControlPressed)
+            {
+                IsCancelled = true;
+                break;
+            }
+            GameFiber.Yield();
         }
+        if(IsCancelled)
+        {
+            Dispose();
+            return;
+        }    
         GetCop();
         if (Cop == null || !Cop.Pedestrian.Exists())
         {
@@ -97,7 +89,7 @@ public class BribeActivity
         OfferBribe();
         PedInteractSetup = new PedInteractSetup(Player, Cop, -0.9f);
         PedInteractSetup.Start();
-        if(CanContinueBribe)
+        if(CanContinueBribe && PedInteractSetup.IsInPosition)
         {
             PlayBribeAnimations();
         }
@@ -134,11 +126,8 @@ public class BribeActivity
         NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, OfferCashDictionary, OfferCashAnimation, 2.0f, -2.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_UPPERBODY | eAnimationFlags.AF_SECONDARY), 0, false, false, false);
         GameFiber.Sleep(1000);
         CreateAndAttachCash();
-        //GameFiber.Sleep(1000);
         NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
-
         Player.PlaySpeech(new List<string>() { "GENERIC_HOWS_IT_GOING", "APOLOGY_NO_TROUBLE", "CHAT_STATE" }.PickRandom(), false);
-
         GameFiber.Sleep(1000);
     }
     private void PlayBribeAnimations()

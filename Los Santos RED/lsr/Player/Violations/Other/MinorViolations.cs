@@ -24,7 +24,7 @@ public class MinorViolations
     private uint GameTimeLastDamagedVehicleOnFoot;
     private List<VehicleExt> CloseVehicles;
 
-    public bool RecentlyDamagedVehicleOnFoot => GameTimeLastDamagedVehicleOnFoot != 0 && Game.GameTime - GameTimeLastDamagedVehicleOnFoot <= 5000;
+    public bool RecentlyDamagedVehicleOnFoot => GameTimeLastDamagedVehicleOnFoot != 0 && Game.GameTime - GameTimeLastDamagedVehicleOnFoot <= 3000;
     public MinorViolations(IViolateable player, Violations violations, ISettingsProvideable settings, ITimeReportable time, IEntityProvideable world, IInteractionable interactionable)
         {
             Player = player;
@@ -61,26 +61,26 @@ public class MinorViolations
     {
         if (Player.IsInVehicle)
         {
-            Player.IsStandingOnVehicle = false;
+            Player.IsStandingOnNonTrainVehicle = false;
             Player.IsRidingOnTrain = false;
             return;
         }
         if (!Settings.SettingsManager.ViolationSettings.AllowVehicleStandingReactions)
         {
-            Player.IsStandingOnVehicle = false;
+            Player.IsStandingOnNonTrainVehicle = false;
             Player.IsRidingOnTrain = false;
             return;
         }
         bool isStandingOnVehicle = NativeFunction.Natives.IS_PED_ON_VEHICLE<bool>(Player.Character);
         if(!isStandingOnVehicle)
         {
-            Player.IsStandingOnVehicle = false;
+            Player.IsStandingOnNonTrainVehicle = false;
             Player.IsRidingOnTrain = false;
             return;
         }
         if(CloseVehicles == null)
         {
-            Player.IsStandingOnVehicle = false;
+            Player.IsStandingOnNonTrainVehicle = false;
             Player.IsRidingOnTrain = false;
             return;
         }
@@ -100,12 +100,17 @@ public class MinorViolations
                     Player.IsRidingOnTrain = false;
                     EntryPoint.WriteToConsole($"YOU ARE STANDING ON TOP OF {vehicle.Handle}");
                     isStandingOnTop = true;
+                    if(vehicle.Vehicle.Exists() && vehicle.Vehicle.Driver.Exists())
+                    {
+                        PedExt driver = World.Pedestrians.GetPedExt(vehicle.Vehicle.Driver.Handle);
+                        driver?.OnPlayerStoodOnCar(Interactionable);
+                    }
                 }
                 break;
             }
         }
         Player.IsRidingOnTrain = isOnTrain;
-        Player.IsStandingOnVehicle = isStandingOnTop;
+        Player.IsStandingOnNonTrainVehicle = isStandingOnTop;
     }
 
     private void UpdateBodilyFunctionsAroundOthers()
@@ -139,7 +144,7 @@ public class MinorViolations
         {
             Violations.AddViolating(StaticStrings.MaliciousVehicleDamageCrimeID);
         }
-        if (Player.IsStandingOnVehicle)
+        if (Player.IsStandingOnNonTrainVehicle)
         {
             Violations.AddViolating(StaticStrings.StandingOnVehicleCrimeID);
         }
@@ -150,13 +155,13 @@ public class MinorViolations
         {
             return;
         }
-        if (Player.IsInVehicle || RecentlyDamagedVehicleOnFoot || Player.IsWanted || Player.IsDead || CloseVehicles == null)//already checks crashes
+        if (Player.IsInVehicle || RecentlyDamagedVehicleOnFoot || Player.IsWanted || Player.IsDead || CloseVehicles == null || Player.RecentlyGotOutOfVehicle || Player.Character.IsInAnyVehicle(false))//already checks crashes
         {
             return;
         }
         foreach (VehicleExt vehicle in CloseVehicles)
         {
-            if (vehicle.CheckPlayerDamage(Interactionable))
+            if (vehicle.CheckPlayerDamage(Interactionable, World))
             {
                 GameTimeLastDamagedVehicleOnFoot = Game.GameTime;
                 return;
@@ -227,5 +232,18 @@ public class MinorViolations
         }
     }
 
+    public void OnGotOutOfVehicle()
+    {
+        if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        {
+            NativeFunction.Natives.CLEAR_ENTITY_LAST_DAMAGE_ENTITY(Player.CurrentVehicle.Vehicle);
+            EntryPoint.WriteToConsole("GOUT OUT CLEAR DAMAGE1");
+        }
+        else if (Player.Character.LastVehicle.Exists())
+        {
+            NativeFunction.Natives.CLEAR_ENTITY_LAST_DAMAGE_ENTITY(Player.Character.LastVehicle);
+            EntryPoint.WriteToConsole("GOUT OUT CLEAR DAMAGE2");
+        }
+    }
 }
 

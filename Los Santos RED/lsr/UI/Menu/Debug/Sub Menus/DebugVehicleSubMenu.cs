@@ -216,12 +216,12 @@ public class DebugVehicleSubMenu : DebugSubMenu
         LogLocationMenu.Value = LogLocationMenu.Minimum;
         LogLocationMenu.Activated += (menu, item) =>
         {
-            if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+            if (Player.InterestedVehicle.Vehicle != null && Player.InterestedVehicle.Vehicle.Exists())
             {
                 NativeFunction.Natives.SET_VEHICLE_LIVERY(Player.InterestedVehicle.Vehicle, LogLocationMenu.Value);
                 Game.DisplaySubtitle($"SET LIVERY {LogLocationMenu.Value}");
             }
-
+            
         };
         vehicleItemsMenu.AddItem(LogLocationMenu);
     }

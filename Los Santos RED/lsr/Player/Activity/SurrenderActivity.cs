@@ -248,7 +248,7 @@ public class SurrenderActivity : DynamicActivity
                         NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                     }
                 }
-                GameFiber.Sleep(2000);
+                GameFiber.Sleep(200);
                 HasPlayedSurrenderActivity = true;
                 //NativeFunction.Natives.SET_PED_KEEP_TASK(Player.Character, true);
                 //Player.Character.KeepTasks = true;

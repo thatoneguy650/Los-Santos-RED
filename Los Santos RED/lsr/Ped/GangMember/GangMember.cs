@@ -19,6 +19,7 @@ public class GangMember : PedExt, IWeaponIssuable
 
         ReputationReport = new ReputationReport(this);
         PedBrain = new GangBrain(this, Settings, world, weapons);
+        Voice = new GangVoice(this, Settings);
     }
     public List<ReputationReport> WitnessedReports { get; private set; } = new List<ReputationReport>();
     public ReputationReport ReputationReport { get; private set; }
@@ -36,6 +37,7 @@ public class GangMember : PedExt, IWeaponIssuable
     public override int PlayerStandTooCloseLimit => 1;
     public bool IsUsingMountedWeapon { get; set; } = false;
     public WeaponInventory WeaponInventory { get; private set; }
+    public GangVoice Voice { get; private set; }
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => Gang.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => Gang.GetRandomWeapon(v, weapons);
     public Gang Gang { get; set; } = new Gang();
@@ -49,7 +51,6 @@ public class GangMember : PedExt, IWeaponIssuable
     public new string FormattedName => (PlayerKnownsName ? Name : GroupName);
     public override bool KnowsDrugAreas => true;
     public override bool KnowsGangAreas => true;
-
     public override bool IsGangMember { get; set; } = true;
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
@@ -84,6 +85,11 @@ public class GangMember : PedExt, IWeaponIssuable
         }
         ReputationReport.Update(perceptable, world, Settings);
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok       
+    }
+
+    public void UpdateSpeech(IPoliceRespondable currentPlayer)
+    {
+        Voice.Speak(currentPlayer);
     }
     public override void OnBecameWanted()
     {
@@ -199,6 +205,34 @@ public class GangMember : PedExt, IWeaponIssuable
         }
         base.OnCollidedWithPlayer(player);
     }
+    public override void OnPlayerDamagedCarOnFoot(IInteractionable player)
+    {
+        if (Game.GameTime - GameTimePlayerLastDamagedCarOnFoot < 3000)
+        {
+            return;
+        }
+        GameTimePlayerLastDamagedCarOnFoot = Game.GameTime;
+        if (IsPlayerMember(player) || Gang == null)
+        {
+            return;
+        }
+        TimesInsultedByPlayer += 10;
+        EntryPoint.WriteToConsole($"OnPlayerDamagedCarOnFoot triggered {Handle}");
+    }
+    public override void OnPlayerStoodOnCar(IInteractionable player)
+    {
+        if (Game.GameTime - GameTimePlayerLastStoodOnCar < 3000)
+        {
+            return;
+        }
+        GameTimePlayerLastStoodOnCar = Game.GameTime;
+        if (IsPlayerMember(player) || Gang == null)
+        {
+            return;
+        }
+        TimesInsultedByPlayer += 10;
+        EntryPoint.WriteToConsole($"OnPlayerStoodOnCar triggered {Handle}");
+    }
     public override void OnPlayerDidBodilyFunctionsNear(IInteractionable player)
     {
         if (Game.GameTime - GameTimePlayerLastDidBodilyFunctionsNear < 3000)
@@ -211,6 +245,7 @@ public class GangMember : PedExt, IWeaponIssuable
             return;
         }
         TimesInsultedByPlayer += 10;
+        EntryPoint.WriteToConsole($"OnPlayerDidBodilyFunctionsNear triggered {Handle}");
     }
     public override void OnKilledByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
     {

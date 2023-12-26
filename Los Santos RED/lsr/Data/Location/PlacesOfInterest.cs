@@ -714,9 +714,15 @@ public class PlacesOfInterest : IPlacesOfInterest
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(-714.89f, -1435.682f, 5.102043f), 227.1837f),
                 VehicleDeliveryLocations = new List<SpawnPlace>() 
                 {
-                    new SpawnPlace(new Vector3(-1015.187f, -3401.692f, 13.8351f), 327.5063f),
-                    new SpawnPlace(new Vector3(-1066.172f, -3397.097f, 14.54819f), 330.6479f),
-                    new SpawnPlace(new Vector3(-1091.473f, -3384.792f, 14.54814f), 330.6455f),
+                    //right outside the place
+                    new SpawnPlace(new Vector3(-728.7345f, -1415.244f, 6.000524f), 140.5158f),
+                    new SpawnPlace(new Vector3(-691.3646f, -1440.159f, 6.000525f), 52.68159f),
+                    new SpawnPlace(new Vector3(-739.0837f, -1489.017f, 6.000519f), 40.92105f),
+
+                    //LSIA, doesnt seem to load col or something
+                    //new SpawnPlace(new Vector3(-1015.187f, -3401.692f, 13.8351f), 327.5063f),
+                    //new SpawnPlace(new Vector3(-1066.172f, -3397.097f, 14.54819f), 330.6479f),
+                    //new SpawnPlace(new Vector3(-1091.473f, -3384.792f, 14.54814f), 330.6455f),
                 } 
             },
             new Dealership(new Vector3(396.8023f, -1170.86f, 29.39787f), 359.2079f, "Get Aweigh", "We can help you Get Aweigh!","GetAweighMenu") 

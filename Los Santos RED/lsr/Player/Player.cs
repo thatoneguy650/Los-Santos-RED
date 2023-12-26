@@ -372,7 +372,7 @@ namespace Mod
         public bool IsPressingFireWeapon { get; set; }
         public bool IsRagdoll { get; private set; }
         public bool IsResting { get; set; } = false;
-        public bool IsStandingOnVehicle { get; set; }
+        public bool IsStandingOnNonTrainVehicle { get; set; }
         public bool IsRidingBus { get; set; }
         public bool IsShooting
         {
@@ -1403,6 +1403,10 @@ namespace Mod
                     NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
                 }
                 TaxiManager.OnGotOutOfVehicle();
+
+
+                Violations.MinorViolations.OnGotOutOfVehicle();
+
                // NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Character, 313, false);
             }
             //UpdateOwnedBlips();
