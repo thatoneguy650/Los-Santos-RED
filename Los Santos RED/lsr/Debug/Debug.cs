@@ -1523,9 +1523,36 @@ private void DebugNumpad6()
 
     private void DebugNumpad7()
     {
+
+        while (!Game.IsKeyDownRightNow(Keys.Space))
+        {
+            if (Player.StreetPlacePoliceShouldSearchForPlayer != Vector3.Zero)
+            {
+                Rage.Debug.DrawArrowDebug(Player.StreetPlacePoliceShouldSearchForPlayer, Vector3.Zero, Rotator.Zero, 1f, Color.Blue);
+            }
+            if (Player.PlacePoliceShouldSearchForPlayer != Vector3.Zero)
+            {
+                Rage.Debug.DrawArrowDebug(Player.StreetPlacePoliceShouldSearchForPlayer, Vector3.Zero, Rotator.Zero, 1f, Color.Purple);
+            }
+            if (Player.StreetPlacePoliceLastSeenPlayer != Vector3.Zero)
+            {
+                Rage.Debug.DrawArrowDebug(Player.StreetPlacePoliceShouldSearchForPlayer, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+            }
+            if (Player.PlacePoliceLastSeenPlayer != Vector3.Zero)
+            {
+                Rage.Debug.DrawArrowDebug(Player.StreetPlacePoliceShouldSearchForPlayer, Vector3.Zero, Rotator.Zero, 1f, Color.Orange);
+            }
+            Game.DisplaySubtitle($"PRESS SPACE TO CANCEL");
+            GameFiber.Yield();
+        }
+
+
+
+
+
         //World.Vehicles.StopAllTrains();
 
-        Player.PoliceResponse.TrainStopper.StopAllTrains();
+        //Player.PoliceResponse.TrainStopper.StopAllTrains();
         //Vector3 Position = new Vector3(833.577f, -1258.954f, 26.34347f);
         //bool isObscured = false;
         //while (!Game.IsKeyDownRightNow(Keys.Space))
@@ -4698,7 +4725,7 @@ private void contacttest()
 
         EntryPoint.WriteToConsole($"PLAYER EVENT: INVESTIGATION START Police:{Player.Investigation.RequiresPolice} EMS;{Player.Investigation.RequiresEMS} Fire:{Player.Investigation.RequiresFirefighters}");
 
-        EntryPoint.WriteToConsole($"============================================ PLAYER HANDLE {Game.LocalPlayer.Character.Handle} {Game.LocalPlayer.Character.Model.Name} RG: {Game.LocalPlayer.Character.RelationshipGroup.Name} DRG: {RelationshipGroup.Player.Name}", 5);
+        EntryPoint.WriteToConsole($"============================================ PLAYER HANDLE {Game.LocalPlayer.Character.Handle} GameModel:{Game.LocalPlayer.Character.Model.Name} LSRModel:{Player.ModelName} FM?:{Player.CharacterModelIsFreeMode} PC?:{Player.CharacterModelIsPrimaryCharacter} voice:{Player.FreeModeVoice} RG: {Game.LocalPlayer.Character.RelationshipGroup.Name} DRG: {RelationshipGroup.Player.Name}", 5);
         //EntryPoint.WriteToConsole($"============================================ VEHICLES START", 5);
         //foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character)))
         //{
@@ -4720,8 +4747,6 @@ private void contacttest()
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
             uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
-
-
             string weaponinventorystring = "";
             if(ped.WeaponInventory.IsSetLessLethal)
             { 
@@ -4739,7 +4764,6 @@ private void contacttest()
             {
                 weaponinventorystring = "IsSetDefault";
             }
-
             if(ped.WeaponInventory.HasPistol)
             {
                 weaponinventorystring += " Has Pistol";

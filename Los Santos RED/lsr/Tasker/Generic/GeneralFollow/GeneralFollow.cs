@@ -131,8 +131,7 @@ public class GeneralFollow : ComplexTask
             bool isAssignmentValid = SeatAssigner.IsAssignmentValid(false);
             if(ShouldGetInVehicle && isAssignmentValid)
             {
-                CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false) { IsGang = true };
-
+                CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false) { IsGang = true,DefaultEnterSpeed = 2.0f };
             }
             else
             {

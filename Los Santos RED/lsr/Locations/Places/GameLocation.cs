@@ -2,6 +2,7 @@
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
+using Microsoft.VisualBasic;
 using Mod;
 using Rage;
 using Rage.Native;
@@ -38,6 +39,10 @@ public class GameLocation : ILocationDispatchable
     protected int CellsAway = 99;
     protected uint GameTimeLastCheckedDistance;
     protected uint GameTimeLastCheckedNearby;
+    protected uint GameTimeLastInteracted;
+    protected DateTime NextRestockTime;
+    protected DateTime NextPriceRefreshTime;
+    protected DateTime LastInteractTime;
 
     protected uint DistanceUpdateIntervalTime
     {
@@ -148,7 +153,7 @@ public class GameLocation : ILocationDispatchable
 
 
 
-  //  public List<ConditionalLocation> PossibleMerchantSpawns { get; set; }
+    //  public List<ConditionalLocation> PossibleMerchantSpawns { get; set; }
     public Vector3 VendorPosition { get; set; } = Vector3.Zero;
     public float VendorHeading { get; set; } = 0f;
     public List<string> VendorModels { get; set; }
@@ -164,6 +169,10 @@ public class GameLocation : ILocationDispatchable
 
     public bool NoEntryCam { get; set; } = false;
 
+    public virtual int MinPriceRefreshHours { get; set; }
+    public virtual int MaxPriceRefreshHours { get; set; }
+    public virtual int MinRestockHours { get; set; }
+    public virtual int MaxRestockHours { get; set; }
 
     [XmlIgnore]
     public List<PedExt> LocationSpawnedPedExts { get; set; } = new List<PedExt>();
@@ -400,6 +409,7 @@ public class GameLocation : ILocationDispatchable
             {
                 SetupLocationCamera(locationCamera, isInside, true);
                 CreateInteractionMenu();
+                HandleVariableItems();
                 Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
                 Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
                 Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
@@ -421,6 +431,53 @@ public class GameLocation : ILocationDispatchable
             }
         }, "StandardInteract");
     }
+
+    public virtual void HandleVariableItems()
+    {
+        HandlePriceRefreshes();
+        HandleSupplyRefreshes();
+    }
+    protected virtual void HandlePriceRefreshes()
+    {
+        if (MinPriceRefreshHours <= 0 && MaxPriceRefreshHours <= 0)
+        {
+            return;
+        }
+        if (DateTime.Compare(Time.CurrentDateTime, NextPriceRefreshTime) == 1)
+        {
+            foreach (MenuItem menuItem in Menu.Items)
+            {
+                menuItem.UpdatePrices();
+            }
+            NextPriceRefreshTime = Time.CurrentDateTime.AddHours(RandomItems.GetRandomNumberInt(MinPriceRefreshHours, MaxPriceRefreshHours));
+            EntryPoint.WriteToConsole($"{Name} AND THE CURRENT TIME IS LATER THAN THE PRICE REFRESHTIME Current:{Time.CurrentDateTime} RefreshTime:{NextPriceRefreshTime} bPRICES HAVE BEEN REFRESHED");
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"{Name} AND WE ARE WAITING FOR THE PRICE REFRESH Current:{Time.CurrentDateTime} RefreshTime:{NextPriceRefreshTime}");
+        }
+    }
+    protected virtual void HandleSupplyRefreshes()
+    {
+        if (MinRestockHours <= 0 && MaxRestockHours <= 0)
+        {
+            return;
+        }
+        if (DateTime.Compare(Time.CurrentDateTime, NextRestockTime) == 1)
+        {
+            foreach (MenuItem menuItem in Menu.Items)
+            {
+                menuItem.UpdateStock();
+            }
+            NextRestockTime = Time.CurrentDateTime.AddHours(RandomItems.GetRandomNumberInt(MinRestockHours, MaxRestockHours));
+            EntryPoint.WriteToConsole($"{Name} AND THE CURRENT TIME IS LATER THAN THE NextRestockTime Current:{Time.CurrentDateTime} RefreshTime:{NextRestockTime} STOCK HAS BEEN UPDATED");
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"{Name} AND WE ARE WAITING FOR THE STOCK REFRESH Current:{Time.CurrentDateTime} RefreshTime:{NextRestockTime}");
+        }
+    }
+
     protected void DoEntranceCamera(bool sayGreeting)
     {
         StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
@@ -464,6 +521,11 @@ public class GameLocation : ILocationDispatchable
     }
     public virtual void OnItemSold(ModItem modItem, MenuItem menuItem, int totalItems)
     {
+        //if (menuItem == null)
+        //{
+        //    return;
+        //}
+        //menuItem.NumberOfItemsPurchasedByPlayer += totalItems;
         //ItemDesires.OnItemsBoughtFromPlayer(modItem, totalItems);
     }
     public virtual bool CanCurrentlyInteract(ILocationInteractable player)
@@ -473,6 +535,11 @@ public class GameLocation : ILocationDispatchable
     }
     public virtual void OnItemPurchased(ModItem modItem, MenuItem menuItem, int totalItems)
     {
+        //if(menuItem == null)
+        //{
+        //    return;
+        //}
+       // menuItem.NumberOfItemsSoldToPlayer += totalItems;
         //ItemDesires.OnItemsSoldToPlayer(modItem, totalItems);
     }
     public virtual void AddDistanceOffset(Vector3 offsetToAdd)
@@ -530,13 +597,13 @@ public class GameLocation : ILocationDispatchable
             {
                 StoreCamera.Setup();
             }
-            EntryPoint.WriteToConsole("RESIDENCE STORE CAM RAN");
+            EntryPoint.WriteToConsole("SetupLocationCamera CAM RAN");
         }
         else
         {
             StoreCamera = locationCamera;
             StoreCamera.SayGreeting = sayGreeting;
-            EntryPoint.WriteToConsole("RESIDENCE STORE CAM GOT PASSED IN");
+            EntryPoint.WriteToConsole("SetupLocationCamera CAM GOT PASSED IN");
         }
     }
     public bool IsSameState(GameState state)
@@ -860,6 +927,7 @@ public class GameLocation : ILocationDispatchable
         {
             ModelName = FallBackVendorModels.PickRandom();
         }
+        HandleVariableItems();
         EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {ModelName}");
         NativeFunction.Natives.CLEAR_AREA(VendorPosition.X, VendorPosition.Y, VendorPosition.Z, 2f, true, false, false, false);
         World.Pedestrians.CleanupAmbient();
@@ -886,12 +954,14 @@ public class GameLocation : ILocationDispatchable
         if (addMenu)
         {
             Vendor.SetupTransactionItems(Menu);
+            Vendor.MatchTransactionItemsWithShop(this);
         }
         Vendor.AssociatedStore = this;
         Vendor.SpawnPosition = VendorPosition;
         Vendor.WasModSpawned = true;
         Vendor.CanBeAmbientTasked = true;
         Vendor.CanBeTasked = true;
+
         EntryPoint.WriteToConsole($"SPAWNED WORKED VENDOR AT {Name}");
     }
     protected bool IsLocationClosed()

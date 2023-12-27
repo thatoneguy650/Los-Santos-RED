@@ -68,6 +68,7 @@ public class PersonTransaction : Interaction
         {
             try
             {
+                AssociatedStore?.HandleVariableItems();
                 CreateInteractionMenu();
                 if(Ped == null || !Ped.Pedestrian.Exists())
                 {
@@ -190,10 +191,7 @@ public class PersonTransaction : Interaction
         {
             useAccounts = false;
         }
-
         Transaction.UseAccounts = useAccounts;// Ped.ShopMenu != null || !Ped.ShopMenu.Items.Any(x => x.IsIllicilt);
-
-
         Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);
     }
     private void CheckButtonPrompts()

@@ -50,6 +50,7 @@ public class Transaction
     public bool UseAccounts { get; set; } = true;
     public LocationCamera LocationCamera { get; set; }
     public bool IsInteriorInteract { get; internal set; }
+    //public bool ShouldUpdateVariablePrices { get; set; } = false;
 
     public Transaction(MenuPool menuPool, UIMenu parentMenu, ShopMenu menu, GameLocation store)
     {
@@ -85,6 +86,10 @@ public class Transaction
         foreach (MenuItem mi in ShopMenu.Items)
         {
             ModItem modItem = modItems.Get(mi.ModItemName);
+            //if (ShouldUpdateVariablePrices)
+            //{
+            //    mi.UpdatePrices();
+            //}
             if (modItem != null && ((IsFreeVehicles && modItem.ModelItem?.Type == ePhysicalItemType.Vehicle) || (IsFreeWeapons && modItem.ModelItem?.Type == ePhysicalItemType.Weapon) || (IsFreeItems && modItem.ModelItem?.Type != ePhysicalItemType.Weapon && modItem.ModelItem?.Type != ePhysicalItemType.Vehicle)))
             {
                 mi.SetFree();
@@ -366,6 +371,7 @@ public class Transaction
             Store.OnItemPurchased(modItem, menuItem, TotalItems);
             DisplayItemPurchasedMessage(modItem, TotalItems);
         }
+        menuItem.NumberOfItemsSoldToPlayer += TotalItems;
         SellMenu?.OnItemPurchased(menuItem);
     }
     public void OnItemSold(ModItem modItem, MenuItem menuItem, int TotalItems)
@@ -379,6 +385,7 @@ public class Transaction
             Store.OnItemSold(modItem, menuItem, TotalItems);
             DisplayItemSoldMessage(modItem, TotalItems);
         }
+        menuItem.NumberOfItemsPurchasedByPlayer += TotalItems;
         PurchaseMenu?.OnItemSold(menuItem); 
     }
     public void DisplayInsufficientFundsMessage()

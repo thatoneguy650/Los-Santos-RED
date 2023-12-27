@@ -18,6 +18,6 @@ public class DesiredItem
     public int NumberOfItemsToSellToPlayer { get; set; } = -1;
     public int NumberOfItemsToPurchaseFromPlayer { get; set; } = -1;
     public int ItemsSoldToPlayer { get; set; } = 0;
-    public int ItemsBoughtFromPlayer { get; set; } = 0;
+    public int ItemsPurchasedFromPlayer { get; set; } = 0;
 }
 

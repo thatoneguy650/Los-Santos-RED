@@ -69,6 +69,7 @@ public class Dealership : GameLocation, ILicensePlatePreviewable
             {
                 SetupLocationCamera(locationCamera, isInside, true);
                 CreateInteractionMenu();
+                HandleVariableItems();
                 Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
                 Transaction.LicensePlatePreviewable = this;
                 Transaction.LocationCamera = StoreCamera;

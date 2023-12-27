@@ -28,6 +28,7 @@ class GetInVehicleTaskState : TaskState
         Settings = settings;
         BlockPermanentEvents = blockPermanentEvents;
     }
+    public float DefaultEnterSpeed { get; set; } = 1.0f;
     public bool IsGang { get; set; } = false;
     
     public bool IsValid => PedGeneral != null && !PedGeneral.IsInVehicle && (!IsGang || Player.IsInVehicle) && PedGeneral.Pedestrian.Exists() && SeatAssigner != null && SeatAssigner.IsAssignmentValid(!IsGang);
@@ -69,8 +70,7 @@ class GetInVehicleTaskState : TaskState
         {
             TaskedVehicle = SeatAssigner.VehicleAssigned;
             TaskedSeat = SeatAssigner.SeatAssigned;
-            float moveRatio = PedGeneral.IsWanted || PedGeneral.Pedestrian.IsInCombat ? 3f : 2f;
-
+            float moveRatio = PedGeneral.IsWanted || PedGeneral.Pedestrian.IsInCombat ? 3f : DefaultEnterSpeed;
             unsafe
             {
                 int lol = 0;

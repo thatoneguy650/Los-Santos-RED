@@ -7,17 +7,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-
+[XmlInclude(typeof(VariablePriceMenuItem))]
 public class MenuItem
 {
     private int originalPurchasePrice;
     private int originalSalesPrice;
     private bool isSetFree = false;
+    public int NumberOfItemsSoldToPlayer { get; set; }
+    public int NumberOfItemsPurchasedByPlayer { get; set; }
     public MenuItem()
     {
 
     }
-
+    public MenuItem(string modItemName)
+    {
+        ModItemName = modItemName;
+    }
     public MenuItem(string modItemName, int purchasePrice)
     {
         ModItemName = modItemName;
@@ -38,8 +43,6 @@ public class MenuItem
     public List<MenuItemExtra> Extras { get; set; } = new List<MenuItemExtra>();
     public int SubPrice { get; set; } = 1;
     public int SubAmount { get; set; } = 30;
-
-
     public int MinimumPurchaseAmount { get; set; } = 1;
     public int MaximumPurchaseAmount { get; set; } = 10;
     public int PurchaseIncrement { get; set; } = 1;
@@ -74,6 +77,15 @@ public class MenuItem
             SalesPrice = originalSalesPrice;
             isSetFree = false;
         }
+    }
+    public virtual void UpdatePrices()
+    {
+
+    }
+    public virtual void UpdateStock()
+    {
+        NumberOfItemsPurchasedByPlayer = 0;
+        NumberOfItemsSoldToPlayer = 0;
     }
 }
 

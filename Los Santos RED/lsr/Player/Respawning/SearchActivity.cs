@@ -101,6 +101,11 @@ public class SearchActivity
                 {
                     return;
                 }
+               // DetermineSearchOutcome();
+
+
+
+
                 MoveCopBehindPlayer();
                 //if(CanContinueSearch && !isCopInPosition)
                 //{
@@ -128,6 +133,11 @@ public class SearchActivity
             }
         }, "Booking");
     }
+
+    //private void DetermineSearchOutcome()
+    //{
+    //    PlayerPoliceSearch.DoVehicleBodySearch();
+    //}
 
     private void SetPlayerInFrontOfCop()
     {

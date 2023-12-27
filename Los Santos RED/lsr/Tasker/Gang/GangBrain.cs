@@ -270,7 +270,13 @@ public class GangBrain : PedBrain
         if (GangMember.CurrentTask?.Name != "Idle")
         {
             //EntryPoint.WriteToConsole($"TASKER: gm {GangMember.Pedestrian.Handle} Task Changed from {GangMember.CurrentTask?.Name} to GeneralIdle", 3);
-            GangMember.CurrentTask = new GeneralIdle(GangMember, GangMember, Player, World, World.Vehicles.SimpleGangVehicles.Where(x => x.AssociatedGang != null && GangMember.Gang != null && x.AssociatedGang.ID == GangMember.Gang.ID).ToList(), PlacesOfInterest, Settings, false, false, false, false);//GangMember.CurrentTask = new GangIdle(GangMember, Player, PedProvider, PlacesOfInterest);
+            GangMember.CurrentTask = new GeneralIdle(GangMember, GangMember, Player, World, 
+                
+                
+                //World.Vehicles.SimpleGangVehicles.Where(x => x.AssociatedGang != null && GangMember.Gang != null && x.AssociatedGang.ID == GangMember.Gang.ID).ToList()
+                new List<VehicleExt>() { PedExt.AssignedVehicle }
+
+                , PlacesOfInterest, Settings, false, false, false, false);//GangMember.CurrentTask = new GangIdle(GangMember, Player, PedProvider, PlacesOfInterest);
             GangMember.WeaponInventory.Reset();
             GangMember.WeaponInventory.SetDefault();
             GameFiber.Yield();//TR Added back 4    

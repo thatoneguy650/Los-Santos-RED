@@ -846,22 +846,25 @@ namespace Mod
         }
         public void PlaySpeech(string speechName, bool useMegaphone)
         {
+            EntryPoint.WriteToConsole($"PLAYER PlaySpeech CharacterModelIsFreeMode:{CharacterModelIsFreeMode} FreeModeVoice{FreeModeVoice}");
             if (CharacterModelIsFreeMode && FreeModeVoice != "")
             {
                 if (useMegaphone)
                 {
                     Character.PlayAmbientSpeech(FreeModeVoice, speechName, 0, SpeechModifier.ForceMegaphone);
-
+                    EntryPoint.WriteToConsole($"PLAYER PlaySpeech SPEAK 1");
                 }
                 else
                 {
                     Character.PlayAmbientSpeech(FreeModeVoice, speechName, 0, SpeechModifier.Force);
+                    EntryPoint.WriteToConsole($"PLAYER PlaySpeech SPEAK 2");
                 }
                 //EntryPoint.WriteToConsoleTestLong($"FREEMODE COP SPEAK {Character.Handle} freeModeVoice {FreeModeVoice} speechName {speechName}");
             }
             else
             {
                 Character.PlayAmbientSpeech(speechName, useMegaphone);
+                EntryPoint.WriteToConsole($"PLAYER PlaySpeech SPEAK 3");
             }
         }
         //Maybe?

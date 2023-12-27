@@ -156,6 +156,7 @@ public class GangDen : GameLocation, IRestableLocation
     private void CreateTransactionMenuItems(bool isInside)
     {
         Player.IsTransacting = true;
+        HandleVariableItems();
         Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
         Transaction.UseAccounts = false;
 

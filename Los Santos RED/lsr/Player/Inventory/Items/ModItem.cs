@@ -183,7 +183,11 @@ public class ModItem
             DesiredItem di = Transaction.ItemDesires?.Get(this);
             if(di != null)
             {
-                itemsBoughtFromPlayer = di.ItemsBoughtFromPlayer;
+                itemsBoughtFromPlayer = di.ItemsPurchasedFromPlayer;
+            }
+            else
+            {
+                itemsBoughtFromPlayer = menuItem.NumberOfItemsPurchasedByPlayer;
             }
             RemainingToSell = menuItem.NumberOfItemsToPurchaseFromPlayer - itemsBoughtFromPlayer;
             if(RemainingToSell < 0)
@@ -339,6 +343,10 @@ public class ModItem
                 if (di != null)
                 {
                     itemsSoldToPlayer = di.ItemsSoldToPlayer;
+                }
+                else
+                {
+                    itemsSoldToPlayer = menuItem.NumberOfItemsSoldToPlayer;
                 }
                 RemainingToBuy = menuItem.NumberOfItemsToSellToPlayer - itemsSoldToPlayer;// menuItem.ItemsSoldToPlayer;
                 if (RemainingToBuy <= 0)

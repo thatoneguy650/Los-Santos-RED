@@ -374,62 +374,70 @@ public class ShopMenus : IShopMenus
     private void GenericPawnShopMenu()
     {
 
-        ShopMenu GenericPawnShopMenu = new ShopMenu("PawnShopMenu", "PawnShop", new List<MenuItem>() {
-                new MenuItem("GASH Black Umbrella", 50, 5),
-                new MenuItem("TAG-HARD Flashlight", 140, 10),
-                new MenuItem("Flint Handle Flashlight", 110, 25),
-                new MenuItem("G.E.S. Baseball Bat", 150, 25),
-                new MenuItem("ProLaps Five Iron Golf Club", 190, 25),
-                new MenuItem("Schmidt & Priss TL6 Scanner", 800, 150),
-                new MenuItem("SCHEISS AS Binoculars", 700, 200),
-                new MenuItem("SCHEISS RP Binoculars", 1200, 300),
+        ShopMenu GenericPawnShopMenu = new ShopMenu("PawnShopMenuGeneric", "PawnShop", new List<MenuItem>() {
+                //new MenuItem("GASH Black Umbrella", 50, 5),
 
-                new MenuItem("Hawk & Little PTF092F",1100, 150),
-                new MenuItem("Hawk & Little Thunder",1250, 200),
-                new MenuItem("Hawk & Little Combat Pistol",1500, 300),
-                new MenuItem("Hawk & Little Desert Slug",1900, 500),
-                new MenuItem("Hawk & Little 1919",1600, 350),
-                new MenuItem("Hawk & Little Raging Mare",2300, 450),
-                new MenuItem("Hawk & Little Raging Mare Dx",2500, 475),
-                new MenuItem("Vom Feuer P69",1050, 170),
-                new MenuItem("Shrewsbury S7",1500, 330),
-                new MenuItem("Shrewsbury S7A",1750, 450),
-                new MenuItem("Coil Tesla",1400, 250),
-                new MenuItem("BS M1922",1900, 250),
 
-                new MenuItem("Flint Duct Tape", 10,1),
-                new MenuItem("Flint Multi-Bit Screwdriver", 40,5),
-                new MenuItem("Flint Rubber Mallet", 70,15),
-                new MenuItem("Flint Hammer", 60,5),
-                new MenuItem("Flint Crowbar", 85,20),
-                new MenuItem("Flint Hatchet", 290,50),
-                new MenuItem("Vom Feuer Machete", 150,40),
-                new MenuItem("Flint Pliers", 45,10),
-                new MenuItem("Flint Heavy Duty Pipe Wrench", 55),
-                new MenuItem("Flint Shovel", 120,35),
-                new MenuItem("Flint Cordless Drill", 150, 25),
-                new MenuItem("Power Metal Cordless Drill", 110,30),
+                new VariablePriceMenuItem("GASH Black Umbrella", 25, 55, 1, 5) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
 
-                new MenuItem("Fake Gold Ring", 0,2),
-                new MenuItem("Gold Ring", 0,155),
-                new MenuItem("Fake Silver Ring", 0,1),
-                new MenuItem("Silver Ring", 0,15),
 
-                new MenuItem("iFruit Cellphone", 0,95),
-                new MenuItem("Facade Cellphone", 0,75),
-                new MenuItem("Badger Cellphone", 0,55),
+
+                new VariablePriceMenuItem("TAG-HARD Flashlight", 110, 140, 5, 10) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("Flint Handle Flashlight",90, 110, 15, 25) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("G.E.S. Baseball Bat",95, 150,15, 25) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("ProLaps Five Iron Golf Club",120, 190, 15,25) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("Schmidt & Priss TL6 Scanner", 500,800,100, 150) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("SCHEISS AS Binoculars", 500, 700,150, 200) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("SCHEISS RP Binoculars", 900, 1500, 220, 400) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+
+
+
+                new VariablePriceMenuItem("Hawk & Little PTF092F",850, 1100, 100, 150) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("Hawk & Little Thunder",745, 1250,110, 200) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("Hawk & Little Combat Pistol",1200, 1500, 200, 300) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("Hawk & Little Desert Slug",1500, 1900, 300, 500) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("Hawk & Little 1919", 1200, 1600, 325, 350) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("Hawk & Little Raging Mare",1500, 2300, 300, 450) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("Hawk & Little Raging Mare Dx",1700, 2500, 375, 475) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("Vom Feuer P69",855, 1050, 140, 170) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("Shrewsbury S7",900, 1500, 220, 330) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("Shrewsbury S7A",1200, 1750,325, 450) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("Coil Tesla",950, 1400, 150, 250) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("BS M1922",1400, 1900, 200, 250) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+
+                new VariablePriceMenuItem("Flint Duct Tape", 5, 10,1,1) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
+                new VariablePriceMenuItem("Flint Multi-Bit Screwdriver", 35, 40, 4, 5) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
+                new VariablePriceMenuItem("Flint Rubber Mallet",45, 70, 10, 15){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
+                new VariablePriceMenuItem("Flint Hammer", 35, 60, 4, 5){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
+                new VariablePriceMenuItem("Flint Crowbar", 56, 85, 12, 20){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
+                new VariablePriceMenuItem("Flint Hatchet", 195, 290, 35, 50){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
+                new VariablePriceMenuItem("Vom Feuer Machete", 95, 150,25, 40){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
+                new VariablePriceMenuItem("Flint Pliers", 20, 45, 5, 10){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
+                new VariablePriceMenuItem("Flint Heavy Duty Pipe Wrench",30, 45, 15, 25){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
+                new VariablePriceMenuItem("Flint Shovel",95,  120, 20, 35){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
+                new VariablePriceMenuItem("Flint Cordless Drill", 98, 150, 18, 25){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
+                new VariablePriceMenuItem("Power Metal Cordless Drill",78,  110, 22, 30){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
+
+                new VariablePriceMenuItem("Fake Gold Ring", 0,0,1,2){ NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 5, },
+                new VariablePriceMenuItem("Gold Ring", 0,0,85,155){ NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 5, },
+                new VariablePriceMenuItem("Fake Silver Ring", 0,0,1,1){ NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 5, },
+                new VariablePriceMenuItem("Silver Ring", 0,0,12,15){ NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 5, },
+
+                new VariablePriceMenuItem("iFruit Cellphone", 0,0,75, 95){ NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 2, },
+                new VariablePriceMenuItem("Facade Cellphone", 0,0,55, 75){ NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 2, },
+                new VariablePriceMenuItem("Badger Cellphone", 0, 0,45,55){ NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 2, },
             });
 
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
             GenericPawnShopMenu,
         });
-        for (int i = 1; i <= 4; i++)
-        {
-            ShopMenu newMenu = GenericPawnShopMenu.Copy();
-            newMenu.Randomize();
-            newMenu.ID += i.ToString();
-            PossibleShopMenus.ShopMenuList.Add(newMenu);
-        }
+        //for (int i = 1; i <= 4; i++)
+        //{
+        //    ShopMenu newMenu = GenericPawnShopMenu.Copy();
+        //    newMenu.Randomize();
+        //    newMenu.ID += i.ToString();
+        //    PossibleShopMenus.ShopMenuList.Add(newMenu);
+        //}
     }
     private void GenericLocationsMenu()
     {
@@ -5425,9 +5433,9 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("DealerHangoutMenu1","DealerHangoutMenu1",new List<MenuItem>() {
-                    new MenuItem("Marijuana", 15, 12) { NumberOfItemsToSellToPlayer = 40, NumberOfItemsToPurchaseFromPlayer = 20,IsIllicilt = true },
-                    new MenuItem("Toilet Cleaner",20, 16) { NumberOfItemsToSellToPlayer = 40, NumberOfItemsToPurchaseFromPlayer = 20,IsIllicilt = true },
-                    new MenuItem("SPANK", 40, 25) { NumberOfItemsToSellToPlayer = 40, NumberOfItemsToPurchaseFromPlayer = 20,IsIllicilt = true },
+                    new VariablePriceMenuItem("Marijuana", 13, 15, 11, 12) { NumberOfItemsToSellToPlayer = 40, NumberOfItemsToPurchaseFromPlayer = 20,IsIllicilt = true },
+                    new VariablePriceMenuItem("Toilet Cleaner",17, 20, 14, 16) { NumberOfItemsToSellToPlayer = 40, NumberOfItemsToPurchaseFromPlayer = 20,IsIllicilt = true },
+                    new VariablePriceMenuItem("SPANK",38, 40, 20, 25) { NumberOfItemsToSellToPlayer = 40, NumberOfItemsToPurchaseFromPlayer = 20,IsIllicilt = true },
                     new MenuItem("Flint Hatchet",80) { IsIllicilt = true },
                     new MenuItem("Brass Knuckles",150) { IsIllicilt = true },
                     new MenuItem("Combat Knife",120) { IsIllicilt = true },
@@ -5477,8 +5485,8 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Extended Clip", 125),
                     new MenuItemExtra("Drum Magazine", 200),} },
                 //OTHER
-                new MenuItem("Improvised Incendiary",30) { IsIllicilt = true, SubAmount = 1,SubPrice = 30 },
-                new MenuItem("BZ Gas Grenade",100) { IsIllicilt = true, SubAmount = 1,SubPrice = 100 },
+                new MenuItem("Improvised Incendiary",30) { NumberOfItemsToSellToPlayer = 5, IsIllicilt = true, SubAmount = 1,SubPrice = 30 },
+                new MenuItem("BZ Gas Grenade",100) { NumberOfItemsToSellToPlayer = 5,IsIllicilt = true, SubAmount = 1,SubPrice = 100 },
                     }),
         });
     }
@@ -6706,6 +6714,8 @@ public class ShopMenus : IShopMenus
                     EntryPoint.WriteToConsole($"Shop Menus ERROR Corresponding Item NOT FOUND {mi.ModItemName} in MENU {sm.Name} REMOVING FROM MENU",0);
                     sm.Items.RemoveAt(i);
                 }
+                mi.UpdatePrices();
+                mi.UpdateStock();
             }
             if(totalItems == 0)
             {

@@ -26,5 +26,10 @@ public class Merchant : PedExt
     {
         return $"Transact with {FormattedName}";
     }
+
+    public void MatchTransactionItemsWithShop(GameLocation gameLocation)
+    {
+
+    }
 }
 

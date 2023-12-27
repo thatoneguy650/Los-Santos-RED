@@ -93,7 +93,7 @@ public class PedViolations
             {
                 CheckCrimes(player);
 
-                if (IsWanted && !PedExt.IsBusted && !PedExt.IsDead && !PedExt.IsArrested)
+                if (IsWanted && !PedExt.IsDead && !PedExt.IsArrested)
                 {
                     CheckWantedStatus();
                 }
@@ -138,7 +138,16 @@ public class PedViolations
         }
 
         HasCopsAround = hasCloseCops;
-
+        if(PedExt.IsBusted)
+        {
+            if(!HasCopsAround)
+            {
+                PedExt.IsBusted = false;
+                PedExt.CanBeAmbientTasked = true;
+                PedExt.CanBeTasked = true;
+            }
+            return;
+        }
 
         if(CanPoliceSee && IsWanted && PedExt != null && PedExt.Pedestrian.Exists())
         {

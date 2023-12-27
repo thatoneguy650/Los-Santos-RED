@@ -82,6 +82,7 @@ public class GunStore : GameLocation
             {
                 SetupLocationCamera(locationCamera, isInside, false);
                 CreateInteractionMenu();
+                HandleVariableItems();
                 Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
                 Transaction.UseAccounts = false;
                 Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);

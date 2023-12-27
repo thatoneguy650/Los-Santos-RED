@@ -51,6 +51,7 @@ public class DriveThru : GameLocation
                 {
                     NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, -1, 2000, 2000);
                     CreateInteractionMenu();
+                    HandleVariableItems();
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
                     Transaction.PreviewItems = false;
                     Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);

@@ -20,6 +20,10 @@ public class PawnShop : GameLocation
     public override string TypeName { get; set; } = "Pawn Shop";
     public override int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
     public override string ButtonPromptText { get; set; }
+    public override int MinPriceRefreshHours { get; set; } = 12;
+    public override int MaxPriceRefreshHours { get; set; } = 24;
+    public override int MinRestockHours { get; set; } = 12;
+    public override int MaxRestockHours { get; set; } = 24;
     public PawnShop(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;

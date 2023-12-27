@@ -1410,8 +1410,8 @@ public class PlacesOfInterest : IPlacesOfInterest
     private void DefaultConfig_PawnShops()
     {
         PawnShops = new List<PawnShop>() {
-            new PawnShop(new Vector3(412.5109f, 314.9815f, 103.1327f), 207.4105f, "F.T. Pawn", "","PawnShopMenu1"),
-            new PawnShop(new Vector3(182.735f, -1318.845f, 29.31752f), 246.2635f, "Pawn & Jewelery", "","PawnShopMenu2"),
+            new PawnShop(new Vector3(412.5109f, 314.9815f, 103.1327f), 207.4105f, "F.T. Pawn", "","PawnShopMenuGeneric") { MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,},
+            new PawnShop(new Vector3(182.735f, -1318.845f, 29.31752f), 246.2635f, "Pawn & Jewelery", "","PawnShopMenuGeneric"){ MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,},
         };
     }
     private void DefaultConfig_HardwareStores()

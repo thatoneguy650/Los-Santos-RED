@@ -4,6 +4,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Linq;
+using static DispatchScannerFiles;
 
 namespace LosSantosRED.lsr
 {
@@ -255,7 +256,7 @@ namespace LosSantosRED.lsr
             if (Player.PlacePoliceLastSeenPlayer.DistanceTo(prevPlacePoliceLastSeenPlayer) >= 5.0f)
             {
                 //EntryPoint.WriteToConsole("POLICE PlacePoliceLastSeenPlayer CHANGED");
-                Player.StreetPlacePoliceLastSeenPlayer = NativeHelper.GetStreetPosition(Player.PlacePoliceLastSeenPlayer, true);
+                Player.StreetPlacePoliceLastSeenPlayer = GetStreetPositionIfAvailable(Player.PlacePoliceLastSeenPlayer);
                 prevPlacePoliceLastSeenPlayer = Player.PlacePoliceLastSeenPlayer;
             }
 
@@ -303,9 +304,11 @@ namespace LosSantosRED.lsr
             {
                 //EntryPoint.WriteToConsole("POLICE PlacePoliceShouldSearchForPlayer CHANGED");
 
+                //GetStreetPlacePoliceSeenPlayer();
 
-                Vector3 streetPos = NativeHelper.GetStreetPosition(Player.PlacePoliceShouldSearchForPlayer, true);
-                if(streetPos == Vector3.Zero || streetPos.DistanceTo(Player.PlacePoliceShouldSearchForPlayer) >= 30f)
+
+                Vector3 streetPos = GetStreetPositionIfAvailable(Player.PlacePoliceShouldSearchForPlayer);
+                if (streetPos == Vector3.Zero || streetPos.DistanceTo(Player.PlacePoliceShouldSearchForPlayer) >= 30f)
                 {
                     Player.StreetPlacePoliceShouldSearchForPlayer = Player.PlacePoliceShouldSearchForPlayer;
                 }
@@ -324,6 +327,36 @@ namespace LosSantosRED.lsr
 
             Player.IsNearbyPlacePoliceShouldSearchForPlayer = Player.PlacePoliceShouldSearchForPlayer.DistanceTo2D(Player.Position) <= 200f;
         }
+
+
+        //private void GetStreetPlacePoliceSeenPlayer()
+        //{
+        //    Vector3 position = Player.PlacePoliceShouldSearchForPlayer;//Game.LocalPlayer.Character.Position;
+        //    Vector3 outPos;
+        //    float outHeading;
+        //    bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(position.X, position.Y, position.Z, out outPos, out outHeading, 0, 3.0f, 0f);
+        //    if(!hasNode || outPos == Vector3.Zero || outPos.DistanceTo(Player.PlacePoliceShouldSearchForPlayer) >= 30f)
+        //    {
+        //        Player.StreetPlacePoliceShouldSearchForPlayer = Player.PlacePoliceShouldSearchForPlayer;
+        //    }
+        //    else
+        //    {
+        //        Player.StreetPlacePoliceShouldSearchForPlayer = position;
+        //    }
+        //}
+        private Vector3 GetStreetPositionIfAvailable(Vector3 testCoordinates)
+        {
+            Vector3 position = testCoordinates;
+            Vector3 outPos;
+            float outHeading;
+            bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(position.X, position.Y, position.Z, out outPos, out outHeading, 0, 3.0f, 0f);
+            if(!hasNode)
+            {
+                return Vector3.Zero;
+            }
+            return outPos;
+        }
     }
+
 
 }

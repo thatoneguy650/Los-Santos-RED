@@ -18,9 +18,14 @@ public class ItemDesires
         DesiredItems.Clear();
         foreach (MenuItem menuItem in shopMenu.Items)
         {
-            DesiredItems.Add(new DesiredItem(menuItem.ModItem, menuItem.NumberOfItemsToSellToPlayer, menuItem.NumberOfItemsToPurchaseFromPlayer));
+
+            DesiredItems.Add(new DesiredItem(menuItem.ModItem, menuItem.NumberOfItemsToSellToPlayer, menuItem.NumberOfItemsToPurchaseFromPlayer) 
+            { ItemsPurchasedFromPlayer = menuItem.NumberOfItemsPurchasedByPlayer, ItemsSoldToPlayer = menuItem.NumberOfItemsSoldToPlayer } );
+            //DesiredItems.Add(new DesiredItem(menuItem.ModItem, menuItem.NumberOfItemsToSellToPlayer, menuItem.NumberOfItemsToPurchaseFromPlayer));
+
         }
     }
+
     public void OnItemsSoldToPlayer(ModItem modItem, int amount)
     {
         DesiredItem di = Get(modItem);
@@ -37,7 +42,7 @@ public class ItemDesires
         {
             return;
         }
-        di.ItemsBoughtFromPlayer += amount;
+        di.ItemsPurchasedFromPlayer += amount;
     }
     public DesiredItem Get(ModItem modItem)
     {

@@ -1085,7 +1085,7 @@ public class PlacesOfInterest_Liberty
         LibertyCityLocations.HardwareStores.AddRange(HardwareStoreList_15);
         List<PawnShop> PawnShopList_16 = new List<PawnShop>() {
             new PawnShop() {
-                MenuID = "PawnShopMenu1",
+                MenuID = "PawnShopMenuGeneric",
                 Name = "Pawnbrokers",
                 Description = "Buying and selling since '81",
                 EntrancePosition = new Vector3(831.78f, 2133.7f, 230.31f),
@@ -1095,7 +1095,7 @@ public class PlacesOfInterest_Liberty
                 StateID = StaticStrings.LibertyStateID,
             },
             new PawnShop() {
-                MenuID = "PawnShopMenu2",
+                MenuID = "PawnShopMenuGeneric",
                 Name = "Jamaican Pawn Shop",
                 Description = "We won't ask where you got it from",
                 EntrancePosition = new Vector3(1648.62f, 561.35f, 225.97f),
@@ -1105,7 +1105,7 @@ public class PlacesOfInterest_Liberty
                 StateID = StaticStrings.LibertyStateID,
             },
             new PawnShop() {
-                MenuID = "PawnShopMenu3",
+                MenuID = "PawnShopMenuGeneric",
                 Name = "Alderney City Pawn",
                 Description = "Find your bargain here",
                 EntrancePosition = new Vector3(-1297.42f, 1500.52f, 226.85f),
