@@ -5045,6 +5045,291 @@ new List<ConditionalGroup>() {
             VehicleDeliveryLocations = new List<SpawnPlace>() { },
         };
         BlankLocationPlaces.Add(KKANGPAEWigWam);
+
+        BlankLocation KKANGPAESteps = new BlankLocation(new Vector3(-759.5464f, -919.3508f, 20.60988f), 0f, "KKangpaeSteps", "KKangpae Steps")
+        {
+            Name = "KKangpaeSteps",
+            Description = "KKangpae Steps",
+            EntrancePosition = new Vector3(-759.5464f, -919.3508f, 20.60988f),
+            OpenTime = 0,
+            CloseTime = 24,
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                //Group1
+                new GangConditionalLocation()
+                {
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 5,
+                    Percentage = 45f,
+                    Location = new Vector3(-757.2037f,-920.0898f,18.05869f),
+                    Heading = -84.28564f,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                },
+                new GangConditionalLocation()
+                {
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 5,
+                    Percentage = 45f,
+                    Location = new Vector3(-755.9536f,-919.7582f,18.08333f),
+                    Heading = 107.8247f,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                },
+                new GangConditionalLocation()
+                {
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 5,
+                    Percentage = 45f,
+                    Location = new Vector3(-761.7447f,-919.8821f,18.54978f),
+                    Heading = -89.37133f,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                },
+                new GangConditionalLocation()
+                {
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 5,
+                    Percentage = 45f,
+                    Location = new Vector3(-762.7174f,-919.2241f,19.20684f),
+                    Heading = -89.37133f,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                },
+                new GangConditionalLocation()
+                {
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 5,
+                    Percentage = 45f,
+                    Location = new Vector3(-764.3067f,-920.2347f,19.20683f),
+                    Heading = -5.322605f,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                },
+                new GangConditionalLocation()
+                {
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 5,
+                    Percentage = 45f,
+                    Location = new Vector3(-764.5144f,-919.2105f,19.20683f),
+                    Heading = -84.28564f,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                },
+                new GangConditionalLocation()
+                {
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 5,
+                    Percentage = 45f,
+                    Location = new Vector3(-764.2292f,-931.306f,17.16749f),
+                    Heading = -116.4253f,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                },
+                new GangConditionalLocation()
+                {
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 5,
+                    Percentage = 45f,
+                    Location = new Vector3(-764.2276f,-932.6341f,17.08447f),
+                    Heading = -65.558f,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                },
+
+
+                //Group2
+                new GangConditionalLocation()
+                {
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 5,
+                    Percentage = 45f,
+                    Location = new Vector3(-765.4142f,-917.1601f,20.0831f),
+                    Heading = -89.37133f,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                },
+                new GangConditionalLocation()
+                {
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 5,
+                    Percentage = 45f,
+                    Location = new Vector3(-763.5844f,-918.8759f,19.20683f),
+                    Heading = -105.295f,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                },
+                new GangConditionalLocation()
+                {
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 5,
+                    Percentage = 45f,
+                    Location = new Vector3(-763.5086f,-919.8815f,19.20683f),
+                    Heading = -86.19594f,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                },
+                new GangConditionalLocation()
+                {
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 5,
+                    Percentage = 45f,
+                    Location = new Vector3(-762.7452f,-922.7858f,17.76118f),
+                    Heading = 116.6984f,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                },
+                new GangConditionalLocation()
+                {
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 5,
+                    Percentage = 45f,
+                    Location = new Vector3(-764.3322f,-923.4336f,17.72986f),
+                    Heading = -70.54628f,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                },
+                new GangConditionalLocation()
+                {
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 5,
+                    Percentage = 45f,
+                    Location = new Vector3(-763.4446f,-922.2467f,18.85892f),
+                    Heading = -178.1328f,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                },
+                new GangConditionalLocation()
+                {
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 5,
+                    Percentage = 45f,
+                    Location = new Vector3(-760.6191f,-915.1982f,18.27511f),
+                    Heading = -6.779637f,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                },
+                new GangConditionalLocation()
+                {
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 5,
+                    Percentage = 45f,
+                    Location = new Vector3(-761.1669f,-914.61f,18.33595f),
+                    Heading = -77.92151f,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                },
+
+            },
+
+            //PossibleGroupSpawns = new List<ConditionalGroup>() 
+            //{    
+            //    new ConditionalGroup() {
+            //        Name = "",
+            //        Percentage = 100f,
+            //        MinHourSpawn = 20,
+            //        MaxHourSpawn = 5,
+            //        PossiblePedSpawns = new List<ConditionalLocation>() 
+            //        {
+            //            new GangConditionalLocation() 
+            //            {
+            //            Location = new Vector3(-757.2037f,-920.0898f,18.05869f),
+            //            Heading = -84.28564f,
+            //            TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+            //            },
+            //            new GangConditionalLocation() 
+            //            {
+            //                Location = new Vector3(-755.9536f,-919.7582f,18.08333f),
+            //                Heading = 107.8247f,
+            //                TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+            //            },
+            //            new GangConditionalLocation() 
+            //            {
+            //                Location = new Vector3(-761.7447f,-919.8821f,18.54978f),
+            //                Heading = -89.37133f,
+            //                TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+            //            },
+            //            new GangConditionalLocation() 
+            //            {
+            //                Location = new Vector3(-762.7174f,-919.2241f,19.20684f),
+            //                Heading = -89.37133f,
+            //                TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+            //            },
+            //            new GangConditionalLocation() 
+            //            {
+            //                Location = new Vector3(-764.3067f,-920.2347f,19.20683f),
+            //                Heading = -5.322605f,
+            //                TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+            //            },
+            //            new GangConditionalLocation() 
+            //            {
+            //                Location = new Vector3(-764.5144f,-919.2105f,19.20683f),
+            //                Heading = -84.28564f,
+            //                TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+            //            },
+            //            new GangConditionalLocation() 
+            //            {
+            //                Location = new Vector3(-764.2292f,-931.306f,17.16749f),
+            //                Heading = -116.4253f,
+            //                TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+            //            },
+            //            new GangConditionalLocation() 
+            //            {
+            //                Location = new Vector3(-764.2276f,-932.6341f,17.08447f),
+            //                Heading = -65.558f,
+            //                TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+            //            },
+            //        },
+            //    },
+            //    new ConditionalGroup() 
+            //    {
+            //        Name = "",
+            //        Percentage = 100f,
+            //        MinHourSpawn = 10,
+            //        MaxHourSpawn = 20,
+            //        PossiblePedSpawns = new List<ConditionalLocation>() 
+            //        {
+            //            new GangConditionalLocation() 
+            //            {
+            //                Location = new Vector3(-765.4142f,-917.1601f,20.0831f),
+            //                Heading = -89.37133f,
+            //                TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+            //            },
+            //            new GangConditionalLocation() 
+            //            {
+            //                Location = new Vector3(-763.5844f,-918.8759f,19.20683f),
+            //                Heading = -105.295f,
+            //                TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+            //            },
+            //            new GangConditionalLocation() 
+            //            {
+            //                Location = new Vector3(-763.5086f,-919.8815f,19.20683f),
+            //                Heading = -86.19594f,
+            //                TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+            //            },
+            //            new GangConditionalLocation() 
+            //            {
+            //                Location = new Vector3(-762.7452f,-922.7858f,17.76118f),
+            //                Heading = 116.6984f,
+            //                TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+            //            },
+            //            new GangConditionalLocation() 
+            //            {
+            //                Location = new Vector3(-764.3322f,-923.4336f,17.72986f),
+            //                Heading = -70.54628f,
+            //                TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+            //            },
+            //            new GangConditionalLocation() 
+            //            {
+            //                Location = new Vector3(-763.4446f,-922.2467f,18.85892f),
+            //                Heading = -178.1328f,
+            //                TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+            //            },
+            //            new GangConditionalLocation() 
+            //            {
+            //                Location = new Vector3(-760.6191f,-915.1982f,18.27511f),
+            //                Heading = -6.779637f,
+            //                TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+            //            },
+            //            new GangConditionalLocation() 
+            //            {
+            //                Location = new Vector3(-761.1669f,-914.61f,18.33595f),
+            //                Heading = -77.92151f,
+            //                TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+            //            },
+            //        },
+            //    },
+            //},
+        };
+        BlankLocationPlaces.Add(KKANGPAESteps);
+
+
+
     }
     private void LupisellaGang()
     {

@@ -980,7 +980,7 @@ namespace Mod
         }
         public void ShowVehicleInteractMenu(bool showDefault)
         {
-            if(InterestedVehicle == null || !InterestedVehicle.Vehicle.Exists())
+            if(InterestedVehicle == null || !InterestedVehicle.Vehicle.Exists() || (!InterestedVehicle.HasBeenEnteredByPlayer && !InterestedVehicle.IsOwnedByPlayer))
             {
                 return;
             }
@@ -1255,7 +1255,7 @@ namespace Mod
             }
             VehicleGettingInto = CurrentVehicle;
             bool isFreeToEnter = IsFreeToEnter();
-            if (IsFreeToEnter())
+            if (isFreeToEnter)//IsFreeToEnter())
             {
                 EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicle Vehicle is Free to Enter, Ending", 3);
                 //return;
@@ -1360,11 +1360,22 @@ namespace Mod
                 {
                     CurrentVehicle.IsHotWireLocked = true;
                     CurrentVehicle.Vehicle.MustBeHotwired = false;
+                    EntryPoint.WriteToConsole("HandleScrewdriver SETTING MUST BE HOTWIRED 1");
                 }
-                if (CurrentVehicle.IsHotWireLocked && currentlyHasScrewdriver)
+                if (Settings.SettingsManager.VehicleSettings.AutoHotwire && CurrentVehicle.IsHotWireLocked && currentlyHasScrewdriver)
                 {
                     CurrentVehicle.IsHotWireLocked = false;
                     CurrentVehicle.Vehicle.MustBeHotwired = true;
+                    EntryPoint.WriteToConsole("HandleScrewdriver CLEARING AS YOU HAVE A SCREWDRIVER AND AUTO HOTWIRE IS ON MUST BE HOTWIRED 1");
+                }
+            }
+            else if(!Settings.SettingsManager.VehicleSettings.AutoHotwire)
+            {
+                if (CurrentVehicle.Vehicle.MustBeHotwired)
+                {
+                    CurrentVehicle.IsHotWireLocked = true;
+                    CurrentVehicle.Vehicle.MustBeHotwired = false;
+                    EntryPoint.WriteToConsole("HandleScrewdriver SETTING MUST BE HOTWIRED WITH AUTO HOTWIRE ONLY!");
                 }
             }
             if (Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry && !currentlyHasScrewdriver && IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)
@@ -1903,7 +1914,7 @@ namespace Mod
             }
 
 
-            if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPoliceVehicle)
+            if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.IsPolice)// && CurrentVehicle.Vehicle.IsPoliceVehicle)
             {
                 IsInPoliceVehicle = true;
             }

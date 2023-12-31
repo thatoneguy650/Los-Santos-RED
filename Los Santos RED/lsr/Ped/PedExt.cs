@@ -1397,6 +1397,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         {
             return;
         }
+        PlayerPerception.SetFakeSeen();
         GameTimePlayerLastStoodOnCar = Game.GameTime;
         PlaySpeech(new List<string>() { "GENERIC_SHOCKED_HIGH", "GENERIC_FRUSTRATED_HIGH", "GET_OUT_OF_HERE" }, false, false);
         AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
@@ -1409,6 +1410,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         {
             TimesInsultedByPlayer += 1;
             GameTimeLastInsultedByPlayer = Game.GameTime;
+
             if(TimesInsultedByPlayer >= InsultLimit)
             {
                 OnHitInsultLimit(player);
@@ -1418,18 +1420,21 @@ public class PedExt : IComplexTaskable, ISeatAssignable
 
     protected virtual void OnHitInsultLimit(IInteractionable player)
     {
+        PlayerPerception.SetFakeSeen();
         PlaySpeech(new List<string>() { "GENERIC_SHOCKED_HIGH", "GENERIC_FRUSTRATED_HIGH", "GET_OUT_OF_HERE" }, false, false);
         AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
         EntryPoint.WriteToConsole($"OnHitInsultLimit triggered {Handle}");
     }
     protected virtual void OnHitPlayerStoodTooCloseLimit(IInteractionable player)
     {
+        PlayerPerception.SetFakeSeen();
         PlaySpeech(new List<string>() { "GENERIC_SHOCKED_HIGH", "GENERIC_FRUSTRATED_HIGH", "GET_OUT_OF_HERE" }, false, false);
         AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
         EntryPoint.WriteToConsole($"OnHitPlayerStoodTooCloseLimit triggered {Handle}");
     }
     protected virtual void OnHitCollideWithPlayerLimit(IInteractionable player)
     {
+        PlayerPerception.SetFakeSeen();
         PlaySpeech(new List<string>() { "GENERIC_SHOCKED_HIGH", "GENERIC_FRUSTRATED_HIGH", "GET_OUT_OF_HERE" }, false, false);
         AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
         EntryPoint.WriteToConsole($"OnHitCollideWithPlayerLimit triggered {Handle}");
@@ -1490,6 +1495,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         {
             return;
         }
+        PlayerPerception.SetFakeSeen();
         GameTimePlayerLastDamagedCarOnFoot = Game.GameTime;
         AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
         EntryPoint.WriteToConsole($"OnPlayerDamagedCarOnFoot triggered {Handle}");

@@ -128,7 +128,12 @@
     <Compile Include="lsr\Data\Agencies\WantedLevels.cs" />
     <Compile Include="lsr\Data\Interface\ICellphones.cs" />
     <Compile Include="lsr\Data\Interface\IContacts.cs" />
+    <Compile Include="lsr\Data\Interface\ISpawnBlocks.cs" />
     <Compile Include="lsr\Data\Location\PossibleInteriors.cs" />
+    <Compile Include="lsr\Data\Other\CarGeneratorBlock.cs" />
+    <Compile Include="lsr\Data\Other\PossibleSpawnBlocks.cs" />
+    <Compile Include="lsr\Data\Other\ScenarioBlock.cs" />
+    <Compile Include="lsr\Data\Other\SpawnBlocks.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_Gangs.cs" />
     <Compile Include="lsr\Data\Organizations\Contacts.cs" />
     <Compile Include="lsr\Data\Organizations\PossibleContacts.cs" />

@@ -51,6 +51,7 @@ public class ModDataFileManager
     public Cellphones Cellphones;
     public Contacts Contacts;
     public TestAnimations TestAnimations;
+    public SpawnBlocks SpawnBlocks;
 
     public ModDataFileManager()
     {
@@ -215,6 +216,13 @@ public class ModDataFileManager
 
 
         Contacts.Setup(Organizations);
+
+
+
+
+        SpawnBlocks = new SpawnBlocks();
+        SpawnBlocks.ReadConfig();
+
 
     }
     private void SetupAlternateConfigs()

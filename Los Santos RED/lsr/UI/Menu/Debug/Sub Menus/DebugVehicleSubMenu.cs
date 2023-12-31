@@ -193,7 +193,7 @@ public class DebugVehicleSubMenu : DebugSubMenu
     }
     private void CreateColorMenuItem()//CreateColorMenuItem
     {
-        UIMenuNumericScrollerItem<int> VehicleColorMenuItem = new UIMenuNumericScrollerItem<int>("Set Color", "Set the vehicle color", 0, 159, 1);
+        UIMenuNumericScrollerItem<int> VehicleColorMenuItem = new UIMenuNumericScrollerItem<int>("Set Both Color", "Set both the vehicle colors the same", 0, 159, 1);
         VehicleColorMenuItem.Value = VehicleColorMenuItem.Minimum;
         VehicleColorMenuItem.Activated += (menu, item) =>
         {
@@ -204,7 +204,54 @@ public class DebugVehicleSubMenu : DebugSubMenu
             }
         };
         vehicleItemsMenu.AddItem(VehicleColorMenuItem);
+
+
+
+        UIMenuNumericScrollerItem<int> vehiclePrimaryColorScroller = new UIMenuNumericScrollerItem<int>("Primary Color", "Set the primary color selected", 0, 159, 1);
+        vehiclePrimaryColorScroller.Value = vehiclePrimaryColorScroller.Minimum;
+        //vehiclePrimaryColorScroller.Activated += (menu, item) =>
+        //{
+        //    if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+        //    {
+        //        NativeFunction.Natives.SET_VEHICLE_COLOURS(Player.InterestedVehicle.Vehicle, vehiclePrimaryColorScroller.Value, vehiclePrimaryColorScroller.Value);
+        //        Game.DisplaySubtitle($"SET COLOR {VehicleColorMenuItem.Value}");
+        //    }
+        //};
+        vehicleItemsMenu.AddItem(vehiclePrimaryColorScroller);
+
+
+        UIMenuNumericScrollerItem<int> vehicleSecondaryColorScroller = new UIMenuNumericScrollerItem<int>("Secondary Color", "Set the secondary color selected", 0, 159, 1);
+        vehicleSecondaryColorScroller.Value = vehicleSecondaryColorScroller.Minimum;
+        vehicleItemsMenu.AddItem(vehicleSecondaryColorScroller);
+
+
+        UIMenuItem setColorIndiv = new UIMenuItem("Set Color", "Set both colors selected");
+        setColorIndiv.Activated += (sender, selectedItem) =>
+        {
+            if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+            {
+                NativeFunction.Natives.SET_VEHICLE_COLOURS(Player.InterestedVehicle.Vehicle, vehiclePrimaryColorScroller.Value, vehicleSecondaryColorScroller.Value);
+                Game.DisplaySubtitle($"SET COLOR {VehicleColorMenuItem.Value}");
+            }
+        };
+
+
+
+        UIMenuNumericScrollerItem<float> dirtsetscroller = new UIMenuNumericScrollerItem<float>("Set Dirtyness", "Set how dirty the car is", 0.0f, 15.0f, 1.0f);
+        dirtsetscroller.Value = dirtsetscroller.Minimum;
+        dirtsetscroller.Activated += (menu, item) =>
+        {
+            if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+            {
+                NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(Player.InterestedVehicle.Vehicle, dirtsetscroller.Value);
+                Game.DisplaySubtitle($"SET DIRT {dirtsetscroller.Value}");
+            }
+        };
+        vehicleItemsMenu.AddItem(dirtsetscroller);
+
     }
+
+
     private void CreateLiveryMenuItem()
     {
         int Total = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Player.InterestedVehicle.Vehicle);

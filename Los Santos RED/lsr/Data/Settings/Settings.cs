@@ -65,6 +65,9 @@ public class Settings : ISettingsProvideable
 
 
         //Easy Preset
+
+        SettingsManager.PlayerOtherSettings.CorruptCopClearCanAlwaysClearWanted = true;
+
         SettingsManager.ViolationSettings.ShowCrimeWarnings = true;
 
         SettingsManager.VehicleSettings.InjureOnWindowBreak = false;
@@ -328,12 +331,12 @@ public class Settings : ISettingsProvideable
         SettingsManager.PedSwapSettings.AliasPedAsMainCharacter = false;
         SettingsManager.VanillaSettings.TerminateVanillaBlips = true;
         SettingsManager.VanillaSettings.TerminateVanillaShops = true;
-        SettingsManager.VanillaSettings.BlockVanillaPoliceCarGenerators = false;
-        SettingsManager.VanillaSettings.BlockVanillaPoliceScenarios = false;
-        SettingsManager.VanillaSettings.BlockVanillaPrisonCarGenerators = false;
-        SettingsManager.VanillaSettings.BlockVanillaPrisonScenarios = false;
-        SettingsManager.VanillaSettings.BlockVanillaOtherScenarios = false;
-        SettingsManager.VanillaSettings.BlockVanillaSecurityScenarios = false;
+        //SettingsManager.VanillaSettings.BlockVanillaPoliceCarGenerators = false;
+        //SettingsManager.VanillaSettings.BlockVanillaPoliceScenarios = false;
+        //SettingsManager.VanillaSettings.BlockVanillaPrisonCarGenerators = false;
+        //SettingsManager.VanillaSettings.BlockVanillaPrisonScenarios = false;
+        //SettingsManager.VanillaSettings.BlockVanillaOtherScenarios = false;
+        //SettingsManager.VanillaSettings.BlockVanillaSecurityScenarios = false;
     }
 
 

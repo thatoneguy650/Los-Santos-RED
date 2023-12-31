@@ -134,9 +134,10 @@ public class TaxiRide
         IsActive = false;
         IsWaitingOnPlayer = false;
         IsHailed = true;
-        EntryPoint.WriteToConsole("Taxi Ride IS ACTIVE SET TO FALSE SETUP");
+        EntryPoint.WriteToConsole("SetupHailedRide START");
         if(!GetVehicleAndDriver() || RespondingVehicle == null || !RespondingVehicle.Vehicle.Exists())
         {
+            EntryPoint.WriteToConsole("Taxi Hailed Ride Return 1");
             return;
         }
         PickupLocation = new SpawnLocation(RespondingVehicle.Vehicle.GetOffsetPositionFront(10f));
@@ -149,7 +150,7 @@ public class TaxiRide
         }
         if (!PickupLocation.HasStreetPosition)
         {
-            EntryPoint.WriteToConsole("TAXI RIDE SETUP FAIL NO STREET POSITION");
+            EntryPoint.WriteToConsole("Taxi Hailed Ride Return 2");
             return;
         }
         if (GetVehicleAndDriver())//if there is an existing one
@@ -160,9 +161,10 @@ public class TaxiRide
             //{
             //    Player.CellPhone.AddContact(RequestedFirm.PhoneContact, true);
             //}
+            EntryPoint.WriteToConsole("Taxi Hailed Ride Return 3");
             return;
         }
-        EntryPoint.WriteToConsole("TAXI RIDE SETUP FAIL NO DISPATCH");
+        EntryPoint.WriteToConsole("SetupHailedRide END NO DISPATCH?");
     }
 
 
@@ -172,7 +174,7 @@ public class TaxiRide
         IsActive = false;
         IsWaitingOnPlayer = false;
         IsHailed = false;
-        EntryPoint.WriteToConsole("Taxi Ride IS ACTIVE SET TO FALSE SETUP");
+        EntryPoint.WriteToConsole("SetupCalledRide");
         PickupLocation = new SpawnLocation(InitialPickupLocation);
         DestinationLocation = new SpawnLocation();
         PickupLocation.GetClosestStreet(false);
@@ -184,13 +186,14 @@ public class TaxiRide
         }
         if (!PickupLocation.HasStreetPosition)
         {
-            EntryPoint.WriteToConsole("TAXI RIDE SETUP FAIL NO STREET POSITION");
+            EntryPoint.WriteToConsole("Taxi Called Ride Return 1");
             return;
         }
         if (GetVehicleAndDriver())//if there is an existing one
         {
             IsActive = true;
             AddPickupBlip();
+            EntryPoint.WriteToConsole("Taxi Called Ride Return 2");
             //Player.GPSManager.AddGPSRoute("Taxi Pickup", PickupLocation.FinalPosition);
             return;
         }
@@ -203,9 +206,10 @@ public class TaxiRide
         {
             IsActive = true;
             AddPickupBlip();
+            EntryPoint.WriteToConsole("Taxi Called Ride Return 3");
             return;
         }
-        EntryPoint.WriteToConsole("TAXI RIDE SETUP FAIL NO DISPATCH");
+        EntryPoint.WriteToConsole("SetupCalledRide END NO DISPATCH?");
     }
     public void Update()
     {
@@ -539,24 +543,29 @@ public class TaxiRide
     }
     private bool GetVehicleAndDriver()
     {
-        foreach (TaxiVehicleExt RespondingVehicle in World.Vehicles.TaxiVehicles.Where(x => x.TaxiFirm.ID == RequestedFirm.ID && x.Vehicle.Exists() && x.Vehicle.HasDriver).OrderBy(x => x.Vehicle.Position.DistanceTo2D(Player.Position)))
+        foreach (TaxiVehicleExt respondingVehicle in World.Vehicles.TaxiVehicles.Where(x => x.TaxiFirm.ID == RequestedFirm.ID && x.Vehicle.Exists() && x.Vehicle.HasDriver).OrderBy(x => x.Vehicle.Position.DistanceTo2D(Player.Position)))
         {
             GameFiber.Yield();
-            if (RespondingVehicle == null || !RespondingVehicle.Vehicle.Exists() || !RespondingVehicle.Vehicle.Driver.Exists())
+            if (respondingVehicle == null || !respondingVehicle.Vehicle.Exists() || !respondingVehicle.Vehicle.Driver.Exists())
             {
+                EntryPoint.WriteToConsole("GetVehicleAndDriver RETURN 1");
                 continue;//return false;
             }
-            uint driverhandle = RespondingVehicle.Vehicle.Driver.Handle;
+            uint driverhandle = respondingVehicle.Vehicle.Driver.Handle;
+            RespondingVehicle = respondingVehicle;
             RespondingDriver = World.Pedestrians.TaxiDriverList.FirstOrDefault(x => x.Handle == driverhandle);
             if (RespondingDriver == null || !RespondingDriver.Pedestrian.Exists())
             {
+                EntryPoint.WriteToConsole("GetVehicleAndDriver RETURN 2");
                 continue; //return false;
             }
             if (RespondingDriver.WillCancelRide)
             {
+                EntryPoint.WriteToConsole("GetVehicleAndDriver RETURN 3 WILL CANCEL RIDE!");
                 continue; //return false;
             }
             //RespondingDriver.SetTaskingActive(PickupLocation.StreetPosition);
+            EntryPoint.WriteToConsole("GetVehicleAndDriver FOUND DRIVER RETURNING TRUE");
             RespondingDriver.SetTaxiRide(this);
             return true;
         }
@@ -629,6 +638,11 @@ public class TaxiRide
             return;
         }
         Game.FadeScreenOut(1000, true);
+        if (RespondingVehicle == null || !RespondingVehicle.Vehicle.Exists())
+        {
+            Game.FadeScreenIn(1000, true);
+            return;
+        }
         RespondingVehicle.Vehicle.Position = PickupLocation.StreetPosition;
         RespondingVehicle.Vehicle.Heading = PickupLocation.Heading;
         GameFiber.Sleep(1000);

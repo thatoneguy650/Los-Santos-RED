@@ -47,12 +47,34 @@ public class ButtonPrompts
         IsUsingKeyboard = NativeFunction.Natives.IS_USING_KEYBOARD_AND_MOUSE<bool>(2);
         AttemptAddConversationPrompts();
         AttemptAddAdvancedInteractionPrompts();
-        AttemptAddVehiclePrompts();
+        AttemptAddVehicleInteractPrompts();
+        AttemptAddHotwireInteractPrompts();
         AttemptAddLocationPrompts();
         AttemptAddActivityPrompts();
         AttemptRemoveMenuPrompts();
     }
-    private void AttemptAddVehiclePrompts()
+
+    private void AttemptAddHotwireInteractPrompts()
+    {
+        VehicleExt toConsider = Player.CurrentVehicle;
+        if (Settings.SettingsManager.VehicleSettings.AutoHotwire ||
+            Player.ActivityManager.IsInteractingWithLocation ||
+            Player.IsShowingFrontEndMenus ||
+            Player.Surrendering.HandsAreUp ||
+            !Player.IsAliveAndFree ||
+            !Player.IsInVehicle || 
+            toConsider == null ||
+
+            !toConsider.IsHotWireLocked
+            )
+        {
+            RemovePrompts("VehicleHotwire");
+            return;
+        }
+        toConsider.UpdateHotwirePrompt(Player);
+    }
+
+    private void AttemptAddVehicleInteractPrompts()
     {
         VehicleExt toConsider = Player.InterestedVehicle;
         if (!Settings.SettingsManager.UIGeneralSettings.ShowVehicleInteractionPrompt || 
@@ -177,6 +199,16 @@ public class ButtonPrompts
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, gameControl, order));
         }
     }
+
+    public void AttemptAddPrompt(string groupName, string prompt, string identifier, GameControl gameControl, int order, Action action)
+    {
+        if (!Prompts.Any(x => x.Identifier == identifier) && !Prompts.Any(x => x.GameControl == gameControl))
+        {
+            Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, gameControl, order) { Action = action });
+        }
+    }
+
+
     public void AddPrompt(string groupName, string prompt, string identifier, GameControl modifierControl, GameControl gameControl, int order)
     {
         if (!Prompts.Any(x => x.Identifier == identifier))

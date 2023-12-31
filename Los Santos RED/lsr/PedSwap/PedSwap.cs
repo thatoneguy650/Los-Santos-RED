@@ -1229,10 +1229,10 @@ public class PedSwap : IPedSwap
     }
     private void ResetOffsetForCurrentModel()
     {
-        //EntryPoint.WriteToConsoleTestLong($"PEDSWAP ResetOffsetForCurrentModel START CurrentModelPlayerIs {CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
+        EntryPoint.WriteToConsole($"PEDSWAP ResetOffsetForCurrentModel START CurrentModelPlayerIs {CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
         if ((Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || HasSetOffset) && CurrentModelPlayerIs != 0)
         {
-            //EntryPoint.WriteToConsoleTestLong($"PEDSWAP ResetOffsetForCurrentModel RAN CurrentModelPlayerIs {CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
+            EntryPoint.WriteToConsole($"PEDSWAP ResetOffsetForCurrentModel RAN CurrentModelPlayerIs {CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
             unsafe
             {
                 var PedPtr = (ulong)Game.LocalPlayer.Character.MemoryAddress;

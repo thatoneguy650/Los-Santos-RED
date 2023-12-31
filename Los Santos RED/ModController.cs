@@ -111,7 +111,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Input = new Input(Player, ModDataFileManager.Settings, UI, PedSwap);
             GameFiber.Yield();
-            VanillaManager = new VanillaManager(ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest);
+            VanillaManager = new VanillaManager(ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest, ModDataFileManager.SpawnBlocks);
             VanillaManager.Setup();
             GameFiber.Yield();
             WeatherManager = new WeatherManager(ModDataFileManager.Settings, Time, ModDataFileManager.WeatherForecasts);

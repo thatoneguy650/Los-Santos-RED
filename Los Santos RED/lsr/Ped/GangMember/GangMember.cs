@@ -216,6 +216,7 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             return;
         }
+        PlayerPerception.SetFakeSeen();
         TimesInsultedByPlayer += 10;
         EntryPoint.WriteToConsole($"OnPlayerDamagedCarOnFoot triggered {Handle}");
     }
@@ -230,6 +231,7 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             return;
         }
+        PlayerPerception.SetFakeSeen();
         TimesInsultedByPlayer += 10;
         EntryPoint.WriteToConsole($"OnPlayerStoodOnCar triggered {Handle}");
     }

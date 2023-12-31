@@ -306,22 +306,26 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     }
     protected override void OnHitInsultLimit(IInteractionable player)
     {
+        PlayerPerception.SetFakeSeen();
         player.SetAngeredCop();
         EntryPoint.WriteToConsole($"OnHitInsultLimit triggered {Handle}");
     }
     protected override void OnHitCollideWithPlayerLimit(IInteractionable player)
     {
+        PlayerPerception.SetFakeSeen();
         player.SetAngeredCop();
         EntryPoint.WriteToConsole($"OnHitCollideWithPlayerLimit triggered {Handle}");
     }
     protected override void OnHitPlayerStoodTooCloseLimit(IInteractionable player)
     {
+        PlayerPerception.SetFakeSeen();
         player.SetAngeredCop();
         EntryPoint.WriteToConsole($"OnHitPlayerStoodTooCloseLimit triggered {Handle}");
     }
 
     public override void OnPlayerDamagedCarOnFoot(IInteractionable player)
     {
+        PlayerPerception.SetFakeSeen();
         player.SetAngeredCop();
         EntryPoint.WriteToConsole($"OnPlayerDamagedCarOnFoot triggered {Handle}");
     }
@@ -332,6 +336,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     }
     public override void OnPlayerStoodOnCar(IInteractionable player)
     {
+        PlayerPerception.SetFakeSeen();
         player.SetAngeredCop();
         EntryPoint.WriteToConsole($"OnPlayerStoodOnCar triggered {Handle}");
     }

@@ -88,6 +88,7 @@ public class VehicleSettings : ISettingsDefaultable
 
     [Description("If enabled, the player will perform an animation when manipulating vehicle controls (engine off, opening/closing door, rolling windows up/down, etc.")]
     public bool PlayControlAnimations { get; set; }
+    public bool AutoHotwire { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -144,5 +145,6 @@ public class VehicleSettings : ISettingsDefaultable
         NonRoadworthyVehicleCheckNoPlate = true;
         AttachOwnedVehicleBlips = true;
         PlayControlAnimations = true;
+        AutoHotwire = false;
     }
 }

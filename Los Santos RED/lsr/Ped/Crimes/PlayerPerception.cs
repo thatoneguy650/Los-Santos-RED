@@ -20,6 +20,9 @@ public class PlayerPerception
     private PedExt Originator;
     private ISettingsProvideable Settings;
     private IPerceptable Target;
+    private uint GameTimeLastSetFakeSeen;
+    private bool IsFakeSeen => GameTimeLastSetFakeSeen != 0 && Game.GameTime - GameTimeLastSetFakeSeen <= 5000;
+
     private float DistanceToTargetInVehicle => Settings.SettingsManager.PlayerOtherSettings.SeeBehindDistanceVehicle;
     private float DistanceToTargetOnFoot => Target.Stance.IsBeingStealthy ? Settings.SettingsManager.PlayerOtherSettings.SeeBehindDistanceStealth : Settings.SettingsManager.PlayerOtherSettings.SeeBehindDistanceRegular; //0.25f : 4f;
     public PlayerPerception(PedExt originator, IPerceptable target, ISettingsProvideable settings)
@@ -81,7 +84,10 @@ public class PlayerPerception
             UpdateTargetDistance(placeLastSeen, target.Position);
             if (!Originator.IsUnconscious)
             {
-                UpdateTargetLineOfSight(Target.IsWanted);
+                if(!IsFakeSeen)
+                {
+                    UpdateTargetLineOfSight(Target.IsWanted);
+                }
                 UpdateWitnessedCrimes();
             }
             else
@@ -197,7 +203,7 @@ public class PlayerPerception
     }
     private bool UpdateTargetLineOfSight(bool IsWanted)
     {
-        if (DistanceToTarget >= 100f || Originator.IsUnconscious || !Target.Character.IsVisible || Originator.IsDead)//this is new
+        if (DistanceToTarget >= 150f || Originator.IsUnconscious || !Target.Character.IsVisible || Originator.IsDead)//this is new, was 100f
         {
             SetTargetUnseen();
             return false;
@@ -353,6 +359,11 @@ public class PlayerPerception
     public void Reset()
     {
         SetTargetUnseen();
+    }
+    public void SetFakeSeen()
+    {
+        GameTimeLastSetFakeSeen = Game.GameTime;
+        SetTargetSeen();
     }
 }
 

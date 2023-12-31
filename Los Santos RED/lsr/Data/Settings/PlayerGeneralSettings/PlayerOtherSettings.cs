@@ -43,6 +43,10 @@ public class PlayerOtherSettings : ISettingsDefaultable
     [Description("Cost to remove an APB/BOLO using the corrupt cop interaction.")]
     public int CorruptCopAPBClearCost { get; set; }
 
+    [Description("If enabled the corrupt cop interaction will ignore fail criteria and always clear your wanted level if you have the cash.")]
+    public bool CorruptCopClearCanAlwaysClearWanted { get; set; }
+
+
     [Description("Hours needed to wait between contact tasks after completing the previous task.")]
     public float HoursBetweenTasksWhenCompleted { get; set; }
     [Description("Hours needed to wait between contact tasks after failing the previous task.")]
@@ -200,6 +204,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
         InteriorAutoCameraYDistance = 3f;
         InteriorAutoCameraZDistance = 1f;
         InteriorAutoCameraHeadingOffset = -90f;
+
+        CorruptCopClearCanAlwaysClearWanted = false;
     }
 
 }

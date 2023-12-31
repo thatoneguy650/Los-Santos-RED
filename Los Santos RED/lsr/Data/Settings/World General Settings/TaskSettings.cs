@@ -70,37 +70,35 @@ public class TaskSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
-        OfficerFriendlyGangHitPaymentMin = 10000;
-        OfficerFriendlyGangHitPaymentMax = 15000;
+
+        OfficerFriendlyWitnessEliminationPaymentMin = 1500;// 10000;
+        OfficerFriendlyWitnessEliminationPaymentMax = 2500;// 20000;
+        OfficerFriendlyWitnessEliminationComplicationsPercentage = 45f;
+
+        OfficerFriendlyGangHitPaymentMin = 2000;// 10000;
+        OfficerFriendlyGangHitPaymentMax = 3000;// 15000;
         OfficerFriendlyGangHitComplicationsPercentage = 10f;
 
-        OfficerFriendlyCopHitPaymentMin = 15000;
-        OfficerFriendlyCopHitPaymentMax = 20000;
-        OfficerFriendlyCopHitComplicationsPercentage = 5f;
+        OfficerFriendlyCopHitPaymentMin = 3500;// 15000;
+        OfficerFriendlyCopHitPaymentMax = 4500;// 20000;
+        OfficerFriendlyCopHitComplicationsPercentage = 25f;
 
-        OfficerFriendlyWitnessEliminationPaymentMin = 10000;
-        OfficerFriendlyWitnessEliminationPaymentMax = 20000;
-        OfficerFriendlyWitnessEliminationComplicationsPercentage = 30f;
 
-        UndergroundGunsGunPickupPaymentMin = 5000;
-        UndergroundGunsGunPickupPaymentMax = 10000;
+        UndergroundGunsGunPickupPaymentMin = 2000;// 5000;
+        UndergroundGunsGunPickupPaymentMax = 4000;// 10000;
         UndergroundGunsGunPickupComplicationsPercentage = 15f;
 
         ShowEntityBlips = true;
         DisplayHelpPrompts = true;
 
-        VehicleExporterTransferPaymentMin = 2000;
-        VehicleExporterTransferPaymentMax = 5000;
+        VehicleExporterTransferPaymentMin = 1500;// 2000;
+        VehicleExporterTransferPaymentMax = 2500;// 5000;
         VehicleExporterTransferComplicationsPercentage = 25f;
-
-
     }
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
-        VehicleExporterTransferPaymentMin = 2000;
-        VehicleExporterTransferPaymentMax = 5000;
-        VehicleExporterTransferComplicationsPercentage = 25f;
+        SetDefault();
     }
 
 }

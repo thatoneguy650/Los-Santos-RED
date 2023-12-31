@@ -1521,6 +1521,30 @@ namespace LSR.Vehicles
                // EntryPoint.WriteToConsole("UpdateInteractPrompts BASE ADD PROMPT 1");
             }
         }
+
+        public void UpdateHotwirePrompt(IButtonPromptable player)
+        {
+            if (!Vehicle.Exists() || (!HasBeenEnteredByPlayer && !IsOwnedByPlayer) || !IsHotWireLocked || VehicleInteractionMenu.IsShowingMenu || Vehicle.Speed >= 0.5f)
+            {
+                player.ButtonPrompts.RemovePrompts("VehicleHotwire");
+                 EntryPoint.WriteToConsole("UpdateHotwirePrompt BASE REMOVE 1");
+                return;
+            }
+            if (player.ActivityManager.IsPerformingActivity)
+            {
+                player.ButtonPrompts.RemovePrompts("VehicleHotwire");
+                EntryPoint.WriteToConsole("UpdateHotwirePrompt BASE REMOVE 2");
+                return;
+            }
+            if (!player.ButtonPrompts.HasPrompt($"VehicleHotwire"))
+            {
+                Action action = () => { player.ActivityManager.HotwireVehicle(); };
+                player.ButtonPrompts.AttemptAddPrompt("VehicleHotwire", "Hotwire", $"VehicleHotwire", GameControl.VehicleAccelerate, 900, action);
+                 EntryPoint.WriteToConsole("UpdateHotwirePrompt BASE ADD PROMPT 1");
+            }
+        }
+
+
         public virtual void AddVehicleToList(IEntityProvideable world)
         {
             world.Vehicles.AddCivilian(this);
@@ -1596,5 +1620,7 @@ namespace LSR.Vehicles
             }
             return false;
         }
+
+
     }
 }

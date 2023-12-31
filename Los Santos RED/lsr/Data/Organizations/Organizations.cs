@@ -98,7 +98,7 @@ public class Organizations : IOrganizations
     {
         return PossibleOrganizations.AllOrganizations().Where(x => x.Vehicles != null && x.Vehicles.Any(b => b.ModelName.ToLower() == vehicle.Model.Name.ToLower())).ToList();
     }
-    public List<Organization> GetAssociations()
+    public List<Organization> GetOrganizations()
     {
         return PossibleOrganizations.AllOrganizations();
     }

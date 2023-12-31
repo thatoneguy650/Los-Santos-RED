@@ -18,13 +18,13 @@ public class VanillaManager
     private ISettingsProvideable Settings;
     private uint GameTimeLastRan;
 
-    public VanillaManager(ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
+    public VanillaManager(ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, ISpawnBlocks spawnBlocks)
     {
         Settings = settings;
         VanillaWorldManager = new VanillaWorldManager(Settings);
         VanillaCopManager = new VanillaCopManager(Settings);
         VanillaGangManager = new VanillaGangManager(Settings, placesOfInterest);
-        VanillaSpawnManager = new VanillaSpawnManager(Settings);
+        VanillaSpawnManager = new VanillaSpawnManager(Settings, spawnBlocks);
     }
     public void Setup()
     {

@@ -473,7 +473,159 @@ public class DebugDispatcherSubMenu : DebugSubMenu
         NewSubDispatcherMenu.AddItem(SpawnItem);
     }
 
+    //private void CreateOrganizationSubMenu()
+    //{
+    //    UIMenu NewSubDispatcherMenu = MenuPool.AddSubMenu(DispatcherMenu, "Organization Spawn Menu");
+    //    NewSubDispatcherMenu.SetBannerType(EntryPoint.LSRedColor);
+    //    NewSubDispatcherMenu.Width = 0.6f;
 
+    //    List<Organization> AllAgencies = Organizations.GetOrganizations().Where(x => x.Personnel != null && x.Vehicles != null).ToList();
+    //    List<VehicleNameSelect> vehicleNameList = new List<VehicleNameSelect>();
+    //    vehicleNameList.Add(new VehicleNameSelect("") { VehicleModelName = "Random" });
+
+    //    if (AllAgencies == null || !AllAgencies.Any())
+    //    {
+    //        return;
+    //    }
+    //    Organization first = AllAgencies.FirstOrDefault();
+    //    if (first == null || first.Vehicles == null || !first.Vehicles.Any() || first.Personnel == null || !first.Personnel.Any())
+    //    {
+    //        return;
+    //    }
+
+    //    foreach (DispatchableVehicle dv in first.Vehicles.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
+    //    {
+    //        VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName) { DispatchableVehicle = dv };
+    //        vns.UpdateItems();
+    //        vehicleNameList.Add(vns);
+    //    }
+    //    UIMenuListScrollerItem<VehicleNameSelect> SpawnVehicleScroller = new UIMenuListScrollerItem<VehicleNameSelect>("Vehicle", $"Choose a vehicle to spawn.", vehicleNameList);
+
+    //    List<DispatchablePerson> pedNameList = new List<DispatchablePerson>();
+    //    pedNameList.Add(new DispatchablePerson() { DebugName = "Random" });
+    //    foreach (DispatchablePerson dv in first.Personnel)
+    //    {
+    //        pedNameList.Add(dv);
+    //    }
+    //    UIMenuListScrollerItem<DispatchablePerson> SpawnPedScroller = new UIMenuListScrollerItem<DispatchablePerson>("Ped", $"Choose a ped to spawn.", pedNameList);
+
+    //    UIMenuCheckboxItem SpawnVehicleCheckboxItem = new UIMenuCheckboxItem("Include Vehicle", true, "If checked a vehicle will be spawned");
+    //    UIMenuCheckboxItem SpawnPedCheckboxItem = new UIMenuCheckboxItem("Include Ped", true, "If checked a ped will be spawned");
+
+    //    UIMenuListScrollerItem<Organization> SpawnAgencyScroller = new UIMenuListScrollerItem<Organization>("Organization", $"Choose an org", AllAgencies);
+    //    SpawnAgencyScroller.IndexChanged += (sender, oldIndex, newIndex) =>
+    //    {
+    //        SpawnVehicleScroller.Items.Clear();
+    //        List<VehicleNameSelect> vehicleNameList2 = new List<VehicleNameSelect>();
+    //        vehicleNameList.Add(new VehicleNameSelect("") { VehicleModelName = "Random" });
+
+    //        Organization selectedAgency = SpawnAgencyScroller.SelectedItem;
+    //        EntryPoint.WriteToConsole($"selectedOrganization?{selectedAgency}");
+
+    //        if (selectedAgency != null && selectedAgency.Vehicles != null && selectedAgency.Vehicles.Any())
+    //        {
+    //            EntryPoint.WriteToConsole($"I AM Organization {selectedAgency.FullName} VehiclesNulls?{selectedAgency.Vehicles == null}");
+    //            EntryPoint.WriteToConsole($"VehiclesNulls?{selectedAgency.Vehicles == null}");
+    //            EntryPoint.WriteToConsole($"VehiclesEMPTY?{selectedAgency.Vehicles.Any()}");
+    //            foreach (DispatchableVehicle dv in selectedAgency.Vehicles.ToList())//.Where(x => !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
+    //            {
+    //                if (dv == null)
+    //                {
+    //                    continue;
+    //                }
+    //                VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName) { DispatchableVehicle = dv };
+    //                vns.UpdateItems();
+    //                vehicleNameList2.Add(vns);
+    //            }
+    //        }
+    //        SpawnVehicleScroller.Items = vehicleNameList2.ToList();
+
+    //        SpawnPedScroller.Items.Clear();
+    //        List<DispatchablePerson> pedNameList2 = new List<DispatchablePerson>();
+    //        pedNameList2.Add(new DispatchablePerson() { DebugName = "Random" });
+    //        if (SpawnAgencyScroller.SelectedItem != null && SpawnAgencyScroller.SelectedItem.Personnel != null && SpawnAgencyScroller.SelectedItem.Personnel.Any())
+    //        {
+    //            foreach (DispatchablePerson dv in SpawnAgencyScroller.SelectedItem.Personnel)
+    //            {
+    //                pedNameList2.Add(dv);
+    //            }
+    //        }
+    //        SpawnPedScroller.Items = pedNameList2.ToList();
+    //    };
+
+
+    //    SpawnPedScroller.IndexChanged += (sender, oldIndex, newIndex) =>
+    //    {
+    //        if (SpawnPedScroller.SelectedItem == null)
+    //        {
+    //            return;
+    //        }
+    //        SpawnPedScroller.Description = SpawnPedScroller.SelectedItem.GetDescription();
+    //    };
+
+    //    SpawnVehicleScroller.IndexChanged += (sender, oldIndex, newIndex) =>
+    //    {
+    //        if (SpawnVehicleScroller.SelectedItem == null || SpawnVehicleScroller.SelectedItem.DispatchableVehicle == null)
+    //        {
+    //            return;
+    //        }
+    //        SpawnVehicleScroller.Description = SpawnVehicleScroller.SelectedItem.DispatchableVehicle.GetDescription();
+
+    //    };
+
+
+    //    UIMenuItem SpawnItem = new UIMenuItem("Spawn", $"Spawn the item");
+    //    SpawnItem.Activated += (sender, selectedItem) =>
+    //    {
+    //        if (SpawnAgencyScroller.SelectedItem == null)
+    //        {
+    //            return;
+    //        }
+    //        bool spawnPed = SpawnPedCheckboxItem.Checked;
+    //        bool spawnVehicle = SpawnVehicleCheckboxItem.Checked;
+    //        string selectedAgencyID = SpawnAgencyScroller.SelectedItem.ID;
+    //        ResponseType selectAgencyResponseType = SpawnAgencyScroller.SelectedItem.ResponseType;
+    //        DispatchableVehicle selectedDispatchableVehicle = null;
+    //        if (spawnVehicle && SpawnVehicleScroller.Items != null && SpawnVehicleScroller.Items.Any() && SpawnVehicleScroller.SelectedItem != null && SpawnVehicleScroller.SelectedItem.DispatchableVehicle != null && SpawnVehicleScroller.SelectedItem.DispatchableVehicle.ModelName != "Random")
+    //        {
+    //            selectedDispatchableVehicle = SpawnVehicleScroller.SelectedItem.DispatchableVehicle;
+    //        }
+    //        DispatchablePerson selectedDispatchablePerson = null;
+    //        if (spawnPed && SpawnPedScroller.Items != null && SpawnPedScroller.Items.Any() && SpawnPedScroller.SelectedItem != null && SpawnPedScroller.SelectedItem.ModelName != "Random")
+    //        {
+    //            selectedDispatchablePerson = SpawnPedScroller.SelectedItem;
+    //        }
+    //        EntryPoint.WriteToConsole($"selectedAgencyID {selectedAgencyID} spawnPed {spawnPed} spawnVehicle {spawnVehicle} onFoot: {!spawnVehicle} isEmpty: {!spawnPed} DV: {(selectedDispatchableVehicle != null ? selectedDispatchableVehicle.ModelName : "")} DP: {(selectedDispatchablePerson != null ? selectedDispatchablePerson.ModelName : "")}");
+    //        if (SpawnAgencyScroller.SelectedItem.ResponseType == ResponseType.EMS)
+    //        {
+    //            Dispatcher.EMSDispatcher.DebugSpawnEMT(selectedAgencyID, !spawnVehicle, !spawnPed, selectedDispatchableVehicle, selectedDispatchablePerson);
+    //        }
+    //        else if (SpawnAgencyScroller.SelectedItem.ResponseType == ResponseType.Fire)
+    //        {
+    //            Dispatcher.FireDispatcher.DebugSpawnFire(selectedAgencyID, !spawnVehicle, !spawnPed, selectedDispatchableVehicle, selectedDispatchablePerson);
+    //        }
+    //        else if (SpawnAgencyScroller.SelectedItem.ResponseType == ResponseType.Security)
+    //        {
+    //            Dispatcher.SecurityDispatcher.DebugSpawnSecurity(selectedAgencyID, !spawnVehicle, !spawnPed, selectedDispatchableVehicle, selectedDispatchablePerson);
+    //        }
+    //        else
+    //        {
+    //            Dispatcher.LEDispatcher.DebugSpawnCop(SpawnAgencyScroller.SelectedItem.ID, !spawnVehicle, !spawnPed, selectedDispatchableVehicle, selectedDispatchablePerson, false);
+    //        }
+
+
+    //        Dispae
+
+
+    //        sender.Visible = false;
+    //    };
+    //    NewSubDispatcherMenu.AddItem(SpawnAgencyScroller);
+    //    NewSubDispatcherMenu.AddItem(SpawnVehicleCheckboxItem);
+    //    NewSubDispatcherMenu.AddItem(SpawnVehicleScroller);
+    //    NewSubDispatcherMenu.AddItem(SpawnPedCheckboxItem);
+    //    NewSubDispatcherMenu.AddItem(SpawnPedScroller);
+    //    NewSubDispatcherMenu.AddItem(SpawnItem);
+    //}
 
 }
 

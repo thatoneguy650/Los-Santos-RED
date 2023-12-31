@@ -60,6 +60,7 @@ public class ActivityManager
     private UIMenu continueActivityMenu;
     private uint GameTimeLastSetBlips;
     private bool IsDoingVehileAnim;
+    private uint GameTimeLastStartedHotwiring;
 
     public bool IsUsingToolAsWeapon { get; set; }
 
@@ -1296,14 +1297,14 @@ public class ActivityManager
             NativeFunction.Natives.TASK_SHUFFLE_TO_NEXT_VEHICLE_SEAT(Player.Character, Player.CurrentVehicle.Vehicle, 0);
         }
     }
-    public void StartHotwiring()
-    {
-        if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.IsHotWireLocked)
-        {
-            Player.CurrentVehicle.IsHotWireLocked = false;
-            Player.CurrentVehicle.Vehicle.MustBeHotwired = true;
-        }
-    }
+    //public void StartHotwiring()
+    //{
+    //    if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.IsHotWireLocked)
+    //    {
+    //        Player.CurrentVehicle.IsHotWireLocked = false;
+    //        Player.CurrentVehicle.Vehicle.MustBeHotwired = true;
+    //    }
+    //}
     public void ForceErraticDriver()
     {
         if (Player.IsInVehicle && !Player.IsDriver && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
@@ -1527,6 +1528,10 @@ public class ActivityManager
         {
             return;
         }
+        if (Player.CurrentVehicle.IsHotWireLocked)
+        {
+            return;
+        }
         if (!Player.IsDriver)
         {
             Game.DisplayHelp("Cannot change engine status from current seat");
@@ -1544,6 +1549,10 @@ public class ActivityManager
     public void SetVehicleEngine(bool desiredStatus)
     {
         if (Player.CurrentVehicle == null)
+        {
+            return;
+        }
+        if(Player.CurrentVehicle.IsHotWireLocked)
         {
             return;
         }
@@ -1571,6 +1580,11 @@ public class ActivityManager
         {
             return;
         }
+        if (!Player.CurrentVehicle.Engine.IsRunning)
+        {
+            Game.DisplayHelp("Engine must be running to control windows");
+            return;
+        }
         if (!Player.IsDriver)
         {
             Game.DisplayHelp("Cannot control driver window from current seat");
@@ -1594,6 +1608,11 @@ public class ActivityManager
         }
         if (Player.CurrentVehicle.IsMotorcycle || Player.CurrentVehicle.IsBicycle || Player.CurrentVehicle.IsBoat)
         {
+            return;
+        }
+        if (!Player.CurrentVehicle.Engine.IsRunning)
+        {
+            Game.DisplayHelp("Engine must be running to control windows");
             return;
         }
         if (!Player.IsDriver)
@@ -1620,6 +1639,11 @@ public class ActivityManager
     {
         if (Player.CurrentVehicle == null)// || (!Player.IsDriver || )
         {
+            return;
+        }
+        if(!Player.CurrentVehicle.Engine.IsRunning)
+        {
+            Game.DisplayHelp("Engine must be running to control windows");
             return;
         }
         if (Player.CurrentVehicle.IsMotorcycle || Player.CurrentVehicle.IsBicycle || Player.CurrentVehicle.IsBoat)
@@ -1888,7 +1912,29 @@ public class ActivityManager
         DoSimpleVehicleAnimation(new Action(() => Player.CurrentVehicle?.Windows.ToggleWindow(0)), dictionaryName, animName, 750);
     }
 
-
+    public void HotwireVehicle()
+    {
+        if(Player.CurrentVehicle == null || !Player.CurrentVehicle.IsHotWireLocked)
+        {
+            return;
+        }
+        bool currentlyHasScrewdriver = HasScrewdriverInHand || Player.Inventory.Has(typeof(ScrewdriverItem)); //Inventory.HasTool(ToolTypes.Screwdriver);
+        if (Settings.SettingsManager.VehicleSettings.RequireScrewdriverForHotwire &&  !currentlyHasScrewdriver)
+        {
+            Game.DisplayHelp("Screwdriver required to hotwire");
+            return;
+        }
+        Player.CurrentVehicle.IsHotWireLocked = false;
+        GameTimeLastStartedHotwiring = Game.GameTime;
+        if(!Player.CurrentVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        Player.CurrentVehicle.Vehicle.MustBeHotwired = true;
+        Player.CurrentVehicle.Engine.SetState(true);
+        //GameFiber.Sleep(2500);
+        //Player.CurrentVehicle?.Engine.Synchronize();
+    }
 }
 
 

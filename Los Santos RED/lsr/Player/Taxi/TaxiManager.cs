@@ -100,7 +100,11 @@ public class TaxiManager
         {
             taxiRide.SetupCalledRide();
         }
-        if(!taxiRide.IsActive)
+
+        EntryPoint.WriteToConsole($"RequestService RAN SETUP");
+
+
+        if (!taxiRide.IsActive)
         {
             EntryPoint.WriteToConsole($"RequestService FAIL, NOT ACTIVE");
             return false;

@@ -107,6 +107,7 @@ public class TaxiServiceInteraction : IContactMenuInteraction
             string fullText = "";
             if (Player.TaxiManager.RequestService(TaxiFirm, false))
             {
+                sender.Visible = false;
                 //fullText = $"{TaxiServiceContact.Name} is en route to ";
                 //fullText += Player.CurrentLocation?.GetStreetAndZoneString();
                 Player.TaxiManager.ActiveRides.FirstOrDefault(x => x.RequestedFirm.ID == TaxiFirm.ID)?.TeleportToPickup();
@@ -114,8 +115,9 @@ public class TaxiServiceInteraction : IContactMenuInteraction
             else
             {
                 fullText = "No service available to your current location. Please try again later.";
+                Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
             }
-            Player.CellPhone.AddPhoneResponse(TaxiServiceContact.Name, TaxiServiceContact.IconName, fullText);
+
             sender.Visible = false;
         };
         TaxiServiceMenu.AddItem(requestQuickTaxiMenuItem);

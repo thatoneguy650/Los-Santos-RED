@@ -160,7 +160,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetPayment()
         {
-            MoneyToRecieve = RandomItems.GetRandomNumberInt(Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin, Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax).Round(500);
+            MoneyToRecieve = RandomItems.GetRandomNumberInt(Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin, Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax).Round(500) * KillRequirement;
             if (MoneyToRecieve <= 0)
             {
                 MoneyToRecieve = 500;

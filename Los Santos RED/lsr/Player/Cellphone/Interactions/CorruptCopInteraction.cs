@@ -49,7 +49,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
     {
         get
         {
-            return Settings.SettingsManager.PlayerOtherSettings.CorruptCopAPBClearCost;
+            return Settings.SettingsManager.PlayerOtherSettings.CorruptCopAPBClearCost * Player.CriminalHistory.MaxWantedLevel == 0 ? 1 : Player.CriminalHistory.MaxWantedLevel;
         }
     }
     public CorruptCopInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, CorruptCopContact contact, IAgencies agencies)
@@ -202,7 +202,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
     private void PayoffCop()
     {
         //EntryPoint.WriteToConsoleTestLong($"Player.Money {Player.BankAccounts.Money} CostToClearWanted {CostToClearWanted}");
-        if (Player.WantedLevel > 4)
+        if (!Settings.SettingsManager.PlayerOtherSettings.CorruptCopClearCanAlwaysClearWanted && Player.WantedLevel > 4)
         {
             List<string> Replies = new List<string>() {
                 $"Nothing I can do, you really fucked up.",
@@ -213,7 +213,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
             Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
 
         }
-        else if (Player.WantedLevel >= 3 && Player.PoliceResponse.HasHurtPolice)
+        else if (!Settings.SettingsManager.PlayerOtherSettings.CorruptCopClearCanAlwaysClearWanted && Player.WantedLevel >= 3 && Player.PoliceResponse.HasHurtPolice)
         {
             List<string> Replies = new List<string>() {
                 $"Shouldn't have messed with the cops so much, they really want you. It's outta my hands",
@@ -222,7 +222,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
                 };
             Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }
-        else if (Player.WantedLevel == 1)
+        else if (!Settings.SettingsManager.PlayerOtherSettings.CorruptCopClearCanAlwaysClearWanted && Player.WantedLevel == 1)
         {
             List<string> Replies = new List<string>() {
                 $"Why not just pay the fine?",

@@ -14,5 +14,6 @@ namespace LosSantosRED.lsr.Interface
         Organization GetOrganizationByContact(string contactName);
         TaxiFirm GetRandomTaxiFirm();
         TaxiFirm GetTaxiFirmFromVehicle(string v, int liveryID);
+        List<Organization> GetOrganizations();
     }
 }

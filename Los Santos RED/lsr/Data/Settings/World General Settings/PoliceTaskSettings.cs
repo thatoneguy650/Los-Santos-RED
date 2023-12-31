@@ -126,8 +126,6 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public PoliceTaskSettings()
     {
         SetDefault();
-
-
     }
     public void SetDefault()
     {

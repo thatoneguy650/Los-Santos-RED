@@ -91,27 +91,21 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public bool AddAmbientRep { get; set; } = true;
     public uint GameTimeToRecoverAmbientRep { get; set; } = 5000;
     public int PickupPaymentMin { get; set; } = 200;
-    public int PickupPaymentMax { get; set; } = 1000;
+    public int PickupPaymentMax { get; set; } = 800;//1000;
     public int TheftPaymentMin { get; set; } = 1000;
-    public int TheftPaymentMax { get; set; } = 5000;
-    public int HitPaymentMin { get; set; } = 5000;
-    public int HitPaymentMax { get; set; } = 12000;
+    public int TheftPaymentMax { get; set; } = 2000;//5000;
+    public int HitPaymentMin { get; set; } = 2500;//5000;
+    public int HitPaymentMax { get; set; } = 3500;//12000;
     public int DeliveryPaymentMin { get; set; } = 1000;
-    public int DeliveryPaymentMax { get; set; } = 4000;
-    public int WheelmanPaymentMin { get; set; } = 15000;
-    public int WheelmanPaymentMax { get; set; } = 35000;
-
-
+    public int DeliveryPaymentMax { get; set; } = 3000;//4000;
+    public int WheelmanPaymentMin { get; set; } = 7500;//15000;
+    public int WheelmanPaymentMax { get; set; } = 12000;//35000;
     public int ImpoundTheftPaymentMin { get; set; } = 3000;
-    public int ImpoundTheftPaymentMax { get; set; } = 7000;
-
-
-    public int BodyDisposalPaymentMin { get; set; } = 4500;
-    public int BodyDisposalPaymentMax { get; set; } = 6500;
-
-
-    public int CopHitPaymentMin { get; set; } = 7500;
-    public int CopHitPaymentMax { get; set; } = 10500;
+    public int ImpoundTheftPaymentMax { get; set; } = 4500;//7000;
+    public int BodyDisposalPaymentMin { get; set; } = 3000;//4500;
+    public int BodyDisposalPaymentMax { get; set; } = 5500;//6500;
+    public int CopHitPaymentMin { get; set; } = 2500;//7500;
+    public int CopHitPaymentMax { get; set; } = 4500;//10500;
 
 
 
