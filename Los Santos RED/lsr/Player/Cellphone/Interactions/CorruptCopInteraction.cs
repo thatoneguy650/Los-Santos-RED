@@ -49,7 +49,11 @@ public class CorruptCopInteraction : IContactMenuInteraction
     {
         get
         {
-            return Settings.SettingsManager.PlayerOtherSettings.CorruptCopAPBClearCost * Player.CriminalHistory.MaxWantedLevel == 0 ? 1 : Player.CriminalHistory.MaxWantedLevel;
+            if(Player.CriminalHistory.MaxWantedLevel == 0)
+            {
+                return Settings.SettingsManager.PlayerOtherSettings.CorruptCopAPBClearCost;
+            }
+            return Settings.SettingsManager.PlayerOtherSettings.CorruptCopAPBClearCost * Player.CriminalHistory.MaxWantedLevel;
         }
     }
     public CorruptCopInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, CorruptCopContact contact, IAgencies agencies)

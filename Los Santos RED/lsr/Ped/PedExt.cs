@@ -892,7 +892,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     {
         ItemDesires.OnItemsBoughtFromPlayer(modItem, numberPurchased);
     }
-    public virtual void SetupTransactionItems(ShopMenu shopMenu)
+    public virtual void SetupTransactionItems(ShopMenu shopMenu, bool matchWithMenu)
     {
         // EntryPoint.WriteToConsole($"SetupTransactionItems START {Handle} HasMenu:{shopMenu == null} {shopMenu?.Name}");
         ShopMenu = shopMenu;
@@ -907,7 +907,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                 PedInventory.Add(menuItem.ModItem, menuItem.NumberOfItemsToSellToPlayer);
             }
         }
-        ItemDesires.AddDesiredItem(shopMenu);
+        ItemDesires.AddDesiredItem(shopMenu, matchWithMenu);
         //EntryPoint.WriteToConsole("SetupTransactionItems END");
     }
     public string LootInventory(IInteractionable player, IModItems modItems, ICellphones cellphones)

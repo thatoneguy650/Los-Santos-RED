@@ -937,7 +937,175 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         illicitMarketplaces = new List<IllicitMarketplace>() {
 
-            new IllicitMarketplace(new Vector3(-423.8026f, 185.627f, 80.80039f), 168.7502f, "Dealer Hangout 1", "Dealer Hangout 1","DealerHangoutMenu1") { OpenTime = 0, CloseTime = 24, VendorPosition = new Vector3(-423.8026f, 185.627f, 80.80039f), VendorHeading = 168.7502f,VendorModels = new List<string>() { "IG_DrugDealer", "S_M_Y_Dealer_01" } },
+            new IllicitMarketplace(new Vector3(-423.8026f, 185.627f, 80.80039f), 168.7502f, "Dealer Hangout 1", "Dealer Hangout 1","DealerHangoutMenu1") { 
+                OpenTime = 0, CloseTime = 24, 
+                VendorPosition = new Vector3(-423.8026f, 185.627f, 80.80039f), VendorHeading = 168.7502f,VendorModels = new List<string>() { "IG_DrugDealer", "S_M_Y_Dealer_01" } ,
+                AppearPercentages = new List<AppearPercentage>() 
+                { 
+                    new AppearPercentage(0,85),
+                    new AppearPercentage(1,75),
+                    new AppearPercentage(2,75),
+                    new AppearPercentage(3,75),
+                    new AppearPercentage(4,50),
+                    new AppearPercentage(5,50),
+                    new AppearPercentage(6,25),
+                    new AppearPercentage(7,25),
+                    new AppearPercentage(8,25),
+                    new AppearPercentage(9,25),
+                    new AppearPercentage(10,25),
+                    new AppearPercentage(11,25),
+                    new AppearPercentage(12,25),
+                    new AppearPercentage(13,25),
+                    new AppearPercentage(14,25),
+                    new AppearPercentage(15,25),
+                    new AppearPercentage(16,50),
+                    new AppearPercentage(17,50),
+                    new AppearPercentage(18,50),
+                    new AppearPercentage(19,50),
+                    new AppearPercentage(20,75),
+                    new AppearPercentage(21,75),
+                    new AppearPercentage(22,75),
+                    new AppearPercentage(23,85),
+                }
+            
+            
+            },
+
+
+            new IllicitMarketplace(new Vector3(-1565.635f, -422.2258f, 37.94275f), 123.8133f, "Dealer Hangout 2", "Dealer Hangout 2","DealerHangoutMenu1") {
+                OpenTime = 0, CloseTime = 24,
+                VendorPosition = new Vector3(-1565.635f, -422.2258f, 37.94275f), VendorHeading = 123.8133f,VendorModels = new List<string>() { "IG_DrugDealer", "S_M_Y_Dealer_01" } ,
+                AppearPercentages = new List<AppearPercentage>()
+                {
+                    new AppearPercentage(0,85),
+                    new AppearPercentage(1,75),
+                    new AppearPercentage(2,75),
+                    new AppearPercentage(3,75),
+                    new AppearPercentage(4,50),
+                    new AppearPercentage(5,50),
+                    new AppearPercentage(6,25),
+                    new AppearPercentage(7,25),
+                    new AppearPercentage(8,25),
+                    new AppearPercentage(9,25),
+                    new AppearPercentage(10,25),
+                    new AppearPercentage(11,25),
+                    new AppearPercentage(12,25),
+                    new AppearPercentage(13,25),
+                    new AppearPercentage(14,25),
+                    new AppearPercentage(15,25),
+                    new AppearPercentage(16,50),
+                    new AppearPercentage(17,50),
+                    new AppearPercentage(18,50),
+                    new AppearPercentage(19,50),
+                    new AppearPercentage(20,75),
+                    new AppearPercentage(21,75),
+                    new AppearPercentage(22,75),
+                    new AppearPercentage(23,85),
+                }
+
+
+            },
+
+            new IllicitMarketplace(new Vector3(737.3876f, -654.9383f, 28.26988f),  14.88211f, "Dealer Hangout 3", "Dealer Hangout 3","DealerHangoutMenu1") {
+                OpenTime = 0, CloseTime = 24,
+                VendorPosition = new Vector3(737.3876f, -654.9383f, 28.26988f), VendorHeading = 14.88211f,VendorModels = new List<string>() { "IG_DrugDealer", "S_M_Y_Dealer_01" } ,
+                AppearPercentages = new List<AppearPercentage>()
+                {
+                    new AppearPercentage(0,85),
+                    new AppearPercentage(1,75),
+                    new AppearPercentage(2,75),
+                    new AppearPercentage(3,75),
+                    new AppearPercentage(4,50),
+                    new AppearPercentage(5,50),
+                    new AppearPercentage(6,25),
+                    new AppearPercentage(7,25),
+                    new AppearPercentage(8,25),
+                    new AppearPercentage(9,25),
+                    new AppearPercentage(10,25),
+                    new AppearPercentage(11,25),
+                    new AppearPercentage(12,25),
+                    new AppearPercentage(13,25),
+                    new AppearPercentage(14,25),
+                    new AppearPercentage(15,25),
+                    new AppearPercentage(16,50),
+                    new AppearPercentage(17,50),
+                    new AppearPercentage(18,50),
+                    new AppearPercentage(19,50),
+                    new AppearPercentage(20,75),
+                    new AppearPercentage(21,75),
+                    new AppearPercentage(22,75),
+                    new AppearPercentage(23,85),
+                }
+
+
+            },
+
+            new IllicitMarketplace(new Vector3(1528.213f, 3590.099f, 35.45225f), 168.7502f, "Dealer Hangout 4", "Dealer Hangout 4","DealerHangoutMenu1") {
+                OpenTime = 0, CloseTime = 24,
+                VendorPosition = new Vector3(1528.213f, 3590.099f, 35.45225f), VendorHeading = 357.4594f,VendorModels = new List<string>() { "IG_DrugDealer", "S_M_Y_Dealer_01" } ,
+                AppearPercentages = new List<AppearPercentage>()
+                {
+                    new AppearPercentage(0,85),
+                    new AppearPercentage(1,75),
+                    new AppearPercentage(2,75),
+                    new AppearPercentage(3,75),
+                    new AppearPercentage(4,50),
+                    new AppearPercentage(5,50),
+                    new AppearPercentage(6,25),
+                    new AppearPercentage(7,25),
+                    new AppearPercentage(8,25),
+                    new AppearPercentage(9,25),
+                    new AppearPercentage(10,25),
+                    new AppearPercentage(11,25),
+                    new AppearPercentage(12,25),
+                    new AppearPercentage(13,25),
+                    new AppearPercentage(14,25),
+                    new AppearPercentage(15,25),
+                    new AppearPercentage(16,50),
+                    new AppearPercentage(17,50),
+                    new AppearPercentage(18,50),
+                    new AppearPercentage(19,50),
+                    new AppearPercentage(20,75),
+                    new AppearPercentage(21,75),
+                    new AppearPercentage(22,75),
+                    new AppearPercentage(23,85),
+                }
+
+
+            },
+            new IllicitMarketplace(new Vector3(-30.06856f, 6456.729f, 31.47281f), 243.118f, "Dealer Hangout 5", "Dealer Hangout 5","DealerHangoutMenu1") {
+                OpenTime = 0, CloseTime = 24,
+                VendorPosition = new Vector3(-30.06856f, 6456.729f, 31.47281f), VendorHeading = 243.118f,VendorModels = new List<string>() { "IG_DrugDealer", "S_M_Y_Dealer_01" } ,
+                AppearPercentages = new List<AppearPercentage>()
+                {
+                    new AppearPercentage(0,85),
+                    new AppearPercentage(1,75),
+                    new AppearPercentage(2,75),
+                    new AppearPercentage(3,75),
+                    new AppearPercentage(4,50),
+                    new AppearPercentage(5,50),
+                    new AppearPercentage(6,25),
+                    new AppearPercentage(7,25),
+                    new AppearPercentage(8,25),
+                    new AppearPercentage(9,25),
+                    new AppearPercentage(10,25),
+                    new AppearPercentage(11,25),
+                    new AppearPercentage(12,25),
+                    new AppearPercentage(13,25),
+                    new AppearPercentage(14,25),
+                    new AppearPercentage(15,25),
+                    new AppearPercentage(16,50),
+                    new AppearPercentage(17,50),
+                    new AppearPercentage(18,50),
+                    new AppearPercentage(19,50),
+                    new AppearPercentage(20,75),
+                    new AppearPercentage(21,75),
+                    new AppearPercentage(22,75),
+                    new AppearPercentage(23,85),
+                }
+
+
+            },
             //(-423.8026f, 185.627f, 80.80039f)
         };
     }
@@ -2112,16 +2280,21 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24,
                 IgnoreEntranceInteract = true,
                 ScannerFilePath = "01_specific_location\\0x1667D63F.wav", 
-                PossiblePedSpawns = new List<ConditionalLocation>() {
+                PossiblePedSpawns = new List<ConditionalLocation>() 
+                {
                     new LEConditionalLocation(new Vector3(101.3534f, -745.8216f, 45.75475f), 76.27069f, 55f),
                     new LEConditionalLocation(new Vector3(117.8028f, -747.0616f, 45.75158f), 102.5501f, 100f),// { TaskRequirements = TaskRequirements.LocalScenario },//is front desk spawn
-
                    // new LEConditionalLocation(new Vector3(117.8712f, -748.6705f, 45.75157f), 111.3529f, 100f) { TaskRequirements = TaskRequirements.LocalScenario | TaskRequirements.Guard },//is front desk spawn
-
-
                     new LEConditionalLocation(new Vector3(113.9787f, -758.2271f, 45.75474f), 21.6145f, 55f),
-                } },
-            new PoliceStation(new Vector3(387.16f, 789.96f, 188.23f), 178f, "Beaver Bush Ranger Station","You won't get this bush!") { 
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                { 
+                    new LEConditionalLocation(new Vector3(74.06145f, -698.9698f, 43.63071f), 341.3815f, 55f),
+                    new LEConditionalLocation(new Vector3(71.99015f, -704.8258f, 43.63755f), 340.0341f, 55f),
+                    new LEConditionalLocation(new Vector3(76.40812f, -693.0204f, 43.62196f), 339.8584f, 55f), 
+                }, 
+            },
+                    new PoliceStation(new Vector3(387.16f, 789.96f, 188.23f), 178f, "Beaver Bush Ranger Station","You won't get this bush!") { 
                 AssignedAssociationID = "SAPR", 
                 OpenTime = 0,
                 CloseTime = 24, 

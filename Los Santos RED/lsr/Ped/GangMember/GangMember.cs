@@ -148,7 +148,7 @@ public class GangMember : PedExt, IWeaponIssuable
         }
         if (RandomItems.RandomPercent(Gang.DrugDealerPercentage))
         {
-            SetupTransactionItems(shopMenus.GetWeightedRandomMenuFromGroup(Gang.DealerMenuGroup));
+            SetupTransactionItems(shopMenus.GetWeightedRandomMenuFromGroup(Gang.DealerMenuGroup), false);
             Money = RandomItems.GetRandomNumberInt(Gang.DealerMemberMoneyMin, Gang.DealerMemberMoneyMax);
         }
         if (addBlip)

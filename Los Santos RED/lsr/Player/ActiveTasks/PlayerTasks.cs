@@ -158,17 +158,28 @@ public class PlayerTasks
         PlayerTask myTask = PlayerTaskList.FirstOrDefault(x => x.ContactName == phoneContact.Name && x.IsActive);
         if (myTask != null)
         {
-            Player.RelationshipManager.SetFailedTask(phoneContact, myTask.RepAmountOnFail, myTask.DebtAmountOnFail);    
-            
+
+            if (myTask.IsReadyForPayment)
+            {
+                if (Settings.SettingsManager.TaskSettings.DisplayHelpPrompts)
+                {
+                    Game.DisplayHelp($"Task Expired for {phoneContact.Name}");
+                }
+            }
+            else
+            {
+                Player.RelationshipManager.SetFailedTask(phoneContact, myTask.RepAmountOnFail, myTask.DebtAmountOnFail);
+                if (Settings.SettingsManager.TaskSettings.DisplayHelpPrompts)
+                {
+                    Game.DisplayHelp($"Task Failed for {phoneContact.Name}");
+                }
+            }
             myTask.IsActive = false;
             myTask.IsReadyForPayment = false;
             myTask.WasFailed = true;
             myTask.FailedTime = Time.CurrentDateTime;
             //EntryPoint.WriteToConsoleTestLong($"Task Failed for {contactName}");
-            if (Settings.SettingsManager.TaskSettings.DisplayHelpPrompts)
-            {
-                Game.DisplayHelp($"Task Failed for {phoneContact.Name}");
-            }
+
             LastContactTask.RemoveAll(x => x.ContactName == phoneContact.Name);
             LastContactTask.Add(myTask);
         }

@@ -441,7 +441,7 @@ public class OldDispatchableVehicles : IDispatchableVehicles
         AncelottiVehicles.AddRange(customGangs.AncelottiVehicles);
         CartelVehicles.AddRange(customGangs.CartelVehicles);
         RedneckVehicles.AddRange(customGangs.RedneckVehicles);
-
+        ArmeniaVehicles.AddRange(customGangs.ArmenianVehicles);
 
         //SetupDefaultGangSpecialVehicles();
 

@@ -859,11 +859,11 @@ public class Pedestrians : ITaskerReportable
             createdPedExt.WillFightPolice = false;
             createdPedExt.WillAlwaysFightPolice = false;
             createdPedExt.CanBeAmbientTasked = false;
-            createdPedExt.SetupTransactionItems(null);
+            createdPedExt.SetupTransactionItems(null, false);
         }
         else
         {
-            createdPedExt.SetupTransactionItems(EntryPoint.FocusZone?.GetIllicitMenu(Settings, ShopMenus));
+            createdPedExt.SetupTransactionItems(EntryPoint.FocusZone?.GetIllicitMenu(Settings, ShopMenus), false);
         }
 
         //Civilians.Add(createdPedExt);
@@ -917,14 +917,14 @@ public class Pedestrians : ITaskerReportable
             gm.WillFightPolice = false;
             gm.WillAlwaysFightPolice = false;
             gm.CanBeAmbientTasked = false;
-            gm.SetupTransactionItems(null);
+            gm.SetupTransactionItems(null, false);
         }
         if (isCarSpawn && Settings.SettingsManager.GangSettings.ForceAmbientCarDocile)
         {
             gm.WillFight = false;
             gm.WillFightPolice = false;
             gm.WillAlwaysFightPolice = false;
-            gm.SetupTransactionItems(null);
+            gm.SetupTransactionItems(null, false);
             NativeFunction.Natives.REMOVE_ALL_PED_WEAPONS(Pedestrian, false);
         }
         GangMembers.Add(gm);    

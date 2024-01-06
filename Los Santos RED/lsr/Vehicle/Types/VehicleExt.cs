@@ -1469,7 +1469,7 @@ namespace LSR.Vehicles
                     {
                         return;
                     }
-                    player.ActivityManager.SetDoor(door.DoorID, uIMenuListScrollerItem.SelectedItem == "Open" ? true : false, false);
+                    player.ActivityManager.SetDoor(door.DoorID, uIMenuListScrollerItem.SelectedItem == "Open" ? true : false, false, this);
                 };
                 doorAccessHeaderMenu.AddItem(uIMenuListScrollerItem);
             }

@@ -50,10 +50,10 @@ public class VehicleVariation
     public int NeonColorR { get; set; }
     public int NeonColorG { get; set; }
     public int NeonColorB { get; set; }
-    public int InteriorColor { get; set; }
-    public int DashboardColor { get; set; }
-    public int XenonLightColor { get; set; }
-    public dynamic CanTiresBurst { get; set; }
+    public int InteriorColor { get; set; } = -1;
+    public int DashboardColor { get; set; } = -1;
+    public int XenonLightColor { get; set; } = -1;
+    public bool CanTiresBurst { get; set; }
 
     public void Apply(VehicleExt vehicleExt)
     {
@@ -149,9 +149,18 @@ public class VehicleVariation
             NativeFunction.Natives.SET_VEHICLE_NEON_ENABLED(vehicleExt.Vehicle, vehicleNeon.ID, vehicleNeon.IsEnabled);
         }
         NativeFunction.Natives.SET_VEHICLE_NEON_COLOUR(vehicleExt.Vehicle,NeonColorR,NeonColorG,NeonColorB);
-        NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_5(vehicleExt.Vehicle, InteriorColor);
-        NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_6(vehicleExt.Vehicle, DashboardColor);
-        NativeFunction.Natives.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(vehicleExt.Vehicle, XenonLightColor);
+        if (InteriorColor != -1)
+        {
+            NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_5(vehicleExt.Vehicle, InteriorColor);
+        }
+        if(DashboardColor != -1)
+        {
+            NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_6(vehicleExt.Vehicle, DashboardColor);
+        }
+        if(XenonLightColor != -1)
+        {
+            NativeFunction.Natives.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(vehicleExt.Vehicle, XenonLightColor);
+        }
     }
 
 }

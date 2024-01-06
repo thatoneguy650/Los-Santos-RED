@@ -41,7 +41,7 @@ public class VehicleInteractionMenu
             {
                 return;
             }
-            player.ActivityManager.SetDoor(vehicleDoorSeatData.DoorID, true, false);
+            player.ActivityManager.SetDoor(vehicleDoorSeatData.DoorID, true, false, VehicleExt);
         };
         InventoryWeaponHeaderMenu.OnMenuClose += (sender) =>
         {
@@ -49,7 +49,7 @@ public class VehicleInteractionMenu
             {
                 return;
             }
-            player.ActivityManager.SetDoor(vehicleDoorSeatData.DoorID, false, false);
+            player.ActivityManager.SetDoor(vehicleDoorSeatData.DoorID, false, false, VehicleExt);
         };
 
 

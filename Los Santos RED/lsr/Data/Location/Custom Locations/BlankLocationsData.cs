@@ -5134,8 +5134,8 @@ new List<ConditionalGroup>() {
                 //Group2
                 new GangConditionalLocation()
                 {
-                    MinHourSpawn = 20,
-                    MaxHourSpawn = 5,
+                    MinHourSpawn = 10,
+                    MaxHourSpawn = 20,
                     Percentage = 45f,
                     Location = new Vector3(-765.4142f,-917.1601f,20.0831f),
                     Heading = -89.37133f,
@@ -5143,8 +5143,8 @@ new List<ConditionalGroup>() {
                 },
                 new GangConditionalLocation()
                 {
-                    MinHourSpawn = 20,
-                    MaxHourSpawn = 5,
+                    MinHourSpawn = 10,
+                    MaxHourSpawn = 20,
                     Percentage = 45f,
                     Location = new Vector3(-763.5844f,-918.8759f,19.20683f),
                     Heading = -105.295f,
@@ -5152,8 +5152,8 @@ new List<ConditionalGroup>() {
                 },
                 new GangConditionalLocation()
                 {
-                    MinHourSpawn = 20,
-                    MaxHourSpawn = 5,
+                    MinHourSpawn = 10,
+                    MaxHourSpawn = 20,
                     Percentage = 45f,
                     Location = new Vector3(-763.5086f,-919.8815f,19.20683f),
                     Heading = -86.19594f,
@@ -5161,8 +5161,8 @@ new List<ConditionalGroup>() {
                 },
                 new GangConditionalLocation()
                 {
-                    MinHourSpawn = 20,
-                    MaxHourSpawn = 5,
+                    MinHourSpawn = 10,
+                    MaxHourSpawn = 20,
                     Percentage = 45f,
                     Location = new Vector3(-762.7452f,-922.7858f,17.76118f),
                     Heading = 116.6984f,
@@ -5170,8 +5170,8 @@ new List<ConditionalGroup>() {
                 },
                 new GangConditionalLocation()
                 {
-                    MinHourSpawn = 20,
-                    MaxHourSpawn = 5,
+                    MinHourSpawn = 10,
+                    MaxHourSpawn = 20,
                     Percentage = 45f,
                     Location = new Vector3(-764.3322f,-923.4336f,17.72986f),
                     Heading = -70.54628f,
@@ -5179,8 +5179,8 @@ new List<ConditionalGroup>() {
                 },
                 new GangConditionalLocation()
                 {
-                    MinHourSpawn = 20,
-                    MaxHourSpawn = 5,
+                    MinHourSpawn = 10,
+                    MaxHourSpawn = 20,
                     Percentage = 45f,
                     Location = new Vector3(-763.4446f,-922.2467f,18.85892f),
                     Heading = -178.1328f,
@@ -5188,8 +5188,8 @@ new List<ConditionalGroup>() {
                 },
                 new GangConditionalLocation()
                 {
-                    MinHourSpawn = 20,
-                    MaxHourSpawn = 5,
+                    MinHourSpawn = 10,
+                    MaxHourSpawn = 20,
                     Percentage = 45f,
                     Location = new Vector3(-760.6191f,-915.1982f,18.27511f),
                     Heading = -6.779637f,
@@ -5197,8 +5197,8 @@ new List<ConditionalGroup>() {
                 },
                 new GangConditionalLocation()
                 {
-                    MinHourSpawn = 20,
-                    MaxHourSpawn = 5,
+                    MinHourSpawn = 10,
+                    MaxHourSpawn = 20,
                     Percentage = 45f,
                     Location = new Vector3(-761.1669f,-914.61f,18.33595f),
                     Heading = -77.92151f,

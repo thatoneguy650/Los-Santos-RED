@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime;
 using System.Xml.Serialization;
 
 public class GameLocation : ILocationDispatchable
@@ -237,6 +238,7 @@ public class GameLocation : ILocationDispatchable
     public bool IgnoreEntranceInteract { get; set; } = false;
     public virtual bool ShowInteractPrompt => !IgnoreEntranceInteract && CanInteract;
     public string MapTeleportString => IsOnSPMap && !IsOnMPMap ? "(SP)" : IsOnMPMap && !IsOnSPMap ? "(MP)" : "";
+
     public virtual void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
         //EntryPoint.WriteToConsole($"Activate Location {Name} {DistanceToPlayer}");
@@ -247,13 +249,9 @@ public class GameLocation : ILocationDispatchable
             EntryPoint.WriteToConsole($"{Name} NOINT:{Interior == null} ISTELE:{Interior?.IsTeleportEntry} ISTELE:{Interior?.Name}");
             if (Interior == null || !Interior.IsTeleportEntry)
             {
-
                 CanInteract = false;
             }
-            if (isOpen && settings.SettingsManager.CivilianSettings.ManageDispatching && world.Pedestrians.TotalSpawnedServiceWorkers < settings.SettingsManager.CivilianSettings.TotalSpawnedServiceMembersLimit)
-            {
-                SpawnVendor(settings, crimes, weapons, true);// InteractsWithVendor);
-            }
+            AttemptVendorSpawn(isOpen, interiors,settings,crimes,weapons,time,world);
         }
         if(DisableRegularInteract)
         {
@@ -281,6 +279,13 @@ public class GameLocation : ILocationDispatchable
 
         EntryPoint.WriteToConsole($"{Name} CanInteract:{CanInteract} DisableRegularInteract{DisableRegularInteract}");
 
+    }
+    protected virtual void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
+    {
+        if (isOpen && settings.SettingsManager.CivilianSettings.ManageDispatching && world.Pedestrians.TotalSpawnedServiceWorkers < settings.SettingsManager.CivilianSettings.TotalSpawnedServiceMembersLimit)
+        {
+            SpawnVendor(settings, crimes, weapons, true);// InteractsWithVendor);
+        }
     }
     protected virtual void LoadInterior(bool isOpen)
     {
@@ -953,7 +958,7 @@ public class GameLocation : ILocationDispatchable
         }
         if (addMenu)
         {
-            Vendor.SetupTransactionItems(Menu);
+            Vendor.SetupTransactionItems(Menu, true);
             Vendor.MatchTransactionItemsWithShop(this);
         }
         Vendor.AssociatedStore = this;

@@ -32,6 +32,8 @@ public class DebugLocationSubMenu : DebugSubMenu
     private uint GameTimeLastUpdatedNodes;
     private bool IsBigMapActive;
     private bool IsWritingPosition;
+    private bool isPaused;
+    private bool isSlowMode;
 
     public DebugLocationSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IEntityProvideable world, ISettingsProvideable settings, IStreets streets, IPlacesOfInterest placesOfInterest) : base(debug, menuPool, player)
     {
@@ -345,10 +347,47 @@ public class DebugLocationSubMenu : DebugSubMenu
                             GameFiber.Sleep(200);
                         }
 
+
+
+                        if (Game.IsKeyDownRightNow(Keys.N))
+                        {
+                            if(!isPaused)
+                            {
+                                Game.IsPaused = true;
+                            }
+                            else
+                            {
+                                Game.IsPaused = false;
+                            }
+                            isPaused = !isPaused;
+                            GameFiber.Sleep(200);
+                        }
+
+
+
+
+
+                        if (Game.IsKeyDownRightNow(Keys.M))
+                        {
+                            if (!isSlowMode)
+                            {
+                                Game.TimeScale = 0.1f;
+                            }
+                            else
+                            {
+                                Game.TimeScale = 1.0f;
+                            }
+                            isSlowMode = !isSlowMode;
+                            GameFiber.Sleep(200);
+                        }
+
+
+
+
                         //string FreeCamString = FreeCamScale == 1.0f ? "Regular Scale" : "Slow Scale";
                         if (!isHidingHelp)
                         {
-                            Game.DisplayHelp($"Press Z to Exit~n~Press O To Increase Scale~n~Press L To Decrease Scale~n~Current Scale: {FreeCamScale}~n~Press J To Move Player to Position~n~Press K to Toggle Controls");
+                            Game.DisplayHelp($"Press Z to Exit~n~Press O To Increase Scale~n~Press L To Decrease Scale~n~Current Scale: {FreeCamScale}~n~Press J To Move Player to Position~n~Press K to Toggle Controls ~n~N=pausM=slow");
                         }
                     }
                     GameFiber.Yield();

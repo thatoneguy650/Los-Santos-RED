@@ -13,16 +13,25 @@ public class ItemDesires
     {
 
     }
-    public void AddDesiredItem(ShopMenu shopMenu)
+    public void AddDesiredItem(ShopMenu shopMenu, bool matchWithMenu)
     {
         DesiredItems.Clear();
         foreach (MenuItem menuItem in shopMenu.Items)
         {
-
-            DesiredItems.Add(new DesiredItem(menuItem.ModItem, menuItem.NumberOfItemsToSellToPlayer, menuItem.NumberOfItemsToPurchaseFromPlayer) 
-            { ItemsPurchasedFromPlayer = menuItem.NumberOfItemsPurchasedByPlayer, ItemsSoldToPlayer = menuItem.NumberOfItemsSoldToPlayer } );
+            if (matchWithMenu)
+            {
+                DesiredItems.Add(new DesiredItem(menuItem.ModItem, menuItem.NumberOfItemsToSellToPlayer, menuItem.NumberOfItemsToPurchaseFromPlayer)
+                {
+                    ItemsPurchasedFromPlayer = menuItem.NumberOfItemsPurchasedByPlayer,
+                    ItemsSoldToPlayer = menuItem.NumberOfItemsSoldToPlayer
+                }
+                );
+            }
+            else
+            {
+                DesiredItems.Add(new DesiredItem(menuItem.ModItem, menuItem.NumberOfItemsToSellToPlayer, menuItem.NumberOfItemsToPurchaseFromPlayer));
+            }
             //DesiredItems.Add(new DesiredItem(menuItem.ModItem, menuItem.NumberOfItemsToSellToPlayer, menuItem.NumberOfItemsToPurchaseFromPlayer));
-
         }
     }
 

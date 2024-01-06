@@ -15,7 +15,7 @@ public class DebugTeleportSubMenu : DebugSubMenu
     private IEntityProvideable World;
     private IInteractionable Interactionable;
     private UIMenu LocationItemsMenu;
-
+    private bool isMPMapLoaded;
     public DebugTeleportSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteractionable interactionable) : base(debug, menuPool, player)
     {
         PlacesOfInterest = placesOfInterest;
@@ -32,10 +32,20 @@ public class DebugTeleportSubMenu : DebugSubMenu
     }
     public override void Update()
     {
-        CreateMenu();
+        //CreateMenu();
+
+        if(isMPMapLoaded != World.IsMPMapLoaded)
+        {
+            EntryPoint.WriteToConsole("LOADED MAP HAS CHANGED, RELOADING TELEPORT MENU");
+            CreateMenu();
+        }
+
     }
     private void CreateMenu()
     {
+        isMPMapLoaded = World.IsMPMapLoaded;
+
+
         LocationItemsMenu.Clear();
         UIMenuItem teleportToMarker = new UIMenuItem("Teleport To Marker", "Teleport to the current marker.");
         teleportToMarker.Activated += (sender, selectedItem) =>

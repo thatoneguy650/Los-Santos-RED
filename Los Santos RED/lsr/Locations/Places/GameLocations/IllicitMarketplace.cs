@@ -24,6 +24,7 @@ public class IllicitMarketplace : GameLocation
     public override int MaxPriceRefreshHours { get; set; } = 24;
     public override int MinRestockHours { get; set; } = 12;
     public override int MaxRestockHours { get; set; } = 24;
+    public List<AppearPercentage> AppearPercentages { get; set; }
     public IllicitMarketplace(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
@@ -32,6 +33,22 @@ public class IllicitMarketplace : GameLocation
     {
         ButtonPromptText = $"Discretly shop At {Name}";
         return true;
+    }
+    protected override void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
+    {
+        if(AppearPercentages != null && AppearPercentages.Any())
+        {
+            AppearPercentage appearPercentage = AppearPercentages.FirstOrDefault(x => x.Hour == time.CurrentHour);
+            if(appearPercentage != null)
+            {
+                if(!RandomItems.RandomPercent(appearPercentage.Percentage))
+                {
+                    EntryPoint.WriteToConsole("VENDOR IS NOT APPEARING (PROBABILITY)");
+                    return;
+                }
+            }
+        }
+        base.AttemptVendorSpawn(isOpen, interiors, settings, crimes, weapons, time, world);
     }
 }
 

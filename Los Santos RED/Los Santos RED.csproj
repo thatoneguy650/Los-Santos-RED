@@ -134,6 +134,7 @@
     <Compile Include="lsr\Data\Other\PossibleSpawnBlocks.cs" />
     <Compile Include="lsr\Data\Other\ScenarioBlock.cs" />
     <Compile Include="lsr\Data\Other\SpawnBlocks.cs" />
+    <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_Gangs.cs" />
     <Compile Include="lsr\Data\Organizations\Contacts.cs" />
     <Compile Include="lsr\Data\Organizations\PossibleContacts.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="lsr\Locations\Interiors\ToiletInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\UrinalInteract.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\MerchantConditionalLocation.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\AppearPercentage.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankDrawer.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\IGasPumpable.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Machines\CashRegister.cs" />

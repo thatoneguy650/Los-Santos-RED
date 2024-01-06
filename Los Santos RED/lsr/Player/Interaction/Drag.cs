@@ -136,7 +136,7 @@ public class Drag : DynamicActivity
                 {
                     if(ClosestVehicle.VehicleBodyManager.LoadBody(Ped, VehicleDoorSeatData, true, World))
                     {
-                        Player.ActivityManager.SetDoor(VehicleDoorSeatData.DoorID, false, false);
+                        Player.ActivityManager.SetDoor(VehicleDoorSeatData.DoorID, false, false, ClosestVehicle);
                     }
                     else if (Game.IsScreenFadedOut)
                     {

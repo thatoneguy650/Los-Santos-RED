@@ -225,6 +225,10 @@ public class MinorViolations
         {
             return;
         }
+        if(1==1)
+        {
+            return;
+        }
         if (closestPedExt.DistanceToPlayer <= 0.65f)
         {
             closestPedExt.OnPlayerIsClose(Interactionable);

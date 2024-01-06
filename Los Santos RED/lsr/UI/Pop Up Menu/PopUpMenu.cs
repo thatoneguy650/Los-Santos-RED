@@ -1380,13 +1380,13 @@ public class PopUpMenu
 
         List<PopUpBox> OpenDoorSubMenu = new List<PopUpBox>()
         {
-            new PopUpBox(0,"Driver", new Action(() => Player.ActivityManager.ToggleDoor(0,true)),"Toggle the driver door"),
-            new PopUpBox(1,"Passenger", new Action(() => Player.ActivityManager.ToggleDoor(1,true)),"Toggle the passenger door"),
-            new PopUpBox(2,"Left Rear", new Action(() => Player.ActivityManager.ToggleDoor(2,true)),"Toggle the left rear door"),
-            new PopUpBox(3,"Right Rear", new Action(() => Player.ActivityManager.ToggleDoor(3,true)),"Toggle the right rear door"),
-            new PopUpBox(4,"Hood", new Action(() => Player.ActivityManager.ToggleDoor(4,true)),"Toggle the hood (bonnet)"),
-            new PopUpBox(5,"Trunk", new Action(() => Player.ActivityManager.ToggleDoor(5,true)),"Toggle the trunk (boot)"),
-            new PopUpBox(6,"Other", new Action(() => Player.ActivityManager.ToggleDoor(6,true)),"Toggle the other door"),
+            new PopUpBox(0,"Driver", new Action(() => Player.ActivityManager.ToggleDoor(0,true, null)),"Toggle the driver door"),
+            new PopUpBox(1,"Passenger", new Action(() => Player.ActivityManager.ToggleDoor(1,true, null)),"Toggle the passenger door"),
+            new PopUpBox(2,"Left Rear", new Action(() => Player.ActivityManager.ToggleDoor(2,true, null)),"Toggle the left rear door"),
+            new PopUpBox(3,"Right Rear", new Action(() => Player.ActivityManager.ToggleDoor(3,true, null)),"Toggle the right rear door"),
+            new PopUpBox(4,"Hood", new Action(() => Player.ActivityManager.ToggleDoor(4,true, null)),"Toggle the hood (bonnet)"),
+            new PopUpBox(5,"Trunk", new Action(() => Player.ActivityManager.ToggleDoor(5,true, null)),"Toggle the trunk (boot)"),
+            new PopUpBox(6,"Other", new Action(() => Player.ActivityManager.ToggleDoor(6,true, null)),"Toggle the other door"),
         };
 
 

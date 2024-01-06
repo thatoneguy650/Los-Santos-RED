@@ -16,6 +16,7 @@ public class DebugVehicleSubMenu : DebugSubMenu
 {
     private UIMenu vehicleItemsMenu;
     private IPlateTypes PlateTypes;
+    private uint LastVehicleHandle;
     public DebugVehicleSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IPlateTypes plateTypes) : base(debug, menuPool, player)
     {
         PlateTypes = plateTypes;
@@ -29,11 +30,21 @@ public class DebugVehicleSubMenu : DebugSubMenu
     }
     public override void Update()
     {
-        vehicleItemsMenu.Clear();
+
         if (Player.InterestedVehicle == null || !Player.InterestedVehicle.Vehicle.Exists())
         {
+            vehicleItemsMenu.Clear();
             return;
         }
+        if (LastVehicleHandle != Player.InterestedVehicle.Handle)
+        {
+            vehicleItemsMenu.Clear();
+            CreateMenu();
+        }
+    }
+    private void CreateMenu()
+    {
+        LastVehicleHandle = Player.InterestedVehicle.Handle;
         CreatePlateMenuItem();
         CreateLiveryMenuItem();
         CreateLivery2MenuItem();
@@ -42,7 +53,6 @@ public class DebugVehicleSubMenu : DebugSubMenu
         CreateInfoMenuItem();
         CreateModificationItem();
     }
-
     private void CreateModificationItem()
     {
 

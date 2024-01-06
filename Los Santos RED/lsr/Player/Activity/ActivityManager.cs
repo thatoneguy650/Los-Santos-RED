@@ -1008,9 +1008,17 @@ public class ActivityManager
         NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, toEnter.Vehicle, -1, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);
         WatchVehicleEntry(toEnter, stopDriver);
     }
-    public void ToggleDoor(int doorIndex, bool withAnimation)
+    public void ToggleDoor(int doorIndex, bool withAnimation, VehicleExt mainVehicle)
     {
-        VehicleExt toToggleDoor = GetInterestedVehicle();
+        VehicleExt toToggleDoor = null;
+        if (mainVehicle != null)
+        {
+            toToggleDoor = mainVehicle;
+        }
+        else
+        {
+            toToggleDoor = GetInterestedVehicle();
+        }
         if (toToggleDoor == null || !toToggleDoor.Vehicle.Exists())
         {
             return;
@@ -1045,9 +1053,17 @@ public class ActivityManager
             }
         }
     }
-    public bool SetDoor(int doorIndex, bool setOpen, bool includeWarning) 
+    public bool SetDoor(int doorIndex, bool setOpen, bool includeWarning, VehicleExt mainVehicle) 
     {
-        VehicleExt toToggleDoor = GetInterestedVehicle();
+        VehicleExt toToggleDoor = null;
+        if (mainVehicle != null)
+        {
+            toToggleDoor = mainVehicle;
+        }
+        else
+        {
+            toToggleDoor = GetInterestedVehicle();
+        }
         if (toToggleDoor == null || !toToggleDoor.Vehicle.Exists())
         {
             return false;

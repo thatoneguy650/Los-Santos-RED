@@ -14,7 +14,7 @@ public class DispatchableVehicles_Gangs
     public List<DispatchableVehicle> LupisellaVehicles { get; private set; }
     public List<DispatchableVehicle> PavanoVehicles { get; private set; }
     public List<DispatchableVehicle> GambettiVehicles { get; private set; }
-    public List<DispatchableVehicle> ArmeniaVehicles { get; private set; }
+    public List<DispatchableVehicle> ArmenianVehicles { get; private set; }
     public List<DispatchableVehicle> CartelVehicles { get; private set; }
     public List<DispatchableVehicle> RedneckVehicles { get; private set; }
     public List<DispatchableVehicle> TriadVehicles { get; private set; }
@@ -961,10 +961,6 @@ public class DispatchableVehicles_Gangs
             },
             new VehicleMod() {
             ID = 3,
-            },
-            new VehicleMod() {
-            ID = 4,
-            Output = 3,
             },
             new VehicleMod() {
             ID = 6,
@@ -2310,7 +2306,7 @@ public class DispatchableVehicles_Gangs
             PearlescentColor = 4,
             WheelColor = 147,
             WheelType = 3,
-
+            WindowTint = 0,
             VehicleExtras = new List<VehicleExtra>() {
             new VehicleExtra() {
             ID = 10,
@@ -2541,7 +2537,7 @@ public class DispatchableVehicles_Gangs
             RequiresDLC = true,
             },
             };
-        ArmeniaVehicles = new List<DispatchableVehicle>() {
+        ArmenianVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle() {
             DebugName = "dubsta2_PeterBadoingy_DLCDespawn",
             ModelName = "dubsta2",
@@ -3252,7 +3248,7 @@ public class DispatchableVehicles_Gangs
             WheelColor = 2,
             WheelType = 11,
             WindowTint = 3,
-
+            DashboardColor = 131,
             VehicleToggles = new List<VehicleToggle>() {
             new VehicleToggle() {
             ID = 17,
@@ -4293,7 +4289,7 @@ public class DispatchableVehicles_Gangs
             SecondaryColor = 70,
             PearlescentColor = 38,
             WheelColor = 90,
-
+            DashboardColor = 127,
 
             WheelType = 9,
             WindowTint = 3,
@@ -4360,7 +4356,7 @@ public class DispatchableVehicles_Gangs
             SecondaryColor = 2,
             WheelColor = 120,
 
-
+            DashboardColor = 127,
             WheelType = 1,
             WindowTint = 3,
             VehicleExtras = new List<VehicleExtra>() {
@@ -4456,7 +4452,7 @@ public class DispatchableVehicles_Gangs
             SecondaryColor = 2,
             WheelColor = 120,
 
-
+            DashboardColor = 127,
             WheelType = 1,
             WindowTint = 3,
             VehicleExtras = new List<VehicleExtra>() {
@@ -4554,7 +4550,7 @@ public class DispatchableVehicles_Gangs
 
             WheelType = 1,
             WindowTint = 3,
-
+            DashboardColor = 127,
             VehicleToggles = new List<VehicleToggle>() {
             new VehicleToggle() {
             ID = 18,
@@ -4626,7 +4622,7 @@ public class DispatchableVehicles_Gangs
             PrimaryColor = 70,
             SecondaryColor = 70,
             WheelColor = 156,
-
+            DashboardColor = 127,
 
             WheelType = 9,
             WindowTint = 3,
@@ -5099,7 +5095,7 @@ public class DispatchableVehicles_Gangs
             PrimaryColor = 63,
             SecondaryColor = 120,
             WheelColor = 90,
-
+            DashboardColor = 127,
             WheelType = 1,
             WindowTint = 3,
             VehicleExtras = new List<VehicleExtra>() {
