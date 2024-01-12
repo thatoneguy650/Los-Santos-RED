@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -1204,12 +1205,34 @@ namespace LosSantosRED.lsr
                 else
                 {
                     Color CarColor = VehicleToDescribe.VehicleColor(); //Vehicles.VehicleManager.VehicleColor(VehicleToDescribe);
+
+                    int primaryColor = -1;
+                    int secondaryColor = -1;
+                    unsafe
+                    {
+                        NativeFunction.CallByName<bool>("GET_VEHICLE_COLOURS", VehicleToDescribe.Vehicle, &primaryColor, &secondaryColor);
+                    }
+
+
                     string MakeName = VehicleToDescribe.MakeName();// Vehicles.VehicleManager.MakeName(VehicleToDescribe);
                     int ClassInt = VehicleToDescribe.ClassInt();// Vehicles.VehicleManager.ClassInt(VehicleToDescribe);
                     string ClassName = VehicleScannerAudio.ClassName(ClassInt);
                     string ModelName = VehicleToDescribe.ModelName();// Vehicles.VehicleManager.ModelName(VehicleToDescribe);
 
-                    string ColorAudio = VehicleScannerAudio.GetColorAudio(CarColor);
+                    string ColorAudio = "";
+                    
+                    if(primaryColor == -1)
+                    {
+                        VehicleScannerAudio.GetColorAudio(CarColor);
+                    }
+                    else
+                    {
+                        VehicleScannerAudio.GetColorAudioByID(primaryColor);
+                    }
+                    
+                    
+                    
+
                     string MakeAudio = VehicleScannerAudio.GetMakeAudio(MakeName);
                     string ClassAudio = VehicleScannerAudio.GetClassAudio(ClassInt);
                     string ModelAudio = VehicleScannerAudio.GetModelAudio(VehicleToDescribe.Vehicle.Model.Hash);

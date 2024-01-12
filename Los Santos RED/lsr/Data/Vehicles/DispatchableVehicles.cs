@@ -36,8 +36,10 @@ public class DispatchableVehicles : IDispatchableVehicles
 
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\DispatchableVehicles.xml";
     private List<DispatchableVehicleGroup> VehicleGroupLookup = new List<DispatchableVehicleGroup>();
-    private List<DispatchableVehicle> GenericGangVehicles;
-    private List<DispatchableVehicle> AllGangVehicles;
+
+
+    private DispatchableVehicles_Gangs DispatchableVehicles_Gangs;
+
     private List<DispatchableVehicle> LostMCVehicles;
     private List<DispatchableVehicle> VarriosVehicles;
     private List<DispatchableVehicle> BallasVehicles;
@@ -47,7 +49,6 @@ public class DispatchableVehicles : IDispatchableVehicles
     private List<DispatchableVehicle> TriadVehicles;
     private List<DispatchableVehicle> YardieVehicles;
     private List<DispatchableVehicle> DiablosVehicles;
-    private List<DispatchableVehicle> MafiaVehicles;
 
     private List<DispatchableVehicle> GambettiVehicles;
     private List<DispatchableVehicle> PavanoVehicles;
@@ -317,150 +318,46 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("washington", 20, 0) { MaxOccupants = 1,MaxWantedLevelSpawn = 0,RequiredPedGroup = "OffDuty", },
         };
 
-
-
         //Gangs
-        GenericGangVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("buccaneer", 15, 15),
-            new DispatchableVehicle("manana", 15, 15),
-            new DispatchableVehicle("tornado", 15, 15),};
-        AllGangVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("buccaneer", 15, 15),
-            new DispatchableVehicle("buccaneer2", 15, 15),
-            new DispatchableVehicle("manana", 15, 15),
-            new DispatchableVehicle("chino", 15, 15),
-            new DispatchableVehicle("chino2", 15, 15),
-            new DispatchableVehicle("faction", 15, 15),
-            new DispatchableVehicle("faction2", 15, 15),
-            new DispatchableVehicle("primo", 15, 15),
-            new DispatchableVehicle("primo2", 15, 15),
-            new DispatchableVehicle("voodoo", 15, 15),
-            new DispatchableVehicle("voodoo2", 15, 15),
-        };
-        LostMCVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("daemon", 70, 70) { MaxOccupants = 1 },
-            new DispatchableVehicle("slamvan2", 15, 15) { MaxOccupants = 1 },
-            new DispatchableVehicle("gburrito", 15, 15) { MaxOccupants = 1 },};
-        VarriosVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("buccaneer", 20, 20){ RequiredPrimaryColorID = 68,RequiredSecondaryColorID = 68},
-            //new DispatchableVehicle("buccaneer2", 50, 50){RequiredPrimaryColorID = 68,RequiredSecondaryColorID = 68 },//light?blue
-        };
-        BallasVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("baller", 20, 20){ RequiredPrimaryColorID = 145,RequiredSecondaryColorID = 145 },
-            new DispatchableVehicle("baller2", 20, 20){ RequiredPrimaryColorID = 145,RequiredSecondaryColorID = 145 },//purple
-        };
-        VagosVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("chino", 20, 20){ RequiredPrimaryColorID = 42,RequiredSecondaryColorID = 42 },
-            new DispatchableVehicle("chino2", 20, 20){ RequiredPrimaryColorID = 42,RequiredSecondaryColorID = 42 },//yellow
-        };
-        MarabuntaVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("faction", 20, 20){ RequiredPrimaryColorID = 70,RequiredSecondaryColorID = 70 },
-            new DispatchableVehicle("faction2", 20, 20){ RequiredPrimaryColorID = 70,RequiredSecondaryColorID = 70 },//blue
-        };
-        KoreanVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("feltzer2", 20, 20){ RequiredPrimaryColorID = 4,RequiredSecondaryColorID = 4 },//silver
-            new DispatchableVehicle("comet2", 20, 20){ RequiredPrimaryColorID = 4,RequiredSecondaryColorID = 4 },//silver
-            new DispatchableVehicle("dubsta2", 20, 20){ RequiredPrimaryColorID = 4,RequiredSecondaryColorID = 4 },//silver
-        };
-        TriadVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("fugitive", 20, 20){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111 },//white
-            new DispatchableVehicle("washington", 20, 20){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111 },//white
-           // new DispatchableVehicle("cavalcade", 33, 33){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111 },//white
-        };
-        YardieVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("virgo", 20, 20){ RequiredPrimaryColorID = 55,RequiredSecondaryColorID = 55 },//matte lime green
-            new DispatchableVehicle("voodoo", 20, 20){ RequiredPrimaryColorID = 55,RequiredSecondaryColorID = 55 },//matte lime green
-            new DispatchableVehicle("voodoo2", 20, 20){ RequiredPrimaryColorID = 55,RequiredSecondaryColorID = 55 },//matte lime green
-        };
-        DiablosVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("stalion", 25, 25){ RequiredPrimaryColorID = 28,RequiredSecondaryColorID = 28, },
-        };
-        MafiaVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sentinel", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("sentinel2", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("cognoscenti", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("cogcabrio", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("huntley", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-        };
-        GambettiVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sentinel", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("sentinel2", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("cognoscenti", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-        };
-        PavanoVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sentinel", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("sentinel2", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("cogcabrio", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-        };
-        LupisellaVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sentinel", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("sentinel2", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("huntley", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-        };
-        MessinaVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sentinel", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("cognoscenti", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("cogcabrio", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-        };
-        AncelottiVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("cognoscenti", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("cogcabrio", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("huntley", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-        };
+        LostMCVehicles = new List<DispatchableVehicle>();
+        VarriosVehicles = new List<DispatchableVehicle>();
+        BallasVehicles = new List<DispatchableVehicle>();
+        VagosVehicles = new List<DispatchableVehicle>();
+        MarabuntaVehicles = new List<DispatchableVehicle>();
+        KoreanVehicles = new List<DispatchableVehicle>();
+        TriadVehicles = new List<DispatchableVehicle>();
+        YardieVehicles = new List<DispatchableVehicle>();
+        DiablosVehicles = new List<DispatchableVehicle>();
+        GambettiVehicles = new List<DispatchableVehicle>();
+        PavanoVehicles = new List<DispatchableVehicle>();
+        LupisellaVehicles = new List<DispatchableVehicle>();
+        MessinaVehicles = new List<DispatchableVehicle>();
+        AncelottiVehicles = new List<DispatchableVehicle>();
+        ArmeniaVehicles = new List<DispatchableVehicle>();
+        CartelVehicles = new List<DispatchableVehicle>();
+        RedneckVehicles = new List<DispatchableVehicle>();
+        FamiliesVehicles = new List<DispatchableVehicle>();
 
-
-
-
-        ArmeniaVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("schafter2", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-        };
-        CartelVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("cavalcade2", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("cavalcade", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-
-        };
-        RedneckVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sandking2",10,10),
-            new DispatchableVehicle("rebel", 20, 20),
-            new DispatchableVehicle("bison", 20, 20),
-            new DispatchableVehicle("sanchez2",20,20) {MaxOccupants = 1 },
-        };
-        FamiliesVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("emperor",15,15) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
-           // new DispatchableVehicle("peyote",15,15) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
-            new DispatchableVehicle("nemesis",15,15) {MaxOccupants = 1 },
-            new DispatchableVehicle("buccaneer",15,15) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
-           //new DispatchableVehicle("manana",15,15)  { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
-            new DispatchableVehicle("tornado",15,15)  { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green       
-
-        };
-
-
-        DispatchableVehicles_Gangs customGangs = new DispatchableVehicles_Gangs();
-        customGangs.DefaultConfig();
-        FamiliesVehicles.AddRange(customGangs.FamiliesVehicles);
-        VarriosVehicles.AddRange(customGangs.VarriosVehicles);
-        BallasVehicles.AddRange(customGangs.BallasVehicles);
-        VagosVehicles.AddRange(customGangs.VagosVehicles);
-        MarabuntaVehicles.AddRange(customGangs.MarabuntaVehicles);
-        KoreanVehicles.AddRange(customGangs.KoreanVehicles);
-        TriadVehicles.AddRange(customGangs.TriadVehicles);
-        DiablosVehicles.AddRange(customGangs.DiablosVehicles);
-        GambettiVehicles.AddRange(customGangs.GambettiVehicles);
-        PavanoVehicles.AddRange(customGangs.PavanoVehicles);
-        LupisellaVehicles.AddRange(customGangs.LupisellaVehicles);
-        MessinaVehicles.AddRange(customGangs.MessinaVehicles);
-        AncelottiVehicles.AddRange(customGangs.AncelottiVehicles);
-        CartelVehicles.AddRange(customGangs.CartelVehicles);
-        RedneckVehicles.AddRange(customGangs.RedneckVehicles);
-        ArmeniaVehicles.AddRange(customGangs.ArmenianVehicles);
-
-
-
-
-
-
-        //SetupDefaultGangSpecialVehicles();
+        DispatchableVehicles_Gangs dispatchableVehiclesGangs = new DispatchableVehicles_Gangs();
+        dispatchableVehiclesGangs.DefaultConfig();
+        FamiliesVehicles.AddRange(dispatchableVehiclesGangs.FamiliesVehicles);
+        VarriosVehicles.AddRange(dispatchableVehiclesGangs.VarriosVehicles);
+        BallasVehicles.AddRange(dispatchableVehiclesGangs.BallasVehicles);
+        VagosVehicles.AddRange(dispatchableVehiclesGangs.VagosVehicles);
+        MarabuntaVehicles.AddRange(dispatchableVehiclesGangs.MarabuntaVehicles);
+        KoreanVehicles.AddRange(dispatchableVehiclesGangs.KoreanVehicles);
+        TriadVehicles.AddRange(dispatchableVehiclesGangs.TriadVehicles);
+        DiablosVehicles.AddRange(dispatchableVehiclesGangs.DiablosVehicles);
+        GambettiVehicles.AddRange(dispatchableVehiclesGangs.GambettiVehicles);
+        PavanoVehicles.AddRange(dispatchableVehiclesGangs.PavanoVehicles);
+        LupisellaVehicles.AddRange(dispatchableVehiclesGangs.LupisellaVehicles);
+        MessinaVehicles.AddRange(dispatchableVehiclesGangs.MessinaVehicles);
+        AncelottiVehicles.AddRange(dispatchableVehiclesGangs.AncelottiVehicles);
+        CartelVehicles.AddRange(dispatchableVehiclesGangs.CartelVehicles);
+        RedneckVehicles.AddRange(dispatchableVehiclesGangs.RedneckVehicles);
+        ArmeniaVehicles.AddRange(dispatchableVehiclesGangs.ArmenianVehicles);
+        YardieVehicles.AddRange(dispatchableVehiclesGangs.YardiesVehicles);
+        LostMCVehicles.AddRange(dispatchableVehiclesGangs.LostVehicles);
 
         //Other
         TaxiBroadWay = new DispatchableVehicle("broadway", 4, 4)
@@ -1248,8 +1145,6 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
 
 
-            new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles),
-            new DispatchableVehicleGroup("AllGangVehicles", AllGangVehicles),
             new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
             new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles),
             new DispatchableVehicleGroup("BallasVehicles", BallasVehicles),
@@ -1259,7 +1154,6 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("TriadVehicles", TriadVehicles),
             new DispatchableVehicleGroup("YardieVehicles", YardieVehicles),
             new DispatchableVehicleGroup("DiablosVehicles", DiablosVehicles),
-            new DispatchableVehicleGroup("MafiaVehicles", MafiaVehicles),
 
             new DispatchableVehicleGroup("GambettiVehicles", GambettiVehicles),
             new DispatchableVehicleGroup("PavanoVehicles", PavanoVehicles),
@@ -1374,8 +1268,6 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
 
             //Gang
-            new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles),
-            new DispatchableVehicleGroup("AllGangVehicles", AllGangVehicles),
             new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
             new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles),
             new DispatchableVehicleGroup("BallasVehicles", BallasVehicles_Old),
@@ -1385,7 +1277,6 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("TriadVehicles", TriadVehicles),
             new DispatchableVehicleGroup("YardieVehicles", YardieVehicles),
             new DispatchableVehicleGroup("DiablosVehicles", DiablosVehicles),
-            new DispatchableVehicleGroup("MafiaVehicles", MafiaVehicles_Old),
 
             new DispatchableVehicleGroup("GambettiVehicles", MafiaVehicles_Old),
             new DispatchableVehicleGroup("PavanoVehicles", MafiaVehicles_Old),
@@ -1437,8 +1328,6 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
 
             //Gang
-            new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles),
-            new DispatchableVehicleGroup("AllGangVehicles", AllGangVehicles),
             new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
             new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles),
             new DispatchableVehicleGroup("BallasVehicles", BallasVehicles),
@@ -1504,8 +1393,6 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
 
             //Gang stuff
-            new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles),
-            new DispatchableVehicleGroup("AllGangVehicles", AllGangVehicles),
             new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
             new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles),
             new DispatchableVehicleGroup("BallasVehicles", BallasVehicles),
@@ -1515,7 +1402,6 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("TriadVehicles", TriadVehicles),
             new DispatchableVehicleGroup("YardieVehicles", YardieVehicles),
             new DispatchableVehicleGroup("DiablosVehicles", DiablosVehicles),
-            new DispatchableVehicleGroup("MafiaVehicles", MafiaVehicles),
             new DispatchableVehicleGroup("GambettiVehicles", GambettiVehicles),
             new DispatchableVehicleGroup("PavanoVehicles", PavanoVehicles),
             new DispatchableVehicleGroup("LupisellaVehicles", LupisellaVehicles),

@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using NAudio.CoreAudioApi.Interfaces;
+using Rage;
 using System;
 using System.Collections.Generic;
 
@@ -22,10 +23,38 @@ public class DispatchableVehicles_Gangs
     public List<DispatchableVehicle> MarabuntaVehicles { get; private set; }
     public List<DispatchableVehicle> DiablosVehicles { get; private set; }
     public List<DispatchableVehicle> VarriosVehicles { get; private set; }
-
+    public List<DispatchableVehicle> LostVehicles { get; private set; }
+    public List<DispatchableVehicle> YardiesVehicles { get; private set; }
     public void DefaultConfig()
     {
-        BallasVehicles = new List<DispatchableVehicle>() {
+        SetBallasVehicles();
+        SetVagosVehicles();
+        SetFamiliesVehicles();
+        SetAncelottiVehicles();
+        SetMessinaVehicles();
+        SetLupisellaVehicles();
+        SetPavanoVehicles();
+        SetGambettiVehicles();
+        SetArmenianVehicles();
+        SetCartelVehicles();
+        SetRedneckVehicles();
+        SetTriadVehicles();
+        SetKoreanVehicles();
+        SetMarabuntaVehicles();
+        SetDiablosVehicles();
+        SetVarriosVehicles();
+        SetLostVehicles();
+        SetYardiesVehicles();
+    }
+    private void SetBallasVehicles()
+    {
+        BallasVehicles = new List<DispatchableVehicle>() 
+        {
+            //Base
+            new DispatchableVehicle("baller", 20, 20){ RequiredPrimaryColorID = 145,RequiredSecondaryColorID = 145 },
+            new DispatchableVehicle("baller2", 20, 20){ RequiredPrimaryColorID = 145,RequiredSecondaryColorID = 145 },//purple
+
+            //Custom
             new DispatchableVehicle() {
             DebugName = "primo2_PeterBadoingy_DLCDespawn",
             ModelName = "primo2",
@@ -530,8 +559,17 @@ public class DispatchableVehicles_Gangs
             },
             RequiresDLC = true,
             },
-            };
-        VagosVehicles = new List<DispatchableVehicle>() {
+        };
+    }
+    private void SetVagosVehicles()
+    {
+        VagosVehicles = new List<DispatchableVehicle>() 
+        {
+            //Base
+            new DispatchableVehicle("chino", 20, 20){ RequiredPrimaryColorID = 42,RequiredSecondaryColorID = 42 },
+            new DispatchableVehicle("chino2", 20, 20){ RequiredPrimaryColorID = 42,RequiredSecondaryColorID = 42 },//yellow
+
+            //Custom
             new DispatchableVehicle() {
             DebugName = "SLAMVAN3_PeterBadoingy_DLCDespawn",
             ModelName = "SLAMVAN3",
@@ -993,484 +1031,494 @@ public class DispatchableVehicles_Gangs
             },
             RequiresDLC = true,
             },
-            };
+        };
+    }
+    private void SetFamiliesVehicles()
+    {
         FamiliesVehicles = new List<DispatchableVehicle>()
+        {
+            //Base
+            new DispatchableVehicle("emperor",15,15) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
+            new DispatchableVehicle("nemesis",15,15) {MaxOccupants = 1 },
+            new DispatchableVehicle("buccaneer",15,15) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
+            new DispatchableVehicle("tornado",15,15)  { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green    
+
+            //Custom
+            new DispatchableVehicle("peyote3",25,25)
             {
-                new DispatchableVehicle("peyote3",25,25)
+                DebugName = "peyote3_PeterBadoingy_DLCDespawn",
+                RequiredPrimaryColorID = 53,
+                RequiredSecondaryColorID = 0,
+                ForcedPlateType = 0,
+                RequiredVariation = new VehicleVariation()
                 {
-                    DebugName = "peyote3_PeterBadoingy_DLCDespawn",
-                    RequiredPrimaryColorID = 53,
-                    RequiredSecondaryColorID = 0,
-                    ForcedPlateType = 0,
-                    RequiredVariation = new VehicleVariation()
-                    {
-                        PrimaryColor = 53,
-                        PearlescentColor = 52,
-                        WheelColor = 156,
-                        WheelType = 8,
-                        VehicleExtras = new List<VehicleExtra>() {
-                        new VehicleExtra() {
-                        },
-                        new VehicleExtra() {
-                        ID = 1,
-                        IsTurnedOn = true,
-                        },
-                        new VehicleExtra() {
-                        ID = 2,
-                        },
-                        new VehicleExtra() {
-                        ID = 3,
-                        },
-                        new VehicleExtra() {
-                        ID = 4,
-                        },
-                        new VehicleExtra() {
-                        ID = 5,
-                        },
-                        },
-                        VehicleToggles = new List<VehicleToggle>() {
-                        new VehicleToggle() {
-                        ID = 18,
-                        IsTurnedOn = true,
-                        },
-                        },
-                        VehicleMods = new List<VehicleMod>() {
-                        new VehicleMod() {
-                        ID = 4,
-                        },
-                        new VehicleMod() {
-                        ID = 5,
-                        },
-                        new VehicleMod() {
-                        ID = 6,
-                        Output = 2,
-                        },
-                        new VehicleMod() {
-                        ID = 9,
-                        },
-                        new VehicleMod() {
-                        ID = 23,
-                        Output = 26,
-                        },
-                        new VehicleMod() {
-                        ID = 25,
-                        Output = 4,
-                        },
-                        new VehicleMod() {
-                        ID = 27,
-                        Output = 7,
-                        },
-                        new VehicleMod() {
-                        ID = 28,
-                        Output = 5,
-                        },
-                        new VehicleMod() {
-                        ID = 30,
-                        },
-                        new VehicleMod() {
-                        ID = 33,
-                        Output = 1,
-                        },
-                        new VehicleMod() {
-                        ID = 35,
-                        Output = 2,
-                        },
-                        new VehicleMod() {
-                        ID = 39,
-                        Output = 1,
-                        },
-                        new VehicleMod() {
-                        ID = 43,
-                        },
-                        new VehicleMod() {
-                        ID = 45,
-                        Output = 1,
-                        },
-                        new VehicleMod() {
-                        ID = 48,
-                        Output = 1,
-                        },
-                        },
-                        DashboardColor = 55,
+                    PrimaryColor = 53,
+                    PearlescentColor = 52,
+                    WheelColor = 156,
+                    WheelType = 8,
+                    VehicleExtras = new List<VehicleExtra>() {
+                    new VehicleExtra() {
                     },
-                    RequiresDLC = true,
+                    new VehicleExtra() {
+                    ID = 1,
+                    IsTurnedOn = true,
+                    },
+                    new VehicleExtra() {
+                    ID = 2,
+                    },
+                    new VehicleExtra() {
+                    ID = 3,
+                    },
+                    new VehicleExtra() {
+                    ID = 4,
+                    },
+                    new VehicleExtra() {
+                    ID = 5,
+                    },
+                    },
+                    VehicleToggles = new List<VehicleToggle>() {
+                    new VehicleToggle() {
+                    ID = 18,
+                    IsTurnedOn = true,
+                    },
+                    },
+                    VehicleMods = new List<VehicleMod>() {
+                    new VehicleMod() {
+                    ID = 4,
+                    },
+                    new VehicleMod() {
+                    ID = 5,
+                    },
+                    new VehicleMod() {
+                    ID = 6,
+                    Output = 2,
+                    },
+                    new VehicleMod() {
+                    ID = 9,
+                    },
+                    new VehicleMod() {
+                    ID = 23,
+                    Output = 26,
+                    },
+                    new VehicleMod() {
+                    ID = 25,
+                    Output = 4,
+                    },
+                    new VehicleMod() {
+                    ID = 27,
+                    Output = 7,
+                    },
+                    new VehicleMod() {
+                    ID = 28,
+                    Output = 5,
+                    },
+                    new VehicleMod() {
+                    ID = 30,
+                    },
+                    new VehicleMod() {
+                    ID = 33,
+                    Output = 1,
+                    },
+                    new VehicleMod() {
+                    ID = 35,
+                    Output = 2,
+                    },
+                    new VehicleMod() {
+                    ID = 39,
+                    Output = 1,
+                    },
+                    new VehicleMod() {
+                    ID = 43,
+                    },
+                    new VehicleMod() {
+                    ID = 45,
+                    Output = 1,
+                    },
+                    new VehicleMod() {
+                    ID = 48,
+                    Output = 1,
+                    },
+                    },
+                    DashboardColor = 55,
                 },
-                new DispatchableVehicle("manana2",25,25)
+                RequiresDLC = true,
+            },
+            new DispatchableVehicle("manana2",25,25)
+            {
+                DebugName = "manana2_PeterBadoingy_DLCDespawn",
+                RequiredPrimaryColorID = 53,
+                RequiredSecondaryColorID = 0,
+                ForcedPlateType = 0,
+                RequiredVariation = new VehicleVariation()
                 {
-                    DebugName = "manana2_PeterBadoingy_DLCDespawn",
-                    RequiredPrimaryColorID = 53,
-                    RequiredSecondaryColorID = 0,
-                    ForcedPlateType = 0,
-                    RequiredVariation = new VehicleVariation()
-                    {
-                        PrimaryColor = 53,
-                        PearlescentColor = 52,
-                        WheelColor = 156,
-                        WheelType = 8,
-                        WindowTint = 3,
-                        VehicleExtras = new List<VehicleExtra>() {
-                        new VehicleExtra() {
-                        },
-                        new VehicleExtra() {
-                        ID = 1,
-                        },
-                        new VehicleExtra() {
-                        ID = 2,
-                        },
-                        new VehicleExtra() {
-                        ID = 3,
-                        IsTurnedOn = true,
-                        },
-                        new VehicleExtra() {
-                        ID = 4,
-                        },
-                        new VehicleExtra() {
-                        ID = 5,
-                        },
-                        },
-                        VehicleToggles = new List<VehicleToggle>() {
-                        new VehicleToggle() {
-                        ID = 18,
-                        IsTurnedOn = true,
-                        },
-                        },
-                        VehicleMods = new List<VehicleMod>() {
-                        new VehicleMod() {
-                        ID = 1,
-                        },
-                        new VehicleMod() {
-                        ID = 4,
-                        },
-                        new VehicleMod() {
-                        ID = 6,
-                        },
-                        new VehicleMod() {
-                        ID = 8,
-                        },
-                        new VehicleMod() {
-                        ID = 23,
-                        Output = 24,
-                        },
-                        new VehicleMod() {
-                        ID = 25,
-                        Output = 4,
-                        },
-                        new VehicleMod() {
-                        ID = 27,
-                        },
-                        new VehicleMod() {
-                        ID = 28,
-                        Output = 5,
-                        },
-                        new VehicleMod() {
-                        ID = 33,
-                        Output = 1,
-                        },
-                        new VehicleMod() {
-                        ID = 34,
-                        Output = 2,
-                        },
-                        new VehicleMod() {
-                        ID = 37,
-                        Output = 3,
-                        },
-                        new VehicleMod() {
-                        ID = 38,
-                        Output = 4,
-                        },
-                        new VehicleMod() {
-                        ID = 39,
-                        Output = 3,
-                        },
-                        new VehicleMod() {
-                        ID = 40,
-                        Output = 1,
-                        },
-                        new VehicleMod() {
-                        ID = 42,
-                        Output = 1,
-                        },
-                        new VehicleMod() {
-                        ID = 48,
-                        },
-                        },
-                        InteriorColor = 21,
-                        DashboardColor = 4,
+                    PrimaryColor = 53,
+                    PearlescentColor = 52,
+                    WheelColor = 156,
+                    WheelType = 8,
+                    WindowTint = 3,
+                    VehicleExtras = new List<VehicleExtra>() {
+                    new VehicleExtra() {
                     },
-                    RequiresDLC = true,
+                    new VehicleExtra() {
+                    ID = 1,
+                    },
+                    new VehicleExtra() {
+                    ID = 2,
+                    },
+                    new VehicleExtra() {
+                    ID = 3,
+                    IsTurnedOn = true,
+                    },
+                    new VehicleExtra() {
+                    ID = 4,
+                    },
+                    new VehicleExtra() {
+                    ID = 5,
+                    },
+                    },
+                    VehicleToggles = new List<VehicleToggle>() {
+                    new VehicleToggle() {
+                    ID = 18,
+                    IsTurnedOn = true,
+                    },
+                    },
+                    VehicleMods = new List<VehicleMod>() {
+                    new VehicleMod() {
+                    ID = 1,
+                    },
+                    new VehicleMod() {
+                    ID = 4,
+                    },
+                    new VehicleMod() {
+                    ID = 6,
+                    },
+                    new VehicleMod() {
+                    ID = 8,
+                    },
+                    new VehicleMod() {
+                    ID = 23,
+                    Output = 24,
+                    },
+                    new VehicleMod() {
+                    ID = 25,
+                    Output = 4,
+                    },
+                    new VehicleMod() {
+                    ID = 27,
+                    },
+                    new VehicleMod() {
+                    ID = 28,
+                    Output = 5,
+                    },
+                    new VehicleMod() {
+                    ID = 33,
+                    Output = 1,
+                    },
+                    new VehicleMod() {
+                    ID = 34,
+                    Output = 2,
+                    },
+                    new VehicleMod() {
+                    ID = 37,
+                    Output = 3,
+                    },
+                    new VehicleMod() {
+                    ID = 38,
+                    Output = 4,
+                    },
+                    new VehicleMod() {
+                    ID = 39,
+                    Output = 3,
+                    },
+                    new VehicleMod() {
+                    ID = 40,
+                    Output = 1,
+                    },
+                    new VehicleMod() {
+                    ID = 42,
+                    Output = 1,
+                    },
+                    new VehicleMod() {
+                    ID = 48,
+                    },
+                    },
+                    InteriorColor = 21,
+                    DashboardColor = 4,
                 },
-                new DispatchableVehicle("glendale2",20,20)
+                RequiresDLC = true,
+            },
+            new DispatchableVehicle("glendale2",20,20)
+            {
+                DebugName = "glendale2_PeterBadoingy_DLCDespawn",
+                MaxOccupants = 4,
+                RequiredPrimaryColorID = 53,
+                RequiredSecondaryColorID = 0,
+                ForcedPlateType = 0,
+                RequiredVariation = new VehicleVariation()
                 {
-                    DebugName = "glendale2_PeterBadoingy_DLCDespawn",
-                    MaxOccupants = 4,
-                    RequiredPrimaryColorID = 53,
-                    RequiredSecondaryColorID = 0,
-                    ForcedPlateType = 0,
-                    RequiredVariation = new VehicleVariation()
-                    {
-                        PrimaryColor = 53,
-                        PearlescentColor = 52,
-                        WheelColor = 156,
-                        WheelType = 9,
-                        WindowTint = 3,
-                        VehicleToggles = new List<VehicleToggle>() {
-                        new VehicleToggle() {
-                        ID = 17,
-                        },
-                        new VehicleToggle() {
-                        ID = 18,
-                        IsTurnedOn = true,
-                        },
-                        },
-                        VehicleMods = new List<VehicleMod>() {
-                        new VehicleMod() {
-                        ID = 4,
-                        Output = 5,
-                        },
-                        new VehicleMod() {
-                        ID = 7,
-                        Output = 1,
-                        },
-                        new VehicleMod() {
-                        ID = 23,
-                        Output = 18,
-                        },
-                        new VehicleMod() {
-                        ID = 25,
-                        Output = 4,
-                        },
-                        new VehicleMod() {
-                        ID = 27,
-                        Output = 6,
-                        },
-                        new VehicleMod() {
-                        ID = 28,
-                        Output = 5,
-                        },
-                        new VehicleMod() {
-                        ID = 33,
-                        Output = 4,
-                        },
-                        new VehicleMod() {
-                        ID = 34,
-                        Output = 2,
-                        },
-                        new VehicleMod() {
-                        ID = 36,
-                        Output = 3,
-                        },
-                        new VehicleMod() {
-                        ID = 37,
-                        Output = 4,
-                        },
-                        new VehicleMod() {
-                        ID = 38,
-                        Output = 4,
-                        },
-                        new VehicleMod() {
-                        ID = 39,
-                        Output = 4,
-                        },
-                        new VehicleMod() {
-                        ID = 45,
-                        Output = 1,
-                        },
-                        new VehicleMod() {
-                        ID = 48,
-                        Output = 8,
-                        },
-                        },
-                        DashboardColor = 55,
+                    PrimaryColor = 53,
+                    PearlescentColor = 52,
+                    WheelColor = 156,
+                    WheelType = 9,
+                    WindowTint = 3,
+                    VehicleToggles = new List<VehicleToggle>() {
+                    new VehicleToggle() {
+                    ID = 17,
                     },
-                    RequiresDLC = true,
+                    new VehicleToggle() {
+                    ID = 18,
+                    IsTurnedOn = true,
+                    },
+                    },
+                    VehicleMods = new List<VehicleMod>() {
+                    new VehicleMod() {
+                    ID = 4,
+                    Output = 5,
+                    },
+                    new VehicleMod() {
+                    ID = 7,
+                    Output = 1,
+                    },
+                    new VehicleMod() {
+                    ID = 23,
+                    Output = 18,
+                    },
+                    new VehicleMod() {
+                    ID = 25,
+                    Output = 4,
+                    },
+                    new VehicleMod() {
+                    ID = 27,
+                    Output = 6,
+                    },
+                    new VehicleMod() {
+                    ID = 28,
+                    Output = 5,
+                    },
+                    new VehicleMod() {
+                    ID = 33,
+                    Output = 4,
+                    },
+                    new VehicleMod() {
+                    ID = 34,
+                    Output = 2,
+                    },
+                    new VehicleMod() {
+                    ID = 36,
+                    Output = 3,
+                    },
+                    new VehicleMod() {
+                    ID = 37,
+                    Output = 4,
+                    },
+                    new VehicleMod() {
+                    ID = 38,
+                    Output = 4,
+                    },
+                    new VehicleMod() {
+                    ID = 39,
+                    Output = 4,
+                    },
+                    new VehicleMod() {
+                    ID = 45,
+                    Output = 1,
+                    },
+                    new VehicleMod() {
+                    ID = 48,
+                    Output = 8,
+                    },
+                    },
+                    DashboardColor = 55,
                 },
-                new DispatchableVehicle("greenwood",20,20)
+                RequiresDLC = true,
+            },
+            new DispatchableVehicle("greenwood",20,20)
+            {
+                DebugName = "greenwood_PeterBadoingy_DLCDespawn",
+                MaxOccupants = 4,
+                RequiredPrimaryColorID = 53,
+                RequiredSecondaryColorID = 0,
+                ForcedPlateType = 0,
+                RequiredVariation = new VehicleVariation()
                 {
-                    DebugName = "greenwood_PeterBadoingy_DLCDespawn",
-                    MaxOccupants = 4,
-                    RequiredPrimaryColorID = 53,
-                    RequiredSecondaryColorID = 0,
-                    ForcedPlateType = 0,
-                    RequiredVariation = new VehicleVariation()
-                    {
-                        PrimaryColor = 53,
-                        PearlescentColor = 52,
-                        WheelColor = 156,
-                        WheelType = 8,
-                        WindowTint = 3,
-                        VehicleMods = new List<VehicleMod>() {
-                        new VehicleMod() {
-                        Output = 4,
-                        },
-                        new VehicleMod() {
-                        ID = 3,
-                        Output = 1,
-                        },
-                        new VehicleMod() {
-                        ID = 4,
-                        Output = 7,
-                        },
-                        new VehicleMod() {
-                        ID = 8,
-                        Output = 1,
-                        },
-                        new VehicleMod() {
-                        ID = 23,
-                        Output = 24,
-                        },
-                        new VehicleMod() {
-                        ID = 40,
-                        Output = 2,
-                        },
-                        new VehicleMod() {
-                        ID = 42,
-                        Output = 2,
-                        },
-                        new VehicleMod() {
-                        ID = 48,
-                        Output = 3,
-                        },
-                        },
-                        DashboardColor = 55,
+                    PrimaryColor = 53,
+                    PearlescentColor = 52,
+                    WheelColor = 156,
+                    WheelType = 8,
+                    WindowTint = 3,
+                    VehicleMods = new List<VehicleMod>() {
+                    new VehicleMod() {
+                    Output = 4,
                     },
-                    RequiresDLC = true,
+                    new VehicleMod() {
+                    ID = 3,
+                    Output = 1,
+                    },
+                    new VehicleMod() {
+                    ID = 4,
+                    Output = 7,
+                    },
+                    new VehicleMod() {
+                    ID = 8,
+                    Output = 1,
+                    },
+                    new VehicleMod() {
+                    ID = 23,
+                    Output = 24,
+                    },
+                    new VehicleMod() {
+                    ID = 40,
+                    Output = 2,
+                    },
+                    new VehicleMod() {
+                    ID = 42,
+                    Output = 2,
+                    },
+                    new VehicleMod() {
+                    ID = 48,
+                    Output = 3,
+                    },
+                    },
+                    DashboardColor = 55,
                 },
-                new DispatchableVehicle("minivan2",20,20)
+                RequiresDLC = true,
+            },
+            new DispatchableVehicle("minivan2",20,20)
+            {
+                DebugName = "minivan2_PeterBadoingy_DLCDespawn",
+                MaxOccupants = 4,
+                RequiredPrimaryColorID = 53,
+                RequiredSecondaryColorID = 0,
+                ForcedPlateType = 0,
+                RequiredVariation = new VehicleVariation()
                 {
-                    DebugName = "minivan2_PeterBadoingy_DLCDespawn",
-                    MaxOccupants = 4,
-                    RequiredPrimaryColorID = 53,
-                    RequiredSecondaryColorID = 0,
-                    ForcedPlateType = 0,
-                    RequiredVariation = new VehicleVariation()
-                    {
-                        PrimaryColor = 53,
-                        PearlescentColor = 52,
-                        WheelColor = 156,
-                        WheelType = 8,
-                        WindowTint = 3,
-                        VehicleToggles = new List<VehicleToggle>() {
-                        },
-                        VehicleMods = new List<VehicleMod>() {
-                        new VehicleMod() {
-                        },
-                        new VehicleMod() {
-                        ID = 4,
-                        },
-                        new VehicleMod() {
-                        ID = 5,
-                        Output = -1,
-                        },
-                        new VehicleMod() {
-                        ID = 6,
-                        },
-                        new VehicleMod() {
-                        ID = 10,
-                        Output = 1,
-                        },
-                        new VehicleMod() {
-                        ID = 23,
-                        Output = 15,
-                        },
-                        new VehicleMod() {
-                        ID = 24,
-                        Output = -1,
-                        },
-                        new VehicleMod() {
-                        ID = 25,
-                        Output = 4,
-                        },
-                        new VehicleMod() {
-                        ID = 27,
-                        Output = 1,
-                        },
-                        new VehicleMod() {
-                        ID = 28,
-                        Output = 5,
-                        },
-                        new VehicleMod() {
-                        ID = 31,
-                        Output = 3,
-                        },
-                        new VehicleMod() {
-                        ID = 32,
-                        },
-                        new VehicleMod() {
-                        ID = 33,
-                        Output = 6,
-                        },
-                        new VehicleMod() {
-                        ID = 34,
-                        Output = 2,
-                        },
-                        new VehicleMod() {
-                        ID = 37,
-                        Output = 6,
-                        },
-                        new VehicleMod() {
-                        ID = 38,
-                        Output = 3,
-                        },
-                        new VehicleMod() {
-                        ID = 39,
-                        Output = 3,
-                        },
-                        new VehicleMod() {
-                        ID = 40,
-                        Output = 1,
-                        },
-                        new VehicleMod() {
-                        ID = 48,
-                        },
-                        },
-                        DashboardColor = 55,
+                    PrimaryColor = 53,
+                    PearlescentColor = 52,
+                    WheelColor = 156,
+                    WheelType = 8,
+                    WindowTint = 3,
+                    VehicleToggles = new List<VehicleToggle>() {
                     },
-                    RequiresDLC = true,
+                    VehicleMods = new List<VehicleMod>() {
+                    new VehicleMod() {
+                    },
+                    new VehicleMod() {
+                    ID = 4,
+                    },
+                    new VehicleMod() {
+                    ID = 5,
+                    Output = -1,
+                    },
+                    new VehicleMod() {
+                    ID = 6,
+                    },
+                    new VehicleMod() {
+                    ID = 10,
+                    Output = 1,
+                    },
+                    new VehicleMod() {
+                    ID = 23,
+                    Output = 15,
+                    },
+                    new VehicleMod() {
+                    ID = 24,
+                    Output = -1,
+                    },
+                    new VehicleMod() {
+                    ID = 25,
+                    Output = 4,
+                    },
+                    new VehicleMod() {
+                    ID = 27,
+                    Output = 1,
+                    },
+                    new VehicleMod() {
+                    ID = 28,
+                    Output = 5,
+                    },
+                    new VehicleMod() {
+                    ID = 31,
+                    Output = 3,
+                    },
+                    new VehicleMod() {
+                    ID = 32,
+                    },
+                    new VehicleMod() {
+                    ID = 33,
+                    Output = 6,
+                    },
+                    new VehicleMod() {
+                    ID = 34,
+                    Output = 2,
+                    },
+                    new VehicleMod() {
+                    ID = 37,
+                    Output = 6,
+                    },
+                    new VehicleMod() {
+                    ID = 38,
+                    Output = 3,
+                    },
+                    new VehicleMod() {
+                    ID = 39,
+                    Output = 3,
+                    },
+                    new VehicleMod() {
+                    ID = 40,
+                    Output = 1,
+                    },
+                    new VehicleMod() {
+                    ID = 48,
+                    },
+                    },
+                    DashboardColor = 55,
                 },
-                new DispatchableVehicle("aleutian",25,25)
+                RequiresDLC = true,
+            },
+            new DispatchableVehicle("aleutian",25,25)
+            {
+                DebugName = "aleutian_PeterBadoingy_DLCDespawn",
+                MaxOccupants = 4,
+                RequiredPrimaryColorID = 53,
+                RequiredSecondaryColorID = 0,
+                ForcedPlateType = 0,
+                RequiredVariation = new VehicleVariation()
                 {
-                    DebugName = "aleutian_PeterBadoingy_DLCDespawn",
-                    MaxOccupants = 4,
-                    RequiredPrimaryColorID = 53,
-                    RequiredSecondaryColorID = 0,
-                    ForcedPlateType = 0,
-                    RequiredVariation = new VehicleVariation()
-                    {
-                        PrimaryColor = 53,
-                        PearlescentColor = 52,
-                        WheelColor = 156,
-                        WheelType = 3,
-                        VehicleMods = new List<VehicleMod>() {
-                        new VehicleMod() {
-                        },
-                        new VehicleMod() {
-                        ID = 3,
-                        Output = 2,
-                        },
-                        new VehicleMod() {
-                        ID = 4,
-                        Output = 6,
-                        },
-                        new VehicleMod() {
-                        ID = 6,
-                        Output = 6,
-                        },
-                        new VehicleMod() {
-                        ID = 7,
-                        Output = 3,
-                        },
-                        new VehicleMod() {
-                        ID = 23,
-                        Output = 22,
-                        },
-                        new VehicleMod() {
-                        ID = 48,
-                        },
-                        },
-                        DashboardColor = 55,
+                    PrimaryColor = 53,
+                    PearlescentColor = 52,
+                    WheelColor = 156,
+                    WheelType = 3,
+                    VehicleMods = new List<VehicleMod>() {
+                    new VehicleMod() {
                     },
-                    RequiresDLC = true,
+                    new VehicleMod() {
+                    ID = 3,
+                    Output = 2,
+                    },
+                    new VehicleMod() {
+                    ID = 4,
+                    Output = 6,
+                    },
+                    new VehicleMod() {
+                    ID = 6,
+                    Output = 6,
+                    },
+                    new VehicleMod() {
+                    ID = 7,
+                    Output = 3,
+                    },
+                    new VehicleMod() {
+                    ID = 23,
+                    Output = 22,
+                    },
+                    new VehicleMod() {
+                    ID = 48,
+                    },
+                    },
+                    DashboardColor = 55,
                 },
+                RequiresDLC = true,
+            },
             new DispatchableVehicle() {
             DebugName = "manchez_PeterBadoingy_DLCDespawn",
             ModelName = "manchez",
@@ -1531,8 +1579,18 @@ public class DispatchableVehicles_Gangs
             },
             RequiresDLC = true,
             },
-            };
-        AncelottiVehicles = new List<DispatchableVehicle>() {
+        };
+    }
+    private void SetAncelottiVehicles()
+    {
+        AncelottiVehicles = new List<DispatchableVehicle>() 
+        {
+            //Base
+            new DispatchableVehicle("cognoscenti", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("cogcabrio", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("huntley", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+
+            //Custom
             new DispatchableVehicle() {
             DebugName = "huntley_PeterBadoingy",
             ModelName = "huntley",
@@ -1657,8 +1715,18 @@ public class DispatchableVehicles_Gangs
             },
             RequiresDLC = true,
             },
-            };
-        MessinaVehicles = new List<DispatchableVehicle>() {
+        };
+    }
+    private void SetMessinaVehicles()
+    {
+        MessinaVehicles = new List<DispatchableVehicle>() 
+        {
+            //Base
+            new DispatchableVehicle("sentinel", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("cognoscenti", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("cogcabrio", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+
+            //Custom
             new DispatchableVehicle() {
             DebugName = "superd_PeterBadoingy",
             ModelName = "superd",
@@ -1836,8 +1904,18 @@ public class DispatchableVehicles_Gangs
             },
             RequiresDLC = true,
             },
-            };
-        LupisellaVehicles = new List<DispatchableVehicle>() {
+        };
+    }
+    private void SetLupisellaVehicles()
+    {
+        LupisellaVehicles = new List<DispatchableVehicle>() 
+        {
+            //Base
+            new DispatchableVehicle("sentinel", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("sentinel2", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("huntley", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+
+            //Custom
             new DispatchableVehicle() {
             DebugName = "komoda_PeterBadoingy_DLCDespawn",
             ModelName = "komoda",
@@ -2046,8 +2124,18 @@ public class DispatchableVehicles_Gangs
             },
             RequiresDLC = true,
             },
-            };
-        PavanoVehicles = new List<DispatchableVehicle>() {
+        };
+    }
+    private void SetPavanoVehicles()
+    {
+        PavanoVehicles = new List<DispatchableVehicle>() 
+        {
+            //Base
+            new DispatchableVehicle("sentinel", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("sentinel2", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("cogcabrio", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+
+            //Custom
             new DispatchableVehicle() {
             DebugName = "tailgater_PeterBadoingy",
             ModelName = "tailgater",
@@ -2285,8 +2373,18 @@ public class DispatchableVehicles_Gangs
             },
             RequiresDLC = true,
             },
-            };
-        GambettiVehicles = new List<DispatchableVehicle>() {
+        };
+    }
+    private void SetGambettiVehicles()
+    {
+        GambettiVehicles = new List<DispatchableVehicle>() 
+        {
+            //Base
+            new DispatchableVehicle("sentinel", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("sentinel2", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("cognoscenti", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+
+            //Custom
             new DispatchableVehicle() {
             DebugName = "baller4_PeterBadoingy_DLCDespawn",
             ModelName = "baller4",
@@ -2536,8 +2634,16 @@ public class DispatchableVehicles_Gangs
             },
             RequiresDLC = true,
             },
-            };
-        ArmenianVehicles = new List<DispatchableVehicle>() {
+        };
+    }
+    private void SetArmenianVehicles()
+    {
+        ArmenianVehicles = new List<DispatchableVehicle>() 
+        {
+            //Base
+            new DispatchableVehicle("schafter2", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+
+            //Custom
             new DispatchableVehicle() {
             DebugName = "dubsta2_PeterBadoingy_DLCDespawn",
             ModelName = "dubsta2",
@@ -2826,8 +2932,17 @@ public class DispatchableVehicles_Gangs
             },
             RequiresDLC = true,
             },
-            };
-        CartelVehicles = new List<DispatchableVehicle>() {
+        };
+    }
+    private void SetCartelVehicles()
+    {
+        CartelVehicles = new List<DispatchableVehicle>() 
+        {
+            //Base
+            new DispatchableVehicle("cavalcade2", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("cavalcade", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+
+            //Custom
             new DispatchableVehicle() {
             DebugName = "patriot3_PeterBadoingy_DLCDespawn",
             ModelName = "patriot3",
@@ -3159,8 +3274,19 @@ public class DispatchableVehicles_Gangs
             },
             RequiresDLC = true,
             },
-            };
-        RedneckVehicles = new List<DispatchableVehicle>() {
+        };
+    }
+    private void SetRedneckVehicles()
+    {
+        RedneckVehicles = new List<DispatchableVehicle>() 
+        {
+            //Base
+            new DispatchableVehicle("sandking2",10,10),
+            new DispatchableVehicle("rebel", 20, 20),
+            new DispatchableVehicle("bison", 20, 20),
+            new DispatchableVehicle("sanchez2",20,20) {MaxOccupants = 1 },
+
+            //Custom
             new DispatchableVehicle() {
             DebugName = "dukes3_PeterBadoingy_DLCDespawn",
             ModelName = "dukes3",
@@ -3503,8 +3629,17 @@ public class DispatchableVehicles_Gangs
             },
             RequiresDLC = true,
             },
-            };
-        TriadVehicles = new List<DispatchableVehicle>() {
+        };
+    }
+    private void SetTriadVehicles()
+    {
+        TriadVehicles = new List<DispatchableVehicle>() 
+        {
+            //Base
+            new DispatchableVehicle("fugitive", 20, 20){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111 },//white
+            new DispatchableVehicle("washington", 20, 20){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111 },//white
+
+            //Custom
             new DispatchableVehicle() {
             DebugName = "ELEGY_PeterBadoingy_DLCDespawn",
             ModelName = "ELEGY",
@@ -3900,8 +4035,18 @@ public class DispatchableVehicles_Gangs
 
             },
             },
-            };
-        KoreanVehicles = new List<DispatchableVehicle>() {
+        };
+    }
+    private void SetKoreanVehicles()
+    {
+        KoreanVehicles = new List<DispatchableVehicle>() 
+        {
+            //Base
+            new DispatchableVehicle("feltzer2", 20, 20){ RequiredPrimaryColorID = 4,RequiredSecondaryColorID = 4 },//silver
+            new DispatchableVehicle("comet2", 20, 20){ RequiredPrimaryColorID = 4,RequiredSecondaryColorID = 4 },//silver
+            new DispatchableVehicle("dubsta2", 20, 20){ RequiredPrimaryColorID = 4,RequiredSecondaryColorID = 4 },//silver
+
+            //Custom
             new DispatchableVehicle() {
             DebugName = "JESTER3_PeterBadoingy_DLCDespawn",
             ModelName = "JESTER3",
@@ -4269,8 +4414,17 @@ public class DispatchableVehicles_Gangs
 
             },
             },
-            };
-        MarabuntaVehicles = new List<DispatchableVehicle>() {
+        };
+    }
+    private void SetMarabuntaVehicles()
+    {
+        MarabuntaVehicles = new List<DispatchableVehicle>() 
+        {
+            //Base
+            new DispatchableVehicle("faction", 20, 20){ RequiredPrimaryColorID = 70,RequiredSecondaryColorID = 70 },
+            new DispatchableVehicle("faction2", 20, 20){ RequiredPrimaryColorID = 70,RequiredSecondaryColorID = 70 },//blue
+
+            //Custom
             new DispatchableVehicle() {
             DebugName = "faction2_PeterBadoingy_DLCDespawn",
             ModelName = "faction2",
@@ -4703,8 +4857,16 @@ public class DispatchableVehicles_Gangs
             },
             RequiresDLC = true,
             },
-            };
-        DiablosVehicles = new List<DispatchableVehicle>() {
+        };
+    }
+    private void SetDiablosVehicles()
+    {
+        DiablosVehicles = new List<DispatchableVehicle>() 
+        {
+            //Base
+            new DispatchableVehicle("stalion", 25, 25){ RequiredPrimaryColorID = 28,RequiredSecondaryColorID = 28, },
+
+            //Custom
             new DispatchableVehicle() {
             DebugName = "HERMES_PeterBadoingy_DLCDespawn",
             ModelName = "HERMES",
@@ -5076,8 +5238,16 @@ public class DispatchableVehicles_Gangs
             },
             RequiresDLC = true,
             },
-            };
-        VarriosVehicles = new List<DispatchableVehicle>() {
+        };
+    }
+    private void SetVarriosVehicles()
+    {
+        VarriosVehicles = new List<DispatchableVehicle>() 
+        {
+            //Base
+            new DispatchableVehicle("buccaneer", 20, 20){ RequiredPrimaryColorID = 68,RequiredSecondaryColorID = 68},
+
+            //Custom
             new DispatchableVehicle() {
             DebugName = "BUCCANEER2_PeterBadoingy",
             ModelName = "BUCCANEER2",
@@ -5452,7 +5622,31 @@ public class DispatchableVehicles_Gangs
             },
             RequiresDLC = true,
             },
-            };
+        };
     }
+
+    private void SetYardiesVehicles()
+    {
+        YardiesVehicles = new List<DispatchableVehicle>()
+        {
+            //Base
+            new DispatchableVehicle("virgo", 20, 20){ RequiredPrimaryColorID = 55,RequiredSecondaryColorID = 55 },//matte lime green
+            new DispatchableVehicle("voodoo", 20, 20){ RequiredPrimaryColorID = 55,RequiredSecondaryColorID = 55 },//matte lime green
+            new DispatchableVehicle("voodoo2", 20, 20){ RequiredPrimaryColorID = 55,RequiredSecondaryColorID = 55 },//matte lime green
+        };
+    }
+
+    private void SetLostVehicles()
+    {
+        LostVehicles = new List<DispatchableVehicle>()
+        {
+            //Base
+            new DispatchableVehicle("daemon", 70, 70) { MaxOccupants = 1 },
+            new DispatchableVehicle("slamvan2", 15, 15) { MaxOccupants = 1 },
+            new DispatchableVehicle("gburrito", 15, 15) { MaxOccupants = 1 },
+        };
+    }
+
+
 }
 

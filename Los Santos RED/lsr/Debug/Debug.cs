@@ -504,9 +504,18 @@ public class Debug
 			BRAIN::REGISTER_OBJECT_SCRIPT_BRAIN("atm_trigger", -639162137, 100, 4f, -1, 8);
          */
 
-        CurrentDictionary = NativeHelper.GetKeyboardInput("dict");
-        CurrentAnimation = NativeHelper.GetKeyboardInput("anim");
-        Game.DisplaySubtitle($"Updated Anims CurrentDict:{CurrentDictionary} CurrentAnimation:{CurrentAnimation}");
+
+
+
+        if(Game.TimeScale >= 0.1f)
+        {
+            Game.TimeScale -= 0.05f;
+        }
+        GameFiber.Sleep(500);
+
+        //CurrentDictionary = NativeHelper.GetKeyboardInput("dict");
+        //CurrentAnimation = NativeHelper.GetKeyboardInput("anim");
+        //Game.DisplaySubtitle($"Updated Anims CurrentDict:{CurrentDictionary} CurrentAnimation:{CurrentAnimation}");
 
         //NativeFunction.Natives.REGISTER_OBJECT_SCRIPT_BRAIN("ob_vend1", Game.GetHashKey("prop_vend_soda_01"), 0, 0.01f, -1, 9);
         //NativeFunction.Natives.REGISTER_OBJECT_SCRIPT_BRAIN("ob_vend2", Game.GetHashKey("prop_vend_soda_02"), 0, 0.01f, -1, 9);
@@ -1523,28 +1532,48 @@ private void DebugNumpad6()
 
     private void DebugNumpad7()
     {
-
-        while (!Game.IsKeyDownRightNow(Keys.Space))
+        if(Game.TimeScale == 1.0f)
         {
-            if (Player.StreetPlacePoliceShouldSearchForPlayer != Vector3.Zero)
-            {
-                Rage.Debug.DrawArrowDebug(Player.StreetPlacePoliceShouldSearchForPlayer, Vector3.Zero, Rotator.Zero, 1f, Color.Blue);
-            }
-            if (Player.PlacePoliceShouldSearchForPlayer != Vector3.Zero)
-            {
-                Rage.Debug.DrawArrowDebug(Player.StreetPlacePoliceShouldSearchForPlayer, Vector3.Zero, Rotator.Zero, 1f, Color.Purple);
-            }
-            if (Player.StreetPlacePoliceLastSeenPlayer != Vector3.Zero)
-            {
-                Rage.Debug.DrawArrowDebug(Player.StreetPlacePoliceShouldSearchForPlayer, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
-            }
-            if (Player.PlacePoliceLastSeenPlayer != Vector3.Zero)
-            {
-                Rage.Debug.DrawArrowDebug(Player.StreetPlacePoliceShouldSearchForPlayer, Vector3.Zero, Rotator.Zero, 1f, Color.Orange);
-            }
-            Game.DisplaySubtitle($"PRESS SPACE TO CANCEL");
-            GameFiber.Yield();
+            Game.TimeScale = Settings.SettingsManager.DebugSettings.SlowMoScaleTime;
         }
+        else
+        {
+            Game.TimeScale = 1.0f;
+        }
+        GameFiber.Sleep(500);
+
+        //if (Game.TimeScale >= 0.4f)
+        //{
+        //    Game.TimeScale = 0.3f;
+        //}
+        //else if (Game.TimeScale >= 0.1f)
+        //{
+        //    Game.TimeScale -= 0.05f;
+        //}
+        GameFiber.Sleep(500);
+
+
+        //while (!Game.IsKeyDownRightNow(Keys.Space))
+        //{
+        //    if (Player.StreetPlacePoliceShouldSearchForPlayer != Vector3.Zero)
+        //    {
+        //        Rage.Debug.DrawArrowDebug(Player.StreetPlacePoliceShouldSearchForPlayer, Vector3.Zero, Rotator.Zero, 1f, Color.Blue);
+        //    }
+        //    if (Player.PlacePoliceShouldSearchForPlayer != Vector3.Zero)
+        //    {
+        //        Rage.Debug.DrawArrowDebug(Player.StreetPlacePoliceShouldSearchForPlayer, Vector3.Zero, Rotator.Zero, 1f, Color.Purple);
+        //    }
+        //    if (Player.StreetPlacePoliceLastSeenPlayer != Vector3.Zero)
+        //    {
+        //        Rage.Debug.DrawArrowDebug(Player.StreetPlacePoliceShouldSearchForPlayer, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+        //    }
+        //    if (Player.PlacePoliceLastSeenPlayer != Vector3.Zero)
+        //    {
+        //        Rage.Debug.DrawArrowDebug(Player.StreetPlacePoliceShouldSearchForPlayer, Vector3.Zero, Rotator.Zero, 1f, Color.Orange);
+        //    }
+        //    Game.DisplaySubtitle($"PRESS SPACE TO CANCEL");
+        //    GameFiber.Yield();
+        //}
 
 
 

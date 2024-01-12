@@ -12,6 +12,7 @@ public class VehicleScannerAudio
 {
     private List<LetterLookup> LettersAndNumbersLookup = new List<LetterLookup>();
     private List<ColorLookup> ColorLookups = new List<ColorLookup>();
+    private List<ColorIDLookup> ColorIDLookups = new List<ColorIDLookup>();
     private List<VehicleModelLookup> VehicleModelLookups = new List<VehicleModelLookup>();
     private List<VehicleClassLookup> VehicleClassLookups = new List<VehicleClassLookup>();
     private List<VehicleMakeLookup> VehicleMakeLookups = new List<VehicleMakeLookup>();
@@ -22,6 +23,15 @@ public class VehicleScannerAudio
     public string GetColorAudio(Color ToLookup)
     {
         ColorLookup VehicleColor = ColorLookups.FirstOrDefault(x => x.BaseColor == ToLookup);
+        if (VehicleColor == null)
+            return "";
+        else
+            return VehicleColor.ScannerFile;
+    }
+
+    public string GetColorAudioByID(int colorID)
+    {
+        ColorIDLookup VehicleColor = ColorIDLookups.Where(x => x.PrimaryColor == colorID).PickRandom();
         if (VehicleColor == null)
             return "";
         else
@@ -185,6 +195,171 @@ public class VehicleScannerAudio
             new ColorLookup(colour.COLORSILVER01.FileName, Color.Silver),
             new ColorLookup(colour.COLORWHITE01.FileName, Color.White),
             new ColorLookup(colour.COLORYELLOW01.FileName, Color.Yellow),
+         };
+        ColorIDLookups = new List<ColorIDLookup>()
+        {
+            new ColorIDLookup(colour.COLORBLACK01.FileName,0),
+            new ColorIDLookup(colour.COLORBLACK01.FileName,1),
+            new ColorIDLookup(colour.COLORBLACK01.FileName,2),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,3),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,4),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,5),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,6),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,7),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,8),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,9),
+            new ColorIDLookup(colour.COLORGREY01.FileName,10),
+            new ColorIDLookup(colour.COLORGREY01.FileName,11),
+            new ColorIDLookup(colour.COLORBLACK01.FileName,12),
+            new ColorIDLookup(colour.COLORGREY01.FileName,13),
+            new ColorIDLookup(colour.COLORGREY01.FileName,14),
+            new ColorIDLookup(colour.COLORBLACK01.FileName,15),
+            new ColorIDLookup(colour.COLORBLACK01.FileName,16),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,17),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,18),
+            new ColorIDLookup(colour.COLORGREY01.FileName,19),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,20),
+            new ColorIDLookup(colour.COLORBLACK01.FileName,21),
+            new ColorIDLookup(colour.COLORGREY01.FileName,22),
+            new ColorIDLookup(colour.COLORGREY01.FileName,23),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,24),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,25),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,26),
+            new ColorIDLookup(colour.COLORRED01.FileName,27),
+            new ColorIDLookup(colour.COLORRED01.FileName,28),
+            new ColorIDLookup(colour.COLORRED01.FileName,29),
+            new ColorIDLookup(colour.COLORRED01.FileName,30),
+            new ColorIDLookup(colour.COLORDARKRED01.FileName,31),
+            new ColorIDLookup(colour.COLORRED01.FileName,32),
+            new ColorIDLookup(colour.COLORDARKRED01.FileName,33),
+            new ColorIDLookup(colour.COLORDARKRED01.FileName,34),
+            new ColorIDLookup(colour.COLORRED01.FileName,35),
+            new ColorIDLookup(colour.COLORDARKORANGE01.FileName,36),
+            new ColorIDLookup(colour.COLORGOLD01.FileName,37),
+            new ColorIDLookup(colour.COLORORANGE01.FileName,38),
+            new ColorIDLookup(colour.COLORRED01.FileName,39),
+            new ColorIDLookup(colour.COLORDARKRED01.FileName,40),
+            new ColorIDLookup(colour.COLORORANGE01.FileName,41),
+            new ColorIDLookup(colour.COLORYELLOW01.FileName,42),
+            new ColorIDLookup(colour.COLORDARKRED01.FileName,43),
+            new ColorIDLookup(colour.COLORRED01.FileName,44),
+            new ColorIDLookup(colour.COLORRED01.FileName,45),
+            new ColorIDLookup(colour.COLORRED01.FileName,46),
+            new ColorIDLookup(colour.COLORRED01.FileName,47),
+            new ColorIDLookup(colour.COLORDARKRED01.FileName,48),
+            new ColorIDLookup(colour.COLORDARKGREEN01.FileName,49),
+            new ColorIDLookup(colour.COLORDARKGREEN01.FileName,50),
+            new ColorIDLookup(colour.COLORDARKGREEN01.FileName,51),
+            new ColorIDLookup(colour.COLORDARKGREEN01.FileName,52),
+            new ColorIDLookup(colour.COLORDARKGREEN01.FileName,53),
+            new ColorIDLookup(colour.COLORGREEN01.FileName,54),
+            new ColorIDLookup(colour.COLORGREEN01.FileName,55),
+            new ColorIDLookup(colour.COLORDARKGREEN01.FileName,56),
+            new ColorIDLookup(colour.COLORGREEN01.FileName,57),
+            new ColorIDLookup(colour.COLORDARKGREEN01.FileName,58),
+            new ColorIDLookup(colour.COLORDARKGREEN01.FileName,59),
+            new ColorIDLookup(colour.COLORGREEN01.FileName,60),
+            new ColorIDLookup(colour.COLORDARKBLUE01.FileName,61),
+            new ColorIDLookup(colour.COLORDARKBLUE01.FileName,62),
+            new ColorIDLookup(colour.COLORBLUE01.FileName,63),
+            new ColorIDLookup(colour.COLORBLUE01.FileName,64),
+            new ColorIDLookup(colour.COLORBLUE01.FileName,65),
+            new ColorIDLookup(colour.COLORDARKBLUE01.FileName,66),
+            new ColorIDLookup(colour.COLORLIGHTBLUE01.FileName,67),
+            new ColorIDLookup(colour.COLORLIGHTBLUE01.FileName,68),
+            new ColorIDLookup(colour.COLORDARKBLUE01.FileName,69),
+            new ColorIDLookup(colour.COLORLIGHTBLUE01.FileName,70),
+            new ColorIDLookup(colour.COLORDARKBLUE01.FileName,71),
+            new ColorIDLookup(colour.COLORDARKBLUE01.FileName,72),
+            new ColorIDLookup(colour.COLORBLUE01.FileName,73),
+            new ColorIDLookup(colour.COLORLIGHTBLUE01.FileName,74),
+            new ColorIDLookup(colour.COLORDARKBLUE01.FileName,75),
+            new ColorIDLookup(colour.COLORDARKBLUE01.FileName,76),
+            new ColorIDLookup(colour.COLORBLUE01.FileName,77),
+            new ColorIDLookup(colour.COLORLIGHTBLUE01.FileName,78),
+            new ColorIDLookup(colour.COLORBLUE01.FileName,79),
+            new ColorIDLookup(colour.COLORLIGHTBLUE01.FileName,80),
+            new ColorIDLookup(colour.COLORLIGHTBLUE01.FileName,81),
+            new ColorIDLookup(colour.COLORDARKBLUE01.FileName,82),
+            new ColorIDLookup(colour.COLORBLUE01.FileName,83),
+            new ColorIDLookup(colour.COLORDARKBLUE01.FileName,84),
+            new ColorIDLookup(colour.COLORDARKBLUE01.FileName,85),
+            new ColorIDLookup(colour.COLORBLUE01.FileName,86),
+            new ColorIDLookup(colour.COLORLIGHTBLUE01.FileName,87),
+            new ColorIDLookup(colour.COLORYELLOW01.FileName,88),
+            new ColorIDLookup(colour.COLORYELLOW01.FileName,89),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,90),
+            new ColorIDLookup(colour.COLORYELLOW01.FileName,91),
+            new ColorIDLookup(colour.COLORGREEN01.FileName,92),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,93),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,94),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,95),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,96),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,97),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,98),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,99),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,100),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,101),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,102),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,103),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,104),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,105),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,106),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,107),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,108),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,109),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,110),
+            new ColorIDLookup(colour.COLORWHITE01.FileName,111),
+            new ColorIDLookup(colour.COLORWHITE01.FileName,112),
+            new ColorIDLookup(colour.COLORBEIGE01.FileName,113),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,114),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,115),
+            new ColorIDLookup(colour.COLORBEIGE01.FileName,116),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,117),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,118),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,119),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,120),
+            new ColorIDLookup(colour.COLORWHITE01.FileName,121),
+            new ColorIDLookup(colour.COLORWHITE01.FileName,122),
+            new ColorIDLookup(colour.COLORORANGE01.FileName,123),
+            new ColorIDLookup(colour.COLORORANGE01.FileName,124),
+            new ColorIDLookup(colour.COLORGREEN01.FileName,125),
+            new ColorIDLookup(colour.COLORYELLOW01.FileName,126),
+            new ColorIDLookup(colour.COLORLIGHTBLUE01.FileName,127),
+            new ColorIDLookup(colour.COLORDARKGREEN01.FileName,128),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,129),
+            new ColorIDLookup(colour.COLORORANGE01.FileName,130),
+            new ColorIDLookup(colour.COLORWHITE01.FileName,131),
+            new ColorIDLookup(colour.COLORWHITE01.FileName,132),
+            new ColorIDLookup(colour.COLORDARKGREEN01.FileName,133),
+            new ColorIDLookup(colour.COLORWHITE01.FileName,134),
+            new ColorIDLookup(colour.COLORPINK01.FileName,135),
+            new ColorIDLookup(colour.COLORPINK01.FileName,136),
+            new ColorIDLookup(colour.COLORPINK01.FileName,137),
+            new ColorIDLookup(colour.COLORORANGE01.FileName,138),
+            new ColorIDLookup(colour.COLORGREEN01.FileName,139),
+            new ColorIDLookup(colour.COLORLIGHTBLUE01.FileName,140),
+            new ColorIDLookup(colour.COLORDARKBLUE01.FileName,141),
+            new ColorIDLookup(colour.COLORPURPLE01.FileName,142),
+            new ColorIDLookup(colour.COLORDARKRED01.FileName,143),
+            new ColorIDLookup(colour.COLORDARKGREEN01.FileName,144),
+            new ColorIDLookup(colour.COLORPURPLE01.FileName,145),
+            new ColorIDLookup(colour.COLORDARKBLUE01.FileName,146),
+            new ColorIDLookup(colour.COLORBLACK01.FileName,147),
+            new ColorIDLookup(colour.COLORPURPLE01.FileName,148),
+            new ColorIDLookup(colour.COLORPURPLE01.FileName,149),
+            new ColorIDLookup(colour.COLORRED01.FileName,150),
+            new ColorIDLookup(colour.COLORDARKGREEN01.FileName,151),
+            new ColorIDLookup(colour.COLORDARKGREEN01.FileName,152),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,153),
+            new ColorIDLookup(colour.COLORBROWN01.FileName,154),
+            new ColorIDLookup(colour.COLORDARKGREEN01.FileName,155),
+            new ColorIDLookup(colour.COLORSILVER01.FileName,156),
+            new ColorIDLookup(colour.COLORLIGHTBLUE01.FileName,157),
+            new ColorIDLookup(colour.COLORGOLD01.FileName,158),
+            new ColorIDLookup(colour.COLORGOLD01.FileName,159),
+
+
          };
         VehicleModelLookups = new List<VehicleModelLookup>
         {
@@ -502,6 +677,17 @@ public class VehicleScannerAudio
         public ColorLookup(string _ScannerFile, Color _BaseColor)
         {
             BaseColor = _BaseColor;
+            ScannerFile = _ScannerFile;
+        }
+
+    }
+    private class ColorIDLookup
+    {
+        public int PrimaryColor { get; set; }
+        public string ScannerFile { get; set; }
+        public ColorIDLookup(string _ScannerFile, int _PrimaryColor)
+        {
+            PrimaryColor = _PrimaryColor;
             ScannerFile = _ScannerFile;
         }
 

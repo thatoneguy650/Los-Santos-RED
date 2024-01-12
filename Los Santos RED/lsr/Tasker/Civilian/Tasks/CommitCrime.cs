@@ -162,7 +162,7 @@ public class CommitCrime : ComplexTask
     }
     private void DriveRecklessly()
     {
-        if (Ped.Pedestrian.CurrentVehicle.Exists())
+        if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists())
         {
             Ped.IsDrivingRecklessly= true;
             NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 90f, (int)eCustomDrivingStyles.RecklessDriving, 10f);
@@ -170,7 +170,7 @@ public class CommitCrime : ComplexTask
     }
     private void DriveAtSpeed()
     {
-        if (Ped.Pedestrian.CurrentVehicle.Exists())
+        if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists())
         {
             Ped.IsSpeeding = true;
             NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 42f, (int)eCustomDrivingStyles.SpeedingDriving, 10f);

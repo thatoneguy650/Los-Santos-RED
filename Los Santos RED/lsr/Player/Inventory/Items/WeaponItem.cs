@@ -46,10 +46,6 @@ public class WeaponItem : ModItem
         {
             MenuCategory = WeaponInformation.Category.ToString();
         }
-        if(!string.IsNullOrEmpty(VanillaName))
-        {
-            Description += $" AKA {VanillaName}";
-        }
     }
     [StructLayout(LayoutKind.Explicit, Size = 0x138)]
     public struct DlcWeaponData
@@ -78,6 +74,10 @@ public class WeaponItem : ModItem
             description = Description;
         }
         description += "~n~~s~";
+        if (!string.IsNullOrEmpty(VanillaName))
+        {
+            Description += $"~n~Alias: {VanillaName}";
+        }
         if (RequiresDLC)
         {
             description += $"~n~~b~DLC Weapon";
@@ -274,6 +274,10 @@ public class WeaponItem : ModItem
             description = Description;
         }
         description += "~n~~s~";
+        if (!string.IsNullOrEmpty(VanillaName))
+        {
+            Description += $"~n~Alias: {VanillaName}";
+        }
         if (RequiresDLC)
         {
             description += $"~n~~b~DLC Weapon";

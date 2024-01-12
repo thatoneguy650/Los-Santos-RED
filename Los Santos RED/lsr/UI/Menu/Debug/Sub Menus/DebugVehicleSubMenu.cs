@@ -34,10 +34,12 @@ public class DebugVehicleSubMenu : DebugSubMenu
         if (Player.InterestedVehicle == null || !Player.InterestedVehicle.Vehicle.Exists())
         {
             vehicleItemsMenu.Clear();
+            LastVehicleHandle = 0;
             return;
         }
         if (LastVehicleHandle != Player.InterestedVehicle.Handle)
         {
+
             vehicleItemsMenu.Clear();
             CreateMenu();
         }
@@ -56,7 +58,7 @@ public class DebugVehicleSubMenu : DebugSubMenu
     private void CreateModificationItem()
     {
 
-        UIMenuNumericScrollerItem<int> VehicleExtraMenuItem = new UIMenuNumericScrollerItem<int>("Set Extra", "Set the vehicle Extra", 1, 15, 1) { Value = 1 };
+        UIMenuNumericScrollerItem<int> VehicleExtraMenuItem = new UIMenuNumericScrollerItem<int>("Set Extra", "Set the vehicle Extra", 1, 12, 1) { Value = 1 };
         VehicleExtraMenuItem.Activated += (menu, item) =>
         {
             if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
