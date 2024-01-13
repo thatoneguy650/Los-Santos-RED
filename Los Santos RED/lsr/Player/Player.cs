@@ -338,6 +338,9 @@ namespace Mod
         public bool IsOnBicycle { get; private set; }
         public bool IsIncapacitated => IsStunned || IsRagdoll;
         public bool IsInCover { get; private set; }
+
+        public bool IsInCombat { get; private set; }
+
         public bool IsInFirstPerson { get; private set; }
         public bool IsInSearchMode { get; set; }
         public bool IsInVehicle
@@ -667,6 +670,8 @@ namespace Mod
                 Properties.Reset();
                 World.Places.Reset();
             }
+
+
             if (resetHealth)
             {
                 Injuries.Reset();
@@ -1745,7 +1750,8 @@ namespace Mod
             IsStunned = Game.LocalPlayer.Character.IsStunned;
             IsRagdoll = Game.LocalPlayer.Character.IsRagdoll;
             IsInCover = Game.LocalPlayer.Character.IsInCover;
-            IsMovingDynamically = IsInCover || Game.LocalPlayer.Character.IsInCombat || Game.LocalPlayer.Character.IsJumping || Game.LocalPlayer.Character.IsRunning;
+            IsInCombat = Game.LocalPlayer.Character.IsInCombat;
+            IsMovingDynamically = IsInCover || IsInCombat || Game.LocalPlayer.Character.IsJumping || Game.LocalPlayer.Character.IsRunning;
             IsSwimming = Game.LocalPlayer.Character.IsSwimming;
             position = Game.LocalPlayer.Character.Position;
             CellX = (int)(position.X / EntryPoint.CellSize);

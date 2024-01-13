@@ -29,6 +29,7 @@ public class WeaponViolations
         Settings = settings;
         Time = time;
     }
+    public bool ShotSomewhatRecently => GameTimeLastViolatedShooting > 0 && Game.GameTime - GameTimeLastViolatedShooting <= 20000;
     public bool RecentlyShot => GameTimeLastViolatedShooting > 0 && Game.GameTime - GameTimeLastViolatedShooting <= 5000;
     public bool RecentlyShotSuppressed => GameTimeLastViolatedShootingSuppressed > 0 && Game.GameTime - GameTimeLastViolatedShootingSuppressed <= 5000;
     //public bool RecentlyShotNearCops => GameTimeLastViolatedShootingAtCops > 0 && Game.GameTime - GameTimeLastViolatedShootingAtCops <= 5000;

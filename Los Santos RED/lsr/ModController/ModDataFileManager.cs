@@ -265,11 +265,21 @@ public class ModDataFileManager
     }
     private void SetupFullExpandedJurisdiction()
     {
+
+    /*    private string PoliceGauntlet = "polgauntlet";
+
+    private string ServiceDilettante = "dilettante2";
+    private string WashingtonUnmarked = "blista3";
+
+    private string PoliceStanierOld = "stalion2";
+    private string ServiceStanierOld = "gauntlet2";
+    */
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction");
         string Description =
-            "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, NIGHTKID, israelsr, and AllenKennedy's mapped default police/service vehicles."
+            "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, NIGHTKID, israelsr, AllenKennedy, and my own mapped default police/service vehicles."
             + Environment.NewLine +
-            "These are all replace vehicles for police (Stanier), police2 (Buffalo), police3 (Interceptor), sheriff (Gresley Police), sheriff2 (Granger Police), policeb (Police Bike), policeold1 (Merit Police), pranger (Fugitive Police), policeold2 (Police Bison), taxi (Stanier Taxi), and lurcher (Security Torrence)."
+            "These are all replace vehicles for police (Stanier), police2 (Buffalo), police3 (Interceptor), sheriff (Gresley Police), sheriff2 (Granger Police), policeb (Police Bike), policeold1 (Merit Police), pranger (Fugitive Police), policeold2 (Police Bison), taxi (Stanier Taxi)," +
+            " dilettante2 (Taxi/Security Dilettante), policet (Police Transporter), polgauntlet (Gauntlet Livery), blista3 (Unmaked Washinton), stalion2 (1st Gen Stanier Police), gauntlet2 (1st Gen Stanier Security/Taxi) and lurcher (Security Torrence)."
             + Environment.NewLine + Environment.NewLine +
             "EUP Installation: "
             + Environment.NewLine +

@@ -181,6 +181,7 @@ public class GangReputation
         MembersCarJackedInTerritory = 0;
         PlayerDebt = 0;
         Player.SetDenStatus(Gang, false);
+        GameTimeLastAttacked = 0;
     }
     public void AddembientRep()
     {

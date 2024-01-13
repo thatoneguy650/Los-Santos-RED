@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using NAudio.Wave;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,7 @@ public class GangDispatcher
     private bool IsPedestrianOnlySpawn = false;
     private uint TimeBetweenHitSquads;
     private uint GameTimeLastDispatchedHitSquad;
+    private uint GameTimeLastAttemptedAssaultSpawn;
 
     public GangDispatcher(IEntityProvideable world, IDispatchable player, IGangs gangs, ISettingsProvideable settings, IStreets streets, IZones zones, IGangTerritories gangTerritories, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, ICrimes crimes, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IModItems modItems)
     {
@@ -193,8 +195,149 @@ public class GangDispatcher
         }
         HandleAmbientSpawns();
         HandleHitSquadSpawns();
+        HandleAssaultSpawns();
        // EntryPoint.WriteToConsole($"GANG DISPATCHER IsTimeToDispatch:{IsTimeToDispatch} GameTimeSinceDispatch:{Game.GameTime - GameTimeAttemptedDispatch} HasNeedToDispatch:{HasNeedToDispatch} TotalGangMembers:{World.Pedestrians.TotalSpawnedGangMembers} AmbientMemberLimitForZoneType:{AmbientMemberLimitForZoneType} TimeBetweenSpawn:{TimeBetweenSpawn} HasNeedToDispatchToDens:{HasNeedToDispatchToDens} PercentageOfAmbientSpawn:{PercentageOfAmbientSpawn}");
         return HasDispatchedThisTick;
+    }
+
+    private void HandleAssaultSpawns()
+    {
+        bool shouldAttempt = GameTimeLastAttemptedAssaultSpawn == 0 || Game.GameTime - GameTimeLastAttemptedAssaultSpawn >= 9000;
+        if (!shouldAttempt)
+        {
+            return;
+        }
+        if (Player.IsDead || Player.IsInVehicle)
+        {
+            //EntryPoint.WriteToConsole("Assault Spawn failed NOT NEEDED");
+            return;
+        }
+        GameFiber.Yield();
+        //GameTimeLastAttemptedAssaultSpawn = Game.GameTime;
+
+
+
+        GangDen closestDen = null;
+        float closestDistance = 999f;
+        GangDen fallbackCloseestDen = null;
+        bool RecentlyAttacked = false;
+        foreach(GangDen gangDen in PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.DistanceToPlayer <= 150f && x.IsEnabled && x.IsActivated && x.AssociatedGang != null))
+        {
+            GangReputation gr1 = Player.RelationshipManager.GangRelationships.GetReputation(gangDen.AssociatedGang);
+            if(gr1 != null && gr1.RecentlyAttacked)
+            {
+                closestDen = gangDen;
+                RecentlyAttacked = true;
+                break;
+            }
+            if(gangDen.DistanceToPlayer <= closestDistance)
+            {
+                fallbackCloseestDen = gangDen;
+                closestDistance = gangDen.DistanceToPlayer;
+            }
+        }
+        if(closestDen == null)
+        {
+            closestDen = fallbackCloseestDen;
+        }
+        if (closestDen == null || closestDen.AssociatedGang == null)
+        {
+            EntryPoint.WriteToConsole("Assault Spawn failed no den or gang");
+            return;
+        }
+        EntryPoint.WriteToConsole($"Assault Spawn Picked {closestDen.AssociatedGang.ShortName}");
+        if (closestDen.TotalAssaultSpawns >= closestDen.MaxAssaultSpawns)
+        {
+            EntryPoint.WriteToConsole("Assault Spawn failed too many spawns already");
+            return;
+        }
+        if (World.Pedestrians.GangMemberList.Count(x => x.Gang?.ID == closestDen.AssociatedGang.ID) >= closestDen.AssociatedGang.SpawnLimit)
+        {
+            EntryPoint.WriteToConsole("Assault Spawn failed TOO MANY GANG MEMBERS");
+            return;
+        }
+        //GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(closestDen.AssociatedGang);
+
+        bool shouldAttack = Player.Violations.WeaponViolations.ShotSomewhatRecently || RecentlyAttacked;
+        if (!shouldAttack)
+        {
+            EntryPoint.WriteToConsole("Assault Spawn failed havent recently attacked or shot");
+            return;
+        }
+        if (!closestDen.AssociatedGang.CanSpawn(World.TotalWantedLevel))
+        {
+            EntryPoint.WriteToConsole("Assault Spawn failed cantspawn");
+            return;
+        }
+        GameTimeLastAttemptedAssaultSpawn = Game.GameTime;
+
+
+        if (!GetAssaultSpawnTypes(closestDen.AssociatedGang))
+        {
+            EntryPoint.WriteToConsole("Assault Spawn failed type");
+            return;
+        }
+        if (!GetAssaultSpawnLocation(closestDen))
+        {
+            EntryPoint.WriteToConsole("Assault Spawn failed location");
+            return;
+        }
+        EntryPoint.WriteToConsole($"Assault Spawn EXECUTED TotalAssaultSpawns SO FAR:{closestDen.TotalAssaultSpawns}");
+        GameFiber.Yield();
+        int pedsSpawned = CallSpawnTask(true, true, true, false, TaskRequirements.None, true, false, 99);
+        EntryPoint.WriteToConsole($"GANG ASSAULT SPAWN PEDS SPAWNED THIS TIME {pedsSpawned}");
+        if (pedsSpawned > 0)
+        {
+            closestDen.TotalAssaultSpawns++;
+        }
+    }
+
+
+    private bool GetAssaultSpawnTypes(Gang gang)
+    {
+        Gang = null;
+        VehicleType = null;
+        PersonType = null;
+        Gang = gang;
+        if (Gang == null)
+        {
+            return false;
+        }
+        PersonType = Gang.GetRandomPed(World.TotalWantedLevel, "");
+        return PersonType != null;
+    }
+
+    private bool GetAssaultSpawnLocation(GangDen closestDen)
+    {
+        SpawnLocation = new SpawnLocation();
+        if (closestDen == null || PersonType == null || string.IsNullOrEmpty(PersonType.ModelName))
+        {
+            return false;
+        }
+        uint modelHash = Game.GetHashKey(PersonType.ModelName);
+        uint GameTimeStarted = Game.GameTime;
+        if (!NativeFunction.Natives.HAS_MODEL_LOADED<bool>(modelHash))
+        {
+            NativeFunction.Natives.REQUEST_MODEL(modelHash);
+            while (!NativeFunction.Natives.HAS_MODEL_LOADED<bool>(modelHash) && Game.GameTime - GameTimeStarted <= 1000)
+            {
+                GameFiber.Yield();
+            }
+        }
+        if (closestDen.PossiblePedSpawns.Any())
+        {
+            foreach (ConditionalLocation cl in closestDen.PossiblePedSpawns.Where(x=> x.Location.DistanceTo2D(Game.LocalPlayer.Character) >= 20f).OrderBy(x => Guid.NewGuid()))
+            {
+                if (NativeFunction.Natives.WOULD_ENTITY_BE_OCCLUDED<bool>(modelHash, cl.Location.X, cl.Location.Y, cl.Location.Z, true))
+                {
+                    SpawnLocation.InitialPosition = cl.Location;
+                    SpawnLocation.Heading = cl.Heading;
+                    EntryPoint.WriteToConsole($"POSITION IS OCCLUDED, SPAWN THE PED {SpawnLocation.InitialPosition} {Game.LocalPlayer.Character.DistanceTo(SpawnLocation.InitialPosition)}");
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     private void HandleHitSquadSpawns()
     {

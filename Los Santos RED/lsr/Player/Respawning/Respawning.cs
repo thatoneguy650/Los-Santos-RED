@@ -692,8 +692,8 @@ public class Respawning// : IRespawning
             EntryPoint.FocusCellY = (int)(ToSet.RespawnLocation.Y / EntryPoint.CellSize);
             EntryPoint.FocusPosition = ToSet.RespawnLocation;
         }
-
         World.ClearSpawned(false);
+        Player.Dispatcher.LocationDispatcher.Reset();
         World.Places.StaticPlaces.ActivateLocation(ToSet);
         GameTimeLastPlacedAtLocation = Game.GameTime;
         NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Game.LocalPlayer.Character);

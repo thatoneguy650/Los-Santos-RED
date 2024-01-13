@@ -175,6 +175,8 @@ public class GameLocation : ILocationDispatchable
     public virtual int MinRestockHours { get; set; }
     public virtual int MaxRestockHours { get; set; }
 
+    public int MaxAssaultSpawns { get; set; } = 15;
+
     [XmlIgnore]
     public List<PedExt> LocationSpawnedPedExts { get; set; } = new List<PedExt>();
     [XmlIgnore]
@@ -224,6 +226,11 @@ public class GameLocation : ILocationDispatchable
     public bool IsDispatchFilled { get; set; } = false;
     [XmlIgnore]
     public float EntranceGroundZ { get; set; } = 0.0f;
+
+
+    [XmlIgnore]
+    public int TotalAssaultSpawns { get; set; } = 0;
+
     public bool IsAnyMenuVisible => MenuPool.IsAnyMenuOpen();
     public bool HasCustomCamera => CameraPosition != Vector3.Zero;
     public bool HasCustomVehicleCamera => VehiclePreviewCameraPosition != Vector3.Zero;
@@ -323,6 +330,7 @@ public class GameLocation : ILocationDispatchable
             World.Places.ActiveLocations.Remove(this);
         }
         RestrictedAreas?.Deactivate();
+        TotalAssaultSpawns = 0;
     }
     public virtual List<Tuple<string, string>> DirectoryInfo(int currentHour, float distanceTo)
     {
@@ -584,7 +592,7 @@ public class GameLocation : ILocationDispatchable
     }
     public virtual void Reset()
     {
-
+        TotalAssaultSpawns = 0;
     }
 
     protected void SetupLocationCamera(LocationCamera locationCamera, bool isInside, bool sayGreeting)

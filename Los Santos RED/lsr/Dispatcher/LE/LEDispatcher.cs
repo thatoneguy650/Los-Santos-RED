@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices.ComTypes;
+using System.Windows.Markup;
+using System.Windows.Media.Animation;
 
 public class LEDispatcher
 {
@@ -48,6 +50,7 @@ public class LEDispatcher
     private Street RoadblockInitialPositionStreet;
     private Vector3 RoadblockFinalPosition;
     private float RoadblockFinalHeading;
+    private uint GameTimeLastAttemptedAssaultSpawn;
 
     private bool HasNeedToSpawnHeli => World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit;
     private bool HasNeedToSpawnBoat => (Player.CurrentVehicle?.IsBoat == true || Player.IsSwimming) && World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit;
@@ -744,7 +747,107 @@ public class LEDispatcher
         {
             HasDispatchedThisTick = true;
         }
+        HandleAssaultSpawns();
         return HasDispatchedThisTick;
+    }
+
+    private void HandleAssaultSpawns()
+    {
+        bool shouldAttempt = GameTimeLastAttemptedAssaultSpawn == 0 || Game.GameTime - GameTimeLastAttemptedAssaultSpawn >= 9000;
+        if (!shouldAttempt)
+        {
+            return;
+        }
+        if (Player.IsNotWanted || Player.IsDead || Player.WantedLevel <= 1 || Player.IsInVehicle)
+        {
+            //EntryPoint.WriteToConsole("Assault Spawn failed NOT NEEDED");
+            return;
+        }
+        if (World.Pedestrians.TotalSpawnedAmbientPolice >= SpawnedCopLimit)
+        {
+            EntryPoint.WriteToConsole("Assault Spawn failed TOO MANY COPS");
+            return;
+        }
+        GameFiber.Yield();
+        GameTimeLastAttemptedAssaultSpawn = Game.GameTime;
+        PoliceStation ClosestStation = PlacesOfInterest.PossibleLocations.PoliceStations.Where(x => x.DistanceToPlayer <= 150f && x.IsEnabled && x.IsActivated && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        if(ClosestStation == null || ClosestStation.AssignedAgency == null)
+        {
+            EntryPoint.WriteToConsole("Assault Spawn failed no station or agency");
+            return;
+        }
+        if(ClosestStation.TotalAssaultSpawns >= ClosestStation.MaxAssaultSpawns)
+        {
+            EntryPoint.WriteToConsole("Assault Spawn failed too many spawns already");
+            return;
+        }
+        if (!ClosestStation.AssignedAgency.CanSpawn(World.TotalWantedLevel))
+        {
+            EntryPoint.WriteToConsole("Assault Spawn failed cantspawn");
+            return;
+        }
+        if (!GetAssaultSpawnTypes(ClosestStation.AssignedAgency))
+        {
+            EntryPoint.WriteToConsole("Assault Spawn failed type");
+            return;
+        }
+        if (!GetAssaultSpawnLocation(ClosestStation))
+        {
+            EntryPoint.WriteToConsole("Assault Spawn failed location");
+            return;
+        }
+        EntryPoint.WriteToConsole($"Assault Spawn EXECUTED TotalAssaultSpawns SO FAR:{ClosestStation.TotalAssaultSpawns}");
+        GameFiber.Yield();
+        if(CallSpawnTask(true, true, true, false, TaskRequirements.None, false, false))
+        {
+            ClosestStation.TotalAssaultSpawns++;
+        }
+    }
+    private bool GetAssaultSpawnLocation(PoliceStation ClosestStation)
+    {
+        SpawnLocation = new SpawnLocation();
+        if(ClosestStation == null || PersonType == null || string.IsNullOrEmpty(PersonType.ModelName))
+        {
+            return false;
+        }
+        uint modelHash = Game.GetHashKey(PersonType.ModelName);
+        uint GameTimeStarted = Game.GameTime;
+        if (!NativeFunction.Natives.HAS_MODEL_LOADED<bool>(modelHash))
+        {
+            NativeFunction.Natives.REQUEST_MODEL(modelHash);
+            while (!NativeFunction.Natives.HAS_MODEL_LOADED<bool>(modelHash) && Game.GameTime - GameTimeStarted <= 1000)
+            {
+                GameFiber.Yield();
+            }
+        }
+        if (ClosestStation.PossiblePedSpawns.Any())
+        {
+            foreach(ConditionalLocation cl in ClosestStation.PossiblePedSpawns.Where(x => x.Location.DistanceTo2D(Game.LocalPlayer.Character) >= 20f).OrderBy(x=> Guid.NewGuid()))
+            {
+                if(NativeFunction.Natives.WOULD_ENTITY_BE_OCCLUDED<bool>(modelHash, cl.Location.X,cl.Location.Y,cl.Location.Z,true))
+                {
+                    SpawnLocation.InitialPosition = cl.Location;
+                    SpawnLocation.Heading = cl.Heading;
+                    EntryPoint.WriteToConsole("POSITION IS OCCLUDED, SPAWN THE PED");
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private bool GetAssaultSpawnTypes(Agency agency)
+    {
+        Agency = null;
+        VehicleType = null;
+        PersonType = null;
+        IsOffDutySpawn = false;
+        Agency = agency;
+        if(Agency == null)
+        {
+            return false;
+        }
+        PersonType = Agency.GetRandomPed(World.TotalWantedLevel, "");
+        return PersonType != null;
     }
     public void Dispose()
     {
@@ -1042,7 +1145,6 @@ public class LEDispatcher
             EntryPoint.WriteToConsole("Spawn Location is water and no need to spawn heli or boat, exit");
             return false;
         }
-
         Agency = GetRandomAgency(SpawnLocation);
         GameFiber.Yield();
         bool isAmbientPedSpawn = false;

@@ -45,6 +45,7 @@ namespace LosSantosRED.lsr.Interface
         VehicleOwnership VehicleOwnership { get; }
         PedExt PedLastKilledPlayer { get; }
         string Gender { get; }
+        Dispatcher Dispatcher { get; }
 
         void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearVehicleOwnership, 
             bool resetCellphone, bool clearActiveTasks, bool clearProperties, bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetACtivites, bool resetGracePeriod, bool resetBankAccounts, bool resetSavedGame, 
