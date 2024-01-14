@@ -39,6 +39,7 @@ public abstract class HumanNeed
     public bool IsBelowHalf => CurrentValue <= MaxValue * 0.5f;
     public bool IsNearMax => CurrentValue >= 0.9f * MaxValue;
     public bool IsMax => CurrentValue == MaxValue;
+    public bool IsMin => CurrentValue <= MinValue;
     public bool NeedsValueUpdate => Game.GameTime - GameTimeLastUpdated >= GameTimeBetweenValueUpdates;
     public bool NeedsResultUpdate => Game.GameTime - GameTimeLastUpdated >= GameTimeBetweenResultUpdates;
     public bool RecentlyChanged => GameTimeLastChangedNeed > 0 && Game.GameTime - GameTimeLastChangedNeed <= 5000;

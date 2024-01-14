@@ -43,8 +43,9 @@ namespace LosSantosRED.lsr.Interface
         InteriorManager InteriorManager { get; }
         OutfitManager OutfitManager { get; }
         Violations Violations { get; }
+        bool IsAiming { get; }
 
-       // void OnDamagedVehicle();
+        // void OnDamagedVehicle();
         void PlaySpeech(string v1, bool v2);
         void SetAngeredCop();
     }

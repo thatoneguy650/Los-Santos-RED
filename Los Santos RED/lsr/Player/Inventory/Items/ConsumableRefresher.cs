@@ -83,7 +83,7 @@ public class ConsumableRefresher
         {
             if (GivenFullHunger && GivenFullSleep && GivenFullThirst && (GivenFullHealth || !ConsumableItem.AlwaysChangesHealth) && GivenFullArmor)
             {
-                //EntryPoint.WriteToConsoleTestLong($"Finished CIG1 {ConsumableItem.Name}");
+                EntryPoint.WriteToConsole($"Finished CIG1 {ConsumableItem.Name}");
                 IsFinished = true;
             }
         }
@@ -91,7 +91,7 @@ public class ConsumableRefresher
         {
             if (GivenFullHealth && GivenFullArmor)
             {
-                //EntryPoint.WriteToConsoleTestLong($"Finished CIG2 {ConsumableItem.Name}");
+                EntryPoint.WriteToConsole($"Finished CIG2 {ConsumableItem.Name}");
                 IsFinished = true;
             }
         }
@@ -156,7 +156,7 @@ public class ConsumableRefresher
                 {
                     if (ConsumableItem.HungerChangeAmount < 0.0f)
                     {
-                        if (HungerGiven > ConsumableItem.HungerChangeAmount)
+                        if (!Player.HumanState.Hunger.IsMin && HungerGiven > ConsumableItem.HungerChangeAmount)
                         {
                             Player.HumanState.Hunger.Change(-1.0f, true);
                             HungerGiven--;
@@ -168,7 +168,7 @@ public class ConsumableRefresher
                     }
                     else
                     {
-                        if (HungerGiven < ConsumableItem.HungerChangeAmount)
+                        if (!Player.HumanState.Hunger.IsMax && HungerGiven < ConsumableItem.HungerChangeAmount)
                         {
                             Player.HumanState.Hunger.Change(1.0f, true);
                             HungerGiven++;
@@ -187,7 +187,7 @@ public class ConsumableRefresher
                 {
                     if (ConsumableItem.ThirstChangeAmount < 0.0f)
                     {
-                        if (ThirstGiven > ConsumableItem.ThirstChangeAmount)
+                        if (!Player.HumanState.Thirst.IsMin && ThirstGiven > ConsumableItem.ThirstChangeAmount)
                         {
                             Player.HumanState.Thirst.Change(-1.0f, true);
                             ThirstGiven--;
@@ -199,7 +199,7 @@ public class ConsumableRefresher
                     }
                     else
                     {
-                        if (ThirstGiven < ConsumableItem.ThirstChangeAmount)
+                        if (!Player.HumanState.Hunger.IsMax && ThirstGiven < ConsumableItem.ThirstChangeAmount)
                         {
                             Player.HumanState.Thirst.Change(1.0f, true);
                             ThirstGiven++;
@@ -218,7 +218,7 @@ public class ConsumableRefresher
                 {
                     if (ConsumableItem.SleepChangeAmount < 0.0f)
                     {
-                        if (SleepGiven > ConsumableItem.SleepChangeAmount)
+                        if (!Player.HumanState.Sleep.IsMin && SleepGiven > ConsumableItem.SleepChangeAmount)
                         {
                             Player.HumanState.Sleep.Change(-1.0f, true);
                             SleepGiven--;
@@ -230,7 +230,7 @@ public class ConsumableRefresher
                     }
                     else
                     {
-                        if (SleepGiven < ConsumableItem.SleepChangeAmount)
+                        if (!Player.HumanState.Sleep.IsMax && SleepGiven < ConsumableItem.SleepChangeAmount)
                         {
                             Player.HumanState.Sleep.Change(1.0f, true);
                             SleepGiven++;

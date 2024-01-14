@@ -129,7 +129,7 @@ public class HoldUp : Interaction
         GameTimeStoppedTargetting = 0;
         int TimeToWait = 500;// RandomItems.MyRand.Next(500, 1000);
         IsTargetting = true;
-        while ((IsTargetting || Game.GameTime - GameTimeStoppedTargetting <= TimeToWait) && !ForcedCower && Target.DistanceToPlayer <= 10f && Target.Pedestrian.IsAlive && !Target.Pedestrian.IsRagdoll && !Target.Pedestrian.IsStunned && Player.IsAliveAndFree && !Player.Character.IsStunned && !Player.Character.IsRagdoll && NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1))
+        while ((IsTargetting || Game.GameTime - GameTimeStoppedTargetting <= TimeToWait || Player.IsAiming) && !ForcedCower && Target.DistanceToPlayer <= 10f && Target.Pedestrian.IsAlive && !Target.Pedestrian.IsRagdoll && !Target.Pedestrian.IsStunned && Player.IsAliveAndFree && !Player.Character.IsStunned && !Player.Character.IsRagdoll && NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1))
         {
             if (Player.CurrentTargetedPed?.Pedestrian.Handle == Target.Pedestrian.Handle)
             {

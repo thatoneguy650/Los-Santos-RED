@@ -272,7 +272,42 @@ public class DebugHelperSubMenu : DebugSubMenu
 
         AddAnimationItems();
 
+        string audioName = "";
+        string audioRef = "";
+        UIMenuItem playAudioName = new UIMenuItem("Set Audio Name", "");
+        playAudioName.Activated += (menu, item) =>
+        {
+            string scriptName = NativeHelper.GetKeyboardInput("");
+            if (!string.IsNullOrEmpty(scriptName))
+            {
+                playAudioName.RightLabel = scriptName;
+                audioName = scriptName;
+            }
+        };
+        HelperMenuItem.AddItem(playAudioName);
 
+        UIMenuItem playAudioRef = new UIMenuItem("Set Audio Ref", "");
+        playAudioRef.Activated += (menu, item) =>
+        {
+            string scriptName = NativeHelper.GetKeyboardInput("");
+            if (!string.IsNullOrEmpty(scriptName))
+            {
+                playAudioRef.RightLabel = scriptName;
+                audioRef = scriptName;
+            }
+        };
+        HelperMenuItem.AddItem(playAudioRef);
+
+        UIMenuItem playAudio = new UIMenuItem("Play Audio", "");
+        playAudio.Activated += (menu, item) =>
+        {
+
+            if (!string.IsNullOrEmpty(audioRef) && !string.IsNullOrEmpty(audioName))
+            {
+                NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, audioName, audioRef, 0);
+            }
+        };
+        HelperMenuItem.AddItem(playAudio);
     }
     private void AddTrunkItems()
     {

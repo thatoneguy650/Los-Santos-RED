@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,6 +63,7 @@ public abstract class ConsumableItem : ModItem
         actionable.Inventory.Use(this);
         return true;
     }
+
     public override bool ConsumeItem(IActionable actionable, bool applyNeeds)
     {
         actionable.Inventory.Use(this);
@@ -101,6 +103,195 @@ public abstract class ConsumableItem : ModItem
         }
         return true;
     }
+
+    public override bool ConsumeItemSlow(IActionable actionable, bool applyNeeds, ISettingsProvideable settings)
+    {
+        actionable.Inventory.Use(this);
+        ConsumableRefresher ConsumableItemNeedGain = new ConsumableRefresher(actionable, this, settings) { SpeedMultiplier = 5.0f };
+        uint GameTimeStarted = Game.GameTime;
+       //uint GameTimeLastPlayedSound = 0;
+        while (ConsumableItemNeedGain != null && !ConsumableItemNeedGain.IsFinished)// && Game.GameTime - GameTimeStarted <= 20000)
+        {
+            ConsumableItemNeedGain.Update();
+
+            //if(Game.GameTime - GameTimeLastPlayedSound >= 3000)
+            //{
+            //    NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+            //    GameTimeLastPlayedSound = Game.GameTime;
+            //}
+
+            GameFiber.Yield();
+        }
+        if (IsIntoxicating && Intoxicant != null)
+        {
+            actionable.Intoxication.Ingest(Intoxicant);
+        }
+        if (ChangesArmor)
+        {
+            actionable.ArmorManager.ChangeArmor(ArmorChangeAmount);
+        }
+
+
+
+
+        //bool StillConsuming = true;
+
+        //float HungerGiven = 0f;
+        //float SleepGiven = 0f;
+        //float ThirstGiven = 0f;
+        //float HealthGiven = 0f;
+        //float ArmorGiven = 0f;
+        //bool isFinishedHunger = false;
+        //bool isFinishedSleep = false;
+        //bool isFinishedThirst = false;
+        //bool isFinishedHealth = false;
+        //bool isFinishedArmor = false;
+
+
+        //while (StillConsuming)
+        //{
+        //    if (applyNeeds)
+        //    {
+        //        if (ChangesHunger)
+        //        {
+        //            if (HungerGiven < HungerChangeAmount)
+        //            {
+        //                actionable.HumanState.Hunger.Change(1.0f, true);
+        //                HungerGiven++;
+        //            }
+        //            else if (HungerGiven >= HungerChangeAmount)
+        //            {
+        //                isFinishedHunger = true;
+        //            }
+        //        }
+        //        if (ChangesThirst)
+        //        {
+        //            if (ThirstGiven < ThirstChangeAmount)
+        //            {
+        //                actionable.HumanState.Thirst.Change(1.0f, true);
+        //                ThirstGiven++;
+        //            }
+        //            else if (ThirstGiven >= ThirstChangeAmount)
+        //            {
+        //                isFinishedThirst = true;
+        //            }
+        //        }
+        //        if (ChangesSleep)
+        //        {
+        //            if (SleepGiven < SleepChangeAmount)
+        //            {
+        //                actionable.HumanState.Sleep.Change(1.0f, true);
+        //                SleepGiven++;
+        //            }
+        //            else if (SleepGiven >= SleepChangeAmount)
+        //            {
+        //                isFinishedSleep = true;
+        //            }
+        //        }
+        //        if (ChangesHealth && AlwaysChangesHealth)
+        //        {
+        //            if (HealthGiven < HealthChangeAmount)
+        //            {
+        //                actionable.HealthManager.ChangeHealth(1);
+        //                HealthGiven++;
+        //            }
+        //            else if (HealthGiven >= HealthChangeAmount)
+        //            {
+        //                isFinishedHealth = true;
+        //            }
+        //        }
+        //        if (ChangesArmor)
+        //        {
+        //            if (ArmorGiven < ArmorChangeAmount)
+        //            {
+        //                actionable.ArmorManager.ChangeArmor(1);
+        //                ArmorGiven++;
+        //            }
+        //            else if (ArmorGiven >= ArmorChangeAmount)
+        //            {
+        //                isFinishedArmor = true;
+        //            }
+        //        }
+
+        //        if ((isFinishedHunger || !ChangesHunger) && (isFinishedSleep || !ChangesSleep) && (isFinishedThirst || !ChangesThirst) && (isFinishedHealth || !ChangesHealth || !AlwaysChangesHealth) && (isFinishedArmor || !ChangesArmor))
+        //        {
+        //            break;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (ChangesHealth)
+        //        {
+        //            if (HealthGiven < HealthChangeAmount)
+        //            {
+        //                actionable.HealthManager.ChangeHealth(1);
+        //                HealthGiven++;
+        //            }
+        //            else if (HealthGiven >= HealthChangeAmount)
+        //            {
+        //                isFinishedHealth = true;
+        //            }
+        //        }
+        //        if (ChangesArmor)
+        //        {
+        //            if (ArmorGiven < ArmorChangeAmount)
+        //            {
+        //                actionable.ArmorManager.ChangeArmor(1);
+        //                ArmorGiven++;
+        //            }
+        //            else if (ArmorGiven >= ArmorChangeAmount)
+        //            {
+        //                isFinishedArmor = true;
+        //            }
+        //        }
+        //        if((isFinishedHealth || !ChangesHealth) && (isFinishedArmor || !ChangesArmor))
+        //        {
+        //            break;
+        //        }
+        //    }
+        //    GameFiber.Sleep(500);
+        //}
+
+
+
+        //if (applyNeeds)
+        //{
+        //    if (ChangesHunger)
+        //    {
+        //        actionable.HumanState.Hunger.Change(HungerChangeAmount, true);
+        //    }
+        //    if (ChangesSleep)
+        //    {
+        //        actionable.HumanState.Sleep.Change(SleepChangeAmount, true);
+        //    }
+        //    if (ChangesThirst)
+        //    {
+        //        actionable.HumanState.Thirst.Change(ThirstChangeAmount, true);
+        //    }
+        //    if (ChangesHealth && AlwaysChangesHealth)
+        //    {
+        //        actionable.HealthManager.ChangeHealth(HealthChangeAmount);
+        //    }
+        //}
+        //else
+        //{
+        //    if (ChangesHealth)
+        //    {
+        //        actionable.HealthManager.ChangeHealth(HealthChangeAmount);
+        //    }
+        //}
+        //if (IsIntoxicating && Intoxicant != null)
+        //{
+        //    actionable.Intoxication.Ingest(Intoxicant);
+        //}
+        //if (ChangesArmor)
+        //{
+        //    actionable.ArmorManager.ChangeArmor(ArmorChangeAmount);
+        //}
+        return true;
+    }
+
+
     public override string GetExtendedDescription(ISettingsProvideable settings)
     {
         string toReturn = (settings.SettingsManager.NeedsSettings.ApplyNeeds ? (ChangesNeeds ? $"~n~{NeedChangeDescription}" : "") : (ChangesHealth ? $"~n~{HealthChangeDescription}" : "")) + (ChangesArmor ? $"~n~{ArmorChangeDescription}" : "");

@@ -242,7 +242,7 @@ public class GangDispatcher
         }
         if (closestDen == null || closestDen.AssociatedGang == null)
         {
-            EntryPoint.WriteToConsole("Assault Spawn failed no den or gang");
+            //EntryPoint.WriteToConsole("Assault Spawn failed no den or gang");
             return;
         }
         EntryPoint.WriteToConsole($"Assault Spawn Picked {closestDen.AssociatedGang.ShortName}");

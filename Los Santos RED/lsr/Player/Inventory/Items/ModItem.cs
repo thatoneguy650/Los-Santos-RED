@@ -125,6 +125,10 @@ public class ModItem
     {
         return false;
     }
+    public virtual bool ConsumeItemSlow(IActionable actionable, bool applyNeeds, ISettingsProvideable settings)
+    {
+        return false;
+    }
     public virtual string GetTypeDescription(ISettingsProvideable settings)
     {
         return $"~n~Type: ~p~{ItemType}~s~" + (ItemSubType != ItemSubType.None ? $" - ~p~{ItemSubType}~s~" : "");
@@ -386,20 +390,25 @@ public class ModItem
         {      
             Transaction?.PersonTransaction?.TransactionPed?.PedInventory.Remove(this, TotalItems);
             //menuItem.ItemsSoldToPlayer += TotalItems;
-            if (ConsumeOnPurchase)
-            {
-                player.ActivityManager.UseInventoryItem(this, false);
-            }
-            else
-            {
-                player.Inventory.Add(this, TotalItems * AmountPerPackage);
-            }
+
             if (!isStealing)
             {
                 player.BankAccounts.GiveMoney(-1 * TotalPrice, Transaction.UseAccounts);
                 Transaction.MoneySpent += TotalPrice;
             }
             Transaction.OnItemPurchased(this, menuItem, TotalItems);
+
+
+            if (ConsumeOnPurchase)
+            {
+                Transaction.ClearPreviews();
+                player.ActivityManager.UseInventoryItem(this, false);
+            }
+            else
+            {
+                player.Inventory.Add(this, TotalItems * AmountPerPackage);
+            }
+
             return true;
         }
         Transaction.DisplayInsufficientFundsMessage();

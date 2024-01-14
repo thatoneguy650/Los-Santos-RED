@@ -132,6 +132,7 @@ public class ActivityManager
         CanPerformActivitesBase &&
         !IsPerformingActivity &&
         Player.IsVisiblyArmed && 
+        !Player.CurrentTargetedPed.PedViolations.IsVisiblyArmed && 
         Player.CurrentTargetedPed.DistanceToPlayer <= Settings.SettingsManager.ActivitySettings.HoldUpDistance;
 
     public bool CanInspectPed => 
@@ -604,8 +605,19 @@ public class ActivityManager
         if(!performActivity)
         {
             Time.FastForward(Time.CurrentDateTime.AddMinutes(3));
-            GameFiber.Sleep(3000);
-            modItem.ConsumeItem(Actionable, Settings.SettingsManager.NeedsSettings.ApplyNeeds);
+
+            //GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
+            //{
+            //    try
+            //    {
+                    modItem.ConsumeItemSlow(Actionable, Settings.SettingsManager.NeedsSettings.ApplyNeeds, Settings);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+            //        EntryPoint.ModController.CrashUnload();
+            //    }
+            //}, "Consumewatcher");
         }
         else
         {

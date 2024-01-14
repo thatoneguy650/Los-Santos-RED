@@ -135,7 +135,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
 
         SetSlowMoOnDeath = true;
         SlowMoOnDeathSpeed = 0.4f;
-        SetSlowMoOnBusted = true;
+        SetSlowMoOnBusted = false; // true;
         SlowMoOnBustedSpeed = 0.4f;
         AllowWeaponDropping = true;
         WeaponDroppingSupressPickups = true;

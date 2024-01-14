@@ -790,6 +790,9 @@ public class GameLocation : ILocationDispatchable
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)locationBlip.Handle, true);
         }
         NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+
+
+
         NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(BlipName);
         NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(locationBlip);
         return locationBlip;

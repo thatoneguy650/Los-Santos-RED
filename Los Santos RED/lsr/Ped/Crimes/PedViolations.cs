@@ -84,6 +84,9 @@ public class PedViolations
     public bool IsCurrentlyViolatingAnyCivilianReportableCrimes => CrimesViolating.Any(x=> x.CanBeReactedToByCivilians);
     public Crime WorstObservedCrime => CrimesObservedViolating.OrderBy(x => x.Priority).FirstOrDefault();
     public List<Crime> CrimesObservedViolating => CrimesObserved;
+
+    public bool IsVisiblyArmed { get; set; }
+
     public void Update(IPoliceRespondable player)
     {
         if (Settings.SettingsManager.CivilianSettings.CheckCivilianCrimes)
@@ -202,15 +205,15 @@ public class PedViolations
             {
                 AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));
             }
-            bool isVisiblyArmed = IsVisiblyArmed();
-            if (isVisiblyArmed)
+            IsVisiblyArmed = IsConsideredVisiblyArmed();
+            if (IsVisiblyArmed)
             {
                 if (!PedExt.IsInVehicle)
                 {
                     AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "BrandishingWeapon"));
                 }
             }
-            if (isVisiblyArmed)
+            if (IsVisiblyArmed)
             {
                 ShootingChecker();
                 if (IsShooting)
@@ -266,7 +269,7 @@ public class PedViolations
                 if (PedExt.Pedestrian.IsInCombat || PedExt.Pedestrian.IsInMeleeCombat)
                 {
                     AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingCivilians"));
-                    if (isVisiblyArmed)
+                    if (IsVisiblyArmed)
                     {
                         AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingWithDeadlyWeapon"));
                     }
@@ -497,7 +500,7 @@ public class PedViolations
         }
         else return -1.0f;
     }
-    private bool IsVisiblyArmed()
+    private bool IsConsideredVisiblyArmed()
     {
        // WeaponDescriptor CurrentWeapon = PedExt.Pedestrian.Inventory.EquippedWeapon;
 
