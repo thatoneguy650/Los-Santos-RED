@@ -17,6 +17,9 @@ public class DebugVehicleSubMenu : DebugSubMenu
     private UIMenu vehicleItemsMenu;
     private IPlateTypes PlateTypes;
     private uint LastVehicleHandle;
+    private int selectedPrimaryColor;
+    private int selectedSecondaryColor;
+
     public DebugVehicleSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IPlateTypes plateTypes) : base(debug, menuPool, player)
     {
         PlateTypes = plateTypes;
@@ -218,34 +221,50 @@ public class DebugVehicleSubMenu : DebugSubMenu
         vehicleItemsMenu.AddItem(VehicleColorMenuItem);
 
 
-
+        selectedPrimaryColor = 0;
+        selectedSecondaryColor = 0;
         UIMenuNumericScrollerItem<int> vehiclePrimaryColorScroller = new UIMenuNumericScrollerItem<int>("Primary Color", "Set the primary color selected", 0, 159, 1);
         vehiclePrimaryColorScroller.Value = vehiclePrimaryColorScroller.Minimum;
-        //vehiclePrimaryColorScroller.Activated += (menu, item) =>
-        //{
-        //    if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
-        //    {
-        //        NativeFunction.Natives.SET_VEHICLE_COLOURS(Player.InterestedVehicle.Vehicle, vehiclePrimaryColorScroller.Value, vehiclePrimaryColorScroller.Value);
-        //        Game.DisplaySubtitle($"SET COLOR {VehicleColorMenuItem.Value}");
-        //    }
-        //};
+        vehiclePrimaryColorScroller.Activated += (menu, item) =>
+        {
+            selectedPrimaryColor = vehiclePrimaryColorScroller.Value;
+            if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+            {
+                NativeFunction.Natives.SET_VEHICLE_COLOURS(Player.InterestedVehicle.Vehicle, selectedPrimaryColor, selectedSecondaryColor);
+                Game.DisplaySubtitle($"SET COLOR {VehicleColorMenuItem.Value}");
+            }
+        };
         vehicleItemsMenu.AddItem(vehiclePrimaryColorScroller);
 
 
         UIMenuNumericScrollerItem<int> vehicleSecondaryColorScroller = new UIMenuNumericScrollerItem<int>("Secondary Color", "Set the secondary color selected", 0, 159, 1);
         vehicleSecondaryColorScroller.Value = vehicleSecondaryColorScroller.Minimum;
-        vehicleItemsMenu.AddItem(vehicleSecondaryColorScroller);
-
-
-        UIMenuItem setColorIndiv = new UIMenuItem("Set Color", "Set both colors selected");
-        setColorIndiv.Activated += (sender, selectedItem) =>
+        vehicleSecondaryColorScroller.Activated += (sender, selectedItem) =>
         {
+            selectedSecondaryColor = vehicleSecondaryColorScroller.Value;
             if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
             {
-                NativeFunction.Natives.SET_VEHICLE_COLOURS(Player.InterestedVehicle.Vehicle, vehiclePrimaryColorScroller.Value, vehicleSecondaryColorScroller.Value);
+                NativeFunction.Natives.SET_VEHICLE_COLOURS(Player.InterestedVehicle.Vehicle, selectedPrimaryColor, selectedSecondaryColor);
                 Game.DisplaySubtitle($"SET COLOR {VehicleColorMenuItem.Value}");
             }
         };
+        vehicleItemsMenu.AddItem(vehicleSecondaryColorScroller);
+
+
+        UIMenuItem setWHiteMenu = new UIMenuItem("Set Color White", "Set Color White");
+        setWHiteMenu.Activated += (menu, item) =>
+        {
+            if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+            {
+                NativeFunction.Natives.SET_VEHICLE_COLOURS(Player.InterestedVehicle.Vehicle, 134, 134);
+            }
+        };
+        vehicleItemsMenu.AddItem(setWHiteMenu);
+
+
+
+
+
 
 
 
