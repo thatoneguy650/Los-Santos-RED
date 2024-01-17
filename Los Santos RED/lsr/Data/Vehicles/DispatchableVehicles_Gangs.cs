@@ -5996,7 +5996,7 @@ public class DispatchableVehicles_Gangs
                     SecondaryColor = 12,
                     PearlescentColor = 0,
                     WheelColor = 2,
-                    WheelType = 8,
+                    WheelType = 6,
                     VehicleMods =
                         new List<VehicleMod>() {
                           new VehicleMod() {
@@ -6284,6 +6284,160 @@ public class DispatchableVehicles_Gangs
                           },
                           new VehicleMod() {
                             ID = 48,
+                            Output = 3,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "wolfsbane_PBFatStripe_Lost_DLC",
+              ModelName = "wolfsbane",
+              AmbientSpawnChance = 20,
+              WantedSpawnChance = 20,
+              MaxOccupants = 1,//2, when seat assigning added
+              RequiredPrimaryColorID = 21,
+              RequiredSecondaryColorID = 21,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 21,
+                    SecondaryColor = 21,
+                    WheelColor = 112,
+                    WheelType = 6,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 9,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 25,
+                          },
+                          new VehicleMod() {
+                            ID = 24,
+                            Output = 25,
+                          },
+                          new VehicleMod() {
+                            ID = 48,
+                            Output = 14,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "daemon2_PBClassicStripe_Lost_DLC",
+              ModelName = "daemon2",
+              AmbientSpawnChance = 20,
+              WantedSpawnChance = 20,
+              MaxOccupants = 1,//2, when seat assigning added
+              RequiredPrimaryColorID = 21,
+              RequiredSecondaryColorID = 118,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 21,
+                    SecondaryColor = 118,
+                    WheelColor = 147,
+                    WheelType = 6,
+                    VehicleToggles = new List<VehicleToggle>() {
+                        new VehicleToggle() {
+                            ID = 18,
+                            IsTurnedOn = true,
+                          },
+                        },
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 0,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 2,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 5,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 6,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 8,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 9,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 5,
+                          },
+                          new VehicleMod() {
+                            ID = 11,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 12,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 13,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 16,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 50,
+                          },
+                          new VehicleMod() {
+                            ID = 24,
+                            Output = 50,
+                          },
+                          new VehicleMod() {
+                            ID = 48,
+                            Output = 5,
+                          },
+                          new VehicleMod() {
+                            ID = 50,
                             Output = 3,
                           },
                         },

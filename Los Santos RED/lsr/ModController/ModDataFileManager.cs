@@ -314,8 +314,6 @@ public class ModDataFileManager
             "Bison - Model by Rockstar Games; UV-Map, template, and assembly by Yard1."
             + Environment.NewLine +
             "Stanier Taxi - Model by Rockstar Games; UV-Map, template, and assembly by israelsr"
-            + Environment.NewLine +
-            "Fugitive - Original Cheval Fugitive model by Rockstar Games modified, UV mapped, skins and assembled by NIGHTKID - Generic police equipments(radio, pushbar, spotlight, partition, lightbars) model by Rockstar Games - Arma console by LeoAllTheWay, converted by NIGHTKID - Jay's Stalker radarv by jasonct203 converted by NIGHTKID - Setina pushbar/FPIU wraparound by GUMP converted by NIGHTKID - NFS Equipment(Antenna) by TGM converted by NIGHTKID - Tir6 Texure by Kpdofficer - Carvariation.meta and Vehicles.meta files by JWillMac51"
             + Environment.NewLine + Environment.NewLine +
             "Creator Links"
             + Environment.NewLine +
@@ -324,8 +322,6 @@ public class ModDataFileManager
             "Lt.Caine - https://www.lcpdfr.com/profile/143082-ltcaine/content/?type=downloads_file"
             + Environment.NewLine +
             "AllenKennedy - https://www.gta5-mods.com/users/AllenKennedy/files"
-            + Environment.NewLine +
-            "NIGHTKID/Han'SGarage - https://www.lcpdfr.com/profile/69491-hansgarage/content/?type=downloads_file"
             + Environment.NewLine +
             "israelsr - https://www.gta5-mods.com/users/israelsr"
             + Environment.NewLine +
