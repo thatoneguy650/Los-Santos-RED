@@ -276,10 +276,10 @@ public class ModDataFileManager
     */
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction");
         string Description =
-            "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, NIGHTKID, israelsr, AllenKennedy, and my own mapped default police/service vehicles."
+            "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, israelsr, AllenKennedy, and my own mapped default police/service vehicles."
             + Environment.NewLine +
             "These are all replace vehicles for police (Stanier), police2 (Buffalo), police3 (Interceptor), sheriff (Gresley Police), sheriff2 (Granger Police), policeb (Police Bike), policeold1 (Merit Police), pranger (Fugitive Police), policeold2 (Police Bison), taxi (Stanier Taxi)," +
-            " dilettante2 (Taxi/Security Dilettante), policet (Police Transporter), polgauntlet (Gauntlet Livery), blista3 (Unmaked Washinton), stalion2 (1st Gen Stanier Police), gauntlet2 (1st Gen Stanier Security/Taxi) and lurcher (Security Torrence)."
+            " dilettante2 (Taxi/Security Dilettante), policet (Police Transporter), polgauntlet (Gauntlet Livery), blista3 (Unmaked Washinton), stalion2 (1st Gen Stanier Police), gauntlet2 (1st Gen Stanier Security/Taxi), issi2 (Civilian Interceptor), and lurcher (Service Interceptor)."
             + Environment.NewLine + Environment.NewLine +
             "EUP Installation: "
             + Environment.NewLine +
@@ -299,13 +299,9 @@ public class ModDataFileManager
             + Environment.NewLine +
             "Buffalo - Model by Rockstar Games, UV-Map, template, lightbar, assembly and skins by Yard1."
             + Environment.NewLine +
-            "Interceptor - Base GTAV vehicle model made by Rockstar Games and modified by Lt.Caine. Vehicle body remapped by Lt.Caine. Yard1 for fixing vehicle glass collision issues."
-            + Environment.NewLine +
             "Granger - Base GTAV vehicle model made by Rockstar Games and modified by Lt.Caine. Vehicle body remapped by Lt.Caine. Yard1 for fixing vehicle glass collision issues"
             + Environment.NewLine +
             "Gresley - Model by Rockstar Games, UV-Map, template, lightbar, assembly and skins by Yard1."
-            + Environment.NewLine +
-            "Torrence - AllenKennedy - Everything, except the front bumper and the spotlight. actuallyтoхιc - Front bumper and the spotlight. Jacobmaate - LED spotlight texture and vital assistance with figuring out audio files. Vx5 Voltage - For creating the Original Torrence SSO mod which inspired me to develop this one. 11john11 - Help finding good civilian wheels from Watch Dogs to use. Boywond - Converting Watch Dogs wheels. w/ - Help figuring out how to do 3D text in Blender."
             + Environment.NewLine +
             "Police Bike Retro - Model: Rockstar Games. Mapping: AllenKennedy"
             + Environment.NewLine +

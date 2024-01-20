@@ -74,10 +74,10 @@ public class WeaponItem : ModItem
             description = Description;
         }
         description += "~n~~s~";
-        if (!string.IsNullOrEmpty(VanillaName))
-        {
-            Description += $"~n~Alias: {VanillaName}";
-        }
+        //if (!string.IsNullOrEmpty(VanillaName))
+        //{
+        //    Description += $"~n~Alias: {VanillaName}";
+        //}
         if (RequiresDLC)
         {
             description += $"~n~~b~DLC Weapon";
@@ -274,10 +274,10 @@ public class WeaponItem : ModItem
             description = Description;
         }
         description += "~n~~s~";
-        if (!string.IsNullOrEmpty(VanillaName))
-        {
-            Description += $"~n~Alias: {VanillaName}";
-        }
+        //if (!string.IsNullOrEmpty(VanillaName))
+        //{
+        //    Description += $"~n~Alias: {VanillaName}";
+        //}
         if (RequiresDLC)
         {
             description += $"~n~~b~DLC Weapon";

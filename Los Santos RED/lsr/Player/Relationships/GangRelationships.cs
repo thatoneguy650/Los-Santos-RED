@@ -53,10 +53,23 @@ public class GangRelationships
                 int WantedRep = rg.Gang.RemoveRepOnWantedInTerritoryScalar * Player.WantedLevel;
                 if (Player.IsWanted)
                 {
-                    if (rg.Gang.RemoveRepOnWantedInTerritory && rg.Gang.ID == Player.CurrentLocation.CurrentZone?.AssignedGang?.ID && rg.ReputationLevel >= WantedRep)
+                    if(rg.Gang.RemoveRepOnWantedInTerritory && rg.Gang.ID == Player.CurrentLocation.CurrentZone?.AssignedGang?.ID)
                     {
-                        ChangeReputation(rg.Gang, -1 * WantedRep, false);
+                        if(rg.IsEnemy || rg.GangRelationship == GangRespect.Hostile)
+                        {
+                            ChangeReputation(rg.Gang, -1 * WantedRep, false);
+                        }
+                        else if(rg.ReputationLevel >= WantedRep && (rg.ReputationLevel - WantedRep) >= rg.HostileRepLevel)
+                        {
+                            ChangeReputation(rg.Gang, -1 * WantedRep, false);
+                        }
                     }
+
+
+                    //if (rg.Gang.RemoveRepOnWantedInTerritory && rg.Gang.ID == Player.CurrentLocation.CurrentZone?.AssignedGang?.ID && rg.ReputationLevel >= WantedRep && (rg.ReputationLevel - WantedRep) >= rg.HostileRepLevel)
+                    //{
+                    //    ChangeReputation(rg.Gang, -1 * WantedRep, false);
+                    //}
                 }
                 else
                 {
