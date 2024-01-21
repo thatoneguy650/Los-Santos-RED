@@ -11,6 +11,8 @@ public class VanillaSettings : ISettingsDefaultable
 
     [Description("Terminates the entire vanilla respawn system. REQUIRED FOR NORMAL MOD FUNCTIONS. May cause issues with Taxi dispatch.")]
     public bool TerminateRespawn { get; set; }
+    [Description("Global ID for the vanilla respawn system. Requires a mod restart after chaning. Currently 5, was changed from 4 in the Chop Shop Update. If you don't know what you are doing dont change this number.")]
+    public int TerminateRespawnGlobalID { get; set; }
     public bool TerminateDispatch { get; set; }
     public bool TerminateHealthRecharge { get; set; }
     public bool TerminateWantedMusic { get; set; }
@@ -68,7 +70,7 @@ public class VanillaSettings : ISettingsDefaultable
 
         SupressVanillaCopCrimes = true;
 
-
+        TerminateRespawnGlobalID = 5;
 
 
         //BlockVanillaOtherScenarios = true;

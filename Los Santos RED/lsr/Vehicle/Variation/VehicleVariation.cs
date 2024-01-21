@@ -161,6 +161,8 @@ public class VehicleVariation
         {
             NativeFunction.Natives.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(vehicleExt.Vehicle, XenonLightColor);
         }
+
+        
     }
 
 }
