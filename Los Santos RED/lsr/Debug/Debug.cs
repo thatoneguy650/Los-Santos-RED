@@ -1340,19 +1340,24 @@ GameFiber.StartNew(delegate
 
 private void DebugNumpad6()
 {
-
-        int interiorID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(347.2686f, -999.2955f, -99.19622f);
-
-        if (interiorID != 0)
+        if (Player.CurrentVehicle != null)
         {
-            NativeFunction.Natives.DISABLE_INTERIOR(interiorID, true);
-            NativeFunction.Natives.REMOVE_IPL("Medium End Apartment");
-            NativeFunction.Natives.SET_INTERIOR_ACTIVE(interiorID, false);
 
 
-            Game.DisplaySubtitle($"SET INACTIVE interiorID {interiorID}");
-            GameFiber.Sleep(500);
+            EntryPoint.WriteToConsole($"IsOnMotorcycle:{Player.IsOnMotorcycle} IsOnBicycle:{Player.IsOnBicycle} CurrentVehicle.IsMotorcycle:{Player.CurrentVehicle.IsMotorcycle} CurrentVehicle.VehicleClass:{Player.CurrentVehicle.VehicleClass} CurrentVehicle.IsCar:{Player.CurrentVehicle.IsCar}");
         }
+        //int interiorID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(347.2686f, -999.2955f, -99.19622f);
+
+        //if (interiorID != 0)
+        //{
+        //    NativeFunction.Natives.DISABLE_INTERIOR(interiorID, true);
+        //    NativeFunction.Natives.REMOVE_IPL("Medium End Apartment");
+        //    NativeFunction.Natives.SET_INTERIOR_ACTIVE(interiorID, false);
+
+
+        //    Game.DisplaySubtitle($"SET INACTIVE interiorID {interiorID}");
+        //    GameFiber.Sleep(500);
+        //}
 
         //NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("lost_mc", true);
         //NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("LOST_MC", true);

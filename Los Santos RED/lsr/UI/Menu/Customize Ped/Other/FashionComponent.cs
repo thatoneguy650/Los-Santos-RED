@@ -367,13 +367,24 @@ public class FashionComponent
     public void SetCurrent(int drawableID, int textureID)
     {
         //EntryPoint.WriteToConsoleTestLong($"SetCurrent Start {ComponentID}");
+
+        if(DrawableMenuScroller == null || DrawableMenuScroller.Items == null)
+        {
+            return;
+        }
+
+
+
         PedFashionAlias pfa = DrawableMenuScroller.Items.Where(x => x.ID == drawableID).FirstOrDefault();
         if (pfa != null)
         {
             //EntryPoint.WriteToConsoleTestLong($"SetCurrent Drawable Found {pfa.ID} {pfa.Name}");
             DrawableMenuScroller.SelectedItem = pfa;
         }
-
+        if (TextureMenuScroller == null || TextureMenuScroller.Items == null)
+        {
+            return;
+        }
         PedFashionAlias tfa = TextureMenuScroller.Items.Where(x => x.ID == textureID).FirstOrDefault();
         if (tfa != null)
         {

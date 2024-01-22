@@ -1240,6 +1240,7 @@ namespace Mod
         {
             if (IsGettingIntoAVehicle)
             {
+                EntryPoint.WriteToConsole("IsGettingIntoAVehicle CHANGED TO TRUE");
                 VehicleTryingToEnter = Game.LocalPlayer.Character.VehicleTryingToEnter;
                 SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
                 if (VehicleTryingToEnter != null)
@@ -1258,6 +1259,7 @@ namespace Mod
                 EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicle ERROR VEHICLE NOT FOUND (ARE YOU SCANNING ENOUGH?)", 3);
                 return;
             }
+            EntryPoint.WriteToConsole("HandleVehicleEntry STARTED");
             VehicleGettingInto = CurrentVehicle;
             bool isFreeToEnter = IsFreeToEnter();
             if (isFreeToEnter)//IsFreeToEnter())
@@ -1267,6 +1269,7 @@ namespace Mod
             }
             if (!(isFreeToEnter || (CurrentVehicle.IsService && IsServicePed)))
             {
+                EntryPoint.WriteToConsole("HandleVehicleEntry ATTEMPTING TO LOCK");
                 CurrentVehicle.AttemptToLock();
             }
             HandleScrewdriver();
@@ -1358,6 +1361,7 @@ namespace Mod
         }
         private void HandleScrewdriver()
         {
+            EntryPoint.WriteToConsole("HandleScrewdriver STARTED");
             currentlyHasScrewdriver = ActivityManager.HasScrewdriverInHand || Inventory.Has(typeof(ScrewdriverItem)); //Inventory.HasTool(ToolTypes.Screwdriver);
             if (Settings.SettingsManager.VehicleSettings.RequireScrewdriverForHotwire)
             {
@@ -1404,7 +1408,7 @@ namespace Mod
                 {
                     CurrentVehicle.HasAutoSetRadio = false;
                 }
-
+                EntryPoint.WriteToConsole("OnIsInVehicleChanged CHANGED TO TRUE");
             }
             else
             {
@@ -1422,11 +1426,9 @@ namespace Mod
                     NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
                 }
                 TaxiManager.OnGotOutOfVehicle();
-
-
                 Violations.MinorViolations.OnGotOutOfVehicle();
-
-               // NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Character, 313, false);
+                EntryPoint.WriteToConsole("OnIsInVehicleChanged CHANGED TO FALSE");
+                // NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Character, 313, false);
             }
             //UpdateOwnedBlips();
             //EntryPoint.WriteToConsole($"PLAYER EVENT: IsInVehicle to {IsInVehicle}");
@@ -1614,7 +1616,6 @@ namespace Mod
              EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
             PreviousWantedLevel = wantedLevel;// NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>();//PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
         }
-
         private void OnCurrentVehicleChanged()
         {
             if (CurrentVehicle != null)

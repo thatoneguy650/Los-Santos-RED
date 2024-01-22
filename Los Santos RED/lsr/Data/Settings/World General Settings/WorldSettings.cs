@@ -122,6 +122,10 @@ public class WorldSettings : ISettingsDefaultable
     [Description("If enabled, LSR will cancel a vehicle spawn if there is a mission entity within a certain radius")]
     public bool CheckAreaBeforeVehicleSpawn { get; set; }
 
+
+    [Description("More aggressively remove abandoned or empty vehicle from the game world.")]
+    public bool ExtendedVehicleCleanup { get;  set; }
+
     //[Description("If enabled, the reduced props of the MP map will be loaded. THIS OPTION IS REQUIRED FOR THE TIME BEING, UNLESS YOU ARE RUNNING A CUSTOM GAMECONFIG (most should work)!")]
     //public bool SetReducedPropsOnMap { get; set; }
 
@@ -197,6 +201,7 @@ public class WorldSettings : ISettingsDefaultable
         InteriorMarkerScale = 0.25f;
 
         CheckAreaBeforeVehicleSpawn = true;
+        ExtendedVehicleCleanup = true;
     }
 
 }

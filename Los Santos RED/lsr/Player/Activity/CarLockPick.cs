@@ -71,13 +71,13 @@ public class CarLockPick
                     GameFiber.Yield();
                     if (!SetupLockPick())
                     {
-                        //EntryPoint.WriteToConsoleTestLong("PickLock Setup Failed");
+                        EntryPoint.WriteToConsole("PickLock Setup Failed");
                         return;
                     }
                     GameFiber.Yield();
                     if (!LockPickAnimation())
                     {
-                        //EntryPoint.WriteToConsoleTestLong("PickLock Animation Failed");
+                        EntryPoint.WriteToConsole("PickLock Animation Failed");
                         return;
                     }
                     GameFiber.Yield();
@@ -103,11 +103,19 @@ public class CarLockPick
         Player.WeaponEquipment.SetUnarmed();
         if(TargetVehicle.LockStatus != (VehicleLockStatus)3)
         {
-            //EntryPoint.WriteToConsoleTestLong($"SetupLockPick Failed, Could Not Set Lock Status to 3 Current Status {(int)TargetVehicle.LockStatus}");//some IV pack cars fail even with the door open.....
+            EntryPoint.WriteToConsole($"SetupLockPick Failed, Could Not Set Lock Status to 3 Current Status {(int)TargetVehicle.LockStatus}");//some IV pack cars fail even with the door open.....
             NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, TargetVehicle, -1, SeatTryingToEnter, 2.0f, 1, 0);
+
+
+
+
             return false;
         }
-        TargetVehicle.MustBeHotwired = true;
+
+        EntryPoint.WriteToConsole($"LOCK Current Status {(int)TargetVehicle.LockStatus}");//some IV pack cars fail even with the door open.....
+
+
+        //TargetVehicle.MustBeHotwired = true;
         uint GameTimeStartedStealing = Game.GameTime;
         bool StartAnimation = true;
         while (Game.LocalPlayer.Character.IsGettingIntoVehicle && Game.GameTime - GameTimeStartedStealing <= 3500)
@@ -122,12 +130,12 @@ public class CarLockPick
         if (!StartAnimation)
         {
             TargetVehicle.LockStatus = OriginalLockStatus;
-            //EntryPoint.WriteToConsoleTestLong("SetupLockPick Failed, Move Control Pressed");
+            EntryPoint.WriteToConsole("SetupLockPick Failed, Move Control Pressed");
             return false;
         }
         if (TargetVehicle.LockStatus == (VehicleLockStatus)1)
         {
-            //EntryPoint.WriteToConsoleTestLong("SetupLockPick Failed, Lock Status = 1");
+            EntryPoint.WriteToConsole("SetupLockPick Failed, Lock Status = 1");
             return false;
         }
         if (TargetVehicle.HasBone("door_dside_f") && TargetVehicle.HasBone("door_pside_f"))
@@ -151,7 +159,7 @@ public class CarLockPick
     {
         Player.IsLockPicking = true;
         bool Continue = true;
-        //EntryPoint.WriteToConsoleTestLong($"LOCK PICK ENTRY: LockPickAnimation START");
+        EntryPoint.WriteToConsole($"LOCK PICK ENTRY: LockPickAnimation START");
         Screwdriver = Player.ActivityManager.AttachScrewdriverToPed(ScrewdriverItem, true);
 
         AnimationDictionary.RequestAnimationDictionay("veh@break_in@0h@p_m_one@");
@@ -161,12 +169,21 @@ public class CarLockPick
         while (Game.GameTime - GameTimeStarted <= WaitTime)
         {
             GameFiber.Yield();
-            if (Player.IsMoveControlPressed || TargetVehicle.Doors[DoorIndex].IsOpen)
+            if (Player.IsMoveControlPressed)// || TargetVehicle.Doors[DoorIndex].IsOpen)
             {
-                //EntryPoint.WriteToConsoleTestLong($"LOCK PICK ENTRY: {Player.IsMoveControlPressed} TargetVehicle.Doors[DoorIndex].IsOpen {TargetVehicle.Doors[DoorIndex].IsOpen}");
+                EntryPoint.WriteToConsole($"LOCK PICK ENTRY BREAK 1: {Player.IsMoveControlPressed} TargetVehicle.Doors[DoorIndex].IsOpen {TargetVehicle.Doors[DoorIndex].IsOpen}");
                 Continue = false;
                 break;
             }
+            if (TargetVehicle.Doors[DoorIndex].IsOpen)
+            {
+                EntryPoint.WriteToConsole($"LOCK PICK ENTRY BREAK 2: {Player.IsMoveControlPressed} TargetVehicle.Doors[DoorIndex].IsOpen {TargetVehicle.Doors[DoorIndex].IsOpen}");
+                NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, TargetVehicle, -1, SeatTryingToEnter, 2.0f, 1, 0);
+                //Continue = false;
+                break;
+            }
+
+
         }
         Player.IsLockPicking = false;
         if (!Continue)
@@ -179,7 +196,7 @@ public class CarLockPick
             }
             Player.IsLockPicking = false;
             TargetVehicle.LockStatus = OriginalLockStatus;
-            //EntryPoint.WriteToConsoleTestLong($"LOCK PICK ENTRY: CANNOT CONTINUE");
+            EntryPoint.WriteToConsole($"LOCK PICK ENTRY: CANNOT CONTINUE");
             return false;
         }
 
@@ -189,7 +206,7 @@ public class CarLockPick
         {
             TargetVehicle.Doors[DoorIndex].Open(true, false);
         }
-        //EntryPoint.WriteToConsoleTestLong($"LOCK PICK ENTRY: LockPickAnimation FINISH TRUE");
+        EntryPoint.WriteToConsole($"LOCK PICK ENTRY: LockPickAnimation FINISH TRUE");
         return true;
     }
     private bool FinishLockPick()

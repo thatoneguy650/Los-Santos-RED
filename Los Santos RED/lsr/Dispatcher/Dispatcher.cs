@@ -203,7 +203,16 @@ public class Dispatcher
                     {
                         EntryPoint.PersistentVehiclesNonPersistent++;
                     }
-                    EntryPoint.WriteToConsole($"GENERAL DISPATCHER NON PERSIST EMPTY VEHICLE distanceTo{distanceTo} {civilianCar.Handle}");
+                    EntryPoint.WriteToConsole($"GENERAL DISPATCHER NON PERSIST 1 EMPTY VEHICLE distanceTo{distanceTo} {civilianCar.Handle}");
+                    civilianCar.Vehicle.IsPersistent = false;
+                }
+                else if (Settings.SettingsManager.WorldSettings.ExtendedVehicleCleanup && distanceTo >= 125f && !civilianCar.WasSpawnedEmpty)
+                {
+                    if (civilianCar.Vehicle.IsPersistent)
+                    {
+                        EntryPoint.PersistentVehiclesNonPersistent++;
+                    }
+                    EntryPoint.WriteToConsole($"GENERAL DISPATCHER NON PERSIST 2 EMPTY VEHICLE distanceTo{distanceTo} {civilianCar.Handle}");
                     civilianCar.Vehicle.IsPersistent = false;
                 }
                 GameFiber.Yield();

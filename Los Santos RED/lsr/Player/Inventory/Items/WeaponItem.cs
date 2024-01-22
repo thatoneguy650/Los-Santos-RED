@@ -76,7 +76,7 @@ public class WeaponItem : ModItem
         description += "~n~~s~";
         //if (!string.IsNullOrEmpty(VanillaName))
         //{
-        //    Description += $"~n~Alias: {VanillaName}";
+        //    description += $"~n~Alias: {VanillaName}"; //LOWER CASE OR IT ERRORS!
         //}
         if (RequiresDLC)
         {
@@ -276,7 +276,7 @@ public class WeaponItem : ModItem
         description += "~n~~s~";
         //if (!string.IsNullOrEmpty(VanillaName))
         //{
-        //    Description += $"~n~Alias: {VanillaName}";
+        //    description += $"~n~Alias: {VanillaName}";//LOWERCASE OR IT ERRORS!
         //}
         if (RequiresDLC)
         {
