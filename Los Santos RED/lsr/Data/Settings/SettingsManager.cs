@@ -217,5 +217,30 @@ public class SettingsManager
         }
     }
 
+    public void SetScreenshotMode()
+    {
+        PoliceSpawnSettings.ManageDispatching = false;
+        EMSSettings.ManageDispatching = false;
+        FireSettings.ManageDispatching = false;
+        SecuritySettings.ManageDispatching = false;
+        GangSettings.ManageDispatching = false;
+        UIGeneralSettings.AlwaysShowRadar = false;
+        UIGeneralSettings.NeverShowRadar = true;
+        LSRHUDSettings.ShowPlayerDisplay = false;
+        LSRHUDSettings.ShowIntoxicationDisplay= false;
+        LSRHUDSettings.ShowSearchModeDisplay = false;
+        LSRHUDSettings.ShowStaminaDisplay = false;
+        LSRHUDSettings.ShowStreetDisplay = false;
+        LSRHUDSettings.ShowZoneDisplay = false;
+        UIGeneralSettings.ShowVehicleInteractionPrompt = false;
+        UIGeneralSettings.ShowVehicleInteractionPromptInVehicle = false;
+        WeatherSettings.ReportWeather = false;
+        NeedsSettings.ApplyNeeds = false;
 
+    }
+
+    public void DisableScreenshotMode()
+    {
+        SetDefault();
+    }
 }

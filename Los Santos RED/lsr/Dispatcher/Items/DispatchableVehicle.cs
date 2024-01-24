@@ -122,6 +122,11 @@ public class DispatchableVehicle
         {
             NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", vehicleExt.Vehicle, RequiredLiveries.PickRandom());
         }
+        GameFiber.Yield();
+        if (!vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
         if (VehicleExtras != null)
         {
             foreach (DispatchableVehicleExtra extra in VehicleExtras.OrderBy(x => x.ExtraID).ThenBy(x => x.IsOn))
@@ -136,7 +141,12 @@ public class DispatchableVehicle
                 }
             }
         }
-        if(VehicleMods != null)
+        GameFiber.Yield();
+        if (!vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+        if (VehicleMods != null)
         {
             NativeFunction.Natives.SET_VEHICLE_MOD_KIT(vehicleExt.Vehicle, 0);
             foreach (DispatchableVehicleMod dispatchableVehicleMod in VehicleMods)
@@ -153,7 +163,12 @@ public class DispatchableVehicle
                 }
             }
         }
-        if(ForcedPlateType != -1)
+        GameFiber.Yield();
+        if (!vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+        if (ForcedPlateType != -1)
         {
             string plateNumber = NativeHelper.GenerateNewLicensePlateNumber("12ABC345");
             vehicleExt.Vehicle.LicensePlate = plateNumber;

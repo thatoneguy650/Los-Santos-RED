@@ -28,6 +28,7 @@ public class DebugHelperSubMenu : DebugSubMenu
     private bool isRunning;
     private uint GameTimeLastAttached;
     private bool IsBigMapActive;
+    private bool IsSSMode;
     private IEntityProvideable World;
     private IPlacesOfInterest PlacesOfInterest;
     private ISettingsProvideable Settings;
@@ -62,6 +63,26 @@ public class DebugHelperSubMenu : DebugSubMenu
             menu.Visible = false;
         };
         HelperMenuItem.AddItem(SetBigMap);
+
+
+
+        UIMenuItem setSSMode = new UIMenuItem("Toggle Screenshot", "Toggles Screenshot mode");
+        setSSMode.Activated += (menu, item) =>
+        {
+            IsSSMode = !IsSSMode;
+            
+            if(IsSSMode)
+            {
+                Settings.SettingsManager.SetScreenshotMode();
+            }
+            else
+            {
+                Settings.SettingsManager.DisableScreenshotMode();
+            }
+            //Game.DisplaySubtitle($"IsBigMapActive:{IsBigMapActive}"); 
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(setSSMode);
 
 
 

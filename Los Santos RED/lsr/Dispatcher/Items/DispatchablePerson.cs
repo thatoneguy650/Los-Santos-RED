@@ -105,8 +105,7 @@ public class DispatchablePerson
 
     public bool IsAnimal { get; set; } = false;
 
-
-
+    public bool IsVehicleRestricted { get; set; } = false;
     public string GetDescription()
     {
         string description = "";
@@ -117,9 +116,6 @@ public class DispatchablePerson
         description += $"~n~MinWantedLevelSpawn: {MinWantedLevelSpawn} MaxWantedLevelSpawn: {MaxWantedLevelSpawn}";
         return description;
     }
-
-
-
     public bool CanCurrentlySpawn(int WantedLevel)
     {
         if (WantedLevel > 0)
@@ -271,8 +267,6 @@ public class DispatchablePerson
         }
 
     }
-
-
     public DispatchablePerson()
     {
 
@@ -557,9 +551,6 @@ public class DispatchablePerson
         }
         // EntryPoint.WriteToConsole($"myHead {myHead.HeadID} {myHead.Name} HairID {HairID} HairColor {HairColor}");      
     }
-
-
-
     public override string ToString()
     {
         string toReturn = "";
@@ -577,6 +568,4 @@ public class DispatchablePerson
         }
         return toReturn;
     }
-
-
 }

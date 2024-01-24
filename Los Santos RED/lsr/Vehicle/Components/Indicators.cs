@@ -54,8 +54,10 @@ public class Indicators
     {
         if (Game.GameTime - GameTimeLastPressIndicator >= 1500)
         {
-            if (VehicleExt == null || !VehicleExt.Vehicle.Exists() || !VehicleExt.IsCar)
+            if (VehicleExt == null || !VehicleExt.Vehicle.Exists() || (!VehicleExt.IsCar && !VehicleExt.IsMotorcycle))
+            {
                 return;
+            }
 
             if (HazardsOn)
             {
@@ -77,7 +79,7 @@ public class Indicators
     {
         if (Game.GameTime - GameTimeLastPressIndicator >= 1500)
         {
-            if (VehicleExt == null || !VehicleExt.Vehicle.Exists() || !VehicleExt.IsCar)
+            if (VehicleExt == null || !VehicleExt.Vehicle.Exists() || (!VehicleExt.IsCar && !VehicleExt.IsMotorcycle))
                 return;
 
             if (LeftBlinkerOn)
@@ -93,13 +95,16 @@ public class Indicators
                 HazardsOn = false;
             }
             GameTimeLastPressIndicator = Game.GameTime;
+
+
+           
         }
     }
     public void ToggleRight()
     {
         if (Game.GameTime - GameTimeLastPressIndicator >= 1500)
         {
-            if (VehicleExt == null || !VehicleExt.Vehicle.Exists() || !VehicleExt.IsCar)
+            if (VehicleExt == null || !VehicleExt.Vehicle.Exists() || (!VehicleExt.IsCar && !VehicleExt.IsMotorcycle))
                 return;
 
             if (RightBlinkerOn)
