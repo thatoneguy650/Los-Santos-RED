@@ -60,6 +60,7 @@ public class VehicleVariation
         if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
         {
             return;
+            
         }
         if(LicensePlate != null)
         {
@@ -72,7 +73,8 @@ public class VehicleVariation
             NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(vehicleExt.Vehicle, LicensePlate.PlateType);
             vehicleExt.HasUpdatedPlateType = true;
         }
-        //NativeFunction.Natives.SET_VEHICLE_MOD_KIT(vehicleExt.Vehicle, 0);
+        NativeFunction.Natives.SET_VEHICLE_MOD_KIT(vehicleExt.Vehicle, 0);
+        EntryPoint.WriteToConsole("SETTING VEHICLE MODS 22222");
         NativeFunction.Natives.SET_VEHICLE_WINDOW_TINT(vehicleExt.Vehicle, WindowTint);
         NativeFunction.Natives.SET_VEHICLE_WHEEL_TYPE(vehicleExt.Vehicle, WheelType);
         foreach (VehicleExtra vehicleExtra in VehicleExtras.OrderBy(x => x.ID))

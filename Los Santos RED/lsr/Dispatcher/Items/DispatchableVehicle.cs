@@ -127,7 +127,7 @@ public class DispatchableVehicle
         {
             return;
         }
-        if (VehicleExtras != null)
+        if (VehicleExtras != null && VehicleExtras.Any())
         {
             foreach (DispatchableVehicleExtra extra in VehicleExtras.OrderBy(x => x.ExtraID).ThenBy(x => x.IsOn))
             {
@@ -146,9 +146,10 @@ public class DispatchableVehicle
         {
             return;
         }
-        if (VehicleMods != null)
-        {
-            //NativeFunction.Natives.SET_VEHICLE_MOD_KIT(vehicleExt.Vehicle, 0);
+        if (VehicleMods != null && VehicleMods.Any())
+        { 
+            //EntryPoint.WriteToConsole("SETTING VEHICLE MODS");
+            NativeFunction.Natives.SET_VEHICLE_MOD_KIT(vehicleExt.Vehicle, 0);
             foreach (DispatchableVehicleMod dispatchableVehicleMod in VehicleMods)
             {
                // EntryPoint.WriteToConsole($"VEHICLE MODS: ID: {dispatchableVehicleMod.ModID}");
