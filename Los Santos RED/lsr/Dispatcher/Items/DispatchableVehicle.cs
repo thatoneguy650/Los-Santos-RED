@@ -148,7 +148,7 @@ public class DispatchableVehicle
         }
         if (VehicleMods != null)
         {
-            NativeFunction.Natives.SET_VEHICLE_MOD_KIT(vehicleExt.Vehicle, 0);
+            //NativeFunction.Natives.SET_VEHICLE_MOD_KIT(vehicleExt.Vehicle, 0);
             foreach (DispatchableVehicleMod dispatchableVehicleMod in VehicleMods)
             {
                // EntryPoint.WriteToConsole($"VEHICLE MODS: ID: {dispatchableVehicleMod.ModID}");

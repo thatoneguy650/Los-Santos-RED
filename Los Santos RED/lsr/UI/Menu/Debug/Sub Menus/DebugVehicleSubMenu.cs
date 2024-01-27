@@ -24,9 +24,18 @@ public class DebugVehicleSubMenu : DebugSubMenu
     private int PrimaryColor;
     private bool SetSecondaryColor;
     private int SecondaryColor;
+    private bool SetPearlescentColor;
+    private int PearlescentColor;
+    private bool SetWheelColor;
+    private int WheelColor;
+    private bool SetInteriorColor;
+    private int InteriorColor;
+
     private int FinalPrimaryColor => PrimaryColor == -1 ? 0 : PrimaryColor;
     private int FinalSecondaryColor => SecondaryColor == -1 ? 0 : SecondaryColor;
-
+    private int FinalPearlColor => PearlescentColor == -1 ? 0 : PearlescentColor;
+    private int FinalWheelColor => WheelColor == -1 ? 156 : WheelColor;
+    private int FinalInteriorColor => InteriorColor == -1 ? 0 : InteriorColor;
     public DebugVehicleSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IPlateTypes plateTypes) : base(debug, menuPool, player)
     {
         PlateTypes = plateTypes;
@@ -393,6 +402,13 @@ public class DebugVehicleSubMenu : DebugSubMenu
     }
     private void CreateColorMenuItem()//CreateColorMenuItem
     {
+
+        UIMenu colorSimpleMenu = MenuPool.AddSubMenu(vehicleItemsMenu, "Simple Colors");
+        colorSimpleMenu.SubtitleText = "COLORS";
+        vehicleItemsMenu.MenuItems[vehicleItemsMenu.MenuItems.Count() - 1].Description = "Pick Colors";
+
+
+
         UIMenuNumericScrollerItem<int> VehicleColorMenuItem = new UIMenuNumericScrollerItem<int>("Set Both Color", "Set both the vehicle colors the same", 0, 159, 1);
         VehicleColorMenuItem.Value = VehicleColorMenuItem.Minimum;
         VehicleColorMenuItem.Activated += (menu, item) =>
@@ -403,7 +419,7 @@ public class DebugVehicleSubMenu : DebugSubMenu
                 Game.DisplaySubtitle($"SET COLOR {VehicleColorMenuItem.Value}");
             }
         };
-        vehicleItemsMenu.AddItem(VehicleColorMenuItem);
+        colorSimpleMenu.AddItem(VehicleColorMenuItem);
 
 
         selectedPrimaryColor = 0;
@@ -419,7 +435,7 @@ public class DebugVehicleSubMenu : DebugSubMenu
                 Game.DisplaySubtitle($"SET COLOR {VehicleColorMenuItem.Value}");
             }
         };
-        vehicleItemsMenu.AddItem(vehiclePrimaryColorScroller);
+        colorSimpleMenu.AddItem(vehiclePrimaryColorScroller);
 
 
         UIMenuNumericScrollerItem<int> vehicleSecondaryColorScroller = new UIMenuNumericScrollerItem<int>("Secondary Color", "Set the secondary color selected", 0, 159, 1);
@@ -433,7 +449,7 @@ public class DebugVehicleSubMenu : DebugSubMenu
                 Game.DisplaySubtitle($"SET COLOR {VehicleColorMenuItem.Value}");
             }
         };
-        vehicleItemsMenu.AddItem(vehicleSecondaryColorScroller);
+        colorSimpleMenu.AddItem(vehicleSecondaryColorScroller);
 
 
         UIMenuItem setWHiteMenu = new UIMenuItem("Set Color White", "Set Color White");
@@ -444,7 +460,7 @@ public class DebugVehicleSubMenu : DebugSubMenu
                 NativeFunction.Natives.SET_VEHICLE_COLOURS(Player.InterestedVehicle.Vehicle, 134, 134);
             }
         };
-        vehicleItemsMenu.AddItem(setWHiteMenu);
+        colorSimpleMenu.AddItem(setWHiteMenu);
 
 
 
@@ -463,7 +479,7 @@ public class DebugVehicleSubMenu : DebugSubMenu
                 Game.DisplaySubtitle($"SET DIRT {dirtsetscroller.Value}");
             }
         };
-        vehicleItemsMenu.AddItem(dirtsetscroller);
+        colorSimpleMenu.AddItem(dirtsetscroller);
 
     }
     private void CreateBetterColorMenu()
@@ -472,6 +488,13 @@ public class DebugVehicleSubMenu : DebugSubMenu
         UIMenu colorFullMenu = MenuPool.AddSubMenu(vehicleItemsMenu, "Colors");
         colorFullMenu.SubtitleText = "COLORS";
         vehicleItemsMenu.MenuItems[vehicleItemsMenu.MenuItems.Count() - 1].Description = "Pick Colors";
+
+
+
+
+
+
+
 
 
         UIMenu primaryColorMenu = MenuPool.AddSubMenu(colorFullMenu, "Primary Color");
@@ -484,6 +507,18 @@ public class DebugVehicleSubMenu : DebugSubMenu
         colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Secondary Colors";
 
 
+        UIMenu pearlescentColorMenu = MenuPool.AddSubMenu(colorFullMenu, "Pearlescent Color");
+        pearlescentColorMenu.SubtitleText = "PEARLESCENT COLOR GROUPS";
+        colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Pearlescent Colors";
+
+        UIMenu wheelColorMenu = MenuPool.AddSubMenu(colorFullMenu, "Wheel Color");
+        wheelColorMenu.SubtitleText = "WHEEL COLOR GROUPS";
+        colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Wheel Colors";
+
+        UIMenu interiorColorMenu = MenuPool.AddSubMenu(colorFullMenu, "Interior Color");
+        interiorColorMenu.SubtitleText = "INTERIOR COLOR GROUPS";
+        colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Interior Colors";
+
         //Add Color Sub Menu Here
         foreach (string colorGroupString in VehicleColors.GroupBy(x => x.ColorGroup).Select(x => x.Key).Distinct().OrderBy(x => x))
         {
@@ -495,6 +530,20 @@ public class DebugVehicleSubMenu : DebugSubMenu
             UIMenu secondarycolorGroupMenu = MenuPool.AddSubMenu(secondaryColorMenu, colorGroupString);
             secondarycolorGroupMenu.SubtitleText = "SECONDARY COLORS";
             secondaryColorMenu.MenuItems[secondaryColorMenu.MenuItems.Count() - 1].Description = "Choose a color group";
+
+
+            UIMenu pearlescentcolorGroupMenu = MenuPool.AddSubMenu(pearlescentColorMenu, colorGroupString);
+            pearlescentcolorGroupMenu.SubtitleText = "PEARLESCENT COLORS";
+            pearlescentColorMenu.MenuItems[pearlescentColorMenu.MenuItems.Count() - 1].Description = "Choose a color group";
+
+
+            UIMenu wheelcolorGroupMenu = MenuPool.AddSubMenu(wheelColorMenu, colorGroupString);
+            wheelcolorGroupMenu.SubtitleText = "WHEEL COLORS";
+            wheelColorMenu.MenuItems[wheelColorMenu.MenuItems.Count() - 1].Description = "Choose a color group";
+
+            UIMenu interiorcolorGroupMenu = MenuPool.AddSubMenu(interiorColorMenu, colorGroupString);
+            interiorcolorGroupMenu.SubtitleText = "INTERIOR COLORS";
+            interiorColorMenu.MenuItems[interiorColorMenu.MenuItems.Count() - 1].Description = "Choose a color group";
 
             foreach (VehicleColorLookup cl in VehicleColors.Where(x => x.ColorGroup == colorGroupString))
             {
@@ -524,6 +573,54 @@ public class DebugVehicleSubMenu : DebugSubMenu
                     }
                 };
                 secondarycolorGroupMenu.AddItem(actualColorSecondary);
+
+
+
+                UIMenuItem actualColorPearl = new UIMenuItem(cl.ColorName, cl.FullColorName);
+                actualColorPearl.RightBadge = UIMenuItem.BadgeStyle.Heart;
+                actualColorPearl.RightBadgeInfo.Color = cl.RGBColor;
+                actualColorPearl.Activated += (sender, selectedItem) =>
+                {
+                    SetPearlescentColor = true;
+                    PearlescentColor = cl.ColorID;
+                    if (Player.InterestedVehicle.Vehicle.Exists())
+                    {
+                        NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(Player.InterestedVehicle.Vehicle, FinalPearlColor, FinalWheelColor);
+                    }
+                };
+                pearlescentcolorGroupMenu.AddItem(actualColorPearl);
+
+
+
+                UIMenuItem actualColorWheel = new UIMenuItem(cl.ColorName, cl.FullColorName);
+                actualColorWheel.RightBadge = UIMenuItem.BadgeStyle.Heart;
+                actualColorWheel.RightBadgeInfo.Color = cl.RGBColor;
+                actualColorWheel.Activated += (sender, selectedItem) =>
+                {
+                    SetWheelColor = true;
+                    WheelColor = cl.ColorID;
+                    if (Player.InterestedVehicle.Vehicle.Exists())
+                    {
+                        NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(Player.InterestedVehicle.Vehicle, FinalPearlColor, FinalWheelColor);
+                    }
+                };
+                wheelcolorGroupMenu.AddItem(actualColorWheel);
+
+
+                UIMenuItem actualColorInterior = new UIMenuItem(cl.ColorName, cl.FullColorName);
+                actualColorInterior.RightBadge = UIMenuItem.BadgeStyle.Heart;
+                actualColorInterior.RightBadgeInfo.Color = cl.RGBColor;
+                actualColorInterior.Activated += (sender, selectedItem) =>
+                {
+                    SetInteriorColor = true;
+                    InteriorColor = cl.ColorID;
+                    if (Player.InterestedVehicle.Vehicle.Exists())
+                    {
+                        NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_5(Player.InterestedVehicle.Vehicle, FinalInteriorColor);
+                    }
+                };
+                interiorcolorGroupMenu.AddItem(actualColorInterior);
+
             }
         }
     }
