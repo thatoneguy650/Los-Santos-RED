@@ -1342,9 +1342,11 @@ private void DebugNumpad6()
 {
         if (Player.CurrentVehicle != null)
         {
+            Player.CurrentVehicle.Engine.SetState(false);
+            Player.CurrentVehicle.Vehicle.MustBeHotwired = true;
+            Player.CurrentVehicle.IsHotWireLocked = true;
 
-
-            EntryPoint.WriteToConsole($"IsOnMotorcycle:{Player.IsOnMotorcycle} IsOnBicycle:{Player.IsOnBicycle} CurrentVehicle.IsMotorcycle:{Player.CurrentVehicle.IsMotorcycle} CurrentVehicle.VehicleClass:{Player.CurrentVehicle.VehicleClass} CurrentVehicle.IsCar:{Player.CurrentVehicle.IsCar}");
+            //EntryPoint.WriteToConsole($"IsOnMotorcycle:{Player.IsOnMotorcycle} IsOnBicycle:{Player.IsOnBicycle} CurrentVehicle.IsMotorcycle:{Player.CurrentVehicle.IsMotorcycle} CurrentVehicle.VehicleClass:{Player.CurrentVehicle.VehicleClass} CurrentVehicle.IsCar:{Player.CurrentVehicle.IsCar}");
         }
         //int interiorID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(347.2686f, -999.2955f, -99.19622f);
 

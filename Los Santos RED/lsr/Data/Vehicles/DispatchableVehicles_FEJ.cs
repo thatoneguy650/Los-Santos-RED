@@ -843,23 +843,36 @@ public class DispatchableVehicles_FEJ
         }
         if (policeVehicleType == PoliceVehicleType.Marked)
         {
+            //1 = roof, 2 = siren, 4 = searchlight, 5 = top antenna, 6 = side antenna, 11 = divider
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
             {
+                new DispatchableVehicleExtra(1, true, 100),
                 new DispatchableVehicleExtra(2, true, 100),
+                new DispatchableVehicleExtra(4, true, 55),
+                new DispatchableVehicleExtra(5, true, 55),
+                new DispatchableVehicleExtra(6, true, 55),
+                new DispatchableVehicleExtra(11, true, 85),
             };
         }
         else if (policeVehicleType == PoliceVehicleType.SlicktopMarked)
         {
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
             {
+                new DispatchableVehicleExtra(1, true, 100),
                 new DispatchableVehicleExtra(2, false, 100),
+                new DispatchableVehicleExtra(4, true, 55),
+                new DispatchableVehicleExtra(11, true, 85),
             };
         }
         else if (policeVehicleType == PoliceVehicleType.Unmarked || policeVehicleType == PoliceVehicleType.Detective)
         {
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
             {
+                new DispatchableVehicleExtra(1, false, 100),
                 new DispatchableVehicleExtra(2, false, 100),
+                new DispatchableVehicleExtra(4, true, 55),
+                new DispatchableVehicleExtra(6, true, 100),
+                new DispatchableVehicleExtra(11, false, 100),
             };
         }
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);

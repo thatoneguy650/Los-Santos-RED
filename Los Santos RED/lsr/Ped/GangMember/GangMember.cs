@@ -320,19 +320,9 @@ public class GangMember : PedExt, IWeaponIssuable
                 }
             }
         }
-
-
-        // ReputationReport.WasInjuredByPlayer = true;
+        WillFight = true;
         ReputationReport.AddReputation(RepToRemove);
-
         EntryPoint.WriteToConsole($"INJURED ReputationReport.ReputationChangeAmount:{ReputationReport.ReputationChangeAmount} ({RepToRemove})");
-
-
-        //Player.RelationshipManager.GangRelationships.ChangeReputation(Gang, RepToRemove, true);
-        //Player.RelationshipManager.GangRelationships.AddAttacked(Gang);
-
-
-
         base.OnInjuredByPlayer(Player, Zones, GangTerritories);
     }
     public override void OnCarjackedByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
@@ -358,18 +348,13 @@ public class GangMember : PedExt, IWeaponIssuable
                 }
             }
         }
-
         //ReputationReport.WasCarjackedByPlayer = true;
         ReputationReport.AddReputation(RepToRemove);
-
+        WillFight = true;
 
         EntryPoint.WriteToConsole($"CARJACKED ReputationReport.ReputationChangeAmount:{ReputationReport.ReputationChangeAmount} ({RepToRemove})");
-
         //Player.RelationshipManager.GangRelationships.ChangeReputation(Gang, RepToRemove, true);
         //Player.RelationshipManager.GangRelationships.AddAttacked(Gang);
-
-
-
         base.OnCarjackedByPlayer(Player, Zones, GangTerritories);
     }
     protected override string GetPedInfoForDisplay()

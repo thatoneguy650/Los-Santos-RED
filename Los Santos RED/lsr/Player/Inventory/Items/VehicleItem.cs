@@ -28,9 +28,19 @@ public class VehicleItem : ModItem
     private bool SetSecondaryColor = false;
     private bool SetLivery1 = false;
     private bool SetLivery2 = false;
+    private bool SetPearlescentColor;
+    private int PearlescentColor;
+    private bool SetWheelColor;
+    private int WheelColor;
+    private bool SetInteriorColor;
+    private int InteriorColor;
 
     private int FinalPrimaryColor => PrimaryColor == -1 ? 0 : PrimaryColor;
     private int FinalSecondaryColor => SecondaryColor == -1 ? 0 : SecondaryColor;
+    private int FinalPearlColor => PearlescentColor == -1 ? 0 : PearlescentColor;
+    private int FinalWheelColor => WheelColor == -1 ? 156 : WheelColor;
+    private int FinalInteriorColor => InteriorColor == -1 ? 0 : InteriorColor;
+
     public bool RequiresDLC { get; set; } = false;
     public string ModelName { get; set; }
     public uint ModelHash { get; set; }
@@ -204,6 +214,9 @@ public class VehicleItem : ModItem
         SecondaryColor = -1;
         SetPrimaryColor = false;
         SetSecondaryColor = false;
+        SetInteriorColor = false;
+        SetWheelColor = false;
+        SetPearlescentColor = false;
         SetLivery1 = false;
         SetLivery2 = false;
         if(RequiresDLC && !settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles)
@@ -341,6 +354,22 @@ public class VehicleItem : ModItem
         colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Secondary Colors";
         if (Transaction.HasBannerImage) { secondaryColorMenu.SetBannerType(Transaction.BannerImage); }
 
+        UIMenu pearlescentColorMenu = Transaction.MenuPool.AddSubMenu(colorFullMenu, "Pearlescent Color");
+        pearlescentColorMenu.SubtitleText = "PEARLESCENT COLOR GROUPS";
+        colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Pearlescent Colors";
+        if (Transaction.HasBannerImage) { pearlescentColorMenu.SetBannerType(Transaction.BannerImage); }
+
+        UIMenu wheelColorMenu = Transaction.MenuPool.AddSubMenu(colorFullMenu, "Wheel Color");
+        wheelColorMenu.SubtitleText = "WHEEL COLOR GROUPS";
+        colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Wheel Colors";
+        if (Transaction.HasBannerImage) { wheelColorMenu.SetBannerType(Transaction.BannerImage); }
+
+        UIMenu interiorColorMenu = Transaction.MenuPool.AddSubMenu(colorFullMenu, "Interior Color");
+        interiorColorMenu.SubtitleText = "INTERIOR COLOR GROUPS";
+        colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Interior Colors";
+        if (Transaction.HasBannerImage) { interiorColorMenu.SetBannerType(Transaction.BannerImage); }
+
+
         //Add Color Sub Menu Here
         foreach (string colorGroupString in Transaction.VehicleColors.GroupBy(x => x.ColorGroup).Select(x => x.Key).Distinct().OrderBy(x => x))
         {
@@ -353,6 +382,22 @@ public class VehicleItem : ModItem
             secondarycolorGroupMenu.SubtitleText = "SECONDARY COLORS";
             secondaryColorMenu.MenuItems[secondaryColorMenu.MenuItems.Count() - 1].Description = "Choose a color group";
             if (Transaction.HasBannerImage) { secondarycolorGroupMenu.SetBannerType(Transaction.BannerImage); }
+
+            UIMenu pearlescentcolorGroupMenu = Transaction.MenuPool.AddSubMenu(pearlescentColorMenu, colorGroupString);
+            pearlescentcolorGroupMenu.SubtitleText = "PEARLESCENT COLORS";
+            pearlescentColorMenu.MenuItems[pearlescentColorMenu.MenuItems.Count() - 1].Description = "Choose a color group";
+            if (Transaction.HasBannerImage) { pearlescentcolorGroupMenu.SetBannerType(Transaction.BannerImage); }
+
+            UIMenu wheelcolorGroupMenu = Transaction.MenuPool.AddSubMenu(wheelColorMenu, colorGroupString);
+            wheelcolorGroupMenu.SubtitleText = "WHEEL COLORS";
+            wheelColorMenu.MenuItems[wheelColorMenu.MenuItems.Count() - 1].Description = "Choose a color group";
+            if (Transaction.HasBannerImage) { wheelcolorGroupMenu.SetBannerType(Transaction.BannerImage); }
+
+            UIMenu interiorcolorGroupMenu = Transaction.MenuPool.AddSubMenu(interiorColorMenu, colorGroupString);
+            interiorcolorGroupMenu.SubtitleText = "INTERIOR COLORS";
+            interiorColorMenu.MenuItems[interiorColorMenu.MenuItems.Count() - 1].Description = "Choose a color group";
+            if (Transaction.HasBannerImage) { interiorcolorGroupMenu.SetBannerType(Transaction.BannerImage); }
+
 
             foreach (VehicleColorLookup cl in Transaction.VehicleColors.Where(x => x.ColorGroup == colorGroupString))
             {
@@ -382,6 +427,50 @@ public class VehicleItem : ModItem
                     }
                 };
                 secondarycolorGroupMenu.AddItem(actualColorSecondary);
+
+
+
+                UIMenuItem actualColorPearl = new UIMenuItem(cl.ColorName, cl.FullColorName);
+                actualColorPearl.RightBadge = UIMenuItem.BadgeStyle.Heart;
+                actualColorPearl.RightBadgeInfo.Color = cl.RGBColor;
+                actualColorPearl.Activated += (sender, selectedItem) =>
+                {
+                    SetPearlescentColor = true;
+                    PearlescentColor = cl.ColorID;
+                    if (Transaction.SellingVehicle.Exists())
+                    {
+                        NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(Transaction.SellingVehicle, FinalPearlColor, FinalWheelColor);
+                    }
+                };
+                pearlescentcolorGroupMenu.AddItem(actualColorPearl);
+
+                UIMenuItem actualColorWheel = new UIMenuItem(cl.ColorName, cl.FullColorName);
+                actualColorWheel.RightBadge = UIMenuItem.BadgeStyle.Heart;
+                actualColorWheel.RightBadgeInfo.Color = cl.RGBColor;
+                actualColorWheel.Activated += (sender, selectedItem) =>
+                {
+                    SetWheelColor = true;
+                    WheelColor = cl.ColorID;
+                    if (Transaction.SellingVehicle.Exists())
+                    {
+                        NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(Transaction.SellingVehicle, FinalPearlColor, FinalWheelColor);
+                    }
+                };
+                wheelcolorGroupMenu.AddItem(actualColorWheel);
+
+                UIMenuItem actualColorInterior = new UIMenuItem(cl.ColorName, cl.FullColorName);
+                actualColorInterior.RightBadge = UIMenuItem.BadgeStyle.Heart;
+                actualColorInterior.RightBadgeInfo.Color = cl.RGBColor;
+                actualColorInterior.Activated += (sender, selectedItem) =>
+                {
+                    SetInteriorColor = true;
+                    InteriorColor = cl.ColorID;
+                    if (Transaction.SellingVehicle.Exists())
+                    {
+                        NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_5(Transaction.SellingVehicle, FinalInteriorColor);
+                    }
+                };
+                interiorcolorGroupMenu.AddItem(actualColorInterior);
             }
         }
         liveryFullMenu = null;     
@@ -420,6 +509,14 @@ public class VehicleItem : ModItem
                 if (SetPrimaryColor || SetSecondaryColor || !SetLivery1)
                 {
                     NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, FinalPrimaryColor, FinalSecondaryColor);
+                }
+                if(SetPearlescentColor || SetWheelColor)
+                {
+                    NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(NewVehicle, FinalPearlColor, FinalWheelColor);
+                }
+                if(SetInteriorColor)
+                {
+                    NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_5(NewVehicle, FinalInteriorColor);
                 }
                 if(SetLivery1 && Livery1 != -1)
                 {
@@ -478,6 +575,7 @@ public class VehicleItem : ModItem
             if (isPurchase)
             {
                 NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, FinalPrimaryColor, FinalSecondaryColor);
+                NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(Transaction.SellingVehicle, FinalPearlColor, FinalWheelColor);
             }
             else
             {

@@ -60,7 +60,7 @@ public class GangVoice
         if(GangMember.WantedLevel >= 2 || GangMember.PedViolations.CurrentlyViolatingWantedLevel >= 2 || GangMember.Pedestrian.IsInCombat)
         {
             GangMember.PlaySpeech(HighCombatSpeech, GangMember.IsInVehicle, true);
-            TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_WeaponsFree_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_WeaponsFree_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_WeaponsFree_Randomizer_Max);
+            TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Randomizer_Max);
         }
         else if(GangMember.WantedLevel == 1 || GangMember.PedViolations.CurrentlyViolatingWantedLevel == 1)
         {

@@ -97,17 +97,20 @@ public class CopVoice
         {
             TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Deadly_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Deadly_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Deadly_Randomizer_Max);
         }
-        if (currentPlayer.IsWanted && Cop.CanSeePlayer)
+        if (currentPlayer.IsWanted && Cop.RecentlySeenPlayer)
         {
             if (Cop.IsInVehicle)
             {
-                if (currentPlayer.IsInVehicle)
+                if (Cop.IsDriver)
                 {
-                    Cop.PlaySpeech(InVehiclePlayerInVehicleMegaPhone, false,false);
-                }
-                else 
-                {
-                    Cop.PlaySpeech(InVehiclePlayerOnFootMegaPhone, false,false);
+                    if (currentPlayer.IsInVehicle)
+                    {
+                        Cop.PlaySpeech(InVehiclePlayerInVehicleMegaPhone, false, false);
+                    }
+                    else
+                    {
+                        Cop.PlaySpeech(InVehiclePlayerOnFootMegaPhone, false, false);
+                    }
                 }
             }
             else

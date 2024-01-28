@@ -312,7 +312,7 @@ public class LESpawnTask : SpawnTask
                 return null;
             }
             VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, true);
-            //CreatedVehicle.UpgradePerformance();
+            CreatedVehicle.UpgradePerformance();
             if (IsOffDutySpawn)
             {
                 CreatedVehicle.UpdatePlateType(true, World.ModDataFileManager.Zones, World.ModDataFileManager.PlateTypes,true, true);

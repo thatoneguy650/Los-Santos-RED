@@ -198,7 +198,7 @@ namespace LSR.Vehicles
         public bool CanPerformActivitiesInside => !IsBicycle && !IsMotorcycle;
 
         public bool IsRandomlyLocked { get; set; } = false;
-        public bool UsePlayerAnimations => VehicleClass != VehicleClass.Motorcycle && VehicleClass != VehicleClass.Cycle;
+        public bool UsePlayerAnimations => !IsMotorcycle && !IsBicycle;// VehicleClass != VehicleClass.Motorcycle && VehicleClass != VehicleClass.Cycle;
         public virtual bool CanHaveRandomCash { get; set; } = true;
         public virtual float PercentageToGetRandomWeapons => Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomWeapons;
         public virtual bool CanHaveRandomWeapons { get; set; } = true;
