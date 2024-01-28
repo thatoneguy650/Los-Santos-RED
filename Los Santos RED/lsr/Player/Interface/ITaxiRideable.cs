@@ -23,5 +23,9 @@ namespace LosSantosRED.lsr.Interface
         bool IsWanted { get; }
         bool IsDead { get; }
         CellPhone CellPhone { get; }
+        bool AnyPoliceRecentlySeenPlayer { get; }
+        PoliceResponse PoliceResponse { get; }
+        SearchMode SearchMode { get; }
+        bool IsInSearchMode { get; }
     }
 }

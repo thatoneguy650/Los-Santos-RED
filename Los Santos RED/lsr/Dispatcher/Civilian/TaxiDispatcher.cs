@@ -164,7 +164,7 @@ public class TaxiDispatcher : DefaultDispatcher
             GameFiber.Yield();
         }
 
-        EntryPoint.WriteToConsole($"TAXI DISPATCHER DetermineRun shouldRun{shouldRun} TotalSpawnedTaxiDrivers{World.Pedestrians.TotalSpawnedTaxiDrivers}");
+       // EntryPoint.WriteToConsole($"TAXI DISPATCHER DetermineRun shouldRun{shouldRun} TotalSpawnedTaxiDrivers{World.Pedestrians.TotalSpawnedTaxiDrivers}");
         return shouldRun;
     }
     protected override bool DetermineRecall()
@@ -196,7 +196,7 @@ public class TaxiDispatcher : DefaultDispatcher
             Position = Player.Position;
         }
         Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
-        EntryPoint.WriteToConsole($"TAXI DISPATCHER GetSpawnPosition Position{Position}");
+       // EntryPoint.WriteToConsole($"TAXI DISPATCHER GetSpawnPosition Position{Position}");
         return Position;
     }
     protected override bool GetSpawnTypes()
@@ -228,7 +228,7 @@ public class TaxiDispatcher : DefaultDispatcher
             return false;
         }
 
-        EntryPoint.WriteToConsole($"TAXI DISPATCHER GetSpawnTypes PersonType{PersonType.ModelName} VehicleType{VehicleType.ModelName}");
+       // EntryPoint.WriteToConsole($"TAXI DISPATCHER GetSpawnTypes PersonType{PersonType.ModelName} VehicleType{VehicleType.ModelName}");
         return true;
     }
     protected override bool CallSpawnTask()
@@ -252,7 +252,7 @@ public class TaxiDispatcher : DefaultDispatcher
         {
             ShouldRunAmbientDispatch = false;
         }
-        EntryPoint.WriteToConsole($"TAXI DISPATCHER CallSpawnTask SpawnedItems{SpawnedItems} PEDHANDLE:{spawnedDriver?.Handle} VEHHANDLE:{spawnedVehicle?.Handle}");
+       // EntryPoint.WriteToConsole($"TAXI DISPATCHER CallSpawnTask SpawnedItems{SpawnedItems} PEDHANDLE:{spawnedDriver?.Handle} VEHHANDLE:{spawnedVehicle?.Handle}");
         return SpawnedItems;
     }
     public void ForceTaxiSpawn(TaxiFirm taxiFirm)

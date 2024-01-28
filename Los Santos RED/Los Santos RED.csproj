@@ -146,6 +146,8 @@
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\PedLoadingSettings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\TaxiSettings.cs" />
     <Compile Include="lsr\Data\Vehicles\OldDispatchableVehicles.cs" />
+    <Compile Include="lsr\Dispatcher\Items\eSpawnAdjustment.cs" />
+    <Compile Include="lsr\Dispatcher\Items\SpawnAdjustmentAmount.cs" />
     <Compile Include="lsr\Dispatcher\LE\MarshalDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Civilian\TaxiDispatcher.cs" />
     <Compile Include="lsr\Inventory\CashStorage.cs" />

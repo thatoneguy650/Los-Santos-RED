@@ -385,7 +385,7 @@ public class Vehicles
         }
         if (!TaxiVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
         {
-            EntryPoint.WriteToConsole($"TAXI VEHICLE ADDING {vehicleExt.Handle}");
+            //EntryPoint.WriteToConsole($"TAXI VEHICLE ADDING {vehicleExt.Handle}");
             TaxiVehicles.Add(vehicleExt);
             CivilianVehicles.RemoveAll(x => x.Handle == vehicleExt.Handle);
         }

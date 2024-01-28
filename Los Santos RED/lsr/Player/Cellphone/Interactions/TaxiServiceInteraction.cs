@@ -82,7 +82,6 @@ public class TaxiServiceInteraction : IContactMenuInteraction
         UIMenuItem requestTaxiMenuItem = new UIMenuItem("Request Taxi", "Ask for a taxi to be dispatched.");
         requestTaxiMenuItem.Activated += (sender, selectedItem) =>
         {
-
             string fullText = "";
             if (Player.TaxiManager.RequestService(TaxiFirm, false))
             {

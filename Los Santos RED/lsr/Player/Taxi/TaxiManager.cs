@@ -91,7 +91,6 @@ public class TaxiManager
 
         TaxiRide taxiRide = new TaxiRide(World, Player, taxiFirm, Player.Position);
         taxiRide.CanSpawnRide = !isHailed;
-
         if (isHailed)
         {
             taxiRide.SetupHailedRide();
@@ -100,10 +99,7 @@ public class TaxiManager
         {
             taxiRide.SetupCalledRide();
         }
-
         EntryPoint.WriteToConsole($"RequestService RAN SETUP");
-
-
         if (!taxiRide.IsActive)
         {
             EntryPoint.WriteToConsole($"RequestService FAIL, NOT ACTIVE");

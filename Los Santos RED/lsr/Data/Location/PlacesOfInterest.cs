@@ -2015,6 +2015,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new PoliceStation(new Vector3(361.1365f, -1584.821f, 29.29195f), 48.07573f, "Davis Sheriff's Station","A Tradition of Suppression") {
                 RespawnLocation = new Vector3(358.9726f, -1582.881f, 29.29195f),
                 RespawnHeading = 323.5287f,
+                MaxAssaultSpawns = 25,
                 BannerImagePath = "agencies\\lssddavis.png",
                 OpenTime = 0,
                 CloseTime = 24,
@@ -2062,6 +2063,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 BannerImagePath = "agencies\\lssdmain.png",
                 OpenTime = 0,
                 CloseTime = 24,
+                MaxAssaultSpawns = 10,
                 RespawnLocation = new Vector3(1858.19f, 3679.873f, 33.75724f),
                 RespawnHeading = 218.3256f,
                 InteriorID = -707,
@@ -2116,6 +2118,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 OpenTime = 0,
                 CloseTime = 24,
                 InteriorID= 30978,
+                MaxAssaultSpawns = 30,
                 RespawnLocation = new Vector3(440.0835f, -982.3911f, 30.68966f),
                 RespawnHeading = 47.88088f,
                 ScannerFilePath = "01_specific_location\\0x0A45FA8A.wav",
@@ -2151,6 +2154,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 BannerImagePath = "agencies\\lspdlamesa.png",
                 OpenTime = 0,
                 CloseTime = 24,
+                MaxAssaultSpawns = 20,
                 RespawnLocation = new Vector3(815.8774f, -1290.531f, 26.28391f),
                 RespawnHeading = 74.91704f,
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(860.3976f, -1349.983f, 26.06512f),79.33445f),
@@ -2188,6 +2192,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 BannerImagePath = "agencies\\lspdmain.png",
                 OpenTime = 0,
                 CloseTime = 24,
+                MaxAssaultSpawns = 30,
                 RespawnLocation = new Vector3(644.8676f, -5.218857f, 82.7738f),
                 RespawnHeading = 222.2603f,
                 ActivateCells = 5,
@@ -2214,6 +2219,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 BannerImagePath = "agencies\\lspdmain.png",
                 OpenTime = 0,
                 CloseTime = 24, 
+                MaxAssaultSpawns = 20,
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(-560.6538f, -134.251f, 38.11069f), 180.7514f, 55f),
                     new LEConditionalLocation(new Vector3(-563.0671f, -141.727f, 38.32593f), 192.5406f, 55f),
@@ -2231,6 +2237,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 BannerImagePath = "agencies\\lspdmain.png",
                 OpenTime = 0,
                 CloseTime = 24, 
+                MaxAssaultSpawns = 5,
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(-1114.355f, -822.5755f, 19.3168f), 14.61082f, 55f),
                     new LEConditionalLocation(new Vector3(-1135.939f, -847.7239f, 19.34725f), 31.25465f, 55f),
@@ -2256,6 +2263,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 BannerImagePath = "agencies\\lspdmain.png",
                 OpenTime = 0,
                 CloseTime = 24, 
+                MaxAssaultSpawns = 2,
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(-1629.069f, -1013.071f, 13.11924f), 298.982f, 55f),
                     new LEConditionalLocation(new Vector3(-1639.286f, -1011.673f, 13.12066f), 24.4451f, 55f),
@@ -2267,6 +2275,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 BannerImagePath = "agencies\\lspdmain.png",
                 OpenTime = 0,
                 CloseTime = 24, 
+                MaxAssaultSpawns = 5,
                 ScannerFilePath = "01_specific_location\\0x13CBAB64.wav", 
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(-1314.879f, -1532.083f, 4.423616f), 190.5698f, 60f),
@@ -2278,6 +2287,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 InteriorID = 58882, 
                 OpenTime = 0,
                 CloseTime = 24,
+                MaxAssaultSpawns = 30,
                 IgnoreEntranceInteract = true,
                 ScannerFilePath = "01_specific_location\\0x1667D63F.wav", 
                 PossiblePedSpawns = new List<ConditionalLocation>() 
@@ -2308,6 +2318,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 AssignedAssociationID = "NOOSE", 
                 OpenTime = 0,
                 CloseTime = 24, 
+                MaxAssaultSpawns = 30,
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(-896.5345f, -2388.417f, 14.02436f), 63.63145f, 45f){ AssociationID = "NOOSE-BP", TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario ,LongGunAlwaysEquipped = true},
                     new LEConditionalLocation(new Vector3(-897.6145f, -2398.739f, 14.02436f), 117.328f, 45f){ AssociationID = "NOOSE-PIA", TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario,LongGunAlwaysEquipped = true },
@@ -2328,6 +2339,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 AssignedAssociationID = "NYSP", 
                 OpenTime = 0,
                 CloseTime = 24, 
+                MaxAssaultSpawns = 2,
                 PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 },
@@ -3169,6 +3181,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             IsEnabled = true,
             IsOnMPMap = true,
             IsOnSPMap = true,
+            MaxAssaultSpawns = 30,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
                 new GangConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 55f) { TaskRequirements = TaskRequirements.Guard },
@@ -3226,6 +3239,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            MaxAssaultSpawns = 20,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(-608.3129f, -1786.241f, 23.63522f), 191.6332f, 45f),
@@ -3289,6 +3303,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            MaxAssaultSpawns = 20,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
                 new GangConditionalLocation(new Vector3(274.3982f, -3017.684f, 5.699762f), 86.04555f, 65f),
@@ -3383,6 +3398,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            MaxAssaultSpawns = 20,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(-585.9933f, -776.1322f, 25.01723f), 167.2549f, 70f),
@@ -3440,6 +3456,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            MaxAssaultSpawns = 10,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
                 new GangConditionalLocation(new Vector3(1664.384f, 4765.325f, 42.0682f), 290.2068f, 65f),
@@ -3463,6 +3480,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            MaxAssaultSpawns = 10,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
                 new GangConditionalLocation(new Vector3(-233.3555f, 6447.341f, 31.19741f), 131.7259f, 65f),
@@ -3486,6 +3504,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            MaxAssaultSpawns = 20,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
                 new GangConditionalLocation(new Vector3(-1630.811f, 39.70509f, 62.54136f), 323.2733f, 65f),
@@ -3509,6 +3528,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            MaxAssaultSpawns = 15,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
                 new GangConditionalLocation(new Vector3(-3228.078f, 1089.288f, 10.73698f), 243.1453f, 65f),
@@ -3533,6 +3553,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            MaxAssaultSpawns = 10,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(517.7187f, 191.4421f, 104.745f), 344.8743f, spawnChance) { TaskRequirements = TaskRequirements.Guard, ForceSidearm = true },//right by thingo, alwayts has a gun
@@ -4012,6 +4033,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             IsEnabled = true,
             IsOnMPMap = false,
             IsOnSPMap = true,
+            MaxAssaultSpawns = 25,
             //HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
@@ -4053,6 +4075,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             InteriorID = 245761,
             IsOnMPMap = true,
             IsOnSPMap = false,
+            MaxAssaultSpawns = 25,
             IgnoreEntranceInteract = true,
             //HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>()
@@ -4121,6 +4144,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            MaxAssaultSpawns = 30,
            // HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
@@ -4161,6 +4185,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            MaxAssaultSpawns = 15,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
                 new GangConditionalLocation(new Vector3(99.74276f, -816.0181f, 31.40174f), 2.775635f, 65f),
@@ -4187,6 +4212,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            MaxAssaultSpawns = 20,
            // HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {

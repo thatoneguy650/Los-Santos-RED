@@ -191,7 +191,7 @@ public class Dispatcher
                     continue;
                 }
                 float distanceTo = civilianCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character);
-                if (distanceTo >= 325f)//275f)//250f)
+                if (distanceTo >= 275f || (!civilianCar.WasSpawnedEmpty && distanceTo >= 150f))//325f)//275f)//250f)
                 {
                     //if (civilianCar.Vehicle.IsPersistent)
                     //{

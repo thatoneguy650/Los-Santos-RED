@@ -207,7 +207,7 @@ public class GangDispatcher
         {
             return;
         }
-        if (Player.IsDead || Player.IsInVehicle)
+        if (Player.IsDead)// || Player.IsInVehicle)
         {
             //EntryPoint.WriteToConsole("Assault Spawn failed NOT NEEDED");
             return;

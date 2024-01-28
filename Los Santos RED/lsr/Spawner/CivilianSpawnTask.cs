@@ -98,7 +98,6 @@ public class CivilianSpawnTask : SpawnTask
 
             if (createdPed.Exists())
             {
-                EntryPoint.WriteToConsole("CIVILIAN SPAWN TASK, PED DOES NOT EXIST");
                 SetupPed(createdPed);
                 if (!createdPed.Exists())
                 {

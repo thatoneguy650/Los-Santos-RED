@@ -22,35 +22,29 @@ public class DispatchableVehicle
     public int MinWantedLevelSpawn { get; set; } = 0;
     public int MaxWantedLevelSpawn { get; set; } = 6;
 
+
+
+    public int AdditionalSpawnChanceOffRoad { get; set; } = 0;
+
     public List<int> ForceStayInSeats { get; set; }
-
     public List<int> CaninePossibleSeats { get; set; }
-
     public int RequiredPrimaryColorID { get; set; } = -1;
     public int RequiredSecondaryColorID { get; set; } = -1;
     public List<int> RequiredLiveries { get; set; } = new List<int>();
     public List<DispatchableVehicleExtra> VehicleExtras { get; set; } = new List<DispatchableVehicleExtra>();
-
-
-
-
-
-
-   // public List<DispatchableVehicleToggle> VehicleToggles { get; set; } = new List<DispatchableVehicleToggle>();
     public List<DispatchableVehicleMod> VehicleMods { get; set; } = new List<DispatchableVehicleMod>();
-
-
     public List<int> OptionalColors { get; set; }
     public float MaxRandomDirtLevel { get; set; } = 5.0f;
     public int ForcedPlateType { get; set; } = -1;
     public VehicleVariation RequiredVariation { get; set; }
-
     public bool RequiresDLC { get; set; } = false;
     public bool IsBoat => NativeFunction.Natives.IS_THIS_MODEL_A_BOAT<bool>(Game.GetHashKey(ModelName));
     public bool IsCar => NativeFunction.Natives.IS_THIS_MODEL_A_CAR<bool>(Game.GetHashKey(ModelName));
     public bool IsHelicopter => NativeFunction.Natives.IS_THIS_MODEL_A_HELI<bool>(Game.GetHashKey(ModelName));
     public bool IsMotorcycle => NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>(Game.GetHashKey(ModelName));
 
+
+    public List<SpawnAdjustmentAmount> SpawnAdjustmentAmounts { get; set; }
 
     public string GetDescription()
     {
@@ -65,6 +59,46 @@ public class DispatchableVehicle
         description += $"~n~RequiresDLC: {RequiresDLC}";
         return description;
     }
+
+    public bool CanCurrentlyAdjustedSpawn(int WantedLevel, bool allowDLC, eSpawnAdjustment eSpawnAdjustment) => CurrentAdjustedSpawnChance(WantedLevel, allowDLC, eSpawnAdjustment) > 0;
+    public int CurrentAdjustedSpawnChance(int WantedLevel, bool allowDLC, eSpawnAdjustment eSpawnAdjustment)
+    {
+        if (RequiresDLC && !allowDLC)
+        {
+            return 0;
+        }
+        int adjustmentAmount = 0;
+        if (SpawnAdjustmentAmounts != null && SpawnAdjustmentAmounts.Any())
+        {
+            foreach(SpawnAdjustmentAmount spawnAdjustmentAmount in SpawnAdjustmentAmounts)
+            {
+                if(eSpawnAdjustment.HasFlag(spawnAdjustmentAmount.eSpawnAdjustment))
+                {
+                    adjustmentAmount += spawnAdjustmentAmount.PercentAmount;
+                    EntryPoint.WriteToConsole($"CurrentAdjustedSpawnChance eSpawnAdjustment {eSpawnAdjustment}, spawnAdjustmentAmount enum:{spawnAdjustmentAmount.eSpawnAdjustment} value:{spawnAdjustmentAmount.PercentAmount}");
+                }
+            }
+        }
+        if (WantedLevel > 0)
+        {
+            if (WantedLevel >= MinWantedLevelSpawn && WantedLevel <= MaxWantedLevelSpawn)
+            {
+                return WantedSpawnChance + adjustmentAmount;
+            }
+            else
+            {
+                return 0 + adjustmentAmount;
+            }
+        }
+        else
+        {
+            return AmbientSpawnChance + adjustmentAmount;
+        }
+    }
+
+
+
+
     public bool CanCurrentlySpawn(int WantedLevel, bool allowDLC) => CurrentSpawnChance(WantedLevel, allowDLC) > 0;
     public int CurrentSpawnChance(int WantedLevel, bool allowDLC)
     {
@@ -139,6 +173,11 @@ public class DispatchableVehicle
                         NativeFunction.Natives.SET_VEHICLE_EXTRA(vehicleExt.Vehicle, extra.ExtraID, toSet);
                     }
                 }
+                GameFiber.Yield();
+                if (!vehicleExt.Vehicle.Exists())
+                {
+                    break;
+                }
             }
         }
         GameFiber.Yield();
@@ -160,6 +199,11 @@ public class DispatchableVehicle
                     {
                        // EntryPoint.WriteToConsole($"VEHICLE MODS: ID: {dispatchableVehicleMod.ModID} VALUE: {value.Value}");
                         NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, dispatchableVehicleMod.ModID, value.Value, false);
+                        GameFiber.Yield();
+                        if(!vehicleExt.Vehicle.Exists())
+                        {
+                            break;
+                        }
                     }
                 }
             }

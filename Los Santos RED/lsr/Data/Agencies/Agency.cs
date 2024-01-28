@@ -291,6 +291,46 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
         }      
         return null;
     }
+    public DispatchableVehicle GetRandomAdjustedVehicle(int wantedLevel, bool includeHelicopters, bool includeBoats, bool includeMotorcycles, string requiredGroup, ISettingsProvideable settings, eSpawnAdjustment eSpawnAdjustment)
+    {
+        if (Vehicles == null || !Vehicles.Any())
+        {
+            return null;
+        }
+        List<DispatchableVehicle> ToPickFrom = Vehicles.Where(x => x.CanCurrentlyAdjustedSpawn(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles, eSpawnAdjustment) && !x.IsHelicopter && !x.IsBoat && !x.IsMotorcycle).ToList();
+        if (includeBoats)
+        {
+            ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlyAdjustedSpawn(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles, eSpawnAdjustment) && x.IsBoat).ToList());
+        }
+        if (includeHelicopters)
+        {
+            ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlyAdjustedSpawn(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles, eSpawnAdjustment) && x.IsHelicopter).ToList());
+        }
+        if (includeMotorcycles)
+        {
+            ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlyAdjustedSpawn(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles, eSpawnAdjustment) && x.IsMotorcycle).ToList());
+        }
+        if (requiredGroup != "" && !string.IsNullOrEmpty(requiredGroup))
+        {
+            ToPickFrom = ToPickFrom.Where(x => x.GroupName == requiredGroup).ToList();
+        }
+        int Total = ToPickFrom.Sum(x => x.CurrentAdjustedSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles, eSpawnAdjustment));
+        int RandomPick = RandomItems.MyRand.Next(0, Total);
+        foreach (DispatchableVehicle Vehicle in ToPickFrom)
+        {
+            int SpawnChance = Vehicle.CurrentAdjustedSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles, eSpawnAdjustment);
+            if (RandomPick < SpawnChance)
+            {
+                return Vehicle;
+            }
+            RandomPick -= SpawnChance;
+        }
+        return null;
+    }
+
+
+
+
     public IssuableWeapon GetRandomWeapon(bool isSidearm, IWeapons weapons)
     {
         List<IssuableWeapon> PossibleWeapons;     

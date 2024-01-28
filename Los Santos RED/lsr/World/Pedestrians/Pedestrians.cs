@@ -809,7 +809,7 @@ public class Pedestrians : ITaskerReportable
             {
                 WasPersistentOnCreate = WasPersistentOnCreate,
             };
-            EntryPoint.WriteToConsole($"CREATE AMBIENT TAXI PED {createdPedExt.Handle}");
+           // EntryPoint.WriteToConsole($"CREATE AMBIENT TAXI PED {createdPedExt.Handle}");
         }
         else
         {

@@ -15,33 +15,18 @@ public class GangVoice
     private bool IsInFiber = false;
     private ISettingsProvideable Settings;
 
-
-
-    //{ "DRAW_GUN", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL", "GET_HIM", "REQUEST_BACKUP", "REQUEST_NOOSE", "SHOOTOUT_OPEN_FIRE" };  
-
-
-
+    private readonly List<string> IdleSpeech = new List<string> { "CHAT_STATE", "CHAT_RESP", "GENERIC_HOWS_IT_GOING" };
+    private readonly List<string> FleeingSpeech = new List<string> { "GENERIC_SHOCKED_MED", "GENERIC_SHOCKED_HIGH", "GENERIC_FRUSTRATED_MED", "GENERIC_FRUSTRATED_HIGH" };
     private readonly List<string> LowCombatSpeech = new List<string> {  "GENERIC_CURSE_MED", "GENERIC_INSULT_MED", "GENERIC_FRUSTRATED_MED","GENERIC_FRUSTRATED_HIGH", "GENERIC_WHATEVER" };
     private readonly List<string> HighCombatSpeech = new List<string> { "CHALLENGE_THREATEN", "GENERIC_CURSE_HIGH", "GENERIC_WAR_CRY", "GENERIC_FUCK_YOU", "GENERIC_INSULT_HIGH", "GENERIC_INSULT_MED" };//,"GENERIC_FRIGHTENED_HIGH" };
-
-
-
-
-    //{ "CHALLENGE_THREATEN", "COMBAT_TAUNT", "FIGHT", "GENERIC_SHOCKED_HIGH", "GENERIC_WAR_CRY", "PINNED_DOWN", "GENERIC_INSULT_HIGH", "GET_HIM" };
-
-    private readonly List<string> UnarmedChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "SUSPECT_SPOTTED", "COP_ARRIVAL_ANNOUNCE", "COMBAT_TAUNT" };
-    private readonly List<string> DangerousUnarmedSpeech = new List<string> { "DRAW_GUN", "COP_SEES_WEAPON", "COP_SEES_GUN", "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "GET_HIM" };
-    private readonly List<string> InVehiclePlayerOnFootMegaPhone = new List<string> { "STOP_ON_FOOT_MEGAPHONE", "COP_ARRIVAL_ANNOUNCE_MEGAPHONE" };
-    private readonly List<string> InVehiclePlayerInVehicleMegaPhone = new List<string> { "CHASE_VEHICLE_MEGAPHONE", "STOP_VEHICLE_CAR_MEGAPHONE", "STOP_VEHICLE_CAR_WARNING_MEGAPHONE", "STOP_VEHICLE_GENERIC_MEGAPHONE", "SUSPECT_SPOTTED", "COP_ARRIVAL_ANNOUNCE_MEGAPHONE", "COMBAT_TAUNT" };
-    private readonly List<string> IdleSpeech = new List<string> { "CHAT_STATE", "CHAT_RESP" };
-    private readonly List<string> SuspectBusted = new List<string> { "WON_DISPUTE", "ARREST_PLAYER", "CRIMINAL_APPREHENDED" };
-    private readonly List<string> SuspectDown = new List<string> { "SUSPECT_KILLED", "SUSPECT_KILLED_REPORT" };
 
     private uint GameTimeLastSpoke;
 
     private int TimeBetweenSpeaking;
     private bool Spoke;
-
+    private bool IsInSevereCombat => GangMember.WantedLevel >= 2 || GangMember.PedViolations.CurrentlyViolatingWantedLevel >= 2 || (GangMember.Pedestrian.Exists() && GangMember.Pedestrian.IsInCombat);
+    private bool IsInLowCombat => GangMember.WantedLevel == 1 || GangMember.PedViolations.CurrentlyViolatingWantedLevel == 1;
+    private bool IsFleeing => GangMember.IsCowering || (GangMember.Pedestrian.Exists() && GangMember.Pedestrian.IsFleeing);
     public GangVoice(PedExt gangMember, ISettingsProvideable settings)
     {
         GangMember = gangMember;
@@ -57,17 +42,45 @@ public class GangVoice
         {
             return;
         }
-        if(GangMember.WantedLevel >= 2 || GangMember.PedViolations.CurrentlyViolatingWantedLevel >= 2 || GangMember.Pedestrian.IsInCombat)
+        if(IsInSevereCombat)
         {
-            GangMember.PlaySpeech(HighCombatSpeech, GangMember.IsInVehicle, true);
-            TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Randomizer_Max);
+            SaySevereCombatSpeech();
         }
-        else if(GangMember.WantedLevel == 1 || GangMember.PedViolations.CurrentlyViolatingWantedLevel == 1)
+        else if(IsInLowCombat)
         {
-            GangMember.PlaySpeech(LowCombatSpeech, GangMember.IsInVehicle, true);
-            TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Randomizer_Max);
+            SayLowCombatSpeech();
+        }
+        else if (IsFleeing)
+        {
+            SayFleeingSpeech();
+        }
+        else
+        {
+            SayIdleSpeech();
         }
         GameTimeLastSpoke = Game.GameTime;
+    }
+
+    private void SayIdleSpeech()
+    {
+        GangMember.PlaySpeech(IdleSpeech, false, false);
+        TimeBetweenSpeaking = Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_General_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_General_Randomizer_Min, Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_General_Randomizer_Max);
+    }
+
+    private void SaySevereCombatSpeech()
+    {
+        GangMember.PlaySpeech(HighCombatSpeech, false, true);
+        TimeBetweenSpeaking = Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_HighCombat_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_HighCombat_Randomizer_Min, Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_HighCombat_Randomizer_Max);
+    }
+    private void SayLowCombatSpeech()
+    {
+        GangMember.PlaySpeech(LowCombatSpeech, false, true);
+        TimeBetweenSpeaking = Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_LowCombat_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_LowCombat_Randomizer_Min, Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_LowCombat_Randomizer_Max);
+    }
+    private void SayFleeingSpeech()
+    {
+        GangMember.PlaySpeech(LowCombatSpeech, false, true);
+        TimeBetweenSpeaking = Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_Fleeing_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_Fleeing_Randomizer_Min, Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_Fleeing_Randomizer_Max);
     }
     public void ResetSpeech()
     {

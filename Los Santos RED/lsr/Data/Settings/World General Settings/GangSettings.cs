@@ -117,7 +117,39 @@ public class GangSettings : ISettingsDefaultable
     public float GangTerritoryBlipSize { get; set; }
     public float GangTerritoryBlipAlpha { get; set; }
     public bool SetPersistent { get; set; }
+
+
+    [Description("Enable or disable ambient speech from gang members")]
     public bool AllowAmbientSpeech { get; set; }
+    [Description("Minimum time (in ms) between gang members speaking when idle.")]
+    public int TimeBetweenGangSpeak_General_Min { get; set; }
+    [Description("Minimum additional time (in ms) between gang members speaking when idle.")]
+    public int TimeBetweenGangSpeak_General_Randomizer_Min { get; set; }
+    [Description("Maximum additional time (in ms) between gang members speaking when idle.")]
+    public int TimeBetweenGangSpeak_General_Randomizer_Max { get; set; }
+
+
+
+
+    [Description("Minimum time (in ms) between gang members speaking when you are armed.")]
+    public int TimeBetweenGangSpeak_Fleeing_Min { get; set; }
+    [Description("Minimum additional time (in ms) between gang members speaking when you are armed.")]
+    public int TimeBetweenGangSpeak_Fleeing_Randomizer_Min { get; set; }
+    [Description("Maximum additional time (in ms) between gang members speaking when you are armed.")]
+    public int TimeBetweenGangSpeak_Fleeing_Randomizer_Max { get; set; }
+    [Description("Minimum time (in ms) between gang members speaking when in a deadly chase.")]
+    public int TimeBetweenGangSpeak_LowCombat_Min { get; set; }
+    [Description("Minimum additional time (in ms) between gang members speaking when in a deadly chase.")]
+    public int TimeBetweenGangSpeak_LowCombat_Randomizer_Min { get; set; }
+    [Description("Maximum additional time (in ms) between gang members speaking when in a deadly chase.")]
+    public int TimeBetweenGangSpeak_LowCombat_Randomizer_Max { get; set; }
+    [Description("Minimum time (in ms) between gang members speaking when in a weapons free mode.")]
+    public int TimeBetweenGangSpeak_HighCombat_Min { get; set; }
+    [Description("Minimum additional time (in ms) between gang members speaking when in weapons free mode.")]
+    public int TimeBetweenGangSpeak_HighCombat_Randomizer_Min { get; set; }
+    [Description("Maximum additional time (in ms) between gang members speaking when in weapons free mode.")]
+    public int TimeBetweenGangSpeak_HighCombat_Randomizer_Max { get; set; }
+
 
     public GangSettings()
     {
@@ -226,7 +258,28 @@ public class GangSettings : ISettingsDefaultable
         GangTerritoryBlipAlpha = 0.15f;//HAS DESERIALIZED VALUES
 
         SetPersistent = false;
+
+
         AllowAmbientSpeech = true;
+
+
+        TimeBetweenGangSpeak_General_Min = 30000;
+        TimeBetweenGangSpeak_General_Randomizer_Min = 30000;
+        TimeBetweenGangSpeak_General_Randomizer_Max = 60000;
+
+
+        TimeBetweenGangSpeak_Fleeing_Min = 20000;
+        TimeBetweenGangSpeak_Fleeing_Randomizer_Min = 20000;
+        TimeBetweenGangSpeak_Fleeing_Randomizer_Max = 35000;
+
+
+        TimeBetweenGangSpeak_LowCombat_Min = 15000;
+        TimeBetweenGangSpeak_LowCombat_Randomizer_Min = 20000;
+        TimeBetweenGangSpeak_LowCombat_Randomizer_Max = 35000;
+
+        TimeBetweenGangSpeak_HighCombat_Min = 12000;
+        TimeBetweenGangSpeak_HighCombat_Randomizer_Min = 20000;
+        TimeBetweenGangSpeak_HighCombat_Randomizer_Max = 35000;
     }
 
 }

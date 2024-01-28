@@ -1,5 +1,4 @@
 ﻿using ExtensionsMethods;
-using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
@@ -7,10 +6,6 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices.ComTypes;
-using System.Windows.Markup;
-using System.Windows.Media.Animation;
 
 public class LEDispatcher
 {
@@ -758,7 +753,7 @@ public class LEDispatcher
         {
             return;
         }
-        if (Player.IsNotWanted || Player.IsDead || Player.WantedLevel <= 1 || Player.IsInVehicle)
+        if (Player.IsNotWanted || Player.IsDead || Player.WantedLevel <= 1)// || Player.IsInVehicle)
         {
             //EntryPoint.WriteToConsole("Assault Spawn failed NOT NEEDED");
             return;
@@ -929,7 +924,7 @@ public class LEDispatcher
                             EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles 2 NONPERS isNearLimit{isNearLimit} TotalPoliceCars{TotalPoliceCars} PossibleSpawnedPoliceCars{PossibleSpawnedPoliceCars}");
                             GameFiber.Yield();
                         }
-                        else if (TotalPoliceCars > 15 && distanceTo >= 200f && PoliceCar.HasBeenEmptyFor >= 20000)//250f)
+                        else if (TotalPoliceCars > 12 && distanceTo >= 200f && PoliceCar.HasBeenEmptyFor >= 20000)//250f)
                         {
                             if (PoliceCar.Vehicle.IsPersistent)
                             {
@@ -939,7 +934,7 @@ public class LEDispatcher
                             PoliceCar.FullyDelete();
                             GameFiber.Yield();
                         }
-                        else if (distanceTo >= 200f && PoliceCar.HasBeenEmptyFor >= 20000 && PoliceCar.Vehicle.IsPersistent)
+                        else if (distanceTo >= 125f && PoliceCar.HasBeenEmptyFor >= 20000 && PoliceCar.Vehicle.IsPersistent)//200f
                         {
                             PoliceCar.Vehicle.IsPersistent = false;
                             EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles 4 NONPERS isNearLimit{isNearLimit} TotalPoliceCars{TotalPoliceCars} PossibleSpawnedPoliceCars{PossibleSpawnedPoliceCars}");
@@ -967,13 +962,13 @@ public class LEDispatcher
                     {
                         PoliceCar.SetBecameEmpty();
                         float distanceTo = PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character);
-                        if (distanceTo >= 300f && PoliceCar.HasBeenEmptyFor >= 15000)//10000))
+                        if (distanceTo >= 225f && PoliceCar.HasBeenEmptyFor >= 15000)//300f//10000))
                         {
                             PoliceCar.Vehicle.IsPersistent = false;
                             EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles 1 SPAWNED EMPTY NONPERS isNearLimit{isNearLimit} TotalPoliceCars{TotalPoliceCars} PossibleSpawnedPoliceCars{PossibleSpawnedPoliceCars}");
                             GameFiber.Yield();
                         }
-                        else if (distanceTo >= 375f && PoliceCar.HasBeenEmptyFor >= 10000)//10000))
+                        else if (distanceTo >= 300f && PoliceCar.HasBeenEmptyFor >= 10000)//375f//10000))
                         {
                             PoliceCar.Vehicle.IsPersistent = false;
                             EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles 2 SPAWNED EMPTY NONPERS isNearLimit{isNearLimit} TotalPoliceCars{TotalPoliceCars} PossibleSpawnedPoliceCars{PossibleSpawnedPoliceCars}");
@@ -1145,16 +1140,17 @@ public class LEDispatcher
             EntryPoint.WriteToConsole("Spawn Location is water and no need to spawn heli or boat, exit");
             return false;
         }
-        Agency = GetRandomAgency(SpawnLocation);
+        Zone zoneAtPosition = Zones.GetZone(SpawnLocation.FinalPosition);
+        Street streetAtPosition = Streets.GetStreet(SpawnLocation.FinalPosition);
+
+        Agency = GetRandomAgency(SpawnLocation, zoneAtPosition, streetAtPosition);
         GameFiber.Yield();
         bool isAmbientPedSpawn = false;
         if (Agency == null)
         {
             return false;
         }
-
         IsOffDutySpawn = RandomItems.RandomPercent(Agency.OffDutyDispatchPercent) && World.TotalWantedLevel == 0 && Agency.OffDutyVehicles != null && Agency.OffDutyVehicles.Any() && Agency.OffDutyPersonnel != null && Agency.OffDutyPersonnel.Any();
-
         if (SpawnLocation.IsWater)
         {
             VehicleType = Agency.GetRandomWaterVehicle(World.TotalWantedLevel, "", Settings);
@@ -1165,7 +1161,7 @@ public class LEDispatcher
             if(World.TotalWantedLevel == 0 &&  SpawnLocation.HasSidewalk && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.FootPatrolSpawnPercentage) && Jurisdictions.CanSpawnAmbientPedestrians(Zones.GetZone(SpawnLocation.SidewalkPosition)?.InternalGameName, Agency))
             {
                 isAmbientPedSpawn = true;
-                EntryPoint.WriteToConsole("LE Dispatcher IS FOOT SPAWN");
+                //EntryPoint.WriteToConsole("LE Dispatcher IS FOOT SPAWN");
             }          
             else
             {
@@ -1175,7 +1171,26 @@ public class LEDispatcher
                 }
                 else
                 {
-                    VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, HasNeedToSpawnHeli, false, true, "", Settings);
+                    eSpawnAdjustment addedSpawnAdjustments = eSpawnAdjustment.None;
+                    bool addedAdjustment = false;
+                    if(zoneAtPosition != null && (zoneAtPosition.Type == eLocationType.Wilderness || (zoneAtPosition.Type == eLocationType.Rural && Player.CurrentLocation.IsOffroad)))
+                    {
+                        addedSpawnAdjustments |= eSpawnAdjustment.OffRoad;
+                        addedAdjustment = true;
+                    }
+                    if (streetAtPosition != null && streetAtPosition.IsHighway)
+                    {
+                        addedSpawnAdjustments |= eSpawnAdjustment.Highway;
+                        addedAdjustment = true;
+                    }
+                    if (addedAdjustment)
+                    {
+                        VehicleType = Agency.GetRandomAdjustedVehicle(World.TotalWantedLevel, HasNeedToSpawnHeli, false, true, "", Settings, addedSpawnAdjustments);
+                    }
+                    else
+                    {
+                        VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, HasNeedToSpawnHeli, false, true, "", Settings);
+                    }
                 }
             }
         }
@@ -1266,16 +1281,21 @@ public class LEDispatcher
             MyBlip.Delete();
         }
     }
-    private List<Agency> GetAgencies(Vector3 Position, int WantedLevel)
+
+
+    private List<Agency> GetAgencies(Vector3 Position, int WantedLevel, Zone positionZone, Street positionStreet)
     {
         List<Agency> ToReturn = new List<Agency>();
-        Street StreetAtPosition = Streets.GetStreet(Position);
-        if (StreetAtPosition != null && StreetAtPosition.IsHighway) //Highway Patrol Jurisdiction
+        if (positionStreet != null && positionStreet.IsHighway) //Highway Patrol Jurisdiction
         {
             ToReturn.AddRange(Agencies.GetSpawnableHighwayAgencies(WantedLevel, ResponseType.LawEnforcement));
         }
-        Zone CurrentZone = Zones.GetZone(Position);
-        Agency ZoneAgency = Jurisdictions.GetRandomAgency(CurrentZone.InternalGameName, WantedLevel, ResponseType.LawEnforcement);
+        if (positionZone == null)
+        {
+            ToReturn.AddRange(Agencies.GetSpawnableAgencies(WantedLevel, ResponseType.LawEnforcement));
+            return ToReturn;
+        }
+        Agency ZoneAgency = Jurisdictions.GetRandomAgency(positionZone.InternalGameName, WantedLevel, ResponseType.LawEnforcement);
         if (ZoneAgency != null)
         {
             ToReturn.Add(ZoneAgency); //Zone Jurisdiciton Random
@@ -1286,7 +1306,7 @@ public class LEDispatcher
         }
         if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfCountySpawn))
         {
-            Agency CountyAgency = Jurisdictions.GetRandomCountyAgency(CurrentZone.CountyID, WantedLevel, ResponseType.LawEnforcement);
+            Agency CountyAgency = Jurisdictions.GetRandomCountyAgency(positionZone.CountyID, WantedLevel, ResponseType.LawEnforcement);
             if (CountyAgency != null)//randomly spawn the county agency
             {
                 ToReturn.Add(CountyAgency); //Zone Jurisdiciton Random
@@ -1297,7 +1317,6 @@ public class LEDispatcher
     private Vector3 GetSpawnPosition()
     {
         Vector3 Position;
-
         if(World.TotalWantedLevel > 0 && (World.TotalWantedLevel > Player.WantedLevel || Player.IsNotWanted))//someone else is the priority
         {
             Position = World.PoliceBackupPoint;
@@ -1320,39 +1339,22 @@ public class LEDispatcher
         Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
         return Position;
     }
-    private Agency GetRandomAgency(SpawnLocation spawnLocation)
+    private Agency GetRandomAgency(SpawnLocation spawnLocation, Zone spawnZone, Street spawnStreet)
     {
         Agency agency = null;
-        List<Agency> PossibleAgencies = GetAgencies(spawnLocation.FinalPosition, World.TotalWantedLevel);
-
+        List<Agency> PossibleAgencies = GetAgencies(spawnLocation.FinalPosition, World.TotalWantedLevel, spawnZone, spawnStreet);
         if(PossibleAgencies == null)
         {
             return agency;
         }
-
         agency = PossibleAgencies.Where(x=>x.Personnel.Any(y =>y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
         if (agency == null)
         {
-            agency = GetAgencies(spawnLocation.InitialPosition, World.TotalWantedLevel).Where(x => x.Personnel.Any(y => y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
+            agency = GetAgencies(spawnLocation.InitialPosition, World.TotalWantedLevel, spawnZone, spawnStreet).Where(x => x.Personnel.Any(y => y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
         }
         if (agency == null)
         {
             //EntryPoint.WriteToConsoleTestLong("Dispatcher could not find Agency To Spawn");
-        }
-        return agency;
-    }
-    private Agency GetRandomAgency(Vector3 spawnLocation)
-    {
-        Agency agency;
-        List<Agency> PossibleAgencies = GetAgencies(spawnLocation, World.TotalWantedLevel);
-        agency = PossibleAgencies.PickRandom();
-        if (agency == null)
-        {
-            agency = GetAgencies(spawnLocation, World.TotalWantedLevel).PickRandom();
-        }
-        if (agency == null)
-        {
-            //EntryPoint.WriteToConsole("Dispatcher could not find Agency To Spawn");
         }
         return agency;
     }
@@ -1424,7 +1426,10 @@ public class LEDispatcher
         GameFiber.Yield();
         if(GetRoadblockNode(force))
         {
-            Agency ToSpawn = GetRandomAgency(RoadblockFinalPosition);
+            Zone zoneAtPosition = Zones.GetZone(RoadblockFinalPosition);
+            Street streetAtPosition = Streets.GetStreet(RoadblockFinalPosition);
+            SpawnLocation roadblockSpawnLocations = new SpawnLocation(RoadblockFinalPosition);
+            Agency ToSpawn = GetRandomAgency(roadblockSpawnLocations, zoneAtPosition, streetAtPosition);
             GameFiber.Yield();
             if (ToSpawn != null)
             {
