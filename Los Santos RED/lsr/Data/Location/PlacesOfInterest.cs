@@ -2040,7 +2040,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SpawnPlace(new Vector3(352.7339f, -1593.033f, 29.29193f), 356.82f),
                     new SpawnPlace(new Vector3(360.7824f, -1582.344f, 29.29195f), 16.9674f),
                 },
-                UseAllSpawnsForAssault = false,
+                RestrictAssaultSpawningUsingPedSpawns = false,
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     //new LEConditionalLocation(new Vector3(343.7892f, -1602.402f, 29.29194f), 336.6382f, DavisPercentage),
                     new LEConditionalLocation(new Vector3(373.5635f, -1612.563f, 29.29194f), 229.7581f, 35f),

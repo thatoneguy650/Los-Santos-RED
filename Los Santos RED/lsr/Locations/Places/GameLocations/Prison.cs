@@ -27,7 +27,8 @@ public class Prison : GameLocation, ILocationRespawnable, ILocationAreaRestricta
     public int MaxAssaultSpawns { get; set; } = 15;
     public List<SpawnPlace> AssaultSpawnLocations { get; set; }
 
-    public bool UseAllSpawnsForAssault { get; set; } = true;
+    public bool RestrictAssaultSpawningUsingPedSpawns { get; set; } = false;
+    public float AssaultSpawnHeavyWeaponsPercent { get; set; } = 80f;
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Enter {Name}";

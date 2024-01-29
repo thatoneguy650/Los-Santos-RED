@@ -365,15 +365,15 @@ public class GangDispatcher
             PossibleSpawnPlaces.AddRange(ClosestStation.AssaultSpawnLocations.Where(x => x.Position.DistanceTo2D(Game.LocalPlayer.Character) >= 20f).ToList());
             GameFiber.Yield();
         }
-        if (ClosestStation.UseAllSpawnsForAssault && ClosestStation.PossiblePedSpawns.Any())
+        if (!ClosestStation.RestrictAssaultSpawningUsingPedSpawns && ClosestStation.PossiblePedSpawns != null && ClosestStation.PossiblePedSpawns.Any())
         {
-            foreach (ConditionalLocation cl in ClosestStation.PossiblePedSpawns.Where(x => x.Location.DistanceTo2D(Game.LocalPlayer.Character) >= 20f))
+            foreach (ConditionalLocation cl in ClosestStation.PossiblePedSpawns.Where(x => x.Location.DistanceTo2D(Game.LocalPlayer.Character) >= 20f).ToList())
             {
                 PossibleSpawnPlaces.Add(new SpawnPlace(cl.Location, cl.Heading));
             }
             GameFiber.Yield();
         }
-        if (ClosestStation.PossiblePedSpawns.Any())
+        if (PossibleSpawnPlaces.Any())
         {
             foreach (SpawnPlace cl in PossibleSpawnPlaces.OrderBy(x => Guid.NewGuid()))
             {

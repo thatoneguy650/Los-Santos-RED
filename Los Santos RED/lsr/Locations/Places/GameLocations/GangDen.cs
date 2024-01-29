@@ -34,12 +34,10 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
     public GameLocation GameLocation => this;
     public bool DisableNearbyScenarios { get; set; } = false;
     public float DisableScenarioDistance { get; set; } = 50f;
-
-
-
     public int MaxAssaultSpawns { get; set; } = 15;
     public List<SpawnPlace> AssaultSpawnLocations { get; set; }
-    public bool UseAllSpawnsForAssault { get; set; } = true;
+    public bool RestrictAssaultSpawningUsingPedSpawns { get; set; } = false;
+    public float AssaultSpawnHeavyWeaponsPercent { get; set; } = 80f;
     [XmlIgnore]
     public GangDenInterior GangDenInterior { get; set; }
     [XmlIgnore]

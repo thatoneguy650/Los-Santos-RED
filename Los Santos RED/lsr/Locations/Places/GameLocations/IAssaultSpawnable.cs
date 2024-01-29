@@ -10,6 +10,7 @@ public interface IAssaultSpawnable
     int MaxAssaultSpawns { get; }
     List<SpawnPlace> AssaultSpawnLocations { get; }
     List<ConditionalLocation> PossiblePedSpawns { get; }
-    bool UseAllSpawnsForAssault { get; }
+    bool RestrictAssaultSpawningUsingPedSpawns { get; }
+    float AssaultSpawnHeavyWeaponsPercent { get; }
 }
 

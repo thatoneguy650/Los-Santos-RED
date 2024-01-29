@@ -793,7 +793,8 @@ public class LEDispatcher
         }
         EntryPoint.WriteToConsole($"Assault Spawn EXECUTED TotalAssaultSpawns SO FAR:{ClosestStation.TotalAssaultSpawns}");
         GameFiber.Yield();
-        if(CallSpawnTask(true, true, true, false, TaskRequirements.None, false, false))
+        bool spawnsWithHeavyWeapons = RandomItems.RandomPercent(ClosestStation.AssaultSpawnHeavyWeaponsPercent);
+        if(CallSpawnTask(true, true, true, false, TaskRequirements.None, false, false, spawnsWithHeavyWeapons))
         {
             ClosestStation.TotalAssaultSpawns++;
         }
@@ -822,15 +823,15 @@ public class LEDispatcher
             PossibleSpawnPlaces.AddRange(ClosestStation.AssaultSpawnLocations.Where(x => x.Position.DistanceTo2D(Game.LocalPlayer.Character) >= 20f).ToList());
             GameFiber.Yield();
         }
-        if (ClosestStation.UseAllSpawnsForAssault && ClosestStation.PossiblePedSpawns.Any())
+        if (!ClosestStation.RestrictAssaultSpawningUsingPedSpawns && ClosestStation.PossiblePedSpawns != null && ClosestStation.PossiblePedSpawns.Any())
         {
-            foreach(ConditionalLocation cl in ClosestStation.PossiblePedSpawns.Where(x => x.Location.DistanceTo2D(Game.LocalPlayer.Character) >= 20f))
+            foreach(ConditionalLocation cl in ClosestStation.PossiblePedSpawns.Where(x => x.Location.DistanceTo2D(Game.LocalPlayer.Character) >= 20f).ToList())
             {
                 PossibleSpawnPlaces.Add(new SpawnPlace(cl.Location,cl.Heading));
             }
             GameFiber.Yield();
         }
-        if (ClosestStation.PossiblePedSpawns.Any())
+        if (PossibleSpawnPlaces.Any())
         {
             foreach(SpawnPlace cl in PossibleSpawnPlaces.OrderBy(x=> Guid.NewGuid()))
             {
@@ -920,7 +921,7 @@ public class LEDispatcher
 
             bool isNearLimit = PossibleSpawnedPoliceCars - TotalPoliceCars <= 3 && TotalPoliceCars >= 15;
             int updated = 0;
-            foreach (VehicleExt PoliceCar in World.Vehicles.PoliceVehicles.Where(x => !x.IsOwnedByPlayer && x.Vehicle.Exists() && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000).ToList())
+            foreach (VehicleExt PoliceCar in World.Vehicles.PoliceVehicles.Where(x => !x.IsOwnedByPlayer && x.Vehicle.Exists() && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000 && !x.IsManualCleanup).ToList())
             {
                 if (PoliceCar.Vehicle.Exists())
                 {
@@ -970,7 +971,7 @@ public class LEDispatcher
                 }
             }
             GameFiber.Yield();
-            foreach (VehicleExt PoliceCar in World.Vehicles.PoliceVehicles.Where(x => !x.IsOwnedByPlayer && x.Vehicle.Exists() && x.WasSpawnedEmpty && x.HasExistedFor >= 15000).ToList())
+            foreach (VehicleExt PoliceCar in World.Vehicles.PoliceVehicles.Where(x => !x.IsOwnedByPlayer && x.Vehicle.Exists() && x.WasSpawnedEmpty && x.HasExistedFor >= 15000 && !x.IsManualCleanup).ToList())
             {
                 if (PoliceCar.Vehicle.Exists())
                 {
@@ -1065,7 +1066,7 @@ public class LEDispatcher
             GameFiber.Yield();
             GameTimeAttemptedDispatch = Game.GameTime;
             //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP CALLED SPAWN TASK");
-            if (CallSpawnTask(false, true, false, false, TaskRequirements.None, false, IsOffDutySpawn))
+            if (CallSpawnTask(false, true, false, false, TaskRequirements.None, false, IsOffDutySpawn, false))
             {
                 //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP SPAWN TASK RAN");
                 ShouldRunAmbientDispatch = false;
@@ -1081,7 +1082,7 @@ public class LEDispatcher
             SpawnRoadblock(false,225f);//300f
         }
     }
-    private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement, bool forcek9, bool isOffDuty)
+    private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement, bool forcek9, bool isOffDuty, bool spawnsWithAllWeapons)
     {
         try
         {
@@ -1098,6 +1099,7 @@ public class LEDispatcher
             spawnTask.ClearVehicleArea = clearArea;
             spawnTask.SpawnRequirement = spawnRequirement;
             spawnTask.IsOffDutySpawn = isOffDuty;
+            spawnTask.SpawnWithAllWeapons = spawnsWithAllWeapons;
             // spawnTask.PlacePedOnGround = VehicleType == null;
             EntryPoint.WriteToConsole($"DEBUG LE DISPATCH CallSpawnTask: VehicleType:{VehicleType?.ModelName} PersonType:{PersonType?.ModelName} RequiredPedGroup:{VehicleType?.RequiredPedGroup} GroupName:{PersonType?.GroupName}");
             spawnTask.AttemptSpawn();
@@ -1158,7 +1160,6 @@ public class LEDispatcher
         }
         Zone zoneAtPosition = Zones.GetZone(SpawnLocation.FinalPosition);
         Street streetAtPosition = Streets.GetStreet(SpawnLocation.FinalPosition);
-
         Agency = GetRandomAgency(SpawnLocation, zoneAtPosition, streetAtPosition);
         GameFiber.Yield();
         bool isAmbientPedSpawn = false;
@@ -1657,6 +1658,6 @@ public class LEDispatcher
       // EntryPoint.WriteToConsole($"DEBUG LE DISPATCH vehicleType: {VehicleType?.ModelName}");
        // EntryPoint.WriteToConsole($"DEBUG LE DISPATCH PERSONTYTPE: {PersonType?.ModelName}");
 
-        CallSpawnTask(true, true, true, true, TaskRequirements.None, forcek9, IsOffDutySpawn);
+        CallSpawnTask(true, true, true, true, TaskRequirements.None, forcek9, IsOffDutySpawn, true);
     }
 }
