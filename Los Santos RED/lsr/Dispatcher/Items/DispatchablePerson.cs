@@ -105,7 +105,11 @@ public class DispatchablePerson
 
     public bool IsAnimal { get; set; } = false;
 
-    public bool IsVehicleRestricted { get; set; } = false;
+   // public bool IsVehicleRestricted { get; set; } = false;
+
+
+    public float OverrideSightDistance { get; set; } = -1.0f;
+
     public string GetDescription()
     {
         string description = "";
@@ -247,6 +251,11 @@ public class DispatchablePerson
                 NativeFunction.Natives.SET_PED_COMBAT_RANGE(pedExt.Pedestrian, pedExt.CombatRange);
                // EntryPoint.WriteToConsole($"SET COMBAT RANGE {pedExt.Handle} {pedExt.CombatRange}");
             }
+        }
+        if(OverrideSightDistance >= 1.0f)
+        {
+            NativeFunction.Natives.SET_PED_SEEING_RANGE(pedExt.Pedestrian, OverrideSightDistance);
+            EntryPoint.WriteToConsole($"OverrideSightDistance {OverrideSightDistance}");
         }
         GameFiber.Yield();
         if (!pedExt.Pedestrian.Exists())

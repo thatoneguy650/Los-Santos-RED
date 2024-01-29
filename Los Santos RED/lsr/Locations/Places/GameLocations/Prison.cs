@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Prison : GameLocation, ILocationRespawnable, ILocationAreaRestrictable
+public class Prison : GameLocation, ILocationRespawnable, ILocationAreaRestrictable, IAssaultSpawnable, ILEDispatchableLocation
 {
     public Prison(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -23,6 +23,11 @@ public class Prison : GameLocation, ILocationRespawnable, ILocationAreaRestricta
     public override int MapIcon { get; set; } = 188;
     public Vector3 RespawnLocation { get; set; }
     public float RespawnHeading { get; set; }
+
+    public int MaxAssaultSpawns { get; set; } = 15;
+    public List<SpawnPlace> AssaultSpawnLocations { get; set; }
+
+    public bool UseAllSpawnsForAssault { get; set; } = true;
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Enter {Name}";

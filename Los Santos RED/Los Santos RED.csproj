@@ -169,7 +169,9 @@
     <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\MerchantConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\AppearPercentage.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankDrawer.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\IAssaultSpawnable.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\IGasPumpable.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\ILEDispatchableLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Machines\CashRegister.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Residence\ApartmentBuilding.cs" />
     <Compile Include="lsr\Locations\Places\Interface\IInventoryableLocation.cs" />

@@ -19,5 +19,6 @@ namespace LosSantosRED.lsr.Interface
         DeadDrop GetUsableDeadDrop(bool IsOnMPMap);
         GangDen GetMainDen(string iD, bool isMPMapLoaded);
         List<ILocationAreaRestrictable> RestrictedAreaLocations();
+        List<ILEDispatchableLocation> LEDispatchLocations();
     }
 }

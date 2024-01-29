@@ -70,6 +70,7 @@ public class GangSpawnTask : SpawnTask
     {
         for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
         {
+            EntryPoint.WriteToConsole("ADDED PASSENGER TO GANG SPAWN");
             string requiredGroup = "";
             if (VehicleType != null)
             {
@@ -224,6 +225,7 @@ public class GangSpawnTask : SpawnTask
             if ((IsHitSquad || IsBackupSquad) && RandomItems.RandomPercent(80))
             {
                 OccupantsToAdd = VehicleType.MaxOccupants - 1;
+                EntryPoint.WriteToConsole($"HITSQUAD BACKUP OCCUPANTS TO ADD 1 {OccupantsToAdd} PedSpawnLimit{PedSpawnLimit}");
             }
             else
             {
@@ -232,16 +234,24 @@ public class GangSpawnTask : SpawnTask
             if(OccupantsToAdd + 1 > PedSpawnLimit)
             {
                 OccupantsToAdd = PedSpawnLimit - 1;
+
+                EntryPoint.WriteToConsole($"HITSQUAD BACKUP OCCUPANTS TO ADD 2 {OccupantsToAdd} PedSpawnLimit{PedSpawnLimit}");
+
             }
             if(OccupantsToAdd < 0)
             {
                 OccupantsToAdd = 0;
+                EntryPoint.WriteToConsole($"HITSQUAD BACKUP OCCUPANTS TO ADD 3 {OccupantsToAdd} PedSpawnLimit{PedSpawnLimit}");
             }
         }
         else
         {
             OccupantsToAdd = 0;
         }
+
+
+        EntryPoint.WriteToConsole($"HITSQUAD BACKUP OCCUPANTS TO ADD 4 {OccupantsToAdd} PedSpawnLimit{PedSpawnLimit}");
+
     }
     private PedExt SetupGangPed(Ped ped)
     {

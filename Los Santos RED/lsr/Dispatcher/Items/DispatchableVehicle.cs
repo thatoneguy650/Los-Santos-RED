@@ -75,7 +75,7 @@ public class DispatchableVehicle
                 if(eSpawnAdjustment.HasFlag(spawnAdjustmentAmount.eSpawnAdjustment))
                 {
                     adjustmentAmount += spawnAdjustmentAmount.PercentAmount;
-                    EntryPoint.WriteToConsole($"CurrentAdjustedSpawnChance eSpawnAdjustment {eSpawnAdjustment}, spawnAdjustmentAmount enum:{spawnAdjustmentAmount.eSpawnAdjustment} value:{spawnAdjustmentAmount.PercentAmount}");
+                   // EntryPoint.WriteToConsole($"CurrentAdjustedSpawnChance eSpawnAdjustment {eSpawnAdjustment}, spawnAdjustmentAmount enum:{spawnAdjustmentAmount.eSpawnAdjustment} value:{spawnAdjustmentAmount.PercentAmount}");
                 }
             }
         }

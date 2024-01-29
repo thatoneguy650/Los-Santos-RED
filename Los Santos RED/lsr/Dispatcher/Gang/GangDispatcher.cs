@@ -307,10 +307,44 @@ public class GangDispatcher
         return PersonType != null;
     }
 
-    private bool GetAssaultSpawnLocation(GangDen closestDen)
+    //private bool GetAssaultSpawnLocation(GangDen closestDen)
+    //{
+    //    SpawnLocation = new SpawnLocation();
+    //    if (closestDen == null || PersonType == null || string.IsNullOrEmpty(PersonType.ModelName))
+    //    {
+    //        return false;
+    //    }
+    //    uint modelHash = Game.GetHashKey(PersonType.ModelName);
+    //    uint GameTimeStarted = Game.GameTime;
+    //    if (!NativeFunction.Natives.HAS_MODEL_LOADED<bool>(modelHash))
+    //    {
+    //        NativeFunction.Natives.REQUEST_MODEL(modelHash);
+    //        while (!NativeFunction.Natives.HAS_MODEL_LOADED<bool>(modelHash) && Game.GameTime - GameTimeStarted <= 1000)
+    //        {
+    //            GameFiber.Yield();
+    //        }
+    //    }
+    //    if (closestDen.PossiblePedSpawns.Any())
+    //    {
+    //        foreach (ConditionalLocation cl in closestDen.PossiblePedSpawns.Where(x=> x.Location.DistanceTo2D(Game.LocalPlayer.Character) >= 20f).OrderBy(x => Guid.NewGuid()))
+    //        {
+    //            if (NativeFunction.Natives.WOULD_ENTITY_BE_OCCLUDED<bool>(modelHash, cl.Location.X, cl.Location.Y, cl.Location.Z, true))
+    //            {
+    //                SpawnLocation.InitialPosition = cl.Location;
+    //                SpawnLocation.Heading = cl.Heading;
+    //                EntryPoint.WriteToConsole($"POSITION IS OCCLUDED, SPAWN THE PED {SpawnLocation.InitialPosition} {Game.LocalPlayer.Character.DistanceTo(SpawnLocation.InitialPosition)}");
+    //                return true;
+    //            }
+    //        }
+    //    }
+    //    return false;
+    //}
+
+
+    private bool GetAssaultSpawnLocation(IAssaultSpawnable ClosestStation)
     {
         SpawnLocation = new SpawnLocation();
-        if (closestDen == null || PersonType == null || string.IsNullOrEmpty(PersonType.ModelName))
+        if (ClosestStation == null || PersonType == null || string.IsNullOrEmpty(PersonType.ModelName))
         {
             return false;
         }
@@ -324,21 +358,43 @@ public class GangDispatcher
                 GameFiber.Yield();
             }
         }
-        if (closestDen.PossiblePedSpawns.Any())
+
+        List<SpawnPlace> PossibleSpawnPlaces = new List<SpawnPlace>();
+        if (ClosestStation.AssaultSpawnLocations != null && ClosestStation.AssaultSpawnLocations.Any())
         {
-            foreach (ConditionalLocation cl in closestDen.PossiblePedSpawns.Where(x=> x.Location.DistanceTo2D(Game.LocalPlayer.Character) >= 20f).OrderBy(x => Guid.NewGuid()))
+            PossibleSpawnPlaces.AddRange(ClosestStation.AssaultSpawnLocations.Where(x => x.Position.DistanceTo2D(Game.LocalPlayer.Character) >= 20f).ToList());
+            GameFiber.Yield();
+        }
+        if (ClosestStation.UseAllSpawnsForAssault && ClosestStation.PossiblePedSpawns.Any())
+        {
+            foreach (ConditionalLocation cl in ClosestStation.PossiblePedSpawns.Where(x => x.Location.DistanceTo2D(Game.LocalPlayer.Character) >= 20f))
             {
-                if (NativeFunction.Natives.WOULD_ENTITY_BE_OCCLUDED<bool>(modelHash, cl.Location.X, cl.Location.Y, cl.Location.Z, true))
+                PossibleSpawnPlaces.Add(new SpawnPlace(cl.Location, cl.Heading));
+            }
+            GameFiber.Yield();
+        }
+        if (ClosestStation.PossiblePedSpawns.Any())
+        {
+            foreach (SpawnPlace cl in PossibleSpawnPlaces.OrderBy(x => Guid.NewGuid()))
+            {
+                if (NativeFunction.Natives.WOULD_ENTITY_BE_OCCLUDED<bool>(modelHash, cl.Position.X, cl.Position.Y, cl.Position.Z, true))
                 {
-                    SpawnLocation.InitialPosition = cl.Location;
+                    SpawnLocation.InitialPosition = cl.Position;
                     SpawnLocation.Heading = cl.Heading;
-                    EntryPoint.WriteToConsole($"POSITION IS OCCLUDED, SPAWN THE PED {SpawnLocation.InitialPosition} {Game.LocalPlayer.Character.DistanceTo(SpawnLocation.InitialPosition)}");
+                    EntryPoint.WriteToConsole("POSITION IS OCCLUDED, SPAWN THE PED");
                     return true;
                 }
+                GameFiber.Yield();
             }
         }
         return false;
     }
+
+
+
+
+
+
     private void HandleHitSquadSpawns()
     {
         if (!Settings.SettingsManager.GangSettings.AllowHitSquads || !IsTimeToDispatchHitSquad)
@@ -395,7 +451,12 @@ public class GangDispatcher
             {
                 if (GetCloseVehicleSpawnLocation() && GetHitSquadSpawnTypes(requestedGang, requiredVehicleModel))
                 {
-                    membersSpawned += CallSpawnTask(false, true, false, false, TaskRequirements.None, false, true, membersSpawned - membersToSpawn);
+                    membersSpawned += CallSpawnTask(false, true, false, false, TaskRequirements.None, false, true, membersToSpawn - membersSpawned);
+
+
+                    EntryPoint.WriteToConsole($"DispatchGangBackup {requestedGang.ShortName} RAN DISPATCH membersSpawned:{membersSpawned} membersToSpawn:{membersToSpawn} pedspawnlimit{membersToSpawn - membersSpawned}");
+
+
                     if (membersSpawned >= membersToSpawn)
                     {
                         break;

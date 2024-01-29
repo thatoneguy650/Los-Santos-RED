@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
-public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePreviewable, ILocationImpoundable, ILocationAreaRestrictable
+public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePreviewable, ILocationImpoundable, ILocationAreaRestrictable, IAssaultSpawnable, ILEDispatchableLocation
 {
     private ShopMenu agencyMenu;
     private UIMenu ImpoundSubMenu;
@@ -36,6 +36,13 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
     public float RespawnHeading { get; set; }
     public VehicleImpoundLot VehicleImpoundLot { get; set; }
     public bool HasImpoundLot => VehicleImpoundLot != null;
+
+
+    public int MaxAssaultSpawns { get; set; } = 15;
+
+    public List<SpawnPlace> AssaultSpawnLocations { get; set; }
+    public bool UseAllSpawnsForAssault { get; set; } = true;
+
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Enter {Name}";

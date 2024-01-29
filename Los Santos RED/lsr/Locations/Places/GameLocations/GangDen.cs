@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class GangDen : GameLocation, IRestableLocation
+public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
 {
     private UIMenuItem dropoffCashMenuItem;
     private UIMenuItem dropoffItemMenuItem;
@@ -34,6 +34,12 @@ public class GangDen : GameLocation, IRestableLocation
     public GameLocation GameLocation => this;
     public bool DisableNearbyScenarios { get; set; } = false;
     public float DisableScenarioDistance { get; set; } = 50f;
+
+
+
+    public int MaxAssaultSpawns { get; set; } = 15;
+    public List<SpawnPlace> AssaultSpawnLocations { get; set; }
+    public bool UseAllSpawnsForAssault { get; set; } = true;
     [XmlIgnore]
     public GangDenInterior GangDenInterior { get; set; }
     [XmlIgnore]

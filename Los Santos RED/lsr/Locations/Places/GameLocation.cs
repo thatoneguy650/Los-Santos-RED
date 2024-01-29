@@ -175,7 +175,7 @@ public class GameLocation : ILocationDispatchable
     public virtual int MinRestockHours { get; set; }
     public virtual int MaxRestockHours { get; set; }
 
-    public int MaxAssaultSpawns { get; set; } = 15;
+    //public int MaxAssaultSpawns { get; set; } = 15;
 
     [XmlIgnore]
     public List<PedExt> LocationSpawnedPedExts { get; set; } = new List<PedExt>();

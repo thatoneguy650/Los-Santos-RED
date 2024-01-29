@@ -765,7 +765,7 @@ public class LEDispatcher
         }
         GameFiber.Yield();
         GameTimeLastAttemptedAssaultSpawn = Game.GameTime;
-        PoliceStation ClosestStation = PlacesOfInterest.PossibleLocations.PoliceStations.Where(x => x.DistanceToPlayer <= 150f && x.IsEnabled && x.IsActivated && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        ILEDispatchableLocation ClosestStation = PlacesOfInterest.LEDispatchLocations().Where(x => x.DistanceToPlayer <= 150f && x.IsEnabled && x.IsActivated && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
         if(ClosestStation == null || ClosestStation.AssignedAgency == null)
         {
             EntryPoint.WriteToConsole("Assault Spawn failed no station or agency");
@@ -798,7 +798,7 @@ public class LEDispatcher
             ClosestStation.TotalAssaultSpawns++;
         }
     }
-    private bool GetAssaultSpawnLocation(PoliceStation ClosestStation)
+    private bool GetAssaultSpawnLocation(IAssaultSpawnable ClosestStation)
     {
         SpawnLocation = new SpawnLocation();
         if(ClosestStation == null || PersonType == null || string.IsNullOrEmpty(PersonType.ModelName))
@@ -815,17 +815,33 @@ public class LEDispatcher
                 GameFiber.Yield();
             }
         }
+
+        List<SpawnPlace> PossibleSpawnPlaces = new List<SpawnPlace>();
+        if(ClosestStation.AssaultSpawnLocations != null && ClosestStation.AssaultSpawnLocations.Any())
+        {
+            PossibleSpawnPlaces.AddRange(ClosestStation.AssaultSpawnLocations.Where(x => x.Position.DistanceTo2D(Game.LocalPlayer.Character) >= 20f).ToList());
+            GameFiber.Yield();
+        }
+        if (ClosestStation.UseAllSpawnsForAssault && ClosestStation.PossiblePedSpawns.Any())
+        {
+            foreach(ConditionalLocation cl in ClosestStation.PossiblePedSpawns.Where(x => x.Location.DistanceTo2D(Game.LocalPlayer.Character) >= 20f))
+            {
+                PossibleSpawnPlaces.Add(new SpawnPlace(cl.Location,cl.Heading));
+            }
+            GameFiber.Yield();
+        }
         if (ClosestStation.PossiblePedSpawns.Any())
         {
-            foreach(ConditionalLocation cl in ClosestStation.PossiblePedSpawns.Where(x => x.Location.DistanceTo2D(Game.LocalPlayer.Character) >= 20f).OrderBy(x=> Guid.NewGuid()))
+            foreach(SpawnPlace cl in PossibleSpawnPlaces.OrderBy(x=> Guid.NewGuid()))
             {
-                if(NativeFunction.Natives.WOULD_ENTITY_BE_OCCLUDED<bool>(modelHash, cl.Location.X,cl.Location.Y,cl.Location.Z,true))
+                if(NativeFunction.Natives.WOULD_ENTITY_BE_OCCLUDED<bool>(modelHash, cl.Position.X,cl.Position.Y,cl.Position.Z,true))
                 {
-                    SpawnLocation.InitialPosition = cl.Location;
+                    SpawnLocation.InitialPosition = cl.Position;
                     SpawnLocation.Heading = cl.Heading;
                     EntryPoint.WriteToConsole("POSITION IS OCCLUDED, SPAWN THE PED");
                     return true;
                 }
+                GameFiber.Yield();
             }
         }
         return false;

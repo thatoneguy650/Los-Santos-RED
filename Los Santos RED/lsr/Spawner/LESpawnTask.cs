@@ -394,6 +394,11 @@ public class LESpawnTask : SpawnTask
         {
             sightDistance = Settings.SettingsManager.PoliceSettings.SightDistance_Helicopter;
         }
+        if(PersonType.OverrideSightDistance > 1.0f)
+        {
+            sightDistance = PersonType.OverrideSightDistance;
+            EntryPoint.WriteToConsole($"OverrideSightDistance {sightDistance} IN THE COPS");
+        }
         PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode, sightDistance);//TASKING IS BROKEN FOR ALL COPS FAR FROM PLAYER AND ALL OTHER PEDS
         if (Pedestrian.Exists())
         {

@@ -133,6 +133,16 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.Hospitals);
         return AllLocations;
     }
+
+
+    public List<ILEDispatchableLocation> LEDispatchLocations()
+    {
+        List<ILEDispatchableLocation> AllLocations = new List<ILEDispatchableLocation>();
+        AllLocations.AddRange(PossibleLocations.PoliceStations);
+        AllLocations.AddRange(PossibleLocations.Prisons);
+        return AllLocations;
+    }
+
     public DeadDrop GetUsableDeadDrop(bool IsMPMap)
     {
         return PossibleLocations.DeadDrops.Where(x => x.CanUse && x.IsCorrectMap(IsMPMap)).PickRandom();// IsMPMap == x.IsOnMPMap).PickRandom();
@@ -2023,6 +2033,14 @@ public class PlacesOfInterest : IPlacesOfInterest
                 //CameraPosition = new Vector3(384.024f, -1617.086f, 31.70451f), 
                // CameraDirection = new Vector3(-0.115703f, -0.9545547f, -0.2746601f), 
                 //CameraRotation = new Rotator(-15.94176f, -6.659415E-07f, 173.0888f),
+                AssaultSpawnLocations = new List<SpawnPlace>()
+                {
+                    new SpawnPlace(new Vector3(371.7006f, -1609.662f, 29.29194f), 226.7574f),
+                    new SpawnPlace(new Vector3(372.206f, -1612.077f, 29.29194f), 288.6986f),
+                    new SpawnPlace(new Vector3(352.7339f, -1593.033f, 29.29193f), 356.82f),
+                    new SpawnPlace(new Vector3(360.7824f, -1582.344f, 29.29195f), 16.9674f),
+                },
+                UseAllSpawnsForAssault = false,
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     //new LEConditionalLocation(new Vector3(343.7892f, -1602.402f, 29.29194f), 336.6382f, DavisPercentage),
                     new LEConditionalLocation(new Vector3(373.5635f, -1612.563f, 29.29194f), 229.7581f, 35f),
