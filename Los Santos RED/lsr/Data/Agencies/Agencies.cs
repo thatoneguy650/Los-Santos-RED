@@ -142,7 +142,7 @@ public class Agencies : IAgencies
 
         SAHP = new Agency("~y~", "SAHP", "SAHP", "San Andreas Highway Patrol", "Yellow", Classification.State, "SAHPPeds", "SAHPVehicles", "HP ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "SAHP Officer") { MaxWantedLevelSpawn = 3, SpawnsOnHighway = true, HeadDataGroupID = "AllHeads", OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
         SASPA = new Agency("~o~", "SASPA", "SASPA", "San Andreas State Prison Authority", "Orange", Classification.State, "PrisonPeds", "PrisonVehicles", "SASPA ", "Tasers", "AllSidearms", "AllLongGuns", "SASPA Officer") { MaxWantedLevelSpawn = 3, SpawnLimit = 2, HeadDataGroupID = "AllHeads" };
-        SAPR = new Agency("~g~", "SAPR", "SAPR", "San Andreas Park Ranger", "Green", Classification.State, "ParkRangers", "ParkRangerVehicles", "", "Tasers", "AllSidearms", "AllLongGuns", "SA Park Ranger") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
+        SAPR = new Agency("~g~", "SAPR", "SAPR", "San Andreas State Parks Ranger", "Green", Classification.State, "ParkRangers", "ParkRangerVehicles", "", "Tasers", "AllSidearms", "AllLongGuns", "SA Parks Ranger") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
         SACG = new Agency("~o~", "SACG", "SACG", "San Andreas Coast Guard", "DarkOrange", Classification.State, "CoastGuardPeds", "CoastGuardVehicles", "SACG ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "Coast Guard Officer") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
 
         LCPD = new Agency("~b~", "LCPD", "LCPD", "Liberty City Police Department", "Blue", Classification.Police, "StandardCops", "LCPDVehicles", "LC ", "Tasers", "AllSidearms", "AllLongGuns", "LCPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1, OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
@@ -205,6 +205,13 @@ public class Agencies : IAgencies
         Agency NOOSEPIA = new Agency("~r~", "NOOSE-PIA", "Patriotism and Immigration Authority", "NOoSE Patriotism and Immigration Authority", "DarkSlateGray", Classification.Federal, "NOOSEPIAPeds", "NOOSEPIAVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "NOOSE-PIA Officer") { MaxWantedLevelSpawn = 4, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         Agency NOOSESEP = new Agency("~r~", "NOOSE", "Security Enforcement Police", "NOoSE Security Enforcement Police", "DarkSlateGray", Classification.Federal, "NOOSESEPPeds", "NOOSESEPVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "NOOSE-SEP Officer") { MaxWantedLevelSpawn = 4, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
 
+
+        Agency USNPS = new Agency("~g~","USNPS","USNPS","US National Park Service","Green",Classification.Federal, "USNPSParkRangers", "USNPSParkRangersVehicles", "NPS ", "Tasers", "AllSidearms", "AllLongGuns", "US Park Ranger") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
+        Agency LSDPR = new Agency("~g~", "LSDPR", "LSDPR", "Los Santos Dept. Parks & Rec", "Green", Classification.Police, "LSDPRParkRangers", "LSDPRParkRangersVehicles", "DPR ", "Tasers", "AllSidearms", "AllLongGuns", "LSDPR Park Ranger") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
+        Agency SADFW = new Agency("~g~", "SADFW", "SADFW", "San Andreas Dept. Fish and Wildlife", "Green", Classification.State, "SADFWParkRangers", "SADFWParkRangersVehicles", "DFW ", "Tasers", "AllSidearms", "AllLongGuns", "Game Warden") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
+
+
+
         List< Agency> FullAgenciesList = new List<Agency>
         {
             LSPD,LSPDVW,LSPDELS,
@@ -214,6 +221,10 @@ public class Agencies : IAgencies
             LSPDASD,LSSDASD,
             LSPPFEJ,LSIAPDFEJ,
             SAHP,SASPA,SAPR,SACG,
+
+
+            USNPS,LSDPR,SADFW,
+
             NYSP,LCPD,
             FIB,BorderPatrol,NOOSEPIA,NOOSESEP,DOA,ARMY,USMS,
             LSFDFire,LSMC,MRH,LSFD,UNK,

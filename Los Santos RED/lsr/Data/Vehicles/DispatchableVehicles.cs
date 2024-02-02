@@ -1355,7 +1355,12 @@ public class DispatchableVehicles : IDispatchableVehicles
         {
             new DispatchableVehicleGroup("UnmarkedVehicles", dispatchableVehicles_FEJ.UnmarkedVehicles_FEJ),
             new DispatchableVehicleGroup("CoastGuardVehicles", dispatchableVehicles_FEJ.CoastGuardVehicles_FEJ),
-            new DispatchableVehicleGroup("ParkRangerVehicles", dispatchableVehicles_FEJ.ParkRangerVehicles_FEJ),
+
+            new DispatchableVehicleGroup("ParkRangerVehicles", dispatchableVehicles_FEJ.ParkRangerVehicles_FEJ),//san andreas state parks
+            new DispatchableVehicleGroup("SADFWParkRangersVehicles", dispatchableVehicles_FEJ.SADFWParkRangersVehicles_FEJ),
+            new DispatchableVehicleGroup("USNPSParkRangersVehicles", dispatchableVehicles_FEJ.USNPSParkRangersVehicles_FEJ),
+            new DispatchableVehicleGroup("LSDPRParkRangersVehicles", dispatchableVehicles_FEJ.LSDPRParkRangersVehicles_FEJ),
+
             new DispatchableVehicleGroup("FIBVehicles", dispatchableVehicles_FEJ.FIBVehicles_FEJ),
             new DispatchableVehicleGroup("NOOSEVehicles", dispatchableVehicles_FEJ.NOOSEVehicles_FEJ),
             new DispatchableVehicleGroup("PrisonVehicles", dispatchableVehicles_FEJ.PrisonVehicles_FEJ),

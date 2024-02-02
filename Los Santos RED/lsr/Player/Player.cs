@@ -1313,6 +1313,7 @@ namespace Mod
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
                 return true;
             }
+
             else if (VehicleOwnership.OwnedVehicles.Any(x => CurrentVehicle.Vehicle.Exists() && x.Handle == CurrentVehicle.Handle))
             {
                 CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
@@ -1339,6 +1340,12 @@ namespace Mod
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
                 CurrentVehicle.IsStolen = false;
                 CurrentVehicle.CanBeConsideredStolen = false;
+                return true;
+            }
+            else if (CurrentVehicle.IsBoat)
+            {
+                CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                CurrentVehicle.Vehicle.MustBeHotwired = false;
                 return true;
             }
             else if (CurrentVehicle.WasModSpawned && (CurrentVehicle.IsService || CurrentVehicle.IsGang) && CurrentVehicle.Vehicle.Exists())//maybe unlock friendly gang vehicles?maybe not

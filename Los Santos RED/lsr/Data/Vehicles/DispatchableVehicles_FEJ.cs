@@ -52,7 +52,14 @@ public class DispatchableVehicles_FEJ
 
     public List<DispatchableVehicle> UnmarkedVehicles_FEJ { get; private set; }
     public List<DispatchableVehicle> CoastGuardVehicles_FEJ { get; private set; }
+
     public List<DispatchableVehicle> ParkRangerVehicles_FEJ { get; private set; }
+    public List<DispatchableVehicle> SADFWParkRangersVehicles_FEJ { get; private set; }
+    public List<DispatchableVehicle> USNPSParkRangersVehicles_FEJ { get; private set; }
+    public List<DispatchableVehicle> LSDPRParkRangersVehicles_FEJ { get; private set; }
+
+
+
     public List<DispatchableVehicle> FIBVehicles_FEJ { get; private set; }
     public List<DispatchableVehicle> NOOSEVehicles_FEJ { get; private set; }
     public List<DispatchableVehicle> LSPDVehicles_FEJ { get; private set; }
@@ -562,13 +569,39 @@ public class DispatchableVehicles_FEJ
             new DispatchableVehicle("predator", 75, 50),
             new DispatchableVehicle("dinghy", 0, 25),
             new DispatchableVehicle("seashark2", 25, 25) { MaxOccupants = 1 },};
-        ParkRangerVehicles_FEJ = new List<DispatchableVehicle>()
+        ParkRangerVehicles_FEJ = new List<DispatchableVehicle>()//San Andreas State Parks
+        {
+            Create_PoliceTerminus(20,20,16,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","",20),
+            Create_PoliceTerminus(20,20,16,false,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"","",20),
+            Create_PoliceLandstalkerXL(40,40,29,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
+            Create_PoliceSanchez(10,10,8,false,PoliceVehicleType.Marked,134,-1,2,1,1,"DirtBike","DirtBike",10),
+        };
+        USNPSParkRangersVehicles_FEJ = new List<DispatchableVehicle>()
         {
             new DispatchableVehicle(PoliceGresley, 25, 25) { RequiredLiveries = new List<int>() { 20 } },
             new DispatchableVehicle(PoliceGranger, 40, 40) { RequiredLiveries = new List<int>() { 20 } },
             new DispatchableVehicle(PoliceBison, 40, 40) { RequiredLiveries = new List<int>() { 15 } },
-            Create_PoliceTerminus(40,40,13,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","",20),
+            Create_PoliceTerminus(20,20,13,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","",5),
+            Create_PoliceTerminus(20,20,13,false,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"","",5),
+            Create_PoliceLandstalkerXL(40,40,26,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
+            Create_PoliceSanchez(10,10,5,false,PoliceVehicleType.Marked,134,-1,2,1,1,"DirtBike","DirtBike",10),
         };
+        SADFWParkRangersVehicles_FEJ = new List<DispatchableVehicle>()
+        {
+            Create_PoliceTerminus(20,20,14,false,PoliceVehicleType.Marked,51,-1,-1,-1,-1,"","",20),
+            Create_PoliceTerminus(20,20,14,false,PoliceVehicleType.Unmarked,51,-1,-1,-1,-1,"","",20),
+            Create_PoliceLandstalkerXL(40,40,27,false,PoliceVehicleType.MarkedWithColor,51,-1,-1,-1,-1,"",""),
+            Create_PoliceSanchez(10,10,6,false,PoliceVehicleType.Marked,51,-1,2,1,1,"DirtBike","DirtBike",10),
+
+        };
+        LSDPRParkRangersVehicles_FEJ = new List<DispatchableVehicle>()
+        {
+            Create_PoliceTerminus(20,20,15,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","",20),
+            Create_PoliceTerminus(20,20,15,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","",20),
+            Create_PoliceLandstalkerXL(40,40,28,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
+            Create_PoliceSanchez(10,10,7,false,PoliceVehicleType.Marked,134,-1,2,1,1,"DirtBike","DirtBike",10),
+        };
+
         ParkRangerVehicles_FEJ.ForEach(x => x.MaxRandomDirtLevel = 15.0f);
         FIBVehicles_FEJ = new List<DispatchableVehicle>()
         {
@@ -829,6 +862,7 @@ public class DispatchableVehicles_FEJ
         Unmarked = 1,
         Detective = 2,
         SlicktopMarked = 3,
+        MarkedWithColor = 4,
     }
     private enum ServiceVehicleType
     {
@@ -1030,6 +1064,26 @@ public class DispatchableVehicles_FEJ
             {
                 toReturn.RequiredVariation.PrimaryColor = 134;
                 toReturn.RequiredVariation.SecondaryColor = 0;
+            }
+        }
+        if (policeVehicleType == PoliceVehicleType.MarkedWithColor)
+        {
+            //Landstalker XL - 1 = Top Light, 2 = Ram Bar, 4 = searchlight, 5 = antenna, 11 = partition, 12 = radio
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
+                new DispatchableVehicleExtra(1, true, 100),
+                new DispatchableVehicleExtra(2, true, 80),
+                new DispatchableVehicleExtra(4, true, 30),
+                new DispatchableVehicleExtra(5, true, 70),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
+            };
+            toReturn.RequiredPrimaryColorID = requiredColor;//base white
+            toReturn.RequiredSecondaryColorID = requiredColor;//base black
+
+            if (toReturn.RequiredVariation != null)
+            {
+                toReturn.RequiredVariation.PrimaryColor = requiredColor;
+                toReturn.RequiredVariation.SecondaryColor = requiredColor;
             }
         }
         else if (policeVehicleType == PoliceVehicleType.Unmarked)

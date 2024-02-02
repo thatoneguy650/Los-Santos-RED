@@ -681,11 +681,14 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","CALAFB", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CALAFB", 0, 100, 100),
 
-            new ZoneJurisdiction("BCSO","CANNY", 0, 100, 100),
+            
+            new ZoneJurisdiction("SADFW","CANNY", 0, 51, 51),
+            new ZoneJurisdiction("BCSO","CANNY", 1, 49, 49),//new ZoneJurisdiction("BCSO","CANNY", 0, 100, 100),
             new ZoneJurisdiction("LSFD","CANNY", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CANNY", 0, 100, 100),
 
-            new ZoneJurisdiction("BCSO","CCREAK", 0, 100, 100),
+            new ZoneJurisdiction("SADFW","CCREAK", 0, 51, 51),
+            new ZoneJurisdiction("BCSO","CCREAK", 1, 49, 49),//new ZoneJurisdiction("BCSO","CCREAK", 0, 100, 100),
             new ZoneJurisdiction("LSFD","CCREAK", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CCREAK", 0, 100, 100),
 
@@ -701,7 +704,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","CHU", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CHU", 0, 100, 100),
 
-            new ZoneJurisdiction("SAPR","CMSW", 0, 51, 35),
+            new ZoneJurisdiction("SADFW","CMSW", 0, 51, 35),//new ZoneJurisdiction("SAPR","CMSW", 0, 51, 35),
             new ZoneJurisdiction("BCSO","CMSW", 1, 49, 65),
             new ZoneJurisdiction("LSFD","CMSW", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CMSW", 0, 100, 100),
@@ -830,15 +833,16 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","MOVIE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","MOVIE", 0, 100, 100),
 
-            new ZoneJurisdiction("SAPR","MTCHIL", 0, 100, 100),
+            new ZoneJurisdiction("USNPS","MTCHIL", 0, 100, 100),// ZoneJurisdiction("SAPR","MTCHIL", 0, 100, 100),
             new ZoneJurisdiction("LSFD","MTCHIL", 0, 100, 100),
             new ZoneJurisdiction("LSMC","MTCHIL", 0, 100, 100),
 
-            new ZoneJurisdiction("SAPR","MTGORDO", 0, 100, 100),
+            new ZoneJurisdiction("SAPR","MTGORDO", 0, 100, 100),//new ZoneJurisdiction("SAPR","MTGORDO", 0, 100, 100),
             new ZoneJurisdiction("LSFD","MTGORDO", 0, 100, 100),
             new ZoneJurisdiction("LSMC","MTGORDO", 0, 100, 100),
 
-            new ZoneJurisdiction("BCSO","MTJOSE", 0, 100, 100),
+            new ZoneJurisdiction("USNPS","MTJOSE", 0, 51, 51),//added
+            new ZoneJurisdiction("BCSO","MTJOSE", 1, 49, 49),//new ZoneJurisdiction("BCSO","MTJOSE", 0, 100, 100),
             new ZoneJurisdiction("LSFD","MTJOSE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","MTJOSE", 0, 100, 100),
 
@@ -870,7 +874,8 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","PALFOR", 0, 100, 100),
             new ZoneJurisdiction("LSMC","PALFOR", 0, 100, 100),
 
-            new ZoneJurisdiction("LSSD","PALHIGH", 0, 100, 100),
+            new ZoneJurisdiction("LSDPR","PALHIGH", 0, 51, 51),
+            new ZoneJurisdiction("LSSD","PALHIGH", 1, 49, 49),//new ZoneJurisdiction("LSSD","PALHIGH", 0, 100, 100),
             new ZoneJurisdiction("LSFD","PALHIGH", 0, 100, 100),
             new ZoneJurisdiction("LSMC","PALHIGH", 0, 100, 100),
 
@@ -940,7 +945,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","STRAW", 0, 100, 100),
             new ZoneJurisdiction("LSMC","STRAW", 0, 100, 100),
 
-            new ZoneJurisdiction("LSSD","TATAMO", 0, 100, 100),
+            new ZoneJurisdiction("LSDPR","TATAMO", 0, 100, 100),//new ZoneJurisdiction("LSSD","TATAMO", 0, 100, 100),
             new ZoneJurisdiction("LSFD","TATAMO", 0, 100, 100),
             new ZoneJurisdiction("LSMC","TATAMO", 0, 100, 100),
 
@@ -980,8 +985,11 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","WVINE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","WVINE", 0, 100, 100),
 
-            new ZoneJurisdiction("SAPR","ZANCUDO", 0, 51, 35),
-            new ZoneJurisdiction("BCSO","ZANCUDO", 1, 49, 65),
+            new ZoneJurisdiction("USNPS","ZANCUDO", 0, 51, 51),
+            new ZoneJurisdiction("BCSO","ZANCUDO", 1, 49, 49),
+
+            //new ZoneJurisdiction("SAPR","ZANCUDO", 0, 51, 35),  
+            //new ZoneJurisdiction("BCSO","ZANCUDO", 1, 49, 65),
 
             new ZoneJurisdiction("LSPP","ZP_ORT", 0, 100, 100),
             new ZoneJurisdiction("LSFD","ZP_ORT", 0, 100, 100),
