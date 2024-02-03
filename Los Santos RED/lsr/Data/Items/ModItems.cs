@@ -890,7 +890,7 @@ public class ModItems : IModItems
         {
             new IngestItem("Bull Shark Testosterone","More bite than bush elephant testosterone. Become more aggressive, hornier, and irresistible to women! The ultimate man!", ItemType.Drugs) {
                 ModelItemID = "prop_cs_pills",IntoxicantName = "Bull Shark Testosterone" , AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1,ThirstChangeAmount = -5, HungerChangeAmount = -5, SleepChangeAmount = 20 },     
-            new IngestItem("Alco Patch","The Alco Patch. It's the same refreshing feeling of your favorite drink, but delivered transdermally and discreetly. Pick up the Alco Patch at your local pharmacy.", ItemType.Drugs) {
+            new IngestItem("Alco Patch","It's the same refreshing feeling of your favorite drink, but delivered transdermally and discreetly.", ItemType.Drugs) {
                 ModelItemID = "prop_cs_pills",IntoxicantName = "Alco Patch",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1,ThirstChangeAmount = -5, SleepChangeAmount = -15 },     
             new IngestItem("Lax to the Max","Lubricated suppositories. Get flowing again!", ItemType.Drugs) {
                 ModelItemID = "prop_cs_pills",IntoxicantName = "Alco Patch",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, HungerChangeAmount = -10, ThirstChangeAmount = -10 },    
@@ -898,7 +898,7 @@ public class ModItems : IModItems
                 ModelItemID = "prop_cs_pills",IntoxicantName = "Mollis",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 2 },     
             new IngestItem("Chesty","Cough suppressant manufactured by Good Aids Pharmacy. Gives 24-hour relief and is available in honey flavour.", ItemType.Drugs) {
                 ModelItemID = "prop_cs_script_bottle_01",IntoxicantName = "Chesty", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 10 },    
-            new IngestItem("Equanox","Combats dissatisfaction, lethargy, depression, melancholy, sexual dysfunction. May cause nausea, loss of sleep, blurred vision, leakage, kidney problems and breathing irregularities.", ItemType.Drugs) {
+            new IngestItem("Equanox","Combats dissatisfaction, lethargy, depression, melancholy, sexual dysfunction.", ItemType.Drugs) {
                 ModelItemID = "prop_cs_pills",IntoxicantName = "Equanox", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 5 },        
             new IngestItem("Zombix","Painkiller and antidepressant manufactured by O'Deas Pharmacy. ~n~'Go straight for the head.'", ItemType.Drugs) {
                 ModelItemID = "prop_cs_pills",IntoxicantName = "Zombix", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 50 },
@@ -917,7 +917,7 @@ public class ModItems : IModItems
                 AmountPerPackage = 12,
                 ModelItemID = "prop_cs_pills", 
                 ItemSubType = ItemSubType.Medication,
-                HealthChangeAmount = 10,
+                HealthChangeAmount = 2,
                 ThirstChangeAmount = -3, 
                 FindPercentage = 5, 
                 AlwaysChangesHealth = true,

@@ -134,7 +134,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         Recognize_NightPenalty = 3000;// 3500;
         Recognize_VehiclePenalty = 1500;// 750;
 
-        SetSlowMoOnDeath = true;
+        SetSlowMoOnDeath = false;// true;
         SlowMoOnDeathSpeed = 0.4f;
         SetSlowMoOnBusted = false; // true;
         SlowMoOnBustedSpeed = 0.4f;

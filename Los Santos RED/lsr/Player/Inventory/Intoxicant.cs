@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 [Serializable]
-public class Intoxicant//THIS IS THE OBJECT, THX, ALOCOHL, ETC
+public class Intoxicant//THIS IS THE OBJECT, THC, ALOCOHL, ETC
 {
 
 
@@ -54,11 +54,24 @@ public class Intoxicant//THIS IS THE OBJECT, THX, ALOCOHL, ETC
     {
         get
         {
-            if (HasOverlay || Effects > 0)
+            string toReturn = "";
+            if (HasOverlay)
             {
-                return "~r~Has Side Effects~s~";
+
+                if (Effects > 0)
+                {
+                    toReturn += $"~r~Impares Vision, ~s~";
+                }
+                else
+                {
+                    toReturn += $"~r~Impares Vision~s~";
+                }
             }
-            return "";
+            if (Effects > 0)
+            {
+                toReturn += $"~r~{Extensions.GetDisplayName(Effects)}~s~";
+            }
+            return toReturn;
         }
     }
 }

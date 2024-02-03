@@ -53,6 +53,8 @@ public class DispatchableVehicles_FEJ
     public List<DispatchableVehicle> UnmarkedVehicles_FEJ { get; private set; }
     public List<DispatchableVehicle> CoastGuardVehicles_FEJ { get; private set; }
 
+    public List<DispatchableVehicle> LSLifeguardVehicles_FEJ { get; private set; }
+
     public List<DispatchableVehicle> ParkRangerVehicles_FEJ { get; private set; }
     public List<DispatchableVehicle> SADFWParkRangersVehicles_FEJ { get; private set; }
     public List<DispatchableVehicle> USNPSParkRangersVehicles_FEJ { get; private set; }
@@ -575,9 +577,18 @@ public class DispatchableVehicles_FEJ
     {
         CoastGuardVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle("predator", 75, 50),
-            new DispatchableVehicle("dinghy", 0, 25),
-            new DispatchableVehicle("seashark2", 25, 25) { MaxOccupants = 1 },};
+            new DispatchableVehicle("dinghy", 50, 50),
+            new DispatchableVehicle("seashark2", 50, 50) { RequiredLiveries = new List<int>() { 2,3 }, MaxOccupants = 1 },
+        };
+
+        LSLifeguardVehicles_FEJ = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("lguard", 50, 50),
+            new DispatchableVehicle("blazer2",50,50),
+            new DispatchableVehicle("freecrawler",5,5) { RequiredVariation = new VehicleVariation() { VehicleMods = new List<VehicleMod>() {new VehicleMod(48, 7) } } },
+            new DispatchableVehicle("seashark2", 100, 100) { RequiredLiveries = new List<int>() { 0,1 }, MaxOccupants = 1 },
+        }; 
+
         ParkRangerVehicles_FEJ = new List<DispatchableVehicle>()//San Andreas State Parks
         {
             Create_PoliceTerminus(20,20,16,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","",20),

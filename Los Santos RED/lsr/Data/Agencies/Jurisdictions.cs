@@ -233,7 +233,8 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","BAYTRE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BAYTRE", 0, 100, 100),
 
-            new ZoneJurisdiction("LSPD-DP","BEACH", 0, 100, 100),
+            new ZoneJurisdiction("LSPD-DP","BEACH", 0, 80, 100),
+            new ZoneJurisdiction("LSLFG","BEACH",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
             //new ZoneJurisdiction("LSPD","BEACH", 1, 5, 30),
             new ZoneJurisdiction("LSFD","BEACH", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BEACH", 0, 100, 100),
@@ -298,7 +299,8 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","DAVIS", 0, 100, 100),
             new ZoneJurisdiction("MRH","DAVIS", 0, 100, 100),
 
-            new ZoneJurisdiction("LSPD-DP","DELBE", 0, 100, 100),
+            new ZoneJurisdiction("LSPD-DP","DELBE", 0, 80, 100),
+            new ZoneJurisdiction("LSLFG","DELBE",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
             //new ZoneJurisdiction("LSPD","DELBE", 1, 15, 30),
             new ZoneJurisdiction("LSFD","DELBE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","DELBE", 0, 100, 100),
@@ -586,6 +588,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSMC","VCANA", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-DP","VESP", 0, 85, 70) {CanSpawnPedestrianOfficers = true },
+            new ZoneJurisdiction("LSLFG","VESP",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
             //new ZoneJurisdiction("LSPD","VESP", 1, 15, 30) {CanSpawnPedestrianOfficers = true },
             new ZoneJurisdiction("LSFD","VESP", 0, 100, 100),
             new ZoneJurisdiction("LSMC","VESP", 0, 100, 100),
@@ -668,7 +671,8 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","BAYTRE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BAYTRE", 0, 100, 100),
 
-            new ZoneJurisdiction("DPPD","BEACH", 0, 100, 100) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
+            new ZoneJurisdiction("DPPD","BEACH", 0, 80, 100) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
+            new ZoneJurisdiction("LSLFG","BEACH",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
             new ZoneJurisdiction("LSFD","BEACH", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BEACH", 0, 100, 100),
 
@@ -728,7 +732,8 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","DAVIS", 0, 100, 100),
             new ZoneJurisdiction("MRH","DAVIS", 0, 100, 100),
 
-            new ZoneJurisdiction("DPPD","DELBE", 0, 85, 70),
+            new ZoneJurisdiction("DPPD","DELBE", 0, 80, 100),
+            new ZoneJurisdiction("LSLFG","DELBE",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
             new ZoneJurisdiction("LSFD","DELBE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","DELBE", 0, 100, 100),
 
@@ -980,7 +985,8 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","VCANA", 0, 100, 100),
             new ZoneJurisdiction("LSMC","VCANA", 0, 100, 100),
 
-            new ZoneJurisdiction("DPPD","VESP", 0, 100, 100) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
+            new ZoneJurisdiction("DPPD","VESP", 0, 80, 100) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
+            new ZoneJurisdiction("LSLFG","VESP", 1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
             new ZoneJurisdiction("LSFD","VESP", 0, 100, 100),
             new ZoneJurisdiction("LSMC","VESP", 0, 100, 100),
 
@@ -1064,7 +1070,8 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","BAYTRE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BAYTRE", 0, 100, 100),
 
-            new ZoneJurisdiction("LSPD","BEACH", 0, 100, 100),
+            new ZoneJurisdiction("LSPD","BEACH", 0, 80, 100),
+            new ZoneJurisdiction("LSLFG","BEACH",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
             new ZoneJurisdiction("LSFD","BEACH", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BEACH", 0, 100, 100),
 
@@ -1121,7 +1128,8 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","DAVIS", 0, 100, 100),
             new ZoneJurisdiction("MRH","DAVIS", 0, 100, 100),
 
-            new ZoneJurisdiction("LSPD","DELBE", 0, 100, 100),
+            new ZoneJurisdiction("LSPD","DELBE", 0, 80, 100),
+            new ZoneJurisdiction("LSLFG","DELBE",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
             new ZoneJurisdiction("LSFD","DELBE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","DELBE", 0, 100, 100),
 
@@ -1372,7 +1380,8 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","VCANA", 0, 100, 100),
             new ZoneJurisdiction("LSMC","VCANA", 0, 100, 100),
 
-            new ZoneJurisdiction("LSPD","VESP", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
+            new ZoneJurisdiction("LSPD","VESP", 0, 80, 100) {CanSpawnPedestrianOfficers = true },
+            new ZoneJurisdiction("LSLFG","VESP", 1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
             new ZoneJurisdiction("LSFD","VESP", 0, 100, 100),
             new ZoneJurisdiction("LSMC","VESP", 0, 100, 100),
 
@@ -1530,7 +1539,8 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","BAYTRE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BAYTRE", 0, 100, 100),
 
-            new ZoneJurisdiction("LSPD","BEACH", 0, 100, 100),
+            new ZoneJurisdiction("LSPD","BEACH", 0, 80, 100),
+            new ZoneJurisdiction("LSLFG","BEACH",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
             new ZoneJurisdiction("LSFD","BEACH", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BEACH", 0, 100, 100),
 
@@ -1587,7 +1597,8 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","DAVIS", 0, 100, 100),
             new ZoneJurisdiction("MRH","DAVIS", 0, 100, 100),
 
-            new ZoneJurisdiction("LSPD","DELBE", 0, 100, 100),
+            new ZoneJurisdiction("LSPD","DELBE", 0, 80, 100),
+            new ZoneJurisdiction("LSLFG","DELBE",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
             new ZoneJurisdiction("LSFD","DELBE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","DELBE", 0, 100, 100),
 
@@ -1838,7 +1849,8 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","VCANA", 0, 100, 100),
             new ZoneJurisdiction("LSMC","VCANA", 0, 100, 100),
 
-            new ZoneJurisdiction("LSPD","VESP", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
+            new ZoneJurisdiction("LSPD","VESP", 0, 80, 100) {CanSpawnPedestrianOfficers = true },
+            new ZoneJurisdiction("LSLFG","VESP", 1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
             new ZoneJurisdiction("LSFD","VESP", 0, 100, 100),
             new ZoneJurisdiction("LSMC","VESP", 0, 100, 100),
 

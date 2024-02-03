@@ -22,6 +22,7 @@ public class WeaponInventory
     private PedComponent EmptyHolster;
     private PedComponent FullHolster;
     private uint CurrentWeapon;
+    private bool HasSearchlight;
 
     public IssuableWeapon LongGun { get; private set; }
     public IssuableWeapon Sidearm { get; private set; }
@@ -152,9 +153,9 @@ public class WeaponInventory
         GetVehicleWeapon();
 
 
-        if (HasVehicleWeapon && CurrentVehicleWeapon == 3450622333)//searchlight
+        if (HasVehicleWeapon && CurrentVehicleWeapon == 3450622333 || (HasSearchlight && WeaponOwner.IsDriver))//searchlight
         {
-           // EntryPoint.WriteToConsole($"{WeaponOwner.Handle} HANDLE SEARCHLIGHT IS RUNNING");
+            EntryPoint.WriteToConsole($"{WeaponOwner.Handle} HANDLE SEARCHLIGHT IS RUNNING");
             HandleSearchlight(isNightTime);
             return;
         }
@@ -312,6 +313,7 @@ public class WeaponInventory
     {
         HasVehicleWeapon = NativeFunction.Natives.GET_CURRENT_PED_VEHICLE_WEAPON<bool>(WeaponOwner.Pedestrian, out CurrentVehicleWeapon);//3450622333 searchlight
         WeaponOwner.IsUsingMountedWeapon = HasVehicleWeapon;
+        HasSearchlight = WeaponOwner.Pedestrian.CurrentVehicle.Exists() && NativeFunction.Natives.DOES_VEHICLE_HAVE_SEARCHLIGHT<bool>(WeaponOwner.Pedestrian.CurrentVehicle);
     }
     public void UpdateSettings()
     {

@@ -79,6 +79,7 @@ public class DispatchableVehicles : IDispatchableVehicles
     private List<DispatchableVehicle> PoliceHeliVehicles;
     private List<DispatchableVehicle> SheriffHeliVehicles;
     private List<DispatchableVehicle> ArmyVehicles;
+    private List<DispatchableVehicle> LSLifeguardVehicles;
     private List<DispatchableVehicle> Firetrucks;
     private List<DispatchableVehicle> Amublance1;
     private List<DispatchableVehicle> Amublance2;
@@ -259,6 +260,15 @@ public class DispatchableVehicles : IDispatchableVehicles
 
 
             };
+
+        LSLifeguardVehicles = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("lguard", 50, 50),
+            new DispatchableVehicle("blazer2",50,50),
+            new DispatchableVehicle("freecrawler",5,5) { RequiredVariation = new VehicleVariation() { VehicleMods = new List<VehicleMod>() {new VehicleMod(48, 7) } } },
+            new DispatchableVehicle("seashark2",100,100),
+        };
+
         LCPDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police4", 100, 100)};
         Firetrucks = new List<DispatchableVehicle>() {
@@ -1109,6 +1119,11 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles),
             new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles),
             new DispatchableVehicleGroup("ParkRangerVehicles", ParkRangerVehicles),
+            new DispatchableVehicleGroup("SADFWParkRangersVehicles", ParkRangerVehicles),
+            new DispatchableVehicleGroup("USNPSParkRangersVehicles", ParkRangerVehicles),
+            new DispatchableVehicleGroup("LSDPRParkRangersVehicles", ParkRangerVehicles),
+
+
             new DispatchableVehicleGroup("FIBVehicles", FIBVehicles),
             new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles),
             new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles),
@@ -1143,6 +1158,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("NOOSESEPVehicles", NOOSESEPVehicles),
             new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles),
             new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
+            new DispatchableVehicleGroup("LSLifeguardVehicles",LSLifeguardVehicles),
 
 
             new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
@@ -1266,6 +1282,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("LCPDVehicles", LCPDVehicles),
             new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles),
             new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
+            new DispatchableVehicleGroup("LSLifeguardVehicles",LSLifeguardVehicles),
 
             //Gang
             new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
@@ -1326,6 +1343,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("LCPDVehicles", LCPDVehicles),
             new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles),
             new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
+            new DispatchableVehicleGroup("LSLifeguardVehicles",LSLifeguardVehicles),
 
             //Gang
             new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
@@ -1360,6 +1378,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("SADFWParkRangersVehicles", dispatchableVehicles_FEJ.SADFWParkRangersVehicles_FEJ),
             new DispatchableVehicleGroup("USNPSParkRangersVehicles", dispatchableVehicles_FEJ.USNPSParkRangersVehicles_FEJ),
             new DispatchableVehicleGroup("LSDPRParkRangersVehicles", dispatchableVehicles_FEJ.LSDPRParkRangersVehicles_FEJ),
+            new DispatchableVehicleGroup("LSLifeguardVehicles",dispatchableVehicles_FEJ.LSLifeguardVehicles_FEJ),
 
             new DispatchableVehicleGroup("FIBVehicles", dispatchableVehicles_FEJ.FIBVehicles_FEJ),
             new DispatchableVehicleGroup("NOOSEVehicles", dispatchableVehicles_FEJ.NOOSEVehicles_FEJ),

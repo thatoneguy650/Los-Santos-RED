@@ -69,7 +69,7 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> SecuroservPeds_Simple;
     private List<DispatchablePerson> BobcatPeds_Simple;
     private List<DispatchablePerson> MerryweatherSecurityPeds_Simple;
-
+    private List<DispatchablePerson> LSLifeguardPeds;
     public List<DispatchablePersonGroup> AllPeople => PeopleGroupLookup;
 
     public void Setup(IIssuableWeapons issuableWeapons)
@@ -1183,8 +1183,14 @@ public class DispatchablePeople : IDispatchablePeople
                 ,GroupName = "UnarmedSecurity"
             },
         };
-
-        CoastGuardPeds = new List<DispatchablePerson>() {
+        //s_m_y_baywatch_01,s_f_y_baywatch_01 for lifeguards?
+        LSLifeguardPeds = new List<DispatchablePerson>() 
+        {
+            new DispatchablePerson("s_m_y_baywatch_01",50,50)  { DebugName = "LS Lifeguard Male" },
+            new DispatchablePerson("s_f_y_baywatch_01",50,50)  { DebugName = "LS Lifeguard Female" },
+        };
+        CoastGuardPeds = new List<DispatchablePerson>() 
+        {
             new DispatchablePerson("s_m_y_uscg_01",100,100)  { DebugName = "CoastGuardMale" },
         };
         NYSPPeds = new List<DispatchablePerson>() {
@@ -1620,6 +1626,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("MarshalsServicePeds", MarshalsServicePeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("OffDutyCops", OffDutyCops));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("LSLifeguardPeds", LSLifeguardPeds));
         //Fire
         PeopleGroupLookup.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
         //EMT
@@ -1736,6 +1743,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("MarshalsServicePeds", MarshalsServicePeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("OffDutyCops", OffDutyCops));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LSLifeguardPeds", LSLifeguardPeds));
         //Fire
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
         //EMT
@@ -1873,8 +1881,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("MarshalsServicePeds", MarshalsServicePeds_Simple));
 
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("OffDutyCops", OffDutyCops));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("LSLifeguardPeds", LSLifeguardPeds));
 
-        
         //Fire
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
         //EMTs
@@ -6214,7 +6222,7 @@ public class DispatchablePeople : IDispatchablePeople
                 })
             },
         };
-        List <DispatchablePerson> FIBPeds_FEJ = new List<DispatchablePerson>() {
+        List<DispatchablePerson> FIBPeds_FEJ = new List<DispatchablePerson>() {
 
             //Suits
             new DispatchablePerson("mp_m_freemode_01",20,20) { MaxWantedLevelSpawn = 2, DebugName = "<Male FIB Agent>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
@@ -9281,6 +9289,9 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("USNPSParkRangers", USNPSParkRangers_FEJ));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("LSDPRParkRangers", LSDRP1_FEJ));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("SADFWParkRangers", GameWarden_FEJ));
+
+
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("LSLifeguardPeds", LSLifeguardPeds));
 
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("DOAPeds", DOAPeds_FEJ));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("SAHPPeds", SAHPPeds_FEJ));

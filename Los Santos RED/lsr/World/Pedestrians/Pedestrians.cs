@@ -308,6 +308,14 @@ public class Pedestrians : ITaskerReportable
                     AddAmbientGangMember(Pedestrian);
                     GameFiber.Yield();
                 }
+                else if (Pedestrian.Model.Name.ToLower() == "s_m_y_baywatch_01" || Pedestrian.Model.Name.ToLower() == "s_f_y_baywatch_01")//lifeguards
+                {
+                    if (Police.Any(x => x.Handle == localHandle))
+                    {
+                        continue;
+                    }
+                    AddAmbientCop(Pedestrian);
+                }
                 else if (!Civilians.Any(x => x.Handle == localHandle) && !ServiceWorkers.Any(x => x.Handle == localHandle) 
                     && !Zombies.Any(x => x.Handle == localHandle) && !GangMembers.Any(x => x.Handle == localHandle) 
                     && !Police.Any(x => x.Handle == localHandle) && !EMTs.Any(x => x.Handle == localHandle) && !Firefighters.Any(x => x.Handle == localHandle) && !SecurityGuards.Any(x => x.Handle == localHandle))

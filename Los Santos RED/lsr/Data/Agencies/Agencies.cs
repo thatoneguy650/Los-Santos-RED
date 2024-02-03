@@ -39,6 +39,7 @@ public class Agencies : IAgencies
     private Agency LSFD;
     private Agency NYSP;
     private Agency USMS;
+    private Agency LSLFG;
     private Agency GRPSECHS;
     private Agency SECURO;
     private Agency MERRY;
@@ -154,6 +155,9 @@ public class Agencies : IAgencies
         ARMY = new Agency("~u~", "ARMY", "ARMY", "Army", "Black", Classification.Military, "MilitaryPeds", "ArmyVehicles", "", "Tasers", "MilitarySidearms", "MilitaryLongGuns", "Soldier") { MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         USMS = new Agency("~r~", "USMS", "Marshals Service", "US Marshals Service", "DarkSlateGray", Classification.Marshal, "MarshalsServicePeds", "MarshalsServiceVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "Marshals Service Officer") { MaxWantedLevelSpawn = 3, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
 
+
+        LSLFG = new Agency("~b~", "LSLFG", "LS Lifeguards", "Los Santos Lifeguards", "Blue", Classification.Police, "LSLifeguardPeds", "LSLifeguardVehicles", "LFG ", null, "LimitedSidearms", null, "Lifeguard") { MaxWantedLevelSpawn = 2,SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
+
         LSFDFire = new Agency("~r~", "LSFD", "LSFD", "Los Santos Fire Department", "Red", Classification.Fire, "Firefighters", "Firetrucks", "LSFD ", "FireExtinguisher", null, null, "LSFD Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         LSMC = new Agency("~w~", "LSMC", "LSMC", "Los Santos Medical Center", "White", Classification.EMS, "GreenEMTs", "Amublance1", "LSMC ", null, null, null, "LSMC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         MRH = new Agency("~w~", "MRH", "MRH", "Mission Row Hospital", "White", Classification.EMS, "BlueEMTs", "Amublance2", "MRH ", null, null, null, "MRH Officer") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
@@ -177,6 +181,7 @@ public class Agencies : IAgencies
             LSSD,LSSDVW,LSSDDV,LSSDBC,LSSDMJ,LSSDASD,LSPP,LSIAPD,
             SAHP,SASPA,SAPR,SACG,
             NYSP,LCPD,
+            LSLFG,
             NOOSE,FIB,DOA,ARMY,USMS,
             LSFDFire,LSMC,MRH,LSFD, 
             GRPSECHS,SECURO,MERRY,BOBCAT,
@@ -226,6 +231,7 @@ public class Agencies : IAgencies
             USNPS,LSDPR,SADFW,
 
             NYSP,LCPD,
+            LSLFG,
             FIB,BorderPatrol,NOOSEPIA,NOOSESEP,DOA,ARMY,USMS,
             LSFDFire,LSMC,MRH,LSFD,UNK,
             GRPSECHS,SECURO,MERRY,BOBCAT,
@@ -259,6 +265,7 @@ public class Agencies : IAgencies
             LSSD2008,LSSDASD2008,        
             SAHP2008,SASPA2008,SAPR2008,SACG2008,
             NYSP,
+            LSLFG,
             NOOSE2008,FIB2008,DOA2008,ARMY2008,USMS2008,
             LSFDFire,LSMC,MRH,LSFD,
             GRPSECHS2008,SECURO2008,MERRY2008,BOBCAT2008,
@@ -320,6 +327,7 @@ public class Agencies : IAgencies
             LSSD,LSSDASD,
             SAHP,SASPA,SAPR,SACG,
             NYSP,
+            LSLFG,
             NOOSE,FIB,DOA,ARMY,USMS,
             LSFDFire,LSMC_Simple,MRH_Simple,LSFD_Simple,    
             GRPSECHS_Simple,SECURO_Simple,MERRY_Simple,BOBCAT_Simple,

@@ -753,7 +753,7 @@ public class LEDispatcher
         {
             return;
         }
-        if (Player.IsNotWanted || Player.IsDead || Player.WantedLevel <= 1)// || Player.IsInVehicle)
+        if (Player.IsNotWanted || Player.IsDead || Player.WantedLevel <= 2)// || Player.IsInVehicle)
         {
             //EntryPoint.WriteToConsole("Assault Spawn failed NOT NEEDED");
             return;
@@ -1355,7 +1355,7 @@ public class LEDispatcher
         {
             if(Player.IsWanted && Player.IsInVehicle)//if you are wanted and in a car, put it out front to better get it
             {
-                Position = Player.Character.GetOffsetPositionFront(250f);//350f
+                Position = Player.Character.GetOffsetPositionFront(200f);// 250f);//350f
             }
             else if (Player.Investigation.IsActive)//investigations mode takes over too?
             {

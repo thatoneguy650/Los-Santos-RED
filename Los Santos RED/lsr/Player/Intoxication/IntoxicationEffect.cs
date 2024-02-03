@@ -14,7 +14,7 @@ public enum IntoxicationEffect
     ImparesWalking = 8,
     [Display(Name = "Super Speed")]
     FastSpeed = 16,
-    [Display(Name = "Increased Weapon Control")]
+    [Display(Name = "Muscle Relaxant")]
     RelaxesMuscles = 32,
     Unused4 = 64,
 }
