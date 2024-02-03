@@ -44,6 +44,7 @@ public class Intoxicant//THIS IS THE OBJECT, THX, ALOCOHL, ETC
     public bool HasOverlay => OverLayEffect != "";
     public float EffectIntoxicationLimit { get; set; } = 0.25f;
     public bool ContinuesWithoutCurrentUse { get; set; } = false;
+    public bool NoCameraShake { get; set; }
     public IntoxicationEffect Effects { get; set; }
     public override string ToString()
     {

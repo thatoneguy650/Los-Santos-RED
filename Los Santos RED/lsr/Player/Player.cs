@@ -1470,6 +1470,13 @@ namespace Mod
             Game.LocalPlayer.Character.Kill();
             Game.LocalPlayer.Character.Health = 0;
             Game.LocalPlayer.Character.IsInvincible = true;
+
+            if (Settings.SettingsManager.PlayerOtherSettings.SetCutToBlackDeath)
+            {
+                Game.FadeScreenOut(0, false);
+            }
+
+
             if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
             {
                 Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnDeathSpeed;// 0.4f;

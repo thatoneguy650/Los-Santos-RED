@@ -1159,8 +1159,9 @@ public class LEDispatcher
             return false;
         }
         Zone zoneAtPosition = Zones.GetZone(SpawnLocation.FinalPosition);
-        Street streetAtPosition = Streets.GetStreet(SpawnLocation.FinalPosition);
+        Street streetAtPosition = Streets.GetStreet(SpawnLocation.FinalPosition);   
         Agency = GetRandomAgency(SpawnLocation, zoneAtPosition, streetAtPosition);
+        ZoneJurisdiction zoneJurisdiction = Jurisdictions.GetJurisdiction(zoneAtPosition?.InternalGameName, Agency);
         GameFiber.Yield();
         bool isAmbientPedSpawn = false;
         if (Agency == null)
@@ -1175,7 +1176,7 @@ public class LEDispatcher
         }
         else 
         {
-            if(World.TotalWantedLevel == 0 &&  SpawnLocation.HasSidewalk && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.FootPatrolSpawnPercentage) && Jurisdictions.CanSpawnAmbientPedestrians(Zones.GetZone(SpawnLocation.SidewalkPosition)?.InternalGameName, Agency))
+            if(World.TotalWantedLevel == 0 && SpawnLocation.HasSidewalk && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.FootPatrolSpawnPercentage) && zoneJurisdiction != null && zoneJurisdiction.CanSpawnPedestrianOfficers)
             {
                 isAmbientPedSpawn = true;
                 //EntryPoint.WriteToConsole("LE Dispatcher IS FOOT SPAWN");
@@ -1199,6 +1200,18 @@ public class LEDispatcher
                     {
                         addedSpawnAdjustments |= eSpawnAdjustment.Highway;
                         addedAdjustment = true;
+                    }
+                    if(zoneJurisdiction != null && zoneJurisdiction.CanSpawnBicycleOfficers)
+                    {
+                        addedSpawnAdjustments |= eSpawnAdjustment.Bicycle;
+                        addedAdjustment = true;
+                        EntryPoint.WriteToConsole("LE DISPATCHER ADDED BIKE ADJUSTMENT");
+                    }
+                    if (zoneJurisdiction != null && zoneJurisdiction.CanSpawnDirtBikeOfficers)
+                    {
+                        addedSpawnAdjustments |= eSpawnAdjustment.DirtBike;
+                        addedAdjustment = true;
+                        EntryPoint.WriteToConsole("LE DISPATCHER ADDED DIRT BIKE ADJUSTMENT");
                     }
                     if (addedAdjustment)
                     {

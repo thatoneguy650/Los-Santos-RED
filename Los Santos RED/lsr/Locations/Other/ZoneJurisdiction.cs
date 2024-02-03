@@ -14,6 +14,8 @@ public class ZoneJurisdiction
     public int AmbientSpawnChance { get; set; } = 0;
     public int WantedSpawnChance { get; set; } = 0;
     public bool CanSpawnPedestrianOfficers { get; set; } = false;
+    public bool CanSpawnBicycleOfficers { get; set; } = false;
+    public bool CanSpawnDirtBikeOfficers { get; set; } = false;
     public ZoneJurisdiction()
     {
 

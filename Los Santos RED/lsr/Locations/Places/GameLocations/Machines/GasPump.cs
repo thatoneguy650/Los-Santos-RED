@@ -156,7 +156,7 @@ public class GasPump : GameLocation
                 InteractionMenu.Visible = false;
                 sender.Visible = false;
                 Refueling.RefuelSlow(Refueling.UnitsOfFuelNeeded, this);
-                StartMachineBuyAnimation();
+                //StartMachineBuyAnimation();
             }
         };
         UIMenuNumericScrollerItem<int> AddSomeMenuItem = new UIMenuNumericScrollerItem<int>("Partial", "Add gasoline by the gallon" + MenuString, 1, Refueling.UnitsOfFuelNeeded, 1) { Formatter = v => v + " Gallons - " + (v * pricePerUnit).ToString("C0") };
@@ -168,7 +168,7 @@ public class GasPump : GameLocation
                 InteractionMenu.Visible = false;
                 sender.Visible = false;
                 Refueling.RefuelSlow(AddSomeMenuItem.Value, this);
-                StartMachineBuyAnimation();
+                //StartMachineBuyAnimation();
             }
         };
         if (Refueling.UnitsOfFuelNeeded > 0)

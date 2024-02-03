@@ -120,11 +120,15 @@ public class WeaponRecoil
         AdjustedPitch = RandomItems.GetRandomNumber(Player.WeaponEquipment.CurrentWeapon.MinVerticalRecoil, Player.WeaponEquipment.CurrentWeapon.MaxVerticalRecoil);
         AdjustedPitch *= 2.0f * 0.7f;//want this to be near to 1.0 in the settings default;//Settings.SettingsManager.SwaySettings.VeritcalSwayAdjuster * 0.0075f * 20.0f * 1.25f;//want this to be near to 1.0 in the settings default;
         AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalOnFootRecoilAdjuster;
-        if(Player.IsInFirstPerson)
+        if (Player.IsInFirstPerson)
         {
             AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalFirstPersonRecoilAdjuster;
         }
         AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalRecoilAdjuster;
+        if (Player.IsOnMuscleRelaxants)
+        {
+            AdjustedPitch *= 0.25f;
+        }
     }
     private void AdjustHeadingOnFoot()
     {
@@ -140,6 +144,10 @@ public class WeaponRecoil
             AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalFirstPersonRecoilAdjuster;
         }
         AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalRecoilAdjuster;
+        if (Player.IsOnMuscleRelaxants)
+        {
+            AdjustedHeading *= 0.25f;
+        }
     }
 }
 

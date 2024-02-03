@@ -250,7 +250,7 @@ public class GangSpawnTask : SpawnTask
         }
 
 
-        EntryPoint.WriteToConsole($"HITSQUAD BACKUP OCCUPANTS TO ADD 4 {OccupantsToAdd} PedSpawnLimit{PedSpawnLimit}");
+        EntryPoint.WriteToConsole($"OCCUPANTS TO ADD 4 {OccupantsToAdd} PedSpawnLimit{PedSpawnLimit}");
 
     }
     private PedExt SetupGangPed(Ped ped)

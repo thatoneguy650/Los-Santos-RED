@@ -600,6 +600,10 @@ public class Respawning// : IRespawning
         {
             Game.TimeScale = 1f;
         }
+        if(Settings.SettingsManager.PlayerOtherSettings.SetCutToBlackDeath && Game.IsScreenFadedOut)
+        {
+            Game.FadeScreenIn(0, false);
+        }
         if (clearIntoxication)
         {
             NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;

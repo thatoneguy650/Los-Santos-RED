@@ -20,5 +20,6 @@ namespace LosSantosRED.lsr.Interface
         string DebugString { get; set; }
         bool IsUsingController { get; }
         Ped Character { get; }
+        bool IsOnMuscleRelaxants { get; }
     }
 }

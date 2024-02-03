@@ -73,6 +73,7 @@ public class Refueling
         else
         {
             Player.ButtonPrompts.AddPrompt("Fueling", "Cancel Fueling", "CancelFueling", Settings.SettingsManager.KeySettings.InteractCancel, 99);
+            EntryPoint.WriteToConsole("Refuel Slow Started");
             int UnitsAdded = 0;
             GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
             {
@@ -114,9 +115,7 @@ public class Refueling
                             }
                             Player.BankAccounts.GiveMoney(-1 * PricePerUnit, true);
                             //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-
                             Shop.PlaySuccessSound();
-
                             //EntryPoint.WriteToConsoleTestLong($"Gas pump added unit of gas Percent Added {PercentFilledPerUnit} Money Subtracted {-1 * PricePerUnit}");
                         }
                         if (Player.ButtonPrompts.IsPressed("CancelFueling"))
@@ -125,6 +124,7 @@ public class Refueling
                         }
                         GameFiber.Yield();
                     }
+                    EntryPoint.WriteToConsole("Refuel Slow LOOP ENDED");
                     if (UnitsAdded > 0)
                     {
                         PurchaseSucceeded(UnitsToAdd);

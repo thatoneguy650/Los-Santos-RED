@@ -301,8 +301,15 @@ public class Intoxication
                 Player.ClipsetManager.SetMovementClipset(CurrentClipset);
             }
 
-            NativeFunction.CallByName<int>("SET_GAMEPLAY_CAM_SHAKE_AMPLITUDE", CurrentIntensity);
-            NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
+            if(!PrimaryIntoxicator.Intoxicant.NoCameraShake)
+            {
+                NativeFunction.CallByName<int>("SET_GAMEPLAY_CAM_SHAKE_AMPLITUDE", CurrentIntensity);
+
+            }
+            if (!string.IsNullOrEmpty(PrimaryIntoxicator.Intoxicant.OverLayEffect))
+            {
+                NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
+            }
             CurrentIntensityPercent = CurrentIntensity / PrimaryIntoxicator.Intoxicant.MaxEffectAllowed;
             if (Player.IsInVehicle && PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.ImparesDriving))
             {
@@ -350,15 +357,19 @@ public class Intoxication
             Player.ClipsetManager.SetMovementClipset(CurrentClipset);
         }
         NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, true);
-        NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER", OverLayEffect);
-        NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
-        NativeFunction.Natives.x80C8B1846639BB19(1);
-        NativeFunction.CallByName<int>("SHAKE_GAMEPLAY_CAM", "DRUNK_SHAKE", CurrentIntensity);
-
+        if (!PrimaryIntoxicator.Intoxicant.NoCameraShake)
+        {
+            NativeFunction.Natives.x80C8B1846639BB19(1);
+            NativeFunction.CallByName<int>("SHAKE_GAMEPLAY_CAM", "DRUNK_SHAKE", CurrentIntensity);
+        }
+        if (!string.IsNullOrEmpty(OverLayEffect))
+        {
+            NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER", OverLayEffect);
+            NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
+        }
         Player.Sprinting.InfiniteStamina = PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.InfiniteStamina);
         Player.Sprinting.TurboSpeed = PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.FastSpeed);
         Player.IsOnMuscleRelaxants = PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.RelaxesMuscles);
-
         GameTimeUntilNextSwerve = Game.GameTime + RandomItems.GetRandomNumber(15000, 30000);
     }
     private void SetSober(bool ResetClipset)

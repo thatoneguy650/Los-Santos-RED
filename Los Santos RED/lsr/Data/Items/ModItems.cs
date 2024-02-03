@@ -913,7 +913,16 @@ public class ModItems : IModItems
             new IngestItem("Delladamol","Extra Strength Painkiller. Extra Legit Packaging.", ItemType.Drugs) { AmountPerPackage = 12,
                 ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 10,ThirstChangeAmount = -3, FindPercentage = 5, AlwaysChangesHealth = true },
 
-
+            new IngestItem("Diazepam","When you REALLY need to line up the shot. Useful for hunting wolves.",ItemType.Drugs) { 
+                AmountPerPackage = 12,
+                ModelItemID = "prop_cs_pills", 
+                ItemSubType = ItemSubType.Medication,
+                HealthChangeAmount = 10,
+                ThirstChangeAmount = -3, 
+                FindPercentage = 5, 
+                AlwaysChangesHealth = true,
+                IntoxicantName = "Diazepam",
+            },
 
 
             new IngestItem("SPANK","You looking for some fun? a little.. hmmm? Some SPANK?", ItemType.Drugs) { IsPossessionIllicit = true,

@@ -52,7 +52,10 @@ public class Intoxicants : IIntoxicants
 
 
             new Intoxicant("Mushrooms", 25000, 60000, 10.0f, "DRUG_gas_huffin",IntoxicationEffect.ImparesWalking | IntoxicationEffect.ImparesDriving) { ContinuesWithoutCurrentUse = true },
-            new Intoxicant("Nicotine", 120000, 60000, 1.0f, "HeatHaze"),
+            new Intoxicant("Nicotine", 120000, 60000, 1.0f, "HeatHaze") { NoCameraShake = true, },
+
+
+
 
 
             new Intoxicant("SPANK", 45000, 40000, 5.0f, "BeastIntro01",IntoxicationEffect.ImparesWalking | IntoxicationEffect.ImparesDriving) {  EffectIntoxicationLimit = 0.5f, ContinuesWithoutCurrentUse = true },
@@ -61,6 +64,11 @@ public class Intoxicants : IIntoxicants
             new Intoxicant("Toilet Cleaner", 10000, 60000, 5.0f, "dying",IntoxicationEffect.ImparesWalking | IntoxicationEffect.ImparesDriving) { ContinuesWithoutCurrentUse = true },
             new Intoxicant("Heroin", 15000, 60000, 5.0f, "dying",IntoxicationEffect.ImparesWalking | IntoxicationEffect.ImparesDriving) { ContinuesWithoutCurrentUse = true },
             new Intoxicant("Crack", 20000, 30000, 5.0f, "BikerFormFlash",IntoxicationEffect.ImparesWalking | IntoxicationEffect.ImparesDriving | IntoxicationEffect.InfiniteStamina) {  EffectIntoxicationLimit = 0.5f },
+
+
+
+
+            new Intoxicant("Diazepam", 60000, 120000, 4.0f, "", IntoxicationEffect.RelaxesMuscles) { NoCameraShake = true, EffectIntoxicationLimit = 0.25f,ContinuesWithoutCurrentUse = true },
 
 
             new Intoxicant("Bull Shark Testosterone", 45000, 60000, 2.0f, "drug_wobbly",IntoxicationEffect.InfiniteStamina | IntoxicationEffect.FastSpeed) { ContinuesWithoutCurrentUse = true },

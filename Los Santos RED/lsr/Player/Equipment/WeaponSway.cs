@@ -271,7 +271,14 @@ public class WeaponSway
         {
             AdjustedPitch *= Speed;
         }
-        AdjustedPitch *= Settings.SettingsManager.SwaySettings.VeritcalOnFootSwayAdjuster;   
+        AdjustedPitch *= Settings.SettingsManager.SwaySettings.VeritcalOnFootSwayAdjuster;
+        
+
+        if(Player.IsOnMuscleRelaxants)
+        {
+            AdjustedPitch *= 0.25f;
+        }
+
         uint SwayTime = Game.GameTime - GameTimeLastVerticalChangedSwayDirection;
         if (SwayTime >= GameTimeBetweenVerticalSwayChanges)
         {
@@ -307,7 +314,13 @@ public class WeaponSway
         {
             AdjustedHeading *= Speed * 2.0f;
         }
-        AdjustedHeading *= Settings.SettingsManager.SwaySettings.HorizontalOnFootSwayAdjuster;   
+        AdjustedHeading *= Settings.SettingsManager.SwaySettings.HorizontalOnFootSwayAdjuster;
+
+        if (Player.IsOnMuscleRelaxants)
+        {
+            AdjustedHeading *= 0.25f;
+        }
+
         uint SwayTime = Game.GameTime - GameTimeLastHorizontalChangedSwayDirection;
         if (SwayTime >= GameTimeBetweenHorizontalSwayChanges)
         {

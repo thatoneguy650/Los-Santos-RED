@@ -12,6 +12,8 @@ using System.Xml.Serialization;
 
 public class IllicitMarketplace : GameLocation
 {
+    private bool ShownWarning = false;
+    private bool IsVendorSpawned = false;
     public IllicitMarketplace() : base()
     {
 
@@ -34,6 +36,11 @@ public class IllicitMarketplace : GameLocation
         ButtonPromptText = $"Discretly shop At {Name}";
         return true;
     }
+    public override void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
+    {
+        ShownWarning = false;
+        base.Activate(interiors, settings, crimes, weapons, time, world);
+    }
     protected override void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
         if(AppearPercentages != null && AppearPercentages.Any())
@@ -44,11 +51,22 @@ public class IllicitMarketplace : GameLocation
                 if(!RandomItems.RandomPercent(appearPercentage.Percentage))
                 {
                     EntryPoint.WriteToConsole("VENDOR IS NOT APPEARING (PROBABILITY)");
+                    IsVendorSpawned = false;
                     return;
                 }
             }
         }
+        IsVendorSpawned = true;
         base.AttemptVendorSpawn(isOpen, interiors, settings, crimes, weapons, time, world);
+    }
+    public override void OnPlayerBecameClose()
+    {
+        if(!ShownWarning && !IsVendorSpawned)
+        {
+            Game.DisplayHelp("Nobody Around, Come Back Later");
+            ShownWarning = true;
+        }
+        base.OnPlayerBecameClose();
     }
 }
 

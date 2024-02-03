@@ -819,8 +819,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Equanox", 89, 0),
                 new MenuItem("Mollis", 345, 0),
                 new MenuItem("Zombix", 267, 0),
-
-
+                new MenuItem("Diazepam", 150, 0),
 
 
 

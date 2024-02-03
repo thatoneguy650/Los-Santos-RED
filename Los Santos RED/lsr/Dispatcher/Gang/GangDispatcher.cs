@@ -245,15 +245,15 @@ public class GangDispatcher
             //EntryPoint.WriteToConsole("Assault Spawn failed no den or gang");
             return;
         }
-        EntryPoint.WriteToConsole($"Assault Spawn Picked {closestDen.AssociatedGang.ShortName}");
+       // EntryPoint.WriteToConsole($"Assault Spawn Picked {closestDen.AssociatedGang.ShortName}");
         if (closestDen.TotalAssaultSpawns >= closestDen.MaxAssaultSpawns)
         {
-            EntryPoint.WriteToConsole("Assault Spawn failed too many spawns already");
+           // EntryPoint.WriteToConsole("Assault Spawn failed too many spawns already");
             return;
         }
         if (World.Pedestrians.GangMemberList.Count(x => x.Gang?.ID == closestDen.AssociatedGang.ID) >= closestDen.AssociatedGang.SpawnLimit)
         {
-            EntryPoint.WriteToConsole("Assault Spawn failed TOO MANY GANG MEMBERS");
+            //EntryPoint.WriteToConsole("Assault Spawn failed TOO MANY GANG MEMBERS");
             return;
         }
         //GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(closestDen.AssociatedGang);

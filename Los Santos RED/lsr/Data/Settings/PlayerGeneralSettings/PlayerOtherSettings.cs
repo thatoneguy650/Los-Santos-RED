@@ -117,6 +117,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public float InteriorAutoCameraYDistance { get; set; }
     public float InteriorAutoCameraZDistance { get; set; }
     public float InteriorAutoCameraHeadingOffset { get; set; }
+    public bool SetCutToBlackDeath { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -206,6 +207,9 @@ public class PlayerOtherSettings : ISettingsDefaultable
         InteriorAutoCameraHeadingOffset = -90f;
 
         CorruptCopClearCanAlwaysClearWanted = false;
+
+
+        SetCutToBlackDeath = false;
     }
 
 }

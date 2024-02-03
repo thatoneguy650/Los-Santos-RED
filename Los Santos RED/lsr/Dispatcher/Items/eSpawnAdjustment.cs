@@ -6,8 +6,8 @@ public enum eSpawnAdjustment
     None = 0,
     OffRoad = 1 << 0,
     Highway = 1 << 1,
-    //Mexican = 1 << 2,
-    //Japanese = 1 << 3,
+    Bicycle = 1 << 2,
+    DirtBike = 1 << 3,
 
     //Mexican = 1 << 4,
     //Korean = 1 << 5,

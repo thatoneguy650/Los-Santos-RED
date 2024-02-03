@@ -305,6 +305,10 @@ public class UI : IMenuProvideable
             {
                 GameTimeLastDied = 0;
                 Show(DeathMenu);
+                if(Settings.SettingsManager.PlayerOtherSettings.SetCutToBlackDeath && Game.IsScreenFadedOut)
+                {
+                    Game.FadeScreenIn(2000, false);
+                }
             }
         }
         else if (DisplayablePlayer.IsBusted)

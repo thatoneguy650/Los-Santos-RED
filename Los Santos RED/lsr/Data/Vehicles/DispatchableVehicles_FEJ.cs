@@ -164,6 +164,8 @@ public class DispatchableVehicles_FEJ
 
             new DispatchableVehicle(PoliceBike, 15, 10) {GroupName = "Motorcycle", MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 0 } },
             Create_PoliceSanchez(1,0,0,false,PoliceVehicleType.Marked,0,-1,2,1,1,"DirtBike","DirtBike",10),
+            Create_PoliceBicycle(0,0,-1,false,PoliceVehicleType.Unmarked,0,-1,2,1,1,"Bicycle","Bicycle",50),
+
 
             Create_PoliceTransporter(0,35,1,false,100,false,true,134,3,-1,3,4,""),
         };
@@ -249,6 +251,8 @@ public class DispatchableVehicles_FEJ
             Create_PoliceFugitive(20,15,5,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             Create_PoliceFugitive(1,1,11,true,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"",""),
             Create_PoliceFugitive(1,1,11,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"",""),
+
+            Create_PoliceBicycle(0,0,-1,false,PoliceVehicleType.Unmarked,0,-1,2,1,1,"Bicycle","Bicycle",50),
         };
         DPPDVehicles_FEJ = new List<DispatchableVehicle>()
         {
@@ -274,6 +278,8 @@ public class DispatchableVehicles_FEJ
             Create_PoliceFugitive(1,1,11,true,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"",""),
             Create_PoliceFugitive(1,1,11,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"",""),
             Create_PoliceTerminus(3,3,8,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","",10),
+
+            Create_PoliceBicycle(0,0,-1,false,PoliceVehicleType.Unmarked,0,-1,2,1,1,"Bicycle","Bicycle",50),
         };
         NYSPVehicles_FEJ = new List<DispatchableVehicle>()
         {
@@ -332,6 +338,8 @@ public class DispatchableVehicles_FEJ
             Create_PoliceSanchez(1,0,3,false,PoliceVehicleType.Marked,0,-1,2,1,1,"DirtBike","DirtBike",10),
             new DispatchableVehicle(PoliceBike, 10, 10) {GroupName = "Motorcycle", MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 2 } },
 
+            Create_PoliceBicycle(0,0,-1,false,PoliceVehicleType.Unmarked,0,-1,2,1,1,"Bicycle","Bicycle",50),
+
             Create_PoliceTransporter(0,35,0,false,100,false,true,134,3,-1,3,4,""),
         };
         BCSOVehicles_FEJ.ForEach(x => x.MaxRandomDirtLevel = 15.0f);
@@ -363,6 +371,7 @@ public class DispatchableVehicles_FEJ
             new DispatchableVehicle(PoliceBike, 20, 10) { GroupName = "Motorcycle",MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 3 } },
             Create_PoliceSanchez(1,0,1,false,PoliceVehicleType.Marked,134,-1,2,1,1,"DirtBike","DirtBike",10),
             Create_PoliceTerminus(3,3,4,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","",10),
+            Create_PoliceBicycle(0,0,-1,false,PoliceVehicleType.Unmarked,0,-1,2,1,1,"Bicycle","Bicycle",50),
 
             Create_PoliceTransporter(0,35,2,false,100,false,true,134,3,-1,3,4,""),
         };
@@ -872,7 +881,23 @@ public class DispatchableVehicles_FEJ
         Taxi4 = 3,
         Security = 4,
     }
-
+    private DispatchableVehicle Create_PoliceBicycle(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int bicyclePercent)
+    {
+        DispatchableVehicle toReturn = new DispatchableVehicle("scorcher", ambientPercent, wantedPercent);
+        if (liveryID != -1)
+        {
+            toReturn.RequiredLiveries = new List<int>() { liveryID };
+        }
+        SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        if (bicyclePercent > 0)
+        {
+            toReturn.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>
+            {
+                new SpawnAdjustmentAmount(eSpawnAdjustment.Bicycle, bicyclePercent),
+            };
+        }
+        return toReturn;
+    }
     private DispatchableVehicle Create_PoliceSanchez(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int offroadAdditionalPercent)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceSanchez, ambientPercent, wantedPercent);
@@ -883,8 +908,11 @@ public class DispatchableVehicles_FEJ
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         if (offroadAdditionalPercent > 0)
         {
-            toReturn.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>();
-            toReturn.SpawnAdjustmentAmounts.Add(new SpawnAdjustmentAmount(eSpawnAdjustment.OffRoad, offroadAdditionalPercent));
+            toReturn.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>
+            {
+                new SpawnAdjustmentAmount(eSpawnAdjustment.OffRoad, offroadAdditionalPercent),
+                new SpawnAdjustmentAmount(eSpawnAdjustment.DirtBike, offroadAdditionalPercent),
+            };
         }
         return toReturn;
     }

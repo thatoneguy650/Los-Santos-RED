@@ -177,6 +177,8 @@ public class GameLocation : ILocationDispatchable
 
     //public int MaxAssaultSpawns { get; set; } = 15;
 
+    public float CloseRange { get; set; } = 10f;
+
     [XmlIgnore]
     public List<PedExt> LocationSpawnedPedExts { get; set; } = new List<PedExt>();
     [XmlIgnore]
@@ -512,7 +514,10 @@ public class GameLocation : ILocationDispatchable
         StoreCamera.MoveToPosition(desiredPosition, desiredDirection, desiredRotation, true, true);
         StandardInteract(StoreCamera, true);
     }
+    public virtual void OnPlayerBecameClose()
+    {
 
+    }
     protected virtual void DisposeInterior()
     {
         if (Interior != null)
@@ -694,6 +699,10 @@ public class GameLocation : ILocationDispatchable
                 if (IsActivated && HasInterior)
                 {
                     Interior?.Update();
+                }
+                if(DistanceToPlayer <= CloseRange)
+                {
+                    OnPlayerBecameClose();
                 }
             }
             //RestrictedAreas?.Update(Player);

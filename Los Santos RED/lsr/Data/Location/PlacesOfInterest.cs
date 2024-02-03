@@ -2324,14 +2324,15 @@ public class PlacesOfInterest : IPlacesOfInterest
             },
                     new PoliceStation(new Vector3(387.16f, 789.96f, 188.23f), 178f, "Beaver Bush Ranger Station","You won't get this bush!") { 
                 AssignedAssociationID = "SAPR", 
+                
                 OpenTime = 0,
                 CloseTime = 24, 
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(391.3105f, 789.5917f, 186.6761f), 178f,55f),
-                    new LEConditionalLocation(new Vector3(381.8302f, 789.8931f, 186.6757f), 178f,55f),
+                    new LEConditionalLocation(new Vector3(391.3105f, 789.5917f, 186.6761f), 178f,55f) { AssociationID = "LSDPR" },
+                    new LEConditionalLocation(new Vector3(381.8302f, 789.8931f, 186.6757f), 178f,55f) { AssociationID = "LSDPR" },
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>(){ 
-                    new LEConditionalLocation(new Vector3(374.2932f, 795.6959f, 186.5305f), 178f,70f), } },
+                    new LEConditionalLocation(new Vector3(374.2932f, 795.6959f, 186.5305f), 178f,70f) { AssociationID = "LSDPR" }, } },
             new PoliceStation(new Vector3(-893.9146f, -2401.547f, 14.02436f), 148.8757f, "NOoSE LSIA","Let's tighten the noose!") { 
                 AssignedAssociationID = "NOOSE", 
                 OpenTime = 0,
