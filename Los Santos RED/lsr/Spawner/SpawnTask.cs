@@ -75,9 +75,9 @@ public abstract class SpawnTask
             {
                 return SpawnLocation.InitialPosition + new Vector3(0f, 0f, 250f);
             }
-            else if (VehicleType.IsBoat)
+            else if (VehicleType.IsBoat && SpawnLocation.IsWater)
             {
-                return SpawnLocation.InitialPosition;
+                return SpawnLocation.WaterPosition;
             }
             else
             {

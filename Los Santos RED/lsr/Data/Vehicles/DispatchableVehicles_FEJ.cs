@@ -577,8 +577,12 @@ public class DispatchableVehicles_FEJ
     {
         CoastGuardVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle("dinghy", 50, 50),
+            new DispatchableVehicle("dinghy5", 50, 50) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 38, RequiredSecondaryColorID = 0, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 1,MaxOccupants = 2, MaxWantedLevelSpawn = 2, },
+            new DispatchableVehicle("dinghy5", 0, 100) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 38, RequiredSecondaryColorID = 0, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, },
             new DispatchableVehicle("seashark2", 50, 50) { RequiredLiveries = new List<int>() { 2,3 }, MaxOccupants = 1 },
+            new DispatchableVehicle("seasparrow",0,50) { RequiredPrimaryColorID = 38, RequiredSecondaryColorID = 38,MinWantedLevelSpawn = 2,MaxWantedLevelSpawn = 4,MinOccupants = 1,MaxOccupants = 2 },
+            new DispatchableVehicle("frogger",0,50) { RequiredPrimaryColorID = 38, RequiredSecondaryColorID = 38,MinWantedLevelSpawn = 2,MaxWantedLevelSpawn = 4,MinOccupants = 2,MaxOccupants = 3 },
+
         };
 
         LSLifeguardVehicles_FEJ = new List<DispatchableVehicle>()
@@ -650,6 +654,10 @@ public class DispatchableVehicles_FEJ
             Create_PoliceFugitive(0,10,11,false,PoliceVehicleType.Unmarked,1,5,5,3,4,"FIBHET",""),
             Create_PoliceBuffaloS(0,35,16,false,PoliceVehicleType.Unmarked,1,5,5,3,4,"FIBHET", ""),
             Create_PoliceInterceptor(15,15,PIBlankLivID,true,PoliceVehicleType.Unmarked,1,5,5,3,4,"FIBHET",""),
+
+            new DispatchableVehicle("dinghy5", 0, 100) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 1, RequiredSecondaryColorID = 0, RequiredPedGroup = "FIBHET", ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4, MinWantedLevelSpawn = 5,MaxWantedLevelSpawn = 6, },
+
+
         };
         FIBVehicles_FEJ.ForEach(x => x.MaxRandomDirtLevel = 2.0f);
         BorderPatrolVehicles_FEJ = new List<DispatchableVehicle>()

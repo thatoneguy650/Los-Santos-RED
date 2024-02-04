@@ -33,7 +33,7 @@ public class Agencies : IAgencies
     private Agency SAHP;
     private Agency SASPA;
     private Agency SAPR;
-    private Agency SACG;
+    private Agency USCG;
     private Agency ARMY;
     private Agency LSFDFire;
     private Agency LSFD;
@@ -142,9 +142,9 @@ public class Agencies : IAgencies
         LSIAPD = new Agency("~p~", "LSIAPD", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Classification.Police, "StandardCops", "LSPDVehicles", "LSA ", "Tasers", "AllSidearms", "AllLongGuns", "LSIAPD Officer") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads", Division = 16, OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
 
         SAHP = new Agency("~y~", "SAHP", "SAHP", "San Andreas Highway Patrol", "Yellow", Classification.State, "SAHPPeds", "SAHPVehicles", "HP ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "SAHP Officer") { MaxWantedLevelSpawn = 3, SpawnsOnHighway = true, HeadDataGroupID = "AllHeads", OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
-        SASPA = new Agency("~o~", "SASPA", "SASPA", "San Andreas State Prison Authority", "Orange", Classification.State, "PrisonPeds", "PrisonVehicles", "SASPA ", "Tasers", "AllSidearms", "AllLongGuns", "SASPA Officer") { MaxWantedLevelSpawn = 3, SpawnLimit = 2, HeadDataGroupID = "AllHeads" };
-        SAPR = new Agency("~g~", "SAPR", "SAPR", "San Andreas State Parks Ranger", "Green", Classification.State, "ParkRangers", "ParkRangerVehicles", "", "Tasers", "AllSidearms", "AllLongGuns", "SA Parks Ranger") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
-        SACG = new Agency("~o~", "SACG", "SACG", "San Andreas Coast Guard", "DarkOrange", Classification.State, "CoastGuardPeds", "CoastGuardVehicles", "SACG ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "Coast Guard Officer") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
+        SASPA = new Agency("~o~", "SASPA", "SASPA", "San Andreas State Prison Authority", "Orange", Classification.State, "PrisonPeds", "PrisonVehicles", "SASPA ", "Tasers", "AllSidearms", "AllLongGuns", "SASPA Officer") { MaxWantedLevelSpawn = 3, SpawnLimit = 4, HeadDataGroupID = "AllHeads" };
+        SAPR = new Agency("~g~", "SAPR", "SAPR", "San Andreas State Parks Ranger", "Green", Classification.State, "ParkRangers", "ParkRangerVehicles", "", "Tasers", "AllSidearms", "AllLongGuns", "SA Parks Ranger") { MaxWantedLevelSpawn = 3, SpawnLimit = 4, HeadDataGroupID = "AllHeads" };
+        USCG = new Agency("~w~", "USCG", "USCG", "U.S. Coast Guard", "White", Classification.Federal, "CoastGuardPeds", "CoastGuardVehicles", "USCG ", "Tasers", "AllSidearms", "BestLongGuns", "Coast Guard Officer") { MaxWantedLevelSpawn = 4, SpawnLimit = 4, HeadDataGroupID = "AllHeads" };
 
         LCPD = new Agency("~b~", "LCPD", "LCPD", "Liberty City Police Department", "Blue", Classification.Police, "StandardCops", "LCPDVehicles", "LC ", "Tasers", "AllSidearms", "AllLongGuns", "LCPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1, OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
         NYSP = new Agency("~b~", "NYSP", "NYSP", "North Yankton State Patrol", "Blue", Classification.Police, "NYSPPeds", "NYSPVehicles", "NYSP ", "Nightsticks", "LimitedSidearms", "LimitedLongGuns", "NYSP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
@@ -156,7 +156,7 @@ public class Agencies : IAgencies
         USMS = new Agency("~r~", "USMS", "Marshals Service", "US Marshals Service", "DarkSlateGray", Classification.Marshal, "MarshalsServicePeds", "MarshalsServiceVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "Marshals Service Officer") { MaxWantedLevelSpawn = 3, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
 
 
-        LSLFG = new Agency("~b~", "LSLFG", "LS Lifeguards", "Los Santos Lifeguards", "Blue", Classification.Police, "LSLifeguardPeds", "LSLifeguardVehicles", "LFG ", null, "LimitedSidearms", null, "Lifeguard") { MaxWantedLevelSpawn = 2,SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
+        LSLFG = new Agency("~r~", "LSLFG", "LS Lifeguards", "Los Santos Lifeguards", "Red", Classification.Police, "LSLifeguardPeds", "LSLifeguardVehicles", "LFG ", null, "ConcealableSidearms", null, "Lifeguard") { MaxWantedLevelSpawn = 2,SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
 
         LSFDFire = new Agency("~r~", "LSFD", "LSFD", "Los Santos Fire Department", "Red", Classification.Fire, "Firefighters", "Firetrucks", "LSFD ", "FireExtinguisher", null, null, "LSFD Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         LSMC = new Agency("~w~", "LSMC", "LSMC", "Los Santos Medical Center", "White", Classification.EMS, "GreenEMTs", "Amublance1", "LSMC ", null, null, null, "LSMC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
@@ -179,7 +179,7 @@ public class Agencies : IAgencies
         {
             LSPD,LSPDVW,LSPDELS,LSPDDP,LSPDRH,LSPDASD,
             LSSD,LSSDVW,LSSDDV,LSSDBC,LSSDMJ,LSSDASD,LSPP,LSIAPD,
-            SAHP,SASPA,SAPR,SACG,
+            SAHP,SASPA,SAPR,USCG,
             NYSP,LCPD,
             LSLFG,
             NOOSE,FIB,DOA,ARMY,USMS,
@@ -225,7 +225,7 @@ public class Agencies : IAgencies
             BCSO,
             LSPDASD,LSSDASD,
             LSPPFEJ,LSIAPDFEJ,
-            SAHP,SASPA,SAPR,SACG,
+            SAHP,SASPA,SAPR,USCG,
 
 
             USNPS,LSDPR,SADFW,
@@ -252,7 +252,7 @@ public class Agencies : IAgencies
         Agency SAHP2008 = Extensions.DeepCopy(SAHP);
         Agency SASPA2008 = Extensions.DeepCopy(SASPA);
         Agency SAPR2008 = Extensions.DeepCopy(SAPR);
-        Agency SACG2008 = Extensions.DeepCopy(SACG);
+        Agency SACG2008 = Extensions.DeepCopy(USCG);
         Agency ARMY2008 = Extensions.DeepCopy(ARMY);
         Agency GRPSECHS2008 = Extensions.DeepCopy(GRPSECHS);
         Agency SECURO2008 = Extensions.DeepCopy(SECURO);
@@ -325,7 +325,7 @@ public class Agencies : IAgencies
         {
             LSPD,LSPDASD,
             LSSD,LSSDASD,
-            SAHP,SASPA,SAPR,SACG,
+            SAHP,SASPA,SAPR,USCG,
             NYSP,
             LSLFG,
             NOOSE,FIB,DOA,ARMY,USMS,

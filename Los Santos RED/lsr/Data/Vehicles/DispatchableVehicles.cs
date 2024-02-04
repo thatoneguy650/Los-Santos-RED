@@ -154,10 +154,22 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("fbi", 50, 50){ OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
             new DispatchableVehicle("fbi2", 50, 50) { OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
         };
-        CoastGuardVehicles = new List<DispatchableVehicle>() {
+        CoastGuardVehicles = new List<DispatchableVehicle>() 
+        {
             new DispatchableVehicle("predator", 75, 50),
-            new DispatchableVehicle("dinghy", 0, 25),
-            new DispatchableVehicle("seashark2", 25, 25) { MaxOccupants = 1 },};
+            //new DispatchableVehicle("dinghy", 0, 25) { MaxWantedLevelSpawn = 2, },
+
+            new DispatchableVehicle("dinghy5", 50, 50) { RequiredPrimaryColorID = 38, RequiredSecondaryColorID = 0, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 1,MaxOccupants = 2, MaxWantedLevelSpawn = 2, },
+            new DispatchableVehicle("dinghy5", 0, 100) { RequiredPrimaryColorID = 38, RequiredSecondaryColorID = 0,ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 4,MaxOccupants = 4, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, },
+
+            new DispatchableVehicle("seasparrow",0,50) { RequiredPrimaryColorID = 38, RequiredSecondaryColorID = 38,MinWantedLevelSpawn = 2,MaxWantedLevelSpawn = 4 },
+            new DispatchableVehicle("frogger",0,50) { RequiredPrimaryColorID = 38, RequiredSecondaryColorID = 38,MinWantedLevelSpawn = 2,MaxWantedLevelSpawn = 4 },
+
+            //seasparrow
+            //dingy5 seat 3 = gunner seat
+            new DispatchableVehicle("seashark2", 25, 25) { MaxOccupants = 1 },
+            
+        };
         ParkRangerVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("pranger", 100, 100) { MaxRandomDirtLevel = 15.0f },
             ParkRangerStanierNew, };
@@ -166,7 +178,13 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("fbi2", 30, 30) { MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
             new DispatchableVehicle("fbi2", 0, 30) { MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHET",MinOccupants = 3, MaxOccupants = 4 },
             new DispatchableVehicle("fbi", 0, 70) { MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHET",MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("frogger2", 0, 30) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHET",MinOccupants = 4, MaxOccupants = 4 }, };
+            new DispatchableVehicle("frogger2", 0, 30) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHET",MinOccupants = 4, MaxOccupants = 4 },
+            new DispatchableVehicle("dinghy5", 0, 100) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 1, RequiredSecondaryColorID = 0, RequiredPedGroup = "FIBHET", ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4, MinWantedLevelSpawn = 5,MaxWantedLevelSpawn = 6, },
+
+
+
+
+        };
         NOOSEVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("fbi", 70, 70){ MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
             new DispatchableVehicle("fbi2", 30, 30) { MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
@@ -254,8 +272,9 @@ public class DispatchableVehicles : IDispatchableVehicles
 
 
             new DispatchableVehicle("rhino", 0, 15) {  MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 1,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            new DispatchableVehicle("valkyrie2", 0,75) { MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1,0,1,2 },MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 }
+            new DispatchableVehicle("valkyrie2", 0,75) { MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1,0,1,2 },MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
 
+            new DispatchableVehicle("dinghy5", 0, 100) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 152, RequiredSecondaryColorID = 0, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4, MinWantedLevelSpawn = 6,MaxWantedLevelSpawn = 10, },
 
 
 

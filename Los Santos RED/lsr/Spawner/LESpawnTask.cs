@@ -137,28 +137,42 @@ public class LESpawnTask : SpawnTask
     }
     protected override void AddPassengers()
     {
+        int AlreadyRanItem = -99;
+        if(VehicleType != null && VehicleType.FirstPassengerIndex > 0)
+        {
+            AlreadyRanItem = VehicleType.FirstPassengerIndex;
+            PassengerCreate(VehicleType.FirstPassengerIndex);
+        }
         for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
         {
-            string requiredGroup = "";
-            if (VehicleType != null)
+            if(OccupantIndex - 1 == AlreadyRanItem)
             {
-                requiredGroup = VehicleType.RequiredPedGroup;
+                continue;
             }
-            GetNewPersonType(requiredGroup);
-            if (PersonType != null)
-            {
-                PedExt Passenger = CreatePerson(OccupantIndex - 1);
-                if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)
-                {
-                    PutPedInVehicle(Passenger, OccupantIndex - 1);
-                }
-                else
-                {
-                    Cleanup(false);
-                }
-            }
-            GameFiber.Yield();
+            PassengerCreate(OccupantIndex - 1);
         }
+    }
+    private void PassengerCreate(int seatIndex)
+    {
+        string requiredGroup = "";
+        if (VehicleType != null)
+        {
+            requiredGroup = VehicleType.RequiredPedGroup;
+        }
+        GetNewPersonType(requiredGroup);
+        if (PersonType != null)
+        {
+            PedExt Passenger = CreatePerson(seatIndex);
+            if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)
+            {
+                PutPedInVehicle(Passenger, seatIndex);
+            }
+            else
+            {
+                Cleanup(false);
+            }
+        }
+        GameFiber.Yield();
     }
     protected override PedExt CreatePerson(int seat)
     {
@@ -286,7 +300,7 @@ public class LESpawnTask : SpawnTask
                 return null;
             }
 
-
+            EntryPoint.WriteToConsole($"LE SPAWN TASK POSITION OF SPAWN {Position} WaterPosition:{SpawnLocation.WaterPosition} InitialPosition:{SpawnLocation.InitialPosition} ISWater:{SpawnLocation.IsWater} DebugWaterHeight{SpawnLocation.DebugWaterHeight}");
             SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(SpawnedVehicle);
             GameFiber.Yield();

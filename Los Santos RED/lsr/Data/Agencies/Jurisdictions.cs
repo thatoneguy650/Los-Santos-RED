@@ -464,7 +464,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","NOOSE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","NOOSE", 0, 100, 100),
 
-            new ZoneJurisdiction("SACG","OCEANA", 0, 95, 80),
+            new ZoneJurisdiction("USCG","OCEANA", 0, 95, 80),
             new ZoneJurisdiction("LSPD","OCEANA", 1, 5, 20),
             new ZoneJurisdiction("LSFD","OCEANA", 0, 100, 100),
             new ZoneJurisdiction("LSMC","OCEANA", 0, 100, 100),
@@ -874,7 +874,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","NOOSE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","NOOSE", 0, 100, 100),
 
-            new ZoneJurisdiction("SACG","OCEANA", 0, 100, 100),
+            new ZoneJurisdiction("USCG","OCEANA", 0, 100, 100),
             new ZoneJurisdiction("LSFD","OCEANA", 0, 100, 100),
             new ZoneJurisdiction("LSMC","OCEANA", 0, 100, 100),
 
@@ -1270,7 +1270,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","NOOSE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","NOOSE", 0, 100, 100),
 
-            new ZoneJurisdiction("SACG","OCEANA", 0, 95, 80),
+            new ZoneJurisdiction("USCG","OCEANA", 0, 95, 80),
             new ZoneJurisdiction("LSPD","OCEANA", 1, 5, 20),
             new ZoneJurisdiction("LSFD","OCEANA", 0, 100, 100),
             new ZoneJurisdiction("LSMC","OCEANA", 0, 100, 100),
@@ -1739,7 +1739,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","NOOSE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","NOOSE", 0, 100, 100),
 
-            new ZoneJurisdiction("SACG","OCEANA", 0, 95, 80),
+            new ZoneJurisdiction("USCG","OCEANA", 0, 95, 80),
             new ZoneJurisdiction("LSPD","OCEANA", 1, 5, 20),
             new ZoneJurisdiction("LSFD","OCEANA", 0, 100, 100),
             new ZoneJurisdiction("LSMC","OCEANA", 0, 100, 100),

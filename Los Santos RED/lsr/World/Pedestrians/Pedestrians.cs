@@ -308,12 +308,15 @@ public class Pedestrians : ITaskerReportable
                     AddAmbientGangMember(Pedestrian);
                     GameFiber.Yield();
                 }
-                else if (Pedestrian.Model.Name.ToLower() == "s_m_y_baywatch_01" || Pedestrian.Model.Name.ToLower() == "s_f_y_baywatch_01")//lifeguards
+                else if (Pedestrian.Model.Name.ToLower() == "s_m_y_baywatch_01" || Pedestrian.Model.Name.ToLower() == "s_f_y_baywatch_01" || Pedestrian.Model.Name.ToLower() == "s_m_y_uscg_01")//lifeguards& coast guard
                 {
                     if (Police.Any(x => x.Handle == localHandle))
                     {
                         continue;
                     }
+                    NativeFunction.Natives.SET_PED_AS_COP(Pedestrian);
+
+                    Pedestrian.RelationshipGroup = "COP";
                     AddAmbientCop(Pedestrian);
                 }
                 else if (!Civilians.Any(x => x.Handle == localHandle) && !ServiceWorkers.Any(x => x.Handle == localHandle) 

@@ -119,6 +119,7 @@ public class DispatchablePeople : IDispatchablePeople
     }
     private void SetupDefault()
     {
+       // Game.DisplaySubtitle(Game.LocalPlayer.Character.SeatIndex.ToString());
         //Cops
         StandardCops = new List<DispatchablePerson>() {
             new DispatchablePerson("s_f_y_cop_01",0,0) {

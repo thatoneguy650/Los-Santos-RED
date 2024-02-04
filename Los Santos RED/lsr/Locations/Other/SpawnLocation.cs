@@ -28,10 +28,10 @@ public class SpawnLocation
     public bool HasSidewalk => SidewalkPosition != Vector3.Zero;
     public bool IsWater { get; private set; } = false;
     public Vector3 FinalPosition => IsWater || !HasStreetPosition ? InitialPosition : StreetPosition;
-
     public bool HasRoadBoundaryPosition { get; set; } = false;
     public Vector3 RoadBoundaryPosition { get; set; } = Vector3.Zero;
-
+    public Vector3 WaterPosition => new Vector3(InitialPosition.X, InitialPosition.Y, IsWater ? WaterHeight + 3.0f : InitialPosition.Z);
+    public float DebugWaterHeight => WaterHeight;
     public void GetWaterHeight()
     {
         if (IsWater = NativeFunction.Natives.GET_WATER_HEIGHT_NO_WAVES<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out float height))

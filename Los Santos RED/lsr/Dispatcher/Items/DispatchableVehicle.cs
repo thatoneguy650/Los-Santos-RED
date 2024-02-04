@@ -43,7 +43,7 @@ public class DispatchableVehicle
     public bool IsHelicopter => NativeFunction.Natives.IS_THIS_MODEL_A_HELI<bool>(Game.GetHashKey(ModelName));
     public bool IsMotorcycle => NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>(Game.GetHashKey(ModelName));
 
-
+    public int FirstPassengerIndex { get; set; } = 0;
     public List<SpawnAdjustmentAmount> SpawnAdjustmentAmounts { get; set; }
 
     public string GetDescription()

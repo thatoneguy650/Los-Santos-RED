@@ -162,6 +162,15 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_marksmanrifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Large Scope"), new WeaponComponent("Suppressor"), new WeaponComponent("Tracer Rounds" )})),
             new IssuableWeapon("weapon_marksmanrifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Large Scope"), new WeaponComponent("Tracer Rounds") })),
         };
+        List<IssuableWeapon> ConcealableSidearms = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_snspistol", new WeaponVariation(),25),
+            new IssuableWeapon("weapon_snspistol_mk2", new WeaponVariation(),25),
+            new IssuableWeapon("weapon_pistolxm3", new WeaponVariation(),25),
+            new IssuableWeapon("weapon_ceramicpistol", new WeaponVariation(),25),
+        };
+
+
 
         //TAXI
         List<IssuableWeapon> TaxiSidearms = new List<IssuableWeapon>()
@@ -528,6 +537,7 @@ public class IssueableWeapons : IIssuableWeapons
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("Minigun", Minigun));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("FireExtinguisher", FireExtinguisher));
+        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("ConcealableSidearms", ConcealableSidearms));
         Serialization.SerializeParams(IssuableWeaponsGroupLookup, ConfigFileName);
     }
     private void DefaultConfig_LosSantos2008()
@@ -636,7 +646,13 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_nightstick", new WeaponVariation(), 100),
         };
 
-
+        List<IssuableWeapon> ConcealableSidearms = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_snspistol", new WeaponVariation(),25),
+            new IssuableWeapon("weapon_snspistol_mk2", new WeaponVariation(),25),
+            new IssuableWeapon("weapon_pistolxm3", new WeaponVariation(),25),
+            new IssuableWeapon("weapon_ceramicpistol", new WeaponVariation(),25),
+        };
 
         //TAXI
         List<IssuableWeapon> TaxiSidearms = new List<IssuableWeapon>()
@@ -998,6 +1014,7 @@ public class IssueableWeapons : IIssuableWeapons
         IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns));
         IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("Minigun", Minigun));
         IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("FireExtinguisher", FireExtinguisher));
+        IssuableWeaponsGroupLookup_Old.Add(new IssuableWeaponsGroup("ConcealableSidearms", ConcealableSidearms));
 
         Serialization.SerializeParams(IssuableWeaponsGroupLookup_Old, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\IssuableWeapons_LosSantos2008.xml");
     }
