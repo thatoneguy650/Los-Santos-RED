@@ -205,7 +205,18 @@ public class Agencies : IAgencies
         Agency LSIAPDFEJ = Extensions.DeepCopy(LSIAPD);
         LSIAPDFEJ.PersonnelID = "LSIAPDPeds";
         LSIAPDFEJ.VehiclesID = "LSIAPDVehicles";
-   
+
+
+
+        Agency LSPDASDFEJ = Extensions.DeepCopy(LSPDASD);
+
+        LSPDASDFEJ.PersonnelID = "LSPDASDPeds";
+
+        Agency LSSDASDFEJ = Extensions.DeepCopy(LSSDASD);
+        LSSDASDFEJ.PersonnelID = "LSSDASDPeds";
+
+
+
         Agency BorderPatrol = new Agency("~r~", "NOOSE-BP", "Border Patrol", "NOoSE Border Patrol", "DarkSlateGray", Classification.Federal, "BorderPatrolPeds", "BorderPatrolVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "Border Patrol Officer") { MaxWantedLevelSpawn = 3, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         Agency NOOSEPIA = new Agency("~r~", "NOOSE-PIA", "Patriotism and Immigration Authority", "NOoSE Patriotism and Immigration Authority", "DarkSlateGray", Classification.Federal, "NOOSEPIAPeds", "NOOSEPIAVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "NOOSE-PIA Officer") { MaxWantedLevelSpawn = 4, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         Agency NOOSESEP = new Agency("~r~", "NOOSE", "Security Enforcement Police", "NOoSE Security Enforcement Police", "DarkSlateGray", Classification.Federal, "NOOSESEPPeds", "NOOSESEPVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "NOOSE-SEP Officer") { MaxWantedLevelSpawn = 4, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
@@ -223,7 +234,7 @@ public class Agencies : IAgencies
             DPPD,RHPD,
             LSSD,LSSDVW,LSSDDV,LSSDMJ,
             BCSO,
-            LSPDASD,LSSDASD,
+            LSPDASDFEJ,LSSDASDFEJ,
             LSPPFEJ,LSIAPDFEJ,
             SAHP,SASPA,SAPR,USCG,
 

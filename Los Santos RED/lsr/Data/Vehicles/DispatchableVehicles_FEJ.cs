@@ -60,7 +60,8 @@ public class DispatchableVehicles_FEJ
     public List<DispatchableVehicle> USNPSParkRangersVehicles_FEJ { get; private set; }
     public List<DispatchableVehicle> LSDPRParkRangersVehicles_FEJ { get; private set; }
 
-
+    public List<DispatchableVehicle> PoliceHeliVehicles_FEJ { get; private set; }
+    public List<DispatchableVehicle> SheriffHeliVehicles_FEJ { get; private set; }
 
     public List<DispatchableVehicle> FIBVehicles_FEJ { get; private set; }
     public List<DispatchableVehicle> NOOSEVehicles_FEJ { get; private set; }
@@ -306,6 +307,14 @@ public class DispatchableVehicles_FEJ
 
             new DispatchableVehicle(PoliceBike, 15, 10) { GroupName = "Motorcycle",MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 5 } },
         };
+
+        PoliceHeliVehicles_FEJ = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("polmav", 1,100) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 },
+            new DispatchableVehicle("frogger2", 1,50) { RequiredLiveries = new List<int>() { 2 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 } };
+        SheriffHeliVehicles_FEJ = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("frogger2", 1,150) { RequiredLiveries = new List<int>() { 4 },MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 },
+        };
+
     }
     private void LocalSheriff()
     {
@@ -558,6 +567,10 @@ public class DispatchableVehicles_FEJ
 
             DispatchableVehicles.GauntletUndercoverSAHP,
 
+
+            new DispatchableVehicle("frogger2",1,1) { RequiredLiveries = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 3, GroupName = "Helicopter",RequiredPedGroup = "Pilot",MaxWantedLevelSpawn = 2 },
+            new DispatchableVehicle("frogger2",0,30) { RequiredLiveries = new List<int>() { 3 },MinOccupants = 3,MaxOccupants = 4, GroupName = "Helicopter",RequiredPedGroup = "Pilot",MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
+
             Create_PoliceSanchez(1,0,2,false,PoliceVehicleType.Marked,0,-1,2,1,1,"DirtBike","DirtBike",10),
             new DispatchableVehicle(PoliceBike, 45, 20) { GroupName = "Motorcycle", MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 1 } },
 
@@ -580,9 +593,7 @@ public class DispatchableVehicles_FEJ
             new DispatchableVehicle("dinghy5", 50, 50) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 38, RequiredSecondaryColorID = 0, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 1,MaxOccupants = 2, MaxWantedLevelSpawn = 2, },
             new DispatchableVehicle("dinghy5", 0, 100) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 38, RequiredSecondaryColorID = 0, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, },
             new DispatchableVehicle("seashark2", 50, 50) { RequiredLiveries = new List<int>() { 2,3 }, MaxOccupants = 1 },
-            new DispatchableVehicle("seasparrow",0,50) { RequiredPrimaryColorID = 38, RequiredSecondaryColorID = 38,MinWantedLevelSpawn = 2,MaxWantedLevelSpawn = 4,MinOccupants = 1,MaxOccupants = 2 },
-            new DispatchableVehicle("frogger",0,50) { RequiredPrimaryColorID = 38, RequiredSecondaryColorID = 38,MinWantedLevelSpawn = 2,MaxWantedLevelSpawn = 4,MinOccupants = 2,MaxOccupants = 3 },
-
+            new DispatchableVehicle("frogger2",1,50) { RequiredLiveries = new List<int>() { 1 },MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 2,MaxOccupants = 3 },
         };
 
         LSLifeguardVehicles_FEJ = new List<DispatchableVehicle>()
