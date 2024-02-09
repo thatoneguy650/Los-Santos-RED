@@ -15,8 +15,8 @@ public class RestrictedAreas
     {
 
     }
-
     public List<RestrictedArea> RestrictedAreasList { get; set; } = new List<RestrictedArea>();
+    public List<VanillaRestrictedArea> VanillaRestrictedAreas { get; set; } = new List<VanillaRestrictedArea>();
     public void Activate(IEntityProvideable world)
     {
         foreach (RestrictedArea restrictedArea in RestrictedAreasList)
@@ -38,6 +38,13 @@ public class RestrictedAreas
             restrictedArea.Update(player, world);
         }
     }
+    public void UpdateVanilla(ILocationInteractable player, IEntityProvideable world)
+    {
+        foreach (VanillaRestrictedArea restrictedArea in VanillaRestrictedAreas)
+        {
+            restrictedArea.Update(player);
+        }
+    }
     public void RemoveImpoundRestrictions()
     {
         foreach (RestrictedArea restrictedArea in RestrictedAreasList.Where(x=> x.RestrictedAreaType == RestrictedAreaType.ImpoundLot))
@@ -53,6 +60,6 @@ public class RestrictedAreas
         }
     }
     public bool IsPlayerViolating() => RestrictedAreasList.Any(x => x.IsPlayerViolating);
-
+    public bool IsPlayerViolatingVanilla() => VanillaRestrictedAreas.Any(x => x.IsPlayerViolating);
 }
 

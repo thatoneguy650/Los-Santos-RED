@@ -249,6 +249,10 @@ public class OtherViolations
         {
             Violations.AddViolating(StaticStrings.TrespessingCrimeID);
         }
+        if (Player.RestrictedAreaManager.IsTrespassingOnMilitaryBase && !Violations.CanEnterRestrictedAreas)
+        {
+            Violations.AddViolating(StaticStrings.TrespassingOnMilitaryBaseCrimeID);
+        }
     }
     public bool AddFoundIllegalItem()
     {

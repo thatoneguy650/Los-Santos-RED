@@ -19,6 +19,7 @@ public class VanillaWorldManager
     private bool isVanillaVendingActive;
     private bool hasSetMaxWanted;
     private uint GameTimeLastTerminatedAudio;
+    private bool isVanillaCarRaceActive;
 
     public VanillaWorldManager(ISettingsProvideable settings)
     {
@@ -104,7 +105,24 @@ public class VanillaWorldManager
         TerminateAudio();
 
 
-        if(Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
+        if (Settings.SettingsManager.VanillaSettings.TerminateVanillaCarRaces)
+        {
+            if (isVanillaCarRaceActive)
+            {
+                TerminateVanillaCarRace();
+            }
+        }
+        else
+        {
+            if (!isVanillaCarRaceActive)
+            {
+                ActivateVanillaCarRace();
+            }
+        }
+
+
+
+        if (Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
         {
             if(!hasSetMaxWanted)
             {
@@ -182,6 +200,24 @@ public class VanillaWorldManager
         Game.StartNewScript("shop_controller");
         isVanillaShopsActive = true;
     }
+
+
+
+    private void TerminateVanillaCarRace()
+    {
+        Game.TerminateAllScriptsWithName("controller_races");
+        Game.TerminateAllScriptsWithName("country_race_controller");
+        isVanillaCarRaceActive = false;
+    }
+    private void ActivateVanillaCarRace()
+    {
+        Game.StartNewScript("controller_races");
+        Game.StartNewScript("country_race_controller");
+        isVanillaCarRaceActive = true;
+    }
+
+
+
     private void TerminateVanillaMachines()
     {
         Game.TerminateAllScriptsWithName("ob_vend1");//doesnt work, the brain is attached to the object, this doesnt actually stop it

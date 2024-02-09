@@ -137,6 +137,7 @@ namespace LosSantosRED.lsr
         private Dispatch ThreateningOfficerWithFirearm;
         private ITimeReportable Time;
         private Dispatch TrespassingOnGovernmentProperty;
+        private Dispatch TrespassingOnMilitaryBase;
         private Dispatch Trespassing;
         private List<AudioSet> UnitEnRouteSet;
         private Dispatch VehicleCrashed;
@@ -1724,6 +1725,9 @@ namespace LosSantosRED.lsr
             new CrimeDispatch("ResistingArrest",ResistingArrest),
             new CrimeDispatch(StaticStrings.TrespessingOnGovtPropertyCrimeID,TrespassingOnGovernmentProperty),
 
+
+            new CrimeDispatch(StaticStrings.TrespassingOnMilitaryBaseCrimeID,TrespassingOnMilitaryBase),
+
             new CrimeDispatch(StaticStrings.TrespessingCrimeID,Trespassing),
 
             new CrimeDispatch(StaticStrings.VehicleInvasionCrimeID,SuspiciousActivity),
@@ -1762,6 +1766,7 @@ namespace LosSantosRED.lsr
             ,AssaultingOfficer
             ,ThreateningOfficerWithFirearm
             ,TrespassingOnGovernmentProperty
+            ,TrespassingOnMilitaryBase
             ,Trespassing
             ,StealingAirVehicle
             ,ShotsFired
@@ -2257,7 +2262,17 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_trespassing_on_government_property.Trespassingongovernmentproperty.FileName },"trespassing on government property"),
             },
             };
-
+            TrespassingOnMilitaryBase = new Dispatch()
+            {
+                Name = "Trespassing on Military Base",
+                ResultsInLethalForce = true,
+                CanBeReportedMultipleTimes = false,
+                LocationDescription = LocationSpecificity.Zone,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_trespassing_on_government_property.Trespassingongovernmentproperty.FileName },"trespassing on military base"),
+            },
+            };
 
             Trespassing = new Dispatch()
             {

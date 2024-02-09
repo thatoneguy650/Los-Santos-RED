@@ -61,7 +61,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     private List<Airport> Airports;
     private List<BlankLocation> BlankLocationPlaces;
     private List<ApartmentBuilding> ApartmentBuildings;
-
+    private List<MilitaryBase> MilitaryBasePlaces;
     public PossibleLocations PossibleLocations { get; private set; }
     public PlacesOfInterest(IShopMenus shopMenus, IGangs gangs)
     {
@@ -119,6 +119,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<ILocationAreaRestrictable> AllLocations = new List<ILocationAreaRestrictable>();
         AllLocations.AddRange(PossibleLocations.PoliceStations);
         AllLocations.AddRange(PossibleLocations.Prisons);
+        AllLocations.AddRange(PossibleLocations.MilitaryBases);
         return AllLocations;
     }
     public List<ILocationImpoundable> VehicleImpoundLocations()
@@ -140,6 +141,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<ILEDispatchableLocation> AllLocations = new List<ILEDispatchableLocation>();
         AllLocations.AddRange(PossibleLocations.PoliceStations);
         AllLocations.AddRange(PossibleLocations.Prisons);
+        AllLocations.AddRange(PossibleLocations.MilitaryBases);
         return AllLocations;
     }
 
@@ -199,6 +201,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         DefaultConfig_BusStops();
         DefaultConfig_Morgues();
         DefaultConfig_Airports();
+        DefaultConfig_MilitaryBases();
 
         PossibleLocations.DeadDrops.AddRange(DeadDrops);
         PossibleLocations.CarCrushers.AddRange(CarCrushers);
@@ -240,8 +243,65 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.Airports.AddRange(Airports);
         PossibleLocations.IllicitMarketplaces.AddRange(illicitMarketplaces);
         PossibleLocations.BlankLocations.AddRange(BlankLocationPlaces);
+
+        PossibleLocations.MilitaryBases.AddRange(MilitaryBasePlaces);
+
         Serialization.SerializeParam(PossibleLocations, ConfigFileName);
     }
+
+    private void DefaultConfig_MilitaryBases()
+    {
+        MilitaryBasePlaces = new List<MilitaryBase>()
+        { 
+            new MilitaryBase(new Vector3(-1991.979f,3203.726f,32.81024f),180f,"Fort Zancudo","")
+            {
+                AssignedAssociationID = "ARMY",
+                ActivateCells = 14,
+                AssaultSpawnLocations = new List<SpawnPlace>()
+                {
+                    new SpawnPlace(new Vector3(-1787.544f, 3143.728f, 33.06939f), 60.1537f),
+                    new SpawnPlace(new Vector3(-1763.003f, 3172.671f, 32.82656f), 65.32996f),
+                    new SpawnPlace(new Vector3(-1879.845f, 3240.712f, 32.84465f), 243.7359f),
+                    new SpawnPlace(new Vector3(-2122.645f, 3231.769f, 32.81014f), 359.4727f),
+                    new SpawnPlace(new Vector3(-2241.937f, 3322.318f, 33.25841f), 150.9899f),
+                    new SpawnPlace(new Vector3(-2323.133f, 3259.009f, 33.08135f), 59.05438f),
+                    new SpawnPlace(new Vector3(-2409.102f, 3267.377f, 33.14949f), 50.25306f),
+                    new SpawnPlace(new Vector3(-2302.279f, 3386.413f, 31.25652f), 143.0586f),
+                    new SpawnPlace(new Vector3(-1592.959f, 2798.034f, 17.07146f), 131.2532f),
+                    new SpawnPlace(new Vector3(-1732.277f, 2962.13f, 32.80659f), 128.1796f),
+
+                },
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    VanillaRestrictedAreas = new List<VanillaRestrictedArea>()
+                    {
+                        new VanillaRestrictedArea()
+                        {
+                            AngledRestrictedAreas = new List<AngledRestrictedArea>()
+                            {
+                                new AngledRestrictedArea(new Vector3(-1773.944f, 3287.3342f, 30f),new Vector3(-2029.7765f, 2845.0833f, 250f),255f),
+                                new AngledRestrictedArea(new Vector3(-2725.8894f, 3291.0986f, 30f),new Vector3(-2009.1815f, 2879.8352f, 250f),180f),
+                                new AngledRestrictedArea(new Vector3(-2442.0261f, 3326.6987f, 30f),new Vector3(-2033.9279f, 3089.0488f, 250f),205f),
+                                new AngledRestrictedArea(new Vector3(-1917.1654f, 3374.209f, 30f),new Vector3(-2016.7909f, 3195.058f, 250f),86.25f),
+                                new AngledRestrictedArea(new Vector3(-2192.753f, 3373.2778f, 30f),new Vector3(-2191.5444f, 3150.4165f, 250f),150.5f),
+                                new AngledRestrictedArea(new Vector3(-2077.6633f, 3344.5142f, 30f),new Vector3(-2191.5444f, 3150.4165f, 250f),140.5f),
+                                new AngledRestrictedArea(new Vector3(-2861.7554f, 3352.6606f, 30f),new Vector3(-2715.8708f, 3269.9155f, 250f),90f),
+                                new AngledRestrictedArea(new Vector3(-2005.5745f, 3364.5327f, 30f),new Vector3(-1977.5688f, 3330.8882f, 250f),100f),
+                                new AngledRestrictedArea(new Vector3(-1682.235f, 3004.2852f, 30f),new Vector3(-1942.747f, 2947.4412f,  250f),248.75f),
+                                new AngledRestrictedArea(new Vector3(-2393.2954f, 2936.406f, 31.680103f),new Vector3(-2453.0366f, 3006.863f, 52.310028f),128f),
+                                new AngledRestrictedArea(new Vector3(-2347.1848f, 3023.8298f, 31.56573f),new Vector3( -2517.3298f, 2989.0635f, 49.956444f),140f),
+                                new AngledRestrictedArea(new Vector3(-2259.9219f, 3358.0398f, 29.999718f),new Vector3(-2299.772f, 3385.79f, 38.060143f),16f),
+                                new AngledRestrictedArea(new Vector3(-2476.3093f, 3363.914f, 31.679329f),new Vector3(-2431.9807f, 3287.6694f, 39.978264f),214.25f),
+                                new AngledRestrictedArea(new Vector3(-2103.0813f, 2797.7834f, 29.37864f),new Vector3(-2096.8213f, 2874.4233f, 57.80989f ),65.75f),
+                            },
+                        },
+                    },
+                },
+
+            },
+        };
+    }
+
     private void DefaultConfig_Airports()
     {
         Airports = new List<Airport>()
@@ -1716,13 +1776,13 @@ public class PlacesOfInterest : IPlacesOfInterest
                 IgnoreEntranceInteract = true,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1795.943f, -860.3762f, 7.491427f), 112.3975f, 100f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1800.148f, -856.9856f, 7.514591f), 98.28096f, 100f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1795.827f, -855.4499f, 9.2f), 106.6543f, 100f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new LEConditionalLocation(new Vector3(-1795.943f, -860.3762f, 7.491427f), 112.3975f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new LEConditionalLocation(new Vector3(-1800.148f, -856.9856f, 7.514591f), 98.28096f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new LEConditionalLocation(new Vector3(-1795.827f, -855.4499f, 9.2f), 106.6543f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1789.967f, -854.0302f, 7.722801f), 205.7013f, 100f) { IsEmpty = true },
+                    new LEConditionalLocation(new Vector3(-1789.967f, -854.0302f, 7.722801f), 205.7013f, 15f) { IsEmpty = true },
                 },
             },
 
@@ -1765,6 +1825,44 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
             },
 
+
+            new Landmark(new Vector3(-1133.159f,-521.3668f,33.43165f),0f,"Richards Majestic Studios","")
+            {
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    VanillaRestrictedAreas = new List<VanillaRestrictedArea>()
+                    {
+                        new VanillaRestrictedArea()
+                        {
+                            AngledRestrictedAreas = new List<AngledRestrictedArea>()
+                            {
+                                new AngledRestrictedArea(new Vector3(-1108.5497f, -570.87976f, 20f),new Vector3(-1187.8108f, -477.50366f, 50f),162f),
+                                new AngledRestrictedArea(new Vector3(-1201.3776f, -485.96732f, 20f),new Vector3(-1215.7959f, -464.82806f, 50f),124f),
+                                new AngledRestrictedArea(new Vector3(-985.6311f, -525.42334f, 20f),new Vector3(-1013.3932f, -475.20575f, 50f),55f),
+                                new AngledRestrictedArea(new Vector3(-1055.8492f, -477.8226f, 20f),new Vector3(-1073.3325f, -498.717f, 50f),142f),
+                            },
+                        },
+                    },
+                },
+            },
+            new Landmark(new Vector3(3542.128f,3731.31f,36.44195f),0f,"Humane Labs","")
+            {
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    VanillaRestrictedAreas = new List<VanillaRestrictedArea>()
+                    {
+                        new VanillaRestrictedArea()
+                        {
+                            AngledRestrictedAreas = new List<AngledRestrictedArea>()
+                            {
+                                new AngledRestrictedArea(new Vector3(3411.002f, 3663.1846f, 20f),new Vector3(3615.583f, 3626.1936f, 40f),45.75f),
+                                new AngledRestrictedArea(new Vector3(3426.66f, 3733.078f, 20f),new Vector3(3643.8008f, 3694.3618f, 40f),99f),
+                                new AngledRestrictedArea(new Vector3(3446.0364f, 3795.6882f, 20f),new Vector3(3650.9143f, 3766.1516f,  40f),81.5f),
+                            },
+                        },
+                    },
+                },
+            },
         };
     }
     private void DefaultConfig_PawnShops()
@@ -2148,27 +2246,48 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         Prisons = new List<Prison>()
         {
-            new Prison(new Vector3(1846.258f, 2586.139f, 45.67202f), 269.2306f, "Bolingbroke Penitentiary","Where the scum of LS washes up")  { OpenTime = 0,CloseTime = 24,AssignedAssociationID = "SASPA",
-                PossiblePedSpawns = new List<ConditionalLocation>() {
-                new LEConditionalLocation(new Vector3(1899.234f, 2605.696f, 44.96621f), 354f, 100f) { TaskRequirements = TaskRequirements.Guard,LongGunAlwaysEquipped = true },//guard facing towards entry
-
-                new LEConditionalLocation(new Vector3(1830.171f, 2602.584f, 44.88912f), 0f, 100f) { TaskRequirements = TaskRequirements.Guard,LongGunAlwaysEquipped = true },//guard facing towards entry second guard booth
-
-
-                //
-                new LEConditionalLocation(new Vector3(1846.473f, 2584.199f, 44.67195f), 295f, 40f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },//front of prison
-                new LEConditionalLocation(new Vector3(1845.851f, 2587.203f, 44.67231f), 290f, 40f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipSidearmWhenIdle,LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
-            },PossibleVehicleSpawns = new List<ConditionalLocation>() {
-
-                new LEConditionalLocation(new Vector3(1855.314f, 2578.854f, 46.42464f), 92f, 35f),//facing towards prison
-                new LEConditionalLocation(new Vector3(1869.82f, 2588.359f, 46.42464f), 269f, 35f),//facing away from prison
-                 new LEConditionalLocation(new Vector3(1854.312f, 2620.756f, 46.42464f), 92f, 35f),//facing towards prison
-                 new LEConditionalLocation( new Vector3(1869.65f, 2577.781f, 45.18463f), 269f, 35f),//facing away from prison
-
-
-                
-
-            }
+            new Prison(new Vector3(1846.258f, 2586.139f, 45.67202f), 269.2306f, "Bolingbroke Penitentiary","Where the scum of LS washes up")  
+            { 
+                OpenTime = 0,
+                CloseTime = 24,
+                ActivateCells = 8,
+                AssignedAssociationID = "SASPA",
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    VanillaRestrictedAreas = new List<VanillaRestrictedArea>()
+                    {
+                        new VanillaRestrictedArea()
+                        {
+                            AngledRestrictedAreas = new List<AngledRestrictedArea>()
+                            {
+                                new AngledRestrictedArea(new Vector3(1541.6072f, 2527.555f, 40f),new Vector3(1815.5753f, 2535.0596f,150f),114f),
+                                new AngledRestrictedArea(new Vector3(1788.8787f, 2445.7273f, 40f),new Vector3(1716.9603f, 2502.957f,150f),88.5f),
+                                new AngledRestrictedArea(new Vector3(1601.1575f, 2436.2441f, 40f),new Vector3(1650.0776f, 2515.9226f,150f),133.25f),
+                                new AngledRestrictedArea(new Vector3(1706.3307f, 2407.5972f, 40f),new Vector3(1698.5546f, 2460.2078f,150f),104.5f),
+                                new AngledRestrictedArea(new Vector3(1712.4517f, 2756.2175f, 40f),new Vector3(1718.8477f, 2589.1616f, 150f),121.75f),
+                                new AngledRestrictedArea(new Vector3(1830.2278f, 2661.2402f, 40f),new Vector3(1774.8124f, 2679.4187f,150f), 84.5f),
+                                new AngledRestrictedArea(new Vector3(1559.0503f, 2632.2205f, 40f),new Vector3(1657.2083f, 2595.4844f, 150f),103.75f),
+                                new AngledRestrictedArea(new Vector3(1612.0209f, 2716.869f, 40f),new Vector3(1657.1647f, 2669.721f, 150f),104.25f),
+                                new AngledRestrictedArea(new Vector3(1809.8721f, 2729.827f, 40f),new Vector3(1789.8551f, 2705.0369f,150f),91f),
+                                new AngledRestrictedArea(new Vector3(1818.7888f, 2605.9478f, 40f),new Vector3(1783.1143f, 2606.7832f,150f),51.25f),
+                            },
+                        },
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>() 
+                {
+                    new LEConditionalLocation(new Vector3(1899.234f, 2605.696f, 44.96621f), 354f, 100f) { TaskRequirements = TaskRequirements.Guard,LongGunAlwaysEquipped = true },//guard facing towards entry
+                    new LEConditionalLocation(new Vector3(1830.171f, 2602.584f, 44.88912f), 0f, 100f) { TaskRequirements = TaskRequirements.Guard,LongGunAlwaysEquipped = true },//guard facing towards entry second guard booth
+                    new LEConditionalLocation(new Vector3(1846.473f, 2584.199f, 44.67195f), 295f, 40f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },//front of prison
+                    new LEConditionalLocation(new Vector3(1845.851f, 2587.203f, 44.67231f), 290f, 40f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipSidearmWhenIdle,LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>() 
+                {
+                    new LEConditionalLocation(new Vector3(1855.314f, 2578.854f, 46.42464f), 92f, 35f),//facing towards prison
+                    new LEConditionalLocation(new Vector3(1869.82f, 2588.359f, 46.42464f), 269f, 35f),//facing away from prison
+                    new LEConditionalLocation(new Vector3(1854.312f, 2620.756f, 46.42464f), 92f, 35f),//facing towards prison
+                    new LEConditionalLocation( new Vector3(1869.65f, 2577.781f, 45.18463f), 269f, 35f),//facing away from prison
+                }
             },
         };
     }
@@ -2328,6 +2447,24 @@ public class PlacesOfInterest : IPlacesOfInterest
                 //CameraPosition = new Vector3(434.2917f, -1023.771f, 29.87288f), 
                // CameraDirection = new Vector3(0.6072524f, 0.7701081f, -0.1953922f), 
                // CameraRotation = new Rotator(-11.26764f, 1.262302E-05f, -38.25679f),
+
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    VanillaRestrictedAreas = new List<VanillaRestrictedArea>()
+                    {
+                        new VanillaRestrictedArea() 
+                        { 
+                            AngledRestrictedAreas = new List<AngledRestrictedArea>()
+                            { 
+                                new AngledRestrictedArea(new Vector3(461.5684f, -984.57196f, 29.439508f),new Vector3(471.17004f, -984.4292f, 40.14212f),7.75f),
+                                new AngledRestrictedArea(new Vector3(457.3404f, -984.75604f, 34.439507f),new Vector3(457.20837f, -993.71893f, 29.389584f),14.75f),
+                                new AngledRestrictedArea(new Vector3(477.62268f, -986.60004f, 40.00819f),new Vector3(424.8687f, -986.3279f, 48.712406f),31.5f),
+                                new AngledRestrictedArea(new Vector3(474.38895f, -974.4613f, 39.557606f),new Vector3(474.0358f, -1021.9721f, 49.10033f),30.5f),
+                                new AngledRestrictedArea(new Vector3(442.17685f, -974.1888f, 29.689508f),new Vector3(442.18552f, -979.8635f, 33.439507f),6.75f),
+                            },
+                        },
+                    },
+                },
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(427.7032f, -982.3438f, 30.7101f), 46.43887f, 40f),
                     new LEConditionalLocation(new Vector3(432.3652f, -973.1894f, 30.71074f), 60.75554f, 40f),

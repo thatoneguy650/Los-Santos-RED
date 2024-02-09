@@ -1,0 +1,40 @@
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+public class MilitaryBase : GameLocation, ILocationRespawnable,  ILocationAreaRestrictable, IAssaultSpawnable, ILEDispatchableLocation
+{
+    public MilitaryBase(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
+    {
+
+    }
+    public MilitaryBase() : base()
+    {
+
+    }
+    public override string TypeName { get; set; } = "Military Base";
+    public override int MapIcon { get; set; } = 176;
+    public Vector3 RespawnLocation { get; set; }
+    public float RespawnHeading { get; set; }
+    public int MaxAssaultSpawns { get; set; } = 150;
+    public List<SpawnPlace> AssaultSpawnLocations { get; set; }
+    public bool RestrictAssaultSpawningUsingPedSpawns { get; set; } = false;
+    public float AssaultSpawnHeavyWeaponsPercent { get; set; } = 100f;
+    public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world,
+    IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors,
+    ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    {
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest);
+        if (AssignedAgency == null)
+        {
+            AssignedAgency = zones.GetZone(EntrancePosition)?.AssignedLEAgency;
+        }
+    }
+
+}
+

@@ -17,6 +17,7 @@ public class Crimes : ICrimes
     private Crime HurtingPolice;
     private Crime BrandishingHeavyWeapon;
     private Crime TrespessingOnGovtProperty;
+    private Crime TrespassingOnMilitaryBase;
     private Crime GotInAirVehicleDuringChase;
     private Crime FiringWeapon;
     private Crime FiringSilencedWeapon;
@@ -99,13 +100,25 @@ public class Crimes : ICrimes
 
     private void SetupCrimes()
     {
+
+        TrespassingOnMilitaryBase = new Crime(StaticStrings.TrespassingOnMilitaryBaseCrimeID, "Trespassing on Military Installation", 6, true, 0, false, false, false);
+
         KillingPolice = new Crime(StaticStrings.KillingPoliceCrimeID, "Police Fatality", 3, true, 1, true, true, true);// { CanViolateWithoutPerception = true };
         TerroristActivity = new Crime(StaticStrings.TerroristActivityCrimeID, "Terrorist Activity", 3, true, 2, false, false, true) { CanReportBySound = true };
         FiringWeaponNearPolice = new Crime(StaticStrings.FiringWeaponNearPoliceCrimeID, "Shots Fired Near Police", 3, true, 3, false, false, true) { CanReportBySound = true };
         AimingWeaponAtPolice = new Crime(StaticStrings.AimingWeaponAtPoliceCrimeID, "Aiming Weapons At Police", 3, true, 4, false, false, true);
         HurtingPolice = new Crime(StaticStrings.HurtingPoliceCrimeID, "Assaulting Police", 3, false, 5, true, false, true);// { CanViolateWithoutPerception = true };
         BrandishingHeavyWeapon = new Crime(StaticStrings.BrandishingHeavyWeaponCrimeID, "Brandishing Heavy Weapon", 3, false, 6, true, true, true);
+
+
+
         TrespessingOnGovtProperty = new Crime(StaticStrings.TrespessingOnGovtPropertyCrimeID, "Trespassing on Government Property", 3, false, 7, false, false, true);
+        
+
+
+
+
+
         GotInAirVehicleDuringChase = new Crime(StaticStrings.GotInAirVehicleDuringChaseCrimeID, "Stealing an Air Vehicle", 3, false, 8, false, false, true);
         
         FiringWeapon = new Crime(StaticStrings.FiringWeaponCrimeID, "Firing Weapon", 2, false, 9, true, true, true) { CanReportBySound = true };
@@ -168,6 +181,7 @@ public class Crimes : ICrimes
              HurtingPolice,
              BrandishingHeavyWeapon,
              TrespessingOnGovtProperty,
+             TrespassingOnMilitaryBase,
              Trespassing,
              VehicleInvasion,
              SuspiciousVehicle,
@@ -237,6 +251,7 @@ public class Crimes : ICrimes
              Trespassing,
              VehicleInvasion,
              TrespessingOnGovtProperty,
+             TrespassingOnMilitaryBase,
              GotInAirVehicleDuringChase,
              FiringWeapon,
              FiringSilencedWeapon,

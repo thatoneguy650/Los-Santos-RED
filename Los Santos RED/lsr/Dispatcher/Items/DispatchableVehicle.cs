@@ -45,7 +45,7 @@ public class DispatchableVehicle
 
     public int FirstPassengerIndex { get; set; } = 0;
     public List<SpawnAdjustmentAmount> SpawnAdjustmentAmounts { get; set; }
-
+    public bool RequiredGroupIsDriverOnly { get; set; }
     public string GetDescription()
     {
         string description = "";

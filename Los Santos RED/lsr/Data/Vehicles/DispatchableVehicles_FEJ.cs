@@ -43,6 +43,8 @@ public class DispatchableVehicles_FEJ
 
     private string PoliceTerminus = "marshall";
 
+    private string PoliceBoxville = "boxville5";
+
     private List<int> DefaultOptionalColors = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 37, 38, 54, 61, 62, 63, 64, 65, 66, 67, 68, 69, 94, 95, 96, 97, 98, 99, 100, 101, 201, 103, 104, 105, 106, 107, 111, 112 };
 
     public DispatchableVehicles_FEJ(DispatchableVehicles dispatchableVehicles)
@@ -169,6 +171,8 @@ public class DispatchableVehicles_FEJ
             Create_PoliceSanchez(1,0,0,false,PoliceVehicleType.Marked,0,-1,2,1,1,"DirtBike","DirtBike",10),
             Create_PoliceBicycle(0,0,-1,false,PoliceVehicleType.Unmarked,0,-1,2,1,1,"Bicycle","Bicycle",50),
 
+            Create_PoliceBoxville(1,0,0,false,PoliceVehicleType.Marked,0,-1,-1,-1,-1,"",""),
+            Create_PoliceBoxville(0,5,0,false,PoliceVehicleType.Marked,0,3,4,3,4,"",""),
 
             Create_PoliceTransporter(0,35,1,false,100,false,true,134,3,-1,3,4,""),
         };
@@ -200,6 +204,9 @@ public class DispatchableVehicles_FEJ
             new DispatchableVehicle(PoliceBike, 15, 5) { GroupName = "Motorcycle",MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 0 } },
             Create_PoliceSanchez(1,0,0,false,PoliceVehicleType.Marked,0,-1,2,1,1,"DirtBike","DirtBike",10),
 
+            Create_PoliceBoxville(1,0,0,false,PoliceVehicleType.Marked,0,-1,-1,-1,-1,"",""),
+            Create_PoliceBoxville(0,5,0,false,PoliceVehicleType.Marked,0,3,4,3,4,"",""),
+
             Create_PoliceTransporter(0,35,1,false,100,false,true,134,3,-1,3,4,""),
         };
         VWPDVehicles_FEJ = new List<DispatchableVehicle>()
@@ -229,6 +236,8 @@ public class DispatchableVehicles_FEJ
             new DispatchableVehicle(PoliceBike, 20, 10) {GroupName = "Motorcycle", MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 0 } },
             Create_PoliceSanchez(1,0,0,false,PoliceVehicleType.Marked,0,-1,2,1,1,"DirtBike","DirtBike",10),
 
+            Create_PoliceBoxville(1,0,0,false,PoliceVehicleType.Marked,0,-1,-1,-1,-1,"",""),
+            Create_PoliceBoxville(0,5,0,false,PoliceVehicleType.Marked,0,3,4,3,4,"",""),
             Create_PoliceTransporter(0,35,1,false,100,false,true,134,3,-1,3,4,""),
         };
         RHPDVehicles_FEJ = new List<DispatchableVehicle>()
@@ -309,10 +318,10 @@ public class DispatchableVehicles_FEJ
         };
 
         PoliceHeliVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("polmav", 1,100) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 },
-            new DispatchableVehicle("frogger2", 1,50) { RequiredLiveries = new List<int>() { 2 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 } };
+            new DispatchableVehicle("polmav", 1,100) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 },
+            new DispatchableVehicle("frogger2", 1,50) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 2 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 } };
         SheriffHeliVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("frogger2", 1,150) { RequiredLiveries = new List<int>() { 4 },MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 },
+            new DispatchableVehicle("frogger2", 1,200) { RequiredPedGroup = "Pilot", RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 4 },MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 },
         };
 
     }
@@ -384,6 +393,8 @@ public class DispatchableVehicles_FEJ
             Create_PoliceTerminus(3,3,4,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","",10),
             Create_PoliceBicycle(0,0,-1,false,PoliceVehicleType.Unmarked,0,-1,2,1,1,"Bicycle","Bicycle",50),
 
+            Create_PoliceBoxville(1,0,5,false,PoliceVehicleType.Marked,0,-1,-1,-1,-1,"",""),
+            Create_PoliceBoxville(0,5,5,false,PoliceVehicleType.Marked,0,3,4,3,4,"",""),
             Create_PoliceTransporter(0,35,2,false,100,false,true,134,3,-1,3,4,""),
         };
         LSSDVehicles_FEJ.ForEach(x => x.MaxRandomDirtLevel = 10.0f);
@@ -568,8 +579,8 @@ public class DispatchableVehicles_FEJ
             DispatchableVehicles.GauntletUndercoverSAHP,
 
 
-            new DispatchableVehicle("frogger2",1,1) { RequiredLiveries = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 3, GroupName = "Helicopter",RequiredPedGroup = "Pilot",MaxWantedLevelSpawn = 2 },
-            new DispatchableVehicle("frogger2",0,30) { RequiredLiveries = new List<int>() { 3 },MinOccupants = 3,MaxOccupants = 4, GroupName = "Helicopter",RequiredPedGroup = "Pilot",MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
+            new DispatchableVehicle("frogger2",1,1) { RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 3, GroupName = "Helicopter",RequiredPedGroup = "Pilot",MaxWantedLevelSpawn = 2 },
+            new DispatchableVehicle("frogger2",0,30) { RequiredGroupIsDriverOnly = true, RequiredLiveries = new List<int>() { 3 },MinOccupants = 3,MaxOccupants = 4, GroupName = "Helicopter",RequiredPedGroup = "Pilot",MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
 
             Create_PoliceSanchez(1,0,2,false,PoliceVehicleType.Marked,0,-1,2,1,1,"DirtBike","DirtBike",10),
             new DispatchableVehicle(PoliceBike, 45, 20) { GroupName = "Motorcycle", MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 1 } },
@@ -602,6 +613,7 @@ public class DispatchableVehicles_FEJ
             new DispatchableVehicle("blazer2",50,50),
             new DispatchableVehicle("freecrawler",5,5) { RequiredVariation = new VehicleVariation() { VehicleMods = new List<VehicleMod>() {new VehicleMod(48, 7) } } },
             new DispatchableVehicle("seashark2", 100, 100) { RequiredLiveries = new List<int>() { 0,1 }, MaxOccupants = 1 },
+            new DispatchableVehicle("frogger2",2,5) { RequiredLiveries = new List<int>() { 6 }, MinOccupants = 2,MaxOccupants = 3, GroupName = "Helicopter" },
         }; 
 
         ParkRangerVehicles_FEJ = new List<DispatchableVehicle>()//San Andreas State Parks
@@ -654,7 +666,7 @@ public class DispatchableVehicles_FEJ
             Create_PoliceLandstalkerXL(5,5,-1,false,PoliceVehicleType.Unmarked,1,0,4,-1,-1,"",""),
             Create_PoliceLandstalkerXL(5,5,-1,false,PoliceVehicleType.Detective,1,0,4,-1,-1,"",""),
             Create_PoliceTerminus(5,5,12,false,PoliceVehicleType.Detective,1,0,4,-1,-1,"","",20),
-
+            Create_PoliceBoxville(1,0,4,false,PoliceVehicleType.Unmarked,1,-1,-1,-1,-1,"",""),
 
 
             new DispatchableVehicle(GrangerUnmarked, 0, 30) { MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHET",MinOccupants = 3, MaxOccupants = 4 },
@@ -664,7 +676,9 @@ public class DispatchableVehicles_FEJ
             Create_PoliceLandstalkerXL(0,20,-1,false,PoliceVehicleType.Unmarked,1,5,5,3,4,"FIBHET",""),
             Create_PoliceFugitive(0,10,11,false,PoliceVehicleType.Unmarked,1,5,5,3,4,"FIBHET",""),
             Create_PoliceBuffaloS(0,35,16,false,PoliceVehicleType.Unmarked,1,5,5,3,4,"FIBHET", ""),
-            Create_PoliceInterceptor(15,15,PIBlankLivID,true,PoliceVehicleType.Unmarked,1,5,5,3,4,"FIBHET",""),
+            Create_PoliceInterceptor(15,15,PIBlankLivID,true,PoliceVehicleType.Unmarked,1,5,5,3,4,"FIBHET",""),    
+            Create_PoliceBoxville(0,5,4,false,PoliceVehicleType.Unmarked,1,5,5,3,4,"FIBHET",""),
+
 
             new DispatchableVehicle("dinghy5", 0, 100) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 1, RequiredSecondaryColorID = 0, RequiredPedGroup = "FIBHET", ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4, MinWantedLevelSpawn = 5,MaxWantedLevelSpawn = 6, },
 
@@ -686,7 +700,7 @@ public class DispatchableVehicles_FEJ
             new DispatchableVehicle(PoliceBison, 35, 35){ RequiredLiveries = new List<int>() { 19 }, },
             Create_PoliceFugitive(5,5,16,false,PoliceVehicleType.Marked,134,-1,-1,-1,-1,"",""),
             Create_PoliceLandstalkerXL(5,5,25,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
-
+            Create_PoliceBoxville(3,3,3,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
 
             Create_PoliceTerminus(3,3,9,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","",30),
 
@@ -712,6 +726,10 @@ public class DispatchableVehicles_FEJ
             new DispatchableVehicle(PoliceBison, 10, 10) { MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3, RequiredLiveries = new List<int>() { 17 }, },
             Create_PoliceGauntlet(1,1,18,false,PoliceVehicleType.Marked,111,0,3,-1,-1,"",""),
             Create_PoliceTerminus(1,1,10,false,PoliceVehicleType.Marked,-1,0,3,-1,-1,"","",10),
+            Create_PoliceBoxville(1,0,1,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
+
+
+
 
 
             new DispatchableVehicle(PoliceStanier, 15,10){ MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 17 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
@@ -723,6 +741,7 @@ public class DispatchableVehicles_FEJ
             Create_PoliceLandstalkerXL(0,15,23,false,PoliceVehicleType.Marked,-1,4,5,3,4,"",""),
             Create_PoliceTransporter(0,35,4,false,50,false,true,134,4,5,3,4,""),
             Create_PoliceFugitive(0,15,14,false,PoliceVehicleType.Marked,134,4,5,3,4,"",""),
+            Create_PoliceBoxville(0,5,1,false,PoliceVehicleType.Marked,-1,3,4,3,4,"",""),
             new DispatchableVehicle("annihilator", 0, 100) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 5 },
         };
         NOOSESEPVehicles_FEJ = new List<DispatchableVehicle>()
@@ -743,8 +762,9 @@ public class DispatchableVehicles_FEJ
             new DispatchableVehicle(PoliceMerit,5,5){ MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3, RequiredLiveries = new List<int>() { 18 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle(PoliceBison,5,5) { MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3, RequiredLiveries = new List<int>() { 18 }, },
             Create_PoliceGauntlet(1,1,17,false,PoliceVehicleType.Marked,111,0,3,-1,-1,"",""),
-           Create_PoliceTerminus(1,1,11,false,PoliceVehicleType.Marked,-1,0,3,-1,-1,"","",10),
-
+            Create_PoliceTerminus(1,1,11,false,PoliceVehicleType.Marked,-1,0,3,-1,-1,"","",10),
+            Create_PoliceBoxville(1,0,2,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
+            
 
 
             new DispatchableVehicle(PoliceStanier, 0, 15) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 18 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
@@ -755,6 +775,8 @@ public class DispatchableVehicles_FEJ
             new DispatchableVehicle(PoliceGresley, 0, 40) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 18 }, },  
             Create_PoliceTransporter(0,35,5,false,50,false,true,134,4,-1,3,4,""),
             Create_PoliceFugitive(0,15,15,false,PoliceVehicleType.Marked,134,4,5,3,4,"",""),
+            Create_PoliceBoxville(0,5,2,false,PoliceVehicleType.Marked,-1,3,4,3,4,"",""),
+
 
             new DispatchableVehicle("annihilator", 0, 100) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 5 },
         };
@@ -911,6 +933,48 @@ public class DispatchableVehicles_FEJ
         Taxi4 = 3,
         Security = 4,
     }
+
+
+    private DispatchableVehicle Create_PoliceBoxville(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
+    {
+        DispatchableVehicle toReturn = new DispatchableVehicle(PoliceBoxville, ambientPercent, wantedPercent);
+        if (liveryID != -1)
+        {
+            toReturn.RequiredLiveries = new List<int>() { liveryID };
+        }
+        if (policeVehicleType == PoliceVehicleType.Marked)
+        {
+            //Boxville - 1 = Top Light
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
+                new DispatchableVehicleExtra(1, true, 100),
+            };
+        }
+        if (policeVehicleType == PoliceVehicleType.MarkedWithColor)
+        {
+            //Boxville - 1 = Top Light
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
+                new DispatchableVehicleExtra(1, true, 100),
+            };
+            toReturn.RequiredPrimaryColorID = requiredColor;//base white
+            toReturn.RequiredSecondaryColorID = requiredColor;//base black
+        }
+        else if (policeVehicleType == PoliceVehicleType.Unmarked)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
+                new DispatchableVehicleExtra(1, false, 100),
+            };
+        }
+        else if (policeVehicleType == PoliceVehicleType.Detective)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
+                new DispatchableVehicleExtra(1, false, 100),
+            };
+        }
+        SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        return toReturn;
+    }
+
+
     private DispatchableVehicle Create_PoliceBicycle(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int bicyclePercent)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle("scorcher", ambientPercent, wantedPercent);

@@ -121,13 +121,13 @@ public class CopBrain : PedBrain
                 {
                     SetMarshalLocate();
                 }
-                else
+                else if(Cop.WasModSpawned)
                 {
                     SetIdle();
                 }
             }
         }
-        else
+        else if (Cop.WasModSpawned)
         {
             SetIdle();
         }

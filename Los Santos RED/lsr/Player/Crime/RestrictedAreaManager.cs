@@ -19,6 +19,7 @@ public class RestrictedAreaManager
     private RestrictedArea CurrentRestrictedArea;
     private Interior CurrentRestrictedInterior;
     public bool IsTrespassing { get; private set; }
+    public bool IsTrespassingOnMilitaryBase { get; private set; }
     public RestrictedAreaManager(IRestrictedAreaManagable player, ILocationInteractable locationInteractable, IEntityProvideable world, ISettingsProvideable settings)
     {
         Player = player;
@@ -38,14 +39,19 @@ public class RestrictedAreaManager
     {
         foreach (GameLocation gl in World.Places.ActiveLocations.ToList())
         {
-            if(gl.RestrictedAreas == null || gl.RestrictedAreas.RestrictedAreasList == null || !gl.RestrictedAreas.RestrictedAreasList.Any())
+            if(gl.RestrictedAreas != null && gl.RestrictedAreas.RestrictedAreasList != null && gl.RestrictedAreas.RestrictedAreasList.Any())
             {
-                continue;
+                gl.RestrictedAreas.Update(LocationInteractable, World);
+                GameFiber.Yield();
             }
-            gl.RestrictedAreas.Update(LocationInteractable, World);
-            GameFiber.Yield();
+            if(gl.RestrictedAreas != null && gl.RestrictedAreas.VanillaRestrictedAreas != null && gl.RestrictedAreas.VanillaRestrictedAreas.Any())
+            {
+                gl.RestrictedAreas.UpdateVanilla(LocationInteractable, World);
+                GameFiber.Yield();
+            }
         }
         IsTrespassing = false;
+        IsTrespassingOnMilitaryBase = false;
         if (Player.Violations.CanEnterRestrictedAreas)
         {        
             return;
@@ -63,22 +69,31 @@ public class RestrictedAreaManager
     }
     private void UpdateLocationRestrictions()
     {
-        GameLocation restrictedLocation = World.Places.ActiveLocations.Where(x => x.RestrictedAreas != null && x.RestrictedAreas.IsPlayerViolating()).FirstOrDefault();
+        GameLocation restrictedLocation = World.Places.ActiveLocations.Where(x => x.RestrictedAreas != null && (x.RestrictedAreas.IsPlayerViolating() || x.RestrictedAreas.IsPlayerViolatingVanilla())).FirstOrDefault();
         if (restrictedLocation == null)
         {
             return;
         }
         RestrictedArea CurrentRestrictedArea = restrictedLocation.RestrictedAreas.RestrictedAreasList.Where(x => x.IsPlayerViolating).FirstOrDefault();
-        if(CurrentRestrictedArea == null)
+        if (CurrentRestrictedArea != null)
         {
-            return;
+            if (CurrentRestrictedArea.CanSeeOnCameras == true && Game.GameTime - GameTimeLastReportedCamera >= 20000)
+            {
+                Player.OnSeenInRestrictedAreaOnCamera();
+                GameTimeLastReportedCamera = Game.GameTime;
+            }
+            IsTrespassing = true;
         }
-        if (CurrentRestrictedArea.CanSeeOnCameras == true && Game.GameTime - GameTimeLastReportedCamera >= 20000)
+        VanillaRestrictedArea CurrentVanillaRestrictedArea = restrictedLocation.RestrictedAreas.VanillaRestrictedAreas.Where(x => x.IsPlayerViolating).FirstOrDefault();
+        if (CurrentVanillaRestrictedArea != null)
         {
-            Player.OnSeenInRestrictedAreaOnCamera();
-            GameTimeLastReportedCamera = Game.GameTime;
+            IsTrespassing = true;
         }
-        IsTrespassing = true;
+
+        if(IsTrespassing && restrictedLocation.GetType() == typeof(MilitaryBase))
+        {
+            IsTrespassingOnMilitaryBase = true;
+        }
     }
 }
 

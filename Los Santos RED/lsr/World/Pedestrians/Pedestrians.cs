@@ -265,13 +265,23 @@ public class Pedestrians : ITaskerReportable
                 {
                     continue;
                 }
-                if (Settings.SettingsManager.PoliceSpawnSettings.RemoveNonSpawnedPolice || (Settings.SettingsManager.PoliceSpawnSettings.RemoveAmbientPolice && !Pedestrian.IsPersistent))
+                if (Pedestrian.IsArmy(PedType) || Pedestrian.Model.Name.ToLower() == "s_m_m_prisguard_01")
                 {
-                    Delete(Pedestrian);
+                    AddAmbientCop(Pedestrian);
+                    GameFiber.Yield();
                     continue;
                 }
-                AddAmbientCop(Pedestrian);
-                GameFiber.Yield();
+                else
+                {
+
+                    if (Settings.SettingsManager.PoliceSpawnSettings.RemoveNonSpawnedPolice || (Settings.SettingsManager.PoliceSpawnSettings.RemoveAmbientPolice && !Pedestrian.IsPersistent))
+                    {
+                        Delete(Pedestrian);
+                        continue;
+                    }
+                    AddAmbientCop(Pedestrian);
+                    GameFiber.Yield();
+                }
             }
             else
             {

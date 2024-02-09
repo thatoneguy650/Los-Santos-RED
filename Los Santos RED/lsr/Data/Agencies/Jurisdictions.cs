@@ -636,6 +636,7 @@ public class Jurisdictions : IJurisdictions
         {
             new CountyJurisdiction("LSPD-ASD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.BlaineCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSSD-ASD",StaticStrings.MajesticCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.LosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
         };
@@ -1033,6 +1034,7 @@ public class Jurisdictions : IJurisdictions
         {
             new CountyJurisdiction("LSPD-ASD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.BlaineCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSSD-ASD",StaticStrings.MajesticCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.LosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
         };
@@ -1422,6 +1424,7 @@ public class Jurisdictions : IJurisdictions
         {
             new CountyJurisdiction("LSPD-ASD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.BlaineCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSSD-ASD",StaticStrings.MajesticCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.LosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
         };
@@ -1891,6 +1894,7 @@ public class Jurisdictions : IJurisdictions
         {
             new CountyJurisdiction("LSPD-ASD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.BlaineCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSSD-ASD",StaticStrings.MajesticCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.LosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
         };

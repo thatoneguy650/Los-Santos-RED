@@ -51,8 +51,8 @@ public class PossibleLocations
     public List<Airport> Airports { get; private set; } = new List<Airport>();
     public List<IllicitMarketplace> IllicitMarketplaces { get; private set; } = new List<IllicitMarketplace>();
     public List<BlankLocation> BlankLocations { get; private set; } = new List<BlankLocation>();
-
-  //  public List<InteractableLocation> AllLocationsList { get; private set; } = new List<InteractableLocation>();
+    public List<MilitaryBase> MilitaryBases { get; private set; } = new List<MilitaryBase>();
+    //  public List<InteractableLocation> AllLocationsList { get; private set; } = new List<InteractableLocation>();
 
 
     public List<GameLocation> InteractableLocations()
@@ -99,6 +99,7 @@ public class PossibleLocations
         AllLocations.AddRange(Airports);
         AllLocations.AddRange(IllicitMarketplaces);
         AllLocations.AddRange(BlankLocations);
+        AllLocations.AddRange(MilitaryBases);
         return AllLocations;
     }
 

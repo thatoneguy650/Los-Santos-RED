@@ -1330,10 +1330,6 @@ public class LEDispatcher
         {
             ToReturn.Add(ZoneAgency); //Zone Jurisdiciton Random
         }
-        if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfAnySpawn))//fall back to anybody
-        {
-            ToReturn.AddRange(Agencies.GetSpawnableAgencies(WantedLevel, ResponseType.LawEnforcement));
-        }
         if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfCountySpawn))
         {
             Agency CountyAgency = Jurisdictions.GetRandomCountyAgency(positionZone.CountyID, WantedLevel, ResponseType.LawEnforcement);
@@ -1341,6 +1337,12 @@ public class LEDispatcher
             {
                 ToReturn.Add(CountyAgency); //Zone Jurisdiciton Random
             }
+            //EntryPoint.WriteToConsole("ATTEMPING TO ADD COUNTY AGENCY!");
+        }
+        if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfAnySpawn))//fall back to anybody
+        {
+            ToReturn.AddRange(Agencies.GetSpawnableAgencies(WantedLevel, ResponseType.LawEnforcement));
+            //EntryPoint.WriteToConsole("ATTEMPING TO ADD ANY AGENCY!");
         }
         return ToReturn;
     }
@@ -1373,14 +1375,19 @@ public class LEDispatcher
     {
         Agency agency = null;
         List<Agency> PossibleAgencies = GetAgencies(spawnLocation.FinalPosition, World.TotalWantedLevel, spawnZone, spawnStreet);
+
+        EntryPoint.WriteToConsole($"LEDIS GetRandomAgency 1 {string.Join(",",PossibleAgencies)}");
+
         if(PossibleAgencies == null)
         {
             return agency;
         }
         agency = PossibleAgencies.Where(x=>x.Personnel.Any(y =>y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
+        EntryPoint.WriteToConsole($"LEDIS GetRandomAgency 2 SELECTED {agency?.FullName}");
         if (agency == null)
         {
             agency = GetAgencies(spawnLocation.InitialPosition, World.TotalWantedLevel, spawnZone, spawnStreet).Where(x => x.Personnel.Any(y => y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
+            EntryPoint.WriteToConsole($"LEDIS GetRandomAgency 3 SELECTED {agency?.FullName}");
         }
         if (agency == null)
         {
@@ -1642,9 +1649,15 @@ public class LEDispatcher
             {
                 PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
             }
-            //EntryPoint.WriteToConsole($"DEBUG LE DISPATCH RequiredGroup: {RequiredGroup} HasOffDuty:{Agency.OffDutyPersonnel?.Any()}");
+          //  EntryPoint.WriteToConsole($"DEBUG LE DISPATCH RequiredGroup: {RequiredGroup} HasOffDuty:{Agency.OffDutyPersonnel?.Any()}");
         }
-        if(isEmpty)
+
+
+       // EntryPoint.WriteToConsole($"DEBUG LE DISPATCH vehicleType: {VehicleType?.ModelName}");
+       // EntryPoint.WriteToConsole($"DEBUG LE DISPATCH PERSONTYTPE: {PersonType?.ModelName}");
+
+
+        if (isEmpty)
         {
             PersonType = null;
         }
@@ -1654,21 +1667,23 @@ public class LEDispatcher
         }
 
 
+       // EntryPoint.WriteToConsole($"DEBUG LE DISPATCH vehicleType: {VehicleType?.ModelName}");
+       // EntryPoint.WriteToConsole($"DEBUG LE DISPATCH PERSONTYTPE: {PersonType?.ModelName}");
 
 
-
-
+       // EntryPoint.WriteToConsole($"personType.ModelName: {personType.ModelName}");
 
         if (vehicleType != null)
         {
             VehicleType = vehicleType;
         }
-        if(personType != null) 
-        { 
+        if (personType != null && !string.IsNullOrEmpty(personType.ModelName) && personType.ModelName != "") 
+        {
+            //EntryPoint.WriteToConsole($"I WENT IN THIS STUPID FUCKING IF STATEMENT CUZ IM A FUCKING ASSHGO<E");
             PersonType = personType;       
         }
 
-      // EntryPoint.WriteToConsole($"DEBUG LE DISPATCH vehicleType: {VehicleType?.ModelName}");
+       //EntryPoint.WriteToConsole($"DEBUG LE DISPATCH vehicleType: {VehicleType?.ModelName}");
        // EntryPoint.WriteToConsole($"DEBUG LE DISPATCH PERSONTYTPE: {PersonType?.ModelName}");
 
         CallSpawnTask(true, true, true, true, TaskRequirements.None, forcek9, IsOffDutySpawn, true);

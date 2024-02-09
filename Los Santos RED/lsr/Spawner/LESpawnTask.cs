@@ -155,7 +155,7 @@ public class LESpawnTask : SpawnTask
     private void PassengerCreate(int seatIndex)
     {
         string requiredGroup = "";
-        if (VehicleType != null)
+        if (VehicleType != null && !VehicleType.RequiredGroupIsDriverOnly)
         {
             requiredGroup = VehicleType.RequiredPedGroup;
         }

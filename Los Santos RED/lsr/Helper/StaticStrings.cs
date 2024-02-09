@@ -56,6 +56,10 @@ public static class StaticStrings
     public static readonly string HurtingPoliceCrimeID = "HurtingPolice";
     public static readonly string BrandishingHeavyWeaponCrimeID = "BrandishingHeavyWeapon";
     public static readonly string TrespessingOnGovtPropertyCrimeID = "TrespessingOnGovtProperty";
+
+    public static readonly string TrespassingOnMilitaryBaseCrimeID = "TrespassingOnMilitaryBase";
+
+
     public static readonly string TrespessingCrimeID = "Trespassing";
     public static readonly string GotInAirVehicleDuringChaseCrimeID = "GotInAirVehicleDuringChase";
     public static readonly string FiringWeaponCrimeID = "FiringWeapon";

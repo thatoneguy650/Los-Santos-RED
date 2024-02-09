@@ -173,7 +173,10 @@
     <Compile Include="lsr\Locations\Places\GameLocations\IGasPumpable.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\ILEDispatchableLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Machines\CashRegister.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Military\MilitaryBase.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Residence\ApartmentBuilding.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\RestrictedAreas\Vanilla\AngledRestrictedArea.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\RestrictedAreas\Vanilla\VanillaRestrictedArea.cs" />
     <Compile Include="lsr\Locations\Places\Interface\IInventoryableLocation.cs" />
     <Compile Include="lsr\Locations\Places\Interface\IOutfitableLocation.cs" />
     <Compile Include="lsr\Locations\Places\Interface\IRestableLocation.cs" />
