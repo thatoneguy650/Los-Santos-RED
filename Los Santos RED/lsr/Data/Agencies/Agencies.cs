@@ -131,13 +131,13 @@ public class Agencies : IAgencies
         LSPDELS = new Agency("~b~", "LSPD-ELS", "LSPD-ELS", "Los Santos Police - East Los Santos Division", "Blue", Classification.Police, "StandardCops", "EastLSPDVehicles", "LSE ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "LSPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 3, OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
         LSPDDP = new Agency("~b~", "LSPD-DP", "LSPD-DP", "Los Santos Police - Del Perro Division", "Blue", Classification.Police, "StandardCops", "DPPDVehicles", "VP ", "Tasers", "AllSidearms", "AllLongGuns", "LSPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 4, OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
         LSPDRH = new Agency("~b~", "LSPD-RH", "LSPD-RH", "Los Santos Police - Rockford Hills Division", "Blue", Classification.Police, "StandardCops", "RHPDVehicles", "RH ", "Tasers", "AllSidearms", "AllLongGuns", "LSPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 5, OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
-        LSPDASD = new Agency("~b~", "LSPD-ASD", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "Blue", Classification.Police, "StandardCops", "PoliceHeliVehicles", "ASD ", "Tasers", "HeliSidearms", "HeliLongGuns", "LSPD Officer") { MinWantedLevelSpawn = 3, MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6 };     
+        LSPDASD = new Agency("~b~", "LSPD-ASD", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "Blue", Classification.Police, "LSPDASDPeds", "PoliceHeliVehicles", "ASD ", "Tasers", "HeliSidearms", "HeliLongGuns", "LSPD Officer") { MinWantedLevelSpawn = 3, MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6 };     
         LSSD = new Agency("~r~", "LSSD", "LSSD", "Los Santos County Sheriff", "Red", Classification.Sheriff, "SheriffPeds", "LSSDVehicles", "LSCS ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "LSSD Deputy") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 7 };
         LSSDVW = new Agency("~r~", "LSSD-VW", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "Red", Classification.Sheriff, "SheriffPeds", "VWHillsLSSDVehicles", "LSCS ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "LSSD Deputy") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 8, OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
         LSSDDV = new Agency("~r~", "LSSD-DV", "LSSD-DV", "Los Santos Sheriff - Davis Division", "Red", Classification.Sheriff, "SheriffPeds", "DavisLSSDVehicles", "LSCS ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "LSSD Deputy") { MaxWantedLevelSpawn = 4, HeadDataGroupID = "AllHeads", Division = 9, OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
         LSSDBC = new Agency("~r~", "LSSD-BC", "LSSD-BC", "Los Santos Sheriff - Blaine County Division", "Red", Classification.Sheriff, "SheriffPeds", "BCSOVehicles", "BCS ", "Nightsticks", "LimitedSidearms", "LimitedLongGuns", "LSSD Deputy") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 10, OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
         LSSDMJ = new Agency("~r~", "LSSD-MJ", "LSSD-MJ", "Los Santos Sheriff - Majestic County Division", "Red", Classification.Sheriff, "SheriffPeds", "MajesticLSSDVehicles", "MCS ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "LSSD Deputy") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 11, OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
-        LSSDASD = new Agency("~r~", "LSSD-ASD", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Classification.Sheriff, "SheriffPeds", "SheriffHeliVehicles", "ASD ", "Tasers", "HeliSidearms", "HeliLongGuns", "LSSD Deputy") { MinWantedLevelSpawn = 3, MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 13 };     
+        LSSDASD = new Agency("~r~", "LSSD-ASD", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Classification.Sheriff, "LSSDASDPeds", "SheriffHeliVehicles", "ASD ", "Tasers", "HeliSidearms", "HeliLongGuns", "LSSD Deputy") { MinWantedLevelSpawn = 3, MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 13 };     
         LSPP = new Agency("~p~", "LSPP", "LSPP", "Los Santos Port Police", "LightGray", Classification.Police, "SecurityPeds", "UnmarkedVehicles", "LSPP ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "Port Authority Officer") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads", Division = 15, OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
         LSIAPD = new Agency("~p~", "LSIAPD", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Classification.Police, "StandardCops", "LSPDVehicles", "LSA ", "Tasers", "AllSidearms", "AllLongGuns", "LSIAPD Officer") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads", Division = 16, OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
 
@@ -208,12 +208,12 @@ public class Agencies : IAgencies
 
 
 
-        Agency LSPDASDFEJ = Extensions.DeepCopy(LSPDASD);
+        //Agency LSPDASDFEJ = Extensions.DeepCopy(LSPDASD);
 
-        LSPDASDFEJ.PersonnelID = "LSPDASDPeds";
+        //LSPDASDFEJ.PersonnelID = "LSPDASDPeds";
 
-        Agency LSSDASDFEJ = Extensions.DeepCopy(LSSDASD);
-        LSSDASDFEJ.PersonnelID = "LSSDASDPeds";
+        //Agency LSSDASDFEJ = Extensions.DeepCopy(LSSDASD);
+        //LSSDASDFEJ.PersonnelID = "LSSDASDPeds";
 
 
 
@@ -234,7 +234,7 @@ public class Agencies : IAgencies
             DPPD,RHPD,
             LSSD,LSSDVW,LSSDDV,LSSDMJ,
             BCSO,
-            LSPDASDFEJ,LSSDASDFEJ,
+            LSPDASD,LSSDASD,
             LSPPFEJ,LSIAPDFEJ,
             SAHP,SASPA,SAPR,USCG,
 

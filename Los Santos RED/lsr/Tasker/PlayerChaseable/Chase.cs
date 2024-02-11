@@ -623,6 +623,10 @@ public class Chase : ComplexTask
 
 
             }
+            else if (Ped.IsInPlane)
+            {
+                NativeFunction.Natives.TASK_PLANE_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, Player.Character, 0f, 0f, 0f, 6, 70f, 40, -1.0f, 40, 20, true);
+            }
             //else if (Ped.IsInBoat)
             //{
             //    NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
@@ -655,7 +659,7 @@ public class Chase : ComplexTask
 
             NativeFunction.Natives.SET_DRIVE_TASK_MAX_CRUISE_SPEED(Ped.Pedestrian, 100f);
 
-            if (!Ped.IsInHelicopter && !Ped.IsInBoat)
+            if (!Ped.IsInHelicopter && !Ped.IsInBoat && !Ped.IsInPlane)
             {
                 if (ShouldChaseRecklessly && !Ped.IsOnBike)
                 {
@@ -718,6 +722,10 @@ public class Chase : ComplexTask
 
 
             }
+            if (Ped.IsDriver && (Ped.IsInHelicopter || Ped.IsInPlane))
+            {
+                Ped.ControlLandingGear();
+            }
             VehicleChase_CheckStuck();
         }
     }
@@ -778,6 +786,10 @@ public class Chase : ComplexTask
                 {
                     NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.GetRandomNumber(40f, 60f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -35f, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(50f, 80f));
                     //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, 25f, 0f, 25f);
+                }
+                else if (Ped.IsInPlane)
+                {
+                    NativeFunction.Natives.TASK_PLANE_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, Player.Character, 0f, 0f, 0f, 6, 70f, 40, -1.0f, 40, 20, true);
                 }
                 else if (Ped.IsInBoat)
                 {

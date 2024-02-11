@@ -343,10 +343,10 @@ public class UI : IMenuProvideable
             GameTimeLastDied = 0;
             GameTimeLastBusted = 0;
 
-            if(StartedBustedEffect || StartedDeathEffect)
-            {
-                BigMessage.MessageInstance.Dispose();
-            }
+            //if (StartedBustedEffect || StartedDeathEffect)
+            //{
+            //    BigMessage.MessageInstance.Dispose();
+            //}
             StartedBustedEffect = false;
             StartedDeathEffect = false;
             if (Settings.SettingsManager.UIGeneralSettings.AllowScreenEffectReset && IsShowingCustomOverlay)

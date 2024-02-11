@@ -67,11 +67,11 @@ public abstract class SpawnTask
                 }
                 return SpawnLocation.InitialPosition;
             }
-            else if (VehicleType.IsHelicopter && PersonType == null)
+            else if ((VehicleType.IsHelicopter || VehicleType.IsPlane) && PersonType == null)
             {
                 return SpawnLocation.InitialPosition;
             }
-            else if (VehicleType.IsHelicopter)
+            else if (VehicleType.IsHelicopter || VehicleType.IsPlane)
             {
                 return SpawnLocation.InitialPosition + new Vector3(0f, 0f, 250f);
             }

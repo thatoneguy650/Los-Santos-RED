@@ -98,6 +98,10 @@ public class RegularGoToInVehicleTaskState : TaskState
         {
             NativeFunction.Natives.TASK_HELI_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 6, DrivingSpeed, 10f, -1f, 60, 60, -1.0f, 0);//6 = attack
         }
+        else if (PedGeneral.IsInPlane)
+        {
+            NativeFunction.Natives.TASK_PLANE_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 6, 70f, 40, -1.0f, 40, 20, true);
+        }
         else if (PedGeneral.IsInBoat)
         {
             NativeFunction.Natives.TASK_BOAT_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 4, DrivingSpeed, (int)DrivingStyle, -1.0f, 7);

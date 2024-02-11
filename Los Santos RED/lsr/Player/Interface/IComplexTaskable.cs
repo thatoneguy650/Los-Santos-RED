@@ -80,7 +80,9 @@ namespace LosSantosRED.lsr.Interface
         bool CanSurrender { get; }
         PedViolations PedViolations { get; }
         bool ShouldSurrender { get; set; }
+        bool IsInPlane { get; }
 
+        void ControlLandingGear();
         void PlaySpeech(string name, bool v);
         void PlaySpeech(List<string> list, bool isInVehicle, bool v);
         void ReportCrime(ITargetable player);

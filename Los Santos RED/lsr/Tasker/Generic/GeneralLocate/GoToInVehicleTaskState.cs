@@ -60,6 +60,10 @@ class GoToInVehicleTaskState : TaskState
         CheckTasks();
         CheckGoToDistances();
         SetGoToDrivingStyle();
+        if (PedGeneral.IsDriver && (PedGeneral.IsInHelicopter || PedGeneral.IsInPlane))
+        {
+            PedGeneral.ControlLandingGear();
+        }
     }
 
     private void CheckTasks()
@@ -99,6 +103,12 @@ class GoToInVehicleTaskState : TaskState
         {
            //EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} HELI TASK ASSIGNED");
             NativeFunction.Natives.TASK_HELI_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 6, 50f, 10f, -1f, 60, 60, -1.0f, 0);//6 = attack
+            //NativeFunction.Natives.TASK_HELI_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 4, 50f, 150f, -1f, -1, 30, -1.0f, 0);//NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 50f, 10f, 0f, -1, -1, -1, 0);
+        }
+        else if (PedGeneral.IsInPlane)
+        {
+            //EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} HELI TASK ASSIGNED");
+            NativeFunction.Natives.TASK_PLANE_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 6, 70f, 40, -1.0f, 40, 20, true);
             //NativeFunction.Natives.TASK_HELI_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 4, 50f, 150f, -1f, -1, 30, -1.0f, 0);//NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 50f, 10f, 0f, -1, -1, -1, 0);
         }
         else if (PedGeneral.IsInBoat)

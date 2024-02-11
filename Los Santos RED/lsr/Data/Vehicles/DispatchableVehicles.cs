@@ -272,12 +272,13 @@ public class DispatchableVehicles : IDispatchableVehicles
 
 
             new DispatchableVehicle("rhino", 0, 15) {  MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 1,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            new DispatchableVehicle("valkyrie2", 0,75) { MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1,0,1,2 },MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            new DispatchableVehicle("valkyrie2", 0,75) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true, MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1,0,1,2 },MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
 
             new DispatchableVehicle("dinghy5", 0, 100) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 152, RequiredSecondaryColorID = 0, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4, MinWantedLevelSpawn = 6,MaxWantedLevelSpawn = 10, },
 
-
-
+            new DispatchableVehicle("lazer",0,1) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1 },
+            new DispatchableVehicle("hydra",0,1) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1 },
+            new DispatchableVehicle("strikeforce",0,1) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1 },
             };
 
         LSLifeguardVehicles = new List<DispatchableVehicle>()
@@ -1417,7 +1418,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("EastLSPDVehicles", dispatchableVehicles_FEJ.EastLSPDVehicles_FEJ),
             new DispatchableVehicleGroup("PoliceHeliVehicles", dispatchableVehicles_FEJ.PoliceHeliVehicles_FEJ),
             new DispatchableVehicleGroup("SheriffHeliVehicles", dispatchableVehicles_FEJ.SheriffHeliVehicles_FEJ),
-            new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles),
+            new DispatchableVehicleGroup("ArmyVehicles", dispatchableVehicles_FEJ.ArmyVehicles_FEJ),
             new DispatchableVehicleGroup("Firetrucks", Firetrucks),
             new DispatchableVehicleGroup("Amublance1", Amublance1),
             new DispatchableVehicleGroup("Amublance2", Amublance2),

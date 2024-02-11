@@ -41,6 +41,7 @@ public class DispatchableVehicle
     public bool IsBoat => NativeFunction.Natives.IS_THIS_MODEL_A_BOAT<bool>(Game.GetHashKey(ModelName));
     public bool IsCar => NativeFunction.Natives.IS_THIS_MODEL_A_CAR<bool>(Game.GetHashKey(ModelName));
     public bool IsHelicopter => NativeFunction.Natives.IS_THIS_MODEL_A_HELI<bool>(Game.GetHashKey(ModelName));
+    public bool IsPlane => NativeFunction.Natives.IS_THIS_MODEL_A_PLANE<bool>(Game.GetHashKey(ModelName));
     public bool IsMotorcycle => NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>(Game.GetHashKey(ModelName));
 
     public int FirstPassengerIndex { get; set; } = 0;

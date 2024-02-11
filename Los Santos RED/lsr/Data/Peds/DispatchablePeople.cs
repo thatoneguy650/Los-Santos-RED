@@ -70,6 +70,8 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> BobcatPeds_Simple;
     private List<DispatchablePerson> MerryweatherSecurityPeds_Simple;
     private List<DispatchablePerson> LSLifeguardPeds;
+    private List<DispatchablePerson> LSPDASDPeds;
+    private List<DispatchablePerson> LSSDASDPeds;
     public List<DispatchablePersonGroup> AllPeople => PeopleGroupLookup;
 
     public void Setup(IIssuableWeapons issuableWeapons)
@@ -480,8 +482,10 @@ public class DispatchablePeople : IDispatchablePeople
                     new List<PedComponent>() { new PedComponent(2, 1, 0, 0),new PedComponent(8, 0, 0, 0) },
                     new List<PedPropComponent>() { new PedPropComponent(3, 1, 0), new PedPropComponent(1, 0, 0)})
             },
-            new DispatchablePerson("s_m_y_pilot_01",0,0) { DebugName = "ARMYPilotMale1" },
-            new DispatchablePerson("s_m_m_pilot_02",0,0) { DebugName = "ARMYPilotMale2" },
+            new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } },
+            //new DispatchablePerson("s_m_y_pilot_01",0,0) { DebugName = "ARMYPilotMale1" },
+            //new DispatchablePerson("s_m_m_pilot_02",0,0) { DebugName = "ARMYPilotMale2" },
+            
         };
         PrisonPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_m_prisguard_01",0,0)  { DebugName = "PrisonGuardMale" },
@@ -614,8 +618,6 @@ public class DispatchablePeople : IDispatchablePeople
             },
 
         };
-
-
         MarshalsServicePeds = new List<DispatchablePerson>() {
             new DispatchablePerson("mp_m_freemode_01",50,0) {
                 DebugName = "USMSMPMale"
@@ -660,6 +662,15 @@ public class DispatchablePeople : IDispatchablePeople
 
         };
 
+        LSPDASDPeds = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("s_m_y_pilot_01",0,0) { DebugName = "Police and LSPD Labeled Pilot",GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } }, //HAS LSPD STUFF ON HIM!!!!
+        };
+        LSSDASDPeds = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } },
+        };
+
         OffDutyCops = new List<DispatchablePerson>()
         { 
             new DispatchablePerson("a_f_y_bevhills_03",25,0) {  OverrideAgencyLongGuns = true,GroupName = "OffDuty", OverrideLongGunsID = "",OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, },
@@ -670,9 +681,6 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("a_m_y_busicas_01",25,0) { OverrideAgencyLongGuns = true, GroupName = "OffDuty",OverrideLongGunsID = "" ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },},
         };
 
-
-
-        //s_m_m_bouncer_01
         SecurityPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_m_security_01",0,0)  { DebugName = "SecurityMale",GroupName = "ArmedSecurity" },
 
@@ -931,8 +939,6 @@ public class DispatchablePeople : IDispatchablePeople
                 ,GroupName = "UnarmedSecurity"
             },
         };
-
-
         BobcatPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("mp_m_freemode_01",20,20) {
                 DebugName = "MPShortSleeveArmedBobcatMale"
@@ -1184,7 +1190,6 @@ public class DispatchablePeople : IDispatchablePeople
                 ,GroupName = "UnarmedSecurity"
             },
         };
-        //s_m_y_baywatch_01,s_f_y_baywatch_01 for lifeguards?
         LSLifeguardPeds = new List<DispatchablePerson>() 
         {
             new DispatchablePerson("s_m_y_baywatch_01",50,50)  { DebugName = "LS Lifeguard Male" },
@@ -1383,8 +1388,6 @@ public class DispatchablePeople : IDispatchablePeople
                      new PedComponent(11, 224, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(0,14,2), })
             },
         };
-
-
         FamiliesPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("g_m_y_famca_01",30,30,5,10,400,600,0,1) { DebugName = "FamiliesMale1" },
             new DispatchablePerson("g_m_y_famdnf_01",30,30,5,10,400,600,0,1) { DebugName = "FamiliesMale2" },
@@ -1564,52 +1567,7 @@ public class DispatchablePeople : IDispatchablePeople
         };
 
 
-        ////  ,CustomPropAttachments = new List<CustomPropAttachment>() { new CustomPropAttachment("prop_holster_01", "BONETAG_PELVIS", new Vector3(-0.04f, 0f, 0.19f), new Rotator(-90f, -90f, 0f)) { SpawnChance = 100f } }
 
-        //LSPD//
-        //s_m_y_cop_01
-        //new PedPropComponent(0, 0, 0) Goofy Hat
-        //new PedPropComponent(1, 0, 0) Spy Glasses Forward
-        //new PedPropComponent(1, 1, 0) Spy Glasses Backwards
-        //new PedPropComponent(1, 2, 0) Spy Glasses On Head
-        //new PedPropComponent(1, 3, 0) Aviators
-
-        //s_f_y_cop_01
-        //new PedPropComponent(0, 0, 0) Goofy Hat
-        //new PedPropComponent(1, 0, 0) Aviators
-
-
-        //LSSD//
-        //s_m_y_sheriff_01
-        //new PedPropComponent(0, 0, 0) Flat Hat
-        //new PedPropComponent(0, 1, 0) Cowboy Hat
-        //new PedPropComponent(1, 0, 0) Aviators
-        //new PedPropComponent(1, 1, 0) Spy Glasses Forwards
-
-        //s_f_y_sheriff_01
-        //new PedPropComponent(0, 0, 0) Flat Hat
-        //new PedPropComponent(0, 1, 0) Cowboy Hat
-        //new PedPropComponent(1, 0, 0) Aviators
-
-
-        //SAHP//
-        //s_m_y_hwaycop_01
-        //new PedPropComponent(0, 0, 0) Helmet
-        //new PedPropComponent(1, 0, 0) Spy Glasses Forward
-        //new PedPropComponent(1, 1, 0) Aviators
-
-        //Park Rangers//
-        //s_m_y_ranger_01
-        //new PedPropComponent(0, 0, 0) Flat Hat
-        //new PedPropComponent(0, 1, 0) Baseball Hat
-        //new PedPropComponent(1, 0, 0) Aviators
-
-        //s_f_y_ranger_01
-        //new PedPropComponent(1, 0, 0) Aviators
-
-        //ARMY//
-        //s_m_y_marine_03
-        //new PedPropComponent(1, 0, 0) ESS Glasses
     }
     private void DefaultConfig()
     {
@@ -1628,6 +1586,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("MarshalsServicePeds", MarshalsServicePeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("OffDutyCops", OffDutyCops));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("LSLifeguardPeds", LSLifeguardPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("LSPDASDPeds", LSPDASDPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("LSSDASDPeds", LSSDASDPeds));
         //Fire
         PeopleGroupLookup.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
         //EMT
@@ -1745,6 +1705,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("MarshalsServicePeds", MarshalsServicePeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("OffDutyCops", OffDutyCops));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LSLifeguardPeds", LSLifeguardPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LSPDASDPeds", LSPDASDPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LSSDASDPeds", LSSDASDPeds));
         //Fire
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
         //EMT
@@ -1883,6 +1845,9 @@ public class DispatchablePeople : IDispatchablePeople
 
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("OffDutyCops", OffDutyCops));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("LSLifeguardPeds", LSLifeguardPeds));
+
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("LSPDASDPeds", LSPDASDPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("LSSDASDPeds", LSSDASDPeds));
 
         //Fire
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
@@ -7060,41 +7025,13 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("s_m_m_marine_02",0,0),
             new DispatchablePerson("s_m_y_marine_01",25,0),
             new DispatchablePerson("s_m_y_marine_02",0,0),
-            new DispatchablePerson("s_m_m_pilot_02",0,0),
-            new DispatchablePerson("s_m_y_pilot_01",0,0),
+
+            new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } },
+
+            new DispatchablePerson("s_m_y_pilot_01",0,0) { DebugName = "Police and LSPD Labeled Pilot",GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } }, //HAS LSPD STUFF ON HIM!!!!
+
+
             new DispatchablePerson("s_m_y_marine_03",100,100, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(2, 1, 0, 0),new PedComponent(8, 0, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(3, 1, 0), new PedPropComponent(1, 0, 0)}) },
-        
-            ////EUP
-            //new DispatchablePerson("mp_m_freemode_01", 0, 70, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) { MinWantedLevelSpawn = 6, RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" },
-            //    RequiredVariation = new PedVariation(
-            //        new List<PedComponent>() {
-            //            new PedComponent(1, 0, 0, 0),
-            //            new PedComponent(3, 141, 19, 0),
-            //            new PedComponent(4, 37, 2, 0),
-            //            new PedComponent(5, 48, 0, 0),
-            //            new PedComponent(6, 35, 0, 0),
-            //            new PedComponent(7, 42, 0, 0),
-            //            new PedComponent(8, 15, 0, 0),
-            //            new PedComponent(9, 15, 0, 0),
-            //            new PedComponent(10, 0, 0, 0),
-            //            new PedComponent(11, 220, 13, 0)},//13?//6?//listed as 25, but that texture is BROKE
-            //        new List<PedPropComponent>() { new PedPropComponent(0,39,1),new PedPropComponent(1,23,0)  }),
-            //},
-            //new DispatchablePerson("mp_f_freemode_01", 0, 30, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) { MinWantedLevelSpawn = 6, RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
-            //    RequiredVariation = new PedVariation(
-            //        new List<PedComponent>() {
-            //            new PedComponent(1, 0, 0, 0),
-            //            new PedComponent(3, 174,19, 0),
-            //            new PedComponent(4, 36, 2, 0),
-            //            new PedComponent(5, 48, 0, 0),
-            //            new PedComponent(6, 36, 0, 0),
-            //            new PedComponent(7, 29, 0, 0),
-            //            new PedComponent(8, 14, 0, 0),
-            //            new PedComponent(9, 17, 0, 0),
-            //            new PedComponent(10, 0, 0, 0),
-            //            new PedComponent(11, 230, 25, 0)},//listed as 25, but that texture is BROKE
-            //        new List<PedPropComponent>()  {new PedPropComponent(0,38,1),new PedPropComponent(1,25,0)   }),
-            //},
 
         };
         List<DispatchablePerson> PrisonPeds_FEJ = new List<DispatchablePerson>() {

@@ -49,10 +49,10 @@ public class PoliceSettings : ISettingsDefaultable
     public float SightDistance { get; set; }
     [Description("Distance (in meters) that police can hear gunshots.")]
     public float GunshotHearingDistance { get; set; }
-    [Description("Additional distance (in meters) that police can see when in a helicopter.")]
-    public float SightDistance_Helicopter { get; set; }
-    [Description("Additional distance (in meters) that police can see when in a helicopter and you are wanted.")]
-    public float SightDistance_Helicopter_AdditionalAtWanted { get; set; }
+    [Description("Additional distance (in meters) that police can see when in an aircraft.")]
+    public float SightDistance_Aircraft { get; set; }
+    [Description("Additional distance (in meters) that police can see when in an aircraft and you are wanted.")]
+    public float SightDistance_Aircraft_AdditionalAtWanted { get; set; }
     [Description("Enable or disable cops knowing your position when you fire a weapon within their hearing distance. Realistic and useful for more cover based shootouts.")]
     public bool KnowsShootingSourceLocation { get; set; }
     [Description("Distance (in meters) that the police will instantly recognize you if you are seen.")]
@@ -225,8 +225,8 @@ public class PoliceSettings : ISettingsDefaultable
 
         SightDistance = 90f;//70f;
         GunshotHearingDistance = 125f;
-        SightDistance_Helicopter = 175f;
-        SightDistance_Helicopter_AdditionalAtWanted = 100f;
+        SightDistance_Aircraft = 175f;
+        SightDistance_Aircraft_AdditionalAtWanted = 100f;
         DeadlyChaseMinimumWantedLevel = 3;
         UnarmedChaseMaxWantedLevel = 3;
         MaxWantedLevel = 6;

@@ -101,7 +101,10 @@ class WanderInVehicleTaskState : TaskState
     }
     public void Update()
     {
-
+        if (PedGeneral.IsDriver && (PedGeneral.IsInHelicopter || PedGeneral.IsInPlane))
+        {
+            PedGeneral.ControlLandingGear();
+        }
     }
     private void VehicleGuard()
     {
@@ -123,6 +126,12 @@ class WanderInVehicleTaskState : TaskState
             Vector3 PlaceToDriveTo = PedGeneral.Pedestrian.Position;
             NativeFunction.Natives.TASK_HELI_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 9, 50f, 10f, -1f, 60, 60, -1.0f, 0);//9 = circle
             //NativeFunction.CallByName<bool>("TASK_HELI_MISSION", PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, 0f, 0f, 300f, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);
+        }
+        else if (PedGeneral.IsInPlane)
+        {
+            EntryPoint.WriteToConsole("RANK PLANE SHIT 1");
+            Vector3 PlaceToDriveTo = PedGeneral.Pedestrian.GetOffsetPositionFront(1000);
+            NativeFunction.Natives.TASK_PLANE_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 1, 70f, 40, -1.0f, 40, 20, true);
         }
         else
         {
@@ -159,9 +168,22 @@ class WanderInVehicleTaskState : TaskState
         {
             Vector3 PlaceToDriveTo = PedGeneral.Pedestrian.Position;
             NativeFunction.Natives.TASK_HELI_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 8, 50f, 10f, -1f, 60, 60, -1.0f, 0);//9 = circle
-
-
             //NativeFunction.CallByName<bool>("TASK_HELI_MISSION", PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, 0f, 0f, 300f, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);
+        }
+        else if (PedGeneral.IsInPlane)
+        {
+            EntryPoint.WriteToConsole("RANK PLANE SHIT 2");
+            Vector3 PlaceToDriveTo = PedGeneral.Pedestrian.GetOffsetPositionFront(1000);
+            NativeFunction.Natives.TASK_PLANE_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 
+                6, 
+                50f, 
+                0f, 
+                90f, 
+                0, 
+                150
+                );//8, 70f, 40, -1.0f, 40, 20, true);
+
+            //the strikeforce just crashes
         }
         else
         {

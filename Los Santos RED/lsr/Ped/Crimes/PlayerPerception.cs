@@ -252,12 +252,12 @@ public class PlayerPerception
                     //RanSightThisUpdate = true;
                 }
             }
-            else if (Originator.Pedestrian.IsInHelicopter)
+            else if (Originator.IsInHelicopter || Originator.IsInPlane)
             {
-                float DistanceToSee = Settings.SettingsManager.PoliceSettings.SightDistance_Helicopter;
+                float DistanceToSee = Settings.SettingsManager.PoliceSettings.SightDistance_Aircraft;
                 if (IsWanted)
                 {
-                    DistanceToSee += Settings.SettingsManager.PoliceSettings.SightDistance_Helicopter_AdditionalAtWanted;
+                    DistanceToSee += Settings.SettingsManager.PoliceSettings.SightDistance_Aircraft_AdditionalAtWanted;
                 }
                 if (DistanceToTarget <= DistanceToSee)
                 {

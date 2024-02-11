@@ -404,9 +404,9 @@ public class LESpawnTask : SpawnTask
         SpawnedCops.Add(PrimaryCop);
         World.Pedestrians.AddEntity(PrimaryCop);
         float sightDistance = Settings.SettingsManager.PoliceSettings.SightDistance;
-        if(VehicleType != null && VehicleType.IsHelicopter)
+        if(VehicleType != null && (VehicleType.IsHelicopter || VehicleType.IsPlane))
         {
-            sightDistance = Settings.SettingsManager.PoliceSettings.SightDistance_Helicopter;
+            sightDistance = Settings.SettingsManager.PoliceSettings.SightDistance_Aircraft;
         }
         if(PersonType.OverrideSightDistance > 1.0f)
         {
@@ -438,9 +438,9 @@ public class LESpawnTask : SpawnTask
 
         SpawnedCops.Add(PrimaryCop);
         float sightDistance = Settings.SettingsManager.PoliceSettings.SightDistance;
-        if (VehicleType != null && VehicleType.IsHelicopter)
+        if (VehicleType != null && (VehicleType.IsHelicopter || VehicleType.IsPlane))
         {
-            sightDistance = Settings.SettingsManager.PoliceSettings.SightDistance_Helicopter;
+            sightDistance = Settings.SettingsManager.PoliceSettings.SightDistance_Aircraft;
         }
         World.Pedestrians.AddEntity(PrimaryCop);
         PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode, sightDistance);

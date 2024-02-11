@@ -140,6 +140,10 @@ ENDENUM */
                         //}
                     }
                 }
+                else if (Ped.IsInPlane)
+                {
+                    NativeFunction.Natives.TASK_PLANE_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, Player.Character, 0f,0f, 0f, 6, 70f, 40, -1.0f, 40, 20, true);
+                }
                 else if (Ped.IsInBoat)
                 {
                     NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
@@ -168,8 +172,10 @@ ENDENUM */
     {
         if (Ped.Pedestrian.Exists())
         {
-            if(Ped.IsInHelicopter)
+            if(Ped.IsDriver && (Ped.IsInHelicopter || Ped.IsInPlane))
             {
+                Ped.ControlLandingGear();
+
                 //if(Ped.IsDriver)
                 //{
                 //    if (Ped.DistanceToPlayer <= 100f && Player.Character.Speed < 32f)//70 mph
@@ -181,8 +187,10 @@ ENDENUM */
                 //        NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 100f);
                 //    }
                 //}
+
+
             }
-            if(Ped.IsDriver && !Ped.IsInHelicopter)
+            if(Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInPlane)
             {
                 NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.FullContact, true);
                 NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 0f);

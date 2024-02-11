@@ -215,6 +215,10 @@ public class Locate : ComplexTask
         {
             NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 50f, 150f, -1f, -1, 30, -1.0f, 0);//NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 50f, 10f, 0f, -1, -1, -1, 0);
         }
+        if (Ped.IsInPlane)
+        {
+            NativeFunction.Natives.TASK_PLANE_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 70f, 40, -1.0f, 40, 20, true);
+        }
         else if (Ped.IsInBoat)
         {
             NativeFunction.Natives.TASK_BOAT_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 50f, (int)eCustomDrivingStyles.Code3, -1.0f, 7);
@@ -267,6 +271,10 @@ public class Locate : ComplexTask
             {
                 NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverRacing);
             }
+        }
+        if (Ped.IsDriver && (Ped.IsInHelicopter || Ped.IsInPlane))
+        {
+            Ped.ControlLandingGear();
         }
     }
     public override void Stop()

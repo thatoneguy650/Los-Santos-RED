@@ -277,6 +277,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsTurningLeftAtTrafficLight { get; set; }
     public bool IsTurningRightAtTrafficLight { get; set; }
     public bool IsInHelicopter { get; private set; } = false;
+    public bool IsInPlane { get; private set; } = false;
     public bool IsInVehicle { get; private set; } = false;
     public bool IsInWrithe { get; set; } = false;
     public virtual bool IsMerchant { get; set; } = false;
@@ -760,6 +761,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             LastSeatIndex = Pedestrian.SeatIndex;
             IsInHelicopter = Pedestrian.IsInHelicopter;
             IsInBoat = Pedestrian.IsInBoat;
+            IsInPlane = Pedestrian.IsInPlane;
 
             IsWaitingAtTrafficLight = NativeFunction.Natives.IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS<bool>(Pedestrian.CurrentVehicle);
             IsTurningLeftAtTrafficLight = false;
@@ -1502,7 +1504,48 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
 
 
+    public virtual void ControlLandingGear()
+    {
+        if(!(IsInHelicopter || IsInPlane))
+        {
+            return;
+        }
+        if(!Pedestrian.Exists() || !Pedestrian.CurrentVehicle.Exists())
+        {
+            return;
+        }
+        int landingGearState = NativeFunction.Natives.GET_LANDING_GEAR_STATE<int>(Pedestrian.CurrentVehicle);
+        float height = Pedestrian.HeightAboveGround;
+        EntryPoint.WriteToConsole($"I AM PED {Handle} IsInHelicopter{IsInHelicopter} IsInPlane{IsInPlane} landingGearState{landingGearState} height{height}");
+        if (height >= 15f && landingGearState == 0)//locked down
+        {
+            NativeFunction.Natives.CONTROL_LANDING_GEAR(Pedestrian.CurrentVehicle, 1);//retract
+            EntryPoint.WriteToConsole($"I AM PED {Handle} IsInHelicopter{IsInHelicopter} IsInPlane{IsInPlane} AND I AM RETRACTING MY LANDING GEAR");
+        }
 
+
+        /*ENUM LANDING_GEAR_STATE
+LGS_LOCKED_DOWN,
+LGS_RETRACTING,
+LGS_RETRACTING_INSTANT,
+LGS_DEPLOYING,
+LGS_LOCKED_UP,
+LGS_BROKEN
+ENDENUM
+        
+         ENUM LANDING_GEAR_COMMAND
+    LGC_DEPLOY = 0,
+    LGC_RETRACT,
+    LGC_DEPLOY_INSTANT,
+    LGC_RETRACT_INSTANT,
+    LGC_BREAK
+ENDENUM
+         
+         
+         */
+
+
+    }
     public virtual void OnPlayerDidBodilyFunctionsNear(IInteractionable player)
     {
         if (Game.GameTime - GameTimePlayerLastDidBodilyFunctionsNear < 3000)
