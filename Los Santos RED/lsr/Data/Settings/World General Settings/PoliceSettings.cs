@@ -61,6 +61,11 @@ public class PoliceSettings : ISettingsDefaultable
     public float AlwaysRecognizeDistance { get; set; }
     [Description("Time (in ms) that you will still be considered seen after police have lost sight.")]
     public int RecentlySeenTime { get; set; }
+
+
+    [Description("Additional Time (in ms) that you will still be considered seen after police have lost sight if any are in an aircraft.")]
+    public int RecentlySeenTimeAdditionalAircraft { get; set; }
+
     [Description("Distance (in meters) police need to be within to bust the player.")]
     public float BustDistance { get; set; }
     [Description("Enable or disable dropping your current weapon when busted and armed.")]
@@ -198,6 +203,7 @@ public class PoliceSettings : ISettingsDefaultable
         AutoRecognizeDistance = 15f;
         AlwaysRecognizeDistance = 7f;
         RecentlySeenTime = 15000;// 15000;
+        RecentlySeenTimeAdditionalAircraft = 15000;
         ManageLoadout = true;
         BustDistance = 4f;//5f;
         OverrideHealth = true;
@@ -225,7 +231,7 @@ public class PoliceSettings : ISettingsDefaultable
 
         SightDistance = 90f;//70f;
         GunshotHearingDistance = 125f;
-        SightDistance_Aircraft = 175f;
+        SightDistance_Aircraft = 250f;// 175f;
         SightDistance_Aircraft_AdditionalAtWanted = 100f;
         DeadlyChaseMinimumWantedLevel = 3;
         UnarmedChaseMaxWantedLevel = 3;

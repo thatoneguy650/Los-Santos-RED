@@ -203,18 +203,19 @@ public class PlayerPerception
     }
     private bool UpdateTargetLineOfSight(bool IsWanted)
     {
-        if (DistanceToTarget >= 150f || Originator.IsUnconscious || !Target.Character.IsVisible || Originator.IsDead)//this is new, was 100f
+        if (DistanceToTarget >= (Originator.IsInAirVehicle ? 500f : 150f) || Originator.IsUnconscious || !Target.Character.IsVisible || Originator.IsDead)//this is new, was 100f
         {
             SetTargetUnseen();
             return false;
         }
+
         if (NeedsLOSCheck && Target.Character.Exists() && Originator.Pedestrian.Exists())
         {     
             bool TargetInVehicle = Target.Character.IsInAnyVehicle(false);
             Entity ToCheck = TargetInVehicle ? (Entity)Target.Character.CurrentVehicle : (Entity)Target.Character;
 
             bool isInFront = IsInFrontOf(Target.Character); 
-            if (Originator.IsCop && !Originator.Pedestrian.IsInHelicopter)
+            if (Originator.IsCop && !Originator.IsInHelicopter && !Originator.IsInPlane)//!Originator.Pedestrian.IsInHelicopter)
             {
                 if (DistanceToTarget <= Settings.SettingsManager.PoliceSettings.SightDistance && isInFront)//55f
                 {

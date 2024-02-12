@@ -142,7 +142,7 @@ ENDENUM */
                 }
                 else if (Ped.IsInPlane)
                 {
-                    NativeFunction.Natives.TASK_PLANE_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, Player.Character, 0f,0f, 0f, 6, 70f, 40, -1.0f, 40, 20, true);
+                    NativeFunction.Natives.TASK_PLANE_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, Player.Character, 0f, 0f, 0f, 6, 100f, 40, -1.0f, 40, 20, true);//THIS KINDA WORKS//NativeFunction.Natives.TASK_PLANE_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, Player.Character, 0f,0f, 0f, 6, 70f, 40, -1.0f, 40, 20, true);
                 }
                 else if (Ped.IsInBoat)
                 {
@@ -162,7 +162,7 @@ ENDENUM */
             {
                 AssignCombat();
             }
-            if (!Ped.IsInHelicopter)
+            if (!Ped.IsInHelicopter && !Ped.IsInPlane)
             {
                 UpdateCombat();
             }

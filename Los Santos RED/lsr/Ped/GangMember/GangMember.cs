@@ -183,11 +183,11 @@ public class GangMember : PedExt, IWeaponIssuable
     public override void OnInsultedByPlayer(IInteractionable player)
     {
         base.OnInsultedByPlayer(player);
-        if(IsPlayerMember(player) || Gang == null)
+        if(IsPlayerMember(player) || Gang == null || player == null)
         {
             return;
         }
-        PlayerToCheck.RelationshipManager.GangRelationships.ChangeReputation(Gang, -100, true);  
+        player.RelationshipManager.GangRelationships.ChangeReputation(Gang, -100, true);  
     }
     public override void OnPlayerIsClose(IInteractionable player)
     {

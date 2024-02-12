@@ -103,6 +103,21 @@ public class PhysicalItems : IPropItems
             new PhysicalItem("h4_prop_h4_t_bottle_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }){ CleanupItemImmediately = true },
 
             new PhysicalItem("ng_proc_sodacan_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.1f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(-0.02f, -0.08999999f, -0.03f),new Rotator(-70f, 10f, 0f)), }),
+
+
+
+
+
+
+
+
+      //      new PhysicalItem("prop_pisswassercan_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.1f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(-0.02f, -0.08999999f, -0.03f),new Rotator(-70f, 10f, 0f)), }),
+
+
+            
+
+
+
             new PhysicalItem("ng_proc_sodacan_01b", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.1f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(-0.02f, -0.08999999f, -0.03f),new Rotator(-70f, 10f, 0f)), }),
             new PhysicalItem("prop_orang_can_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.01f, 0f, 0.02f),new Rotator(-80f, 20f, 0f)), }),
 

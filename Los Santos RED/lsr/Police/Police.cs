@@ -161,7 +161,7 @@ namespace LosSantosRED.lsr
                     {
                         anyPoliceCanRecognizePlayer = true;
                     }
-                    if (cop.SeenPlayerWithin(Settings.SettingsManager.PoliceSettings.RecentlySeenTime))
+                    if (cop.SeenPlayerWithin(cop.IsInAirVehicle ? Settings.SettingsManager.PoliceSettings.RecentlySeenTimeAdditionalAircraft : 0 + Settings.SettingsManager.PoliceSettings.RecentlySeenTime))
                     {
                         anyPoliceRecentlySeenPlayer = true;
                     }

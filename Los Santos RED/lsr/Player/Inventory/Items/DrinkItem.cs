@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 public class DrinkItem : ConsumableItem
 {
     public override bool CanConsume { get; set; } = true;
+    public int AnimationCycles { get; set; } = 25;
     public DrinkItem()
     {
     }
@@ -21,6 +23,12 @@ public class DrinkItem : ConsumableItem
     {
 
     }
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        AnimationCycles = 25;
+    }
+
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
         DrinkingActivity activity = new DrinkingActivity(actionable, settings, this, intoxicants);

@@ -742,6 +742,10 @@ public class ShopMenus : IShopMenus
                 new MenuItem("DIC Lighter Silver", 10),
                 new MenuItem("DIC Lighter Gold", 15),
                 new MenuItem("Dippo Lighter", 20),
+
+               // new MenuItem("Can of PiBwasser", 4),
+
+
                 new MenuItem("Can of eCola", 1),
                 new MenuItem("Can of Sprunk", 1),
                 new MenuItem("Bottle of PiBwasser", 3),

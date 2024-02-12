@@ -385,6 +385,40 @@ public class ModItems : IModItems
                 ItemSubType = ItemSubType.Soda, 
                 FindPercentage = 10 },//fine
             //Beer
+
+
+
+
+
+
+
+//#if DEBUG
+
+
+//            new DrinkItem("Can of PiBwasser", "Cheap 11% ABV fighting lager brewed in Germany for export only from rice, barley, hops and the fresh urine of Bavarian virgins", ItemType.Drinks){
+//                ModelItemID = "prop_pisswassercan_01a",
+//                IntoxicantName = "Low Proof Alcohol",
+//                HealthChangeAmount = 5,
+//                SleepChangeAmount = -2.0f,
+//                HungerChangeAmount = TinyHungerRecover,
+//                ThirstChangeAmount = 5.0f,
+//                ItemSubType= ItemSubType.Beer,
+//                FindPercentage = 5 },//is perfecto
+
+
+//#endif
+
+
+
+
+
+
+
+
+
+
+
+
             new DrinkItem("Bottle of PiBwasser", "Cheap 11% ABV fighting lager brewed in Germany for export only from rice, barley, hops and the fresh urine of Bavarian virgins", ItemType.Drinks){
                 ModelItemID = "prop_amb_beer_bottle",
                 IntoxicantName = "Low Proof Alcohol",

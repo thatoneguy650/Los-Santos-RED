@@ -278,6 +278,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsTurningRightAtTrafficLight { get; set; }
     public bool IsInHelicopter { get; private set; } = false;
     public bool IsInPlane { get; private set; } = false;
+    public bool IsInAirVehicle => IsInPlane || IsInHelicopter;
     public bool IsInVehicle { get; private set; } = false;
     public bool IsInWrithe { get; set; } = false;
     public virtual bool IsMerchant { get; set; } = false;

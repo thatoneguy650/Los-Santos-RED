@@ -102,7 +102,7 @@ namespace LosSantosRED.lsr.Player
                         IsFinishedWithBite = true;
                         //EntryPoint.WriteToConsole($"Eating Bite finished {PlayingAnim} TimesAte {TimesAte}");
                     }
-                    if (TimesAte >= 1 && ConsumableItemNeedGain.IsFinished)
+                    if (TimesAte >= FoodItem.AnimationCycles && ConsumableItemNeedGain.IsFinished)
                     {
                         IsCancelled = true;
                     }
