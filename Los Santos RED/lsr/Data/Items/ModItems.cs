@@ -90,6 +90,7 @@ public class ModItems : IModItems
             EntryPoint.WriteToConsole($"No Mod Items config found, creating default", 0);
             DefaultConfig();
             DefaultConfig_FullExpandedJurisdiction();
+            DefaultConfig_FullExpandedExperience();
         }
     }
 
@@ -103,6 +104,47 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { OverrideMakeName = "Vapid",OverrideClassName = "Sedan", ModelName = "tornado3", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", }); newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { ModelName = "tornado3", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", });
         
         Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\ModItems_FullExpandedJurisdiction.xml");
+    }
+    private void DefaultConfig_FullExpandedExperience()
+    {
+        PossibleItems newPossibleItems = PossibleItems.Copy();
+        DrinkItem ecolaCan = newPossibleItems.DrinkItems.FirstOrDefault(x => x.ModelItemID == "ng_proc_sodacan_01a");
+        if (ecolaCan != null)
+        {
+            ecolaCan.ModelItemID = "prop_ecolacan_01a";
+        }
+        DrinkItem sprunkCan = newPossibleItems.DrinkItems.FirstOrDefault(x => x.ModelItemID == "ng_proc_sodacan_01b");
+        if (sprunkCan != null)
+        {
+            sprunkCan.ModelItemID = "prop_sprunkcan_01a";
+        }
+        FoodItem strawRails = newPossibleItems.FoodItems.FirstOrDefault(x => x.Name == "Strawberry Rails Cereal");
+        if(strawRails != null)
+        {
+            strawRails.ModelItemID = "prop_strawberryrailsbox_01a";
+        }
+        newPossibleItems.DrinkItems.AddRange(new List<DrinkItem>
+        {
+            new DrinkItem("Can of PiBwasser", "Cheap 11% ABV fighting lager brewed in Germany for export only from rice, barley, hops and the fresh urine of Bavarian virgins", ItemType.Drinks){
+                ModelItemID = "prop_pisswassercan_01a",
+                IntoxicantName = "Low Proof Alcohol",
+                HealthChangeAmount = 5,
+                SleepChangeAmount = -2.0f,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = 5.0f,
+                ItemSubType= ItemSubType.Beer,
+                FindPercentage = 5 },
+            new DrinkItem("Can of PiBwasser ICE", "Cheap 11% ABV fighting lager brewed in Germany for export only from rice, barley, hops and the fresh urine of Bavarian virgins", ItemType.Drinks){
+                ModelItemID = "prop_pisswassercan_01b",
+                IntoxicantName = "Low Proof Alcohol",
+                HealthChangeAmount = 5,
+                SleepChangeAmount = -2.0f,
+                HungerChangeAmount = TinyHungerRecover,
+                ThirstChangeAmount = 5.0f,
+                ItemSubType= ItemSubType.Beer,
+                FindPercentage = 5 },
+        });
+        Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedExperience\\ModItems_FullExpandedExperience.xml");
     }
 
     public void WriteToFile()
@@ -311,8 +353,15 @@ public class ModItems : IModItems
         DefaultConfig_Vehicles();
         DefaultConfig_Services();
         DefaultConfig_Valuables();
+        DefaultConfig_FEE();
         Serialization.SerializeParam(PossibleItems, ConfigFileName);
     }
+
+    private void DefaultConfig_FEE()
+    {
+
+    }
+
     private void DefaultConfig_Armor()
     {
         PossibleItems.BodyArmorItems.AddRange(new List<BodyArmorItem>
@@ -385,40 +434,6 @@ public class ModItems : IModItems
                 ItemSubType = ItemSubType.Soda, 
                 FindPercentage = 10 },//fine
             //Beer
-
-
-
-
-
-
-
-//#if DEBUG
-
-
-//            new DrinkItem("Can of PiBwasser", "Cheap 11% ABV fighting lager brewed in Germany for export only from rice, barley, hops and the fresh urine of Bavarian virgins", ItemType.Drinks){
-//                ModelItemID = "prop_pisswassercan_01a",
-//                IntoxicantName = "Low Proof Alcohol",
-//                HealthChangeAmount = 5,
-//                SleepChangeAmount = -2.0f,
-//                HungerChangeAmount = TinyHungerRecover,
-//                ThirstChangeAmount = 5.0f,
-//                ItemSubType= ItemSubType.Beer,
-//                FindPercentage = 5 },//is perfecto
-
-
-//#endif
-
-
-
-
-
-
-
-
-
-
-
-
             new DrinkItem("Bottle of PiBwasser", "Cheap 11% ABV fighting lager brewed in Germany for export only from rice, barley, hops and the fresh urine of Bavarian virgins", ItemType.Drinks){
                 ModelItemID = "prop_amb_beer_bottle",
                 IntoxicantName = "Low Proof Alcohol",

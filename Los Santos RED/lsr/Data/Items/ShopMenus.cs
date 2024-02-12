@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Windows.Forms.LinkLabel;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ExplorerBar;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 
@@ -45,6 +46,7 @@ public class ShopMenus : IShopMenus
             DefaultConfig();
             DefaultConfig_LosSantos2008();
             DefaultConfig_FullExpandedJurisdiction();
+            DefaultConfig_FullExpandedExperience();
         }
     }
 
@@ -247,7 +249,17 @@ public class ShopMenus : IShopMenus
         }
         Serialization.SerializeParam(fejPossibleShopMenus, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\ShopMenus_FullExpandedJurisdiction.xml");
     }
-
+    private void DefaultConfig_FullExpandedExperience()
+    {
+        ShopMenuTypes fejPossibleShopMenus = PossibleShopMenus.Copy();
+        List<string> beerMenus = new List<string>() { "ConvenienceStoreMenu","LiquorStoreMenu","PizzaMenu","GasStationMenu","DeliGroceryMenu","ItalianMenu","PizzaThisMenu","AlDentesMenu","TwentyFourSevenMenu","FruitVineMenu","RonMenu","XeroMenu","LTDMenu","BarMenu" };
+        foreach (ShopMenu shopMenu in fejPossibleShopMenus.ShopMenuList.Where(x=> beerMenus.Contains(x.ID)))
+        {
+            shopMenu.Items.Add(new MenuItem("Can of PiBwasser", 3));
+            shopMenu.Items.Add(new MenuItem("Can of PiBwasser ICE", 3));
+        }
+        Serialization.SerializeParam(fejPossibleShopMenus, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedExperience\\ShopMenus_FullExpandedExperience.xml");
+    }
 
 
     public ShopMenu GetSpecificMenu(string menuID)

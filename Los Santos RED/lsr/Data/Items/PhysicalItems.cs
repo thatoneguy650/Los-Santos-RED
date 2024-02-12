@@ -54,7 +54,22 @@ public class PhysicalItems : IPropItems
         DefaultConfig_Drugs();
         DefaultConfig_Tools();
         DefaultConfig_ArmorHealth();
+        DefaultConfig_FEE();
         Serialization.SerializeParams(PhysicalItemsList, ConfigFileName);
+    }
+
+    private void DefaultConfig_FEE()
+    {
+        PhysicalItemsList.AddRange(new List<PhysicalItem> 
+        { 
+            //Drinks
+            new PhysicalItem("prop_pisswassercan_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.1f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(-0.02f, -0.08999999f, -0.03f),new Rotator(-70f, 10f, 0f)), }),
+            new PhysicalItem("prop_pisswassercan_01b", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.1f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(-0.02f, -0.08999999f, -0.03f),new Rotator(-70f, 10f, 0f)), }),
+            new PhysicalItem("prop_ecolacan_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.1f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(-0.02f, -0.08999999f, -0.03f),new Rotator(-70f, 10f, 0f)), }),
+            new PhysicalItem("prop_sprunkcan_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.1f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(-0.02f, -0.08999999f, -0.03f),new Rotator(-70f, 10f, 0f)), }),
+            //Food
+            new PhysicalItem("prop_strawberryrailsbox_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, -0.0f),new Rotator(0f, 0f, 0f)), }),
+        });
     }
 
     private void DefaultConfig_ArmorHealth()
@@ -111,10 +126,6 @@ public class PhysicalItems : IPropItems
 
 
 
-      //      new PhysicalItem("prop_pisswassercan_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.1f), new Rotator(0.0f, 0.0f, 0.0f)),new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(-0.02f, -0.08999999f, -0.03f),new Rotator(-70f, 10f, 0f)), }),
-
-
-            
 
 
 

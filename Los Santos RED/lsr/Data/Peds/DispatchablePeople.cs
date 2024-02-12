@@ -5190,6 +5190,9 @@ public class DispatchablePeople : IDispatchablePeople
               new PedComponent(9,16,0),
               new PedComponent(5,48,0),
                }) },
+
+            //Pilot
+            new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } },
         };
         List<DispatchablePerson> NOOSEPIAPeds_FEJ = new List<DispatchablePerson>() {
             //Class A
