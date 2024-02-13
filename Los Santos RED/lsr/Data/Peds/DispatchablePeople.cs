@@ -22,7 +22,12 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> ParkRangers;
     private List<DispatchablePerson> DOAPeds;
     private List<DispatchablePerson> SAHPPeds;
-    private List<DispatchablePerson> MilitaryPeds;
+    //private List<DispatchablePerson> MilitaryPeds;
+
+    private List<DispatchablePerson> ArmyPeds;
+    private List<DispatchablePerson> USMCPeds;
+    private List<DispatchablePerson> USAFPeds;
+
     private List<DispatchablePerson> PrisonPeds;
     private List<DispatchablePerson> MarshalsServicePeds;
     private List<DispatchablePerson> OffDutyCops;
@@ -469,24 +474,55 @@ public class DispatchablePeople : IDispatchablePeople
                     new List<PedPropComponent>() )
             },
         };
-        MilitaryPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_m_y_armymech_01",25,0) { DebugName = "ARMYNormalMale1" },
-            new DispatchablePerson("s_m_m_marine_01",50,0) { DebugName = "ARMYNormalMale2" },
-            new DispatchablePerson("s_m_m_marine_02",0,0) { DebugName = "ARMYNormalMale3" },
-            new DispatchablePerson("s_m_y_marine_03",100,100, 100, 100, 100, 150, 35, 55, 450, 550, 2, 2) {
-                DebugName = "ARMYSoldierMale"
+
+        ArmyPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_y_armymech_01",10,10) { DebugName = "Army Mechanic", MaxWantedLevelSpawn = 2 },
+            new DispatchablePerson("s_m_m_marine_01",10,10) { DebugName = "Military_BDUOnly",MaxWantedLevelSpawn = 3 },
+            new DispatchablePerson("s_m_m_marine_02",10,0) { DebugName = "Military_Dress", MaxWantedLevelSpawn = 2 },
+            new DispatchablePerson("s_m_y_marine_01",10,10) { DebugName = "Military_CombatShirtOnly", MaxWantedLevelSpawn = 3 },
+            new DispatchablePerson("s_m_y_marine_02",10,1) { DebugName = "Military_NoShirt", MaxWantedLevelSpawn = 2 },
+            new DispatchablePerson("s_m_y_marine_03",100,100, 100, 100, 100, 150, 35, 55, 450, 550, 2, 2) 
+            {
+                DebugName = "Military_FullGear"
                 ,MaxWantedLevelSpawn = 10
                 ,AllowRandomizeBeforeVariationApplied = true
                 ,FiringPatternHash = -957453492//fullauto
-                ,RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(2, 1, 0, 0),new PedComponent(8, 0, 0, 0) },
-                    new List<PedPropComponent>() { new PedPropComponent(3, 1, 0), new PedPropComponent(1, 0, 0)})
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(2, 1, 0, 0),new PedComponent(8, 0, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(3, 1, 0), new PedPropComponent(1, 0, 0)})
+            },
+            new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } },            
+        };
+        USMCPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_m_marine_01",10,10) { DebugName = "Military_BDUOnly",MaxWantedLevelSpawn = 3 },
+            new DispatchablePerson("s_m_m_marine_02",10,0) { DebugName = "Military_Dress", MaxWantedLevelSpawn = 2 },
+            new DispatchablePerson("s_m_y_marine_01",10,10) { DebugName = "Military_CombatShirtOnly", MaxWantedLevelSpawn = 3 },
+            new DispatchablePerson("s_m_y_marine_02",10,1) { DebugName = "Military_NoShirt", MaxWantedLevelSpawn = 2 },
+            new DispatchablePerson("s_m_y_marine_03",100,100, 100, 100, 100, 150, 35, 55, 450, 550, 2, 2) 
+            {
+                DebugName = "Military_FullGear"
+                ,MaxWantedLevelSpawn = 10
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,FiringPatternHash = -957453492//fullauto
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(2, 1, 0, 0),new PedComponent(8, 0, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(3, 1, 0), new PedPropComponent(1, 0, 0)})
+            },
+            new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } },            
+        };
+        USAFPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_m_marine_01",10,10) { DebugName = "Military_BDUOnly",MaxWantedLevelSpawn = 3 },
+            new DispatchablePerson("s_m_m_marine_02",10,0) { DebugName = "Military_Dress", MaxWantedLevelSpawn = 2 },
+            new DispatchablePerson("s_m_y_marine_01",10,10) { DebugName = "Military_CombatShirtOnly", MaxWantedLevelSpawn = 3 },
+            new DispatchablePerson("s_m_y_marine_02",10,1) { DebugName = "Military_NoShirt", MaxWantedLevelSpawn = 2 },
+            new DispatchablePerson("s_m_y_marine_03",100,100, 100, 100, 100, 150, 35, 55, 450, 550, 2, 2) 
+            {
+                DebugName = "Military_FullGear"
+                ,MaxWantedLevelSpawn = 10
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,FiringPatternHash = -957453492//fullauto
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(2, 1, 0, 0),new PedComponent(8, 0, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(3, 1, 0), new PedPropComponent(1, 0, 0)})
             },
             new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } },
-            //new DispatchablePerson("s_m_y_pilot_01",0,0) { DebugName = "ARMYPilotMale1" },
-            //new DispatchablePerson("s_m_m_pilot_02",0,0) { DebugName = "ARMYPilotMale2" },
-            
         };
+
+
         PrisonPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_m_prisguard_01",0,0)  { DebugName = "PrisonGuardMale" },
 
@@ -1579,7 +1615,9 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("ParkRangers", ParkRangers));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("DOAPeds", DOAPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("SAHPPeds", SAHPPeds));
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("MilitaryPeds", MilitaryPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("ArmyPeds", ArmyPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("USMCPeds", USMCPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("USAFPeds", USAFPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("PrisonPeds", PrisonPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
@@ -1698,7 +1736,9 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("ParkRangers", ParkRangers));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("DOAPeds", DOAPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("SAHPPeds", SAHPPeds));
-        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("MilitaryPeds", MilitaryPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("ArmyPeds", ArmyPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("USMCPeds", USMCPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("USAFPeds", USAFPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("PrisonPeds", PrisonPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
@@ -1837,7 +1877,9 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("ParkRangers", ParkRangers));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("DOAPeds", DOAPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("SAHPPeds", SAHPPeds));
-        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("MilitaryPeds", MilitaryPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("ArmyPeds", ArmyPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("USMCPeds", USMCPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("USAFPeds", USAFPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("PrisonPeds", PrisonPeds_Simple));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
@@ -7021,22 +7063,22 @@ public class DispatchablePeople : IDispatchablePeople
    }) 
             },
         };
-        List<DispatchablePerson> MilitaryPeds_FEJ = new List<DispatchablePerson>() {
-            //Vanilla Peds
-            new DispatchablePerson("s_m_y_armymech_01",25,0),
-            new DispatchablePerson("s_m_m_marine_01",50,0),
-            new DispatchablePerson("s_m_m_marine_02",0,0),
-            new DispatchablePerson("s_m_y_marine_01",25,0),
-            new DispatchablePerson("s_m_y_marine_02",0,0),
+        //List<DispatchablePerson> MilitaryPeds_FEJ = new List<DispatchablePerson>() {
+        //    //Vanilla Peds
+        //    new DispatchablePerson("s_m_y_armymech_01",25,0),
+        //    new DispatchablePerson("s_m_m_marine_01",50,0),
+        //    new DispatchablePerson("s_m_m_marine_02",0,0),
+        //    new DispatchablePerson("s_m_y_marine_01",25,0),
+        //    new DispatchablePerson("s_m_y_marine_02",0,0),
 
-            new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } },
+        //    new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } },
 
-            new DispatchablePerson("s_m_y_pilot_01",0,0) { DebugName = "Police and LSPD Labeled Pilot",GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } }, //HAS LSPD STUFF ON HIM!!!!
+        //    new DispatchablePerson("s_m_y_pilot_01",0,0) { DebugName = "Police and LSPD Labeled Pilot",GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } }, //HAS LSPD STUFF ON HIM!!!!
 
 
-            new DispatchablePerson("s_m_y_marine_03",100,100, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(2, 1, 0, 0),new PedComponent(8, 0, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(3, 1, 0), new PedPropComponent(1, 0, 0)}) },
+        //    new DispatchablePerson("s_m_y_marine_03",100,100, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(2, 1, 0, 0),new PedComponent(8, 0, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(3, 1, 0), new PedPropComponent(1, 0, 0)}) },
 
-        };
+        //};
         List<DispatchablePerson> PrisonPeds_FEJ = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_m_prisguard_01",0,0),
 
@@ -9380,7 +9422,13 @@ public class DispatchablePeople : IDispatchablePeople
 
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("DOAPeds", DOAPeds_FEJ));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("SAHPPeds", SAHPPeds_FEJ));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("MilitaryPeds", MilitaryPeds_FEJ));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("ArmyPeds", ArmyPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("USMCPeds", USMCPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("USAFPeds", USAFPeds));
+
+
+
+
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("PrisonPeds", PrisonPeds_FEJ));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("NYSPPeds", NYSP_FEJ));

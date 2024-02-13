@@ -79,6 +79,8 @@ public class DispatchableVehicles : IDispatchableVehicles
     private List<DispatchableVehicle> PoliceHeliVehicles;
     private List<DispatchableVehicle> SheriffHeliVehicles;
     private List<DispatchableVehicle> ArmyVehicles;
+    private List<DispatchableVehicle> USMCVehicles;
+    private List<DispatchableVehicle> USAFVehicles;
     private List<DispatchableVehicle> LSLifeguardVehicles;
     private List<DispatchableVehicle> Firetrucks;
     private List<DispatchableVehicle> Amublance1;
@@ -259,27 +261,124 @@ public class DispatchableVehicles : IDispatchableVehicles
         SheriffHeliVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("buzzard2", 1,150) { MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 },
         };
-        ArmyVehicles = new List<DispatchableVehicle>() {
-            //new DispatchableVehicle("crusader", 85,25) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            //new DispatchableVehicle("barracks", 15,75) { MaxRandomDirtLevel = 15.0f,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
 
+        ArmyVehicles = new List<DispatchableVehicle>()
+        {
+            //General
             new DispatchableVehicle("crusader", 25,10) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             new DispatchableVehicle("barracks", 25,10) { MaxRandomDirtLevel = 15.0f,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-
             new DispatchableVehicle("squaddie", 50,50) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             new DispatchableVehicle("insurgent3", 0,25) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            
+            //Heavy
+            new DispatchableVehicle("rhino", 0, 15) {  MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 1,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             new DispatchableVehicle("apc", 0,25) { MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
 
+            //Heli
+            new DispatchableVehicle("valkyrie2", 0,75) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1,0,1,2 },MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            new DispatchableVehicle("buzzard",0,20) { RequiredPedGroup = "Pilot", RequiredGroupIsDriverOnly = true, RequiredPrimaryColorID = 153, RequiredSecondaryColorID = 153, MinOccupants = 3, MaxOccupants = 4},
+            new DispatchableVehicle("hunter",0,20) { RequiredPedGroup = "Pilot", RequiredPrimaryColorID = 153, RequiredSecondaryColorID = 153, MinOccupants = 2, MaxOccupants = 2}
 
-            new DispatchableVehicle("rhino", 0, 15) {  MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 1,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            new DispatchableVehicle("valkyrie2", 0,75) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true, MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1,0,1,2 },MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+        };
 
+        USMCVehicles = new List<DispatchableVehicle>()
+        {
+            //General
+            new DispatchableVehicle("crusader", 25,10) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            new DispatchableVehicle("barracks", 25,10) { MaxRandomDirtLevel = 15.0f,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            new DispatchableVehicle("squaddie", 50,50) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            new DispatchableVehicle("insurgent3", 0,25) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            
+            //HELI
+            new DispatchableVehicle("cargobob",0,20) { RequiredPedGroup = "Pilot", RequiredGroupIsDriverOnly = true, RequiredPrimaryColorID = 153, RequiredSecondaryColorID = 153, MinOccupants = 3, MaxOccupants = 4},
+
+            //Boat
             new DispatchableVehicle("dinghy5", 0, 100) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 152, RequiredSecondaryColorID = 0, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4, MinWantedLevelSpawn = 6,MaxWantedLevelSpawn = 10, },
+        };
 
+        USAFVehicles = new List<DispatchableVehicle>()
+        {
+            //General
+            new DispatchableVehicle("crusader", 25,10) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            new DispatchableVehicle("barracks", 25,10) { MaxRandomDirtLevel = 15.0f,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            new DispatchableVehicle("squaddie", 50,50) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            
+            //HELI
+           
+            //JETS
             new DispatchableVehicle("lazer",0,1) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1 },
             new DispatchableVehicle("hydra",0,1) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1 },
             new DispatchableVehicle("strikeforce",0,1) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1 },
-            };
+        };
+
+        //ArmyVehicles = new List<DispatchableVehicle>()
+        //{
+        //    //new DispatchableVehicle("crusader", 85,25) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+        //    //new DispatchableVehicle("barracks", 15,75) { MaxRandomDirtLevel = 15.0f,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+
+        //    new DispatchableVehicle("crusader", 25,10) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+        //    new DispatchableVehicle("barracks", 25,10) { MaxRandomDirtLevel = 15.0f,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+
+        //    new DispatchableVehicle("squaddie", 50,50) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+        //    new DispatchableVehicle("insurgent3", 0,25) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+        //    new DispatchableVehicle("apc", 0,25) { MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+
+
+        //    new DispatchableVehicle("rhino", 0, 15) {  MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 1,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+        //    new DispatchableVehicle("valkyrie2", 0,75) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true, MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1,0,1,2 },MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+
+        //    new DispatchableVehicle("dinghy5", 0, 100) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 152, RequiredSecondaryColorID = 0, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4, MinWantedLevelSpawn = 6,MaxWantedLevelSpawn = 10, },
+
+        //    new DispatchableVehicle("lazer",0,1) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1 },
+        //    new DispatchableVehicle("hydra",0,1) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1 },
+        //    new DispatchableVehicle("strikeforce",0,1) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1 },
+        //};
+
+        //USMCVehicles = new List<DispatchableVehicle>() 
+        //{
+        //    //new DispatchableVehicle("crusader", 85,25) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+        //    //new DispatchableVehicle("barracks", 15,75) { MaxRandomDirtLevel = 15.0f,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+
+        //    new DispatchableVehicle("crusader", 25,10) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+        //    new DispatchableVehicle("barracks", 25,10) { MaxRandomDirtLevel = 15.0f,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+
+        //    new DispatchableVehicle("squaddie", 50,50) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+        //    new DispatchableVehicle("insurgent3", 0,25) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+        //    new DispatchableVehicle("apc", 0,25) { MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+
+
+        //    new DispatchableVehicle("rhino", 0, 15) {  MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 1,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+        //    new DispatchableVehicle("valkyrie2", 0,75) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true, MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1,0,1,2 },MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+
+        //    new DispatchableVehicle("dinghy5", 0, 100) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 152, RequiredSecondaryColorID = 0, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4, MinWantedLevelSpawn = 6,MaxWantedLevelSpawn = 10, },
+
+        //    new DispatchableVehicle("lazer",0,1) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1 },
+        //    new DispatchableVehicle("hydra",0,1) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1 },
+        //    new DispatchableVehicle("strikeforce",0,1) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1 },
+        //};
+
+        //USAFVehicles = new List<DispatchableVehicle>() 
+        //{
+        //    //new DispatchableVehicle("crusader", 85,25) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+        //    //new DispatchableVehicle("barracks", 15,75) { MaxRandomDirtLevel = 15.0f,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+
+        //    new DispatchableVehicle("crusader", 25,10) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+        //    new DispatchableVehicle("barracks", 25,10) { MaxRandomDirtLevel = 15.0f,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+
+        //    new DispatchableVehicle("squaddie", 50,50) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+        //    new DispatchableVehicle("insurgent3", 0,25) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+        //    new DispatchableVehicle("apc", 0,25) { MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+
+
+        //    new DispatchableVehicle("rhino", 0, 15) {  MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 1,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+        //    new DispatchableVehicle("valkyrie2", 0,75) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true, MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1,0,1,2 },MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+
+        //    new DispatchableVehicle("dinghy5", 0, 100) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 152, RequiredSecondaryColorID = 0, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4, MinWantedLevelSpawn = 6,MaxWantedLevelSpawn = 10, },
+
+        //    new DispatchableVehicle("lazer",0,1) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1 },
+        //    new DispatchableVehicle("hydra",0,1) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1 },
+        //    new DispatchableVehicle("strikeforce",0,1) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1 },
+        //};
 
         LSLifeguardVehicles = new List<DispatchableVehicle>()
         {
@@ -1163,6 +1262,8 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("PoliceHeliVehicles", PoliceHeliVehicles),
             new DispatchableVehicleGroup("SheriffHeliVehicles", SheriffHeliVehicles),
             new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles),
+            new DispatchableVehicleGroup("USMCVehicles", USMCVehicles),
+            new DispatchableVehicleGroup("USAFVehicles", USAFVehicles),
             new DispatchableVehicleGroup("Firetrucks", Firetrucks),
             new DispatchableVehicleGroup("Amublance1", Amublance1),
             new DispatchableVehicleGroup("Amublance2", Amublance2),
@@ -1290,6 +1391,10 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("PoliceHeliVehicles", PoliceHeliVehicles),
             new DispatchableVehicleGroup("SheriffHeliVehicles", SheriffHeliVehicles),
             new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles),
+            new DispatchableVehicleGroup("USMCVehicles", USMCVehicles),
+            new DispatchableVehicleGroup("USAFVehicles", USAFVehicles),
+            new DispatchableVehicleGroup("USMCVehicles", USMCVehicles),
+            new DispatchableVehicleGroup("USAFVehicles", USAFVehicles),
             new DispatchableVehicleGroup("Firetrucks", Firetrucks),
             new DispatchableVehicleGroup("Amublance1", Amublance1),
             new DispatchableVehicleGroup("Amublance2", Amublance2),
@@ -1351,6 +1456,8 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("PoliceHeliVehicles", PoliceHeliVehicles),
             new DispatchableVehicleGroup("SheriffHeliVehicles", SheriffHeliVehicles),
             new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles),
+            new DispatchableVehicleGroup("USMCVehicles", USMCVehicles),
+            new DispatchableVehicleGroup("USAFVehicles", USAFVehicles),
             new DispatchableVehicleGroup("Firetrucks", Firetrucks),
             new DispatchableVehicleGroup("Amublance1", Amublance1),
             new DispatchableVehicleGroup("Amublance2", Amublance2),
@@ -1418,7 +1525,13 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("EastLSPDVehicles", dispatchableVehicles_FEJ.EastLSPDVehicles_FEJ),
             new DispatchableVehicleGroup("PoliceHeliVehicles", dispatchableVehicles_FEJ.PoliceHeliVehicles_FEJ),
             new DispatchableVehicleGroup("SheriffHeliVehicles", dispatchableVehicles_FEJ.SheriffHeliVehicles_FEJ),
+
+
             new DispatchableVehicleGroup("ArmyVehicles", dispatchableVehicles_FEJ.ArmyVehicles_FEJ),
+            new DispatchableVehicleGroup("USMCVehicles", dispatchableVehicles_FEJ.USMCVehicles_FEJ),
+            new DispatchableVehicleGroup("USAFVehicles", dispatchableVehicles_FEJ.USAFVehicles_FEJ),
+
+
             new DispatchableVehicleGroup("Firetrucks", Firetrucks),
             new DispatchableVehicleGroup("Amublance1", Amublance1),
             new DispatchableVehicleGroup("Amublance2", Amublance2),

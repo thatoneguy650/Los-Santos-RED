@@ -35,6 +35,8 @@ public class Agencies : IAgencies
     private Agency SAPR;
     private Agency USCG;
     private Agency ARMY;
+    private Agency USMC;
+    private Agency USAF;
     private Agency LSFDFire;
     private Agency LSFD;
     private Agency NYSP;
@@ -152,7 +154,18 @@ public class Agencies : IAgencies
         NOOSE = new Agency("~r~", "NOOSE", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Classification.Federal, "NOOSEPeds", "NOOSEVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "NOOSE Officer") { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         FIB = new Agency("~p~", "FIB", "FIB", "Federal Investigation Bureau", "Purple", Classification.Federal, "FIBPeds", "FIBVehicles", "FIB ", "Tasers", "BestSidearms", "BestLongGuns", "FIB Agent") { MaxWantedLevelSpawn = 5, SpawnLimit = 6, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         DOA = new Agency("~p~", "DOA", "DOA", "Drug Observation Agency", "Purple", Classification.Federal, "DOAPeds", "UnmarkedVehicles", "DOA ", "Tasers", "AllSidearms", "AllLongGuns", "DOA Agent") { MaxWantedLevelSpawn = 3, SpawnLimit = 4, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };    
-        ARMY = new Agency("~u~", "ARMY", "ARMY", "Army", "Black", Classification.Military, "MilitaryPeds", "ArmyVehicles", "", null, "MilitarySidearms", "MilitaryLongGuns", "Soldier") { MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
+        
+        
+        
+        
+        ARMY = new Agency("~u~", "ARMY", "ARMY", "U.S. Army", "Black", Classification.Military, "ArmyPeds", "ArmyVehicles", "", null, "MilitarySidearms", "MilitaryLongGuns", "Soldier") { MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
+        USAF = new Agency("~u~", "USAF", "USAF", "U.S. Air Force", "Black", Classification.Military, "USAFPeds", "USAFVehicles", "", null, "MilitarySidearms", "MilitaryLongGuns", "Airman") { MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
+        USMC = new Agency("~u~", "USMC", "USMC", "U.S. Marine Corps", "Black", Classification.Military, "USMCPeds", "USMCVehicles", "", null, "MilitarySidearms", "MilitaryLongGuns", "Marine") { MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
+
+
+
+
+
         USMS = new Agency("~r~", "USMS", "Marshals Service", "US Marshals Service", "DarkSlateGray", Classification.Marshal, "MarshalsServicePeds", "MarshalsServiceVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "Marshals Service Officer") { MaxWantedLevelSpawn = 3, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
 
 
@@ -182,7 +195,7 @@ public class Agencies : IAgencies
             SAHP,SASPA,SAPR,USCG,
             NYSP,LCPD,
             LSLFG,
-            NOOSE,FIB,DOA,ARMY,USMS,
+            NOOSE,FIB,DOA,ARMY,USMC,USAF,USMS,
             LSFDFire,LSMC,MRH,LSFD, 
             GRPSECHS,SECURO,MERRY,BOBCAT,
             UNK,
@@ -243,7 +256,7 @@ public class Agencies : IAgencies
 
             NYSP,LCPD,
             LSLFG,
-            FIB,BorderPatrol,NOOSEPIA,NOOSESEP,DOA,ARMY,USMS,
+            FIB,BorderPatrol,NOOSEPIA,NOOSESEP,DOA,ARMY,USMC,USAF,USMS,
             LSFDFire,LSMC,MRH,LSFD,UNK,
             GRPSECHS,SECURO,MERRY,BOBCAT,
             UNK,
@@ -265,6 +278,8 @@ public class Agencies : IAgencies
         Agency SAPR2008 = Extensions.DeepCopy(SAPR);
         Agency SACG2008 = Extensions.DeepCopy(USCG);
         Agency ARMY2008 = Extensions.DeepCopy(ARMY);
+        Agency USMC2008 = Extensions.DeepCopy(USMC);
+        Agency USAF2008 = Extensions.DeepCopy(USAF);
         Agency GRPSECHS2008 = Extensions.DeepCopy(GRPSECHS);
         Agency SECURO2008 = Extensions.DeepCopy(SECURO);
         Agency MERRY2008 = Extensions.DeepCopy(MERRY);
@@ -277,7 +292,7 @@ public class Agencies : IAgencies
             SAHP2008,SASPA2008,SAPR2008,SACG2008,
             NYSP,
             LSLFG,
-            NOOSE2008,FIB2008,DOA2008,ARMY2008,USMS2008,
+            NOOSE2008,FIB2008,DOA2008,ARMY2008,USMC2008,USAF2008,USMS2008,
             LSFDFire,LSMC,MRH,LSFD,
             GRPSECHS2008,SECURO2008,MERRY2008,BOBCAT2008,
             UNK,
@@ -299,7 +314,7 @@ public class Agencies : IAgencies
             new Agency("~b~", "LCPD-ASD","LCPD-ASD", "Liberty City Police Department - Air Support Division", "Blue", Classification.Police, "StandardCops", "PoliceHeliVehicles", "ASD ","Tasers","HeliSidearms","HeliLongGuns", "LSPD Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6  },
             new Agency("~b~", "ASP","ASP", "Alderney State Police", "Blue", Classification.Police, "SheriffPeds", "LCPDVehicles", "ASP ","Tasers","AllSidearms","AllLongGuns", "ASP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1,OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" },
             NYSP,
-            NOOSE,FIB,DOA,ARMY,USMS,               
+            NOOSE,FIB,DOA,ARMY,USMC,USAF,USMS,               
             new Agency("~r~", "FDLC","FDLC", "Liberty City Fire Department", "Red", Classification.Fire, "Firefighters", "Firetrucks", "FD ","FireExtinguisher",null, null, "FDLC Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
             new Agency("~w~", "LCMC","LCMC", "Liberty City Medical Center", "White", Classification.EMS, "BlueEMTs", "Amublance1", "MC ",null,null, null, "LCMC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
             GRPSECHS,SECURO,MERRY,BOBCAT,
@@ -339,7 +354,7 @@ public class Agencies : IAgencies
             SAHP,SASPA,SAPR,USCG,
             NYSP,
             LSLFG,
-            NOOSE,FIB,DOA,ARMY,USMS,
+            NOOSE,FIB,DOA,ARMY,USMC,USAF,USMS,
             LSFDFire,LSMC_Simple,MRH_Simple,LSFD_Simple,    
             GRPSECHS_Simple,SECURO_Simple,MERRY_Simple,BOBCAT_Simple,
             UNK,
