@@ -67,11 +67,6 @@ public class Bank : GameLocation
             BankInterior.SetBank(this);
             BankInterior.Teleport(Player, this, StoreCamera);
         }
-        //if (Interior != null && Interior.IsTeleportEntry)
-        //{
-        //    DoEntranceCamera(true);
-        //    Interior.Teleport(Player, this, StoreCamera);
-        //}
         else
         {
             StandardInteract(null, false);

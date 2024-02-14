@@ -15,6 +15,7 @@ namespace LosSantosRED.lsr
 
     public class Violations
     {
+        private List<string> ContinuouslyViolatingCrimes= new List<string>();
         private IViolateable Player;
         private ITimeReportable TimeReporter;
         private ICrimes Crimes;
@@ -74,9 +75,19 @@ namespace LosSantosRED.lsr
                 OtherViolations.Update();
                 DamageViolations.Update();
                 MinorViolations.Update();
+                HandleContinuoslyViolating();
                 AddObservedAndReported();
             }
         }
+
+        private void HandleContinuoslyViolating()
+        {
+            foreach(string crimeID in ContinuouslyViolatingCrimes)
+            {
+                AddViolating(crimeID);
+            }
+        }
+
         public void Reset()
         {
             DamageViolations.Reset();
@@ -86,6 +97,7 @@ namespace LosSantosRED.lsr
             CrimesViolating.RemoveAll(x => !x.IsTrafficViolation);
             TrafficViolations.Reset();
             MinorViolations.Reset();
+            ContinuouslyViolatingCrimes.Clear();
         }
         public void Dispose()
         {
@@ -95,6 +107,7 @@ namespace LosSantosRED.lsr
             TheftViolations.Dispose();
             OtherViolations.Dispose();
             MinorViolations.Dispose();
+            ContinuouslyViolatingCrimes.Clear();
         }
         public void AddViolating(string crimeID)
         {
@@ -108,6 +121,20 @@ namespace LosSantosRED.lsr
                 crime.DisplayWarning();
             }
             CrimesViolating.Add(crime);        
+        }
+        public void SetContinuouslyViolating(string crimeID)
+        {
+            if(!ContinuouslyViolatingCrimes.Contains(crimeID))
+            {
+                ContinuouslyViolatingCrimes.Add(crimeID);
+            }
+        }
+        public void StopContinuouslyViolating(string crimeID)
+        {
+            if (ContinuouslyViolatingCrimes.Contains(crimeID))
+            {
+                ContinuouslyViolatingCrimes.Remove(crimeID);
+            }
         }
         public void AddViolatingAndObserved(string crimeID) //for when the cops find a gun on you
         {

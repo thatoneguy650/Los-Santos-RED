@@ -107,6 +107,7 @@ public class ModDataFileManager
         GameFiber.Yield();
         DispatchableVehicles = new DispatchableVehicles();
         DispatchableVehicles.ReadConfig();
+        DispatchableVehicles.Setup();
         GameFiber.Yield();
         IssueableWeapons = new IssueableWeapons();
         IssueableWeapons.ReadConfig();
@@ -240,12 +241,12 @@ public class ModDataFileManager
 
     private void SetupFullExpandedExperience()
     {
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedExperience");
+        //Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedExperience");
         string Description =
             "Full Expanded Experience"
             + Environment.NewLine +
             "";
-        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedExperience\\readme.txt", Description);
+        //File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedExperience\\readme.txt", Description);
     }
 
     private void SetupFullModernTraffic()

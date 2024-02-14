@@ -156,6 +156,8 @@ namespace LosSantosRED.lsr
         private bool canHearScanner;
         private Dispatch StoppingTrains;
 
+        private Dispatch TheftDispatch;
+        private Dispatch Shoplifting;
 
         private uint GameTimeLastAddedAmbientDispatch;
         private uint GameTimeBetweenAmbientDispatches;
@@ -1757,7 +1759,10 @@ namespace LosSantosRED.lsr
             new CrimeDispatch(StaticStrings.MaliciousVehicleDamageCrimeID,MaliciousVehicleDamage),
             new CrimeDispatch(StaticStrings.DrugPossessionCrimeID,DrugPossession),
             new CrimeDispatch(StaticStrings.StandingOnVehicleCrimeID,StandingOnVehicle),
-            new CrimeDispatch(StaticStrings.BuringABodyCrimeID,UnlawfulBodyDisposal),
+            new CrimeDispatch(StaticStrings.BuryingABody,UnlawfulBodyDisposal),
+
+            new CrimeDispatch(StaticStrings.TheftCrimeID,TheftDispatch),
+            new CrimeDispatch(StaticStrings.ShopliftingCrimeID,Shoplifting),
         };
             DispatchList = new List<Dispatch>
         {
@@ -1844,6 +1849,8 @@ namespace LosSantosRED.lsr
             ,StandingOnVehicle
             ,UnlawfulBodyDisposal
             ,StoppingTrains
+            ,TheftDispatch
+            ,Shoplifting
         };
         }
         private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)
@@ -2477,6 +2484,29 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_4_19.Adeceasedperson.FileName },"a deceased person"),
             },
             };
+
+
+
+            TheftDispatch = new Dispatch()
+            {
+                Name = "Theft",
+                LocationDescription = LocationSpecificity.Street,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_theft.Apossibletheft.FileName },"a possible theft"),
+            },
+            };
+
+            Shoplifting = new Dispatch()
+            {
+                Name = "Shoplifting",
+                LocationDescription = LocationSpecificity.Street,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_4_84.Apettytheft.FileName },"a petty theft"),
+            },
+            };
+
 
             PublicVagrancy = new Dispatch()
             {

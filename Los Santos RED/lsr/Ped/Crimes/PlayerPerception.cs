@@ -203,7 +203,26 @@ public class PlayerPerception
     }
     private bool UpdateTargetLineOfSight(bool IsWanted)
     {
-        if (DistanceToTarget >= (Originator.IsInAirVehicle ? 500f : 150f) || Originator.IsUnconscious || !Target.Character.IsVisible || Originator.IsDead)//this is new, was 100f
+        float expectedSightDistance = 60f;
+        if(Originator.IsInAirVehicle)
+        {
+            expectedSightDistance = Settings.SettingsManager.PoliceSettings.SightDistance_Aircraft;
+            if (IsWanted)
+            {
+                expectedSightDistance += Settings.SettingsManager.PoliceSettings.SightDistance_Aircraft_AdditionalAtWanted;
+            }
+        }
+        else if (Originator.IsCop)
+        {
+            expectedSightDistance = Settings.SettingsManager.PoliceSettings.SightDistance;
+        }
+        else
+        {
+            expectedSightDistance = Settings.SettingsManager.CivilianSettings.SightDistance;
+        }
+        expectedSightDistance += 50f;//safety margin
+
+        if (DistanceToTarget >= expectedSightDistance || Originator.IsUnconscious || !Target.Character.IsVisible || Originator.IsDead)//this is new, was 100f
         {
             SetTargetUnseen();
             return false;

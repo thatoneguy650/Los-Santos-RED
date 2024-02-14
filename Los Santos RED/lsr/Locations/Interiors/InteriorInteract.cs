@@ -4,6 +4,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -13,6 +14,11 @@ using System.Xml.Serialization;
 [XmlInclude(typeof(AnimationInteract))]
 [XmlInclude(typeof(ToiletInteract))]
 [XmlInclude(typeof(SinkInteract))]
+
+
+[XmlInclude(typeof(TheftInteract))]
+[XmlInclude(typeof(MoneyTheftInteract))]
+[XmlInclude(typeof(ItemTheftInteract))]
 //UrinalInteract
 //ToiletInteract
 public class InteriorInteract
@@ -55,13 +61,16 @@ public class InteriorInteract
     public bool UseNavmesh { get; set; } = true;
     public bool WithWarp { get; set; } = false;
     public virtual bool ShouldAddPrompt => !Interior.IsMenuInteracting && distanceTo <= InteractDistance;
-    public virtual void Setup()
+    public virtual void Setup(IModItems modItems)
     {
 
     }
 
 
+    public virtual void OnInteriorLoaded()
+    {
 
+    }
 
 
     public void DisplayMarker(int markerType, float zOffset, float markerScale)

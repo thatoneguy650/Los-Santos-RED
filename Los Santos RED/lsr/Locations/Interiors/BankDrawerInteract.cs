@@ -26,7 +26,15 @@ public class BankDrawerInteract : InteriorInteract
     {
 
     }
-
+    public override void OnInteriorLoaded()
+    {
+        if (Bank == null)
+        {
+            return;
+        }
+        TotalCash = RandomItems.GetRandomNumberInt(Bank.DrawerCashMin, Bank.DrawerCashMax);
+        EntryPoint.WriteToConsole($"BankDrawerInteract OnInteriorLoaded SET TOTALCASH ${TotalCash} OF DRAWER");
+    }
     public override void OnInteract()
     {
         if(Bank == null)

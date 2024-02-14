@@ -79,7 +79,8 @@ public static class StaticStrings
     public static readonly string AssaultingWithDeadlyWeaponCrimeID = "AssaultingWithDeadlyWeapon";
     public static readonly string AssaultingCiviliansCrimeID = "AssaultingCivilians";
     public static readonly string DealingDrugsCrimeID = "DealingDrugs";
-
+    public static readonly string TheftCrimeID = "TheftCrime";
+    public static readonly string ShopliftingCrimeID = "Shoplifting";
     public static readonly string DrugPossessionCrimeID = "DrugPossession";
 
 
@@ -105,7 +106,7 @@ public static class StaticStrings
     public static readonly string IndecentExposureCrimeID = "IndecentExposure";
     public static readonly string MaliciousVehicleDamageCrimeID = "MaliciousVehicleDamage";
     public static readonly string StandingOnVehicleCrimeID = "StandingOnVehicle";
-    public static readonly string BuringABodyCrimeID = "BuringABody";
+    public static readonly string BuryingABody = "BuringABody";
     //Air Carriers
     public static readonly string AirHerlerCarrierID = "AirHerler";
     public static readonly string CaipiraAirwaysCarrierID = "CaipiraAirways";

@@ -115,7 +115,105 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(545.504f,2672.745f,42.30644f)),//left door
-                    new InteriorDoor(997554217, new Vector3(542.9252f,2672.406f,42.30644f))}) { IsWeaponRestricted = true, },//right door
+                    new InteriorDoor(997554217, new Vector3(542.9252f,2672.406f,42.30644f))}) //right door
+            { 
+                
+                IsWeaponRestricted = true, 
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ItemTheftInteract("247rt68itemtheftint4",new Vector3(547.77f, 2669.75f, 42.15649f), 272.6136f,"Shoplift")//Looking at the front counter, mostly candy bars and chips
+                    {
+                        MinItems = 15,
+                        MaxItems = 25,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        ViolatingCrimeID = StaticStrings.ShopliftingCrimeID,
+                        PossibleItems = new List<TheftInteractItem> ()
+                        {
+                            new TheftInteractItem("Sticky Rib Phat Chips",1,1,100),
+                            new TheftInteractItem("Habanero Phat Chips",1,1,100),
+                            new TheftInteractItem("Supersalt Phat Chips",1,1,100),
+                            new TheftInteractItem("Big Cheese Phat Chips",1,1,100),
+                            new TheftInteractItem("Ego Chaser Energy Bar",1,1,100),
+                            new TheftInteractItem("P's & Q's",1,1,100),
+                            new TheftInteractItem("Meteorite Bar",1,1,100),
+
+                            new TheftInteractItem("Redwood Regular",20,20,100),
+                            new TheftInteractItem("Redwood Mild",20,20,100),
+                            new TheftInteractItem("Debonaire",20,20,100),
+                            new TheftInteractItem("Debonaire Menthol",20,20,100),
+                            new TheftInteractItem("Caradique",20,20,100),
+                            new TheftInteractItem("69 Brand",20,20,100),
+                            new TheftInteractItem("Estancia Cigar",10,10,100),
+                        }
+                    },
+
+                    new ItemTheftInteract("247rt68itemtheftint3",new Vector3(546.6794f, 2668.725f, 42.15649f), 88.89041f,"Shoplift")//Front of first stand
+                    {
+                        MinItems = 15,
+                        MaxItems = 25,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        ViolatingCrimeID = StaticStrings.ShopliftingCrimeID,
+                        PossibleItems = new List<TheftInteractItem> ()
+                        {
+                            new TheftInteractItem("Can of eCola",1,1,20),
+                            new TheftInteractItem("Can of Sprunk",1,1,20),
+                            new TheftInteractItem("Can of Orang-O-Tang",1,1,45),
+                        }
+                    },
+                    new ItemTheftInteract("247rt68itemtheftint1",new Vector3(544.7056f, 2668.834f, 42.15654f), 269.0896f,"Shoplift") //back of first
+                    { 
+                        MinItems = 15, 
+                        MaxItems = 25,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        ViolatingCrimeID = StaticStrings.ShopliftingCrimeID,
+                        PossibleItems = new List<TheftInteractItem> () 
+                        {
+                            new TheftInteractItem("Strawberry Rails Cereal",1,1,20),
+                            new TheftInteractItem("Crackles O' Dawn Cereal",1,1,20),
+                            new TheftInteractItem("White Bread",1,1,45),
+                        }
+                    },
+                    new ItemTheftInteract("247rt68itemtheftint2",new Vector3(541.7424f, 2668.305f, 42.15653f), 281.1041f,"Shoplift")//back of second BEER!
+                    {
+                        MinItems = 15,
+                        MaxItems = 25,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        ViolatingCrimeID = StaticStrings.ShopliftingCrimeID,
+
+                        IntroAnimationDictionary = "anim@scripted@heist@ig1_table_grab@cash@male@",
+                        IntroAnimation = "enter",
+
+                        LoopAnimationDictionary = "anim@scripted@heist@ig1_table_grab@cash@male@",
+                        LoopAnimation = "grab",
+                        PossibleItems = new List<TheftInteractItem> ()
+                        {
+                            new TheftInteractItem("Bottle of Pride",1,1,100),
+                            new TheftInteractItem("Bottle of Barracho",1,1,100),
+                            new TheftInteractItem("Bottle of A.M.",1,1,100),
+                            new TheftInteractItem("Bottle of Dusche",1,1,100),
+                        }
+                    },
+                   new MoneyTheftInteract("247rt68moneytheft1",new Vector3(546.2946f, 2663.203f, 42.1565f), 189.7516f,"Steal from Safe")
+                    {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 2500,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        CameraPosition = new Vector3(548.8856f, 2664.482f, 43.11457f), CameraDirection = new Vector3(-0.8029377f, -0.4896093f, -0.3399612f), CameraRotation = new Rotator(-19.87451f, 5.447072E-06f, 121.3737f),
+                        IntroAnimationDictionary = "anim@amb@business@weed@weed_inspecting_lo_med_hi@",
+                        IntroAnimation = "weed_spraybottle_stand_kneeling_01_inspector",
+                        LoopAnimationDictionary = "anim@amb@business@weed@weed_inspecting_lo_med_hi@",
+                        LoopAnimation = "weed_spraybottle_stand_kneeling_01_inspector",
+                    },
+                }
+            },
             new Interior(16386,"24/7 Chumash",
                 new List<string>() {  },
                 new List<string>() {  },

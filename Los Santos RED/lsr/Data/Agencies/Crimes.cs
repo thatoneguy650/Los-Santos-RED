@@ -61,6 +61,8 @@ public class Crimes : ICrimes
     private Crime DrugPossession;
     private Crime StandingOnVehicle;
     private Crime BuringABody;
+    private Crime Theft;
+    private Crime Shoplifting;
     public Crimes()
     {
     }
@@ -137,6 +139,10 @@ public class Crimes : ICrimes
         DrunkDriving = new Crime(StaticStrings.DrunkDrivingCrimeID, "Drunk Driving", 2, false, 20, true, false, false) { ShowsWarning = true, WarningMessage = "You are ~r~driving under the influence~s~~n~Sober up or stop driving" };     
         AssaultingWithDeadlyWeapon = new Crime(StaticStrings.AssaultingWithDeadlyWeaponCrimeID, "Assaulting With A Deadly Weapon", 2, false, 21, true, true, true);
         AssaultingCivilians = new Crime(StaticStrings.AssaultingCiviliansCrimeID, "Assaulting", 2, false, 22, true, true, true);
+
+        Theft = new Crime(StaticStrings.TheftCrimeID, "Theft", 2, false, 22, true, true, true);
+        Shoplifting = new Crime(StaticStrings.ShopliftingCrimeID, "Shoplifting", 2, false, 22, true, true, true);
+
         DealingDrugs = new Crime(StaticStrings.DealingDrugsCrimeID, "Dealing Drugs", 2, false, 23, true, false, false) { MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~dealing illegal drugs~s~~n~Avoid dealing in public" };
         DealingGuns = new Crime(StaticStrings.DealingGunsCrimeID, "Illegal Weapons Dealing", 2, false, 24, true, false, false) { MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~dealing illegal guns~s~~n~Avoid dealing in public" };
         DrugPossession = new Crime(StaticStrings.DrugPossessionCrimeID, "Drug Possession", 2, false, 25, true, false, false) { MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~in possession of illegal drugs~s~~n~Avoid using in public" };
@@ -145,7 +151,7 @@ public class Crimes : ICrimes
         VehicleInvasion = new Crime(StaticStrings.VehicleInvasionCrimeID, "Vehicle Invasion", 2, false, 28, true, true, true) { MaxReportingDistance = 15f  };
 
 
-        BuringABody = new Crime(StaticStrings.BuringABodyCrimeID,"Buring Body",2,false,29,true,true,true) { MaxReportingDistance = 45f };
+        BuringABody = new Crime(StaticStrings.BuryingABody, "Burying Body", 2,false,29,true,true,true) { MaxReportingDistance = 45f };
 
 
 
@@ -225,6 +231,8 @@ public class Crimes : ICrimes
              DrugPossession,
              StandingOnVehicle,
              BuringABody,
+             Theft,
+             Shoplifting,
         };
         Serialization.SerializeParams(CrimeList, ConfigFileName);
     }
@@ -292,6 +300,8 @@ public class Crimes : ICrimes
              DrugPossession,
              StandingOnVehicle,
              BuringABody,
+             Theft,
+             Shoplifting,
             });
 
         HitCarWithCar.CanBeReactedToByCivilians = false;

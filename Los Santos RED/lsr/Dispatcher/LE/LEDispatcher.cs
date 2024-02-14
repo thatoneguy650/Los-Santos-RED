@@ -1213,6 +1213,12 @@ public class LEDispatcher
                         addedAdjustment = true;
                         EntryPoint.WriteToConsole("LE DISPATCHER ADDED DIRT BIKE ADJUSTMENT");
                     }
+                    if(Player.IsInAirVehicle)
+                    {
+                        addedSpawnAdjustments |= eSpawnAdjustment.InAirVehicle;
+                        addedAdjustment = true;
+                        EntryPoint.WriteToConsole("LE DISPATCHER ADDED AIR VEHICLE ADJUSTMENT");
+                    }
                     if (addedAdjustment)
                     {
                         VehicleType = Agency.GetRandomAdjustedVehicle(World.TotalWantedLevel, HasNeedToSpawnHeli, false, true, "", Settings, addedSpawnAdjustments);

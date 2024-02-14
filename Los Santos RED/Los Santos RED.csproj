@@ -158,12 +158,16 @@
     <Compile Include="lsr\Locations\Interiors\InteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\InventoryInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\IRestableInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\Theft\ItemTheftInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\Theft\MoneyTheftInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\OutfitInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ResidenceInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\RestInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\SinkInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\StandardInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\AnimationInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\Theft\TheftInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\Theft\TheftInteractItem.cs" />
     <Compile Include="lsr\Locations\Interiors\ToiletInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\UrinalInteract.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\MerchantConditionalLocation.cs" />

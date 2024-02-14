@@ -88,7 +88,7 @@ public class CopBrain : PedBrain
                     }
                     else
                     {
-                        if (Cop.DistanceToPlayer <= 150f)//200f
+                        if (Cop.DistanceToPlayer <= (Cop.IsInAirVehicle ? 400f : 150f))//200f
                         {
                             if (Player.PoliceResponse.IsDeadlyChase && !Player.IsAttemptingToSurrender)
                             {

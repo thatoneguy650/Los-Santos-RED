@@ -31,6 +31,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsDead { get; }
         Violations Violations { get; }
         bool RecentlyShot { get; }
+        bool IsInAirVehicle { get; }
 
         void OnHitSquadDispatched(Gang enemyGang);
         void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType);

@@ -9,7 +9,6 @@ using System.Xml.Serialization;
 [Serializable()]
 public class Interior
 {
-   // private bool IsMenuInteracting = false;
     private bool IsInside;
     protected IInteractionable Player;
     protected ILocationInteractable LocationInteractable;
@@ -65,8 +64,6 @@ public class Interior
     public int LocalID { get; set; }
     public Vector3 InternalInteriorCoordinates { get; set; }
     public string Name { get; set; }
-    //public bool IsMPOnly { get; set; } = false;
-    //public bool IsSPOnly { get; set; } = false;
     public bool IsTeleportEntry { get; set; } = false;
     public Vector3 DisabledInteriorCoords { get; set; } = Vector3.Zero;
     public List<InteriorDoor> Doors { get; set; } = new List<InteriorDoor>();
@@ -80,17 +77,12 @@ public class Interior
     public bool IsRestricted { get; set; } = false;
     public bool IsWeaponRestricted { get; set; } = false;
     public List<InteriorInteract> InteractPoints { get; set; } = new List<InteriorInteract>();
-
-
     public List<Vector3> ClearPositions { get; set; } = new List<Vector3>();
-
     [XmlIgnore]
     public virtual List<InteriorInteract> AllInteractPoints => InteractPoints;
     public InteriorInteract ClosestInteract => AllInteractPoints.Where(x => x.CanAddPrompt).OrderBy(x => x.DistanceTo).FirstOrDefault();
 
-
-
-    public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ILocationInteractable locationInteractable)
+    public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ILocationInteractable locationInteractable, IModItems modItems)
     {
         Settings = settings;
         Player = player;
@@ -99,12 +91,11 @@ public class Interior
         {
             InteractableLocation = placesOfInterest.AllLocations().Where(x=> x.InteriorID == LocalID).FirstOrDefault();
         }
-        foreach (InteriorInteract interiorInteract in InteractPoints)
+        foreach (InteriorInteract interiorInteract in AllInteractPoints)//InteractPoints)
         {
-            interiorInteract.Setup();
+            interiorInteract.Setup(modItems);
         }
     }
-
     public void DebugOpenDoors()
     {
         foreach (InteriorDoor door in Doors)
@@ -171,6 +162,13 @@ public class Interior
                     GameFiber.Yield();
                 }
                 NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
+                if (AllInteractPoints != null)
+                {
+                    foreach (InteriorInteract ii in AllInteractPoints)
+                    {
+                        ii.OnInteriorLoaded();
+                    }
+                }
                 IsActive = true;
                 GameFiber.Yield();
                 EntryPoint.WriteToConsole($"Load Interior {Name} isOpen{isOpen}");
@@ -309,7 +307,6 @@ public class Interior
 
         }
     }
-
     protected virtual void RemoveExistingPeds()
     {
         foreach(Vector3 position in ClearPositions)
@@ -317,7 +314,6 @@ public class Interior
             NativeFunction.Natives.CLEAR_AREA(position.X, position.Y, position.Z, 5f, true, false, false, false);
         }
     }
-
     public virtual void UpdateInteractDistances()
     {
         foreach (InteriorInteract interiorInteract in AllInteractPoints)
@@ -376,6 +372,4 @@ public class Interior
             //GameFiber.Sleep(1000);
         }
     }
-
-
 }

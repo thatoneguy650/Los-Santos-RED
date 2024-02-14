@@ -258,7 +258,7 @@ public class ShopMenus : IShopMenus
             shopMenu.Items.Add(new MenuItem("Can of PiBwasser", 3));
             shopMenu.Items.Add(new MenuItem("Can of PiBwasser ICE", 3));
         }
-        Serialization.SerializeParam(fejPossibleShopMenus, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedExperience\\ShopMenus_FullExpandedExperience.xml");
+        //Serialization.SerializeParam(fejPossibleShopMenus, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedExperience\\ShopMenus_FullExpandedExperience.xml");
     }
 
 

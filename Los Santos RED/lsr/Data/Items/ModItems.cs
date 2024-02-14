@@ -144,7 +144,7 @@ public class ModItems : IModItems
                 ItemSubType= ItemSubType.Beer,
                 FindPercentage = 5 },
         });
-        Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedExperience\\ModItems_FullExpandedExperience.xml");
+        //Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedExperience\\ModItems_FullExpandedExperience.xml");
     }
 
     public void WriteToFile()

@@ -32,7 +32,7 @@ public class BankInterior : Interior
         foreach (BankDrawerInteract test in BankDrawerInteracts)
         {
             test.Bank = newBank;
-            test.TotalCash = RandomItems.GetRandomNumberInt(Bank.DrawerCashMin, Bank.DrawerCashMax);
+            //test.TotalCash = RandomItems.GetRandomNumberInt(Bank.DrawerCashMin, Bank.DrawerCashMax);
         }
     }
 }

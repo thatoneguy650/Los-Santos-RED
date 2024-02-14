@@ -191,7 +191,7 @@ public class OtherViolations
         }
         if (Player.ActivityManager.IsBuryingBody)
         {
-            Violations.AddViolating(StaticStrings.BuringABodyCrimeID);
+            Violations.AddViolating(StaticStrings.BuryingABody);
         }
         CheckVehicleInvasion();
     }

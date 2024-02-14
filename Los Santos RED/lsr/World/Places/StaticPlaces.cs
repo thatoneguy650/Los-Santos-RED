@@ -73,7 +73,7 @@ public class StaticPlaces
         }
         foreach(Interior interior in Interiors.PossibleInteriors.AllInteriors())
         {
-            interior.Setup(player, PlacesOfInterest, Settings, locationInteractable);
+            interior.Setup(player, PlacesOfInterest, Settings, locationInteractable, ModItems);
         }
     }
     public void ActivateLocations()

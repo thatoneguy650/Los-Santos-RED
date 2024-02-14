@@ -6,10 +6,19 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 [Serializable]
 public class DispatchableVehicle
 {
+
+    private bool isBoat;
+    private bool isHelicopter;
+    private bool isMotorcycle;
+    private bool isPlane;
+    private bool isCar;
+
+
     public string DebugName { get; set; }
     public string ModelName { get; set; }
     public string RequiredPedGroup { get; set; } = "";
@@ -38,11 +47,11 @@ public class DispatchableVehicle
     public int ForcedPlateType { get; set; } = -1;
     public VehicleVariation RequiredVariation { get; set; }
     public bool RequiresDLC { get; set; } = false;
-    public bool IsBoat => NativeFunction.Natives.IS_THIS_MODEL_A_BOAT<bool>(Game.GetHashKey(ModelName));
-    public bool IsCar => NativeFunction.Natives.IS_THIS_MODEL_A_CAR<bool>(Game.GetHashKey(ModelName));
-    public bool IsHelicopter => NativeFunction.Natives.IS_THIS_MODEL_A_HELI<bool>(Game.GetHashKey(ModelName));
-    public bool IsPlane => NativeFunction.Natives.IS_THIS_MODEL_A_PLANE<bool>(Game.GetHashKey(ModelName));
-    public bool IsMotorcycle => NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>(Game.GetHashKey(ModelName));
+    public bool IsBoat => isBoat;// NativeFunction.Natives.IS_THIS_MODEL_A_BOAT<bool>(Game.GetHashKey(ModelName));
+    public bool IsCar => isCar;// NativeFunction.Natives.IS_THIS_MODEL_A_CAR<bool>(Game.GetHashKey(ModelName));
+    public bool IsHelicopter => isHelicopter;// NativeFunction.Natives.IS_THIS_MODEL_A_HELI<bool>(Game.GetHashKey(ModelName));
+    public bool IsPlane => isPlane;// NativeFunction.Natives.IS_THIS_MODEL_A_PLANE<bool>(Game.GetHashKey(ModelName));
+    public bool IsMotorcycle => isMotorcycle;// NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>(Game.GetHashKey(ModelName));
 
     public int FirstPassengerIndex { get; set; } = 0;
     public List<SpawnAdjustmentAmount> SpawnAdjustmentAmounts { get; set; }
@@ -59,6 +68,36 @@ public class DispatchableVehicle
         description += $"~n~MinWantedLevelSpawn: {MinWantedLevelSpawn} MaxWantedLevelSpawn: {MaxWantedLevelSpawn}";
         description += $"~n~RequiresDLC: {RequiresDLC}";
         return description;
+    }
+    public void Setup()
+    {
+        isBoat = NativeFunction.Natives.IS_THIS_MODEL_A_BOAT<bool>(Game.GetHashKey(ModelName));
+        isCar = NativeFunction.Natives.IS_THIS_MODEL_A_CAR<bool>(Game.GetHashKey(ModelName));
+        isHelicopter = NativeFunction.Natives.IS_THIS_MODEL_A_HELI<bool>(Game.GetHashKey(ModelName));
+        isPlane = NativeFunction.Natives.IS_THIS_MODEL_A_PLANE<bool>(Game.GetHashKey(ModelName));
+        isMotorcycle = NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>(Game.GetHashKey(ModelName));
+#if DEBUG
+        if(isMotorcycle)
+        {
+            EntryPoint.WriteToConsole($"{DebugName} {ModelName} is motorcycle");
+        }
+        if (isHelicopter)
+        {
+            EntryPoint.WriteToConsole($"{DebugName} {ModelName} is heli");
+        }
+        if (isPlane)
+        {
+            EntryPoint.WriteToConsole($"{DebugName} {ModelName} is plane");
+        }
+        if (isBoat)
+        {
+            EntryPoint.WriteToConsole($"{DebugName} {ModelName} is boat");
+        }
+        //if (isCar)
+        //{
+        //    EntryPoint.WriteToConsole($"{DebugName} {ModelName} is car");
+        //}
+#endif
     }
 
     public bool CanCurrentlyAdjustedSpawn(int WantedLevel, bool allowDLC, eSpawnAdjustment eSpawnAdjustment) => CurrentAdjustedSpawnChance(WantedLevel, allowDLC, eSpawnAdjustment) > 0;
