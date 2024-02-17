@@ -845,7 +845,7 @@ public class ActivityManager
             ForceCancelUpperBody();//was only if performing
             try
             {
-                Player.ClosestInteractableLocation.OnInteract();// LocationInteractable, ModItems, World, Settings, Weapons, Time, PlacesOfInterest);
+                Player.ClosestInteractableLocation?.OnInteract();// LocationInteractable, ModItems, World, Settings, Weapons, Time, PlacesOfInterest);
             }
             catch(Exception e) 
             {

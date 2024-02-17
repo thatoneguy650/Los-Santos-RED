@@ -168,6 +168,9 @@ namespace Mod
             TaxiManager = new TaxiManager(this, World,PlacesOfInterest, Settings);
             GangBackupManager = new GangBackupManager(World, this);
             InteriorManager = new InteriorManager(World, PlacesOfInterest, Settings, this, this, this);
+
+
+            
         }
         public RelationshipManager RelationshipManager { get; private set; }
         public GPSManager GPSManager { get; private set; }
