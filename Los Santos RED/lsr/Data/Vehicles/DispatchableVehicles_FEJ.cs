@@ -624,9 +624,12 @@ public class DispatchableVehicles_FEJ
             //General
             new DispatchableVehicle("crusader", 25,10) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             new DispatchableVehicle("barracks", 25,5) { MaxRandomDirtLevel = 15.0f,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            new DispatchableVehicle("squaddie", 50,50) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            //new DispatchableVehicle("insurgent3", 5,25) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            
+            //new DispatchableVehicle("squaddie", 50,50) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            Create_MilitaryUnarmedHumvee(50,50,-1,false,PoliceVehicleType.Marked,-1,6,10,1,4,"",""),
+            //new DispatchableVehicle("insurgent3", 5,50) { ForceStayInSeats = new List<int>(){ 7 },FirstPassengerIndex = 7, MaxRandomDirtLevel = 15.0f, MinOccupants = 2,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            Create_MilitaryArmedHumvee(5,50,-1,false,PoliceVehicleType.Marked,-1,6,10,2,5,"",""),
+
+
             //Heavy
             new DispatchableVehicle("rhino", 0, 15) {  MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 1,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             //new DispatchableVehicle("apc", 0,25) { MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
@@ -645,9 +648,11 @@ public class DispatchableVehicles_FEJ
             //General
             new DispatchableVehicle("crusader", 25,10) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             new DispatchableVehicle("barracks", 25,5) { MaxRandomDirtLevel = 15.0f,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            new DispatchableVehicle("squaddie", 50,50) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            //new DispatchableVehicle("insurgent3", 5,25) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            
+            //new DispatchableVehicle("squaddie", 50,50) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            Create_MilitaryUnarmedHumvee(50,50,-1,false,PoliceVehicleType.Marked,-1,6,10,1,4,"",""),
+            //new DispatchableVehicle("insurgent3", 5,50) { ForceStayInSeats = new List<int>(){ 7 },FirstPassengerIndex = 7, MaxRandomDirtLevel = 15.0f, MinOccupants = 2,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            Create_MilitaryArmedHumvee(5,50,-1,false,PoliceVehicleType.Marked,-1,6,10,2,5,"",""),
+
             //HELI
             new DispatchableVehicle("cargobob",0,15) { RequiredPedGroup = "Pilot", RequiredGroupIsDriverOnly = true, RequiredPrimaryColorID = 153, RequiredSecondaryColorID = 153, MinOccupants = 3, MaxOccupants = 4},
             
@@ -660,7 +665,10 @@ public class DispatchableVehicles_FEJ
             //General
             new DispatchableVehicle("crusader", 25,10) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             new DispatchableVehicle("barracks", 25,5) { MaxRandomDirtLevel = 15.0f,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            new DispatchableVehicle("squaddie", 50,50) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            //new DispatchableVehicle("squaddie", 50,50) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            Create_MilitaryUnarmedHumvee(50,50,-1,false,PoliceVehicleType.Marked,-1,6,10,1,4,"",""),
+            //new DispatchableVehicle("insurgent3", 5,50) { ForceStayInSeats = new List<int>(){ 7 },FirstPassengerIndex = 7, MaxRandomDirtLevel = 15.0f, MinOccupants = 2,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            Create_MilitaryArmedHumvee(5,50,-1,false,PoliceVehicleType.Marked,-1,6,10,2,5,"",""),
             
             //HELI
             new DispatchableVehicle("annihilator", 0, 45) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 4 },RequiredPrimaryColorID = 153,RequiredSecondaryColorID = 153, MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10, MinOccupants = 3, MaxOccupants = 4 },
@@ -1019,8 +1027,53 @@ public class DispatchableVehicles_FEJ
         Taxi4 = 3,
         Security = 4,
     }
-
-
+    private DispatchableVehicle Create_MilitaryUnarmedHumvee(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
+    {
+        DispatchableVehicle toReturn = new DispatchableVehicle("squaddie", ambientPercent, wantedPercent);
+        if (liveryID != -1)
+        {
+            toReturn.RequiredLiveries = new List<int>() { 0,1,2,3,4 };
+        }
+        //Squaddie - 1 = Front Grille, 5 = Rear Antenna, 6 = side antenna
+        toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() 
+        {
+            new DispatchableVehicleExtra(1, true, 60),
+            new DispatchableVehicleExtra(5, true, 60),
+            new DispatchableVehicleExtra(6, true, 60),
+        };
+        toReturn.MaxRandomDirtLevel = 15.0f;
+        SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        return toReturn;
+    }
+    private DispatchableVehicle Create_MilitaryArmedHumvee(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
+    {
+        DispatchableVehicle toReturn = new DispatchableVehicle("insurgent3", ambientPercent, wantedPercent);
+        //Squaddie - 1 = Main Gun, 2 = Front Grille, 5 = Rear Antenna, 6 = side antenna
+        toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
+        {
+            new DispatchableVehicleExtra(1, true, 100),
+            new DispatchableVehicleExtra(2, true, 60),
+            new DispatchableVehicleExtra(5, true, 60),
+            new DispatchableVehicleExtra(6, true, 60),
+        };
+        toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+        {
+            new DispatchableVehicleMod(48,20) 
+            { 
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>() 
+                { 
+                    new DispatchableVehicleModValue(0,33),
+                    new DispatchableVehicleModValue(1,33),
+                    new DispatchableVehicleModValue(2,33),
+                }  
+            }
+        };
+        toReturn.FirstPassengerIndex = 7;
+        toReturn.ForceStayInSeats = new List<int>() { 7 };
+        toReturn.MaxRandomDirtLevel = 15.0f;
+        SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        return toReturn;
+    }
     private DispatchableVehicle Create_PoliceBoxville(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceBoxville, ambientPercent, wantedPercent);
