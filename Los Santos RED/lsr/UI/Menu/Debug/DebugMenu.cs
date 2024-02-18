@@ -96,6 +96,9 @@ public class DebugMenu : ModUIMenu
         DebugSubMenus.Add(new DebugTrunkSubMenu(Debug, MenuPool, Player, ModDataFileManager, World));
 
         DebugSubMenus.Add(new DebugPerformanceSubMenu(Debug, MenuPool, Player));
+
+        DebugSubMenus.Add(new DebugPropAttachSubMenu(Debug, MenuPool, Player, ModDataFileManager));
+
 #if DEBUG
         DebugSubMenus.Add(new DebugLCYMAPSubMenu(Debug, MenuPool, Player));
 #endif

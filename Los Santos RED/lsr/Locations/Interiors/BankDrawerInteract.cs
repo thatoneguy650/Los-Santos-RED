@@ -1,18 +1,11 @@
-﻿using Rage.Native;
-using Rage;
+﻿using Rage;
+using Rage.Native;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LosSantosRED.lsr.Interface;
-using System.Xml.Serialization;
-using RAGENativeUI;
-using LosSantosRED.lsr;
-using ExtensionsMethods;
 
 public class BankDrawerInteract : InteriorInteract
 {
+    private Rage.Object rightHandCashBundle;
+    private Rage.Object leftHandCashBundle;
     private string drawerStealPromptText = "Steal from Drawer";
     private string drawerStealEmptyText = "Drawer Empty";
     public int TotalCash { get; set; }
@@ -99,6 +92,14 @@ public class BankDrawerInteract : InteriorInteract
         bool IsCancelled = false;
         Player.Violations.TheftViolations.IsRobbingBank = true;
         uint GameTimeLastGotCash = Game.GameTime;
+        ModItem cashItem = ModItems?.Get("Cash Bundle");
+        rightHandCashBundle = null;
+        leftHandCashBundle = null;
+        if (cashItem != null)
+        {
+            rightHandCashBundle = cashItem.SpawnAndAttachItem(Player, false, true);
+            leftHandCashBundle = cashItem.SpawnAndAttachItem(Player, false, false);
+        }
         while (Player.ActivityManager.CanPerformActivitiesExtended)
         {
             Player.WeaponEquipment.SetUnarmed();
@@ -111,12 +112,22 @@ public class BankDrawerInteract : InteriorInteract
             {
                 break;
             }
+            float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, "oddjobs@shop_robbery@rob_till", "loop");
+            HandleCashItem(AnimationTime);
             if (Player.IsMoveControlPressed || !Player.Character.IsAlive)
             {
                 IsCancelled = true;
                 break;
             }
             GameFiber.Yield();
+        }
+        if(rightHandCashBundle.Exists())
+        {
+            rightHandCashBundle.Delete();
+        }
+        if (leftHandCashBundle.Exists())
+        {
+            leftHandCashBundle.Delete();
         }
         EntryPoint.WriteToConsole($"BANK PlayMoneyAnimation IsCancelled: {IsCancelled}");
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
@@ -130,6 +141,75 @@ public class BankDrawerInteract : InteriorInteract
             return true;
         }
     }
+
+    private void HandleCashItem(float animationTime)
+    {
+        if(!rightHandCashBundle.Exists() || !leftHandCashBundle.Exists())
+        {
+            return;
+        }
+
+        /*        CashAnimationMin1 = 0.01f;
+        CashAnimationMax1 = 0.4f;
+        CashAnimationMin2 = 0.6f;
+        CashAnimationMax2 = 0.8f;*/
+        if(animationTime >= 0.8f)
+        {
+            if (rightHandCashBundle.IsVisible)
+            {
+                rightHandCashBundle.IsVisible = false;
+            }
+            if (leftHandCashBundle.IsVisible)
+            {
+                leftHandCashBundle.IsVisible = false;
+            }
+        }
+        else if (animationTime >= 0.6f)
+        {
+            if (!rightHandCashBundle.IsVisible)
+            {
+                rightHandCashBundle.IsVisible = true;
+            }
+            if (!leftHandCashBundle.IsVisible)
+            {
+                leftHandCashBundle.IsVisible = true;
+            }
+        }
+        else if (animationTime >= 0.4f)
+        {
+            if (rightHandCashBundle.IsVisible)
+            {
+                rightHandCashBundle.IsVisible = false;
+            }
+            if (leftHandCashBundle.IsVisible)
+            {
+                leftHandCashBundle.IsVisible = false;
+            }
+        }
+        else if (animationTime >= 0.01f)
+        {
+            if (!rightHandCashBundle.IsVisible)
+            {
+                rightHandCashBundle.IsVisible = true;
+            }
+            if (!leftHandCashBundle.IsVisible)
+            {
+                leftHandCashBundle.IsVisible = true;
+            }
+        }
+        else
+        {
+            if (rightHandCashBundle.IsVisible)
+            {
+                rightHandCashBundle.IsVisible = false;
+            }
+            if (leftHandCashBundle.IsVisible)
+            {
+                leftHandCashBundle.IsVisible = false;
+            }
+        }
+    }
+
     private void GiveCash()
     {
         if (TotalCash <= Bank.DrawerCashGainedPerAnimation)

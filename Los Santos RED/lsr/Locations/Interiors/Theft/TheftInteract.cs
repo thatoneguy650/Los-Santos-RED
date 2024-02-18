@@ -16,26 +16,21 @@ using System.Windows.Forms;
 
 public class TheftInteract : InteriorInteract
 {
-    protected virtual bool CanInteract => false;
+    protected uint GameTimeGotReward;
+    protected uint IncrementGameTime;
 
+    protected virtual bool CanInteract => false;
     public string StealPrimptText { get; set; } = "Steal";
     public string EmptyText { get; set; } = "Empty";
-
-    public uint IncrementGameTimeMin { get; set; } = 900;
-    public uint IncrementGameTimeMax { get; set; } = 900;
-    public int SpawnPercent { get; set; }
-
-   public uint GameTimeBeforeInitialReward { get; set; }
-
+    public virtual uint IncrementGameTimeMin { get; set; } = 900;
+    public virtual uint IncrementGameTimeMax { get; set; } = 900;
+    public int SpawnPercent { get; set; } = 100;
+    public virtual uint GameTimeBeforeInitialReward { get; set; }
     public string IntroAnimationDictionary { get; set; }
     public string IntroAnimation { get; set; }
     public string LoopAnimationDictionary { get; set; }
     public string LoopAnimation { get; set; }
-
-
-
     public string ViolatingCrimeID { get; set; }
-
     public TheftInteract()
     {
 
@@ -47,7 +42,7 @@ public class TheftInteract : InteriorInteract
     }
     public override void Setup(IModItems modItems)
     {
-
+        ModItems = modItems;
     }
 
     public override void OnInteract()
@@ -119,19 +114,16 @@ public class TheftInteract : InteriorInteract
                 GameFiber.Yield();
             }
         }
-
         uint GameTimeGotReward = Game.GameTime;
         uint IncrementGameTime = RandomItems.GetRandomNumber(IncrementGameTimeMin,IncrementGameTimeMax);
+        HandlePreLoop();
         while (Player.ActivityManager.CanPerformActivitiesExtended)
         {
             Player.WeaponEquipment.SetUnarmed();
-            if (Game.GameTime - GameTimeGotReward >= IncrementGameTime)
-            {
-                GiveReward();
-                GameTimeGotReward = Game.GameTime;
-                IncrementGameTime = RandomItems.GetRandomNumber(IncrementGameTimeMin, IncrementGameTimeMax);
-            }
-            if (!CanInteract)//CashMinAmount <= 0)
+            HandleReward();
+            float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, LoopAnimationDictionary, LoopAnimation);
+            HandleLoop(AnimationTime);
+            if (!CanInteract)
             {
                 break;
             }
@@ -142,6 +134,7 @@ public class TheftInteract : InteriorInteract
             }
             GameFiber.Yield();
         }
+        HandlePostLoop();
         EntryPoint.WriteToConsole($"TheftInteract IsCancelled: {IsCancelled}");
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         if (!string.IsNullOrEmpty(ViolatingCrimeID))
@@ -155,6 +148,15 @@ public class TheftInteract : InteriorInteract
         else
         {
             return true;
+        }
+    }
+    protected virtual void HandleReward()
+    {
+        if (Game.GameTime - GameTimeGotReward >= IncrementGameTime)
+        {
+            GiveReward();
+            GameTimeGotReward = Game.GameTime;
+            IncrementGameTime = RandomItems.GetRandomNumber(IncrementGameTimeMin, IncrementGameTimeMax);
         }
     }
     private void SetupAnimations()
@@ -185,6 +187,18 @@ public class TheftInteract : InteriorInteract
         }
     }
     protected virtual void GiveReward()
+    {
+
+    }
+    protected virtual void HandleLoop(float animationTime)
+    {
+
+    }
+    protected virtual void HandlePreLoop()
+    {
+
+    }
+    protected virtual void HandlePostLoop()
     {
 
     }

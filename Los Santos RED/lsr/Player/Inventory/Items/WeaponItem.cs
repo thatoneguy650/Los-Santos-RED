@@ -834,15 +834,10 @@ public class WeaponItem : ModItem
         Vector3 HandOffset = Vector3.Zero;
         Rotator HandRotator = Rotator.Zero;
         string anim = isTake ? "givetake1_b" : "givetake1_a";
-
-
-
         if (ModelItem != null && ModelItem.ModelHash != 0)
         {
             NativeFunction.Natives.REQUEST_WEAPON_ASSET(ModelItem.ModelHash, 31, 0);
         }
-
-
         AnimationDictionary.RequestAnimationDictionay("mp_common");
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", anim, 1.0f, -1.0f, 5000, 50, 0, false, false, false);
         if (isTake)
@@ -879,6 +874,47 @@ public class WeaponItem : ModItem
         {
             AttachProp.Delete();
         }
+    }
+    public override Rage.Object SpawnAndAttachItem(IInteractionable Player, bool isVisible, bool isRight)
+    {
+        string HandBoneName = "BONETAG_R_PH_HAND";
+        string firstAttach = "RightHandPass";
+        string secondAttach = "RightHand";
+        if (!isRight)
+        {
+            HandBoneName = "BONETAG_L_PH_HAND";
+            firstAttach = "LeftHandPass";
+            secondAttach = "LeftHand";
+        }
+        Vector3 HandOffset = Vector3.Zero;
+        Rotator HandRotator = Rotator.Zero;
+        if (ModelItem != null && ModelItem.ModelHash != 0)
+        {
+            NativeFunction.Natives.REQUEST_WEAPON_ASSET(ModelItem.ModelHash, 31, 0);
+        }
+        Rage.Object spawnedAttachedObject = null;
+        try
+        {
+            if (NativeFunction.Natives.HAS_WEAPON_ASSET_LOADED<bool>(ModelItem.ModelHash))
+            {
+                Vector3 Position = Player.Character.GetOffsetPositionUp(50f);
+                spawnedAttachedObject = NativeFunction.Natives.CREATE_WEAPON_OBJECT<Rage.Object>(ModelItem.ModelHash, 60, Position.X, Position.Y, Position.Z, true, 1.0f, 0, 0, 1);
+            }
+        }
+        catch (Exception ex)
+        {
+
+        }
+        GameFiber.Yield();
+        if (spawnedAttachedObject.Exists())
+        {
+            if (!isVisible)
+            {
+                spawnedAttachedObject.IsVisible = false;
+            }
+            spawnedAttachedObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
+        }
+        return spawnedAttachedObject;
     }
 }
 

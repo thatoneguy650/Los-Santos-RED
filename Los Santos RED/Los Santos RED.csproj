@@ -158,6 +158,7 @@
     <Compile Include="lsr\Locations\Interiors\InteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\InventoryInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\IRestableInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\Theft\AnimationPoint.cs" />
     <Compile Include="lsr\Locations\Interiors\Theft\ItemTheftInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\Theft\MoneyTheftInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\OutfitInteract.cs" />
@@ -549,6 +550,7 @@
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugOutfitSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugPerformanceSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugPlayerStateSubMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugPropAttachSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugRelationshipSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugTeleportSubMenu.cs" />

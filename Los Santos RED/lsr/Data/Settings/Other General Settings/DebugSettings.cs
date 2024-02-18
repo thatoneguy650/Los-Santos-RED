@@ -110,6 +110,14 @@ public class DebugSettings : ISettingsDefaultable
     public float ObscuredZ { get; set; }
     public float SlowMoScaleTime { get; set; }
 
+
+
+    public float CashAnimationMin1 { get; set; }
+    public float CashAnimationMax1 { get; set; }
+    public float CashAnimationMin2 { get; set; }
+    public float CashAnimationMax2 { get; set; }
+
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -272,5 +280,9 @@ public class DebugSettings : ISettingsDefaultable
 
         SlowMoScaleTime = 0.3f;
 
+        CashAnimationMin1 = 0.01f;
+        CashAnimationMax1 = 0.4f;
+        CashAnimationMin2 = 0.6f;
+        CashAnimationMax2 = 0.8f;
     }
 }

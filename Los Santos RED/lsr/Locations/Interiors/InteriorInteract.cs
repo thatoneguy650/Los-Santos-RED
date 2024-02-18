@@ -26,6 +26,7 @@ public class InteriorInteract
     protected IInteractionable Player;
     protected ILocationInteractable LocationInteractable;
     protected ISettingsProvideable Settings;
+    protected IModItems ModItems;
     protected GameLocation InteractableLocation;
     protected Interior Interior;
     protected LocationCamera LocationCamera;
@@ -63,7 +64,7 @@ public class InteriorInteract
     public virtual bool ShouldAddPrompt => !Interior.IsMenuInteracting && distanceTo <= InteractDistance;
     public virtual void Setup(IModItems modItems)
     {
-
+        ModItems = modItems;
     }
 
 

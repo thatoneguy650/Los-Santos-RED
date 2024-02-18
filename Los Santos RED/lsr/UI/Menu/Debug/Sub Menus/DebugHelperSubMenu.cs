@@ -490,7 +490,7 @@ public class DebugHelperSubMenu : DebugSubMenu
 
     private void SetPropAttachment()
     {
-        string PropName = NativeHelper.GetKeyboardInput("sf_prop_sf_bag_weed_01a");
+        string PropName = NativeHelper.GetKeyboardInput("prop_cash_pile_02");
         try
         {
             Rage.Object SmokedItem = new Rage.Object(Game.GetHashKey(PropName), Player.Character.GetOffsetPositionUp(50f));
@@ -574,7 +574,7 @@ public class DebugHelperSubMenu : DebugSubMenu
                             {
                                 //EntryPoint.WriteToConsoleTestLong($"Item {PropName} Attached to  {boneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
 
-                                EntryPoint.WriteToConsole($"new PropAttachment(\"RightHandPass\", \"{boneName}\", new Vector3({Offset.X}f, {Offset.Y}f, {Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)),");
+                                EntryPoint.WriteToConsole($"new PropAttachment(\"NAMEHERE\", \"{boneName}\", new Vector3({Offset.X}f, {Offset.Y}f, {Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)),");
                                 GameFiber.Sleep(500);
                             }
                             if (Game.IsKeyDown(Keys.N))

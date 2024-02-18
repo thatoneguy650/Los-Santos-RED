@@ -236,6 +236,12 @@ public class SettingsManager
         UIGeneralSettings.ShowVehicleInteractionPromptInVehicle = false;
         WeatherSettings.ReportWeather = false;
         NeedsSettings.ApplyNeeds = false;
+        ScannerSettings.IsEnabled = false;
+        UIGeneralSettings.UseCustomInvestigationMarks = false;
+        UIGeneralSettings.UseCustomWantedLevelStars = false;
+        UIGeneralSettings.ShowVehicleInteractionPrompt = false;
+        UIGeneralSettings.ShowVehicleInteractionPromptInVehicle = false;
+        UIGeneralSettings.DisplayButtonPrompts = false;
 
     }
 

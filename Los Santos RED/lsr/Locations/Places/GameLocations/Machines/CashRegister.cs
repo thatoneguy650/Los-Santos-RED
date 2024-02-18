@@ -13,6 +13,8 @@ using System.Xml.Serialization;
 
 public class CashRegister : GameLocation
 {
+    private Rage.Object rightHandCashBundle;
+    private Rage.Object leftHandCashBundle;
     private UIMenuItem completeTask;
     private Vector3 PropEntryPosition;
     private float PropEntryHeading;
@@ -120,6 +122,14 @@ public class CashRegister : GameLocation
         IsCancelled = false;
         Player.Violations.TheftViolations.IsRobbingBank = true;
         uint GameTimeLastGotCash = Game.GameTime;
+        ModItem cashItem = ModItems?.Get("Cash Bundle");
+        rightHandCashBundle = null;
+        leftHandCashBundle = null;
+        if (cashItem != null)
+        {
+            rightHandCashBundle = cashItem.SpawnAndAttachItem(Player, false, true);
+            leftHandCashBundle = cashItem.SpawnAndAttachItem(Player, false, false);
+        }
         while (Player.ActivityManager.CanPerformActivitiesExtended)
         {
             Player.WeaponEquipment.SetUnarmed();
@@ -128,6 +138,8 @@ public class CashRegister : GameLocation
                 GiveCash();
                 GameTimeLastGotCash = Game.GameTime;
             }
+            float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, "oddjobs@shop_robbery@rob_till", "loop");
+            HandleCashItem(AnimationTime);
             if (RegisterCash <= 0)
             {
                 break;
@@ -139,6 +151,14 @@ public class CashRegister : GameLocation
             }
             GameFiber.Yield();
         }
+        if (rightHandCashBundle.Exists())
+        {
+            rightHandCashBundle.Delete();
+        }
+        if (leftHandCashBundle.Exists())
+        {
+            leftHandCashBundle.Delete();
+        }
         EntryPoint.WriteToConsole($"REGISTER PlayMoneyAnimation IsCancelled: {IsCancelled}");
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         Player.Violations.TheftViolations.IsRobbingBank = false;
@@ -149,6 +169,68 @@ public class CashRegister : GameLocation
         else
         {
             return true;
+        }
+    }
+    private void HandleCashItem(float animationTime)
+    {
+        if (!rightHandCashBundle.Exists() || !leftHandCashBundle.Exists())
+        {
+            return;
+        }
+        if (animationTime >= 0.8f)
+        {
+            if (rightHandCashBundle.IsVisible)
+            {
+                rightHandCashBundle.IsVisible = false;
+            }
+            if (leftHandCashBundle.IsVisible)
+            {
+                leftHandCashBundle.IsVisible = false;
+            }
+        }
+        else if (animationTime >= 0.6f)
+        {
+            if (!rightHandCashBundle.IsVisible)
+            {
+                rightHandCashBundle.IsVisible = true;
+            }
+            if (!leftHandCashBundle.IsVisible)
+            {
+                leftHandCashBundle.IsVisible = true;
+            }
+        }
+        else if (animationTime >= 0.4f)
+        {
+            if (rightHandCashBundle.IsVisible)
+            {
+                rightHandCashBundle.IsVisible = false;
+            }
+            if (leftHandCashBundle.IsVisible)
+            {
+                leftHandCashBundle.IsVisible = false;
+            }
+        }
+        else if (animationTime >= 0.01f)
+        {
+            if (!rightHandCashBundle.IsVisible)
+            {
+                rightHandCashBundle.IsVisible = true;
+            }
+            if (!leftHandCashBundle.IsVisible)
+            {
+                leftHandCashBundle.IsVisible = true;
+            }
+        }
+        else
+        {
+            if (rightHandCashBundle.IsVisible)
+            {
+                rightHandCashBundle.IsVisible = false;
+            }
+            if (leftHandCashBundle.IsVisible)
+            {
+                leftHandCashBundle.IsVisible = false;
+            }
         }
     }
     private void GiveCash()

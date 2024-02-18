@@ -54,6 +54,7 @@ public class ModItem
     private UIMenu inventoryItemSubMenu;
     private UIMenuItem inventoryItemSubMenuItem;
     private UIMenuNumericScrollerItem<int> giveScroller;
+    //protected Rage.Object spawnedAttachedObject;
    // private Func<int, string> Formatter = v => $"{(v == 1 && MeasurementName == "Item" ? "" : v.ToString() + " ")}{(MeasurementName != "Item" || v > 1 ? MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * menuItem.SalesPrice)}"
 
     public ModItem()
@@ -94,6 +95,8 @@ public class ModItem
     public virtual bool CanConsume { get; set; } = false;//no no
     public int FindPercentage { get; set; } = 0;
     public int PoliceFindDuringPlayerSearchPercentage { get; set; } = 85;
+    //[XmlIgnore]
+    //public Rage.Object SpawnedAttachedObject => spawnedAttachedObject;
     public virtual bool IsDLC => false;
     public virtual string DisplayName => Name;
     public virtual string DisplayDescription => Description;
@@ -618,7 +621,6 @@ public class ModItem
         inventoryItemSubMenuItem.RightLabel = $"{storedItems} Stored";
         inventoryItemSubMenuItem.Description = descriptionToUse;
     }
-
     public virtual void CreateSimpleSellMenu(ILocationInteractable player, UIMenu sellPlateSubMenu,GameLocation gameLocation, int defaultPrice, int altPrice, bool useAccounts)
     {
         UIMenuItem MenuItem = new UIMenuItem(Name,Description);
@@ -639,18 +641,10 @@ public class ModItem
         };
         sellPlateSubMenu.AddItem(MenuItem);
     }
-
     public void ClearPurchaseItems()
     {
         menusToUpdate.Clear();
     }
-
-
-
-
-
-
-
     public virtual void PerformItemAnimation(IActivityManageable Player, bool isTake)
     {
         string HandBoneName = "BONETAG_R_PH_HAND";
@@ -722,5 +716,85 @@ public class ModItem
             AttachProp.Delete();
         }
     }
+
+    public virtual Rage.Object SpawnAndAttachItem(IInteractionable Player, bool isVisible, bool isRight)
+    {
+        string HandBoneName = "BONETAG_R_PH_HAND";
+        string firstAttach = "RightHandSteal";
+        string secondAttach = "RightHandPass";
+        string thirdAttach = "RightHand";
+        if (!isRight)
+        {
+            HandBoneName = "BONETAG_L_PH_HAND";
+            firstAttach = "LeftHandSteal";
+            secondAttach = "LeftHandPass";
+            thirdAttach = "LeftHand";
+        }
+        Vector3 HandOffset = Vector3.Zero;
+        Rotator HandRotator = Rotator.Zero;
+        string modelName = "";
+        bool HasProp = false;
+        PropAttachment finalAttachment = null;
+        if (PackageItem != null && PackageItem.ModelName != "")
+        {
+            modelName = PackageItem.ModelName;
+            HasProp = true;
+            finalAttachment = PackageItem?.Attachments?.FirstOrDefault(x => x.Name == firstAttach && (x.Gender == "U" || x.Gender == Player.Gender));
+            if (finalAttachment == null)
+            {
+                finalAttachment = PackageItem?.Attachments?.FirstOrDefault(x => x.Name == secondAttach && (x.Gender == "U" || x.Gender == Player.Gender));
+            }
+            if (finalAttachment == null)
+            {
+                finalAttachment = PackageItem?.Attachments?.FirstOrDefault(x => x.Name == thirdAttach && (x.Gender == "U" || x.Gender == Player.Gender));
+            }
+        }
+        else if (ModelItem != null && ModelItem.ModelName != "")
+        {
+            modelName = ModelItem.ModelName;
+            HasProp = true;
+            finalAttachment = ModelItem?.Attachments?.FirstOrDefault(x => x.Name == firstAttach && (x.Gender == "U" || x.Gender == Player.Gender));
+            if (finalAttachment == null)
+            {
+                finalAttachment = ModelItem?.Attachments?.FirstOrDefault(x => x.Name == secondAttach && (x.Gender == "U" || x.Gender == Player.Gender));
+            }
+            if (finalAttachment == null)
+            {
+                finalAttachment = ModelItem?.Attachments?.FirstOrDefault(x => x.Name == thirdAttach && (x.Gender == "U" || x.Gender == Player.Gender));
+            }
+        }
+        if (finalAttachment != null)
+        {
+            HandOffset = finalAttachment.Attachment;
+            HandRotator = finalAttachment.Rotation;
+            HandBoneName = finalAttachment.BoneName;
+        }
+        Rage.Object spawnedAttachedObject = null;
+        if (HasProp && modelName != "")
+        {
+            try
+            {
+                spawnedAttachedObject = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));// new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
+            }
+            catch (Exception ex)
+            {
+
+            }
+            GameFiber.Yield();
+            if (spawnedAttachedObject.Exists())
+            {
+                if(!isVisible)
+                {
+                    spawnedAttachedObject.IsVisible = false;
+                }
+                spawnedAttachedObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
+            }
+        }
+        return spawnedAttachedObject;
+    }
+
+
+    
+
 }
 

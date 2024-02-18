@@ -68,6 +68,8 @@ public class Interiors : IInteriors
 
     private void Stores()
     {
+
+
         PossibleInteriors.GeneralInteriors.AddRange(new List<Interior>()
         {
             //Clothes
@@ -121,83 +123,11 @@ public class Interiors : IInteriors
                 IsWeaponRestricted = true, 
                 InteractPoints = new List<InteriorInteract>()
                 {
-                    new ItemTheftInteract("247rt68itemtheftint4",new Vector3(547.77f, 2669.75f, 42.15649f), 272.6136f,"Shoplift")//Looking at the front counter, mostly candy bars and chips
-                    {
-                        MinItems = 15,
-                        MaxItems = 25,
-                        IncrementGameTimeMin = 1500,
-                        IncrementGameTimeMax = 2000,
-                        ViolatingCrimeID = StaticStrings.ShopliftingCrimeID,
-                        PossibleItems = new List<TheftInteractItem> ()
-                        {
-                            new TheftInteractItem("Sticky Rib Phat Chips",1,1,100),
-                            new TheftInteractItem("Habanero Phat Chips",1,1,100),
-                            new TheftInteractItem("Supersalt Phat Chips",1,1,100),
-                            new TheftInteractItem("Big Cheese Phat Chips",1,1,100),
-                            new TheftInteractItem("Ego Chaser Energy Bar",1,1,100),
-                            new TheftInteractItem("P's & Q's",1,1,100),
-                            new TheftInteractItem("Meteorite Bar",1,1,100),
-
-                            new TheftInteractItem("Redwood Regular",20,20,100),
-                            new TheftInteractItem("Redwood Mild",20,20,100),
-                            new TheftInteractItem("Debonaire",20,20,100),
-                            new TheftInteractItem("Debonaire Menthol",20,20,100),
-                            new TheftInteractItem("Caradique",20,20,100),
-                            new TheftInteractItem("69 Brand",20,20,100),
-                            new TheftInteractItem("Estancia Cigar",10,10,100),
-                        }
-                    },
-
-                    new ItemTheftInteract("247rt68itemtheftint3",new Vector3(546.6794f, 2668.725f, 42.15649f), 88.89041f,"Shoplift")//Front of first stand
-                    {
-                        MinItems = 15,
-                        MaxItems = 25,
-                        IncrementGameTimeMin = 1500,
-                        IncrementGameTimeMax = 2000,
-                        ViolatingCrimeID = StaticStrings.ShopliftingCrimeID,
-                        PossibleItems = new List<TheftInteractItem> ()
-                        {
-                            new TheftInteractItem("Can of eCola",1,1,20),
-                            new TheftInteractItem("Can of Sprunk",1,1,20),
-                            new TheftInteractItem("Can of Orang-O-Tang",1,1,45),
-                        }
-                    },
-                    new ItemTheftInteract("247rt68itemtheftint1",new Vector3(544.7056f, 2668.834f, 42.15654f), 269.0896f,"Shoplift") //back of first
-                    { 
-                        MinItems = 15, 
-                        MaxItems = 25,
-                        IncrementGameTimeMin = 1500,
-                        IncrementGameTimeMax = 2000,
-                        ViolatingCrimeID = StaticStrings.ShopliftingCrimeID,
-                        PossibleItems = new List<TheftInteractItem> () 
-                        {
-                            new TheftInteractItem("Strawberry Rails Cereal",1,1,20),
-                            new TheftInteractItem("Crackles O' Dawn Cereal",1,1,20),
-                            new TheftInteractItem("White Bread",1,1,45),
-                        }
-                    },
-                    new ItemTheftInteract("247rt68itemtheftint2",new Vector3(541.7424f, 2668.305f, 42.15653f), 281.1041f,"Shoplift")//back of second BEER!
-                    {
-                        MinItems = 15,
-                        MaxItems = 25,
-                        IncrementGameTimeMin = 1500,
-                        IncrementGameTimeMax = 2000,
-                        ViolatingCrimeID = StaticStrings.ShopliftingCrimeID,
-
-                        IntroAnimationDictionary = "anim@scripted@heist@ig1_table_grab@cash@male@",
-                        IntroAnimation = "enter",
-
-                        LoopAnimationDictionary = "anim@scripted@heist@ig1_table_grab@cash@male@",
-                        LoopAnimation = "grab",
-                        PossibleItems = new List<TheftInteractItem> ()
-                        {
-                            new TheftInteractItem("Bottle of Pride",1,1,100),
-                            new TheftInteractItem("Bottle of Barracho",1,1,100),
-                            new TheftInteractItem("Bottle of A.M.",1,1,100),
-                            new TheftInteractItem("Bottle of Dusche",1,1,100),
-                        }
-                    },
-                   new MoneyTheftInteract("247rt68moneytheft1",new Vector3(546.2946f, 2663.203f, 42.1565f), 189.7516f,"Steal from Safe")
+                    Generate247Interact1("247rt68itemtheftint1",new Vector3(547.77f, 2669.75f, 42.15649f), 272.6136f),
+                    Generate247Interact2("247rt68itemtheftint2",new Vector3(546.6794f, 2668.725f, 42.15649f), 88.89041f),
+                    Generate247Interact3("247rt68itemtheftint3",new Vector3(544.7056f, 2668.834f, 42.15654f), 269.0896f),
+                    Generate247Interact4("247rt68itemtheftint4",new Vector3(541.7424f, 2668.305f, 42.15653f), 281.1041f),
+                    new MoneyTheftInteract("247rt68moneytheft1",new Vector3(546.2946f, 2663.203f, 42.1565f), 189.7516f,"Steal from Safe")//only here for example
                     {
                         CashMinAmount = 250,
                         CashMaxAmount = 2500,
@@ -212,6 +142,15 @@ public class Interiors : IInteriors
                         LoopAnimationDictionary = "anim@amb@business@weed@weed_inspecting_lo_med_hi@",
                         LoopAnimation = "weed_spraybottle_stand_kneeling_01_inspector",
                     },
+                   //new MoneyTheftInteract("247rt68moneytheft2",new Vector3(546.5319f, 2671.772f, 42.15653f), 355.2674f,"Steal Cash")//testing only
+                   //{
+                   //     CashMinAmount = 250,
+                   //     CashMaxAmount = 2500,
+                   //     IncrementGameTimeMin = 1500,
+                   //     IncrementGameTimeMax = 2000,
+                   //     CashGainedPerIncrement = 250,
+                   //     ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                   //},
                 }
             },
             new Interior(16386,"24/7 Chumash",
@@ -219,49 +158,120 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(-3240.128f,1003.157f,12.98064f)),//left door
-                    new InteriorDoor(997554217, new Vector3(-3239.905f,1005.749f,12.98064f))}) { IsWeaponRestricted = true, },//right door
+                    new InteriorDoor(997554217, new Vector3(-3239.905f,1005.749f,12.98064f))})//right door 
+            { 
+                IsWeaponRestricted = true, 
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("247chumashitemtheftint1",new Vector3(-3243.837f, 1001.816f, 12.83072f), 173.4079f),
+                    Generate247Interact2("247chumashitemtheftint2",new Vector3(-3244.236f, 1002.773f, 12.83072f), 349.7097f),
+                    Generate247Interact3("247chumashitemtheftint3",new Vector3(-3244.103f, 1004.807f, 12.83072f), 171.435f),
+                    Generate247Interact4("247chumashitemtheftint4",new Vector3(-3243.798f, 1007.824f, 12.83071f), 171.7916f),
+                },
+            },
             new Interior(62722,"24/7 Palomino Freeway",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(2559.201f,384.0875f,108.7729f)),
-                    new InteriorDoor(997554217, new Vector3(2559.304f,386.6865f,108.7729f)),}) { IsWeaponRestricted = true, },//right door
+                    new InteriorDoor(997554217, new Vector3(2559.304f,386.6865f,108.7729f)),}) { IsWeaponRestricted = true,
+
+                            InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("247palominoitemtheftint1",new Vector3(2555.472f, 382.472f, 108.623f), 177.8884f),
+                    Generate247Interact2("247palominoitemtheftint2",new Vector3(2555.143f, 383.8918f, 108.623f), 354.7713f),
+                    Generate247Interact3("247palominoitemtheftint3",new Vector3(2555.162f, 385.2853f, 108.623f), 173.1648f),
+                    Generate247Interact4("247palominoitemtheftint4",new Vector3(2555.455f, 388.542f, 108.623f), 177.5899f),
+                },
+
+            },//right door
             new Interior(33282,"24/7 Strawberry",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(27.81761f,-1349.169f,29.64696f)),
-                    new InteriorDoor(997554217, new Vector3(30.4186f,-1349.169f,29.64696f)),}) { IsWeaponRestricted = true, },//right door
+                    new InteriorDoor(997554217, new Vector3(30.4186f,-1349.169f,29.64696f)),}) { IsWeaponRestricted = true,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("247strawberryitemtheftint1",new Vector3(26.20215f, -1345.724f, 29.49702f), 84.35592f),
+                    Generate247Interact2("247strawberryitemtheftint2",new Vector3(27.30392f, -1345.065f, 29.49702f), 255.6686f),
+                    Generate247Interact3("247strawberryitemtheftint3",new Vector3(29.2087f, -1344.919f, 29.49702f), 88.0149f),
+                    Generate247Interact4("247strawberryitemtheftint4",new Vector3(31.93349f, -1345.247f, 29.49702f), 86.14433f),
+                },
+            },//right door
             new Interior(97538,"24/7 Banham Canyon",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(-3038.219f,588.2872f,8.058861f)),
-                    new InteriorDoor(997554217, new Vector3(-3039.012f,590.7643f,8.058861f)),}) { IsWeaponRestricted = true, },//right door    
+                    new InteriorDoor(997554217, new Vector3(-3039.012f,590.7643f,8.058861f)),}) { IsWeaponRestricted = true,
+                    InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("247Banhamitemtheftint1",new Vector3(-3041.139f, 585.6979f, 7.908929f), 196.5549f),
+                    Generate247Interact2("247Banhamitemtheftint2",new Vector3(-3041.866f, 586.2217f, 7.908929f), 19.2346f),
+                    Generate247Interact3("247Banhamitemtheftint3",new Vector3(-3042.159f, 588.2862f, 7.908929f), 196.0548f),
+                    Generate247Interact4("247Banhamitemtheftint4",new Vector3(-3043.282f, 591.1353f, 7.908931f), 181.0563f),
+                },
+
+            },//right door    
             new Interior(46850,"24/7 Downtown Vinewood",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(375.3528f,323.8015f,103.7163f)),
-                    new InteriorDoor(997554217, new Vector3(377.8753f,323.1672f,103.7163f)),}) { IsWeaponRestricted = true, },//right door   
+                    new InteriorDoor(997554217, new Vector3(377.8753f,323.1672f,103.7163f)),}) { IsWeaponRestricted = true,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("247vinewooditemtheftint1",new Vector3(374.461f, 327.4398f, 103.5665f), 70.37616f),
+                    Generate247Interact2("247vinewooditemtheftint2",new Vector3(375.8289f, 327.4654f, 103.5665f), 255.7188f),
+                    Generate247Interact3("247vinewooditemtheftint3",new Vector3(377.3474f, 327.4413f, 103.5665f), 60.62653f),
+                    Generate247Interact4("247vinewooditemtheftint4",new Vector3(380.042f, 326.4352f, 103.5665f), 72.08177f),
+                },
+            },//right door   
             new Interior(36354,"24/7 Senora Freeway",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1437777724, new Vector3(1732.245f,6415.377f,34.76194f)),
-                    new InteriorDoor(1421582485, new Vector3(1734.097f,6413.048f,34.99545f)),}) { IsWeaponRestricted = true, },//right door   
+                    new InteriorDoor(1421582485, new Vector3(1734.097f,6413.048f,34.99545f)),}) { IsWeaponRestricted = true,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("247Senoraitemtheftint1",new Vector3(2677.432f, 3281.56f, 55.24113f), 146.3796f),
+                    Generate247Interact2("247Senoraitemtheftint2",new Vector3(2677.385f, 3282.917f, 55.24113f), 317.2356f),
+                    Generate247Interact3("247Senoraitemtheftint3",new Vector3(2678.458f, 3284.286f, 55.24113f), 144.8814f),
+                    Generate247Interact4("247Senoraitemtheftint4",new Vector3(2679.751f, 3286.76f, 55.24113f), 139.366f),
+                },
+            },//right door   
             new Interior(13826,"24/7 Senora Freeway",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(2681.292f,3281.427f,55.39108f)),
-                    new InteriorDoor(997554217, new Vector3(2682.558f,3283.698f,55.39108f)),}) { IsWeaponRestricted = true, },//right door          
+                    new InteriorDoor(997554217, new Vector3(2682.558f,3283.698f,55.39108f)),}) { IsWeaponRestricted = true,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("247Senora2itemtheftint1",new Vector3(1729.814f, 6416.296f, 35.03724f), 54.17762f),
+                    Generate247Interact2("247Senora2itemtheftint2",new Vector3(1731.211f, 6415.733f, 35.03724f), 235.11f),
+                    Generate247Interact3("247Senora2itemtheftint3",new Vector3(1732.993f, 6414.77f, 35.03724f), 59.2864f),
+                    Generate247Interact4("247Senora2itemtheftint4",new Vector3(1735.669f, 6413.408f, 35.03724f), 64.71087f),
+                },
+
+            },//right door          
             new Interior(55554,"24/7 Sandy Shores",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(1963.917f,3740.075f,32.49369f)),
-                    new InteriorDoor(997554217, new Vector3(1966.17f,3741.376f,32.49369f)),}) { IsWeaponRestricted = true, },//right door 
+                    new InteriorDoor(997554217, new Vector3(1966.17f,3741.376f,32.49369f)),}) { IsWeaponRestricted = true,
+
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("247sandyitemtheftint1",new Vector3(1960.4f, 3742.231f, 32.34375f), 107.836f),
+                    Generate247Interact2("247sandyitemtheftint2",new Vector3(1961.382f, 3743.152f, 32.34375f), 287.01f),
+                    Generate247Interact3("247sandyitemtheftint3",new Vector3(1962.828f, 3744.041f, 32.34375f), 117.9122f),
+                    Generate247Interact4("247sandyitemtheftint4",new Vector3(1965.526f, 3745.193f, 32.34375f), 114.0811f),
+                },
+            },//right door 
 
             //LtD
             new Interior(47874, "Ltd Little Seoul",
@@ -7079,6 +7089,111 @@ public class Interiors : IInteriors
             ,new Interior(271873, "Nightclub Warehouse")// { IsMPOnly = true }
             ,new Interior(272129, "Terrorbyte Interior")// { IsMPOnly = true }
         });
+    }
+
+    private ItemTheftInteract Generate247Interact1(string name,Vector3 position,float heading)
+    {
+        return new ItemTheftInteract(name, position, heading, "Shoplift")//Looking at the front counter, mostly candy bars and chips
+        {
+            MinItems = 15,
+            MaxItems = 25,
+            ViolatingCrimeID = StaticStrings.ShopliftingCrimeID,
+            PossibleItems = new List<TheftInteractItem>()
+                        {
+                            new TheftInteractItem("Sticky Rib Phat Chips",1,1,100),
+                            new TheftInteractItem("Habanero Phat Chips",1,1,100),
+                            new TheftInteractItem("Supersalt Phat Chips",1,1,100),
+                            new TheftInteractItem("Big Cheese Phat Chips",1,1,100),
+                            new TheftInteractItem("Ego Chaser Energy Bar",1,1,100),
+                            new TheftInteractItem("P's & Q's",1,1,100),
+                            new TheftInteractItem("Meteorite Bar",1,1,100),
+
+                            new TheftInteractItem("Redwood Regular",20,20,100),
+                            new TheftInteractItem("Redwood Mild",20,20,100),
+                            new TheftInteractItem("Debonaire",20,20,100),
+                            new TheftInteractItem("Debonaire Menthol",20,20,100),
+                            new TheftInteractItem("Caradique",20,20,100),
+                            new TheftInteractItem("69 Brand",20,20,100),
+                            new TheftInteractItem("Estancia Cigar",10,10,100),
+                        }
+        };
+    }
+    private ItemTheftInteract Generate247Interact2(string name, Vector3 position, float heading)
+    {
+        return new ItemTheftInteract(name, position, heading, "Shoplift")//Front of first stand
+        {
+            MinItems = 15,
+            MaxItems = 25,
+            ViolatingCrimeID = StaticStrings.ShopliftingCrimeID,
+            PossibleItems = new List<TheftInteractItem>()
+                        {
+                            new TheftInteractItem("Can of eCola",1,1,20),
+                            new TheftInteractItem("Can of Sprunk",1,1,20),
+                            new TheftInteractItem("Can of Orang-O-Tang",1,1,45),
+                        },
+            CameraPosition = new Vector3(546.7435f, 2670.579f, 43.03606f),
+            CameraDirection = new Vector3(-0.3920216f, -0.8322931f, -0.3919277f),
+            CameraRotation = new Rotator(-23.0745f, 1.113623E-05f, 154.7789f),
+        };
+    }
+    private ItemTheftInteract Generate247Interact3(string name, Vector3 position, float heading)
+    {
+        return new ItemTheftInteract(name, position, heading, "Shoplift")///back of first
+        {
+            MinItems = 15,
+            MaxItems = 25,
+            ViolatingCrimeID = StaticStrings.ShopliftingCrimeID,
+            PossibleItems = new List<TheftInteractItem>()
+                        {
+                            new TheftInteractItem("Strawberry Rails Cereal",1,1,20),
+                            new TheftInteractItem("Crackles O' Dawn Cereal",1,1,20),
+                            new TheftInteractItem("White Bread",1,1,45),
+                        }
+        };
+    }
+    private ItemTheftInteract Generate247Interact4(string name, Vector3 position, float heading)
+    {
+        return new ItemTheftInteract(name, position, heading, "Shoplift")//Looking at the front counter, mostly candy bars and chips
+        {
+            MinItems = 15,
+            MaxItems = 25,
+            IncrementGameTimeMin = 1500,
+            IncrementGameTimeMax = 2000,
+            ViolatingCrimeID = StaticStrings.ShopliftingCrimeID,
+            IntroAnimationDictionary = "anim@scripted@heist@ig1_table_grab@cash@male@",
+            IntroAnimation = "enter",
+            LoopAnimationDictionary = "anim@scripted@heist@ig1_table_grab@cash@male@",
+            LoopAnimation = "grab",
+            RightHandAnimationPoints = new List<AnimationPoint>() {
+                            new AnimationPoint(0, 0.05f,true),
+                            new AnimationPoint(1, 0.08f, false),
+                            new AnimationPoint(2, 0.15f, true),
+                            new AnimationPoint(3, 0.2f, false),
+                            new AnimationPoint(4, 0.25f, true),
+                            new AnimationPoint(5, 0.3f, false),
+                            new AnimationPoint(6, 0.35f, true),
+                            new AnimationPoint(7, 0.39f, false),
+                            new AnimationPoint(8, 0.43f, true),
+                            new AnimationPoint(9, 0.5f, false),
+                            new AnimationPoint(10, 0.55f, true),
+                            new AnimationPoint(11, 0.6f, false),
+                            new AnimationPoint(12, 0.65f, true),
+                            new AnimationPoint(13, 0.7f, false),
+                            new AnimationPoint(14, 0.75f, true),
+                            new AnimationPoint(15, 0.8f, false),
+                            new AnimationPoint(16, 0.85f, true),
+                            new AnimationPoint(17, 0.9f, false),
+                            new AnimationPoint(18, 0.95f, true),
+                            new AnimationPoint(19, 0.98f, false),
+                        },
+            PossibleItems = new List<TheftInteractItem>()
+                        {
+                            new TheftInteractItem("Bottle of Pride",1,1,100),
+                            new TheftInteractItem("Bottle of Barracho",1,1,100),
+                            new TheftInteractItem("Bottle of A.M.",1,1,100),
+                            new TheftInteractItem("Bottle of Dusche",1,1,100),
+                        }
+        };
     }
 }
 

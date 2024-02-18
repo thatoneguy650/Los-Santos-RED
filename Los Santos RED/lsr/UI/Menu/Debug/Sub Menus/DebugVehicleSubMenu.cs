@@ -288,8 +288,45 @@ public class DebugVehicleSubMenu : DebugSubMenu
         };
         vehicleItemsMenu.AddItem(VehicleToggleMenuItem);
 
+        List<ModKitDescription> ModKitDescriptions = new List<ModKitDescription>()
+        {
+            new ModKitDescription("Spoilers",0),
+            new ModKitDescription("Front Bumper",1),
+            new ModKitDescription("Rear Bumper",2),
+            new ModKitDescription("Side Skirt",3),
+            new ModKitDescription("Exhaust",4),
+            new ModKitDescription("Frame",5),
+            new ModKitDescription("Grille",6),
+            new ModKitDescription("Hood",7),
+            new ModKitDescription("Fender",8),
+            new ModKitDescription("Right Fender",9),
+            new ModKitDescription("Roof",10),
+            new ModKitDescription("Engine",11),
+            new ModKitDescription("Brakes",12),
+            new ModKitDescription("Transmission",13),
+            new ModKitDescription("Horns",1),
+            new ModKitDescription("Suspension",15),
+            new ModKitDescription("Armor",16),
+            new ModKitDescription("Turbo",18),
+            new ModKitDescription("Xenon",22),
+            new ModKitDescription("Front Wheels",23),
+            new ModKitDescription("Back Wheels (Motorcycle)",24),
+            new ModKitDescription("Plate holders", 25),
+            new ModKitDescription("Trim Design", 27),
+            new ModKitDescription("Ornaments", 28),
+            new ModKitDescription("Dial Design", 30),
+            new ModKitDescription("Steering Wheel", 33),
+            new ModKitDescription("Shift Lever", 34),
+            new ModKitDescription("Plaques", 35),
+            new ModKitDescription("Hydraulics", 38),
+            new ModKitDescription("Boost", 40),
+            new ModKitDescription("Window Tint", 55),
+            new ModKitDescription("Livery", 48),
+            new ModKitDescription("Plate", 53),
+        };
 
-        UIMenuNumericScrollerItem<int> VehicleModMenuItem = new UIMenuNumericScrollerItem<int>("Set Mod", "Set the vehicle mod", 1, 50, 1) { Value = 1 };
+
+        UIMenuListScrollerItem<ModKitDescription> VehicleModMenuItem = new UIMenuListScrollerItem<ModKitDescription>("Set Mod", "Set the vehicle mod", ModKitDescriptions);
         VehicleModMenuItem.Activated += (menu, item) =>
         {
             if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
@@ -301,8 +338,8 @@ public class DebugVehicleSubMenu : DebugSubMenu
                 if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
                 {
                     NativeFunction.Natives.SET_VEHICLE_MOD_KIT(Player.InterestedVehicle.Vehicle, 0);
-                    NativeFunction.Natives.SET_VEHICLE_MOD(Player.InterestedVehicle.Vehicle, VehicleModMenuItem.Value, modID, false);
-                    Game.DisplaySubtitle($"SET MOD {VehicleModMenuItem.Value} modID:{modID}");
+                    NativeFunction.Natives.SET_VEHICLE_MOD(Player.InterestedVehicle.Vehicle, VehicleModMenuItem.SelectedItem.ID, modID, false);
+                    Game.DisplaySubtitle($"SET MOD {VehicleModMenuItem.SelectedItem.ID} modID:{modID}");
                 }
             }
         };
@@ -403,6 +440,20 @@ public class DebugVehicleSubMenu : DebugSubMenu
     private void CreateColorMenuItem()//CreateColorMenuItem
     {
 
+        UIMenuNumericScrollerItem<float> dirtsetscroller = new UIMenuNumericScrollerItem<float>("Set Dirtyness", "Set how dirty the car is", 0.0f, 15.0f, 1.0f);
+        dirtsetscroller.Value = dirtsetscroller.Minimum;
+        dirtsetscroller.Activated += (menu, item) =>
+        {
+            if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+            {
+                NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(Player.InterestedVehicle.Vehicle, dirtsetscroller.Value);
+                Game.DisplaySubtitle($"SET DIRT {dirtsetscroller.Value}");
+            }
+        };
+        vehicleItemsMenu.AddItem(dirtsetscroller);
+
+
+
         UIMenu colorSimpleMenu = MenuPool.AddSubMenu(vehicleItemsMenu, "Simple Colors");
         colorSimpleMenu.SubtitleText = "COLORS";
         vehicleItemsMenu.MenuItems[vehicleItemsMenu.MenuItems.Count() - 1].Description = "Pick Colors";
@@ -469,17 +520,7 @@ public class DebugVehicleSubMenu : DebugSubMenu
 
 
 
-        UIMenuNumericScrollerItem<float> dirtsetscroller = new UIMenuNumericScrollerItem<float>("Set Dirtyness", "Set how dirty the car is", 0.0f, 15.0f, 1.0f);
-        dirtsetscroller.Value = dirtsetscroller.Minimum;
-        dirtsetscroller.Activated += (menu, item) =>
-        {
-            if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
-            {
-                NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(Player.InterestedVehicle.Vehicle, dirtsetscroller.Value);
-                Game.DisplaySubtitle($"SET DIRT {dirtsetscroller.Value}");
-            }
-        };
-        colorSimpleMenu.AddItem(dirtsetscroller);
+
 
     }
     private void CreateBetterColorMenu()
@@ -554,9 +595,10 @@ public class DebugVehicleSubMenu : DebugSubMenu
                 {
                     SetPrimaryColor = true;
                     PrimaryColor = cl.ColorID;
-                    if (Player.InterestedVehicle.Vehicle.Exists())
+                    if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
                     {
                         NativeFunction.Natives.SET_VEHICLE_COLOURS(Player.InterestedVehicle.Vehicle, FinalPrimaryColor, FinalSecondaryColor);
+                        DisplayColor();
                     }
                 };
                 primarycolorGroupMenu.AddItem(actualColorPrimary);
@@ -567,9 +609,10 @@ public class DebugVehicleSubMenu : DebugSubMenu
                 {
                     SetSecondaryColor = true;
                     SecondaryColor = cl.ColorID;
-                    if (Player.InterestedVehicle.Vehicle.Exists())
+                    if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
                     {
                         NativeFunction.Natives.SET_VEHICLE_COLOURS(Player.InterestedVehicle.Vehicle, FinalPrimaryColor, FinalSecondaryColor);
+                        DisplayColor();
                     }
                 };
                 secondarycolorGroupMenu.AddItem(actualColorSecondary);
@@ -583,9 +626,10 @@ public class DebugVehicleSubMenu : DebugSubMenu
                 {
                     SetPearlescentColor = true;
                     PearlescentColor = cl.ColorID;
-                    if (Player.InterestedVehicle.Vehicle.Exists())
+                    if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
                     {
                         NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(Player.InterestedVehicle.Vehicle, FinalPearlColor, FinalWheelColor);
+                        DisplayColor();
                     }
                 };
                 pearlescentcolorGroupMenu.AddItem(actualColorPearl);
@@ -599,9 +643,10 @@ public class DebugVehicleSubMenu : DebugSubMenu
                 {
                     SetWheelColor = true;
                     WheelColor = cl.ColorID;
-                    if (Player.InterestedVehicle.Vehicle.Exists())
+                    if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
                     {
                         NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(Player.InterestedVehicle.Vehicle, FinalPearlColor, FinalWheelColor);
+                        DisplayColor();
                     }
                 };
                 wheelcolorGroupMenu.AddItem(actualColorWheel);
@@ -614,9 +659,10 @@ public class DebugVehicleSubMenu : DebugSubMenu
                 {
                     SetInteriorColor = true;
                     InteriorColor = cl.ColorID;
-                    if (Player.InterestedVehicle.Vehicle.Exists())
+                    if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
                     {
                         NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_5(Player.InterestedVehicle.Vehicle, FinalInteriorColor);
+                        DisplayColor();
                     }
                 };
                 interiorcolorGroupMenu.AddItem(actualColorInterior);
@@ -624,7 +670,10 @@ public class DebugVehicleSubMenu : DebugSubMenu
             }
         }
     }
-
+    private void DisplayColor()
+    {
+        Game.DisplaySubtitle($"Primary {FinalPrimaryColor} Secondary {FinalSecondaryColor} PearlColor {FinalPearlColor} WheelColor {FinalWheelColor} InteriorColor {FinalInteriorColor}");
+    }
     private void CreateLiveryMenuItem()
     {
         int Total = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Player.InterestedVehicle.Vehicle);
@@ -707,5 +756,27 @@ public class DebugVehicleSubMenu : DebugSubMenu
         };
         vehicleItemsMenu.AddItem(vehInfoMenu);
     }
+
+
+    private class ModKitDescription
+    {
+        public ModKitDescription()
+        {
+        }
+
+        public ModKitDescription(string name, int iD)
+        {
+            Name = name;
+            ID = iD;
+        }
+
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public override string ToString()
+        {
+            return Name;
+        }
+    }
 }
+
 

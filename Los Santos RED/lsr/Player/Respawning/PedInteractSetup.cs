@@ -24,7 +24,7 @@ public class PedInteractSetup
         Offset = offset;
     }
     public bool ForcePosition { get; set; } = true;
-    public uint GameTimeLimit { get; set; } = 60000;
+    public uint GameTimeLimit { get; set; } = 15000;
     private bool IsValid => EntryPoint.ModController.IsRunning && (Player.IsBusted || Player.IsArrested) && !Player.IsIncapacitated && Player.IsAlive && PedExt != null && PedExt.Pedestrian.Exists() && !PedExt.Pedestrian.IsDead && !PedExt.IsInWrithe && !PedExt.IsUnconscious;
     public bool IsInPosition { get; private set; }
     public void Start()

@@ -40,5 +40,9 @@ public class PhysicalItem
     public List<PropAttachment> Attachments { get; set; }
     public bool CleanupItemImmediately { get; set; } = false;
     public uint AliasWeaponHash { get; set; }
+    public override string ToString()
+    {
+        return ID;
+    }
 }
 

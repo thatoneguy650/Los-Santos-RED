@@ -627,7 +627,7 @@ public class DispatchableVehicles_FEJ
             //new DispatchableVehicle("squaddie", 50,50) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             Create_MilitaryUnarmedHumvee(50,50,-1,false,PoliceVehicleType.Marked,-1,6,10,1,4,"",""),
             //new DispatchableVehicle("insurgent3", 5,50) { ForceStayInSeats = new List<int>(){ 7 },FirstPassengerIndex = 7, MaxRandomDirtLevel = 15.0f, MinOccupants = 2,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            Create_MilitaryArmedHumvee(5,50,-1,false,PoliceVehicleType.Marked,-1,6,10,2,5,"",""),
+            Create_MilitaryArmedHumvee(5,50,-1,false,PoliceVehicleType.Marked,-1,6,10,2,4,"",""),
 
 
             //Heavy
@@ -651,7 +651,7 @@ public class DispatchableVehicles_FEJ
             //new DispatchableVehicle("squaddie", 50,50) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             Create_MilitaryUnarmedHumvee(50,50,-1,false,PoliceVehicleType.Marked,-1,6,10,1,4,"",""),
             //new DispatchableVehicle("insurgent3", 5,50) { ForceStayInSeats = new List<int>(){ 7 },FirstPassengerIndex = 7, MaxRandomDirtLevel = 15.0f, MinOccupants = 2,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            Create_MilitaryArmedHumvee(5,50,-1,false,PoliceVehicleType.Marked,-1,6,10,2,5,"",""),
+            Create_MilitaryArmedHumvee(5,50,-1,false,PoliceVehicleType.Marked,-1,6,10,2,4,"",""),
 
             //HELI
             new DispatchableVehicle("cargobob",0,15) { RequiredPedGroup = "Pilot", RequiredGroupIsDriverOnly = true, RequiredPrimaryColorID = 153, RequiredSecondaryColorID = 153, MinOccupants = 3, MaxOccupants = 4},
@@ -668,7 +668,7 @@ public class DispatchableVehicles_FEJ
             //new DispatchableVehicle("squaddie", 50,50) { MaxRandomDirtLevel = 15.0f, MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             Create_MilitaryUnarmedHumvee(50,50,-1,false,PoliceVehicleType.Marked,-1,6,10,1,4,"",""),
             //new DispatchableVehicle("insurgent3", 5,50) { ForceStayInSeats = new List<int>(){ 7 },FirstPassengerIndex = 7, MaxRandomDirtLevel = 15.0f, MinOccupants = 2,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            Create_MilitaryArmedHumvee(5,50,-1,false,PoliceVehicleType.Marked,-1,6,10,2,5,"",""),
+            Create_MilitaryArmedHumvee(5,50,-1,false,PoliceVehicleType.Marked,-1,6,10,2,4,"",""),
             
             //HELI
             new DispatchableVehicle("annihilator", 0, 45) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 4 },RequiredPrimaryColorID = 153,RequiredSecondaryColorID = 153, MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10, MinOccupants = 3, MaxOccupants = 4 },

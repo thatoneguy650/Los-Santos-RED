@@ -37,7 +37,7 @@ public class ModDataFileManager
     public Dances DanceList;
     public Gestures GestureList;
     public Speeches SpeechList;
-    private PhysicalItems PhysicalItems;
+    public PhysicalItems PhysicalItems;
     public Seats Seats;
     public LocationTypes LocationTypes;
     public WeatherForecasts WeatherForecasts;
