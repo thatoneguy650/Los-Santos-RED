@@ -279,61 +279,179 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3426294393, new Vector3(-713.0732f,-916.5409f,19.36553f)),
-                    new InteriorDoor(2065277225, new Vector3(-710.4722f,-916.5372f,19.36553f)),}),// { IsSPOnly = true},//right door  
+                    new InteriorDoor(2065277225, new Vector3(-710.4722f,-916.5372f,19.36553f)),}){
+                IsWeaponRestricted = true,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("ltdlittleseoulitemtheftint1",new Vector3(-707.8715f, -914.1517f, 19.21559f), 270.5069f),
+                    Generate247Interact2("ltdlittleseoulitemtheftint2",new Vector3(-714.9484f, -912.2844f, 19.21559f), 47.72692f),
+                    Generate247Interact3("ltdlittleseoulitemtheftint3",new Vector3(-714.4394f, -912.6227f, 19.21559f), 221.3954f),
+                    Generate247Interact4("ltdlittleseoulitemtheftint4",new Vector3(-713.0032f, -911.1704f, 19.21559f), 223.4646f),
+                },
+
+
+
+            },// { IsSPOnly = true},//right door  
             new Interior(45570, "Ltd Grapeseed",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3426294393, new Vector3(1699.661f,4930.278f,42.21359f)),
-                    new InteriorDoor(2065277225, new Vector3(1698.172f,4928.146f,42.21359f)),}),// { IsSPOnly = true},//right door  
+                    new InteriorDoor(2065277225, new Vector3(1698.172f,4928.146f,42.21359f)),})
+            {
+                IsWeaponRestricted = true,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("ltdgrapeseeditemtheftint1",new Vector3(1698.303f, 4924.868f, 42.06368f), 147.1322f),
+                    Generate247Interact2("ltdgrapeseeditemtheftint2",new Vector3(1704.167f, 4929.214f, 42.06368f), 284.1616f),
+                    Generate247Interact3("ltdgrapeseeditemtheftint3",new Vector3(1703.845f, 4929.148f, 42.06368f), 99.67239f),
+                    Generate247Interact4("ltdgrapeseeditemtheftint4",new Vector3(1704.235f, 4927.141f, 42.06368f), 100.0045f),
+                },
+
+            },// { IsSPOnly = true},//right door  
             new Interior(80642,"LtD Davis",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3426294393, new Vector3(-53.96111f,-1755.717f,29.57094f)),
-                    new InteriorDoor(2065277225, new Vector3(-51.96669f,-1757.387f,29.57094f)),}) { IsWeaponRestricted = true, },//right door   
+                    new InteriorDoor(2065277225, new Vector3(-51.96669f,-1757.387f,29.57094f)),}) {
+
+
+                IsWeaponRestricted = true,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("ltdgrapeseeditemtheftint1",new Vector3(-48.92481f, -1757.641f, 29.42102f), 232.3135f),
+                    Generate247Interact2("ltdgrapeseeditemtheftint2",new Vector3(-52.70221f, -1751.247f, 29.42102f), 10.09468f),
+                    Generate247Interact3("ltdgrapeseeditemtheftint3",new Vector3(-52.58833f, -1751.656f, 29.42102f), 190.6157f),
+                    Generate247Interact4("ltdgrapeseeditemtheftint4",new Vector3(-50.41463f, -1751.314f, 29.42102f), 184.5213f),
+                },
+
+
+
+
+            },//right door   
             new Interior(2050,"LtD Mirror Park",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3426294393, new Vector3(1158.364f,-326.8165f,69.35503f)),
-                    new InteriorDoor(2065277225, new Vector3(1160.925f,-326.3612f,69.35503f)),}) { IsWeaponRestricted = true, },//right door   
+                    new InteriorDoor(2065277225, new Vector3(1160.925f,-326.3612f,69.35503f)),}) { IsWeaponRestricted = true,
+
+                                InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("ltdmirroritemtheftint1",new Vector3(1163.169f, -323.9579f, 69.20515f), 281.6205f),
+                    Generate247Interact2("ltdmirroritemtheftint2",new Vector3(1155.778f, -323.0717f, 69.20515f), 57.65269f),
+                    Generate247Interact3("ltdmirroritemtheftint3",new Vector3(1156.007f, -323.2287f, 69.20515f), 240.3528f),
+                    Generate247Interact4("ltdmirroritemtheftint4",new Vector3(1157.43f, -321.1204f, 69.20515f), 233.2851f),
+                },
+
+
+
+            },//right door   
             new Interior(82178,"LtD Richman Glen",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(3426294393, new Vector3(1158.364f,-326.8165f,69.35503f)),
-                    new InteriorDoor(2065277225, new Vector3(1160.925f,-326.3612f,69.35503f)),}) { IsWeaponRestricted = true, },//right door  
-            new Interior(74874,"LtD Gas") { IsWeaponRestricted = true, },
+                    new InteriorDoor(3426294393, new Vector3(-1823.285f, 787.3687f, 138.3624f)),
+                    new InteriorDoor(2065277225, new Vector3(-1821.369f, 789.1273f, 138.3124f)),}) { IsWeaponRestricted = true, },//right door  
+            new Interior(74874,"LtD Gas") { IsWeaponRestricted = true,
+
+            InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("ltdrichamanitemtheftint1",new Vector3(-1821.235f, 792.0287f, 138.1301f), 310.7221f),
+                    Generate247Interact2("ltdrichamanitemtheftint2",new Vector3(-1827.494f, 789.2473f, 138.2624f), 86.91869f),
+                    Generate247Interact3("ltdrichamanitemtheftint3",new Vector3(-1827.215f, 789.2775f, 138.2572f), 273.1148f),
+                    Generate247Interact4("ltdrichamanitemtheftint4",new Vector3(-1827.185f, 791.273f, 138.236f), 268.6499f),
+                },
+
+
+
+
+            },
 
             //Liquor
-            new Interior(33026,"Scoops Liquor Barn"),                
-            new Interior(104450,"Liquor Ace"),     
+            new Interior(33026,"Scoops Liquor Barn") { IsWeaponRestricted = true,
+
+            InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("scoopsitemtheft1",new Vector3(1166.253f, 2708.812f, 38.15771f), 359.1691f),
+                    Generate247Interact4("scoopsitemtheft4",new Vector3(1166.231f, 2707.29f, 38.15771f), 95.36868f),
+                },
+
+            },                
+            new Interior(104450,"Liquor Ace"){
+            
+            IsWeaponRestricted = true,
+            InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("liquoraceitemtheft1",new Vector3(1393.848f, 3604.695f, 34.98093f), 14.72468f),
+                    Generate247Interact4("liquoraceitemtheft4",new Vector3(1390.842f, 3601.188f, 34.98093f), 107.446f),
+                },
+
+            },     
             new Interior(50178,"Rob's Liquors",//San Andreas Ave Del Perro
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3082015943, new Vector3(-1226.894f,-903.1218f,12.47039f)){ LockWhenClosed = true },
-                }) { IsWeaponRestricted = true, },
+                }) { IsWeaponRestricted = true,
+
+                        InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("robsdelperroitemtheftint1",new Vector3(-1821.235f, 792.0287f, 138.1301f), 310.7221f),
+                    Generate247Interact4("robsdelperroitemtheftint4",new Vector3(-1827.185f, 791.273f, 138.236f), 268.6499f),
+                },
+
+
+
+
+            },
             new Interior(19202,"Rob's Liquors",//Route 1
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3082015943, new Vector3(-2973.535f,390.1414f,15.18735f)){ LockWhenClosed = true },
-                }) { IsWeaponRestricted = true, },
+                }) { 
+                IsWeaponRestricted = true,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("robschumashitemtheftint1",new Vector3(-2968.487f, 390.65f, 15.04331f), 267.1219f),
+                    Generate247Interact4("robschumashitemtheftint4",new Vector3(-2970.053f, 390.9432f, 15.04331f), 357.4018f),
+                },
+
+            },
             new Interior(98818,"Rob's Liquors",//Prosperity Street
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3082015943, new Vector3(-1490.411f,-383.8453f,40.30745f)){ LockWhenClosed = true },
-                }) { IsWeaponRestricted = true, },
+                }) { IsWeaponRestricted = true,
+
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("robsprosperityitemtheftint1",new Vector3(-1487.278f, -379.4213f, 40.16343f), 315.5894f),
+                    Generate247Interact4("robsprosperityitemtheftint4",new Vector3(-1488.674f, -380.564f, 40.16343f), 43.9887f),
+                },
+
+
+
+            },
             new Interior(73986,"Rob's Liquors",//El Rancho Boulevard
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3082015943, new Vector3(1141.038f,-980.3225f,46.55986f)) { LockWhenClosed = true },
-                }) { IsWeaponRestricted = true, },
-            new Interior(50178,"Rob's Liquors") { IsWeaponRestricted = true, },
+                }) { IsWeaponRestricted = true,
+
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    Generate247Interact1("robselranchoitemtheftint1",new Vector3(1136.005f, -981.7958f, 46.41584f), 104.7439f),
+                    Generate247Interact4("robselranchoitemtheftint4",new Vector3(1137.729f, -981.8011f, 46.41584f), 190.8169f),
+                },
+
+
+
+            },
 
             //Barber/Tattoo      
             new Interior(37378,"Bob Mullet Hair & Beauty"),
@@ -358,96 +476,96 @@ public class Interiors : IInteriors
     {
         PossibleInteriors.GeneralInteriors.AddRange(new List<Interior>()
         {
-            new Interior(96002,"Zancudo Tunnel"),
-            new Interior(104706,"Zancudo Tunnel"),
-            new Interior(81154,"Braddock Tunnel"),
-            new Interior(40450,"Braddock Tunnel"),
-            new Interior(19714,"Braddock Tunnel"),
-            new Interior(7682,"Integrity Way Tunnel"),
-            new Interior(50946,"Integrity Way Tunnel"),
-            new Interior(75010,"Integrity Way Tunnel"),
+            new Interior(96002,"Zancudo Tunnel") { IsTunnel = true, },
+            new Interior(104706,"Zancudo Tunnel"){ IsTunnel = true, },
+            new Interior(81154,"Braddock Tunnel"){ IsTunnel = true, },
+            new Interior(40450,"Braddock Tunnel"){ IsTunnel = true, },
+            new Interior(19714,"Braddock Tunnel"){ IsTunnel = true, },
+            new Interior(7682,"Integrity Way Tunnel"){ IsTunnel = true, },
+            new Interior(50946,"Integrity Way Tunnel"){ IsTunnel = true, },
+            new Interior(75010,"Integrity Way Tunnel"){ IsTunnel = true, },
 
 
-            new Interior(6146,"Del Perro Tunnel"),
-            new Interior(96770,"Del Perro Tunnel"),
-            new Interior(86274,"Del Perro Tunnel"),
-            new Interior(105218,"Del Perro Tunnel"),
-
-
-
-            new Interior(38658,"South LS Rail Tunnel"),
-            new Interior(100866,"South LS Rail Tunnel"),
-            new Interior(83202,"South LS Rail Tunnel"),
-            new Interior(110850,"South LS Rail Tunnel"),
-            new Interior(28674,"South LS Rail Tunnel"),
-            new Interior(49154,"South LS Rail Tunnel"),
-            new Interior(27650,"South LS Rail Tunnel"),
-            new Interior(101122,"South LS Rail Tunnel"),
-
-
-            new Interior(111362,"Del Perro Canal Access"),
-            new Interior(118530,"Del Perro Canal Access"),
-            new Interior(97282,"Del Perro Canal Access"),
-            new Interior(104194,"Del Perro Canal Access"),
-            new Interior(113410,"Del Perro Canal Access"),
-
-
-            new Interior(108802,"Raton Canyon Rail Tunnel"),
-            new Interior(112898,"Raton Canyon Rail Tunnel"),
-            new Interior(20994,"Raton Canyon Rail Tunnel"),
-            new Interior(29442,"Raton Canyon Rail Tunnel"),
-            new Interior(12034,"Raton Canyon Rail Tunnel"),
-            new Interior(16130,"Raton Canyon Rail Tunnel"),
-            new Interior(117762,"Raton Canyon Rail Tunnel"),
-            new Interior(5890,"Raton Canyon Rail Tunnel"),
-            new Interior(97026,"Raton Canyon Rail Tunnel"),
-            new Interior(71170,"Raton Canyon Rail Tunnel"),
+            new Interior(6146,"Del Perro Tunnel"){ IsTunnel = true, },
+            new Interior(96770,"Del Perro Tunnel"){ IsTunnel = true, },
+            new Interior(86274,"Del Perro Tunnel"){ IsTunnel = true, },
+            new Interior(105218,"Del Perro Tunnel"){ IsTunnel = true, },
 
 
 
-            new Interior(14082,"Downtown LS Sewer"),
-            new Interior(42242,"Downtown LS Sewer"),
-            new Interior(45826,"Downtown LS Sewer"),
-            new Interior(55810,"Downtown LS Sewer"),
-            new Interior(57346,"Downtown LS Sewer"),
-            new Interior(109826,"Downtown LS Sewer"),
-            new Interior(10498,"Downtown LS Sewer"),
-            new Interior(71938,"Downtown LS Sewer"),
-            new Interior(43266,"Downtown LS Sewer"),
-            new Interior(26114,"Downtown LS Sewer"),
-            new Interior(9986,"Downtown LS Sewer"),
-            new Interior(120322,"Downtown LS Sewer"),
-            new Interior(36610,"Downtown LS Sewer"),
-            new Interior(104962,"Downtown LS Sewer"),
-            new Interior(23298,"Downtown LS Sewer"),
+            new Interior(38658,"South LS Rail Tunnel"){ IsTunnel = true, },
+            new Interior(100866,"South LS Rail Tunnel"){ IsTunnel = true, },
+            new Interior(83202,"South LS Rail Tunnel"){ IsTunnel = true, },
+            new Interior(110850,"South LS Rail Tunnel"){ IsTunnel = true, },
+            new Interior(28674,"South LS Rail Tunnel"){ IsTunnel = true, },
+            new Interior(49154,"South LS Rail Tunnel"){ IsTunnel = true, },
+            new Interior(27650,"South LS Rail Tunnel"){ IsTunnel = true, },
+            new Interior(101122,"South LS Rail Tunnel"){ IsTunnel = true, },
 
 
-            new Interior(5634,"Burton Subway Station"),
-            new Interior(32770,"Burton Subway Station"),
-            new Interior(99842,"Burton Subway Station"),
+            new Interior(111362,"Del Perro Canal Access"){ IsTunnel = true, },
+            new Interior(118530,"Del Perro Canal Access"){ IsTunnel = true, },
+            new Interior(97282,"Del Perro Canal Access"){ IsTunnel = true, },
+            new Interior(104194,"Del Perro Canal Access"){ IsTunnel = true, },
+            new Interior(113410,"Del Perro Canal Access"){ IsTunnel = true, },
+
+
+            new Interior(108802,"Raton Canyon Rail Tunnel"){ IsTunnel = true, },
+            new Interior(112898,"Raton Canyon Rail Tunnel"){ IsTunnel = true, },
+            new Interior(20994,"Raton Canyon Rail Tunnel"){ IsTunnel = true, },
+            new Interior(29442,"Raton Canyon Rail Tunnel"){ IsTunnel = true, },
+            new Interior(12034,"Raton Canyon Rail Tunnel"){ IsTunnel = true, },
+            new Interior(16130,"Raton Canyon Rail Tunnel"){ IsTunnel = true, },
+            new Interior(117762,"Raton Canyon Rail Tunnel"){ IsTunnel = true, },
+            new Interior(5890,"Raton Canyon Rail Tunnel"){ IsTunnel = true, },
+            new Interior(97026,"Raton Canyon Rail Tunnel"){ IsTunnel = true, },
+            new Interior(71170,"Raton Canyon Rail Tunnel"){ IsTunnel = true, },
 
 
 
-            new Interior(68866,"Little Seoul Subway Station"),
-            new Interior(20482,"Little Seoul Subway Station"),
-            new Interior(16898,"Little Seoul Subway Station"),
+            new Interior(14082,"Downtown LS Sewer"){ IsTunnel = true, },
+            new Interior(42242,"Downtown LS Sewer"){ IsTunnel = true, },
+            new Interior(45826,"Downtown LS Sewer"){ IsTunnel = true, },
+            new Interior(55810,"Downtown LS Sewer"){ IsTunnel = true, },
+            new Interior(57346,"Downtown LS Sewer"){ IsTunnel = true, },
+            new Interior(109826,"Downtown LS Sewer"){ IsTunnel = true, },
+            new Interior(10498,"Downtown LS Sewer"){ IsTunnel = true, },
+            new Interior(71938,"Downtown LS Sewer"){ IsTunnel = true, },
+            new Interior(43266,"Downtown LS Sewer"){ IsTunnel = true, },
+            new Interior(26114,"Downtown LS Sewer"){ IsTunnel = true, },
+            new Interior(9986,"Downtown LS Sewer"){ IsTunnel = true, },
+            new Interior(120322,"Downtown LS Sewer"){ IsTunnel = true, },
+            new Interior(36610,"Downtown LS Sewer"){ IsTunnel = true, },
+            new Interior(104962,"Downtown LS Sewer"){ IsTunnel = true, },
+            new Interior(23298,"Downtown LS Sewer"){ IsTunnel = true, },
 
-            new Interior(98306,"Del Perro Subway Station"),
-            new Interior(5122,"Del Perro Subway Station"),
-            new Interior(32002,"Del Perro Subway Station"),
+
+            new Interior(5634,"Burton Subway Station"){ IsTunnel = true, },
+            new Interior(32770,"Burton Subway Station"){ IsTunnel = true, },
+            new Interior(99842,"Burton Subway Station"){ IsTunnel = true, },
 
 
-            new Interior(84482,"Portola Drive Subway Station"),
-            new Interior(91650,"Portola Drive Subway Station"),
-            new Interior(50690,"Portola Drive Subway Station"),
 
-            new Interior(62466,"LSIA Terminal 4 Subway Station"),
-            new Interior(108546,"LSIA Terminal 4 Subway Station"),
-            new Interior(77314,"LSIA Terminal 4 Subway Station"),
+            new Interior(68866,"Little Seoul Subway Station"){ IsTunnel = true, },
+            new Interior(20482,"Little Seoul Subway Station"){ IsTunnel = true, },
+            new Interior(16898,"Little Seoul Subway Station"){ IsTunnel = true, },
 
-            new Interior(61698,"LSIA Parking Subway Station"),
-            new Interior(65538,"LSIA Parking Subway Station"),
-            new Interior(111106,"LSIA Parking Subway Station"),
+            new Interior(98306,"Del Perro Subway Station"){ IsTunnel = true, },
+            new Interior(5122,"Del Perro Subway Station"){ IsTunnel = true, },
+            new Interior(32002,"Del Perro Subway Station"){ IsTunnel = true, },
+
+
+            new Interior(84482,"Portola Drive Subway Station"){ IsTunnel = true, },
+            new Interior(91650,"Portola Drive Subway Station"){ IsTunnel = true, },
+            new Interior(50690,"Portola Drive Subway Station"){ IsTunnel = true, },
+
+            new Interior(62466,"LSIA Terminal 4 Subway Station"){ IsTunnel = true, },
+            new Interior(108546,"LSIA Terminal 4 Subway Station"){ IsTunnel = true, },
+            new Interior(77314,"LSIA Terminal 4 Subway Station"){ IsTunnel = true, },
+
+            new Interior(61698,"LSIA Parking Subway Station"){ IsTunnel = true, },
+            new Interior(65538,"LSIA Parking Subway Station"){ IsTunnel = true, },
+            new Interior(111106,"LSIA Parking Subway Station"){ IsTunnel = true, },
 
             //"LSIA Parking Subway Station"
         });
@@ -7093,10 +7211,12 @@ public class Interiors : IInteriors
 
     private ItemTheftInteract Generate247Interact1(string name,Vector3 position,float heading)
     {
+        int minItems = RandomItems.GetRandomNumberInt(10, 25);
+        int maxItems = minItems + RandomItems.GetRandomNumberInt(2, 10);
         return new ItemTheftInteract(name, position, heading, "Shoplift")//Looking at the front counter, mostly candy bars and chips
         {
-            MinItems = 15,
-            MaxItems = 25,
+            MinItems = minItems,
+            MaxItems = maxItems,
             ViolatingCrimeID = StaticStrings.ShopliftingCrimeID,
             PossibleItems = new List<TheftInteractItem>()
                         {
@@ -7120,10 +7240,12 @@ public class Interiors : IInteriors
     }
     private ItemTheftInteract Generate247Interact2(string name, Vector3 position, float heading)
     {
+        int minItems = RandomItems.GetRandomNumberInt(10, 25);
+        int maxItems = minItems + RandomItems.GetRandomNumberInt(2, 10);
         return new ItemTheftInteract(name, position, heading, "Shoplift")//Front of first stand
         {
-            MinItems = 15,
-            MaxItems = 25,
+            MinItems = minItems,
+            MaxItems = maxItems,
             ViolatingCrimeID = StaticStrings.ShopliftingCrimeID,
             PossibleItems = new List<TheftInteractItem>()
                         {
@@ -7131,17 +7253,19 @@ public class Interiors : IInteriors
                             new TheftInteractItem("Can of Sprunk",1,1,20),
                             new TheftInteractItem("Can of Orang-O-Tang",1,1,45),
                         },
-            CameraPosition = new Vector3(546.7435f, 2670.579f, 43.03606f),
-            CameraDirection = new Vector3(-0.3920216f, -0.8322931f, -0.3919277f),
-            CameraRotation = new Rotator(-23.0745f, 1.113623E-05f, 154.7789f),
+            //CameraPosition = new Vector3(546.7435f, 2670.579f, 43.03606f),
+            //CameraDirection = new Vector3(-0.3920216f, -0.8322931f, -0.3919277f),
+            //CameraRotation = new Rotator(-23.0745f, 1.113623E-05f, 154.7789f),
         };
     }
     private ItemTheftInteract Generate247Interact3(string name, Vector3 position, float heading)
     {
+        int minItems = RandomItems.GetRandomNumberInt(10, 25);
+        int maxItems = minItems + RandomItems.GetRandomNumberInt(2, 10);
         return new ItemTheftInteract(name, position, heading, "Shoplift")///back of first
         {
-            MinItems = 15,
-            MaxItems = 25,
+            MinItems = minItems,
+            MaxItems = maxItems,
             ViolatingCrimeID = StaticStrings.ShopliftingCrimeID,
             PossibleItems = new List<TheftInteractItem>()
                         {
@@ -7153,10 +7277,12 @@ public class Interiors : IInteriors
     }
     private ItemTheftInteract Generate247Interact4(string name, Vector3 position, float heading)
     {
+        int minItems = RandomItems.GetRandomNumberInt(10, 25);
+        int maxItems = minItems + RandomItems.GetRandomNumberInt(2, 10);
         return new ItemTheftInteract(name, position, heading, "Shoplift")//Looking at the front counter, mostly candy bars and chips
         {
-            MinItems = 15,
-            MaxItems = 25,
+            MinItems = minItems,
+            MaxItems = maxItems,
             IncrementGameTimeMin = 1500,
             IncrementGameTimeMax = 2000,
             ViolatingCrimeID = StaticStrings.ShopliftingCrimeID,

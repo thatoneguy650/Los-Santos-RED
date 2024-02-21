@@ -127,7 +127,7 @@ namespace Mod
             {
                 HealthState.MyPed.VoiceName = FreeModeVoice;
             }
-            CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors);
+            CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors, Settings);
             Surrendering = new SurrenderActivity(this, World, Settings);
             Violations = new Violations(this, TimeControllable, Crimes, Settings, Zones, GangTerritories, World, this);
             Investigation = new Investigation(this, Settings, provider);

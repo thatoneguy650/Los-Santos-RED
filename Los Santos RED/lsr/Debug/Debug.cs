@@ -86,6 +86,7 @@ public class Debug
     private bool IsBigMapActive = false;
     private string CurrentDictionary;
     private string CurrentAnimation;
+    private bool isShowingTunnel;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Mod.Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, WeatherReporting weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
@@ -505,12 +506,33 @@ public class Debug
          */
 
 
+        //if(!isShowingTunnel)
+        //{
+        //    Game.dis
+        //    isShowingTunnel = true;
+        //}
+        //else
+        //{
+        //    isShowingTunnel = false;
+        //}
 
 
-        if(Game.TimeScale >= 0.1f)
+        GameFiber.StartNew(delegate
         {
-            Game.TimeScale -= 0.05f;
-        }
+            uint GameTimeStarted = Game.GameTime;
+            while (!Game.IsKeyDownRightNow(Keys.Space))
+            {
+                Game.DisplaySubtitle($"IsInTunnel {Player.CurrentLocation.IsInTunnel} MightBeInTunnel {Player.CurrentLocation.MightBeInTunnel} IsByTunnelNode: {Player.CurrentLocation.IsByTunnelNode} SPACE TO STOP");
+                GameFiber.Yield();
+            }
+
+        }, "Run Debug Logic");
+
+
+        //if(Game.TimeScale >= 0.1f)
+        //{
+        //    Game.TimeScale -= 0.05f;
+        //}
         GameFiber.Sleep(500);
 
         //CurrentDictionary = NativeHelper.GetKeyboardInput("dict");
@@ -917,31 +939,35 @@ public class Debug
     private void DebugNumpad5()
 {
 
-        string dictionary = "savem_default@";
-        string animation = "m_getin_l";
+        bool isGround = NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, 1000f, out float GroundZ, true, false);
 
-        if(!string.IsNullOrEmpty(CurrentDictionary))
-        {
-            dictionary = CurrentDictionary;
-        }
-        if(!string.IsNullOrEmpty(CurrentAnimation))
-        {
-            animation = CurrentAnimation;
-        }
-        Vector3 startingPos = Game.LocalPlayer.Character.Position;
-        float startingHeading = Game.LocalPlayer.Character.Heading;
+        Game.DisplaySubtitle($"GroundZ: {GroundZ}");
+        GameFiber.Sleep(500);
+        //string dictionary = "savem_default@";
+        //string animation = "m_getin_l";
 
-        AnimationDictionary.RequestAnimationDictionay(dictionary);
-        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 0, false, false, false);//-1
-        GameFiber.Sleep(1000);
+        //if(!string.IsNullOrEmpty(CurrentDictionary))
+        //{
+        //    dictionary = CurrentDictionary;
+        //}
+        //if(!string.IsNullOrEmpty(CurrentAnimation))
+        //{
+        //    animation = CurrentAnimation;
+        //}
+        //Vector3 startingPos = Game.LocalPlayer.Character.Position;
+        //float startingHeading = Game.LocalPlayer.Character.Heading;
 
-        while(!Game.IsKeyDownRightNow(Keys.O))
-        {
-            Game.DisplayHelp("PRESS O To Cancel");
-            GameFiber.Yield();
-        }
-        EntryPoint.WriteToConsole($"startingPos: new Vector3({startingPos.X}f, {startingPos.Y}f, {startingPos.Z}f), startingHeading: {startingHeading}f");
-        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+        //AnimationDictionary.RequestAnimationDictionay(dictionary);
+        //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 0, false, false, false);//-1
+        //GameFiber.Sleep(1000);
+
+        //while(!Game.IsKeyDownRightNow(Keys.O))
+        //{
+        //    Game.DisplayHelp("PRESS O To Cancel");
+        //    GameFiber.Yield();
+        //}
+        //EntryPoint.WriteToConsole($"startingPos: new Vector3({startingPos.X}f, {startingPos.Y}f, {startingPos.Z}f), startingHeading: {startingHeading}f");
+        //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
 
         //Game.DisplaySubtitle($" TotalCars: {Rage.World.EnumerateVehicles().Count()} Vehicle Capacity {Rage.World.VehicleCapacity}");
         //Game.DisplaySubtitle($"DOOR LOCK SET TO {isDoorLocked} ");

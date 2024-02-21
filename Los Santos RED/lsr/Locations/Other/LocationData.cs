@@ -15,7 +15,7 @@ namespace LosSantosRED.lsr.Locations
         private Vector3 ClosestNode;
 
 
-
+        private ISettingsProvideable Settings;
         private IStreets Streets;
         private IZones Zones;
         private Zone PreviousZone;
@@ -35,12 +35,13 @@ namespace LosSantosRED.lsr.Locations
 
         private uint GameTimeWentInside;
         private uint GameTimeWentOutside;
-        public LocationData(Entity characterToLocate, IStreets streets, IZones zones, IInteriors interiors)
+        public LocationData(Entity characterToLocate, IStreets streets, IZones zones, IInteriors interiors, ISettingsProvideable settings)
         {
             Streets = streets;
             Zones = zones;
             Interiors = interiors;
             EntityToLocate = characterToLocate;
+            Settings= settings;
         }
         public int ClosestNodeID { get; private set; }
         public Interior CurrentInterior { get; private set; }
@@ -52,6 +53,11 @@ namespace LosSantosRED.lsr.Locations
         public bool IsInside => InteriorID != 0 &&  CurrentInterior != null;
         public uint GameTimeInZone => GameTimeEnteredZone == 0 ? 0 : Game.GameTime - GameTimeEnteredZone;
         public bool IsOnFreeway => CurrentStreet != null && CurrentStreet.IsHighway;
+
+        public bool MightBeInTunnel => IsInside && Game.LocalPlayer.Character.Position.Z <= Settings.SettingsManager.DebugSettings.TunnelZValueMax;// -10.f;
+        public bool IsInTunnel { get; private set; }
+
+        public bool IsByTunnelNode { get; private set; }
         public Vector3 ClosestRoadNode => ClosestNode;
         public int ClosestRoadNodeID => ClosestNodeID;
         public float ClosestNodeHeading { get; private set; }
@@ -154,6 +160,7 @@ namespace LosSantosRED.lsr.Locations
         }
         private void UpdateNode(bool isInVehicle)
         {
+            IsByTunnelNode = false;
             if (EntityToLocate.Exists() && (!IsInside || isInVehicle))
             {
                 Vector3 position = EntityToLocate.Position;//Game.LocalPlayer.Character.Position;
@@ -162,6 +169,34 @@ namespace LosSantosRED.lsr.Locations
                // bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, out outPos, 0, 3.0f, 0f);
 
                 bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(position.X, position.Y, position.Z, out outPos, out outHeading, 0, 3.0f, 0f);
+                bool hasProperties = false;
+                //int busy;
+                //int flags = 0;
+                //if (hasNode)
+                //{
+                //    hasProperties = NativeFunction.Natives.GET_VEHICLE_NODE_PROPERTIES<bool>(ClosestNode.X, ClosestNode.Y, ClosestNode.Z, out busy, out flags);
+                //}
+                //if (hasProperties)
+                //{
+                //    VEHICLE_NODE_PROPERTIES coolFlag = (VEHICLE_NODE_PROPERTIES)flags;
+                //    if(coolFlag.HasFlag(VEHICLE_NODE_PROPERTIES.VNP_TUNNEL_OR_INTERIOR))
+                //    {
+                //        IsByTunnelNode = true;
+                //        EntryPoint.WriteToConsole("NEAR A TUNNEL OR INSIDE ROAD NODE");
+                //    }
+                //    else
+                //    {
+                //        IsByTunnelNode = false;
+                //    }
+                //}
+                //else
+                //{
+                //    IsByTunnelNode = false;
+                //}
+
+
+
+
 
                 ClosestNode = outPos;
                 ClosestNodeHeading = outHeading;
@@ -322,12 +357,17 @@ namespace LosSantosRED.lsr.Locations
         {
             GameTimeWentInside = Game.GameTime;
             GameTimeWentOutside = 0;
+            if(CurrentInterior != null && CurrentInterior.IsTunnel)
+            {
+                IsInTunnel = true;
+            }
             //EntryPoint.WriteToConsoleTestLong("PLAYER EVENT: WENT INSIDE");
         }
         private void OnWentOutside()
         {
             GameTimeWentInside = 0;
             GameTimeWentOutside = Game.GameTime;
+            IsInTunnel = false;
             //EntryPoint.WriteToConsoleTestLong("PLAYER EVENT: WENT OUTSIDE");
         }
         private void GetInteriorFromID()
@@ -354,6 +394,21 @@ namespace LosSantosRED.lsr.Locations
             }
         }
     }
+
+}
+public enum VEHICLE_NODE_PROPERTIES
+{
+    VNP_OFF_ROAD = 1,                   // node has been flagged as 'off road', suitable only for 4x4 vehicles, etc
+    VNP_ON_PLAYERS_ROAD = 2,                    // node has been dynamically marked as somewhere ahead, possibly on (or near to) the player's current road
+    VNP_NO_BIG_VEHICLES = 4,                    // node has been marked as not suitable for big vehicles
+    VNP_SWITCHED_OFF = 8,                   // node is switched off for ambient population
+    VNP_TUNNEL_OR_INTERIOR = 16,                    // node is in a tunnel or an interior
+    VNP_LEADS_TO_DEAD_END = 32,                 // node is, or leads to, a dead end
+    VNP_HIGHWAY = 64,                   // node is marked as highway
+    VNP_JUNCTION = 128,                 // node qualifies as junction
+    VNP_TRAFFIC_LIGHT = 256,                    // node's special function is traffic-light
+    VNP_GIVE_WAY = 512,                 // node's special function is give-way	
+    VNP_WATER = 1024                    // node is water/boat
 }
 
 

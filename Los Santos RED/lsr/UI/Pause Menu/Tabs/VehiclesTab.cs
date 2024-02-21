@@ -69,7 +69,7 @@ public class VehiclesTab
             string DescriptionHeaderText = $"{Model}";
             if (car.Vehicle.Exists())
             {
-                LocationData myData = new LocationData(car.Vehicle, Streets, Zones, Interiors);
+                LocationData myData = new LocationData(car.Vehicle, Streets, Zones, Interiors, Settings);
                 myData.Update(car.Vehicle, false);
 
                 string StreetText = "";
