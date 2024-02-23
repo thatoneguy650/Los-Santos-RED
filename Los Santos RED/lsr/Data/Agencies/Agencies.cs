@@ -220,14 +220,26 @@ public class Agencies : IAgencies
         LSIAPDFEJ.VehiclesID = "LSIAPDVehicles";
 
 
+        Agency SAHPFEJ = Extensions.DeepCopy(SAHP);
+        Agency LSPDFEJ = Extensions.DeepCopy(LSPD);
+        Agency LSPDVWFEJ = Extensions.DeepCopy(LSPDVW);
+        Agency LSPDELSFEJ = Extensions.DeepCopy(LSPDELS);
+        SAHPFEJ.MaxWantedLevelSpawn = 4;
+        LSPDFEJ.MaxWantedLevelSpawn = 4;
+        LSPDVWFEJ.MaxWantedLevelSpawn = 4;
+        LSPDELSFEJ.MaxWantedLevelSpawn = 4;
 
-        //Agency LSPDASDFEJ = Extensions.DeepCopy(LSPDASD);
 
-        //LSPDASDFEJ.PersonnelID = "LSPDASDPeds";
 
-        //Agency LSSDASDFEJ = Extensions.DeepCopy(LSSDASD);
-        //LSSDASDFEJ.PersonnelID = "LSSDASDPeds";
-
+        Agency LSSDFEJ = Extensions.DeepCopy(LSSD);
+        Agency LSSDVWFEJ = Extensions.DeepCopy(LSSDVW);
+        Agency LSSDDVFEJ = Extensions.DeepCopy(LSSDDV);
+        Agency LSSDMJFEJ = Extensions.DeepCopy(LSSDMJ);
+        LSSDFEJ.MaxWantedLevelSpawn = 4;
+        LSSDVWFEJ.MaxWantedLevelSpawn = 4;
+        LSSDDVFEJ.MaxWantedLevelSpawn = 4;
+        LSSDMJFEJ.MaxWantedLevelSpawn = 4;
+        //            LSSD,LSSDVW,LSSDDV,LSSDMJ,
 
 
         Agency BorderPatrol = new Agency("~r~", "NOOSE-BP", "Border Patrol", "NOoSE Border Patrol", "DarkSlateGray", Classification.Federal, "BorderPatrolPeds", "BorderPatrolVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "Border Patrol Officer") { MaxWantedLevelSpawn = 3, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
@@ -243,13 +255,13 @@ public class Agencies : IAgencies
 
         List< Agency> FullAgenciesList = new List<Agency>
         {
-            LSPD,LSPDVW,LSPDELS,
+            LSPDFEJ,LSPDVWFEJ,LSPDELSFEJ,
             DPPD,RHPD,
-            LSSD,LSSDVW,LSSDDV,LSSDMJ,
+            LSSDFEJ,LSSDVWFEJ,LSSDDVFEJ,LSSDMJFEJ,
             BCSO,
             LSPDASD,LSSDASD,
             LSPPFEJ,LSIAPDFEJ,
-            SAHP,SASPA,SAPR,USCG,
+            SAHPFEJ,SASPA,SAPR,USCG,
 
 
             USNPS,LSDPR,SADFW,

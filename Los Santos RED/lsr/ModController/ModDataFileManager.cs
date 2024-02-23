@@ -291,7 +291,7 @@ public class ModDataFileManager
             "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, israelsr, AllenKennedy, and my own mapped default police/service vehicles."
             + Environment.NewLine +
             "These are all replace vehicles for police (Stanier), police2 (Buffalo), police3 (Interceptor), sheriff (Gresley Police), sheriff2 (Granger Police), policeb (Police Bike), policeold1 (Merit Police), pranger (Fugitive Police), policeold2 (Police Bison), taxi (Stanier Taxi)," +
-            " dilettante2 (Taxi/Security Dilettante), policet (Police Transporter), polgauntlet (Gauntlet Livery), blista3 (Unmaked Washinton), stalion2 (1st Gen Stanier Police), gauntlet2 (1st Gen Stanier Security/Taxi), issi2 (Civilian Interceptor), and lurcher (Service Interceptor)."
+            " dilettante2 (Taxi/Security Dilettante), policet (Police Transporter), polgauntlet (Gauntlet Livery), blista3 (Unmaked Washinton), stalion2 (1st Gen Stanier Police), gauntlet2 (1st Gen Stanier Security/Taxi), issi2 (Civilian Interceptor), lurcher (Service Interceptor), and lots more."
             + Environment.NewLine + Environment.NewLine +
             "EUP Installation: "
             + Environment.NewLine +

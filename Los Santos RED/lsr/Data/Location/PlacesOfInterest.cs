@@ -2432,6 +2432,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new LEConditionalLocation(new Vector3(-475.1396f, 6031.421f, 31.17419f), 45f,35f),
                 new LEConditionalLocation(new Vector3(-458.788f, 6005.529f, 31.17422f), 267f,35f),
                 new LEConditionalLocation(new Vector3(-455.154f, 6001.894f, 31.17422f), 267f,35f),
+                new LEConditionalLocation(new Vector3(-475.5325f, 5988.582f, 31.33671f), 311.222f,45f) { AllowAirVehicle = true,RequiredVehicleGroup = "Helicopter" },
             }},
             new PoliceStation(new Vector3(434.3387f, -981.8954f, 30.70984f), 89.51098f, "Mission Row Police Station","Obey and Survive") {
                 OpenTime = 0,
