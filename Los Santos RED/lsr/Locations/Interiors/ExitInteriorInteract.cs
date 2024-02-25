@@ -33,7 +33,7 @@ public class ExitInteriorInteract : InteriorInteract
         {
             return;
         }
-        Player.ButtonPrompts.AddPrompt(Name, ButtonPromptText, Name, Settings.SettingsManager.KeySettings.InteractCancel, 999);
+        Player.ButtonPrompts.AttemptAddPrompt(Name, ButtonPromptText, Name, Settings.SettingsManager.KeySettings.InteractCancel, 999);
     }
 }
 

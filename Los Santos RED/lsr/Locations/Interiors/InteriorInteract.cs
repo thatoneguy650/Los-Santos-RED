@@ -61,7 +61,7 @@ public class InteriorInteract
 
     public bool UseNavmesh { get; set; } = true;
     public bool WithWarp { get; set; } = false;
-    public virtual bool ShouldAddPrompt => !Interior.IsMenuInteracting && distanceTo <= InteractDistance;
+    public virtual bool ShouldAddPrompt => !Interior.IsMenuInteracting && distanceTo <= InteractDistance && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanPerformActivitiesOnFoot;
     public virtual void Setup(IModItems modItems)
     {
         ModItems = modItems;

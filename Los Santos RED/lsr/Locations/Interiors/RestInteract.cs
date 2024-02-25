@@ -68,7 +68,7 @@ public class RestInteract : InteriorInteract
         {
             return;
         }
-        Player.ButtonPrompts.AddPrompt(Name, ButtonPromptText, Name, Settings.SettingsManager.KeySettings.InteractStart, 999);
+        Player.ButtonPrompts.AttemptAddPrompt(Name, ButtonPromptText, Name, Settings.SettingsManager.KeySettings.InteractStart, 999);
     }
     private bool DoRestAnimation()
     {

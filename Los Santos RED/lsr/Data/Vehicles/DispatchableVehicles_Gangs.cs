@@ -55,7 +55,7 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle("baller2", 20, 20){ RequiredPrimaryColorID = 145,RequiredSecondaryColorID = 145 },//purple
 
             //Custom
-            new DispatchableVehicle("primo2",20,20) {
+            new DispatchableVehicle("primo2",75,75) {
             DebugName = "primo2_PB_DLC",
             MaxOccupants = 4,
             RequiredPrimaryColorID = 145,
@@ -169,14 +169,12 @@ public class DispatchableVehicles_Gangs
             DebugName = "impaler6_PB_DLC",
             ModelName = "impaler6",
             MaxOccupants = 4,
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 145,
             RequiredSecondaryColorID = 105,
-
-
 
 
             RequiredVariation = new VehicleVariation() {
@@ -184,11 +182,8 @@ public class DispatchableVehicles_Gangs
             SecondaryColor = 105,
             PearlescentColor = 105,
             WheelColor = 156,
-
-
             WheelType = 8,
             WindowTint = 3,
-
             VehicleToggles = new List<VehicleToggle>() {
             },
             VehicleMods = new List<VehicleMod>() {
@@ -236,14 +231,12 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "virgo2_PB_DLC",
             ModelName = "virgo2",
-            AmbientSpawnChance = 25,
-            WantedSpawnChance = 25,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 145,
             RequiredSecondaryColorID = 105,
-
-
 
 
             RequiredVariation = new VehicleVariation() {
@@ -251,9 +244,7 @@ public class DispatchableVehicles_Gangs
             SecondaryColor = 105,
             PearlescentColor = 1,
             WheelColor = 156,
-
             Livery = 0,
-
             WheelType = 9,
             WindowTint = 3,
 
@@ -349,8 +340,8 @@ public class DispatchableVehicles_Gangs
             DebugName = "baller7_PB_DLC",
             ModelName = "baller7",
             MaxOccupants = 4,
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 145,
@@ -419,14 +410,12 @@ public class DispatchableVehicles_Gangs
             DebugName = "baller_PB",
             ModelName = "baller",
             MaxOccupants = 4,
-            AmbientSpawnChance = 25,
-            WantedSpawnChance = 25,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 145,
             RequiredSecondaryColorID = 105,
-
-
 
 
             RequiredVariation = new VehicleVariation() {
@@ -434,8 +423,6 @@ public class DispatchableVehicles_Gangs
             SecondaryColor = 105,
             PearlescentColor = 105,
             WheelColor = 156,
-
-
             WheelType = 3,
             WindowTint = 3,
             VehicleExtras = new List<VehicleExtra>() {
@@ -469,17 +456,87 @@ public class DispatchableVehicles_Gangs
             },
             },
             new DispatchableVehicle() {
-            DebugName = "blazer4_PB_DLC",
-            ModelName = "blazer4",
-            MaxOccupants = 1,
-            AmbientSpawnChance = 10,
-            WantedSpawnChance = 10,
+            DebugName = "faction3_PB_DONK_DLC",
+            ModelName = "faction3",
+            MaxOccupants = 2,
+            AmbientSpawnChance = 50,
+            WantedSpawnChance = 50,
 
 
             RequiredPrimaryColorID = 145,
             RequiredSecondaryColorID = 105,
 
 
+            RequiredVariation = new VehicleVariation() {
+            PrimaryColor = 145,
+            SecondaryColor = 105,
+            PearlescentColor = 105,
+            WheelColor = 145,
+            WheelType = 8,
+            WindowTint = 3,
+
+            VehicleMods = new List<VehicleMod>() {
+            new VehicleMod() {
+            ID = 4,
+            Output = 1,
+            },
+            new VehicleMod() {
+            ID = 7,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 23,
+            Output = 25,
+            },
+            new VehicleMod() {
+            ID = 25,
+            Output = 7,
+            },
+            new VehicleMod() {
+            ID = 27,
+            Output = 1,
+            },
+            new VehicleMod() {
+            ID = 28,
+            Output = 3,
+            },
+            new VehicleMod() {
+            ID = 33,
+            Output = 12,
+            },
+            new VehicleMod() {
+            ID = 34,
+            Output = 2,
+            },
+            new VehicleMod() {
+            ID = 37,
+            Output = 6,
+            },
+            new VehicleMod() {
+            ID = 39,
+            Output = 3,
+            },
+            new VehicleMod() {
+            ID = 40,
+            Output = 4,
+            },
+            },
+
+            InteriorColor = 16,
+            DashboardColor = 24,
+            },
+            RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+            DebugName = "blazer4_PB_DLC",
+            ModelName = "blazer4",
+            MaxOccupants = 1,
+            AmbientSpawnChance = 50,
+            WantedSpawnChance = 50,
+
+
+            RequiredPrimaryColorID = 145,
+            RequiredSecondaryColorID = 105,
 
 
             RequiredVariation = new VehicleVariation() {
@@ -487,10 +544,7 @@ public class DispatchableVehicles_Gangs
             SecondaryColor = 105,
             PearlescentColor = 105,
             WheelColor = 156,
-
-
             WheelType = 9,
-
 
             VehicleToggles = new List<VehicleToggle>() {
             new VehicleToggle() {
@@ -561,8 +615,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "SLAMVAN3_PB_Vagos_DLC",
             ModelName = "SLAMVAN3",
-            AmbientSpawnChance = 25,
-            WantedSpawnChance = 25,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 89,
@@ -657,15 +711,15 @@ public class DispatchableVehicles_Gangs
             },
 
             InteriorColor = 26,
-            DashboardColor = 157,
+            DashboardColor = 160,
             },
             RequiresDLC = true,
             },
             new DispatchableVehicle() {
             DebugName = "tulip2_PB_Vagos_DLC",
             ModelName = "tulip2",
-            AmbientSpawnChance = 25,
-            WantedSpawnChance = 25,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 89,
@@ -723,15 +777,15 @@ public class DispatchableVehicles_Gangs
             },
 
             InteriorColor = 2,
-            DashboardColor = 157,
+            DashboardColor = 160,
             },
             RequiresDLC = true,
             },
             new DispatchableVehicle() {
             DebugName = "DEVIANT_PB_Vagos_DLC",
             ModelName = "DEVIANT",
-            AmbientSpawnChance = 25,
-            WantedSpawnChance = 25,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 89,
@@ -824,8 +878,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "IMPALER_PB_Vagos_DLC",
             ModelName = "IMPALER",
-            AmbientSpawnChance = 25,
-            WantedSpawnChance = 25,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 89,
@@ -881,7 +935,7 @@ public class DispatchableVehicles_Gangs
             },
 
             InteriorColor = 2,
-            DashboardColor = 157,
+            DashboardColor = 160,
             },
             RequiresDLC = true,
             },
@@ -889,8 +943,8 @@ public class DispatchableVehicles_Gangs
             DebugName = "impaler5_PB_Vagos_DLC",
             ModelName = "impaler5",
             MaxOccupants = 4,
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 89,
@@ -952,8 +1006,8 @@ public class DispatchableVehicles_Gangs
             DebugName = "dorado_PB_Vagos_DLC",
             ModelName = "dorado",
             MaxOccupants = 4,
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 89,
@@ -1015,7 +1069,7 @@ public class DispatchableVehicles_Gangs
             },
 
             InteriorColor = 2,
-            DashboardColor = 157,
+            DashboardColor = 160,
             },
             RequiresDLC = true,
             },
@@ -1032,7 +1086,7 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle("tornado",15,15)  { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green    
 
             //Custom
-            new DispatchableVehicle("peyote3",25,25)
+            new DispatchableVehicle("peyote3",75,75)
             {
                 DebugName = "peyote3_PB_Families_DLC",
                 RequiredPrimaryColorID = 53,
@@ -1131,7 +1185,7 @@ public class DispatchableVehicles_Gangs
                 },
                 RequiresDLC = true,
             },
-            new DispatchableVehicle("manana2",25,25)
+            new DispatchableVehicle("manana2",75,75)
             {
                 DebugName = "manana2_PB_Families_DLC",
                 RequiredPrimaryColorID = 53,
@@ -1235,7 +1289,7 @@ public class DispatchableVehicles_Gangs
                 },
                 RequiresDLC = true,
             },
-            new DispatchableVehicle("glendale2",20,20)
+            new DispatchableVehicle("glendale2",75,75)
             {
                 DebugName = "glendale2_PB_Families_DLC",
                 MaxOccupants = 4,
@@ -1320,7 +1374,7 @@ public class DispatchableVehicles_Gangs
                 },
                 RequiresDLC = true,
             },
-            new DispatchableVehicle("greenwood",20,20)
+            new DispatchableVehicle("greenwood",75,75)
             {
                 DebugName = "greenwood_PB_Families_DLC",
                 MaxOccupants = 4,
@@ -1371,7 +1425,7 @@ public class DispatchableVehicles_Gangs
                 },
                 RequiresDLC = true,
             },
-            new DispatchableVehicle("minivan2",20,20)
+            new DispatchableVehicle("minivan2",75,75)
             {
                 DebugName = "minivan2_PB_Families_DLC",
                 MaxOccupants = 4,
@@ -1464,7 +1518,7 @@ public class DispatchableVehicles_Gangs
                 },
                 RequiresDLC = true,
             },
-            new DispatchableVehicle("aleutian",25,25)
+            new DispatchableVehicle("aleutian",75,75)
             {
                 DebugName = "aleutian_PB_Families_DLC",
                 MaxOccupants = 4,
@@ -1513,8 +1567,8 @@ public class DispatchableVehicles_Gangs
             DebugName = "manchez_PB_Families_DLC",
             ModelName = "manchez",
             MaxOccupants = 1,
-            AmbientSpawnChance = 10,
-            WantedSpawnChance = 10,
+            AmbientSpawnChance = 50,
+            WantedSpawnChance = 50,
 
 
             RequiredPrimaryColorID = 53,
@@ -1703,6 +1757,128 @@ public class DispatchableVehicles_Gangs
             },
             RequiresDLC = true,
             },
+            new DispatchableVehicle() {
+            DebugName = "omnisegt_PB_Ancelotti_DLC",
+            ModelName = "omnisegt",
+            MaxOccupants = 4,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
+
+
+            RequiredPrimaryColorID = 75,
+            RequiredSecondaryColorID = 0,
+
+
+
+
+            RequiredVariation = new VehicleVariation() {
+            PrimaryColor = 75,
+            SecondaryColor = 0,
+            PearlescentColor = 157,
+            WheelColor = 156,
+            WheelType = 7,
+            WindowTint = 3,
+
+            VehicleMods = new List<VehicleMod>() {
+            new VehicleMod() {
+            ID = 0,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 1,
+            Output = 2,
+            },
+            new VehicleMod() {
+            ID = 2,
+            Output = 2,
+            },
+            new VehicleMod() {
+            ID = 6,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 8,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 10,
+            Output = 3,
+            },
+            new VehicleMod() {
+            ID = 23,
+            Output = 31,
+            },
+            },
+
+            InteriorColor = 4,
+            DashboardColor = 156,
+            },
+            RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+            DebugName = "drafter_PB_Ancelotti_DLC",
+            ModelName = "drafter",
+            MaxOccupants = 2,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
+
+
+            RequiredPrimaryColorID = 75,
+            RequiredSecondaryColorID = 0,
+
+
+            RequiredVariation = new VehicleVariation() {
+            PrimaryColor = 75,
+            SecondaryColor = 0,
+            PearlescentColor = 157,
+            WheelColor = 156,
+            WheelType = 7,
+            WindowTint = 3,
+
+            VehicleMods = new List<VehicleMod>() {
+            new VehicleMod() {
+            ID = 1,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 2,
+            Output = 2,
+            },
+            new VehicleMod() {
+            ID = 3,
+            Output = 1,
+            },
+            new VehicleMod() {
+            ID = 4,
+            Output = 3,
+            },
+            new VehicleMod() {
+            ID = 6,
+            Output = 1,
+            },
+            new VehicleMod() {
+            ID = 7,
+            Output = 2,
+            },
+            new VehicleMod() {
+            ID = 8,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 10,
+            Output = 2,
+            },
+            new VehicleMod() {
+            ID = 23,
+            Output = 28,
+            },
+            },
+
+            InteriorColor = 111,
+            DashboardColor = 156,
+            },
+            RequiresDLC = true,
+            },
         };
     }
     private void SetMessinaVehicles()
@@ -1724,15 +1900,13 @@ public class DispatchableVehicles_Gangs
 
 
             RequiredPrimaryColorID = 34,
-            RequiredSecondaryColorID = 147,
-
-
+            RequiredSecondaryColorID = 34,
 
 
             RequiredVariation = new VehicleVariation() {
             PrimaryColor = 34,
-            SecondaryColor = 147,
-            PearlescentColor = 147,
+            SecondaryColor = 34,
+            PearlescentColor = 47,
 
             WheelType = 11,
             WindowTint = 3,
@@ -1760,14 +1934,13 @@ public class DispatchableVehicles_Gangs
 
 
             RequiredPrimaryColorID = 34,
-            RequiredSecondaryColorID = 147,
-
-
+            RequiredSecondaryColorID = 34,
 
 
             RequiredVariation = new VehicleVariation() {
             PrimaryColor = 34,
-            SecondaryColor = 147,
+            SecondaryColor = 34,
+            PearlescentColor = 47,
 
             Livery = 0,
 
@@ -1799,14 +1972,13 @@ public class DispatchableVehicles_Gangs
 
 
             RequiredPrimaryColorID = 34,
-            RequiredSecondaryColorID = 147,
-
+            RequiredSecondaryColorID = 34,
 
 
             RequiredVariation = new VehicleVariation() {
             PrimaryColor = 34,
-            SecondaryColor = 147,
-            PearlescentColor = 147,
+            SecondaryColor = 34,
+            PearlescentColor = 47,
 
             WheelType = 12,
             WindowTint = 3,
@@ -1823,7 +1995,7 @@ public class DispatchableVehicles_Gangs
             Output = 2,
             },
             },
-
+            InteriorColor = 0,
 
             },
             RequiresDLC = true,
@@ -1837,14 +2009,13 @@ public class DispatchableVehicles_Gangs
 
 
             RequiredPrimaryColorID = 34,
-            RequiredSecondaryColorID = 147,
-
-
+            RequiredSecondaryColorID = 34,
 
 
             RequiredVariation = new VehicleVariation() {
             PrimaryColor = 34,
-            SecondaryColor = 147,
+            SecondaryColor = 34,
+            PearlescentColor = 47,
 
             WheelType = 12,
             WindowTint = 3,
@@ -2125,18 +2296,15 @@ public class DispatchableVehicles_Gangs
             WantedSpawnChance = 75,
 
 
-            RequiredPrimaryColorID = 7,
-            RequiredSecondaryColorID = 7,
-
-
+            RequiredPrimaryColorID = 52,
+            RequiredSecondaryColorID = 52,
 
 
             RequiredVariation = new VehicleVariation() {
-            PrimaryColor = 7,
-            SecondaryColor = 7,
-            PearlescentColor = 5,
-
-
+            PrimaryColor = 52,
+            SecondaryColor = 52,
+            PearlescentColor = 59,
+            DirtLevel = 5,
             WheelType = 11,
             WindowTint = 3,
             VehicleExtras = new List<VehicleExtra>() {
@@ -2185,17 +2353,15 @@ public class DispatchableVehicles_Gangs
             WantedSpawnChance = 75,
 
 
-            RequiredPrimaryColorID = 7,
-            RequiredSecondaryColorID = 7,
-
-
+            RequiredPrimaryColorID = 52,
+            RequiredSecondaryColorID = 52,
 
 
             RequiredVariation = new VehicleVariation() {
-            PrimaryColor = 7,
-            SecondaryColor = 7,
-            PearlescentColor = 5,
-
+            PrimaryColor = 52,
+            SecondaryColor = 52,
+            PearlescentColor = 59,
+            DirtLevel = 5,
             WheelType = 3,
             WindowTint = 3,
 
@@ -2239,20 +2405,18 @@ public class DispatchableVehicles_Gangs
             WantedSpawnChance = 75,
 
 
-            RequiredPrimaryColorID = 7,
-            RequiredSecondaryColorID = 7,
-
-
+            RequiredPrimaryColorID = 52,
+            RequiredSecondaryColorID = 52,
 
 
             RequiredVariation = new VehicleVariation() {
-            PrimaryColor = 7,
-            SecondaryColor = 7,
-            PearlescentColor = 5,
+            PrimaryColor = 52,
+            SecondaryColor = 52,
+            PearlescentColor = 59,
+            DirtLevel = 5,
             WheelColor = 147,
-
-
             WindowTint = 3,
+
             VehicleExtras = new List<VehicleExtra>() {
             new VehicleExtra() {
             ID = 10,
@@ -2285,17 +2449,15 @@ public class DispatchableVehicles_Gangs
             WantedSpawnChance = 75,
 
 
-            RequiredPrimaryColorID = 7,
-            RequiredSecondaryColorID = 7,
-
-
+            RequiredPrimaryColorID = 52,
+            RequiredSecondaryColorID = 52,
 
 
             RequiredVariation = new VehicleVariation() {
-            PrimaryColor = 7,
-            SecondaryColor = 7,
-            PearlescentColor = 5,
-
+            PrimaryColor = 52,
+            SecondaryColor = 52,
+            PearlescentColor = 59,
+            DirtLevel = 5,
             WindowTint = 3,
 
             VehicleToggles = new List<VehicleToggle>() {
@@ -2629,8 +2791,8 @@ public class DispatchableVehicles_Gangs
             DebugName = "dubsta2_PB_Armenian_DLC",
             ModelName = "dubsta2",
             MaxOccupants = 4,
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 147,
@@ -2676,8 +2838,8 @@ public class DispatchableVehicles_Gangs
             DebugName = "schafter3_PB_Armenian_DLC",
             ModelName = "schafter3",
             MaxOccupants = 4,
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 147,
@@ -2731,8 +2893,8 @@ public class DispatchableVehicles_Gangs
             DebugName = "schafter4_PB_Armenian_DLC",
             ModelName = "schafter4",
             MaxOccupants = 4,
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 147,
@@ -2782,8 +2944,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "schwarzer_PB_Armenian_DLC",
             ModelName = "schwarzer",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 147,
@@ -2857,8 +3019,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "schlagen_PB_Armenian_DLC",
             ModelName = "schlagen",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 147,
@@ -2935,8 +3097,8 @@ public class DispatchableVehicles_Gangs
             DebugName = "patriot3_PB_Cartel_DLC",
             ModelName = "patriot3",
             MaxOccupants = 4,
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 0,
@@ -3019,8 +3181,8 @@ public class DispatchableVehicles_Gangs
             DebugName = "kamacho_PB_Cartel_DLC",
             ModelName = "kamacho",
             MaxOccupants = 4,
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 0,
@@ -3094,8 +3256,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "hellion_PB_Cartel_DLC",
             ModelName = "hellion",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 0,
@@ -3157,8 +3319,8 @@ public class DispatchableVehicles_Gangs
             DebugName = "cavalcade2_PB_Cartel_DLC",
             ModelName = "cavalcade2",
             MaxOccupants = 4,
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 0,
@@ -3202,8 +3364,8 @@ public class DispatchableVehicles_Gangs
             DebugName = "granger2_PB_Cartel_DLC",
             ModelName = "granger2",
             MaxOccupants = 4,
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 0,
@@ -3283,22 +3445,23 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "dukes3_PB_Redneck_DLC",
             ModelName = "dukes3",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
-            RequiredPrimaryColorID = 21,
-            RequiredSecondaryColorID = 21,
-
-
+            RequiredPrimaryColorID = 12,
+            RequiredSecondaryColorID = 12,
 
 
             RequiredVariation = new VehicleVariation() {
-            PrimaryColor = 21,
-            SecondaryColor = 21,
-            WheelColor = 2,
+            PrimaryColor = 12,
+            SecondaryColor = 12,
 
+            DirtLevel = 10,
+
+            WheelColor = 2,
             WheelType = 11,
+
             WindowTint = 3,
 
             VehicleToggles = new List<VehicleToggle>() {
@@ -3351,24 +3514,28 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "slamvan3_PB_Redneck_DLC",
             ModelName = "slamvan3",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
-            RequiredPrimaryColorID = 21,
-            RequiredSecondaryColorID = 118,
-
-
+            RequiredPrimaryColorID = 12,
+            RequiredSecondaryColorID = 12,
 
 
             RequiredVariation = new VehicleVariation() {
-            PrimaryColor = 21,
-            SecondaryColor = 118,
+            PrimaryColor = 12,
+            SecondaryColor = 12,
+
+            DirtLevel = 10,
+
             WheelColor = 2,
             WheelType = 4,
+
             WindowTint = 3,
+
             InteriorColor = 1,
             DashboardColor = 131,
+
             VehicleToggles = new List<VehicleToggle>() {
             new VehicleToggle() {
             ID = 17,
@@ -3417,23 +3584,21 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "slamvan4_PB_Redneck_DLC",
             ModelName = "slamvan4",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
-            RequiredPrimaryColorID = 21,
+            RequiredPrimaryColorID = 12,
             RequiredSecondaryColorID = 118,
 
 
-
-
             RequiredVariation = new VehicleVariation() {
-            PrimaryColor = 21,
+            PrimaryColor = 12,
             SecondaryColor = 118,
+            DirtLevel = 10,
+
             WheelColor = 2,
-
             WheelType = 1,
-
 
             VehicleToggles = new List<VehicleToggle>() {
             new VehicleToggle() {
@@ -3473,23 +3638,25 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "yosemite3_PB_Redneck_DLC",
             ModelName = "yosemite3",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 40,
             RequiredSecondaryColorID = 12,
 
 
-
-
             RequiredVariation = new VehicleVariation() {
             PrimaryColor = 40,
-            SecondaryColor = 21,
-            WheelColor = 120,
+            SecondaryColor = 12,
 
+            DirtLevel = 10,
+
+            WheelColor = 120,
             WheelType = 4,
+
             WindowTint = 3,
+
             VehicleExtras = new List<VehicleExtra>() {
             new VehicleExtra() {
             ID = 1,
@@ -3551,23 +3718,25 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "broadway_PB_Redneck_DLC",
             ModelName = "broadway",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
-            RequiredPrimaryColorID = 21,
-            RequiredSecondaryColorID = 21,
-
-
+            RequiredPrimaryColorID = 12,
+            RequiredSecondaryColorID = 12,
 
 
             RequiredVariation = new VehicleVariation() {
-            PrimaryColor = 21,
-            SecondaryColor = 21,
-            WheelColor = 120,
+            PrimaryColor = 12,
+            SecondaryColor = 12,
 
+            DirtLevel = 10,
+
+            WheelColor = 120,
             WheelType = 11,
+
             WindowTint = 3,
+
             VehicleExtras = new List<VehicleExtra>() {
             new VehicleExtra() {
             ID = 1,
@@ -3638,8 +3807,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "ELEGY_PB_Triad_DLC",
             ModelName = "ELEGY",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 111,
@@ -3755,8 +3924,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "euros_PB_Triad_DLC",
             ModelName = "euros",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 111,
@@ -3827,8 +3996,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "futo2_PB_Triad_DLC",
             ModelName = "futo2",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 111,
@@ -3944,8 +4113,8 @@ public class DispatchableVehicles_Gangs
             ModelName = "KURUMA",
             MinOccupants = 2,
             MaxOccupants = 4,
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 111,
@@ -3995,10 +4164,167 @@ public class DispatchableVehicles_Gangs
             },
             },
             new DispatchableVehicle() {
+            DebugName = "tenf2_PB_Triad",
+            ModelName = "tenf2",
+            MaxOccupants = 2,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
+
+
+            RequiredPrimaryColorID = 111,
+            RequiredSecondaryColorID = 12,
+
+
+            RequiredVariation = new VehicleVariation() {
+            PrimaryColor = 111,
+            SecondaryColor = 12,
+
+            WheelType = 11,
+            WheelColor = 0,
+
+            InteriorColor  = 16,
+            DashboardColor = 157,
+
+            WindowTint = 3,
+
+            VehicleToggles = new List<VehicleToggle>() {
+            new VehicleToggle() {
+            ID = 18,
+            IsTurnedOn = true,
+            },
+            },
+            VehicleMods = new List<VehicleMod>() {
+            new VehicleMod() {
+            ID = 0,
+            Output = 2,
+            },
+            new VehicleMod() {
+            ID = 1,
+            Output = 1,
+            },
+            new VehicleMod() {
+            ID = 2,
+            Output = 6,
+            },
+            new VehicleMod() {
+            ID = 3,
+            Output = 1,
+            },
+            new VehicleMod() {
+            ID = 4,
+            Output = 18,
+            },
+            new VehicleMod() {
+            ID = 7,
+            Output = 13,
+            },
+            new VehicleMod() {
+            ID = 8,
+            Output = 4,
+            },
+            new VehicleMod() {
+            ID = 9,
+            Output = 5,
+            },
+            new VehicleMod() {
+            ID = 10,
+            Output = 8,
+            },
+            new VehicleMod() {
+            ID = 15,
+            Output = 2,
+            },
+            new VehicleMod() {
+            ID = 23,
+            Output = 27,
+            },
+            new VehicleMod() {
+            ID = 27,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 29,
+            Output = 3,
+            },
+            new VehicleMod() {
+            ID = 44,
+            Output = 3,
+            },
+            new VehicleMod() {
+            ID = 48,
+            Output = 5,
+            },
+            },
+
+            },
+            },
+            new DispatchableVehicle() {
+            DebugName = "jester4_PB_Triad",
+            ModelName = "jester4",
+            MaxOccupants = 2,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
+
+
+            RequiredPrimaryColorID = 111,
+            RequiredSecondaryColorID = 12,
+
+
+            RequiredVariation = new VehicleVariation() {
+            PrimaryColor = 111,
+            SecondaryColor = 12,
+            PearlescentColor = 5,
+
+            WheelType = 11,
+            WheelColor = 0,
+
+            InteriorColor  = 16,
+            DashboardColor = 157,
+
+            WindowTint = 3,
+
+            VehicleMods = new List<VehicleMod>() {
+            new VehicleMod() {
+            ID = 0,
+            Output = 10,
+            },
+            new VehicleMod() {
+            ID = 1,
+            Output = 9,
+            },
+            new VehicleMod() {
+            ID = 2,
+            Output = 8,
+            },
+            new VehicleMod() {
+            ID = 3,
+            Output = 4,
+            },
+            new VehicleMod() {
+            ID = 4,
+            Output = 3,
+            },
+            new VehicleMod() {
+            ID = 7,
+            Output = 5,
+            },
+            new VehicleMod() {
+            ID = 8,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 48,
+            Output = 7,
+            },
+            },
+
+            },
+            },
+            new DispatchableVehicle() {
             DebugName = "HAKUCHOU_PB_Triad",
             ModelName = "HAKUCHOU",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 50,
+            WantedSpawnChance = 50,
 
 
             RequiredPrimaryColorID = 111,
@@ -4045,21 +4371,18 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "JESTER3_PB_Korean_DLC",
             ModelName = "JESTER3",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 7,
             RequiredSecondaryColorID = 12,
 
 
-
-
             RequiredVariation = new VehicleVariation() {
             PrimaryColor = 7,
             SecondaryColor = 12,
             PearlescentColor = 5,
-
             WheelColor = 12,
             WheelType = 0,
             WindowTint = 3,
@@ -4110,21 +4433,18 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "ZR350_PB_Korean_DLC",
             ModelName = "ZR350",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 7,
             RequiredSecondaryColorID = 12,
 
 
-
-
             RequiredVariation = new VehicleVariation() {
             PrimaryColor = 7,
             SecondaryColor = 12,
             PearlescentColor = 5,
-
             WheelColor = 156,
             WheelType = 7,
             WindowTint = 3,
@@ -4182,21 +4502,18 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "RT3000_PB_Korean_DLC",
             ModelName = "RT3000",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 7,
             RequiredSecondaryColorID = 12,
 
 
-
-
             RequiredVariation = new VehicleVariation() {
             PrimaryColor = 7,
             SecondaryColor = 12,
             PearlescentColor = 5,
-
             WheelColor = 65,
             WheelType = 7,
             WindowTint = 3,
@@ -4295,8 +4612,8 @@ public class DispatchableVehicles_Gangs
             ModelName = "SULTAN2",
             MinOccupants = 2,
             MaxOccupants = 4,
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 7,
@@ -4366,16 +4683,15 @@ public class DispatchableVehicles_Gangs
             RequiresDLC = true,
             },
             new DispatchableVehicle() {
-            DebugName = "DOUBLE_PB_Korean",
-            ModelName = "DOUBLE",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            DebugName = "comet6_PB_Korean_DLC",
+            ModelName = "comet6",
+            MaxOccupants = 2,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
 
 
             RequiredPrimaryColorID = 7,
             RequiredSecondaryColorID = 12,
-
-
 
 
             RequiredVariation = new VehicleVariation() {
@@ -4383,8 +4699,172 @@ public class DispatchableVehicles_Gangs
             SecondaryColor = 12,
             PearlescentColor = 5,
 
-            WheelType = 6,
+            WheelColor = 12,
+            WheelType = 12,
 
+            InteriorColor = 16,
+            DashboardColor = 134,
+
+            WindowTint = 3,
+
+            VehicleMods = new List<VehicleMod>() {
+            new VehicleMod() {
+            ID = 0,
+            Output = 6,
+            },
+            new VehicleMod() {
+            ID = 1,
+            Output = 2,
+            },
+            new VehicleMod() {
+            ID = 2,
+            Output = 6,
+            },
+            new VehicleMod() {
+            ID = 3,
+            Output = 4,
+            },
+            new VehicleMod() {
+            ID = 4,
+            Output = 2,
+            },
+            new VehicleMod() {
+            ID = 7,
+            Output = 5,
+            },
+            new VehicleMod() {
+            ID = 8,
+            Output = 2,
+            },
+            new VehicleMod() {
+            ID = 23,
+            Output = 14,
+            },
+            new VehicleMod() {
+            ID = 25,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 26,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 27,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 43,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 48,
+            Output = 5,
+            },
+            },
+
+            },
+            RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+            DebugName = "growler_PB_Korean_DLC",
+            ModelName = "growler",
+            MaxOccupants = 2,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
+
+
+            RequiredPrimaryColorID = 7,
+            RequiredSecondaryColorID = 12,
+
+
+            RequiredVariation = new VehicleVariation() {
+            PrimaryColor = 7,
+            SecondaryColor = 12,
+            PearlescentColor = 5,
+            WheelColor = 12,
+            WheelType = 0,
+            InteriorColor = 16,
+            DashboardColor = 67,
+            WindowTint = 3,
+
+            VehicleMods = new List<VehicleMod>() {
+            new VehicleMod() {
+            ID = 1,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 2,
+            Output = 4,
+            },
+            new VehicleMod() {
+            ID = 3,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 4,
+            Output = 5,
+            },
+            new VehicleMod() {
+            ID = 6,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 7,
+            Output = 7,
+            },
+            new VehicleMod() {
+            ID = 8,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 25,
+            Output = 4,
+            },
+            new VehicleMod() {
+            ID = 27,
+            Output = 1,
+            },
+            new VehicleMod() {
+            ID = 30,
+            Output = 1,
+            },
+            new VehicleMod() {
+            ID = 41,
+            Output = 14,
+            },
+            new VehicleMod() {
+            ID = 41,
+            Output = 0,
+            },
+            new VehicleMod() {
+            ID = 47,
+            Output = 2,
+            },
+            new VehicleMod() {
+            ID = 48,
+            Output = 5,
+            },
+            },
+
+            },
+            RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+            DebugName = "DOUBLE_PB_Korean",
+            ModelName = "DOUBLE",
+            AmbientSpawnChance = 50,
+            WantedSpawnChance = 50,
+
+
+            RequiredPrimaryColorID = 7,
+            RequiredSecondaryColorID = 12,
+
+
+            RequiredVariation = new VehicleVariation() {
+            PrimaryColor = 7,
+            SecondaryColor = 12,
+            PearlescentColor = 5,
+            WheelType = 6,
 
             VehicleToggles = new List<VehicleToggle>() {
             new VehicleToggle() {
@@ -4415,7 +4895,7 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle("faction2", 20, 20){ RequiredPrimaryColorID = 70,RequiredSecondaryColorID = 70 },//blue
 
             //Custom
-            new DispatchableVehicle("faction2",20,20) {
+            new DispatchableVehicle("faction2",75,75) {
                 DebugName = "faction2_PB_Marabunta_DLC",
                 RequiredPrimaryColorID = 70,
                 RequiredSecondaryColorID = 70,
@@ -4451,7 +4931,7 @@ public class DispatchableVehicles_Gangs
                 },
                 RequiresDLC = true,
             },
-            new DispatchableVehicle("chino2",20,20) {
+            new DispatchableVehicle("chino2",75,75 ){
                 DebugName = "chino2_PB_Marabunta_DLC",
                 RequiredPrimaryColorID = 70,
                 RequiredSecondaryColorID = 70,
@@ -4497,8 +4977,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "chino2_PB_Marabunta_DLC",
             ModelName = "chino2",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
             RequiredPrimaryColorID = 70,
             RequiredSecondaryColorID = 2,
             RequiredVariation = new VehicleVariation() {
@@ -4584,8 +5064,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "sabregt2_PB_Marabunta_DLC",
             ModelName = "sabregt2",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
             RequiredPrimaryColorID = 70,
             RequiredSecondaryColorID = 70,
             RequiredVariation = new VehicleVariation() {
@@ -4653,8 +5133,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
             DebugName = "voodoo_PB_Marabunta_DLC",
             ModelName = "voodoo",
-            AmbientSpawnChance = 20,
-            WantedSpawnChance = 20,
+            AmbientSpawnChance = 75,
+            WantedSpawnChance = 75,
             RequiredPrimaryColorID = 70,
             RequiredSecondaryColorID = 70,
             RequiredVariation = new VehicleVariation() {
@@ -4747,14 +5227,14 @@ public class DispatchableVehicles_Gangs
     {
         DiablosVehicles = new List<DispatchableVehicle>() {
             // Base
-            new DispatchableVehicle("stalion", 25, 25) { RequiredPrimaryColorID = 28,RequiredSecondaryColorID = 28,},
+            new DispatchableVehicle("stalion", 20, 20) { RequiredPrimaryColorID = 28,RequiredSecondaryColorID = 28,},
 
             // Custom
             new DispatchableVehicle() {
               DebugName = "HERMES_PB_Diablos_DLC",
               ModelName = "HERMES",
-              AmbientSpawnChance = 25,
-              WantedSpawnChance = 25,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               RequiredPrimaryColorID = 28,
               RequiredSecondaryColorID = 120,
               RequiredVariation =
@@ -4826,8 +5306,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "stalion_PB_Diablos",
               ModelName = "stalion",
-              AmbientSpawnChance = 25,
-              WantedSpawnChance = 25,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               RequiredPrimaryColorID = 28,
               RequiredSecondaryColorID = 12,
               RequiredVariation =
@@ -4873,8 +5353,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "gauntlet3_PB_Diablos_DLC",
               ModelName = "gauntlet3",
-              AmbientSpawnChance = 25,
-              WantedSpawnChance = 25,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               RequiredPrimaryColorID = 28,
               RequiredSecondaryColorID = 12,
               RequiredVariation =
@@ -4970,8 +5450,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "GAUNTLET5_PB_Diablos_DLC",
               ModelName = "GAUNTLET5",
-              AmbientSpawnChance = 25,
-              WantedSpawnChance = 25,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               RequiredPrimaryColorID = 28,
               RequiredSecondaryColorID = 120,
               RequiredVariation =
@@ -5117,8 +5597,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "BUCCANEER2_PB_Varrios",
               ModelName = "BUCCANEER2",
-              AmbientSpawnChance = 25,
-              WantedSpawnChance = 25,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               RequiredPrimaryColorID = 63,
               RequiredSecondaryColorID = 120,
               RequiredVariation =
@@ -5243,8 +5723,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "BUCCANEER2_PB_Varrios",
               ModelName = "BUCCANEER2",
-              AmbientSpawnChance = 25,
-              WantedSpawnChance = 25,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               RequiredPrimaryColorID = 63,
               RequiredSecondaryColorID = 120,
               RequiredVariation =
@@ -5372,8 +5852,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "VAMOS_PB_Varrios_DLC",
               ModelName = "VAMOS",
-              AmbientSpawnChance = 25,
-              WantedSpawnChance = 25,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               RequiredPrimaryColorID = 63,
               RequiredSecondaryColorID = 12,
               RequiredVariation =
@@ -5430,8 +5910,8 @@ public class DispatchableVehicles_Gangs
               DebugName = "tulip_PB_Varrios_DLC",
               ModelName = "tulip",
               MaxOccupants = 4,
-              AmbientSpawnChance = 25,
-              WantedSpawnChance = 25,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               RequiredPrimaryColorID = 63,
               RequiredSecondaryColorID = 12,
               RequiredVariation =
@@ -5489,8 +5969,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "eudora_PB_Yardies_DLC",
               ModelName = "eudora",
-              AmbientSpawnChance = 20,
-              WantedSpawnChance = 20,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               MaxOccupants = 4,
               RequiredPrimaryColorID = 92,
               RequiredSecondaryColorID = 92,
@@ -5544,8 +6024,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "buccaneer2_PB_Yardies_DLC",
               ModelName = "buccaneer2",
-              AmbientSpawnChance = 20,
-              WantedSpawnChance = 20,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               MaxOccupants = 2,
               RequiredPrimaryColorID = 92,
               RequiredSecondaryColorID = 118,
@@ -5630,8 +6110,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "voodoo_PB_Yardies_DLC",
               ModelName = "voodoo",
-              AmbientSpawnChance = 20,
-              WantedSpawnChance = 20,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               MaxOccupants = 2,
               RequiredPrimaryColorID = 92,
               RequiredSecondaryColorID = 158,
@@ -5713,8 +6193,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "tornado5_PB_Yardies_DLC",
               ModelName = "tornado5",
-              AmbientSpawnChance = 20,
-              WantedSpawnChance = 20,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               MaxOccupants = 2,
               RequiredPrimaryColorID = 92,
               RequiredSecondaryColorID = 37,
@@ -5814,8 +6294,8 @@ public class DispatchableVehicles_Gangs
               DebugName = "manana2_PB_Yardies_DLC",
               ModelName = "manana2",
               MaxOccupants = 2,
-              AmbientSpawnChance = 20,
-              WantedSpawnChance = 20,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               RequiredPrimaryColorID = 92,
               RequiredSecondaryColorID = 37,
               RequiredVariation =
@@ -5912,16 +6392,16 @@ public class DispatchableVehicles_Gangs
         LostVehicles = new List<DispatchableVehicle>()
         {
             //Base
-            new DispatchableVehicle("daemon", 20, 20) { MaxOccupants = 1 },
-            new DispatchableVehicle("slamvan2", 15, 15) { MaxOccupants = 1 },
-            new DispatchableVehicle("gburrito", 15, 15) { MaxOccupants = 1 },
+            new DispatchableVehicle("daemon", 25, 25) { MaxOccupants = 1 },
+            new DispatchableVehicle("slamvan2", 15, 15) { MaxOccupants = 2 },
+            new DispatchableVehicle("gburrito", 15, 15) { MaxOccupants = 2 },
 
             //Custom
             new DispatchableVehicle() {
               DebugName = "avarus_PBDieHard_Lost_DLC",
               ModelName = "avarus",
-              AmbientSpawnChance = 20,
-              WantedSpawnChance = 20,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               MaxOccupants = 1,
               RequiredPrimaryColorID = 131,
               RequiredSecondaryColorID = 118,
@@ -5985,8 +6465,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "avarus_PBRustFlag_Lost_DLC",
               ModelName = "avarus",
-              AmbientSpawnChance = 20,
-              WantedSpawnChance = 20,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               MaxOccupants = 1,
               RequiredPrimaryColorID = 12,
               RequiredSecondaryColorID = 12,
@@ -6038,8 +6518,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "zombiea_PBArmy_Lost_DLC",
               ModelName = "zombiea",
-              AmbientSpawnChance = 20,
-              WantedSpawnChance = 20,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               MaxOccupants = 1,
               RequiredPrimaryColorID = 12,
               RequiredSecondaryColorID = 118,
@@ -6103,8 +6583,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "zombieb_PBFlames_Lost_DLC",
               ModelName = "zombieb",
-              AmbientSpawnChance = 20,
-              WantedSpawnChance = 20,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               MaxOccupants = 1,
               RequiredPrimaryColorID = 12,
               RequiredSecondaryColorID = 118,
@@ -6169,8 +6649,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "sanctus_PBGhostFlame_Lost_DLC",
               ModelName = "sanctus",
-              AmbientSpawnChance = 20,
-              WantedSpawnChance = 20,
+              AmbientSpawnChance = 50,
+              WantedSpawnChance = 50,
               MaxOccupants = 1,
               RequiredPrimaryColorID = 13,
               RequiredSecondaryColorID = 5,
@@ -6229,8 +6709,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "wolfsbane_PBPinstripe_Lost_DLC",
               ModelName = "wolfsbane",
-              AmbientSpawnChance = 20,
-              WantedSpawnChance = 20,
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
               MaxOccupants = 1,
               RequiredPrimaryColorID = 0,
               RequiredSecondaryColorID = 118,
@@ -6293,8 +6773,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "wolfsbane_PBFatStripe_Lost_DLC",
               ModelName = "wolfsbane",
-              AmbientSpawnChance = 20,
-              WantedSpawnChance = 20,
+              AmbientSpawnChance = 25,
+              WantedSpawnChance = 25,
               MaxOccupants = 1,//2, when seat assigning added
               RequiredPrimaryColorID = 21,
               RequiredSecondaryColorID = 21,
@@ -6346,8 +6826,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "daemon2_PBClassicStripe_Lost_DLC",
               ModelName = "daemon2",
-              AmbientSpawnChance = 20,
-              WantedSpawnChance = 20,
+              AmbientSpawnChance = 25,
+              WantedSpawnChance = 25,
               MaxOccupants = 1,//2, when seat assigning added
               RequiredPrimaryColorID = 21,
               RequiredSecondaryColorID = 118,
@@ -6447,8 +6927,8 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle() {
               DebugName = "chimera_PBPatinastripe_Lost_DLC",
               ModelName = "chimera",
-              AmbientSpawnChance = 20,
-              WantedSpawnChance = 20,
+              AmbientSpawnChance = 50,
+              WantedSpawnChance = 50,
               MaxOccupants = 1,
               RequiredPrimaryColorID = 12,
               RequiredSecondaryColorID = 118,

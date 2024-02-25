@@ -463,11 +463,11 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         LikelyHoodOfCountySpawn_Wanted2 = 15;// 5;
         LikelyHoodOfAnySpawn_Wanted3 = 5;// 10;
         LikelyHoodOfCountySpawn_Wanted3 = 25;// 15;
-        LikelyHoodOfAnySpawn_Wanted4 = 5;//20;
+        LikelyHoodOfAnySpawn_Wanted4 = 40;// 5;//20;
         LikelyHoodOfCountySpawn_Wanted4 = 25;// 20;
-        LikelyHoodOfAnySpawn_Wanted5 = 5;//20;
+        LikelyHoodOfAnySpawn_Wanted5 = 40;// 5;//20;
         LikelyHoodOfCountySpawn_Wanted5 = 20;
-        LikelyHoodOfAnySpawn_Wanted6 = 5;//20;
+        LikelyHoodOfAnySpawn_Wanted6 = 40;// 5;//20;
         LikelyHoodOfCountySpawn_Wanted6 = 20;
 
         LikelyHoodOfAnySpawn_Wanted7 = 5;

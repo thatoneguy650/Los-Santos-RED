@@ -44,6 +44,7 @@ namespace LosSantosRED.lsr.Interface
         OutfitManager OutfitManager { get; }
         Violations Violations { get; }
         bool IsAiming { get; }
+        bool IsAlive { get; }
 
         // void OnDamagedVehicle();
         void PlaySpeech(string v1, bool v2);
