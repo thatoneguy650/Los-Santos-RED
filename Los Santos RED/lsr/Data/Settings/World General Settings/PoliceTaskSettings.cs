@@ -111,7 +111,8 @@ public class PoliceTaskSettings : ISettingsDefaultable
 
 
 
-    public int RecklessVehicleChaseWantedLevelRequirement { get; set; }
+    public int PITVehicleChaseWantedLevelRequirement { get; set; }
+    public int VeryRecklessVehicleChaseWantedLevelRequirement { get; set; }
     public bool AllowVeryRecklessVehicleChaseWithLethalForce { get; set; }
     public bool UseLegacyLocateTasking { get; set; }
     public bool AllowAutoDispatchWhenCop { get; set; }
@@ -216,7 +217,8 @@ public class PoliceTaskSettings : ISettingsDefaultable
         AllowMinorReactions = true;
 
 
-        RecklessVehicleChaseWantedLevelRequirement = 4;//3;
+        PITVehicleChaseWantedLevelRequirement = 3;// 4;//3;
+        VeryRecklessVehicleChaseWantedLevelRequirement = 4;
         AllowVeryRecklessVehicleChaseWithLethalForce = true;
         UseLegacyLocateTasking = false;
         AllowAutoDispatchWhenCop = false;

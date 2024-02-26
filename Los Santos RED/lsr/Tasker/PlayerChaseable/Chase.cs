@@ -88,8 +88,8 @@ public class Chase : ComplexTask
     private bool ShouldCarJackPlayer => (!UseWantedLevel || Player.WantedLevel > 1) && Cop.DistanceToPlayer <= 50f && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast && !Ped.Pedestrian.IsInAnyVehicle(true) && !Ped.IsAnimal;
     private bool ShouldGoToPlayerCar => Player.WantedLevel == 1 && Cop.DistanceToPlayer <= 50f && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;
     private bool ShouldChasePedInVehicle => Ped.IsDriver && !Ped.IsAnimal && (Ped.DistanceToPlayer >= 55f || Ped.IsInBoat || Ped.IsInHelicopter || World.Pedestrians.PoliceList.Count(x => x.DistanceToPlayer <= 25f && !x.IsInVehicle) > 3);
-    private bool ShouldChaseRecklessly => Player.WantedLevel >= Settings.SettingsManager.PoliceTaskSettings.RecklessVehicleChaseWantedLevelRequirement && !Player.PoliceResponse.LethalForceAuthorized;
-    private bool ShouldChaseVeryRecklessly => Player.WantedLevel >= Settings.SettingsManager.PoliceTaskSettings.RecklessVehicleChaseWantedLevelRequirement && Settings.SettingsManager.PoliceTaskSettings.AllowVeryRecklessVehicleChaseWithLethalForce && Player.PoliceResponse.LethalForceAuthorized;
+    private bool ShouldChaseRecklessly => Player.WantedLevel >= Settings.SettingsManager.PoliceTaskSettings.PITVehicleChaseWantedLevelRequirement || Player.PoliceResponse.LethalForceAuthorized;
+    private bool ShouldChaseVeryRecklessly => Player.WantedLevel >= Settings.SettingsManager.PoliceTaskSettings.VeryRecklessVehicleChaseWantedLevelRequirement && Settings.SettingsManager.PoliceTaskSettings.AllowVeryRecklessVehicleChaseWithLethalForce && Player.PoliceResponse.LethalForceAuthorized;
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && Player.CurrentVehicle != null;
     private bool ShouldExitPoliceVehicle => !Ped.RecentlyGotInVehicle && Ped.DistanceToPlayer < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed < 0.5f && !Player.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;
     private bool ShouldExitPlayersVehicle => Ped.Pedestrian.CurrentVehicle.Exists() && TaskedEnterVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Handle == TaskedEnterVehicle.Handle;
@@ -640,6 +640,7 @@ public class Chase : ComplexTask
                 //}
             }
         }
+        EntryPoint.WriteToConsole($"{Ped.Handle} VEHICLE CHASE ASSIGNED TASK");
     }
     private void UpdateVehicleChase()
     {
