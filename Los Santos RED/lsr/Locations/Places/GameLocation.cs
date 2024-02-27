@@ -155,9 +155,57 @@ public class GameLocation : ILocationDispatchable
 
 
     //  public List<ConditionalLocation> PossibleMerchantSpawns { get; set; }
-    public Vector3 VendorPosition { get; set; } = Vector3.Zero;
-    public float VendorHeading { get; set; } = 0f;
-    public List<string> VendorModels { get; set; }
+    //public Vector3 VendorPosition { get; set; } = Vector3.Zero;
+    //public float VendorHeading { get; set; } = 0f;
+    //public List<string> VendorModels { get; set; }
+
+
+
+
+
+
+    public List<SpawnPlace> VendorLocations { get; set; } = new List<SpawnPlace>();
+    public virtual float ExtaVendorSpawnPercentage { get; set; } = 70f;
+    public virtual string VendorHeadDataGroupID { get; set; }
+    public virtual string VendorPersonnelID { get; set; } = "VendorPeds";
+    public virtual string VendorMeleeWeaponsID { get; set; } = "VendorMeleeWeapons";
+    public virtual string VendorSidearmWeaponsID { get; set; } = "VendorSidearms";
+    public virtual string VendorLongGunWeaponsID { get; set; } = "VendorLongGuns";
+
+
+    public virtual float VendorMeleePercent { get; set; } = 20f;
+    public virtual float VendorSidearmPercent { get; set; } = 5f;
+    public virtual float VendorLongGunPercent { get; set; } = 2f;
+    [XmlIgnore]
+    public List<RandomHeadData> VendorPossibleHeads { get; set; } = new List<RandomHeadData>();
+    [XmlIgnore]
+    public List<DispatchablePerson> VendorPersonnel { get; set; } = new List<DispatchablePerson>();
+    [XmlIgnore]
+    public List<IssuableWeapon> VendorSideArms { get; set; } = new List<IssuableWeapon>();
+    [XmlIgnore]
+    public List<IssuableWeapon> VendorLongGuns { get; set; } = new List<IssuableWeapon>();
+    [XmlIgnore]
+    public List<IssuableWeapon> VendorMeleeWeapons { get; set; } = new List<IssuableWeapon>();
+
+
+
+    [XmlIgnore]
+    public virtual List<PedExt> SpawnedVendors
+    {
+        get
+        {
+            List<PedExt> toreturn = new List<PedExt>() { };
+            toreturn.AddRange(Vendors);
+            return toreturn;
+        }
+    }
+
+    [XmlIgnore]
+    public List<Merchant> Vendors { get; set; } = new List<Merchant>();
+
+
+
+
 
 
 
@@ -208,10 +256,10 @@ public class GameLocation : ILocationDispatchable
     public bool IsPlayerInterestedInLocation { get; set; } = false;
     [XmlIgnore]
     public virtual string ButtonPromptText { get; set; }
+    //[XmlIgnore]
+    //public Merchant Vendor { get; set; }
     [XmlIgnore]
-    public Merchant Vendor { get; set; }
-    [XmlIgnore]
-    public bool HasVendor => VendorPosition != Vector3.Zero;
+    public bool HasVendor => VendorLocations != null && VendorLocations.Any();// VendorPosition != Vector3.Zero;
     [XmlIgnore]
     public ShopMenu Menu { get; set; }
     [XmlIgnore]
@@ -227,11 +275,19 @@ public class GameLocation : ILocationDispatchable
     [XmlIgnore]
     public bool IsDispatchFilled { get; set; } = false;
     [XmlIgnore]
+    public bool IsServiceFilled { get; set; } = false;
+    [XmlIgnore]
     public float EntranceGroundZ { get; set; } = 0.0f;
-
-
     [XmlIgnore]
     public int TotalAssaultSpawns { get; set; } = 0;
+
+
+
+
+
+
+
+
 
     public bool IsAnyMenuVisible => MenuPool.IsAnyMenuOpen();
     public bool HasCustomCamera => CameraPosition != Vector3.Zero;
@@ -247,7 +303,6 @@ public class GameLocation : ILocationDispatchable
     public bool IgnoreEntranceInteract { get; set; } = false;
     public virtual bool ShowInteractPrompt => !IgnoreEntranceInteract && CanInteract;
     public string MapTeleportString => IsOnSPMap && !IsOnMPMap ? "(SP)" : IsOnMPMap && !IsOnSPMap ? "(MP)" : "";
-
     public virtual void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
         //EntryPoint.WriteToConsole($"Activate Location {Name} {DistanceToPlayer}");
@@ -260,7 +315,7 @@ public class GameLocation : ILocationDispatchable
             {
                 CanInteract = false;
             }
-            AttemptVendorSpawn(isOpen, interiors,settings,crimes,weapons,time,world);
+            //AttemptVendorSpawn(isOpen, interiors,settings,crimes,weapons,time,world);
         }
         if(DisableRegularInteract)
         {
@@ -285,15 +340,19 @@ public class GameLocation : ILocationDispatchable
         }
         world.AddBlip(Blip);
         RestrictedAreas?.Activate(world);
-
-        //EntryPoint.WriteToConsole($"{Name} CanInteract:{CanInteract} DisableRegularInteract{DisableRegularInteract}");
-
     }
-    protected virtual void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
+    public virtual void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
-        if (isOpen && settings.SettingsManager.CivilianSettings.ManageDispatching && world.Pedestrians.TotalSpawnedServiceWorkers < settings.SettingsManager.CivilianSettings.TotalSpawnedServiceMembersLimit)
+        int VendorsSpawned = 0;
+        foreach (SpawnPlace spawnPlace in VendorLocations)
         {
-            SpawnVendor(settings, crimes, weapons, true);// InteractsWithVendor);
+            if (IsOpen(time.CurrentHour) && settings.SettingsManager.CivilianSettings.ManageDispatching && world.Pedestrians.TotalSpawnedServiceWorkers < settings.SettingsManager.CivilianSettings.TotalSpawnedServiceMembersLimit && (VendorsSpawned == 0 || RandomItems.RandomPercent(ExtaVendorSpawnPercentage)))
+            {
+                if (SpawnVendor(spawnPlace))
+                {
+                    VendorsSpawned++;
+                }
+            }
         }
     }
     protected virtual void LoadInterior(bool isOpen)
@@ -305,12 +364,6 @@ public class GameLocation : ILocationDispatchable
     }
     public virtual void Deactivate(bool deleteBlip)
     {
-       // EntryPoint.WriteToConsole($"Deactivate Location {Name}");
-        if (Vendor != null && Vendor.Pedestrian.Exists())
-        {
-            Vendor.FullyDelete();
-            //Vendor.Pedestrian.Delete();
-        }
         IsActivated = false;
         if (deleteBlip)
         {
@@ -369,7 +422,7 @@ public class GameLocation : ILocationDispatchable
     }
     public virtual void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups,
         IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors, 
-        ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+        ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople)
     {
         ShopMenus = shopMenus;
         World = world;
@@ -382,6 +435,16 @@ public class GameLocation : ILocationDispatchable
         ModItems = modItems;
         Weapons = weapons;
         Time = time;
+
+
+        VendorMeleeWeapons = issuableWeapons.GetWeaponData(VendorMeleeWeaponsID);
+        VendorLongGuns = issuableWeapons.GetWeaponData(VendorLongGunWeaponsID);
+        VendorSideArms = issuableWeapons.GetWeaponData(VendorSidearmWeaponsID);
+        VendorPersonnel = dispatchablePeople.GetPersonData(VendorPersonnelID);
+        VendorPossibleHeads = heads.GetHeadData(VendorHeadDataGroupID);
+
+
+
         StoreBasicData(zones, streets, locationTypes);
         if (AssignedAssociationID != null)
         {
@@ -446,7 +509,6 @@ public class GameLocation : ILocationDispatchable
             }
         }, "StandardInteract");
     }
-
     public virtual void HandleVariableItems()
     {
         HandlePriceRefreshes();
@@ -492,7 +554,6 @@ public class GameLocation : ILocationDispatchable
             EntryPoint.WriteToConsole($"{Name} AND WE ARE WAITING FOR THE STOCK REFRESH Current:{Time.CurrentDateTime} RefreshTime:{NextRestockTime}");
         }
     }
-
     protected void DoEntranceCamera(bool sayGreeting)
     {
         StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
@@ -563,9 +624,12 @@ public class GameLocation : ILocationDispatchable
     public virtual void AddDistanceOffset(Vector3 offsetToAdd)
     {
         EntrancePosition += offsetToAdd;
-        if (VendorPosition != Vector3.Zero)
+        foreach(SpawnPlace sl in VendorLocations)
         {
-            VendorPosition += offsetToAdd;
+            if (sl.Position != Vector3.Zero)
+            {
+                sl.Position += offsetToAdd;
+            }
         }
         if (CameraPosition != Vector3.Zero)
         {
@@ -599,7 +663,6 @@ public class GameLocation : ILocationDispatchable
     {
         TotalAssaultSpawns = 0;
     }
-
     protected void SetupLocationCamera(LocationCamera locationCamera, bool isInside, bool sayGreeting)
     {
         if (locationCamera == null)
@@ -940,54 +1003,31 @@ public class GameLocation : ILocationDispatchable
         //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
         //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
     }
-    protected void SpawnVendor(ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, bool addMenu)
+    protected bool SpawnVendor(SpawnPlace spawnPlace)
     {
         //Ped ped;
-        string ModelName;
-        if (VendorModels != null && VendorModels.Any())
+        DispatchablePerson VendorPersonType = null;
+        if (VendorPersonnel != null && VendorPersonnel.Any())
         {
-            ModelName = VendorModels.PickRandom();
+            VendorPersonType = VendorPersonnel.PickRandom();
         }
-        else
+        if(VendorPersonType == null)
         {
-            ModelName = FallBackVendorModels.PickRandom();
+            VendorPersonType = new DispatchablePerson(FallBackVendorModels.PickRandom(), 100, 100);
         }
         HandleVariableItems();
-        EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {ModelName}");
-        NativeFunction.Natives.CLEAR_AREA(VendorPosition.X, VendorPosition.Y, VendorPosition.Z, 2f, true, false, false, false);
-        World.Pedestrians.CleanupAmbient();
-        Ped ped = new Ped(ModelName, VendorPosition, VendorHeading);
-        GameFiber.Yield();
-        if (!ped.Exists())
-        {
-            return;
-        }
-        EntryPoint.SpawnedEntities.Add(ped);
-        Vendor = new Merchant(ped, settings, "Vendor", crimes, weapons, World);
-        if (!World.Pedestrians.Merchants.Any(x => x.Handle == Vendor.Handle))
-        {
-            World.Pedestrians.Merchants.Add(Vendor);
-        }
-        ped.IsPersistent = true;//THIS IS ON FOR NOW!
-        ped.RandomizeVariation();
-        Vendor.LocationTaskRequirements = new LocationTaskRequirements() { TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_STAND_IMPATIENT" } };
-        GameFiber.Yield();
-        if (!ped.Exists())
-        {
-            return;
-        }
-        if (addMenu)
-        {
-            Vendor.SetupTransactionItems(Menu, true);
-            Vendor.MatchTransactionItemsWithShop(this);
-        }
-        Vendor.AssociatedStore = this;
-        Vendor.SpawnPosition = VendorPosition;
-        Vendor.WasModSpawned = true;
-        Vendor.CanBeAmbientTasked = true;
-        Vendor.CanBeTasked = true;
+        EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {VendorPersonType.ModelName}");
+        Vendors = new List<Merchant>();
+        SpawnLocation sl = new SpawnLocation(spawnPlace.Position) { Heading = spawnPlace.Heading };
+        MerchantSpawnTask merchantSpawnTask = new MerchantSpawnTask(sl, null,VendorPersonType,false,false,true,Settings,Crimes,Weapons,Names,World,ModItems,ShopMenus,this);
+        merchantSpawnTask.AllowAnySpawn = true;
+        merchantSpawnTask.SpawnWithAllWeapons = true;
+        merchantSpawnTask.AllowBuddySpawn = false;
+        merchantSpawnTask.AttemptSpawn();
 
-        EntryPoint.WriteToConsole($"SPAWNED WORKED VENDOR AT {Name}");
+        Vendors.AddRange(merchantSpawnTask.SpawnedVendors);
+
+        return merchantSpawnTask.CreatedPeople.Any();
     }
     protected bool IsLocationClosed()
     {
@@ -1035,6 +1075,87 @@ public class GameLocation : ILocationDispatchable
         }
         StoreCamera.HighlightHome();
     }
+
+    public virtual void AttemptVendorDespawn()
+    {
+        foreach(PedExt pedExt in SpawnedVendors.ToList())
+        {
+            if(pedExt.Pedestrian.Exists())
+            {
+                pedExt.DeleteBlip();
+                pedExt.Pedestrian.IsPersistent = false;
+                EntryPoint.WriteToConsole($"AttemptVendorDespawn MADE NON PERSIST");
+            }
+        }
+    }
+
+    public IssuableWeapon GetRandomWeapon(bool isSidearm, IWeapons weapons)
+    {
+        List<IssuableWeapon> PossibleWeapons;
+        if (isSidearm)
+        {
+            PossibleWeapons = VendorSideArms;
+        }
+        else
+        {
+            PossibleWeapons = VendorLongGuns;
+        }
+        if (PossibleWeapons != null && PossibleWeapons.Any())
+        {
+            int Total = PossibleWeapons.Sum(x => x.SpawnChance);
+            int RandomPick = RandomItems.MyRand.Next(0, Total);
+            foreach (IssuableWeapon weapon in PossibleWeapons)
+            {
+                int SpawnChance = weapon.SpawnChance;
+                if (RandomPick < SpawnChance)
+                {
+                    WeaponInformation WeaponLookup = weapons.GetWeapon(weapon.ModelName);
+                    if (WeaponLookup != null)
+                    {
+
+                        weapon.SetIssued(Game.GetHashKey(weapon.ModelName), WeaponLookup.PossibleComponents, WeaponLookup.IsTaser);
+                        return weapon;
+                    }
+                }
+                RandomPick -= SpawnChance;
+            }
+            if (PossibleWeapons.Any())
+            {
+                return PossibleWeapons.PickRandom();
+            }
+        }
+        return null;
+    }
+    public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons)
+    {
+        List<IssuableWeapon> PossibleWeapons = VendorMeleeWeapons;
+        if (PossibleWeapons != null && PossibleWeapons.Any())
+        {
+            int Total = PossibleWeapons.Sum(x => x.SpawnChance);
+            int RandomPick = RandomItems.MyRand.Next(0, Total);
+            foreach (IssuableWeapon weapon in PossibleWeapons)
+            {
+                int SpawnChance = weapon.SpawnChance;
+                if (RandomPick < SpawnChance)
+                {
+                    WeaponInformation WeaponLookup = weapons.GetWeapon(weapon.ModelName);
+                    if (WeaponLookup != null)
+                    {
+                        weapon.SetIssued(Game.GetHashKey(weapon.ModelName), WeaponLookup.PossibleComponents, WeaponLookup.IsTaser);
+                        return weapon;
+                    }
+                }
+                RandomPick -= SpawnChance;
+            }
+            if (PossibleWeapons.Any())
+            {
+                return PossibleWeapons.PickRandom();
+            }
+        }
+        return null;
+    }
+
+
     //public virtual void UpdatePrompts()
     //{
 

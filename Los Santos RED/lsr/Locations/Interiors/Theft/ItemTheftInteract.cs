@@ -61,14 +61,14 @@ public class ItemTheftInteract : TheftInteract
         }
         int ItemsToAdd = RandomItems.GetRandomNumberInt(MinItems, MaxItems);
         int ItemsAdded = 0;
-        EntryPoint.WriteToConsole($"ItemTheftInteract OnInteriorLoaded ItemsToAdd {ItemsToAdd}");
+        //EntryPoint.WriteToConsole($"ItemTheftInteract OnInteriorLoaded ItemsToAdd {ItemsToAdd}");
         for (int i = 0; i < ItemsToAdd; i++)
         {
             TheftInteractItem item = PickRandomItem();
             if (item != null)
             {
                 Items.Add(item);
-                EntryPoint.WriteToConsole($"ItemTheftInteract OnInteriorLoaded ADDED ITEM {item.ModItemName}");
+                //EntryPoint.WriteToConsole($"ItemTheftInteract OnInteriorLoaded ADDED ITEM {item.ModItemName}");
             }
             ItemsAdded++;
         }

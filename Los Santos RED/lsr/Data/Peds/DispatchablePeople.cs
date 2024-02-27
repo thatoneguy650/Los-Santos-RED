@@ -77,6 +77,12 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> LSLifeguardPeds;
     private List<DispatchablePerson> LSPDASDPeds;
     private List<DispatchablePerson> LSSDASDPeds;
+
+
+    private List<DispatchablePerson> VendorPeds;
+    private List<DispatchablePerson> IllicitMarketplacePeds;
+    private List<DispatchablePerson> TellerPeds;
+    private List<DispatchablePerson> BarPeds;
     public List<DispatchablePersonGroup> AllPeople => PeopleGroupLookup;
 
     public void Setup(IIssuableWeapons issuableWeapons)
@@ -1723,6 +1729,29 @@ public class DispatchablePeople : IDispatchablePeople
         };
 
 
+        VendorPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_m_strvend_01",100,100),
+            new DispatchablePerson("s_m_m_linecook",100,100),
+        };
+
+        IllicitMarketplacePeds = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("IG_DrugDealer",100,100),
+            new DispatchablePerson("S_M_Y_Dealer_01",100,100),
+        };
+
+        TellerPeds = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("s_f_m_shop_high",100,100),
+            new DispatchablePerson("s_f_y_airhostess_01",100,100),
+            new DispatchablePerson("s_m_m_highsec_01",100,100),
+        };
+        BarPeds = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("s_f_y_clubbar_01",100,100),
+            new DispatchablePerson("s_m_y_clubbar_01",100,100),
+            new DispatchablePerson("a_f_y_clubcust_01",100,100),
+        };
 
     }
     private void DefaultConfig()
@@ -1778,6 +1807,10 @@ public class DispatchablePeople : IDispatchablePeople
         //Other
         PeopleGroupLookup.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
 
         Serialization.SerializeParams(PeopleGroupLookup, ConfigFileName);
     }
@@ -1900,7 +1933,10 @@ public class DispatchablePeople : IDispatchablePeople
         //Other
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
-
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         Serialization.SerializeParams(PeopleGroupLookup_Old, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\DispatchablePeople_LosSantos2008.xml");
     }
     private void DefaultConfig_Simple()
@@ -2069,7 +2105,10 @@ public class DispatchablePeople : IDispatchablePeople
         //Other
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
-
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         Serialization.SerializeParams(PeopleGroupLookup_Simple, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\DispatchablePeople_Simple.xml");
     }
     private void DefaultConfig_FullExpandedJurisdiction()
@@ -9751,6 +9790,10 @@ public class DispatchablePeople : IDispatchablePeople
         //Other
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
 
         DefaultConfig_FullExpandedJurisdictionEXTRA(PeopleConfig_EUP);
 

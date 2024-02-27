@@ -897,7 +897,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public virtual void SetupTransactionItems(ShopMenu shopMenu, bool matchWithMenu)
     {
-        // EntryPoint.WriteToConsole($"SetupTransactionItems START {Handle} HasMenu:{shopMenu == null} {shopMenu?.Name}");
+         //EntryPoint.WriteToConsole($"SetupTransactionItems START {Handle} HasMenu:{shopMenu == null} {shopMenu?.Name}");
         ShopMenu = shopMenu;
         if (shopMenu == null)
         {
@@ -911,7 +911,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             }
         }
         ItemDesires.AddDesiredItem(shopMenu, matchWithMenu);
-        //EntryPoint.WriteToConsole("SetupTransactionItems END");
+       // EntryPoint.WriteToConsole("SetupTransactionItems END");
     }
     public string LootInventory(IInteractionable player, IModItems modItems, ICellphones cellphones)
     {
@@ -1135,7 +1135,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Ped Info", $"~y~{Name}", Description);
         }
     }
-    private float CivilianCallPercentage()
+    protected float CivilianCallPercentage()
     {
         if (EntryPoint.FocusZone != null)
         {
@@ -1161,7 +1161,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             return Settings.SettingsManager.CivilianSettings.CallPolicePercentageMiddleZones;
         }
     }
-    private float CivilianSeriousCallPercentage()
+    protected float CivilianSeriousCallPercentage()
     {
         if (EntryPoint.FocusZone != null)
         {
@@ -1187,7 +1187,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             return Settings.SettingsManager.CivilianSettings.CallPoliceForSeriousCrimesPercentageMiddleZones;
         }
     }
-    private float CivilianFightPercentage()
+    protected float CivilianFightPercentage()
     {
         if (EntryPoint.FocusZone != null)
         {
@@ -1213,7 +1213,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             return Settings.SettingsManager.CivilianSettings.FightPercentageMiddleZones;
         }
     }
-    private float CivilianFightPolicePercentage()
+    protected float CivilianFightPolicePercentage()
     {
         if (EntryPoint.FocusZone != null)
         {
@@ -1239,7 +1239,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             return Settings.SettingsManager.CivilianSettings.FightPolicePercentageMiddleZones;
         }
     }
-    private float CivilianCowerPercentage()
+    protected float CivilianCowerPercentage()
     {
         if (EntryPoint.FocusZone != null)
         {

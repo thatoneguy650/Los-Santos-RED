@@ -1408,7 +1408,7 @@ public class BlankLocationsData
             
             AssignedAssociationID = "AMBIENT_GANG_ARMENIAN",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -1523,7 +1523,7 @@ public class BlankLocationsData
             
             AssignedAssociationID = "AMBIENT_GANG_ARMENIAN",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -1594,7 +1594,7 @@ public class BlankLocationsData
             
             AssignedAssociationID = "AMBIENT_GANG_ARMENIAN",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -1708,7 +1708,7 @@ public class BlankLocationsData
             
             AssignedAssociationID = "AMBIENT_GANG_ARMENIAN",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -2392,7 +2392,7 @@ public class BlankLocationsData
             
             AssignedAssociationID = "AMBIENT_GANG_MADRAZO",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
 new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -2464,7 +2464,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_MADRAZO",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -3177,7 +3177,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_DIABLOS",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns = new List<ConditionalGroup>()
             {
                 new ConditionalGroup()
@@ -4726,7 +4726,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
       new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -4811,7 +4811,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -4896,7 +4896,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -4989,7 +4989,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -6328,7 +6328,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_MARABUNTE",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns = new List<ConditionalGroup>()
             {
                 new ConditionalGroup()
@@ -6395,7 +6395,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_MARABUNTE",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns = new List<ConditionalGroup>()
             {
                 new ConditionalGroup()
@@ -6465,7 +6465,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_MARABUNTE",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns = new List<ConditionalGroup>()
             {
                 new ConditionalGroup()
@@ -6526,7 +6526,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_MARABUNTE",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns = new List<ConditionalGroup>()
             {
                 new ConditionalGroup()
@@ -7312,7 +7312,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns = new List<ConditionalGroup>()
             {
                 new ConditionalGroup()
@@ -7475,7 +7475,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns = new List<ConditionalGroup>()
             {
                 new ConditionalGroup()
@@ -7602,7 +7602,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns = new List<ConditionalGroup>()
             {
                 new ConditionalGroup()
@@ -7660,7 +7660,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns = new List<ConditionalGroup>()
             {
                 new ConditionalGroup()
@@ -8195,7 +8195,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
       new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -10401,7 +10401,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_HILLBILLY",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
       new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -10475,7 +10475,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_HILLBILLY",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -10549,7 +10549,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_HILLBILLY",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -10636,7 +10636,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_HILLBILLY",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -10711,7 +10711,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_HILLBILLY",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -10784,7 +10784,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_HILLBILLY",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -10887,7 +10887,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_HILLBILLY",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -10997,7 +10997,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_HILLBILLY",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
               new List<ConditionalGroup>() {
         new ConditionalGroup() {
@@ -11112,7 +11112,7 @@ new List<ConditionalGroup>() {
             
             AssignedAssociationID = "AMBIENT_GANG_SALVA",
             MenuID = "",
-            VendorModels = new List<String>() { },
+
             PossibleGroupSpawns =
               new List<ConditionalGroup>() {
         new ConditionalGroup() {

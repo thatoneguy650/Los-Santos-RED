@@ -9,17 +9,17 @@ using System.Linq;
 using System.Windows;
 using System.Xml.Linq;
 
-public class MerchantSpawnTask : SpawnTask
+public class TellerSpawnTask : SpawnTask
 {
 
     protected Vehicle SpawnedVehicle;
     protected ICrimes Crimes;
     protected IShopMenus ShopMenus;
-    protected GameLocation Store;
+    protected Bank Store;
     public bool SetPersistent { get; set; } = false;
-    public List<Merchant> SpawnedVendors { get; set; } = new List<Merchant>();
-    public MerchantSpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, bool setPersistent, ISettingsProvideable settings,
-        ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world, IModItems modItems, IShopMenus shopMenus, GameLocation store)
+    public List<Teller> SpawnedTellers { get; set; } = new List<Teller>();
+    public TellerSpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, bool setPersistent, ISettingsProvideable settings,
+        ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world, IModItems modItems, IShopMenus shopMenus, Bank store)
         : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
     {
         Crimes = crimes;
@@ -97,7 +97,7 @@ public class MerchantSpawnTask : SpawnTask
             {
                 return null;
             }
-            PedExt Person = SetupMerchantPed(createdPed);
+            PedExt Person = SetupTellerPed(createdPed);
             PersonType.SetPedVariation(createdPed, null, true);
             GameFiber.Yield();
             CreatedPeople.Add(Person);
@@ -121,38 +121,34 @@ public class MerchantSpawnTask : SpawnTask
             OccupantsToAdd = 0;
         }
     }
-    private PedExt SetupMerchantPed(Ped ped)
+    private PedExt SetupTellerPed(Ped ped)
     {
-        if(!ped.Exists())
+        if (!ped.Exists())
         {
             return null;
         }
         ped.IsPersistent = true;//THIS IS ON FOR NOW!
         EntryPoint.PersistentPedsCreated++;//TR
-        Merchant Vendor = new Merchant(ped, Settings, "Vendor", Crimes, Weapons, World);
-        SpawnedVendors.Add(Vendor);
+        Teller Vendor = new Teller(ped, Settings, "Teller", Crimes, Weapons, World);
+        SpawnedTellers.Add(Vendor);
         World.Pedestrians.AddEntity(Vendor);
-        Vendor.SetStats(PersonType, ShopMenus, Weapons, AddBlip, false,false,false,Store);//TASKING IS BROKEN FOR ALL COPS FAR FROM PLAYER AND ALL OTHER PEDS
+        Vendor.SetStats(PersonType, ShopMenus, Weapons, AddBlip, false, false, false, Store);//TASKING IS BROKEN FOR ALL COPS FAR FROM PLAYER AND ALL OTHER PEDS
         if (ped.Exists())
         {
             Vendor.SpawnPosition = ped.Position;
             Vendor.SpawnHeading = ped.Heading;
-            Vendor.AssociatedStore = Store;
+            Vendor.AssociatedBank = Store;
             Vendor.SpawnPosition = SpawnLocation.InitialPosition;
             Vendor.WasModSpawned = true;
             Vendor.CanBeAmbientTasked = true;
             Vendor.CanBeTasked = true;
-            if (SpawnWithAllWeapons || PersonType.AlwaysHasLongGun)
-            {
-                Vendor.WeaponInventory.GiveHeavyWeapon();
-            }
         }
         GameFiber.Yield();
         if (!ped.Exists())
         {
             return null;
         }
-        EntryPoint.WriteToConsole($"SPAWNED WORKED VENDOR AT {Store?.Name}");
+        EntryPoint.WriteToConsole($"SPAWNED WORKED TELLER AT {Store?.Name}");
         return Vendor;
     }
     protected void SetupPed(Ped ped)

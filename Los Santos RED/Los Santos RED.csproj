@@ -416,6 +416,7 @@
     <Compile Include="lsr\Police\OfficerMIAWatcher.cs" />
     <Compile Include="lsr\Spawner\MerchantSpawnTask.cs" />
     <Compile Include="lsr\Spawner\TaxiSpawnTask.cs" />
+    <Compile Include="lsr\Spawner\TellerSpawnTask.cs" />
     <Compile Include="lsr\Tasker\AIChaseable\IAIChaseable.cs" />
     <Compile Include="lsr\Tasker\Cop\CopBrain.cs" />
     <Compile Include="lsr\Tasker\Cop\Tasks\CopGeneralIdle.cs" />

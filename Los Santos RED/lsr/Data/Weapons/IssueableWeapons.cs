@@ -188,6 +188,31 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_dbshotgun", new WeaponVariation()),
         };
 
+        //Vendor
+        List<IssuableWeapon> VendorMeleeWeapons = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_hatchet", new WeaponVariation()),
+            new IssuableWeapon("weapon_knife", new WeaponVariation()),
+            new IssuableWeapon("weapon_machete", new WeaponVariation()),
+            new IssuableWeapon("weapon_bat", new WeaponVariation()),
+            new IssuableWeapon("weapon_crowbar", new WeaponVariation()),
+            new IssuableWeapon("weapon_hammer", new WeaponVariation()),
+        };
+        List<IssuableWeapon> VendorSidearms = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_ceramicpistol", new WeaponVariation()),
+            new IssuableWeapon("weapon_snspistol", new WeaponVariation()),
+            new IssuableWeapon("weapon_heavypistol", new WeaponVariation(),20),
+            new IssuableWeapon("weapon_vintagepistol", new WeaponVariation(),10),
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(),5),
+            new IssuableWeapon("weapon_revolver", new WeaponVariation(),5),
+        };
+        List<IssuableWeapon> VendorLongGuns = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_sawnoffshotgun", new WeaponVariation()),
+            new IssuableWeapon("weapon_dbshotgun", new WeaponVariation()),
+        };
+
         IssuableWeaponsGroupLookup = new List<IssuableWeaponsGroup>
         {
             new IssuableWeaponsGroup("Tasers", Tasers),
@@ -209,6 +234,9 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeaponsGroup("TaxiSidearms", TaxiSidearms),
             new IssuableWeaponsGroup("TaxiLongGuns", TaxiLongGuns),
 
+            new IssuableWeaponsGroup("VendorMeleeWeapons", VendorMeleeWeapons),
+            new IssuableWeaponsGroup("VendorSidearms", VendorSidearms),
+            new IssuableWeaponsGroup("VendorLongGuns", VendorLongGuns),
         };
 
 
@@ -670,6 +698,30 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_dbshotgun", new WeaponVariation()),
         };
 
+        //Vendor
+        List<IssuableWeapon> VendorMeleeWeapons = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_hatchet", new WeaponVariation()),
+            new IssuableWeapon("weapon_knife", new WeaponVariation()),
+            new IssuableWeapon("weapon_machete", new WeaponVariation()),
+            new IssuableWeapon("weapon_bat", new WeaponVariation()),
+            new IssuableWeapon("weapon_crowbar", new WeaponVariation()),
+            new IssuableWeapon("weapon_hammer", new WeaponVariation()),
+        };
+        List<IssuableWeapon> VendorSidearms = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_ceramicpistol", new WeaponVariation()),
+            new IssuableWeapon("weapon_snspistol", new WeaponVariation()),
+            new IssuableWeapon("weapon_heavypistol", new WeaponVariation(),20),
+            new IssuableWeapon("weapon_vintagepistol", new WeaponVariation(),10),
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(),5),
+            new IssuableWeapon("weapon_revolver", new WeaponVariation(),5),
+        };
+        List<IssuableWeapon> VendorLongGuns = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_sawnoffshotgun", new WeaponVariation()),
+            new IssuableWeapon("weapon_dbshotgun", new WeaponVariation()),
+        };
 
         List<IssuableWeaponsGroup> IssuableWeaponsGroupLookup_Old = new List<IssuableWeaponsGroup>
         {
@@ -688,6 +740,11 @@ public class IssueableWeapons : IIssuableWeapons
 
             new IssuableWeaponsGroup("TaxiSidearms", TaxiSidearms),
             new IssuableWeaponsGroup("TaxiLongGuns", TaxiLongGuns),
+
+
+            new IssuableWeaponsGroup("VendorMeleeWeapons", VendorMeleeWeapons),
+            new IssuableWeaponsGroup("VendorSidearms", VendorSidearms),
+            new IssuableWeaponsGroup("VendorLongGuns", VendorLongGuns),
         };
 
         //Gangs

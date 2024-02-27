@@ -26,6 +26,23 @@ public class IllicitMarketplace : GameLocation
     public override int MaxPriceRefreshHours { get; set; } = 24;
     public override int MinRestockHours { get; set; } = 12;
     public override int MaxRestockHours { get; set; } = 24;
+
+
+
+    public override float ExtaVendorSpawnPercentage { get; set; } = 25f;
+    public override string VendorHeadDataGroupID { get; set; }
+    public override string VendorPersonnelID { get; set; } = "IllicitMarketplacePeds";
+
+    public override float VendorMeleePercent { get; set; } = 55f;
+    public override float VendorSidearmPercent { get; set; } = 25f;
+    public override float VendorLongGunPercent { get; set; } = 5f;
+
+
+
+
+
+
+
     public List<AppearPercentage> AppearPercentages { get; set; }
     public IllicitMarketplace(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -41,7 +58,7 @@ public class IllicitMarketplace : GameLocation
         ShownWarning = false;
         base.Activate(interiors, settings, crimes, weapons, time, world);
     }
-    protected override void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
+    public override void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
         if(AppearPercentages != null && AppearPercentages.Any())
         {

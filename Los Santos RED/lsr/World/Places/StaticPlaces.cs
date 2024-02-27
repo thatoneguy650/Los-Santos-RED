@@ -34,9 +34,13 @@ public class StaticPlaces
     private ILocationTypes LocationTypes;
     private IOrganizations Associations;
     private IContacts Contacts;
+    private IIssuableWeapons IssuableWeapons;
+    private IHeads Heads;
+    private IDispatchablePeople DispatchablePeople;
 
     public StaticPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, IZones zones, IStreets streets, IGangs gangs,
-        IAgencies agencies, ITimeControllable time, INameProvideable names, IPedGroups pedGroups, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ILocationTypes locationTypes, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IModItems modItems)
+        IAgencies agencies, ITimeControllable time, INameProvideable names, IPedGroups pedGroups, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ILocationTypes locationTypes, IPlateTypes plateTypes, 
+        IOrganizations associations, IContacts contacts, IModItems modItems, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople)
     {
         Places = places;
         PlacesOfInterest = placesOfInterest;
@@ -60,12 +64,15 @@ public class StaticPlaces
         Associations = associations;
         Contacts = contacts;
         ModItems = modItems;
+        IssuableWeapons = issuableWeapons;
+        Heads = heads;
+        DispatchablePeople= dispatchablePeople;
     }
     public void Setup(IInteractionable player, ILocationInteractable locationInteractable)
     {
         foreach (GameLocation tl in PlacesOfInterest.InteractableLocations())
         {
-            tl.StoreData(ShopMenus, Agencies, Gangs,Zones, Jurisdictions, GangTerritories, Names, Crimes, PedGroups, World, Streets, LocationTypes, Settings, PlateTypes, Associations, Contacts, Interiors, locationInteractable, ModItems, Weapons, Time, PlacesOfInterest);
+            tl.StoreData(ShopMenus, Agencies, Gangs,Zones, Jurisdictions, GangTerritories, Names, Crimes, PedGroups, World, Streets, LocationTypes, Settings, PlateTypes, Associations, Contacts, Interiors, locationInteractable, ModItems, Weapons, Time, PlacesOfInterest, IssuableWeapons, Heads, DispatchablePeople);
         }
         foreach (ILocationSetupable ps in PlacesOfInterest.LocationsToSetup())
         {

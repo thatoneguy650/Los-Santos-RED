@@ -27,9 +27,10 @@ public class LocationDispatcher
     private IWeatherReportable WeatherReporter;
     private ITimeControllable Time;
     private IModItems ModItems;
+    private IInteriors Interiors;
 
     public LocationDispatcher(IEntityProvideable world, IDispatchable player, IGangs gangs, ISettingsProvideable settings, IStreets streets, IZones zones, IGangTerritories gangTerritories, IWeapons weapons, INameProvideable names, 
-        IPedGroups pedGroups, ICrimes crimes, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IAgencies agencies, IJurisdictions jurisdictions, IWeatherReportable weatherReporter, ITimeControllable time, IModItems modItems)
+        IPedGroups pedGroups, ICrimes crimes, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IAgencies agencies, IJurisdictions jurisdictions, IWeatherReportable weatherReporter, ITimeControllable time, IModItems modItems, IInteriors interiors)
     {
         Player = player;
         World = world;
@@ -49,6 +50,7 @@ public class LocationDispatcher
         WeatherReporter = weatherReporter;
         Time = time;
         ModItems = modItems;
+        Interiors = interiors;
     }
 
     public void Dispatch()
@@ -93,13 +95,37 @@ public class LocationDispatcher
             //EntryPoint.WriteToConsole($"Location Dispatcher, CLEARED AT {ps.Name}");
             ps.IsDispatchFilled = false;
         }
+        GameFiber.Yield();
+        HandleServiceWorkerSpawns();
     }
+
     public void Reset()
     {
         foreach (GameLocation ps in PlacesOfInterest.InteractableLocations().Where(x => x.IsDispatchFilled).ToList())
         {
             ps.IsDispatchFilled = false;
         }
+        foreach (GameLocation ps in PlacesOfInterest.InteractableLocations().Where(x => x.IsServiceFilled).ToList())
+        {
+            ps.IsServiceFilled = false;
+        }
     }
+    private void HandleServiceWorkerSpawns()
+    {
+        foreach (GameLocation ps in World.Places.ActiveLocations.ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= x.ActivateDistance && x.IsNearby && !x.IsServiceFilled).ToList())
+        {
+            ps.AttemptVendorSpawn(ps.IsOpen(Time.CurrentHour),Interiors,Settings,Crimes,Weapons,Time,World);
+            ps.IsServiceFilled = true;
+            GameFiber.Yield();
+        }
+        GameFiber.Yield();
+        foreach (GameLocation ps in PlacesOfInterest.InteractableLocations().Where(x => x.IsEnabled && !x.IsNearby && x.IsServiceFilled).ToList())
+        {
+            ps.AttemptVendorDespawn();
+            //EntryPoint.WriteToConsole($"VENDOR DESPAWN AT {ps.Name} ");
+            ps.IsServiceFilled = false;
+        }
+    }
+
 }
 

@@ -193,10 +193,7 @@ namespace LSR.Vehicles
         public bool IsCar { get; private set; }
         public bool IsBicycle { get; private set; } = false;
         public bool IsMotorcycle { get; private set; } = false;
-
-
         public bool CanPerformActivitiesInside => !IsBicycle && !IsMotorcycle;
-
         public bool IsRandomlyLocked { get; set; } = false;
         public bool UsePlayerAnimations => !IsMotorcycle && !IsBicycle;// VehicleClass != VehicleClass.Motorcycle && VehicleClass != VehicleClass.Cycle;
         public virtual bool CanHaveRandomCash { get; set; } = true;
@@ -343,6 +340,11 @@ namespace LSR.Vehicles
                     GameTimeToReportStolen = GameTimeEntered + RandomItems.GetRandomNumber(Settings.SettingsManager.VehicleSettings.NonAlarmedCarTimeToReportStolenMin, Settings.SettingsManager.VehicleSettings.NonAlarmedCarTimeToReportStolenMax);//IF it is stolen, this is when it would trigger
                 }
                 PlaceOriginallyEntered = Vehicle.Position;
+
+                if (Settings.SettingsManager.VehicleSettings.UseCustomFuelSystem && RequiresFuel)
+                {
+                    Vehicle.FuelLevel = RandomItems.GetRandomNumber(Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin, Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax);// (float)(Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin + RandomItems.MyRand.NextDouble() * (settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax - Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin));//RandomItems.MyRand.Next(8, 100);  
+                }
             }
         }
         public Color VehicleColor()
@@ -719,11 +721,8 @@ namespace LSR.Vehicles
         public bool WasCrushed { get; set; }
         public bool IsAlwaysOpenForPlayer { get; set; } = false;
         public bool CanAlwaysRollOver => VehicleClass == VehicleClass.Motorcycle || VehicleClass == VehicleClass.Cycle;
-
         public virtual bool HasSonarBlip => true;
-
         public bool IsManualCleanup { get; internal set; }
-
         private int ClosestColor(List<Color> colors, Color target)
         {
             var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
@@ -857,10 +856,10 @@ namespace LSR.Vehicles
                 return;
             }
             SetupClassAndCategory();
-            if (Settings.SettingsManager.VehicleSettings.UseCustomFuelSystem && RequiresFuel)
-            {
-                Vehicle.FuelLevel = RandomItems.GetRandomNumber(Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin, Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax);// (float)(Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin + RandomItems.MyRand.NextDouble() * (settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax - Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin));//RandomItems.MyRand.Next(8, 100);  
-            }
+            //if (Settings.SettingsManager.VehicleSettings.UseCustomFuelSystem && RequiresFuel)
+            //{
+            //    Vehicle.FuelLevel = RandomItems.GetRandomNumber(Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin, Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax);// (float)(Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin + RandomItems.MyRand.NextDouble() * (settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax - Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin));//RandomItems.MyRand.Next(8, 100);  
+            //}
             GetFuelTankCapacity();
             IsRandomlyLocked = RandomItems.RandomPercent(Settings.SettingsManager.VehicleSettings.LockVehiclePercentage);
         }
@@ -1521,7 +1520,6 @@ namespace LSR.Vehicles
                // EntryPoint.WriteToConsole("UpdateInteractPrompts BASE ADD PROMPT 1");
             }
         }
-
         public void UpdateHotwirePrompt(IButtonPromptable player)
         {
             if (!Vehicle.Exists() || (!HasBeenEnteredByPlayer && !IsOwnedByPlayer) || !IsHotWireLocked || VehicleInteractionMenu.IsShowingMenu || Vehicle.Speed >= 0.5f)
@@ -1543,8 +1541,6 @@ namespace LSR.Vehicles
                  EntryPoint.WriteToConsole("UpdateHotwirePrompt BASE ADD PROMPT 1");
             }
         }
-
-
         public virtual void AddVehicleToList(IEntityProvideable world)
         {
             world.Vehicles.AddCivilian(this);
@@ -1558,7 +1554,6 @@ namespace LSR.Vehicles
             }
             return vehicleText;
         }
-
         public void SetReportedStolen()
         {
             if(WasReportedStolen)
@@ -1584,7 +1579,6 @@ namespace LSR.Vehicles
                 Game.DisplaySubtitle($"Vehicle Reported Stolen");
             }
         }
-
         public virtual void OnDamagedByPlayer(IInteractionable player, IEntityProvideable world)
         {
             if(!Vehicle.Exists())
@@ -1606,7 +1600,6 @@ namespace LSR.Vehicles
             }
             GameTimeLastDamagedByPlayer = Game.GameTime;
         }
-
         public bool CheckPlayerDamage(IInteractionable player, IEntityProvideable world)
         {
             if (!Vehicle.Exists() || RecentlyDamagedByPlayer)
@@ -1620,7 +1613,5 @@ namespace LSR.Vehicles
             }
             return false;
         }
-
-
     }
 }

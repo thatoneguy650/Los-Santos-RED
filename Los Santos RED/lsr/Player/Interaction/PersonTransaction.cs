@@ -150,11 +150,11 @@ public class PersonTransaction : Interaction
                 }
                 //EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE CAR 1");
             }
-            else if (AssociatedStore != null && AssociatedStore.VendorHeading != 0f)
+            else if (AssociatedStore != null && Ped.SpawnHeading != 0f)
             {
                 Ped.Pedestrian.BlockPermanentEvents = false;
                 Ped.Pedestrian.KeepTasks = false;
-                NativeFunction.Natives.TASK_ACHIEVE_HEADING(Ped.Pedestrian, AssociatedStore.VendorHeading, -1);
+                NativeFunction.Natives.TASK_ACHIEVE_HEADING(Ped.Pedestrian, Ped.SpawnHeading, -1);// AssociatedStore.VendorHeading, -1);
                 //EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE Set Heading");
             }
             else

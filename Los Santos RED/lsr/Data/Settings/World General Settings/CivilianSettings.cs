@@ -126,7 +126,8 @@ public class CivilianSettings : ISettingsDefaultable
     [Description("Maximum amount of money a civilian will surrender upon mugging.")]
     public int MoneyMax { get; set; }
 
-
+    //[Description("Minumum amount of money a merchant will surrender upon mugging.")]
+    //public int MerchantMoneyMin { get; set; }
 
 
 

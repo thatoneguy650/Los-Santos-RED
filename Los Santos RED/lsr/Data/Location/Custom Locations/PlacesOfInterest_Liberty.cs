@@ -1996,8 +1996,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 83.74f,
                 OpenTime = 11,
                 CloseTime = 19,
-                VendorPosition = new Vector3(923.45f, 1265.04f, 202.79f),
-                VendorHeading = 83.74f,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(923.45f, 1265.04f, 202.79f), 83.74f) },
                 StateID = StaticStrings.LibertyStateID,
             },
         };

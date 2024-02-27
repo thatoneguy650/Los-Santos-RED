@@ -43,12 +43,12 @@ public class MarkerManager
             {
                 continue;
             }
-            if(bl.Vendor != null && bl.Vendor.Pedestrian.Exists())
+            if(bl.HasVendor)//bl.Vendor != null && bl.Vendor.Pedestrian.Exists())
             {
-                Vector3 PedPos = bl.Vendor.Pedestrian.Position;
-                NativeFunction.Natives.DRAW_MARKER(2, PedPos.X, PedPos.Y, PedPos.Z + (bl.Vendor.Pedestrian.Model.Dimensions.Z / 2.0f) + 0.35f, 0f, 0f, 0f, 0f, 180f, 0f, 1.0f, 1.0f, 1.0f, 
-                    EntryPoint.LSRedColor.R, EntryPoint.LSRedColor.G, EntryPoint.LSRedColor.B, EntryPoint.LSRedColor.A, 
-                    true, true, 2, true, 0, 0, false);
+                //Vector3 PedPos = bl.Vendor.Pedestrian.Position;
+                //NativeFunction.Natives.DRAW_MARKER(2, PedPos.X, PedPos.Y, PedPos.Z + (bl.Vendor.Pedestrian.Model.Dimensions.Z / 2.0f) + 0.35f, 0f, 0f, 0f, 0f, 180f, 0f, 1.0f, 1.0f, 1.0f, 
+                //    EntryPoint.LSRedColor.R, EntryPoint.LSRedColor.G, EntryPoint.LSRedColor.B, EntryPoint.LSRedColor.A, 
+                //    true, true, 2, true, 0, 0, false);
             }
             else
             {  
