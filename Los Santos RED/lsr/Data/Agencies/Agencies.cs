@@ -229,8 +229,6 @@ public class Agencies : IAgencies
         LSPDVWFEJ.MaxWantedLevelSpawn = 4;
         LSPDELSFEJ.MaxWantedLevelSpawn = 4;
 
-
-
         Agency LSSDFEJ = Extensions.DeepCopy(LSSD);
         Agency LSSDVWFEJ = Extensions.DeepCopy(LSSDVW);
         Agency LSSDDVFEJ = Extensions.DeepCopy(LSSDDV);
@@ -239,8 +237,12 @@ public class Agencies : IAgencies
         LSSDVWFEJ.MaxWantedLevelSpawn = 4;
         LSSDDVFEJ.MaxWantedLevelSpawn = 4;
         LSSDMJFEJ.MaxWantedLevelSpawn = 4;
-        //            LSSD,LSSDVW,LSSDDV,LSSDMJ,
 
+
+
+        Agency LSFDFireFEJ = Extensions.DeepCopy(LSFDFire);
+
+        Agency LSFDFEJ = Extensions.DeepCopy(LSFD);
 
         Agency BorderPatrol = new Agency("~r~", "NOOSE-BP", "Border Patrol", "NOoSE Border Patrol", "DarkSlateGray", Classification.Federal, "BorderPatrolPeds", "BorderPatrolVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "Border Patrol Officer") { MaxWantedLevelSpawn = 3, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         Agency NOOSEPIA = new Agency("~r~", "NOOSE-PIA", "Patriotism and Immigration Authority", "NOoSE Patriotism and Immigration Authority", "DarkSlateGray", Classification.Federal, "NOOSEPIAPeds", "NOOSEPIAVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "NOOSE-PIA Officer") { MaxWantedLevelSpawn = 4, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
@@ -250,6 +252,27 @@ public class Agencies : IAgencies
         Agency USNPS = new Agency("~g~","USNPS","USNPS","US National Park Service","Green",Classification.Federal, "USNPSParkRangers", "USNPSParkRangersVehicles", "NPS ", "Tasers", "AllSidearms", "AllLongGuns", "US Park Ranger") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
         Agency LSDPR = new Agency("~g~", "LSDPR", "LSDPR", "Los Santos Dept. Parks & Rec", "Green", Classification.Police, "LSDPRParkRangers", "LSDPRParkRangersVehicles", "DPR ", "Tasers", "AllSidearms", "AllLongGuns", "LSDPR Park Ranger") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
         Agency SADFW = new Agency("~g~", "SADFW", "SADFW", "San Andreas Dept. Fish and Wildlife", "Green", Classification.State, "SADFWParkRangers", "SADFWParkRangersVehicles", "DFW ", "Tasers", "AllSidearms", "AllLongGuns", "Game Warden") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
+
+
+
+
+        Agency CHUFFSEC = new Agency("~w~", "CHUFF", "Chuff", "Chuff Security", "White", Classification.Security, "ChuffPeds", "ChuffVehicles", "MW ", "Tasers", "LimitedSidearms", null, "Chuff Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
+        Agency LNLSEC = new Agency("~w~", "LNL", "Lock & Load", "Lock & Load Security", "White", Classification.Security, "LNLPeds", "LNLVehicles", "BC ", "Tasers", "LimitedSidearms", null, "L&L Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
+
+        LSFDFireFEJ.PersonnelID = "LSFDPeds";
+        LSFDFireFEJ.VehiclesID = "LSFDVehicles";
+
+        Agency LSCoFDFire = new Agency("~r~", "LSCoFD", "LSCoFD", "Los Santos County Fire Department", "Red", Classification.Fire, "LSCOFDPeds", "LSCOFDVehicles", "LSCO ", "LSCO ", "FireExtinguisher", null, "LSCoFD Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
+        Agency BCFDFire = new Agency("~r~", "BCFD", "BCFD", "Blaine County County Fire Department", "Red", Classification.Fire, "BCFDPeds", "BCFDVehicles", "BCFD ", "BCFD ", "FireExtinguisher", null, "BCFD Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" }; 
+        Agency SanFire = new Agency("~r~", "SANFIRE", "San Fire", "San Andreas Dept of Forestry and Fire Protection", "Red", Classification.Fire, "SanFirePeds", "SanFireVehicles", "SANF ", "FireExtinguisher", null, null, "SANFIRE Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
+        //sanfire has no EMTS, no full gear and some LEOs, not sure what to do with it
+
+        LSFDFEJ.PersonnelID = "LSFDEMTPeds";
+        LSFDFEJ.VehiclesID = "LSFDEMTVehicles";
+
+        Agency LSCoFDEMT = new Agency("~w~", "LSCoFD-EMS", "LSCoFD-EMS", "Los Santos County Fire Department EMS", "White", Classification.EMS, "LSCOFDEMTPeds", "LSCOFDEMSVehicles", "LSCO ", null, null, null, "LSCoFD EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
+        Agency BCFDEMT = new Agency("~w~", "BCFD-EMS", "BCFD-EMS", "Blaine County Fire Department EMS", "White", Classification.EMS, "BCFDEMTPeds", "BCFDEMSVehicles", "BCFD ", null, null, null, "BCFD EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
+        Agency SAMSEMT = new Agency("~w~", "SAMS", "SAMS", "San Andreas Medical Services", "White", Classification.EMS, "SAMSEMTPeds", "SAMSVehicles", "SAMS ", null, null, null, "SAMS EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
 
 
 
@@ -269,8 +292,10 @@ public class Agencies : IAgencies
             NYSP,LCPD,
             LSLFG,
             FIB,BorderPatrol,NOOSEPIA,NOOSESEP,DOA,ARMY,USMC,USAF,USMS,
-            LSFDFire,LSMC,MRH,LSFD,UNK,
-            GRPSECHS,SECURO,MERRY,BOBCAT,
+            LSFDFireFEJ,LSCoFDFire,BCFDFire,SanFire,
+            LSMC,MRH,LSFDFEJ,LSCoFDEMT,BCFDEMT,SAMSEMT,
+            UNK,
+            GRPSECHS,SECURO,MERRY,BOBCAT,CHUFFSEC,LNLSEC,
             UNK,
         };
         Serialization.SerializeParams(FullAgenciesList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Agencies_FullExpandedJurisdiction.xml");

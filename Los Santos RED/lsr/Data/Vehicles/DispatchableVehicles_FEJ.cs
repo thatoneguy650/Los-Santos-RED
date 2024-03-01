@@ -102,11 +102,24 @@ public class DispatchableVehicles_FEJ
     public List<DispatchableVehicle> BobcatSecurityVehicles_FEJ { get; private set; }
     public List<DispatchableVehicle> GroupSechsVehicles_FEJ { get; private set; }
     public List<DispatchableVehicle> SecuroservVehicles_FEJ { get; private set; }
+
+    public List<DispatchableVehicle> LNLVehicles_FEJ { get; private set; }
+    public List<DispatchableVehicle> CHUFFVehicles_FEJ { get; private set; }
+
     public List<DispatchableVehicle> DowntownTaxiVehicles { get; private set; }
     public List<DispatchableVehicle> PurpleTaxiVehicles { get; private set; }
     public List<DispatchableVehicle> HellTaxiVehicles { get; private set; }
     public List<DispatchableVehicle> ShitiTaxiVehicles { get; private set; }
     public List<DispatchableVehicle> SunderedTaxiVehicles { get; private set; }
+    public List<DispatchableVehicle> LSFDVehicles_FEJ { get; private set; }
+    public List<DispatchableVehicle> LSCOFDVehicles_FEJ { get; private set; }
+    public List<DispatchableVehicle> BCFDVehicles_FEJ { get; private set; }
+    public List<DispatchableVehicle> SanFireVehicles_FEJ { get; private set; }
+    public List<DispatchableVehicle> LSFDEMTVehicles_FEJ { get; private set; }
+    public List<DispatchableVehicle> LSCOFDEMSVehicles_FEJ { get; private set; }
+    public List<DispatchableVehicle> BCFDEMSVehicles_FEJ { get; private set; }
+    public List<DispatchableVehicle> SAMSVehicles_FEJ { get; private set; }
+
     public void DefaultConfig()
     {
         LocalPolice();
@@ -116,6 +129,8 @@ public class DispatchableVehicles_FEJ
         OtherPolice();
         Security();
         Taxis();
+        EMT();
+        Fire();
         /*
          * 
          Extras
@@ -860,9 +875,9 @@ public class DispatchableVehicles_FEJ
         LSLifeguardVehicles_FEJ = new List<DispatchableVehicle>()
         {
             new DispatchableVehicle("lguard", 50, 50),
-            new DispatchableVehicle("blazer2",50,50),
+            new DispatchableVehicle("blazer2",50,50)  { RequiredPedGroup = "ATV",GroupName = "ATV" },
             new DispatchableVehicle("freecrawler",5,5) { RequiredVariation = new VehicleVariation() { VehicleMods = new List<VehicleMod>() {new VehicleMod(48, 7) } } },
-            new DispatchableVehicle("seashark2", 100, 100) { RequiredLiveries = new List<int>() { 0,1 }, MaxOccupants = 1 },
+            new DispatchableVehicle("seashark2", 100, 100) { RequiredPedGroup = "Boat",GroupName = "Boat", RequiredLiveries = new List<int>() { 0,1 }, MaxOccupants = 1 },
             new DispatchableVehicle("frogger2",2,5) { RequiredLiveries = new List<int>() { 6 }, MinOccupants = 2,MaxOccupants = 3, GroupName = "Helicopter" },
             new DispatchableVehicle("polmav",2,5) { RequiredLiveries = new List<int>() { 5 }, MinOccupants = 2,MaxOccupants = 3, GroupName = "Helicopter" },
         }; 
@@ -1076,6 +1091,44 @@ public class DispatchableVehicles_FEJ
         MarshalsServiceVehicles_FEJ.Add(Create_PoliceBison(10, 10, -1, true, PoliceVehicleType.Unmarked, -1, -1, -1, -1, -1, "", ""));
         MarshalsServiceVehicles_FEJ.Add(Create_PoliceCaracara(10, 10, 11, true, PoliceVehicleType.Unmarked, -1, -1, -1, -1, -1, "", ""));
     }
+    private void EMT()
+    {
+        LSFDEMTVehicles_FEJ = new List<DispatchableVehicle>() 
+        {
+            new DispatchableVehicle("ambulance", 100, 100) { RequiredLiveries = new List<int>() { 0 } } 
+        };
+        LSCOFDEMSVehicles_FEJ = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("ambulance", 100, 100) { RequiredLiveries = new List<int>() { 0 } }
+        };
+        BCFDEMSVehicles_FEJ = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("ambulance", 100, 100) { RequiredLiveries = new List<int>() { 0 } }
+        };
+        SAMSVehicles_FEJ = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("ambulance", 100, 100) { RequiredLiveries = new List<int>() { 0 } }
+        };
+    }
+    private void Fire()
+    {
+        LSFDVehicles_FEJ = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("firetruk", 100, 100) { MinOccupants = 2, MaxOccupants = 4 }
+        };
+        LSCOFDVehicles_FEJ = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("firetruk", 100, 100) { MinOccupants = 2, MaxOccupants = 4 }
+        };
+        BCFDVehicles_FEJ = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("firetruk", 100, 100) { MinOccupants = 2, MaxOccupants = 4 }
+        };
+        SanFireVehicles_FEJ = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("firetruk", 100, 100) { MinOccupants = 2, MaxOccupants = 4 }
+        };
+    }
     private void Security()
     {
         MerryweatherPatrolVehicles_FEJ = new List<DispatchableVehicle>()
@@ -1114,6 +1167,27 @@ public class DispatchableVehicles_FEJ
             Create_ServiceStanierOld(20,20,7,false,ServiceVehicleType.Security,134,-1,-1),
             Create_SecurityStanier(20,20,1,false,ServiceVehicleType.Security,-1,-1,-1),
         };
+
+        LNLVehicles_FEJ = new List<DispatchableVehicle>()
+        {
+            Create_ServiceDilettante(35,35,5,false,ServiceVehicleType.Security,-1,-1,-1,"",""),
+            //Create_ServiceInterceptor(35,35,6,false,ServiceVehicleType.Security,-1,-1,-1),
+            //DispatchableVehicles.AleutianSecurityMW,
+            //DispatchableVehicles.AsteropeSecurityMW,
+            //Create_ServiceStanierOld(20,20,6,false,ServiceVehicleType.Security,134,-1,-1),
+            //Create_SecurityStanier(20,20,0,false,ServiceVehicleType.Security,-1,-1,-1),
+        };
+
+        CHUFFVehicles_FEJ = new List<DispatchableVehicle>()
+        {
+            Create_ServiceDilettante(35,35,5,false,ServiceVehicleType.Security,-1,-1,-1,"",""),
+            //Create_ServiceInterceptor(35,35,6,false,ServiceVehicleType.Security,-1,-1,-1),
+            //DispatchableVehicles.AleutianSecurityMW,
+            //DispatchableVehicles.AsteropeSecurityMW,
+            //Create_ServiceStanierOld(20,20,6,false,ServiceVehicleType.Security,134,-1,-1),
+            //Create_SecurityStanier(20,20,0,false,ServiceVehicleType.Security,-1,-1,-1),
+        };
+
     }
     private void Taxis()
     {

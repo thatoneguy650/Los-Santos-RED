@@ -288,14 +288,17 @@ public class ModDataFileManager
     */
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction");
         string Description =
-            "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, israelsr, AllenKennedy, and my own mapped default police/service vehicles."
+            "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, AllenKennedy, and my own mapped default police/service vehicles."
             + Environment.NewLine +
-            "These are all replace vehicles for police (Stanier), police2 (Buffalo), police3 (Interceptor), sheriff (Gresley Police), sheriff2 (Granger Police), policeb (Police Bike), policeold1 (Merit Police), pranger (Fugitive Police), policeold2 (Police Bison), taxi (Stanier Taxi)," +
-            " dilettante2 (Taxi/Security Dilettante), policet (Police Transporter), polgauntlet (Gauntlet Livery), blista3 (Unmaked Washinton), stalion2 (1st Gen Stanier Police), gauntlet2 (1st Gen Stanier Security/Taxi), issi2 (Civilian Interceptor), lurcher (Service Interceptor), and lots more."
+            "These vehicles are all replace, open the dlc.rpf file to see modelnames"
             + Environment.NewLine + Environment.NewLine +
             "EUP Installation: "
             + Environment.NewLine +
-            "1. Follow the instructions at https://www.lcpdfr.com/downloads/gta5mods/character/8151-emergency-uniforms-pack-law-order/ (the add-on items are not needed)"
+            "LSR FEJ Requires BOTH EUP Base and EUP Serve and Rescue"
+            + Environment.NewLine +
+            "1. Install EUP Base. Follow the instructions at https://www.lcpdfr.com/downloads/gta5mods/character/8151-emergency-uniforms-pack-law-order/"
+            + Environment.NewLine +
+            "2. Install EUP Serve and Rescue. Follow the instructions at https://www.lcpdfr.com/downloads/gta5mods/character/16256-emergency-uniforms-pack-serve-rescue/"
             + Environment.NewLine + Environment.NewLine +
             "Expanded Department Liveries Installation: "
             + Environment.NewLine +
@@ -320,8 +323,6 @@ public class ModDataFileManager
             "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1."
             + Environment.NewLine +
             "Bison - Model by Rockstar Games; UV-Map, template, and assembly by Yard1."
-            + Environment.NewLine +
-            "Stanier Taxi - Model by Rockstar Games; UV-Map, template, and assembly by israelsr"
             + Environment.NewLine + Environment.NewLine +
             "Creator Links"
             + Environment.NewLine +
@@ -330,8 +331,6 @@ public class ModDataFileManager
             "Lt.Caine - https://www.lcpdfr.com/profile/143082-ltcaine/content/?type=downloads_file"
             + Environment.NewLine +
             "AllenKennedy - https://www.gta5-mods.com/users/AllenKennedy/files"
-            + Environment.NewLine +
-            "israelsr - https://www.gta5-mods.com/users/israelsr"
             + Environment.NewLine +
             "";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\readme.txt", Description);

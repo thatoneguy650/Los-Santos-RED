@@ -1557,29 +1557,43 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("EastLSPDVehicles", dispatchableVehicles_FEJ.EastLSPDVehicles_FEJ),
             new DispatchableVehicleGroup("PoliceHeliVehicles", dispatchableVehicles_FEJ.PoliceHeliVehicles_FEJ),
             new DispatchableVehicleGroup("SheriffHeliVehicles", dispatchableVehicles_FEJ.SheriffHeliVehicles_FEJ),
-
-
             new DispatchableVehicleGroup("ArmyVehicles", dispatchableVehicles_FEJ.ArmyVehicles_FEJ),
             new DispatchableVehicleGroup("USMCVehicles", dispatchableVehicles_FEJ.USMCVehicles_FEJ),
             new DispatchableVehicleGroup("USAFVehicles", dispatchableVehicles_FEJ.USAFVehicles_FEJ),
-
-
             new DispatchableVehicleGroup("Firetrucks", Firetrucks),
             new DispatchableVehicleGroup("Amublance1", Amublance1),
             new DispatchableVehicleGroup("Amublance2", Amublance2),
             new DispatchableVehicleGroup("Amublance3", Amublance3),
             new DispatchableVehicleGroup("NYSPVehicles", dispatchableVehicles_FEJ.NYSPVehicles_FEJ),
-            new DispatchableVehicleGroup("MerryweatherPatrolVehicles", dispatchableVehicles_FEJ.MerryweatherPatrolVehicles_FEJ),
-            new DispatchableVehicleGroup("BobcatSecurityVehicles", dispatchableVehicles_FEJ.BobcatSecurityVehicles_FEJ),
-            new DispatchableVehicleGroup("GroupSechsVehicles", dispatchableVehicles_FEJ.GroupSechsVehicles_FEJ),
-            new DispatchableVehicleGroup("SecuroservVehicles", dispatchableVehicles_FEJ.SecuroservVehicles_FEJ),
             new DispatchableVehicleGroup("LCPDVehicles", dispatchableVehicles_FEJ.LCPDVehicles_FEJ),
-
             new DispatchableVehicleGroup("BorderPatrolVehicles", dispatchableVehicles_FEJ.BorderPatrolVehicles_FEJ),
             new DispatchableVehicleGroup("NOOSEPIAVehicles", dispatchableVehicles_FEJ.NOOSEPIAVehicles_FEJ),
             new DispatchableVehicleGroup("NOOSESEPVehicles", dispatchableVehicles_FEJ.NOOSESEPVehicles_FEJ),
             new DispatchableVehicleGroup("MarshalsServiceVehicles", dispatchableVehicles_FEJ.MarshalsServiceVehicles_FEJ),
             new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
+
+            //EMT
+            new DispatchableVehicleGroup("LSFDEMTVehicles", dispatchableVehicles_FEJ.LSFDEMTVehicles_FEJ),
+            new DispatchableVehicleGroup("LSCOFDEMSVehicles", dispatchableVehicles_FEJ.LSCOFDEMSVehicles_FEJ),
+            new DispatchableVehicleGroup("BCFDEMSVehicles", dispatchableVehicles_FEJ.BCFDEMSVehicles_FEJ),
+            new DispatchableVehicleGroup("SAMSVehicles", dispatchableVehicles_FEJ.SAMSVehicles_FEJ),
+
+
+            //Fire
+            new DispatchableVehicleGroup("LSFDVehicles", dispatchableVehicles_FEJ.LSFDVehicles_FEJ),
+            new DispatchableVehicleGroup("LSCOFDVehicles", dispatchableVehicles_FEJ.LSCOFDVehicles_FEJ),
+            new DispatchableVehicleGroup("BCFDVehicles", dispatchableVehicles_FEJ.BCFDVehicles_FEJ),
+            new DispatchableVehicleGroup("SanFireVehicles", dispatchableVehicles_FEJ.SanFireVehicles_FEJ),
+
+
+            //Security
+
+            new DispatchableVehicleGroup("MerryweatherPatrolVehicles", dispatchableVehicles_FEJ.MerryweatherPatrolVehicles_FEJ),
+            new DispatchableVehicleGroup("BobcatSecurityVehicles", dispatchableVehicles_FEJ.BobcatSecurityVehicles_FEJ),
+            new DispatchableVehicleGroup("GroupSechsVehicles", dispatchableVehicles_FEJ.GroupSechsVehicles_FEJ),
+            new DispatchableVehicleGroup("SecuroservVehicles", dispatchableVehicles_FEJ.SecuroservVehicles_FEJ),
+            new DispatchableVehicleGroup("LNLVehicles", dispatchableVehicles_FEJ.LNLVehicles_FEJ),
+            new DispatchableVehicleGroup("ChuffVehicles", dispatchableVehicles_FEJ.CHUFFVehicles_FEJ),
 
             //Gang stuff
             new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
@@ -1608,14 +1622,9 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("PurpleTaxiVehicles", dispatchableVehicles_FEJ.PurpleTaxiVehicles),
             new DispatchableVehicleGroup("ShitiTaxiVehicles", dispatchableVehicles_FEJ.ShitiTaxiVehicles),
             new DispatchableVehicleGroup("SunderedTaxiVehicles",dispatchableVehicles_FEJ.SunderedTaxiVehicles),
-            //
-
         };
-
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\DispatchableVehicles_FullExpandedJurisdiction.xml");
     }
-
-
 }
 
 

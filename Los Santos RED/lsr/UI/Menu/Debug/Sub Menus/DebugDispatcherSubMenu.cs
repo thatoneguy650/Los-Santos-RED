@@ -201,7 +201,7 @@ public class DebugDispatcherSubMenu : DebugSubMenu
         NewSubDispatcherMenu.SetBannerType(EntryPoint.LSRedColor);
         NewSubDispatcherMenu.Width = 0.6f;
 
-        List<Agency> AllAgencies = Agencies.GetAgencies().Where(x=> x.Personnel != null && x.Vehicles != null).ToList();
+        List<Agency> AllAgencies = Agencies.GetAgencies().Where(x=> x.Personnel != null && x.Vehicles != null).OrderBy(x => x.Classification).ThenBy(x => x.FullName).ToList();
         List<VehicleNameSelect> vehicleNameList = new List<VehicleNameSelect>();
         vehicleNameList.Add(new VehicleNameSelect("") { VehicleModelName = "Random" });
 
