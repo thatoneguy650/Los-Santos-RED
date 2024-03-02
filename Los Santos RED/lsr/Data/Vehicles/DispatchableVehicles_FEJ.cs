@@ -49,7 +49,8 @@ public class DispatchableVehicles_FEJ
 
     private string SecurityStanier = "massacro2";
     private string PoliceBuffaloSTX = "jester2";
-    private string PoliceCaracara = "ratloader";
+    private string PoliceCaracara = "dune4";
+    private string PoliceGranger3600 = "dune5";
 
     private List<int> DefaultOptionalColors = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 37, 38, 54, 61, 62, 63, 64, 65, 66, 67, 68, 69, 94, 95, 96, 97, 98, 99, 100, 101, 201, 103, 104, 105, 106, 107, 111, 112 };
 
