@@ -103,7 +103,7 @@ public class EmergencyServicesInteraction : IContactMenuInteraction
         string fullText = "";
         if (Player.CurrentLocation != null)
         {
-            Agency main = Jurisdictions.GetMainAgency(Player.CurrentLocation.CurrentZone.InternalGameName, ResponseType.LawEnforcement);
+            Agency main = Jurisdictions.GetRespondingAgency(Player.CurrentLocation.CurrentZone.InternalGameName, Player.CurrentLocation.CurrentZone.CountyID, ResponseType.LawEnforcement);
             if (main != null)
             {
                 fullText = $"The {main.ColorPrefix}{main.FullName}~s~";
@@ -123,7 +123,7 @@ public class EmergencyServicesInteraction : IContactMenuInteraction
         string fullText = "";
         if (Player.CurrentLocation != null)
         {
-            Agency main = Jurisdictions.GetMainAgency(Player.CurrentLocation.CurrentZone.InternalGameName, ResponseType.Fire);
+            Agency main = Jurisdictions.GetRespondingAgency(Player.CurrentLocation.CurrentZone.InternalGameName, Player.CurrentLocation.CurrentZone.CountyID, ResponseType.Fire);
             if (main != null)
             {
                 fullText = $"The {main.ColorPrefix}{main.FullName}~s~";
@@ -143,7 +143,7 @@ public class EmergencyServicesInteraction : IContactMenuInteraction
         string fullText = "";
         if (Player.CurrentLocation != null)
         {
-            Agency main = Jurisdictions.GetMainAgency(Player.CurrentLocation.CurrentZone.InternalGameName, ResponseType.Fire);
+            Agency main = Jurisdictions.GetRespondingAgency(Player.CurrentLocation.CurrentZone.InternalGameName, Player.CurrentLocation.CurrentZone.CountyID, ResponseType.EMS);
             if (main != null)
             {
                 fullText = $"The {main.ColorPrefix}{main.FullName}~s~";
@@ -167,6 +167,7 @@ public class EmergencyServicesInteraction : IContactMenuInteraction
         {
             Player.Scanner.Reset();
             Player.Investigation.Start(Player.Position, false, false, true, false);
+            Player.Dispatcher.EMSDispatcher.OnMedicalServicesRequested();
             Player.Scanner.OnMedicalServicesRequested();
         }
     }
@@ -176,6 +177,7 @@ public class EmergencyServicesInteraction : IContactMenuInteraction
         {
             Player.Scanner.Reset();
             Player.Investigation.Start(Player.Position, false, false, false, true);
+            Player.Dispatcher.FireDispatcher.OnFirefightingServicesRequested();
             Player.Scanner.OnFirefightingServicesRequested();
         }
     }

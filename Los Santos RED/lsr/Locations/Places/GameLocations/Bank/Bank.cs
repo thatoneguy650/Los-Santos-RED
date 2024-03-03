@@ -41,6 +41,20 @@ public class Bank : GameLocation
     public float ExtaTellerSpawnPercentage { get; set; } = 70f;
     public override string VendorPersonnelID => "TellerPeds";
     public string ShortName { get; set; }
+
+
+
+
+    public override int VendorMoneyMin { get; set; } = 45;
+    public override int VendorMoneyMax { get; set; } = 650;
+
+    public override float VendorFightPercentage { get; set; } = 1f;
+    public override float VendorCallPolicePercentage { get; set; } = 95f;
+    public override float VendorCallPoliceForSeriousCrimesPercentage { get; set; } = 100f;
+    public override float VendorFightPolicePercentage { get; set; } = 0f;
+    public override float VendorCowerPercentage { get; set; } = 85f;
+
+
     [XmlIgnore]
     public BankInterior BankInterior { get; set; }
 

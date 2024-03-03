@@ -522,7 +522,7 @@ public class Debug
             uint GameTimeStarted = Game.GameTime;
             while (!Game.IsKeyDownRightNow(Keys.Space))
             {
-                Game.DisplaySubtitle($"IsInTunnel {Player.CurrentLocation.IsInTunnel} MightBeInTunnel {Player.CurrentLocation.MightBeInTunnel} IsByTunnelNode: {Player.CurrentLocation.IsByTunnelNode} SPACE TO STOP");
+                Game.DisplaySubtitle($"IsInTunnel {Player.CurrentLocation.IsInTunnel} PossiblyInTunnel {Player.CurrentLocation.PossiblyInTunnel} IsInside {Player.CurrentLocation.IsInside} SPACE TO STOP");
                 GameFiber.Yield();
             }
 
@@ -4834,7 +4834,7 @@ private void contacttest()
             {
                 weaponinventorystring += " Has Long Gun";
             }
-            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} IsUnconscious:{ped.IsUnconscious} " +
+            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} {ped.AssignedAgency?.ID} IsUnconscious:{ped.IsUnconscious} " +
                 $"Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} " +
                 $"IsInVehicle {ped.IsInVehicle} ReactionTier: {ped.PedReactions.ReactionTier} WeaponSet {weaponinventorystring} DebugWeaponState {ped.WeaponInventory.DebugWeaponState}" +
                 $"Weapon {currentWeapon} Stunned {ped.Pedestrian.IsStunned} WasEverSetPersistent:{ped.WasEverSetPersistent} " +
@@ -4864,7 +4864,7 @@ private void contacttest()
 
 
 
-            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} " +
+            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} {ped.AssignedAgency?.ID} MENU? {ped.HasMenu} " +
                 $"IsUnconscious:{ped.IsUnconscious} Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  " +
                 $"PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} " +
                 $"IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} " +
@@ -4896,7 +4896,7 @@ private void contacttest()
 
 
 
-            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} " +
+            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} {ped.AssignedAgency?.ID} MENU? {ped.HasMenu} " +
                 $"IsUnconscious:{ped.IsUnconscious} Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  " +
                 $"PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} " +
                 $"IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} " +

@@ -17,6 +17,7 @@ namespace LosSantosRED.lsr.Interface
         string TestString();
         bool CanSpawnAmbientPedestrians(string internalGameName, Agency agency);
         ZoneJurisdiction GetJurisdiction(string internalGameName, Agency agency);
+        Agency GetRespondingAgency(string internalGameName, string countyID, ResponseType fire);
         // bool CanSpawnPedestrianAtZone(string v, string iD);
     }
 }

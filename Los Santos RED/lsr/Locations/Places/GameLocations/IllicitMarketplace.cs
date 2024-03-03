@@ -38,7 +38,15 @@ public class IllicitMarketplace : GameLocation
     public override float VendorLongGunPercent { get; set; } = 5f;
 
 
+    public override int VendorMoneyMin { get; set; } = 5;
+    public override int VendorMoneyMax { get; set; } = 550;
 
+    public override float VendorFightPercentage { get; set; } = 35f;
+    public override float VendorCallPolicePercentage { get; set; } = 0f;
+    public override float VendorCallPoliceForSeriousCrimesPercentage { get; set; } = 0f;
+    public override float VendorFightPolicePercentage { get; set; } = 35f;
+    public override float VendorCowerPercentage { get; set; } = 1f;
+    public override float VendorSurrenderPercentage { get; set; } = 5f;
 
 
 

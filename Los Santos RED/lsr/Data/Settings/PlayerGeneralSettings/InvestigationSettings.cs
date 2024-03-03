@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,6 +23,14 @@ public class InvestigationSettings : ISettingsDefaultable
 
     [Description("Extra time after a cop arrives at the center before the investigation can expire.")]
     public uint ExtraTimeAfterReachingInvestigationCenterBeforeExpiring { get; set; }
+
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
+
     public InvestigationSettings()
     {
         SetDefault();
@@ -29,8 +38,8 @@ public class InvestigationSettings : ISettingsDefaultable
     public void SetDefault()
     {
         ActiveDistance = 700f;// 800f;
-        TimeLimit = 900000;//60000;
-        MinTimeLimit = 20000;
+        TimeLimit = 90000;//60000;
+        MinTimeLimit = 70000;// 20000;
         MaxDistance = 1000f;// 1500f;
         SuspiciousDistance = 250f;
         CreateBlip = true;

@@ -51,14 +51,14 @@ public class FireDispatcher
         ShopMenus = shopMenus;
     }
 
-    private float ClosestOfficerSpawnToPlayerAllowed => Player.IsWanted ? 150f : 250f;
+    private float ClosestOfficerSpawnToPlayerAllowed => Player.Investigation.IsActive && Player.Investigation.RequiresEMS ? 100f : 250f;
     private List<Firefighter> DeletableOfficers => World.Pedestrians.FirefighterList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
     private float DistanceToDelete => Player.IsWanted ? 600f : 1300f;
     private float DistanceToDeleteOnFoot => Player.IsWanted ? 125f : 500f;
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= 5000;
-    private float MaxDistanceToSpawn => Settings.SettingsManager.FireSettings.MaxDistanceToSpawn;//150f;
-    private float MinDistanceToSpawn => Settings.SettingsManager.FireSettings.MinDistanceToSpawn;//50f;
+    private float MaxDistanceToSpawn => Player.Investigation.IsActive && Player.Investigation.RequiresFirefighters ? Settings.SettingsManager.FireSettings.MaxDistanceToSpawn_Investigation : Settings.SettingsManager.FireSettings.MaxDistanceToSpawn;//150f;
+    private float MinDistanceToSpawn => Player.Investigation.IsActive && Player.Investigation.RequiresFirefighters ? Settings.SettingsManager.FireSettings.MinDistanceToSpawn_Investigation : Settings.SettingsManager.FireSettings.MinDistanceToSpawn;//50f;
     private bool HasNeedToAmbientDispatch
     {
         get
@@ -178,6 +178,7 @@ public class FireDispatcher
             return ambientSpawnPercent;
         }
     }
+    private float LikelyHoodOfCountySpawn => Settings.SettingsManager.FireSettings.LikelyHoodOfCountySpawn;
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
@@ -303,7 +304,7 @@ public class FireDispatcher
         }
         return false;
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement)
+    private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement)
     {
         try
         {
@@ -315,12 +316,14 @@ public class FireDispatcher
             firefighterSpawnTask.PlacePedOnGround = VehicleType == null;
             firefighterSpawnTask.AttemptSpawn();
             firefighterSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });
-            firefighterSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
+            //firefighterSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
             firefighterSpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));// World.Vehicles.AddEntity(x, ResponseType.Fire));;
+            return firefighterSpawnTask.CreatedPeople.Any(x => x.Pedestrian.Exists());
         }
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"Firefighter Dispatcher Spawn Error: {ex.Message} : {ex.StackTrace}", 0);
+            return false;
         }
     }
     private bool ShouldBeRecalled(Firefighter firefighter)
@@ -399,13 +402,17 @@ public class FireDispatcher
         {
             ToReturn.Add(ZoneAgency); //Zone Jurisdiciton Random
         }
+        if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfCountySpawn))
+        {
+            Agency CountyAgency = Jurisdictions.GetRandomCountyAgency(CurrentZone.CountyID, WantedLevel, ResponseType.Fire);
+            if (CountyAgency != null)//randomly spawn the county agency
+            {
+                ToReturn.Add(CountyAgency); //Zone Jurisdiciton Random
+            }
+        }
         if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfAnySpawn))//fall back to anybody
         {
             ToReturn.AddRange(Agencies.GetSpawnableAgencies(WantedLevel, ResponseType.Fire));
-        }
-        foreach (Agency ag in ToReturn)
-        {
-            //EntryPoint.WriteToConsole(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
         }
         return ToReturn;
     }
@@ -500,253 +507,8 @@ public class FireDispatcher
         EntryPoint.WriteToConsole("DebugSpawnFire");
     }
 
-
-
-
-
-
-
-    //private float ClosestOfficerSpawnToPlayerAllowed => Player.IsWanted ? 150f : 250f;
-    //private List<Firefighter> DeletableOfficers => World.Pedestrians.FirefighterList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
-    //private float DistanceToDelete => Player.IsWanted ? 600f : 1000f;
-    //private float DistanceToDeleteOnFoot => Player.IsWanted ? 125f : 1000f;
-    //private bool HasNeedToDispatch => World.Pedestrians.TotalSpawnedFirefighters == 0;
-    //private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= 60000;
-    //private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
-    //private float MaxDistanceToSpawn => 900f;
-    //private float MinDistanceToSpawn => 350f;
-    //private int TimeBetweenSpawn => 60000;
-    //public bool Dispatch()
-    //{
-    //    HasDispatchedThisTick = false;
-    //    if (Settings.SettingsManager.FireSettings.ManageDispatching)
-    //    {
-    //        HandleAmbientSpawns();
-    //        //HandleStationSpawns();
-    //    }
-    //    return HasDispatchedThisTick;
-    //}
-    //public void Dispose()
-    //{
-
-    //}
-    //public void Recall()
-    //{
-    //    if (Settings.SettingsManager.FireSettings.ManageDispatching && IsTimeToRecall)
-    //    {
-    //        foreach (Firefighter ff in DeletableOfficers)
-    //        {
-    //            if (ShouldBeRecalled(ff))
-    //            {
-    //                Delete(ff);
-    //                GameFiber.Yield();
-    //            }
-    //        }
-    //        GameTimeAttemptedRecall = Game.GameTime;
-    //    }
-    //}
-    //private void HandleAmbientSpawns()
-    //{
-    //    if (Settings.SettingsManager.FireSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
-    //    {
-    //        GameFiber.Yield();
-    //        HasDispatchedThisTick = true;//up here for now, might be better down low
-    //        if (GetSpawnLocation() && GetSpawnTypes(false, null))
-    //        {
-    //            CallSpawnTask(false, true, false, false, TaskRequirements.None);
-    //        }
-    //        GameTimeAttemptedDispatch = Game.GameTime;
-    //    }
-    //}
-    //private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement)
-    //{
-    //    try
-    //    {
-    //        FireFighterSpawnTask fireFighterSpawnTask = new FireFighterSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, ModItems, ShopMenus);
-    //        fireFighterSpawnTask.AllowAnySpawn = allowAny;
-    //        fireFighterSpawnTask.AllowBuddySpawn = allowBuddy;
-    //        fireFighterSpawnTask.SpawnRequirement = spawnRequirement;
-    //        fireFighterSpawnTask.ClearArea = clearArea;
-    //        fireFighterSpawnTask.PlacePedOnGround = VehicleType == null;
-    //        fireFighterSpawnTask.AttemptSpawn();
-    //        fireFighterSpawnTask.CreatedPeople.ForEach(x =>{ World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });
-    //        fireFighterSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Fire));
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        EntryPoint.WriteToConsole($"EMS Dispatcher Spawn Error: {ex.Message} : {ex.StackTrace}", 0);
-    //    }
-    //}
-    //private bool GetSpawnLocation()
-    //{
-    //    int timesTried = 0;
-    //    bool isValidSpawn;
-    //    SpawnLocation = new SpawnLocation();
-    //    do
-    //    {
-    //        SpawnLocation.InitialPosition = GetPositionAroundPlayer();
-    //        SpawnLocation.GetClosestStreet(false);
-    //        isValidSpawn = IsValidSpawn(SpawnLocation);
-    //        timesTried++;
-    //    }
-    //    while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
-    //    return isValidSpawn && SpawnLocation.HasSpawns;
-    //}
-    //private bool GetSpawnTypes(bool forcePed, Agency forceAgency)
-    //{
-    //    Agency = null;
-    //    VehicleType = null;
-    //    PersonType = null;
-    //    if (forceAgency != null)
-    //    {
-    //        Agency = forceAgency;
-    //    }
-    //    else
-    //    {
-    //        Agency = GetRandomAgency(SpawnLocation);
-    //    }
-    //    if (Agency != null)
-    //    {
-    //        if (!forcePed)
-    //        {
-    //            VehicleType = Agency.GetRandomVehicle(Player.WantedLevel, false, false, false, "", Settings);
-    //        }
-    //        if (VehicleType != null)
-    //        {
-    //            string RequiredGroup = "";
-    //            if (VehicleType != null)
-    //            {
-    //                RequiredGroup = VehicleType.RequiredPedGroup;
-    //            }
-    //            PersonType = Agency.GetRandomPed(Player.WantedLevel, RequiredGroup);
-    //            if (PersonType != null)
-    //            {
-    //                return true;
-    //            }
-    //        }
-    //        else if (forcePed)
-    //        {
-    //            PersonType = Agency.GetRandomPed(World.TotalWantedLevel, "");
-    //            if (PersonType != null)
-    //            {
-    //                return true;
-    //            }
-    //        }
-    //    }
-    //    return false;
-    //}
-    //private bool ShouldBeRecalled(Firefighter ff)
-    //{
-    //    if (ff.IsInVehicle)
-    //    {
-    //        return ff.DistanceToPlayer >= DistanceToDelete;
-    //    }
-    //    else
-    //    {
-    //        return ff.DistanceToPlayer >= DistanceToDeleteOnFoot;
-    //    }
-    //}
-    //private void Delete(PedExt ff)
-    //{
-    //    if (ff != null && ff.Pedestrian.Exists())
-    //    {
-    //        //EntryPoint.WriteToConsole($"Attempting to Delete {Cop.Pedestrian.Handle}");
-    //        if (ff.Pedestrian.IsInAnyVehicle(false))
-    //        {
-    //            if (ff.Pedestrian.CurrentVehicle.HasPassengers)
-    //            {
-    //                foreach (Ped Passenger in ff.Pedestrian.CurrentVehicle.Passengers)
-    //                {
-    //                    RemoveBlip(Passenger);
-    //                    Passenger.Delete();
-    //                    EntryPoint.PersistentPedsDeleted++;
-    //                }
-    //            }
-    //            if (ff.Pedestrian.Exists() && ff.Pedestrian.CurrentVehicle.Exists() && ff.Pedestrian.CurrentVehicle != null)
-    //            {
-    //                ff.Pedestrian.CurrentVehicle.Delete();
-    //                EntryPoint.PersistentVehiclesDeleted++;
-    //            }
-    //        }
-    //        RemoveBlip(ff.Pedestrian);
-    //        if (ff.Pedestrian.Exists())
-    //        {
-    //            //EntryPoint.WriteToConsole(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
-    //            ff.Pedestrian.Delete();
-    //            EntryPoint.PersistentPedsDeleted++;
-    //        }
-    //    }
-    //}
-    //private void RemoveBlip(Ped ff)
-    //{
-    //    if (!ff.Exists())
-    //    {
-    //        return;
-    //    }
-    //    Blip MyBlip = ff.GetAttachedBlip();
-    //    if (MyBlip.Exists())
-    //    {
-    //        MyBlip.Delete();
-    //    }
-    //}
-    //private List<Agency> GetAgencies(Vector3 Position, int WantedLevel)
-    //{
-    //    List<Agency> ToReturn = new List<Agency>();
-    //    Zone CurrentZone = Zones.GetZone(Position);
-    //    Agency ZoneAgency = Jurisdictions.GetRandomAgency(CurrentZone.InternalGameName, WantedLevel, ResponseType.Fire);
-    //    if (ZoneAgency != null)
-    //    {
-    //        ToReturn.Add(ZoneAgency); //Zone Jurisdiciton Random
-    //    }
-    //    if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfAnySpawn))//fall back to anybody
-    //    {
-    //        ToReturn.AddRange(Agencies.GetSpawnableAgencies(WantedLevel, ResponseType.Fire));
-    //    }
-    //    foreach (Agency ag in ToReturn)
-    //    {
-    //        //EntryPoint.WriteToConsole(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
-    //    }
-    //    return ToReturn;
-    //}
-    //private Vector3 GetPositionAroundPlayer()
-    //{
-    //    Vector3 Position;
-    //    if (Player.IsInVehicle)
-    //    {
-    //        Position = Player.Character.GetOffsetPositionFront(250f);//350f
-    //    }
-    //    else
-    //    {
-    //        Position = Player.Position;
-    //    }
-    //    Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
-    //    return Position;
-    //}
-    //private Agency GetRandomAgency(SpawnLocation spawnLocation)
-    //{
-    //    Agency agency;
-    //    List<Agency> PossibleAgencies = GetAgencies(spawnLocation.StreetPosition, Player.WantedLevel);
-    //    agency = PossibleAgencies.PickRandom();
-    //    if (agency == null)
-    //    {
-    //        agency = GetAgencies(spawnLocation.InitialPosition, Player.WantedLevel).PickRandom();
-    //    }
-    //    if (agency == null)
-    //    {
-    //        //EntryPoint.WriteToConsole("Dispatcher could not find Agency To Spawn");
-    //    }
-    //    return agency;
-    //}
-    //private bool IsValidSpawn(SpawnLocation spawnLocation)
-    //{
-    //    if (spawnLocation.StreetPosition.DistanceTo2D(Player.Position) < ClosestOfficerSpawnToPlayerAllowed)
-    //    {
-    //        return false;
-    //    }
-    //    else if (spawnLocation.InitialPosition.DistanceTo2D(Player.Position) < ClosestOfficerSpawnToPlayerAllowed)
-    //    {
-    //        return false;
-    //    }
-    //    return true;
-    //}
+    public void OnFirefightingServicesRequested()
+    {
+        RunAmbientDispatch();
+    }
 }

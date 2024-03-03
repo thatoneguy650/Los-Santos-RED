@@ -1579,6 +1579,10 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("SAMSVehicles", dispatchableVehicles_FEJ.SAMSVehicles_FEJ),
 
 
+            new DispatchableVehicleGroup("LSMCVehicles", dispatchableVehicles_FEJ.LSMCVehicles_FEJ),
+            new DispatchableVehicleGroup("MRHVehicles", dispatchableVehicles_FEJ.MRHVehicles_FEJ),
+
+
             //Fire
             new DispatchableVehicleGroup("LSFDVehicles", dispatchableVehicles_FEJ.LSFDVehicles_FEJ),
             new DispatchableVehicleGroup("LSCOFDVehicles", dispatchableVehicles_FEJ.LSCOFDVehicles_FEJ),

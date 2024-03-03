@@ -176,6 +176,28 @@ public class GameLocation : ILocationDispatchable
     public virtual float VendorMeleePercent { get; set; } = 20f;
     public virtual float VendorSidearmPercent { get; set; } = 5f;
     public virtual float VendorLongGunPercent { get; set; } = 2f;
+
+
+    public virtual int VendorMoneyMin { get; set; } = -1;
+    public virtual int VendorMoneyMax { get; set; } = -1;
+
+    public virtual float VendorFightPercentage { get; set; } = -1f;
+    public virtual float VendorCallPolicePercentage { get; set; } = -1f;
+    public virtual float VendorCallPoliceForSeriousCrimesPercentage { get; set; } = -1f;
+    public virtual float VendorFightPolicePercentage { get; set; } = -1f;
+    public virtual float VendorCowerPercentage { get; set; } = -1f;
+    public virtual float VendorSurrenderPercentage { get; set; } = -1f;
+
+    /*Money = RandomItems.GetRandomNumberInt(Settings.SettingsManager.CivilianSettings.MerchantMoneyMin, Settings.SettingsManager.CivilianSettings.MerchantMoneyMax);
+
+
+            WillFight = RandomItems.RandomPercent(CivilianFightPercentage());
+            WillCallPolice = RandomItems.RandomPercent(CivilianCallPercentage());
+            WillCallPoliceIntense = RandomItems.RandomPercent(CivilianSeriousCallPercentage());
+            WillFightPolice = RandomItems.RandomPercent(CivilianFightPolicePercentage());
+            WillCower = RandomItems.RandomPercent(CivilianCowerPercentage());
+            CanSurrender = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PossibleSurrenderPercentage);*/
+
     [XmlIgnore]
     public List<RandomHeadData> VendorPossibleHeads { get; set; } = new List<RandomHeadData>();
     [XmlIgnore]
@@ -1040,7 +1062,10 @@ public class GameLocation : ILocationDispatchable
         if (!IsOpen(Time.CurrentHour))
         {
             Game.RemoveNotification(NotificationHandle);
-            NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Closed", $"We're sorry, this location is now closed.~n~Hours: {OpenTime} to {CloseTime}");
+
+            string openRange = $"{OpenTime}{(OpenTime <= 11 ? " am" : " pm")}-{CloseTime - 12}{(CloseTime <= 11 ? " am" : " pm")}";
+
+            NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Closed", $"We're sorry, this location is now closed.~n~Hours: {openRange}");
             return true;
         }
         if (Player.IsWanted && !CanInteractWhenWanted)

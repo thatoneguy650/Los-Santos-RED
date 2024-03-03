@@ -48,14 +48,15 @@ public class EMSDispatcher
         PlacesOfInterest = placesOfInterest;
         ModItems = modItems;
     }
-    private float ClosestOfficerSpawnToPlayerAllowed => Player.IsWanted ? 150f : 250f;
+    private float ClosestOfficerSpawnToPlayerAllowed => Player.Investigation.IsActive && Player.Investigation.RequiresEMS ? 100f : 250f;
     private List<EMT> DeletableOfficers => World.Pedestrians.EMTList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
     private float DistanceToDelete => Player.IsWanted ? 600f : 1300f;
     private float DistanceToDeleteOnFoot => Player.IsWanted ? 125f : 500f;
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= 5000;
-    private float MaxDistanceToSpawn => Settings.SettingsManager.EMSSettings.MaxDistanceToSpawn;//150f;
-    private float MinDistanceToSpawn => Settings.SettingsManager.EMSSettings.MinDistanceToSpawn;//50f;
+    private float MaxDistanceToSpawn => Player.Investigation.IsActive && Player.Investigation.RequiresEMS ? Settings.SettingsManager.EMSSettings.MaxDistanceToSpawn_Investigation : Settings.SettingsManager.EMSSettings.MaxDistanceToSpawn;//150f;
+    private float MinDistanceToSpawn => Player.Investigation.IsActive && Player.Investigation.RequiresEMS ? Settings.SettingsManager.EMSSettings.MinDistanceToSpawn_Investigation : Settings.SettingsManager.EMSSettings.MinDistanceToSpawn;//50f;
+    private float LikelyHoodOfCountySpawn => Settings.SettingsManager.EMSSettings.LikelyHoodOfCountySpawn;
     private bool HasNeedToAmbientDispatch
     {
         get
@@ -118,7 +119,7 @@ public class EMSDispatcher
             int TotalTimeBetweenSpawns = Settings.SettingsManager.EMSSettings.TimeBetweenSpawn;
             if(Player.Investigation.IsActive && Player.Investigation.RequiresEMS)
             {
-                TotalTimeBetweenSpawns = 10000;
+                TotalTimeBetweenSpawns = Settings.SettingsManager.EMSSettings.TimeBetweenSpawn_Investigation;
             }
             else if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
             {
@@ -309,7 +310,7 @@ public class EMSDispatcher
         }
         return false;
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement)
+    private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement)
     {
         try
         {
@@ -321,12 +322,14 @@ public class EMSDispatcher
             eMTSpawnTask.PlacePedOnGround = VehicleType == null;
             eMTSpawnTask.AttemptSpawn();  
             eMTSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });
-            eMTSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
+            //eMTSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
             eMTSpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));// World.Vehicles.AddEntity(x, ResponseType.EMS));
+            return eMTSpawnTask.CreatedPeople.Any(x=>x.Pedestrian.Exists());
         }
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"EMS Dispatcher Spawn Error: {ex.Message} : {ex.StackTrace}", 0);
+            return false;
         }
     }
     private bool ShouldBeRecalled(EMT emt)
@@ -404,6 +407,14 @@ public class EMSDispatcher
         if (ZoneAgency != null)
         {
             ToReturn.Add(ZoneAgency); //Zone Jurisdiciton Random
+        }
+        if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfCountySpawn))
+        {
+            Agency CountyAgency = Jurisdictions.GetRandomCountyAgency(CurrentZone.CountyID, WantedLevel, ResponseType.EMS);
+            if (CountyAgency != null)//randomly spawn the county agency
+            {
+                ToReturn.Add(CountyAgency); //Zone Jurisdiciton Random
+            }
         }
         if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfAnySpawn))//fall back to anybody
         {
@@ -506,4 +517,8 @@ public class EMSDispatcher
         EntryPoint.WriteToConsole("DebugSpawnEMT");
     }
 
+    public void OnMedicalServicesRequested()
+    {
+        RunAmbientDispatch();
+    }
 }

@@ -38,14 +38,25 @@ public class Merchant : PedExt, IWeaponIssuable
             return;
         }
         Pedestrian.Money = 0;
+
         IsTrustingOfPlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageTrustingOfPlayer);
-        Money = RandomItems.GetRandomNumberInt(Settings.SettingsManager.CivilianSettings.MerchantMoneyMin, Settings.SettingsManager.CivilianSettings.MerchantMoneyMax);
-        WillFight = RandomItems.RandomPercent(CivilianFightPercentage());
-        WillCallPolice = RandomItems.RandomPercent(CivilianCallPercentage());
-        WillCallPoliceIntense = RandomItems.RandomPercent(CivilianSeriousCallPercentage());
-        WillFightPolice = RandomItems.RandomPercent(CivilianFightPolicePercentage());
-        WillCower = RandomItems.RandomPercent(CivilianCowerPercentage());
-        CanSurrender = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PossibleSurrenderPercentage);
+
+        if(store == null || store.VendorMoneyMin == -1 || store.VendorMoneyMax == -1)
+        {
+            Money = RandomItems.GetRandomNumberInt(Settings.SettingsManager.CivilianSettings.MerchantMoneyMin, Settings.SettingsManager.CivilianSettings.MerchantMoneyMax);
+        }
+        else
+        {
+            Money = RandomItems.GetRandomNumberInt(store.VendorMoneyMin, store.VendorMoneyMax);
+        }
+       
+        WillFight = RandomItems.RandomPercent(store == null || store.VendorFightPercentage == -1f ? CivilianFightPercentage() : store.VendorFightPercentage);
+        WillCallPolice = RandomItems.RandomPercent(store == null || store.VendorFightPercentage == -1f ? CivilianCallPercentage() : store.VendorCallPolicePercentage);
+        WillCallPoliceIntense = RandomItems.RandomPercent(store == null || store.VendorFightPercentage == -1f ? CivilianSeriousCallPercentage() : store.VendorCallPoliceForSeriousCrimesPercentage);
+        WillFightPolice = RandomItems.RandomPercent(store == null || store.VendorFightPercentage == -1f ? CivilianFightPolicePercentage() : store.VendorFightPolicePercentage);
+        WillCower = RandomItems.RandomPercent(store == null || store.VendorFightPercentage == -1f ? CivilianCowerPercentage() : store.VendorCowerPercentage);
+        CanSurrender = RandomItems.RandomPercent(store == null || store.VendorFightPercentage == -1f ? Settings.SettingsManager.CivilianSettings.PossibleSurrenderPercentage : store.VendorSurrenderPercentage);
+    
         LocationTaskRequirements = new LocationTaskRequirements() { TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_STAND_IMPATIENT" } };
         if (store != null)
         {

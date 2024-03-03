@@ -4,74 +4,74 @@
     {
 
     }
-    public class gtaiv_legacy_support
-    {
-        public static ScannerFile InuhhEast { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x007624B6.wav", "In...uhh... East.", "0_gtaiv_legacy_support"); } }
-        public static ScannerFile InuhhWestern { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x00C21410.wav", "In...uhh... Western", "0_gtaiv_legacy_support"); } }
-        public static ScannerFile InuhhWest { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x040B13FE.wav", "In...uhh... West", "0_gtaiv_legacy_support"); } }
-        public static ScannerFile beepplaceholderbeep { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x06C2C42B.wav", "*beep*placeholder(?)*beep*", "0_gtaiv_legacy_support"); } }
-        public static ScannerFile FIBteamdispatchingfrom { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x0708C2C6.wav", "FIB team dispatching from...", "0_gtaiv_legacy_support"); } }
-        public static ScannerFile Dispatchairunitfrom { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x095C198D.wav", "Dispatch air unit from...", "0_gtaiv_legacy_support"); } }
-        public static ScannerFile DispatchingSWATunitsfrom { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x0F106A48.wav", "Dispatching SWAT units from...", "0_gtaiv_legacy_support"); } }
-        public static ScannerFile InuhhNorth { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x11889985.wav", "In...uhh... North", "0_gtaiv_legacy_support"); } }
-        public static ScannerFile InuhhCentral { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x13A847B7.wav", "In...uhh... Central", "0_gtaiv_legacy_support"); } }
-        public static ScannerFile InuhhNorthern { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x1B806676.wav", "In...uhh... Northern", "0_gtaiv_legacy_support"); } }
-        public static ScannerFile InEastern { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x1CC03B69.wav", "In... Eastern", "0_gtaiv_legacy_support"); } }
-        public static ScannerFile InuhhSouth { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x1D349635.wav", "In...uhh... South", "0_gtaiv_legacy_support"); } }
-        public static ScannerFile InuhhSouthern { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x1D74BE76.wav", "In...uhh... Southern", "0_gtaiv_legacy_support"); } }
-    }
-    public class gtaiv_legacy_support_small
-    {
-        public static ScannerFile Suspect { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x003685A2.wav", "Suspect", "0_gtaiv_legacy_support_small"); } }
-        public static ScannerFile for121 { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x01A766C8.wav", "for(?)", "0_gtaiv_legacy_support_small"); } }
-        public static ScannerFile Uhh { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x01E5D9FA.wav", "Uhh...", "0_gtaiv_legacy_support_small"); } }
-        public static ScannerFile Bright { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x0866A86E.wav", "Bright", "0_gtaiv_legacy_support_small"); } }
-        public static ScannerFile Dark { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x0B35C659.wav", "Dark", "0_gtaiv_legacy_support_small"); } }
-        public static ScannerFile Light { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x0E18707B.wav", "Light", "0_gtaiv_legacy_support_small"); } }
-        public static ScannerFile Central { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x0E43511A.wav", "Central", "0_gtaiv_legacy_support_small"); } }
-        public static ScannerFile Lastseen { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x15B4F5FC.wav", "Last seen", "0_gtaiv_legacy_support_small"); } }
-        public static ScannerFile beep { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x189A930F.wav", "*beep*", "0_gtaiv_legacy_support_small"); } }
-        public static ScannerFile Heading { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x19DDC879.wav", "Heading", "0_gtaiv_legacy_support_small"); } }
-    }
-    public class age
-    {
-        public static ScannerFile Early50s { get { return new ScannerFile("01_age\\0x00617E13.wav", "Early 50s", "age"); } }
-        public static ScannerFile Early20s { get { return new ScannerFile("01_age\\0x028E8E07.wav", "Early 20s", "age"); } }
-        public static ScannerFile Young { get { return new ScannerFile("01_age\\0x057E03E3.wav", "Young", "age"); } }
-        public static ScannerFile Elderly { get { return new ScannerFile("01_age\\0x09B1D180.wav", "Elderly", "age"); } }
-        public static ScannerFile Late20s { get { return new ScannerFile("01_age\\0x0F4F6D73.wav", "Late 20s", "age"); } }
-        public static ScannerFile Mid20s { get { return new ScannerFile("01_age\\0x107FA3B0.wav", "Mid 20s", "age"); } }
-        public static ScannerFile Late50s { get { return new ScannerFile("01_age\\0x11BC4434.wav", "Late 50s", "age"); } }
-        public static ScannerFile Mid50s { get { return new ScannerFile("01_age\\0x164F5F0E.wav", "Mid 50s", "age"); } }
-        public static ScannerFile Mid40s { get { return new ScannerFile("01_age\\0x16B57506.wav", "Mid 40s", "age"); } }
-        public static ScannerFile Early30s { get { return new ScannerFile("01_age\\0x18ECC893.wav", "Early 30s", "age"); } }
-        public static ScannerFile Mid30s { get { return new ScannerFile("01_age\\0x198138E7.wav", "Mid 30s", "age"); } }
-        public static ScannerFile Late30s { get { return new ScannerFile("01_age\\0x1A9DE131.wav", "Late 30s", "age"); } }
-        public static ScannerFile Late40s { get { return new ScannerFile("01_age\\0x1C74AC5A.wav", "Late 40s", "age"); } }
-        public static ScannerFile Teenage { get { return new ScannerFile("01_age\\0x1D5268E6.wav", "Teenage", "age"); } }
-        public static ScannerFile Early40s { get { return new ScannerFile("01_age\\0x1F9A8632.wav", "Early 40s", "age"); } }
-    }
-    public class air_support_shoot_tires
-    {
-        public static ScannerFile Airsupportceasefireonsuspectsvehicle { get { return new ScannerFile("01_air_support_shoot_tires\\0x00B655FE.wav", "Air support, cease fire on suspect's vehicle.", "air_support_shoot_tires"); } }
-        public static ScannerFile Airsupportholdyourfire { get { return new ScannerFile("01_air_support_shoot_tires\\0x03C6DB9C.wav", "Air support, hold your fire.", "air_support_shoot_tires"); } }
-        public static ScannerFile Airsupportmoveinatinmobileatsuspectsvehicle { get { return new ScannerFile("01_air_support_shoot_tires\\0x06694A56.wav", "Air support, move in at in mobile at suspect's vehicle.", "air_support_shoot_tires"); } }
-        public static ScannerFile Airsupportyouareagotoimmobilizesuspectsvehicle { get { return new ScannerFile("01_air_support_shoot_tires\\0x09FE117F.wav", "Air support, you are a go to immobilize suspect's vehicle.", "air_support_shoot_tires"); } }
-        public static ScannerFile Airsupportceasefire { get { return new ScannerFile("01_air_support_shoot_tires\\0x0A63E8D7.wav", "Air support, cease fire.", "air_support_shoot_tires"); } }
-        public static ScannerFile Airsupportholdfire { get { return new ScannerFile("01_air_support_shoot_tires\\0x110F362E.wav", "Air support, hold fire.", "air_support_shoot_tires"); } }
-        public static ScannerFile Airsupportholdyourfire1 { get { return new ScannerFile("01_air_support_shoot_tires\\0x1A46091E.wav", "Air support, hold your fire.", "air_support_shoot_tires"); } }
-        public static ScannerFile Airsupportceasefiringonthevehicle { get { return new ScannerFile("01_air_support_shoot_tires\\0x1AED49EA.wav", "Air support, cease firing on the vehicle.", "air_support_shoot_tires"); } }
-        public static ScannerFile Airsupportceasefire1 { get { return new ScannerFile("01_air_support_shoot_tires\\0x1C300C70.wav", "Air support, cease fire.", "air_support_shoot_tires"); } }
-        public static ScannerFile Airsupportmoveinandimmobilizesuspectsvehicle { get { return new ScannerFile("01_air_support_shoot_tires\\0x1C36B5F0.wav", "Air support, move in and immobilize suspect's vehicle.", "air_support_shoot_tires"); } }
-        public static ScannerFile Airsupportyouarecleartoimmobilizesuspectsvehicle { get { return new ScannerFile("01_air_support_shoot_tires\\0x1F7BFC7C.wav", "Air support, you are clear to immobilize suspect's vehicle.", "air_support_shoot_tires"); } }
-        public static ScannerFile Airsupporttakeoutsuspectstires { get { return new ScannerFile("01_air_support_shoot_tires\\0x1FB47CEB.wav", "Air support, take out suspect's tires.", "air_support_shoot_tires"); } }
-    }
-    public class all_crooks_caught
-    {
-        public static ScannerFile Allsuspectsapprehended { get { return new ScannerFile("01_all_crooks_caught\\0x08CC5E87.wav", "All suspects apprehended.", "all_crooks_caught"); } }
-        public static ScannerFile Allsuspects1015 { get { return new ScannerFile("01_all_crooks_caught\\0x0DAB6838.wav", "All suspects 10-15.", "all_crooks_caught"); } }
-        public static ScannerFile Allcriminalsincustody { get { return new ScannerFile("01_all_crooks_caught\\0x1BD6048E.wav", "All criminals in custody.", "all_crooks_caught"); } }
-    }
+    //public class gtaiv_legacy_support
+    //{
+    //    public static ScannerFile InuhhEast { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x007624B6.wav", "In...uhh... East.", "0_gtaiv_legacy_support"); } }
+    //    public static ScannerFile InuhhWestern { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x00C21410.wav", "In...uhh... Western", "0_gtaiv_legacy_support"); } }
+    //    public static ScannerFile InuhhWest { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x040B13FE.wav", "In...uhh... West", "0_gtaiv_legacy_support"); } }
+    //    public static ScannerFile beepplaceholderbeep { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x06C2C42B.wav", "*beep*placeholder(?)*beep*", "0_gtaiv_legacy_support"); } }
+    //    public static ScannerFile FIBteamdispatchingfrom { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x0708C2C6.wav", "FIB team dispatching from...", "0_gtaiv_legacy_support"); } }
+    //    public static ScannerFile Dispatchairunitfrom { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x095C198D.wav", "Dispatch air unit from...", "0_gtaiv_legacy_support"); } }
+    //    public static ScannerFile DispatchingSWATunitsfrom { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x0F106A48.wav", "Dispatching SWAT units from...", "0_gtaiv_legacy_support"); } }
+    //    public static ScannerFile InuhhNorth { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x11889985.wav", "In...uhh... North", "0_gtaiv_legacy_support"); } }
+    //    public static ScannerFile InuhhCentral { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x13A847B7.wav", "In...uhh... Central", "0_gtaiv_legacy_support"); } }
+    //    public static ScannerFile InuhhNorthern { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x1B806676.wav", "In...uhh... Northern", "0_gtaiv_legacy_support"); } }
+    //    public static ScannerFile InEastern { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x1CC03B69.wav", "In... Eastern", "0_gtaiv_legacy_support"); } }
+    //    public static ScannerFile InuhhSouth { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x1D349635.wav", "In...uhh... South", "0_gtaiv_legacy_support"); } }
+    //    public static ScannerFile InuhhSouthern { get { return new ScannerFile("01_0_gtaiv_legacy_support\\0x1D74BE76.wav", "In...uhh... Southern", "0_gtaiv_legacy_support"); } }
+    //}
+    //public class gtaiv_legacy_support_small
+    //{
+    //    public static ScannerFile Suspect { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x003685A2.wav", "Suspect", "0_gtaiv_legacy_support_small"); } }
+    //    public static ScannerFile for121 { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x01A766C8.wav", "for(?)", "0_gtaiv_legacy_support_small"); } }
+    //    public static ScannerFile Uhh { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x01E5D9FA.wav", "Uhh...", "0_gtaiv_legacy_support_small"); } }
+    //    public static ScannerFile Bright { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x0866A86E.wav", "Bright", "0_gtaiv_legacy_support_small"); } }
+    //    public static ScannerFile Dark { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x0B35C659.wav", "Dark", "0_gtaiv_legacy_support_small"); } }
+    //    public static ScannerFile Light { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x0E18707B.wav", "Light", "0_gtaiv_legacy_support_small"); } }
+    //    public static ScannerFile Central { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x0E43511A.wav", "Central", "0_gtaiv_legacy_support_small"); } }
+    //    public static ScannerFile Lastseen { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x15B4F5FC.wav", "Last seen", "0_gtaiv_legacy_support_small"); } }
+    //    public static ScannerFile beep { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x189A930F.wav", "*beep*", "0_gtaiv_legacy_support_small"); } }
+    //    public static ScannerFile Heading { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x19DDC879.wav", "Heading", "0_gtaiv_legacy_support_small"); } }
+    //}
+    //public class age
+    //{
+    //    public static ScannerFile Early50s { get { return new ScannerFile("01_age\\0x00617E13.wav", "Early 50s", "age"); } }
+    //    public static ScannerFile Early20s { get { return new ScannerFile("01_age\\0x028E8E07.wav", "Early 20s", "age"); } }
+    //    public static ScannerFile Young { get { return new ScannerFile("01_age\\0x057E03E3.wav", "Young", "age"); } }
+    //    public static ScannerFile Elderly { get { return new ScannerFile("01_age\\0x09B1D180.wav", "Elderly", "age"); } }
+    //    public static ScannerFile Late20s { get { return new ScannerFile("01_age\\0x0F4F6D73.wav", "Late 20s", "age"); } }
+    //    public static ScannerFile Mid20s { get { return new ScannerFile("01_age\\0x107FA3B0.wav", "Mid 20s", "age"); } }
+    //    public static ScannerFile Late50s { get { return new ScannerFile("01_age\\0x11BC4434.wav", "Late 50s", "age"); } }
+    //    public static ScannerFile Mid50s { get { return new ScannerFile("01_age\\0x164F5F0E.wav", "Mid 50s", "age"); } }
+    //    public static ScannerFile Mid40s { get { return new ScannerFile("01_age\\0x16B57506.wav", "Mid 40s", "age"); } }
+    //    public static ScannerFile Early30s { get { return new ScannerFile("01_age\\0x18ECC893.wav", "Early 30s", "age"); } }
+    //    public static ScannerFile Mid30s { get { return new ScannerFile("01_age\\0x198138E7.wav", "Mid 30s", "age"); } }
+    //    public static ScannerFile Late30s { get { return new ScannerFile("01_age\\0x1A9DE131.wav", "Late 30s", "age"); } }
+    //    public static ScannerFile Late40s { get { return new ScannerFile("01_age\\0x1C74AC5A.wav", "Late 40s", "age"); } }
+    //    public static ScannerFile Teenage { get { return new ScannerFile("01_age\\0x1D5268E6.wav", "Teenage", "age"); } }
+    //    public static ScannerFile Early40s { get { return new ScannerFile("01_age\\0x1F9A8632.wav", "Early 40s", "age"); } }
+    //}
+    //public class air_support_shoot_tires
+    //{
+    //    public static ScannerFile Airsupportceasefireonsuspectsvehicle { get { return new ScannerFile("01_air_support_shoot_tires\\0x00B655FE.wav", "Air support, cease fire on suspect's vehicle.", "air_support_shoot_tires"); } }
+    //    public static ScannerFile Airsupportholdyourfire { get { return new ScannerFile("01_air_support_shoot_tires\\0x03C6DB9C.wav", "Air support, hold your fire.", "air_support_shoot_tires"); } }
+    //    public static ScannerFile Airsupportmoveinatinmobileatsuspectsvehicle { get { return new ScannerFile("01_air_support_shoot_tires\\0x06694A56.wav", "Air support, move in at in mobile at suspect's vehicle.", "air_support_shoot_tires"); } }
+    //    public static ScannerFile Airsupportyouareagotoimmobilizesuspectsvehicle { get { return new ScannerFile("01_air_support_shoot_tires\\0x09FE117F.wav", "Air support, you are a go to immobilize suspect's vehicle.", "air_support_shoot_tires"); } }
+    //    public static ScannerFile Airsupportceasefire { get { return new ScannerFile("01_air_support_shoot_tires\\0x0A63E8D7.wav", "Air support, cease fire.", "air_support_shoot_tires"); } }
+    //    public static ScannerFile Airsupportholdfire { get { return new ScannerFile("01_air_support_shoot_tires\\0x110F362E.wav", "Air support, hold fire.", "air_support_shoot_tires"); } }
+    //    public static ScannerFile Airsupportholdyourfire1 { get { return new ScannerFile("01_air_support_shoot_tires\\0x1A46091E.wav", "Air support, hold your fire.", "air_support_shoot_tires"); } }
+    //    public static ScannerFile Airsupportceasefiringonthevehicle { get { return new ScannerFile("01_air_support_shoot_tires\\0x1AED49EA.wav", "Air support, cease firing on the vehicle.", "air_support_shoot_tires"); } }
+    //    public static ScannerFile Airsupportceasefire1 { get { return new ScannerFile("01_air_support_shoot_tires\\0x1C300C70.wav", "Air support, cease fire.", "air_support_shoot_tires"); } }
+    //    public static ScannerFile Airsupportmoveinandimmobilizesuspectsvehicle { get { return new ScannerFile("01_air_support_shoot_tires\\0x1C36B5F0.wav", "Air support, move in and immobilize suspect's vehicle.", "air_support_shoot_tires"); } }
+    //    public static ScannerFile Airsupportyouarecleartoimmobilizesuspectsvehicle { get { return new ScannerFile("01_air_support_shoot_tires\\0x1F7BFC7C.wav", "Air support, you are clear to immobilize suspect's vehicle.", "air_support_shoot_tires"); } }
+    //    public static ScannerFile Airsupporttakeoutsuspectstires { get { return new ScannerFile("01_air_support_shoot_tires\\0x1FB47CEB.wav", "Air support, take out suspect's tires.", "air_support_shoot_tires"); } }
+    //}
+    //public class all_crooks_caught
+    //{
+    //    public static ScannerFile Allsuspectsapprehended { get { return new ScannerFile("01_all_crooks_caught\\0x08CC5E87.wav", "All suspects apprehended.", "all_crooks_caught"); } }
+    //    public static ScannerFile Allsuspects1015 { get { return new ScannerFile("01_all_crooks_caught\\0x0DAB6838.wav", "All suspects 10-15.", "all_crooks_caught"); } }
+    //    public static ScannerFile Allcriminalsincustody { get { return new ScannerFile("01_all_crooks_caught\\0x1BD6048E.wav", "All criminals in custody.", "all_crooks_caught"); } }
+    //}
     public class areas
     {
         public static ScannerFile PalmerTaylorPowerStation { get { return new ScannerFile("01_areas\\0x001F9BDF.wav", "Palmer-Taylor Power Station", "areas"); } }
@@ -204,16 +204,16 @@
         public static ScannerFile DelPierro_1 { get { return new ScannerFile("01_areas\\0x1F7B7ABB.wav", "DelPierro", "areas"); } }
         public static ScannerFile RockfordHills_1 { get { return new ScannerFile("01_areas\\0x1FD39F4A.wav", "RockfordHills", "areas"); } }
     }
-    public class area_direction
-    {
-        public static ScannerFile Northern { get { return new ScannerFile("01_area_direction\\0x00C822E3.wav", "Northern", "area_direction"); } }
-        public static ScannerFile Eastern { get { return new ScannerFile("01_area_direction\\0x00D20737.wav", "Eastern", "area_direction"); } }
-        public static ScannerFile Western { get { return new ScannerFile("01_area_direction\\0x03F4BFA1.wav", "Western", "area_direction"); } }
-        public static ScannerFile Central { get { return new ScannerFile("01_area_direction\\0x04886DF6.wav", "Central", "area_direction"); } }
-        public static ScannerFile Central1 { get { return new ScannerFile("01_area_direction\\0x088F3603.wav", "Central", "area_direction"); } }
-        public static ScannerFile Southern { get { return new ScannerFile("01_area_direction\\0x0A6BC575.wav", "Southern", "area_direction"); } }
-        public static ScannerFile Central1_1 { get { return new ScannerFile("01_area_direction\\0x123E8963.wav", "Central", "area_direction"); } }
-    }
+    //public class area_direction
+    //{
+    //    public static ScannerFile Northern { get { return new ScannerFile("01_area_direction\\0x00C822E3.wav", "Northern", "area_direction"); } }
+    //    public static ScannerFile Eastern { get { return new ScannerFile("01_area_direction\\0x00D20737.wav", "Eastern", "area_direction"); } }
+    //    public static ScannerFile Western { get { return new ScannerFile("01_area_direction\\0x03F4BFA1.wav", "Western", "area_direction"); } }
+    //    public static ScannerFile Central { get { return new ScannerFile("01_area_direction\\0x04886DF6.wav", "Central", "area_direction"); } }
+    //    public static ScannerFile Central1 { get { return new ScannerFile("01_area_direction\\0x088F3603.wav", "Central", "area_direction"); } }
+    //    public static ScannerFile Southern { get { return new ScannerFile("01_area_direction\\0x0A6BC575.wav", "Southern", "area_direction"); } }
+    //    public static ScannerFile Central1_1 { get { return new ScannerFile("01_area_direction\\0x123E8963.wav", "Central", "area_direction"); } }
+    //}
     public class assistance_required
     {
         public static ScannerFile Backupneeded { get { return new ScannerFile("01_assistance_required\\0x04BBD783.wav", "Backup needed.", "assistance_required"); } }
@@ -310,11 +310,11 @@
         public static ScannerFile Attentionallunits2 { get { return new ScannerFile("01_attention_all_units_gen\\0x1D7ADE4C.wav", "Attention all units,", "attention_all_units_gen"); } }
         public static ScannerFile Attentionallunits3 { get { return new ScannerFile("01_attention_all_units_gen\\0x1EC1A0E1.wav", "Attention all units,", "attention_all_units_gen"); } }
     }
-    public class attention_generic
-    {
-        public static ScannerFile AttentionThisisdispatch { get { return new ScannerFile("01_attention_generic\\0x053CA2E6.wav", "Attention. This is dispatch.", "attention_generic"); } }
-        public static ScannerFile Attentionthisisdispatch { get { return new ScannerFile("01_attention_generic\\0x12043C6C.wav", "Attention, this is dispatch.", "attention_generic"); } }
-    }
+    //public class attention_generic
+    //{
+    //    public static ScannerFile AttentionThisisdispatch { get { return new ScannerFile("01_attention_generic\\0x053CA2E6.wav", "Attention. This is dispatch.", "attention_generic"); } }
+    //    public static ScannerFile Attentionthisisdispatch { get { return new ScannerFile("01_attention_generic\\0x12043C6C.wav", "Attention, this is dispatch.", "attention_generic"); } }
+    //}
     public class attention_specific
     {
         public static ScannerFile Dispatchtocarumm { get { return new ScannerFile("01_attention_specific\\0x066E5F2B.wav", "Dispatch to car umm...", "attention_specific"); } }
@@ -329,24 +329,24 @@
         public static ScannerFile Dispatchcallingunit { get { return new ScannerFile("01_attention_unit_specific\\0x1874DB8F.wav", "Dispatch calling unit...", "attention_unit_specific"); } }
         public static ScannerFile Attentionunit { get { return new ScannerFile("01_attention_unit_specific\\0x1E2DE701.wav", "Attention unit...", "attention_unit_specific"); } }
     }
-    public class build
-    {
-        public static ScannerFile BUILDATHLETIC01 { get { return new ScannerFile("01_build\\BUILD_ATHLETIC_01.wav", "BUILD_ATHLETIC_01", "build"); } }
-        public static ScannerFile BUILDAVERAGE01 { get { return new ScannerFile("01_build\\BUILD_AVERAGE_01.wav", "BUILD_AVERAGE_01", "build"); } }
-        public static ScannerFile BUILDHEAVY01 { get { return new ScannerFile("01_build\\BUILD_HEAVY_01.wav", "BUILD_HEAVY_01", "build"); } }
-        public static ScannerFile BUILDMUSCULAR01 { get { return new ScannerFile("01_build\\BUILD_MUSCULAR_01.wav", "BUILD_MUSCULAR_01", "build"); } }
-        public static ScannerFile BUILDOBESE01 { get { return new ScannerFile("01_build\\BUILD_OBESE_01.wav", "BUILD_OBESE_01", "build"); } }
-        public static ScannerFile BUILDSLENDER01 { get { return new ScannerFile("01_build\\BUILD_SLENDER_01.wav", "BUILD_SLENDER_01", "build"); } }
-        public static ScannerFile BUILDTHIN01 { get { return new ScannerFile("01_build\\BUILD_THIN_01.wav", "BUILD_THIN_01", "build"); } }
-    }
-    public class car
-    {
-        public static ScannerFile CAR01 { get { return new ScannerFile("01_car\\CAR_01.wav", "CAR_01", "car"); } }
-        public static ScannerFile CAR02 { get { return new ScannerFile("01_car\\CAR_02.wav", "CAR_02", "car"); } }
-        public static ScannerFile CAR03 { get { return new ScannerFile("01_car\\CAR_03.wav", "CAR_03", "car"); } }
-        public static ScannerFile CAR04 { get { return new ScannerFile("01_car\\CAR_04.wav", "CAR_04", "car"); } }
-        public static ScannerFile CAR05 { get { return new ScannerFile("01_car\\CAR_05.wav", "CAR_05", "car"); } }
-    }
+    //public class build
+    //{
+    //    public static ScannerFile BUILDATHLETIC01 { get { return new ScannerFile("01_build\\BUILD_ATHLETIC_01.wav", "BUILD_ATHLETIC_01", "build"); } }
+    //    public static ScannerFile BUILDAVERAGE01 { get { return new ScannerFile("01_build\\BUILD_AVERAGE_01.wav", "BUILD_AVERAGE_01", "build"); } }
+    //    public static ScannerFile BUILDHEAVY01 { get { return new ScannerFile("01_build\\BUILD_HEAVY_01.wav", "BUILD_HEAVY_01", "build"); } }
+    //    public static ScannerFile BUILDMUSCULAR01 { get { return new ScannerFile("01_build\\BUILD_MUSCULAR_01.wav", "BUILD_MUSCULAR_01", "build"); } }
+    //    public static ScannerFile BUILDOBESE01 { get { return new ScannerFile("01_build\\BUILD_OBESE_01.wav", "BUILD_OBESE_01", "build"); } }
+    //    public static ScannerFile BUILDSLENDER01 { get { return new ScannerFile("01_build\\BUILD_SLENDER_01.wav", "BUILD_SLENDER_01", "build"); } }
+    //    public static ScannerFile BUILDTHIN01 { get { return new ScannerFile("01_build\\BUILD_THIN_01.wav", "BUILD_THIN_01", "build"); } }
+    //}
+    //public class car
+    //{
+    //    public static ScannerFile CAR01 { get { return new ScannerFile("01_car\\CAR_01.wav", "CAR_01", "car"); } }
+    //    public static ScannerFile CAR02 { get { return new ScannerFile("01_car\\CAR_02.wav", "CAR_02", "car"); } }
+    //    public static ScannerFile CAR03 { get { return new ScannerFile("01_car\\CAR_03.wav", "CAR_03", "car"); } }
+    //    public static ScannerFile CAR04 { get { return new ScannerFile("01_car\\CAR_04.wav", "CAR_04", "car"); } }
+    //    public static ScannerFile CAR05 { get { return new ScannerFile("01_car\\CAR_05.wav", "CAR_05", "car"); } }
+    //}
     public class carrying_weapon
     {
         public static ScannerFile Carryingagrenadelauncher { get { return new ScannerFile("01_carrying_weapon\\0x00FE11D6.wav", "Carrying a grenade launcher.", "carrying_weapon"); } }
@@ -477,53 +477,53 @@
     }
 
 
-    public class clothing_item_outfit
-    {
-        public static ScannerFile Afirefightersuniform { get { return new ScannerFile("01_clothing_item_outfit\\0x05FCA5E3.wav", "A firefighter's uniform", "clothing_item_outfit"); } }
-        public static ScannerFile Awetsuit { get { return new ScannerFile("01_clothing_item_outfit\\0x07F171A5.wav", "A wet suit", "clothing_item_outfit"); } }
-        public static ScannerFile Atracksuit { get { return new ScannerFile("01_clothing_item_outfit\\0x088DE65C.wav", "A track suit", "clothing_item_outfit"); } }
-        public static ScannerFile Firefightingattire { get { return new ScannerFile("01_clothing_item_outfit\\0x13964116.wav", "Firefighting attire", "clothing_item_outfit"); } }
-        public static ScannerFile Ajanitorsuniform { get { return new ScannerFile("01_clothing_item_outfit\\0x17D713A7.wav", "A janitor's uniform", "clothing_item_outfit"); } }
-        public static ScannerFile Apoliceofficersuniform { get { return new ScannerFile("01_clothing_item_outfit\\0x1A275FE2.wav", "A police officer's uniform", "clothing_item_outfit"); } }
-        public static ScannerFile Agasmask { get { return new ScannerFile("01_clothing_item_outfit\\0x1AE21C68.wav", "A gas mask", "clothing_item_outfit"); } }
-        public static ScannerFile Adarkgraysuit { get { return new ScannerFile("01_clothing_item_outfit\\0x1C215456.wav", "A dark gray suit", "clothing_item_outfit"); } }
-    }
-    public class clothing_item_pants
-    {
-        public static ScannerFile Brookjeans { get { return new ScannerFile("01_clothing_item_pants\\0x0124C899.wav", "Brook(?) jeans", "clothing_item_pants"); } }
-        public static ScannerFile Lightpants { get { return new ScannerFile("01_clothing_item_pants\\0x07DAA810.wav", "Light pants", "clothing_item_pants"); } }
-        public static ScannerFile Darkpants { get { return new ScannerFile("01_clothing_item_pants\\0x09FF1A21.wav", "Dark pants", "clothing_item_pants"); } }
-        public static ScannerFile Bluejeans { get { return new ScannerFile("01_clothing_item_pants\\0x0CEA5160.wav", "Blue jeans", "clothing_item_pants"); } }
-        public static ScannerFile Lightshorts { get { return new ScannerFile("01_clothing_item_pants\\0x12A4D46F.wav", "Light shorts", "clothing_item_pants"); } }
-        public static ScannerFile Blackjeans { get { return new ScannerFile("01_clothing_item_pants\\0x15D1CBC3.wav", "Black jeans", "clothing_item_pants"); } }
-        public static ScannerFile Cargopants { get { return new ScannerFile("01_clothing_item_pants\\0x1761F58C.wav", "Cargo pants", "clothing_item_pants"); } }
-        public static ScannerFile Darkshorts { get { return new ScannerFile("01_clothing_item_pants\\0x186A9052.wav", "Dark shorts", "clothing_item_pants"); } }
-    }
-    public class clothing_item_shoes
-    {
-        public static ScannerFile Lightsneakers { get { return new ScannerFile("01_clothing_item_shoes\\0x04DF1D1B.wav", "Light sneakers", "clothing_item_shoes"); } }
-        public static ScannerFile Blackboots { get { return new ScannerFile("01_clothing_item_shoes\\0x0D8BF112.wav", "Black boots", "clothing_item_shoes"); } }
-        public static ScannerFile Darksneakers { get { return new ScannerFile("01_clothing_item_shoes\\0x1222B07E.wav", "Dark sneakers", "clothing_item_shoes"); } }
-        public static ScannerFile Brownboots { get { return new ScannerFile("01_clothing_item_shoes\\0x18770478.wav", "Brown boots", "clothing_item_shoes"); } }
-        public static ScannerFile Brownshoes { get { return new ScannerFile("01_clothing_item_shoes\\0x1C00A135.wav", "Brown shoes", "clothing_item_shoes"); } }
-        public static ScannerFile Blackshoes { get { return new ScannerFile("01_clothing_item_shoes\\0x1DF3345A.wav", "Black shoes", "clothing_item_shoes"); } }
-    }
-    public class clothing_item_torso
-    {
-        public static ScannerFile Shortsleeveshirt { get { return new ScannerFile("01_clothing_item_torso\\0x021EEEAF.wav", "Short sleeve shirt", "clothing_item_torso"); } }
-        public static ScannerFile Suitjacket { get { return new ScannerFile("01_clothing_item_torso\\0x02BEDD9F.wav", "Suit jacket", "clothing_item_torso"); } }
-        public static ScannerFile Leatherjacket { get { return new ScannerFile("01_clothing_item_torso\\0x03FB29CC.wav", "Leather jacket", "clothing_item_torso"); } }
-        public static ScannerFile Darkjacket { get { return new ScannerFile("01_clothing_item_torso\\0x04E5C73E.wav", "Dark jacket", "clothing_item_torso"); } }
-        public static ScannerFile Blueshirt { get { return new ScannerFile("01_clothing_item_torso\\0x06CA50C1.wav", "Blue shirt", "clothing_item_torso"); } }
-        public static ScannerFile Darkshirt { get { return new ScannerFile("01_clothing_item_torso\\0x0724F7EF.wav", "Dark shirt", "clothing_item_torso"); } }
-        public static ScannerFile Denimjacket { get { return new ScannerFile("01_clothing_item_torso\\0x0C7CEAEE.wav", "Denim jacket", "clothing_item_torso"); } }
-        public static ScannerFile Noshirt { get { return new ScannerFile("01_clothing_item_torso\\0x0CE3051C.wav", "No shirt", "clothing_item_torso"); } }
-        public static ScannerFile Greenshirt { get { return new ScannerFile("01_clothing_item_torso\\0x0D4A8107.wav", "Green shirt", "clothing_item_torso"); } }
-        public static ScannerFile Longsleeveshirt { get { return new ScannerFile("01_clothing_item_torso\\0x0DF91657.wav", "Long sleeve shirt", "clothing_item_torso"); } }
-        public static ScannerFile Redshirt { get { return new ScannerFile("01_clothing_item_torso\\0x107319A5.wav", "Red shirt", "clothing_item_torso"); } }
-        public static ScannerFile Lightshirt { get { return new ScannerFile("01_clothing_item_torso\\0x1707806C.wav", "Light shirt", "clothing_item_torso"); } }
-        public static ScannerFile Lightjacket { get { return new ScannerFile("01_clothing_item_torso\\0x1D00E5A1.wav", "Light jacket", "clothing_item_torso"); } }
-    }
+    //public class clothing_item_outfit
+    //{
+    //    public static ScannerFile Afirefightersuniform { get { return new ScannerFile("01_clothing_item_outfit\\0x05FCA5E3.wav", "A firefighter's uniform", "clothing_item_outfit"); } }
+    //    public static ScannerFile Awetsuit { get { return new ScannerFile("01_clothing_item_outfit\\0x07F171A5.wav", "A wet suit", "clothing_item_outfit"); } }
+    //    public static ScannerFile Atracksuit { get { return new ScannerFile("01_clothing_item_outfit\\0x088DE65C.wav", "A track suit", "clothing_item_outfit"); } }
+    //    public static ScannerFile Firefightingattire { get { return new ScannerFile("01_clothing_item_outfit\\0x13964116.wav", "Firefighting attire", "clothing_item_outfit"); } }
+    //    public static ScannerFile Ajanitorsuniform { get { return new ScannerFile("01_clothing_item_outfit\\0x17D713A7.wav", "A janitor's uniform", "clothing_item_outfit"); } }
+    //    public static ScannerFile Apoliceofficersuniform { get { return new ScannerFile("01_clothing_item_outfit\\0x1A275FE2.wav", "A police officer's uniform", "clothing_item_outfit"); } }
+    //    public static ScannerFile Agasmask { get { return new ScannerFile("01_clothing_item_outfit\\0x1AE21C68.wav", "A gas mask", "clothing_item_outfit"); } }
+    //    public static ScannerFile Adarkgraysuit { get { return new ScannerFile("01_clothing_item_outfit\\0x1C215456.wav", "A dark gray suit", "clothing_item_outfit"); } }
+    //}
+    //public class clothing_item_pants
+    //{
+    //    public static ScannerFile Brookjeans { get { return new ScannerFile("01_clothing_item_pants\\0x0124C899.wav", "Brook(?) jeans", "clothing_item_pants"); } }
+    //    public static ScannerFile Lightpants { get { return new ScannerFile("01_clothing_item_pants\\0x07DAA810.wav", "Light pants", "clothing_item_pants"); } }
+    //    public static ScannerFile Darkpants { get { return new ScannerFile("01_clothing_item_pants\\0x09FF1A21.wav", "Dark pants", "clothing_item_pants"); } }
+    //    public static ScannerFile Bluejeans { get { return new ScannerFile("01_clothing_item_pants\\0x0CEA5160.wav", "Blue jeans", "clothing_item_pants"); } }
+    //    public static ScannerFile Lightshorts { get { return new ScannerFile("01_clothing_item_pants\\0x12A4D46F.wav", "Light shorts", "clothing_item_pants"); } }
+    //    public static ScannerFile Blackjeans { get { return new ScannerFile("01_clothing_item_pants\\0x15D1CBC3.wav", "Black jeans", "clothing_item_pants"); } }
+    //    public static ScannerFile Cargopants { get { return new ScannerFile("01_clothing_item_pants\\0x1761F58C.wav", "Cargo pants", "clothing_item_pants"); } }
+    //    public static ScannerFile Darkshorts { get { return new ScannerFile("01_clothing_item_pants\\0x186A9052.wav", "Dark shorts", "clothing_item_pants"); } }
+    //}
+    //public class clothing_item_shoes
+    //{
+    //    public static ScannerFile Lightsneakers { get { return new ScannerFile("01_clothing_item_shoes\\0x04DF1D1B.wav", "Light sneakers", "clothing_item_shoes"); } }
+    //    public static ScannerFile Blackboots { get { return new ScannerFile("01_clothing_item_shoes\\0x0D8BF112.wav", "Black boots", "clothing_item_shoes"); } }
+    //    public static ScannerFile Darksneakers { get { return new ScannerFile("01_clothing_item_shoes\\0x1222B07E.wav", "Dark sneakers", "clothing_item_shoes"); } }
+    //    public static ScannerFile Brownboots { get { return new ScannerFile("01_clothing_item_shoes\\0x18770478.wav", "Brown boots", "clothing_item_shoes"); } }
+    //    public static ScannerFile Brownshoes { get { return new ScannerFile("01_clothing_item_shoes\\0x1C00A135.wav", "Brown shoes", "clothing_item_shoes"); } }
+    //    public static ScannerFile Blackshoes { get { return new ScannerFile("01_clothing_item_shoes\\0x1DF3345A.wav", "Black shoes", "clothing_item_shoes"); } }
+    //}
+    //public class clothing_item_torso
+    //{
+    //    public static ScannerFile Shortsleeveshirt { get { return new ScannerFile("01_clothing_item_torso\\0x021EEEAF.wav", "Short sleeve shirt", "clothing_item_torso"); } }
+    //    public static ScannerFile Suitjacket { get { return new ScannerFile("01_clothing_item_torso\\0x02BEDD9F.wav", "Suit jacket", "clothing_item_torso"); } }
+    //    public static ScannerFile Leatherjacket { get { return new ScannerFile("01_clothing_item_torso\\0x03FB29CC.wav", "Leather jacket", "clothing_item_torso"); } }
+    //    public static ScannerFile Darkjacket { get { return new ScannerFile("01_clothing_item_torso\\0x04E5C73E.wav", "Dark jacket", "clothing_item_torso"); } }
+    //    public static ScannerFile Blueshirt { get { return new ScannerFile("01_clothing_item_torso\\0x06CA50C1.wav", "Blue shirt", "clothing_item_torso"); } }
+    //    public static ScannerFile Darkshirt { get { return new ScannerFile("01_clothing_item_torso\\0x0724F7EF.wav", "Dark shirt", "clothing_item_torso"); } }
+    //    public static ScannerFile Denimjacket { get { return new ScannerFile("01_clothing_item_torso\\0x0C7CEAEE.wav", "Denim jacket", "clothing_item_torso"); } }
+    //    public static ScannerFile Noshirt { get { return new ScannerFile("01_clothing_item_torso\\0x0CE3051C.wav", "No shirt", "clothing_item_torso"); } }
+    //    public static ScannerFile Greenshirt { get { return new ScannerFile("01_clothing_item_torso\\0x0D4A8107.wav", "Green shirt", "clothing_item_torso"); } }
+    //    public static ScannerFile Longsleeveshirt { get { return new ScannerFile("01_clothing_item_torso\\0x0DF91657.wav", "Long sleeve shirt", "clothing_item_torso"); } }
+    //    public static ScannerFile Redshirt { get { return new ScannerFile("01_clothing_item_torso\\0x107319A5.wav", "Red shirt", "clothing_item_torso"); } }
+    //    public static ScannerFile Lightshirt { get { return new ScannerFile("01_clothing_item_torso\\0x1707806C.wav", "Light shirt", "clothing_item_torso"); } }
+    //    public static ScannerFile Lightjacket { get { return new ScannerFile("01_clothing_item_torso\\0x1D00E5A1.wav", "Light jacket", "clothing_item_torso"); } }
+    //}
     public class colour
     {
         public static ScannerFile COLORAQUA01 { get { return new ScannerFile("01_colour\\COLOR_AQUA_01.wav", "COLOR_AQUA_01", "colour"); } }
@@ -620,39 +620,39 @@
         public static ScannerFile On4 { get { return new ScannerFile("01_conjunctives\\ON_07.wav", "On", "conjunctives"); } }
         public static ScannerFile OVER01 { get { return new ScannerFile("01_conjunctives\\OVER_01.wav", "OVER_01", "conjunctives"); } }
     }
-    public class crime_10_24
-    {
-        public static ScannerFile Astationemergency { get { return new ScannerFile("01_crime_10_24\\0x026A3806.wav", "A station emergency.", "crime_10_24"); } }
-        public static ScannerFile A1024 { get { return new ScannerFile("01_crime_10_24\\0x10A0D480.wav", "A 10-24.", "crime_10_24"); } }
-        public static ScannerFile Astationemergency1 { get { return new ScannerFile("01_crime_10_24\\0x14A19C80.wav", "A station emergency.", "crime_10_24"); } }
-        public static ScannerFile A10241 { get { return new ScannerFile("01_crime_10_24\\0x15BC9EAB.wav", "A 10-24.", "crime_10_24"); } }
-    }
-    public class crime_10_351
-    {
-        public static ScannerFile Possessionofdrugsforsale { get { return new ScannerFile("01_crime_10_351\\0x0E4C71EB.wav", "Possession of drugs for sale.", "crime_10_351"); } }
-        public static ScannerFile Apossessionofdrugsforsaleincident { get { return new ScannerFile("01_crime_10_351\\0x17A244B2.wav", "A possession of drugs for sale incident.", "crime_10_351"); } }
-        public static ScannerFile Possessionofdrugsforsale1 { get { return new ScannerFile("01_crime_10_351\\0x1E95927E.wav", "Possession of drugs for sale.", "crime_10_351"); } }
-    }
-    public class crime_10_851
-    {
-        public static ScannerFile A10851 { get { return new ScannerFile("01_crime_10_851\\0x013CC71E.wav", "A 10-851.", "crime_10_851"); } }
-        public static ScannerFile A108511 { get { return new ScannerFile("01_crime_10_851\\0x05258EF1.wav", "A 10-851.", "crime_10_851"); } }
-        public static ScannerFile Astolenvehicle { get { return new ScannerFile("01_crime_10_851\\0x0E03A0AD.wav", "A stolen vehicle.", "crime_10_851"); } }
-        public static ScannerFile Astolenvehicle1 { get { return new ScannerFile("01_crime_10_851\\0x12D86A56.wav", "A stolen vehicle.", "crime_10_851"); } }
-    }
-    public class crime_10_99
-    {
-        public static ScannerFile Anofficerrequiresimmediateassistance { get { return new ScannerFile("01_crime_10_99\\0x029C50BE.wav", "An officer requires immediate assistance.", "crime_10_99"); } }
-        public static ScannerFile Acode99 { get { return new ScannerFile("01_crime_10_99\\0x02A890D4.wav", "A code 99.", "crime_10_99"); } }
-        public static ScannerFile A1099 { get { return new ScannerFile("01_crime_10_99\\0x108A6C97.wav", "A 10-99.", "crime_10_99"); } }
-        public static ScannerFile Anofficerrequiresimmediatehelp { get { return new ScannerFile("01_crime_10_99\\0x149B34B9.wav", "An officer requires immediate help.", "crime_10_99"); } }
-    }
-    public class crime_11_351
-    {
-        public static ScannerFile An11351 { get { return new ScannerFile("01_crime_11_351\\0x0654770E.wav", "An 11-351.", "crime_11_351"); } }
-        public static ScannerFile An113511 { get { return new ScannerFile("01_crime_11_351\\0x0B6E4141.wav", "An 11-351.", "crime_11_351"); } }
-        public static ScannerFile Apossessionofdrugsforsaleincident { get { return new ScannerFile("01_crime_11_351\\0x10140A8E.wav", "A possession of drugs for sale incident.", "crime_11_351"); } }
-    }
+    //public class crime_10_24
+    //{
+    //    public static ScannerFile Astationemergency { get { return new ScannerFile("01_crime_10_24\\0x026A3806.wav", "A station emergency.", "crime_10_24"); } }
+    //    public static ScannerFile A1024 { get { return new ScannerFile("01_crime_10_24\\0x10A0D480.wav", "A 10-24.", "crime_10_24"); } }
+    //    public static ScannerFile Astationemergency1 { get { return new ScannerFile("01_crime_10_24\\0x14A19C80.wav", "A station emergency.", "crime_10_24"); } }
+    //    public static ScannerFile A10241 { get { return new ScannerFile("01_crime_10_24\\0x15BC9EAB.wav", "A 10-24.", "crime_10_24"); } }
+    //}
+    //public class crime_10_351
+    //{
+    //    public static ScannerFile Possessionofdrugsforsale { get { return new ScannerFile("01_crime_10_351\\0x0E4C71EB.wav", "Possession of drugs for sale.", "crime_10_351"); } }
+    //    public static ScannerFile Apossessionofdrugsforsaleincident { get { return new ScannerFile("01_crime_10_351\\0x17A244B2.wav", "A possession of drugs for sale incident.", "crime_10_351"); } }
+    //    public static ScannerFile Possessionofdrugsforsale1 { get { return new ScannerFile("01_crime_10_351\\0x1E95927E.wav", "Possession of drugs for sale.", "crime_10_351"); } }
+    //}
+    //public class crime_10_851
+    //{
+    //    public static ScannerFile A10851 { get { return new ScannerFile("01_crime_10_851\\0x013CC71E.wav", "A 10-851.", "crime_10_851"); } }
+    //    public static ScannerFile A108511 { get { return new ScannerFile("01_crime_10_851\\0x05258EF1.wav", "A 10-851.", "crime_10_851"); } }
+    //    public static ScannerFile Astolenvehicle { get { return new ScannerFile("01_crime_10_851\\0x0E03A0AD.wav", "A stolen vehicle.", "crime_10_851"); } }
+    //    public static ScannerFile Astolenvehicle1 { get { return new ScannerFile("01_crime_10_851\\0x12D86A56.wav", "A stolen vehicle.", "crime_10_851"); } }
+    //}
+    //public class crime_10_99
+    //{
+    //    public static ScannerFile Anofficerrequiresimmediateassistance { get { return new ScannerFile("01_crime_10_99\\0x029C50BE.wav", "An officer requires immediate assistance.", "crime_10_99"); } }
+    //    public static ScannerFile Acode99 { get { return new ScannerFile("01_crime_10_99\\0x02A890D4.wav", "A code 99.", "crime_10_99"); } }
+    //    public static ScannerFile A1099 { get { return new ScannerFile("01_crime_10_99\\0x108A6C97.wav", "A 10-99.", "crime_10_99"); } }
+    //    public static ScannerFile Anofficerrequiresimmediatehelp { get { return new ScannerFile("01_crime_10_99\\0x149B34B9.wav", "An officer requires immediate help.", "crime_10_99"); } }
+    ////}
+    //public class crime_11_351
+    //{
+    //    public static ScannerFile An11351 { get { return new ScannerFile("01_crime_11_351\\0x0654770E.wav", "An 11-351.", "crime_11_351"); } }
+    //    public static ScannerFile An113511 { get { return new ScannerFile("01_crime_11_351\\0x0B6E4141.wav", "An 11-351.", "crime_11_351"); } }
+    //    public static ScannerFile Apossessionofdrugsforsaleincident { get { return new ScannerFile("01_crime_11_351\\0x10140A8E.wav", "A possession of drugs for sale incident.", "crime_11_351"); } }
+    //}
     public class crime_11_357
     {
         public static ScannerFile Adrugpossessionincident { get { return new ScannerFile("01_crime_11_357\\0x0403DE60.wav", "A drug possession incident.", "crime_11_357"); } }
@@ -690,82 +690,82 @@
         public static ScannerFile Apossible211 { get { return new ScannerFile("01_crime_2_11\\0x19F9E4B3.wav", "A possible 211.", "crime_2_11"); } }
         public static ScannerFile A211 { get { return new ScannerFile("01_crime_2_11\\0x1E842DC8.wav", "A 211.", "crime_2_11"); } }
     }
-    public class crime_2_13
-    {
-        public static ScannerFile A213 { get { return new ScannerFile("01_crime_2_13\\0x1490EDEF.wav", "A 213.", "crime_2_13"); } }
-        public static ScannerFile Useofexplosives { get { return new ScannerFile("01_crime_2_13\\0x190F36ED.wav", "Use of explosives.", "crime_2_13"); } }
-    }
-    public class crime_2_17
-    {
-        public static ScannerFile Anattemptedmurder { get { return new ScannerFile("01_crime_2_17\\0x0AFA345E.wav", "An attempted murder.", "crime_2_17"); } }
-        public static ScannerFile A217 { get { return new ScannerFile("01_crime_2_17\\0x1A5C9323.wav", "A 217.", "crime_2_17"); } }
-    }
-    public class crime_2_40
-    {
-        public static ScannerFile A240 { get { return new ScannerFile("01_crime_2_40\\0x0458F5C8.wav", "A 240.", "crime_2_40"); } }
-        public static ScannerFile Anassault { get { return new ScannerFile("01_crime_2_40\\0x15AA986C.wav", "An assault.", "crime_2_40"); } }
-    }
-    public class crime_2_42
-    {
-        public static ScannerFile A242 { get { return new ScannerFile("01_crime_2_42\\0x039009FB.wav", "A 242.", "crime_2_42"); } }
-        public static ScannerFile Abatteryincident { get { return new ScannerFile("01_crime_2_42\\0x13C5AA66.wav", "A battery incident.", "crime_2_42"); } }
-    }
-    public class crime_2_45
-    {
-        public static ScannerFile Anassaultwithadeadlyweapon { get { return new ScannerFile("01_crime_2_45\\0x032B7620.wav", "An assault with a deadly weapon.", "crime_2_45"); } }
-        public static ScannerFile Apossible245 { get { return new ScannerFile("01_crime_2_45\\0x0C3E8856.wav", "A possible 245.", "crime_2_45"); } }
-        public static ScannerFile A245 { get { return new ScannerFile("01_crime_2_45\\0x1E1A2C0D.wav", "A 245.", "crime_2_45"); } }
-    }
-    public class crime_2_46
-    {
-        public static ScannerFile Apossible246 { get { return new ScannerFile("01_crime_2_46\\0x04FA0824.wav", "A possible 246.", "crime_2_46"); } }
-        public static ScannerFile A246 { get { return new ScannerFile("01_crime_2_46\\0x1624AA79.wav", "A 246.", "crime_2_46"); } }
-        public static ScannerFile Ashootinginadwelling { get { return new ScannerFile("01_crime_2_46\\0x17176C4F.wav", "A shooting in a dwelling.", "crime_2_46"); } }
-    }
-    public class crime_2_88
-    {
-        public static ScannerFile Apossible288 { get { return new ScannerFile("01_crime_2_88\\0x001ABF70.wav", "A possible 288.", "crime_2_88"); } }
-        public static ScannerFile A288 { get { return new ScannerFile("01_crime_2_88\\0x0E4E5BD7.wav", "A 288.", "crime_2_88"); } }
-    }
-    public class crime_3_11
-    {
-        public static ScannerFile A311 { get { return new ScannerFile("01_crime_3_11\\0x0232E557.wav", "A 311.", "crime_3_11"); } }
-        public static ScannerFile Apossible311 { get { return new ScannerFile("01_crime_3_11\\0x15AE8C53.wav", "A possible 311.", "crime_3_11"); } }
-        public static ScannerFile Anindecentexposure { get { return new ScannerFile("01_crime_3_11\\0x196E53D3.wav", "An indecent exposure.", "crime_3_11"); } }
-    }
+    //public class crime_2_13
+    //{
+    //    public static ScannerFile A213 { get { return new ScannerFile("01_crime_2_13\\0x1490EDEF.wav", "A 213.", "crime_2_13"); } }
+    //    public static ScannerFile Useofexplosives { get { return new ScannerFile("01_crime_2_13\\0x190F36ED.wav", "Use of explosives.", "crime_2_13"); } }
+    //}
+    //public class crime_2_17
+    //{
+    //    public static ScannerFile Anattemptedmurder { get { return new ScannerFile("01_crime_2_17\\0x0AFA345E.wav", "An attempted murder.", "crime_2_17"); } }
+    //    public static ScannerFile A217 { get { return new ScannerFile("01_crime_2_17\\0x1A5C9323.wav", "A 217.", "crime_2_17"); } }
+    //}
+    //public class crime_2_40
+    //{
+    //    public static ScannerFile A240 { get { return new ScannerFile("01_crime_2_40\\0x0458F5C8.wav", "A 240.", "crime_2_40"); } }
+    //    public static ScannerFile Anassault { get { return new ScannerFile("01_crime_2_40\\0x15AA986C.wav", "An assault.", "crime_2_40"); } }
+    //}
+    //public class crime_2_42
+    //{
+    //    public static ScannerFile A242 { get { return new ScannerFile("01_crime_2_42\\0x039009FB.wav", "A 242.", "crime_2_42"); } }
+    //    public static ScannerFile Abatteryincident { get { return new ScannerFile("01_crime_2_42\\0x13C5AA66.wav", "A battery incident.", "crime_2_42"); } }
+    //}
+    //public class crime_2_45
+    //{
+    //    public static ScannerFile Anassaultwithadeadlyweapon { get { return new ScannerFile("01_crime_2_45\\0x032B7620.wav", "An assault with a deadly weapon.", "crime_2_45"); } }
+    //    public static ScannerFile Apossible245 { get { return new ScannerFile("01_crime_2_45\\0x0C3E8856.wav", "A possible 245.", "crime_2_45"); } }
+    //    public static ScannerFile A245 { get { return new ScannerFile("01_crime_2_45\\0x1E1A2C0D.wav", "A 245.", "crime_2_45"); } }
+    //}
+    //public class crime_2_46
+    //{
+    //    public static ScannerFile Apossible246 { get { return new ScannerFile("01_crime_2_46\\0x04FA0824.wav", "A possible 246.", "crime_2_46"); } }
+    //    public static ScannerFile A246 { get { return new ScannerFile("01_crime_2_46\\0x1624AA79.wav", "A 246.", "crime_2_46"); } }
+    //    public static ScannerFile Ashootinginadwelling { get { return new ScannerFile("01_crime_2_46\\0x17176C4F.wav", "A shooting in a dwelling.", "crime_2_46"); } }
+    //}
+    //public class crime_2_88
+    //{
+    //    public static ScannerFile Apossible288 { get { return new ScannerFile("01_crime_2_88\\0x001ABF70.wav", "A possible 288.", "crime_2_88"); } }
+    //    public static ScannerFile A288 { get { return new ScannerFile("01_crime_2_88\\0x0E4E5BD7.wav", "A 288.", "crime_2_88"); } }
+    //}
+    //public class crime_3_11
+    //{
+    //    public static ScannerFile A311 { get { return new ScannerFile("01_crime_3_11\\0x0232E557.wav", "A 311.", "crime_3_11"); } }
+    //    public static ScannerFile Apossible311 { get { return new ScannerFile("01_crime_3_11\\0x15AE8C53.wav", "A possible 311.", "crime_3_11"); } }
+    //    public static ScannerFile Anindecentexposure { get { return new ScannerFile("01_crime_3_11\\0x196E53D3.wav", "An indecent exposure.", "crime_3_11"); } }
+    //}
     public class crime_3_90
     {
         public static ScannerFile Apossible390 { get { return new ScannerFile("01_crime_3_90\\0x08698BA8.wav", "A possible 390.", "crime_3_90"); } }
         public static ScannerFile Publicintoxication { get { return new ScannerFile("01_crime_3_90\\0x1632E73A.wav", "Public intoxication.", "crime_3_90"); } }
         public static ScannerFile A390 { get { return new ScannerFile("01_crime_3_90\\0x19882DE5.wav", "A 390.", "crime_3_90"); } }
     }
-    public class crime_4_06
-    {
-        public static ScannerFile Apossible406 { get { return new ScannerFile("01_crime_4_06\\0x061DEFD6.wav", "A possible 406.", "crime_4_06"); } }
-        public static ScannerFile Breakingandentering { get { return new ScannerFile("01_crime_4_06\\0x0FDFC35A.wav", "Breaking and entering.", "crime_4_06"); } }
-        public static ScannerFile A406 { get { return new ScannerFile("01_crime_4_06\\0x13790A8D.wav", "A 406.", "crime_4_06"); } }
-        public static ScannerFile ABnE { get { return new ScannerFile("01_crime_4_06\\0x1E81A09D.wav", "A BnE.", "crime_4_06"); } }
-    }
-    public class crime_4_15 { public static ScannerFile A415 { get { return new ScannerFile("01_crime_4_15\\0x06E7893A.wav", "A 415.", "crime_4_15"); } } }
-    public class crime_4_15_george
-    {
-        public static ScannerFile Apossiblegangrelateddisturbance { get { return new ScannerFile("01_crime_4_15_george\\0x0A3A3012.wav", "A possible gang-related disturbance.", "crime_4_15_george"); } }
-        public static ScannerFile Agangrelateddisturbance { get { return new ScannerFile("01_crime_4_15_george\\0x0B23B1DB.wav", "A gang-related disturbance.", "crime_4_15_george"); } }
-        public static ScannerFile A415George { get { return new ScannerFile("01_crime_4_15_george\\0x1D721678.wav", "A 415 George.", "crime_4_15_george"); } }
-    }
-    public class crime_4_17
-    {
-        public static ScannerFile Apersonwithafirearm { get { return new ScannerFile("01_crime_4_17\\0x0A578619.wav", "A person with a firearm.", "crime_4_17"); } }
-        public static ScannerFile A417 { get { return new ScannerFile("01_crime_4_17\\0x15D4DD10.wav", "A 417.", "crime_4_17"); } }
-        public static ScannerFile Apersonwithagun { get { return new ScannerFile("01_crime_4_17\\0x1F9EB0A4.wav", "A person with a gun.", "crime_4_17"); } }
-    }
-    public class crime_4_17_king
-    {
-        public static ScannerFile Apersonwithaknife { get { return new ScannerFile("01_crime_4_17_king\\0x05BD27F9.wav", "A person with a knife.", "crime_4_17_king"); } }
-        public static ScannerFile A417King { get { return new ScannerFile("01_crime_4_17_king\\0x11B4BFE4.wav", "A 417 King.", "crime_4_17_king"); } }
-        public static ScannerFile Apossible417King { get { return new ScannerFile("01_crime_4_17_king\\0x12F6426C.wav", "A possible 417 King.", "crime_4_17_king"); } }
-        public static ScannerFile A417King1 { get { return new ScannerFile("01_crime_4_17_king\\0x1AFE9278.wav", "A 417 King.", "crime_4_17_king"); } }
-    }
+    //public class crime_4_06
+    //{
+    //    public static ScannerFile Apossible406 { get { return new ScannerFile("01_crime_4_06\\0x061DEFD6.wav", "A possible 406.", "crime_4_06"); } }
+    //    public static ScannerFile Breakingandentering { get { return new ScannerFile("01_crime_4_06\\0x0FDFC35A.wav", "Breaking and entering.", "crime_4_06"); } }
+    //    public static ScannerFile A406 { get { return new ScannerFile("01_crime_4_06\\0x13790A8D.wav", "A 406.", "crime_4_06"); } }
+    //    public static ScannerFile ABnE { get { return new ScannerFile("01_crime_4_06\\0x1E81A09D.wav", "A BnE.", "crime_4_06"); } }
+    //}
+    //public class crime_4_15 { public static ScannerFile A415 { get { return new ScannerFile("01_crime_4_15\\0x06E7893A.wav", "A 415.", "crime_4_15"); } } }
+    //public class crime_4_15_george
+    //{
+    //    public static ScannerFile Apossiblegangrelateddisturbance { get { return new ScannerFile("01_crime_4_15_george\\0x0A3A3012.wav", "A possible gang-related disturbance.", "crime_4_15_george"); } }
+    //    public static ScannerFile Agangrelateddisturbance { get { return new ScannerFile("01_crime_4_15_george\\0x0B23B1DB.wav", "A gang-related disturbance.", "crime_4_15_george"); } }
+    //    public static ScannerFile A415George { get { return new ScannerFile("01_crime_4_15_george\\0x1D721678.wav", "A 415 George.", "crime_4_15_george"); } }
+    //}
+    //public class crime_4_17
+    //{
+    //    public static ScannerFile Apersonwithafirearm { get { return new ScannerFile("01_crime_4_17\\0x0A578619.wav", "A person with a firearm.", "crime_4_17"); } }
+    //    public static ScannerFile A417 { get { return new ScannerFile("01_crime_4_17\\0x15D4DD10.wav", "A 417.", "crime_4_17"); } }
+    //    public static ScannerFile Apersonwithagun { get { return new ScannerFile("01_crime_4_17\\0x1F9EB0A4.wav", "A person with a gun.", "crime_4_17"); } }
+    //}
+    //public class crime_4_17_king
+    //{
+    //    public static ScannerFile Apersonwithaknife { get { return new ScannerFile("01_crime_4_17_king\\0x05BD27F9.wav", "A person with a knife.", "crime_4_17_king"); } }
+    //    public static ScannerFile A417King { get { return new ScannerFile("01_crime_4_17_king\\0x11B4BFE4.wav", "A 417 King.", "crime_4_17_king"); } }
+    //    public static ScannerFile Apossible417King { get { return new ScannerFile("01_crime_4_17_king\\0x12F6426C.wav", "A possible 417 King.", "crime_4_17_king"); } }
+    //    public static ScannerFile A417King1 { get { return new ScannerFile("01_crime_4_17_king\\0x1AFE9278.wav", "A 417 King.", "crime_4_17_king"); } }
+    //}
     public class crime_4_19
     {
         public static ScannerFile Apossible419 { get { return new ScannerFile("01_crime_4_19\\0x0658CBC9.wav", "A possible 419.", "crime_4_19"); } }
@@ -773,46 +773,46 @@
         public static ScannerFile Adeadbody { get { return new ScannerFile("01_crime_4_19\\0x148F6836.wav", "A dead body.", "crime_4_19"); } }
         public static ScannerFile Adeceasedperson { get { return new ScannerFile("01_crime_4_19\\0x19D032B4.wav", "A deceased person.", "crime_4_19"); } }
     }
-    public class crime_4_59
-    {
-        public static ScannerFile ABnE { get { return new ScannerFile("01_crime_4_59\\0x159DC5DC.wav", "A BnE.", "crime_4_59"); } }
-        public static ScannerFile Apossible459 { get { return new ScannerFile("01_crime_4_59\\0x18214A95.wav", "A possible 459.", "crime_4_59"); } }
-    }
-    public class crime_4_80
-    {
-        public static ScannerFile A480 { get { return new ScannerFile("01_crime_4_80\\0x05D8072E.wav", "A 480.", "crime_4_80"); } }
-        public static ScannerFile Afelonyhitandrun { get { return new ScannerFile("01_crime_4_80\\0x09A9CED1.wav", "A felony hit and run.", "crime_4_80"); } }
-        public static ScannerFile Ahitandrun { get { return new ScannerFile("01_crime_4_80\\0x0C46540B.wav", "A hit and run.", "crime_4_80"); } }
-        public static ScannerFile Apossible480 { get { return new ScannerFile("01_crime_4_80\\0x1719A9B2.wav", "A possible 480.", "crime_4_80"); } }
-    }
-    public class crime_4_81
-    {
-        public static ScannerFile Ahitandrun { get { return new ScannerFile("01_crime_4_81\\0x08B8E1B0.wav", "A hit and run.", "crime_4_81"); } }
-        public static ScannerFile A481 { get { return new ScannerFile("01_crime_4_81\\0x1A9E8577.wav", "A 481.", "crime_4_81"); } }
-    }
+    //public class crime_4_59
+    //{
+    //    public static ScannerFile ABnE { get { return new ScannerFile("01_crime_4_59\\0x159DC5DC.wav", "A BnE.", "crime_4_59"); } }
+    //    public static ScannerFile Apossible459 { get { return new ScannerFile("01_crime_4_59\\0x18214A95.wav", "A possible 459.", "crime_4_59"); } }
+    //}
+    //public class crime_4_80
+    //{
+    //    public static ScannerFile A480 { get { return new ScannerFile("01_crime_4_80\\0x05D8072E.wav", "A 480.", "crime_4_80"); } }
+    //    public static ScannerFile Afelonyhitandrun { get { return new ScannerFile("01_crime_4_80\\0x09A9CED1.wav", "A felony hit and run.", "crime_4_80"); } }
+    //    public static ScannerFile Ahitandrun { get { return new ScannerFile("01_crime_4_80\\0x0C46540B.wav", "A hit and run.", "crime_4_80"); } }
+    //    public static ScannerFile Apossible480 { get { return new ScannerFile("01_crime_4_80\\0x1719A9B2.wav", "A possible 480.", "crime_4_80"); } }
+    //}
+    //public class crime_4_81
+    //{
+    //    public static ScannerFile Ahitandrun { get { return new ScannerFile("01_crime_4_81\\0x08B8E1B0.wav", "A hit and run.", "crime_4_81"); } }
+    //    public static ScannerFile A481 { get { return new ScannerFile("01_crime_4_81\\0x1A9E8577.wav", "A 481.", "crime_4_81"); } }
+    //}
     public class crime_4_84
     {
         public static ScannerFile Apettytheft { get { return new ScannerFile("01_crime_4_84\\0x089B4C9F.wav", "A petty theft.", "crime_4_84"); } }
         public static ScannerFile Apossible484 { get { return new ScannerFile("01_crime_4_84\\0x125A601D.wav", "A possible 484.", "crime_4_84"); } }
         public static ScannerFile A484 { get { return new ScannerFile("01_crime_4_84\\0x1C0E7386.wav", "A 484.", "crime_4_84"); } }
     }
-    public class crime_4_84_paul_sam
-    {
-        public static ScannerFile Apursetheft { get { return new ScannerFile("01_crime_4_84_paul_sam\\0x05649D12.wav", "A purse theft.", "crime_4_84_paul_sam"); } }
-        public static ScannerFile A484PaulSam { get { return new ScannerFile("01_crime_4_84_paul_sam\\0x07E5A217.wav", "A 484 Paul-Sam.", "crime_4_84_paul_sam"); } }
-        public static ScannerFile Apossible484PaulSam { get { return new ScannerFile("01_crime_4_84_paul_sam\\0x13CE79E5.wav", "A possible 484 Paul-Sam.", "crime_4_84_paul_sam"); } }
-    }
-    public class crime_4_87
-    {
-        public static ScannerFile Apossible487 { get { return new ScannerFile("01_crime_4_87\\0x047A29C5.wav", "A possible 487.", "crime_4_87"); } }
-        public static ScannerFile Agrandtheft { get { return new ScannerFile("01_crime_4_87\\0x11C84461.wav", "A grand theft.", "crime_4_87"); } }
-        public static ScannerFile A487 { get { return new ScannerFile("01_crime_4_87\\0x14FA8AC6.wav", "A 487,", "crime_4_87"); } }
-    }
-    public class crime_4_88
-    {
-        public static ScannerFile Apossible488 { get { return new ScannerFile("01_crime_4_88\\0x0A83BA37.wav", "A possible 488.", "crime_4_88"); } }
-        public static ScannerFile A488 { get { return new ScannerFile("01_crime_4_88\\0x1D09DF42.wav", "A 488.", "crime_4_88"); } }
-    }
+    //public class crime_4_84_paul_sam
+    //{
+    //    public static ScannerFile Apursetheft { get { return new ScannerFile("01_crime_4_84_paul_sam\\0x05649D12.wav", "A purse theft.", "crime_4_84_paul_sam"); } }
+    //    public static ScannerFile A484PaulSam { get { return new ScannerFile("01_crime_4_84_paul_sam\\0x07E5A217.wav", "A 484 Paul-Sam.", "crime_4_84_paul_sam"); } }
+    //    public static ScannerFile Apossible484PaulSam { get { return new ScannerFile("01_crime_4_84_paul_sam\\0x13CE79E5.wav", "A possible 484 Paul-Sam.", "crime_4_84_paul_sam"); } }
+    //}
+    //public class crime_4_87
+    //{
+    //    public static ScannerFile Apossible487 { get { return new ScannerFile("01_crime_4_87\\0x047A29C5.wav", "A possible 487.", "crime_4_87"); } }
+    //    public static ScannerFile Agrandtheft { get { return new ScannerFile("01_crime_4_87\\0x11C84461.wav", "A grand theft.", "crime_4_87"); } }
+    //    public static ScannerFile A487 { get { return new ScannerFile("01_crime_4_87\\0x14FA8AC6.wav", "A 487,", "crime_4_87"); } }
+    //}
+    //public class crime_4_88
+    //{
+    //    public static ScannerFile Apossible488 { get { return new ScannerFile("01_crime_4_88\\0x0A83BA37.wav", "A possible 488.", "crime_4_88"); } }
+    //    public static ScannerFile A488 { get { return new ScannerFile("01_crime_4_88\\0x1D09DF42.wav", "A 488.", "crime_4_88"); } }
+    //}
     public class crime_5_02
     {
         public static ScannerFile ADUI { get { return new ScannerFile("01_crime_5_02\\0x02098AFD.wav", "A DUI.", "crime_5_02"); } }
@@ -848,24 +848,24 @@
         public static ScannerFile Vehiclesracing { get { return new ScannerFile("01_crime_5_10\\0x12CE564E.wav", "Vehicles racing.", "crime_5_10"); } }
         public static ScannerFile Speedingvehicle { get { return new ScannerFile("01_crime_5_10\\0x17561F60.wav", "Speeding vehicles.", "crime_5_10"); } }
     }
-    public class crime_5_86
-    {
-        public static ScannerFile A586 { get { return new ScannerFile("01_crime_5_86\\0x092E5D13.wav", "A 586.", "crime_5_86"); } }
-        public static ScannerFile Anillegallyparkedvehicle { get { return new ScannerFile("01_crime_5_86\\0x0D4EA555.wav", "An illegally parked vehicle.", "crime_5_86"); } }
-        public static ScannerFile Illegalparking { get { return new ScannerFile("01_crime_5_86\\0x18DA7C6C.wav", "Illegal parking.", "crime_5_86"); } }
-        public static ScannerFile Aparkingviolation { get { return new ScannerFile("01_crime_5_86\\0x1E1106DA.wav", "A parking violation.", "crime_5_86"); } }
-    }
+    //public class crime_5_86
+    //{
+    //    public static ScannerFile A586 { get { return new ScannerFile("01_crime_5_86\\0x092E5D13.wav", "A 586.", "crime_5_86"); } }
+    //    public static ScannerFile Anillegallyparkedvehicle { get { return new ScannerFile("01_crime_5_86\\0x0D4EA555.wav", "An illegally parked vehicle.", "crime_5_86"); } }
+    //    public static ScannerFile Illegalparking { get { return new ScannerFile("01_crime_5_86\\0x18DA7C6C.wav", "Illegal parking.", "crime_5_86"); } }
+    //    public static ScannerFile Aparkingviolation { get { return new ScannerFile("01_crime_5_86\\0x1E1106DA.wav", "A parking violation.", "crime_5_86"); } }
+    //}
     public class crime_5_94
     {
         public static ScannerFile Maliciousmischief { get { return new ScannerFile("01_crime_5_94\\0x08494618.wav", "Malicious mischief.", "crime_5_94"); } }
         public static ScannerFile Maliciousmischief1 { get { return new ScannerFile("01_crime_5_94\\0x0EA052C1.wav", "Malicious mischief.", "crime_5_94"); } }
         public static ScannerFile A594 { get { return new ScannerFile("01_crime_5_94\\0x16BD22FD.wav", "A 594.", "crime_5_94"); } }
     }
-    public class crime_6_53_mary
-    {
-        public static ScannerFile Athreateningphonecall { get { return new ScannerFile("01_crime_6_53_mary\\0x04A45011.wav", "A threatening phone call.", "crime_6_53_mary"); } }
-        public static ScannerFile A653Mary { get { return new ScannerFile("01_crime_6_53_mary\\0x14332F31.wav", "A 653-Mary.", "crime_6_53_mary"); } }
-    }
+    //public class crime_6_53_mary
+    //{
+    //    public static ScannerFile Athreateningphonecall { get { return new ScannerFile("01_crime_6_53_mary\\0x04A45011.wav", "A threatening phone call.", "crime_6_53_mary"); } }
+    //    public static ScannerFile A653Mary { get { return new ScannerFile("01_crime_6_53_mary\\0x14332F31.wav", "A 653-Mary.", "crime_6_53_mary"); } }
+    //}
     public class crime_9_14a_attempted_suicide
     {
         public static ScannerFile Apossibleattemptedsuicide { get { return new ScannerFile("01_crime_9_14a_attempted_suicide\\0x037FB5C7.wav", "A possible attempted suicide.", "crime_9_14a_attempted_suicide"); } }
@@ -879,52 +879,52 @@
         public static ScannerFile Asuspiciousperson { get { return new ScannerFile("01_crime_9_25\\0x11BA9943.wav", "A suspicious person.", "crime_9_25"); } }
         public static ScannerFile A925 { get { return new ScannerFile("01_crime_9_25\\0x1F38B43F.wav", "A 925.", "crime_9_25"); } }
     }
-    public class crime_9_96
-    {
-        public static ScannerFile A996 { get { return new ScannerFile("01_crime_9_96\\0x0BD091D7.wav", "A 996.", "crime_9_96"); } }
-        public static ScannerFile Acombustiblematerialincident { get { return new ScannerFile("01_crime_9_96\\0x11861D3A.wav", "A combustible material incident.", "crime_9_96"); } }
-    }
-    public class crime_9_96_boy
-    {
-        public static ScannerFile A996Boy { get { return new ScannerFile("01_crime_9_96_boy\\0x05AC6C07.wav", "A 996-Boy.", "crime_9_96_boy"); } }
-        public static ScannerFile Anexplosion { get { return new ScannerFile("01_crime_9_96_boy\\0x1BF8589E.wav", "An explosion.", "crime_9_96_boy"); } }
-    }
-    public class crime_accident { public static ScannerFile Anaccident { get { return new ScannerFile("01_crime_accident\\0x0AC0DB4B.wav", "An accident.", "crime_accident"); } } }
-    public class crime_airplane_crash
-    {
-        public static ScannerFile Anaircraftcrash { get { return new ScannerFile("01_crime_airplane_crash\\0x04A51B94.wav", "An aircraft crash.", "crime_airplane_crash"); } }
-        public static ScannerFile AnAC { get { return new ScannerFile("01_crime_airplane_crash\\0x183EC2CD.wav", "An AC.", "crime_airplane_crash"); } }
-        public static ScannerFile Anairplanecrash { get { return new ScannerFile("01_crime_airplane_crash\\0x190D4464.wav", "An airplane crash.", "crime_airplane_crash"); } }
-    }
-    public class crime_air_squad_down { public static ScannerFile Anairsquaddown { get { return new ScannerFile("01_crime_air_squad_down\\0x08895194.wav", "An air squad down.", "crime_air_squad_down"); } } }
-    public class crime_air_unit_down { public static ScannerFile Anairunitdown { get { return new ScannerFile("01_crime_air_unit_down\\0x098D02C9.wav", "An air unit down.", "crime_air_unit_down"); } } }
-    public class crime_ambulance_requested
-    {
-        public static ScannerFile Anambulancecall { get { return new ScannerFile("01_crime_ambulance_requested\\0x01B705D3.wav", "An ambulance call.", "crime_ambulance_requested"); } }
-        public static ScannerFile Aninjuryincident { get { return new ScannerFile("01_crime_ambulance_requested\\0x0B58D917.wav", "An injury incident.", "crime_ambulance_requested"); } }
-        public static ScannerFile Anambulancerequestedinjuriesunknown { get { return new ScannerFile("01_crime_ambulance_requested\\0x1208E676.wav", "An ambulance requested; injuries unknown.", "crime_ambulance_requested"); } }
-    }
-    public class crime_animal_cruelty
-    {
-        public static ScannerFile Reportofanimalcruelty { get { return new ScannerFile("01_crime_animal_cruelty\\0x0383DAFA.wav", "Report of animal cruelty.", "crime_animal_cruelty"); } }
-        public static ScannerFile Reportsofanimalcruelty { get { return new ScannerFile("01_crime_animal_cruelty\\0x12BA7967.wav", "Reports of animal cruelty.", "crime_animal_cruelty"); } }
-        public static ScannerFile Reportsofanimalcruelty1 { get { return new ScannerFile("01_crime_animal_cruelty\\0x16DD41AE.wav", "Reports of animal cruelty.", "crime_animal_cruelty"); } }
-    }
-    public class crime_animal_killed
-    {
-        public static ScannerFile Animalkilledbyperson { get { return new ScannerFile("01_crime_animal_killed\\0x0BAACC73.wav", "Animal killed by person.", "crime_animal_killed"); } }
-        public static ScannerFile Animalkilled { get { return new ScannerFile("01_crime_animal_killed\\0x0F3A9393.wav", "Animal killed.", "crime_animal_killed"); } }
-    }
-    public class crime_armored_car_robbery
-    {
-        public static ScannerFile Anarmoredcarrobbery { get { return new ScannerFile("01_crime_armored_car_robbery\\0x0E8B5D1D.wav", "An armored car robbery.", "crime_armored_car_robbery"); } }
-        public static ScannerFile Apossiblearmoredcarrobbery { get { return new ScannerFile("01_crime_armored_car_robbery\\0x1D40BA88.wav", "A possible armored car robbery.", "crime_armored_car_robbery"); } }
-    }
-    public class crime_arson
-    {
-        public static ScannerFile Anarsonattack { get { return new ScannerFile("01_crime_arson\\0x040FE61D.wav", "An arson attack.", "crime_arson"); } }
-        public static ScannerFile Arson { get { return new ScannerFile("01_crime_arson\\0x124D0298.wav", "Arson.", "crime_arson"); } }
-    }
+    //public class crime_9_96
+    //{
+    //    public static ScannerFile A996 { get { return new ScannerFile("01_crime_9_96\\0x0BD091D7.wav", "A 996.", "crime_9_96"); } }
+    //    public static ScannerFile Acombustiblematerialincident { get { return new ScannerFile("01_crime_9_96\\0x11861D3A.wav", "A combustible material incident.", "crime_9_96"); } }
+    //}
+    //public class crime_9_96_boy
+    //{
+    //    public static ScannerFile A996Boy { get { return new ScannerFile("01_crime_9_96_boy\\0x05AC6C07.wav", "A 996-Boy.", "crime_9_96_boy"); } }
+    //    public static ScannerFile Anexplosion { get { return new ScannerFile("01_crime_9_96_boy\\0x1BF8589E.wav", "An explosion.", "crime_9_96_boy"); } }
+    //}
+   // public class crime_accident { public static ScannerFile Anaccident { get { return new ScannerFile("01_crime_accident\\0x0AC0DB4B.wav", "An accident.", "crime_accident"); } } }
+    //public class crime_airplane_crash
+    //{
+    //    public static ScannerFile Anaircraftcrash { get { return new ScannerFile("01_crime_airplane_crash\\0x04A51B94.wav", "An aircraft crash.", "crime_airplane_crash"); } }
+    //    public static ScannerFile AnAC { get { return new ScannerFile("01_crime_airplane_crash\\0x183EC2CD.wav", "An AC.", "crime_airplane_crash"); } }
+    //    public static ScannerFile Anairplanecrash { get { return new ScannerFile("01_crime_airplane_crash\\0x190D4464.wav", "An airplane crash.", "crime_airplane_crash"); } }
+    //}
+    //public class crime_air_squad_down { public static ScannerFile Anairsquaddown { get { return new ScannerFile("01_crime_air_squad_down\\0x08895194.wav", "An air squad down.", "crime_air_squad_down"); } } }
+    //public class crime_air_unit_down { public static ScannerFile Anairunitdown { get { return new ScannerFile("01_crime_air_unit_down\\0x098D02C9.wav", "An air unit down.", "crime_air_unit_down"); } } }
+    //public class crime_ambulance_requested
+    //{
+    //    public static ScannerFile Anambulancecall { get { return new ScannerFile("01_crime_ambulance_requested\\0x01B705D3.wav", "An ambulance call.", "crime_ambulance_requested"); } }
+    //    public static ScannerFile Aninjuryincident { get { return new ScannerFile("01_crime_ambulance_requested\\0x0B58D917.wav", "An injury incident.", "crime_ambulance_requested"); } }
+    //    public static ScannerFile Anambulancerequestedinjuriesunknown { get { return new ScannerFile("01_crime_ambulance_requested\\0x1208E676.wav", "An ambulance requested; injuries unknown.", "crime_ambulance_requested"); } }
+    //}
+    //public class crime_animal_cruelty
+    //{
+    //    public static ScannerFile Reportofanimalcruelty { get { return new ScannerFile("01_crime_animal_cruelty\\0x0383DAFA.wav", "Report of animal cruelty.", "crime_animal_cruelty"); } }
+    //    public static ScannerFile Reportsofanimalcruelty { get { return new ScannerFile("01_crime_animal_cruelty\\0x12BA7967.wav", "Reports of animal cruelty.", "crime_animal_cruelty"); } }
+    //    public static ScannerFile Reportsofanimalcruelty1 { get { return new ScannerFile("01_crime_animal_cruelty\\0x16DD41AE.wav", "Reports of animal cruelty.", "crime_animal_cruelty"); } }
+    //}
+    //public class crime_animal_killed
+    //{
+    //    public static ScannerFile Animalkilledbyperson { get { return new ScannerFile("01_crime_animal_killed\\0x0BAACC73.wav", "Animal killed by person.", "crime_animal_killed"); } }
+    //    public static ScannerFile Animalkilled { get { return new ScannerFile("01_crime_animal_killed\\0x0F3A9393.wav", "Animal killed.", "crime_animal_killed"); } }
+    //}
+    //public class crime_armored_car_robbery
+    //{
+    //    public static ScannerFile Anarmoredcarrobbery { get { return new ScannerFile("01_crime_armored_car_robbery\\0x0E8B5D1D.wav", "An armored car robbery.", "crime_armored_car_robbery"); } }
+    //    public static ScannerFile Apossiblearmoredcarrobbery { get { return new ScannerFile("01_crime_armored_car_robbery\\0x1D40BA88.wav", "A possible armored car robbery.", "crime_armored_car_robbery"); } }
+    //}
+    //public class crime_arson
+    //{
+    //    public static ScannerFile Anarsonattack { get { return new ScannerFile("01_crime_arson\\0x040FE61D.wav", "An arson attack.", "crime_arson"); } }
+    //    public static ScannerFile Arson { get { return new ScannerFile("01_crime_arson\\0x124D0298.wav", "Arson.", "crime_arson"); } }
+    //}
     public class crime_assault
     {
         public static ScannerFile Apossibleassault { get { return new ScannerFile("01_crime_assault\\0x1009963F.wav", "A possible assault.", "crime_assault"); } }
@@ -946,38 +946,38 @@
         public static ScannerFile AnADW { get { return new ScannerFile("01_crime_assault_with_a_deadly_weapon\\0x0B1C964E.wav", "An ADW.", "crime_assault_with_a_deadly_weapon"); } }
         public static ScannerFile Assaultwithadeadlyweapon { get { return new ScannerFile("01_crime_assault_with_a_deadly_weapon\\0x1909F229.wav", "Assault with a deadly weapon.", "crime_assault_with_a_deadly_weapon"); } }
     }
-    public class crime_association
-    {
-        public static ScannerFile Associationwithanindividualengagedincriminalactivity { get { return new ScannerFile("01_crime_association\\0x047A56F7.wav", "Association with an individual engaged in criminal activity.", "crime_association"); } }
-        public static ScannerFile Associationwithaknownfelon { get { return new ScannerFile("01_crime_association\\0x11807101.wav", "Association with a known felon.", "crime_association"); } }
-        public static ScannerFile Associationwithaknowncriminal { get { return new ScannerFile("01_crime_association\\0x123BF27A.wav", "Association with a known criminal.", "crime_association"); } }
-        public static ScannerFile Associationwithanindividualengagedincriminalactivity1 { get { return new ScannerFile("01_crime_association\\0x16813B05.wav", "Association with an individual engaged in criminal activity.", "crime_association"); } }
-        public static ScannerFile Acivilianwantedforassociationwithaknownfelon { get { return new ScannerFile("01_crime_association\\0x1F598CB7.wav", "A civilian wanted for association with a known felon.", "crime_association"); } }
-    }
-    public class crime_attack_on_an_endangered_species { public static ScannerFile Anattackonanendangeredspecies { get { return new ScannerFile("01_crime_attack_on_an_endangered_species\\0x1B784403.wav", "An attack on an endangered species.", "crime_attack_on_an_endangered_species"); } } }
-    public class crime_attack_on_an_officer { public static ScannerFile Anattackonanofficer { get { return new ScannerFile("01_crime_attack_on_an_officer\\0x05D1A54E.wav", "An attack on an officer.", "crime_attack_on_an_officer"); } } }
-    public class crime_attack_on_a_motor_vehicle { public static ScannerFile Anattackonamotorvehicle { get { return new ScannerFile("01_crime_attack_on_a_motor_vehicle\\0x05B29DBA.wav", "An attack on a motor vehicle.", "crime_attack_on_a_motor_vehicle"); } } }
-    public class crime_attack_on_a_protected_species
-    {
-        public static ScannerFile Anattackonaprotectedspecies { get { return new ScannerFile("01_crime_attack_on_a_protected_species\\0x07F5B9BF.wav", "An attack on a protected species.", "crime_attack_on_a_protected_species"); } }
-        public static ScannerFile Attackonaprotectedspecies { get { return new ScannerFile("01_crime_attack_on_a_protected_species\\0x19A71D22.wav", "Attack on a protected species.", "crime_attack_on_a_protected_species"); } }
-    }
-    public class crime_attack_on_a_vehicle { public static ScannerFile Anattackonavehicle { get { return new ScannerFile("01_crime_attack_on_a_vehicle\\0x0BCD234E.wav", "An attack on a vehicle.", "crime_attack_on_a_vehicle"); } } }
-    public class crime_attempted_homicide { public static ScannerFile Anattemptedhomicide { get { return new ScannerFile("01_crime_attempted_homicide\\0x137F395C.wav", "An attempted homicide.", "crime_attempted_homicide"); } } }
-    public class crime_bank_robbery
-    {
-        public static ScannerFile Abankrobbery { get { return new ScannerFile("01_crime_bank_robbery\\0x08797576.wav", "A bank robbery.", "crime_bank_robbery"); } }
-        public static ScannerFile Abankheist { get { return new ScannerFile("01_crime_bank_robbery\\0x0D703F9D.wav", "A bank heist.", "crime_bank_robbery"); } }
-        public static ScannerFile Abankrobbery1 { get { return new ScannerFile("01_crime_bank_robbery\\0x12590970.wav", "A bank robbery.", "crime_bank_robbery"); } }
-        public static ScannerFile Apossiblebankrobbery { get { return new ScannerFile("01_crime_bank_robbery\\0x18C2D609.wav", "A possible bank robbery.", "crime_bank_robbery"); } }
-        public static ScannerFile Apossiblebankrobbery1 { get { return new ScannerFile("01_crime_bank_robbery\\0x1B249B06.wav", "A possible bank robbery.", "crime_bank_robbery"); } }
-    }
-    public class crime_burglary { public static ScannerFile Apossibleburglary { get { return new ScannerFile("01_crime_burglary\\0x065CDE1D.wav", "A possible burglary.", "crime_burglary"); } } }
-    public class crime_car_jacking
-    {
-        public static ScannerFile Apossiblecarjacking { get { return new ScannerFile("01_crime_car_jacking\\0x0BFAF610.wav", "A possible carjacking.", "crime_car_jacking"); } }
-        public static ScannerFile Acarjacking { get { return new ScannerFile("01_crime_car_jacking\\0x1A6892EB.wav", "A carjacking.", "crime_car_jacking"); } }
-    }
+    //public class crime_association
+    //{
+    //    public static ScannerFile Associationwithanindividualengagedincriminalactivity { get { return new ScannerFile("01_crime_association\\0x047A56F7.wav", "Association with an individual engaged in criminal activity.", "crime_association"); } }
+    //    public static ScannerFile Associationwithaknownfelon { get { return new ScannerFile("01_crime_association\\0x11807101.wav", "Association with a known felon.", "crime_association"); } }
+    //    public static ScannerFile Associationwithaknowncriminal { get { return new ScannerFile("01_crime_association\\0x123BF27A.wav", "Association with a known criminal.", "crime_association"); } }
+    //    public static ScannerFile Associationwithanindividualengagedincriminalactivity1 { get { return new ScannerFile("01_crime_association\\0x16813B05.wav", "Association with an individual engaged in criminal activity.", "crime_association"); } }
+    //    public static ScannerFile Acivilianwantedforassociationwithaknownfelon { get { return new ScannerFile("01_crime_association\\0x1F598CB7.wav", "A civilian wanted for association with a known felon.", "crime_association"); } }
+    //}
+    //public class crime_attack_on_an_endangered_species { public static ScannerFile Anattackonanendangeredspecies { get { return new ScannerFile("01_crime_attack_on_an_endangered_species\\0x1B784403.wav", "An attack on an endangered species.", "crime_attack_on_an_endangered_species"); } } }
+    // public class crime_attack_on_an_officer { public static ScannerFile Anattackonanofficer { get { return new ScannerFile("01_crime_attack_on_an_officer\\0x05D1A54E.wav", "An attack on an officer.", "crime_attack_on_an_officer"); } } }
+    // public class crime_attack_on_a_motor_vehicle { public static ScannerFile Anattackonamotorvehicle { get { return new ScannerFile("01_crime_attack_on_a_motor_vehicle\\0x05B29DBA.wav", "An attack on a motor vehicle.", "crime_attack_on_a_motor_vehicle"); } } }
+    //public class crime_attack_on_a_protected_species
+    //{
+    //    public static ScannerFile Anattackonaprotectedspecies { get { return new ScannerFile("01_crime_attack_on_a_protected_species\\0x07F5B9BF.wav", "An attack on a protected species.", "crime_attack_on_a_protected_species"); } }
+    //    public static ScannerFile Attackonaprotectedspecies { get { return new ScannerFile("01_crime_attack_on_a_protected_species\\0x19A71D22.wav", "Attack on a protected species.", "crime_attack_on_a_protected_species"); } }
+    //}
+    //public class crime_attack_on_a_vehicle { public static ScannerFile Anattackonavehicle { get { return new ScannerFile("01_crime_attack_on_a_vehicle\\0x0BCD234E.wav", "An attack on a vehicle.", "crime_attack_on_a_vehicle"); } } }
+    //public class crime_attempted_homicide { public static ScannerFile Anattemptedhomicide { get { return new ScannerFile("01_crime_attempted_homicide\\0x137F395C.wav", "An attempted homicide.", "crime_attempted_homicide"); } } }
+    //public class crime_bank_robbery
+    //{
+    //    public static ScannerFile Abankrobbery { get { return new ScannerFile("01_crime_bank_robbery\\0x08797576.wav", "A bank robbery.", "crime_bank_robbery"); } }
+    //    public static ScannerFile Abankheist { get { return new ScannerFile("01_crime_bank_robbery\\0x0D703F9D.wav", "A bank heist.", "crime_bank_robbery"); } }
+    //    public static ScannerFile Abankrobbery1 { get { return new ScannerFile("01_crime_bank_robbery\\0x12590970.wav", "A bank robbery.", "crime_bank_robbery"); } }
+    //    public static ScannerFile Apossiblebankrobbery { get { return new ScannerFile("01_crime_bank_robbery\\0x18C2D609.wav", "A possible bank robbery.", "crime_bank_robbery"); } }
+    //    public static ScannerFile Apossiblebankrobbery1 { get { return new ScannerFile("01_crime_bank_robbery\\0x1B249B06.wav", "A possible bank robbery.", "crime_bank_robbery"); } }
+    //}
+    //public class crime_burglary { public static ScannerFile Apossibleburglary { get { return new ScannerFile("01_crime_burglary\\0x065CDE1D.wav", "A possible burglary.", "crime_burglary"); } } }
+    //public class crime_car_jacking
+    //{
+    //    public static ScannerFile Apossiblecarjacking { get { return new ScannerFile("01_crime_car_jacking\\0x0BFAF610.wav", "A possible carjacking.", "crime_car_jacking"); } }
+    //    public static ScannerFile Acarjacking { get { return new ScannerFile("01_crime_car_jacking\\0x1A6892EB.wav", "A carjacking.", "crime_car_jacking"); } }
+    //}
     public class crime_car_on_fire
     {
         public static ScannerFile Acarfire { get { return new ScannerFile("01_crime_car_on_fire\\0x065069D8.wav", "A car fire.", "crime_car_on_fire"); } }
@@ -997,8 +997,8 @@
         public static ScannerFile Agunshotwound { get { return new ScannerFile("01_crime_civillian_gsw\\0x11579233.wav", "A gunshot wound.", "crime_civillian_gsw"); } }
         public static ScannerFile Acivilianshot { get { return new ScannerFile("01_crime_civillian_gsw\\0x15439A09.wav", "A civilian shot.", "crime_civillian_gsw"); } }
     }
-    public class crime_civillian_on_fire { public static ScannerFile Acivilianonfire { get { return new ScannerFile("01_crime_civillian_on_fire\\0x0CCE003C.wav", "A civilian on fire.", "crime_civillian_on_fire"); } } }
-    public class crime_civil_disturbance { public static ScannerFile Acivildisturbance { get { return new ScannerFile("01_crime_civil_disturbance\\0x16A9B4AA.wav", "A civil disturbance.", "crime_civil_disturbance"); } } }
+    //public class crime_civillian_on_fire { public static ScannerFile Acivilianonfire { get { return new ScannerFile("01_crime_civillian_on_fire\\0x0CCE003C.wav", "A civilian on fire.", "crime_civillian_on_fire"); } } }
+    //public class crime_civil_disturbance { public static ScannerFile Acivildisturbance { get { return new ScannerFile("01_crime_civil_disturbance\\0x16A9B4AA.wav", "A civil disturbance.", "crime_civil_disturbance"); } } }
     //public class crime_code { public static ScannerFile 217 { get {return new ScannerFile("01_crime_code\\0x00FB6351.wav","217","crime_code"); } }
     //public static ScannerFile 10851 { get {return new ScannerFile("01_crime_code\\0x0103395C.wav","10-851.","crime_code"); } }
     //public static ScannerFile 488 { get {return new ScannerFile("01_crime_code\\0x0188BBA3.wav","488","crime_code"); } }
@@ -1071,12 +1071,12 @@
         public static ScannerFile Criminalactivity { get { return new ScannerFile("01_crime_criminal_activity\\0x1B755C5C.wav", "Criminal activity.", "crime_criminal_activity"); } }
         public static ScannerFile Areportofacriminalactivity { get { return new ScannerFile("01_crime_criminal_activity\\0x1E7A2266.wav", "A report of a criminal activity.", "crime_criminal_activity"); } }
     }
-    public class crime_dangerous_driving
-    {
-        public static ScannerFile Dangerousdriving { get { return new ScannerFile("01_crime_dangerous_driving\\0x0129A4E4.wav", "Dangerous driving.", "crime_dangerous_driving"); } }
-        public static ScannerFile Dangerousdriving1 { get { return new ScannerFile("01_crime_dangerous_driving\\0x1B6C996A.wav", "Dangerous driving.", "crime_dangerous_driving"); } }
-    }
-    public class crime_dead_body { public static ScannerFile Adeadbody { get { return new ScannerFile("01_crime_dead_body\\0x1567C297.wav", "A dead body.", "crime_dead_body"); } } }
+    //public class crime_dangerous_driving
+    //{
+    //    public static ScannerFile Dangerousdriving { get { return new ScannerFile("01_crime_dangerous_driving\\0x0129A4E4.wav", "Dangerous driving.", "crime_dangerous_driving"); } }
+    //    public static ScannerFile Dangerousdriving1 { get { return new ScannerFile("01_crime_dangerous_driving\\0x1B6C996A.wav", "Dangerous driving.", "crime_dangerous_driving"); } }
+    //}
+    //public class crime_dead_body { public static ScannerFile Adeadbody { get { return new ScannerFile("01_crime_dead_body\\0x1567C297.wav", "A dead body.", "crime_dead_body"); } } }
     public class crime_disturbance
     {
         public static ScannerFile Apossibledisturbance { get { return new ScannerFile("01_crime_disturbance\\0x06A8CC92.wav", "A possible disturbance.", "crime_disturbance"); } }
@@ -1084,13 +1084,13 @@
         public static ScannerFile Adisturbance1 { get { return new ScannerFile("01_crime_disturbance\\0x14AEA8AC.wav", "A disturbance.", "crime_disturbance"); } }
         public static ScannerFile A415 { get { return new ScannerFile("01_crime_disturbance\\0x19F7733E.wav", "A 415.", "crime_disturbance"); } }
     }
-    public class crime_domestic_disturbance
-    {
-        public static ScannerFile Adomesticdisturbance { get { return new ScannerFile("01_crime_domestic_disturbance\\0x0BECC465.wav", "A domestic disturbance.", "crime_domestic_disturbance"); } }
-        public static ScannerFile Apossibledomesticdisturbance { get { return new ScannerFile("01_crime_domestic_disturbance\\0x1A19A0BE.wav", "A possible domestic disturbance.", "crime_domestic_disturbance"); } }
-    }
-    public class crime_domestic_violence_incident { public static ScannerFile Domesticviolenceincident { get { return new ScannerFile("01_crime_domestic_violence_incident\\0x0533758F.wav", "Domestic violence incident.", "crime_domestic_violence_incident"); } } }
-    public class crime_driveby_shooting { public static ScannerFile Adrivebyshooting { get { return new ScannerFile("01_crime_driveby_shooting\\0x1C66805E.wav", "A driveby shooting.", "crime_driveby_shooting"); } } }
+    //public class crime_domestic_disturbance
+    //{
+    //    public static ScannerFile Adomesticdisturbance { get { return new ScannerFile("01_crime_domestic_disturbance\\0x0BECC465.wav", "A domestic disturbance.", "crime_domestic_disturbance"); } }
+    //    public static ScannerFile Apossibledomesticdisturbance { get { return new ScannerFile("01_crime_domestic_disturbance\\0x1A19A0BE.wav", "A possible domestic disturbance.", "crime_domestic_disturbance"); } }
+    //}
+    //public class crime_domestic_violence_incident { public static ScannerFile Domesticviolenceincident { get { return new ScannerFile("01_crime_domestic_violence_incident\\0x0533758F.wav", "Domestic violence incident.", "crime_domestic_violence_incident"); } } }
+    //public class crime_driveby_shooting { public static ScannerFile Adrivebyshooting { get { return new ScannerFile("01_crime_driveby_shooting\\0x1C66805E.wav", "A driveby shooting.", "crime_driveby_shooting"); } } }
     public class crime_drug_deal
     {
         public static ScannerFile Narcoticstrafficking { get { return new ScannerFile("01_crime_drug_deal\\0x043280CC.wav", "Narcotics trafficking.", "crime_drug_deal"); } }
@@ -1113,14 +1113,14 @@
         public static ScannerFile AweaponsincidentShotsfired { get { return new ScannerFile("01_crime_firearms_incident\\0x193ACF7B.wav", "A weapons incident. Shots fired.", "crime_firearms_incident"); } }
     }
     public class crime_firearms_possession { public static ScannerFile Afirearmspossession { get { return new ScannerFile("01_crime_firearms_possession\\0x0C2145BC.wav", "A firearms possession.", "crime_firearms_possession"); } } }
-    public class crime_firearm_discharged_in_a_public_place { public static ScannerFile Afirearmdischargedinapublicplace { get { return new ScannerFile("01_crime_firearm_discharged_in_a_public_place\\0x085D09EB.wav", "A firearm discharged in a public place.", "crime_firearm_discharged_in_a_public_place"); } } }
-    public class crime_fire_alarm { public static ScannerFile Afirealarm { get { return new ScannerFile("01_crime_fire_alarm\\0x0B3DC516.wav", "A fire alarm.", "crime_fire_alarm"); } } }
-    public class crime_gang_activity_incident { public static ScannerFile Agangactivityincident { get { return new ScannerFile("01_crime_gang_activity_incident\\0x18F48FFD.wav", "A gang activity incident.", "crime_gang_activity_incident"); } } }
-    public class crime_gang_related_violence
-    {
-        public static ScannerFile Gangrelatedviolence { get { return new ScannerFile("01_crime_gang_related_violence\\0x0092E590.wav", "Gang-related violence.", "crime_gang_related_violence"); } }
-        public static ScannerFile Gangrelatedviolence1 { get { return new ScannerFile("01_crime_gang_related_violence\\0x0EB801DB.wav", "Gang-related violence.", "crime_gang_related_violence"); } }
-    }
+   // public class crime_firearm_discharged_in_a_public_place { public static ScannerFile Afirearmdischargedinapublicplace { get { return new ScannerFile("01_crime_firearm_discharged_in_a_public_place\\0x085D09EB.wav", "A firearm discharged in a public place.", "crime_firearm_discharged_in_a_public_place"); } } }
+   // public class crime_fire_alarm { public static ScannerFile Afirealarm { get { return new ScannerFile("01_crime_fire_alarm\\0x0B3DC516.wav", "A fire alarm.", "crime_fire_alarm"); } } }
+  //  public class crime_gang_activity_incident { public static ScannerFile Agangactivityincident { get { return new ScannerFile("01_crime_gang_activity_incident\\0x18F48FFD.wav", "A gang activity incident.", "crime_gang_activity_incident"); } } }
+    //public class crime_gang_related_violence
+    //{
+    //    public static ScannerFile Gangrelatedviolence { get { return new ScannerFile("01_crime_gang_related_violence\\0x0092E590.wav", "Gang-related violence.", "crime_gang_related_violence"); } }
+    //    public static ScannerFile Gangrelatedviolence1 { get { return new ScannerFile("01_crime_gang_related_violence\\0x0EB801DB.wav", "Gang-related violence.", "crime_gang_related_violence"); } }
+    //}
     public class crime_grand_theft_auto
     {
         public static ScannerFile AGTAinprogress { get { return new ScannerFile("01_crime_grand_theft_auto\\0x008EDFEF.wav", "A GTA in progress.", "crime_grand_theft_auto"); } }
@@ -1128,62 +1128,62 @@
         public static ScannerFile AGTAinprogress1 { get { return new ScannerFile("01_crime_grand_theft_auto\\0x0AA4B41B.wav", "A GTA in progress.", "crime_grand_theft_auto"); } }
         public static ScannerFile Agrandtheftauto { get { return new ScannerFile("01_crime_grand_theft_auto\\0x1C0316D8.wav", "A grand theft auto.", "crime_grand_theft_auto"); } }
     }
-    public class crime_gsw_driveby_attack { public static ScannerFile Adrivebyattack { get { return new ScannerFile("01_crime_gsw_driveby_attack\\0x0AC6744D.wav", "A driveby attack.", "crime_gsw_driveby_attack"); } } }
-    public class crime_helicopter_down
-    {
-        public static ScannerFile Ahelicopterdown { get { return new ScannerFile("01_crime_helicopter_down\\0x1DB63742.wav", "A helicopter down.", "crime_helicopter_down"); } }
-        public static ScannerFile Achopperdown { get { return new ScannerFile("01_crime_helicopter_down\\0x1F6ABAA8.wav", "A chopper down.", "crime_helicopter_down"); } }
-    }
-    public class crime_high_ranking_gang_member_in_transit { public static ScannerFile Ahighrankinggangmemberintransit { get { return new ScannerFile("01_crime_high_ranking_gang_member_in_transit\\0x0920EE1F.wav", "A high-ranking gang member in transit.", "crime_high_ranking_gang_member_in_transit"); } } }
+   // public class crime_gsw_driveby_attack { public static ScannerFile Adrivebyattack { get { return new ScannerFile("01_crime_gsw_driveby_attack\\0x0AC6744D.wav", "A driveby attack.", "crime_gsw_driveby_attack"); } } }
+    //public class crime_helicopter_down
+    //{
+    //    public static ScannerFile Ahelicopterdown { get { return new ScannerFile("01_crime_helicopter_down\\0x1DB63742.wav", "A helicopter down.", "crime_helicopter_down"); } }
+    //    public static ScannerFile Achopperdown { get { return new ScannerFile("01_crime_helicopter_down\\0x1F6ABAA8.wav", "A chopper down.", "crime_helicopter_down"); } }
+    //}
+  //  public class crime_high_ranking_gang_member_in_transit { public static ScannerFile Ahighrankinggangmemberintransit { get { return new ScannerFile("01_crime_high_ranking_gang_member_in_transit\\0x0920EE1F.wav", "A high-ranking gang member in transit.", "crime_high_ranking_gang_member_in_transit"); } } }
     public class crime_hijacked_aircraft { public static ScannerFile Ahijackedaircraft { get { return new ScannerFile("01_crime_hijacked_aircraft\\0x1CFA777C.wav", "A hijacked aircraft.", "crime_hijacked_aircraft"); } } }
     public class crime_hijacked_vehicle { public static ScannerFile Ahijackedvehicle { get { return new ScannerFile("01_crime_hijacked_vehicle\\0x0E518420.wav", "A hijacked vehicle.", "crime_hijacked_vehicle"); } } }
     public class crime_hold_up { public static ScannerFile Aholdup { get { return new ScannerFile("01_crime_hold_up\\0x162A5F2D.wav", "A hold-up.", "crime_hold_up"); } } }
-    public class crime_hunting_an_endangered_species { public static ScannerFile Huntinganendangeredspecies { get { return new ScannerFile("01_crime_hunting_an_endangered_species\\0x1AFDD2BB.wav", "Hunting an endangered species.", "crime_hunting_an_endangered_species"); } } }
-    public class crime_hunting_without_a_permit
-    {
-        public static ScannerFile Personhuntingwithoutapermit { get { return new ScannerFile("01_crime_hunting_without_a_permit\\0x08CC0434.wav", "Person hunting without a permit.", "crime_hunting_without_a_permit"); } }
-        public static ScannerFile Huntingwithoutapermit { get { return new ScannerFile("01_crime_hunting_without_a_permit\\0x19FEA699.wav", "Hunting without a permit.", "crime_hunting_without_a_permit"); } }
-    }
-    public class crime_illegal_burning
-    {
-        public static ScannerFile Anillegalfire { get { return new ScannerFile("01_crime_illegal_burning\\0x1802EBFB.wav", "An illegal fire.", "crime_illegal_burning"); } }
-        public static ScannerFile Illegalburning { get { return new ScannerFile("01_crime_illegal_burning\\0x1ED03998.wav", "Illegal burning.", "crime_illegal_burning"); } }
-    }
+    //public class crime_hunting_an_endangered_species { public static ScannerFile Huntinganendangeredspecies { get { return new ScannerFile("01_crime_hunting_an_endangered_species\\0x1AFDD2BB.wav", "Hunting an endangered species.", "crime_hunting_an_endangered_species"); } } }
+    //public class crime_hunting_without_a_permit
+    //{
+    //    public static ScannerFile Personhuntingwithoutapermit { get { return new ScannerFile("01_crime_hunting_without_a_permit\\0x08CC0434.wav", "Person hunting without a permit.", "crime_hunting_without_a_permit"); } }
+    //    public static ScannerFile Huntingwithoutapermit { get { return new ScannerFile("01_crime_hunting_without_a_permit\\0x19FEA699.wav", "Hunting without a permit.", "crime_hunting_without_a_permit"); } }
+    //}
+    //public class crime_illegal_burning
+    //{
+    //    public static ScannerFile Anillegalfire { get { return new ScannerFile("01_crime_illegal_burning\\0x1802EBFB.wav", "An illegal fire.", "crime_illegal_burning"); } }
+    //    public static ScannerFile Illegalburning { get { return new ScannerFile("01_crime_illegal_burning\\0x1ED03998.wav", "Illegal burning.", "crime_illegal_burning"); } }
+    //}
     public class crime_injured_civilian { public static ScannerFile Aninjuredcivilian { get { return new ScannerFile("01_crime_injured_civilian\\0x1AF8CB2D.wav", "An injured civilian.", "crime_injured_civilian"); } } }
-    public class crime_killing_animals { public static ScannerFile Killinganimals { get { return new ScannerFile("01_crime_killing_animals\\0x0651B03C.wav", "Killing animals.", "crime_killing_animals"); } } }
-    public class crime_kinfe_assault_on_an_officer { public static ScannerFile Aknifeassaultonanofficer { get { return new ScannerFile("01_crime_kinfe_assault_on_an_officer\\0x18674968.wav", "A knife assault on an officer.", "crime_kinfe_assault_on_an_officer"); } } }
-    public class crime_low_flying_aircraft
-    {
-        public static ScannerFile Alowflyingaircraft { get { return new ScannerFile("01_crime_low_flying_aircraft\\0x0ED60811.wav", "A low-flying aircraft.", "crime_low_flying_aircraft"); } }
-        public static ScannerFile Lowflyingaircraft { get { return new ScannerFile("01_crime_low_flying_aircraft\\0x1D91E58B.wav", "Low-flying aircraft.", "crime_low_flying_aircraft"); } }
-    }
-    public class crime_malicious_damage_to_property { public static ScannerFile Maliciousdamagetoproperty { get { return new ScannerFile("01_crime_malicious_damage_to_property\\0x0E66D16B.wav", "Malicious damage to property.", "crime_malicious_damage_to_property"); } } }
+   // public class crime_killing_animals { public static ScannerFile Killinganimals { get { return new ScannerFile("01_crime_killing_animals\\0x0651B03C.wav", "Killing animals.", "crime_killing_animals"); } } }
+    //public class crime_kinfe_assault_on_an_officer { public static ScannerFile Aknifeassaultonanofficer { get { return new ScannerFile("01_crime_kinfe_assault_on_an_officer\\0x18674968.wav", "A knife assault on an officer.", "crime_kinfe_assault_on_an_officer"); } } }
+    //public class crime_low_flying_aircraft
+    //{
+    //    public static ScannerFile Alowflyingaircraft { get { return new ScannerFile("01_crime_low_flying_aircraft\\0x0ED60811.wav", "A low-flying aircraft.", "crime_low_flying_aircraft"); } }
+    //    public static ScannerFile Lowflyingaircraft { get { return new ScannerFile("01_crime_low_flying_aircraft\\0x1D91E58B.wav", "Low-flying aircraft.", "crime_low_flying_aircraft"); } }
+    //}
+   // public class crime_malicious_damage_to_property { public static ScannerFile Maliciousdamagetoproperty { get { return new ScannerFile("01_crime_malicious_damage_to_property\\0x0E66D16B.wav", "Malicious damage to property.", "crime_malicious_damage_to_property"); } } }
     public class crime_malicious_vehicle_damage { public static ScannerFile Maliciousvehicledamage { get { return new ScannerFile("01_crime_malicious_vehicle_damage\\0x13B65F4F.wav", "Malicious vehicle damage.", "crime_malicious_vehicle_damage"); } } }
-    public class crime_mdv { public static ScannerFile MDV { get { return new ScannerFile("01_crime_mdv\\0x0419EF0A.wav", "MDV.", "crime_mdv"); } } }
+  // public class crime_mdv { public static ScannerFile MDV { get { return new ScannerFile("01_crime_mdv\\0x0419EF0A.wav", "MDV.", "crime_mdv"); } } }
     public class crime_medical_aid_requested { public static ScannerFile Medicalaidrequested { get { return new ScannerFile("01_crime_medical_aid_requested\\0x0BB0BD5B.wav", "Medical aid requested.", "crime_medical_aid_requested"); } } }
-    public class crime_motorcycle_rider_without_a_helmet
-    {
-        public static ScannerFile Amotorcycleridersseenwithoutahelmet { get { return new ScannerFile("01_crime_motorcycle_rider_without_a_helmet\\0x0563B805.wav", "A motorcycle rider(s) seen without a helmet.", "crime_motorcycle_rider_without_a_helmet"); } }
-        public static ScannerFile Ridingamotorcyclewithoutahelmet { get { return new ScannerFile("01_crime_motorcycle_rider_without_a_helmet\\0x139E947B.wav", "Riding a motorcycle without a helmet.", "crime_motorcycle_rider_without_a_helmet"); } }
-        public static ScannerFile Amotorcycleriderwithoutahelmet { get { return new ScannerFile("01_crime_motorcycle_rider_without_a_helmet\\0x13D5D4E1.wav", "A motorcycle rider without a helmet.", "crime_motorcycle_rider_without_a_helmet"); } }
-    }
+    //public class crime_motorcycle_rider_without_a_helmet
+    //{
+    //    public static ScannerFile Amotorcycleridersseenwithoutahelmet { get { return new ScannerFile("01_crime_motorcycle_rider_without_a_helmet\\0x0563B805.wav", "A motorcycle rider(s) seen without a helmet.", "crime_motorcycle_rider_without_a_helmet"); } }
+    //    public static ScannerFile Ridingamotorcyclewithoutahelmet { get { return new ScannerFile("01_crime_motorcycle_rider_without_a_helmet\\0x139E947B.wav", "Riding a motorcycle without a helmet.", "crime_motorcycle_rider_without_a_helmet"); } }
+    //    public static ScannerFile Amotorcycleriderwithoutahelmet { get { return new ScannerFile("01_crime_motorcycle_rider_without_a_helmet\\0x13D5D4E1.wav", "A motorcycle rider without a helmet.", "crime_motorcycle_rider_without_a_helmet"); } }
+    //}
     public class crime_motor_vehicle_accident
     {
         public static ScannerFile Amotorvehicleaccident { get { return new ScannerFile("01_crime_motor_vehicle_accident\\0x0305104D.wav", "A motor vehicle accident.", "crime_motor_vehicle_accident"); } }
         public static ScannerFile AnAEincident { get { return new ScannerFile("01_crime_motor_vehicle_accident\\0x0829DA96.wav", "An A&E incident.", "crime_motor_vehicle_accident"); } }
         public static ScannerFile AseriousMVA { get { return new ScannerFile("01_crime_motor_vehicle_accident\\0x1E710726.wav", "A serious MVA.", "crime_motor_vehicle_accident"); } }
     }
-    public class crime_moving_violation { public static ScannerFile Amovingviolation { get { return new ScannerFile("01_crime_moving_violation\\0x13C84BC4.wav", "A moving violation.", "crime_moving_violation"); } } }
+    //public class crime_moving_violation { public static ScannerFile Amovingviolation { get { return new ScannerFile("01_crime_moving_violation\\0x13C84BC4.wav", "A moving violation.", "crime_moving_violation"); } } }
     public class crime_mugging { public static ScannerFile Apossiblemugging { get { return new ScannerFile("01_crime_mugging\\0x195CFE4E.wav", "A possible mugging.", "crime_mugging"); } } }
-    public class crime_multiple_injuries { public static ScannerFile Multipleinjuries { get { return new ScannerFile("01_crime_multiple_injuries\\0x03841223.wav", "Multiple injuries.", "crime_multiple_injuries"); } } }
-    public class crime_narcotics_activity { public static ScannerFile Narcoticsactivity { get { return new ScannerFile("01_crime_narcotics_activity\\0x060CE903.wav", "Narcotics activity.", "crime_narcotics_activity"); } } }
-    public class crime_narcotics_in_transit { public static ScannerFile Narcoticsintransit { get { return new ScannerFile("01_crime_narcotics_in_transit\\0x0E83D176.wav", "Narcotics in transit.", "crime_narcotics_in_transit"); } } }
+    //public class crime_multiple_injuries { public static ScannerFile Multipleinjuries { get { return new ScannerFile("01_crime_multiple_injuries\\0x03841223.wav", "Multiple injuries.", "crime_multiple_injuries"); } } }
+    //public class crime_narcotics_activity { public static ScannerFile Narcoticsactivity { get { return new ScannerFile("01_crime_narcotics_activity\\0x060CE903.wav", "Narcotics activity.", "crime_narcotics_activity"); } } }
+    //public class crime_narcotics_in_transit { public static ScannerFile Narcoticsintransit { get { return new ScannerFile("01_crime_narcotics_in_transit\\0x0E83D176.wav", "Narcotics in transit.", "crime_narcotics_in_transit"); } } }
     public class crime_officers_down
     {
         public static ScannerFile Severalofficersdown { get { return new ScannerFile("01_crime_officers_down\\0x10A785B3.wav", "Several officers down.", "crime_officers_down"); } }
         public static ScannerFile Multipleofficersdown { get { return new ScannerFile("01_crime_officers_down\\0x1FF1244F.wav", "Multiple officers down.", "crime_officers_down"); } }
     }
-    public class crime_officer_assault { public static ScannerFile Anofficerassault { get { return new ScannerFile("01_crime_officer_assault\\0x11374E1D.wav", "An officer assault.", "crime_officer_assault"); } } }
+    //public class crime_officer_assault { public static ScannerFile Anofficerassault { get { return new ScannerFile("01_crime_officer_assault\\0x11374E1D.wav", "An officer assault.", "crime_officer_assault"); } } }
     public class crime_officer_down
     {
         public static ScannerFile Anofficerdownconditionunknown { get { return new ScannerFile("01_crime_officer_down\\0x01FDB341.wav", "An officer down; condition unknown.", "crime_officer_down"); } }
@@ -1191,32 +1191,32 @@
         public static ScannerFile AnofferdownpossiblyKIA { get { return new ScannerFile("01_crime_officer_down\\0x143757B4.wav", "An offer down, possibly KIA.", "crime_officer_down"); } }
         public static ScannerFile AcriticalsituationOfficerdown { get { return new ScannerFile("01_crime_officer_down\\0x17C49ECF.wav", "A critical situation: Officer down.", "crime_officer_down"); } }
     }
-    public class crime_officer_fatality
-    {
-        public static ScannerFile Anofficerhomicide { get { return new ScannerFile("01_crime_officer_fatality\\0x06FE2FC0.wav", "An officer homicide.", "crime_officer_fatality"); } }
-        public static ScannerFile Anofficerfatality { get { return new ScannerFile("01_crime_officer_fatality\\0x1844124C.wav", "An officer fatality.", "crime_officer_fatality"); } }
-    }
-    public class crime_officer_homicide { public static ScannerFile Anofficerhomicide { get { return new ScannerFile("01_crime_officer_homicide\\0x146BDE45.wav", "An officer homicide.", "crime_officer_homicide"); } } }
-    public class crime_officer_injured { public static ScannerFile Anofficerinjured { get { return new ScannerFile("01_crime_officer_injured\\0x095FEC28.wav", "An officer injured.", "crime_officer_injured"); } } }
+    //public class crime_officer_fatality
+    //{
+    //    public static ScannerFile Anofficerhomicide { get { return new ScannerFile("01_crime_officer_fatality\\0x06FE2FC0.wav", "An officer homicide.", "crime_officer_fatality"); } }
+    //    public static ScannerFile Anofficerfatality { get { return new ScannerFile("01_crime_officer_fatality\\0x1844124C.wav", "An officer fatality.", "crime_officer_fatality"); } }
+    //}
+    //public class crime_officer_homicide { public static ScannerFile Anofficerhomicide { get { return new ScannerFile("01_crime_officer_homicide\\0x146BDE45.wav", "An officer homicide.", "crime_officer_homicide"); } } }
+    //public class crime_officer_injured { public static ScannerFile Anofficerinjured { get { return new ScannerFile("01_crime_officer_injured\\0x095FEC28.wav", "An officer injured.", "crime_officer_injured"); } } }
     public class crime_officer_in_danger { public static ScannerFile Anofficerindanger { get { return new ScannerFile("01_crime_officer_in_danger\\0x0E2B57AB.wav", "An officer in danger.", "crime_officer_in_danger"); } } }
     public class crime_officer_in_need_of_assistance
     {
         public static ScannerFile Anofficerrequiringassistance { get { return new ScannerFile("01_crime_officer_in_need_of_assistance\\0x04B233C3.wav", "An officer requiring assistance.", "crime_officer_in_need_of_assistance"); } }
         public static ScannerFile Anofficerinneedofassistance { get { return new ScannerFile("01_crime_officer_in_need_of_assistance\\0x1AA91FB1.wav", "An officer in need of assistance.", "crime_officer_in_need_of_assistance"); } }
     }
-    public class crime_officer_on_fire
-    {
-        public static ScannerFile Anofficeronfire { get { return new ScannerFile("01_crime_officer_on_fire\\0x0D64C020.wav", "An officer on fire.", "crime_officer_on_fire"); } }
-        public static ScannerFile Anofficersetonfire { get { return new ScannerFile("01_crime_officer_on_fire\\0x1FADA4B3.wav", "An officer set on fire.", "crime_officer_on_fire"); } }
-    }
-    public class crime_officer_stabbed { public static ScannerFile Anofficerstabbed { get { return new ScannerFile("01_crime_officer_stabbed\\0x16DAE516.wav", "An officer stabbed.", "crime_officer_stabbed"); } } }
-    public class crime_officer_struck_by_vehicle
-    {
-        public static ScannerFile Anofficerstruckbyavehicle { get { return new ScannerFile("01_crime_officer_struck_by_vehicle\\0x05861C4A.wav", "An officer struck by a vehicle.", "crime_officer_struck_by_vehicle"); } }
-        public static ScannerFile Apedestrianstruckbyavehicle { get { return new ScannerFile("01_crime_officer_struck_by_vehicle\\0x0F91B046.wav", "A pedestrian struck by a vehicle.", "crime_officer_struck_by_vehicle"); } }
-    }
-    public class crime_officer_wounded { public static ScannerFile Anofficerwounded { get { return new ScannerFile("01_crime_officer_wounded\\0x15E81134.wav", "An officer wounded.", "crime_officer_wounded"); } } }
-    public class crime_pedestrian_involved_accident { public static ScannerFile Apedestrianinvolvedaccident { get { return new ScannerFile("01_crime_pedestrian_involved_accident\\0x1933F786.wav", "A pedestrian-involved accident.", "crime_pedestrian_involved_accident"); } } }
+    //public class crime_officer_on_fire
+    //{
+    //    public static ScannerFile Anofficeronfire { get { return new ScannerFile("01_crime_officer_on_fire\\0x0D64C020.wav", "An officer on fire.", "crime_officer_on_fire"); } }
+    //    public static ScannerFile Anofficersetonfire { get { return new ScannerFile("01_crime_officer_on_fire\\0x1FADA4B3.wav", "An officer set on fire.", "crime_officer_on_fire"); } }
+    //}
+    //public class crime_officer_stabbed { public static ScannerFile Anofficerstabbed { get { return new ScannerFile("01_crime_officer_stabbed\\0x16DAE516.wav", "An officer stabbed.", "crime_officer_stabbed"); } } }
+    //public class crime_officer_struck_by_vehicle
+    //{
+    //    public static ScannerFile Anofficerstruckbyavehicle { get { return new ScannerFile("01_crime_officer_struck_by_vehicle\\0x05861C4A.wav", "An officer struck by a vehicle.", "crime_officer_struck_by_vehicle"); } }
+    //    public static ScannerFile Apedestrianstruckbyavehicle { get { return new ScannerFile("01_crime_officer_struck_by_vehicle\\0x0F91B046.wav", "A pedestrian struck by a vehicle.", "crime_officer_struck_by_vehicle"); } }
+    //}
+    //public class crime_officer_wounded { public static ScannerFile Anofficerwounded { get { return new ScannerFile("01_crime_officer_wounded\\0x15E81134.wav", "An officer wounded.", "crime_officer_wounded"); } } }
+    //public class crime_pedestrian_involved_accident { public static ScannerFile Apedestrianinvolvedaccident { get { return new ScannerFile("01_crime_pedestrian_involved_accident\\0x1933F786.wav", "A pedestrian-involved accident.", "crime_pedestrian_involved_accident"); } } }
     public class crime_ped_struck_by_veh
     {
         public static ScannerFile Apedestrianstruck { get { return new ScannerFile("01_crime_ped_struck_by_veh\\0x0366CCA6.wav", "A pedestrian struck.", "crime_ped_struck_by_veh"); } }
@@ -1224,40 +1224,40 @@
         public static ScannerFile Apedestrianstruckbyavehicle1 { get { return new ScannerFile("01_crime_ped_struck_by_veh\\0x0BB09D49.wav", "A pedestrian struck by a vehicle.", "crime_ped_struck_by_veh"); } }
         public static ScannerFile Apedestrianstruck1 { get { return new ScannerFile("01_crime_ped_struck_by_veh\\0x1AD73B96.wav", "A pedestrian struck.", "crime_ped_struck_by_veh"); } }
     }
-    public class crime_person_attempting_to_steal_a_car { public static ScannerFile Apersonattemptingtostealacar { get { return new ScannerFile("01_crime_person_attempting_to_steal_a_car\\0x0EA0B0C9.wav", "A person attempting to steal a car.", "crime_person_attempting_to_steal_a_car"); } } }
-    public class crime_person_down { public static ScannerFile Apersondown { get { return new ScannerFile("01_crime_person_down\\0x084DB426.wav", "A person down.", "crime_person_down"); } } }
-    public class crime_person_fleeing_a_crime_scene { public static ScannerFile Apersonfleeingacrimescene { get { return new ScannerFile("01_crime_person_fleeing_a_crime_scene\\0x13FA7AA2.wav", "A person fleeing a crime scene.", "crime_person_fleeing_a_crime_scene"); } } }
+    //public class crime_person_attempting_to_steal_a_car { public static ScannerFile Apersonattemptingtostealacar { get { return new ScannerFile("01_crime_person_attempting_to_steal_a_car\\0x0EA0B0C9.wav", "A person attempting to steal a car.", "crime_person_attempting_to_steal_a_car"); } } }
+    //public class crime_person_down { public static ScannerFile Apersondown { get { return new ScannerFile("01_crime_person_down\\0x084DB426.wav", "A person down.", "crime_person_down"); } } }
+    //public class crime_person_fleeing_a_crime_scene { public static ScannerFile Apersonfleeingacrimescene { get { return new ScannerFile("01_crime_person_fleeing_a_crime_scene\\0x13FA7AA2.wav", "A person fleeing a crime scene.", "crime_person_fleeing_a_crime_scene"); } } }
     public class crime_person_in_a_stolen_car { public static ScannerFile Apersoninastolencar { get { return new ScannerFile("01_crime_person_in_a_stolen_car\\0x06ECE5BE.wav", "A person in a stolen car.", "crime_person_in_a_stolen_car"); } } }
     public class crime_person_in_a_stolen_vehicle { public static ScannerFile Apersoninastolenvehicle { get { return new ScannerFile("01_crime_person_in_a_stolen_vehicle\\0x0C290C9F.wav", "A person in a stolen vehicle.", "crime_person_in_a_stolen_vehicle"); } } }
     public class crime_person_resisting_arrest { public static ScannerFile Apersonresistingarrest { get { return new ScannerFile("01_crime_person_resisting_arrest\\0x04A12B61.wav", "A person resisting arrest.", "crime_person_resisting_arrest"); } } }
     public class crime_person_running_a_red_light { public static ScannerFile Apersonrunningaredlight { get { return new ScannerFile("01_crime_person_running_a_red_light\\0x0BFCA53A.wav", "A person running a red light.", "crime_person_running_a_red_light"); } } }
-    public class crime_person_stealing_a_car { public static ScannerFile Apersonstealingacar { get { return new ScannerFile("01_crime_person_stealing_a_car\\0x03CBA5DC.wav", "A person stealing a car.", "crime_person_stealing_a_car"); } } }
-    public class crime_person_transporting_narcotics { public static ScannerFile Apersonorpersonstransportingnarcotics { get { return new ScannerFile("01_crime_person_transporting_narcotics\\0x02CFBABE.wav", "A person or persons transporting narcotics.", "crime_person_transporting_narcotics"); } } }
-    public class crime_perverting_justice
-    {
-        public static ScannerFile Acivilianpervertingthecourseofjustice { get { return new ScannerFile("01_crime_perverting_justice\\0x08AFAEFF.wav", "A civilian perverting the course of justice.", "crime_perverting_justice"); } }
-        public static ScannerFile Obstructionofanofficer { get { return new ScannerFile("01_crime_perverting_justice\\0x15400820.wav", "Obstruction of an officer.", "crime_perverting_justice"); } }
-    }
-    public class crime_pimping_and_solicitation { public static ScannerFile Pimpingandsolicitation { get { return new ScannerFile("01_crime_pimping_and_solicitation\\0x1436A1CD.wav", "Pimping and solicitation.", "crime_pimping_and_solicitation"); } } }
-    public class crime_police_convoy_under_attack
-    {
-        public static ScannerFile Apolicetransportunderattack { get { return new ScannerFile("01_crime_police_convoy_under_attack\\0x0831006A.wav", "A police transport under attack.", "crime_police_convoy_under_attack"); } }
-        public static ScannerFile Apoliceconvoyunderattack { get { return new ScannerFile("01_crime_police_convoy_under_attack\\0x1A6FA4E7.wav", "A police convoy under attack.", "crime_police_convoy_under_attack"); } }
-    }
-    public class crime_property_damage
-    {
-        public static ScannerFile Damagetoproperty { get { return new ScannerFile("01_crime_property_damage\\0x009DAE97.wav", "Damage to property.", "crime_property_damage"); } }
-        public static ScannerFile Propertydamage { get { return new ScannerFile("01_crime_property_damage\\0x020A316D.wav", "Property damage.", "crime_property_damage"); } }
-        public static ScannerFile Areportofpropertydamage { get { return new ScannerFile("01_crime_property_damage\\0x13A2949E.wav", "A report of property damage.", "crime_property_damage"); } }
-    }
-    public class crime_prowler { public static ScannerFile Aprowler { get { return new ScannerFile("01_crime_prowler\\0x05EF2A48.wav", "A prowler.", "crime_prowler"); } } }
+    //public class crime_person_stealing_a_car { public static ScannerFile Apersonstealingacar { get { return new ScannerFile("01_crime_person_stealing_a_car\\0x03CBA5DC.wav", "A person stealing a car.", "crime_person_stealing_a_car"); } } }
+    //public class crime_person_transporting_narcotics { public static ScannerFile Apersonorpersonstransportingnarcotics { get { return new ScannerFile("01_crime_person_transporting_narcotics\\0x02CFBABE.wav", "A person or persons transporting narcotics.", "crime_person_transporting_narcotics"); } } }
+    //public class crime_perverting_justice
+    //{
+    //    public static ScannerFile Acivilianpervertingthecourseofjustice { get { return new ScannerFile("01_crime_perverting_justice\\0x08AFAEFF.wav", "A civilian perverting the course of justice.", "crime_perverting_justice"); } }
+    //    public static ScannerFile Obstructionofanofficer { get { return new ScannerFile("01_crime_perverting_justice\\0x15400820.wav", "Obstruction of an officer.", "crime_perverting_justice"); } }
+    //}
+    //public class crime_pimping_and_solicitation { public static ScannerFile Pimpingandsolicitation { get { return new ScannerFile("01_crime_pimping_and_solicitation\\0x1436A1CD.wav", "Pimping and solicitation.", "crime_pimping_and_solicitation"); } } }
+    //public class crime_police_convoy_under_attack
+    //{
+    //    public static ScannerFile Apolicetransportunderattack { get { return new ScannerFile("01_crime_police_convoy_under_attack\\0x0831006A.wav", "A police transport under attack.", "crime_police_convoy_under_attack"); } }
+    //    public static ScannerFile Apoliceconvoyunderattack { get { return new ScannerFile("01_crime_police_convoy_under_attack\\0x1A6FA4E7.wav", "A police convoy under attack.", "crime_police_convoy_under_attack"); } }
+    //}
+    //public class crime_property_damage
+    //{
+    //    public static ScannerFile Damagetoproperty { get { return new ScannerFile("01_crime_property_damage\\0x009DAE97.wav", "Damage to property.", "crime_property_damage"); } }
+    //    public static ScannerFile Propertydamage { get { return new ScannerFile("01_crime_property_damage\\0x020A316D.wav", "Property damage.", "crime_property_damage"); } }
+    //    public static ScannerFile Areportofpropertydamage { get { return new ScannerFile("01_crime_property_damage\\0x13A2949E.wav", "A report of property damage.", "crime_property_damage"); } }
+    //}
+    //public class crime_prowler { public static ScannerFile Aprowler { get { return new ScannerFile("01_crime_prowler\\0x05EF2A48.wav", "A prowler.", "crime_prowler"); } } }
     public class crime_reckless_driver { public static ScannerFile Arecklessdriver { get { return new ScannerFile("01_crime_reckless_driver\\0x06F0317A.wav", "A reckless driver.", "crime_reckless_driver"); } } }
-    public class crime_road_blockade
-    {
-        public static ScannerFile Aroadwayblocked { get { return new ScannerFile("01_crime_road_blockade\\0x01CE4B75.wav", "A roadway blocked.", "crime_road_blockade"); } }
-        public static ScannerFile Aroadblockade { get { return new ScannerFile("01_crime_road_blockade\\0x0B3C5E40.wav", "A road blockade.", "crime_road_blockade"); } }
-        public static ScannerFile Aroadblock { get { return new ScannerFile("01_crime_road_blockade\\0x1D348242.wav", "A roadblock.", "crime_road_blockade"); } }
-    }
+    //public class crime_road_blockade
+    //{
+    //    public static ScannerFile Aroadwayblocked { get { return new ScannerFile("01_crime_road_blockade\\0x01CE4B75.wav", "A roadway blocked.", "crime_road_blockade"); } }
+    //    public static ScannerFile Aroadblockade { get { return new ScannerFile("01_crime_road_blockade\\0x0B3C5E40.wav", "A road blockade.", "crime_road_blockade"); } }
+    //    public static ScannerFile Aroadblock { get { return new ScannerFile("01_crime_road_blockade\\0x1D348242.wav", "A roadblock.", "crime_road_blockade"); } }
+    //}
     public class crime_robbery
     {
         public static ScannerFile Arobbery { get { return new ScannerFile("01_crime_robbery\\0x0A677E12.wav", "A robbery.", "crime_robbery"); } }
@@ -1269,21 +1269,21 @@
         public static ScannerFile Aweaponsincidentshotsfired { get { return new ScannerFile("01_crime_shooting\\0x01AC508D.wav", "A weapons incident; shots fired.", "crime_shooting"); } }
         public static ScannerFile Afirearmssituationseveralshotsfired { get { return new ScannerFile("01_crime_shooting\\0x1F5D8BEF.wav", "A firearms situation; several shots fired.", "crime_shooting"); } }
     }
-    public class crime_shooting_at_animals { public static ScannerFile Personshootingatanimals { get { return new ScannerFile("01_crime_shooting_at_animals\\0x0EC4903B.wav", "Person shooting at animals.", "crime_shooting_at_animals"); } } }
-    public class crime_shooting_a_protected_bird
-    {
-        public static ScannerFile Reportsofsuspectshootingaprotectedbird { get { return new ScannerFile("01_crime_shooting_a_protected_bird\\0x0CBF96A2.wav", "Reports of suspect shooting a protected bird.", "crime_shooting_a_protected_bird"); } }
-        public static ScannerFile Suspectshootingaprotectedbird { get { return new ScannerFile("01_crime_shooting_a_protected_bird\\0x195A6FDB.wav", "Suspect shooting a protected bird.", "crime_shooting_a_protected_bird"); } }
-        public static ScannerFile Reportsofsomeoneshootingaprotectedbird { get { return new ScannerFile("01_crime_shooting_a_protected_bird\\0x1A94324F.wav", "Reports of someone shooting a protected bird.", "crime_shooting_a_protected_bird"); } }
-    }
-    public class crime_shooting_wildlife { public static ScannerFile Suspectshootingwildlife { get { return new ScannerFile("01_crime_shooting_wildlife\\0x03E5D09E.wav", "Suspect shooting wildlife.", "crime_shooting_wildlife"); } } }
+    //public class crime_shooting_at_animals { public static ScannerFile Personshootingatanimals { get { return new ScannerFile("01_crime_shooting_at_animals\\0x0EC4903B.wav", "Person shooting at animals.", "crime_shooting_at_animals"); } } }
+    //public class crime_shooting_a_protected_bird
+    //{
+    //    public static ScannerFile Reportsofsuspectshootingaprotectedbird { get { return new ScannerFile("01_crime_shooting_a_protected_bird\\0x0CBF96A2.wav", "Reports of suspect shooting a protected bird.", "crime_shooting_a_protected_bird"); } }
+    //    public static ScannerFile Suspectshootingaprotectedbird { get { return new ScannerFile("01_crime_shooting_a_protected_bird\\0x195A6FDB.wav", "Suspect shooting a protected bird.", "crime_shooting_a_protected_bird"); } }
+    //    public static ScannerFile Reportsofsomeoneshootingaprotectedbird { get { return new ScannerFile("01_crime_shooting_a_protected_bird\\0x1A94324F.wav", "Reports of someone shooting a protected bird.", "crime_shooting_a_protected_bird"); } }
+    //}
+    //public class crime_shooting_wildlife { public static ScannerFile Suspectshootingwildlife { get { return new ScannerFile("01_crime_shooting_wildlife\\0x03E5D09E.wav", "Suspect shooting wildlife.", "crime_shooting_wildlife"); } } }
     public class crime_shoot_out { public static ScannerFile Ashootout { get { return new ScannerFile("01_crime_shoot_out\\0x09B682AC.wav", "A shoot-out.", "crime_shoot_out"); } } }
-    public class crime_shots_fired
-    {
-        public static ScannerFile Shotsfired { get { return new ScannerFile("01_crime_shots_fired\\0x0EADE575.wav", "Shots fired.", "crime_shots_fired"); } }
-        public static ScannerFile Gunfirereported { get { return new ScannerFile("01_crime_shots_fired\\0x1A7C3D10.wav", "Gunfire reported.", "crime_shots_fired"); } }
-        public static ScannerFile Gunshotsreported { get { return new ScannerFile("01_crime_shots_fired\\0x1D3E4296.wav", "Gunshots reported.", "crime_shots_fired"); } }
-    }
+    //public class crime_shots_fired
+    //{
+    //    public static ScannerFile Shotsfired { get { return new ScannerFile("01_crime_shots_fired\\0x0EADE575.wav", "Shots fired.", "crime_shots_fired"); } }
+    //    public static ScannerFile Gunfirereported { get { return new ScannerFile("01_crime_shots_fired\\0x1A7C3D10.wav", "Gunfire reported.", "crime_shots_fired"); } }
+    //    public static ScannerFile Gunshotsreported { get { return new ScannerFile("01_crime_shots_fired\\0x1D3E4296.wav", "Gunshots reported.", "crime_shots_fired"); } }
+    //}
     public class crime_shots_fired_at_an_officer { public static ScannerFile Shotsfiredatanofficer { get { return new ScannerFile("01_crime_shots_fired_at_an_officer\\0x0B6ECE66.wav", "Shots fired at an officer.", "crime_shots_fired_at_an_officer"); } } }
     public class crime_shots_fired_at_officer
     {
@@ -1292,21 +1292,21 @@
         public static ScannerFile Anofficerunderfire { get { return new ScannerFile("01_crime_shots_fired_at_officer\\0x0802D252.wav", "An officer under fire.", "crime_shots_fired_at_officer"); } }
         public static ScannerFile Afirearmattackonanofficer { get { return new ScannerFile("01_crime_shots_fired_at_officer\\0x0C669B19.wav", "A firearm attack on an officer.", "crime_shots_fired_at_officer"); } }
     }
-    public class crime_solicitation { public static ScannerFile Solicitation { get { return new ScannerFile("01_crime_solicitation\\0x0DFDDC04.wav", "Solicitation.", "crime_solicitation"); } } }
-    public class crime_sos_call
-    {
-        public static ScannerFile AnSOScall { get { return new ScannerFile("01_crime_sos_call\\0x04F36BF2.wav", "An SOS call.", "crime_sos_call"); } }
-        public static ScannerFile AnSOSdistresssignal { get { return new ScannerFile("01_crime_sos_call\\0x123D0686.wav", "An SOS distress signal.", "crime_sos_call"); } }
-    }
+   // public class crime_solicitation { public static ScannerFile Solicitation { get { return new ScannerFile("01_crime_solicitation\\0x0DFDDC04.wav", "Solicitation.", "crime_solicitation"); } } }
+    //public class crime_sos_call
+    //{
+    //    public static ScannerFile AnSOScall { get { return new ScannerFile("01_crime_sos_call\\0x04F36BF2.wav", "An SOS call.", "crime_sos_call"); } }
+    //    public static ScannerFile AnSOSdistresssignal { get { return new ScannerFile("01_crime_sos_call\\0x123D0686.wav", "An SOS distress signal.", "crime_sos_call"); } }
+    //}
     public class crime_speeding { public static ScannerFile Speeding { get { return new ScannerFile("01_crime_speeding\\0x1C912AD5.wav", "Speeding.", "crime_speeding"); } } }
     public class crime_speeding_felony { public static ScannerFile Aspeedingfelony { get { return new ScannerFile("01_crime_speeding_felony\\0x01C16921.wav", "A speeding felony.", "crime_speeding_felony"); } } }
     public class crime_speeding_incident { public static ScannerFile Aspeedingincident { get { return new ScannerFile("01_crime_speeding_incident\\0x00BA5D8E.wav", "A speeding incident.", "crime_speeding_incident"); } } }
-    public class crime_stabbing
-    {
-        public static ScannerFile Apossiblestabbing { get { return new ScannerFile("01_crime_stabbing\\0x10112C89.wav", "A possible stabbing.", "crime_stabbing"); } }
-        public static ScannerFile Astabbing { get { return new ScannerFile("01_crime_stabbing\\0x1280B178.wav", "A stabbing.", "crime_stabbing"); } }
-        public static ScannerFile Astabbing1 { get { return new ScannerFile("01_crime_stabbing\\0x1DDB481E.wav", "A stabbing.", "crime_stabbing"); } }
-    }
+    //public class crime_stabbing
+    //{
+    //    public static ScannerFile Apossiblestabbing { get { return new ScannerFile("01_crime_stabbing\\0x10112C89.wav", "A possible stabbing.", "crime_stabbing"); } }
+    //    public static ScannerFile Astabbing { get { return new ScannerFile("01_crime_stabbing\\0x1280B178.wav", "A stabbing.", "crime_stabbing"); } }
+    //    public static ScannerFile Astabbing1 { get { return new ScannerFile("01_crime_stabbing\\0x1DDB481E.wav", "A stabbing.", "crime_stabbing"); } }
+    //}
     public class crime_stolen_aircraft { public static ScannerFile Astolenaircraft { get { return new ScannerFile("01_crime_stolen_aircraft\\0x11D9B7A5.wav", "A stolen aircraft.", "crime_stolen_aircraft"); } } }
     public class crime_stolen_cop_car
     {
@@ -1315,13 +1315,13 @@
         public static ScannerFile Astolenpolicevehicle1 { get { return new ScannerFile("01_crime_stolen_cop_car\\0x073466F5.wav", "A stolen police vehicle.", "crime_stolen_cop_car"); } }
         public static ScannerFile Defectivepolicevehicle { get { return new ScannerFile("01_crime_stolen_cop_car\\0x0FEBF849.wav", "Defective police vehicle.", "crime_stolen_cop_car"); } }
     }
-    public class crime_stolen_helicopter { public static ScannerFile Astolenhelicopter { get { return new ScannerFile("01_crime_stolen_helicopter\\0x1D5AF1B0.wav", "A stolen helicopter.", "crime_stolen_helicopter"); } } }
+   // public class crime_stolen_helicopter { public static ScannerFile Astolenhelicopter { get { return new ScannerFile("01_crime_stolen_helicopter\\0x1D5AF1B0.wav", "A stolen helicopter.", "crime_stolen_helicopter"); } } }
     public class crime_stolen_vehicle { public static ScannerFile Apossiblestolenvehicle { get { return new ScannerFile("01_crime_stolen_vehicle\\0x09CEE854.wav", "A possible stolen vehicle.", "crime_stolen_vehicle"); } } }
-    public class crime_structure_on_fire
-    {
-        public static ScannerFile Astructureonfire { get { return new ScannerFile("01_crime_structure_on_fire\\0x067D94A5.wav", "A structure on fire.", "crime_structure_on_fire"); } }
-        public static ScannerFile Astructureonfire1 { get { return new ScannerFile("01_crime_structure_on_fire\\0x1E35841E.wav", "A structure on fire.", "crime_structure_on_fire"); } }
-    }
+    //public class crime_structure_on_fire
+    //{
+    //    public static ScannerFile Astructureonfire { get { return new ScannerFile("01_crime_structure_on_fire\\0x067D94A5.wav", "A structure on fire.", "crime_structure_on_fire"); } }
+    //    public static ScannerFile Astructureonfire1 { get { return new ScannerFile("01_crime_structure_on_fire\\0x1E35841E.wav", "A structure on fire.", "crime_structure_on_fire"); } }
+    //}
     public class crime_suspect_armed_and_dangerous { public static ScannerFile Asuspectarmedanddangerous { get { return new ScannerFile("01_crime_suspect_armed_and_dangerous\\0x08E2DF46.wav", "A suspect...armed and dangerous.", "crime_suspect_armed_and_dangerous"); } } }
     public class crime_suspect_resisting_arrest { public static ScannerFile Asuspectresistingarrest { get { return new ScannerFile("01_crime_suspect_resisting_arrest\\0x04DE3185.wav", "A suspect resisting arrest.", "crime_suspect_resisting_arrest"); } } }
     public class crime_suspect_threatening_an_officer_with_a_firearm { public static ScannerFile Asuspectthreateninganofficerwithafirearm { get { return new ScannerFile("01_crime_suspect_threatening_an_officer_with_a_firearm\\0x05A09EE6.wav", "A suspect threatening an officer with a firearm.", "crime_suspect_threatening_an_officer_with_a_firearm"); } } }
@@ -1338,73 +1338,73 @@
     }
     public class crime_theft { public static ScannerFile Apossibletheft { get { return new ScannerFile("01_crime_theft\\0x0536E1CD.wav", "A possible theft.", "crime_theft"); } } }
     public class crime_theft_of_an_aircraft { public static ScannerFile Theftofanaircraft { get { return new ScannerFile("01_crime_theft_of_an_aircraft\\0x045DD97F.wav", "Theft of an aircraft.", "crime_theft_of_an_aircraft"); } } }
-    public class crime_torturing_an_animal { public static ScannerFile Persontorturingananimal { get { return new ScannerFile("01_crime_torturing_an_animal\\0x0BB248B5.wav", "Person torturing an animal.", "crime_torturing_an_animal"); } } }
-    public class crime_traffic_alert { public static ScannerFile Atrafficalert { get { return new ScannerFile("01_crime_traffic_alert\\0x1C20369B.wav", "A traffic alert.", "crime_traffic_alert"); } } }
-    public class crime_traffic_felony { public static ScannerFile Atrafficfelony { get { return new ScannerFile("01_crime_traffic_felony\\0x19F600A8.wav", "A traffic felony.", "crime_traffic_felony"); } } }
-    public class crime_traffic_violation { public static ScannerFile Atrafficviolation { get { return new ScannerFile("01_crime_traffic_violation\\0x10D7F5BC.wav", "A traffic violation.", "crime_traffic_violation"); } } }
-    public class crime_transporting_narcotics { public static ScannerFile Apersonorpersonstransportingnarcotics { get { return new ScannerFile("01_crime_transporting_narcotics\\0x0CA3A65C.wav", "A person or persons transporting narcotics.", "crime_transporting_narcotics"); } } }
+    //public class crime_torturing_an_animal { public static ScannerFile Persontorturingananimal { get { return new ScannerFile("01_crime_torturing_an_animal\\0x0BB248B5.wav", "Person torturing an animal.", "crime_torturing_an_animal"); } } }
+    //public class crime_traffic_alert { public static ScannerFile Atrafficalert { get { return new ScannerFile("01_crime_traffic_alert\\0x1C20369B.wav", "A traffic alert.", "crime_traffic_alert"); } } }
+    //public class crime_traffic_felony { public static ScannerFile Atrafficfelony { get { return new ScannerFile("01_crime_traffic_felony\\0x19F600A8.wav", "A traffic felony.", "crime_traffic_felony"); } } }
+    //public class crime_traffic_violation { public static ScannerFile Atrafficviolation { get { return new ScannerFile("01_crime_traffic_violation\\0x10D7F5BC.wav", "A traffic violation.", "crime_traffic_violation"); } } }
+    //public class crime_transporting_narcotics { public static ScannerFile Apersonorpersonstransportingnarcotics { get { return new ScannerFile("01_crime_transporting_narcotics\\0x0CA3A65C.wav", "A person or persons transporting narcotics.", "crime_transporting_narcotics"); } } }
     public class crime_trespassing
     {
         public static ScannerFile Trespassing { get { return new ScannerFile("01_crime_trespassing\\0x05C3CC3B.wav", "Trespassing.", "crime_trespassing"); } }
         public static ScannerFile Possibletrespassing { get { return new ScannerFile("01_crime_trespassing\\0x1071E197.wav", "Possible trespassing.", "crime_trespassing"); } }
     }
     public class crime_trespassing_on_government_property { public static ScannerFile Trespassingongovernmentproperty { get { return new ScannerFile("01_crime_trespassing_on_government_property\\0x11228580.wav", "Trespassing on government property.", "crime_trespassing_on_government_property"); } } }
-    public class crime_unauthorized_hunting { public static ScannerFile Unauthorizedhunting { get { return new ScannerFile("01_crime_unauthorized_hunting\\0x0D93CE7F.wav", "Unauthorized hunting.", "crime_unauthorized_hunting"); } } }
+    //public class crime_unauthorized_hunting { public static ScannerFile Unauthorizedhunting { get { return new ScannerFile("01_crime_unauthorized_hunting\\0x0D93CE7F.wav", "Unauthorized hunting.", "crime_unauthorized_hunting"); } } }
     public class crime_unconscious_civilian { public static ScannerFile Anunconsciouscivilian { get { return new ScannerFile("01_crime_unconscious_civilian\\0x0839AE65.wav", "An unconscious civilian.", "crime_unconscious_civilian"); } } }
-    public class crime_unconscious_female { public static ScannerFile Anunconsciousfemale { get { return new ScannerFile("01_crime_unconscious_female\\0x19D87B01.wav", "An unconscious female.", "crime_unconscious_female"); } } }
-    public class crime_unconscious_male { public static ScannerFile Anunconsciousmale { get { return new ScannerFile("01_crime_unconscious_male\\0x106D54AF.wav", "An unconscious male.", "crime_unconscious_male"); } } }
-    public class crime_unit_under_fire { public static ScannerFile Aunitunderfire { get { return new ScannerFile("01_crime_unit_under_fire\\0x1EC3B6A6.wav", "A unit under fire.", "crime_unit_under_fire"); } } }
-    public class crime_vehicle_explosion { public static ScannerFile Avehicleexplosion { get { return new ScannerFile("01_crime_vehicle_explosion\\0x00ACF28E.wav", "A vehicle explosion.", "crime_vehicle_explosion"); } } }
+    //public class crime_unconscious_female { public static ScannerFile Anunconsciousfemale { get { return new ScannerFile("01_crime_unconscious_female\\0x19D87B01.wav", "An unconscious female.", "crime_unconscious_female"); } } }
+    //public class crime_unconscious_male { public static ScannerFile Anunconsciousmale { get { return new ScannerFile("01_crime_unconscious_male\\0x106D54AF.wav", "An unconscious male.", "crime_unconscious_male"); } } }
+    //public class crime_unit_under_fire { public static ScannerFile Aunitunderfire { get { return new ScannerFile("01_crime_unit_under_fire\\0x1EC3B6A6.wav", "A unit under fire.", "crime_unit_under_fire"); } } }
+    //public class crime_vehicle_explosion { public static ScannerFile Avehicleexplosion { get { return new ScannerFile("01_crime_vehicle_explosion\\0x00ACF28E.wav", "A vehicle explosion.", "crime_vehicle_explosion"); } } }
     public class crime_vehicle_on_fire { public static ScannerFile Avehicleonfire { get { return new ScannerFile("01_crime_vehicle_on_fire\\0x0CF82D90.wav", "A vehicle on fire.", "crime_vehicle_on_fire"); } } }
-    public class crime_vehicle_theft { public static ScannerFile Avehicletheft { get { return new ScannerFile("01_crime_vehicle_theft\\0x126934E4.wav", "A vehicle theft.", "crime_vehicle_theft"); } } }
-    public class crime_vehicular_homicide { public static ScannerFile Avehicularhomicide { get { return new ScannerFile("01_crime_vehicular_homicide\\0x08687686.wav", "A vehicular homicide.", "crime_vehicular_homicide"); } } }
-    public class crime_vessel_in_distress { public static ScannerFile Avesselindistress { get { return new ScannerFile("01_crime_vessel_in_distress\\0x0FE8B7D8.wav", "A vessel in distress.", "crime_vessel_in_distress"); } } }
-    public class crime_vicious_animal
-    {
-        public static ScannerFile Aviciousanimalontheloose { get { return new ScannerFile("01_crime_vicious_animal\\0x00029C1B.wav", "A vicious animal on the loose.", "crime_vicious_animal"); } }
-        public static ScannerFile Aviciousanimal { get { return new ScannerFile("01_crime_vicious_animal\\0x03A4A365.wav", "A vicious animal.", "crime_vicious_animal"); } }
-    }
-    public class crime_violation_of_a_non_kill_order { public static ScannerFile Violationofanonkillorder { get { return new ScannerFile("01_crime_violation_of_a_non_kill_order\\0x0FCF6888.wav", "Violation of a non-kill order.", "crime_violation_of_a_non_kill_order"); } } }
-    public class crime_violation_of_a_no_kill_order
-    {
-        public static ScannerFile Violationofanokillmandate { get { return new ScannerFile("01_crime_violation_of_a_no_kill_order\\0x09EE350E.wav", "Violation of a no-kill mandate.", "crime_violation_of_a_no_kill_order"); } }
-        public static ScannerFile Violationofanokillorder { get { return new ScannerFile("01_crime_violation_of_a_no_kill_order\\0x183F91B1.wav", "Violation of a no-kill order.", "crime_violation_of_a_no_kill_order"); } }
-    }
+    //public class crime_vehicle_theft { public static ScannerFile Avehicletheft { get { return new ScannerFile("01_crime_vehicle_theft\\0x126934E4.wav", "A vehicle theft.", "crime_vehicle_theft"); } } }
+    //public class crime_vehicular_homicide { public static ScannerFile Avehicularhomicide { get { return new ScannerFile("01_crime_vehicular_homicide\\0x08687686.wav", "A vehicular homicide.", "crime_vehicular_homicide"); } } }
+    //public class crime_vessel_in_distress { public static ScannerFile Avesselindistress { get { return new ScannerFile("01_crime_vessel_in_distress\\0x0FE8B7D8.wav", "A vessel in distress.", "crime_vessel_in_distress"); } } }
+    //public class crime_vicious_animal
+    //{
+    //    public static ScannerFile Aviciousanimalontheloose { get { return new ScannerFile("01_crime_vicious_animal\\0x00029C1B.wav", "A vicious animal on the loose.", "crime_vicious_animal"); } }
+    //    public static ScannerFile Aviciousanimal { get { return new ScannerFile("01_crime_vicious_animal\\0x03A4A365.wav", "A vicious animal.", "crime_vicious_animal"); } }
+    //}
+    //public class crime_violation_of_a_non_kill_order { public static ScannerFile Violationofanonkillorder { get { return new ScannerFile("01_crime_violation_of_a_non_kill_order\\0x0FCF6888.wav", "Violation of a non-kill order.", "crime_violation_of_a_non_kill_order"); } } }
+    //public class crime_violation_of_a_no_kill_order
+    //{
+    //    public static ScannerFile Violationofanokillmandate { get { return new ScannerFile("01_crime_violation_of_a_no_kill_order\\0x09EE350E.wav", "Violation of a no-kill mandate.", "crime_violation_of_a_no_kill_order"); } }
+    //    public static ScannerFile Violationofanokillorder { get { return new ScannerFile("01_crime_violation_of_a_no_kill_order\\0x183F91B1.wav", "Violation of a no-kill order.", "crime_violation_of_a_no_kill_order"); } }
+    //}
     public class crime_wanted_felon_on_the_loose { public static ScannerFile Awantedfelonontheloose { get { return new ScannerFile("01_crime_wanted_felon_on_the_loose\\0x17CA8289.wav", "A wanted felon on the loose.", "crime_wanted_felon_on_the_loose"); } } }
-    public class crime_warrant_issued { public static ScannerFile Awarrantissued { get { return new ScannerFile("01_crime_warrant_issued\\0x09926678.wav", "A warrant issued.", "crime_warrant_issued"); } } }
-    public class crooks_arrested
-    {
-        public static ScannerFile Multiplesuspectsarrested { get { return new ScannerFile("01_crooks_arrested\\0x03169622.wav", "Multiple suspects arrested.", "crooks_arrested"); } }
-        public static ScannerFile Officershaveapprehendedallsuspects { get { return new ScannerFile("01_crooks_arrested\\0x07A25F39.wav", "Officers have apprehended all suspects.", "crooks_arrested"); } }
-        public static ScannerFile Suspectsincustody { get { return new ScannerFile("01_crooks_arrested\\0x0C75E8E3.wav", "Suspects in custody.", "crooks_arrested"); } }
-        public static ScannerFile Officershaveapprehendedmultiplesuspects { get { return new ScannerFile("01_crooks_arrested\\0x10166FB6.wav", "Officers have apprehended multiple suspects.", "crooks_arrested"); } }
-        public static ScannerFile Unitshavesuspectsincustody { get { return new ScannerFile("01_crooks_arrested\\0x139936BB.wav", "Units have suspects in custody.", "crooks_arrested"); } }
-        public static ScannerFile Suspectsincustody1 { get { return new ScannerFile("01_crooks_arrested\\0x151DBA30.wav", "Suspects in custody.", "crooks_arrested"); } }
-        public static ScannerFile Multiplesuspectsincustody { get { return new ScannerFile("01_crooks_arrested\\0x19D883A9.wav", "Multiple suspects in custody.", "crooks_arrested"); } }
-        public static ScannerFile Suspectsare1015 { get { return new ScannerFile("01_crooks_arrested\\0x1CFC0672.wav", "Suspects are 10-15.", "crooks_arrested"); } }
-        public static ScannerFile Unitshaveapprehendedsuspects { get { return new ScannerFile("01_crooks_arrested\\0x1E69CC5D.wav", "Units have apprehended suspects.", "crooks_arrested"); } }
-        public static ScannerFile Suspectsapprehended { get { return new ScannerFile("01_crooks_arrested\\0x1EC68D84.wav", "Suspects apprehended.", "crooks_arrested"); } }
-    }
-    public class crooks_escaped
-    {
-        public static ScannerFile Suspectshaveevadedpursuit { get { return new ScannerFile("01_crooks_escaped\\0x062BA4E6.wav", "Suspects have evaded pursuit.", "crooks_escaped"); } }
-        public static ScannerFile Suspectsevadedofficers { get { return new ScannerFile("01_crooks_escaped\\0x0B21EED1.wav", "Suspects evaded officers.", "crooks_escaped"); } }
-        public static ScannerFile Targetshaveevadedcapture { get { return new ScannerFile("01_crooks_escaped\\0x11987BBF.wav", "Targets have evaded capture.", "crooks_escaped"); } }
-        public static ScannerFile Criminalshaveevadedpursuit { get { return new ScannerFile("01_crooks_escaped\\0x14430115.wav", "Criminals have evaded pursuit.", "crooks_escaped"); } }
-        public static ScannerFile Targetsevadedpursuingofficers { get { return new ScannerFile("01_crooks_escaped\\0x18F84A7E.wav", "Targets evaded pursuing officers.", "crooks_escaped"); } }
-        public static ScannerFile Suspectslost { get { return new ScannerFile("01_crooks_escaped\\0x1FAF17EC.wav", "Suspects lost.", "crooks_escaped"); } }
-        public static ScannerFile Suspectshaveeludedofficers { get { return new ScannerFile("01_crooks_escaped\\0x1FE8D860.wav", "Suspects have eluded officers.", "crooks_escaped"); } }
-    }
-    public class crooks_killed
-    {
-        public static ScannerFile Unitshaveneutralizedsuspects { get { return new ScannerFile("01_crooks_killed\\0x065E8858.wav", "Units have neutralized suspects.", "crooks_killed"); } }
-        public static ScannerFile Suspectsneutralized { get { return new ScannerFile("01_crooks_killed\\0x083B4D1C.wav", "Suspects neutralized.", "crooks_killed"); } }
-        public static ScannerFile Suspectsdown { get { return new ScannerFile("01_crooks_killed\\0x0F5A9A4F.wav", "Suspects down.", "crooks_killed"); } }
-        public static ScannerFile Officershavepacifiedsuspects { get { return new ScannerFile("01_crooks_killed\\0x11ADDEF5.wav", "Officers have pacified suspects.", "crooks_killed"); } }
-        public static ScannerFile Suspectspacified { get { return new ScannerFile("01_crooks_killed\\0x11FE60A2.wav", "Suspects pacified.", "crooks_killed"); } }
-        public static ScannerFile Unitshavepacifiedsuspects { get { return new ScannerFile("01_crooks_killed\\0x1BDB3351.wav", "Units have pacified suspects.", "crooks_killed"); } }
-        public static ScannerFile Officershaveneutralizedsuspects { get { return new ScannerFile("01_crooks_killed\\0x1F707A7A.wav", "Officers have neutralized suspects.", "crooks_killed"); } }
-    }
+    //public class crime_warrant_issued { public static ScannerFile Awarrantissued { get { return new ScannerFile("01_crime_warrant_issued\\0x09926678.wav", "A warrant issued.", "crime_warrant_issued"); } } }
+    //public class crooks_arrested
+    //{
+    //    public static ScannerFile Multiplesuspectsarrested { get { return new ScannerFile("01_crooks_arrested\\0x03169622.wav", "Multiple suspects arrested.", "crooks_arrested"); } }
+    //    public static ScannerFile Officershaveapprehendedallsuspects { get { return new ScannerFile("01_crooks_arrested\\0x07A25F39.wav", "Officers have apprehended all suspects.", "crooks_arrested"); } }
+    //    public static ScannerFile Suspectsincustody { get { return new ScannerFile("01_crooks_arrested\\0x0C75E8E3.wav", "Suspects in custody.", "crooks_arrested"); } }
+    //    public static ScannerFile Officershaveapprehendedmultiplesuspects { get { return new ScannerFile("01_crooks_arrested\\0x10166FB6.wav", "Officers have apprehended multiple suspects.", "crooks_arrested"); } }
+    //    public static ScannerFile Unitshavesuspectsincustody { get { return new ScannerFile("01_crooks_arrested\\0x139936BB.wav", "Units have suspects in custody.", "crooks_arrested"); } }
+    //    public static ScannerFile Suspectsincustody1 { get { return new ScannerFile("01_crooks_arrested\\0x151DBA30.wav", "Suspects in custody.", "crooks_arrested"); } }
+    //    public static ScannerFile Multiplesuspectsincustody { get { return new ScannerFile("01_crooks_arrested\\0x19D883A9.wav", "Multiple suspects in custody.", "crooks_arrested"); } }
+    //    public static ScannerFile Suspectsare1015 { get { return new ScannerFile("01_crooks_arrested\\0x1CFC0672.wav", "Suspects are 10-15.", "crooks_arrested"); } }
+    //    public static ScannerFile Unitshaveapprehendedsuspects { get { return new ScannerFile("01_crooks_arrested\\0x1E69CC5D.wav", "Units have apprehended suspects.", "crooks_arrested"); } }
+    //    public static ScannerFile Suspectsapprehended { get { return new ScannerFile("01_crooks_arrested\\0x1EC68D84.wav", "Suspects apprehended.", "crooks_arrested"); } }
+    //}
+    //public class crooks_escaped
+    //{
+    //    public static ScannerFile Suspectshaveevadedpursuit { get { return new ScannerFile("01_crooks_escaped\\0x062BA4E6.wav", "Suspects have evaded pursuit.", "crooks_escaped"); } }
+    //    public static ScannerFile Suspectsevadedofficers { get { return new ScannerFile("01_crooks_escaped\\0x0B21EED1.wav", "Suspects evaded officers.", "crooks_escaped"); } }
+    //    public static ScannerFile Targetshaveevadedcapture { get { return new ScannerFile("01_crooks_escaped\\0x11987BBF.wav", "Targets have evaded capture.", "crooks_escaped"); } }
+    //    public static ScannerFile Criminalshaveevadedpursuit { get { return new ScannerFile("01_crooks_escaped\\0x14430115.wav", "Criminals have evaded pursuit.", "crooks_escaped"); } }
+    //    public static ScannerFile Targetsevadedpursuingofficers { get { return new ScannerFile("01_crooks_escaped\\0x18F84A7E.wav", "Targets evaded pursuing officers.", "crooks_escaped"); } }
+    //    public static ScannerFile Suspectslost { get { return new ScannerFile("01_crooks_escaped\\0x1FAF17EC.wav", "Suspects lost.", "crooks_escaped"); } }
+    //    public static ScannerFile Suspectshaveeludedofficers { get { return new ScannerFile("01_crooks_escaped\\0x1FE8D860.wav", "Suspects have eluded officers.", "crooks_escaped"); } }
+    //}
+    //public class crooks_killed
+    //{
+    //    public static ScannerFile Unitshaveneutralizedsuspects { get { return new ScannerFile("01_crooks_killed\\0x065E8858.wav", "Units have neutralized suspects.", "crooks_killed"); } }
+    //    public static ScannerFile Suspectsneutralized { get { return new ScannerFile("01_crooks_killed\\0x083B4D1C.wav", "Suspects neutralized.", "crooks_killed"); } }
+    //    public static ScannerFile Suspectsdown { get { return new ScannerFile("01_crooks_killed\\0x0F5A9A4F.wav", "Suspects down.", "crooks_killed"); } }
+    //    public static ScannerFile Officershavepacifiedsuspects { get { return new ScannerFile("01_crooks_killed\\0x11ADDEF5.wav", "Officers have pacified suspects.", "crooks_killed"); } }
+    //    public static ScannerFile Suspectspacified { get { return new ScannerFile("01_crooks_killed\\0x11FE60A2.wav", "Suspects pacified.", "crooks_killed"); } }
+    //    public static ScannerFile Unitshavepacifiedsuspects { get { return new ScannerFile("01_crooks_killed\\0x1BDB3351.wav", "Units have pacified suspects.", "crooks_killed"); } }
+    //    public static ScannerFile Officershaveneutralizedsuspects { get { return new ScannerFile("01_crooks_killed\\0x1F707A7A.wav", "Officers have neutralized suspects.", "crooks_killed"); } }
+    //}
     public class crook_arrested
     {
         public static ScannerFile Asuspectincustody { get { return new ScannerFile("01_crook_arrested\\0x02B3621C.wav", "A suspect in custody.", "crook_arrested"); } }
@@ -1438,23 +1438,23 @@
         public static ScannerFile Acriminaldown { get { return new ScannerFile("01_crook_killed\\0x1C44D467.wav", "A criminal down.", "crook_killed"); } }
         public static ScannerFile Officershavepacifiedsuspect { get { return new ScannerFile("01_crook_killed\\0x1E57EBF8.wav", "Officers have pacified suspect.", "crook_killed"); } }
     }
-    public class custom_player_flow
-    {
-        public static ScannerFile WantedinconnectionwiththeRichmanJewelryStoreHeist { get { return new ScannerFile("01_custom_player_flow\\0x005719B7.wav", "Wanted in connection with theRichman Jewelry Store Heist.", "custom_player_flow"); } }
-        public static ScannerFile WantedinconnectionwiththeRobberyofthePaletoBayBank { get { return new ScannerFile("01_custom_player_flow\\0x018DF534.wav", "Wanted in connection with theRobbery of the Paleto Bay Bank.", "custom_player_flow"); } }
-        public static ScannerFile OfficersreportsightingofTrevorPhilips { get { return new ScannerFile("01_custom_player_flow\\0x01A271E2.wav", "Officers report sighting of Trevor Philips.", "custom_player_flow"); } }
-        public static ScannerFile SuspectisFranklinClinton { get { return new ScannerFile("01_custom_player_flow\\0x02D9EA4C.wav", "Suspect is Franklin Clinton.", "custom_player_flow"); } }
-        public static ScannerFile WantedforquestioningabouttheHumaneLabsRobbery { get { return new ScannerFile("01_custom_player_flow\\0x076EFD5F.wav", "Wanted for questioning about theHumane Labs Robbery.", "custom_player_flow"); } }
-        public static ScannerFile FornumerousviolationsinthemiddleLosSantosarea { get { return new ScannerFile("01_custom_player_flow\\0x079A4471.wav", "For numerous violations in the middle(?) Los Santos area.", "custom_player_flow"); } }
-        public static ScannerFile Attentionallunitssuspectisamiddleagedwhitemale { get { return new ScannerFile("01_custom_player_flow\\0x0C8FA2D3.wav", "Attention all units, suspect is a middle-aged white male.", "custom_player_flow"); } }
-        public static ScannerFile Suspectsarereportedtobethegroupwanted { get { return new ScannerFile("01_custom_player_flow\\0x10D916E2.wav", "Suspects are reported to be the group wanted.", "custom_player_flow"); } }
-        public static ScannerFile Wantedinconnectionwithmultiplehomicides { get { return new ScannerFile("01_custom_player_flow\\0x119211C1.wav", "Wanted in connection with multiple homicides.", "custom_player_flow"); } }
-        public static ScannerFile WantedforquestioningabouttheHumaneLabsRobbery1 { get { return new ScannerFile("01_custom_player_flow\\0x129809C9.wav", "Wanted for questioning about theHumane Labs Robbery.", "custom_player_flow"); } }
-        public static ScannerFile WantedinconnectionwiththeRichmanJewelryStoreHeist1 { get { return new ScannerFile("01_custom_player_flow\\0x1343B038.wav", "Wanted in connection with theRichman Jewelry Store Heist.", "custom_player_flow"); } }
-        public static ScannerFile Suspectisayoungafricanamericanmale { get { return new ScannerFile("01_custom_player_flow\\0x15BC99FA.wav", "Suspect is a young, african-american male.", "custom_player_flow"); } }
-        public static ScannerFile Officersreportsightingofaheavysetwhitemale { get { return new ScannerFile("01_custom_player_flow\\0x17EE21F7.wav", "Officers report sighting of a heavyset white male.", "custom_player_flow"); } }
-        public static ScannerFile AttentionallunitssuspectissupportedasMichaeldeSanto { get { return new ScannerFile("01_custom_player_flow\\0x1B360F7C.wav", "Attention all units, suspect is supported as Michael de Santo.", "custom_player_flow"); } }
-    }
+    //public class custom_player_flow
+    //{
+    //    public static ScannerFile WantedinconnectionwiththeRichmanJewelryStoreHeist { get { return new ScannerFile("01_custom_player_flow\\0x005719B7.wav", "Wanted in connection with theRichman Jewelry Store Heist.", "custom_player_flow"); } }
+    //    public static ScannerFile WantedinconnectionwiththeRobberyofthePaletoBayBank { get { return new ScannerFile("01_custom_player_flow\\0x018DF534.wav", "Wanted in connection with theRobbery of the Paleto Bay Bank.", "custom_player_flow"); } }
+    //    public static ScannerFile OfficersreportsightingofTrevorPhilips { get { return new ScannerFile("01_custom_player_flow\\0x01A271E2.wav", "Officers report sighting of Trevor Philips.", "custom_player_flow"); } }
+    //    public static ScannerFile SuspectisFranklinClinton { get { return new ScannerFile("01_custom_player_flow\\0x02D9EA4C.wav", "Suspect is Franklin Clinton.", "custom_player_flow"); } }
+    //    public static ScannerFile WantedforquestioningabouttheHumaneLabsRobbery { get { return new ScannerFile("01_custom_player_flow\\0x076EFD5F.wav", "Wanted for questioning about theHumane Labs Robbery.", "custom_player_flow"); } }
+    //    public static ScannerFile FornumerousviolationsinthemiddleLosSantosarea { get { return new ScannerFile("01_custom_player_flow\\0x079A4471.wav", "For numerous violations in the middle(?) Los Santos area.", "custom_player_flow"); } }
+    //    public static ScannerFile Attentionallunitssuspectisamiddleagedwhitemale { get { return new ScannerFile("01_custom_player_flow\\0x0C8FA2D3.wav", "Attention all units, suspect is a middle-aged white male.", "custom_player_flow"); } }
+    //    public static ScannerFile Suspectsarereportedtobethegroupwanted { get { return new ScannerFile("01_custom_player_flow\\0x10D916E2.wav", "Suspects are reported to be the group wanted.", "custom_player_flow"); } }
+    //    public static ScannerFile Wantedinconnectionwithmultiplehomicides { get { return new ScannerFile("01_custom_player_flow\\0x119211C1.wav", "Wanted in connection with multiple homicides.", "custom_player_flow"); } }
+    //    public static ScannerFile WantedforquestioningabouttheHumaneLabsRobbery1 { get { return new ScannerFile("01_custom_player_flow\\0x129809C9.wav", "Wanted for questioning about theHumane Labs Robbery.", "custom_player_flow"); } }
+    //    public static ScannerFile WantedinconnectionwiththeRichmanJewelryStoreHeist1 { get { return new ScannerFile("01_custom_player_flow\\0x1343B038.wav", "Wanted in connection with theRichman Jewelry Store Heist.", "custom_player_flow"); } }
+    //    public static ScannerFile Suspectisayoungafricanamericanmale { get { return new ScannerFile("01_custom_player_flow\\0x15BC99FA.wav", "Suspect is a young, african-american male.", "custom_player_flow"); } }
+    //    public static ScannerFile Officersreportsightingofaheavysetwhitemale { get { return new ScannerFile("01_custom_player_flow\\0x17EE21F7.wav", "Officers report sighting of a heavyset white male.", "custom_player_flow"); } }
+    //    public static ScannerFile AttentionallunitssuspectissupportedasMichaeldeSanto { get { return new ScannerFile("01_custom_player_flow\\0x1B360F7C.wav", "Attention all units, suspect is supported as Michael de Santo.", "custom_player_flow"); } }
+    //}
     public class custom_wanted_level_line
     {
         public static ScannerFile OfficersauthorizedtousetasersCodeTom { get { return new ScannerFile("01_custom_wanted_level_line\\0x00381DCD.wav", "Officers authorized to use tasers; Code Tom.", "custom_wanted_level_line"); } }
@@ -1473,13 +1473,13 @@
         public static ScannerFile Suspectisarmedanddangerousweaponsfree { get { return new ScannerFile("01_custom_wanted_level_line\\0x1B146598.wav", "Suspect is armed and dangerous; weapons free.", "custom_wanted_level_line"); } }
         public static ScannerFile Code13militaryunitsrequested { get { return new ScannerFile("01_custom_wanted_level_line\\0x1E4F9A87.wav", "Code 13; military units requested.", "custom_wanted_level_line"); } }
     }
-    public class direction_bound
-    {
-        public static ScannerFile Southbound { get { return new ScannerFile("01_direction_bound\\0x02F43627.wav", "Southbound.", "direction_bound"); } }
-        public static ScannerFile Westbound { get { return new ScannerFile("01_direction_bound\\0x089A1D9B.wav", "Westbound.", "direction_bound"); } }
-        public static ScannerFile Northbound { get { return new ScannerFile("01_direction_bound\\0x0F00AAE2.wav", "Northbound.", "direction_bound"); } }
-        public static ScannerFile Eastbound { get { return new ScannerFile("01_direction_bound\\0x15D27B32.wav", "Eastbound.", "direction_bound"); } }
-    }
+    //public class direction_bound
+    //{
+    //    public static ScannerFile Southbound { get { return new ScannerFile("01_direction_bound\\0x02F43627.wav", "Southbound.", "direction_bound"); } }
+    //    public static ScannerFile Westbound { get { return new ScannerFile("01_direction_bound\\0x089A1D9B.wav", "Westbound.", "direction_bound"); } }
+    //    public static ScannerFile Northbound { get { return new ScannerFile("01_direction_bound\\0x0F00AAE2.wav", "Northbound.", "direction_bound"); } }
+    //    public static ScannerFile Eastbound { get { return new ScannerFile("01_direction_bound\\0x15D27B32.wav", "Eastbound.", "direction_bound"); } }
+    //}
     public class direction_heading
     {
         public static ScannerFile South { get { return new ScannerFile("01_direction_heading\\0x0BB197C4.wav", "South.", "direction_heading"); } }
@@ -1487,16 +1487,16 @@
         public static ScannerFile North { get { return new ScannerFile("01_direction_heading\\0x168FB5D8.wav", "North.", "direction_heading"); } }
         public static ScannerFile West { get { return new ScannerFile("01_direction_heading\\0x1E1242F0.wav", "West.", "direction_heading"); } }
     }
-    public class dispatch_custom_field_report_response
-    {
-        public static ScannerFile copythat104 { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x01A472D4.wav", "10-4, copy that.", "dispatch_custom_field_report_response"); } }
-        public static ScannerFile Copythat1041 { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x06283BDB.wav", "Copy that, 10-4.", "dispatch_custom_field_report_response"); } }
-        public static ScannerFile Rogerthat { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x0DD40B1E.wav", "Roger that.", "dispatch_custom_field_report_response"); } }
-        public static ScannerFile Acknowledged { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x1356D639.wav", "Acknowledged.", "dispatch_custom_field_report_response"); } }
-        public static ScannerFile Number104 { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x1460D84C.wav", "10-4.", "dispatch_custom_field_report_response"); } }
-        public static ScannerFile Number104copy { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x17D59F36.wav", "10-4, copy.", "dispatch_custom_field_report_response"); } }
-        public static ScannerFile Roger { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x1E802C76.wav", "Roger.", "dispatch_custom_field_report_response"); } }
-    }
+    //public class dispatch_custom_field_report_response
+    //{
+    //    public static ScannerFile copythat104 { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x01A472D4.wav", "10-4, copy that.", "dispatch_custom_field_report_response"); } }
+    //    public static ScannerFile Copythat1041 { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x06283BDB.wav", "Copy that, 10-4.", "dispatch_custom_field_report_response"); } }
+    //    public static ScannerFile Rogerthat { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x0DD40B1E.wav", "Roger that.", "dispatch_custom_field_report_response"); } }
+    //    public static ScannerFile Acknowledged { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x1356D639.wav", "Acknowledged.", "dispatch_custom_field_report_response"); } }
+    //    public static ScannerFile Number104 { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x1460D84C.wav", "10-4.", "dispatch_custom_field_report_response"); } }
+    //    public static ScannerFile Number104copy { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x17D59F36.wav", "10-4, copy.", "dispatch_custom_field_report_response"); } }
+    //    public static ScannerFile Roger { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x1E802C76.wav", "Roger.", "dispatch_custom_field_report_response"); } }
+    //}
     public class dispatch_respond_code
     {
         public static ScannerFile UnitsrespondCode2 { get { return new ScannerFile("01_dispatch_respond_code\\0x00B0B158.wav", "Units respond; Code 2.", "dispatch_respond_code"); } }
@@ -1510,18 +1510,18 @@
         public static ScannerFile EmergencyallunitsrespondCode99 { get { return new ScannerFile("01_dispatch_respond_code\\0x1B01574D.wav", "Emergency; all units respond Code 99.", "dispatch_respond_code"); } }
         public static ScannerFile UnitrespondCode2 { get { return new ScannerFile("01_dispatch_respond_code\\0x1CB5A95C.wav", "Unit respond; Code 2.", "dispatch_respond_code"); } }
     }
-    public class dispatch_to
-    {
-        public static ScannerFile Dispatchtouhh { get { return new ScannerFile("01_dispatch_to\\0x04BCE5D5.wav", "Dispatch to, uhh...", "dispatch_to"); } }
-        public static ScannerFile Dispatchtoumm { get { return new ScannerFile("01_dispatch_to\\0x14FE4658.wav", "Dispatch to, umm...", "dispatch_to"); } }
-    }
-    public class dispatch_units_from
-    {
-        public static ScannerFile Dispatchunitsfromuh { get { return new ScannerFile("01_dispatch_units_from\\0x08A4112E.wav", "Dispatch units from uh...", "dispatch_units_from"); } }
-        public static ScannerFile Dispatchunitsfrom { get { return new ScannerFile("01_dispatch_units_from\\0x0B7756D4.wav", "Dispatch units from...", "dispatch_units_from"); } }
-        public static ScannerFile Dispatchunitsfromumm { get { return new ScannerFile("01_dispatch_units_from\\0x1668ECB8.wav", "Dispatch units from...umm...", "dispatch_units_from"); } }
-        public static ScannerFile Dispatchunitsfromumm1 { get { return new ScannerFile("01_dispatch_units_from\\0x175AEE96.wav", "Dispatch units from...umm...", "dispatch_units_from"); } }
-    }
+    //public class dispatch_to
+    //{
+    //    public static ScannerFile Dispatchtouhh { get { return new ScannerFile("01_dispatch_to\\0x04BCE5D5.wav", "Dispatch to, uhh...", "dispatch_to"); } }
+    //    public static ScannerFile Dispatchtoumm { get { return new ScannerFile("01_dispatch_to\\0x14FE4658.wav", "Dispatch to, umm...", "dispatch_to"); } }
+    //}
+    //public class dispatch_units_from
+    //{
+    //    public static ScannerFile Dispatchunitsfromuh { get { return new ScannerFile("01_dispatch_units_from\\0x08A4112E.wav", "Dispatch units from uh...", "dispatch_units_from"); } }
+    //    public static ScannerFile Dispatchunitsfrom { get { return new ScannerFile("01_dispatch_units_from\\0x0B7756D4.wav", "Dispatch units from...", "dispatch_units_from"); } }
+    //    public static ScannerFile Dispatchunitsfromumm { get { return new ScannerFile("01_dispatch_units_from\\0x1668ECB8.wav", "Dispatch units from...umm...", "dispatch_units_from"); } }
+    //    public static ScannerFile Dispatchunitsfromumm1 { get { return new ScannerFile("01_dispatch_units_from\\0x175AEE96.wav", "Dispatch units from...umm...", "dispatch_units_from"); } }
+    //}
     public class dispatch_units_full
     {
         public static ScannerFile DispatchingSWATunitsfrompoliceheadquarters { get { return new ScannerFile("01_dispatch_units_full\\0x011432C4.wav", "Dispatching SWAT units from police headquarters.", "dispatch_units_full"); } }
@@ -1617,80 +1617,80 @@
         public static ScannerFile Allunitsprimarytargetisunderarrest { get { return new ScannerFile("01_escort_boss\\0x1EC349F5.wav", "All units, primary target is under arrest.", "escort_boss"); } }
         public static ScannerFile WehavereportsofahighlevelVagosgangmemberintransit1 { get { return new ScannerFile("01_escort_boss\\0x1EC96AA1.wav", "We have reports of a high-level Vagos gang member in transit.", "escort_boss"); } }
     }
-    public class extra_prefix
-    {
-        public static ScannerFile Beatup { get { return new ScannerFile("01_extra_prefix\\0x02CB8B4C.wav", "Beat up.", "extra_prefix"); } }
-        public static ScannerFile Dented { get { return new ScannerFile("01_extra_prefix\\0x02E3C342.wav", "Dented.", "extra_prefix"); } }
-        public static ScannerFile Modified { get { return new ScannerFile("01_extra_prefix\\0x06127D7F.wav", "Modified.", "extra_prefix"); } }
-        public static ScannerFile Dirty { get { return new ScannerFile("01_extra_prefix\\0x067B9330.wav", "Dirty.", "extra_prefix"); } }
-        public static ScannerFile Mint { get { return new ScannerFile("01_extra_prefix\\0x08510305.wav", "Mint.", "extra_prefix"); } }
-        public static ScannerFile Custom { get { return new ScannerFile("01_extra_prefix\\0x0DE67420.wav", "Custom.", "extra_prefix"); } }
-        public static ScannerFile Customized { get { return new ScannerFile("01_extra_prefix\\0x1303EEAD.wav", "Customized.", "extra_prefix"); } }
-        public static ScannerFile Chopped { get { return new ScannerFile("01_extra_prefix\\0x1501AFC3.wav", "Chopped.", "extra_prefix"); } }
-        public static ScannerFile Damaged { get { return new ScannerFile("01_extra_prefix\\0x151A41F6.wav", "Damaged.", "extra_prefix"); } }
-        public static ScannerFile Rundown { get { return new ScannerFile("01_extra_prefix\\0x158689B3.wav", "Run-down.", "extra_prefix"); } }
-        public static ScannerFile Distressed { get { return new ScannerFile("01_extra_prefix\\0x15F33674.wav", "Distressed.", "extra_prefix"); } }
-        public static ScannerFile Rundown1 { get { return new ScannerFile("01_extra_prefix\\0x160B4ABB.wav", "Run-down.", "extra_prefix"); } }
-        public static ScannerFile Battered { get { return new ScannerFile("01_extra_prefix\\0x17987A64.wav", "Battered.", "extra_prefix"); } }
-        public static ScannerFile Rusty { get { return new ScannerFile("01_extra_prefix\\0x1CDCBBCC.wav", "Rusty.", "extra_prefix"); } }
-    }
-    public class gang_name
-    {
-        public static ScannerFile TheLost { get { return new ScannerFile("01_gang_name\\0x00A35403.wav", "The Lost.", "gang_name"); } }
-        public static ScannerFile TheVagos { get { return new ScannerFile("01_gang_name\\0x0476C52A.wav", "The Vagos.", "gang_name"); } }
-        public static ScannerFile Aprofessionalcrimeoutfit { get { return new ScannerFile("01_gang_name\\0x06123C0C.wav", "A professional crime outfit.", "gang_name"); } }
-        public static ScannerFile AMexicangang { get { return new ScannerFile("01_gang_name\\0x06A0C782.wav", "A Mexican gang.", "gang_name"); } }
-        public static ScannerFile Aprofessionalcriminalorganization { get { return new ScannerFile("01_gang_name\\0x0A713996.wav", "A professional criminal organization", "gang_name"); } }
-        public static ScannerFile Aprofessionalcrimesyndicate { get { return new ScannerFile("01_gang_name\\0x0BE7D9C7.wav", "A professional crime syndicate.", "gang_name"); } }
-        public static ScannerFile AnAfricanAmericangang { get { return new ScannerFile("01_gang_name\\0x0CB8D07E.wav", "An African-American gang.", "gang_name"); } }
-        public static ScannerFile Abikergang { get { return new ScannerFile("01_gang_name\\0x0FCCB6E6.wav", "A biker gang.", "gang_name"); } }
-        public static ScannerFile Aprofessionalcrimecrew { get { return new ScannerFile("01_gang_name\\0x1F1DE0EA.wav", "A professional crime crew.", "gang_name"); } }
-    }
-    public class generic_direction { public static ScannerFile Central { get { return new ScannerFile("01_generic_direction\\0x0BF563E8.wav", "Central.", "generic_direction"); } } }
-    public class hair
-    {
-        public static ScannerFile Purplehair { get { return new ScannerFile("01_hair\\0x019331A8.wav", "Purple hair.", "hair"); } }
-        public static ScannerFile Bluehair { get { return new ScannerFile("01_hair\\0x06449285.wav", "Blue hair.", "hair"); } }
-        public static ScannerFile Orangehair { get { return new ScannerFile("01_hair\\0x0F349B52.wav", "Orange hair.", "hair"); } }
-        public static ScannerFile Coloredhair { get { return new ScannerFile("01_hair\\0x133F208B.wav", "Colored hair.", "hair"); } }
-        public static ScannerFile Aknittedcap { get { return new ScannerFile("01_hair\\0x1433A16F.wav", "A knitted cap.", "hair"); } }
-        public static ScannerFile Brownhair { get { return new ScannerFile("01_hair\\0x184B98DE.wav", "Brown hair.", "hair"); } }
-        public static ScannerFile Redhair { get { return new ScannerFile("01_hair\\0x18E34C46.wav", "Red hair.", "hair"); } }
-        public static ScannerFile Greenhair { get { return new ScannerFile("01_hair\\0x18FC48DA.wav", "Green hair.", "hair"); } }
-        public static ScannerFile Blackhair { get { return new ScannerFile("01_hair\\0x19960FF6.wav", "Black hair.", "hair"); } }
-        public static ScannerFile Abaseballcap { get { return new ScannerFile("01_hair\\0x1A122B24.wav", "A baseball cap.", "hair"); } }
-        public static ScannerFile Blondehair { get { return new ScannerFile("01_hair\\0x1D7A1600.wav", "Blonde hair.", "hair"); } }
-        public static ScannerFile Punkhair { get { return new ScannerFile("01_hair\\0x1E913A94.wav", "Punk hair.", "hair"); } }
-        public static ScannerFile Acowboyhat { get { return new ScannerFile("01_hair\\0x1F47D088.wav", "A cowboy hat.", "hair"); } }
-        public static ScannerFile Nohair { get { return new ScannerFile("01_hair\\0x1F975F7C.wav", "No hair.", "hair"); } }
-    }
-    public class helicopter_refuelling
-    {
-        public static ScannerFile Airunitlowonfuelreturningtobase { get { return new ScannerFile("01_helicopter_refuelling\\0x021BAEBA.wav", "Air unit low on fuel, returning to base.", "helicopter_refuelling"); } }
-        public static ScannerFile Eagleunithasbeenrecalledforarefueling { get { return new ScannerFile("01_helicopter_refuelling\\0x0783F887.wav", "Eagle unit has been recalled for a refueling.", "helicopter_refuelling"); } }
-        public static ScannerFile Eagleunithasbeenrecalledforrefueling { get { return new ScannerFile("01_helicopter_refuelling\\0x0CCA0311.wav", "Eagle unit has been recalled for refueling.", "helicopter_refuelling"); } }
-        public static ScannerFile Airsupportlowonfuelreturningtobase { get { return new ScannerFile("01_helicopter_refuelling\\0x1017CABD.wav", "Air support low on fuel; returning to base.", "helicopter_refuelling"); } }
-        public static ScannerFile Airsupportisreturningtobaseforarefueling { get { return new ScannerFile("01_helicopter_refuelling\\0x12924E9F.wav", "Air support is returning to base for a refueling.", "helicopter_refuelling"); } }
-        public static ScannerFile Airsupportunitneedstorefuel { get { return new ScannerFile("01_helicopter_refuelling\\0x1336D0F7.wav", "Air support unit needs to refuel.", "helicopter_refuelling"); } }
-        public static ScannerFile Airunitneedstorefuel { get { return new ScannerFile("01_helicopter_refuelling\\0x15761452.wav", "Air unit needs to refuel.", "helicopter_refuelling"); } }
-        public static ScannerFile Airunitislowonfuelreturningtobase { get { return new ScannerFile("01_helicopter_refuelling\\0x19F1DD49.wav", "Air unit is low on fuel; returning to base.", "helicopter_refuelling"); } }
-        public static ScannerFile Airsupportisheadinghometorefuel { get { return new ScannerFile("01_helicopter_refuelling\\0x1C4F2219.wav", "Air support is heading home to refuel.", "helicopter_refuelling"); } }
-        public static ScannerFile Airunitisreturningtobaseforarefueling { get { return new ScannerFile("01_helicopter_refuelling\\0x1FD3E922.wav", "Air unit is returning to base for a refueling.", "helicopter_refuelling"); } }
-    }
-    public class in_the_water
-    {
-        public static ScannerFile IntheLSriver { get { return new ScannerFile("01_in_the_water\\0x0243B2FD.wav", "In the LS river.", "in_the_water"); } }
-        public static ScannerFile OfftheWesterncoast { get { return new ScannerFile("01_in_the_water\\0x03680F1E.wav", "Off the Western coast.", "in_the_water"); } }
-        public static ScannerFile OfftheWestcoast { get { return new ScannerFile("01_in_the_water\\0x09AD1BA7.wav", "Off the West coast.", "in_the_water"); } }
-        public static ScannerFile OfftheNortherncoast { get { return new ScannerFile("01_in_the_water\\0x0BC82B92.wav", "Off the Northern coast.", "in_the_water"); } }
-        public static ScannerFile Inthewater { get { return new ScannerFile("01_in_the_water\\0x0BF2657F.wav", "In the water.", "in_the_water"); } }
-        public static ScannerFile IntheAlamoSea { get { return new ScannerFile("01_in_the_water\\0x0D0526A6.wav", "In the Alamo Sea.", "in_the_water"); } }
-        public static ScannerFile OfftheEastcoast { get { return new ScannerFile("01_in_the_water\\0x0F083043.wav", "Off the East coast.", "in_the_water"); } }
-        public static ScannerFile OfftheSoutherncoast { get { return new ScannerFile("01_in_the_water\\0x10CDD7BA.wav", "Off the Southern coast.", "in_the_water"); } }
-        public static ScannerFile OfftheSouthcoast { get { return new ScannerFile("01_in_the_water\\0x15E2E1E5.wav", "Off the South coast.", "in_the_water"); } }
-        public static ScannerFile OfftheNorthcoast { get { return new ScannerFile("01_in_the_water\\0x1916062E.wav", "Off the North coast.", "in_the_water"); } }
-        public static ScannerFile OfftheEasterncoast { get { return new ScannerFile("01_in_the_water\\0x1EC9CFC7.wav", "Off the Eastern coast.", "in_the_water"); } }
-    }
+    //public class extra_prefix
+    //{
+    //    public static ScannerFile Beatup { get { return new ScannerFile("01_extra_prefix\\0x02CB8B4C.wav", "Beat up.", "extra_prefix"); } }
+    //    public static ScannerFile Dented { get { return new ScannerFile("01_extra_prefix\\0x02E3C342.wav", "Dented.", "extra_prefix"); } }
+    //    public static ScannerFile Modified { get { return new ScannerFile("01_extra_prefix\\0x06127D7F.wav", "Modified.", "extra_prefix"); } }
+    //    public static ScannerFile Dirty { get { return new ScannerFile("01_extra_prefix\\0x067B9330.wav", "Dirty.", "extra_prefix"); } }
+    //    public static ScannerFile Mint { get { return new ScannerFile("01_extra_prefix\\0x08510305.wav", "Mint.", "extra_prefix"); } }
+    //    public static ScannerFile Custom { get { return new ScannerFile("01_extra_prefix\\0x0DE67420.wav", "Custom.", "extra_prefix"); } }
+    //    public static ScannerFile Customized { get { return new ScannerFile("01_extra_prefix\\0x1303EEAD.wav", "Customized.", "extra_prefix"); } }
+    //    public static ScannerFile Chopped { get { return new ScannerFile("01_extra_prefix\\0x1501AFC3.wav", "Chopped.", "extra_prefix"); } }
+    //    public static ScannerFile Damaged { get { return new ScannerFile("01_extra_prefix\\0x151A41F6.wav", "Damaged.", "extra_prefix"); } }
+    //    public static ScannerFile Rundown { get { return new ScannerFile("01_extra_prefix\\0x158689B3.wav", "Run-down.", "extra_prefix"); } }
+    //    public static ScannerFile Distressed { get { return new ScannerFile("01_extra_prefix\\0x15F33674.wav", "Distressed.", "extra_prefix"); } }
+    //    public static ScannerFile Rundown1 { get { return new ScannerFile("01_extra_prefix\\0x160B4ABB.wav", "Run-down.", "extra_prefix"); } }
+    //    public static ScannerFile Battered { get { return new ScannerFile("01_extra_prefix\\0x17987A64.wav", "Battered.", "extra_prefix"); } }
+    //    public static ScannerFile Rusty { get { return new ScannerFile("01_extra_prefix\\0x1CDCBBCC.wav", "Rusty.", "extra_prefix"); } }
+    //}
+    //public class gang_name
+    //{
+    //    public static ScannerFile TheLost { get { return new ScannerFile("01_gang_name\\0x00A35403.wav", "The Lost.", "gang_name"); } }
+    //    public static ScannerFile TheVagos { get { return new ScannerFile("01_gang_name\\0x0476C52A.wav", "The Vagos.", "gang_name"); } }
+    //    public static ScannerFile Aprofessionalcrimeoutfit { get { return new ScannerFile("01_gang_name\\0x06123C0C.wav", "A professional crime outfit.", "gang_name"); } }
+    //    public static ScannerFile AMexicangang { get { return new ScannerFile("01_gang_name\\0x06A0C782.wav", "A Mexican gang.", "gang_name"); } }
+    //    public static ScannerFile Aprofessionalcriminalorganization { get { return new ScannerFile("01_gang_name\\0x0A713996.wav", "A professional criminal organization", "gang_name"); } }
+    //    public static ScannerFile Aprofessionalcrimesyndicate { get { return new ScannerFile("01_gang_name\\0x0BE7D9C7.wav", "A professional crime syndicate.", "gang_name"); } }
+    //    public static ScannerFile AnAfricanAmericangang { get { return new ScannerFile("01_gang_name\\0x0CB8D07E.wav", "An African-American gang.", "gang_name"); } }
+    //    public static ScannerFile Abikergang { get { return new ScannerFile("01_gang_name\\0x0FCCB6E6.wav", "A biker gang.", "gang_name"); } }
+    //    public static ScannerFile Aprofessionalcrimecrew { get { return new ScannerFile("01_gang_name\\0x1F1DE0EA.wav", "A professional crime crew.", "gang_name"); } }
+    //}
+    //public class generic_direction { public static ScannerFile Central { get { return new ScannerFile("01_generic_direction\\0x0BF563E8.wav", "Central.", "generic_direction"); } } }
+    //public class hair
+    //{
+    //    public static ScannerFile Purplehair { get { return new ScannerFile("01_hair\\0x019331A8.wav", "Purple hair.", "hair"); } }
+    //    public static ScannerFile Bluehair { get { return new ScannerFile("01_hair\\0x06449285.wav", "Blue hair.", "hair"); } }
+    //    public static ScannerFile Orangehair { get { return new ScannerFile("01_hair\\0x0F349B52.wav", "Orange hair.", "hair"); } }
+    //    public static ScannerFile Coloredhair { get { return new ScannerFile("01_hair\\0x133F208B.wav", "Colored hair.", "hair"); } }
+    //    public static ScannerFile Aknittedcap { get { return new ScannerFile("01_hair\\0x1433A16F.wav", "A knitted cap.", "hair"); } }
+    //    public static ScannerFile Brownhair { get { return new ScannerFile("01_hair\\0x184B98DE.wav", "Brown hair.", "hair"); } }
+    //    public static ScannerFile Redhair { get { return new ScannerFile("01_hair\\0x18E34C46.wav", "Red hair.", "hair"); } }
+    //    public static ScannerFile Greenhair { get { return new ScannerFile("01_hair\\0x18FC48DA.wav", "Green hair.", "hair"); } }
+    //    public static ScannerFile Blackhair { get { return new ScannerFile("01_hair\\0x19960FF6.wav", "Black hair.", "hair"); } }
+    //    public static ScannerFile Abaseballcap { get { return new ScannerFile("01_hair\\0x1A122B24.wav", "A baseball cap.", "hair"); } }
+    //    public static ScannerFile Blondehair { get { return new ScannerFile("01_hair\\0x1D7A1600.wav", "Blonde hair.", "hair"); } }
+    //    public static ScannerFile Punkhair { get { return new ScannerFile("01_hair\\0x1E913A94.wav", "Punk hair.", "hair"); } }
+    //    public static ScannerFile Acowboyhat { get { return new ScannerFile("01_hair\\0x1F47D088.wav", "A cowboy hat.", "hair"); } }
+    //    public static ScannerFile Nohair { get { return new ScannerFile("01_hair\\0x1F975F7C.wav", "No hair.", "hair"); } }
+    //}
+    //public class helicopter_refuelling
+    //{
+    //    public static ScannerFile Airunitlowonfuelreturningtobase { get { return new ScannerFile("01_helicopter_refuelling\\0x021BAEBA.wav", "Air unit low on fuel, returning to base.", "helicopter_refuelling"); } }
+    //    public static ScannerFile Eagleunithasbeenrecalledforarefueling { get { return new ScannerFile("01_helicopter_refuelling\\0x0783F887.wav", "Eagle unit has been recalled for a refueling.", "helicopter_refuelling"); } }
+    //    public static ScannerFile Eagleunithasbeenrecalledforrefueling { get { return new ScannerFile("01_helicopter_refuelling\\0x0CCA0311.wav", "Eagle unit has been recalled for refueling.", "helicopter_refuelling"); } }
+    //    public static ScannerFile Airsupportlowonfuelreturningtobase { get { return new ScannerFile("01_helicopter_refuelling\\0x1017CABD.wav", "Air support low on fuel; returning to base.", "helicopter_refuelling"); } }
+    //    public static ScannerFile Airsupportisreturningtobaseforarefueling { get { return new ScannerFile("01_helicopter_refuelling\\0x12924E9F.wav", "Air support is returning to base for a refueling.", "helicopter_refuelling"); } }
+    //    public static ScannerFile Airsupportunitneedstorefuel { get { return new ScannerFile("01_helicopter_refuelling\\0x1336D0F7.wav", "Air support unit needs to refuel.", "helicopter_refuelling"); } }
+    //    public static ScannerFile Airunitneedstorefuel { get { return new ScannerFile("01_helicopter_refuelling\\0x15761452.wav", "Air unit needs to refuel.", "helicopter_refuelling"); } }
+    //    public static ScannerFile Airunitislowonfuelreturningtobase { get { return new ScannerFile("01_helicopter_refuelling\\0x19F1DD49.wav", "Air unit is low on fuel; returning to base.", "helicopter_refuelling"); } }
+    //    public static ScannerFile Airsupportisheadinghometorefuel { get { return new ScannerFile("01_helicopter_refuelling\\0x1C4F2219.wav", "Air support is heading home to refuel.", "helicopter_refuelling"); } }
+    //    public static ScannerFile Airunitisreturningtobaseforarefueling { get { return new ScannerFile("01_helicopter_refuelling\\0x1FD3E922.wav", "Air unit is returning to base for a refueling.", "helicopter_refuelling"); } }
+    //}
+    //public class in_the_water
+    //{
+    //    public static ScannerFile IntheLSriver { get { return new ScannerFile("01_in_the_water\\0x0243B2FD.wav", "In the LS river.", "in_the_water"); } }
+    //    public static ScannerFile OfftheWesterncoast { get { return new ScannerFile("01_in_the_water\\0x03680F1E.wav", "Off the Western coast.", "in_the_water"); } }
+    //    public static ScannerFile OfftheWestcoast { get { return new ScannerFile("01_in_the_water\\0x09AD1BA7.wav", "Off the West coast.", "in_the_water"); } }
+    //    public static ScannerFile OfftheNortherncoast { get { return new ScannerFile("01_in_the_water\\0x0BC82B92.wav", "Off the Northern coast.", "in_the_water"); } }
+    //    public static ScannerFile Inthewater { get { return new ScannerFile("01_in_the_water\\0x0BF2657F.wav", "In the water.", "in_the_water"); } }
+    //    public static ScannerFile IntheAlamoSea { get { return new ScannerFile("01_in_the_water\\0x0D0526A6.wav", "In the Alamo Sea.", "in_the_water"); } }
+    //    public static ScannerFile OfftheEastcoast { get { return new ScannerFile("01_in_the_water\\0x0F083043.wav", "Off the East coast.", "in_the_water"); } }
+    //    public static ScannerFile OfftheSoutherncoast { get { return new ScannerFile("01_in_the_water\\0x10CDD7BA.wav", "Off the Southern coast.", "in_the_water"); } }
+    //    public static ScannerFile OfftheSouthcoast { get { return new ScannerFile("01_in_the_water\\0x15E2E1E5.wav", "Off the South coast.", "in_the_water"); } }
+    //    public static ScannerFile OfftheNorthcoast { get { return new ScannerFile("01_in_the_water\\0x1916062E.wav", "Off the North coast.", "in_the_water"); } }
+    //    public static ScannerFile OfftheEasterncoast { get { return new ScannerFile("01_in_the_water\\0x1EC9CFC7.wav", "Off the Eastern coast.", "in_the_water"); } }
+    //}
     public class lethal_force
     {
         public static ScannerFile Useoflethalforceisnotauthorized { get { return new ScannerFile("01_lethal_force\\0x0270822F.wav", "Use of lethal force is not authorized.", "lethal_force"); } }
@@ -1760,62 +1760,62 @@
         public static ScannerFile Young1 { get { return new ScannerFile("01_lp_letters_high\\0x1B2FD3AF.wav", "Young.", "lp_letters_high"); } }
         public static ScannerFile Lincoln1 { get { return new ScannerFile("01_lp_letters_high\\0x1E5D67B5.wav", "Lincoln.", "lp_letters_high"); } }
     }
-    public class lp_letters_low
-    {
-        public static ScannerFile William { get { return new ScannerFile("01_lp_letters_low\\0x0031F6C5.wav", "William.", "lp_letters_low"); } }
-        public static ScannerFile Robert { get { return new ScannerFile("01_lp_letters_low\\0x00D31CC4.wav", "Robert.", "lp_letters_low"); } }
-        public static ScannerFile HASH01E6E7C1 { get { return new ScannerFile("01_lp_letters_low\\0x01E6E7C1.wav", "0x01E6E7C1", "lp_letters_low"); } }
-        public static ScannerFile HASH03361ED9 { get { return new ScannerFile("01_lp_letters_low\\0x03361ED9.wav", "0x03361ED9", "lp_letters_low"); } }
-        public static ScannerFile HASH03B8C5D6 { get { return new ScannerFile("01_lp_letters_low\\0x03B8C5D6.wav", "0x03B8C5D6", "lp_letters_low"); } }
-        public static ScannerFile HASH048C0CEC { get { return new ScannerFile("01_lp_letters_low\\0x048C0CEC.wav", "0x048C0CEC", "lp_letters_low"); } }
-        public static ScannerFile HASH04936189 { get { return new ScannerFile("01_lp_letters_low\\0x04936189.wav", "0x04936189", "lp_letters_low"); } }
-        public static ScannerFile HASH0537B541 { get { return new ScannerFile("01_lp_letters_low\\0x0537B541.wav", "0x0537B541", "lp_letters_low"); } }
-        public static ScannerFile HASH055D0BCA { get { return new ScannerFile("01_lp_letters_low\\0x055D0BCA.wav", "0x055D0BCA", "lp_letters_low"); } }
-        public static ScannerFile HASH05EE78E6 { get { return new ScannerFile("01_lp_letters_low\\0x05EE78E6.wav", "0x05EE78E6", "lp_letters_low"); } }
-        public static ScannerFile HASH05F0170F { get { return new ScannerFile("01_lp_letters_low\\0x05F0170F.wav", "0x05F0170F", "lp_letters_low"); } }
-        public static ScannerFile HASH064182C9 { get { return new ScannerFile("01_lp_letters_low\\0x064182C9.wav", "0x064182C9", "lp_letters_low"); } }
-        public static ScannerFile HASH074858B4 { get { return new ScannerFile("01_lp_letters_low\\0x074858B4.wav", "0x074858B4", "lp_letters_low"); } }
-        public static ScannerFile HASH07511EA5 { get { return new ScannerFile("01_lp_letters_low\\0x07511EA5.wav", "0x07511EA5", "lp_letters_low"); } }
-        public static ScannerFile HASH0843F47A { get { return new ScannerFile("01_lp_letters_low\\0x0843F47A.wav", "0x0843F47A", "lp_letters_low"); } }
-        public static ScannerFile HASH0856C2D4 { get { return new ScannerFile("01_lp_letters_low\\0x0856C2D4.wav", "0x0856C2D4", "lp_letters_low"); } }
-        public static ScannerFile HASH0A913F22 { get { return new ScannerFile("01_lp_letters_low\\0x0A913F22.wav", "0x0A913F22", "lp_letters_low"); } }
-        public static ScannerFile HASH0ABED54D { get { return new ScannerFile("01_lp_letters_low\\0x0ABED54D.wav", "0x0ABED54D", "lp_letters_low"); } }
-        public static ScannerFile HASH0B4627A7 { get { return new ScannerFile("01_lp_letters_low\\0x0B4627A7.wav", "0x0B4627A7", "lp_letters_low"); } }
-        public static ScannerFile HASH0B905BFE { get { return new ScannerFile("01_lp_letters_low\\0x0B905BFE.wav", "0x0B905BFE", "lp_letters_low"); } }
-        public static ScannerFile HASH0D681934 { get { return new ScannerFile("01_lp_letters_low\\0x0D681934.wav", "0x0D681934", "lp_letters_low"); } }
-        public static ScannerFile HASH0DF35248 { get { return new ScannerFile("01_lp_letters_low\\0x0DF35248.wav", "0x0DF35248", "lp_letters_low"); } }
-        public static ScannerFile HASH0E67EDE6 { get { return new ScannerFile("01_lp_letters_low\\0x0E67EDE6.wav", "0x0E67EDE6", "lp_letters_low"); } }
-        public static ScannerFile HASH0F54B9C7 { get { return new ScannerFile("01_lp_letters_low\\0x0F54B9C7.wav", "0x0F54B9C7", "lp_letters_low"); } }
-        public static ScannerFile HASH1040DC27 { get { return new ScannerFile("01_lp_letters_low\\0x1040DC27.wav", "0x1040DC27", "lp_letters_low"); } }
-        public static ScannerFile HASH10A007F6 { get { return new ScannerFile("01_lp_letters_low\\0x10A007F6.wav", "0x10A007F6", "lp_letters_low"); } }
-        public static ScannerFile HASH11043372 { get { return new ScannerFile("01_lp_letters_low\\0x11043372.wav", "0x11043372", "lp_letters_low"); } }
-        public static ScannerFile HASH110EAB58 { get { return new ScannerFile("01_lp_letters_low\\0x110EAB58.wav", "0x110EAB58", "lp_letters_low"); } }
-        public static ScannerFile HASH1274A090 { get { return new ScannerFile("01_lp_letters_low\\0x1274A090.wav", "0x1274A090", "lp_letters_low"); } }
-        public static ScannerFile HASH13032F14 { get { return new ScannerFile("01_lp_letters_low\\0x13032F14.wav", "0x13032F14", "lp_letters_low"); } }
-        public static ScannerFile HASH1313AF33 { get { return new ScannerFile("01_lp_letters_low\\0x1313AF33.wav", "0x1313AF33", "lp_letters_low"); } }
-        public static ScannerFile HASH134D0FEB { get { return new ScannerFile("01_lp_letters_low\\0x134D0FEB.wav", "0x134D0FEB", "lp_letters_low"); } }
-        public static ScannerFile HASH138511DC { get { return new ScannerFile("01_lp_letters_low\\0x138511DC.wav", "0x138511DC", "lp_letters_low"); } }
-        public static ScannerFile HASH15A77B52 { get { return new ScannerFile("01_lp_letters_low\\0x15A77B52.wav", "0x15A77B52", "lp_letters_low"); } }
-        public static ScannerFile HASH15BBE1BC { get { return new ScannerFile("01_lp_letters_low\\0x15BBE1BC.wav", "0x15BBE1BC", "lp_letters_low"); } }
-        public static ScannerFile HASH16079E36 { get { return new ScannerFile("01_lp_letters_low\\0x16079E36.wav", "0x16079E36", "lp_letters_low"); } }
-        public static ScannerFile HASH175B37F2 { get { return new ScannerFile("01_lp_letters_low\\0x175B37F2.wav", "0x175B37F2", "lp_letters_low"); } }
-        public static ScannerFile HASH1774FFFB { get { return new ScannerFile("01_lp_letters_low\\0x1774FFFB.wav", "0x1774FFFB", "lp_letters_low"); } }
-        public static ScannerFile HASH177C9C03 { get { return new ScannerFile("01_lp_letters_low\\0x177C9C03.wav", "0x177C9C03", "lp_letters_low"); } }
-        public static ScannerFile HASH17BE3350 { get { return new ScannerFile("01_lp_letters_low\\0x17BE3350.wav", "0x17BE3350", "lp_letters_low"); } }
-        public static ScannerFile HASH18F531BA { get { return new ScannerFile("01_lp_letters_low\\0x18F531BA.wav", "0x18F531BA", "lp_letters_low"); } }
-        public static ScannerFile HASH18F83C11 { get { return new ScannerFile("01_lp_letters_low\\0x18F83C11.wav", "0x18F83C11", "lp_letters_low"); } }
-        public static ScannerFile HASH192F773C { get { return new ScannerFile("01_lp_letters_low\\0x192F773C.wav", "0x192F773C", "lp_letters_low"); } }
-        public static ScannerFile HASH1B56ADC8 { get { return new ScannerFile("01_lp_letters_low\\0x1B56ADC8.wav", "0x1B56ADC8", "lp_letters_low"); } }
-        public static ScannerFile HASH1C1CE18D { get { return new ScannerFile("01_lp_letters_low\\0x1C1CE18D.wav", "0x1C1CE18D", "lp_letters_low"); } }
-        public static ScannerFile HASH1C49E292 { get { return new ScannerFile("01_lp_letters_low\\0x1C49E292.wav", "0x1C49E292", "lp_letters_low"); } }
-        public static ScannerFile HASH1CEB0504 { get { return new ScannerFile("01_lp_letters_low\\0x1CEB0504.wav", "0x1CEB0504", "lp_letters_low"); } }
-        public static ScannerFile HASH1CEFAECF { get { return new ScannerFile("01_lp_letters_low\\0x1CEFAECF.wav", "0x1CEFAECF", "lp_letters_low"); } }
-        public static ScannerFile HASH1CFE711A { get { return new ScannerFile("01_lp_letters_low\\0x1CFE711A.wav", "0x1CFE711A", "lp_letters_low"); } }
-        public static ScannerFile HASH1E2EF14D { get { return new ScannerFile("01_lp_letters_low\\0x1E2EF14D.wav", "0x1E2EF14D", "lp_letters_low"); } }
-        public static ScannerFile HASH1E6B3DD7 { get { return new ScannerFile("01_lp_letters_low\\0x1E6B3DD7.wav", "0x1E6B3DD7", "lp_letters_low"); } }
-        public static ScannerFile HASH1ED86465 { get { return new ScannerFile("01_lp_letters_low\\0x1ED86465.wav", "0x1ED86465", "lp_letters_low"); } }
-        public static ScannerFile HASH1F7AA846 { get { return new ScannerFile("01_lp_letters_low\\0x1F7AA846.wav", "0x1F7AA846", "lp_letters_low"); } }
-    }
+    //public class lp_letters_low
+    //{
+    //    public static ScannerFile William { get { return new ScannerFile("01_lp_letters_low\\0x0031F6C5.wav", "William.", "lp_letters_low"); } }
+    //    public static ScannerFile Robert { get { return new ScannerFile("01_lp_letters_low\\0x00D31CC4.wav", "Robert.", "lp_letters_low"); } }
+    //    public static ScannerFile HASH01E6E7C1 { get { return new ScannerFile("01_lp_letters_low\\0x01E6E7C1.wav", "0x01E6E7C1", "lp_letters_low"); } }
+    //    public static ScannerFile HASH03361ED9 { get { return new ScannerFile("01_lp_letters_low\\0x03361ED9.wav", "0x03361ED9", "lp_letters_low"); } }
+    //    public static ScannerFile HASH03B8C5D6 { get { return new ScannerFile("01_lp_letters_low\\0x03B8C5D6.wav", "0x03B8C5D6", "lp_letters_low"); } }
+    //    public static ScannerFile HASH048C0CEC { get { return new ScannerFile("01_lp_letters_low\\0x048C0CEC.wav", "0x048C0CEC", "lp_letters_low"); } }
+    //    public static ScannerFile HASH04936189 { get { return new ScannerFile("01_lp_letters_low\\0x04936189.wav", "0x04936189", "lp_letters_low"); } }
+    //    public static ScannerFile HASH0537B541 { get { return new ScannerFile("01_lp_letters_low\\0x0537B541.wav", "0x0537B541", "lp_letters_low"); } }
+    //    public static ScannerFile HASH055D0BCA { get { return new ScannerFile("01_lp_letters_low\\0x055D0BCA.wav", "0x055D0BCA", "lp_letters_low"); } }
+    //    public static ScannerFile HASH05EE78E6 { get { return new ScannerFile("01_lp_letters_low\\0x05EE78E6.wav", "0x05EE78E6", "lp_letters_low"); } }
+    //    public static ScannerFile HASH05F0170F { get { return new ScannerFile("01_lp_letters_low\\0x05F0170F.wav", "0x05F0170F", "lp_letters_low"); } }
+    //    public static ScannerFile HASH064182C9 { get { return new ScannerFile("01_lp_letters_low\\0x064182C9.wav", "0x064182C9", "lp_letters_low"); } }
+    //    public static ScannerFile HASH074858B4 { get { return new ScannerFile("01_lp_letters_low\\0x074858B4.wav", "0x074858B4", "lp_letters_low"); } }
+    //    public static ScannerFile HASH07511EA5 { get { return new ScannerFile("01_lp_letters_low\\0x07511EA5.wav", "0x07511EA5", "lp_letters_low"); } }
+    //    public static ScannerFile HASH0843F47A { get { return new ScannerFile("01_lp_letters_low\\0x0843F47A.wav", "0x0843F47A", "lp_letters_low"); } }
+    //    public static ScannerFile HASH0856C2D4 { get { return new ScannerFile("01_lp_letters_low\\0x0856C2D4.wav", "0x0856C2D4", "lp_letters_low"); } }
+    //    public static ScannerFile HASH0A913F22 { get { return new ScannerFile("01_lp_letters_low\\0x0A913F22.wav", "0x0A913F22", "lp_letters_low"); } }
+    //    public static ScannerFile HASH0ABED54D { get { return new ScannerFile("01_lp_letters_low\\0x0ABED54D.wav", "0x0ABED54D", "lp_letters_low"); } }
+    //    public static ScannerFile HASH0B4627A7 { get { return new ScannerFile("01_lp_letters_low\\0x0B4627A7.wav", "0x0B4627A7", "lp_letters_low"); } }
+    //    public static ScannerFile HASH0B905BFE { get { return new ScannerFile("01_lp_letters_low\\0x0B905BFE.wav", "0x0B905BFE", "lp_letters_low"); } }
+    //    public static ScannerFile HASH0D681934 { get { return new ScannerFile("01_lp_letters_low\\0x0D681934.wav", "0x0D681934", "lp_letters_low"); } }
+    //    public static ScannerFile HASH0DF35248 { get { return new ScannerFile("01_lp_letters_low\\0x0DF35248.wav", "0x0DF35248", "lp_letters_low"); } }
+    //    public static ScannerFile HASH0E67EDE6 { get { return new ScannerFile("01_lp_letters_low\\0x0E67EDE6.wav", "0x0E67EDE6", "lp_letters_low"); } }
+    //    public static ScannerFile HASH0F54B9C7 { get { return new ScannerFile("01_lp_letters_low\\0x0F54B9C7.wav", "0x0F54B9C7", "lp_letters_low"); } }
+    //    public static ScannerFile HASH1040DC27 { get { return new ScannerFile("01_lp_letters_low\\0x1040DC27.wav", "0x1040DC27", "lp_letters_low"); } }
+    //    public static ScannerFile HASH10A007F6 { get { return new ScannerFile("01_lp_letters_low\\0x10A007F6.wav", "0x10A007F6", "lp_letters_low"); } }
+    //    public static ScannerFile HASH11043372 { get { return new ScannerFile("01_lp_letters_low\\0x11043372.wav", "0x11043372", "lp_letters_low"); } }
+    //    public static ScannerFile HASH110EAB58 { get { return new ScannerFile("01_lp_letters_low\\0x110EAB58.wav", "0x110EAB58", "lp_letters_low"); } }
+    //    public static ScannerFile HASH1274A090 { get { return new ScannerFile("01_lp_letters_low\\0x1274A090.wav", "0x1274A090", "lp_letters_low"); } }
+    //    public static ScannerFile HASH13032F14 { get { return new ScannerFile("01_lp_letters_low\\0x13032F14.wav", "0x13032F14", "lp_letters_low"); } }
+    //    public static ScannerFile HASH1313AF33 { get { return new ScannerFile("01_lp_letters_low\\0x1313AF33.wav", "0x1313AF33", "lp_letters_low"); } }
+    //    public static ScannerFile HASH134D0FEB { get { return new ScannerFile("01_lp_letters_low\\0x134D0FEB.wav", "0x134D0FEB", "lp_letters_low"); } }
+    //    public static ScannerFile HASH138511DC { get { return new ScannerFile("01_lp_letters_low\\0x138511DC.wav", "0x138511DC", "lp_letters_low"); } }
+    //    public static ScannerFile HASH15A77B52 { get { return new ScannerFile("01_lp_letters_low\\0x15A77B52.wav", "0x15A77B52", "lp_letters_low"); } }
+    //    public static ScannerFile HASH15BBE1BC { get { return new ScannerFile("01_lp_letters_low\\0x15BBE1BC.wav", "0x15BBE1BC", "lp_letters_low"); } }
+    //    public static ScannerFile HASH16079E36 { get { return new ScannerFile("01_lp_letters_low\\0x16079E36.wav", "0x16079E36", "lp_letters_low"); } }
+    //    public static ScannerFile HASH175B37F2 { get { return new ScannerFile("01_lp_letters_low\\0x175B37F2.wav", "0x175B37F2", "lp_letters_low"); } }
+    //    public static ScannerFile HASH1774FFFB { get { return new ScannerFile("01_lp_letters_low\\0x1774FFFB.wav", "0x1774FFFB", "lp_letters_low"); } }
+    //    public static ScannerFile HASH177C9C03 { get { return new ScannerFile("01_lp_letters_low\\0x177C9C03.wav", "0x177C9C03", "lp_letters_low"); } }
+    //    public static ScannerFile HASH17BE3350 { get { return new ScannerFile("01_lp_letters_low\\0x17BE3350.wav", "0x17BE3350", "lp_letters_low"); } }
+    //    public static ScannerFile HASH18F531BA { get { return new ScannerFile("01_lp_letters_low\\0x18F531BA.wav", "0x18F531BA", "lp_letters_low"); } }
+    //    public static ScannerFile HASH18F83C11 { get { return new ScannerFile("01_lp_letters_low\\0x18F83C11.wav", "0x18F83C11", "lp_letters_low"); } }
+    //    public static ScannerFile HASH192F773C { get { return new ScannerFile("01_lp_letters_low\\0x192F773C.wav", "0x192F773C", "lp_letters_low"); } }
+    //    public static ScannerFile HASH1B56ADC8 { get { return new ScannerFile("01_lp_letters_low\\0x1B56ADC8.wav", "0x1B56ADC8", "lp_letters_low"); } }
+    //    public static ScannerFile HASH1C1CE18D { get { return new ScannerFile("01_lp_letters_low\\0x1C1CE18D.wav", "0x1C1CE18D", "lp_letters_low"); } }
+    //    public static ScannerFile HASH1C49E292 { get { return new ScannerFile("01_lp_letters_low\\0x1C49E292.wav", "0x1C49E292", "lp_letters_low"); } }
+    //    public static ScannerFile HASH1CEB0504 { get { return new ScannerFile("01_lp_letters_low\\0x1CEB0504.wav", "0x1CEB0504", "lp_letters_low"); } }
+    //    public static ScannerFile HASH1CEFAECF { get { return new ScannerFile("01_lp_letters_low\\0x1CEFAECF.wav", "0x1CEFAECF", "lp_letters_low"); } }
+    //    public static ScannerFile HASH1CFE711A { get { return new ScannerFile("01_lp_letters_low\\0x1CFE711A.wav", "0x1CFE711A", "lp_letters_low"); } }
+    //    public static ScannerFile HASH1E2EF14D { get { return new ScannerFile("01_lp_letters_low\\0x1E2EF14D.wav", "0x1E2EF14D", "lp_letters_low"); } }
+    //    public static ScannerFile HASH1E6B3DD7 { get { return new ScannerFile("01_lp_letters_low\\0x1E6B3DD7.wav", "0x1E6B3DD7", "lp_letters_low"); } }
+    //    public static ScannerFile HASH1ED86465 { get { return new ScannerFile("01_lp_letters_low\\0x1ED86465.wav", "0x1ED86465", "lp_letters_low"); } }
+    //    public static ScannerFile HASH1F7AA846 { get { return new ScannerFile("01_lp_letters_low\\0x1F7AA846.wav", "0x1F7AA846", "lp_letters_low"); } }
+    //}
     public class lp_numbers
     {
         public static ScannerFile Zero { get { return new ScannerFile("01_lp_numbers\\0x04F3CC0F.wav", "0", "lp_numbers"); } }
@@ -2268,17 +2268,17 @@
         public static ScannerFile ZION01 { get { return new ScannerFile("01_model\\MODEL_ZION_01.wav", "MODEL_ZION_01", "model"); } }
         public static ScannerFile ZTYPE01 { get { return new ScannerFile("01_model\\MODEL_ZTYPE_01.wav", "MODEL_ZTYPE_01", "model"); } }
     }
-    public class near_dir
-    {
-        public static ScannerFile Westofumm { get { return new ScannerFile("01_near_dir\\0x07FAA085.wav", "West of, umm...", "near_dir"); } }
-        public static ScannerFile Eastofuh { get { return new ScannerFile("01_near_dir\\0x0B24BCE7.wav", "East of, uh...", "near_dir"); } }
-        public static ScannerFile Southofumm { get { return new ScannerFile("01_near_dir\\0x0DEF2D26.wav", "South of, umm...", "near_dir"); } }
-        public static ScannerFile Eastofumm { get { return new ScannerFile("01_near_dir\\0x156E917B.wav", "East of, umm...", "near_dir"); } }
-        public static ScannerFile Northofuhh { get { return new ScannerFile("01_near_dir\\0x15BD7E38.wav", "North of, uhh...", "near_dir"); } }
-        public static ScannerFile Northofuh { get { return new ScannerFile("01_near_dir\\0x16C2C038.wav", "North of, (uh)", "near_dir"); } }
-        public static ScannerFile Westof { get { return new ScannerFile("01_near_dir\\0x19D04430.wav", "West of...", "near_dir"); } }
-        public static ScannerFile Southofuhh { get { return new ScannerFile("01_near_dir\\0x1D0DCB63.wav", "South of, uhh...", "near_dir"); } }
-    }
+    //public class near_dir
+    //{
+    //    public static ScannerFile Westofumm { get { return new ScannerFile("01_near_dir\\0x07FAA085.wav", "West of, umm...", "near_dir"); } }
+    //    public static ScannerFile Eastofuh { get { return new ScannerFile("01_near_dir\\0x0B24BCE7.wav", "East of, uh...", "near_dir"); } }
+    //    public static ScannerFile Southofumm { get { return new ScannerFile("01_near_dir\\0x0DEF2D26.wav", "South of, umm...", "near_dir"); } }
+    //    public static ScannerFile Eastofumm { get { return new ScannerFile("01_near_dir\\0x156E917B.wav", "East of, umm...", "near_dir"); } }
+    //    public static ScannerFile Northofuhh { get { return new ScannerFile("01_near_dir\\0x15BD7E38.wav", "North of, uhh...", "near_dir"); } }
+    //    public static ScannerFile Northofuh { get { return new ScannerFile("01_near_dir\\0x16C2C038.wav", "North of, (uh)", "near_dir"); } }
+    //    public static ScannerFile Westof { get { return new ScannerFile("01_near_dir\\0x19D04430.wav", "West of...", "near_dir"); } }
+    //    public static ScannerFile Southofuhh { get { return new ScannerFile("01_near_dir\\0x1D0DCB63.wav", "South of, uhh...", "near_dir"); } }
+    //}
     public class no_further_units
     {
         public static ScannerFile WereCode4Adam { get { return new ScannerFile("01_no_further_units\\0x0605420C.wav", "We're Code 4-Adam.", "no_further_units"); } }
@@ -2288,19 +2288,19 @@
         public static ScannerFile Noadditionalofficersneeded1 { get { return new ScannerFile("01_no_further_units\\0x189CE738.wav", "No additional officers needed.", "no_further_units"); } }
         public static ScannerFile Nofurtherunitsrequired { get { return new ScannerFile("01_no_further_units\\0x1CE7EFD0.wav", "No further units required.", "no_further_units"); } }
     }
-    public class number_criminals
-    {
-        public static ScannerFile suspects8 { get { return new ScannerFile("01_number_criminals\\0x03F2B4F9.wav", "8 suspects.", "number_criminals"); } }
-        public static ScannerFile suspects3 { get { return new ScannerFile("01_number_criminals\\0x06344DE2.wav", "3 suspects.", "number_criminals"); } }
-        public static ScannerFile suspects9 { get { return new ScannerFile("01_number_criminals\\0x08A64BDC.wav", "9 suspects.", "number_criminals"); } }
-        public static ScannerFile suspects6 { get { return new ScannerFile("01_number_criminals\\0x0E5BE06F.wav", "6 suspects.", "number_criminals"); } }
-        public static ScannerFile suspects5 { get { return new ScannerFile("01_number_criminals\\0x113E5F08.wav", "5 suspects.", "number_criminals"); } }
-        public static ScannerFile suspects7 { get { return new ScannerFile("01_number_criminals\\0x13572036.wav", "7 suspects.", "number_criminals"); } }
-        public static ScannerFile suspect1 { get { return new ScannerFile("01_number_criminals\\0x136DA273.wav", "1 suspect.", "number_criminals"); } }
-        public static ScannerFile suspects10 { get { return new ScannerFile("01_number_criminals\\0x16B651EB.wav", "10 suspects.", "number_criminals"); } }
-        public static ScannerFile suspects2 { get { return new ScannerFile("01_number_criminals\\0x19FB0E23.wav", "2 suspects.", "number_criminals"); } }
-        public static ScannerFile suspects4 { get { return new ScannerFile("01_number_criminals\\0x1DF7C60A.wav", "4 suspects.", "number_criminals"); } }
-    }
+    //public class number_criminals
+    //{
+    //    public static ScannerFile suspects8 { get { return new ScannerFile("01_number_criminals\\0x03F2B4F9.wav", "8 suspects.", "number_criminals"); } }
+    //    public static ScannerFile suspects3 { get { return new ScannerFile("01_number_criminals\\0x06344DE2.wav", "3 suspects.", "number_criminals"); } }
+    //    public static ScannerFile suspects9 { get { return new ScannerFile("01_number_criminals\\0x08A64BDC.wav", "9 suspects.", "number_criminals"); } }
+    //    public static ScannerFile suspects6 { get { return new ScannerFile("01_number_criminals\\0x0E5BE06F.wav", "6 suspects.", "number_criminals"); } }
+    //    public static ScannerFile suspects5 { get { return new ScannerFile("01_number_criminals\\0x113E5F08.wav", "5 suspects.", "number_criminals"); } }
+    //    public static ScannerFile suspects7 { get { return new ScannerFile("01_number_criminals\\0x13572036.wav", "7 suspects.", "number_criminals"); } }
+    //    public static ScannerFile suspect1 { get { return new ScannerFile("01_number_criminals\\0x136DA273.wav", "1 suspect.", "number_criminals"); } }
+    //    public static ScannerFile suspects10 { get { return new ScannerFile("01_number_criminals\\0x16B651EB.wav", "10 suspects.", "number_criminals"); } }
+    //    public static ScannerFile suspects2 { get { return new ScannerFile("01_number_criminals\\0x19FB0E23.wav", "2 suspects.", "number_criminals"); } }
+    //    public static ScannerFile suspects4 { get { return new ScannerFile("01_number_criminals\\0x1DF7C60A.wav", "4 suspects.", "number_criminals"); } }
+    //}
     public class officer
     {
         public static ScannerFile Unituhh { get { return new ScannerFile("01_officer\\0x03087D87.wav", "Unit, uhh...", "officer"); } }
@@ -2328,28 +2328,28 @@
         public static ScannerFile Beginbeat { get { return new ScannerFile("01_officer_begin_patrol\\0x152767CD.wav", "Begin beat.", "officer_begin_patrol"); } }
         public static ScannerFile Proceedtopatrolarea1 { get { return new ScannerFile("01_officer_begin_patrol\\0x17ABACD6.wav", "Proceed to patrol area.", "officer_begin_patrol"); } }
     }
-    public class officer_down
-    {
-        public static ScannerFile Hasbeeninjured { get { return new ScannerFile("01_officer_down\\0x02CD8D91.wav", "Has been injured.", "officer_down"); } }
-        public static ScannerFile Hasbeenwounded { get { return new ScannerFile("01_officer_down\\0x0721163B.wav", "Has been wounded.", "officer_down"); } }
-        public static ScannerFile Iswounded { get { return new ScannerFile("01_officer_down\\0x0A2E5C55.wav", "Is wounded.", "officer_down"); } }
-        public static ScannerFile Isnotrespondingpossiblywounded { get { return new ScannerFile("01_officer_down\\0x0A701DB8.wav", "Is not responding; possibly wounded.", "officer_down"); } }
-        public static ScannerFile Killedinaction { get { return new ScannerFile("01_officer_down\\0x103D2951.wav", "Killed in action.", "officer_down"); } }
-        public static ScannerFile Isseverelywounded { get { return new ScannerFile("01_officer_down\\0x1418F029.wav", "Is severely wounded.", "officer_down"); } }
-        public static ScannerFile Hasbeenseverelyinjured { get { return new ScannerFile("01_officer_down\\0x1423B03D.wav", "Has been severely injured.", "officer_down"); } }
-        public static ScannerFile Hasbeenkilled { get { return new ScannerFile("01_officer_down\\0x1E62C4BA.wav", "Has been killed.", "officer_down"); } }
-        public static ScannerFile OFFICERDOWN01 { get { return new ScannerFile("01_officer_down\\OFFICER_DOWN_01.wav", "OFFICER_DOWN_01", "officer_down"); } }
-        public static ScannerFile OFFICERDOWN02 { get { return new ScannerFile("01_officer_down\\OFFICER_DOWN_02.wav", "OFFICER_DOWN_02", "officer_down"); } }
-        public static ScannerFile OFFICERDOWN03 { get { return new ScannerFile("01_officer_down\\OFFICER_DOWN_03.wav", "OFFICER_DOWN_03", "officer_down"); } }
-    }
-    public class officer_down_shot
-    {
-        public static ScannerFile Hasbeenfatallyshot { get { return new ScannerFile("01_officer_down_shot\\0x00A2944D.wav", "Has been fatally shot.", "officer_down_shot"); } }
-        public static ScannerFile Hasbeenshot { get { return new ScannerFile("01_officer_down_shot\\0x0A66680B.wav", "Has been shot.", "officer_down_shot"); } }
-        public static ScannerFile Isreportedlyshotandwounded { get { return new ScannerFile("01_officer_down_shot\\0x0DBDEE80.wav", "Is reportedly shot and wounded.", "officer_down_shot"); } }
-        public static ScannerFile Hasbeenshotandcriticallywounded { get { return new ScannerFile("01_officer_down_shot\\0x0EDD30C2.wav", "Has been shot and critically wounded.", "officer_down_shot"); } }
-        public static ScannerFile Isreportedlyshot { get { return new ScannerFile("01_officer_down_shot\\0x1C6B0BDB.wav", "Is reportedly shot.", "officer_down_shot"); } }
-    }
+    //public class officer_down
+    //{
+    //    public static ScannerFile Hasbeeninjured { get { return new ScannerFile("01_officer_down\\0x02CD8D91.wav", "Has been injured.", "officer_down"); } }
+    //    public static ScannerFile Hasbeenwounded { get { return new ScannerFile("01_officer_down\\0x0721163B.wav", "Has been wounded.", "officer_down"); } }
+    //    public static ScannerFile Iswounded { get { return new ScannerFile("01_officer_down\\0x0A2E5C55.wav", "Is wounded.", "officer_down"); } }
+    //    public static ScannerFile Isnotrespondingpossiblywounded { get { return new ScannerFile("01_officer_down\\0x0A701DB8.wav", "Is not responding; possibly wounded.", "officer_down"); } }
+    //    public static ScannerFile Killedinaction { get { return new ScannerFile("01_officer_down\\0x103D2951.wav", "Killed in action.", "officer_down"); } }
+    //    public static ScannerFile Isseverelywounded { get { return new ScannerFile("01_officer_down\\0x1418F029.wav", "Is severely wounded.", "officer_down"); } }
+    //    public static ScannerFile Hasbeenseverelyinjured { get { return new ScannerFile("01_officer_down\\0x1423B03D.wav", "Has been severely injured.", "officer_down"); } }
+    //    public static ScannerFile Hasbeenkilled { get { return new ScannerFile("01_officer_down\\0x1E62C4BA.wav", "Has been killed.", "officer_down"); } }
+    //    public static ScannerFile OFFICERDOWN01 { get { return new ScannerFile("01_officer_down\\OFFICER_DOWN_01.wav", "OFFICER_DOWN_01", "officer_down"); } }
+    //    public static ScannerFile OFFICERDOWN02 { get { return new ScannerFile("01_officer_down\\OFFICER_DOWN_02.wav", "OFFICER_DOWN_02", "officer_down"); } }
+    //    public static ScannerFile OFFICERDOWN03 { get { return new ScannerFile("01_officer_down\\OFFICER_DOWN_03.wav", "OFFICER_DOWN_03", "officer_down"); } }
+    //}
+    //public class officer_down_shot
+    //{
+    //    public static ScannerFile Hasbeenfatallyshot { get { return new ScannerFile("01_officer_down_shot\\0x00A2944D.wav", "Has been fatally shot.", "officer_down_shot"); } }
+    //    public static ScannerFile Hasbeenshot { get { return new ScannerFile("01_officer_down_shot\\0x0A66680B.wav", "Has been shot.", "officer_down_shot"); } }
+    //    public static ScannerFile Isreportedlyshotandwounded { get { return new ScannerFile("01_officer_down_shot\\0x0DBDEE80.wav", "Is reportedly shot and wounded.", "officer_down_shot"); } }
+    //    public static ScannerFile Hasbeenshotandcriticallywounded { get { return new ScannerFile("01_officer_down_shot\\0x0EDD30C2.wav", "Has been shot and critically wounded.", "officer_down_shot"); } }
+    //    public static ScannerFile Isreportedlyshot { get { return new ScannerFile("01_officer_down_shot\\0x1C6B0BDB.wav", "Is reportedly shot.", "officer_down_shot"); } }
+    //}
     public class officer_requests_air_support
     {
         public static ScannerFile Officersrequireaerialsupport { get { return new ScannerFile("01_officer_requests_air_support\\0x03867D3A.wav", "Officers require aerial support.", "officer_requests_air_support"); } }
@@ -2361,432 +2361,432 @@
         public static ScannerFile Officersrequireaerialsupport1 { get { return new ScannerFile("01_officer_requests_air_support\\0x19946955.wav", "Officers require aerial support.", "officer_requests_air_support"); } }
         public static ScannerFile Officersrequireairsupport { get { return new ScannerFile("01_officer_requests_air_support\\0x1CE9B000.wav", "Officers require air support.", "officer_requests_air_support"); } }
     }
-    public class officer_requests_backup
-    {
-        public static ScannerFile Code99officersrequireassistance { get { return new ScannerFile("01_officer_requests_backup\\0x001BB1F7.wav", "Code 99; officers require assistance.", "officer_requests_backup"); } }
-        public static ScannerFile Code99unitneedsimmediatebackup { get { return new ScannerFile("01_officer_requests_backup\\0x033FF83C.wav", "Code 99; unit needs immediate backup.", "officer_requests_backup"); } }
-        public static ScannerFile Officersrequestingbackup { get { return new ScannerFile("01_officer_requests_backup\\0x0ACEC75C.wav", "Officers requesting backup.", "officer_requests_backup"); } }
-        public static ScannerFile Unitsrequirebackup { get { return new ScannerFile("01_officer_requests_backup\\0x0DE40D87.wav", "Units require backup.", "officer_requests_backup"); } }
-        public static ScannerFile Unitsrequireimmediateassistance { get { return new ScannerFile("01_officer_requests_backup\\0x11D15562.wav", "Units require immediate assistance.", "officer_requests_backup"); } }
-        public static ScannerFile Code99unitrequiresbackup { get { return new ScannerFile("01_officer_requests_backup\\0x14FC9BB9.wav", "Code 99; unit requires backup.", "officer_requests_backup"); } }
-        public static ScannerFile Unitsrequestingbackup { get { return new ScannerFile("01_officer_requests_backup\\0x190D23D9.wav", "Units requesting backup.", "officer_requests_backup"); } }
-        public static ScannerFile Officerneedsimmediateassistance { get { return new ScannerFile("01_officer_requests_backup\\0x1C296A12.wav", "Officer needs immediate assistance.", "officer_requests_backup"); } }
-        public static ScannerFile Officerrequestingbackup { get { return new ScannerFile("01_officer_requests_backup\\0x1C79AAAE.wav", "Officer requesting backup.", "officer_requests_backup"); } }
-    }
+    //public class officer_requests_backup
+    //{
+    //    public static ScannerFile Code99officersrequireassistance { get { return new ScannerFile("01_officer_requests_backup\\0x001BB1F7.wav", "Code 99; officers require assistance.", "officer_requests_backup"); } }
+    //    public static ScannerFile Code99unitneedsimmediatebackup { get { return new ScannerFile("01_officer_requests_backup\\0x033FF83C.wav", "Code 99; unit needs immediate backup.", "officer_requests_backup"); } }
+    //    public static ScannerFile Officersrequestingbackup { get { return new ScannerFile("01_officer_requests_backup\\0x0ACEC75C.wav", "Officers requesting backup.", "officer_requests_backup"); } }
+    //    public static ScannerFile Unitsrequirebackup { get { return new ScannerFile("01_officer_requests_backup\\0x0DE40D87.wav", "Units require backup.", "officer_requests_backup"); } }
+    //    public static ScannerFile Unitsrequireimmediateassistance { get { return new ScannerFile("01_officer_requests_backup\\0x11D15562.wav", "Units require immediate assistance.", "officer_requests_backup"); } }
+    //    public static ScannerFile Code99unitrequiresbackup { get { return new ScannerFile("01_officer_requests_backup\\0x14FC9BB9.wav", "Code 99; unit requires backup.", "officer_requests_backup"); } }
+    //    public static ScannerFile Unitsrequestingbackup { get { return new ScannerFile("01_officer_requests_backup\\0x190D23D9.wav", "Units requesting backup.", "officer_requests_backup"); } }
+    //    public static ScannerFile Officerneedsimmediateassistance { get { return new ScannerFile("01_officer_requests_backup\\0x1C296A12.wav", "Officer needs immediate assistance.", "officer_requests_backup"); } }
+    //    public static ScannerFile Officerrequestingbackup { get { return new ScannerFile("01_officer_requests_backup\\0x1C79AAAE.wav", "Officer requesting backup.", "officer_requests_backup"); } }
+    //}
     public class on_foot
     {
         public static ScannerFile Onfoot { get { return new ScannerFile("01_on_foot\\0x00EF6F8D.wav", "On foot.", "on_foot"); } }
         public static ScannerFile Onfoot1 { get { return new ScannerFile("01_on_foot\\0x0EA9CB02.wav", "On foot.", "on_foot"); } }
     }
-    public class ornate_bank_heist
-    {
-        public static ScannerFile Atthe211inEastLosSantos { get { return new ScannerFile("01_ornate_bank_heist\\0x0006F181.wav", "At the 2-11 in East Los Santos.", "ornate_bank_heist"); } }
-        public static ScannerFile Allunits { get { return new ScannerFile("01_ornate_bank_heist\\0x011A4380.wav", "All units.", "ornate_bank_heist"); } }
-        public static ScannerFile AtthebankrobberyattheEastVinewoodBankofLosSantos { get { return new ScannerFile("01_ornate_bank_heist\\0x04EDBB4E.wav", "At the bank robbery at the East Vinewood Bank of Los Santos.", "ornate_bank_heist"); } }
-        public static ScannerFile AttheEastVinewoodBankofLosSantos { get { return new ScannerFile("01_ornate_bank_heist\\0x0614A3D8.wav", "At the East Vinewood Bank of Los Santos.", "ornate_bank_heist"); } }
-        public static ScannerFile Officershavearrivedatthe211 { get { return new ScannerFile("01_ornate_bank_heist\\0x08C55498.wav", "Officers have arrived at the 2-11.", "ornate_bank_heist"); } }
-        public static ScannerFile Unitsatthe211inEastLosSantosbeadvised { get { return new ScannerFile("01_ornate_bank_heist\\0x0A022F01.wav", "Units at the 2-11 in East Los Santos, be advised.", "ornate_bank_heist"); } }
-        public static ScannerFile Attentionallunitsatthe211inEastLosSantos { get { return new ScannerFile("01_ornate_bank_heist\\0x0B9E89B4.wav", "Attention all units at the 2-11 in East Los Santos.", "ornate_bank_heist"); } }
-        public static ScannerFile Attentionallunitsatthe211inEastLosSantos1 { get { return new ScannerFile("01_ornate_bank_heist\\0x0D40F8A4.wav", "Attention all units at the 2-11 in East Los Santos.", "ornate_bank_heist"); } }
-        public static ScannerFile Suspectsarefleeingthecrime { get { return new ScannerFile("01_ornate_bank_heist\\0x0D6D38FC.wav", "Suspects are fleeing the crime.", "ornate_bank_heist"); } }
-        public static ScannerFile Wehavereportsofapossible211inEastLosSantos { get { return new ScannerFile("01_ornate_bank_heist\\0x10BBC345.wav", "We have reports of a possible 2-11 in East Los Santos.", "ornate_bank_heist"); } }
-        public static ScannerFile Atthe211inEastLosSantos1 { get { return new ScannerFile("01_ornate_bank_heist\\0x1264563C.wav", "At the 2-11 in East Los Santos.", "ornate_bank_heist"); } }
-        public static ScannerFile Suspectshavebreachedthebanksvault { get { return new ScannerFile("01_ornate_bank_heist\\0x137722CE.wav", "Suspects have breached the bank's vault.", "ornate_bank_heist"); } }
-        public static ScannerFile EastVinewoodBankofLosSantos { get { return new ScannerFile("01_ornate_bank_heist\\0x14D4EAF7.wav", "East Vinewood Bank of Los Santos.", "ornate_bank_heist"); } }
-        public static ScannerFile Officershavearrivedatthe2111 { get { return new ScannerFile("01_ornate_bank_heist\\0x1606C3BC.wav", "Officers have arrived at the 2-11.", "ornate_bank_heist"); } }
-        public static ScannerFile Atthe211attheEastVinewoodBankofLosSantos { get { return new ScannerFile("01_ornate_bank_heist\\0x17301FD3.wav", "At the 2-11 at the East Vinewood Bank of Los Santos.", "ornate_bank_heist"); } }
-        public static ScannerFile Suspectshaveenteredthebanksvault { get { return new ScannerFile("01_ornate_bank_heist\\0x18C08C7E.wav", "Suspects have entered the bank's vault.", "ornate_bank_heist"); } }
-        public static ScannerFile AttheEastVinewoodBankofLS { get { return new ScannerFile("01_ornate_bank_heist\\0x1A34F777.wav", "At the East Vinewood Bank of LS.", "ornate_bank_heist"); } }
-        public static ScannerFile Wehaveconfirmationofabankrobberyatthe { get { return new ScannerFile("01_ornate_bank_heist\\0x1A853657.wav", "We have confirmation of a bank robbery at the...", "ornate_bank_heist"); } }
-        public static ScannerFile Suspectsarefleeingthecrime1 { get { return new ScannerFile("01_ornate_bank_heist\\0x1CDC2C2F.wav", "Suspects are fleeing the crime.", "ornate_bank_heist"); } }
-        public static ScannerFile Unitsatthe211inEastLosSantosbeadvised1 { get { return new ScannerFile("01_ornate_bank_heist\\0x1D6A36A5.wav", "Units at the 2-11 in East Los Santos, be advised.", "ornate_bank_heist"); } }
-        public static ScannerFile Banksecurityreports4suspectsarmedanddangerous { get { return new ScannerFile("01_ornate_bank_heist\\0x1DFFFD4C.wav", "Bank security reports 4 suspects, armed and dangerous.", "ornate_bank_heist"); } }
-        public static ScannerFile Atthe211attheEastVinewoodBankofLS { get { return new ScannerFile("01_ornate_bank_heist\\0x1F2DEFE7.wav", "At the 2-11 at the East Vinewood Bank of LS.", "ornate_bank_heist"); } }
-        public static ScannerFile AllavailableunitsrespondCode3 { get { return new ScannerFile("01_ornate_bank_heist\\0x1FB8613E.wav", "All available units respond; Code 3.", "ornate_bank_heist"); } }
-    }
-    public class over_area
-    {
-        public static ScannerFile OVERAREAALAMOSEA01 { get { return new ScannerFile("01_over_area\\OVER_AREA_ALAMO_SEA_01.wav", "OVER_AREA_ALAMO_SEA_01", "over_area"); } }
-        public static ScannerFile OVERAREABRADDOCKPASS01 { get { return new ScannerFile("01_over_area\\OVER_AREA_BRADDOCK_PASS_01.wav", "OVER_AREA_BRADDOCK_PASS_01", "over_area"); } }
-        public static ScannerFile OVERAREACENTRALLOSSANTOS01 { get { return new ScannerFile("01_over_area\\OVER_AREA_CENTRAL_LOS_SANTOS_01.wav", "OVER_AREA_CENTRAL_LOS_SANTOS_01", "over_area"); } }
-        public static ScannerFile OVERAREACHUMASH01 { get { return new ScannerFile("01_over_area\\OVER_AREA_CHUMASH_01.wav", "OVER_AREA_CHUMASH_01", "over_area"); } }
-        public static ScannerFile OVERAREADOWNTOWN01 { get { return new ScannerFile("01_over_area\\OVER_AREA_DOWNTOWN_01.wav", "OVER_AREA_DOWNTOWN_01", "over_area"); } }
-        public static ScannerFile OVERAREAEASTLOSSANTOS01 { get { return new ScannerFile("01_over_area\\OVER_AREA_EAST_LOS_SANTOS_01.wav", "OVER_AREA_EAST_LOS_SANTOS_01", "over_area"); } }
-        public static ScannerFile OVERAREAGRANDESENORADESERT01 { get { return new ScannerFile("01_over_area\\OVER_AREA_GRANDE_SENORA_DESERT_01.wav", "OVER_AREA_GRANDE_SENORA_DESERT_01", "over_area"); } }
-        public static ScannerFile OVERAREALAGOZANCUDO01 { get { return new ScannerFile("01_over_area\\OVER_AREA_LAGO_ZANCUDO_01.wav", "OVER_AREA_LAGO_ZANCUDO_01", "over_area"); } }
-        public static ScannerFile OVERAREALOSSANTOSINTERNATIONAL01 { get { return new ScannerFile("01_over_area\\OVER_AREA_LOS_SANTOS_INTERNATIONAL_01.wav", "OVER_AREA_LOS_SANTOS_INTERNATIONAL_01", "over_area"); } }
-        public static ScannerFile OVERAREAMOUNTJOSIAH01 { get { return new ScannerFile("01_over_area\\OVER_AREA_MOUNT_JOSIAH_01.wav", "OVER_AREA_MOUNT_JOSIAH_01", "over_area"); } }
-        public static ScannerFile OVERAREANORTHLOSSANTOS01 { get { return new ScannerFile("01_over_area\\OVER_AREA_NORTH_LOS_SANTOS_01.wav", "OVER_AREA_NORTH_LOS_SANTOS_01", "over_area"); } }
-        public static ScannerFile OVERAREAPALETOBAY01 { get { return new ScannerFile("01_over_area\\OVER_AREA_PALETO_BAY_01.wav", "OVER_AREA_PALETO_BAY_01", "over_area"); } }
-        public static ScannerFile OVERAREAPORTOFLOSSANTOS01 { get { return new ScannerFile("01_over_area\\OVER_AREA_PORT_OF_LOS_SANTOS_01.wav", "OVER_AREA_PORT_OF_LOS_SANTOS_01", "over_area"); } }
-        public static ScannerFile OVERAREARATONCANYON01 { get { return new ScannerFile("01_over_area\\OVER_AREA_RATON_CANYON_01.wav", "OVER_AREA_RATON_CANYON_01", "over_area"); } }
-        public static ScannerFile OVERAREASANDYSHORES01 { get { return new ScannerFile("01_over_area\\OVER_AREA_SANDY_SHORES_01.wav", "OVER_AREA_SANDY_SHORES_01", "over_area"); } }
-        public static ScannerFile OVERAREASOUTHLOSSANTOS01 { get { return new ScannerFile("01_over_area\\OVER_AREA_SOUTH_LOS_SANTOS_01.wav", "OVER_AREA_SOUTH_LOS_SANTOS_01", "over_area"); } }
-        public static ScannerFile OVERAREAVINEWOODHILLS01 { get { return new ScannerFile("01_over_area\\OVER_AREA_VINEWOOD_HILLS_01.wav", "OVER_AREA_VINEWOOD_HILLS_01", "over_area"); } }
-        public static ScannerFile OVERAREAWESTLOSSANTOS01 { get { return new ScannerFile("01_over_area\\OVER_AREA_WEST_LOS_SANTOS_01.wav", "OVER_AREA_WEST_LOS_SANTOS_01", "over_area"); } }
-        public static ScannerFile OVERAREAWESTLOSSANTOS02 { get { return new ScannerFile("01_over_area\\OVER_AREA_WEST_LOS_SANTOS_02.wav", "OVER_AREA_WEST_LOS_SANTOS_02", "over_area"); } }
-    }
-    public class player_description
-    {
-        public static ScannerFile Blackmaleearly20sblackhair { get { return new ScannerFile("01_player_description\\0x002BC54F.wav", "Black male, early 20s, black hair.", "player_description"); } }
-        public static ScannerFile Whitemalelate40sdarkhair { get { return new ScannerFile("01_player_description\\0x0372C4A6.wav", "White male, late 40s, dark hair.", "player_description"); } }
-        public static ScannerFile Athleticwhitemalelate40sdarkhair { get { return new ScannerFile("01_player_description\\0x049E79F3.wav", "Athletic white male, late 40s, dark hair.", "player_description"); } }
-        public static ScannerFile Athleticblackmaleearly20sblackhair { get { return new ScannerFile("01_player_description\\0x0B2492A0.wav", "Athletic black male, early 20s, black hair.", "player_description"); } }
-        public static ScannerFile Heavysetblackmaleearly20sblackhair { get { return new ScannerFile("01_player_description\\0x1285A907.wav", "Heavyset black male, early 20s, black hair.", "player_description"); } }
-        public static ScannerFile Heavysetwhitemalelate40sdarkhair { get { return new ScannerFile("01_player_description\\0x18396F91.wav", "Heavyset white male, late 40s, dark hair.", "player_description"); } }
-        public static ScannerFile Whitemalemid30sbrownhair { get { return new ScannerFile("01_player_description\\0x19D42672.wav", "White male, mid-30s, brown hair.", "player_description"); } }
-        public static ScannerFile Heavysetwhitemalemid30sbrownhair { get { return new ScannerFile("01_player_description\\0x1B2189EA.wav", "Heavyset white male, mid-30s, brown hair.", "player_description"); } }
-        public static ScannerFile Athleticwhitemalemid30sbrownhair { get { return new ScannerFile("01_player_description\\0x1EF15F7E.wav", "Athletic white male, mid-30s, brown hair.", "player_description"); } }
-    }
-    public class police_station_bust_out
-    {
-        public static ScannerFile Emergencyallunitsrespond { get { return new ScannerFile("01_police_station_bust_out\\0x0121C945.wav", "Emergency; all units respond.", "police_station_bust_out"); } }
-        public static ScannerFile Allunitswehavea1024 { get { return new ScannerFile("01_police_station_bust_out\\0x0362211C.wav", "All units, we have a 10-24.", "police_station_bust_out"); } }
-        public static ScannerFile Allunitsrespondimmediatelycodepurple { get { return new ScannerFile("01_police_station_bust_out\\0x047D8AA7.wav", "All units respond immediately, code purple.", "police_station_bust_out"); } }
-        public static ScannerFile Allunitsrespondimmediatelyemergency { get { return new ScannerFile("01_police_station_bust_out\\0x05959293.wav", "All units respond immediately; emergency.", "police_station_bust_out"); } }
-        public static ScannerFile Allunitsrespondimmediatelycode99 { get { return new ScannerFile("01_police_station_bust_out\\0x080C5809.wav", "All units respond immediately; code 99.", "police_station_bust_out"); } }
-        public static ScannerFile Allunitsrespondimmediatelyemergency1 { get { return new ScannerFile("01_police_station_bust_out\\0x08968ED7.wav", "All units respond immediately; emergency.", "police_station_bust_out"); } }
-        public static ScannerFile Attentionallunitswehaveareportofanexplosionattheprecinct { get { return new ScannerFile("01_police_station_bust_out\\0x0A4618EC.wav", "Attention all units, we have a report of an explosion at the precinct.", "police_station_bust_out"); } }
-        public static ScannerFile Allunitsrespond1024 { get { return new ScannerFile("01_police_station_bust_out\\0x0A786E55.wav", "All units respond; 10-24.", "police_station_bust_out"); } }
-        public static ScannerFile Emergencyallunitsrespond1 { get { return new ScannerFile("01_police_station_bust_out\\0x0EC921B4.wav", "Emergency; all units respond.", "police_station_bust_out"); } }
-        public static ScannerFile Allunitsrespondimmediatelycode991 { get { return new ScannerFile("01_police_station_bust_out\\0x0FB1DEC0.wav", "All units respond immediately; code 99.", "police_station_bust_out"); } }
-        public static ScannerFile Attentionwehavea982atthecentralprecinct { get { return new ScannerFile("01_police_station_bust_out\\0x0FEDA742.wav", "Attention, we have a 9-82 at the central precinct.", "police_station_bust_out"); } }
-        public static ScannerFile Allunitsanexplosionhasoccurredattheprecinct { get { return new ScannerFile("01_police_station_bust_out\\0x10A0609E.wav", "All units, an explosion has occurred at the precinct.", "police_station_bust_out"); } }
-        public static ScannerFile Attentionwehavea983atthecentralprecinct { get { return new ScannerFile("01_police_station_bust_out\\0x12C9A33D.wav", "Attention, we have a 9-83 at the central precinct.", "police_station_bust_out"); } }
-        public static ScannerFile Allunitsrespondimmediatelycodepurple1 { get { return new ScannerFile("01_police_station_bust_out\\0x13594109.wav", "All units respond immediately; code purple.", "police_station_bust_out"); } }
-        public static ScannerFile Wehaveareportofanexplosionattheprecinct { get { return new ScannerFile("01_police_station_bust_out\\0x13672DD0.wav", "We have a report of an explosion at the precinct.", "police_station_bust_out"); } }
-        public static ScannerFile Allunitsanexplosionhasoccurredattheprecinct1 { get { return new ScannerFile("01_police_station_bust_out\\0x15CD338B.wav", "All units, an explosion has occurred at the precinct.", "police_station_bust_out"); } }
-        public static ScannerFile Allunitswehavea10241 { get { return new ScannerFile("01_police_station_bust_out\\0x16362E18.wav", "All units, we have a 10-24.", "police_station_bust_out"); } }
-        public static ScannerFile Attentionallunitswevegota996attheprecinct { get { return new ScannerFile("01_police_station_bust_out\\0x19B8CCD6.wav", "Attention all units, we've got a 9-96 at the precinct.", "police_station_bust_out"); } }
-    }
-    public class proceed_with_caution
-    {
-        public static ScannerFile Proceedwithcaution { get { return new ScannerFile("01_proceed_with_caution\\0x0C544469.wav", "Proceed with caution.", "proceed_with_caution"); } }
-        public static ScannerFile Approachwithcaution { get { return new ScannerFile("01_proceed_with_caution\\0x1A101FE4.wav", "Approach with caution.", "proceed_with_caution"); } }
-        public static ScannerFile Officersproceedwithcaution { get { return new ScannerFile("01_proceed_with_caution\\0x1AEC219A.wav", "Officers, proceed with caution.", "proceed_with_caution"); } }
-    }
-    public class race_sex
-    {
-        public static ScannerFile Caucasianmale { get { return new ScannerFile("01_race_sex\\0x000394EA.wav", "Caucasian male.", "race_sex"); } }
-        public static ScannerFile Asianmale { get { return new ScannerFile("01_race_sex\\0x035E8EE4.wav", "Asian male.", "race_sex"); } }
-        public static ScannerFile AfricanAmericanfemale { get { return new ScannerFile("01_race_sex\\0x040777A8.wav", "African-American female.", "race_sex"); } }
-        public static ScannerFile Caucasianfemale { get { return new ScannerFile("01_race_sex\\0x0858623E.wav", "Caucasian female.", "race_sex"); } }
-        public static ScannerFile AMA { get { return new ScannerFile("01_race_sex\\0x0920E051.wav", "AMA.", "race_sex"); } }
-        public static ScannerFile WFA { get { return new ScannerFile("01_race_sex\\0x0B427DCF.wav", "WFA.", "race_sex"); } }
-        public static ScannerFile Blackmale { get { return new ScannerFile("01_race_sex\\0x0B8CBDE4.wav", "Black male.", "race_sex"); } }
-        public static ScannerFile AfricanAmericanmale { get { return new ScannerFile("01_race_sex\\0x0CE2C090.wav", "African-American male.", "race_sex"); } }
-        public static ScannerFile Hispanicmale { get { return new ScannerFile("01_race_sex\\0x0E6CBBB1.wav", "Hispanic male.", "race_sex"); } }
-        public static ScannerFile Whitefemale { get { return new ScannerFile("01_race_sex\\0x0EDCEF46.wav", "White female.", "race_sex"); } }
-        public static ScannerFile Whitemale { get { return new ScannerFile("01_race_sex\\0x122AF938.wav", "White male.", "race_sex"); } }
-        public static ScannerFile BFA { get { return new ScannerFile("01_race_sex\\0x13490822.wav", "BFA.", "race_sex"); } }
-        public static ScannerFile Asianfemale { get { return new ScannerFile("01_race_sex\\0x17579460.wav", "Asian female.", "race_sex"); } }
-        public static ScannerFile BMA { get { return new ScannerFile("01_race_sex\\0x17608E77.wav", "BMA.", "race_sex"); } }
-        public static ScannerFile Hispanicfemale { get { return new ScannerFile("01_race_sex\\0x177B46CA.wav", "Hispanic female.", "race_sex"); } }
-        public static ScannerFile AFA { get { return new ScannerFile("01_race_sex\\0x18792A5B.wav", "AFA.", "race_sex"); } }
-        public static ScannerFile WFA1 { get { return new ScannerFile("01_race_sex\\0x188BD862.wav", "WFA.", "race_sex"); } }
-        public static ScannerFile HFA { get { return new ScannerFile("01_race_sex\\0x19BB2712.wav", "HFA.", "race_sex"); } }
-        public static ScannerFile WMA { get { return new ScannerFile("01_race_sex\\0x1BF59998.wav", "WMA.", "race_sex"); } }
-        public static ScannerFile Blackfemale { get { return new ScannerFile("01_race_sex\\0x1D26A9B5.wav", "Black female.", "race_sex"); } }
-        public static ScannerFile HMA { get { return new ScannerFile("01_race_sex\\0x1EB40183.wav", "HMA.", "race_sex"); } }
-    }
-    public class requesting_backup
-    {
-        public static ScannerFile Requiresassistance { get { return new ScannerFile("01_requesting_backup\\0x00659C9E.wav", "Requires assistance.", "requesting_backup"); } }
-        public static ScannerFile Needsassistance { get { return new ScannerFile("01_requesting_backup\\0x16328837.wav", "Needs assistance.", "requesting_backup"); } }
-        public static ScannerFile REQUESTBACKUP01 { get { return new ScannerFile("01_requesting_backup\\REQUEST_BACKUP_01.wav", "REQUEST_BACKUP_01", "requesting_backup"); } }
-        public static ScannerFile REQUESTBACKUP02 { get { return new ScannerFile("01_requesting_backup\\REQUEST_BACKUP_02.wav", "REQUEST_BACKUP_02", "requesting_backup"); } }
-        public static ScannerFile REQUESTBACKUP03 { get { return new ScannerFile("01_requesting_backup\\REQUEST_BACKUP_03.wav", "REQUEST_BACKUP_03", "requesting_backup"); } }
-        public static ScannerFile REQUESTBACKUP04 { get { return new ScannerFile("01_requesting_backup\\REQUEST_BACKUP_04.wav", "REQUEST_BACKUP_04", "requesting_backup"); } }
-    }
-    public class requesting_escort
-    {
-        public static ScannerFile Requestsanescort { get { return new ScannerFile("01_requesting_escort\\0x0C7682B4.wav", "Requests an escort.", "requesting_escort"); } }
-        public static ScannerFile Requesting1014 { get { return new ScannerFile("01_requesting_escort\\0x0DFA05B6.wav", "Requesting 10-14.", "requesting_escort"); } }
-        public static ScannerFile Requestsprisonertransportassistance { get { return new ScannerFile("01_requesting_escort\\0x17C81958.wav", "Requests prisoner transport assistance.", "requesting_escort"); } }
-        public static ScannerFile Requesta1014 { get { return new ScannerFile("01_requesting_escort\\0x1A27DE16.wav", "Request a 10-14.", "requesting_escort"); } }
-        public static ScannerFile Requestingescort { get { return new ScannerFile("01_requesting_escort\\0x1F80E8C2.wav", "Requesting escort.", "requesting_escort"); } }
-    }
-    public class scars
-    {
-        public static ScannerFile Alargefacialscar { get { return new ScannerFile("01_scars\\0x03FA659B.wav", "A large facial scar.", "scars"); } }
-        public static ScannerFile Smallupperbodyscar { get { return new ScannerFile("01_scars\\0x054E3D88.wav", "Small upper-body scar.", "scars"); } }
-        public static ScannerFile Largeupperbodyscar { get { return new ScannerFile("01_scars\\0x05D1764C.wav", "Large upper-body scar.", "scars"); } }
-        public static ScannerFile Asmallscarontheirface { get { return new ScannerFile("01_scars\\0x0655846D.wav", "A small scar on their face.", "scars"); } }
-        public static ScannerFile Asmallscarontheirupperbody { get { return new ScannerFile("01_scars\\0x079FC228.wav", "A small scar on their upper-body.", "scars"); } }
-        public static ScannerFile Alargescarorscarsontheface { get { return new ScannerFile("01_scars\\0x09DD315F.wav", "A large scar or scars on the face.", "scars"); } }
-        public static ScannerFile Lightupperbodyscarring { get { return new ScannerFile("01_scars\\0x0A246759.wav", "Light upper-body scarring.", "scars"); } }
-        public static ScannerFile Asmallscarorscarsontheface { get { return new ScannerFile("01_scars\\0x0A5CCC7D.wav", "A small scar or scars on the face.", "scars"); } }
-        public static ScannerFile Heavyfacialscarring { get { return new ScannerFile("01_scars\\0x0B7E0ED1.wav", "Heavy facial scarring.", "scars"); } }
-        public static ScannerFile Alargescarontheirface { get { return new ScannerFile("01_scars\\0x11B7C116.wav", "A large scar on their face.", "scars"); } }
-        public static ScannerFile Lightfacialscarring { get { return new ScannerFile("01_scars\\0x136455B7.wav", "Light facial scarring.", "scars"); } }
-        public static ScannerFile Smallscarsontheirfaceandbody { get { return new ScannerFile("01_scars\\0x13D6CBC0.wav", "Small scars on their face and body.", "scars"); } }
-        public static ScannerFile Largeupperbodyscarorscars { get { return new ScannerFile("01_scars\\0x141F92E9.wav", "Large upper-body scar or scars.", "scars"); } }
-        public static ScannerFile Lifescarringtofaceandbody { get { return new ScannerFile("01_scars\\0x14A8577D.wav", "Life scarring to face and body.", "scars"); } }
-        public static ScannerFile Heavyupperbodyscarring { get { return new ScannerFile("01_scars\\0x17E59DFE.wav", "Heavy upper-body scarring.", "scars"); } }
-        public static ScannerFile Alargescarontheirupperbody { get { return new ScannerFile("01_scars\\0x188CDBC2.wav", "A large scar on their upper-body.", "scars"); } }
-        public static ScannerFile Asmallfacialscar { get { return new ScannerFile("01_scars\\0x1910A9E3.wav", "A small facial scar.", "scars"); } }
-        public static ScannerFile Largescarsontheirfaceandbody { get { return new ScannerFile("01_scars\\0x19604F3C.wav", "Large scars on their face and body.", "scars"); } }
-        public static ScannerFile Smallupperbodyscarorscars { get { return new ScannerFile("01_scars\\0x19E7E6BA.wav", "Small upper-body scar or scars.", "scars"); } }
-        public static ScannerFile Heavyscarringtofaceandbody { get { return new ScannerFile("01_scars\\0x1FD6FB59.wav", "Heavy scarring to face and body.", "scars"); } }
-    }
-    public class scripted_lines
-    {
-        public static ScannerFile Attentionallunits { get { return new ScannerFile("01_scripted_lines\\0x00075F1C.wav", "Attention all units.", "scripted_lines"); } }
-        public static ScannerFile TheLSRiver { get { return new ScannerFile("01_scripted_lines\\0x002DE1C8.wav", "The LS River.", "scripted_lines"); } }
-        public static ScannerFile Wehavea211silentonanarmoredtruck { get { return new ScannerFile("01_scripted_lines\\0x0046621B.wav", "We have a 2-11 silent on an armored truck.", "scripted_lines"); } }
-        public static ScannerFile Wehavea211attheUnionDepository { get { return new ScannerFile("01_scripted_lines\\0x005F5082.wav", "We have a 2-11 at the Union Depository.", "scripted_lines"); } }
-        public static ScannerFile Whitemaleadultseenfleeingthearea { get { return new ScannerFile("01_scripted_lines\\0x01034057.wav", "White male, adult, seen fleeing the area.", "scripted_lines"); } }
-        public static ScannerFile Useofdeadlyforceisauthorized { get { return new ScannerFile("01_scripted_lines\\0x010F1FF6.wav", "Use of deadly force is authorized.", "scripted_lines"); } }
-        public static ScannerFile Possiblesuspectseenheadingwestinabulldozer { get { return new ScannerFile("01_scripted_lines\\0x0116D5B7.wav", "Possible suspect seen heading west in a bulldozer.", "scripted_lines"); } }
-        public static ScannerFile TheparkinggarageattheArcadiusBusinessCenter { get { return new ScannerFile("01_scripted_lines\\0x015CB5CE.wav", "The parking garage at the Arcadius Business Center.", "scripted_lines"); } }
-        public static ScannerFile AttentionLaPuertaunits { get { return new ScannerFile("01_scripted_lines\\0x016048EA.wav", "Attention La Puerta units.", "scripted_lines"); } }
-        public static ScannerFile Code4allunitsreturntopatrol { get { return new ScannerFile("01_scripted_lines\\0x0193CCC9.wav", "Code 4; all units return to patrol.", "scripted_lines"); } }
-        public static ScannerFile RespondCode3 { get { return new ScannerFile("01_scripted_lines\\0x01F3ACCB.wav", "Respond; Code 3.", "scripted_lines"); } }
-        public static ScannerFile Piggybankisbrokenrepeatbroken { get { return new ScannerFile("01_scripted_lines\\0x02001264.wav", "Piggy bank is broken; repeat, broken.", "scripted_lines"); } }
-        public static ScannerFile Attentionallunits1 { get { return new ScannerFile("01_scripted_lines\\0x023C372E.wav", "Attention all units.", "scripted_lines"); } }
-        public static ScannerFile Vehiclesarereportedstolen { get { return new ScannerFile("01_scripted_lines\\0x027592ED.wav", "Vehicles are reported stolen.", "scripted_lines"); } }
-        public static ScannerFile Wevegotareportofanarmedcarhijacked { get { return new ScannerFile("01_scripted_lines\\0x02B6EF7F.wav", "We've got a report of an armed car hijacked.", "scripted_lines"); } }
-        public static ScannerFile AttentionGruppe6securityalarmtriggeredon { get { return new ScannerFile("01_scripted_lines\\0x02E399B8.wav", "Attention, Gruppe 6 security alarm triggered on...", "scripted_lines"); } }
-        public static ScannerFile Wehaveareported187 { get { return new ScannerFile("01_scripted_lines\\0x02EDC597.wav", "We have a reported 1-87.", "scripted_lines"); } }
-        public static ScannerFile Beadvisedsuspectisarmed { get { return new ScannerFile("01_scripted_lines\\0x033A2DB4.wav", "Be advised, suspect is armed.", "scripted_lines"); } }
-        public static ScannerFile HASH040A5429 { get { return new ScannerFile("01_scripted_lines\\0x040A5429.wav", "0x040A5429", "scripted_lines"); } }
-        public static ScannerFile HASH04152C67 { get { return new ScannerFile("01_scripted_lines\\0x04152C67.wav", "0x04152C67", "scripted_lines"); } }
-        public static ScannerFile HASH04907C35 { get { return new ScannerFile("01_scripted_lines\\0x04907C35.wav", "0x04907C35", "scripted_lines"); } }
-        public static ScannerFile HASH04977E6C { get { return new ScannerFile("01_scripted_lines\\0x04977E6C.wav", "0x04977E6C", "scripted_lines"); } }
-        public static ScannerFile HASH04A776F2 { get { return new ScannerFile("01_scripted_lines\\0x04A776F2.wav", "0x04A776F2", "scripted_lines"); } }
-        public static ScannerFile HASH04C12DC7 { get { return new ScannerFile("01_scripted_lines\\0x04C12DC7.wav", "0x04C12DC7", "scripted_lines"); } }
-        public static ScannerFile HASH04C47163 { get { return new ScannerFile("01_scripted_lines\\0x04C47163.wav", "0x04C47163", "scripted_lines"); } }
-        public static ScannerFile HASH04D1464C { get { return new ScannerFile("01_scripted_lines\\0x04D1464C.wav", "0x04D1464C", "scripted_lines"); } }
-        public static ScannerFile HASH04F54D95 { get { return new ScannerFile("01_scripted_lines\\0x04F54D95.wav", "0x04F54D95", "scripted_lines"); } }
-        public static ScannerFile HASH0524C7F7 { get { return new ScannerFile("01_scripted_lines\\0x0524C7F7.wav", "0x0524C7F7", "scripted_lines"); } }
-        public static ScannerFile HASH0550EC10 { get { return new ScannerFile("01_scripted_lines\\0x0550EC10.wav", "0x0550EC10", "scripted_lines"); } }
-        public static ScannerFile HASH056D892C { get { return new ScannerFile("01_scripted_lines\\0x056D892C.wav", "0x056D892C", "scripted_lines"); } }
-        public static ScannerFile HASH05D97E65 { get { return new ScannerFile("01_scripted_lines\\0x05D97E65.wav", "0x05D97E65", "scripted_lines"); } }
-        public static ScannerFile HASH065281C6 { get { return new ScannerFile("01_scripted_lines\\0x065281C6.wav", "0x065281C6", "scripted_lines"); } }
-        public static ScannerFile HASH067F9B20 { get { return new ScannerFile("01_scripted_lines\\0x067F9B20.wav", "0x067F9B20", "scripted_lines"); } }
-        public static ScannerFile HASH06FEFB5C { get { return new ScannerFile("01_scripted_lines\\0x06FEFB5C.wav", "0x06FEFB5C", "scripted_lines"); } }
-        public static ScannerFile HASH07337749 { get { return new ScannerFile("01_scripted_lines\\0x07337749.wav", "0x07337749", "scripted_lines"); } }
-        public static ScannerFile HASH07D987FF { get { return new ScannerFile("01_scripted_lines\\0x07D987FF.wav", "0x07D987FF", "scripted_lines"); } }
-        public static ScannerFile HASH07DCD88F { get { return new ScannerFile("01_scripted_lines\\0x07DCD88F.wav", "0x07DCD88F", "scripted_lines"); } }
-        public static ScannerFile HASH08137472 { get { return new ScannerFile("01_scripted_lines\\0x08137472.wav", "0x08137472", "scripted_lines"); } }
-        public static ScannerFile HASH08138AE8 { get { return new ScannerFile("01_scripted_lines\\0x08138AE8.wav", "0x08138AE8", "scripted_lines"); } }
-        public static ScannerFile HASH083EB2E3 { get { return new ScannerFile("01_scripted_lines\\0x083EB2E3.wav", "0x083EB2E3", "scripted_lines"); } }
-        public static ScannerFile HASH084969C1 { get { return new ScannerFile("01_scripted_lines\\0x084969C1.wav", "0x084969C1", "scripted_lines"); } }
-        public static ScannerFile HASH08B98F20 { get { return new ScannerFile("01_scripted_lines\\0x08B98F20.wav", "0x08B98F20", "scripted_lines"); } }
-        public static ScannerFile HASH08D6E5A5 { get { return new ScannerFile("01_scripted_lines\\0x08D6E5A5.wav", "0x08D6E5A5", "scripted_lines"); } }
-        public static ScannerFile HASH08E29570 { get { return new ScannerFile("01_scripted_lines\\0x08E29570.wav", "0x08E29570", "scripted_lines"); } }
-        public static ScannerFile HASH091C12E0 { get { return new ScannerFile("01_scripted_lines\\0x091C12E0.wav", "0x091C12E0", "scripted_lines"); } }
-        public static ScannerFile HASH0927CCA7 { get { return new ScannerFile("01_scripted_lines\\0x0927CCA7.wav", "0x0927CCA7", "scripted_lines"); } }
-        public static ScannerFile HASH093D0F23 { get { return new ScannerFile("01_scripted_lines\\0x093D0F23.wav", "0x093D0F23", "scripted_lines"); } }
-        public static ScannerFile HASH097B0A47 { get { return new ScannerFile("01_scripted_lines\\0x097B0A47.wav", "0x097B0A47", "scripted_lines"); } }
-        public static ScannerFile HASH09814DE2 { get { return new ScannerFile("01_scripted_lines\\0x09814DE2.wav", "0x09814DE2", "scripted_lines"); } }
-        public static ScannerFile HASH09ADEC88 { get { return new ScannerFile("01_scripted_lines\\0x09ADEC88.wav", "0x09ADEC88", "scripted_lines"); } }
-        public static ScannerFile HASH0A053B49 { get { return new ScannerFile("01_scripted_lines\\0x0A053B49.wav", "0x0A053B49", "scripted_lines"); } }
-        public static ScannerFile HASH0A1B3E4C { get { return new ScannerFile("01_scripted_lines\\0x0A1B3E4C.wav", "0x0A1B3E4C", "scripted_lines"); } }
-        public static ScannerFile HASH0A29EB23 { get { return new ScannerFile("01_scripted_lines\\0x0A29EB23.wav", "0x0A29EB23", "scripted_lines"); } }
-        public static ScannerFile HASH0AA97460 { get { return new ScannerFile("01_scripted_lines\\0x0AA97460.wav", "0x0AA97460", "scripted_lines"); } }
-        public static ScannerFile HASH0AD51F6A { get { return new ScannerFile("01_scripted_lines\\0x0AD51F6A.wav", "0x0AD51F6A", "scripted_lines"); } }
-        public static ScannerFile HASH0AF13A84 { get { return new ScannerFile("01_scripted_lines\\0x0AF13A84.wav", "0x0AF13A84", "scripted_lines"); } }
-        public static ScannerFile HASH0AFD1BC2 { get { return new ScannerFile("01_scripted_lines\\0x0AFD1BC2.wav", "0x0AFD1BC2", "scripted_lines"); } }
-        public static ScannerFile HASH0B01A425 { get { return new ScannerFile("01_scripted_lines\\0x0B01A425.wav", "0x0B01A425", "scripted_lines"); } }
-        public static ScannerFile HASH0B09BEF6 { get { return new ScannerFile("01_scripted_lines\\0x0B09BEF6.wav", "0x0B09BEF6", "scripted_lines"); } }
-        public static ScannerFile HASH0B7DC711 { get { return new ScannerFile("01_scripted_lines\\0x0B7DC711.wav", "0x0B7DC711", "scripted_lines"); } }
-        public static ScannerFile HASH0B885CD8 { get { return new ScannerFile("01_scripted_lines\\0x0B885CD8.wav", "0x0B885CD8", "scripted_lines"); } }
-        public static ScannerFile HASH0B902335 { get { return new ScannerFile("01_scripted_lines\\0x0B902335.wav", "0x0B902335", "scripted_lines"); } }
-        public static ScannerFile HASH0B9C2AC1 { get { return new ScannerFile("01_scripted_lines\\0x0B9C2AC1.wav", "0x0B9C2AC1", "scripted_lines"); } }
-        public static ScannerFile HASH0BDD30E8 { get { return new ScannerFile("01_scripted_lines\\0x0BDD30E8.wav", "0x0BDD30E8", "scripted_lines"); } }
-        public static ScannerFile HASH0BF0ABD5 { get { return new ScannerFile("01_scripted_lines\\0x0BF0ABD5.wav", "0x0BF0ABD5", "scripted_lines"); } }
-        public static ScannerFile HASH0C1B7C74 { get { return new ScannerFile("01_scripted_lines\\0x0C1B7C74.wav", "0x0C1B7C74", "scripted_lines"); } }
-        public static ScannerFile HASH0C3C8054 { get { return new ScannerFile("01_scripted_lines\\0x0C3C8054.wav", "0x0C3C8054", "scripted_lines"); } }
-        public static ScannerFile HASH0C5713E5 { get { return new ScannerFile("01_scripted_lines\\0x0C5713E5.wav", "0x0C5713E5", "scripted_lines"); } }
-        public static ScannerFile HASH0C5BC7B0 { get { return new ScannerFile("01_scripted_lines\\0x0C5BC7B0.wav", "0x0C5BC7B0", "scripted_lines"); } }
-        public static ScannerFile HASH0C5F7B24 { get { return new ScannerFile("01_scripted_lines\\0x0C5F7B24.wav", "0x0C5F7B24", "scripted_lines"); } }
-        public static ScannerFile HASH0CB286C4 { get { return new ScannerFile("01_scripted_lines\\0x0CB286C4.wav", "0x0CB286C4", "scripted_lines"); } }
-        public static ScannerFile HASH0D321A78 { get { return new ScannerFile("01_scripted_lines\\0x0D321A78.wav", "0x0D321A78", "scripted_lines"); } }
-        public static ScannerFile HASH0D7F5BA7 { get { return new ScannerFile("01_scripted_lines\\0x0D7F5BA7.wav", "0x0D7F5BA7", "scripted_lines"); } }
-        public static ScannerFile HASH0DC66418 { get { return new ScannerFile("01_scripted_lines\\0x0DC66418.wav", "0x0DC66418", "scripted_lines"); } }
-        public static ScannerFile HASH0DDE56F3 { get { return new ScannerFile("01_scripted_lines\\0x0DDE56F3.wav", "0x0DDE56F3", "scripted_lines"); } }
-        public static ScannerFile HASH0DEBA202 { get { return new ScannerFile("01_scripted_lines\\0x0DEBA202.wav", "0x0DEBA202", "scripted_lines"); } }
-        public static ScannerFile HASH0DFFE738 { get { return new ScannerFile("01_scripted_lines\\0x0DFFE738.wav", "0x0DFFE738", "scripted_lines"); } }
-        public static ScannerFile HASH0E2B252B { get { return new ScannerFile("01_scripted_lines\\0x0E2B252B.wav", "0x0E2B252B", "scripted_lines"); } }
-        public static ScannerFile HASH0E5DDB1B { get { return new ScannerFile("01_scripted_lines\\0x0E5DDB1B.wav", "0x0E5DDB1B", "scripted_lines"); } }
-        public static ScannerFile HASH0E8C2586 { get { return new ScannerFile("01_scripted_lines\\0x0E8C2586.wav", "0x0E8C2586", "scripted_lines"); } }
-        public static ScannerFile HASH0ED3BB7F { get { return new ScannerFile("01_scripted_lines\\0x0ED3BB7F.wav", "0x0ED3BB7F", "scripted_lines"); } }
-        public static ScannerFile HASH0EF44F2C { get { return new ScannerFile("01_scripted_lines\\0x0EF44F2C.wav", "0x0EF44F2C", "scripted_lines"); } }
-        public static ScannerFile HASH0F1D6717 { get { return new ScannerFile("01_scripted_lines\\0x0F1D6717.wav", "0x0F1D6717", "scripted_lines"); } }
-        public static ScannerFile HASH0F2A4E66 { get { return new ScannerFile("01_scripted_lines\\0x0F2A4E66.wav", "0x0F2A4E66", "scripted_lines"); } }
-        public static ScannerFile HASH0F57ACB1 { get { return new ScannerFile("01_scripted_lines\\0x0F57ACB1.wav", "0x0F57ACB1", "scripted_lines"); } }
-        public static ScannerFile HASH0F704604 { get { return new ScannerFile("01_scripted_lines\\0x0F704604.wav", "0x0F704604", "scripted_lines"); } }
-        public static ScannerFile HASH0F8255E1 { get { return new ScannerFile("01_scripted_lines\\0x0F8255E1.wav", "0x0F8255E1", "scripted_lines"); } }
-        public static ScannerFile HASH0FD0D6F5 { get { return new ScannerFile("01_scripted_lines\\0x0FD0D6F5.wav", "0x0FD0D6F5", "scripted_lines"); } }
-        public static ScannerFile HASH10458A9D { get { return new ScannerFile("01_scripted_lines\\0x10458A9D.wav", "0x10458A9D", "scripted_lines"); } }
-        public static ScannerFile HASH1075F4DC { get { return new ScannerFile("01_scripted_lines\\0x1075F4DC.wav", "0x1075F4DC", "scripted_lines"); } }
-        public static ScannerFile HASH1078E105 { get { return new ScannerFile("01_scripted_lines\\0x1078E105.wav", "0x1078E105", "scripted_lines"); } }
-        public static ScannerFile HASH108405AA { get { return new ScannerFile("01_scripted_lines\\0x108405AA.wav", "0x108405AA", "scripted_lines"); } }
-        public static ScannerFile HASH10B7612A { get { return new ScannerFile("01_scripted_lines\\0x10B7612A.wav", "0x10B7612A", "scripted_lines"); } }
-        public static ScannerFile HASH10E29C6E { get { return new ScannerFile("01_scripted_lines\\0x10E29C6E.wav", "0x10E29C6E", "scripted_lines"); } }
-        public static ScannerFile HASH10EB80E5 { get { return new ScannerFile("01_scripted_lines\\0x10EB80E5.wav", "0x10EB80E5", "scripted_lines"); } }
-        public static ScannerFile HASH10EDE805 { get { return new ScannerFile("01_scripted_lines\\0x10EDE805.wav", "0x10EDE805", "scripted_lines"); } }
-        public static ScannerFile HASH11174006 { get { return new ScannerFile("01_scripted_lines\\0x11174006.wav", "0x11174006", "scripted_lines"); } }
-        public static ScannerFile HASH117239AB { get { return new ScannerFile("01_scripted_lines\\0x117239AB.wav", "0x117239AB", "scripted_lines"); } }
-        public static ScannerFile HASH11946C00 { get { return new ScannerFile("01_scripted_lines\\0x11946C00.wav", "0x11946C00", "scripted_lines"); } }
-        public static ScannerFile HASH119C4775 { get { return new ScannerFile("01_scripted_lines\\0x119C4775.wav", "0x119C4775", "scripted_lines"); } }
-        public static ScannerFile HASH11A9D669 { get { return new ScannerFile("01_scripted_lines\\0x11A9D669.wav", "0x11A9D669", "scripted_lines"); } }
-        public static ScannerFile HASH11CEB3EC { get { return new ScannerFile("01_scripted_lines\\0x11CEB3EC.wav", "0x11CEB3EC", "scripted_lines"); } }
-        public static ScannerFile HASH11F7DC3A { get { return new ScannerFile("01_scripted_lines\\0x11F7DC3A.wav", "0x11F7DC3A", "scripted_lines"); } }
-        public static ScannerFile HASH1259A260 { get { return new ScannerFile("01_scripted_lines\\0x1259A260.wav", "0x1259A260", "scripted_lines"); } }
-        public static ScannerFile HASH125DAD47 { get { return new ScannerFile("01_scripted_lines\\0x125DAD47.wav", "0x125DAD47", "scripted_lines"); } }
-        public static ScannerFile HASH1276F4B1 { get { return new ScannerFile("01_scripted_lines\\0x1276F4B1.wav", "0x1276F4B1", "scripted_lines"); } }
-        public static ScannerFile HASH12884CEB { get { return new ScannerFile("01_scripted_lines\\0x12884CEB.wav", "0x12884CEB", "scripted_lines"); } }
-        public static ScannerFile HASH1288DA4F { get { return new ScannerFile("01_scripted_lines\\0x1288DA4F.wav", "0x1288DA4F", "scripted_lines"); } }
-        public static ScannerFile HASH12AEE908 { get { return new ScannerFile("01_scripted_lines\\0x12AEE908.wav", "0x12AEE908", "scripted_lines"); } }
-        public static ScannerFile HASH12B349B2 { get { return new ScannerFile("01_scripted_lines\\0x12B349B2.wav", "0x12B349B2", "scripted_lines"); } }
-        public static ScannerFile HASH130F07AC { get { return new ScannerFile("01_scripted_lines\\0x130F07AC.wav", "0x130F07AC", "scripted_lines"); } }
-        public static ScannerFile HASH1334E4BA { get { return new ScannerFile("01_scripted_lines\\0x1334E4BA.wav", "0x1334E4BA", "scripted_lines"); } }
-        public static ScannerFile HASH141E9AF0 { get { return new ScannerFile("01_scripted_lines\\0x141E9AF0.wav", "0x141E9AF0", "scripted_lines"); } }
-        public static ScannerFile HASH14532861 { get { return new ScannerFile("01_scripted_lines\\0x14532861.wav", "0x14532861", "scripted_lines"); } }
-        public static ScannerFile HASH14F98E38 { get { return new ScannerFile("01_scripted_lines\\0x14F98E38.wav", "0x14F98E38", "scripted_lines"); } }
-        public static ScannerFile HASH152C3020 { get { return new ScannerFile("01_scripted_lines\\0x152C3020.wav", "0x152C3020", "scripted_lines"); } }
-        public static ScannerFile HASH158B2362 { get { return new ScannerFile("01_scripted_lines\\0x158B2362.wav", "0x158B2362", "scripted_lines"); } }
-        public static ScannerFile HASH15F6451B { get { return new ScannerFile("01_scripted_lines\\0x15F6451B.wav", "0x15F6451B", "scripted_lines"); } }
-        public static ScannerFile HASH165078B5 { get { return new ScannerFile("01_scripted_lines\\0x165078B5.wav", "0x165078B5", "scripted_lines"); } }
-        public static ScannerFile HASH167E6DA6 { get { return new ScannerFile("01_scripted_lines\\0x167E6DA6.wav", "0x167E6DA6", "scripted_lines"); } }
-        public static ScannerFile HASH169BA7E0 { get { return new ScannerFile("01_scripted_lines\\0x169BA7E0.wav", "0x169BA7E0", "scripted_lines"); } }
-        public static ScannerFile HASH16B27BD2 { get { return new ScannerFile("01_scripted_lines\\0x16B27BD2.wav", "0x16B27BD2", "scripted_lines"); } }
-        public static ScannerFile HASH16D57635 { get { return new ScannerFile("01_scripted_lines\\0x16D57635.wav", "0x16D57635", "scripted_lines"); } }
-        public static ScannerFile HASH16DF54FD { get { return new ScannerFile("01_scripted_lines\\0x16DF54FD.wav", "0x16DF54FD", "scripted_lines"); } }
-        public static ScannerFile HASH16E76B7B { get { return new ScannerFile("01_scripted_lines\\0x16E76B7B.wav", "0x16E76B7B", "scripted_lines"); } }
-        public static ScannerFile HASH16F228A5 { get { return new ScannerFile("01_scripted_lines\\0x16F228A5.wav", "0x16F228A5", "scripted_lines"); } }
-        public static ScannerFile HASH16FD3DC6 { get { return new ScannerFile("01_scripted_lines\\0x16FD3DC6.wav", "0x16FD3DC6", "scripted_lines"); } }
-        public static ScannerFile HASH171931DD { get { return new ScannerFile("01_scripted_lines\\0x171931DD.wav", "0x171931DD", "scripted_lines"); } }
-        public static ScannerFile HASH178BEBC0 { get { return new ScannerFile("01_scripted_lines\\0x178BEBC0.wav", "0x178BEBC0", "scripted_lines"); } }
-        public static ScannerFile HASH17AC2479 { get { return new ScannerFile("01_scripted_lines\\0x17AC2479.wav", "0x17AC2479", "scripted_lines"); } }
-        public static ScannerFile HASH18115D81 { get { return new ScannerFile("01_scripted_lines\\0x18115D81.wav", "0x18115D81", "scripted_lines"); } }
-        public static ScannerFile HASH1827FEB0 { get { return new ScannerFile("01_scripted_lines\\0x1827FEB0.wav", "0x1827FEB0", "scripted_lines"); } }
-        public static ScannerFile HASH183E1F75 { get { return new ScannerFile("01_scripted_lines\\0x183E1F75.wav", "0x183E1F75", "scripted_lines"); } }
-        public static ScannerFile HASH1846C75D { get { return new ScannerFile("01_scripted_lines\\0x1846C75D.wav", "0x1846C75D", "scripted_lines"); } }
-        public static ScannerFile HASH18843C41 { get { return new ScannerFile("01_scripted_lines\\0x18843C41.wav", "0x18843C41", "scripted_lines"); } }
-        public static ScannerFile HASH18A02156 { get { return new ScannerFile("01_scripted_lines\\0x18A02156.wav", "0x18A02156", "scripted_lines"); } }
-        public static ScannerFile HASH18DEFFCD { get { return new ScannerFile("01_scripted_lines\\0x18DEFFCD.wav", "0x18DEFFCD", "scripted_lines"); } }
-        public static ScannerFile HASH19296CAA { get { return new ScannerFile("01_scripted_lines\\0x19296CAA.wav", "0x19296CAA", "scripted_lines"); } }
-        public static ScannerFile HASH194740B0 { get { return new ScannerFile("01_scripted_lines\\0x194740B0.wav", "0x194740B0", "scripted_lines"); } }
-        public static ScannerFile HASH19505B83 { get { return new ScannerFile("01_scripted_lines\\0x19505B83.wav", "0x19505B83", "scripted_lines"); } }
-        public static ScannerFile HASH196B32E0 { get { return new ScannerFile("01_scripted_lines\\0x196B32E0.wav", "0x196B32E0", "scripted_lines"); } }
-        public static ScannerFile HASH19B73C44 { get { return new ScannerFile("01_scripted_lines\\0x19B73C44.wav", "0x19B73C44", "scripted_lines"); } }
-        public static ScannerFile HASH1A1E2335 { get { return new ScannerFile("01_scripted_lines\\0x1A1E2335.wav", "0x1A1E2335", "scripted_lines"); } }
-        public static ScannerFile HASH1A58D8EF { get { return new ScannerFile("01_scripted_lines\\0x1A58D8EF.wav", "0x1A58D8EF", "scripted_lines"); } }
-        public static ScannerFile HASH1A9A3E12 { get { return new ScannerFile("01_scripted_lines\\0x1A9A3E12.wav", "0x1A9A3E12", "scripted_lines"); } }
-        public static ScannerFile HASH1AA7D7B6 { get { return new ScannerFile("01_scripted_lines\\0x1AA7D7B6.wav", "0x1AA7D7B6", "scripted_lines"); } }
-        public static ScannerFile HASH1ACBFE04 { get { return new ScannerFile("01_scripted_lines\\0x1ACBFE04.wav", "0x1ACBFE04", "scripted_lines"); } }
-        public static ScannerFile HASH1B8DB7C3 { get { return new ScannerFile("01_scripted_lines\\0x1B8DB7C3.wav", "0x1B8DB7C3", "scripted_lines"); } }
-        public static ScannerFile HASH1BE3AF18 { get { return new ScannerFile("01_scripted_lines\\0x1BE3AF18.wav", "0x1BE3AF18", "scripted_lines"); } }
-        public static ScannerFile HASH1C34C0F5 { get { return new ScannerFile("01_scripted_lines\\0x1C34C0F5.wav", "0x1C34C0F5", "scripted_lines"); } }
-        public static ScannerFile HASH1C4BE8AD { get { return new ScannerFile("01_scripted_lines\\0x1C4BE8AD.wav", "0x1C4BE8AD", "scripted_lines"); } }
-        public static ScannerFile HASH1C5303DF { get { return new ScannerFile("01_scripted_lines\\0x1C5303DF.wav", "0x1C5303DF", "scripted_lines"); } }
-        public static ScannerFile HASH1C5727B4 { get { return new ScannerFile("01_scripted_lines\\0x1C5727B4.wav", "0x1C5727B4", "scripted_lines"); } }
-        public static ScannerFile HASH1C66569D { get { return new ScannerFile("01_scripted_lines\\0x1C66569D.wav", "0x1C66569D", "scripted_lines"); } }
-        public static ScannerFile HASH1C76B3B4 { get { return new ScannerFile("01_scripted_lines\\0x1C76B3B4.wav", "0x1C76B3B4", "scripted_lines"); } }
-        public static ScannerFile HASH1C7BC165 { get { return new ScannerFile("01_scripted_lines\\0x1C7BC165.wav", "0x1C7BC165", "scripted_lines"); } }
-        public static ScannerFile HASH1C89DA80 { get { return new ScannerFile("01_scripted_lines\\0x1C89DA80.wav", "0x1C89DA80", "scripted_lines"); } }
-        public static ScannerFile HASH1CA4F480 { get { return new ScannerFile("01_scripted_lines\\0x1CA4F480.wav", "0x1CA4F480", "scripted_lines"); } }
-        public static ScannerFile HASH1CB9B1BE { get { return new ScannerFile("01_scripted_lines\\0x1CB9B1BE.wav", "0x1CB9B1BE", "scripted_lines"); } }
-        public static ScannerFile HASH1CBFFF47 { get { return new ScannerFile("01_scripted_lines\\0x1CBFFF47.wav", "0x1CBFFF47", "scripted_lines"); } }
-        public static ScannerFile HASH1D148E21 { get { return new ScannerFile("01_scripted_lines\\0x1D148E21.wav", "0x1D148E21", "scripted_lines"); } }
-        public static ScannerFile HASH1D19EB77 { get { return new ScannerFile("01_scripted_lines\\0x1D19EB77.wav", "0x1D19EB77", "scripted_lines"); } }
-        public static ScannerFile HASH1D4C8E22 { get { return new ScannerFile("01_scripted_lines\\0x1D4C8E22.wav", "0x1D4C8E22", "scripted_lines"); } }
-        public static ScannerFile HASH1D4F5F3F { get { return new ScannerFile("01_scripted_lines\\0x1D4F5F3F.wav", "0x1D4F5F3F", "scripted_lines"); } }
-        public static ScannerFile HASH1D8203E2 { get { return new ScannerFile("01_scripted_lines\\0x1D8203E2.wav", "0x1D8203E2", "scripted_lines"); } }
-        public static ScannerFile HASH1D894914 { get { return new ScannerFile("01_scripted_lines\\0x1D894914.wav", "0x1D894914", "scripted_lines"); } }
-        public static ScannerFile HASH1DA7CF40 { get { return new ScannerFile("01_scripted_lines\\0x1DA7CF40.wav", "0x1DA7CF40", "scripted_lines"); } }
-        public static ScannerFile HASH1DB18B27 { get { return new ScannerFile("01_scripted_lines\\0x1DB18B27.wav", "0x1DB18B27", "scripted_lines"); } }
-        public static ScannerFile HASH1DBD4790 { get { return new ScannerFile("01_scripted_lines\\0x1DBD4790.wav", "0x1DBD4790", "scripted_lines"); } }
-        public static ScannerFile HASH1DC689AF { get { return new ScannerFile("01_scripted_lines\\0x1DC689AF.wav", "0x1DC689AF", "scripted_lines"); } }
-        public static ScannerFile HASH1DE12E58 { get { return new ScannerFile("01_scripted_lines\\0x1DE12E58.wav", "0x1DE12E58", "scripted_lines"); } }
-        public static ScannerFile HASH1DFF2F14 { get { return new ScannerFile("01_scripted_lines\\0x1DFF2F14.wav", "0x1DFF2F14", "scripted_lines"); } }
-        public static ScannerFile HASH1E133BCE { get { return new ScannerFile("01_scripted_lines\\0x1E133BCE.wav", "0x1E133BCE", "scripted_lines"); } }
-        public static ScannerFile HASH1E34857B { get { return new ScannerFile("01_scripted_lines\\0x1E34857B.wav", "0x1E34857B", "scripted_lines"); } }
-        public static ScannerFile HASH1E8024DB { get { return new ScannerFile("01_scripted_lines\\0x1E8024DB.wav", "0x1E8024DB", "scripted_lines"); } }
-        public static ScannerFile HASH1E89D108 { get { return new ScannerFile("01_scripted_lines\\0x1E89D108.wav", "0x1E89D108", "scripted_lines"); } }
-        public static ScannerFile HASH1E9DE1DD { get { return new ScannerFile("01_scripted_lines\\0x1E9DE1DD.wav", "0x1E9DE1DD", "scripted_lines"); } }
-        public static ScannerFile HASH1EA59FB1 { get { return new ScannerFile("01_scripted_lines\\0x1EA59FB1.wav", "0x1EA59FB1", "scripted_lines"); } }
-        public static ScannerFile HASH1EB09F1D { get { return new ScannerFile("01_scripted_lines\\0x1EB09F1D.wav", "0x1EB09F1D", "scripted_lines"); } }
-        public static ScannerFile HASH1ED51471 { get { return new ScannerFile("01_scripted_lines\\0x1ED51471.wav", "0x1ED51471", "scripted_lines"); } }
-        public static ScannerFile HASH1F71BEF7 { get { return new ScannerFile("01_scripted_lines\\0x1F71BEF7.wav", "0x1F71BEF7", "scripted_lines"); } }
-        public static ScannerFile HASH1F9FBA77 { get { return new ScannerFile("01_scripted_lines\\0x1F9FBA77.wav", "0x1F9FBA77", "scripted_lines"); } }
-        public static ScannerFile HASH1FAB0581 { get { return new ScannerFile("01_scripted_lines\\0x1FAB0581.wav", "0x1FAB0581", "scripted_lines"); } }
-        public static ScannerFile HASH1FC130C5 { get { return new ScannerFile("01_scripted_lines\\0x1FC130C5.wav", "0x1FC130C5", "scripted_lines"); } }
-        public static ScannerFile HASH1FD90887 { get { return new ScannerFile("01_scripted_lines\\0x1FD90887.wav", "0x1FD90887", "scripted_lines"); } }
-    }
-    public class special_instructions_approach
-    {
-        public static ScannerFile Engagefromthe { get { return new ScannerFile("01_special_instructions_approach\\0x05B3288B.wav", "Engage from the...", "special_instructions_approach"); } }
-        public static ScannerFile Approachfromthe { get { return new ScannerFile("01_special_instructions_approach\\0x0E2BF983.wav", "Approach from the...", "special_instructions_approach"); } }
-        public static ScannerFile Engagefromthe1 { get { return new ScannerFile("01_special_instructions_approach\\0x13EF4503.wav", "Engage...from the...", "special_instructions_approach"); } }
-        public static ScannerFile Convenefromthe { get { return new ScannerFile("01_special_instructions_approach\\0x18644DEE.wav", "Convene from the...", "special_instructions_approach"); } }
-        public static ScannerFile Approachfromthe1 { get { return new ScannerFile("01_special_instructions_approach\\0x1FF51D16.wav", "Approach from the...", "special_instructions_approach"); } }
-    }
-    public class special_ins_app_dir
-    {
-        public static ScannerFile West { get { return new ScannerFile("01_special_ins_app_dir\\0x00D13053.wav", "West.", "special_ins_app_dir"); } }
-        public static ScannerFile South { get { return new ScannerFile("01_special_ins_app_dir\\0x01CD1C1A.wav", "South.", "special_ins_app_dir"); } }
-        public static ScannerFile Rear { get { return new ScannerFile("01_special_ins_app_dir\\0x08633D59.wav", "Rear.", "special_ins_app_dir"); } }
-        public static ScannerFile Eastside { get { return new ScannerFile("01_special_ins_app_dir\\0x0B61A4C6.wav", "East side.", "special_ins_app_dir"); } }
-        public static ScannerFile Northentrance { get { return new ScannerFile("01_special_ins_app_dir\\0x0C81C88E.wav", "North entrance.", "special_ins_app_dir"); } }
-        public static ScannerFile Eastentrance { get { return new ScannerFile("01_special_ins_app_dir\\0x0D6B53E7.wav", "East entrance.", "special_ins_app_dir"); } }
-        public static ScannerFile Frontentrance { get { return new ScannerFile("01_special_ins_app_dir\\0x0DAF97CD.wav", "Front entrance.", "special_ins_app_dir"); } }
-        public static ScannerFile Westentrance { get { return new ScannerFile("01_special_ins_app_dir\\0x0F81625C.wav", "West entrance.", "special_ins_app_dir"); } }
-        public static ScannerFile Northside { get { return new ScannerFile("01_special_ins_app_dir\\0x1159147E.wav", "North side.", "special_ins_app_dir"); } }
-        public static ScannerFile East { get { return new ScannerFile("01_special_ins_app_dir\\0x12F149E3.wav", "East.", "special_ins_app_dir"); } }
-        public static ScannerFile Southside { get { return new ScannerFile("01_special_ins_app_dir\\0x14223FB2.wav", "South side.", "special_ins_app_dir"); } }
-        public static ScannerFile North { get { return new ScannerFile("01_special_ins_app_dir\\0x16D1886A.wav", "North.", "special_ins_app_dir"); } }
-        public static ScannerFile Southentrance { get { return new ScannerFile("01_special_ins_app_dir\\0x1B075B88.wav", "South entrance.", "special_ins_app_dir"); } }
-        public static ScannerFile Front { get { return new ScannerFile("01_special_ins_app_dir\\0x1D1883D9.wav", "Front.", "special_ins_app_dir"); } }
-        public static ScannerFile Rearentrance { get { return new ScannerFile("01_special_ins_app_dir\\0x1DB770EB.wav", "Rear entrance.", "special_ins_app_dir"); } }
-        public static ScannerFile Westside { get { return new ScannerFile("01_special_ins_app_dir\\0x1F58477F.wav", "West side.", "special_ins_app_dir"); } }
-    }
-    public class special_vehicle
-    {
-        public static ScannerFile Drivingadigger { get { return new ScannerFile("01_special_vehicle\\0x000D2597.wav", "Driving a digger.", "special_vehicle"); } }
-        public static ScannerFile Flyingamilitaryaircraft { get { return new ScannerFile("01_special_vehicle\\0x00BA742F.wav", "Flying a military aircraft.", "special_vehicle"); } }
-        public static ScannerFile Drivingatank { get { return new ScannerFile("01_special_vehicle\\0x01684C1F.wav", "Driving a tank.", "special_vehicle"); } }
-        public static ScannerFile Drivingapolicecar { get { return new ScannerFile("01_special_vehicle\\0x023F3422.wav", "Driving a police car.", "special_vehicle"); } }
-        public static ScannerFile Onadarkcoloredhorse { get { return new ScannerFile("01_special_vehicle\\0x02C1BD67.wav", "On a dark-colored horse.", "special_vehicle"); } }
-        public static ScannerFile Drivingadumptruck { get { return new ScannerFile("01_special_vehicle\\0x04474592.wav", "Driving a dump truck.", "special_vehicle"); } }
-        public static ScannerFile Ridingacustomizedmotorcycle { get { return new ScannerFile("01_special_vehicle\\0x059DD2D4.wav", "Riding a customized motorcycle.", "special_vehicle"); } }
-        public static ScannerFile Ridingamountainbike { get { return new ScannerFile("01_special_vehicle\\0x05AA96B3.wav", "Riding a mountain bike.", "special_vehicle"); } }
-        public static ScannerFile Onayacht { get { return new ScannerFile("01_special_vehicle\\0x05DA0986.wav", "On a yacht.", "special_vehicle"); } }
-        public static ScannerFile OperatinganAnnihilatorhelicopter { get { return new ScannerFile("01_special_vehicle\\0x06B3CFF4.wav", "Operating an Annihilator helicopter.", "special_vehicle"); } }
-        public static ScannerFile Onaschooner { get { return new ScannerFile("01_special_vehicle\\0x07158FF4.wav", "On a schooner.", "special_vehicle"); } }
-        public static ScannerFile OperatinganAnnihilatorAttackHelicopter { get { return new ScannerFile("01_special_vehicle\\0x079051AE.wav", "Operating an Annihilator Attack Helicopter.", "special_vehicle"); } }
-        public static ScannerFile Flyingacivilianairplane { get { return new ScannerFile("01_special_vehicle\\0x079FB220.wav", "Flying a civilian airplane.", "special_vehicle"); } }
-        public static ScannerFile Operatingamilitaryhelicopter { get { return new ScannerFile("01_special_vehicle\\0x07BB9776.wav", "Operating a military helicopter.", "special_vehicle"); } }
-        public static ScannerFile Onalightcoloredhorse { get { return new ScannerFile("01_special_vehicle\\0x0840074D.wav", "On a light-colored horse.", "special_vehicle"); } }
-        public static ScannerFile Drivinganambulance { get { return new ScannerFile("01_special_vehicle\\0x0A95F1BD.wav", "Driving an ambulance.", "special_vehicle"); } }
-        public static ScannerFile Ridingablackhorse { get { return new ScannerFile("01_special_vehicle\\0x0ACBBD8F.wav", "Riding a black horse.", "special_vehicle"); } }
-        public static ScannerFile Drivingagarbagetruck { get { return new ScannerFile("01_special_vehicle\\0x0B1FA404.wav", "Driving a garbage truck.", "special_vehicle"); } }
-        public static ScannerFile OperatingaMaverickhelicopter { get { return new ScannerFile("01_special_vehicle\\0x0B9D5088.wav", "Operating a Maverick helicopter.", "special_vehicle"); } }
-        public static ScannerFile Drivingabulldozer { get { return new ScannerFile("01_special_vehicle\\0x0C505B49.wav", "Driving a bulldozer.", "special_vehicle"); } }
-        public static ScannerFile Ridingawhitehorse { get { return new ScannerFile("01_special_vehicle\\0x0D808D20.wav", "Riding a white horse.", "special_vehicle"); } }
-        public static ScannerFile Drivingapolicesedan { get { return new ScannerFile("01_special_vehicle\\0x0E0C0BBC.wav", "Driving a police sedan.", "special_vehicle"); } }
-        public static ScannerFile Onabrownhorse { get { return new ScannerFile("01_special_vehicle\\0x0E38C84F.wav", "On a brown horse.", "special_vehicle"); } }
-        public static ScannerFile Flyingamilitaryairplane { get { return new ScannerFile("01_special_vehicle\\0x0FEC9294.wav", "Flying a military airplane.", "special_vehicle"); } }
-        public static ScannerFile Ridingaracingbike { get { return new ScannerFile("01_special_vehicle\\0x10F1559B.wav", "Riding a racing bike.", "special_vehicle"); } }
-        public static ScannerFile Ridingadarkcoloredhorse { get { return new ScannerFile("01_special_vehicle\\0x110B19FA.wav", "Riding a dark-colored horse.", "special_vehicle"); } }
-        public static ScannerFile Flyinganairplane { get { return new ScannerFile("01_special_vehicle\\0x11E586AD.wav", "Flying an airplane.", "special_vehicle"); } }
-        public static ScannerFile RidingaBMXbike { get { return new ScannerFile("01_special_vehicle\\0x12C22CBB.wav", "Riding a BMX bike.", "special_vehicle"); } }
-        public static ScannerFile Drivingatippertruck { get { return new ScannerFile("01_special_vehicle\\0x1330A850.wav", "Driving a tipper truck.", "special_vehicle"); } }
-        public static ScannerFile Ridingamotorcycle { get { return new ScannerFile("01_special_vehicle\\0x13A1BDA3.wav", "Riding a motorcycle.", "special_vehicle"); } }
-        public static ScannerFile PilotinganAnnihilatorhelicopter { get { return new ScannerFile("01_special_vehicle\\0x142D6AE7.wav", "Piloting an Annihilator helicopter.", "special_vehicle"); } }
-        public static ScannerFile Onaboat { get { return new ScannerFile("01_special_vehicle\\0x144919B6.wav", "On a boat.", "special_vehicle"); } }
-        public static ScannerFile Flyingamilitaryhelicopter { get { return new ScannerFile("01_special_vehicle\\0x15EAF3D3.wav", "Flying a military helicopter.", "special_vehicle"); } }
-        public static ScannerFile FlyingaVTOLaircraft { get { return new ScannerFile("01_special_vehicle\\0x186F5839.wav", "Flying a VTOL aircraft.", "special_vehicle"); } }
-        public static ScannerFile Ridingalightcoloredhorse { get { return new ScannerFile("01_special_vehicle\\0x191228F1.wav", "Riding a light-colored horse.", "special_vehicle"); } }
-        public static ScannerFile Onawhitehorse { get { return new ScannerFile("01_special_vehicle\\0x1B3E289B.wav", "On a white horse.", "special_vehicle"); } }
-        public static ScannerFile Onablackhorse { get { return new ScannerFile("01_special_vehicle\\0x1C5DE0B3.wav", "On a black horse.", "special_vehicle"); } }
-        public static ScannerFile Ridingabrownhorse { get { return new ScannerFile("01_special_vehicle\\0x1CCB2569.wav", "Riding a brown horse.", "special_vehicle"); } }
-        public static ScannerFile PilotingaMaverickhelicopter { get { return new ScannerFile("01_special_vehicle\\0x1D77B43D.wav", "Piloting a Maverick helicopter.", "special_vehicle"); } }
-    }
-    public class specific_location
+    //public class ornate_bank_heist
+    //{
+    //    public static ScannerFile Atthe211inEastLosSantos { get { return new ScannerFile("01_ornate_bank_heist\\0x0006F181.wav", "At the 2-11 in East Los Santos.", "ornate_bank_heist"); } }
+    //    public static ScannerFile Allunits { get { return new ScannerFile("01_ornate_bank_heist\\0x011A4380.wav", "All units.", "ornate_bank_heist"); } }
+    //    public static ScannerFile AtthebankrobberyattheEastVinewoodBankofLosSantos { get { return new ScannerFile("01_ornate_bank_heist\\0x04EDBB4E.wav", "At the bank robbery at the East Vinewood Bank of Los Santos.", "ornate_bank_heist"); } }
+    //    public static ScannerFile AttheEastVinewoodBankofLosSantos { get { return new ScannerFile("01_ornate_bank_heist\\0x0614A3D8.wav", "At the East Vinewood Bank of Los Santos.", "ornate_bank_heist"); } }
+    //    public static ScannerFile Officershavearrivedatthe211 { get { return new ScannerFile("01_ornate_bank_heist\\0x08C55498.wav", "Officers have arrived at the 2-11.", "ornate_bank_heist"); } }
+    //    public static ScannerFile Unitsatthe211inEastLosSantosbeadvised { get { return new ScannerFile("01_ornate_bank_heist\\0x0A022F01.wav", "Units at the 2-11 in East Los Santos, be advised.", "ornate_bank_heist"); } }
+    //    public static ScannerFile Attentionallunitsatthe211inEastLosSantos { get { return new ScannerFile("01_ornate_bank_heist\\0x0B9E89B4.wav", "Attention all units at the 2-11 in East Los Santos.", "ornate_bank_heist"); } }
+    //    public static ScannerFile Attentionallunitsatthe211inEastLosSantos1 { get { return new ScannerFile("01_ornate_bank_heist\\0x0D40F8A4.wav", "Attention all units at the 2-11 in East Los Santos.", "ornate_bank_heist"); } }
+    //    public static ScannerFile Suspectsarefleeingthecrime { get { return new ScannerFile("01_ornate_bank_heist\\0x0D6D38FC.wav", "Suspects are fleeing the crime.", "ornate_bank_heist"); } }
+    //    public static ScannerFile Wehavereportsofapossible211inEastLosSantos { get { return new ScannerFile("01_ornate_bank_heist\\0x10BBC345.wav", "We have reports of a possible 2-11 in East Los Santos.", "ornate_bank_heist"); } }
+    //    public static ScannerFile Atthe211inEastLosSantos1 { get { return new ScannerFile("01_ornate_bank_heist\\0x1264563C.wav", "At the 2-11 in East Los Santos.", "ornate_bank_heist"); } }
+    //    public static ScannerFile Suspectshavebreachedthebanksvault { get { return new ScannerFile("01_ornate_bank_heist\\0x137722CE.wav", "Suspects have breached the bank's vault.", "ornate_bank_heist"); } }
+    //    public static ScannerFile EastVinewoodBankofLosSantos { get { return new ScannerFile("01_ornate_bank_heist\\0x14D4EAF7.wav", "East Vinewood Bank of Los Santos.", "ornate_bank_heist"); } }
+    //    public static ScannerFile Officershavearrivedatthe2111 { get { return new ScannerFile("01_ornate_bank_heist\\0x1606C3BC.wav", "Officers have arrived at the 2-11.", "ornate_bank_heist"); } }
+    //    public static ScannerFile Atthe211attheEastVinewoodBankofLosSantos { get { return new ScannerFile("01_ornate_bank_heist\\0x17301FD3.wav", "At the 2-11 at the East Vinewood Bank of Los Santos.", "ornate_bank_heist"); } }
+    //    public static ScannerFile Suspectshaveenteredthebanksvault { get { return new ScannerFile("01_ornate_bank_heist\\0x18C08C7E.wav", "Suspects have entered the bank's vault.", "ornate_bank_heist"); } }
+    //    public static ScannerFile AttheEastVinewoodBankofLS { get { return new ScannerFile("01_ornate_bank_heist\\0x1A34F777.wav", "At the East Vinewood Bank of LS.", "ornate_bank_heist"); } }
+    //    public static ScannerFile Wehaveconfirmationofabankrobberyatthe { get { return new ScannerFile("01_ornate_bank_heist\\0x1A853657.wav", "We have confirmation of a bank robbery at the...", "ornate_bank_heist"); } }
+    //    public static ScannerFile Suspectsarefleeingthecrime1 { get { return new ScannerFile("01_ornate_bank_heist\\0x1CDC2C2F.wav", "Suspects are fleeing the crime.", "ornate_bank_heist"); } }
+    //    public static ScannerFile Unitsatthe211inEastLosSantosbeadvised1 { get { return new ScannerFile("01_ornate_bank_heist\\0x1D6A36A5.wav", "Units at the 2-11 in East Los Santos, be advised.", "ornate_bank_heist"); } }
+    //    public static ScannerFile Banksecurityreports4suspectsarmedanddangerous { get { return new ScannerFile("01_ornate_bank_heist\\0x1DFFFD4C.wav", "Bank security reports 4 suspects, armed and dangerous.", "ornate_bank_heist"); } }
+    //    public static ScannerFile Atthe211attheEastVinewoodBankofLS { get { return new ScannerFile("01_ornate_bank_heist\\0x1F2DEFE7.wav", "At the 2-11 at the East Vinewood Bank of LS.", "ornate_bank_heist"); } }
+    //    public static ScannerFile AllavailableunitsrespondCode3 { get { return new ScannerFile("01_ornate_bank_heist\\0x1FB8613E.wav", "All available units respond; Code 3.", "ornate_bank_heist"); } }
+    //}
+    //public class over_area
+    //{
+    //    public static ScannerFile OVERAREAALAMOSEA01 { get { return new ScannerFile("01_over_area\\OVER_AREA_ALAMO_SEA_01.wav", "OVER_AREA_ALAMO_SEA_01", "over_area"); } }
+    //    public static ScannerFile OVERAREABRADDOCKPASS01 { get { return new ScannerFile("01_over_area\\OVER_AREA_BRADDOCK_PASS_01.wav", "OVER_AREA_BRADDOCK_PASS_01", "over_area"); } }
+    //    public static ScannerFile OVERAREACENTRALLOSSANTOS01 { get { return new ScannerFile("01_over_area\\OVER_AREA_CENTRAL_LOS_SANTOS_01.wav", "OVER_AREA_CENTRAL_LOS_SANTOS_01", "over_area"); } }
+    //    public static ScannerFile OVERAREACHUMASH01 { get { return new ScannerFile("01_over_area\\OVER_AREA_CHUMASH_01.wav", "OVER_AREA_CHUMASH_01", "over_area"); } }
+    //    public static ScannerFile OVERAREADOWNTOWN01 { get { return new ScannerFile("01_over_area\\OVER_AREA_DOWNTOWN_01.wav", "OVER_AREA_DOWNTOWN_01", "over_area"); } }
+    //    public static ScannerFile OVERAREAEASTLOSSANTOS01 { get { return new ScannerFile("01_over_area\\OVER_AREA_EAST_LOS_SANTOS_01.wav", "OVER_AREA_EAST_LOS_SANTOS_01", "over_area"); } }
+    //    public static ScannerFile OVERAREAGRANDESENORADESERT01 { get { return new ScannerFile("01_over_area\\OVER_AREA_GRANDE_SENORA_DESERT_01.wav", "OVER_AREA_GRANDE_SENORA_DESERT_01", "over_area"); } }
+    //    public static ScannerFile OVERAREALAGOZANCUDO01 { get { return new ScannerFile("01_over_area\\OVER_AREA_LAGO_ZANCUDO_01.wav", "OVER_AREA_LAGO_ZANCUDO_01", "over_area"); } }
+    //    public static ScannerFile OVERAREALOSSANTOSINTERNATIONAL01 { get { return new ScannerFile("01_over_area\\OVER_AREA_LOS_SANTOS_INTERNATIONAL_01.wav", "OVER_AREA_LOS_SANTOS_INTERNATIONAL_01", "over_area"); } }
+    //    public static ScannerFile OVERAREAMOUNTJOSIAH01 { get { return new ScannerFile("01_over_area\\OVER_AREA_MOUNT_JOSIAH_01.wav", "OVER_AREA_MOUNT_JOSIAH_01", "over_area"); } }
+    //    public static ScannerFile OVERAREANORTHLOSSANTOS01 { get { return new ScannerFile("01_over_area\\OVER_AREA_NORTH_LOS_SANTOS_01.wav", "OVER_AREA_NORTH_LOS_SANTOS_01", "over_area"); } }
+    //    public static ScannerFile OVERAREAPALETOBAY01 { get { return new ScannerFile("01_over_area\\OVER_AREA_PALETO_BAY_01.wav", "OVER_AREA_PALETO_BAY_01", "over_area"); } }
+    //    public static ScannerFile OVERAREAPORTOFLOSSANTOS01 { get { return new ScannerFile("01_over_area\\OVER_AREA_PORT_OF_LOS_SANTOS_01.wav", "OVER_AREA_PORT_OF_LOS_SANTOS_01", "over_area"); } }
+    //    public static ScannerFile OVERAREARATONCANYON01 { get { return new ScannerFile("01_over_area\\OVER_AREA_RATON_CANYON_01.wav", "OVER_AREA_RATON_CANYON_01", "over_area"); } }
+    //    public static ScannerFile OVERAREASANDYSHORES01 { get { return new ScannerFile("01_over_area\\OVER_AREA_SANDY_SHORES_01.wav", "OVER_AREA_SANDY_SHORES_01", "over_area"); } }
+    //    public static ScannerFile OVERAREASOUTHLOSSANTOS01 { get { return new ScannerFile("01_over_area\\OVER_AREA_SOUTH_LOS_SANTOS_01.wav", "OVER_AREA_SOUTH_LOS_SANTOS_01", "over_area"); } }
+    //    public static ScannerFile OVERAREAVINEWOODHILLS01 { get { return new ScannerFile("01_over_area\\OVER_AREA_VINEWOOD_HILLS_01.wav", "OVER_AREA_VINEWOOD_HILLS_01", "over_area"); } }
+    //    public static ScannerFile OVERAREAWESTLOSSANTOS01 { get { return new ScannerFile("01_over_area\\OVER_AREA_WEST_LOS_SANTOS_01.wav", "OVER_AREA_WEST_LOS_SANTOS_01", "over_area"); } }
+    //    public static ScannerFile OVERAREAWESTLOSSANTOS02 { get { return new ScannerFile("01_over_area\\OVER_AREA_WEST_LOS_SANTOS_02.wav", "OVER_AREA_WEST_LOS_SANTOS_02", "over_area"); } }
+    //}
+    //public class player_description
+    //{
+    //    public static ScannerFile Blackmaleearly20sblackhair { get { return new ScannerFile("01_player_description\\0x002BC54F.wav", "Black male, early 20s, black hair.", "player_description"); } }
+    //    public static ScannerFile Whitemalelate40sdarkhair { get { return new ScannerFile("01_player_description\\0x0372C4A6.wav", "White male, late 40s, dark hair.", "player_description"); } }
+    //    public static ScannerFile Athleticwhitemalelate40sdarkhair { get { return new ScannerFile("01_player_description\\0x049E79F3.wav", "Athletic white male, late 40s, dark hair.", "player_description"); } }
+    //    public static ScannerFile Athleticblackmaleearly20sblackhair { get { return new ScannerFile("01_player_description\\0x0B2492A0.wav", "Athletic black male, early 20s, black hair.", "player_description"); } }
+    //    public static ScannerFile Heavysetblackmaleearly20sblackhair { get { return new ScannerFile("01_player_description\\0x1285A907.wav", "Heavyset black male, early 20s, black hair.", "player_description"); } }
+    //    public static ScannerFile Heavysetwhitemalelate40sdarkhair { get { return new ScannerFile("01_player_description\\0x18396F91.wav", "Heavyset white male, late 40s, dark hair.", "player_description"); } }
+    //    public static ScannerFile Whitemalemid30sbrownhair { get { return new ScannerFile("01_player_description\\0x19D42672.wav", "White male, mid-30s, brown hair.", "player_description"); } }
+    //    public static ScannerFile Heavysetwhitemalemid30sbrownhair { get { return new ScannerFile("01_player_description\\0x1B2189EA.wav", "Heavyset white male, mid-30s, brown hair.", "player_description"); } }
+    //    public static ScannerFile Athleticwhitemalemid30sbrownhair { get { return new ScannerFile("01_player_description\\0x1EF15F7E.wav", "Athletic white male, mid-30s, brown hair.", "player_description"); } }
+    //}
+    //public class police_station_bust_out
+    //{
+    //    public static ScannerFile Emergencyallunitsrespond { get { return new ScannerFile("01_police_station_bust_out\\0x0121C945.wav", "Emergency; all units respond.", "police_station_bust_out"); } }
+    //    public static ScannerFile Allunitswehavea1024 { get { return new ScannerFile("01_police_station_bust_out\\0x0362211C.wav", "All units, we have a 10-24.", "police_station_bust_out"); } }
+    //    public static ScannerFile Allunitsrespondimmediatelycodepurple { get { return new ScannerFile("01_police_station_bust_out\\0x047D8AA7.wav", "All units respond immediately, code purple.", "police_station_bust_out"); } }
+    //    public static ScannerFile Allunitsrespondimmediatelyemergency { get { return new ScannerFile("01_police_station_bust_out\\0x05959293.wav", "All units respond immediately; emergency.", "police_station_bust_out"); } }
+    //    public static ScannerFile Allunitsrespondimmediatelycode99 { get { return new ScannerFile("01_police_station_bust_out\\0x080C5809.wav", "All units respond immediately; code 99.", "police_station_bust_out"); } }
+    //    public static ScannerFile Allunitsrespondimmediatelyemergency1 { get { return new ScannerFile("01_police_station_bust_out\\0x08968ED7.wav", "All units respond immediately; emergency.", "police_station_bust_out"); } }
+    //    public static ScannerFile Attentionallunitswehaveareportofanexplosionattheprecinct { get { return new ScannerFile("01_police_station_bust_out\\0x0A4618EC.wav", "Attention all units, we have a report of an explosion at the precinct.", "police_station_bust_out"); } }
+    //    public static ScannerFile Allunitsrespond1024 { get { return new ScannerFile("01_police_station_bust_out\\0x0A786E55.wav", "All units respond; 10-24.", "police_station_bust_out"); } }
+    //    public static ScannerFile Emergencyallunitsrespond1 { get { return new ScannerFile("01_police_station_bust_out\\0x0EC921B4.wav", "Emergency; all units respond.", "police_station_bust_out"); } }
+    //    public static ScannerFile Allunitsrespondimmediatelycode991 { get { return new ScannerFile("01_police_station_bust_out\\0x0FB1DEC0.wav", "All units respond immediately; code 99.", "police_station_bust_out"); } }
+    //    public static ScannerFile Attentionwehavea982atthecentralprecinct { get { return new ScannerFile("01_police_station_bust_out\\0x0FEDA742.wav", "Attention, we have a 9-82 at the central precinct.", "police_station_bust_out"); } }
+    //    public static ScannerFile Allunitsanexplosionhasoccurredattheprecinct { get { return new ScannerFile("01_police_station_bust_out\\0x10A0609E.wav", "All units, an explosion has occurred at the precinct.", "police_station_bust_out"); } }
+    //    public static ScannerFile Attentionwehavea983atthecentralprecinct { get { return new ScannerFile("01_police_station_bust_out\\0x12C9A33D.wav", "Attention, we have a 9-83 at the central precinct.", "police_station_bust_out"); } }
+    //    public static ScannerFile Allunitsrespondimmediatelycodepurple1 { get { return new ScannerFile("01_police_station_bust_out\\0x13594109.wav", "All units respond immediately; code purple.", "police_station_bust_out"); } }
+    //    public static ScannerFile Wehaveareportofanexplosionattheprecinct { get { return new ScannerFile("01_police_station_bust_out\\0x13672DD0.wav", "We have a report of an explosion at the precinct.", "police_station_bust_out"); } }
+    //    public static ScannerFile Allunitsanexplosionhasoccurredattheprecinct1 { get { return new ScannerFile("01_police_station_bust_out\\0x15CD338B.wav", "All units, an explosion has occurred at the precinct.", "police_station_bust_out"); } }
+    //    public static ScannerFile Allunitswehavea10241 { get { return new ScannerFile("01_police_station_bust_out\\0x16362E18.wav", "All units, we have a 10-24.", "police_station_bust_out"); } }
+    //    public static ScannerFile Attentionallunitswevegota996attheprecinct { get { return new ScannerFile("01_police_station_bust_out\\0x19B8CCD6.wav", "Attention all units, we've got a 9-96 at the precinct.", "police_station_bust_out"); } }
+    //}
+    //public class proceed_with_caution
+    //{
+    //    public static ScannerFile Proceedwithcaution { get { return new ScannerFile("01_proceed_with_caution\\0x0C544469.wav", "Proceed with caution.", "proceed_with_caution"); } }
+    //    public static ScannerFile Approachwithcaution { get { return new ScannerFile("01_proceed_with_caution\\0x1A101FE4.wav", "Approach with caution.", "proceed_with_caution"); } }
+    //    public static ScannerFile Officersproceedwithcaution { get { return new ScannerFile("01_proceed_with_caution\\0x1AEC219A.wav", "Officers, proceed with caution.", "proceed_with_caution"); } }
+    //}
+    //public class race_sex
+    //{
+    //    public static ScannerFile Caucasianmale { get { return new ScannerFile("01_race_sex\\0x000394EA.wav", "Caucasian male.", "race_sex"); } }
+    //    public static ScannerFile Asianmale { get { return new ScannerFile("01_race_sex\\0x035E8EE4.wav", "Asian male.", "race_sex"); } }
+    //    public static ScannerFile AfricanAmericanfemale { get { return new ScannerFile("01_race_sex\\0x040777A8.wav", "African-American female.", "race_sex"); } }
+    //    public static ScannerFile Caucasianfemale { get { return new ScannerFile("01_race_sex\\0x0858623E.wav", "Caucasian female.", "race_sex"); } }
+    //    public static ScannerFile AMA { get { return new ScannerFile("01_race_sex\\0x0920E051.wav", "AMA.", "race_sex"); } }
+    //    public static ScannerFile WFA { get { return new ScannerFile("01_race_sex\\0x0B427DCF.wav", "WFA.", "race_sex"); } }
+    //    public static ScannerFile Blackmale { get { return new ScannerFile("01_race_sex\\0x0B8CBDE4.wav", "Black male.", "race_sex"); } }
+    //    public static ScannerFile AfricanAmericanmale { get { return new ScannerFile("01_race_sex\\0x0CE2C090.wav", "African-American male.", "race_sex"); } }
+    //    public static ScannerFile Hispanicmale { get { return new ScannerFile("01_race_sex\\0x0E6CBBB1.wav", "Hispanic male.", "race_sex"); } }
+    //    public static ScannerFile Whitefemale { get { return new ScannerFile("01_race_sex\\0x0EDCEF46.wav", "White female.", "race_sex"); } }
+    //    public static ScannerFile Whitemale { get { return new ScannerFile("01_race_sex\\0x122AF938.wav", "White male.", "race_sex"); } }
+    //    public static ScannerFile BFA { get { return new ScannerFile("01_race_sex\\0x13490822.wav", "BFA.", "race_sex"); } }
+    //    public static ScannerFile Asianfemale { get { return new ScannerFile("01_race_sex\\0x17579460.wav", "Asian female.", "race_sex"); } }
+    //    public static ScannerFile BMA { get { return new ScannerFile("01_race_sex\\0x17608E77.wav", "BMA.", "race_sex"); } }
+    //    public static ScannerFile Hispanicfemale { get { return new ScannerFile("01_race_sex\\0x177B46CA.wav", "Hispanic female.", "race_sex"); } }
+    //    public static ScannerFile AFA { get { return new ScannerFile("01_race_sex\\0x18792A5B.wav", "AFA.", "race_sex"); } }
+    //    public static ScannerFile WFA1 { get { return new ScannerFile("01_race_sex\\0x188BD862.wav", "WFA.", "race_sex"); } }
+    //    public static ScannerFile HFA { get { return new ScannerFile("01_race_sex\\0x19BB2712.wav", "HFA.", "race_sex"); } }
+    //    public static ScannerFile WMA { get { return new ScannerFile("01_race_sex\\0x1BF59998.wav", "WMA.", "race_sex"); } }
+    //    public static ScannerFile Blackfemale { get { return new ScannerFile("01_race_sex\\0x1D26A9B5.wav", "Black female.", "race_sex"); } }
+    //    public static ScannerFile HMA { get { return new ScannerFile("01_race_sex\\0x1EB40183.wav", "HMA.", "race_sex"); } }
+    //}
+    //public class requesting_backup
+    //{
+    //    public static ScannerFile Requiresassistance { get { return new ScannerFile("01_requesting_backup\\0x00659C9E.wav", "Requires assistance.", "requesting_backup"); } }
+    //    public static ScannerFile Needsassistance { get { return new ScannerFile("01_requesting_backup\\0x16328837.wav", "Needs assistance.", "requesting_backup"); } }
+    //    public static ScannerFile REQUESTBACKUP01 { get { return new ScannerFile("01_requesting_backup\\REQUEST_BACKUP_01.wav", "REQUEST_BACKUP_01", "requesting_backup"); } }
+    //    public static ScannerFile REQUESTBACKUP02 { get { return new ScannerFile("01_requesting_backup\\REQUEST_BACKUP_02.wav", "REQUEST_BACKUP_02", "requesting_backup"); } }
+    //    public static ScannerFile REQUESTBACKUP03 { get { return new ScannerFile("01_requesting_backup\\REQUEST_BACKUP_03.wav", "REQUEST_BACKUP_03", "requesting_backup"); } }
+    //    public static ScannerFile REQUESTBACKUP04 { get { return new ScannerFile("01_requesting_backup\\REQUEST_BACKUP_04.wav", "REQUEST_BACKUP_04", "requesting_backup"); } }
+    //}
+    //public class requesting_escort
+    //{
+    //    public static ScannerFile Requestsanescort { get { return new ScannerFile("01_requesting_escort\\0x0C7682B4.wav", "Requests an escort.", "requesting_escort"); } }
+    //    public static ScannerFile Requesting1014 { get { return new ScannerFile("01_requesting_escort\\0x0DFA05B6.wav", "Requesting 10-14.", "requesting_escort"); } }
+    //    public static ScannerFile Requestsprisonertransportassistance { get { return new ScannerFile("01_requesting_escort\\0x17C81958.wav", "Requests prisoner transport assistance.", "requesting_escort"); } }
+    //    public static ScannerFile Requesta1014 { get { return new ScannerFile("01_requesting_escort\\0x1A27DE16.wav", "Request a 10-14.", "requesting_escort"); } }
+    //    public static ScannerFile Requestingescort { get { return new ScannerFile("01_requesting_escort\\0x1F80E8C2.wav", "Requesting escort.", "requesting_escort"); } }
+    //}
+    //public class scars
+    //{
+    //    public static ScannerFile Alargefacialscar { get { return new ScannerFile("01_scars\\0x03FA659B.wav", "A large facial scar.", "scars"); } }
+    //    public static ScannerFile Smallupperbodyscar { get { return new ScannerFile("01_scars\\0x054E3D88.wav", "Small upper-body scar.", "scars"); } }
+    //    public static ScannerFile Largeupperbodyscar { get { return new ScannerFile("01_scars\\0x05D1764C.wav", "Large upper-body scar.", "scars"); } }
+    //    public static ScannerFile Asmallscarontheirface { get { return new ScannerFile("01_scars\\0x0655846D.wav", "A small scar on their face.", "scars"); } }
+    //    public static ScannerFile Asmallscarontheirupperbody { get { return new ScannerFile("01_scars\\0x079FC228.wav", "A small scar on their upper-body.", "scars"); } }
+    //    public static ScannerFile Alargescarorscarsontheface { get { return new ScannerFile("01_scars\\0x09DD315F.wav", "A large scar or scars on the face.", "scars"); } }
+    //    public static ScannerFile Lightupperbodyscarring { get { return new ScannerFile("01_scars\\0x0A246759.wav", "Light upper-body scarring.", "scars"); } }
+    //    public static ScannerFile Asmallscarorscarsontheface { get { return new ScannerFile("01_scars\\0x0A5CCC7D.wav", "A small scar or scars on the face.", "scars"); } }
+    //    public static ScannerFile Heavyfacialscarring { get { return new ScannerFile("01_scars\\0x0B7E0ED1.wav", "Heavy facial scarring.", "scars"); } }
+    //    public static ScannerFile Alargescarontheirface { get { return new ScannerFile("01_scars\\0x11B7C116.wav", "A large scar on their face.", "scars"); } }
+    //    public static ScannerFile Lightfacialscarring { get { return new ScannerFile("01_scars\\0x136455B7.wav", "Light facial scarring.", "scars"); } }
+    //    public static ScannerFile Smallscarsontheirfaceandbody { get { return new ScannerFile("01_scars\\0x13D6CBC0.wav", "Small scars on their face and body.", "scars"); } }
+    //    public static ScannerFile Largeupperbodyscarorscars { get { return new ScannerFile("01_scars\\0x141F92E9.wav", "Large upper-body scar or scars.", "scars"); } }
+    //    public static ScannerFile Lifescarringtofaceandbody { get { return new ScannerFile("01_scars\\0x14A8577D.wav", "Life scarring to face and body.", "scars"); } }
+    //    public static ScannerFile Heavyupperbodyscarring { get { return new ScannerFile("01_scars\\0x17E59DFE.wav", "Heavy upper-body scarring.", "scars"); } }
+    //    public static ScannerFile Alargescarontheirupperbody { get { return new ScannerFile("01_scars\\0x188CDBC2.wav", "A large scar on their upper-body.", "scars"); } }
+    //    public static ScannerFile Asmallfacialscar { get { return new ScannerFile("01_scars\\0x1910A9E3.wav", "A small facial scar.", "scars"); } }
+    //    public static ScannerFile Largescarsontheirfaceandbody { get { return new ScannerFile("01_scars\\0x19604F3C.wav", "Large scars on their face and body.", "scars"); } }
+    //    public static ScannerFile Smallupperbodyscarorscars { get { return new ScannerFile("01_scars\\0x19E7E6BA.wav", "Small upper-body scar or scars.", "scars"); } }
+    //    public static ScannerFile Heavyscarringtofaceandbody { get { return new ScannerFile("01_scars\\0x1FD6FB59.wav", "Heavy scarring to face and body.", "scars"); } }
+    //}
+    //public class scripted_lines
+    //{
+    //    public static ScannerFile Attentionallunits { get { return new ScannerFile("01_scripted_lines\\0x00075F1C.wav", "Attention all units.", "scripted_lines"); } }
+    //    public static ScannerFile TheLSRiver { get { return new ScannerFile("01_scripted_lines\\0x002DE1C8.wav", "The LS River.", "scripted_lines"); } }
+    //    public static ScannerFile Wehavea211silentonanarmoredtruck { get { return new ScannerFile("01_scripted_lines\\0x0046621B.wav", "We have a 2-11 silent on an armored truck.", "scripted_lines"); } }
+    //    public static ScannerFile Wehavea211attheUnionDepository { get { return new ScannerFile("01_scripted_lines\\0x005F5082.wav", "We have a 2-11 at the Union Depository.", "scripted_lines"); } }
+    //    public static ScannerFile Whitemaleadultseenfleeingthearea { get { return new ScannerFile("01_scripted_lines\\0x01034057.wav", "White male, adult, seen fleeing the area.", "scripted_lines"); } }
+    //    public static ScannerFile Useofdeadlyforceisauthorized { get { return new ScannerFile("01_scripted_lines\\0x010F1FF6.wav", "Use of deadly force is authorized.", "scripted_lines"); } }
+    //    public static ScannerFile Possiblesuspectseenheadingwestinabulldozer { get { return new ScannerFile("01_scripted_lines\\0x0116D5B7.wav", "Possible suspect seen heading west in a bulldozer.", "scripted_lines"); } }
+    //    public static ScannerFile TheparkinggarageattheArcadiusBusinessCenter { get { return new ScannerFile("01_scripted_lines\\0x015CB5CE.wav", "The parking garage at the Arcadius Business Center.", "scripted_lines"); } }
+    //    public static ScannerFile AttentionLaPuertaunits { get { return new ScannerFile("01_scripted_lines\\0x016048EA.wav", "Attention La Puerta units.", "scripted_lines"); } }
+    //    public static ScannerFile Code4allunitsreturntopatrol { get { return new ScannerFile("01_scripted_lines\\0x0193CCC9.wav", "Code 4; all units return to patrol.", "scripted_lines"); } }
+    //    public static ScannerFile RespondCode3 { get { return new ScannerFile("01_scripted_lines\\0x01F3ACCB.wav", "Respond; Code 3.", "scripted_lines"); } }
+    //    public static ScannerFile Piggybankisbrokenrepeatbroken { get { return new ScannerFile("01_scripted_lines\\0x02001264.wav", "Piggy bank is broken; repeat, broken.", "scripted_lines"); } }
+    //    public static ScannerFile Attentionallunits1 { get { return new ScannerFile("01_scripted_lines\\0x023C372E.wav", "Attention all units.", "scripted_lines"); } }
+    //    public static ScannerFile Vehiclesarereportedstolen { get { return new ScannerFile("01_scripted_lines\\0x027592ED.wav", "Vehicles are reported stolen.", "scripted_lines"); } }
+    //    public static ScannerFile Wevegotareportofanarmedcarhijacked { get { return new ScannerFile("01_scripted_lines\\0x02B6EF7F.wav", "We've got a report of an armed car hijacked.", "scripted_lines"); } }
+    //    public static ScannerFile AttentionGruppe6securityalarmtriggeredon { get { return new ScannerFile("01_scripted_lines\\0x02E399B8.wav", "Attention, Gruppe 6 security alarm triggered on...", "scripted_lines"); } }
+    //    public static ScannerFile Wehaveareported187 { get { return new ScannerFile("01_scripted_lines\\0x02EDC597.wav", "We have a reported 1-87.", "scripted_lines"); } }
+    //    public static ScannerFile Beadvisedsuspectisarmed { get { return new ScannerFile("01_scripted_lines\\0x033A2DB4.wav", "Be advised, suspect is armed.", "scripted_lines"); } }
+    //    public static ScannerFile HASH040A5429 { get { return new ScannerFile("01_scripted_lines\\0x040A5429.wav", "0x040A5429", "scripted_lines"); } }
+    //    public static ScannerFile HASH04152C67 { get { return new ScannerFile("01_scripted_lines\\0x04152C67.wav", "0x04152C67", "scripted_lines"); } }
+    //    public static ScannerFile HASH04907C35 { get { return new ScannerFile("01_scripted_lines\\0x04907C35.wav", "0x04907C35", "scripted_lines"); } }
+    //    public static ScannerFile HASH04977E6C { get { return new ScannerFile("01_scripted_lines\\0x04977E6C.wav", "0x04977E6C", "scripted_lines"); } }
+    //    public static ScannerFile HASH04A776F2 { get { return new ScannerFile("01_scripted_lines\\0x04A776F2.wav", "0x04A776F2", "scripted_lines"); } }
+    //    public static ScannerFile HASH04C12DC7 { get { return new ScannerFile("01_scripted_lines\\0x04C12DC7.wav", "0x04C12DC7", "scripted_lines"); } }
+    //    public static ScannerFile HASH04C47163 { get { return new ScannerFile("01_scripted_lines\\0x04C47163.wav", "0x04C47163", "scripted_lines"); } }
+    //    public static ScannerFile HASH04D1464C { get { return new ScannerFile("01_scripted_lines\\0x04D1464C.wav", "0x04D1464C", "scripted_lines"); } }
+    //    public static ScannerFile HASH04F54D95 { get { return new ScannerFile("01_scripted_lines\\0x04F54D95.wav", "0x04F54D95", "scripted_lines"); } }
+    //    public static ScannerFile HASH0524C7F7 { get { return new ScannerFile("01_scripted_lines\\0x0524C7F7.wav", "0x0524C7F7", "scripted_lines"); } }
+    //    public static ScannerFile HASH0550EC10 { get { return new ScannerFile("01_scripted_lines\\0x0550EC10.wav", "0x0550EC10", "scripted_lines"); } }
+    //    public static ScannerFile HASH056D892C { get { return new ScannerFile("01_scripted_lines\\0x056D892C.wav", "0x056D892C", "scripted_lines"); } }
+    //    public static ScannerFile HASH05D97E65 { get { return new ScannerFile("01_scripted_lines\\0x05D97E65.wav", "0x05D97E65", "scripted_lines"); } }
+    //    public static ScannerFile HASH065281C6 { get { return new ScannerFile("01_scripted_lines\\0x065281C6.wav", "0x065281C6", "scripted_lines"); } }
+    //    public static ScannerFile HASH067F9B20 { get { return new ScannerFile("01_scripted_lines\\0x067F9B20.wav", "0x067F9B20", "scripted_lines"); } }
+    //    public static ScannerFile HASH06FEFB5C { get { return new ScannerFile("01_scripted_lines\\0x06FEFB5C.wav", "0x06FEFB5C", "scripted_lines"); } }
+    //    public static ScannerFile HASH07337749 { get { return new ScannerFile("01_scripted_lines\\0x07337749.wav", "0x07337749", "scripted_lines"); } }
+    //    public static ScannerFile HASH07D987FF { get { return new ScannerFile("01_scripted_lines\\0x07D987FF.wav", "0x07D987FF", "scripted_lines"); } }
+    //    public static ScannerFile HASH07DCD88F { get { return new ScannerFile("01_scripted_lines\\0x07DCD88F.wav", "0x07DCD88F", "scripted_lines"); } }
+    //    public static ScannerFile HASH08137472 { get { return new ScannerFile("01_scripted_lines\\0x08137472.wav", "0x08137472", "scripted_lines"); } }
+    //    public static ScannerFile HASH08138AE8 { get { return new ScannerFile("01_scripted_lines\\0x08138AE8.wav", "0x08138AE8", "scripted_lines"); } }
+    //    public static ScannerFile HASH083EB2E3 { get { return new ScannerFile("01_scripted_lines\\0x083EB2E3.wav", "0x083EB2E3", "scripted_lines"); } }
+    //    public static ScannerFile HASH084969C1 { get { return new ScannerFile("01_scripted_lines\\0x084969C1.wav", "0x084969C1", "scripted_lines"); } }
+    //    public static ScannerFile HASH08B98F20 { get { return new ScannerFile("01_scripted_lines\\0x08B98F20.wav", "0x08B98F20", "scripted_lines"); } }
+    //    public static ScannerFile HASH08D6E5A5 { get { return new ScannerFile("01_scripted_lines\\0x08D6E5A5.wav", "0x08D6E5A5", "scripted_lines"); } }
+    //    public static ScannerFile HASH08E29570 { get { return new ScannerFile("01_scripted_lines\\0x08E29570.wav", "0x08E29570", "scripted_lines"); } }
+    //    public static ScannerFile HASH091C12E0 { get { return new ScannerFile("01_scripted_lines\\0x091C12E0.wav", "0x091C12E0", "scripted_lines"); } }
+    //    public static ScannerFile HASH0927CCA7 { get { return new ScannerFile("01_scripted_lines\\0x0927CCA7.wav", "0x0927CCA7", "scripted_lines"); } }
+    //    public static ScannerFile HASH093D0F23 { get { return new ScannerFile("01_scripted_lines\\0x093D0F23.wav", "0x093D0F23", "scripted_lines"); } }
+    //    public static ScannerFile HASH097B0A47 { get { return new ScannerFile("01_scripted_lines\\0x097B0A47.wav", "0x097B0A47", "scripted_lines"); } }
+    //    public static ScannerFile HASH09814DE2 { get { return new ScannerFile("01_scripted_lines\\0x09814DE2.wav", "0x09814DE2", "scripted_lines"); } }
+    //    public static ScannerFile HASH09ADEC88 { get { return new ScannerFile("01_scripted_lines\\0x09ADEC88.wav", "0x09ADEC88", "scripted_lines"); } }
+    //    public static ScannerFile HASH0A053B49 { get { return new ScannerFile("01_scripted_lines\\0x0A053B49.wav", "0x0A053B49", "scripted_lines"); } }
+    //    public static ScannerFile HASH0A1B3E4C { get { return new ScannerFile("01_scripted_lines\\0x0A1B3E4C.wav", "0x0A1B3E4C", "scripted_lines"); } }
+    //    public static ScannerFile HASH0A29EB23 { get { return new ScannerFile("01_scripted_lines\\0x0A29EB23.wav", "0x0A29EB23", "scripted_lines"); } }
+    //    public static ScannerFile HASH0AA97460 { get { return new ScannerFile("01_scripted_lines\\0x0AA97460.wav", "0x0AA97460", "scripted_lines"); } }
+    //    public static ScannerFile HASH0AD51F6A { get { return new ScannerFile("01_scripted_lines\\0x0AD51F6A.wav", "0x0AD51F6A", "scripted_lines"); } }
+    //    public static ScannerFile HASH0AF13A84 { get { return new ScannerFile("01_scripted_lines\\0x0AF13A84.wav", "0x0AF13A84", "scripted_lines"); } }
+    //    public static ScannerFile HASH0AFD1BC2 { get { return new ScannerFile("01_scripted_lines\\0x0AFD1BC2.wav", "0x0AFD1BC2", "scripted_lines"); } }
+    //    public static ScannerFile HASH0B01A425 { get { return new ScannerFile("01_scripted_lines\\0x0B01A425.wav", "0x0B01A425", "scripted_lines"); } }
+    //    public static ScannerFile HASH0B09BEF6 { get { return new ScannerFile("01_scripted_lines\\0x0B09BEF6.wav", "0x0B09BEF6", "scripted_lines"); } }
+    //    public static ScannerFile HASH0B7DC711 { get { return new ScannerFile("01_scripted_lines\\0x0B7DC711.wav", "0x0B7DC711", "scripted_lines"); } }
+    //    public static ScannerFile HASH0B885CD8 { get { return new ScannerFile("01_scripted_lines\\0x0B885CD8.wav", "0x0B885CD8", "scripted_lines"); } }
+    //    public static ScannerFile HASH0B902335 { get { return new ScannerFile("01_scripted_lines\\0x0B902335.wav", "0x0B902335", "scripted_lines"); } }
+    //    public static ScannerFile HASH0B9C2AC1 { get { return new ScannerFile("01_scripted_lines\\0x0B9C2AC1.wav", "0x0B9C2AC1", "scripted_lines"); } }
+    //    public static ScannerFile HASH0BDD30E8 { get { return new ScannerFile("01_scripted_lines\\0x0BDD30E8.wav", "0x0BDD30E8", "scripted_lines"); } }
+    //    public static ScannerFile HASH0BF0ABD5 { get { return new ScannerFile("01_scripted_lines\\0x0BF0ABD5.wav", "0x0BF0ABD5", "scripted_lines"); } }
+    //    public static ScannerFile HASH0C1B7C74 { get { return new ScannerFile("01_scripted_lines\\0x0C1B7C74.wav", "0x0C1B7C74", "scripted_lines"); } }
+    //    public static ScannerFile HASH0C3C8054 { get { return new ScannerFile("01_scripted_lines\\0x0C3C8054.wav", "0x0C3C8054", "scripted_lines"); } }
+    //    public static ScannerFile HASH0C5713E5 { get { return new ScannerFile("01_scripted_lines\\0x0C5713E5.wav", "0x0C5713E5", "scripted_lines"); } }
+    //    public static ScannerFile HASH0C5BC7B0 { get { return new ScannerFile("01_scripted_lines\\0x0C5BC7B0.wav", "0x0C5BC7B0", "scripted_lines"); } }
+    //    public static ScannerFile HASH0C5F7B24 { get { return new ScannerFile("01_scripted_lines\\0x0C5F7B24.wav", "0x0C5F7B24", "scripted_lines"); } }
+    //    public static ScannerFile HASH0CB286C4 { get { return new ScannerFile("01_scripted_lines\\0x0CB286C4.wav", "0x0CB286C4", "scripted_lines"); } }
+    //    public static ScannerFile HASH0D321A78 { get { return new ScannerFile("01_scripted_lines\\0x0D321A78.wav", "0x0D321A78", "scripted_lines"); } }
+    //    public static ScannerFile HASH0D7F5BA7 { get { return new ScannerFile("01_scripted_lines\\0x0D7F5BA7.wav", "0x0D7F5BA7", "scripted_lines"); } }
+    //    public static ScannerFile HASH0DC66418 { get { return new ScannerFile("01_scripted_lines\\0x0DC66418.wav", "0x0DC66418", "scripted_lines"); } }
+    //    public static ScannerFile HASH0DDE56F3 { get { return new ScannerFile("01_scripted_lines\\0x0DDE56F3.wav", "0x0DDE56F3", "scripted_lines"); } }
+    //    public static ScannerFile HASH0DEBA202 { get { return new ScannerFile("01_scripted_lines\\0x0DEBA202.wav", "0x0DEBA202", "scripted_lines"); } }
+    //    public static ScannerFile HASH0DFFE738 { get { return new ScannerFile("01_scripted_lines\\0x0DFFE738.wav", "0x0DFFE738", "scripted_lines"); } }
+    //    public static ScannerFile HASH0E2B252B { get { return new ScannerFile("01_scripted_lines\\0x0E2B252B.wav", "0x0E2B252B", "scripted_lines"); } }
+    //    public static ScannerFile HASH0E5DDB1B { get { return new ScannerFile("01_scripted_lines\\0x0E5DDB1B.wav", "0x0E5DDB1B", "scripted_lines"); } }
+    //    public static ScannerFile HASH0E8C2586 { get { return new ScannerFile("01_scripted_lines\\0x0E8C2586.wav", "0x0E8C2586", "scripted_lines"); } }
+    //    public static ScannerFile HASH0ED3BB7F { get { return new ScannerFile("01_scripted_lines\\0x0ED3BB7F.wav", "0x0ED3BB7F", "scripted_lines"); } }
+    //    public static ScannerFile HASH0EF44F2C { get { return new ScannerFile("01_scripted_lines\\0x0EF44F2C.wav", "0x0EF44F2C", "scripted_lines"); } }
+    //    public static ScannerFile HASH0F1D6717 { get { return new ScannerFile("01_scripted_lines\\0x0F1D6717.wav", "0x0F1D6717", "scripted_lines"); } }
+    //    public static ScannerFile HASH0F2A4E66 { get { return new ScannerFile("01_scripted_lines\\0x0F2A4E66.wav", "0x0F2A4E66", "scripted_lines"); } }
+    //    public static ScannerFile HASH0F57ACB1 { get { return new ScannerFile("01_scripted_lines\\0x0F57ACB1.wav", "0x0F57ACB1", "scripted_lines"); } }
+    //    public static ScannerFile HASH0F704604 { get { return new ScannerFile("01_scripted_lines\\0x0F704604.wav", "0x0F704604", "scripted_lines"); } }
+    //    public static ScannerFile HASH0F8255E1 { get { return new ScannerFile("01_scripted_lines\\0x0F8255E1.wav", "0x0F8255E1", "scripted_lines"); } }
+    //    public static ScannerFile HASH0FD0D6F5 { get { return new ScannerFile("01_scripted_lines\\0x0FD0D6F5.wav", "0x0FD0D6F5", "scripted_lines"); } }
+    //    public static ScannerFile HASH10458A9D { get { return new ScannerFile("01_scripted_lines\\0x10458A9D.wav", "0x10458A9D", "scripted_lines"); } }
+    //    public static ScannerFile HASH1075F4DC { get { return new ScannerFile("01_scripted_lines\\0x1075F4DC.wav", "0x1075F4DC", "scripted_lines"); } }
+    //    public static ScannerFile HASH1078E105 { get { return new ScannerFile("01_scripted_lines\\0x1078E105.wav", "0x1078E105", "scripted_lines"); } }
+    //    public static ScannerFile HASH108405AA { get { return new ScannerFile("01_scripted_lines\\0x108405AA.wav", "0x108405AA", "scripted_lines"); } }
+    //    public static ScannerFile HASH10B7612A { get { return new ScannerFile("01_scripted_lines\\0x10B7612A.wav", "0x10B7612A", "scripted_lines"); } }
+    //    public static ScannerFile HASH10E29C6E { get { return new ScannerFile("01_scripted_lines\\0x10E29C6E.wav", "0x10E29C6E", "scripted_lines"); } }
+    //    public static ScannerFile HASH10EB80E5 { get { return new ScannerFile("01_scripted_lines\\0x10EB80E5.wav", "0x10EB80E5", "scripted_lines"); } }
+    //    public static ScannerFile HASH10EDE805 { get { return new ScannerFile("01_scripted_lines\\0x10EDE805.wav", "0x10EDE805", "scripted_lines"); } }
+    //    public static ScannerFile HASH11174006 { get { return new ScannerFile("01_scripted_lines\\0x11174006.wav", "0x11174006", "scripted_lines"); } }
+    //    public static ScannerFile HASH117239AB { get { return new ScannerFile("01_scripted_lines\\0x117239AB.wav", "0x117239AB", "scripted_lines"); } }
+    //    public static ScannerFile HASH11946C00 { get { return new ScannerFile("01_scripted_lines\\0x11946C00.wav", "0x11946C00", "scripted_lines"); } }
+    //    public static ScannerFile HASH119C4775 { get { return new ScannerFile("01_scripted_lines\\0x119C4775.wav", "0x119C4775", "scripted_lines"); } }
+    //    public static ScannerFile HASH11A9D669 { get { return new ScannerFile("01_scripted_lines\\0x11A9D669.wav", "0x11A9D669", "scripted_lines"); } }
+    //    public static ScannerFile HASH11CEB3EC { get { return new ScannerFile("01_scripted_lines\\0x11CEB3EC.wav", "0x11CEB3EC", "scripted_lines"); } }
+    //    public static ScannerFile HASH11F7DC3A { get { return new ScannerFile("01_scripted_lines\\0x11F7DC3A.wav", "0x11F7DC3A", "scripted_lines"); } }
+    //    public static ScannerFile HASH1259A260 { get { return new ScannerFile("01_scripted_lines\\0x1259A260.wav", "0x1259A260", "scripted_lines"); } }
+    //    public static ScannerFile HASH125DAD47 { get { return new ScannerFile("01_scripted_lines\\0x125DAD47.wav", "0x125DAD47", "scripted_lines"); } }
+    //    public static ScannerFile HASH1276F4B1 { get { return new ScannerFile("01_scripted_lines\\0x1276F4B1.wav", "0x1276F4B1", "scripted_lines"); } }
+    //    public static ScannerFile HASH12884CEB { get { return new ScannerFile("01_scripted_lines\\0x12884CEB.wav", "0x12884CEB", "scripted_lines"); } }
+    //    public static ScannerFile HASH1288DA4F { get { return new ScannerFile("01_scripted_lines\\0x1288DA4F.wav", "0x1288DA4F", "scripted_lines"); } }
+    //    public static ScannerFile HASH12AEE908 { get { return new ScannerFile("01_scripted_lines\\0x12AEE908.wav", "0x12AEE908", "scripted_lines"); } }
+    //    public static ScannerFile HASH12B349B2 { get { return new ScannerFile("01_scripted_lines\\0x12B349B2.wav", "0x12B349B2", "scripted_lines"); } }
+    //    public static ScannerFile HASH130F07AC { get { return new ScannerFile("01_scripted_lines\\0x130F07AC.wav", "0x130F07AC", "scripted_lines"); } }
+    //    public static ScannerFile HASH1334E4BA { get { return new ScannerFile("01_scripted_lines\\0x1334E4BA.wav", "0x1334E4BA", "scripted_lines"); } }
+    //    public static ScannerFile HASH141E9AF0 { get { return new ScannerFile("01_scripted_lines\\0x141E9AF0.wav", "0x141E9AF0", "scripted_lines"); } }
+    //    public static ScannerFile HASH14532861 { get { return new ScannerFile("01_scripted_lines\\0x14532861.wav", "0x14532861", "scripted_lines"); } }
+    //    public static ScannerFile HASH14F98E38 { get { return new ScannerFile("01_scripted_lines\\0x14F98E38.wav", "0x14F98E38", "scripted_lines"); } }
+    //    public static ScannerFile HASH152C3020 { get { return new ScannerFile("01_scripted_lines\\0x152C3020.wav", "0x152C3020", "scripted_lines"); } }
+    //    public static ScannerFile HASH158B2362 { get { return new ScannerFile("01_scripted_lines\\0x158B2362.wav", "0x158B2362", "scripted_lines"); } }
+    //    public static ScannerFile HASH15F6451B { get { return new ScannerFile("01_scripted_lines\\0x15F6451B.wav", "0x15F6451B", "scripted_lines"); } }
+    //    public static ScannerFile HASH165078B5 { get { return new ScannerFile("01_scripted_lines\\0x165078B5.wav", "0x165078B5", "scripted_lines"); } }
+    //    public static ScannerFile HASH167E6DA6 { get { return new ScannerFile("01_scripted_lines\\0x167E6DA6.wav", "0x167E6DA6", "scripted_lines"); } }
+    //    public static ScannerFile HASH169BA7E0 { get { return new ScannerFile("01_scripted_lines\\0x169BA7E0.wav", "0x169BA7E0", "scripted_lines"); } }
+    //    public static ScannerFile HASH16B27BD2 { get { return new ScannerFile("01_scripted_lines\\0x16B27BD2.wav", "0x16B27BD2", "scripted_lines"); } }
+    //    public static ScannerFile HASH16D57635 { get { return new ScannerFile("01_scripted_lines\\0x16D57635.wav", "0x16D57635", "scripted_lines"); } }
+    //    public static ScannerFile HASH16DF54FD { get { return new ScannerFile("01_scripted_lines\\0x16DF54FD.wav", "0x16DF54FD", "scripted_lines"); } }
+    //    public static ScannerFile HASH16E76B7B { get { return new ScannerFile("01_scripted_lines\\0x16E76B7B.wav", "0x16E76B7B", "scripted_lines"); } }
+    //    public static ScannerFile HASH16F228A5 { get { return new ScannerFile("01_scripted_lines\\0x16F228A5.wav", "0x16F228A5", "scripted_lines"); } }
+    //    public static ScannerFile HASH16FD3DC6 { get { return new ScannerFile("01_scripted_lines\\0x16FD3DC6.wav", "0x16FD3DC6", "scripted_lines"); } }
+    //    public static ScannerFile HASH171931DD { get { return new ScannerFile("01_scripted_lines\\0x171931DD.wav", "0x171931DD", "scripted_lines"); } }
+    //    public static ScannerFile HASH178BEBC0 { get { return new ScannerFile("01_scripted_lines\\0x178BEBC0.wav", "0x178BEBC0", "scripted_lines"); } }
+    //    public static ScannerFile HASH17AC2479 { get { return new ScannerFile("01_scripted_lines\\0x17AC2479.wav", "0x17AC2479", "scripted_lines"); } }
+    //    public static ScannerFile HASH18115D81 { get { return new ScannerFile("01_scripted_lines\\0x18115D81.wav", "0x18115D81", "scripted_lines"); } }
+    //    public static ScannerFile HASH1827FEB0 { get { return new ScannerFile("01_scripted_lines\\0x1827FEB0.wav", "0x1827FEB0", "scripted_lines"); } }
+    //    public static ScannerFile HASH183E1F75 { get { return new ScannerFile("01_scripted_lines\\0x183E1F75.wav", "0x183E1F75", "scripted_lines"); } }
+    //    public static ScannerFile HASH1846C75D { get { return new ScannerFile("01_scripted_lines\\0x1846C75D.wav", "0x1846C75D", "scripted_lines"); } }
+    //    public static ScannerFile HASH18843C41 { get { return new ScannerFile("01_scripted_lines\\0x18843C41.wav", "0x18843C41", "scripted_lines"); } }
+    //    public static ScannerFile HASH18A02156 { get { return new ScannerFile("01_scripted_lines\\0x18A02156.wav", "0x18A02156", "scripted_lines"); } }
+    //    public static ScannerFile HASH18DEFFCD { get { return new ScannerFile("01_scripted_lines\\0x18DEFFCD.wav", "0x18DEFFCD", "scripted_lines"); } }
+    //    public static ScannerFile HASH19296CAA { get { return new ScannerFile("01_scripted_lines\\0x19296CAA.wav", "0x19296CAA", "scripted_lines"); } }
+    //    public static ScannerFile HASH194740B0 { get { return new ScannerFile("01_scripted_lines\\0x194740B0.wav", "0x194740B0", "scripted_lines"); } }
+    //    public static ScannerFile HASH19505B83 { get { return new ScannerFile("01_scripted_lines\\0x19505B83.wav", "0x19505B83", "scripted_lines"); } }
+    //    public static ScannerFile HASH196B32E0 { get { return new ScannerFile("01_scripted_lines\\0x196B32E0.wav", "0x196B32E0", "scripted_lines"); } }
+    //    public static ScannerFile HASH19B73C44 { get { return new ScannerFile("01_scripted_lines\\0x19B73C44.wav", "0x19B73C44", "scripted_lines"); } }
+    //    public static ScannerFile HASH1A1E2335 { get { return new ScannerFile("01_scripted_lines\\0x1A1E2335.wav", "0x1A1E2335", "scripted_lines"); } }
+    //    public static ScannerFile HASH1A58D8EF { get { return new ScannerFile("01_scripted_lines\\0x1A58D8EF.wav", "0x1A58D8EF", "scripted_lines"); } }
+    //    public static ScannerFile HASH1A9A3E12 { get { return new ScannerFile("01_scripted_lines\\0x1A9A3E12.wav", "0x1A9A3E12", "scripted_lines"); } }
+    //    public static ScannerFile HASH1AA7D7B6 { get { return new ScannerFile("01_scripted_lines\\0x1AA7D7B6.wav", "0x1AA7D7B6", "scripted_lines"); } }
+    //    public static ScannerFile HASH1ACBFE04 { get { return new ScannerFile("01_scripted_lines\\0x1ACBFE04.wav", "0x1ACBFE04", "scripted_lines"); } }
+    //    public static ScannerFile HASH1B8DB7C3 { get { return new ScannerFile("01_scripted_lines\\0x1B8DB7C3.wav", "0x1B8DB7C3", "scripted_lines"); } }
+    //    public static ScannerFile HASH1BE3AF18 { get { return new ScannerFile("01_scripted_lines\\0x1BE3AF18.wav", "0x1BE3AF18", "scripted_lines"); } }
+    //    public static ScannerFile HASH1C34C0F5 { get { return new ScannerFile("01_scripted_lines\\0x1C34C0F5.wav", "0x1C34C0F5", "scripted_lines"); } }
+    //    public static ScannerFile HASH1C4BE8AD { get { return new ScannerFile("01_scripted_lines\\0x1C4BE8AD.wav", "0x1C4BE8AD", "scripted_lines"); } }
+    //    public static ScannerFile HASH1C5303DF { get { return new ScannerFile("01_scripted_lines\\0x1C5303DF.wav", "0x1C5303DF", "scripted_lines"); } }
+    //    public static ScannerFile HASH1C5727B4 { get { return new ScannerFile("01_scripted_lines\\0x1C5727B4.wav", "0x1C5727B4", "scripted_lines"); } }
+    //    public static ScannerFile HASH1C66569D { get { return new ScannerFile("01_scripted_lines\\0x1C66569D.wav", "0x1C66569D", "scripted_lines"); } }
+    //    public static ScannerFile HASH1C76B3B4 { get { return new ScannerFile("01_scripted_lines\\0x1C76B3B4.wav", "0x1C76B3B4", "scripted_lines"); } }
+    //    public static ScannerFile HASH1C7BC165 { get { return new ScannerFile("01_scripted_lines\\0x1C7BC165.wav", "0x1C7BC165", "scripted_lines"); } }
+    //    public static ScannerFile HASH1C89DA80 { get { return new ScannerFile("01_scripted_lines\\0x1C89DA80.wav", "0x1C89DA80", "scripted_lines"); } }
+    //    public static ScannerFile HASH1CA4F480 { get { return new ScannerFile("01_scripted_lines\\0x1CA4F480.wav", "0x1CA4F480", "scripted_lines"); } }
+    //    public static ScannerFile HASH1CB9B1BE { get { return new ScannerFile("01_scripted_lines\\0x1CB9B1BE.wav", "0x1CB9B1BE", "scripted_lines"); } }
+    //    public static ScannerFile HASH1CBFFF47 { get { return new ScannerFile("01_scripted_lines\\0x1CBFFF47.wav", "0x1CBFFF47", "scripted_lines"); } }
+    //    public static ScannerFile HASH1D148E21 { get { return new ScannerFile("01_scripted_lines\\0x1D148E21.wav", "0x1D148E21", "scripted_lines"); } }
+    //    public static ScannerFile HASH1D19EB77 { get { return new ScannerFile("01_scripted_lines\\0x1D19EB77.wav", "0x1D19EB77", "scripted_lines"); } }
+    //    public static ScannerFile HASH1D4C8E22 { get { return new ScannerFile("01_scripted_lines\\0x1D4C8E22.wav", "0x1D4C8E22", "scripted_lines"); } }
+    //    public static ScannerFile HASH1D4F5F3F { get { return new ScannerFile("01_scripted_lines\\0x1D4F5F3F.wav", "0x1D4F5F3F", "scripted_lines"); } }
+    //    public static ScannerFile HASH1D8203E2 { get { return new ScannerFile("01_scripted_lines\\0x1D8203E2.wav", "0x1D8203E2", "scripted_lines"); } }
+    //    public static ScannerFile HASH1D894914 { get { return new ScannerFile("01_scripted_lines\\0x1D894914.wav", "0x1D894914", "scripted_lines"); } }
+    //    public static ScannerFile HASH1DA7CF40 { get { return new ScannerFile("01_scripted_lines\\0x1DA7CF40.wav", "0x1DA7CF40", "scripted_lines"); } }
+    //    public static ScannerFile HASH1DB18B27 { get { return new ScannerFile("01_scripted_lines\\0x1DB18B27.wav", "0x1DB18B27", "scripted_lines"); } }
+    //    public static ScannerFile HASH1DBD4790 { get { return new ScannerFile("01_scripted_lines\\0x1DBD4790.wav", "0x1DBD4790", "scripted_lines"); } }
+    //    public static ScannerFile HASH1DC689AF { get { return new ScannerFile("01_scripted_lines\\0x1DC689AF.wav", "0x1DC689AF", "scripted_lines"); } }
+    //    public static ScannerFile HASH1DE12E58 { get { return new ScannerFile("01_scripted_lines\\0x1DE12E58.wav", "0x1DE12E58", "scripted_lines"); } }
+    //    public static ScannerFile HASH1DFF2F14 { get { return new ScannerFile("01_scripted_lines\\0x1DFF2F14.wav", "0x1DFF2F14", "scripted_lines"); } }
+    //    public static ScannerFile HASH1E133BCE { get { return new ScannerFile("01_scripted_lines\\0x1E133BCE.wav", "0x1E133BCE", "scripted_lines"); } }
+    //    public static ScannerFile HASH1E34857B { get { return new ScannerFile("01_scripted_lines\\0x1E34857B.wav", "0x1E34857B", "scripted_lines"); } }
+    //    public static ScannerFile HASH1E8024DB { get { return new ScannerFile("01_scripted_lines\\0x1E8024DB.wav", "0x1E8024DB", "scripted_lines"); } }
+    //    public static ScannerFile HASH1E89D108 { get { return new ScannerFile("01_scripted_lines\\0x1E89D108.wav", "0x1E89D108", "scripted_lines"); } }
+    //    public static ScannerFile HASH1E9DE1DD { get { return new ScannerFile("01_scripted_lines\\0x1E9DE1DD.wav", "0x1E9DE1DD", "scripted_lines"); } }
+    //    public static ScannerFile HASH1EA59FB1 { get { return new ScannerFile("01_scripted_lines\\0x1EA59FB1.wav", "0x1EA59FB1", "scripted_lines"); } }
+    //    public static ScannerFile HASH1EB09F1D { get { return new ScannerFile("01_scripted_lines\\0x1EB09F1D.wav", "0x1EB09F1D", "scripted_lines"); } }
+    //    public static ScannerFile HASH1ED51471 { get { return new ScannerFile("01_scripted_lines\\0x1ED51471.wav", "0x1ED51471", "scripted_lines"); } }
+    //    public static ScannerFile HASH1F71BEF7 { get { return new ScannerFile("01_scripted_lines\\0x1F71BEF7.wav", "0x1F71BEF7", "scripted_lines"); } }
+    //    public static ScannerFile HASH1F9FBA77 { get { return new ScannerFile("01_scripted_lines\\0x1F9FBA77.wav", "0x1F9FBA77", "scripted_lines"); } }
+    //    public static ScannerFile HASH1FAB0581 { get { return new ScannerFile("01_scripted_lines\\0x1FAB0581.wav", "0x1FAB0581", "scripted_lines"); } }
+    //    public static ScannerFile HASH1FC130C5 { get { return new ScannerFile("01_scripted_lines\\0x1FC130C5.wav", "0x1FC130C5", "scripted_lines"); } }
+    //    public static ScannerFile HASH1FD90887 { get { return new ScannerFile("01_scripted_lines\\0x1FD90887.wav", "0x1FD90887", "scripted_lines"); } }
+    //}
+    //public class special_instructions_approach
+    //{
+    //    public static ScannerFile Engagefromthe { get { return new ScannerFile("01_special_instructions_approach\\0x05B3288B.wav", "Engage from the...", "special_instructions_approach"); } }
+    //    public static ScannerFile Approachfromthe { get { return new ScannerFile("01_special_instructions_approach\\0x0E2BF983.wav", "Approach from the...", "special_instructions_approach"); } }
+    //    public static ScannerFile Engagefromthe1 { get { return new ScannerFile("01_special_instructions_approach\\0x13EF4503.wav", "Engage...from the...", "special_instructions_approach"); } }
+    //    public static ScannerFile Convenefromthe { get { return new ScannerFile("01_special_instructions_approach\\0x18644DEE.wav", "Convene from the...", "special_instructions_approach"); } }
+    //    public static ScannerFile Approachfromthe1 { get { return new ScannerFile("01_special_instructions_approach\\0x1FF51D16.wav", "Approach from the...", "special_instructions_approach"); } }
+    //}
+    //public class special_ins_app_dir
+    //{
+    //    public static ScannerFile West { get { return new ScannerFile("01_special_ins_app_dir\\0x00D13053.wav", "West.", "special_ins_app_dir"); } }
+    //    public static ScannerFile South { get { return new ScannerFile("01_special_ins_app_dir\\0x01CD1C1A.wav", "South.", "special_ins_app_dir"); } }
+    //    public static ScannerFile Rear { get { return new ScannerFile("01_special_ins_app_dir\\0x08633D59.wav", "Rear.", "special_ins_app_dir"); } }
+    //    public static ScannerFile Eastside { get { return new ScannerFile("01_special_ins_app_dir\\0x0B61A4C6.wav", "East side.", "special_ins_app_dir"); } }
+    //    public static ScannerFile Northentrance { get { return new ScannerFile("01_special_ins_app_dir\\0x0C81C88E.wav", "North entrance.", "special_ins_app_dir"); } }
+    //    public static ScannerFile Eastentrance { get { return new ScannerFile("01_special_ins_app_dir\\0x0D6B53E7.wav", "East entrance.", "special_ins_app_dir"); } }
+    //    public static ScannerFile Frontentrance { get { return new ScannerFile("01_special_ins_app_dir\\0x0DAF97CD.wav", "Front entrance.", "special_ins_app_dir"); } }
+    //    public static ScannerFile Westentrance { get { return new ScannerFile("01_special_ins_app_dir\\0x0F81625C.wav", "West entrance.", "special_ins_app_dir"); } }
+    //    public static ScannerFile Northside { get { return new ScannerFile("01_special_ins_app_dir\\0x1159147E.wav", "North side.", "special_ins_app_dir"); } }
+    //    public static ScannerFile East { get { return new ScannerFile("01_special_ins_app_dir\\0x12F149E3.wav", "East.", "special_ins_app_dir"); } }
+    //    public static ScannerFile Southside { get { return new ScannerFile("01_special_ins_app_dir\\0x14223FB2.wav", "South side.", "special_ins_app_dir"); } }
+    //    public static ScannerFile North { get { return new ScannerFile("01_special_ins_app_dir\\0x16D1886A.wav", "North.", "special_ins_app_dir"); } }
+    //    public static ScannerFile Southentrance { get { return new ScannerFile("01_special_ins_app_dir\\0x1B075B88.wav", "South entrance.", "special_ins_app_dir"); } }
+    //    public static ScannerFile Front { get { return new ScannerFile("01_special_ins_app_dir\\0x1D1883D9.wav", "Front.", "special_ins_app_dir"); } }
+    //    public static ScannerFile Rearentrance { get { return new ScannerFile("01_special_ins_app_dir\\0x1DB770EB.wav", "Rear entrance.", "special_ins_app_dir"); } }
+    //    public static ScannerFile Westside { get { return new ScannerFile("01_special_ins_app_dir\\0x1F58477F.wav", "West side.", "special_ins_app_dir"); } }
+    //}
+    //public class special_vehicle
+    //{
+    //    public static ScannerFile Drivingadigger { get { return new ScannerFile("01_special_vehicle\\0x000D2597.wav", "Driving a digger.", "special_vehicle"); } }
+    //    public static ScannerFile Flyingamilitaryaircraft { get { return new ScannerFile("01_special_vehicle\\0x00BA742F.wav", "Flying a military aircraft.", "special_vehicle"); } }
+    //    public static ScannerFile Drivingatank { get { return new ScannerFile("01_special_vehicle\\0x01684C1F.wav", "Driving a tank.", "special_vehicle"); } }
+    //    public static ScannerFile Drivingapolicecar { get { return new ScannerFile("01_special_vehicle\\0x023F3422.wav", "Driving a police car.", "special_vehicle"); } }
+    //    public static ScannerFile Onadarkcoloredhorse { get { return new ScannerFile("01_special_vehicle\\0x02C1BD67.wav", "On a dark-colored horse.", "special_vehicle"); } }
+    //    public static ScannerFile Drivingadumptruck { get { return new ScannerFile("01_special_vehicle\\0x04474592.wav", "Driving a dump truck.", "special_vehicle"); } }
+    //    public static ScannerFile Ridingacustomizedmotorcycle { get { return new ScannerFile("01_special_vehicle\\0x059DD2D4.wav", "Riding a customized motorcycle.", "special_vehicle"); } }
+    //    public static ScannerFile Ridingamountainbike { get { return new ScannerFile("01_special_vehicle\\0x05AA96B3.wav", "Riding a mountain bike.", "special_vehicle"); } }
+    //    public static ScannerFile Onayacht { get { return new ScannerFile("01_special_vehicle\\0x05DA0986.wav", "On a yacht.", "special_vehicle"); } }
+    //    public static ScannerFile OperatinganAnnihilatorhelicopter { get { return new ScannerFile("01_special_vehicle\\0x06B3CFF4.wav", "Operating an Annihilator helicopter.", "special_vehicle"); } }
+    //    public static ScannerFile Onaschooner { get { return new ScannerFile("01_special_vehicle\\0x07158FF4.wav", "On a schooner.", "special_vehicle"); } }
+    //    public static ScannerFile OperatinganAnnihilatorAttackHelicopter { get { return new ScannerFile("01_special_vehicle\\0x079051AE.wav", "Operating an Annihilator Attack Helicopter.", "special_vehicle"); } }
+    //    public static ScannerFile Flyingacivilianairplane { get { return new ScannerFile("01_special_vehicle\\0x079FB220.wav", "Flying a civilian airplane.", "special_vehicle"); } }
+    //    public static ScannerFile Operatingamilitaryhelicopter { get { return new ScannerFile("01_special_vehicle\\0x07BB9776.wav", "Operating a military helicopter.", "special_vehicle"); } }
+    //    public static ScannerFile Onalightcoloredhorse { get { return new ScannerFile("01_special_vehicle\\0x0840074D.wav", "On a light-colored horse.", "special_vehicle"); } }
+    //    public static ScannerFile Drivinganambulance { get { return new ScannerFile("01_special_vehicle\\0x0A95F1BD.wav", "Driving an ambulance.", "special_vehicle"); } }
+    //    public static ScannerFile Ridingablackhorse { get { return new ScannerFile("01_special_vehicle\\0x0ACBBD8F.wav", "Riding a black horse.", "special_vehicle"); } }
+    //    public static ScannerFile Drivingagarbagetruck { get { return new ScannerFile("01_special_vehicle\\0x0B1FA404.wav", "Driving a garbage truck.", "special_vehicle"); } }
+    //    public static ScannerFile OperatingaMaverickhelicopter { get { return new ScannerFile("01_special_vehicle\\0x0B9D5088.wav", "Operating a Maverick helicopter.", "special_vehicle"); } }
+    //    public static ScannerFile Drivingabulldozer { get { return new ScannerFile("01_special_vehicle\\0x0C505B49.wav", "Driving a bulldozer.", "special_vehicle"); } }
+    //    public static ScannerFile Ridingawhitehorse { get { return new ScannerFile("01_special_vehicle\\0x0D808D20.wav", "Riding a white horse.", "special_vehicle"); } }
+    //    public static ScannerFile Drivingapolicesedan { get { return new ScannerFile("01_special_vehicle\\0x0E0C0BBC.wav", "Driving a police sedan.", "special_vehicle"); } }
+    //    public static ScannerFile Onabrownhorse { get { return new ScannerFile("01_special_vehicle\\0x0E38C84F.wav", "On a brown horse.", "special_vehicle"); } }
+    //    public static ScannerFile Flyingamilitaryairplane { get { return new ScannerFile("01_special_vehicle\\0x0FEC9294.wav", "Flying a military airplane.", "special_vehicle"); } }
+    //    public static ScannerFile Ridingaracingbike { get { return new ScannerFile("01_special_vehicle\\0x10F1559B.wav", "Riding a racing bike.", "special_vehicle"); } }
+    //    public static ScannerFile Ridingadarkcoloredhorse { get { return new ScannerFile("01_special_vehicle\\0x110B19FA.wav", "Riding a dark-colored horse.", "special_vehicle"); } }
+    //    public static ScannerFile Flyinganairplane { get { return new ScannerFile("01_special_vehicle\\0x11E586AD.wav", "Flying an airplane.", "special_vehicle"); } }
+    //    public static ScannerFile RidingaBMXbike { get { return new ScannerFile("01_special_vehicle\\0x12C22CBB.wav", "Riding a BMX bike.", "special_vehicle"); } }
+    //    public static ScannerFile Drivingatippertruck { get { return new ScannerFile("01_special_vehicle\\0x1330A850.wav", "Driving a tipper truck.", "special_vehicle"); } }
+    //    public static ScannerFile Ridingamotorcycle { get { return new ScannerFile("01_special_vehicle\\0x13A1BDA3.wav", "Riding a motorcycle.", "special_vehicle"); } }
+    //    public static ScannerFile PilotinganAnnihilatorhelicopter { get { return new ScannerFile("01_special_vehicle\\0x142D6AE7.wav", "Piloting an Annihilator helicopter.", "special_vehicle"); } }
+    //    public static ScannerFile Onaboat { get { return new ScannerFile("01_special_vehicle\\0x144919B6.wav", "On a boat.", "special_vehicle"); } }
+    //    public static ScannerFile Flyingamilitaryhelicopter { get { return new ScannerFile("01_special_vehicle\\0x15EAF3D3.wav", "Flying a military helicopter.", "special_vehicle"); } }
+    //    public static ScannerFile FlyingaVTOLaircraft { get { return new ScannerFile("01_special_vehicle\\0x186F5839.wav", "Flying a VTOL aircraft.", "special_vehicle"); } }
+    //    public static ScannerFile Ridingalightcoloredhorse { get { return new ScannerFile("01_special_vehicle\\0x191228F1.wav", "Riding a light-colored horse.", "special_vehicle"); } }
+    //    public static ScannerFile Onawhitehorse { get { return new ScannerFile("01_special_vehicle\\0x1B3E289B.wav", "On a white horse.", "special_vehicle"); } }
+    //    public static ScannerFile Onablackhorse { get { return new ScannerFile("01_special_vehicle\\0x1C5DE0B3.wav", "On a black horse.", "special_vehicle"); } }
+    //    public static ScannerFile Ridingabrownhorse { get { return new ScannerFile("01_special_vehicle\\0x1CCB2569.wav", "Riding a brown horse.", "special_vehicle"); } }
+    //    public static ScannerFile PilotingaMaverickhelicopter { get { return new ScannerFile("01_special_vehicle\\0x1D77B43D.wav", "Piloting a Maverick helicopter.", "special_vehicle"); } }
+    //}
+    public class specific_location//IS USED JUST NOT REF!
     {
         public static ScannerFile Vinewood247Market { get { return new ScannerFile("01_specific_location\\0x000E7300.wav", "Vinewood 24/7 Market", "specific_location"); } }
         public static ScannerFile CentralLaMesaRonStation { get { return new ScannerFile("01_specific_location\\0x0011827A.wav", "Central La Mesa Ron Station", "specific_location"); } }
@@ -2990,16 +2990,16 @@
         public static ScannerFile MirrorParkPoliceStation { get { return new ScannerFile("01_specific_location\\0x1F0E27B7.wav", "Mirror Park Police Station", "specific_location"); } }
         public static ScannerFile HumaneLabsFacility { get { return new ScannerFile("01_specific_location\\0x1FB449F8.wav", "The Humane Labs Facility", "specific_location"); } }
     }
-    public class stand_down
-    {
-        public static ScannerFile Code4 { get { return new ScannerFile("01_stand_down\\0x05C0A263.wav", "0x05C0A263", "stand_down"); } }
-        public static ScannerFile StandDownReturnToPatrol { get { return new ScannerFile("01_stand_down\\0x0A396B54.wav", "0x0A396B54", "stand_down"); } }
-        public static ScannerFile AllUnitsCode4 { get { return new ScannerFile("01_stand_down\\0x1120B929.wav", "0x1120B929", "stand_down"); } }
-        public static ScannerFile AllUnitsStandDown { get { return new ScannerFile("01_stand_down\\0x187347C8.wav", "0x187347C8", "stand_down"); } }
-        public static ScannerFile ReturnToPatrol { get { return new ScannerFile("01_stand_down\\0x18CE0883.wav", "0x18CE0883", "stand_down"); } }
-        public static ScannerFile ReturnToPatrol1 { get { return new ScannerFile("01_stand_down\\0x195C899A.wav", "0x195C899A", "stand_down"); } }
-        public static ScannerFile ReturnToPatrol2 { get { return new ScannerFile("01_stand_down\\0x1F379557.wav", "0x1F379557", "stand_down"); } }
-    }
+    //public class stand_down
+    //{
+    //    public static ScannerFile Code4 { get { return new ScannerFile("01_stand_down\\0x05C0A263.wav", "0x05C0A263", "stand_down"); } }
+    //    public static ScannerFile StandDownReturnToPatrol { get { return new ScannerFile("01_stand_down\\0x0A396B54.wav", "0x0A396B54", "stand_down"); } }
+    //    public static ScannerFile AllUnitsCode4 { get { return new ScannerFile("01_stand_down\\0x1120B929.wav", "0x1120B929", "stand_down"); } }
+    //    public static ScannerFile AllUnitsStandDown { get { return new ScannerFile("01_stand_down\\0x187347C8.wav", "0x187347C8", "stand_down"); } }
+    //    public static ScannerFile ReturnToPatrol { get { return new ScannerFile("01_stand_down\\0x18CE0883.wav", "0x18CE0883", "stand_down"); } }
+    //    public static ScannerFile ReturnToPatrol1 { get { return new ScannerFile("01_stand_down\\0x195C899A.wav", "0x195C899A", "stand_down"); } }
+    //    public static ScannerFile ReturnToPatrol2 { get { return new ScannerFile("01_stand_down\\0x1F379557.wav", "0x1F379557", "stand_down"); } }
+    //}
     public class status_message
     {
         public static ScannerFile HASH01B72847 { get { return new ScannerFile("01_status_message\\0x01B72847.wav", "0x01B72847", "status_message"); } }
@@ -3341,41 +3341,41 @@
         public static ScannerFile Skyway { get { return new ScannerFile("01_streets\\0x1FF7BB6A.wav", "0x1FF7BB6A", "streets"); } }
         public static ScannerFile ColliseumStreet { get { return new ScannerFile("01_streets\\0x1FF7CB59.wav", "0x1FF7CB59", "streets"); } }
     }
-    public class suspects_are
-    {
-        public static ScannerFile HASH0262F796 { get { return new ScannerFile("01_suspects_are\\0x0262F796.wav", "0x0262F796", "suspects_are"); } }
-        public static ScannerFile HASH0323B926 { get { return new ScannerFile("01_suspects_are\\0x0323B926.wav", "0x0323B926", "suspects_are"); } }
-        public static ScannerFile HASH0DE38E9B { get { return new ScannerFile("01_suspects_are\\0x0DE38E9B.wav", "0x0DE38E9B", "suspects_are"); } }
-        public static ScannerFile HASH0EA45019 { get { return new ScannerFile("01_suspects_are\\0x0EA45019.wav", "0x0EA45019", "suspects_are"); } }
-    }
-    public class suspects_are_members_of
-    {
-        public static ScannerFile HASH05EBE717 { get { return new ScannerFile("01_suspects_are_members_of\\0x05EBE717.wav", "0x05EBE717", "suspects_are_members_of"); } }
-        public static ScannerFile HASH17B5CAAB { get { return new ScannerFile("01_suspects_are_members_of\\0x17B5CAAB.wav", "0x17B5CAAB", "suspects_are_members_of"); } }
-        public static ScannerFile HASH1A4BCF5F { get { return new ScannerFile("01_suspects_are_members_of\\0x1A4BCF5F.wav", "0x1A4BCF5F", "suspects_are_members_of"); } }
-    }
-    public class suspects_heading
-    {
-        public static ScannerFile HASH00F4821D { get { return new ScannerFile("01_suspects_heading\\0x00F4821D.wav", "0x00F4821D", "suspects_heading"); } }
-        public static ScannerFile HASH0389C747 { get { return new ScannerFile("01_suspects_heading\\0x0389C747.wav", "0x0389C747", "suspects_heading"); } }
-        public static ScannerFile HASH13312696 { get { return new ScannerFile("01_suspects_heading\\0x13312696.wav", "0x13312696", "suspects_heading"); } }
-        public static ScannerFile HASH15CAEBC9 { get { return new ScannerFile("01_suspects_heading\\0x15CAEBC9.wav", "0x15CAEBC9", "suspects_heading"); } }
-        public static ScannerFile HASH1A56B4E0 { get { return new ScannerFile("01_suspects_heading\\0x1A56B4E0.wav", "0x1A56B4E0", "suspects_heading"); } }
-    }
-    public class suspects_last_seen
-    {
-        public static ScannerFile SuspectLastSeen { get { return new ScannerFile("01_suspects_last_seen\\0x02637742.wav", "0x02637742", "suspects_last_seen"); } }
-        public static ScannerFile HASH04E93C4D { get { return new ScannerFile("01_suspects_last_seen\\0x04E93C4D.wav", "0x04E93C4D", "suspects_last_seen"); } }
-        public static ScannerFile HASH0BCB0A12 { get { return new ScannerFile("01_suspects_last_seen\\0x0BCB0A12.wav", "0x0BCB0A12", "suspects_last_seen"); } }
-        public static ScannerFile HASH1D712D60 { get { return new ScannerFile("01_suspects_last_seen\\0x1D712D60.wav", "0x1D712D60", "suspects_last_seen"); } }
-    }
-    public class suspect_arrested
-    {
-        public static ScannerFile SuspectIncustody { get { return new ScannerFile("01_suspect_arrested\\0x0C51EC8C.wav", "Suspect in custody", "suspect_arrested"); } }
-        public static ScannerFile SuspectApprehended { get { return new ScannerFile("01_suspect_arrested\\0x1627003A.wav", "Suspect Aprehended", "suspect_arrested"); } }
-        public static ScannerFile SuspectIsTenFifteen { get { return new ScannerFile("01_suspect_arrested\\0x1A944911.wav", "Suspect is 10-15", "suspect_arrested"); } }
-        public static ScannerFile TenFifteenSuspectInCustody { get { return new ScannerFile("01_suspect_arrested\\0x1EC51175.wav", "10-15 Suspect in Custody", "suspect_arrested"); } }
-    }
+    //public class suspects_are
+    //{
+    //    public static ScannerFile HASH0262F796 { get { return new ScannerFile("01_suspects_are\\0x0262F796.wav", "0x0262F796", "suspects_are"); } }
+    //    public static ScannerFile HASH0323B926 { get { return new ScannerFile("01_suspects_are\\0x0323B926.wav", "0x0323B926", "suspects_are"); } }
+    //    public static ScannerFile HASH0DE38E9B { get { return new ScannerFile("01_suspects_are\\0x0DE38E9B.wav", "0x0DE38E9B", "suspects_are"); } }
+    //    public static ScannerFile HASH0EA45019 { get { return new ScannerFile("01_suspects_are\\0x0EA45019.wav", "0x0EA45019", "suspects_are"); } }
+    //}
+    //public class suspects_are_members_of
+    //{
+    //    public static ScannerFile HASH05EBE717 { get { return new ScannerFile("01_suspects_are_members_of\\0x05EBE717.wav", "0x05EBE717", "suspects_are_members_of"); } }
+    //    public static ScannerFile HASH17B5CAAB { get { return new ScannerFile("01_suspects_are_members_of\\0x17B5CAAB.wav", "0x17B5CAAB", "suspects_are_members_of"); } }
+    //    public static ScannerFile HASH1A4BCF5F { get { return new ScannerFile("01_suspects_are_members_of\\0x1A4BCF5F.wav", "0x1A4BCF5F", "suspects_are_members_of"); } }
+    //}
+    //public class suspects_heading
+    //{
+    //    public static ScannerFile HASH00F4821D { get { return new ScannerFile("01_suspects_heading\\0x00F4821D.wav", "0x00F4821D", "suspects_heading"); } }
+    //    public static ScannerFile HASH0389C747 { get { return new ScannerFile("01_suspects_heading\\0x0389C747.wav", "0x0389C747", "suspects_heading"); } }
+    //    public static ScannerFile HASH13312696 { get { return new ScannerFile("01_suspects_heading\\0x13312696.wav", "0x13312696", "suspects_heading"); } }
+    //    public static ScannerFile HASH15CAEBC9 { get { return new ScannerFile("01_suspects_heading\\0x15CAEBC9.wav", "0x15CAEBC9", "suspects_heading"); } }
+    //    public static ScannerFile HASH1A56B4E0 { get { return new ScannerFile("01_suspects_heading\\0x1A56B4E0.wav", "0x1A56B4E0", "suspects_heading"); } }
+    //}
+    //public class suspects_last_seen
+    //{
+    //    public static ScannerFile SuspectLastSeen { get { return new ScannerFile("01_suspects_last_seen\\0x02637742.wav", "0x02637742", "suspects_last_seen"); } }
+    //    public static ScannerFile HASH04E93C4D { get { return new ScannerFile("01_suspects_last_seen\\0x04E93C4D.wav", "0x04E93C4D", "suspects_last_seen"); } }
+    //    public static ScannerFile HASH0BCB0A12 { get { return new ScannerFile("01_suspects_last_seen\\0x0BCB0A12.wav", "0x0BCB0A12", "suspects_last_seen"); } }
+    //    public static ScannerFile HASH1D712D60 { get { return new ScannerFile("01_suspects_last_seen\\0x1D712D60.wav", "0x1D712D60", "suspects_last_seen"); } }
+    //}
+    //public class suspect_arrested
+    //{
+    //    public static ScannerFile SuspectIncustody { get { return new ScannerFile("01_suspect_arrested\\0x0C51EC8C.wav", "Suspect in custody", "suspect_arrested"); } }
+    //    public static ScannerFile SuspectApprehended { get { return new ScannerFile("01_suspect_arrested\\0x1627003A.wav", "Suspect Aprehended", "suspect_arrested"); } }
+    //    public static ScannerFile SuspectIsTenFifteen { get { return new ScannerFile("01_suspect_arrested\\0x1A944911.wav", "Suspect is 10-15", "suspect_arrested"); } }
+    //    public static ScannerFile TenFifteenSuspectInCustody { get { return new ScannerFile("01_suspect_arrested\\0x1EC51175.wav", "10-15 Suspect in Custody", "suspect_arrested"); } }
+    //}
     public class suspect_eluded_pt_1
     {
         public static ScannerFile SuspectLost { get { return new ScannerFile("01_suspect_eluded_pt_1\\0x036E44E1.wav", "Suspect Lost", "suspect_eluded_pt_1"); } }
@@ -3389,12 +3389,12 @@
         public static ScannerFile AllUnitsRemainOnAlert { get { return new ScannerFile("01_suspect_eluded_pt_2\\0x145D808B.wav", "All Units Remain on alert", "suspect_eluded_pt_2"); } }
         public static ScannerFile AllUnitsStandby { get { return new ScannerFile("01_suspect_eluded_pt_2\\0x1EBB5543.wav", "All Units Standby", "suspect_eluded_pt_2"); } }
     }
-    public class suspect_has
-    {
-        public static ScannerFile HASH004D3F60 { get { return new ScannerFile("01_suspect_has\\0x004D3F60.wav", "0x004D3F60", "suspect_has"); } }
-        public static ScannerFile HASH0E6C9B9F { get { return new ScannerFile("01_suspect_has\\0x0E6C9B9F.wav", "0x0E6C9B9F", "suspect_has"); } }
-        public static ScannerFile HASH13626589 { get { return new ScannerFile("01_suspect_has\\0x13626589.wav", "0x13626589", "suspect_has"); } }
-    }
+    //public class suspect_has
+    //{
+    //    public static ScannerFile HASH004D3F60 { get { return new ScannerFile("01_suspect_has\\0x004D3F60.wav", "0x004D3F60", "suspect_has"); } }
+    //    public static ScannerFile HASH0E6C9B9F { get { return new ScannerFile("01_suspect_has\\0x0E6C9B9F.wav", "0x0E6C9B9F", "suspect_has"); } }
+    //    public static ScannerFile HASH13626589 { get { return new ScannerFile("01_suspect_has\\0x13626589.wav", "0x13626589", "suspect_has"); } }
+    //}
     public class suspect_heading
     {
         public static ScannerFile SuspectHeading { get { return new ScannerFile("01_suspect_heading\\0x04AE12BC.wav", "Suspect heading", "suspect_heading"); } }
@@ -3410,19 +3410,19 @@
         public static ScannerFile CriminalIs { get { return new ScannerFile("01_suspect_is\\0x0F630663.wav", "CriminalIs", "suspect_is"); } }
         public static ScannerFile TargetIs { get { return new ScannerFile("01_suspect_is\\0x19A5DADF.wav", "TargetIs", "suspect_is"); } }
     }
-    public class suspect_is_a_member_of
-    {
-        public static ScannerFile HASH0789E155 { get { return new ScannerFile("01_suspect_is_a_member_of\\0x0789E155.wav", "0x0789E155", "suspect_is_a_member_of"); } }
-        public static ScannerFile HASH14D37BED { get { return new ScannerFile("01_suspect_is_a_member_of\\0x14D37BED.wav", "0x14D37BED", "suspect_is_a_member_of"); } }
-        public static ScannerFile HASH184F02E0 { get { return new ScannerFile("01_suspect_is_a_member_of\\0x184F02E0.wav", "0x184F02E0", "suspect_is_a_member_of"); } }
-    }
-    public class suspect_is_wearing
-    {
-        public static ScannerFile HASH04A18D33 { get { return new ScannerFile("01_suspect_is_wearing\\0x04A18D33.wav", "0x04A18D33", "suspect_is_wearing"); } }
-        public static ScannerFile HASH0AE599BA { get { return new ScannerFile("01_suspect_is_wearing\\0x0AE599BA.wav", "0x0AE599BA", "suspect_is_wearing"); } }
-        public static ScannerFile HASH12E369B6 { get { return new ScannerFile("01_suspect_is_wearing\\0x12E369B6.wav", "0x12E369B6", "suspect_is_wearing"); } }
-        public static ScannerFile HASH1CA43D37 { get { return new ScannerFile("01_suspect_is_wearing\\0x1CA43D37.wav", "0x1CA43D37", "suspect_is_wearing"); } }
-    }
+    //public class suspect_is_a_member_of
+    //{
+    //    public static ScannerFile HASH0789E155 { get { return new ScannerFile("01_suspect_is_a_member_of\\0x0789E155.wav", "0x0789E155", "suspect_is_a_member_of"); } }
+    //    public static ScannerFile HASH14D37BED { get { return new ScannerFile("01_suspect_is_a_member_of\\0x14D37BED.wav", "0x14D37BED", "suspect_is_a_member_of"); } }
+    //    public static ScannerFile HASH184F02E0 { get { return new ScannerFile("01_suspect_is_a_member_of\\0x184F02E0.wav", "0x184F02E0", "suspect_is_a_member_of"); } }
+    //}
+    //public class suspect_is_wearing
+    //{
+    //    public static ScannerFile HASH04A18D33 { get { return new ScannerFile("01_suspect_is_wearing\\0x04A18D33.wav", "0x04A18D33", "suspect_is_wearing"); } }
+    //    public static ScannerFile HASH0AE599BA { get { return new ScannerFile("01_suspect_is_wearing\\0x0AE599BA.wav", "0x0AE599BA", "suspect_is_wearing"); } }
+    //    public static ScannerFile HASH12E369B6 { get { return new ScannerFile("01_suspect_is_wearing\\0x12E369B6.wav", "0x12E369B6", "suspect_is_wearing"); } }
+    //    public static ScannerFile HASH1CA43D37 { get { return new ScannerFile("01_suspect_is_wearing\\0x1CA43D37.wav", "0x1CA43D37", "suspect_is_wearing"); } }
+    //}
     public class suspect_last_seen
     {
         public static ScannerFile TargetLastReported { get { return new ScannerFile("01_suspect_last_seen\\0x021E1830.wav", "TargetLastReported", "suspect_last_seen"); } }
@@ -3440,36 +3440,36 @@
         public static ScannerFile TargetVehicleLicensePlate { get { return new ScannerFile("01_suspect_license_plate\\0x17AB4229.wav", "0x17AB4229", "target vehicle license plate"); } }
         public static ScannerFile SuspectsLicensePlate02 { get { return new ScannerFile("01_suspect_license_plate\\0x1E8D8FEE.wav", "Suspects Licens ePlate", "suspects license plate"); } }
     }
-    public class suspect_wasted
-    {
-        public static ScannerFile HASH018C67CD { get { return new ScannerFile("01_suspect_wasted\\0x018C67CD.wav", "0x018C67CD", "suspect_wasted"); } }
-        public static ScannerFile HASH0A0FB8D4 { get { return new ScannerFile("01_suspect_wasted\\0x0A0FB8D4.wav", "0x0A0FB8D4", "suspect_wasted"); } }
-        public static ScannerFile HASH129A89EB { get { return new ScannerFile("01_suspect_wasted\\0x129A89EB.wav", "0x129A89EB", "suspect_wasted"); } }
-        public static ScannerFile HASH1BEBDC93 { get { return new ScannerFile("01_suspect_wasted\\0x1BEBDC93.wav", "0x1BEBDC93", "suspect_wasted"); } }
-    }
-    public class tattoos
-    {
-        public static ScannerFile HASH005473A0 { get { return new ScannerFile("01_tattoos\\0x005473A0.wav", "0x005473A0", "tattoos"); } }
-        public static ScannerFile HASH05A8B900 { get { return new ScannerFile("01_tattoos\\0x05A8B900.wav", "0x05A8B900", "tattoos"); } }
-        public static ScannerFile HASH06AB8D05 { get { return new ScannerFile("01_tattoos\\0x06AB8D05.wav", "0x06AB8D05", "tattoos"); } }
-        public static ScannerFile HASH0B67567C { get { return new ScannerFile("01_tattoos\\0x0B67567C.wav", "0x0B67567C", "tattoos"); } }
-        public static ScannerFile HASH102C7332 { get { return new ScannerFile("01_tattoos\\0x102C7332.wav", "0x102C7332", "tattoos"); } }
-        public static ScannerFile HASH1989F2C1 { get { return new ScannerFile("01_tattoos\\0x1989F2C1.wav", "0x1989F2C1", "tattoos"); } }
-        public static ScannerFile HASH1A23673D { get { return new ScannerFile("01_tattoos\\0x1A23673D.wav", "0x1A23673D", "tattoos"); } }
-        public static ScannerFile HASH1D95AE22 { get { return new ScannerFile("01_tattoos\\0x1D95AE22.wav", "0x1D95AE22", "tattoos"); } }
-        public static ScannerFile HASH1F2CD12F { get { return new ScannerFile("01_tattoos\\0x1F2CD12F.wav", "0x1F2CD12F", "tattoos"); } }
-    }
-    public class unit_responding_code
-    {
-        public static ScannerFile HASH0236BDBA { get { return new ScannerFile("01_unit_responding_code\\0x0236BDBA.wav", "0x0236BDBA", "unit_responding_code"); } }
-        public static ScannerFile HASH04910270 { get { return new ScannerFile("01_unit_responding_code\\0x04910270.wav", "0x04910270", "unit_responding_code"); } }
-        public static ScannerFile HASH0A904DB3 { get { return new ScannerFile("01_unit_responding_code\\0x0A904DB3.wav", "0x0A904DB3", "unit_responding_code"); } }
-        public static ScannerFile HASH0E77EBB2 { get { return new ScannerFile("01_unit_responding_code\\0x0E77EBB2.wav", "0x0E77EBB2", "unit_responding_code"); } }
-        public static ScannerFile HASH0F0F2CE4 { get { return new ScannerFile("01_unit_responding_code\\0x0F0F2CE4.wav", "0x0F0F2CE4", "unit_responding_code"); } }
-        public static ScannerFile HASH10165979 { get { return new ScannerFile("01_unit_responding_code\\0x10165979.wav", "0x10165979", "unit_responding_code"); } }
-        public static ScannerFile HASH10F970B8 { get { return new ScannerFile("01_unit_responding_code\\0x10F970B8.wav", "0x10F970B8", "unit_responding_code"); } }
-        public static ScannerFile HASH16CD66E7 { get { return new ScannerFile("01_unit_responding_code\\0x16CD66E7.wav", "0x16CD66E7", "unit_responding_code"); } }
-    }
+    //public class suspect_wasted
+    //{
+    //    public static ScannerFile HASH018C67CD { get { return new ScannerFile("01_suspect_wasted\\0x018C67CD.wav", "0x018C67CD", "suspect_wasted"); } }
+    //    public static ScannerFile HASH0A0FB8D4 { get { return new ScannerFile("01_suspect_wasted\\0x0A0FB8D4.wav", "0x0A0FB8D4", "suspect_wasted"); } }
+    //    public static ScannerFile HASH129A89EB { get { return new ScannerFile("01_suspect_wasted\\0x129A89EB.wav", "0x129A89EB", "suspect_wasted"); } }
+    //    public static ScannerFile HASH1BEBDC93 { get { return new ScannerFile("01_suspect_wasted\\0x1BEBDC93.wav", "0x1BEBDC93", "suspect_wasted"); } }
+    //}
+    //public class tattoos
+    //{
+    //    public static ScannerFile HASH005473A0 { get { return new ScannerFile("01_tattoos\\0x005473A0.wav", "0x005473A0", "tattoos"); } }
+    //    public static ScannerFile HASH05A8B900 { get { return new ScannerFile("01_tattoos\\0x05A8B900.wav", "0x05A8B900", "tattoos"); } }
+    //    public static ScannerFile HASH06AB8D05 { get { return new ScannerFile("01_tattoos\\0x06AB8D05.wav", "0x06AB8D05", "tattoos"); } }
+    //    public static ScannerFile HASH0B67567C { get { return new ScannerFile("01_tattoos\\0x0B67567C.wav", "0x0B67567C", "tattoos"); } }
+    //    public static ScannerFile HASH102C7332 { get { return new ScannerFile("01_tattoos\\0x102C7332.wav", "0x102C7332", "tattoos"); } }
+    //    public static ScannerFile HASH1989F2C1 { get { return new ScannerFile("01_tattoos\\0x1989F2C1.wav", "0x1989F2C1", "tattoos"); } }
+    //    public static ScannerFile HASH1A23673D { get { return new ScannerFile("01_tattoos\\0x1A23673D.wav", "0x1A23673D", "tattoos"); } }
+    //    public static ScannerFile HASH1D95AE22 { get { return new ScannerFile("01_tattoos\\0x1D95AE22.wav", "0x1D95AE22", "tattoos"); } }
+    //    public static ScannerFile HASH1F2CD12F { get { return new ScannerFile("01_tattoos\\0x1F2CD12F.wav", "0x1F2CD12F", "tattoos"); } }
+    //}
+    //public class unit_responding_code
+    //{
+    //    public static ScannerFile HASH0236BDBA { get { return new ScannerFile("01_unit_responding_code\\0x0236BDBA.wav", "0x0236BDBA", "unit_responding_code"); } }
+    //    public static ScannerFile HASH04910270 { get { return new ScannerFile("01_unit_responding_code\\0x04910270.wav", "0x04910270", "unit_responding_code"); } }
+    //    public static ScannerFile HASH0A904DB3 { get { return new ScannerFile("01_unit_responding_code\\0x0A904DB3.wav", "0x0A904DB3", "unit_responding_code"); } }
+    //    public static ScannerFile HASH0E77EBB2 { get { return new ScannerFile("01_unit_responding_code\\0x0E77EBB2.wav", "0x0E77EBB2", "unit_responding_code"); } }
+    //    public static ScannerFile HASH0F0F2CE4 { get { return new ScannerFile("01_unit_responding_code\\0x0F0F2CE4.wav", "0x0F0F2CE4", "unit_responding_code"); } }
+    //    public static ScannerFile HASH10165979 { get { return new ScannerFile("01_unit_responding_code\\0x10165979.wav", "0x10165979", "unit_responding_code"); } }
+    //    public static ScannerFile HASH10F970B8 { get { return new ScannerFile("01_unit_responding_code\\0x10F970B8.wav", "0x10F970B8", "unit_responding_code"); } }
+    //    public static ScannerFile HASH16CD66E7 { get { return new ScannerFile("01_unit_responding_code\\0x16CD66E7.wav", "0x16CD66E7", "unit_responding_code"); } }
+    //}
     public class vehicle_category
     {
         public static ScannerFile ATV { get { return new ScannerFile("01_vehicle_category\\0x005D43A0.wav", "0x005D43A0", "vehicle_category"); } }
@@ -3581,50 +3581,50 @@
         public static ScannerFile CitizensReport_2 { get { return new ScannerFile("01_we_have\\0x1D1D5DBA.wav", "0x1D1D5DBA", "we_have"); } }
         public static ScannerFile CitizensReport_3 { get { return new ScannerFile("01_we_have\\0x1F72E264.wav", "0x1F72E264", "we_have"); } }
     }
-    public class year
-    {
-        public static ScannerFile HASH0033BF81 { get { return new ScannerFile("01_year\\0x0033BF81.wav", "0x0033BF81", "year"); } }
-        public static ScannerFile HASH00B67763 { get { return new ScannerFile("01_year\\0x00B67763.wav", "0x00B67763", "year"); } }
-        public static ScannerFile HASH02B30383 { get { return new ScannerFile("01_year\\0x02B30383.wav", "0x02B30383", "year"); } }
-        public static ScannerFile HASH036B8084 { get { return new ScannerFile("01_year\\0x036B8084.wav", "0x036B8084", "year"); } }
-        public static ScannerFile HASH05C709B8 { get { return new ScannerFile("01_year\\0x05C709B8.wav", "0x05C709B8", "year"); } }
-        public static ScannerFile HASH05FDCB16 { get { return new ScannerFile("01_year\\0x05FDCB16.wav", "0x05FDCB16", "year"); } }
-        public static ScannerFile HASH0708009C { get { return new ScannerFile("01_year\\0x0708009C.wav", "0x0708009C", "year"); } }
-        public static ScannerFile HASH070EFC25 { get { return new ScannerFile("01_year\\0x070EFC25.wav", "0x070EFC25", "year"); } }
-        public static ScannerFile HASH0761B07A { get { return new ScannerFile("01_year\\0x0761B07A.wav", "0x0761B07A", "year"); } }
-        public static ScannerFile HASH0821C9EF { get { return new ScannerFile("01_year\\0x0821C9EF.wav", "0x0821C9EF", "year"); } }
-        public static ScannerFile HASH09AC8E8E { get { return new ScannerFile("01_year\\0x09AC8E8E.wav", "0x09AC8E8E", "year"); } }
-        public static ScannerFile HASH0D1F985B { get { return new ScannerFile("01_year\\0x0D1F985B.wav", "0x0D1F985B", "year"); } }
-        public static ScannerFile HASH0D68947F { get { return new ScannerFile("01_year\\0x0D68947F.wav", "0x0D68947F", "year"); } }
-        public static ScannerFile HASH0F6B74E6 { get { return new ScannerFile("01_year\\0x0F6B74E6.wav", "0x0F6B74E6", "year"); } }
-        public static ScannerFile HASH1088ED93 { get { return new ScannerFile("01_year\\0x1088ED93.wav", "0x1088ED93", "year"); } }
-        public static ScannerFile HASH147616F3 { get { return new ScannerFile("01_year\\0x147616F3.wav", "0x147616F3", "year"); } }
-        public static ScannerFile HASH1567247B { get { return new ScannerFile("01_year\\0x1567247B.wav", "0x1567247B", "year"); } }
-        public static ScannerFile HASH15A77F9F { get { return new ScannerFile("01_year\\0x15A77F9F.wav", "0x15A77F9F", "year"); } }
-        public static ScannerFile HASH166862C8 { get { return new ScannerFile("01_year\\0x166862C8.wav", "0x166862C8", "year"); } }
-        public static ScannerFile HASH16A38189 { get { return new ScannerFile("01_year\\0x16A38189.wav", "0x16A38189", "year"); } }
-        public static ScannerFile HASH17816D2D { get { return new ScannerFile("01_year\\0x17816D2D.wav", "0x17816D2D", "year"); } }
-        public static ScannerFile HASH186D2F8B { get { return new ScannerFile("01_year\\0x186D2F8B.wav", "0x186D2F8B", "year"); } }
-        public static ScannerFile HASH19B0C108 { get { return new ScannerFile("01_year\\0x19B0C108.wav", "0x19B0C108", "year"); } }
-        public static ScannerFile HASH19C7D51C { get { return new ScannerFile("01_year\\0x19C7D51C.wav", "0x19C7D51C", "year"); } }
-        public static ScannerFile HASH1B24717A { get { return new ScannerFile("01_year\\0x1B24717A.wav", "0x1B24717A", "year"); } }
-        public static ScannerFile HASH1BCE8538 { get { return new ScannerFile("01_year\\0x1BCE8538.wav", "0x1BCE8538", "year"); } }
-        public static ScannerFile HASH1D1B1043 { get { return new ScannerFile("01_year\\0x1D1B1043.wav", "0x1D1B1043", "year"); } }
-        public static ScannerFile HASH1D979CE6 { get { return new ScannerFile("01_year\\0x1D979CE6.wav", "0x1D979CE6", "year"); } }
-        public static ScannerFile HASH1E4E491E { get { return new ScannerFile("01_year\\0x1E4E491E.wav", "0x1E4E491E", "year"); } }
-        public static ScannerFile HASH1EA0DEF4 { get { return new ScannerFile("01_year\\0x1EA0DEF4.wav", "0x1EA0DEF4", "year"); } }
-        public static ScannerFile HASH1EC83C50 { get { return new ScannerFile("01_year\\0x1EC83C50.wav", "0x1EC83C50", "year"); } }
-    }
-    public class random_chat
-    {
-        public static ScannerFile RANDOMCHAT1 { get { return new ScannerFile("random_chat\\RANDOMCHAT1.wav", "RANDOMCHAT1", "random_chat"); } }
-        public static ScannerFile RANDOMCHAT2 { get { return new ScannerFile("random_chat\\RANDOMCHAT2.wav", "RANDOMCHAT2", "random_chat"); } }
-        public static ScannerFile RANDOMCHAT3 { get { return new ScannerFile("random_chat\\RANDOMCHAT3.wav", "RANDOMCHAT3", "random_chat"); } }
-        public static ScannerFile RANDOMCHAT5 { get { return new ScannerFile("random_chat\\RANDOMCHAT5.wav", "RANDOMCHAT5", "random_chat"); } }
-        public static ScannerFile RANDOMCHAT6 { get { return new ScannerFile("random_chat\\RANDOMCHAT6.wav", "RANDOMCHAT6", "random_chat"); } }
-        public static ScannerFile RANDOMCHAT7 { get { return new ScannerFile("random_chat\\RANDOMCHAT7.wav", "RANDOMCHAT7", "random_chat"); } }
-        public static ScannerFile RANDOMCHAT8 { get { return new ScannerFile("random_chat\\RANDOMCHAT8.wav", "RANDOMCHAT8", "random_chat"); } }
-    }
+    //public class year
+    //{
+    //    public static ScannerFile HASH0033BF81 { get { return new ScannerFile("01_year\\0x0033BF81.wav", "0x0033BF81", "year"); } }
+    //    public static ScannerFile HASH00B67763 { get { return new ScannerFile("01_year\\0x00B67763.wav", "0x00B67763", "year"); } }
+    //    public static ScannerFile HASH02B30383 { get { return new ScannerFile("01_year\\0x02B30383.wav", "0x02B30383", "year"); } }
+    //    public static ScannerFile HASH036B8084 { get { return new ScannerFile("01_year\\0x036B8084.wav", "0x036B8084", "year"); } }
+    //    public static ScannerFile HASH05C709B8 { get { return new ScannerFile("01_year\\0x05C709B8.wav", "0x05C709B8", "year"); } }
+    //    public static ScannerFile HASH05FDCB16 { get { return new ScannerFile("01_year\\0x05FDCB16.wav", "0x05FDCB16", "year"); } }
+    //    public static ScannerFile HASH0708009C { get { return new ScannerFile("01_year\\0x0708009C.wav", "0x0708009C", "year"); } }
+    //    public static ScannerFile HASH070EFC25 { get { return new ScannerFile("01_year\\0x070EFC25.wav", "0x070EFC25", "year"); } }
+    //    public static ScannerFile HASH0761B07A { get { return new ScannerFile("01_year\\0x0761B07A.wav", "0x0761B07A", "year"); } }
+    //    public static ScannerFile HASH0821C9EF { get { return new ScannerFile("01_year\\0x0821C9EF.wav", "0x0821C9EF", "year"); } }
+    //    public static ScannerFile HASH09AC8E8E { get { return new ScannerFile("01_year\\0x09AC8E8E.wav", "0x09AC8E8E", "year"); } }
+    //    public static ScannerFile HASH0D1F985B { get { return new ScannerFile("01_year\\0x0D1F985B.wav", "0x0D1F985B", "year"); } }
+    //    public static ScannerFile HASH0D68947F { get { return new ScannerFile("01_year\\0x0D68947F.wav", "0x0D68947F", "year"); } }
+    //    public static ScannerFile HASH0F6B74E6 { get { return new ScannerFile("01_year\\0x0F6B74E6.wav", "0x0F6B74E6", "year"); } }
+    //    public static ScannerFile HASH1088ED93 { get { return new ScannerFile("01_year\\0x1088ED93.wav", "0x1088ED93", "year"); } }
+    //    public static ScannerFile HASH147616F3 { get { return new ScannerFile("01_year\\0x147616F3.wav", "0x147616F3", "year"); } }
+    //    public static ScannerFile HASH1567247B { get { return new ScannerFile("01_year\\0x1567247B.wav", "0x1567247B", "year"); } }
+    //    public static ScannerFile HASH15A77F9F { get { return new ScannerFile("01_year\\0x15A77F9F.wav", "0x15A77F9F", "year"); } }
+    //    public static ScannerFile HASH166862C8 { get { return new ScannerFile("01_year\\0x166862C8.wav", "0x166862C8", "year"); } }
+    //    public static ScannerFile HASH16A38189 { get { return new ScannerFile("01_year\\0x16A38189.wav", "0x16A38189", "year"); } }
+    //    public static ScannerFile HASH17816D2D { get { return new ScannerFile("01_year\\0x17816D2D.wav", "0x17816D2D", "year"); } }
+    //    public static ScannerFile HASH186D2F8B { get { return new ScannerFile("01_year\\0x186D2F8B.wav", "0x186D2F8B", "year"); } }
+    //    public static ScannerFile HASH19B0C108 { get { return new ScannerFile("01_year\\0x19B0C108.wav", "0x19B0C108", "year"); } }
+    //    public static ScannerFile HASH19C7D51C { get { return new ScannerFile("01_year\\0x19C7D51C.wav", "0x19C7D51C", "year"); } }
+    //    public static ScannerFile HASH1B24717A { get { return new ScannerFile("01_year\\0x1B24717A.wav", "0x1B24717A", "year"); } }
+    //    public static ScannerFile HASH1BCE8538 { get { return new ScannerFile("01_year\\0x1BCE8538.wav", "0x1BCE8538", "year"); } }
+    //    public static ScannerFile HASH1D1B1043 { get { return new ScannerFile("01_year\\0x1D1B1043.wav", "0x1D1B1043", "year"); } }
+    //    public static ScannerFile HASH1D979CE6 { get { return new ScannerFile("01_year\\0x1D979CE6.wav", "0x1D979CE6", "year"); } }
+    //    public static ScannerFile HASH1E4E491E { get { return new ScannerFile("01_year\\0x1E4E491E.wav", "0x1E4E491E", "year"); } }
+    //    public static ScannerFile HASH1EA0DEF4 { get { return new ScannerFile("01_year\\0x1EA0DEF4.wav", "0x1EA0DEF4", "year"); } }
+    //    public static ScannerFile HASH1EC83C50 { get { return new ScannerFile("01_year\\0x1EC83C50.wav", "0x1EC83C50", "year"); } }
+    //}
+    //public class random_chat
+    //{
+    //    public static ScannerFile RANDOMCHAT1 { get { return new ScannerFile("random_chat\\RANDOMCHAT1.wav", "RANDOMCHAT1", "random_chat"); } }
+    //    public static ScannerFile RANDOMCHAT2 { get { return new ScannerFile("random_chat\\RANDOMCHAT2.wav", "RANDOMCHAT2", "random_chat"); } }
+    //    public static ScannerFile RANDOMCHAT3 { get { return new ScannerFile("random_chat\\RANDOMCHAT3.wav", "RANDOMCHAT3", "random_chat"); } }
+    //    public static ScannerFile RANDOMCHAT5 { get { return new ScannerFile("random_chat\\RANDOMCHAT5.wav", "RANDOMCHAT5", "random_chat"); } }
+    //    public static ScannerFile RANDOMCHAT6 { get { return new ScannerFile("random_chat\\RANDOMCHAT6.wav", "RANDOMCHAT6", "random_chat"); } }
+    //    public static ScannerFile RANDOMCHAT7 { get { return new ScannerFile("random_chat\\RANDOMCHAT7.wav", "RANDOMCHAT7", "random_chat"); } }
+    //    public static ScannerFile RANDOMCHAT8 { get { return new ScannerFile("random_chat\\RANDOMCHAT8.wav", "RANDOMCHAT8", "random_chat"); } }
+    //}
     public class spot_suspect_cop_01
     {
         public static ScannerFile WeHaveAVisual1 { get { return new ScannerFile("spot_suspect_cop_01\\0x0601EE8E.wav", "0x0601EE8E", "spot_suspect_cop_01"); } }

@@ -168,7 +168,7 @@ public class LEDispatcher
     }
     private bool HasNeedToAmbientCanineDispatch => World.Pedestrians.TotalSpawnedAmbientPoliceCanines < SpawnedK9Limit;
     public float ClosestPoliceSpawnToOtherPoliceAllowed => TotalIsWanted ? 200f : 500f;
-    public float ClosestPoliceSpawnToSuspectAllowed => TotalIsWanted ? 150f : 250f;
+    public float ClosestPoliceSpawnToSuspectAllowed => TotalIsWanted ? 200f : 250f;//150f : 250f;
     private List<Cop> DeletableCops => World.Pedestrians.AllPoliceList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime && x.Handle != Player.Handle) || x.CanRemove).ToList();//NEED TO ADD WAS MOD SPAWNED HERE, LET THE REST OF THE FUCKERS MANAGE THEIR OWN STUFF?
     private float DistanceToDelete => TotalIsWanted ? Settings.SettingsManager.PoliceSpawnSettings.DistanceToRecallInVehicle_Wanted : Settings.SettingsManager.PoliceSpawnSettings.DistanceToRecallInVehicle_NotWanted;
     private float DistanceToDeleteOnFoot => TotalIsWanted ? Settings.SettingsManager.PoliceSpawnSettings.DistanceToRecallOnFoot_Wanted : Settings.SettingsManager.PoliceSpawnSettings.DistanceToRecallOnFoot_NotWanted;
@@ -1123,6 +1123,26 @@ public class LEDispatcher
         PoliceStation = null;
         SpawnLocation = new SpawnLocation();
         bool tryBoat = HasNeedToSpawnBoat;
+
+        if(Player.CurrentLocation.TreatAsInTunnel)
+        {
+            foreach(SpawnPlace spawnPlace in PlacesOfInterest.PossibleLocations.TunnelSpawns)
+            {
+                float distanceTo = spawnPlace.Position.DistanceTo(Player.Position);
+                if (distanceTo <= 300f && distanceTo >= 100f)
+                {
+                    SpawnLocation.InitialPosition = spawnPlace.Position;
+                    SpawnLocation.Heading = spawnPlace.Heading;
+                    SpawnLocation.StreetPosition = spawnPlace.Position;
+                    SpawnLocation.SidewalkPosition = spawnPlace.Position;
+
+                    EntryPoint.WriteToConsole("LE DISPATCHER TUNNEL DETECTION SPAWNING NEARBY");
+                    return true;
+                }
+            }
+        }
+
+
         do
         {
             SpawnLocation.InitialPosition = GetSpawnPosition();
@@ -1363,7 +1383,7 @@ public class LEDispatcher
         {
             if(Player.IsWanted && Player.IsInVehicle)//if you are wanted and in a car, put it out front to better get it
             {
-                Position = Player.Character.GetOffsetPositionFront(200f);// 250f);//350f
+                Position = Player.Character.GetOffsetPositionFront(250f);// 200f);// 250f);//350f
             }
             else if (Player.Investigation.IsActive)//investigations mode takes over too?
             {
@@ -1403,14 +1423,14 @@ public class LEDispatcher
     }
     private bool AreSpawnsValidSpawn(SpawnLocation spawnLocation)
     {
-        if (spawnLocation.StreetPosition.DistanceTo2D(Player.Position) < ClosestPoliceSpawnToSuspectAllowed || World.Pedestrians.AnyCopsNearPosition(spawnLocation.StreetPosition, ClosestPoliceSpawnToOtherPoliceAllowed))
+        if (spawnLocation.FinalPosition.DistanceTo2D(Player.Position) < ClosestPoliceSpawnToSuspectAllowed || World.Pedestrians.AnyCopsNearPosition(spawnLocation.FinalPosition, ClosestPoliceSpawnToOtherPoliceAllowed))
         {
             return false;
         }
-        else if (spawnLocation.InitialPosition.DistanceTo2D(Player.Position) < ClosestPoliceSpawnToSuspectAllowed || World.Pedestrians.AnyCopsNearPosition(spawnLocation.InitialPosition, ClosestPoliceSpawnToOtherPoliceAllowed))
-        {
-            return false;
-        }
+        //else if (spawnLocation.InitialPosition.DistanceTo2D(Player.Position) < ClosestPoliceSpawnToSuspectAllowed || World.Pedestrians.AnyCopsNearPosition(spawnLocation.InitialPosition, ClosestPoliceSpawnToOtherPoliceAllowed))
+        //{
+        //    return false;
+        //}
         return true;
     }
     private bool IsValidSpawn(Vector3 location)
@@ -1450,12 +1470,12 @@ public class LEDispatcher
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, CLOSE THEN FAR");
             return true;
         }
-        else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 150f && cop.ClosestDistanceToPlayer <= 35f && anyCopsNearCop && !cop.Pedestrian.IsOnScreen)
+        else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 250f && cop.ClosestDistanceToPlayer <= 35f && anyCopsNearCop && !cop.Pedestrian.IsOnScreen)//else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 150f && cop.ClosestDistanceToPlayer <= 35f && anyCopsNearCop && !cop.Pedestrian.IsOnScreen)
         {
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, LAST ONE");
             return true;
         }
-        else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 300f && totalCopsNearCop >= 4 && !cop.Pedestrian.IsOnScreen)
+        else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 350f && totalCopsNearCop >= 4 && !cop.Pedestrian.IsOnScreen)//else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 300f && totalCopsNearCop >= 4 && !cop.Pedestrian.IsOnScreen)
         {
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, LAST total COPS");
             return true;

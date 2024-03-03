@@ -157,6 +157,19 @@ public class Jurisdictions : IJurisdictions
         }
         return null;
     }
+    public Agency GetRespondingAgency(string zoneInternalGameName, string countyID, ResponseType responseType)
+    {
+        Agency toReturn = null;
+        if(!string.IsNullOrEmpty(zoneInternalGameName))
+        {
+            toReturn = GetMainAgency(zoneInternalGameName, responseType);
+            if(toReturn == null)
+            {
+                toReturn = GetRandomCountyAgency(countyID, 0, responseType);
+            }
+        }
+        return toReturn;
+    }
     public ZoneJurisdiction GetJurisdiction(string zoneInternalGameName, Agency agency)
     {
         if (agency == null || string.IsNullOrEmpty(zoneInternalGameName))
@@ -207,422 +220,222 @@ public class Jurisdictions : IJurisdictions
         {
             new ZoneJurisdiction("LSIAPD","AIRP", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
             new ZoneJurisdiction("LSPD","AIRP", 1, 5, 5) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","AIRP", 0, 100, 100),
-            new ZoneJurisdiction("MRH","AIRP", 0, 100, 100),
+            new ZoneJurisdiction("LSMC","AIRP", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","ALAMO", 0, 100, 100),
-            //new ZoneJurisdiction("LSSD","ALAMO", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","ALAMO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ALAMO", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-VW","ALTA", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","ALTA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ALTA", 0, 100, 100),
 
             new ZoneJurisdiction("ARMY","ARMYB", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","BANHAMC", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BANHAMC", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BANHAMC", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","BANNING", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BANNING", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BANNING", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-VW","BAYTRE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BAYTRE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BAYTRE", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-DP","BEACH", 0, 80, 100),
             new ZoneJurisdiction("LSLFG","BEACH",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            //new ZoneJurisdiction("LSPD","BEACH", 1, 5, 30),
-            new ZoneJurisdiction("LSFD","BEACH", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BEACH", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","BHAMCA", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BHAMCA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BHAMCA", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-BC","BRADP", 0, 100, 100),
-            //new ZoneJurisdiction("LSSD","BRADP", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","BRADP", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BRADP", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-BC","BRADT", 0, 100, 100),
-            //new ZoneJurisdiction("LSSD","BRADT", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","BRADT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BRADT", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-RH","BURTON", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            //new ZoneJurisdiction("LSPD","BURTON", 1, 15, 30) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","BURTON", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BURTON", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-BC","CALAFB", 0, 100, 100),
-            //new ZoneJurisdiction("LSSD","CALAFB", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","CALAFB", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CALAFB", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-BC","CANNY", 0, 100, 100),
-           // new ZoneJurisdiction("LSSD","CANNY", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","CANNY", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CANNY", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-BC","CCREAK", 0, 100, 100),
-            //new ZoneJurisdiction("LSSD","CCREAK", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","CCREAK", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CCREAK", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","CHAMH", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CHAMH", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CHAMH", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-VW","CHIL", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CHIL", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CHIL", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","CHU", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CHU", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CHU", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","CMSW", 0, 51, 35),
             new ZoneJurisdiction("LSSD-BC","CMSW", 1, 49, 65),
-            new ZoneJurisdiction("LSFD","CMSW", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CMSW", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-ELS","CYPRE", 0, 100, 100),
-           // new ZoneJurisdiction("LSPD","CYPRE", 1, 15, 30),
-            new ZoneJurisdiction("LSFD","CYPRE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CYPRE", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","DAVIS", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","DAVIS", 0, 100, 100),
-            new ZoneJurisdiction("MRH","DAVIS", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-DP","DELBE", 0, 80, 100),
             new ZoneJurisdiction("LSLFG","DELBE",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            //new ZoneJurisdiction("LSPD","DELBE", 1, 15, 30),
-            new ZoneJurisdiction("LSFD","DELBE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DELBE", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-DP","DELPE", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            //new ZoneJurisdiction("LSPD","DELPE", 1, 15, 30) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","DELPE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DELPE", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-DP","DELSOL", 0, 100, 100),
-            //new ZoneJurisdiction("LSPD","DELSOL", 1, 15, 30),
-            new ZoneJurisdiction("LSFD","DELSOL", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DELSOL", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","DESRT", 0, 100, 100),
-            //new ZoneJurisdiction("LSSD","DESRT", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","DESRT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DESRT", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","DOWNT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","DOWNT", 0, 100, 100),
             new ZoneJurisdiction("MRH","DOWNT", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-VW","DTVINE", 0, 85, 70),
             new ZoneJurisdiction("LSSD-VW","DTVINE", 1, 15, 30),
-            new ZoneJurisdiction("LSFD","DTVINE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DTVINE", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-VW","EAST_V", 0, 85, 70),
             new ZoneJurisdiction("LSSD-VW","EAST_V", 1, 15, 30),
-            new ZoneJurisdiction("LSFD","EAST_V", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","EAST_V", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-ELS","EBURO", 0, 100, 100),
-            //new ZoneJurisdiction("LSPD","EBURO", 1, 15, 30),
-            new ZoneJurisdiction("LSFD","EBURO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","EBURO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-BC","ELGORL", 0, 100, 100),
-            //new ZoneJurisdiction("LSSD","ELGORL", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","ELGORL", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ELGORL", 0, 100, 100),
 
             new ZoneJurisdiction("LSPP","ELYSIAN", 0, 99, 99),
             new ZoneJurisdiction("LSPD","ELYSIAN", 1, 1, 1),
-            new ZoneJurisdiction("LSFD","ELYSIAN", 0, 100, 100),
             new ZoneJurisdiction("LSMC","ELYSIAN", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-BC","GALFISH", 0, 100, 100),
-            //new ZoneJurisdiction("LSSD","GALFISH", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","GALFISH", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GALFISH", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-RH","GOLF", 0, 100, 100),
-            //new ZoneJurisdiction("LSPD","GOLF", 1, 15, 30),
-            new ZoneJurisdiction("LSFD","GOLF", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GOLF", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","GRAPES", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GRAPES", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GRAPES", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-VW","GREATC", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GREATC", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GREATC", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","HARMO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","HARMO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","HARMO", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-VW","HAWICK", 0, 85, 70) {CanSpawnPedestrianOfficers = true },
             new ZoneJurisdiction("LSSD-VW","HAWICK", 1, 15, 30) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","HAWICK", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","HAWICK", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-VW","HORS", 0, 85, 70),
             new ZoneJurisdiction("LSSD-VW","HORS", 1, 15, 30),
-            new ZoneJurisdiction("LSFD","HORS", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","HORS", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","HUMLAB", 0, 100, 100),
-           // new ZoneJurisdiction("LSSD","HUMLAB", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","HUMLAB", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","HUMLAB", 0, 100, 100),
 
             new ZoneJurisdiction("SASPA","JAIL", 0, 100, 100),
-            //new ZoneJurisdiction("LSSD-MJ","JAIL", 1, 5, 30),
 
             new ZoneJurisdiction("LSPD-RH","KOREAT", 0, 100, 100),
-            //new ZoneJurisdiction("LSPD","KOREAT", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","KOREAT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","KOREAT", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","LACT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LACT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","LACT", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-BC","LAGO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LAGO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","LAGO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","LDAM", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LDAM", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","LDAM", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","LEGSQU", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LEGSQU", 0, 100, 100),
             new ZoneJurisdiction("MRH","LEGSQU", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-ELS","LMESA", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            //new ZoneJurisdiction("LSPD","LMESA", 1, 15, 10) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","LMESA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","LMESA", 0, 100, 100),
+            new ZoneJurisdiction("MRH","LMESA", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-DP","LOSPUER", 0, 100, 100),
-            //new ZoneJurisdiction("LSPD","LOSPUER", 1, 15, 30),
-            new ZoneJurisdiction("LSFD","LOSPUER", 0, 100, 100),
             new ZoneJurisdiction("LSMC","LOSPUER", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-ELS","MIRR", 0, 100, 100),
-            //new ZoneJurisdiction("LSPD","MIRR", 1, 15, 10),
-            new ZoneJurisdiction("LSFD","MIRR", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MIRR", 0, 100, 100),
+            new ZoneJurisdiction("MRH","MIRR", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-RH","MORN", 0, 100, 100),
-            //new ZoneJurisdiction("LSPD","MORN", 1, 15, 5),
-            new ZoneJurisdiction("LSFD","MORN", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MORN", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-RH","MOVIE", 0, 100, 100),
-            //new ZoneJurisdiction("LSPD","MOVIE", 1, 15, 30),
-            new ZoneJurisdiction("LSFD","MOVIE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MOVIE", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","MTCHIL", 0, 51, 35),
             new ZoneJurisdiction("LSSD-BC","MTCHIL", 1, 49, 65),
-            new ZoneJurisdiction("LSFD","MTCHIL", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MTCHIL", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","MTGORDO", 0, 51, 35),
             new ZoneJurisdiction("LSSD-BC","MTGORDO", 1, 49, 65),
-            new ZoneJurisdiction("LSFD","MTGORDO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MTGORDO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-BC","MTJOSE", 0, 100, 100),
-            //new ZoneJurisdiction("LSSD","MTJOSE", 1, 5, 25),
-            new ZoneJurisdiction("LSFD","MTJOSE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MTJOSE", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-ELS","MURRI", 0, 100, 100),
-            //new ZoneJurisdiction("LSPD","MURRI", 1, 15, 30),
-            new ZoneJurisdiction("LSFD","MURRI", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MURRI", 0, 100, 100),
+            new ZoneJurisdiction("MRH","MURRI", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-BC","NCHU", 0, 100, 100),
-            //new ZoneJurisdiction("LSSD","NCHU", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","NCHU", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","NCHU", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","NOOSE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","NOOSE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","NOOSE", 0, 100, 100),
 
             new ZoneJurisdiction("USCG","OCEANA", 0, 95, 80),
             new ZoneJurisdiction("LSPD","OCEANA", 1, 5, 20),
-            new ZoneJurisdiction("LSFD","OCEANA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","OCEANA", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-BC","PALCOV", 0, 100, 100),
-            //new ZoneJurisdiction("LSSD","PALCOV", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","PALCOV", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALCOV", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-BC","PALETO", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            //new ZoneJurisdiction("LSSD","PALETO", 1, 15, 25) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","PALETO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALETO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-BC","PALFOR", 0, 100, 100),
-            //new ZoneJurisdiction("LSSD","PALFOR", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","PALFOR", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALFOR", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","PALHIGH", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PALHIGH", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALHIGH", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","PALMPOW", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PALMPOW", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALMPOW", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-DP","PBLUFF", 0, 100, 100),
-            //new ZoneJurisdiction("LSPD","PBLUFF", 1, 15, 30),
-            new ZoneJurisdiction("LSFD","PBLUFF", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PBLUFF", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","PBOX", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","PBOX", 0, 100, 100),
             new ZoneJurisdiction("LSMC","PBOX", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-BC","PROCOB", 0, 100, 100),
-            //new ZoneJurisdiction("LSSD","PROCOB", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","PROCOB", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PROCOB", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","RANCHO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","RANCHO", 0, 100, 100),
             new ZoneJurisdiction("LSMC","RANCHO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-VW","RGLEN", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","RGLEN", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","RGLEN", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-RH","RICHM", 0, 100, 100),
-            //new ZoneJurisdiction("LSPD","RICHM", 1, 15, 30),
-            new ZoneJurisdiction("LSFD","RICHM", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","RICHM", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-RH","ROCKF", 0, 100, 100) { CanSpawnPedestrianOfficers = true },
-            //new ZoneJurisdiction("LSPD","ROCKF", 1, 15, 30) { CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","ROCKF", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ROCKF", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","RTRAK", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","RTRAK", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","RTRAK", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","SANAND", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","SANAND", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","SANAND", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","SANCHIA", 0, 51, 35),
             new ZoneJurisdiction("LSSD-MJ","SANCHIA", 1, 49, 65),
-            new ZoneJurisdiction("LSFD","SANCHIA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","SANCHIA", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","SANDY", 0, 100, 100),
-            //new ZoneJurisdiction("LSSD","SANDY", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","SANDY", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","SANDY", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","SKID", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","SKID", 0, 100, 100),
             new ZoneJurisdiction("MRH","SKID", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-BC","SLAB", 0, 100, 100),
-            //new ZoneJurisdiction("LSSD","SLAB", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","SLAB", 0, 100, 100),
-            new ZoneJurisdiction("MRH","SLAB", 0, 100, 100),
 
-            //new ZoneJurisdiction("PRISEC","STAD", 0, 95, 0),
-            //new ZoneJurisdiction("LSPD","STAD", 1, 5, 100),
             new ZoneJurisdiction("LSPD","STAD", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","STAD", 0, 100, 100),
             new ZoneJurisdiction("LSMC","STAD", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","STRAW", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","STRAW", 0, 100, 100),
             new ZoneJurisdiction("LSMC","STRAW", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","TATAMO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TATAMO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","TATAMO", 0, 100, 100),
 
             new ZoneJurisdiction("LSPP","TERMINA", 0, 95, 80),
             new ZoneJurisdiction("LSPD","TERMINA", 1, 5, 20),
-            new ZoneJurisdiction("LSFD","TERMINA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","TERMINA", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","TEXTI", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TEXTI", 0, 100, 100),
             new ZoneJurisdiction("MRH","TEXTI", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","TONGVAH", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TONGVAH", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","TONGVAH", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-VW","TONGVAV", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TONGVAV", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","TONGVAV", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-DP","VCANA", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-           // new ZoneJurisdiction("LSPD","VCANA", 1, 15, 30) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","VCANA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","VCANA", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-DP","VESP", 0, 85, 70) {CanSpawnPedestrianOfficers = true },
             new ZoneJurisdiction("LSLFG","VESP",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            //new ZoneJurisdiction("LSPD","VESP", 1, 15, 30) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","VESP", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","VESP", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-VW","VINE", 0, 85, 70),
             new ZoneJurisdiction("LSSD-VW","VINE", 1, 15, 30),
-            new ZoneJurisdiction("LSFD","VINE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","VINE", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","WINDF", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","WINDF", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","WINDF", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-VW","WVINE", 0, 85, 70),
             new ZoneJurisdiction("LSSD-VW","WVINE", 1, 15, 30),
-            new ZoneJurisdiction("LSFD","WVINE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","WVINE", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","ZANCUDO", 0, 51, 35),
             new ZoneJurisdiction("LSSD-BC","ZANCUDO", 1, 49, 65),
 
             new ZoneJurisdiction("LSPP","ZP_ORT", 0, 95, 80),
             new ZoneJurisdiction("LSPD","ZP_ORT", 1, 5, 20),
-            new ZoneJurisdiction("LSFD","ZP_ORT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ZP_ORT", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","ZQ_UAR", 0, 85, 75),
             new ZoneJurisdiction("LSSD","ZQ_UAR", 1, 15, 25),
-            new ZoneJurisdiction("LSFD","ZQ_UAR", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ZQ_UAR", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-BC","GALLI", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GALLI", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GALLI", 0, 100, 100),
             ////Custom
             //new ZoneJurisdiction("APD", "CHI1", 0, 100, 100),
             new ZoneJurisdiction("NYSP", "PROL", 0, 100, 100),
@@ -634,11 +447,24 @@ public class Jurisdictions : IJurisdictions
     {
         CountyJurisdictionList = new List<CountyJurisdiction>()
         {
+            //Police
             new CountyJurisdiction("LSPD-ASD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.BlaineCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.MajesticCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.LosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
+
+            //EMS
+            new CountyJurisdiction("LSFD-EMS",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD-EMS",StaticStrings.BlaineCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD-EMS",StaticStrings.MajesticCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD-EMS",StaticStrings.LosSantosCountyID, 0, 100, 100),
+
+            //Fire
+            new CountyJurisdiction("LSFD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD",StaticStrings.BlaineCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD",StaticStrings.MajesticCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD",StaticStrings.LosSantosCountyID, 0, 100, 100),
         };
         Serialization.SerializeParams(CountyJurisdictionList, CountyConfigFileName);
     }
@@ -647,379 +473,214 @@ public class Jurisdictions : IJurisdictions
         List<ZoneJurisdiction> SimpleZoneJurisdictionsList = new List<ZoneJurisdiction>()
         {
             new ZoneJurisdiction("LSIAPD","AIRP", 0, 100, 100) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","AIRP", 0, 100, 100),
-            new ZoneJurisdiction("MRH","AIRP", 0, 100, 100),
+            new ZoneJurisdiction("LSMC","AIRP", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","ALAMO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","ALAMO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ALAMO", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-VW","ALTA", 0, 100, 100) {CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","ALTA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ALTA", 0, 100, 100),
 
             new ZoneJurisdiction("ARMY","ARMYB", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","BANHAMC", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BANHAMC", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BANHAMC", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","BANNING", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BANNING", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BANNING", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-VW","BAYTRE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BAYTRE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BAYTRE", 0, 100, 100),
 
             new ZoneJurisdiction("DPPD","BEACH", 0, 80, 100) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
             new ZoneJurisdiction("LSLFG","BEACH",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","BEACH", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BEACH", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","BHAMCA", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BHAMCA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BHAMCA", 0, 100, 100),
 
             new ZoneJurisdiction("BCSO","BRADP", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BRADP", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BRADP", 0, 100, 100),
 
             new ZoneJurisdiction("BCSO","BRADT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BRADT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BRADT", 0, 100, 100),
 
             new ZoneJurisdiction("RHPD","BURTON", 0, 100, 100) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","BURTON", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BURTON", 0, 100, 100),
 
             new ZoneJurisdiction("BCSO","CALAFB", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CALAFB", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CALAFB", 0, 100, 100),
-
-            
+    
             new ZoneJurisdiction("SADFW","CANNY", 0, 51, 51),
-            new ZoneJurisdiction("BCSO","CANNY", 1, 49, 49),//new ZoneJurisdiction("BCSO","CANNY", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CANNY", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CANNY", 0, 100, 100),
+            new ZoneJurisdiction("BCSO","CANNY", 1, 49, 49),
 
             new ZoneJurisdiction("SADFW","CCREAK", 0, 51, 51),
-            new ZoneJurisdiction("BCSO","CCREAK", 1, 49, 49),//new ZoneJurisdiction("BCSO","CCREAK", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CCREAK", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CCREAK", 0, 100, 100),
+            new ZoneJurisdiction("BCSO","CCREAK", 1, 49, 49),
 
-            new ZoneJurisdiction("LSPD","CHAMH", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CHAMH", 0, 100, 100),
+            new ZoneJurisdiction("LSPD","CHAMH", 0, 100, 100),//CHamberlain
             new ZoneJurisdiction("LSMC","CHAMH", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-VW","CHIL", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CHIL", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CHIL", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","CHU", 0, 100, 100) { CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","CHU", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CHU", 0, 100, 100),
 
-            new ZoneJurisdiction("SADFW","CMSW", 0, 51, 35),//new ZoneJurisdiction("SAPR","CMSW", 0, 51, 35),
+            new ZoneJurisdiction("SADFW","CMSW", 0, 51, 35),
             new ZoneJurisdiction("BCSO","CMSW", 1, 49, 65),
-            new ZoneJurisdiction("LSFD","CMSW", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CMSW", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-ELS","CYPRE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CYPRE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CYPRE", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-DV","DAVIS", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","DAVIS", 0, 100, 100),
-            new ZoneJurisdiction("MRH","DAVIS", 0, 100, 100),
+            new ZoneJurisdiction("LSMC","DAVIS", 0, 100, 100),
 
             new ZoneJurisdiction("DPPD","DELBE", 0, 80, 100),
             new ZoneJurisdiction("LSLFG","DELBE",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","DELBE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DELBE", 0, 100, 100),
 
             new ZoneJurisdiction("DPPD","DELPE", 0, 100, 100) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","DELPE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DELPE", 0, 100, 100),
 
             new ZoneJurisdiction("DPPD","DELSOL", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","DELSOL", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DELSOL", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","DESRT", 0, 75, 75),
             new ZoneJurisdiction("NOOSE-BP","DESRT", 1, 25, 25),
 
-            new ZoneJurisdiction("LSFD","DESRT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DESRT", 0, 100, 100),
-
             new ZoneJurisdiction("LSPD","DOWNT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","DOWNT", 0, 100, 100),
             new ZoneJurisdiction("MRH","DOWNT", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-VW","DTVINE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","DTVINE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DTVINE", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-VW","EAST_V", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","EAST_V", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","EAST_V", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-ELS","EBURO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","EBURO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","EBURO", 0, 100, 100),
 
             new ZoneJurisdiction("BCSO","ELGORL", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","ELGORL", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ELGORL", 0, 100, 100),
 
             new ZoneJurisdiction("LSPP","ELYSIAN", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","ELYSIAN", 0, 100, 100),
             new ZoneJurisdiction("LSMC","ELYSIAN", 0, 100, 100),
 
             new ZoneJurisdiction("BCSO","GALFISH", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GALFISH", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GALFISH", 0, 100, 100),
 
             new ZoneJurisdiction("RHPD","GOLF", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GOLF", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GOLF", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","GRAPES", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GRAPES", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GRAPES", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-VW","GREATC", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GREATC", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GREATC", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","HARMO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","HARMO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","HARMO", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-VW","HAWICK", 0, 100, 100) { CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","HAWICK", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","HAWICK", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-VW","HORS", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","HORS", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","HORS", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","HUMLAB", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","HUMLAB", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","HUMLAB", 0, 100, 100),
 
             new ZoneJurisdiction("SASPA","JAIL", 0, 100, 100),
 
             new ZoneJurisdiction("RHPD","KOREAT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","KOREAT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","KOREAT", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","LACT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LACT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","LACT", 0, 100, 100),
 
             new ZoneJurisdiction("BCSO","LAGO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LAGO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","LAGO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","LDAM", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LDAM", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","LDAM", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","LEGSQU", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LEGSQU", 0, 100, 100),
             new ZoneJurisdiction("MRH","LEGSQU", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-ELS","LMESA", 0, 100, 100) { CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","LMESA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","LMESA", 0, 100, 100),
+            new ZoneJurisdiction("MRH","LMESA", 0, 100, 100),
 
             new ZoneJurisdiction("DPPD","LOSPUER", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LOSPUER", 0, 100, 100),
             new ZoneJurisdiction("LSMC","LOSPUER", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-ELS","MIRR", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","MIRR", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MIRR", 0, 100, 100),
+            new ZoneJurisdiction("MRH","MIRR", 0, 100, 100),
 
             new ZoneJurisdiction("RHPD","MORN", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","MORN", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MORN", 0, 100, 100),
 
             new ZoneJurisdiction("RHPD","MOVIE", 0, 100, 100) { CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","MOVIE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MOVIE", 0, 100, 100),
 
-            new ZoneJurisdiction("USNPS","MTCHIL", 0, 100, 100),// ZoneJurisdiction("SAPR","MTCHIL", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","MTCHIL", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MTCHIL", 0, 100, 100),
+            new ZoneJurisdiction("USNPS","MTCHIL", 0, 100, 100),
 
-            new ZoneJurisdiction("SAPR","MTGORDO", 0, 100, 100),//new ZoneJurisdiction("SAPR","MTGORDO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","MTGORDO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MTGORDO", 0, 100, 100),
+            new ZoneJurisdiction("SAPR","MTGORDO", 0, 100, 100),
 
             new ZoneJurisdiction("USNPS","MTJOSE", 0, 51, 51),//added
-            new ZoneJurisdiction("BCSO","MTJOSE", 1, 49, 49),//new ZoneJurisdiction("BCSO","MTJOSE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","MTJOSE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MTJOSE", 0, 100, 100),
+            new ZoneJurisdiction("BCSO","MTJOSE", 1, 49, 49),
 
             new ZoneJurisdiction("LSPD-ELS","MURRI", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","MURRI", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MURRI", 0, 100, 100),
+            new ZoneJurisdiction("MRH","MURRI", 0, 100, 100),
 
             new ZoneJurisdiction("BCSO","NCHU", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","NCHU", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","NCHU", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","NOOSE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","NOOSE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","NOOSE", 0, 100, 100),
 
             new ZoneJurisdiction("USCG","OCEANA", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","OCEANA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","OCEANA", 0, 100, 100),
 
             new ZoneJurisdiction("BCSO","PALCOV", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PALCOV", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALCOV", 0, 100, 100),
 
             new ZoneJurisdiction("BCSO","PALETO", 0, 100, 100) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","PALETO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALETO", 0, 100, 100),
 
             new ZoneJurisdiction("BCSO","PALFOR", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PALFOR", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALFOR", 0, 100, 100),
 
             new ZoneJurisdiction("LSDPR","PALHIGH", 0, 51, 51),
             new ZoneJurisdiction("LSSD","PALHIGH", 1, 49, 49),//new ZoneJurisdiction("LSSD","PALHIGH", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PALHIGH", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALHIGH", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","PALMPOW", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PALMPOW", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALMPOW", 0, 100, 100),
 
             new ZoneJurisdiction("DPPD","PBLUFF", 0, 100, 100) { CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","PBLUFF", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PBLUFF", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","PBOX", 0, 100, 100) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","PBOX", 0, 100, 100),
             new ZoneJurisdiction("LSMC","PBOX", 0, 100, 100),
 
             new ZoneJurisdiction("BCSO","PROCOB", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PROCOB", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PROCOB", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","RANCHO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","RANCHO", 0, 100, 100),
             new ZoneJurisdiction("LSMC","RANCHO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-VW","RGLEN", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","RGLEN", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","RGLEN", 0, 100, 100),
 
             new ZoneJurisdiction("RHPD","RICHM", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","RICHM", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","RICHM", 0, 100, 100),
 
             new ZoneJurisdiction("RHPD","ROCKF", 0, 100, 100) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","ROCKF", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ROCKF", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","RTRAK", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","RTRAK", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","RTRAK", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","SANAND", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","SANAND", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","SANAND", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","SANCHIA", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","SANCHIA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","SANCHIA", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","SANDY", 0, 100, 100) { CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","SANDY", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","SANDY", 0, 100, 100),
 
-            new ZoneJurisdiction("LSPD","SKID", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","SKID", 0, 100, 100),
+            new ZoneJurisdiction("LSPD","SKID", 0, 100, 100),//Mission Row
             new ZoneJurisdiction("MRH","SKID", 0, 100, 100),
 
             new ZoneJurisdiction("BCSO","SLAB", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","SLAB", 0, 100, 100),
-            new ZoneJurisdiction("MRH","SLAB", 0, 100, 100),
 
-            //new ZoneJurisdiction("PRISEC","STAD", 0, 95, 0),
-            //new ZoneJurisdiction("LSPD","STAD", 1, 5, 100),
             new ZoneJurisdiction("LSPD","STAD", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","STAD", 0, 100, 100),
             new ZoneJurisdiction("LSMC","STAD", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","STRAW", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","STRAW", 0, 100, 100),
             new ZoneJurisdiction("LSMC","STRAW", 0, 100, 100),
 
-            new ZoneJurisdiction("LSDPR","TATAMO", 0, 100, 100),//new ZoneJurisdiction("LSSD","TATAMO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TATAMO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","TATAMO", 0, 100, 100),
+            new ZoneJurisdiction("LSDPR","TATAMO", 0, 100, 100),
 
             new ZoneJurisdiction("LSPP","TERMINA", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TERMINA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","TERMINA", 0, 100, 100),
 
-            new ZoneJurisdiction("LSPD","TEXTI", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TEXTI", 0, 100, 100),
+            new ZoneJurisdiction("LSPD","TEXTI", 0, 100, 100),//Textile City
             new ZoneJurisdiction("MRH","TEXTI", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","TONGVAH", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TONGVAH", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","TONGVAH", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-VW","TONGVAV", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TONGVAV", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","TONGVAV", 0, 100, 100),
 
             new ZoneJurisdiction("DPPD","VCANA", 0, 100, 100) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","VCANA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","VCANA", 0, 100, 100),
 
             new ZoneJurisdiction("DPPD","VESP", 0, 80, 100) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
             new ZoneJurisdiction("LSLFG","VESP", 1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","VESP", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","VESP", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-VW","VINE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","VINE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","VINE", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","WINDF", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","WINDF", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","WINDF", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-VW","WVINE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","WVINE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","WVINE", 0, 100, 100),
 
             new ZoneJurisdiction("USNPS","ZANCUDO", 0, 51, 51),
-            new ZoneJurisdiction("BCSO","ZANCUDO", 1, 49, 49),
-
-            //new ZoneJurisdiction("SAPR","ZANCUDO", 0, 51, 35),  
-            //new ZoneJurisdiction("BCSO","ZANCUDO", 1, 49, 65),
 
             new ZoneJurisdiction("LSPP","ZP_ORT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","ZP_ORT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ZP_ORT", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","ZQ_UAR", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","ZQ_UAR", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ZQ_UAR", 0, 100, 100),
 
             new ZoneJurisdiction("BCSO","GALLI", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GALLI", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GALLI", 0, 100, 100),
+
             ////Custom
             //new ZoneJurisdiction("APD", "CHI1", 0, 100, 100),
             new ZoneJurisdiction("NYSP", "PROL", 0, 100, 100),
@@ -1033,10 +694,22 @@ public class Jurisdictions : IJurisdictions
         List<CountyJurisdiction> SimpleCountyJurisdictionList = new List<CountyJurisdiction>()
         {
             new CountyJurisdiction("LSPD-ASD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
-            new CountyJurisdiction("LSSD-ASD",StaticStrings.BlaineCountyID, 0, 100, 100),
+            new CountyJurisdiction("BCSO",StaticStrings.BlaineCountyID, 0, 100, 100),//NEW WAS LSSD ASD
             new CountyJurisdiction("LSSD-ASD",StaticStrings.MajesticCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.LosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
+
+            //EMS
+            new CountyJurisdiction("LSCoFD-EMS",StaticStrings.LosSantosCountyID,0,100,100),
+            new CountyJurisdiction("LSCoFD-EMS",StaticStrings.MajesticCountyID, 0, 100, 100),
+            new CountyJurisdiction("BCFD-EMS",StaticStrings.BlaineCountyID,0,100,100),
+            new CountyJurisdiction("LSFD-EMS",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
+
+            //Fire
+            new CountyJurisdiction("LSCoFD",StaticStrings.LosSantosCountyID,0,100,100),
+            new CountyJurisdiction("LSCoFD",StaticStrings.MajesticCountyID,0,100,100),
+            new CountyJurisdiction("BCFD",StaticStrings.BlaineCountyID,0,100,100),
+            new CountyJurisdiction("LSFD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
         };
         Serialization.SerializeParams(SimpleCountyJurisdictionList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\CountyJurisdictions_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(SimpleCountyJurisdictionList, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\CountyJurisdictions_EUP.xml");
@@ -1047,372 +720,213 @@ public class Jurisdictions : IJurisdictions
         List<ZoneJurisdiction> ZoneJurisdictionsList2008 = new List<ZoneJurisdiction>()
         {
             new ZoneJurisdiction("LSPD","AIRP", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","AIRP", 0, 100, 100),
-            new ZoneJurisdiction("MRH","AIRP", 0, 100, 100),
+            new ZoneJurisdiction("LSMC","AIRP", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","ALAMO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","ALAMO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ALAMO", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","ALTA", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","ALTA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ALTA", 0, 100, 100),
 
             new ZoneJurisdiction("ARMY","ARMYB", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","BANHAMC", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BANHAMC", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BANHAMC", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","BANNING", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BANNING", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BANNING", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","BAYTRE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BAYTRE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BAYTRE", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","BEACH", 0, 80, 100),
             new ZoneJurisdiction("LSLFG","BEACH",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","BEACH", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BEACH", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","BHAMCA", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BHAMCA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BHAMCA", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","BRADP", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BRADP", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BRADP", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","BRADT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BRADT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BRADT", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","BURTON", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","BURTON", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BURTON", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","CALAFB", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CALAFB", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CALAFB", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","CANNY", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CANNY", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CANNY", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","CCREAK", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CCREAK", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CCREAK", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","CHAMH", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CHAMH", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CHAMH", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","CHIL", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CHIL", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CHIL", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","CHU", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CHU", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CHU", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","CMSW", 0, 51, 35),
             new ZoneJurisdiction("LSSD","CMSW", 1, 49, 65),
-            new ZoneJurisdiction("LSFD","CMSW", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CMSW", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","CYPRE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CYPRE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CYPRE", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","DAVIS", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","DAVIS", 0, 100, 100),
-            new ZoneJurisdiction("MRH","DAVIS", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","DELBE", 0, 80, 100),
             new ZoneJurisdiction("LSLFG","DELBE",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","DELBE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DELBE", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","DELPE", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","DELPE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DELPE", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","DELSOL", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","DELSOL", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DELSOL", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","DESRT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","DESRT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DESRT", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","DOWNT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","DOWNT", 0, 100, 100),
             new ZoneJurisdiction("MRH","DOWNT", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","DTVINE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","DTVINE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DTVINE", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","EAST_V", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","EAST_V", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","EAST_V", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","EBURO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","EBURO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","EBURO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","ELGORL", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","ELGORL", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ELGORL", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","ELYSIAN", 0, 95, 80),
-            new ZoneJurisdiction("LSFD","ELYSIAN", 0, 100, 100),
             new ZoneJurisdiction("LSMC","ELYSIAN", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","GALFISH", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GALFISH", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GALFISH", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","GOLF", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GOLF", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GOLF", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","GRAPES", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GRAPES", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GRAPES", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","GREATC", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GREATC", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GREATC", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","HARMO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","HARMO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","HARMO", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","HAWICK", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","HAWICK", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","HAWICK", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","HORS", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","HORS", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","HORS", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","HUMLAB", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","HUMLAB", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","HUMLAB", 0, 100, 100),
 
             new ZoneJurisdiction("SASPA","JAIL", 0, 95, 70),
             new ZoneJurisdiction("LSSD","JAIL", 1, 5, 30),
 
             new ZoneJurisdiction("LSPD","KOREAT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","KOREAT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","KOREAT", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","LACT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LACT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","LACT", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","LAGO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LAGO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","LAGO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","LDAM", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LDAM", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","LDAM", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","LEGSQU", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LEGSQU", 0, 100, 100),
             new ZoneJurisdiction("MRH","LEGSQU", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","LMESA", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","LMESA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","LMESA", 0, 100, 100),
+            new ZoneJurisdiction("MRH","LMESA", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","LOSPUER", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LOSPUER", 0, 100, 100),
             new ZoneJurisdiction("LSMC","LOSPUER", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","MIRR", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","MIRR", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MIRR", 0, 100, 100),
+            new ZoneJurisdiction("MRH","MIRR", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","MORN", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","MORN", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MORN", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-RH","MOVIE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","MOVIE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MOVIE", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","MTCHIL", 0, 51, 35),
             new ZoneJurisdiction("LSSD","MTCHIL", 1, 49, 65),
-            new ZoneJurisdiction("LSFD","MTCHIL", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MTCHIL", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","MTGORDO", 0, 51, 35),
             new ZoneJurisdiction("LSSD","MTGORDO", 1, 49, 65),
-            new ZoneJurisdiction("LSFD","MTGORDO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MTGORDO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","MTJOSE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","MTJOSE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MTJOSE", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","MURRI", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","MURRI", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MURRI", 0, 100, 100),
+            new ZoneJurisdiction("MRH","MURRI", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","NCHU", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","NCHU", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","NCHU", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","NOOSE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","NOOSE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","NOOSE", 0, 100, 100),
 
             new ZoneJurisdiction("USCG","OCEANA", 0, 95, 80),
             new ZoneJurisdiction("LSPD","OCEANA", 1, 5, 20),
-            new ZoneJurisdiction("LSFD","OCEANA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","OCEANA", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","PALCOV", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PALCOV", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALCOV", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","PALETO", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","PALETO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALETO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","PALFOR", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PALFOR", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALFOR", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","PALHIGH", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PALHIGH", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALHIGH", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","PALMPOW", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PALMPOW", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALMPOW", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","PBLUFF", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PBLUFF", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PBLUFF", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","PBOX", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","PBOX", 0, 100, 100),
             new ZoneJurisdiction("LSMC","PBOX", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","PROCOB", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PROCOB", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PROCOB", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","RANCHO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","RANCHO", 0, 100, 100),
             new ZoneJurisdiction("LSMC","RANCHO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","RGLEN", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","RGLEN", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","RGLEN", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","RICHM", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","RICHM", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","RICHM", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","ROCKF", 0, 100, 100) { CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","ROCKF", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ROCKF", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","RTRAK", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","RTRAK", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","RTRAK", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","SANAND", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","SANAND", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","SANAND", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","SANCHIA", 0, 51, 35),
             new ZoneJurisdiction("LSSD","SANCHIA", 1, 49, 65),
-            new ZoneJurisdiction("LSFD","SANCHIA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","SANCHIA", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","SANDY", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","SANDY", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","SANDY", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","SKID", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","SKID", 0, 100, 100),
             new ZoneJurisdiction("MRH","SKID", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","SLAB", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","SLAB", 0, 100, 100),
-            new ZoneJurisdiction("MRH","SLAB", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","STAD", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","STAD", 0, 100, 100),
             new ZoneJurisdiction("LSMC","STAD", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","STRAW", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","STRAW", 0, 100, 100),
             new ZoneJurisdiction("LSMC","STRAW", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","TATAMO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TATAMO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","TATAMO", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","TERMINA", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TERMINA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","TERMINA", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","TEXTI", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TEXTI", 0, 100, 100),
             new ZoneJurisdiction("MRH","TEXTI", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","TONGVAH", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TONGVAH", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","TONGVAH", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","TONGVAV", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TONGVAV", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","TONGVAV", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","VCANA", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","VCANA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","VCANA", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","VESP", 0, 80, 100) {CanSpawnPedestrianOfficers = true },
             new ZoneJurisdiction("LSLFG","VESP", 1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","VESP", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","VESP", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-VW","VINE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","VINE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","VINE", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","WINDF", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","WINDF", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","WINDF", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","WVINE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","WVINE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","WVINE", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","ZANCUDO", 0, 51, 35),
             new ZoneJurisdiction("LSSD","ZANCUDO", 1, 49, 65),
 
             new ZoneJurisdiction("LSPD","ZP_ORT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","ZP_ORT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ZP_ORT", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","ZQ_UAR", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","ZQ_UAR", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ZQ_UAR", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","GALLI", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GALLI", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GALLI", 0, 100, 100),
 
             new ZoneJurisdiction("NYSP", "PROL", 0, 100, 100),
         };
@@ -1422,11 +936,24 @@ public class Jurisdictions : IJurisdictions
     {
         List<CountyJurisdiction> CountyJurisdictionList2008 = new List<CountyJurisdiction>()
         {
+            //Police
             new CountyJurisdiction("LSPD-ASD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.BlaineCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.MajesticCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.LosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
+
+            //EMS
+            new CountyJurisdiction("LSFD-EMS",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD-EMS",StaticStrings.BlaineCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD-EMS",StaticStrings.MajesticCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD-EMS",StaticStrings.LosSantosCountyID, 0, 100, 100),
+
+            //Fire
+            new CountyJurisdiction("LSFD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD",StaticStrings.BlaineCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD",StaticStrings.MajesticCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD",StaticStrings.LosSantosCountyID, 0, 100, 100),
         };
         Serialization.SerializeParams(CountyJurisdictionList2008, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\CountyJurisdictions_LosSantos2008.xml");
     }
@@ -1517,372 +1044,213 @@ public class Jurisdictions : IJurisdictions
         List<ZoneJurisdiction> ZoneJurisdictionsListSimple = new List<ZoneJurisdiction>()
         {
             new ZoneJurisdiction("LSPD","AIRP", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","AIRP", 0, 100, 100),
-            new ZoneJurisdiction("MRH","AIRP", 0, 100, 100),
+            new ZoneJurisdiction("LSMC","AIRP", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","ALAMO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","ALAMO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ALAMO", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","ALTA", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","ALTA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ALTA", 0, 100, 100),
 
             new ZoneJurisdiction("ARMY","ARMYB", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","BANHAMC", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BANHAMC", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BANHAMC", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","BANNING", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BANNING", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BANNING", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","BAYTRE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BAYTRE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BAYTRE", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","BEACH", 0, 80, 100),
             new ZoneJurisdiction("LSLFG","BEACH",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","BEACH", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BEACH", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","BHAMCA", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BHAMCA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BHAMCA", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","BRADP", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BRADP", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BRADP", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","BRADT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","BRADT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BRADT", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","BURTON", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","BURTON", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","BURTON", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","CALAFB", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CALAFB", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CALAFB", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","CANNY", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CANNY", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CANNY", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","CCREAK", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CCREAK", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CCREAK", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","CHAMH", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CHAMH", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CHAMH", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","CHIL", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CHIL", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CHIL", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","CHU", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CHU", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CHU", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","CMSW", 0, 51, 35),
             new ZoneJurisdiction("LSSD","CMSW", 1, 49, 65),
-            new ZoneJurisdiction("LSFD","CMSW", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","CMSW", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","CYPRE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","CYPRE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CYPRE", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","DAVIS", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","DAVIS", 0, 100, 100),
-            new ZoneJurisdiction("MRH","DAVIS", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","DELBE", 0, 80, 100),
             new ZoneJurisdiction("LSLFG","DELBE",1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","DELBE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DELBE", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","DELPE", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","DELPE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DELPE", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","DELSOL", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","DELSOL", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DELSOL", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","DESRT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","DESRT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DESRT", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","DOWNT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","DOWNT", 0, 100, 100),
             new ZoneJurisdiction("MRH","DOWNT", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","DTVINE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","DTVINE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","DTVINE", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","EAST_V", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","EAST_V", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","EAST_V", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","EBURO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","EBURO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","EBURO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","ELGORL", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","ELGORL", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ELGORL", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","ELYSIAN", 0, 95, 80),
-            new ZoneJurisdiction("LSFD","ELYSIAN", 0, 100, 100),
             new ZoneJurisdiction("LSMC","ELYSIAN", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","GALFISH", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GALFISH", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GALFISH", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","GOLF", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GOLF", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GOLF", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","GRAPES", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GRAPES", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GRAPES", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","GREATC", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GREATC", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GREATC", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","HARMO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","HARMO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","HARMO", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","HAWICK", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","HAWICK", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","HAWICK", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","HORS", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","HORS", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","HORS", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","HUMLAB", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","HUMLAB", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","HUMLAB", 0, 100, 100),
 
             new ZoneJurisdiction("SASPA","JAIL", 0, 95, 70),
             new ZoneJurisdiction("LSSD","JAIL", 1, 5, 30),
 
             new ZoneJurisdiction("LSPD","KOREAT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","KOREAT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","KOREAT", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","LACT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LACT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","LACT", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","LAGO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LAGO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","LAGO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","LDAM", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LDAM", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","LDAM", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","LEGSQU", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LEGSQU", 0, 100, 100),
             new ZoneJurisdiction("MRH","LEGSQU", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","LMESA", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","LMESA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","LMESA", 0, 100, 100),
+            new ZoneJurisdiction("MRH","LMESA", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","LOSPUER", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","LOSPUER", 0, 100, 100),
             new ZoneJurisdiction("LSMC","LOSPUER", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","MIRR", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","MIRR", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MIRR", 0, 100, 100),
+            new ZoneJurisdiction("MRH","MIRR", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","MORN", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","MORN", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MORN", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-RH","MOVIE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","MOVIE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MOVIE", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","MTCHIL", 0, 51, 35),
             new ZoneJurisdiction("LSSD","MTCHIL", 1, 49, 65),
-            new ZoneJurisdiction("LSFD","MTCHIL", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MTCHIL", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","MTGORDO", 0, 51, 35),
             new ZoneJurisdiction("LSSD","MTGORDO", 1, 49, 65),
-            new ZoneJurisdiction("LSFD","MTGORDO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MTGORDO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","MTJOSE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","MTJOSE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MTJOSE", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","MURRI", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","MURRI", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","MURRI", 0, 100, 100),
+            new ZoneJurisdiction("MRH","MURRI", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","NCHU", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","NCHU", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","NCHU", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","NOOSE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","NOOSE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","NOOSE", 0, 100, 100),
 
             new ZoneJurisdiction("USCG","OCEANA", 0, 95, 80),
             new ZoneJurisdiction("LSPD","OCEANA", 1, 5, 20),
-            new ZoneJurisdiction("LSFD","OCEANA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","OCEANA", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","PALCOV", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PALCOV", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALCOV", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","PALETO", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","PALETO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALETO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","PALFOR", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PALFOR", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALFOR", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","PALHIGH", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PALHIGH", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALHIGH", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","PALMPOW", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PALMPOW", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PALMPOW", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","PBLUFF", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PBLUFF", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PBLUFF", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","PBOX", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","PBOX", 0, 100, 100),
             new ZoneJurisdiction("LSMC","PBOX", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","PROCOB", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","PROCOB", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","PROCOB", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","RANCHO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","RANCHO", 0, 100, 100),
             new ZoneJurisdiction("LSMC","RANCHO", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","RGLEN", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","RGLEN", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","RGLEN", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","RICHM", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","RICHM", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","RICHM", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","ROCKF", 0, 100, 100) { CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","ROCKF", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ROCKF", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","RTRAK", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","RTRAK", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","RTRAK", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","SANAND", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","SANAND", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","SANAND", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","SANCHIA", 0, 51, 35),
             new ZoneJurisdiction("LSSD","SANCHIA", 1, 49, 65),
-            new ZoneJurisdiction("LSFD","SANCHIA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","SANCHIA", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","SANDY", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","SANDY", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","SANDY", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","SKID", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","SKID", 0, 100, 100),
             new ZoneJurisdiction("MRH","SKID", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","SLAB", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","SLAB", 0, 100, 100),
-            new ZoneJurisdiction("MRH","SLAB", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","STAD", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","STAD", 0, 100, 100),
             new ZoneJurisdiction("LSMC","STAD", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","STRAW", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","STRAW", 0, 100, 100),
             new ZoneJurisdiction("LSMC","STRAW", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","TATAMO", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TATAMO", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","TATAMO", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","TERMINA", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TERMINA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","TERMINA", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","TEXTI", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TEXTI", 0, 100, 100),
             new ZoneJurisdiction("MRH","TEXTI", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","TONGVAH", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TONGVAH", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","TONGVAH", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","TONGVAV", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","TONGVAV", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","TONGVAV", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","VCANA", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSFD","VCANA", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","VCANA", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","VESP", 0, 80, 100) {CanSpawnPedestrianOfficers = true },
             new ZoneJurisdiction("LSLFG","VESP", 1, 20, 0) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
-            new ZoneJurisdiction("LSFD","VESP", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","VESP", 0, 100, 100),
 
-            new ZoneJurisdiction("LSPD-VW","VINE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","VINE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","VINE", 0, 100, 100),
+            new ZoneJurisdiction("LSPD","VINE", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","WINDF", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","WINDF", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","WINDF", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","WVINE", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","WVINE", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","WVINE", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","ZANCUDO", 0, 51, 35),
             new ZoneJurisdiction("LSSD","ZANCUDO", 1, 49, 65),
 
             new ZoneJurisdiction("LSPD","ZP_ORT", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","ZP_ORT", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ZP_ORT", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","ZQ_UAR", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","ZQ_UAR", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","ZQ_UAR", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","GALLI", 0, 100, 100),
-            new ZoneJurisdiction("LSFD","GALLI", 0, 100, 100),
-            new ZoneJurisdiction("LSMC","GALLI", 0, 100, 100),
 
             new ZoneJurisdiction("NYSP", "PROL", 0, 100, 100),
         };
@@ -1892,15 +1260,27 @@ public class Jurisdictions : IJurisdictions
     {
         List<CountyJurisdiction> CountyJurisdictionListSimple = new List<CountyJurisdiction>()
         {
+            //Police
             new CountyJurisdiction("LSPD-ASD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.BlaineCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.MajesticCountyID, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",StaticStrings.LosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
+
+            //EMS
+            new CountyJurisdiction("LSFD-EMS",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD-EMS",StaticStrings.BlaineCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD-EMS",StaticStrings.MajesticCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD-EMS",StaticStrings.LosSantosCountyID, 0, 100, 100),
+
+            //Fire
+            new CountyJurisdiction("LSFD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD",StaticStrings.BlaineCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD",StaticStrings.MajesticCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSFD",StaticStrings.LosSantosCountyID, 0, 100, 100),
         };
         Serialization.SerializeParams(CountyJurisdictionListSimple, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\CountyJurisdictions_Simple.xml");
     }
-
 }
 
 

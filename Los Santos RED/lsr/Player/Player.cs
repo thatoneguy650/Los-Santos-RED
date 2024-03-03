@@ -94,6 +94,7 @@ namespace Mod
         private bool prevAliasPedAsMainCharacter = true;//if change default setting
         private bool prevIsSleeping;
         private uint KillerHandle;
+        private bool HasThrownInTunnel;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -851,6 +852,17 @@ namespace Mod
                 HasThrownGotOnFreeway = false;
                 HasThrownGotOffFreeway = true;
             }
+
+
+            if (CurrentLocation.HasBeenInTunnel && !HasThrownInTunnel)
+            {
+                OnWentInTunnel();
+                HasThrownInTunnel = true;
+            }
+            if(!CurrentLocation.TreatAsInTunnel && HasThrownInTunnel)
+            {
+                HasThrownInTunnel = false;
+            }
         }
         public void PlaySpeech(string speechName, bool useMegaphone)
         {
@@ -1028,6 +1040,15 @@ namespace Mod
                 Scanner.OnGotOnFreeway();
             }
             //EntryPoint.WriteToConsole($"PLAYER EVENT: OnGotOnFreeway (5 Second Delay)");
+        }
+        public void OnWentInTunnel()
+        {
+            GameFiber.Yield();
+            if (IsWanted && AnyPoliceCanSeePlayer && IsAliveAndFree)
+            {
+                Scanner.OnWentInTunnel();
+            }
+            EntryPoint.WriteToConsole($"PLAYER EVENT: Went In Tunnel (5 Second Delay)");
         }
         public void OnInvestigationExpire()
         {

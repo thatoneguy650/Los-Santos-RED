@@ -71,6 +71,7 @@ namespace LosSantosRED.lsr
         private uint GameTimeLastMentionedLocation;
         private Dispatch GotOffFreeway;
         private Dispatch GotOnFreeway;
+        private Dispatch WentInTunnel;
         private Dispatch GrandTheftAuto;
         private Dispatch Harassment;
         private int HighestCivilianReportedPriority = 99;
@@ -569,6 +570,18 @@ namespace LosSantosRED.lsr
             }
             //EntryPoint.WriteToConsole($"SCANNER EVENT: OnGotOnFreeway", 5);
         }
+
+        public void OnWentInTunnel()
+        {
+            if (!WentInTunnel.HasRecentlyBeenPlayed && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 4)
+            {
+                WentInTunnel.LatestInformation.SeenByOfficers = true;
+                AddToQueue(WentInTunnel);
+            }
+             EntryPoint.WriteToConsole($"SCANNER EVENT: WENT IN TUNNEL", 3);
+        }
+
+
         public void OnGotOutOfVehicle()
         {
             if (!OnFoot.HasRecentlyBeenPlayed && Player.WantedLevel <= 4)
@@ -1833,6 +1846,7 @@ namespace LosSantosRED.lsr
             ,ExcessiveSpeed
             ,GotOnFreeway
             ,GotOffFreeway
+            ,WentInTunnel
             ,TamperingWithVehicle
             ,VehicleCrashed
             ,VehicleStartedFire
@@ -3230,6 +3244,53 @@ namespace LosSantosRED.lsr
                     //new AudioSet(new List<string>() { crime_speeding_felony.Aspeedingfelony.FileName },"a speeding felony"),
                     //new AudioSet(new List<string>() { crime_5_10.A510.FileName,crime_5_10.Speedingvehicle.FileName },"a 5-10, speeding vehicle"),
                 },
+            };
+            WentInTunnel = new Dispatch()
+            {
+                Name = "Entered Tunnel",
+                IsPoliceStatus = true,
+                IncludeReportedBy = false,
+                LocationDescription = LocationSpecificity.Nothing,
+                IncludeDrivingVehicle = false,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { s_f_y_cop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_f_y_cop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_f_y_cop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_f_y_cop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_mini_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_mini_03.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_mini_04.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_mini_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_mini_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_mini_03.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_mini_04.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_f_y_cop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_f_y_cop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_f_y_cop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_f_y_cop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+            },
             };
             GotOnFreeway = new Dispatch()
             {

@@ -306,7 +306,7 @@ public class Investigation
         }
         else
         {
-            CanEMSExpire = !World.Pedestrians.AnyInjuredPeopleNearPlayer && !HasEMSInvestigated;
+            CanEMSExpire = !World.Pedestrians.AnyInjuredPeopleNearPlayer && HasEMSInvestigated;
         }
 
         if(CanPoliceExpire)

@@ -62,6 +62,8 @@ public class PlacesOfInterest : IPlacesOfInterest
     private List<BlankLocation> BlankLocationPlaces;
     private List<ApartmentBuilding> ApartmentBuildings;
     private List<MilitaryBase> MilitaryBasePlaces;
+    private List<SpawnPlace> TunnelSpawnPlaces;
+
     public PossibleLocations PossibleLocations { get; private set; }
     public PlacesOfInterest(IShopMenus shopMenus, IGangs gangs)
     {
@@ -202,6 +204,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         DefaultConfig_Morgues();
         DefaultConfig_Airports();
         DefaultConfig_MilitaryBases();
+        DefaultConfig_TunnelSpawns();
 
         PossibleLocations.DeadDrops.AddRange(DeadDrops);
         PossibleLocations.CarCrushers.AddRange(CarCrushers);
@@ -245,6 +248,9 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.BlankLocations.AddRange(BlankLocationPlaces);
 
         PossibleLocations.MilitaryBases.AddRange(MilitaryBasePlaces);
+
+
+        PossibleLocations.TunnelSpawns.AddRange(TunnelSpawnPlaces);
 
         Serialization.SerializeParam(PossibleLocations, ConfigFileName);
     }
@@ -301,7 +307,17 @@ public class PlacesOfInterest : IPlacesOfInterest
             },
         };
     }
+    private void DefaultConfig_TunnelSpawns()
+    {
+        TunnelSpawnPlaces = new List<SpawnPlace>()
+        {
+            new SpawnPlace(new Vector3(1376.901f, -955.329f, 57.46247f), 59.50793f),//murrieta train tunnel  a
+            new SpawnPlace(new Vector3(854.5894f, -472.6249f, 29.40497f), 263.9887f),//murrieta train tunnel  b
+        };
 
+
+
+    }
     private void DefaultConfig_Airports()
     {
         Airports = new List<Airport>()
@@ -1235,13 +1251,13 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             new Bar(new Vector3(224.5178f, 336.3819f, 105.5973f), 340.0694f, "Pitchers", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
             new Bar(new Vector3(219.5508f, 304.9488f, 105.5861f), 250.1051f, "Singletons", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
-            new Bar(new Vector3(1982.979f, 3053.596f, 47.21508f), 226.3188f, "Yellow Jacket Inn", "","BarMenu") { OpenTime = 0, CloseTime = 24,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1982.979f, 3053.596f, 47.21508f), 226.3188f) }, ScannerFilePath = "01_specific_location\\0x02C36B8B.wav",VendorPersonnelID = "BarPeds",  },
+            new Bar(new Vector3(1982.979f, 3053.596f, 47.21508f), 226.3188f, "Yellow Jacket Inn", "","BarMenu") { VendorFightPercentage = 45f,VendorFightPolicePercentage = 10f, OpenTime = 0, CloseTime = 24,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1982.979f, 3053.596f, 47.21508f), 226.3188f) }, ScannerFilePath = "01_specific_location\\0x02C36B8B.wav",VendorPersonnelID = "BarPeds",  },
             new Bar(new Vector3(-262.8396f, 6291.08f, 31.49327f), 222.9271f, "The Bay Bar", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
             new Bar(new Vector3(-576.9105f, 239.0964f, 82.63644f), 354.0043f, "The Last Resort", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
             new Bar(new Vector3(255.3016f, -1013.603f, 29.26964f), 70.28053f, "Shenanigan's Bar", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
             new Bar(new Vector3(1218.175f, -416.5078f, 67.78294f), 74.95883f, "Mirror Park Tavern", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
             new Bar(new Vector3(-1388.5f, -586.6741f, 30.21859f), 31.53231f, "Bahama Mama's", "","BarMenu") { OpenTime = 0, CloseTime = 24,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1391.372f, -605.995f, 30.31955f), 116.404f) }, InteriorID = 107778, VendorPersonnelID = "BarPeds", },//TeleportEnterPosition = new Vector3(-1387.984f, -587.4419f, 30.31951f), TeleportEnterHeading = 210.6985f,
-            new Bar(new Vector3(-564.6519f, 276.2436f, 83.12064f), 175.5771f,"Tequila-La", "","BarMenu") { OpenTime = 0, CloseTime = 24,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-561.9947f, 284.9062f, 82.17636f), 262.2369f) }, InteriorID = 72706, VendorPersonnelID = "BarPeds", },//need better coordinates
+            new Bar(new Vector3(-564.6519f, 276.2436f, 83.12064f), 175.5771f,"Tequila-La", "","BarMenu") { VendorFightPercentage =  25f,VendorFightPolicePercentage = 10f, OpenTime = 0, CloseTime = 24,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-561.9947f, 284.9062f, 82.17636f), 262.2369f) }, InteriorID = 72706, VendorPersonnelID = "BarPeds", },//need better coordinates
             new Bar(new Vector3(-2193.238f, 4290.112f, 49.17442f), 37.55579f, "Hookies", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
         };
     }

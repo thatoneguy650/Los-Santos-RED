@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,6 +29,7 @@ public class FireSettings : ISettingsDefaultable
 
     [Description("Minimum time in milliseconds between a spawn.")]
     public int TimeBetweenSpawn { get; set; }
+    public int TimeBetweenSpawn_Investigation { get; set; }
     public int TimeBetweenSpawn_DowntownAdditional { get; set; }
     public int TimeBetweenSpawn_WildernessAdditional { get; set; }
     public int TimeBetweenSpawn_RuralAdditional { get; set; }
@@ -40,7 +42,10 @@ public class FireSettings : ISettingsDefaultable
     public float MinDistanceToSpawn { get; set; }
     [Description("Maximum distance in meters to spawn from the player.")]
     public float MaxDistanceToSpawn { get; set; }
-
+    [Description("Minimum distance in meters to spawn from the player during an investigation.")]
+    public float MinDistanceToSpawn_Investigation { get; set; }
+    [Description("Maximum distance in meters to spawn from the player during an investigation.")]
+    public float MaxDistanceToSpawn_Investigation { get; set; }
 
     [Description("Total limit of spawned ems peds. Does not include vanilla members.")]
     public int TotalSpawnedMembersLimit { get; set; }
@@ -79,6 +84,16 @@ public class FireSettings : ISettingsDefaultable
     [Description("Max wanted level that dens will spawn gang peds.")]
     public int StationSpawningWhenPlayerWantedMaxWanted { get; set; }
     public float FireAwareDistance { get; set; }
+    public float LikelyHoodOfCountySpawn { get; set; }
+
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
+
+
 
     public FireSettings()
     {
@@ -100,6 +115,7 @@ public class FireSettings : ISettingsDefaultable
 
 
         TimeBetweenSpawn = 60000;//10000;
+        TimeBetweenSpawn_Investigation = 10000;
         TimeBetweenSpawn_DowntownAdditional = 20000;
         TimeBetweenSpawn_WildernessAdditional = 90000;
         TimeBetweenSpawn_RuralAdditional = 70000;
@@ -109,6 +125,9 @@ public class FireSettings : ISettingsDefaultable
 
         MinDistanceToSpawn = 350f;// 50f;
         MaxDistanceToSpawn = 750f;// 1000f;// 150f;
+
+        MinDistanceToSpawn_Investigation = 150f;// 50f;
+        MaxDistanceToSpawn_Investigation = 250f;// 1000f;// 150f;
 
         TotalSpawnedMembersLimit = 4;// 6;//5
         TotalSpawnedAmbientMembersLimit = 2;// 8;
@@ -126,12 +145,13 @@ public class FireSettings : ISettingsDefaultable
         AmbientSpawnPercentage_Suburb = 1;// 10;// 15;
         AmbientSpawnPercentage_Industrial = 1;// 15;// 25;
         AmbientSpawnPercentage_Downtown = 2;// 25;// 40;
-        AmbientSpawnPercentage_Investigation = 15;// 25;// 70;
+        AmbientSpawnPercentage_Investigation = 25;// 25;// 70;
 
         AllowStationSpawningWhenPlayerWanted = true;
         StationSpawningWhenPlayerWantedMaxWanted = 2;
         AllowAmbientSpawningWhenPlayerWanted = true;
         AmbientSpawningWhenPlayerWantedMaxWanted = 2;
         FireAwareDistance = 35f;
+        LikelyHoodOfCountySpawn = 30;
     }
 }

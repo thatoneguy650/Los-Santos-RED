@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,19 +32,27 @@ public class EMSSettings : ISettingsDefaultable
 
     [Description("Minimum time in milliseconds between a spawn.")]
     public int TimeBetweenSpawn { get; set; }
+
+    public int TimeBetweenSpawn_Investigation { get; set; }
+
     public int TimeBetweenSpawn_DowntownAdditional { get; set; }
     public int TimeBetweenSpawn_WildernessAdditional { get; set; }
     public int TimeBetweenSpawn_RuralAdditional { get; set; }
     public int TimeBetweenSpawn_SuburbAdditional { get; set; }
     public int TimeBetweenSpawn_IndustrialAdditional { get; set; }
 
-
+    //Settings.SettingsManager.EMSSettings.TimeBetweenSpawn_WildernessAdditional
 
     [Description("Minimum distance in meters to spawn from the player.")]
     public float MinDistanceToSpawn { get; set; }
     [Description("Maximum distance in meters to spawn from the player.")]
     public float MaxDistanceToSpawn { get; set; }
 
+
+    [Description("Minimum distance in meters to spawn from the player during an investigation.")]
+    public float MinDistanceToSpawn_Investigation { get; set; }
+    [Description("Maximum distance in meters to spawn from the player during an investigation.")]
+    public float MaxDistanceToSpawn_Investigation { get; set; }
 
     [Description("Total limit of spawned ems peds. Does not include vanilla members.")]
     public int TotalSpawnedMembersLimit { get; set; }
@@ -81,6 +90,14 @@ public class EMSSettings : ISettingsDefaultable
     public bool AllowStationSpawningWhenPlayerWanted { get; set; }
     [Description("Max wanted level that locations will spawn peds.")]
     public int StationSpawningWhenPlayerWantedMaxWanted { get; set; }
+    public float LikelyHoodOfCountySpawn { get; set; }
+
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
 
 
     public EMSSettings()
@@ -102,6 +119,7 @@ public class EMSSettings : ISettingsDefaultable
 
 
         TimeBetweenSpawn = 60000;//10000;
+        TimeBetweenSpawn_Investigation = 10000;
         TimeBetweenSpawn_DowntownAdditional = 20000;
         TimeBetweenSpawn_WildernessAdditional = 90000;
         TimeBetweenSpawn_RuralAdditional = 70000;
@@ -111,6 +129,8 @@ public class EMSSettings : ISettingsDefaultable
 
         MinDistanceToSpawn = 350f;// 50f;
         MaxDistanceToSpawn = 750f;// 1000f;// 150f;
+        MinDistanceToSpawn_Investigation = 150f;// 50f;
+        MaxDistanceToSpawn_Investigation = 250f;// 1000f;// 150f;
 
         TotalSpawnedMembersLimit = 3;// 6;//5
         TotalSpawnedAmbientMembersLimit = 2;// 8;
@@ -128,13 +148,13 @@ public class EMSSettings : ISettingsDefaultable
         AmbientSpawnPercentage_Suburb = 1;// 15;
         AmbientSpawnPercentage_Industrial = 1;// 25;
         AmbientSpawnPercentage_Downtown = 5;// 40;
-        AmbientSpawnPercentage_Investigation = 15;// 70;
+        AmbientSpawnPercentage_Investigation = 25;// 70;
 
         AllowStationSpawningWhenPlayerWanted = true;
         StationSpawningWhenPlayerWantedMaxWanted = 2;
         AllowAmbientSpawningWhenPlayerWanted = true;
         AmbientSpawningWhenPlayerWantedMaxWanted = 2;
 
-
+        LikelyHoodOfCountySpawn = 30;
     }
 }

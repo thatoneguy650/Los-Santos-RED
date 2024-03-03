@@ -1,8 +1,10 @@
 ﻿using LosSantosRED.lsr.Interface;
+using NAudio.Gui;
 using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -35,6 +37,11 @@ namespace LosSantosRED.lsr.Locations
 
         private uint GameTimeWentInside;
         private uint GameTimeWentOutside;
+        private uint GameTimeLastShowed;
+        private bool treatAsInTunnel;
+        private uint GameTimeWentInTunnel;
+        private uint GameTimeLeftTunnel;
+
         public LocationData(Entity characterToLocate, IStreets streets, IZones zones, IInteriors interiors, ISettingsProvideable settings)
         {
             Streets = streets;
@@ -54,8 +61,10 @@ namespace LosSantosRED.lsr.Locations
         public uint GameTimeInZone => GameTimeEnteredZone == 0 ? 0 : Game.GameTime - GameTimeEnteredZone;
         public bool IsOnFreeway => CurrentStreet != null && CurrentStreet.IsHighway;
 
-        public bool MightBeInTunnel => IsInside && Game.LocalPlayer.Character.Position.Z <= Settings.SettingsManager.DebugSettings.TunnelZValueMax;// -10.f;
+        public bool PossiblyInTunnel { get; private set; } //=> IsInside && Game.LocalPlayer.Character.Position.Z <= Settings.SettingsManager.DebugSettings.TunnelZValueMax;// -10.f;
         public bool IsInTunnel { get; private set; }
+
+        public bool TreatAsInTunnel => IsInTunnel || PossiblyInTunnel;
 
         public bool IsByTunnelNode { get; private set; }
         public Vector3 ClosestRoadNode => ClosestNode;
@@ -64,6 +73,9 @@ namespace LosSantosRED.lsr.Locations
         public string NodeString { get; set; }
         public uint TimeInside => IsInside && GameTimeWentInside != 0 ? Game.GameTime - GameTimeWentInside : 0;
         public uint TimeOutside => !IsInside && GameTimeWentOutside != 0 ? Game.GameTime - GameTimeWentOutside : 0;
+
+        public bool HasBeenInTunnel => TreatAsInTunnel && GameTimeWentInTunnel != 0 && Game.GameTime - GameTimeWentInTunnel >= 5000;
+
         public bool HasBeenOffRoad => isCurrentlyOffroad && GameTimeGotOffRoad != 0 && Game.GameTime - GameTimeGotOffRoad >= 15000;
         public bool HasBeenOnHighway => CurrentStreetIsHighway && GameTimeGotOnFreeway != 0 && Game.GameTime - GameTimeGotOnFreeway >= 5000;
         public bool HasBeenOffHighway => !CurrentStreetIsHighway && GameTimeGotOffFreeway != 0 && Game.GameTime - GameTimeGotOffFreeway >= 5000 && !HasThrownGotOffFreeway;
@@ -161,13 +173,52 @@ namespace LosSantosRED.lsr.Locations
         private void UpdateNode(bool isInVehicle)
         {
             IsByTunnelNode = false;
+
+            if (EntityToLocate.Exists())
+            {
+                Vector3 playerpos = EntityToLocate.Position;
+                float groundZ = 850.0f;
+                bool foundGround = NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(playerpos.X, playerpos.Y, playerpos.Z + 850f, ref groundZ, false);
+
+                if (foundGround && groundZ >= playerpos.Z + Math.Abs(Settings.SettingsManager.DebugSettings.TunnelZValueMax))
+                {
+
+                    PossiblyInTunnel = true;
+
+                }
+                else
+                {
+                    PossiblyInTunnel = false;
+                }
+            }
+            else
+            {
+                PossiblyInTunnel = false;
+            }
+
+
+            if (treatAsInTunnel != TreatAsInTunnel)
+            {
+                if (TreatAsInTunnel)
+                {
+                    OnWentInTunnel();
+                }
+                else
+                {
+                    OnLeftTunnel();
+                }
+                treatAsInTunnel = TreatAsInTunnel;
+            }
+
+
+
+
             if (EntityToLocate.Exists() && (!IsInside || isInVehicle))
             {
                 Vector3 position = EntityToLocate.Position;//Game.LocalPlayer.Character.Position;
                 Vector3 outPos;
                 float outHeading;
                // bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, out outPos, 0, 3.0f, 0f);
-
                 bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(position.X, position.Y, position.Z, out outPos, out outHeading, 0, 3.0f, 0f);
                 bool hasProperties = false;
                 //int busy;
@@ -179,25 +230,21 @@ namespace LosSantosRED.lsr.Locations
                 //if (hasProperties)
                 //{
                 //    VEHICLE_NODE_PROPERTIES coolFlag = (VEHICLE_NODE_PROPERTIES)flags;
-                //    if(coolFlag.HasFlag(VEHICLE_NODE_PROPERTIES.VNP_TUNNEL_OR_INTERIOR))
+                //    if (coolFlag.HasFlag(VEHICLE_NODE_PROPERTIES.VNP_TUNNEL_OR_INTERIOR))
                 //    {
                 //        IsByTunnelNode = true;
-                //        EntryPoint.WriteToConsole("NEAR A TUNNEL OR INSIDE ROAD NODE");
+                //        EntryPoint.WriteToConsole($"NEAR A TUNNEL OR INSIDE ROAD NODE {flags}");
                 //    }
                 //    else
                 //    {
                 //        IsByTunnelNode = false;
+                //        EntryPoint.WriteToConsole($"NOT NEAR A TUNNEL OR INSIDE ROAD NODE {flags}");
                 //    }
                 //}
                 //else
                 //{
                 //    IsByTunnelNode = false;
                 //}
-
-
-
-
-
                 ClosestNode = outPos;
                 ClosestNodeHeading = outHeading;
                 if (!hasNode || ClosestNode == Vector3.Zero || ClosestNode.DistanceTo(EntityToLocate) >= 15f)//was 15f
@@ -227,6 +274,9 @@ namespace LosSantosRED.lsr.Locations
                 isCurrentlyOffroad = IsOffroad;
             }
         }
+
+
+
         private void UpdateStreets(bool isInVehicle)
         {
             if (IsOffroad || (IsInside && !isInVehicle))
@@ -353,6 +403,19 @@ namespace LosSantosRED.lsr.Locations
                 CurrentStreetIsHighway = false;
             }
         }
+
+        private void OnLeftTunnel()
+        {
+            GameTimeWentInTunnel = 0;
+            GameTimeLeftTunnel = Game.GameTime;
+        }
+
+        private void OnWentInTunnel()
+        {
+            GameTimeWentInTunnel = Game.GameTime;
+            GameTimeLeftTunnel = 0;
+        }
+
         private void OnWentInside()
         {
             GameTimeWentInside = Game.GameTime;
