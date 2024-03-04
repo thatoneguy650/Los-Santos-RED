@@ -215,16 +215,10 @@ public class ModDataFileManager
         Organizations.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons, Contacts);
         GameFiber.Yield();
 
-
         Contacts.Setup(Organizations);
-
-
-
 
         SpawnBlocks = new SpawnBlocks();
         SpawnBlocks.ReadConfig();
-
-
     }
     private void SetupAlternateConfigs()
     {
@@ -277,15 +271,6 @@ public class ModDataFileManager
     }
     private void SetupFullExpandedJurisdiction()
     {
-
-    /*    private string PoliceGauntlet = "polgauntlet";
-
-    private string ServiceDilettante = "dilettante2";
-    private string WashingtonUnmarked = "blista3";
-
-    private string PoliceStanierOld = "stalion2";
-    private string ServiceStanierOld = "gauntlet2";
-    */
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction");
         string Description =
             "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, AllenKennedy, and my own mapped default police/service vehicles."
@@ -339,18 +324,12 @@ public class ModDataFileManager
     {
         string Description =
             "See what San Andreas was like in 2008 when we were in Liberty City with Niko. Includes customized traffic, phones, police, and gangs."
-            + Environment.NewLine +
-            "This pack will replace the following vehicles police (Stanier), police2 (Buffalo), sheriff2 (Granger Police), policeb (Police Bike), policeold1 (Merit Police). It will also replace the following files: popgroups.ymt, vehiclemodelsets.meta, and prop_player_phone_01. THE IV PACK IS REQUIRED!"
             + Environment.NewLine + Environment.NewLine +
-            "IV Pack Installation: "
+            "1. Navigate to the Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Files folder and install the greskfejinstaller.oiv with OpenIV (Vehicles from the Full Expanded Jurisdiction config are used in this config)"
             + Environment.NewLine +
-            "1. Follow the instructions at https://www.gta5-mods.com/vehicles/ivpack-gtaiv-vehicles-in-gtav (be sure to get the heap/packfile adjusters and a gameconfig)"
-            + Environment.NewLine + Environment.NewLine +
-            "2008 Installation: "
+            "2. Navigate to the Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008 folder and install the gresk2008installer.oiv with OpenIV"
             + Environment.NewLine +
-            "1. Install the gresk2008installer.oiv with OpenIV"
-            + Environment.NewLine +
-            "2. Copy all of the .xml files from the AlternateConfigs\\LosSantos2008 folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)"
+            "3. Copy all of the .xml files from the AlternateConfigs\\LosSantos2008 folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)"
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
             ""
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +

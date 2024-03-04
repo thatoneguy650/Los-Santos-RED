@@ -1868,9 +1868,20 @@ public class DispatchablePeople : IDispatchablePeople
             },//filled duty belt
         };
 
+        List<DispatchablePerson> LSPDASDPeds_2008 = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("s_m_y_pilot_01",0,0) { DebugName = "Police and LSPD Labeled Pilot",GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } }, //HAS LSPD STUFF ON HIM!!!!
+            new DispatchablePerson("s_m_y_swat_01", 0,100){DebugName = "LSPDASDSWAT",AllowRandomizeBeforeVariationApplied = true,RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) })},
+        };
+        List<DispatchablePerson> LSSDASDPeds_2008 = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } },
+            new DispatchablePerson("s_m_y_swat_01", 0,100){DebugName = "LSSDASDSWAT",AllowRandomizeBeforeVariationApplied = true,RequiredVariation = new PedVariation( new List<PedComponent>() { new PedComponent(10, 0, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) })},
+        };
+
         List<DispatchablePersonGroup> PeopleGroupLookup_Old = new List<DispatchablePersonGroup>();
         //Cops
-        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("StandardCops", StandardCops));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("StandardCops", StandardCops_Old));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("SheriffPeds", SheriffPeds_Old));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("NOOSEPeds", NOOSEPeds_Old));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("FIBPeds", FIBPeds_Old));
@@ -1886,8 +1897,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("MarshalsServicePeds", MarshalsServicePeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("OffDutyCops", OffDutyCops));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LSLifeguardPeds", LSLifeguardPeds));
-        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LSPDASDPeds", LSPDASDPeds));
-        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LSSDASDPeds", LSSDASDPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LSPDASDPeds", LSPDASDPeds_2008));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LSSDASDPeds", LSSDASDPeds_2008));
         //Fire
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
         //EMT
