@@ -82,6 +82,11 @@ public class StaticPlaces
         {
             interior.Setup(player, PlacesOfInterest, Settings, locationInteractable, ModItems);
         }
+
+        foreach(StoredSpawn spawnPlace in PlacesOfInterest.PossibleLocations.StoredSpawns)
+        {
+            spawnPlace.Setup();
+        }
     }
     public void ActivateLocations()
     {

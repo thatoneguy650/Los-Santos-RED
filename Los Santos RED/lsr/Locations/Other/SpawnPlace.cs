@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
-
-    public class SpawnPlace
-    {
+public class SpawnPlace
+{
     public SpawnPlace()
     {
     }
@@ -25,5 +25,6 @@ using System.Threading.Tasks;
     {
         Position += offsetToAdd;
     }
+
 }
 

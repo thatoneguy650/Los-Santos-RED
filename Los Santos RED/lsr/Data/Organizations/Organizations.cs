@@ -208,6 +208,7 @@ public class Organizations : IOrganizations
             SunderedCab,
         };
         Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Organizations_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Organizations_LosSantos2008.xml");
     }
 
 }

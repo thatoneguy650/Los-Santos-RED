@@ -54,7 +54,7 @@ public class PossibleLocations
     public List<MilitaryBase> MilitaryBases { get; private set; } = new List<MilitaryBase>();
     //  public List<InteractableLocation> AllLocationsList { get; private set; } = new List<InteractableLocation>();
 
-    public List<SpawnPlace> TunnelSpawns { get; private set; } = new List<SpawnPlace>();
+    public List<StoredSpawn> StoredSpawns { get; private set; } = new List<StoredSpawn>();
     public List<GameLocation> InteractableLocations()
     {
         List<GameLocation> AllLocations = new List<GameLocation>();

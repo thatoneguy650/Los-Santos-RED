@@ -91,19 +91,27 @@ public class ModItems : IModItems
             DefaultConfig();
             DefaultConfig_FullExpandedJurisdiction();
             DefaultConfig_FullExpandedExperience();
+            DefaultConfig_LosSantos2008();
         }
     }
 
     private void DefaultConfig_FullExpandedJurisdiction()
     {
         PossibleItems newPossibleItems = PossibleItems.Copy();
-
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "issi2");
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "tornado3");
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "phantom2");
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Gemini", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Sedan", ModelName = "issi2", Description = "The civilian version of the police classic. So what if they couldn't sell it to law enforcement? It still can get you to Burger Shot without breaking down. Often.", });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { OverrideMakeName = "Vapid",OverrideClassName = "Sedan", ModelName = "tornado3", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", }); newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { ModelName = "tornado3", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", });
-        
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Esperanto", true, ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "phantom2" });
         Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\ModItems_FullExpandedJurisdiction.xml");
+    }
+    private void DefaultConfig_LosSantos2008()
+    {
+        PossibleItems oldPossibleItems = PossibleItems.Copy();
+        oldPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "phantom2");
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Albany Esperanto", true, ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "phantom2" });
+        Serialization.SerializeParam(oldPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\ModItems_LosSantos2008.xml");
     }
     private void DefaultConfig_FullExpandedExperience()
     {
@@ -356,12 +364,10 @@ public class ModItems : IModItems
         DefaultConfig_FEE();
         Serialization.SerializeParam(PossibleItems, ConfigFileName);
     }
-
     private void DefaultConfig_FEE()
     {
 
     }
-
     private void DefaultConfig_Armor()
     {
         PossibleItems.BodyArmorItems.AddRange(new List<BodyArmorItem>

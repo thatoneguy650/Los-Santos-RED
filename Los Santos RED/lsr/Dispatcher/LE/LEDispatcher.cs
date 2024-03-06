@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
@@ -46,6 +47,8 @@ public class LEDispatcher
     private Vector3 RoadblockFinalPosition;
     private float RoadblockFinalHeading;
     private uint GameTimeLastAttemptedAssaultSpawn;
+    private bool IsTunnelSpawn;
+    private StoredSpawn SelectedTunnelSpawn;
 
     private bool HasNeedToSpawnHeli => World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit;
     private bool HasNeedToSpawnBoat => (Player.CurrentVehicle?.IsBoat == true || Player.IsSwimming) && World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit;
@@ -1123,27 +1126,15 @@ public class LEDispatcher
         PoliceStation = null;
         SpawnLocation = new SpawnLocation();
         bool tryBoat = HasNeedToSpawnBoat;
+        IsTunnelSpawn = false;
+        SelectedTunnelSpawn = null;
 
-        if(Player.CurrentLocation.TreatAsInTunnel)
+
+        if(CheckSpecialSpawnCases())
         {
-            foreach(SpawnPlace spawnPlace in PlacesOfInterest.PossibleLocations.TunnelSpawns)
-            {
-                float distanceTo = spawnPlace.Position.DistanceTo(Player.Position);
-                if (distanceTo <= 300f && distanceTo >= 100f)
-                {
-                    SpawnLocation.InitialPosition = spawnPlace.Position;
-                    SpawnLocation.Heading = spawnPlace.Heading;
-                    SpawnLocation.StreetPosition = spawnPlace.Position;
-                    SpawnLocation.SidewalkPosition = spawnPlace.Position;
-
-                    EntryPoint.WriteToConsole("LE DISPATCHER TUNNEL DETECTION SPAWNING NEARBY");
-                    return true;
-                }
-            }
+            return true;
         }
-
-
-        do
+        do//regular spawn place checking
         {
             SpawnLocation.InitialPosition = GetSpawnPosition();
             if(tryBoat)
@@ -1167,6 +1158,44 @@ public class LEDispatcher
         while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 3);//2//10
         return isValidSpawn && SpawnLocation.HasSpawns;
     }
+
+    private bool CheckSpecialSpawnCases()
+    {
+        if (Player.WantedLevel >= 2 && Player.CurrentLocation.TreatAsInTunnel && (Player.CurrentLocation.IsOffroad || Player.CurrentLocation.IsInside))
+        {
+            int totalCalc = 0;
+            foreach (StoredSpawn spawnPlace in PlacesOfInterest.PossibleLocations.StoredSpawns)
+            {
+                if(totalCalc > 10)
+                {
+                    GameFiber.Yield();
+                    totalCalc = 0;
+                }
+                int CellsAway = NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, spawnPlace.CellX, spawnPlace.CellY);
+                if (CellsAway > 5)
+                {
+                    continue;
+                }
+                float distanceTo = spawnPlace.Position.DistanceTo(Player.Position);
+                if (distanceTo <= 300f && distanceTo >= 150f)
+                {
+                    SpawnLocation.InitialPosition = spawnPlace.Position;
+                    SpawnLocation.Heading = spawnPlace.Heading;
+                    SpawnLocation.StreetPosition = spawnPlace.Position;
+                    SpawnLocation.SidewalkPosition = spawnPlace.Position;
+                    EntryPoint.WriteToConsole("LE DISPATCHER TUNNEL DETECTION SPAWNING NEARBY");
+
+                    IsTunnelSpawn = true;
+                    SelectedTunnelSpawn = spawnPlace;
+
+                    return true;
+                }
+                totalCalc++;
+            }
+        }
+        return false;
+    }
+
     private bool GetSpawnTypes()
     {
         Agency = null;
@@ -1196,7 +1225,11 @@ public class LEDispatcher
         }
         else 
         {
-            if(World.TotalWantedLevel == 0 && SpawnLocation.HasSidewalk && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.FootPatrolSpawnPercentage) && zoneJurisdiction != null && zoneJurisdiction.CanSpawnPedestrianOfficers)
+            if(IsTunnelSpawn && SelectedTunnelSpawn != null && SelectedTunnelSpawn.IsPedestrianOnlySpawn)
+            {
+                isAmbientPedSpawn = true;
+            }
+            else if(World.TotalWantedLevel == 0 && SpawnLocation.HasSidewalk && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.FootPatrolSpawnPercentage) && zoneJurisdiction != null && zoneJurisdiction.CanSpawnPedestrianOfficers)
             {
                 isAmbientPedSpawn = true;
                 //EntryPoint.WriteToConsole("LE Dispatcher IS FOOT SPAWN");

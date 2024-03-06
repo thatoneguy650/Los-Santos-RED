@@ -171,6 +171,7 @@
     <Compile Include="lsr\Locations\Interiors\Theft\TheftInteractItem.cs" />
     <Compile Include="lsr\Locations\Interiors\ToiletInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\UrinalInteract.cs" />
+    <Compile Include="lsr\Locations\Other\StoredSpawn.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\MerchantConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\AppearPercentage.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankDrawer.cs" />
