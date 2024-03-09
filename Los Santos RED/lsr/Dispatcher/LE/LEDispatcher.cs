@@ -1069,7 +1069,14 @@ public class LEDispatcher
             GameFiber.Yield();
             GameTimeAttemptedDispatch = Game.GameTime;
             //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP CALLED SPAWN TASK");
-            if (CallSpawnTask(false, true, false, false, TaskRequirements.None, false, IsOffDutySpawn, false))
+
+            bool allowAny = false;
+            if(IsTunnelSpawn)
+            {
+                allowAny = true;
+            }
+
+            if (CallSpawnTask(allowAny, true, false, false, TaskRequirements.None, false, IsOffDutySpawn, false))
             {
                 //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP SPAWN TASK RAN");
                 ShouldRunAmbientDispatch = false;
@@ -1103,6 +1110,10 @@ public class LEDispatcher
             spawnTask.SpawnRequirement = spawnRequirement;
             spawnTask.IsOffDutySpawn = isOffDuty;
             spawnTask.SpawnWithAllWeapons = spawnsWithAllWeapons;
+            if(IsTunnelSpawn)
+            { 
+                spawnTask.PlacePedOnGround = false;
+            }
             // spawnTask.PlacePedOnGround = VehicleType == null;
             EntryPoint.WriteToConsole($"DEBUG LE DISPATCH CallSpawnTask: VehicleType:{VehicleType?.ModelName} PersonType:{PersonType?.ModelName} RequiredPedGroup:{VehicleType?.RequiredPedGroup} GroupName:{PersonType?.GroupName}");
             spawnTask.AttemptSpawn();
@@ -1161,7 +1172,7 @@ public class LEDispatcher
 
     private bool CheckSpecialSpawnCases()
     {
-        if (Player.WantedLevel >= 2 && Player.CurrentLocation.TreatAsInTunnel && (Player.CurrentLocation.IsOffroad || Player.CurrentLocation.IsInside))
+        if (Player.WantedLevel >= Settings.SettingsManager.PoliceSpawnSettings.TunnelSpawnWantedLevelMinimum && Player.CurrentLocation.TreatAsInTunnel && (Player.CurrentLocation.IsOffroad || Player.CurrentLocation.IsInside))
         {
             int totalCalc = 0;
             foreach (StoredSpawn spawnPlace in PlacesOfInterest.PossibleLocations.StoredSpawns)
@@ -1172,12 +1183,12 @@ public class LEDispatcher
                     totalCalc = 0;
                 }
                 int CellsAway = NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, spawnPlace.CellX, spawnPlace.CellY);
-                if (CellsAway > 5)
+                if (CellsAway > 7)
                 {
                     continue;
                 }
                 float distanceTo = spawnPlace.Position.DistanceTo(Player.Position);
-                if (distanceTo <= 300f && distanceTo >= 150f)
+                if (distanceTo <= spawnPlace.MaxSpawnDistance && distanceTo >= spawnPlace.MinSpawnDistance)
                 {
                     SpawnLocation.InitialPosition = spawnPlace.Position;
                     SpawnLocation.Heading = spawnPlace.Heading;

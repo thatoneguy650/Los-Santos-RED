@@ -405,6 +405,10 @@ public class ModItems : IModItems
 
             new ValuableItem("Cash Bundle","Cash", ItemType.Valuables) { ModelItemID = "prop_cash_pile_02",
                 ItemSubType = ItemSubType.Money },
+
+            new ValuableItem("Drivers License","Drivers License", ItemType.Valuables) { 
+                ModelItemID = "p_ld_id_card_002",
+                ItemSubType = ItemSubType.Identification },
         });
     }
     private void DefaultConfig_Drinks()

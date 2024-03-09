@@ -118,6 +118,7 @@ public class DispatchableVehicles : IDispatchableVehicles
     public DispatchableVehicle AsteropeSecuritySECURO;
     private DispatchableVehicles_FEJ DispatchableVehicles_FEJ;
 
+
     public List<DispatchableVehicleGroup> AllVehicles => VehicleGroupLookup;
     public void ReadConfig()
     {
@@ -1345,11 +1346,6 @@ public class DispatchableVehicles : IDispatchableVehicles
     }
     public void DefaultConfig_LosSantos2008()
     {
-
-        List<DispatchableVehicle> BallasVehicles_Old = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("baller", 50, 50){ RequiredPrimaryColorID = 145,RequiredSecondaryColorID = 145 },
-            new DispatchableVehicle("patriot", 50, 50){ RequiredPrimaryColorID = 145,RequiredSecondaryColorID = 145 },//purp[le
-        };
         List<DispatchableVehicle> KoreanVehicles_old = new List<DispatchableVehicle>() {
             new DispatchableVehicle("fq2", 33, 33){ RequiredPrimaryColorID = 4,RequiredSecondaryColorID = 4 },//silver
             new DispatchableVehicle("prairie", 33, 33){ RequiredPrimaryColorID = 4,RequiredSecondaryColorID = 4 },//silver
@@ -1368,6 +1364,23 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("cavalcade", 100, 100) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
             new DispatchableVehicle("fxt", 100, 100) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
         };
+
+        List<DispatchableVehicle> TriadVehicles_Old = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("fugitive", 20, 20) { RequiredPrimaryColorID = 111, RequiredSecondaryColorID = 111 },//white
+            new DispatchableVehicle("washington", 20, 20) { RequiredPrimaryColorID = 111, RequiredSecondaryColorID = 111 },//white
+        };
+        //Base
+
+
+
+        List<string> toRemove = new List<string>() { "baller7", "aleutian","bison" };
+
+        List<DispatchableVehicle> FamiliesVehicles2008 = ExtensionsMethods.Extensions.DeepCopy(FamiliesVehicles);
+        FamiliesVehicles2008.RemoveAll(x => toRemove.Contains(x.ModelName.ToLower()));
+
+        List<DispatchableVehicle> BallasVehicles2008 = ExtensionsMethods.Extensions.DeepCopy(BallasVehicles);
+        BallasVehicles2008.RemoveAll(x => toRemove.Contains(x.ModelName.ToLower()));
+
 
         //Cop
         List<DispatchableVehicleGroup> OldVehicleLookupGroup = new List<DispatchableVehicleGroup>
@@ -1396,10 +1409,31 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("ArmyVehicles", DispatchableVehicles_FEJ.ArmyVehicles_FEJ),
             new DispatchableVehicleGroup("USMCVehicles", DispatchableVehicles_FEJ.USMCVehicles_FEJ),
             new DispatchableVehicleGroup("USAFVehicles", DispatchableVehicles_FEJ.USAFVehicles_FEJ),
-            new DispatchableVehicleGroup("Firetrucks", Firetrucks),
-            new DispatchableVehicleGroup("Amublance1", Amublance1),//might need to change?
-            new DispatchableVehicleGroup("Amublance2", Amublance2),//might need to change?
-            new DispatchableVehicleGroup("Amublance3", Amublance3),//might need to change?
+            //new DispatchableVehicleGroup("Firetrucks", Firetrucks),
+            //new DispatchableVehicleGroup("Amublance1", Amublance1),//might need to change?
+            //new DispatchableVehicleGroup("Amublance2", Amublance2),//might need to change?
+            //new DispatchableVehicleGroup("Amublance3", Amublance3),//might need to change?
+
+
+            //EMT
+            new DispatchableVehicleGroup("LSFDEMTVehicles", DispatchableVehicles_FEJ.LSFDEMTVehicles_FEJ),
+            new DispatchableVehicleGroup("LSCOFDEMSVehicles", DispatchableVehicles_FEJ.LSCOFDEMSVehicles_FEJ),
+            new DispatchableVehicleGroup("BCFDEMSVehicles", DispatchableVehicles_FEJ.BCFDEMSVehicles_FEJ),
+            new DispatchableVehicleGroup("SAMSVehicles", DispatchableVehicles_FEJ.SAMSVehicles_FEJ),
+
+
+            new DispatchableVehicleGroup("LSMCVehicles", DispatchableVehicles_FEJ.LSMCVehicles_FEJ),
+            new DispatchableVehicleGroup("MRHVehicles", DispatchableVehicles_FEJ.MRHVehicles_FEJ),
+
+
+            //Fire
+            new DispatchableVehicleGroup("LSFDVehicles", DispatchableVehicles_FEJ.LSFDVehicles_FEJ),
+            new DispatchableVehicleGroup("LSCOFDVehicles", DispatchableVehicles_FEJ.LSCOFDVehicles_FEJ),
+            new DispatchableVehicleGroup("BCFDVehicles", DispatchableVehicles_FEJ.BCFDVehicles_FEJ),
+            new DispatchableVehicleGroup("SanFireVehicles", DispatchableVehicles_FEJ.SanFireVehicles_FEJ),
+
+
+
             new DispatchableVehicleGroup("NYSPVehicles", DispatchableVehicles_FEJ.NYSP2008_FEJ),
             new DispatchableVehicleGroup("MerryweatherPatrolVehicles", DispatchableVehicles_FEJ.MerryweatherSecurity2008_FEJ),
             new DispatchableVehicleGroup("BobcatSecurityVehicles", DispatchableVehicles_FEJ.BobcatSecurity2008_FEJ),
@@ -1411,13 +1445,17 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("LSLifeguardVehicles",DispatchableVehicles_FEJ.LSLifeguardVehicles2008_FEJ),
 
             //Gang
+
+
+
+
             new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
             new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles),
-            new DispatchableVehicleGroup("BallasVehicles", BallasVehicles_Old),
+            new DispatchableVehicleGroup("BallasVehicles", BallasVehicles2008),
             new DispatchableVehicleGroup("VagosVehicles", VagosVehicles),
             new DispatchableVehicleGroup("MarabuntaVehicles", MarabuntaVehicles),
             new DispatchableVehicleGroup("KoreanVehicles", KoreanVehicles_old),
-            new DispatchableVehicleGroup("TriadVehicles", TriadVehicles),
+            new DispatchableVehicleGroup("TriadVehicles", TriadVehicles_Old),
             new DispatchableVehicleGroup("YardieVehicles", YardieVehicles),
             new DispatchableVehicleGroup("DiablosVehicles", DiablosVehicles),
 
@@ -1430,7 +1468,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles_Old),
             new DispatchableVehicleGroup("CartelVehicles", CartelVehicles_Old),
             new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles),
-            new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles),
+            new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles2008),
 
             //Other
             new DispatchableVehicleGroup("TaxiVehicles", DispatchableVehicles_FEJ.DowntownTaxiVehicles)

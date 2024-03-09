@@ -297,6 +297,9 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public float DistanceToRecallOnFoot_Wanted { get; set; }
     public float FootPatrolSpawnPercentage { get; set; }
 
+    [Description("Minimum wanted level required to allow police to spawn on the tunnel spawn points.")]
+    public int TunnelSpawnWantedLevelMinimum { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -494,6 +497,6 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
 
         FootPatrolSpawnPercentage = 55f;
-
+        TunnelSpawnWantedLevelMinimum = 0;
     }
 }

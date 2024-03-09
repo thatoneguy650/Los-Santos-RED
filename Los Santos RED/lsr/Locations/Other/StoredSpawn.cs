@@ -8,12 +8,13 @@ using System.Xml.Serialization;
 
 public class StoredSpawn : SpawnPlace
 {
-
     [XmlIgnore]
     public int CellX { get; private set; }
     [XmlIgnore]
     public int CellY { get; private set; }
-    public bool IsPedestrianOnlySpawn { get; set; } 
+    public bool IsPedestrianOnlySpawn { get; set; }
+    public float MinSpawnDistance { get; set; } = 75f;
+    public float MaxSpawnDistance { get; set; } = 200f;
     public StoredSpawn()
     {
     }

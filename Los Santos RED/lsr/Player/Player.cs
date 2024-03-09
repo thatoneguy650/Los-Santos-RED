@@ -2109,6 +2109,26 @@ namespace Mod
                 GameTimeStartedMoving = 0;
             }
 
+
+            if (Settings.SettingsManager.PlayerOtherSettings.AllowMobileRadioOnFoot && CurrentVehicle == null && !ActivityManager.IsDancing)
+            {
+                if (!IsMobileRadioEnabled)
+                {
+                    IsMobileRadioEnabled = true;
+                    NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
+                }
+            }
+            else if(!ActivityManager.IsDancing)
+            {
+                if (IsMobileRadioEnabled)
+                {
+                    IsMobileRadioEnabled = false;
+                    NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
+                }
+            }
+
+
+
             if (!Settings.SettingsManager.PlayerOtherSettings.AllowMobileRadioOnFoot && !ActivityManager.IsDancing)
             {
                 NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);

@@ -303,26 +303,26 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         TunnelSpawnPlaces = new List<StoredSpawn>()
         {
-            new StoredSpawn(new Vector3(1376.901f, -955.329f, 57.46247f), 59.50793f),//murrieta train tunnel  a
-            new StoredSpawn(new Vector3(854.5894f, -472.6249f, 29.40497f), 263.9887f),//murrieta train tunnel  b
-            new StoredSpawn(new Vector3(-66.77925f, -539.6862f, 31.24808f), 230.9879f), //missiontunnelentrance1downtown
-            new StoredSpawn(new Vector3(1.71512f, -622.8944f, 15.21914f), 215.1988f),  //missiontunnel2 cars ok
-            new StoredSpawn(new Vector3(148.4744f, -599.6112f, 17.23636f), 268.7144f),  //missiontunnel3 subway station cars ok
-            new StoredSpawn(new Vector3(519.87f, -1113.665f, 28.66603f), 357.7936f),  //missionrow police tunnel cars ok
-            new StoredSpawn(new Vector3(-294.578f, -311.0045f, 10.06316f), 266.6049f) { IsPedestrianOnlySpawn = true },  //metro spawn 1 NO CARS
-            new StoredSpawn(new Vector3(-294.5332f, -336.6915f, 10.0631f), 86.16338f) { IsPedestrianOnlySpawn = true },  //metro platform spawn NO CARS
-            new StoredSpawn(new Vector3(-243.9805f, -337.3263f, 29.97777f), 10.97605f) { IsPedestrianOnlySpawn = true },  //subway entrance ground NO CARS
-            new StoredSpawn(new Vector3(-795.9164f, -126.2513f, 19.9503f), 211.165f) { IsPedestrianOnlySpawn = true },  //metro platform 1 NO CARS
-            new StoredSpawn(new Vector3(-817.4238f, -139.3606f, 19.95036f), 24.94082f) { IsPedestrianOnlySpawn = true },  //metro platfrom 2 NO CARS
-            new StoredSpawn(new Vector3(-1363.438f, -444.9677f, 15.04533f), 297.7809f) { IsPedestrianOnlySpawn = true },  //metro platform 3 NO CARS
-            new StoredSpawn(new Vector3(-1350.175f, -467.3073f, 15.04538f), 130.3696f) { IsPedestrianOnlySpawn = true }, //metro platform 3 NO CARS
-            new StoredSpawn(new Vector3(-524.4281f, -672.548f, 11.80896f), 356.6177f) { IsPedestrianOnlySpawn = true },  //metro platform 4 NO CARS
-            new StoredSpawn(new Vector3(-466.1653f, -673.5153f, 11.80903f), 188.0343f) { IsPedestrianOnlySpawn = true }, //metro platform 4 NO CARS
-            new StoredSpawn(new Vector3(-195.8262f, -986.5693f, 28.79915f), 339.8409f),  //metro top CARS OK
-            new StoredSpawn(new Vector3(217.6737f, -1813.929f, 24.77368f), 229.9516f),  //train entrance 1 cARS OK
-            new StoredSpawn(new Vector3(598.8229f, -1954.532f, 19.0343f), 97.56085f),  //treain generic CARS OK
-            new StoredSpawn(new Vector3(-520.6234f, 5145.382f, 90.02027f), 163.0666f),  //railroad tunnel CARS OK
-            new StoredSpawn(new Vector3(-429.6222f, 4010.268f, 81.18268f), 8.762694f), //railroad tunnel cars ok
+            new StoredSpawn(new Vector3(1376.901f, -955.329f, 57.46247f), 59.50793f) { MinSpawnDistance = 150f,MaxSpawnDistance = 200f, },//murrieta train tunnel  a
+            new StoredSpawn(new Vector3(854.5894f, -472.6249f, 29.40497f), 263.9887f){ MinSpawnDistance = 150f,MaxSpawnDistance = 200f, },//murrieta train tunnel  b
+            new StoredSpawn(new Vector3(-66.77925f, -539.6862f, 31.24808f), 230.9879f){ MinSpawnDistance = 150f,MaxSpawnDistance = 200f, }, //missiontunnelentrance1downtown
+            new StoredSpawn(new Vector3(1.71512f, -622.8944f, 15.21914f), 215.1988f){ MinSpawnDistance = 150f,MaxSpawnDistance = 200f, },  //missiontunnel2 cars ok
+            new StoredSpawn(new Vector3(148.4744f, -599.6112f, 17.23636f), 268.7144f){ MinSpawnDistance = 150f,MaxSpawnDistance = 200f, },  //missiontunnel3 subway station cars ok
+            new StoredSpawn(new Vector3(519.87f, -1113.665f, 28.66603f), 357.7936f){ MinSpawnDistance = 150f,MaxSpawnDistance = 200f, },  //missionrow police tunnel cars ok
+            new StoredSpawn(new Vector3(-294.578f, -311.0045f, 10.06316f), 266.6049f) { IsPedestrianOnlySpawn = true,MinSpawnDistance = 50f,MaxSpawnDistance = 150f, },  //metro spawn 1 NO CARS
+            new StoredSpawn(new Vector3(-294.5332f, -336.6915f, 10.0631f), 86.16338f) { IsPedestrianOnlySpawn = true,MinSpawnDistance = 50f,MaxSpawnDistance = 150f, },  //metro platform spawn NO CARS
+            new StoredSpawn(new Vector3(-243.9805f, -337.3263f, 29.97777f), 10.97605f) { IsPedestrianOnlySpawn = true,MinSpawnDistance = 50f,MaxSpawnDistance = 150f, },  //subway entrance ground NO CARS
+            new StoredSpawn(new Vector3(-795.9164f, -126.2513f, 19.9503f), 211.165f) { IsPedestrianOnlySpawn = true,MinSpawnDistance = 50f,MaxSpawnDistance = 150f, },  //metro platform 1 NO CARS
+            new StoredSpawn(new Vector3(-817.4238f, -139.3606f, 19.95036f), 24.94082f) { IsPedestrianOnlySpawn = true,MinSpawnDistance = 50f,MaxSpawnDistance = 150f, },  //metro platfrom 2 NO CARS
+            new StoredSpawn(new Vector3(-1363.438f, -444.9677f, 15.04533f), 297.7809f) { IsPedestrianOnlySpawn = true,MinSpawnDistance = 50f,MaxSpawnDistance = 150f, },  //metro platform 3 NO CARS
+            new StoredSpawn(new Vector3(-1350.175f, -467.3073f, 15.04538f), 130.3696f) { IsPedestrianOnlySpawn = true,MinSpawnDistance = 50f,MaxSpawnDistance = 150f, }, //metro platform 3 NO CARS
+            new StoredSpawn(new Vector3(-524.4281f, -672.548f, 11.80896f), 356.6177f) { IsPedestrianOnlySpawn = true,MinSpawnDistance = 50f,MaxSpawnDistance = 150f, },  //metro platform 4 NO CARS
+            new StoredSpawn(new Vector3(-466.1653f, -673.5153f, 11.80903f), 188.0343f) { IsPedestrianOnlySpawn = true,MinSpawnDistance = 50f,MaxSpawnDistance = 150f, }, //metro platform 4 NO CARS
+            new StoredSpawn(new Vector3(-195.8262f, -986.5693f, 28.79915f), 339.8409f){ MinSpawnDistance = 150f,MaxSpawnDistance = 200f, },  //metro top CARS OK
+            new StoredSpawn(new Vector3(217.6737f, -1813.929f, 24.77368f), 229.9516f){ MinSpawnDistance = 150f,MaxSpawnDistance = 200f, },  //train entrance 1 cARS OK
+            new StoredSpawn(new Vector3(598.8229f, -1954.532f, 19.0343f), 97.56085f){ MinSpawnDistance = 150f,MaxSpawnDistance = 200f, },  //treain generic CARS OK
+            new StoredSpawn(new Vector3(-520.6234f, 5145.382f, 90.02027f), 163.0666f){ MinSpawnDistance = 150f,MaxSpawnDistance = 200f, },  //railroad tunnel CARS OK
+            new StoredSpawn(new Vector3(-429.6222f, 4010.268f, 81.18268f), 8.762694f){ MinSpawnDistance = 150f,MaxSpawnDistance = 200f, }, //railroad tunnel cars ok
         };
 
 

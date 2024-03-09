@@ -2,6 +2,7 @@
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
+using Mod;
 using Rage;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
@@ -19,6 +20,8 @@ public class Forger : GameLocation
     private UIMenu PlateSubMenu;
     private UIMenu CustomPlateSubMenu;
     private UIMenu SellPlateSubMenu;
+    private UIMenu IDSubMenu;
+    private UIMenu SellIDSubMenu;
 
     public Forger(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -35,6 +38,12 @@ public class Forger : GameLocation
     public int CustomPlateCost { get; set; } = 500;
     public int WantedPlateSalesPrice { get; set; } = 50;
     public int CleanPlateSalesPrice { get; set; } = 200;
+
+
+
+    public int IdentificationSalesPrice { get; set; } = 45;
+
+    public int IdentificationPurchasePrice { get; set; } = 450;
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Enter {Name}";
@@ -77,6 +86,7 @@ public class Forger : GameLocation
             {
                 SetupLocationCamera(locationCamera, isInside, false);
                 CreateInteractionMenu();
+                Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
                 InteractionMenu.Visible = true;
                 Interact();
                 ProcessInteractionMenu();
@@ -97,7 +107,67 @@ public class Forger : GameLocation
     private void Interact()
     {
         AddLicensePlateItems();
+        AddIdentificationItems();
     }
+
+    private void AddIdentificationItems()
+    {
+        IDSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Identifications");
+        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Buy/Sell identifications.";
+        if (HasBannerImage)
+        {
+            BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
+            IDSubMenu.SetBannerType(BannerImage);
+        }
+        AddIDSale();
+        AddIdentificationBuy();
+    }
+    private void AddIDSale()
+    {
+        SellIDSubMenu = MenuPool.AddSubMenu(IDSubMenu, "Sell IDs");
+        string sellRightLabel = IdentificationSalesPrice.ToString("C0");
+        IDSubMenu.MenuItems[IDSubMenu.MenuItems.Count() - 1].Description = "Sell IDs.";
+        IDSubMenu.MenuItems[IDSubMenu.MenuItems.Count() - 1].RightLabel = sellRightLabel;
+        if (HasBannerImage)
+        {
+            BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
+            SellIDSubMenu.SetBannerType(BannerImage);
+        }
+
+        InventoryItem driversLivenseItems = Player.Inventory.ItemsList.FirstOrDefault(x => x.ModItem != null && x.ModItem.ItemSubType == ItemSubType.Identification);
+        if(driversLivenseItems != null)
+        {
+            MenuItem mi = new MenuItem("Drivers License", 0,IdentificationSalesPrice);
+            driversLivenseItems.ModItem.CreateSellMenuItem(Transaction, mi, SellIDSubMenu, Settings, Player, false, World);
+        }
+    }
+
+
+    private void AddIdentificationBuy()
+    {
+        UIMenuItem buyIDMenu = new UIMenuItem("Buy ID", "Buy a clean ID.") { RightLabel = IdentificationPurchasePrice.ToString("C0") };
+        IDSubMenu.AddItem(buyIDMenu);
+        if(Player.Licenses.HasValidDriversLicense(Time))
+        {
+            buyIDMenu.Enabled = false;
+        }
+        buyIDMenu.Activated += (sender, e) =>
+        {
+            if (Player.BankAccounts.GetMoney(false) <= IdentificationPurchasePrice)
+            {
+                PlayErrorSound();
+                DisplayMessage("~r~Cash Only", "You do not have enough cash on hand.");
+                return;
+            }
+            Player.BankAccounts.GiveMoney(-1 * IdentificationPurchasePrice, false);
+            Player.Licenses.DriversLicense = new DriversLicense();
+            Player.Licenses.DriversLicense.IssueLicense(Time, 6, StateID);
+            PlaySuccessSound();
+            buyIDMenu.Enabled = false;
+            DisplayMessage("~g~Purchased", $"Thank you for your purchase. ID added to inventory.");
+        };
+    }
+
     private void AddLicensePlateItems()
     {
         PlateSubMenu = MenuPool.AddSubMenu(InteractionMenu, "License Plates");

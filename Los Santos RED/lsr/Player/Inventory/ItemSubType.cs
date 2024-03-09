@@ -42,4 +42,5 @@ public enum ItemSubType
     CellPhone,
     Paraphernalia,
     Money,
+    Identification,
 }

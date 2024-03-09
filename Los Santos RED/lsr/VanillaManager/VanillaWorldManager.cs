@@ -20,6 +20,7 @@ public class VanillaWorldManager
     private bool hasSetMaxWanted;
     private uint GameTimeLastTerminatedAudio;
     private bool isVanillaCarRaceActive;
+    private uint GameTimeLastSetMaxWanted;
 
     public VanillaWorldManager(ISettingsProvideable settings)
     {
@@ -124,10 +125,11 @@ public class VanillaWorldManager
 
         if (Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
         {
-            if(!hasSetMaxWanted)
+            if(!hasSetMaxWanted || Game.GameTime - GameTimeLastSetMaxWanted >= 20000)
             {
                 NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
                 hasSetMaxWanted = true;
+                GameTimeLastSetMaxWanted = Game.GameTime;
             }
         }
         else

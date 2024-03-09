@@ -120,7 +120,7 @@ public class DebugSettings : ISettingsDefaultable
 
 
     public float TunnelZValueMax { get; set; }
-
+    public bool AlwaysAllowTunnelSpawns { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -290,5 +290,6 @@ public class DebugSettings : ISettingsDefaultable
         CashAnimationMax2 = 0.8f;
 
         TunnelZValueMax = -10.0f;
+        AlwaysAllowTunnelSpawns = false;
     }
 }

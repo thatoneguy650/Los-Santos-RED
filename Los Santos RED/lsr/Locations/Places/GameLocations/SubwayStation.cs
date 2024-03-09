@@ -20,10 +20,11 @@ public class SubwayStation : GameLocation
     }
     public override string TypeName { get; set; } = "Subway Station";
     public override int MapIcon { get; set; } = 777;
+   
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
-        ButtonPromptText = $"Shop At {Name}";
-        return true;
+        ButtonPromptText = $"Interact with {Name}";
+        return false;
     }
     public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {

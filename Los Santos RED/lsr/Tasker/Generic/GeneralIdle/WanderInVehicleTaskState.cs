@@ -124,7 +124,7 @@ class WanderInVehicleTaskState : TaskState
         if (PedGeneral.IsInHelicopter)
         {
             Vector3 PlaceToDriveTo = PedGeneral.Pedestrian.Position;
-            NativeFunction.Natives.TASK_HELI_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 9, 50f, 10f, -1f, 60, 60, -1.0f, 0);//9 = circle
+            NativeFunction.Natives.TASK_HELI_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 8, 50f, 10f, -1f, 60, 60, -1.0f, 0);//9 = circle
             //NativeFunction.CallByName<bool>("TASK_HELI_MISSION", PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, 0f, 0f, 300f, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);
         }
         else if (PedGeneral.IsInPlane)

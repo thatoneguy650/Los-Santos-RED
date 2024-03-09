@@ -227,6 +227,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual ePedAlertType PedAlertTypes { get; set; } = ePedAlertType.UnconsciousBody;
     public virtual bool GenerateUnconsciousAlerts { get; set; } = true;
     public bool HasCellPhone { get; set; } = true;
+    public bool HasIdentification { get; set; } = true;
     public bool HasBeenCarJackedByPlayer { get; set; } = false;
     public bool HasBeenHurtByPlayer { get; set; } = false;
     public bool WasKilledByPlayer { get; set; } = false;
@@ -918,6 +919,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         HasBeenLooted = true;
         string ItemsFound = "";
         ItemsFound += StealPhone(player, modItems, cellphones);
+        ItemsFound += StealID(player, modItems);
         foreach (InventoryItem ii in PedInventory.ItemsList)
         {
             player.Inventory.Add(ii.ModItem, ii.RemainingPercent);
@@ -950,6 +952,24 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
         player.Inventory.Add(cellphoneItem,1.0f);
         return $"~n~~p~{cellphoneItem.Name}~s~";
+    }
+    private string StealID(IInteractionable player, IModItems modItems)
+    {
+        EntryPoint.WriteToConsole($"STEAL ID START");
+        if (!HasIdentification)
+        {
+            EntryPoint.WriteToConsole($"STEAL ID NO ID");
+            return "";
+        }
+        HasIdentification = false;
+        ValuableItem idITem = modItems.PossibleItems.ValuableItems.FirstOrDefault(x => x.Name.ToLower() == "drivers license");
+        if (idITem == null)
+        {
+            EntryPoint.WriteToConsole($"STEAL ID NO MOD ITEM");
+            return "";
+        }
+        player.Inventory.Add(idITem, 1.0f);
+        return $"~n~~p~{idITem.Name}~s~";
     }
     public virtual void ReportCrime(ITargetable Player)
     {

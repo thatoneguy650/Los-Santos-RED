@@ -330,6 +330,17 @@ public class Agencies : IAgencies
         Agency MERRY2008 = Extensions.DeepCopy(MERRY);
         Agency BOBCAT2008 = Extensions.DeepCopy(BOBCAT);
         Agency USMS2008 = Extensions.DeepCopy(USMS);
+        Agency LSMC2008 = Extensions.DeepCopy(LSMC);
+        LSMC2008.VehiclesID = "LSMCVehicles";
+        Agency MRH2008 = Extensions.DeepCopy(MRH);
+        MRH2008.VehiclesID = "MRHVehicles";
+        Agency LSFDFire2008 = Extensions.DeepCopy(LSFDFire);
+        LSFDFire2008.VehiclesID = "LSFDVehicles";
+        Agency LSFD2008 = Extensions.DeepCopy(LSFD);
+        LSFD2008.VehiclesID = "LSFDEMTVehicles";
+
+
+
         List<Agency> AgenciesList2008 = new List<Agency>
         {
             LSPD2008,LSPDASD2008,
@@ -338,7 +349,7 @@ public class Agencies : IAgencies
             NYSP,
             LSLFG,
             NOOSE2008,FIB2008,DOA2008,ARMY2008,USMC2008,USAF2008,USMS2008,
-            LSFDFire,LSMC,MRH,LSFD,
+            LSFDFire2008,LSMC2008,MRH2008,LSFD2008,
             GRPSECHS2008,SECURO2008,MERRY2008,BOBCAT2008,
             UNK,
         };
