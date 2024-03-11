@@ -340,7 +340,28 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         player.SetAngeredCop();
         EntryPoint.WriteToConsole($"OnPlayerStoodOnCar triggered {Handle}");
     }
-
+    protected override string StealID(IInteractionable player, IModItems modItems)
+    {
+        EntryPoint.WriteToConsole($"STEAL COP ID START");
+        if (!HasIdentification)
+        {
+            EntryPoint.WriteToConsole($"STEAL COP ID NO ID");
+            return "";
+        }
+        HasIdentification = false;
+        ValuableItem idITem = modItems.PossibleItems.ValuableItems.FirstOrDefault(x => x.Name.ToLower() == "police id card");
+        if (idITem == null)
+        {
+            idITem = modItems.PossibleItems.ValuableItems.FirstOrDefault(x => x.Name.ToLower() == "drivers license");
+            if (idITem == null)
+            {
+                EntryPoint.WriteToConsole($"STEAL COP ID NO MOD ITEM");
+                return "";
+            }
+        }
+        player.Inventory.Add(idITem, 1.0f);
+        return $"~n~~p~{idITem.Name}~s~";
+    }
 
     private void PlayerViolationChecker(IPoliceRespondable policeRespondable, IEntityProvideable world)
     {

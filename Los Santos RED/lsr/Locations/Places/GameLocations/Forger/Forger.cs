@@ -40,7 +40,7 @@ public class Forger : GameLocation
     public int CleanPlateSalesPrice { get; set; } = 200;
 
 
-
+    public int PoliceIdentificationSalesPrice { get; set; } = 550;
     public int IdentificationSalesPrice { get; set; } = 45;
 
     public int IdentificationPurchasePrice { get; set; } = 450;
@@ -134,11 +134,19 @@ public class Forger : GameLocation
             SellIDSubMenu.SetBannerType(BannerImage);
         }
 
-        InventoryItem driversLivenseItems = Player.Inventory.ItemsList.FirstOrDefault(x => x.ModItem != null && x.ModItem.ItemSubType == ItemSubType.Identification);
+        InventoryItem driversLivenseItems = Player.Inventory.ItemsList.FirstOrDefault(x => x.ModItem != null && x.ModItem.ItemSubType == ItemSubType.Identification && x.ModItem.Name.ToLower() == "drivers license");
         if(driversLivenseItems != null)
         {
             MenuItem mi = new MenuItem("Drivers License", 0,IdentificationSalesPrice);
             driversLivenseItems.ModItem.CreateSellMenuItem(Transaction, mi, SellIDSubMenu, Settings, Player, false, World);
+        }
+
+
+        InventoryItem policeIDItems = Player.Inventory.ItemsList.FirstOrDefault(x => x.ModItem != null && x.ModItem.ItemSubType == ItemSubType.Identification && x.ModItem.Name.ToLower() == "police id card");
+        if (policeIDItems != null)
+        {
+            MenuItem mi2 = new MenuItem("Police ID Card", 0, PoliceIdentificationSalesPrice);
+            policeIDItems.ModItem.CreateSellMenuItem(Transaction, mi2, SellIDSubMenu, Settings, Player, false, World);
         }
     }
 

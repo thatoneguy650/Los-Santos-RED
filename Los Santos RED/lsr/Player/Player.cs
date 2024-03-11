@@ -536,6 +536,10 @@ namespace Mod
             {
                 NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Character, true, false);
             }
+            if (Settings.SettingsManager.PlayerOtherSettings.AllowRunningInInteriors)
+            {
+                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, 427, true);
+            }
             WeaponEquipment.Setup();
             CellPhone.Start();
             GangBackupManager.Setup();
@@ -715,6 +719,10 @@ namespace Mod
             if (Settings.SettingsManager.VehicleSettings.DisableAutoHelmet)
             {
                 NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, false);
+            }
+            if (Settings.SettingsManager.PlayerOtherSettings.AllowRunningInInteriors)
+            {
+                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, 427, true);
             }
             if (Settings.SettingsManager.PlayerOtherSettings.AllowAttackingFriendlyPeds)
             {

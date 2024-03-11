@@ -409,6 +409,10 @@ public class ModItems : IModItems
             new ValuableItem("Drivers License","Drivers License", ItemType.Valuables) { 
                 ModelItemID = "p_ld_id_card_002",
                 ItemSubType = ItemSubType.Identification },
+
+            new ValuableItem("Police ID Card","Police Identification Card", ItemType.Valuables) {
+                ModelItemID = "p_ld_id_card_01",
+                ItemSubType = ItemSubType.Identification },
         });
     }
     private void DefaultConfig_Drinks()

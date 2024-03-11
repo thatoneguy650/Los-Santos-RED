@@ -953,7 +953,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         player.Inventory.Add(cellphoneItem,1.0f);
         return $"~n~~p~{cellphoneItem.Name}~s~";
     }
-    private string StealID(IInteractionable player, IModItems modItems)
+    protected virtual string StealID(IInteractionable player, IModItems modItems)
     {
         EntryPoint.WriteToConsole($"STEAL ID START");
         if (!HasIdentification)

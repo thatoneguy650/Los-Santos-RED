@@ -118,6 +118,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public float InteriorAutoCameraZDistance { get; set; }
     public float InteriorAutoCameraHeadingOffset { get; set; }
     public bool SetCutToBlackDeath { get; set; }
+    public bool AllowRunningInInteriors { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -210,6 +211,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
 
 
         SetCutToBlackDeath = false;
+        AllowRunningInInteriors = true;
     }
 
 }

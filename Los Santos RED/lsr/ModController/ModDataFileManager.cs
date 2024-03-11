@@ -260,10 +260,14 @@ public class ModDataFileManager
     private void SetupEUP()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\EUP");
-        string Description = "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford. Need some vehicles to match? The FullExpandedJurisdiction config includes the EUP uniforms along with vehicles for most lore friendly departments. If you have your own or just want to use vanilla, this is the config for you. " + Environment.NewLine + Environment.NewLine + Environment.NewLine +
+        string Description = "PreMade config for 'Emergency uniforms pack - Law & Order 8.3'and 'Emergency uniforms pack - Serve and Rescue' by Alex_Ashford. Need some vehicles to match? The FullExpandedJurisdiction config includes the EUP uniforms along with vehicles for most lore friendly departments. If you have your own or just want to use vanilla, this is the config for you. " + Environment.NewLine + Environment.NewLine + Environment.NewLine +
             "EUP Installation: "
             + Environment.NewLine +
-            "https://www.lcpdfr.com/downloads/gta5mods/character/8151-emergency-uniforms-pack-law-order/"
+            "LSR FEJ Requires BOTH EUP Base and EUP Serve and Rescue"
+            + Environment.NewLine +
+            "1. Install EUP Base. Follow the instructions at https://www.lcpdfr.com/downloads/gta5mods/character/8151-emergency-uniforms-pack-law-order/"
+            + Environment.NewLine +
+            "2. Install EUP Serve and Rescue. Follow the instructions at https://www.lcpdfr.com/downloads/gta5mods/character/16256-emergency-uniforms-pack-serve-rescue/"
             + Environment.NewLine +
             "To use, copy all of the .xml files from the AlternateConfigs\\EUP folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" + Environment.NewLine + Environment.NewLine +
             "";
@@ -273,7 +277,7 @@ public class ModDataFileManager
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction");
         string Description =
-            "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, AllenKennedy, and my own mapped default police/service vehicles."
+            "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' and 'Emergency uniforms pack - Serve and Rescue' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, AllenKennedy, and my own mapped default police/service vehicles. Looking for modern only? Try the Modern vehicle config in the Variations subfolder "
             + Environment.NewLine +
             "These vehicles are all replace, open the dlc.rpf file to see modelnames"
             + Environment.NewLine + Environment.NewLine +
