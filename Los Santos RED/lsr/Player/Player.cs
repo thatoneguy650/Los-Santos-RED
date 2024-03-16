@@ -1374,7 +1374,7 @@ namespace Mod
                 CurrentVehicle.CanBeConsideredStolen = false;
                 return true;
             }
-            else if (CurrentVehicle.IsBoat)
+            else if (CurrentVehicle.IsFreeEntry)
             {
                 CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                 CurrentVehicle.Vehicle.MustBeHotwired = false;

@@ -215,7 +215,7 @@ public class DispatchableVehicles_FEJ_2008
         {
             DispatchableVehicles_FEJ.Create_PoliceEsperanto(75,25,15,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PolicePatriot(25,75,17,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
-            DispatchableVehicles_FEJ.Create_PoliceSeminole(25,25,0,false,PoliceVehicleType.OlderMarked,-1,-1,-1,-1,-1,"","",10),
+            DispatchableVehicles_FEJ.Create_PoliceSeminole(25,25,0,false,PoliceVehicleType.OlderMarked,134,-1,-1,-1,-1,"","",10),
         };
         ParkRangerVehicles2008_FEJ.ForEach(x => x.MaxRandomDirtLevel = 15.0f);
         NOOSESEPVehicles2008_FEJ = new List<DispatchableVehicle>()

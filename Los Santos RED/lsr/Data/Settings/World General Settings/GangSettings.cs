@@ -151,6 +151,12 @@ public class GangSettings : ISettingsDefaultable
     public int TimeBetweenGangSpeak_HighCombat_Randomizer_Max { get; set; }
 
 
+
+    public int IdleSpeakPercentage { get; set; }
+    public int SevereCombatSpeakPercentage { get; set; }
+    public int LowCombatSpeakPercentage { get; set; }
+    public int FleeingSpeakPercentage { get; set; }
+
     public GangSettings()
     {
         SetDefault();
@@ -280,6 +286,12 @@ public class GangSettings : ISettingsDefaultable
         TimeBetweenGangSpeak_HighCombat_Min = 12000;
         TimeBetweenGangSpeak_HighCombat_Randomizer_Min = 20000;
         TimeBetweenGangSpeak_HighCombat_Randomizer_Max = 35000;
+
+
+        IdleSpeakPercentage = 10;
+        SevereCombatSpeakPercentage = 35;
+        LowCombatSpeakPercentage = 15;
+        FleeingSpeakPercentage = 15;
     }
 
 }

@@ -67,6 +67,8 @@ public class PedInteractSetup
         uint GameTimeStartedWalking = Game.GameTime;
         float prevDistanceToPos = 0f;
         bool isMoving = false;
+        uint GameTimeLastGotNavResult = Game.GameTime ;
+        bool hasGottenNavResult = false;
         while (IsValid)
         {
             if (HasTargetPositionChanged)
@@ -103,6 +105,19 @@ public class PedInteractSetup
             if(Game.GameTime - GameTimeStartedWalking >= GameTimeLimit)
             {
                 break;
+            }
+
+
+            if(!hasGottenNavResult && Game.GameTime - GameTimeLastGotNavResult >= 2000)
+            {
+                int RouteResult = NativeFunction.Natives.GET_NAVMESH_ROUTE_RESULT<int>(PedExt.Pedestrian);
+                if(RouteResult != 3)//VALID ROUTE
+                {
+                    SetForcePosition();
+
+                }
+                hasGottenNavResult = true;
+                GameTimeLastGotNavResult = Game.GameTime;
             }
             GameFiber.Yield();
         }

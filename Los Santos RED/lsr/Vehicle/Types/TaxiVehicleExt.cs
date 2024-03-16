@@ -11,6 +11,7 @@ namespace LSR.Vehicles
     public class TaxiVehicleExt : VehicleExt
     {
         public override bool CanRandomlyHaveIllegalItems { get; set; } = true;
+        public override bool CanUpdatePlate => false;
         public TaxiFirm TaxiFirm { get; set; }
         public override bool IsTaxi => true;
         public TaxiVehicleExt(Vehicle vehicle, ISettingsProvideable settings) : base(vehicle, settings)

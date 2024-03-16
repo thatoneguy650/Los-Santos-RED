@@ -142,7 +142,7 @@ namespace LSR.Vehicles
                 }
             }
         }
-        public bool CanUpdatePlate
+        public virtual bool CanUpdatePlate
         {
             get
             {
@@ -168,34 +168,45 @@ namespace LSR.Vehicles
                 return false;
             }
         }
-        public bool IsAircraft
-        {
-            get
-            {
-                if (vehicleClass == VehicleClass.Helicopter || vehicleClass == VehicleClass.Plane)
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
-        public bool IsBoat
-        {
-            get
-            {
-                if (vehicleClass == VehicleClass.Boat)
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
+
+        public bool IsAircraft => IsPlane || IsHeli;
+        //public bool IsAircraft
+        //{
+        //    get
+        //    {
+        //        if (vehicleClass == VehicleClass.Helicopter || vehicleClass == VehicleClass.Plane)
+        //        {
+        //            return true;
+        //        }
+        //        return false;
+        //    }
+        //}
+        //public bool IsBoat
+        //{
+        //    get
+        //    {
+        //        if (vehicleClass == VehicleClass.Boat)
+        //        {
+        //            return true;
+        //        }
+        //        return false;
+        //    }
+        //}
         public bool IsCar { get; private set; }
         public bool IsBicycle { get; private set; } = false;
         public bool IsMotorcycle { get; private set; } = false;
-        public bool CanPerformActivitiesInside => !IsBicycle && !IsMotorcycle;
+        public bool IsQuad { get; private set; } = false;
+        public bool IsJetSki { get; private set; } = false;
+        public bool IsBoat { get; private set; } = false;
+        public bool IsHeli { get; private set; } = false;
+        public bool IsPlane { get; private set; } = false;
+        public bool CanPerformActivitiesInside => !IsBicycle && !IsMotorcycle && !IsJetSki && !IsQuad;
         public bool IsRandomlyLocked { get; set; } = false;
-        public bool UsePlayerAnimations => !IsMotorcycle && !IsBicycle;// VehicleClass != VehicleClass.Motorcycle && VehicleClass != VehicleClass.Cycle;
+        public bool UsePlayerAnimations => !IsMotorcycle && !IsBicycle && !IsJetSki && !IsQuad;// VehicleClass != VehicleClass.Motorcycle && VehicleClass != VehicleClass.Cycle;
+
+
+        public bool CanBeHotwired => !IsMotorcycle && !IsBicycle && !IsAircraft && !IsBoat && !IsJetSki && !IsQuad;
+        public bool IsFreeEntry => IsMotorcycle || IsBicycle || IsAircraft || IsBoat || IsJetSki || IsQuad;
         public virtual bool CanHaveRandomCash { get; set; } = true;
         public virtual float PercentageToGetRandomWeapons => Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomWeapons;
         public virtual bool CanHaveRandomWeapons { get; set; } = true;
@@ -979,8 +990,20 @@ namespace LSR.Vehicles
             IsCar = NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Vehicle?.Model.Hash);
             bool isModelBike = NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>((uint)Vehicle?.Model.Hash);
             bool isModelBicycle = NativeFunction.Natives.IS_THIS_MODEL_A_BICYCLE<bool>((uint)Vehicle?.Model.Hash);
+            bool isModelQuad = NativeFunction.Natives.IS_THIS_MODEL_A_QUADBIKE<bool>((uint)Vehicle?.Model.Hash);
+            bool isModelJetSki = NativeFunction.Natives.IS_THIS_MODEL_A_JETSKI<bool>((uint)Vehicle?.Model.Hash);
+            bool isModelBoat = NativeFunction.Natives.IS_THIS_MODEL_A_BOAT<bool>((uint)Vehicle?.Model.Hash);
+
+            bool isModelPlane = NativeFunction.Natives.IS_THIS_MODEL_A_PLANE<bool>((uint)Vehicle?.Model.Hash);
+            bool isModelHeli = NativeFunction.Natives.IS_THIS_MODEL_A_HELI<bool>((uint)Vehicle?.Model.Hash);
+
             IsBicycle = isModelBicycle && isModelBike;
             IsMotorcycle = !isModelBicycle && isModelBike;
+            IsQuad = isModelQuad;
+            IsJetSki = isModelJetSki;
+            IsBoat = isModelBoat;
+            IsPlane = isModelPlane;
+            IsHeli = isModelHeli;
             GetOwnedBlipID();
         }
         public void RemoveBlip()

@@ -1740,7 +1740,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("ShitiTaxiVehicles", DispatchableVehicles_FEJ.ShitiTaxiVehicles),
             new DispatchableVehicleGroup("SunderedTaxiVehicles",DispatchableVehicles_FEJ.SunderedTaxiVehicles),
         };
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations");
+
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\DispatchableVehicles_FullExpandedJurisdictionModern.xml");
     }
 }

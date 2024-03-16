@@ -71,5 +71,9 @@ public static class RandomItems
         throw new NotImplementedException();
     }
 
+    internal static bool RandomPercent(object idleSpeakPercentage)
+    {
+        throw new NotImplementedException();
+    }
 }
 

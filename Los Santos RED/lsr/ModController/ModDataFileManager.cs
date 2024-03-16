@@ -276,6 +276,7 @@ public class ModDataFileManager
     private void SetupFullExpandedJurisdiction()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction");
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations");
         string Description =
             "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' and 'Emergency uniforms pack - Serve and Rescue' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, AllenKennedy, and my own mapped default police/service vehicles. Looking for modern only? Try the Modern vehicle config in the Variations subfolder "
             + Environment.NewLine +

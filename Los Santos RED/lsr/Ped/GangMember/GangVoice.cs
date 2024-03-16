@@ -63,23 +63,35 @@ public class GangVoice
 
     private void SayIdleSpeech()
     {
-        GangMember.PlaySpeech(IdleSpeech, false, false);
+        if (RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.IdleSpeakPercentage))
+        {
+            GangMember.PlaySpeech(IdleSpeech, false, false);
+        }
         TimeBetweenSpeaking = Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_General_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_General_Randomizer_Min, Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_General_Randomizer_Max);
     }
 
     private void SaySevereCombatSpeech()
     {
-        GangMember.PlaySpeech(HighCombatSpeech, false, true);
+        if (RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.SevereCombatSpeakPercentage))
+        {
+            GangMember.PlaySpeech(HighCombatSpeech, false, true);
+        }
         TimeBetweenSpeaking = Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_HighCombat_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_HighCombat_Randomizer_Min, Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_HighCombat_Randomizer_Max);
     }
     private void SayLowCombatSpeech()
     {
-        GangMember.PlaySpeech(LowCombatSpeech, false, true);
+        if (RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.LowCombatSpeakPercentage))
+        {
+            GangMember.PlaySpeech(LowCombatSpeech, false, true);
+        }
         TimeBetweenSpeaking = Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_LowCombat_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_LowCombat_Randomizer_Min, Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_LowCombat_Randomizer_Max);
     }
     private void SayFleeingSpeech()
     {
-        GangMember.PlaySpeech(LowCombatSpeech, false, true);
+        if (RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.FleeingSpeakPercentage))
+        {
+            GangMember.PlaySpeech(LowCombatSpeech, false, true);
+        }
         TimeBetweenSpeaking = Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_Fleeing_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_Fleeing_Randomizer_Min, Settings.SettingsManager.GangSettings.TimeBetweenGangSpeak_Fleeing_Randomizer_Max);
     }
     public void ResetSpeech()
