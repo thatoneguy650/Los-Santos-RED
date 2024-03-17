@@ -302,9 +302,6 @@ public class Vehicles
         Car.Setup();
         Car.AddVehicleToList(World);
     }
-
-
-
     public void AddPolice(PoliceVehicleExt vehicleExt)
     {
         if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
@@ -390,7 +387,6 @@ public class Vehicles
             CivilianVehicles.RemoveAll(x => x.Handle == vehicleExt.Handle);
         }
     }
-
     public VehicleExt GetClosestVehicleExt(Vector3 position, bool includeService, float maxDistance)
     {
         if (position == Vector3.Zero)
@@ -499,8 +495,6 @@ public class Vehicles
         }
         return ToReturn;
     }
-
-
     public void UpdatePoliceSonarBlips(bool setBlipped)
     {
         foreach (VehicleExt copCar in PoliceVehicles)
@@ -519,8 +513,6 @@ public class Vehicles
             }
         }
     }
-
-
     public void ClearPolice()
     {
         foreach (VehicleExt vehicleExt in PoliceVehicles)
@@ -594,9 +586,6 @@ public class Vehicles
             TaxiVehicles.Clear();
         }
     }
-
-
-
     public void CleanupAmbient()
     {
         //IS THIS NEEDED?
@@ -612,6 +601,4 @@ public class Vehicles
         //EntryPoint.WriteToConsole($"CleanupAmbient RAN DELETED CIVILIAN CAR");
         //Car.FullyDelete();
     }
-
-
 }

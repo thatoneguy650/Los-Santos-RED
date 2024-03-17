@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IInteractionable //: ILocationInteractable
+    public interface IInteractionable : IBasicUseable //: ILocationInteractable
     {
         ButtonPrompts ButtonPrompts { get; }
         CellPhone CellPhone { get; }

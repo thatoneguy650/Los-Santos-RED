@@ -686,7 +686,7 @@ public class VehicleItem : ModItem
         }
         return description;
     }
-    public override Rage.Object SpawnAndAttachItem(IInteractionable Player, bool isVisible, bool isRight)
+    public override Rage.Object SpawnAndAttachItem(IBasicUseable Player, bool isVisible, bool isRight)
     {
         //do nothing with cars
         return null;

@@ -156,6 +156,7 @@ public class GangSettings : ISettingsDefaultable
     public int SevereCombatSpeakPercentage { get; set; }
     public int LowCombatSpeakPercentage { get; set; }
     public int FleeingSpeakPercentage { get; set; }
+   // public bool RemoveNonSpawnedGangMembersOnFoot_Extra { get; set; }
 
     public GangSettings()
     {
@@ -292,6 +293,8 @@ public class GangSettings : ISettingsDefaultable
         SevereCombatSpeakPercentage = 35;
         LowCombatSpeakPercentage = 15;
         FleeingSpeakPercentage = 15;
+
+       // RemoveNonSpawnedGangMembersOnFoot_Extra = false;
     }
 
 }

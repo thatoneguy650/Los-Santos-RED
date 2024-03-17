@@ -391,6 +391,7 @@
     <Compile Include="lsr\Player\Interaction\PedInspect\PedInspect.cs" />
     <Compile Include="lsr\Old\TreatmentActivity_Old.cs" />
     <Compile Include="lsr\Player\Interface\IArmorManageable.cs" />
+    <Compile Include="lsr\Player\Interface\IBasicUseable.cs" />
     <Compile Include="lsr\Player\Interface\IClipsetManageable.cs" />
     <Compile Include="lsr\Player\Interface\IGangBackupable.cs" />
     <Compile Include="lsr\Player\Interface\IInteriorManageable.cs" />

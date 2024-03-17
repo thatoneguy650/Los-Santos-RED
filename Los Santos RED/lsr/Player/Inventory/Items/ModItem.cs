@@ -700,6 +700,12 @@ public class ModItem
             GameFiber.Yield();
             if (AttachProp.Exists())
             {
+                if(isTake)
+                {
+                    HandOffset = new Vector3(HandOffset.X + 0.07f, HandOffset.Y, HandOffset.Z - 0.05f);
+                }
+
+
                 AttachProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
             }
         }
@@ -717,7 +723,7 @@ public class ModItem
         }
     }
 
-    public virtual Rage.Object SpawnAndAttachItem(IInteractionable Player, bool isVisible, bool isRight)
+    public virtual Rage.Object SpawnAndAttachItem(IBasicUseable Player, bool isVisible, bool isRight)
     {
         string HandBoneName = "BONETAG_R_PH_HAND";
         string firstAttach = "RightHandSteal";

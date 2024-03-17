@@ -312,6 +312,12 @@ public class Pedestrians : ITaskerReportable
                     }
                     else if (Settings.SettingsManager.GangSettings.RemoveNonSpawnedGangMembersOnFoot && Pedestrian.Exists() && !Pedestrian.IsInAnyVehicle(false))
                     {
+                        //if(Settings.SettingsManager.GangSettings.RemoveNonSpawnedGangMembersOnFoot_Extra)
+                        //{
+                        //    Vector3 blockPos = Pedestrian.Position;
+                        //    new ScenarioBlock(blockPos, "").Block();
+                        //    EntryPoint.WriteToConsole($"SETTING NEW SCENARIO BLOCK AT {blockPos}");
+                        //}
                         Delete(Pedestrian);
                         continue;
                     }

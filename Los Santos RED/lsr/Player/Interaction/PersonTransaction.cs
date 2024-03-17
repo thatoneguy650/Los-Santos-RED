@@ -43,6 +43,7 @@ public class PersonTransaction : Interaction
     private bool PedCanBeAmbientTasked;
     private uint NotificationHandle;
     private bool IsCancelled = false;
+    private int MoneySpent = 0;
     public GameLocation AssociatedStore { get; set; }
     public PedExt TransactionPed => Ped;
     private bool CanContinueConversation => Player.IsAliveAndFree && Ped.CanConverse && Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 15f;// && Ped.Pedestrian.Speed <= 3.0f;// ((AssociatedStore != null && AssociatedStore.HasVendor && Player.Character.DistanceTo2D(AssociatedStore.VendorPosition) <= 6f) && (Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 6f)) && Player.CanConverse && Ped.CanConverse;
@@ -301,8 +302,9 @@ public class PersonTransaction : Interaction
         if (modItem != null)
         {
             MenuPool.CloseAllMenus();
-            StartBuyAnimation(modItem, menuItem, totalItems);
+            StartBuyAnimation(modItem, menuItem, totalItems, MoneySpent == 0);
             Ped.OnItemPurchased(Player, modItem,totalItems, menuItem.PurchasePrice * totalItems);
+            MoneySpent += menuItem.PurchasePrice * totalItems;
             Transaction.PurchaseMenu?.Show();
         }
     }
@@ -311,8 +313,9 @@ public class PersonTransaction : Interaction
         if (modItem != null)
         {
             MenuPool.CloseAllMenus();
-            StartSellAnimation(modItem, menuItem, totalItems);
+            StartSellAnimation(modItem, menuItem, totalItems, MoneySpent == 0);
             Ped.OnItemSold(Player, modItem, totalItems, menuItem.SalesPrice * totalItems);
+            MoneySpent += menuItem.SalesPrice * totalItems;
             Transaction.SellMenu?.Show();
         }
     }
@@ -660,7 +663,7 @@ public class PersonTransaction : Interaction
             IsActivelyConversing = false;
         }
     }
-    private void StartBuyAnimation(ModItem modItem, MenuItem menuItem, int totalItems)
+    private void StartBuyAnimation(ModItem modItem, MenuItem menuItem, int totalItems, bool allowSpeaking)
     {
         IsActivelyConversing = true;
         string modelName = "";
@@ -701,7 +704,10 @@ public class PersonTransaction : Interaction
             }
         }
         Player.ButtonPrompts.Clear();
-        SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
+        if (allowSpeaking)
+        {
+            SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
+        }
         if (Ped.Pedestrian.Exists())
         {
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "mp_common", "givetake1_a", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
@@ -742,16 +748,17 @@ public class PersonTransaction : Interaction
 
         EntryPoint.WriteToConsole($"PERSON TRANSACTION FINAL BUY isPackage{isPackage} HandBoneName{HandBoneName} HandOffset{HandOffset} HandRotator{HandRotator}");
 
-        if (!isWeapon && Ped.Pedestrian.Exists() && HasProp && modelName != "")
+        if (Ped.Pedestrian.Exists() && HasProp && modelName != "")
         {
-            try
-            {
-                SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
-            }
-            catch (Exception ex)
-            {
-                //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
-            }
+            SellingProp = modItem.SpawnAndAttachItem(Player, true, true);
+            //try
+            //{
+            //    SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
+            //}
+            //catch (Exception ex)
+            //{
+            //    //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+            //}
             GameFiber.Yield();
             if (SellingProp.Exists())
             {
@@ -765,7 +772,10 @@ public class PersonTransaction : Interaction
             if (SellingProp.Exists())
             {
                 SellingProp.Detach();
-                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
+
+                Vector3 HandOffsetPlayer = new Vector3(HandOffset.X + 0.07f, HandOffset.Y, HandOffset.Z - 0.05f);
+
+                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffsetPlayer, HandRotator);
             }
         }
         GameFiber.Sleep(1000);
@@ -775,8 +785,11 @@ public class PersonTransaction : Interaction
             {
                 SellingProp.Delete();
             }
-            SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, true);
-            SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BYE", "GENERIC_THANKS", "PED_RANT" }, true);
+            if (allowSpeaking)
+            {
+                SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, true);
+                SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BYE", "GENERIC_THANKS", "PED_RANT" }, true);
+            }
         }
         IsActivelyConversing = false;
         if (menuItem.IsIllicilt)
@@ -793,7 +806,7 @@ public class PersonTransaction : Interaction
             }
         }
     }
-    private void StartSellAnimation(ModItem modItem, MenuItem menuItem, int totalItems)
+    private void StartSellAnimation(ModItem modItem, MenuItem menuItem, int totalItems, bool allowSpeaking)
     {
         string modelName = "";
         bool HasProp = false;
@@ -833,7 +846,10 @@ public class PersonTransaction : Interaction
             }
         }
         Player.ButtonPrompts.Clear();
-        SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
+        if (allowSpeaking)
+        {
+            SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
+        }
         if (Ped.Pedestrian.Exists())
         {
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "mp_common", "givetake1_b", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
@@ -874,16 +890,20 @@ public class PersonTransaction : Interaction
 
         EntryPoint.WriteToConsole($"PERSON TRANSACTION FINAL SELL isPackage{isPackage} HandBoneName{HandBoneName} HandOffset{HandOffset} HandRotator{HandRotator}");
 
-        if (!isWeapon && Ped.Pedestrian.Exists() && HasProp && modelName != "")
+        if (Ped.Pedestrian.Exists() && HasProp && modelName != "")
         {
-            try
-            {
-                SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
-            }
-            catch (Exception ex)
-            {
-                //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
-            }
+            SellingProp = modItem.SpawnAndAttachItem(Player, true, true);
+
+
+
+            //try
+            //{
+            //    SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
+            //}
+            //catch (Exception ex)
+            //{
+            //    //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+            //}
             GameFiber.Yield();
             if (SellingProp.Exists())
             {
@@ -897,7 +917,8 @@ public class PersonTransaction : Interaction
             if (SellingProp.Exists())
             {
                 SellingProp.Detach();
-                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Ped.Pedestrian, HandBoneName), HandOffset, HandRotator);
+                Vector3 HandOffsetPed = new Vector3(HandOffset.X + 0.07f, HandOffset.Y, HandOffset.Z - 0.05f);
+                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Ped.Pedestrian, HandBoneName), HandOffsetPed, HandRotator);
             }
         }
         GameFiber.Sleep(1000);
@@ -907,7 +928,10 @@ public class PersonTransaction : Interaction
             {
                 SellingProp.Delete();
             }
-            SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, true);
+            if (allowSpeaking)
+            {
+                SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, true);
+            }
         }
         IsActivelyConversing = false;
         if (menuItem.IsIllicilt)

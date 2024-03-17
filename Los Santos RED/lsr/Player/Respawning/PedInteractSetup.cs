@@ -25,6 +25,7 @@ public class PedInteractSetup
     }
     public bool ForcePosition { get; set; } = true;
     public uint GameTimeLimit { get; set; } = 15000;
+    public bool CanUseEitherSide { get; set; } = true;
     private bool IsValid => EntryPoint.ModController.IsRunning && (Player.IsBusted || Player.IsArrested) && !Player.IsIncapacitated && Player.IsAlive && PedExt != null && PedExt.Pedestrian.Exists() && !PedExt.Pedestrian.IsDead && !PedExt.IsInWrithe && !PedExt.IsUnconscious;
     public bool IsInPosition { get; private set; }
     public void Start()
@@ -53,6 +54,20 @@ public class PedInteractSetup
     }
     protected virtual void GetDesiredPosition()
     {
+        if (PedExt == null || !PedExt.Pedestrian.Exists())
+        {
+            return;
+        }
+        if (CanUseEitherSide)
+        {
+            float distanceToFront = PedExt.Pedestrian.DistanceTo(Player.Character.GetOffsetPositionFront(-1f * Offset));
+            float distanceToRear = PedExt.Pedestrian.DistanceTo(Player.Character.GetOffsetPositionFront(Offset));
+
+            if(distanceToFront < distanceToRear)
+            {
+                Offset = -1f * Offset;
+            }
+        }
         TargetPosition = Player.Character.GetOffsetPositionFront(Offset);
         TargetHeading = Player.Character.Heading;
     }
@@ -108,13 +123,14 @@ public class PedInteractSetup
             }
 
 
-            if(!hasGottenNavResult && Game.GameTime - GameTimeLastGotNavResult >= 2000)
+            if(!hasGottenNavResult && Game.GameTime - GameTimeLastGotNavResult >= 5000)
             {
                 int RouteResult = NativeFunction.Natives.GET_NAVMESH_ROUTE_RESULT<int>(PedExt.Pedestrian);
                 if(RouteResult != 3)//VALID ROUTE
                 {
-                    SetForcePosition();
-
+                    //SetForcePosition();
+                    IsInPosition = true;
+                    //just end this hell!
                 }
                 hasGottenNavResult = true;
                 GameTimeLastGotNavResult = Game.GameTime;
