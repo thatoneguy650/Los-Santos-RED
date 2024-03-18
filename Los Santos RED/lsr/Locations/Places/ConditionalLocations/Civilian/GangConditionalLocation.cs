@@ -23,6 +23,7 @@ public class GangConditionalLocation : ConditionalLocation
     {
         try
         {
+            GameFiber.Yield();
             GangSpawnTask gangSpawnTask = new GangSpawnTask(Gang, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, World, ModItems, ForceMelee, ForceSidearm, ForceLongGun);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
             gangSpawnTask.AllowAnySpawn = true;
             gangSpawnTask.AllowBuddySpawn = false;

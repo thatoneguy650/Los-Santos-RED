@@ -29,18 +29,11 @@ public class BookingActivity
     private Vector3 AttachOffset;
     private bool IsCancelled;
 
-
-    //private SeatAssigner SeatAssigner;
-    //private int SeatTryingToEnter;
-    //private Vector3 SeatTryingToEnterEntryPosition;
-    //private VehicleExt VehicleTryingToEnter;
-    //private Vehicle VehicleTaskedToEnter;
-    //private int SeatTaskedToEnter;
     private bool isCopInPosition;
     private bool isPlayerCuffed;
     private Vector3 CopTargetPosition;
     private float CopTargetHeading;
-    //private bool hasEnteredVehicle;
+    private PedPlayerInteract PedPlayerInteract;
 
     public bool CanContinueBooking => EntryPoint.ModController.IsRunning && (Player.IsBusted || Player.IsArrested) && !Player.IsIncapacitated && Player.IsAlive && Cop.Pedestrian.Exists() && !Cop.Pedestrian.IsDead && !Cop.IsInWrithe && !Cop.IsUnconscious;
     public bool IsActive { get; private set; }
@@ -77,72 +70,53 @@ public class BookingActivity
     public void Start()
     {
         GetCop();
-        if (Cop != null && Cop.Pedestrian.Exists())
-        {
-            IsActive = true;
-            Player.IsBeingBooked = true;
-            GameFiber.StartNew(delegate
-            {
-                try
-                {
-                    SetupCop();
-                    SetupWorld();
-                    MoveCopBehindPlayer();
-                    if (isCopInPosition)
-                    {
-                        PlayCuffAnimation();
-                        if (isPlayerCuffed)
-                        {
-                            NativeFunction.Natives.SET_ENABLE_HANDCUFFS(Player.Character, true);
 
-                            Player.SetNotBusted();
-
-                            Player.SetWantedLevel(0, "Handcuffed", true);
-                            Player.IsArrested = true;
-
-
-                            try
-                            {
-                                BookingVehicleManager bookingVehicleManager = new BookingVehicleManager(Player, World, PoliceRespondable, Location, SeatAssignable, Settings, this, Cop);
-                                bookingVehicleManager.Setup();
-                                bookingVehicleManager.Start();
-                            }
-                            catch (Exception e)
-                            {
-                                EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
-                                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Booking");
-                            }
-                            //TaskPlayerIntoVehicle();
-                            FinishBooking();
-                        }
-                        else
-                        {
-                            ReleaseCop();
-                            EndBooking();
-                            //EntryPoint.WriteToConsoleTestLong("Booking Activity, Failure Cuffing Player");
-                        }
-                    }
-                    else
-                    {
-                        ReleaseCop();
-                        EndBooking();
-                        //EntryPoint.WriteToConsoleTestLong("Booking Activity, Failure Moving Cop To Cuff Position");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                    EntryPoint.ModController.CrashUnload();
-                }
-            }, "Booking");
-        }
-        else
+        if(Cop == null || !Cop.Pedestrian.Exists())
         {
             ReleaseCop();
             EndBooking();
-            //EntryPoint.WriteToConsoleTestLong("Booking Activity, No Cop Found");
+            return;
         }
+        IsActive = true;
+        Player.IsBeingBooked = true;
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                SetupCop();
+                SetupWorld();
+                PedPlayerInteract = new PedPlayerInteract(Player, Cop, -0.9f);
+                PedPlayerInteract.CanUseEitherSide = false;
+                PedPlayerInteract.Start();
+                if(CanContinueBooking)
+                {
+                    if (!PedPlayerInteract.IsInPosition)
+                    {
+                        PedPlayerInteract.SetPlayerInFront();
+                    }
+                    PlayCuffAnimation();
+                    if(!isPlayerCuffed)
+                    {
+                        ReleaseCop();
+                        EndBooking();
+                        return;
+                    }
+                    BookingVehicleManager bookingVehicleManager = new BookingVehicleManager(Player, World, PoliceRespondable, Location, SeatAssignable, Settings, this, Cop);
+                    bookingVehicleManager.Setup();
+                    bookingVehicleManager.Start();
+                    FinishBooking();
+                }
+                ReleaseCop();
+                EndBooking();
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "Booking");
     }
+   
     private void EndBooking()
     {
         Player.IsBeingBooked = false;
@@ -173,61 +147,15 @@ public class BookingActivity
             Cop.CanBeAmbientTasked = true;
         }
     }
-    private void MoveCopBehindPlayer()
-    {
-        if(Cop.Pedestrian.Exists())
-        {
-            GetCopDesiredPosition();
-            TaskCopToDesiredPosition();
-            CopMoveLoop();
-        }
-    }
-    private void GetCopDesiredPosition()
-    {
-        CopTargetPosition = Player.Character.GetOffsetPositionFront(-0.9f);
-        CopTargetHeading = Player.Character.Heading;
-    }
-    private void TaskCopToDesiredPosition()
-    {
-        NativeFunction.Natives.CLEAR_PED_TASKS(Cop.Pedestrian);
-        NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Cop.Pedestrian, CopTargetPosition.X, CopTargetPosition.Y, CopTargetPosition.Z, 1.0f, -1, CopTargetHeading, 0.1f);
-    }
-    private void CopMoveLoop()
-    {
-        isCopInPosition = false;
-        while (CanContinueBooking)
-        {
-            if(CopTargetPosition.DistanceTo2D(Player.Character.GetOffsetPositionFront(-0.9f)) >= 0.1f)
-            {
-                GetCopDesiredPosition();
-                TaskCopToDesiredPosition();
-            }
-
-
-            if (Cop.Pedestrian.DistanceTo2D(CopTargetPosition) <= 0.05f && Math.Abs(Extensions.GetHeadingDifference(Cop.Pedestrian.Heading, CopTargetHeading)) <= 0.5f)
-            {
-                isCopInPosition = true;
-                break;
-            }
-            GameFiber.Yield();
-        }
-        if (isCopInPosition)
-        {
-            GameFiber.Wait(500);
-        }
-    }
     private void PlayCuffAnimation()
     {
         CameraControl cameraControl = new CameraControl(Player);
-
         if (Settings.SettingsManager.RespawnSettings.UseCustomCameraWhenBooking)
         {
 
             cameraControl.Setup();
             cameraControl.HighlightEntity(Player.Character);
         }
-
-
         isPlayerCuffed = false;
         Cop.WeaponInventory.ShouldAutoSetWeaponState = false;
         Cop.WeaponInventory.SetUnarmed();
@@ -242,15 +170,11 @@ public class BookingActivity
             }
             GameFiber.Yield();
         }
-
-        //GameFiber.Wait(950);
-        //GameFiber.Wait(3000);
         if (CanContinueBooking)
         {
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
             Cop.WeaponInventory.RemoveHeavyWeapon();
             Cop.WeaponInventory.UpdateLoadout(PoliceRespondable, false, Settings.SettingsManager.PoliceSettings.OverrideAccuracy);
-
             endLoop = false;
             while (Cop.Pedestrian.Exists() && !endLoop)
             {
@@ -260,18 +184,15 @@ public class BookingActivity
                 }
                 GameFiber.Yield();
             }
-
-
-            //GameFiber.Wait(1000);
+            //GameFiber.Wait(250);
             if (CanContinueBooking)
             {
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                 Player.Character.KeepTasks = true;
-                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, PlayerCuffedDictionary, PlayerCuffedAnimation, 1.0f, -1.0f, -1, 49, 0, 0, 1, 0);
+                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, PlayerCuffedDictionary, PlayerCuffedAnimation, 8.0f, -8.0f, -1, 49, 0, 0, 1, 0);
                 isPlayerCuffed = true;
             }
         }
-
         if (Settings.SettingsManager.RespawnSettings.UseCustomCameraWhenBooking)
         {
             cameraControl.ReturnToGameplayCam();
@@ -283,13 +204,11 @@ public class BookingActivity
         if (Player.IsInVehicle)
         {
             Player.IsBeingBooked = false;
-            //hasEnteredVehicle = true;
             IsActive = false;//temp here
         }
         else//for now
         {
             Player.IsBeingBooked = false;
-            //hasEnteredVehicle = true;
             IsActive = false;//temp here
         }
     }

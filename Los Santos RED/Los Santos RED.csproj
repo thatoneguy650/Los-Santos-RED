@@ -175,6 +175,7 @@
     <Compile Include="lsr\Locations\Interiors\Theft\TheftInteractItem.cs" />
     <Compile Include="lsr\Locations\Interiors\ToiletInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\UrinalInteract.cs" />
+    <Compile Include="lsr\Locations\Other\DistanceChecker.cs" />
     <Compile Include="lsr\Locations\Other\StoredSpawn.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\MerchantConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\AppearPercentage.cs" />
@@ -407,7 +408,9 @@
     <Compile Include="lsr\Player\Inventory\Items\VariablePriceMenuItem.cs" />
     <Compile Include="lsr\Player\Managers\InteriorManager.cs" />
     <Compile Include="lsr\Player\Respawning\BribeActivity.cs" />
-    <Compile Include="lsr\Player\Respawning\PedInteractSetup.cs" />
+    <Compile Include="lsr\Player\Respawning\PedGeneralInteract.cs" />
+    <Compile Include="lsr\Player\Respawning\PedPlayerInteract.cs" />
+    <Compile Include="lsr\Player\Respawning\PedVehicleInteract.cs" />
     <Compile Include="lsr\Player\Taxi\TaxiManager.cs" />
     <Compile Include="lsr\Player\Taxi\TaxiRide.cs" />
     <Compile Include="lsr\Player\Money\BankAccount.cs" />

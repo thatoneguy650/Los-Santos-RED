@@ -194,7 +194,11 @@ public class Dispatcher
                     continue;
                 }
                 float distanceTo = civilianCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character);
-                if (distanceTo >= 275f || (!civilianCar.WasSpawnedEmpty && distanceTo >= 150f))//325f)//275f)//250f)
+
+                civilianCar.DistanceChecker.UpdateMovement(distanceTo);
+
+
+                if (civilianCar.DistanceChecker.IsMovingAway && (distanceTo >= 275f || (!civilianCar.WasSpawnedEmpty && distanceTo >= 150f)))//325f)//275f)//250f)
                 {
                     //if (civilianCar.Vehicle.IsPersistent)
                     //{
@@ -209,7 +213,7 @@ public class Dispatcher
                     EntryPoint.WriteToConsole($"GENERAL DISPATCHER NON PERSIST 1 EMPTY VEHICLE distanceTo{distanceTo} {civilianCar.Handle}");
                     civilianCar.Vehicle.IsPersistent = false;
                 }
-                else if (Settings.SettingsManager.WorldSettings.ExtendedVehicleCleanup && distanceTo >= 125f && !civilianCar.WasSpawnedEmpty)
+                else if (civilianCar.DistanceChecker.IsMovingAway && Settings.SettingsManager.WorldSettings.ExtendedVehicleCleanup && distanceTo >= 125f && !civilianCar.WasSpawnedEmpty)
                 {
                     if (civilianCar.Vehicle.IsPersistent)
                     {

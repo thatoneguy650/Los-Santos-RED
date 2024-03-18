@@ -39,6 +39,8 @@ public class GangSpawnTask : SpawnTask
         try
         {
             GameFiber.Yield();
+
+            EntryPoint.WriteToConsole($"GANG SPAWN TASK Veh:{VehicleType?.ModelName} Ped:{PersonType?.ModelName} Gang:{Gang?.ShortName}");
             if (IsInvalidSpawnPosition)
             {
                 //EntryPoint.WriteToConsoleTestLong($"GangSpawn: Task Invalid Spawn Position");

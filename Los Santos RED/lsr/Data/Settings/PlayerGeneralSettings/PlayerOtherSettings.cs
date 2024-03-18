@@ -119,6 +119,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public float InteriorAutoCameraHeadingOffset { get; set; }
     public bool SetCutToBlackDeath { get; set; }
     public bool AllowRunningInInteriors { get; set; }
+    public bool SetHintCameraWhenUsingMachineInteractions { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -199,7 +200,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         RandomCashMax = 750;
        // UseVanillaGroup = false;
 
-        SetCameraHintWhenConversing = true;
+        SetCameraHintWhenConversing = false;
 
 
         InteriorAutoCameraXDistance = 2f;
@@ -212,6 +213,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
 
         SetCutToBlackDeath = false;
         AllowRunningInInteriors = true;
+
+        SetHintCameraWhenUsingMachineInteractions = false;
     }
 
 }

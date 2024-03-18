@@ -198,6 +198,10 @@ public class PlayerPerception
         {
             WithinWeaponsAudioRange = false;
         }
+
+        Originator.DistanceChecker.UpdateMovement(DistanceToTarget);
+
+
         GameTimeLastDistanceCheck = Game.GameTime;
         return true;
     }

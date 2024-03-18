@@ -42,6 +42,8 @@ public class SearchActivity
     private string animDict;
     private string anim;
     private float AnimationToggleTime;
+    private PedPlayerInteract PedPlayerInteract;
+    private PedVehicleInteract PedVehicleInteract;
 
     public bool CanContinueSearch => EntryPoint.ModController.IsRunning && (Player.IsBusted || Player.IsArrested) && !Player.IsIncapacitated && Player.IsAlive && Cop != null && Cop.Pedestrian.Exists() && !Cop.Pedestrian.IsDead && !Cop.IsInWrithe && !Cop.IsUnconscious;
     public bool IsActive { get; private set; }
@@ -101,23 +103,24 @@ public class SearchActivity
                 {
                     return;
                 }
-               // DetermineSearchOutcome();
-
-
-
-
-                MoveCopBehindPlayer();
-                //if(CanContinueSearch && !isCopInPosition)
-                //{
-                //    SetPlayerInFrontOfCop();
-                //}
+                PedPlayerInteract = new PedPlayerInteract(Player, Cop, -0.9f);
+                PedPlayerInteract.Start();
                 if (CanContinueSearch)
                 {
+                    if(!PedPlayerInteract.IsInPosition)
+                    {
+                        PedPlayerInteract.SetPlayerInFront();
+                    }
                     PlayPlayerSearchAnimation();
                     if (HasVehicle && CanContinueSearch && Settings.SettingsManager.RespawnSettings.IncludeCarInSearch)
                     {
-                        MoveCopToCar();
-                        if (isCopInPosition && CanContinueSearch)
+                        PedVehicleInteract = new PedVehicleInteract(Player, Cop, -0.9f, CarToSearch, Settings);
+                        PedVehicleInteract.Start();
+                        if(!PedVehicleInteract.IsInPosition)
+                        {
+                            PedVehicleInteract.SetForcePosition();
+                        }
+                        if (CanContinueSearch)
                         {
                             PlayCarSearchAnimation();
                         }
@@ -133,26 +136,6 @@ public class SearchActivity
             }
         }, "Booking");
     }
-
-    //private void DetermineSearchOutcome()
-    //{
-    //    PlayerPoliceSearch.DoVehicleBodySearch();
-    //}
-
-    private void SetPlayerInFrontOfCop()
-    {
-        if (Cop == null || !Cop.Pedestrian.Exists() )
-        {
-            return;
-        }
-        //Game.FadeScreenOut(1000, true);
-        Player.Character.Position = Cop.Pedestrian.GetOffsetPositionFront(0.9f);
-        Player.Character.Heading = Cop.Pedestrian.Heading;
-        //GameFiber.Sleep(500);
-        //Game.FadeScreenIn(1000, true);
-        EntryPoint.WriteToConsole("SET PLAYER IN FRONT OF COP!");
-    }
-
     private void ToggleTrunkLoop(bool setOpen)
     {
         if (Cop == null || !Cop.Pedestrian.Exists() || CarToSearch == null || !CarToSearch.Vehicle.Exists())
@@ -193,9 +176,6 @@ public class SearchActivity
                 DoorMovement();
                 toggledDoor = true;
             }
-//#if DEBUG
-//            Game.DisplaySubtitle($"AnimationTime: {AnimationTime}");
-//#endif
             GameFiber.Yield();
         }
     }
@@ -331,7 +311,6 @@ public class SearchActivity
             CameraControl.ReturnToGameplayCam();
         }
     }
-
     private void CopAnnounceFoundBody()
     {
         AnnouncedFoundBody = true;
@@ -343,27 +322,6 @@ public class SearchActivity
                 };
         Game.DisplayHelp("Stored Body Found");
         Game.DisplaySubtitle("~g~Cop: ~s~" + foundItemResponse.PickRandom());
-    }
-
-    private void MoveCopToCar()
-    {
-        if (!Cop.Pedestrian.Exists() || CarToSearch == null || !CarToSearch.Vehicle.Exists())
-        {
-            return;
-        }      
-        GetCopDesiredCarPosition();
-        TaskCopToDesiredPosition();
-        CopMoveLoop(true);
-    }
-    private void GetCopDesiredCarPosition()
-    {
-        if (CarToSearch == null || !CarToSearch.Vehicle.Exists())
-        {
-            return;
-        }
-        VehicleDoorSeatData vdsd = new VehicleDoorSeatData("unknow", "unknow", 5, -1);
-        CopTargetPosition = vdsd.GetDoorOffset(CarToSearch.Vehicle, Settings);
-        CopTargetHeading = vdsd.GetDoorHeading(CarToSearch.Vehicle, Settings);
     }
     private void EndSearch()
     {
@@ -427,116 +385,28 @@ public class SearchActivity
         Cop.CanBeTasked = true;
         Cop.CanBeAmbientTasked = true;      
     }
-    private void MoveCopBehindPlayer()
-    {
-        if(!Cop.Pedestrian.Exists())
-        {
-            IsActive = false;
-            return;
-        }
-        GetCopDesiredPosition();
-        TaskCopToDesiredPosition();
-        CopMoveLoop(false);      
-    }
-    private void GetCopDesiredPosition()
-    {
-        CopTargetPosition = Player.Character.GetOffsetPositionFront(-0.9f);
-        CopTargetHeading = Player.Character.Heading;
-    }
-    private void TaskCopToDesiredPosition()
-    {
-        NativeFunction.Natives.CLEAR_PED_TASKS(Cop.Pedestrian);
-        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Cop.Pedestrian, CopTargetPosition.X, CopTargetPosition.Y, CopTargetPosition.Z, 1.0f, -1, 0.1f, 0, CopTargetHeading);
-    }
-    private void CopMoveLoop(bool isVehicle)
-    {
-        isCopInPosition = false;
-        uint GameTimeStartedWalking = Game.GameTime;
-        float prevDistanceToPos = 0f;
-        bool isMoving = false;
-        while (CanContinueSearch)
-        {
-            if (!isVehicle && CopTargetPosition.DistanceTo2D(Player.Character.GetOffsetPositionFront(-0.9f)) >= 0.1f)
-            {
-                if (isVehicle)
-                {
-                    GetCopDesiredCarPosition();
-                }
-                else
-                {
-                    GetCopDesiredPosition();
-                }
-                TaskCopToDesiredPosition();
-            }
-            float distanceToPos = Cop.Pedestrian.DistanceTo2D(CopTargetPosition);
-            float headingDiff = Math.Abs(Extensions.GetHeadingDifference(Cop.Pedestrian.Heading, CopTargetHeading));
-
-            if(distanceToPos != prevDistanceToPos)
-            {
-                isMoving = true;
-                prevDistanceToPos = distanceToPos;
-            }
-            else
-            {
-                isMoving = false;
-            }
-
-            if (distanceToPos <= 0.2f && headingDiff <= 0.5f)
-            {
-                isCopInPosition = true;
-                break;
-            }
-            if (!isMoving && distanceToPos <= 0.5f && headingDiff <= 0.5f)
-            {
-                isCopInPosition = true;
-                break;
-            }
-            if(Game.GameTime - GameTimeStartedWalking >= 15000 && distanceToPos <= 1.0f && headingDiff <= 5f)
-            {
-                isCopInPosition = true;
-                break;
-            }
-
-//#if DEBUG
-//            Game.DisplaySubtitle($"distanceToPos:{distanceToPos} headingDiff{headingDiff} isCopInPosition{isCopInPosition} {isVehicle}");
-//            Rage.Debug.DrawArrowDebug(CopTargetPosition + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.White);
-//#endif
-            GameFiber.Yield();
-        }
-        if (isCopInPosition)
-        {
-            GameFiber.Wait(500);
-        }
-    }
     private void PlayPlayerSearchAnimation()
     {
-
         if(Cop == null || !CanContinueSearch)
         {
             return;
         }
-
         CameraControl = new CameraControl(Player);
         if (Settings.SettingsManager.RespawnSettings.UseCustomCameraWhenBooking)
         {
             CameraControl.Setup();
-            if (!isCopInPosition)
-            {
-                SetPlayerInFrontOfCop();
-            }
             CameraControl.HighlightEntity(Player.Character);
-        }
-        else
-        {
-            if (!isCopInPosition)
-            {
-                SetPlayerInFrontOfCop();
-            }
         }
         Cop.WeaponInventory.ShouldAutoSetWeaponState = false;
         Cop.WeaponInventory.SetUnarmed();
         NativeFunction.Natives.TASK_PLAY_ANIM(Cop.Pedestrian, CopDoSearchDictionary, CopDoSearchAnimation, 1.0f, -1.0f, -1, 2, 0, false, false, false);
-        Player.Surrendering.SetArrestedAnimation(true);
+
+        if(!Player.Surrendering.HasPlayedSurrenderActivity)
+        {
+            Player.Surrendering.SetArrestedAnimation(true);
+        }
+
+
         bool endLoop = false;
         while (Cop.Pedestrian.Exists() && !endLoop && CanContinueSearch)
         {         

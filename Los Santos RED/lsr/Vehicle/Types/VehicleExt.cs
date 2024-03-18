@@ -70,6 +70,7 @@ namespace LSR.Vehicles
         public Gang AssociatedGang { get; set; }
         public Agency AssociatedAgency { get; set; }
         public SonarBlip SonarBlip { get; set; }
+        public DistanceChecker DistanceChecker { get; private set; }
         public virtual Color BlipColor => AssociatedAgency != null ? AssociatedAgency.Color : AssociatedGang != null ? AssociatedGang.Color : Color.White;
         public virtual float BlipSize => AssociatedAgency != null ? 0.6f : 0.25f;
         public uint HasExistedFor => Game.GameTime - GameTimeSpawned;
@@ -336,6 +337,7 @@ namespace LSR.Vehicles
             SimpleInventory = new SimpleInventory(Settings);
             CashStorage = new CashStorage();
             SonarBlip = new SonarBlip(this, Settings);
+            DistanceChecker = new DistanceChecker();
         }
         public void SetAsEntered()
         {

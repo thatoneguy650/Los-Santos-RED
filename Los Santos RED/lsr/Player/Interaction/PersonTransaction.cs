@@ -86,6 +86,13 @@ public class PersonTransaction : Interaction
                 }
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                InteractionMenu.OnMenuClose += (sender) =>
+                {
+                    if (Ped != null && Ped.Pedestrian.Exists() && CanContinueConversation && !PanickedByPlayer && !IsCancelled)
+                    {
+                        SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BYE", "GENERIC_THANKS", "PED_RANT" }, true);
+                    }
+                };
                 while ((MenuPool.IsAnyMenuOpen() || isPaused) && CanContinueConversation && !PanickedByPlayer && !IsCancelled)
                 {
                     UpdateOptions();
@@ -104,6 +111,8 @@ public class PersonTransaction : Interaction
             }
         }, "PersonTransaction");
     }
+
+
 
     public override void Dispose()
     {
@@ -194,6 +203,7 @@ public class PersonTransaction : Interaction
         }
         Transaction.UseAccounts = useAccounts;// Ped.ShopMenu != null || !Ped.ShopMenu.Items.Any(x => x.IsIllicilt);
         Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);
+
     }
     private void CheckButtonPrompts()
     {
@@ -788,7 +798,7 @@ public class PersonTransaction : Interaction
             if (allowSpeaking)
             {
                 SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, true);
-                SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BYE", "GENERIC_THANKS", "PED_RANT" }, true);
+                //SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BYE", "GENERIC_THANKS", "PED_RANT" }, true);
             }
         }
         IsActivelyConversing = false;

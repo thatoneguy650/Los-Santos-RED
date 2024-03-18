@@ -8,16 +8,15 @@ using System.Threading.Tasks;
 using LosSantosRED.lsr.Interface;
 using ExtensionsMethods;
 
-public class PedInteractSetup
+public class PedGeneralInteract
 {
-
-    private PedExt PedExt;
-    private IRespawnable Player;
-    private Vector3 TargetPosition;
-    private float TargetHeading;
-    private float Offset;
-    protected virtual bool HasTargetPositionChanged => TargetPosition.DistanceTo2D(Player.Character.GetOffsetPositionFront(Offset)) >= 0.1f;
-    public PedInteractSetup(IRespawnable player, PedExt pedExt, float offset)
+    protected PedExt PedExt;
+    protected IRespawnable Player;
+    protected Vector3 TargetPosition;
+    protected float TargetHeading;
+    protected float Offset;
+    protected virtual bool HasTargetPositionChanged => false;// TargetPosition.DistanceTo2D(Player.Character.GetOffsetPositionFront(Offset)) >= 0.1f;
+    public PedGeneralInteract(IRespawnable player, PedExt pedExt, float offset)
     {
         Player = player;
         PedExt = pedExt;
@@ -26,8 +25,8 @@ public class PedInteractSetup
     public bool ForcePosition { get; set; } = true;
     public uint GameTimeLimit { get; set; } = 15000;
     public bool CanUseEitherSide { get; set; } = true;
-    private bool IsValid => EntryPoint.ModController.IsRunning && (Player.IsBusted || Player.IsArrested) && !Player.IsIncapacitated && Player.IsAlive && PedExt != null && PedExt.Pedestrian.Exists() && !PedExt.Pedestrian.IsDead && !PedExt.IsInWrithe && !PedExt.IsUnconscious;
-    public bool IsInPosition { get; private set; }
+    protected bool IsValid => EntryPoint.ModController.IsRunning && (Player.IsBusted || Player.IsArrested) && !Player.IsIncapacitated && Player.IsAlive && PedExt != null && PedExt.Pedestrian.Exists() && !PedExt.Pedestrian.IsDead && !PedExt.IsInWrithe && !PedExt.IsUnconscious;
+    public bool IsInPosition { get; protected set; }
     public void Start()
     {
         if (!PedExt.Pedestrian.Exists())
@@ -37,13 +36,12 @@ public class PedInteractSetup
         GetDesiredPosition();
         TaskToPosition();
         MoveLoop();
-        if(!ForcePosition)
+        if (ForcePosition && IsInPosition)
         {
-            return;
+            SetForcePosition();
         }
-        SetForcePosition();
     }
-    private void SetForcePosition()
+    public void SetForcePosition()
     {
         if (PedExt == null || !PedExt.Pedestrian.Exists())
         {
@@ -54,22 +52,7 @@ public class PedInteractSetup
     }
     protected virtual void GetDesiredPosition()
     {
-        if (PedExt == null || !PedExt.Pedestrian.Exists())
-        {
-            return;
-        }
-        if (CanUseEitherSide)
-        {
-            float distanceToFront = PedExt.Pedestrian.DistanceTo(Player.Character.GetOffsetPositionFront(-1f * Offset));
-            float distanceToRear = PedExt.Pedestrian.DistanceTo(Player.Character.GetOffsetPositionFront(Offset));
 
-            if(distanceToFront < distanceToRear)
-            {
-                Offset = -1f * Offset;
-            }
-        }
-        TargetPosition = Player.Character.GetOffsetPositionFront(Offset);
-        TargetHeading = Player.Character.Heading;
     }
     private void TaskToPosition()
     {
@@ -82,8 +65,9 @@ public class PedInteractSetup
         uint GameTimeStartedWalking = Game.GameTime;
         float prevDistanceToPos = 0f;
         bool isMoving = false;
-        uint GameTimeLastGotNavResult = Game.GameTime ;
+        uint GameTimeLastGotNavResult = Game.GameTime;
         bool hasGottenNavResult = false;
+        uint GameTimeStoppedMoving = 0;
         while (IsValid)
         {
             if (HasTargetPositionChanged)
@@ -102,14 +86,36 @@ public class PedInteractSetup
             {
                 isMoving = false;
             }
+            if (!isMoving)
+            {
+                if (GameTimeStoppedMoving == 0)
+                {
+                    GameTimeStoppedMoving = Game.GameTime;
+                }
+            }
+            else
+            {
+                GameTimeStoppedMoving = 0;
+            }
             if (distanceToPos <= 0.2f && headingDiff <= 0.5f)
             {
                 IsInPosition = true;
+                EntryPoint.WriteToConsole("PedGeneralInteract VALID 1");
                 break;
             }
             if (!isMoving && distanceToPos <= 0.5f && headingDiff <= 0.5f)
             {
                 IsInPosition = true;
+                EntryPoint.WriteToConsole("PedGeneralInteract VALID 2");
+                break;
+            }
+            if (GameTimeStoppedMoving != 0 && !isMoving && Game.GameTime - GameTimeStoppedMoving >= 4000)
+            {
+                if (distanceToPos <= 1.0f && headingDiff <= 5f)
+                {
+                    IsInPosition = true;
+                }
+                EntryPoint.WriteToConsole("PedGeneralInteract NOT MOVING TIMEOUT");
                 break;
             }
             if (Game.GameTime - GameTimeStartedWalking >= 15000 && distanceToPos <= 1.0f && headingDiff <= 5f)
@@ -117,20 +123,22 @@ public class PedInteractSetup
                 IsInPosition = true;
                 break;
             }
-            if(Game.GameTime - GameTimeStartedWalking >= GameTimeLimit)
+            if (Game.GameTime - GameTimeStartedWalking >= GameTimeLimit)
             {
+                EntryPoint.WriteToConsole("PedGeneralInteract TIMEOUT");
                 break;
             }
-
-
-            if(!hasGottenNavResult && Game.GameTime - GameTimeLastGotNavResult >= 5000)
+            if (!hasGottenNavResult && Game.GameTime - GameTimeLastGotNavResult >= 2000)
             {
                 int RouteResult = NativeFunction.Natives.GET_NAVMESH_ROUTE_RESULT<int>(PedExt.Pedestrian);
-                if(RouteResult != 3)//VALID ROUTE
+                if (RouteResult != 3)//VALID ROUTE
                 {
                     //SetForcePosition();
                     IsInPosition = true;
                     //just end this hell!
+
+                    EntryPoint.WriteToConsole("PedGeneralInteract NO VALID POSITION");
+                    break;
                 }
                 hasGottenNavResult = true;
                 GameTimeLastGotNavResult = Game.GameTime;

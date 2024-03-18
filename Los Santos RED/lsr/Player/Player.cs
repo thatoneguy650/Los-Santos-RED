@@ -428,7 +428,6 @@ namespace Mod
         public bool RecentlyShot => GameTimeLastShot != 0 && !RecentlyStartedPlaying && Game.GameTime - GameTimeLastShot <= 3000;
         public bool RecentlyStartedPlaying => GameTimeStartedPlaying != 0 && Game.GameTime - GameTimeStartedPlaying <= 3000;
         public bool ReleasedFireWeapon { get; set; }
-
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public float SearchModePercentage => SearchMode.SearchModePercentage;
         public bool ShouldCheckViolations => !Settings.SettingsManager.ViolationSettings.TreatAsCop && !IsCop && !RecentlyStartedPlaying;
@@ -1133,6 +1132,7 @@ namespace Mod
             {
                 if (IsWanted && AnyPoliceRecentlySeenPlayer) //if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer)
                 {
+                    GameFiber.Yield();
                     EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleEngineHealthDecreased SCANNER CALLED");
                     Scanner.OnVehicleCrashed();
                 }
@@ -1148,6 +1148,7 @@ namespace Mod
             {
                 if (IsWanted && AnyPoliceRecentlySeenPlayer) //if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer)
                 {
+                    GameFiber.Yield();
                     EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleHealthDecreased SCANNER CALLED");
                     Scanner.OnVehicleCrashed();
                 }

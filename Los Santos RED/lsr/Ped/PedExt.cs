@@ -62,7 +62,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             GameTimeSpawned = Game.GameTime;
         //}
 
-
+        DistanceChecker = new DistanceChecker();
         PedViolations = new PedViolations(this, crimes, settings, weapons, world);
         PedPerception = new PedPerception(this, crimes, settings, weapons, world);
         PlayerPerception = new PlayerPerception(this, null, settings);
@@ -87,6 +87,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public PedBrain PedBrain { get; set; }
     public ItemDesires ItemDesires { get; private set; }
     public PedAlerts PedAlerts { get; private set; }
+    public DistanceChecker DistanceChecker { get; private set; }
     public uint ArrestingPedHandle { get; set; } = 0;
     public List<Cop> AssignedCops { get; set; } = new List<Cop>();
     public int AssignedSeat { get; set; }

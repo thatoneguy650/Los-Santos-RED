@@ -138,7 +138,7 @@ public class GasPump : GameLocation
         }
         GetGasSubMenu.OnMenuOpen += (sender) =>
         {
-            if (Refueling.VehicleExt != null && Refueling.VehicleExt.Vehicle.Exists())
+            if (Refueling.VehicleExt != null && Refueling.VehicleExt.Vehicle.Exists() && Settings.SettingsManager.PlayerOtherSettings.SetHintCameraWhenUsingMachineInteractions)
             {
                 NativeFunction.Natives.SET_GAMEPLAY_VEHICLE_HINT(Refueling.VehicleExt.Vehicle, 0f, 0f, 0f, true, -1, 2000, 2000);
             }
@@ -193,7 +193,10 @@ public class GasPump : GameLocation
     }
     private void FullDispose()
     {
-        NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
+        if (Settings.SettingsManager.PlayerOtherSettings.SetHintCameraWhenUsingMachineInteractions)
+        {
+            NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
+        }
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         Game.LocalPlayer.HasControl = true;
         KeepInteractionGoing = false;

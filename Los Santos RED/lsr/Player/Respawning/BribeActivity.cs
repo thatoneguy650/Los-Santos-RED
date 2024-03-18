@@ -20,7 +20,7 @@ public class BribeActivity
     private bool isCopInPosition;
     private bool IsActive;
     private AnimationWatcher AnimationWatcher;
-    private PedInteractSetup PedInteractSetup;
+    private PedPlayerInteract PedInteractSetup;
     private string TakeCashDictionary;
     private string TakeCashAnimation;
     private string OfferCashDictionary;
@@ -87,7 +87,7 @@ public class BribeActivity
             return;
         }
         OfferBribe();
-        PedInteractSetup = new PedInteractSetup(Player, Cop, -0.9f);
+        PedInteractSetup = new PedPlayerInteract(Player, Cop, -0.9f);
         PedInteractSetup.Start();
         if(CanContinueBribe && PedInteractSetup.IsInPosition)
         {

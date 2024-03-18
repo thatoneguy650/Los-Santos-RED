@@ -70,7 +70,10 @@ public class CashRegister : GameLocation
             {
                 try
                 {
-                    NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, -1, 2000, 2000);
+                    if (Settings.SettingsManager.PlayerOtherSettings.SetHintCameraWhenUsingMachineInteractions)
+                    {
+                        NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, -1, 2000, 2000);
+                    }
                     MachineInteraction = new MachineInteraction(Player, RegisterProp);
                     MachineInteraction.IsSingleSided = true;
                     MachineInteraction.CloseDistance = 0.5f;
@@ -101,7 +104,10 @@ public class CashRegister : GameLocation
 
     private void FullDispose()
     {
-        NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
+        if (Settings.SettingsManager.PlayerOtherSettings.SetHintCameraWhenUsingMachineInteractions)
+        {
+            NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
+        }
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
     }
     private bool PlayMoneyAnimation()

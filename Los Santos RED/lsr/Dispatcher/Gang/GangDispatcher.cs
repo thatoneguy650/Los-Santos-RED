@@ -261,12 +261,12 @@ public class GangDispatcher
         bool shouldAttack = Player.Violations.WeaponViolations.ShotSomewhatRecently || RecentlyAttacked;
         if (!shouldAttack)
         {
-            EntryPoint.WriteToConsole("Assault Spawn failed havent recently attacked or shot");
+            //EntryPoint.WriteToConsole("Assault Spawn failed havent recently attacked or shot");
             return;
         }
         if (!closestDen.AssociatedGang.CanSpawn(World.TotalWantedLevel))
         {
-            EntryPoint.WriteToConsole("Assault Spawn failed cantspawn");
+            //EntryPoint.WriteToConsole("Assault Spawn failed cantspawn");
             return;
         }
         GameTimeLastAttemptedAssaultSpawn = Game.GameTime;
@@ -703,6 +703,7 @@ public class GangDispatcher
     {
         try
         {
+            GameFiber.Yield();
             GangSpawnTask gangSpawnTask = new GangSpawnTask(Gang, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, World, ModItems, false, false, false);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
             gangSpawnTask.AllowAnySpawn = allowAny;
             gangSpawnTask.AllowBuddySpawn = allowBuddy;
@@ -740,11 +741,11 @@ public class GangDispatcher
         }
         else if (gangMember.IsInVehicle)
         {
-            return gangMember.DistanceToPlayer >= DistanceToDeleteInVehicle;
+            return gangMember.DistanceChecker.IsMovingAway &&  gangMember.DistanceToPlayer >= DistanceToDeleteInVehicle;
         }
         else
         {
-            return gangMember.DistanceToPlayer >= DistanceToDeleteOnFoot;
+            return gangMember.DistanceChecker.IsMovingAway && gangMember.DistanceToPlayer >= DistanceToDeleteOnFoot;
         }
     }
     private void Delete(PedExt ganegMember)

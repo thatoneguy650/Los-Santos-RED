@@ -68,7 +68,10 @@ public class VendingMachine : GameLocation
             {
                 try
                 {
-                    NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, -1, 2000, 2000);
+                    if (Settings.SettingsManager.PlayerOtherSettings.SetHintCameraWhenUsingMachineInteractions)
+                    {
+                        NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, -1, 2000, 2000);
+                    }
                     MachineInteraction = new MachineInteraction(Player, MachineProp);
                     if (MachineInteraction.MoveToMachine(1.0f))
                     {
@@ -103,7 +106,10 @@ public class VendingMachine : GameLocation
     }
     private void FullDispose()
     {
-        NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
+        if (Settings.SettingsManager.PlayerOtherSettings.SetHintCameraWhenUsingMachineInteractions)
+        {
+            NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
+        }
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
     }
     private void StartMachineBuyAnimation(ModItem item, bool isIllicit)

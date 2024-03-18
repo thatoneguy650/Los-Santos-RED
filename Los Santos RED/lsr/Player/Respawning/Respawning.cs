@@ -83,8 +83,6 @@ public class Respawning// : IRespawning
     public int HospitalBillPastDue { get; private set; }
     public int BailFee { get; private set; }
     public int BailFeePastDue { get; private set; }
-
-
     public void PayPastDueBail()
     {
         BailFeePastDue = 0;
@@ -196,61 +194,53 @@ public class Respawning// : IRespawning
     }
     public void GetBooked(ILocationRespawnable respawnableLocation)
     {
-        CalculateBailDurationAndFees();
-
-        BookingActivity bookingActivity = new BookingActivity(Player, World, PoliceRespondable, respawnableLocation, SeatAssignable, Settings);
-        bookingActivity.Setup();
-        bookingActivity.Start();
+        EntryPoint.WriteToConsole("GetBooked Start");
+        VehicleExt vehicleToSearch = GetVehicleToSearch();
+        SearchActivity searchActivity = new SearchActivity(Player, World, PoliceRespondable, SeatAssignable, Settings, Time, ModItems, vehicleToSearch, Weapons);
+        searchActivity.Setup();
+        searchActivity.Start();
+        if (!searchActivity.IsActive)
+        {
+            EntryPoint.WriteToConsole("GetBooked SearchACtiivyt DIdnt start, ending");
+            SurrenderToPolice(respawnableLocation);
+            return;
+        }
         GameFiber.StartNew(delegate
         {
             try
             {
+                while (searchActivity.IsActive)
+                {
+                    GameFiber.Yield();
+                }
+                EntryPoint.WriteToConsole("GetBooked SearchAcitivyt Ended");
+                if (!searchActivity.CompletedSearch)
+                {
+                    EntryPoint.WriteToConsole("GetBooked search acitivty didnt complete enging");
+                    SurrenderToPolice(respawnableLocation);
+                    return;
+                }
+                BookingActivity bookingActivity = new BookingActivity(Player, World, PoliceRespondable, respawnableLocation, SeatAssignable, Settings);
+                bookingActivity.Setup();
+                bookingActivity.Start();
+                EntryPoint.WriteToConsole("GetBooked Bookingactivty started");
                 while (bookingActivity.IsActive)
                 {
                     GameFiber.Yield();
                 }
-
-                if (Player.IsArrested && EntryPoint.ModController.IsRunning)//if you are still arrested after the booking, do the standard police station respawn
+                if(Player.IsArrested && EntryPoint.ModController.IsRunning && !Player.IsInVehicle)
                 {
-                    FadeOut();
-                    if (Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnSurrender)
-                    {
-                        RemoveIllegalWeapons();
-                    }
-                    ResetPlayer(true, true, false, false, true, false, true, false, false, false, false, false, true, true, false, true, true, false,false, false, false);//if you pass clear weapons here it will just remover everything anwyays
-                    Player.PlayerTasks.OnStandardRespawn();
-                    if (respawnableLocation == null)
-                    {
-                        List<ILocationRespawnable> PossibleLocations = new List<ILocationRespawnable>();
-                        PossibleLocations.AddRange(PlacesOfInterest.PossibleLocations.PoliceStations);
-                        PossibleLocations.AddRange(PlacesOfInterest.PossibleLocations.Prisons);
-                        respawnableLocation = PossibleLocations.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
-                    }
-                    SetPlayerAtLocation(respawnableLocation);
-                    if (Settings.SettingsManager.RespawnSettings.ClearIllicitInventoryOnSurrender)
-                    {
-                        Player.Inventory.RemoveIllicitInventoryItems();
-                    }
-                    Time.SetDateTime(BailPostingTime);
-                    GameFiber.Sleep(2000);
-                    Player.HumanState.SetRandom();
-                    FadeIn();
-                    if (Settings.SettingsManager.RespawnSettings.DeductBailFee)
-                    {
-                        GenerateTotalBailFee();
-                    }
-                    DisplayBailNotification(respawnableLocation.Name);
-                    GameTimeLastSurrenderedToPolice = Game.GameTime;
-
+                    SurrenderToPolice(respawnableLocation);
+                    EntryPoint.WriteToConsole("GetBooked Ending but you are not in a vehicle ");
+                    return;
                 }
-
             }
             catch (Exception ex)
             {
                 EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
                 EntryPoint.ModController.CrashUnload();
             }
-        }, "Booking");
+        }, "Searching");
     }
     public void AskAboutCrimes()
     {
@@ -403,7 +393,6 @@ public class Respawning// : IRespawning
         GameTimeLastDischargedFromHospital = Game.GameTime;
         EntryPoint.WriteToConsole($"POST 1: {Time.CurrentDateTime} {HospitalDuration} {HospitalDischargeDate}");
     }
-
     private void LoseOnHandCash()
     {
         int CurrentCash = Player.BankAccounts.GetMoney(false);
@@ -411,7 +400,6 @@ public class Respawning// : IRespawning
         int CashToRemove = (int)Math.Floor(CurrentCash * ((float)PercentToRemove/100f));
         Player.BankAccounts.GiveMoney(-1 * CashToRemove, false);
     }
-
     public void SurrenderToPolice(ILocationRespawnable respawnableLocation)
     {
         FadeOut();
@@ -419,27 +407,16 @@ public class Respawning// : IRespawning
         {
             respawnableLocation = PlacesOfInterest.BustedRespawnLocations().ToList().OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
         }
-
-
-
-        //CalculateBailDurationAndFees();
-
-
         HasIllegalWeapons = false;
         if (Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnSurrender)
         {
             HasIllegalWeapons = Player.WeaponEquipment.GetIllegalWeapons(Player.Licenses.HasValidCCWLicense(Time))?.Any() == true;
             RemoveIllegalWeapons();
-        }
-        
+        }    
         ImpoundNotification = ImpoundVehicles();
         ResetPlayer(true, true, false, false, true, false, true,false, false, false, false, false,true, true, false, true, true, false,false, false, true);//if you pass clear weapons here it will just remover everything anwyays
         Player.PlayerTasks.OnStandardRespawn();
         SetPlayerAtLocation(respawnableLocation);
-
-
-
-
         HasIllegalItems = false;
         if (Settings.SettingsManager.RespawnSettings.ClearIllicitInventoryOnSurrender)
         {
@@ -447,24 +424,17 @@ public class Respawning// : IRespawning
             Player.Inventory.RemoveIllicitInventoryItems();
         }
         EntryPoint.WriteToConsole($"PRE 1: {Time.CurrentDateTime} {BailDuration}");
-
-
         Time.SetDateTime(BailPostingTime);
         GameFiber.Sleep(4000);
         Player.HumanState.SetRandom();
         FadeIn();
-
-
         if (Settings.SettingsManager.RespawnSettings.DeductBailFee)
         {
             GenerateTotalBailFee();
         }
-
-
         DisplayBailNotification(respawnableLocation.Name);
         ShowImpoundDisplay();
         GameTimeLastSurrenderedToPolice = Game.GameTime;
-
         EntryPoint.WriteToConsole($"POST 1: {Time.CurrentDateTime} {BailDuration}");
     }
     private void ShowImpoundDisplay()
@@ -501,30 +471,6 @@ public class Respawning// : IRespawning
         EntryPoint.WriteToConsole("IMPOUND VEHICLE FAIL CAN NOT IMPOUND");
         return null;
     }
-    //public void GetSearched()
-    //{
-    //    //Check Items
-    //    List<InventoryItem> IllegalItems = new List<InventoryItem>();
-    //    foreach (InventoryItem ii in CurrentPlayer.Inventory.ItemsList.ToList())
-    //    {
-    //        if (ii.ModItem != null && ii.ModItem.IsPossessionIllicit)
-    //        {
-    //            IllegalItems.Add(ii);
-    //        }
-    //    }
-    //    bool hasIllegalITems = IllegalItems.Any();
-    //    //Check Weapons
-    //    List<WeaponInformation> IllegalGuns = new List<WeaponInformation>();
-    //    foreach (WeaponDescriptor weaponDescriptor in Game.LocalPlayer.Character.Inventory.Weapons.ToList())
-    //    {
-    //        WeaponInformation weaponInformation = Weapons.GetWeapon((uint)weaponDescriptor.Hash);
-    //        if(weaponInformation != null && !weaponInformation.IsLegal)
-    //        {
-    //            IllegalGuns.Add(weaponInformation);
-    //        }        
-    //    }
-    //    bool hasIllegalWeapons = IllegalGuns.Any();
-    //}
     private void RemoveIllegalWeapons()
     {
         Player.WeaponEquipment.RemoveIllegalWeapons(Player.Licenses.HasValidCCWLicense(Time));     
@@ -753,11 +699,7 @@ public class Respawning// : IRespawning
     } 
     public void ConsentToSearch(ModUIMenu menu)
     {
-        VehicleExt vehicleToSearch = World.Vehicles.AllVehicleList.Where(x => x.HasBeenEnteredByPlayer && x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(Player.Character)).FirstOrDefault();// CurrentPlayer.VehicleOwnership.OwnedVehicles.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(CurrentPlayer.Character)).FirstOrDefault();
-        if (vehicleToSearch == null || !vehicleToSearch.Vehicle.Exists() || vehicleToSearch.Vehicle.DistanceTo2D(Player.Character) >= 35f)
-        {
-            vehicleToSearch = null;
-        }
+        VehicleExt vehicleToSearch = GetVehicleToSearch();
         SearchActivity searchActivity = new SearchActivity(Player, World, PoliceRespondable, SeatAssignable, Settings, Time, ModItems, vehicleToSearch, Weapons);
         searchActivity.Setup();
         searchActivity.Start();
@@ -801,6 +743,16 @@ public class Respawning// : IRespawning
                 EntryPoint.ModController.CrashUnload();
             }
         }, "Searching");
+    }
+    private VehicleExt GetVehicleToSearch()
+    {
+        VehicleExt vehicleToSearch = World.Vehicles.NonPoliceList.Where(x => (x.HasBeenEnteredByPlayer || x.IsOwnedByPlayer) && x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(Player.Character)).FirstOrDefault();// CurrentPlayer.VehicleOwnership.OwnedVehicles.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(CurrentPlayer.Character)).FirstOrDefault();
+        if (vehicleToSearch == null || !vehicleToSearch.Vehicle.Exists() || vehicleToSearch.Vehicle.DistanceTo2D(Player.Character) >= 35f)
+        {
+            vehicleToSearch = null;
+        }
+
+        return vehicleToSearch;
     }
 }
 

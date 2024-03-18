@@ -305,7 +305,6 @@ public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, I
     private void AddSurrenderToPolice()//fallback, always works
     {
         string surrenderText = "Surrender";
-
         string currentState = Player.CurrentLocation.CurrentZone?.GameState?.StateName;
         if(string.IsNullOrEmpty(currentState))
         {
@@ -324,7 +323,7 @@ public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, I
             surrenderDescription += $" (~r~${Respawning.Respawning.BailFeePastDue} past due~s~)";
         }
         surrenderDescription += $"~n~Bail Length: ~y~{Respawning.Respawning.BailDuration}~s~ days";
-        if (Settings.SettingsManager.RespawnSettings.ForceBooking && 1 == 0)
+        if (Settings.SettingsManager.RespawnSettings.ForceBooking)
         {
             if (Player.IsBeingBooked)
             {
