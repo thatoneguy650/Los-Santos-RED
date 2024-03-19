@@ -216,7 +216,13 @@ public class DebugPlayerStateSubMenu : DebugSubMenu
         PlayerStateItemsMenu.AddItem(ScamText);
         PlayerStateItemsMenu.AddItem(RandomizePhone);
 
-
+        UIMenuItem setUnCuffed = new UIMenuItem("Set Uncuffed", "Set Uncuffed");
+        setUnCuffed.Activated += (menu, item) =>
+        {
+            Player.CuffManager.SetPlayerHandcuffsRemoved();
+            menu.Visible = false;
+        };
+        PlayerStateItemsMenu.AddItem(setUnCuffed);
     }
 }
 

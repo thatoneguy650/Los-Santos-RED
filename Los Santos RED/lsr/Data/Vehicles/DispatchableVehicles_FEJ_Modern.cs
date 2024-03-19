@@ -81,7 +81,7 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceAleutian(15,15,1,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceLandstalkerXL(15,15,11,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
                    
-            DispatchableVehicles_FEJ.Create_PoliceBuffaloS(1,1,1,false, PoliceVehicleType.Marked, 134, -1, -1, -1, -1, "", ""),
+            DispatchableVehicles_FEJ.Create_PoliceBuffaloS(1,1,1,false, PoliceVehicleType.Marked, -1, -1, -1, -1, -1, "", ""),
             DispatchableVehicles_FEJ.Create_PoliceGauntlet(5,5,0,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceCaracara(5,5,1,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceFugitive(2,2,1,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),

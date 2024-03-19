@@ -18,7 +18,7 @@ namespace Mod
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherAnnounceable,
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IContactRelateable, ILicenseable, IPropertyOwnable,
                           ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable, IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable,
-                          IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable, IRestrictedAreaManagable, ITaxiRideable, IGangBackupable, IInteriorManageable
+                          IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable, IRestrictedAreaManagable, ITaxiRideable, IGangBackupable, IInteriorManageable, ICuffable
     {
         public int UpdateState = 0;
         private float CurrentVehicleRoll;
@@ -169,10 +169,12 @@ namespace Mod
             TaxiManager = new TaxiManager(this, World,PlacesOfInterest, Settings);
             GangBackupManager = new GangBackupManager(World, this);
             InteriorManager = new InteriorManager(World, PlacesOfInterest, Settings, this, this, this);
+            CuffManager = new CuffManager(this, Settings);
 
 
-            
+
         }
+        public CuffManager CuffManager { get; private set; }
         public RelationshipManager RelationshipManager { get; private set; }
         public GPSManager GPSManager { get; private set; }
         public CriminalHistory CriminalHistory { get; private set; }
@@ -510,6 +512,7 @@ namespace Mod
             OfficerMIAWatcher.Setup();
             RestrictedAreaManager.Setup();
             InteriorManager.Setup();
+            CuffManager.Setup();
             ModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
             FreeModeVoice = Game.LocalPlayer.Character.IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
@@ -577,10 +580,13 @@ namespace Mod
             PlayerVoice.Update();
             ActivityManager.Update();
             OfficerMIAWatcher.Update();
+            GameFiber.Yield();//TR Yield RemovedTest 1
             RestrictedAreaManager.Update();//yields in here
             TaxiManager.Update();
+
             GangBackupManager.Update();
             InteriorManager.Update();
+            CuffManager.Update();
         }
         public void SetNotBusted()
         {
@@ -728,6 +734,9 @@ namespace Mod
                 NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Game.LocalPlayer.Character, true, false);
             }
 
+
+            CuffManager.Reset();
+
            // NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Character, 313, false);
         }
         public void Dispose()
@@ -764,6 +773,7 @@ namespace Mod
             TaxiManager.Dispose();
             GangBackupManager.Dispose();
             InteriorManager.Dispose();
+            CuffManager.Dispose();
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);

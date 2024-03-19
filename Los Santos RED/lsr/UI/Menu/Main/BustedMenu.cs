@@ -88,8 +88,15 @@ public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, I
     private void Create()
     {
         Menu.Clear();
-        AddGeneralItems();
-        if(IsDetained)
+        if (!Player.IsArrested)
+        {
+            AddGeneralItems();
+        }
+        if(Player.IsArrested || Player.IsBeingBooked)
+        {
+            CreateArrestedItems();
+        }
+        else if(IsDetained)
         {
             CreateDetainItems();
         }
@@ -102,6 +109,11 @@ public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, I
             CreateHighLevelItems();
         }
         AddRespawningOptions();    
+    }
+
+    private void CreateArrestedItems()
+    {
+        AddSurrenderToPolice();
     }
 
     private void CreateDetainItems()
@@ -325,7 +337,7 @@ public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, I
         surrenderDescription += $"~n~Bail Length: ~y~{Respawning.Respawning.BailDuration}~s~ days";
         if (Settings.SettingsManager.RespawnSettings.ForceBooking)
         {
-            if (Player.IsBeingBooked)
+            if (Player.IsBeingBooked || Player.IsArrested)
             {
                 Surrender = new UIMenuListScrollerItem<ILocationRespawnable>("Skip Booking", "Skip booking.", PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)).Take(1));
                 Surrender.Activated += (sender, selectedItem) =>

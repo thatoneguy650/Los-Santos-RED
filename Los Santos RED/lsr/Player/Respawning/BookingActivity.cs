@@ -101,6 +101,8 @@ public class BookingActivity
                         EndBooking();
                         return;
                     }
+                    Player.CuffManager.SetPlayerHandcuffed();
+                    ReleaseCop();
                     BookingVehicleManager bookingVehicleManager = new BookingVehicleManager(Player, World, PoliceRespondable, Location, SeatAssignable, Settings, this, Cop);
                     bookingVehicleManager.Setup();
                     bookingVehicleManager.Start();
@@ -121,6 +123,7 @@ public class BookingActivity
     {
         Player.IsBeingBooked = false;
         IsActive = false;
+        EntryPoint.WriteToConsole("BOOKING ENDED!");
     }
     private void GetCop()
     {
@@ -145,6 +148,7 @@ public class BookingActivity
         {
             Cop.CanBeTasked = true;
             Cop.CanBeAmbientTasked = true;
+            Cop.CurrentTask = null;
         }
     }
     private void PlayCuffAnimation()
@@ -187,9 +191,9 @@ public class BookingActivity
             //GameFiber.Wait(250);
             if (CanContinueBooking)
             {
-                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                 Player.Character.KeepTasks = true;
-                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, PlayerCuffedDictionary, PlayerCuffedAnimation, 8.0f, -8.0f, -1, 49, 0, 0, 1, 0);
+                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, PlayerCuffedDictionary, PlayerCuffedAnimation, 8.0f, -8.0f, -1, 1 | 8 | 16 | 32 | 8388608, 0, 0, 1, 0);
                 isPlayerCuffed = true;
             }
         }

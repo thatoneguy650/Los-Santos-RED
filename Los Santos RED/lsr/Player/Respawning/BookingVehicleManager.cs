@@ -54,6 +54,7 @@ public class BookingVehicleManager
         {
             Cop.CanBeAmbientTasked = true;
             Cop.CanBeTasked = true;
+            Cop.CurrentTask = null;
         }
     }
     public void Start()
@@ -71,7 +72,8 @@ public class BookingVehicleManager
                 float distanceTo = VehicleTryingToEnter.Vehicle.DistanceTo(Game.LocalPlayer.Character);
                 if(!isOpen && !hasOpenedDoor && distanceTo <= 5f)
                 {
-                    NativeFunction.Natives.TASK_OPEN_VEHICLE_DOOR(Cop.Pedestrian, VehicleTaskedToEnter, -1, SeatTaskedToEnter, 1.0f);
+                    EntryPoint.WriteToConsole("BOOKING ACTIVITY OPEN DOOR RAN");
+                    NativeFunction.Natives.TASK_OPEN_VEHICLE_DOOR(Cop.Pedestrian, VehicleTaskedToEnter, -1, SeatTaskedToEnter, 2.0f);
                     hasOpenedDoor = true;
                 }
                 if (isOpen && distanceTo <= 5f)
@@ -79,6 +81,8 @@ public class BookingVehicleManager
                     if(GameTimeOpenedDoor == 0)
                     {
                         GameTimeOpenedDoor = Game.GameTime;
+                        ReleasePeds();
+                        EntryPoint.WriteToConsole("BOOKING ACTIVITY OPEN DOOR RELEASE PEDS RAN");
                     }
                 }
                 else
@@ -86,29 +90,36 @@ public class BookingVehicleManager
                     GameTimeOpenedDoor = 0;
                 }
 
-                if(isOpen && distanceTo <= 5f && GameTimeOpenedDoor != 0 && Game.GameTime - GameTimeOpenedDoor >= 2500)
+                if(isOpen && distanceTo <= 5f && GameTimeOpenedDoor != 0 && Game.GameTime - GameTimeOpenedDoor >= 1500)
                 {
-                    canEnterCar = true;
+                    EntryPoint.WriteToConsole("BOOKING ACTIVITY ENTER VEHICLE RAN 1!");
+                    EnterVehicle();
+                    ReleasePeds();
+                    //canEnterCar = true;
                     break;
                 }
-                Game.DisplaySubtitle($"Seat {SeatTryingToEnter} Door {DoorTryingToEnter} doorAngle {doorAngle} Open {isOpen} Dist {distanceTo}");
+                //Game.DisplaySubtitle($"Seat {SeatTryingToEnter} Door {DoorTryingToEnter} doorAngle {doorAngle} Open {isOpen} Dist {distanceTo}");
             }
             GameFiber.Yield();
         }
-        if(BookingActivity.CanContinueBooking)
+        EntryPoint.WriteToConsole("BOOKING ACTIVITY ENDED MAIN LOOP!");
+        if (BookingActivity.CanContinueBooking && Player.IsInVehicle)
         {
+            Player.IsArrested = true;
             Player.SetNotBusted();
             Player.SetWantedLevel(0, "Handcuffed", true);
-            Player.IsArrested = true;
+            EntryPoint.WriteToConsole("BOOKING ACTIVITY CVEHICLE FINAL RAN");
         }
-        ReleasePeds();
-        EnterVehicle();
+        //ReleasePeds();
+        //EnterVehicle();
     }
     private void EnterVehicle()
     {
-        if (canEnterCar && VehicleTryingToEnter.Vehicle.Exists())
+        if (VehicleTryingToEnter.Vehicle.Exists())
         {
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+
+            EntryPoint.WriteToConsole("BOOKING ACTIVITY ENTER VEHICLE RAN 2!");
+            //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Game.LocalPlayer.Character, VehicleTryingToEnter.Vehicle, -1, SeatTryingToEnter, 1f, 9);
             GameFiber.Sleep(3000);
         }
@@ -116,12 +127,12 @@ public class BookingVehicleManager
         //{
         //    NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         //}
-        if (Player.IsInVehicle)
-        {
-            Player.SetNotBusted();
-            Player.SetWantedLevel(0, "Handcuffed", true);
-            Player.IsArrested = true;
-        }
+        //if (Player.IsInVehicle)
+        //{
+        //    Player.SetNotBusted();
+        //    Player.SetWantedLevel(0, "Handcuffed", true);
+        //    Player.IsArrested = true;
+        //}
     }
 
     private void ReleasePeds()

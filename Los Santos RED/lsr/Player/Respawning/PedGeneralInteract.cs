@@ -33,6 +33,7 @@ public class PedGeneralInteract
         {
             return;
         }
+        EntryPoint.WriteToConsole("PED GENERAL INTERACT START");
         GetDesiredPosition();
         TaskToPosition();
         MoveLoop();

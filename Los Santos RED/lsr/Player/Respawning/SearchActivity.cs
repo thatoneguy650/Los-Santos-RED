@@ -104,6 +104,7 @@ public class SearchActivity
                     return;
                 }
                 PedPlayerInteract = new PedPlayerInteract(Player, Cop, -0.9f);
+                PedPlayerInteract.CanUseEitherSide = false;
                 PedPlayerInteract.Start();
                 if (CanContinueSearch)
                 {

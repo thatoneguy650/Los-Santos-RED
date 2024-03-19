@@ -53,6 +53,7 @@ namespace LosSantosRED.lsr.Interface
         bool CanBustPeds { get; }
         int CurrentSeat { get; }
         string Gender { get; }
+        CuffManager CuffManager { get; }
 
         void OnManuallyClosedDoor();
         void OnManuallyOpenedDoor();

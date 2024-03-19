@@ -96,6 +96,11 @@ namespace LosSantosRED.lsr
         }
         private void ProcessWheelMenuInput()
         {
+            if(Player.CuffManager.IsHandcuffed)
+            {
+                MenuProvider.IsPressingActionWheelButton = false;
+                return;
+            }
             if (IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier, true))
             {
                 MenuProvider.IsPressingActionWheelButton = true;
@@ -141,6 +146,24 @@ namespace LosSantosRED.lsr
             {
                 NativeHelper.DisablePlayerControl();
             }
+
+            if(Player.CuffManager.IsHandcuffed)
+            {
+                DisableHandcuffedControls();
+            }
+
+        }
+        private void DisableHandcuffedControls()
+        {
+            Game.DisableControlAction(0, GameControl.VehicleExit, true);
+            Game.DisableControlAction(0, GameControl.Enter, true);
+
+
+            Game.DisableControlAction(0, GameControl.Attack, true);
+            Game.DisableControlAction(0, GameControl.Attack2, true);
+
+            Game.DisableControlAction(0, GameControl.MeleeAttack1, true);
+            Game.DisableControlAction(0, GameControl.MeleeAttack2, true);
         }
         private void ProcessOtherControls()
         {
@@ -202,7 +225,7 @@ namespace LosSantosRED.lsr
         }
         private void ProcessBurnerControls()
         {
-            if (IsPressingSimpleCellphone && !RecentlyPressedSimplePhone && !MenuProvider.IsDisplayingMenu && !Player.IsDisplayingCustomMenus)
+            if (IsPressingSimpleCellphone && !RecentlyPressedSimplePhone && !MenuProvider.IsDisplayingMenu && !Player.IsDisplayingCustomMenus && !Player.CuffManager.IsHandcuffed)
             {
                 Player.CellPhone.OpenBurner();
                 GameTimeLastPressedSimplePhone = Game.GameTime;
@@ -241,6 +264,10 @@ namespace LosSantosRED.lsr
         }
         private void ProcessVehicleControls()
         {
+            if(Player.CuffManager.IsHandcuffed)
+            {
+                return;
+            }
             if (Player.CurrentVehicle != null)
             {
                 if (!RecentlyPressedEngineToggle)

@@ -194,6 +194,13 @@ public class Respawning// : IRespawning
     }
     public void GetBooked(ILocationRespawnable respawnableLocation)
     {
+        Player.IsBeingBooked = true;
+        while (Player.IsIncapacitated)
+        {
+            GameFiber.Sleep(500);
+        }
+
+
         EntryPoint.WriteToConsole("GetBooked Start");
         VehicleExt vehicleToSearch = GetVehicleToSearch();
         SearchActivity searchActivity = new SearchActivity(Player, World, PoliceRespondable, SeatAssignable, Settings, Time, ModItems, vehicleToSearch, Weapons);
@@ -203,12 +210,14 @@ public class Respawning// : IRespawning
         {
             EntryPoint.WriteToConsole("GetBooked SearchACtiivyt DIdnt start, ending");
             SurrenderToPolice(respawnableLocation);
+            Player.IsBeingBooked =false;
             return;
         }
         GameFiber.StartNew(delegate
         {
             try
             {
+                EntryPoint.WriteToConsole("GetBooked Waiting for search acitivty start");
                 while (searchActivity.IsActive)
                 {
                     GameFiber.Yield();
@@ -218,6 +227,7 @@ public class Respawning// : IRespawning
                 {
                     EntryPoint.WriteToConsole("GetBooked search acitivty didnt complete enging");
                     SurrenderToPolice(respawnableLocation);
+                    Player.IsBeingBooked = false;
                     return;
                 }
                 BookingActivity bookingActivity = new BookingActivity(Player, World, PoliceRespondable, respawnableLocation, SeatAssignable, Settings);
@@ -232,6 +242,7 @@ public class Respawning// : IRespawning
                 {
                     SurrenderToPolice(respawnableLocation);
                     EntryPoint.WriteToConsole("GetBooked Ending but you are not in a vehicle ");
+                    Player.IsBeingBooked = false;
                     return;
                 }
             }

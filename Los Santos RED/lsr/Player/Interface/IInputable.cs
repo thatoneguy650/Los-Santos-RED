@@ -52,6 +52,7 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentLookedAtVehicle { get; }
         bool IsAlive { get; }
         bool IsSetDisabledControls { get; set; }
+        CuffManager CuffManager { get; }
 
         //   void CancelCurrentActivity();
         //  void CloseDriverDoor();

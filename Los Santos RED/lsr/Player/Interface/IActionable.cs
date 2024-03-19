@@ -74,6 +74,7 @@ namespace LosSantosRED.lsr.Interface
         GPSManager GPSManager { get; }
         TaxiManager TaxiManager { get; }
         InteriorManager InteriorManager { get; }
+        CuffManager CuffManager { get; }
 
         void DisplayPlayerNotification();
         void SetWantedLevel(int selectedItem, string v1, bool v2);

@@ -72,7 +72,7 @@ public class ActivityManager
 
 
     //DO I NEED ALL 3?
-    public bool CanPerformActivitesBase => Player.IsAliveAndFree && !Player.IsIncapacitated && !Player.IsGettingIntoAVehicle && !Player.RecentlyGotOutOfVehicle && !Player.IsBreakingIntoCar && (!Player.IsInVehicle || Player.CurrentVehicle == null || Player.CurrentVehicle.CanPerformActivitiesInside);// && (Interaction == null || Interaction.CanPerformActivities);
+    public bool CanPerformActivitesBase => Player.IsAliveAndFree && !Player.CuffManager.IsHandcuffed && !Player.IsIncapacitated && !Player.IsGettingIntoAVehicle && !Player.RecentlyGotOutOfVehicle && !Player.IsBreakingIntoCar && (!Player.IsInVehicle || Player.CurrentVehicle == null || Player.CurrentVehicle.CanPerformActivitiesInside);// && (Interaction == null || Interaction.CanPerformActivities);
     public bool CanPerformActivitiesExtended => CanPerformActivitesBase && (!Player.IsMovingFast || (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.CanPerformActivitiesInside == true)) && !Player.IsMovingDynamically;
     public bool CanPerformActivitiesMiddle => CanPerformActivitesBase && (!Player.IsMovingFast || (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.CanPerformActivitiesInside == true));
     public bool CanPerformActivitiesOnFoot => CanPerformActivitesBase && !Player.IsInVehicle;

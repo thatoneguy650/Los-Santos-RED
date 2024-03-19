@@ -394,6 +394,7 @@
     <Compile Include="lsr\Player\Interface\IArmorManageable.cs" />
     <Compile Include="lsr\Player\Interface\IBasicUseable.cs" />
     <Compile Include="lsr\Player\Interface\IClipsetManageable.cs" />
+    <Compile Include="lsr\Player\Interface\ICuffable.cs" />
     <Compile Include="lsr\Player\Interface\IGangBackupable.cs" />
     <Compile Include="lsr\Player\Interface\IInteriorManageable.cs" />
     <Compile Include="lsr\Player\Interface\IOutfitManageable.cs" />
@@ -406,6 +407,7 @@
     <Compile Include="lsr\Player\Inventory\Items\RollingPapersItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\ValuableItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\VariablePriceMenuItem.cs" />
+    <Compile Include="lsr\Player\Managers\CuffManager.cs" />
     <Compile Include="lsr\Player\Managers\InteriorManager.cs" />
     <Compile Include="lsr\Player\Respawning\BribeActivity.cs" />
     <Compile Include="lsr\Player\Respawning\PedGeneralInteract.cs" />
