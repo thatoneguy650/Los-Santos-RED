@@ -118,7 +118,6 @@ public class DispatchableVehicles : IDispatchableVehicles
     public DispatchableVehicle AsteropeSecuritySECURO;
     private DispatchableVehicles_FEJ DispatchableVehicles_FEJ;
 
-
     public List<DispatchableVehicleGroup> AllVehicles => VehicleGroupLookup;
     public void ReadConfig()
     {
@@ -570,29 +569,6 @@ public class DispatchableVehicles : IDispatchableVehicles
             TaxiBroadWay,
             TaxiEudora,
         };
-    }
-
-    private DispatchableVehicle CreateDefaultPatriot3Humvee(int ambientPercent, int wantedPercent, int Color)
-    {
-        DispatchableVehicle toReturn = new DispatchableVehicle("patriot3", ambientPercent, wantedPercent);
-        toReturn.MaxRandomDirtLevel = 15.0f;
-        toReturn.RequiredVariation = new VehicleVariation()
-        {
-            PrimaryColor = Color,
-            SecondaryColor = Color,
-            PearlescentColor = 12,
-            WheelColor = 12,
-            VehicleMods = new List<VehicleMod>()
-            { 
-                new VehicleMod(0,1),
-                new VehicleMod(3,2),
-                new VehicleMod(5,0),
-                new VehicleMod(8,1),
-                new VehicleMod(28,7),
-            },
-        };
-       // SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
-        return toReturn;
     }
     private void SharedCopCars()
     {
@@ -1532,7 +1508,6 @@ public class DispatchableVehicles : IDispatchableVehicles
     }
     private void DefaultConfig_FullExpandedJurisdiction()
     {
-
         DispatchableVehicles_FEJ = new DispatchableVehicles_FEJ(this);
         DispatchableVehicles_FEJ.DefaultConfig();
 
@@ -1635,9 +1610,8 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("ShitiTaxiVehicles", DispatchableVehicles_FEJ.ShitiTaxiVehicles),
             new DispatchableVehicleGroup("SunderedTaxiVehicles",DispatchableVehicles_FEJ.SunderedTaxiVehicles),
         };
-        Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\DispatchableVehicles_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\DispatchableVehicles_FullExpandedJurisdiction2015.xml");
     }
-
     private void DefaultConfig_FullExpandedJurisdiction_Modern()
     {
 
@@ -1705,12 +1679,12 @@ public class DispatchableVehicles : IDispatchableVehicles
 
             //Security
 
-            new DispatchableVehicleGroup("MerryweatherPatrolVehicles", DispatchableVehicles_FEJ.MerryweatherPatrolVehicles_FEJ),
-            new DispatchableVehicleGroup("BobcatSecurityVehicles", DispatchableVehicles_FEJ.BobcatSecurityVehicles_FEJ),
-            new DispatchableVehicleGroup("GroupSechsVehicles", DispatchableVehicles_FEJ.GroupSechsVehicles_FEJ),
-            new DispatchableVehicleGroup("SecuroservVehicles", DispatchableVehicles_FEJ.SecuroservVehicles_FEJ),
-            new DispatchableVehicleGroup("LNLVehicles", DispatchableVehicles_FEJ.LNLVehicles_FEJ),
-            new DispatchableVehicleGroup("ChuffVehicles", DispatchableVehicles_FEJ.CHUFFVehicles_FEJ),
+            new DispatchableVehicleGroup("MerryweatherPatrolVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.MerryweatherPatrolVehicles_FEJ_Modern),
+            new DispatchableVehicleGroup("BobcatSecurityVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.BobcatSecurityVehicles_FEJ_Modern),
+            new DispatchableVehicleGroup("GroupSechsVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.GroupSechsVehicles_FEJ_Modern),
+            new DispatchableVehicleGroup("SecuroservVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.SecuroservVehicles_FEJ_Modern),
+            new DispatchableVehicleGroup("LNLVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.LNLVehicles_FEJ_Modern),
+            new DispatchableVehicleGroup("ChuffVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.CHUFFVehicles_FEJ_Modern),
 
             //Gang stuff
             new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
@@ -1734,14 +1708,14 @@ public class DispatchableVehicles : IDispatchableVehicles
 
             //Other
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
-            new DispatchableVehicleGroup("DowntownTaxiVehicles", DispatchableVehicles_FEJ.DowntownTaxiVehicles),
-            new DispatchableVehicleGroup("HellTaxiVehicles", DispatchableVehicles_FEJ.HellTaxiVehicles),
-            new DispatchableVehicleGroup("PurpleTaxiVehicles", DispatchableVehicles_FEJ.PurpleTaxiVehicles),
-            new DispatchableVehicleGroup("ShitiTaxiVehicles", DispatchableVehicles_FEJ.ShitiTaxiVehicles),
-            new DispatchableVehicleGroup("SunderedTaxiVehicles",DispatchableVehicles_FEJ.SunderedTaxiVehicles),
+            new DispatchableVehicleGroup("DowntownTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.DowntownTaxiVehicles_FEJ_Modern),
+            new DispatchableVehicleGroup("HellTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.HellTaxiVehicles_FEJ_Modern),
+            new DispatchableVehicleGroup("PurpleTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.PurpleTaxiVehicles_FEJ_Modern),
+            new DispatchableVehicleGroup("ShitiTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.ShitiTaxiVehicles_FEJ_Modern),
+            new DispatchableVehicleGroup("SunderedTaxiVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.SunderedTaxiVehicles_FEJ_Modern),
         };
 
-        Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\DispatchableVehicles_FullExpandedJurisdictionModern.xml");
+        Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\DispatchableVehicles_FullExpandedJurisdiction.xml");
     }
 }
 

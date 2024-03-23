@@ -34,6 +34,17 @@ public class DispatchableVehicles_FEJ_Modern
     public List<DispatchableVehicle> NOOSEPIAVehicles_FEJ_Modern { get; private set; }
     public List<DispatchableVehicle> NOOSESEPVehicles_FEJ_Modern { get; private set; }
     public List<DispatchableVehicle> MarshalsServiceVehicles_FEJ_Modern { get; private set; }
+    public List<DispatchableVehicle> MerryweatherPatrolVehicles_FEJ_Modern { get; private set; }
+    public List<DispatchableVehicle> BobcatSecurityVehicles_FEJ_Modern { get; private set; }
+    public List<DispatchableVehicle> GroupSechsVehicles_FEJ_Modern { get; private set; }
+    public List<DispatchableVehicle> SecuroservVehicles_FEJ_Modern { get; private set; }
+    public List<DispatchableVehicle> LNLVehicles_FEJ_Modern { get; private set; }
+    public List<DispatchableVehicle> CHUFFVehicles_FEJ_Modern { get; private set; }
+    public List<DispatchableVehicle> DowntownTaxiVehicles_FEJ_Modern { get; private set; }
+    public List<DispatchableVehicle> PurpleTaxiVehicles_FEJ_Modern { get; private set; }
+    public List<DispatchableVehicle> HellTaxiVehicles_FEJ_Modern { get; private set; }
+    public List<DispatchableVehicle> ShitiTaxiVehicles_FEJ_Modern { get; private set; }
+    public List<DispatchableVehicle> SunderedTaxiVehicles_FEJ_Modern { get; private set; }
 
     public DispatchableVehicles_FEJ_Modern(DispatchableVehicles_FEJ dispatchableVehicles_FEJ)
     {
@@ -46,6 +57,8 @@ public class DispatchableVehicles_FEJ_Modern
         LocalSheriff();
         ParkRangers();
         FederalPolice();
+        Security();
+        Taxis();
     }
     private void LocalPolice()
     {
@@ -805,5 +818,151 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceVSTR(15, 15, -1, true, PoliceVehicleType.Unmarked, -1, -1, -1, -1, -1, "", ""),
         };
     }
+
+
+    private void Security()
+    {
+        MerryweatherPatrolVehicles_FEJ_Modern = new List<DispatchableVehicle>()
+        {
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(35,35,5,false,ServiceVehicleType.Security,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(35,35,6,false,ServiceVehicleType.Security,-1,-1,-1),
+            DispatchableVehicles_FEJ.DispatchableVehicles.AleutianSecurityMW,
+            DispatchableVehicles_FEJ.DispatchableVehicles.AsteropeSecurityMW,
+            DispatchableVehicles_FEJ.Create_SecurityStanier(20,20,0,false,ServiceVehicleType.Security,-1,-1,-1),
+        };
+        BobcatSecurityVehicles_FEJ_Modern = new List<DispatchableVehicle>()
+        {
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(20,20,8,false,ServiceVehicleType.Security,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(20,20,9,false,ServiceVehicleType.Security,-1,-1,-1),
+            DispatchableVehicles_FEJ.DispatchableVehicles.AleutianSecurityBobCat,
+            DispatchableVehicles_FEJ.DispatchableVehicles.AsteropeSecurityBobCat,
+            DispatchableVehicles_FEJ.Create_SecurityStanier(20,20,3,false,ServiceVehicleType.Security,-1,-1,-1),
+        };
+        GroupSechsVehicles_FEJ_Modern = new List<DispatchableVehicle>()
+        {
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(20,20,7,false,ServiceVehicleType.Security,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(20,20,8,false,ServiceVehicleType.Security,-1,-1,-1),
+            DispatchableVehicles_FEJ.DispatchableVehicles.AleutianSecurityG6,
+            DispatchableVehicles_FEJ.DispatchableVehicles.AsteropeSecurityG6,
+            DispatchableVehicles_FEJ.Create_SecurityStanier(20,20,2,false,ServiceVehicleType.Security,-1,-1,-1),
+        };
+        SecuroservVehicles_FEJ_Modern = new List<DispatchableVehicle>()
+        {
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(20,20,6,false,ServiceVehicleType.Security,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(20,20,7,false,ServiceVehicleType.Security,-1,-1,-1),
+            DispatchableVehicles_FEJ.DispatchableVehicles.AleutianSecuritySECURO,
+            DispatchableVehicles_FEJ.DispatchableVehicles.AsteropeSecuritySECURO,
+            DispatchableVehicles_FEJ.Create_SecurityStanier(20,20,1,false,ServiceVehicleType.Security,-1,-1,-1),
+        };
+
+        LNLVehicles_FEJ_Modern = new List<DispatchableVehicle>()
+        {
+            DispatchableVehicles_FEJ.Create_SecurityStanier(20,20,5,false,ServiceVehicleType.Security,-1,-1,-1),
+        };
+
+        CHUFFVehicles_FEJ_Modern = new List<DispatchableVehicle>()
+        {
+            DispatchableVehicles_FEJ.Create_SecurityStanier(20,20,4,false,ServiceVehicleType.Security,-1,-1,-1),
+        };
+
+    }
+    private void Taxis()
+    {
+        DowntownTaxiVehicles_FEJ_Modern = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 0 } },
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,1,false,ServiceVehicleType.Taxi1,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,1,false,ServiceVehicleType.Taxi2,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,1,false,ServiceVehicleType.Taxi3,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,1,false,ServiceVehicleType.Taxi4,-1,-1,-1,"",""),
+
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,0,false,ServiceVehicleType.Taxi1,134,-1,-1),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,0,false,ServiceVehicleType.Taxi2,134,-1,-1),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,0,false,ServiceVehicleType.Taxi3,134,-1,-1),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,0,false,ServiceVehicleType.Taxi4,134,-1,-1),
+
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,4,false,ServiceVehicleType.Taxi1,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,4,false,ServiceVehicleType.Taxi2,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,4,false,ServiceVehicleType.Taxi3,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,4,false,ServiceVehicleType.Taxi4,-1,-1,-1),
+
+
+            DispatchableVehicles_FEJ.DispatchableVehicles.TaxiBroadWay,
+            DispatchableVehicles_FEJ.DispatchableVehicles.TaxiEudora,
+        };
+        PurpleTaxiVehicles_FEJ_Modern = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 1 } },
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,2,false,ServiceVehicleType.Taxi1,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,2,false,ServiceVehicleType.Taxi2,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(35,10,2,false,ServiceVehicleType.Taxi3,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,2,false,ServiceVehicleType.Taxi4,-1,-1,-1,"",""),
+
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,1,false,ServiceVehicleType.Taxi1,134,-1,-1),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(35,5,1,false,ServiceVehicleType.Taxi2,134,-1,-1),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,1,false,ServiceVehicleType.Taxi3,134,-1,-1),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,1,false,ServiceVehicleType.Taxi4,134,-1,-1),
+
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,1,false,ServiceVehicleType.Taxi1,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,1,false,ServiceVehicleType.Taxi2,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,1,false,ServiceVehicleType.Taxi3,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,1,false,ServiceVehicleType.Taxi4,-1,-1,-1),
+
+        };
+        HellTaxiVehicles_FEJ_Modern = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 2 } },
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,0,false,ServiceVehicleType.Taxi1,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,0,false,ServiceVehicleType.Taxi2,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,0,false,ServiceVehicleType.Taxi3,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,0,false,ServiceVehicleType.Taxi4,-1,-1,-1,"",""),
+
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,2,false,ServiceVehicleType.Taxi1,134,-1,-1),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,2,false,ServiceVehicleType.Taxi2,134,-1,-1),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,2,false,ServiceVehicleType.Taxi3,134,-1,-1),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,2,false,ServiceVehicleType.Taxi4,134,-1,-1),
+
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,0,false,ServiceVehicleType.Taxi1,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,0,false,ServiceVehicleType.Taxi2,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,0,false,ServiceVehicleType.Taxi3,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,0,false,ServiceVehicleType.Taxi4,-1,-1,-1),
+
+        };
+        ShitiTaxiVehicles_FEJ_Modern = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 3 } },
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,3,false,ServiceVehicleType.Taxi1,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,3,false,ServiceVehicleType.Taxi2,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,3,false,ServiceVehicleType.Taxi3,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,3,false,ServiceVehicleType.Taxi4,-1,-1,-1,"",""),
+
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,3,false,ServiceVehicleType.Taxi1,0,-1,-1),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,3,false,ServiceVehicleType.Taxi2,0,-1,-1),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,3,false,ServiceVehicleType.Taxi3,0,-1,-1),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,3,false,ServiceVehicleType.Taxi4,0,-1,-1),
+
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,3,false,ServiceVehicleType.Taxi1,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,3,false,ServiceVehicleType.Taxi2,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,3,false,ServiceVehicleType.Taxi3,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,3,false,ServiceVehicleType.Taxi4,-1,-1,-1),
+
+        };
+        SunderedTaxiVehicles_FEJ_Modern = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 4 } },
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,4,false,ServiceVehicleType.Taxi1,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,4,false,ServiceVehicleType.Taxi2,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,4,false,ServiceVehicleType.Taxi3,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,4,false,ServiceVehicleType.Taxi4,-1,-1,-1,"",""),
+
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,4,false,ServiceVehicleType.Taxi1,134,-1,-1),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,4,false,ServiceVehicleType.Taxi2,134,-1,-1),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,4,false,ServiceVehicleType.Taxi3,134,-1,-1),
+            DispatchableVehicles_FEJ.Create_ServiceInterceptor(5,5,4,false,ServiceVehicleType.Taxi4,134,-1,-1),
+
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,2,false,ServiceVehicleType.Taxi1,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,2,false,ServiceVehicleType.Taxi2,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,2,false,ServiceVehicleType.Taxi3,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,2,false,ServiceVehicleType.Taxi4,-1,-1,-1),
+
+
+        };
+    }
+
 }
 

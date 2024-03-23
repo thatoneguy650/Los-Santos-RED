@@ -1112,7 +1112,6 @@ public class IssueableWeapons : IIssuableWeapons
         };
         Serialization.SerializeParams(IssuableWeaponsGroupLookup_Old, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\IssuableWeapons_LosSantos2008.xml");
     }
-
     private void DefaultConfig_FullModernJurisdiction()
     {
         //COPS
@@ -1266,7 +1265,7 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns),
 
         };
-        Serialization.SerializeParams(IssuableWeaponsGroupLookup_Modern, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\IssuableWeapons_FullExpandedJurisdictionModern.xml");
+        Serialization.SerializeParams(IssuableWeaponsGroupLookup_Modern, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\IssuableWeapons_FullExpandedJurisdiction.xml");
     }
 
 
