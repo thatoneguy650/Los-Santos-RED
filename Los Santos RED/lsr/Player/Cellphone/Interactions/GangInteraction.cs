@@ -370,10 +370,11 @@ public class GangInteraction : IContactMenuInteraction
         GangDeliverySubMenu.RemoveBanner();
         List<string> PossibleItems = ModItems.AllItems().Where(x => x.ItemSubType == ItemSubType.Narcotic).Select(x => x.Name).ToList();
         GangDen ActiveGangGangDen = PlacesOfInterest.GetMainDen(ActiveGang.ID, World.IsMPMapLoaded);
+
         List<string> AvailableItems = new List<string>();
         foreach(string item in PossibleItems)
         {
-            if(!ActiveGangGangDen.Menu.Items.Any(x => x.Purchaseable && x.ModItemName == item))
+            if(ActiveGangGangDen != null && (ActiveGangGangDen.Menu == null || ActiveGangGangDen.Menu.Items == null || !ActiveGangGangDen.Menu.Items.Any(x => x.Purchaseable && x.ModItemName == item)))
             {
                 AvailableItems.Add(item);
             }
