@@ -1425,6 +1425,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 ActivateCells = 3,
                 ActivateDistance = 75f,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(-352.5154f,-46.69918f,49.03637f),158.5911f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                },
             },
             new Bank(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f,  "Fleeca Bank", "Everything, at a price","Fleeca")
             {
@@ -1436,6 +1440,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 ActivateCells = 3,
                 ActivateDistance = 75f,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(148.3287f,-1037.451f,29.3679f),155.8272f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                },
             },
             new Bank(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f,  "Fleeca Bank", "Everything, at a price","Fleeca")
             {
@@ -1447,6 +1455,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 ActivateCells = 3,
                 ActivateDistance = 75f,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(312.5207f,-275.8242f,54.16462f),158.9338f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                },
             },
             new Bank(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f,  "Fleeca Bank", "Everything, at a price","Fleeca")
             {
@@ -1457,6 +1469,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 ActivateCells = 3,
                 ActivateDistance = 75f,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(-2965.206f,480.3015f,15.6969f),268.606f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                },
             },
             new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", "Everything, at a price","Fleeca")
             {
@@ -1467,6 +1483,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 ActivateCells = 3,
                 ActivateDistance = 75f,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(1177.713f,2704.353f,38.08786f),0.2107314f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                },
             },
             new Bank(new Vector3(-1214.902f, -327.0157f, 37.6686f), 26.31765f, "Fleeca Bank", "Everything, at a price","Fleeca")
             {
@@ -1478,6 +1498,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 ActivateCells = 3,
                 ActivateDistance = 75f,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(-1216.203f,-329.709f,37.78087f),205.3641f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                },
             },
 
 
@@ -1491,6 +1515,13 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 ActivateCells = 3,
                 ActivateDistance = 100f,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(233.8826f,213.5529f,106.2868f),292.8797f,80f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(246.5008f,214.1364f,106.2868f),345.16f,80f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(240.2741f,214.4063f,110.283f),160.8276f,80f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+
+                },
             },
 
             new Bank(new Vector3(-3142.849f, 1131.727f, 20.84295f), 247.9002f, "Blaine County Savings", "Your nest egg!","Blaine CS")
@@ -1506,6 +1537,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 ActivateCells = 4,
                 ActivateDistance = 150f,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(-116.1009f,6471.834f,31.62671f),222.2569f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                },
             },
 
             new Bank(new Vector3(-1103.88f, -1353.062f, 5.037252f), 206.2566f, "Lombank", "Our time is your money", "Lombank")

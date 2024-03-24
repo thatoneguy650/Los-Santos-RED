@@ -31,7 +31,7 @@ public class DrinkItem : ConsumableItem
 
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
-        DrinkingActivity activity = new DrinkingActivity(actionable, settings, this, intoxicants);
+        DrinkingActivityNew activity = new DrinkingActivityNew(actionable, settings, this, intoxicants);
         if (activity.CanPerform(actionable))
         {
             base.UseItem(actionable, settings, world, cameraControllable, intoxicants, time);

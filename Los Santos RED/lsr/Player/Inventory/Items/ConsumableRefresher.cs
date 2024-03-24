@@ -36,6 +36,13 @@ public class ConsumableRefresher
     public bool IsFinished { get; internal set; }
     public float SpeedMultiplier { get; set; } = 1.0f;
 
+    public bool IsIntervalBased { get; set; } = false;
+    public int IntervalHealthScalar { get; set; } = 2;
+    public int IntervalArmorScalar { get; set; } = 2;
+    public float IntervalHungerScalar { get; set; } = 4.0f;
+    public float IntervalSleepScalar { get; set; } = 4.0f;
+    public float IntervalThirstScalar { get; set; } = 4.0f;
+
     public void Update()
     {
         if(ConsumableItem == null)
@@ -45,11 +52,22 @@ public class ConsumableRefresher
         }
         if (!IsFinished)
         {
-            UpdateHealthGain();
-            UpdateArmorGain();
-            UpdateNeeds();
+            if (IsIntervalBased)
+            {
+                UpdateIntervalHealthGain();
+                UpdateIntervalArmorGain();
+                UpdateIntervalNeeds();
+            }
+            else
+            {
+                UpdateHealthGain();
+                UpdateArmorGain();
+                UpdateNeeds();
+            }
             CheckStatus();
         }
+
+
     }
     public void FullyConsume()
     {
@@ -247,6 +265,151 @@ public class ConsumableRefresher
                 }
             }
             GameTimeLastGivenNeeds = Game.GameTime;
+        }
+    }
+
+
+    private void UpdateIntervalHealthGain()
+    {
+        if (ConsumableItem.ChangesHealth && (!Settings.SettingsManager.NeedsSettings.ApplyNeeds || ConsumableItem.AlwaysChangesHealth))
+        {
+            if (ConsumableItem.HealthChangeAmount > 0 && HealthGiven < ConsumableItem.HealthChangeAmount)
+            {
+                HealthGiven++;
+                Player.HealthManager.ChangeHealth(1 * IntervalHealthScalar);
+            }
+            else if (ConsumableItem.HealthChangeAmount < 0 && HealthGiven > ConsumableItem.HealthChangeAmount)
+            {
+                HealthGiven--;
+                Player.HealthManager.ChangeHealth(-1 * IntervalHealthScalar);
+            }
+        }
+        if (HealthGiven == ConsumableItem.HealthChangeAmount || Player.HealthManager.IsMaxHealth)
+        {
+            EntryPoint.WriteToConsole("GIVEN FULL HEALTH");
+            GivenFullHealth = true;
+        }
+    }
+    private void UpdateIntervalArmorGain()
+    {
+        if (ConsumableItem.ChangesArmor)
+        {
+            if (ConsumableItem.ArmorChangeAmount > 0 && ArmorGiven < ConsumableItem.ArmorChangeAmount)
+            {
+                ArmorGiven++;
+                Player.ArmorManager.ChangeArmor(1 * IntervalArmorScalar);
+            }
+            else if (ConsumableItem.ArmorChangeAmount < 0 && ArmorGiven > ConsumableItem.ArmorChangeAmount)
+            {
+                ArmorGiven--;
+                Player.ArmorManager.ChangeArmor(-1 * IntervalArmorScalar);
+            }
+        }
+        if (ArmorGiven == ConsumableItem.ArmorChangeAmount)
+        {
+            EntryPoint.WriteToConsole("GIVEN FULL ARMOR");
+            GivenFullArmor = true;
+        }
+    }
+
+
+    private void UpdateIntervalNeeds()
+    {
+        if (ConsumableItem.ChangesNeeds)
+        {
+            if (ConsumableItem.ChangesHunger)
+            {
+                if (ConsumableItem.HungerChangeAmount < 0.0f)
+                {
+                    if (!Player.HumanState.Hunger.IsMin && HungerGiven > ConsumableItem.HungerChangeAmount)
+                    {
+                        Player.HumanState.Hunger.Change(-1.0f * IntervalHungerScalar, true);
+                        HungerGiven--;
+                    }
+                    else
+                    {
+                        GivenFullHunger = true;
+                    }
+                }
+                else
+                {
+                    if (!Player.HumanState.Hunger.IsMax && HungerGiven < ConsumableItem.HungerChangeAmount)
+                    {
+                        Player.HumanState.Hunger.Change(1.0f * IntervalHungerScalar, true);
+                        HungerGiven++;
+                    }
+                    else
+                    {
+                        GivenFullHunger = true;
+                    }
+                }
+            }
+            else
+            {
+                GivenFullHunger = true;
+            }
+            if (ConsumableItem.ChangesThirst)
+            {
+                if (ConsumableItem.ThirstChangeAmount < 0.0f)
+                {
+                    if (!Player.HumanState.Thirst.IsMin && ThirstGiven > ConsumableItem.ThirstChangeAmount)
+                    {
+                        Player.HumanState.Thirst.Change(-1.0f * IntervalThirstScalar, true);
+                        ThirstGiven--;
+                    }
+                    else
+                    {
+                        GivenFullThirst = true;
+                    }
+                }
+                else
+                {
+                    if (!Player.HumanState.Hunger.IsMax && ThirstGiven < ConsumableItem.ThirstChangeAmount)
+                    {
+                        Player.HumanState.Thirst.Change(1.0f * IntervalThirstScalar, true);
+                        ThirstGiven++;
+                    }
+                    else
+                    {
+                        GivenFullThirst = true;
+                    }
+                }
+            }
+            else
+            {
+                GivenFullThirst = true;
+            }
+            if (ConsumableItem.ChangesSleep)
+            {
+                if (ConsumableItem.SleepChangeAmount < 0.0f)
+                {
+                    if (!Player.HumanState.Sleep.IsMin && SleepGiven > ConsumableItem.SleepChangeAmount)
+                    {
+                        Player.HumanState.Sleep.Change(-1.0f * IntervalSleepScalar, true);
+                        SleepGiven--;
+                    }
+                    else
+                    {
+                        GivenFullSleep = true;
+                    }
+                }
+                else
+                {
+                    if (!Player.HumanState.Sleep.IsMax && SleepGiven < ConsumableItem.SleepChangeAmount)
+                    {
+                        Player.HumanState.Sleep.Change(1.0f * IntervalSleepScalar, true);
+                        SleepGiven++;
+                    }
+                    else
+                    {
+                        GivenFullSleep = true;
+                    }
+                }
+            }
+            else
+            {
+                GivenFullSleep = true;
+            }
         }
     }
 }

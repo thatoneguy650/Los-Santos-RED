@@ -201,6 +201,7 @@
     <Compile Include="lsr\Player\Activity\DefecatingActivity.cs" />
     <Compile Include="lsr\Player\Activity\HailCabActivity.cs" />
     <Compile Include="lsr\Player\Activity\DismissCabActivity.cs" />
+    <Compile Include="lsr\Player\Activity\Items\DrinkingActivityNew.cs" />
     <Compile Include="lsr\Player\Activity\UrinatingActivity.cs" />
     <Compile Include="lsr\Player\BackupManager\GangBackup.cs" />
     <Compile Include="lsr\Player\BackupManager\GangBackupManager.cs" />

@@ -205,6 +205,23 @@ namespace LSR.Vehicles
         public bool IsRandomlyLocked { get; set; } = false;
         public bool UsePlayerAnimations => !IsMotorcycle && !IsBicycle && !IsJetSki && !IsQuad;// VehicleClass != VehicleClass.Motorcycle && VehicleClass != VehicleClass.Cycle;
 
+        public bool HasSpecialPassengerEntry
+        {
+            get
+            {
+                if(!Vehicle.Exists())
+                {
+                    return false;
+                }
+                string modelName = Vehicle.Model.Name;
+                if (modelName == "0xd227bdbb" || modelName == "caddy3")
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+            
 
         public bool CanBeHotwired => !IsMotorcycle && !IsBicycle && !IsAircraft && !IsBoat && !IsJetSki && !IsQuad;
         public bool IsFreeEntry => IsMotorcycle || IsBicycle || IsAircraft || IsBoat || IsJetSki || IsQuad;

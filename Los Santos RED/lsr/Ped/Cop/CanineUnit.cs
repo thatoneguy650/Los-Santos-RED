@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 public class CanineUnit : Cop
 {
+    private bool hasSetSitAnimation = false;
     public override string UnitType { get; set; } = "K9";
     public override bool ShouldBustPlayer => false;
     public override bool IsAnimal { get; set; } = true;
@@ -22,6 +24,38 @@ public class CanineUnit : Cop
     public CanineUnit(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, string modelName, IEntityProvideable world) : base(pedestrian, settings, health, agency, wasModSpawned, crimes, weapons, name, modelName, world)
     {
 
+    }
+    public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
+    {
+        base.Update(perceptable, policeRespondable, placeLastSeen, world);
+
+        if(!Pedestrian.Exists() || !Pedestrian.IsAlive)
+        {
+            return;
+        }
+        if(IsInVehicle)
+        {
+            if (!hasSetSitAnimation)
+            {
+                SetVehicleSitAnimation();
+                hasSetSitAnimation = true;
+            }
+        }
+        else
+        {
+            if (hasSetSitAnimation)
+            {
+                hasSetSitAnimation = false;
+            }
+        }
+    }
+
+    private void SetVehicleSitAnimation()
+    {
+        string PlayingDict = "creatures@rottweiler@in_vehicle@low_car";
+        string PlayingAnim = "sit";
+        AnimationDictionary.RequestAnimationDictionay(PlayingDict);
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Pedestrian, PlayingDict, PlayingAnim, 8.0f, -8.0f, -1, 1, 0, false, false, false);
     }
 }
 

@@ -271,7 +271,7 @@ public class DispatchableVehicles_FEJ
             Create_PoliceInterceptor(1,1,PIBlankLivID,true,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"",""),
             Create_PoliceInterceptor(1,1,PIBlankLivID,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"",""),
             Create_PoliceGresley(10,10,3,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
-            new DispatchableVehicle(PoliceGranger, 25, 25){ RequiredLiveries = new List<int>() { 3 } },
+            new DispatchableVehicle(PoliceGranger, 25, 25){ CaninePossibleSeats = new List<int>{ 1 },RequiredLiveries = new List<int>() { 3 } },
             Create_PoliceBison(10,10,3,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             Create_PoliceBison(1,1,11,true,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"",""),
             Create_PoliceBison(1,1,11,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"",""),
@@ -327,7 +327,7 @@ public class DispatchableVehicles_FEJ
             Create_PoliceInterceptor(1,1,PIBlankLivID,true,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"",""),
             Create_PoliceInterceptor(1,1,PIBlankLivID,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"",""),
             Create_PoliceGresley(50,50,2,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
-            new DispatchableVehicle(PoliceGranger, 25, 25){RequiredLiveries = new List<int>() { 2 } },
+            new DispatchableVehicle(PoliceGranger, 25, 25){CaninePossibleSeats = new List<int>{ 1 },RequiredLiveries = new List<int>() { 2 } },
             Create_PoliceBison(10,10,2,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             Create_PoliceBison(1,1,11,true,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"",""),
             Create_PoliceBison(1,1,11,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"",""),
@@ -1634,6 +1634,7 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(12, false, 100),
             };
         }
+        toReturn.CaninePossibleSeats = new List<int>() { 1, 2 };
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         return toReturn;
     }
@@ -1926,6 +1927,7 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(12, false, 100),
             };
         }
+        toReturn.CaninePossibleSeats = new List<int>() { 1, 2 };
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         return toReturn;
     }

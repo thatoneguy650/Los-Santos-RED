@@ -939,10 +939,18 @@ public class Debug
     private void DebugNumpad5()
 {
 
-        bool isGround = NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, 1000f, out float GroundZ, true, false);
-
-        Game.DisplaySubtitle($"GroundZ: {GroundZ}");
+        if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int seatIndex) && Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+        {
+            NativeFunction.Natives.TASK_WARP_PED_INTO_VEHICLE(Player.Character, Player.InterestedVehicle.Vehicle, seatIndex);
+        }
         GameFiber.Sleep(500);
+
+
+        //TASK_WARP_PED_INTO_VEHICLE
+        //bool isGround = NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, 1000f, out float GroundZ, true, false);
+
+        //Game.DisplaySubtitle($"GroundZ: {GroundZ}");
+        //GameFiber.Sleep(500);
         //string dictionary = "savem_default@";
         //string animation = "m_getin_l";
 
@@ -1313,7 +1321,7 @@ public class Debug
         //SpawnGunAttackers();
     }
 
-private void OffsetGarbage()
+    private void OffsetGarbage()
 {
 
 
@@ -1366,22 +1374,36 @@ GameFiber.StartNew(delegate
 
 private void DebugNumpad6()
 {
-        if (Player.CurrentVehicle != null)
+        //if (Player.CurrentVehicle != null)
+        //{
+        //    //Player.CurrentVehicle.Engine.SetState(false);
+        //    //Player.CurrentVehicle.Vehicle.MustBeHotwired = true;
+        //    //Player.CurrentVehicle.IsHotWireLocked = true;
+
+        //    EntryPoint.WriteToConsole(
+        //        $"IsOnMotorcycle:{Player.IsOnMotorcycle} " +
+        //        $"IsOnBicycle:{Player.IsOnBicycle} " +
+        //        $"CurrentVehicle.IsMotorcycle:{Player.CurrentVehicle.IsMotorcycle} " +
+        //        $"CurrentVehicle.VehicleClass:{Player.CurrentVehicle.VehicleClass} " +
+        //        $"CurrentVehicle.IsCar:{Player.CurrentVehicle.IsCar} " +
+        //        $"IsHotWireLocked:{Player.CurrentVehicle.IsHotWireLocked} IsDisabled{Player.CurrentVehicle.IsDisabled} Engine.CanToggle{Player.CurrentVehicle.Engine.CanToggle} MustBeHotwired:{Player.CurrentVehicle.Vehicle.MustBeHotwired}"
+
+        //        );
+        //}
+
+        if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int seatIndex) && Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
         {
-            //Player.CurrentVehicle.Engine.SetState(false);
-            //Player.CurrentVehicle.Vehicle.MustBeHotwired = true;
-            //Player.CurrentVehicle.IsHotWireLocked = true;
-
-            EntryPoint.WriteToConsole(
-                $"IsOnMotorcycle:{Player.IsOnMotorcycle} " +
-                $"IsOnBicycle:{Player.IsOnBicycle} " +
-                $"CurrentVehicle.IsMotorcycle:{Player.CurrentVehicle.IsMotorcycle} " +
-                $"CurrentVehicle.VehicleClass:{Player.CurrentVehicle.VehicleClass} " +
-                $"CurrentVehicle.IsCar:{Player.CurrentVehicle.IsCar} " +
-                $"IsHotWireLocked:{Player.CurrentVehicle.IsHotWireLocked} IsDisabled{Player.CurrentVehicle.IsDisabled} Engine.CanToggle{Player.CurrentVehicle.Engine.CanToggle} MustBeHotwired:{Player.CurrentVehicle.Vehicle.MustBeHotwired}"
-
-                );
+            uint GameTimeStarted = Game.GameTime;
+            while (Game.GameTime - GameTimeStarted <= 2000)
+            {
+                NativeFunction.Natives.SET_CONTROL_VALUE_NEXT_FRAME<bool>(0, (int)GameControl.Enter, 1.0f);
+                GameFiber.Yield();
+            }
+            
+            //NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, Player.InterestedVehicle.Vehicle, -1, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);
         }
+       // GameFiber.Sleep(500);
+
         //int interiorID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(347.2686f, -999.2955f, -99.19622f);
 
         //if (interiorID != 0)
@@ -1518,55 +1540,55 @@ private void DebugNumpad6()
 
         //        //SpawnWithQuat();
         //HighlightProp();
-//        //SetFlags();
-//        //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
-//        //{
-//        //    BusRide MyBusRide = new BusRide(Player, Player.CurrentVehicle.Vehicle, World, PlacesOfInterest, Settings);
-//        //    MyBusRide.Start();
-//        //}
+        //        //SetFlags();
+        //        //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        //        //{
+        //        //    BusRide MyBusRide = new BusRide(Player, Player.CurrentVehicle.Vehicle, World, PlacesOfInterest, Settings);
+        //        //    MyBusRide.Start();
+        //        //}
 
 
-//        //ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
-//        //Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
-//        //GameFiber.Sleep(500);
+        //        //ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
+        //        //Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
+        //        //GameFiber.Sleep(500);
 
 
 
-//        //int TotalEntities = 0;
-//        //EntryPoint.WriteToConsole($"SPAWNED ENTITIES ===============================", 2);
-//        //foreach (Entity ent in EntryPoint.SpawnedEntities)
-//        //{
-//        //    if (ent.Exists())
-//        //    {
-//        //        TotalEntities++;
-//        //        EntryPoint.WriteToConsole($"SPAWNED ENTITY STILL EXISTS {ent.Handle} {ent.GetType()} {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 2);
-//        //    }
-//        //}
-//        //EntryPoint.WriteToConsole($"SPAWNED ENTITIES =============================== TOTAL: {TotalEntities}", 2);
+        //        //int TotalEntities = 0;
+        //        //EntryPoint.WriteToConsole($"SPAWNED ENTITIES ===============================", 2);
+        //        //foreach (Entity ent in EntryPoint.SpawnedEntities)
+        //        //{
+        //        //    if (ent.Exists())
+        //        //    {
+        //        //        TotalEntities++;
+        //        //        EntryPoint.WriteToConsole($"SPAWNED ENTITY STILL EXISTS {ent.Handle} {ent.GetType()} {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 2);
+        //        //    }
+        //        //}
+        //        //EntryPoint.WriteToConsole($"SPAWNED ENTITIES =============================== TOTAL: {TotalEntities}", 2);
 
-//        //TotalEntities = 0;
+        //        //TotalEntities = 0;
 
-//        //List<Entity> AllEntities = Rage.World.GetAllEntities().ToList();
-//        //EntryPoint.WriteToConsole($"PERSISTENT ENTITIES ===============================", 2);
-//        //foreach (Entity ent in AllEntities)
-//        //{
-//        //    if (ent.Exists() && ent.IsPersistent)
-//        //    {
-//        //        TotalEntities++;
-//        //        EntryPoint.WriteToConsole($"PERSISTENT ENTITY STILL EXISTS {ent.Handle} {ent.GetType()}  {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 2);
-//        //    }
-//        //}
-//        //EntryPoint.WriteToConsole($"PERSISTENT ENTITIES =============================== TOTAL: {TotalEntities}", 2);
+        //        //List<Entity> AllEntities = Rage.World.GetAllEntities().ToList();
+        //        //EntryPoint.WriteToConsole($"PERSISTENT ENTITIES ===============================", 2);
+        //        //foreach (Entity ent in AllEntities)
+        //        //{
+        //        //    if (ent.Exists() && ent.IsPersistent)
+        //        //    {
+        //        //        TotalEntities++;
+        //        //        EntryPoint.WriteToConsole($"PERSISTENT ENTITY STILL EXISTS {ent.Handle} {ent.GetType()}  {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 2);
+        //        //    }
+        //        //}
+        //        //EntryPoint.WriteToConsole($"PERSISTENT ENTITIES =============================== TOTAL: {TotalEntities}", 2);
 
-//        //WriteCopState();
+        //        //WriteCopState();
 
-//        //SpawnModelChecker();
-//        //Vector3 pos = Game.LocalPlayer.Character.Position;
-//        //float Heading = Game.LocalPlayer.Character.Heading;
-//        //string text1 = NativeHelper.GetKeyboardInput("");
-//        //string text2 = NativeHelper.GetKeyboardInput("");
-//        //WriteToLogLocations($"new GameLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f,new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, LocationType.{text1}, \"{text2}\", \"{text2}\"),");
-}
+        //        //SpawnModelChecker();
+        //        //Vector3 pos = Game.LocalPlayer.Character.Position;
+        //        //float Heading = Game.LocalPlayer.Character.Heading;
+        //        //string text1 = NativeHelper.GetKeyboardInput("");
+        //        //string text2 = NativeHelper.GetKeyboardInput("");
+        //        //WriteToLogLocations($"new GameLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f,new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, LocationType.{text1}, \"{text2}\", \"{text2}\"),");
+    }
 
 
 
