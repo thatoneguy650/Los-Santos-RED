@@ -51,6 +51,25 @@ public class ActivitySettings : ISettingsDefaultable
     public uint DrinkTimeBetween { get; set; }
     [Description("Does the base animation play when drinking")]
     public bool DrinkStartsBase { get; set; }
+
+    public float BlendInIdleDrink { get; set; }
+    public float BlendOutIdleDrink { get; set; }
+    public float BlendInBaseDrink { get; set; }
+    public float BlendOutBaseDrink { get; set; }
+    public float DrinkAnimBaseEndingPercentage { get; set; }
+
+
+
+
+    public float BlendInIdleEat { get; set; }
+    public float BlendOutIdleEat { get; set; }
+    public float BlendInBaseEat { get; set; }
+    public float BlendOutBaseEat { get; set; }
+    public float EatAnimBaseEndingPercentage { get; set; }
+
+
+
+
     [Description("Show body armor on player when using the freemode characters. NOT FULLY IMPLEMENTED")]
     public bool DisplayBodyArmor { get; set; }
     [Description("NOT FULLY IMPLEMENTED")]
@@ -134,5 +153,23 @@ public class ActivitySettings : ISettingsDefaultable
         PoopAttachY = -0.07f;
         PoopAttachZ = -0.56f;
         PoopRotatePitch = 90f;
+
+
+        BlendInIdleDrink = 1.0f;
+        BlendOutIdleDrink = 1.0f;
+        BlendInBaseDrink = 1.0f;
+        BlendOutBaseDrink = 1.0f;
+
+        DrinkAnimBaseEndingPercentage = 0.7f;
+
+
+
+        BlendInIdleEat = 2.0f;
+        BlendOutIdleEat = 2.0f;
+        BlendInBaseEat = 2.0f;
+        BlendOutBaseEat = 2.0f;
+
+        EatAnimBaseEndingPercentage = 0.4f;
+
     }
 }

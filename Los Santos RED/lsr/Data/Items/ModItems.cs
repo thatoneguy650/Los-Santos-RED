@@ -141,6 +141,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = 5.0f,
                 ItemSubType= ItemSubType.Beer,
+                IntoxicationPerInterval = 0.1f,
                 FindPercentage = 5 },
             new DrinkItem("Can of PiBwasser ICE", "Cheap 11% ABV fighting lager brewed in Germany for export only from rice, barley, hops and the fresh urine of Bavarian virgins", ItemType.Drinks){
                 ModelItemID = "prop_pisswassercan_01b",
@@ -150,6 +151,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = 5.0f,
                 ItemSubType= ItemSubType.Beer,
+                IntoxicationPerInterval = 0.1f,
                 FindPercentage = 5 },
         });
         //Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedExperience\\ModItems_FullExpandedExperience.xml");
@@ -455,7 +457,8 @@ public class ModItems : IModItems
                 SleepChangeAmount = -2.0f,
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = 5.0f, 
-                ItemSubType= ItemSubType.Beer, 
+                ItemSubType= ItemSubType.Beer,
+                IntoxicationPerInterval = 0.1f,
                 FindPercentage = 5 },//is perfecto
             new DrinkItem("Bottle of A.M.", "Mornings Golden Shower", ItemType.Drinks){
                 ModelItemID = "prop_beer_am",
@@ -464,7 +467,8 @@ public class ModItems : IModItems
                 SleepChangeAmount = -1.0f * TinySleepRecover,
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
-                ItemSubType= ItemSubType.Beer, 
+                ItemSubType= ItemSubType.Beer,
+                IntoxicationPerInterval = 0.1f,
                 FindPercentage = 5},//Does not have gravity, attachmentis too far down
             new DrinkItem("Bottle of Barracho", "Es Playtime!", ItemType.Drinks){
                 ModelItemID = "prop_beer_bar",
@@ -474,6 +478,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Beer,
+                IntoxicationPerInterval = 0.1f,
                 FindPercentage = 5},//Does not have gravity, attachmentis too far down
             new DrinkItem("Bottle of Blarneys", "Making your mouth feel lucky", ItemType.Drinks){
                 ModelItemID = "prop_beer_blr", 
@@ -482,7 +487,8 @@ public class ModItems : IModItems
                 SleepChangeAmount = -1.0f * TinySleepRecover,
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
-                ItemSubType= ItemSubType.Beer, 
+                ItemSubType= ItemSubType.Beer,
+                IntoxicationPerInterval = 0.1f,
                 FindPercentage = 5},//Does not have gravity, attachmentis too far down
             new DrinkItem("Bottle of Jakeys", "Drink Outdoors With Jakey's", ItemType.Drinks){
                 ModelItemID = "prop_beer_jakey", 
@@ -492,6 +498,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Beer,
+                IntoxicationPerInterval = 0.1f,
                 FindPercentage = 5},//Does not have gravity, attachmentis too far down
             new DrinkItem("Bottle of Logger", "A classic American tasteless, watery beer, made by Rednecks for Rednecks. Now Chinese owned", ItemType.Drinks){
                 ModelItemID = "prop_beer_logger",
@@ -509,7 +516,8 @@ public class ModItems : IModItems
                 SleepChangeAmount = -1.0f * TinySleepRecover,
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
-                ItemSubType= ItemSubType.Beer, 
+                ItemSubType= ItemSubType.Beer,
+                IntoxicationPerInterval = 0.1f,
                 FindPercentage = 5},//Does not have gravity, attachmentis too far down
             new DrinkItem("Bottle of Pride", "Swallow Me", ItemType.Drinks){
                 ModelItemID = "prop_beer_pride", 
@@ -518,7 +526,8 @@ public class ModItems : IModItems
                 SleepChangeAmount = -1.0f * TinySleepRecover,
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
-                ItemSubType= ItemSubType.Beer, 
+                ItemSubType= ItemSubType.Beer,
+                IntoxicationPerInterval = 0.1f,
                 FindPercentage = 5},//Does not have gravity, attachmentis too far down
             new DrinkItem("Bottle of Stronzo", "Birra forte d'Italia", ItemType.Drinks){
                 ModelItemID = "prop_beer_stz",
@@ -528,6 +537,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Beer,
+                IntoxicationPerInterval = 0.1f,
                 FindPercentage = 5},//Does not have gravity, attachmentis too far down
             new DrinkItem("Bottle of Dusche", "Das Ist Gut Ja!", ItemType.Drinks){
                 ModelItemID = "prop_beerdusche", 
@@ -536,7 +546,8 @@ public class ModItems : IModItems
                 SleepChangeAmount = -1.0f * TinySleepRecover,
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
-                ItemSubType= ItemSubType.Beer, 
+                ItemSubType= ItemSubType.Beer,
+                IntoxicationPerInterval = 0.1f,
                 FindPercentage = 5},//Does not have gravity, attachmentis too far down
             //Liquor
             new DrinkItem("Bottle of 40 oz", "Drink like a true thug!", ItemType.Drinks){
@@ -546,7 +557,8 @@ public class ModItems : IModItems
                 SleepChangeAmount = -1.0f * TinySleepRecover,
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
-                ItemSubType= ItemSubType.Beer, 
+                ItemSubType= ItemSubType.Beer,
+                IntoxicationPerInterval = 0.2f,
                 FindPercentage = 1},
             new DrinkItem("Bottle of Sinsimito Tequila", "Extra Anejo 100% De Agave. 42% Alcohol by volume", ItemType.Drinks){
                 PackageItemID = "h4_prop_h4_t_bottle_02a",
@@ -556,6 +568,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
             new DrinkItem("Bottle of Cazafortuna Tequila", "Tequila Anejo. 100% Blue Agave 40% Alcohol by volume", ItemType.Drinks){
                 PackageItemID = "h4_prop_h4_t_bottle_01a", 
@@ -564,7 +577,8 @@ public class ModItems : IModItems
                 SleepChangeAmount = -1.0f * TinySleepRecover,
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
-                ItemSubType= ItemSubType.Liquor, 
+                ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
 
             new DrinkItem("The Mount Bourbon Whisky", "The ulitmate blender. 60% alc/vol. Distilled and bottled by The Mount Distilling Co.", ItemType.Drinks){
@@ -575,6 +589,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
 
             new DrinkItem("Richard's Whisky Short", "Made with grain produced in the fields of Kentucky.", ItemType.Drinks){
@@ -585,6 +600,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
             new DrinkItem("Macbeth Single Malt Short", "Cask aged scotch whisky", ItemType.Drinks){
                 PackageItemID = "ba_prop_battle_whiskey_bottle_2_s",
@@ -594,6 +610,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
 
             new DrinkItem("Ragga Rum", "Original Dark", ItemType.Drinks){
@@ -604,6 +621,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
             new DrinkItem("This Worm Has Turned Tequilya", "Tequilya distilled the traditional way with a mind blowing tripping worm!", ItemType.Drinks){
                 PackageItemID = "prop_tequila_bottle",
@@ -613,6 +631,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
 
 
@@ -624,6 +643,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
 
             new DrinkItem("Bourgeoix Cognac", "Fit for a prince.", ItemType.Drinks){
@@ -634,6 +654,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
             new DrinkItem("Macbeth Single Malt", "Cask aged scotch whisky", ItemType.Drinks){
                 PackageItemID = "prop_bottle_macbeth",
@@ -643,6 +664,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
 
             new DrinkItem("Richard's Whisky", "Made with grain produced in the fields of Kentucky.", ItemType.Drinks){
@@ -653,6 +675,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
 
             new DrinkItem("NOGO Vodka", "Make the night a NOGO.", ItemType.Drinks){
@@ -663,6 +686,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
 
             new DrinkItem("Bleuter'd Champagne", "Vintage 1969. Nice.", ItemType.Drinks){
@@ -673,6 +697,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
 
             new DrinkItem("Cherenkov Red Label Vodka", "Warms you to the core.", ItemType.Drinks){
@@ -683,6 +708,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
             new DrinkItem("Cherenkov Blue Label Vodka", "Warms you to the core.", ItemType.Drinks){
                 PackageItemID = "prop_cherenkov_02",
@@ -692,6 +718,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
             new DrinkItem("Cherenkov Green Label Vodka", "Warms you to the core.", ItemType.Drinks){
                 PackageItemID = "prop_cherenkov_03",
@@ -701,6 +728,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
             new DrinkItem("Cherenkov Purple Label Vodka", "Warms you to the core.", ItemType.Drinks){
                 PackageItemID = "prop_cherenkov_04",
@@ -710,6 +738,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 ItemSubType= ItemSubType.Liquor,
+                IntoxicationPerInterval = 0.4f,
                 FindPercentage = 1},
 
             //Cups & Cans
@@ -778,6 +807,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 FindPercentage = 1,
+                IntoxicationPerInterval = 0.1f,
                 ItemSubType = ItemSubType.Beer},
             new DrinkItem("Can of Logger", "A classic American tasteless, watery beer, made by Rednecks for Rednecks. Now Chinese owned", ItemType.Drinks) 
                 { IntoxicantName = "Low Proof Alcohol",
@@ -786,6 +816,7 @@ public class ModItems : IModItems
                 HungerChangeAmount = TinyHungerRecover,
                 ThirstChangeAmount = MediumThirstRecover,
                 FindPercentage = 1,
+                IntoxicationPerInterval = 0.1f,
                 ItemSubType = ItemSubType.Beer },
             //Bean Machine
             new DrinkItem("High Noon Coffee", "Drip coffee, carbonated water, fruit syrup and taurine.", ItemType.Drinks){

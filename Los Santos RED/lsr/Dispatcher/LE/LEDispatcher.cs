@@ -1267,7 +1267,7 @@ public class LEDispatcher
                         addedSpawnAdjustments |= eSpawnAdjustment.Highway;
                         addedAdjustment = true;
                     }
-                    if(zoneJurisdiction != null && zoneJurisdiction.CanSpawnBicycleOfficers)
+                    if(zoneJurisdiction != null && zoneJurisdiction.CanSpawnBicycleOfficers && (Player.IsNotWanted || !Player.IsInVehicle))
                     {
                         addedSpawnAdjustments |= eSpawnAdjustment.Bicycle;
                         addedAdjustment = true;
@@ -1285,6 +1285,14 @@ public class LEDispatcher
                         addedAdjustment = true;
                         EntryPoint.WriteToConsole("LE DISPATCHER ADDED AIR VEHICLE ADJUSTMENT");
                     }
+
+                    if (HasNeedToAmbientCanineDispatch)
+                    {
+                        addedSpawnAdjustments |= eSpawnAdjustment.K9;
+                        addedAdjustment = true;
+                        EntryPoint.WriteToConsole("LE DISPATCHER ADDED K9 VEHICLE ADJUSTMENT");
+                    }
+
                     if (addedAdjustment)
                     {
                         VehicleType = Agency.GetRandomAdjustedVehicle(World.TotalWantedLevel, HasNeedToSpawnHeli, false, true, "", Settings, addedSpawnAdjustments);

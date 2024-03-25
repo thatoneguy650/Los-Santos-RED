@@ -232,6 +232,28 @@ public class Intoxication
         }
         //EntryPoint.WriteToConsole($"Intoxication Started Ingesting {intoxicant.Name}");
     }
+
+    public void StartIngestingIntervalBased(Intoxicant intoxicant, float intervalUpdateAmount)
+    {
+        if (intoxicant == null)
+        {
+            return;
+        }
+        Intoxicator existing = CurrentIntoxicators.FirstOrDefault(x => x.Intoxicant.Name == intoxicant.Name);
+        if (existing != null)
+        {
+            existing.StartConsuming();
+        }
+        else
+        {
+            Intoxicator toAdd = new Intoxicator(Player, intoxicant);
+            toAdd.StartConsuming();
+            toAdd.IsIntervalBased = true;
+            toAdd.IntervalAddition = intervalUpdateAmount;
+            CurrentIntoxicators.Add(toAdd);
+        }
+    }
+
     public void StopIngesting(Intoxicant intoxicant)
     {
         if (intoxicant == null)
@@ -271,6 +293,9 @@ public class Intoxication
         {
             OverLayEffect = PrimaryIntoxicator.Intoxicant?.OverLayEffect;
             CurrentIntensity = PrimaryIntoxicator.CurrentIntensity;
+
+            //EntryPoint.WriteToConsole($"CurrentIntensity {CurrentIntensity}");
+
             UpdateDrunkStatus();
         }
         else
@@ -390,6 +415,19 @@ public class Intoxication
         Player.Sprinting.InfiniteStamina = false;
         Player.Sprinting.TurboSpeed = false;
         Player.IsOnMuscleRelaxants = false;
+    }
+
+    public void AddIntervalConsumption(Intoxicant intoxicant)
+    {
+        if (intoxicant == null)
+        {
+            return;
+        }
+        Intoxicator existing = CurrentIntoxicators.FirstOrDefault(x => x.Intoxicant.Name == intoxicant.Name);
+        if (existing != null)
+        {
+            existing.OnIntervalConsumed();
+        }
     }
 }
 

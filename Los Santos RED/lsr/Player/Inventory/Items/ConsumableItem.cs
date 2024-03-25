@@ -29,6 +29,7 @@ public abstract class ConsumableItem : ModItem
     //public ConsumableRefresher ConsumableItemNeedGain { get; set; }
     public string IntoxicantName { get; set; } = "";
     public bool IsIntoxicating => IntoxicantName != "";
+    public float IntoxicationPerInterval { get; set; } = 0.2f;
     public int HealthChangeAmount { get; set; }
     public int ArmorChangeAmount { get; set; }
     public float HungerChangeAmount { get; set; }

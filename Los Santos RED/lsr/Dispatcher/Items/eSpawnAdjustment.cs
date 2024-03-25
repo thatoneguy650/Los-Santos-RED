@@ -10,7 +10,7 @@ public enum eSpawnAdjustment
     DirtBike = 1 << 3,
 
     InAirVehicle = 1 << 4,
-    //Korean = 1 << 5,
+    K9 = 1 << 5,
     //Chinese = 1 << 6,
     //Japanese = 1 << 7,
     //Snack = 1 << 8,

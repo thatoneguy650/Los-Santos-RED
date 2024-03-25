@@ -30,7 +30,7 @@ public class FoodItem : ConsumableItem
     }
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants, ITimeControllable time)
     {
-        EatingActivity activity = new EatingActivity(actionable, settings, this, intoxicants);
+        EatingActivityNew activity = new EatingActivityNew(actionable, settings, this, intoxicants);
         if (activity.CanPerform(actionable))
         {
             base.UseItem(actionable, settings, world, cameraControllable, intoxicants, time);

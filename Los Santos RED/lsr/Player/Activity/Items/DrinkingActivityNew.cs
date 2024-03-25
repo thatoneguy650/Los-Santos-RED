@@ -108,14 +108,14 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
-            uint GameTimeBetweenDrinks = RandomItems.GetRandomNumber(1500, 2500);
-            uint GameTimeLastChangedIdle = Game.GameTime;
+
             bool IsFinishedWithSip = false;
             StartNewIdleAnimation();
             TimesDrank++;
             isPlayingBase = false;
             ConsumableItemNeedGain = new ConsumableRefresher(Player, DrinkItem, Settings) { IsIntervalBased = true };
             ConsumableItemNeedGain.Update();
+            Player.Intoxication.AddIntervalConsumption(CurrentIntoxicant);
             while (Player.ActivityManager.CanPerformActivitiesMiddle && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
@@ -137,6 +137,9 @@ namespace LosSantosRED.lsr.Player
                         ConsumableItemNeedGain.Update();
                         TimesDrank++;
                         StartNewIdleAnimation();
+                        Player.Intoxication.AddIntervalConsumption(CurrentIntoxicant);
+
+
                         IsFinishedWithSip = false;
                         Player.ButtonPrompts.RemovePrompts("DrinkingActivity");
                         //EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank}");
@@ -144,7 +147,7 @@ namespace LosSantosRED.lsr.Player
                 }
 
 
-                if(isPlayingBase && AnimationTime >= Settings.SettingsManager.DebugSettings.DrinkAnimBaseEndingPercentage)// 0.5f)
+                if(isPlayingBase && AnimationTime >= Settings.SettingsManager.ActivitySettings.DrinkAnimBaseEndingPercentage)// 0.5f)
                 {
                     NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, 0.0f);
                 }
@@ -242,7 +245,7 @@ namespace LosSantosRED.lsr.Player
             aw.Reset();
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, Settings.SettingsManager.DebugSettings.BlendInIdleDrink * 1.0f, Settings.SettingsManager.DebugSettings.BlendOutIdleDrink * -1.0f, -1, (int)(AnimationFlags.SecondaryTask | AnimationFlags.UpperBodyOnly | AnimationFlags.StayInEndFrame), 0, false, false, false);
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, Settings.SettingsManager.ActivitySettings.BlendInIdleDrink * 1.0f, Settings.SettingsManager.ActivitySettings.BlendOutIdleDrink * -1.0f, -1, (int)(AnimationFlags.SecondaryTask | AnimationFlags.UpperBodyOnly | AnimationFlags.StayInEndFrame), 0, false, false, false);
         }
         //private void StartExitAnimation()
         //{
@@ -257,7 +260,7 @@ namespace LosSantosRED.lsr.Player
             aw.Reset();
             PlayingDict = Data.AnimExitDictionary;
             PlayingAnim = Data.AnimExit;
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, Settings.SettingsManager.DebugSettings.BlendInBaseDrink * 1.0f, Settings.SettingsManager.DebugSettings.BlendOutBaseDrink * -1.0f, 1.0f, (int)(AnimationFlags.SecondaryTask | AnimationFlags.UpperBodyOnly | AnimationFlags.StayInEndFrame), 0, false, false, false);
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, Settings.SettingsManager.ActivitySettings.BlendInBaseDrink * 1.0f, Settings.SettingsManager.ActivitySettings.BlendOutBaseDrink * -1.0f, 1.0f, (int)(AnimationFlags.SecondaryTask | AnimationFlags.UpperBodyOnly | AnimationFlags.StayInEndFrame), 0, false, false, false);
         }
         private void Setup()
         {
@@ -362,7 +365,7 @@ namespace LosSantosRED.lsr.Player
             if (DrinkItem != null && DrinkItem.IsIntoxicating && DrinkItem.Intoxicant != null)
             {
                 CurrentIntoxicant = DrinkItem.Intoxicant;
-                Player.Intoxication.StartIngesting(CurrentIntoxicant);
+                Player.Intoxication.StartIngestingIntervalBased(CurrentIntoxicant, DrinkItem.IntoxicationPerInterval);
             }
 
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
