@@ -266,9 +266,22 @@ public class RepairGarage : GameLocation
         {
             return;
         }
+
+        float OldFuel = Player.CurrentVehicle.Vehicle.FuelLevel;
+
         Player.CurrentVehicle.Vehicle.Repair();
         Player.CurrentVehicle.Vehicle.Wash();
-        Player.CurrentVehicle.Vehicle.FuelLevel = Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax;
+
+        if (Settings.SettingsManager.VehicleSettings.RefuelVehicleAfterPayNSprayRepair)
+        {
+            Player.CurrentVehicle.Vehicle.FuelLevel = Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax;
+        }
+        else
+        {
+            Player.CurrentVehicle.Vehicle.FuelLevel = OldFuel;
+        }
+
+
 
     }
     private void RemoveWanted()
