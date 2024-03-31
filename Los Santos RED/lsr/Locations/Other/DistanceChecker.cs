@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,15 @@ public class DistanceChecker
     private float prevDistanceToPlayer;
     private uint GameTimeStartingMovingTowards;
     private uint GameTimeStartingMovingAway;
-    public DistanceChecker()
-    {
+    private ISettingsProvideable Settings;
 
+    public DistanceChecker(ISettingsProvideable settings)
+    {
+        Settings = settings;
     }
-    public bool IsMovingTowards => GameTimeStartingMovingTowards != 0 && Game.GameTime - GameTimeStartingMovingTowards >= 3000;
-    public bool IsMovingAway => GameTimeStartingMovingAway != 0 && Game.GameTime - GameTimeStartingMovingAway >= 3000;
+
+    public bool IsMovingTowards => GameTimeStartingMovingTowards != 0 && Game.GameTime - GameTimeStartingMovingTowards >= Settings.SettingsManager.DebugSettings.MovingTowardsTime;
+    public bool IsMovingAway => GameTimeStartingMovingAway != 0 && Game.GameTime - GameTimeStartingMovingAway >= Settings.SettingsManager.DebugSettings.MovingAwayTime;
     public void UpdateMovement(float distanceToPlayer)
     {
         if(prevDistanceToPlayer == 0)//first update, cant tell

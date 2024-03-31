@@ -1275,9 +1275,9 @@ public class LEDispatcher
                     }
                     if (zoneJurisdiction != null && zoneJurisdiction.CanSpawnDirtBikeOfficers)
                     {
-                        addedSpawnAdjustments |= eSpawnAdjustment.DirtBike;
+                        addedSpawnAdjustments |= eSpawnAdjustment.DirtBike | eSpawnAdjustment.ATV;
                         addedAdjustment = true;
-                        EntryPoint.WriteToConsole("LE DISPATCHER ADDED DIRT BIKE ADJUSTMENT");
+                        EntryPoint.WriteToConsole("LE DISPATCHER ADDED DIRT BIKE ATV ADJUSTMENT");
                     }
                     if(Player.IsInAirVehicle)
                     {

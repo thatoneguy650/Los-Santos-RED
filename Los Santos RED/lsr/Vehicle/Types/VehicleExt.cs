@@ -354,7 +354,7 @@ namespace LSR.Vehicles
             SimpleInventory = new SimpleInventory(Settings);
             CashStorage = new CashStorage();
             SonarBlip = new SonarBlip(this, Settings);
-            DistanceChecker = new DistanceChecker();
+            DistanceChecker = new DistanceChecker(Settings);
         }
         public void SetAsEntered()
         {

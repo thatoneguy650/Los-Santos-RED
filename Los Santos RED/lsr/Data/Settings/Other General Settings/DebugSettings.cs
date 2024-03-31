@@ -121,6 +121,9 @@ public class DebugSettings : ISettingsDefaultable
 
     public float TunnelZValueMax { get; set; }
     public bool AlwaysAllowTunnelSpawns { get; set; }
+    public uint MovingTowardsTime { get; set; }
+    public uint MovingAwayTime { get; set; }
+
     //public float BlendInIdleDrink { get;  set; }
     //public float BlendOutIdleDrink { get;  set; }
     //public float BlendInBaseDrink { get;  set; }
@@ -306,7 +309,8 @@ public class DebugSettings : ISettingsDefaultable
 
         TunnelZValueMax = -10.0f;
         AlwaysAllowTunnelSpawns = false;
-
+        MovingTowardsTime = 1000;
+        MovingAwayTime = 1500;
 
     }
 }

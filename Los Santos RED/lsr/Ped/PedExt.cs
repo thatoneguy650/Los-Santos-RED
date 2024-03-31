@@ -62,7 +62,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             GameTimeSpawned = Game.GameTime;
         //}
 
-        DistanceChecker = new DistanceChecker();
+        DistanceChecker = new DistanceChecker(Settings);
         PedViolations = new PedViolations(this, crimes, settings, weapons, world);
         PedPerception = new PedPerception(this, crimes, settings, weapons, world);
         PlayerPerception = new PlayerPerception(this, null, settings);

@@ -136,7 +136,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
         AllowFrontVehicleClearAssist = true;
         AllowReducedCollisionPenaltyAssist = true;
         AllowPowerAssist = true;
-        AllowFixOffScreenVehiclesAssist = false;
+        AllowFixOffScreenVehiclesAssist = true;
 
         AllowDriveBySightDuringChase = true;
         DriveBySightDuringChaseDistance = 150f;

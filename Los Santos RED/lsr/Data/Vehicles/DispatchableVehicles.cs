@@ -15,24 +15,17 @@ public class DispatchableVehicles : IDispatchableVehicles
     private string PoliceTorrence = "police3";
     private string PoliceGranger = "sheriff2";
     private string PoliceGresley = "sheriff";
-
     private string PoliceBison = "policeold2";
     private string PoliceMerit = "policeold1";
-
     private string PoliceFugitive = "pranger";
     private string PoliceBike = "policeb";
     private string PoliceTransporter = "policet";
-
     private string StanierUnmarked = "police4";
     private string BuffaloUnmarked = "fbi";
     private string GrangerUnmarked = "fbi2";
-
     private string SecurityTorrence = "lurcher";
-
     private string PoliceGauntlet = "polgauntlet";
-
     private string ServiceDilettante = "dilettante2";
-
 
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\DispatchableVehicles.xml";
     private List<DispatchableVehicleGroup> VehicleGroupLookup = new List<DispatchableVehicleGroup>();
@@ -1624,7 +1617,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("SADFWParkRangersVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.SADFWParkRangersVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("USNPSParkRangersVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.USNPSParkRangersVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("LSDPRParkRangersVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.LSDPRParkRangersVehicles_FEJ_Modern),
-            new DispatchableVehicleGroup("LSLifeguardVehicles",DispatchableVehicles_FEJ.LSLifeguardVehicles_FEJ),
+            new DispatchableVehicleGroup("LSLifeguardVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.LSLifeguardVehicles_FEJ_Modern),
 
             new DispatchableVehicleGroup("FIBVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.FIBVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("NOOSEVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.NOOSESEPVehicles_FEJ_Modern),
