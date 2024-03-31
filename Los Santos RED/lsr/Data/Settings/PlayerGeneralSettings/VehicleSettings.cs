@@ -83,6 +83,8 @@ public class VehicleSettings : ISettingsDefaultable
     public bool NonRoadworthyVehicleCheckNoHeadlights { get; set; }
     [Description("If enabled, not having a license plate will mark the vehicle as non-roadworthy.")]
     public bool NonRoadworthyVehicleCheckNoPlate { get; set; }
+    [Description("If enabled, vehicles will be refuelled when repairing at Pay n Spray.")]
+    public bool RefuelVehicleAfterPayNSprayRepair { get; set; }
     public bool AttachOwnedVehicleBlips { get; set; }
 
 
@@ -143,6 +145,7 @@ public class VehicleSettings : ISettingsDefaultable
         NonRoadworthyVehicleCheckDamagedTires = true;
         NonRoadworthyVehicleCheckNoHeadlights = true;
         NonRoadworthyVehicleCheckNoPlate = true;
+        RefuelVehicleAfterPayNSprayRepair = true;
         AttachOwnedVehicleBlips = true;
         PlayControlAnimations = true;
         AutoHotwire = false;
