@@ -43,7 +43,7 @@ public class DispatchableVehicles_FEJ
     public string TaxiVivanite = "caddy3";
     public string PoliceReblaGTS = "oppressor";
     public string PoliceVerus = "shotaro";
-    public string PoliceRiata = "zhaba";
+    public string PoliceRiata = "zhaba"; 
     public List<int> DefaultOptionalColors { get; private set; } = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 37, 38, 54, 61, 62, 63, 64, 65, 66, 67, 68, 69, 94, 95, 96, 97, 98, 99, 100, 101, 201, 103, 104, 105, 106, 107, 111, 112 };
 
     public DispatchableVehicles_FEJ(DispatchableVehicles dispatchableVehicles)
