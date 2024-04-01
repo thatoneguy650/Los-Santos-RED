@@ -157,6 +157,8 @@
     <Compile Include="lsr\Inventory\CashStorage.cs" />
     <Compile Include="lsr\Locations\Interiors\BankDrawerInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\BankInterior.cs" />
+    <Compile Include="lsr\Locations\Interiors\Barber\BarberShopInterior.cs" />
+    <Compile Include="lsr\Locations\Interiors\Barber\HaircutInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\GangDenInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\InteriorInteract.cs" />
@@ -180,6 +182,9 @@
     <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\MerchantConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\AppearPercentage.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankDrawer.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\CustomizeShops\BarberShop.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\CustomizeShops\PlasticSurgeryClinic.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\CustomizeShops\TattooShop.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\IAssaultSpawnable.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\IGasPumpable.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\ILEDispatchableLocation.cs" />
@@ -564,6 +569,7 @@
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugOutfitSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugPerformanceSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugPlayerStateSubMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugPositionLoggingSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugPropAttachSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugRelationshipSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugSubMenu.cs" />

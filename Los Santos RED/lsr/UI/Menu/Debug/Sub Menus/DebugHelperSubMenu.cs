@@ -94,6 +94,16 @@ public class DebugHelperSubMenu : DebugSubMenu
         };
         HelperMenuItem.AddItem(highlightProp);
 
+        UIMenuItem getPropPosition = new UIMenuItem("Get Nearby Prop Positions", "Get nearby prop positions");
+        getPropPosition.Activated += (menu, item) =>
+        {
+            PropPosition();
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(getPropPosition);
+
+        //X:-280.5973 Y:6227.909 Z:30.72211
+
         UIMenuItem propAttachMenu = new UIMenuItem("Prop Attachment", "Do some prop attachments");
         propAttachMenu.Activated += (menu, item) =>
         {
@@ -329,6 +339,13 @@ public class DebugHelperSubMenu : DebugSubMenu
             }
         };
         HelperMenuItem.AddItem(playAudio);
+
+
+
+
+
+
+
     }
     private void AddTrunkItems()
     {
@@ -1244,6 +1261,51 @@ public class DebugHelperSubMenu : DebugSubMenu
             }
 
         }
+    }
+
+
+    private void PropPosition()
+    {
+        foreach(Rage.Object ClosestEntity in Rage.World.GetAllObjects())
+        {
+            if (ClosestEntity.Exists() && ClosestEntity.DistanceTo2D(Game.LocalPlayer.Character) <= 10.0f)
+            {
+  
+                EntryPoint.WriteToConsole($"Closest:{ClosestEntity.Model.Name} {ClosestEntity.Model.Hash},new Vector3({ClosestEntity.Position.X}f, {ClosestEntity.Position.Y}f, {ClosestEntity.Position.Z}f), {ClosestEntity.Heading}f", 5);
+
+
+
+            }
+        }
+
+
+        //Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
+        //if (ClosestEntity.Exists())
+        //{
+        //    Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
+        //    EntryPoint.WriteToConsole($"Closest Object = {ClosestEntity.Model.Name} {ClosestEntity.Model.Hash}", 5);
+        //    EntryPoint.WriteToConsole($"Closest Object Dimensions X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
+
+        //    EntryPoint.WriteToConsole($"Closest: {ClosestEntity.Model.Hash},new Vector3({ClosestEntity.Position.X}f, {ClosestEntity.Position.Y}f, {ClosestEntity.Position.Z}f) //{ClosestEntity.Heading}f", 5);
+
+        //    uint GameTimeStartedDisplaying = Game.GameTime;
+        //    while (Game.GameTime - GameTimeStartedDisplaying <= 2000)
+        //    {
+        //        Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Yellow);
+        //        GameFiber.Yield();
+        //    }
+
+        //}
+    }
+
+
+
+    private void PositionSetter()
+    {
+
+        //new Vector3(-282.1472f, 6227.552f, 31.88528f)
+
+
     }
 
 }

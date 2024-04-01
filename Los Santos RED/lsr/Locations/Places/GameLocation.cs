@@ -365,13 +365,16 @@ public class GameLocation : ILocationDispatchable
     }
     public virtual void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
+        EntryPoint.WriteToConsole($"ATTEMPT VENDOR SPAWN AT {Name}");
         int VendorsSpawned = 0;
         foreach (SpawnPlace spawnPlace in VendorLocations)
         {
             if (IsOpen(time.CurrentHour) && settings.SettingsManager.CivilianSettings.ManageDispatching && world.Pedestrians.TotalSpawnedServiceWorkers < settings.SettingsManager.CivilianSettings.TotalSpawnedServiceMembersLimit && (VendorsSpawned == 0 || RandomItems.RandomPercent(ExtaVendorSpawnPercentage)))
             {
+                EntryPoint.WriteToConsole($"ATTEMPT VENDOR SPAWN AT {Name} 2");
                 if (SpawnVendor(spawnPlace))
                 {
+                    EntryPoint.WriteToConsole($"ATTEMPT VENDOR SPAWN AT {Name} 3");
                     VendorsSpawned++;
                 }
             }

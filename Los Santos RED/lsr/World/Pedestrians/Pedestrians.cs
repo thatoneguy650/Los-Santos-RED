@@ -244,7 +244,7 @@ public class Pedestrians : ITaskerReportable
         foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.MaxHealth != 1 && s.Handle != Game.LocalPlayer.Character.Handle))//take 20 is new
         {
             string modelName = Pedestrian.Model.Name.ToLower();
-            if (Settings.SettingsManager.WorldSettings.ReplaceVanillaShopKeepers && (modelName == "mp_m_shopkeep_01"))// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
+            if (Settings.SettingsManager.WorldSettings.ReplaceVanillaShopKeepers && (modelName == "mp_m_shopkeep_01"))// || modelName == "s_f_m_fembarber"))// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
             {
                 Delete(Pedestrian);
                 continue;

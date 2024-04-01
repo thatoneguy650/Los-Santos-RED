@@ -51,6 +51,7 @@ public class Interiors : IInteriors
         Residence();
         GangDens();
         Banks();
+        BarberShops();
         Serialization.SerializeParam(PossibleInteriors, ConfigFileName);
     }
     public List<Interior> GetAllPlaces()
@@ -65,13 +66,29 @@ public class Interiors : IInteriors
     {
         return PossibleInteriors.AllInteriors().Where(x => x.InternalID == id).FirstOrDefault();
     }
-
+    private void BarberShops()
+    {
+        PossibleInteriors.BarberShopInteriors.AddRange(
+            new List<BarberShopInterior>()
+            {
+                new BarberShopInterior(13058,"Herr Kutz Paleto"){ 
+                    HaircutInteracts = new List<HaircutInteract>() { 
+                        new HaircutInteract("herrkutzpaletointeract1",new Vector3(-281.3866f, 6228.842f, 31.69553f), 171.1638f,"Get Haircut") 
+                    }, 
+                    Doors = new List<InteriorDoor>() 
+                    { 
+                        new InteriorDoor(2450522579, new Vector3(-280.7851f, 6232.782f, 31.84548f)) { NeedsDefaultUnlock = true,LockWhenClosed = true } } 
+                },
+            }
+        );
+    }
     private void Stores()
     {
-
-
         PossibleInteriors.GeneralInteriors.AddRange(new List<Interior>()
         {
+            //Barber
+            
+
             //Clothes
             new Interior(19458,"Sub Urban") { IsWeaponRestricted = true, },
             new Interior(22786, "BINCO Textile City",
@@ -727,11 +744,9 @@ public class Interiors : IInteriors
                 },
             },
         });
-
     }
     private void Residence()
     {
-
         PossibleInteriors.ResidenceInteriors.AddRange(new List<ResidenceInterior>()
         {
             //Apartments

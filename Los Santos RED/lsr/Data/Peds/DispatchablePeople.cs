@@ -8686,6 +8686,7 @@ public class DispatchablePeople : IDispatchablePeople
             {
                 DebugName = "<Male LSDRP Ranger Class C>",
                 RandomizeHead = true,
+                GroupName = "OffRoad",
                 OverrideVoice = new List<string>()
                 {
                     "S_M_Y_COP_01_WHITE_FULL_01",
@@ -8790,6 +8791,7 @@ public class DispatchablePeople : IDispatchablePeople
             {
                 DebugName = "<Female LSDRP Ranger Class C>",
                 RandomizeHead = true,
+                GroupName = "OffRoad",
                 OverrideVoice = new List<string>()
                 {
                     "S_F_Y_COP_01_WHITE_FULL_01",
@@ -8949,6 +8951,7 @@ public class DispatchablePeople : IDispatchablePeople
             {
                 DebugName = "<Male Game Warden Utility>",
                 RandomizeHead = true,
+                GroupName = "OffRoad",
                 OverrideVoice = new List<string>()
                 {
                     "S_M_Y_COP_01_WHITE_FULL_01",
@@ -9137,6 +9140,7 @@ public class DispatchablePeople : IDispatchablePeople
             {
                 DebugName = "<Female Game Warden Utility>",
                 RandomizeHead = true,
+                GroupName = "OffRoad",
                 OverrideVoice = new List<string>()
                 {
                     "S_F_Y_COP_01_WHITE_FULL_01",
@@ -9276,6 +9280,7 @@ public class DispatchablePeople : IDispatchablePeople
             {
                 DebugName = "<Male LE Park Ranger Polo>",
                 RandomizeHead = true,
+                GroupName = "OffRoad",
                 OverrideVoice = new List<string>()
                 {
                     "S_M_Y_COP_01_WHITE_FULL_01",
@@ -9470,6 +9475,7 @@ public class DispatchablePeople : IDispatchablePeople
             {
                 DebugName = "<Female LE Ranger Polo>",
                 RandomizeHead = true,
+                GroupName = "OffRoad",
                 OverrideVoice = new List<string>()
                 {
                     "S_F_Y_COP_01_WHITE_FULL_01",
@@ -9546,7 +9552,9 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 78, 0),
                 })
             },
-            new DispatchablePerson("mp_m_freemode_01", 5, 5)
+
+            //NON LE BELOW
+            new DispatchablePerson("mp_m_freemode_01", 0, 0)
             {
                 DebugName = "<Male Park Ranger Class A>",
                 RandomizeHead = true,
@@ -9574,7 +9582,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 30, 0),
                 })
             },
-            new DispatchablePerson("mp_m_freemode_01", 5, 5)
+            new DispatchablePerson("mp_m_freemode_01", 0, 0)
             {
                 DebugName = "<Male Park Ranger Class B>",
                 RandomizeHead = true,
@@ -9602,7 +9610,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 30, 0),
                 })
             },
-            new DispatchablePerson("mp_m_freemode_01", 5, 5)
+            new DispatchablePerson("mp_m_freemode_01", 0, 0)
             {
                 DebugName = "<Male Park Ranger Class C>",
                 RandomizeHead = true,
@@ -9630,7 +9638,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 30, 0),
                 })
             },
-            new DispatchablePerson("mp_f_freemode_01", 5, 5)
+            new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
                 DebugName = "<Female Park Ranger Class A>",
                 RandomizeHead = true,
@@ -9658,7 +9666,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 30, 0),
                 })
             },
-            new DispatchablePerson("mp_f_freemode_01", 5, 5)
+            new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
                 DebugName = "<Female Park Ranger Class B>",
                 RandomizeHead = true,
@@ -9686,7 +9694,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 30, 0),
                 })
             },
-            new DispatchablePerson("mp_f_freemode_01", 5, 5)
+            new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
                 DebugName = "<Female Park Ranger Class C>",
                 RandomizeHead = true,

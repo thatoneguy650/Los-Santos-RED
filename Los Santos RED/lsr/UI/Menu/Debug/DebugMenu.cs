@@ -99,6 +99,10 @@ public class DebugMenu : ModUIMenu
 
         DebugSubMenus.Add(new DebugPropAttachSubMenu(Debug, MenuPool, Player, ModDataFileManager));
 
+
+        DebugSubMenus.Add(new DebugPositionLoggingSubMenu(Debug, MenuPool, Player, ModDataFileManager));
+
+
 #if DEBUG
         DebugSubMenus.Add(new DebugLCYMAPSubMenu(Debug, MenuPool, Player));
 #endif

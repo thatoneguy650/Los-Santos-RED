@@ -63,6 +63,9 @@ public class PlacesOfInterest : IPlacesOfInterest
     private List<ApartmentBuilding> ApartmentBuildings;
     private List<MilitaryBase> MilitaryBasePlaces;
     private List<StoredSpawn> TunnelSpawnPlaces;
+    private List<TattooShop> TattooShopPlaces;
+    private List<PlasticSurgeryClinic> PlasticSurgeryClinics;
+    private List<BarberShop> BarberShopPlaces;
 
     public PossibleLocations PossibleLocations { get; private set; }
     public PlacesOfInterest(IShopMenus shopMenus, IGangs gangs)
@@ -202,6 +205,9 @@ public class PlacesOfInterest : IPlacesOfInterest
         DefaultConfig_Airports();
         DefaultConfig_MilitaryBases();
         DefaultConfig_TunnelSpawns();
+        DefaultConfig_BarberShops();
+        DefaultConfig_PlasticSurgeryClinics();
+        DefaultConfig_TattooShops();
 
         PossibleLocations.DeadDrops.AddRange(DeadDrops);
         PossibleLocations.CarCrushers.AddRange(CarCrushers);
@@ -245,7 +251,44 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.BlankLocations.AddRange(BlankLocationPlaces);
         PossibleLocations.MilitaryBases.AddRange(MilitaryBasePlaces);
         PossibleLocations.StoredSpawns.AddRange(TunnelSpawnPlaces);
+
+
+        PossibleLocations.BarberShops.AddRange(BarberShopPlaces);
+        PossibleLocations.PlasticSurgeryClinics.AddRange(PlasticSurgeryClinics);
+        PossibleLocations.TattooShops.AddRange(TattooShopPlaces);
+
         Serialization.SerializeParam(PossibleLocations, ConfigFileName);
+    }
+
+
+    private void DefaultConfig_BarberShops()
+    {
+        BarberShopPlaces = new List<BarberShop>()
+        {
+            //OFF FOR RELEASE TEMP
+            //new BarberShop(new Vector3(-281.8168f, 6232.678f, 31.69073f), 45.57799f,"Herr Kutz Barber","") 
+            //{ 
+            //    DisableRegularInteract = true,
+            //    VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-277.812f, 6229.735f, 30.69552f), 50.82846f) }, 
+            //    InteriorID = 13058 
+            //},
+
+            //new Vector3(-282.1472f, 6227.552f, 31.88528f)
+        };
+    }
+    private void DefaultConfig_PlasticSurgeryClinics()
+    {
+        PlasticSurgeryClinics = new List<PlasticSurgeryClinic>()
+        {
+
+        };
+    }
+    private void DefaultConfig_TattooShops()
+    {
+        TattooShopPlaces = new List<TattooShop>()
+        {
+
+        };
     }
     private void DefaultConfig_MilitaryBases()
     {
@@ -2221,6 +2264,43 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new FireConditionalLocation(new Vector3(-636.2214f, -123.7732f, 39.01375f), 42.9723f, 25f),
                 new FireConditionalLocation(new Vector3(-636.4733f, -117.1641f, 38.02922f), 78.61053f, 25f),
             } },
+
+            new FireStation(new Vector3(-379.3594f, 6117.986f, 31.84872f), 46.27145f, "Blaine County Fire Station", "") 
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                AssignedAssociationID = "LSFD",
+                PossiblePedSpawns = new List<ConditionalLocation>() 
+                {
+                    new FireConditionalLocation(new Vector3(-383.4373f, 6118.202f, 31.47953f), 81.63596f, 25f) { AssociationID = "BCFD" },
+                    new FireConditionalLocation(new Vector3(-373.4855f, 6101.625f, 31.44381f), 114.8036f, 25f) { AssociationID = "BCFD" },
+                    new FireConditionalLocation(new Vector3(-359.7747f, 6128.129f, 31.44016f), 338.6169f, 25f) { AssociationID = "BCFD" },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new FireConditionalLocation(new Vector3(-377.4937f, 6127.635f, 31.43834f), 42.40747f, 25f) { AssociationID = "BCFD" },
+                    new FireConditionalLocation(new Vector3(-374.1196f, 6131.559f, 31.4365f), 227.4514f, 25f) { AssociationID = "BCFD" },
+                }
+            },
+
+            new FireStation(new Vector3(1690.468f, 3580.97f, 35.62085f), 210.2316f, "Sandy Shores Fire Station", "")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                AssignedAssociationID = "LSFD",
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new FireConditionalLocation(new Vector3(1688.425f, 3578.468f, 35.59258f), 228.2383f, 25f) { AssociationID = "LSCoFD" },
+                    new FireConditionalLocation(new Vector3(1700.156f, 3593.156f, 35.64092f), 307.3349f, 25f) { AssociationID = "LSCoFD" },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new FireConditionalLocation(new Vector3(1697.492f, 3585.232f, 35.58413f), 206.995f, 25f) { AssociationID = "LSCoFD" },
+                    new FireConditionalLocation(new Vector3(1694.652f, 3604.606f, 35.46653f), 222.9968f, 25f) { AssociationID = "LSCoFD" },
+                }
+            },
+
+            //MISSING LSIA AND ZANCUDO FIRE STATIONS!
         };
     }
     private void DefaultConfig_Hospitals()

@@ -52,6 +52,17 @@ public class PossibleLocations
     public List<IllicitMarketplace> IllicitMarketplaces { get; private set; } = new List<IllicitMarketplace>();
     public List<BlankLocation> BlankLocations { get; private set; } = new List<BlankLocation>();
     public List<MilitaryBase> MilitaryBases { get; private set; } = new List<MilitaryBase>();
+
+
+
+    public List<BarberShop> BarberShops { get; private set; } = new List<BarberShop>();
+    public List<PlasticSurgeryClinic> PlasticSurgeryClinics { get; private set; } = new List<PlasticSurgeryClinic>();
+    public List<TattooShop> TattooShops { get; private set; } = new List<TattooShop>();
+
+
+
+
+
     //  public List<InteractableLocation> AllLocationsList { get; private set; } = new List<InteractableLocation>();
 
     public List<StoredSpawn> StoredSpawns { get; private set; } = new List<StoredSpawn>();
@@ -100,6 +111,9 @@ public class PossibleLocations
         AllLocations.AddRange(IllicitMarketplaces);
         AllLocations.AddRange(BlankLocations);
         AllLocations.AddRange(MilitaryBases);
+        AllLocations.AddRange(BarberShops);
+        AllLocations.AddRange(PlasticSurgeryClinics);
+        AllLocations.AddRange(TattooShops);
         return AllLocations;
     }
 
@@ -122,6 +136,9 @@ public class PossibleLocations
         AllLocations.AddRange(GasStations);
         AllLocations.AddRange(Bars);
         AllLocations.AddRange(SportingGoodsStores);
+        AllLocations.AddRange(BarberShops);
+        AllLocations.AddRange(PlasticSurgeryClinics);
+        AllLocations.AddRange(TattooShops);
         return AllLocations;
     }
 
@@ -147,6 +164,9 @@ public class PossibleLocations
         AllLocations.AddRange(Restaurants);
         AllLocations.AddRange(Landmarks);
         AllLocations.AddRange(SportingGoodsStores);
+        AllLocations.AddRange(BarberShops);
+        AllLocations.AddRange(PlasticSurgeryClinics);
+        AllLocations.AddRange(TattooShops);
         return AllLocations;
     }
     public List<GameLocation> RobberyTaskLocations()
@@ -162,6 +182,9 @@ public class PossibleLocations
         AllLocations.AddRange(PawnShops);
         AllLocations.AddRange(Pharmacies);
         AllLocations.AddRange(SportingGoodsStores);
+        AllLocations.AddRange(BarberShops);
+        AllLocations.AddRange(PlasticSurgeryClinics);
+        AllLocations.AddRange(TattooShops);
         return AllLocations;
     }
 }

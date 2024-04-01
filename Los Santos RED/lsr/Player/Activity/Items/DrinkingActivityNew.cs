@@ -115,6 +115,7 @@ namespace LosSantosRED.lsr.Player
             isPlayingBase = false;
             ConsumableItemNeedGain = new ConsumableRefresher(Player, DrinkItem, Settings) { IsIntervalBased = true };
             ConsumableItemNeedGain.Update();
+            uint GameTimeStartedSip = 0;
             Player.Intoxication.AddIntervalConsumption(CurrentIntoxicant);
             while (Player.ActivityManager.CanPerformActivitiesMiddle && !IsCancelled)
             {
@@ -132,21 +133,19 @@ namespace LosSantosRED.lsr.Player
                     {
                         IsCancelled = true;
                     }
-                    else if (IsFinishedWithSip && Player.ButtonPrompts.IsPressed("DrinkingTakeSip"))
+                    else if (IsFinishedWithSip && Player.ButtonPrompts.IsPressed("DrinkingTakeSip") && (Game.GameTime - GameTimeStartedSip >= 1500 || AnimationTime >= 1.0f))
                     {
                         ConsumableItemNeedGain.Update();
                         TimesDrank++;
                         StartNewIdleAnimation();
                         Player.Intoxication.AddIntervalConsumption(CurrentIntoxicant);
 
-
+                        GameTimeStartedSip = Game.GameTime;
                         IsFinishedWithSip = false;
                         Player.ButtonPrompts.RemovePrompts("DrinkingActivity");
                         //EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank}");
                     }
                 }
-
-
                 if(isPlayingBase && AnimationTime >= Settings.SettingsManager.ActivitySettings.DrinkAnimBaseEndingPercentage)// 0.5f)
                 {
                     NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, 0.0f);

@@ -94,7 +94,7 @@ namespace LosSantosRED.lsr.Player
             ConsumableItemNeedGain.Update();
             Player.Intoxication.AddIntervalConsumption(CurrentIntoxicant);
 
-
+            uint GameTimeStartedBite = 0;
             while (Player.ActivityManager.CanPerformActivitiesMiddle && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
@@ -111,7 +111,7 @@ namespace LosSantosRED.lsr.Player
                     {
                         IsCancelled = true;
                     }
-                    else if (IsFinishedWithBite && Player.ButtonPrompts.IsPressed("EatingTakeBite"))
+                    else if (IsFinishedWithBite && Player.ButtonPrompts.IsPressed("EatingTakeBite") && (Game.GameTime - GameTimeStartedBite >= 1500 || AnimationTime >= 1.0f))
                     {
                         ConsumableItemNeedGain.Update();
 
@@ -121,6 +121,8 @@ namespace LosSantosRED.lsr.Player
                         TimesAte++;
                         StartNewIdleAnimation();
                         IsFinishedWithBite = false;
+
+                        GameTimeStartedBite = Game.GameTime;
                         Player.ButtonPrompts.RemovePrompts("EatingActivity");
                         //EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank}");
                     }
