@@ -243,13 +243,14 @@ public class Pedestrians : ITaskerReportable
         int updated = 0;
         foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.MaxHealth != 1 && s.Handle != Game.LocalPlayer.Character.Handle))//take 20 is new
         {
+            uint localHandle = Pedestrian.Handle;
             string modelName = Pedestrian.Model.Name.ToLower();
-            if (Settings.SettingsManager.WorldSettings.ReplaceVanillaShopKeepers && (modelName == "mp_m_shopkeep_01"))// || modelName == "s_f_m_fembarber"))// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
+            if (Settings.SettingsManager.WorldSettings.ReplaceVanillaShopKeepers && !ServiceWorkers.Any(x => x.Handle == localHandle) && (modelName == "mp_m_shopkeep_01" || modelName == "s_f_m_fembarber"))// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
             {
                 Delete(Pedestrian);
                 continue;
             }
-            uint localHandle = Pedestrian.Handle;
+
             int PedType = NativeFunction.Natives.GET_PED_TYPE<int>(Pedestrian);
             if (DeadPeds.Any(x => x.Handle == localHandle))
             {

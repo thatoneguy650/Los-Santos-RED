@@ -123,6 +123,11 @@ public class DebugSettings : ISettingsDefaultable
     public bool AlwaysAllowTunnelSpawns { get; set; }
     public uint MovingTowardsTime { get; set; }
     public uint MovingAwayTime { get; set; }
+    public float BarberZOffset { get; set; }
+    public float BarberXOffset { get; set; }
+    public float BarberYOffset { get; set; }
+    public float BarberHeadingXOffset { get; set; }
+    public float BarberHeadingYOffset { get; set; }
 
     //public float BlendInIdleDrink { get;  set; }
     //public float BlendOutIdleDrink { get;  set; }
@@ -311,6 +316,14 @@ public class DebugSettings : ISettingsDefaultable
         AlwaysAllowTunnelSpawns = false;
         MovingTowardsTime = 1000;
         MovingAwayTime = 1500;
+        BarberXOffset = 1.1f;
 
+        BarberYOffset = 0.3f;
+
+        BarberZOffset = 0.2f;
+
+        BarberHeadingXOffset = 0f;
+
+        BarberHeadingYOffset = -90f;
     }
 }

@@ -83,6 +83,8 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> IllicitMarketplacePeds;
     private List<DispatchablePerson> TellerPeds;
     private List<DispatchablePerson> BarPeds;
+    private List<DispatchablePerson> HaircutPeds;
+
     public List<DispatchablePersonGroup> AllPeople => PeopleGroupLookup;
 
     public void Setup(IIssuableWeapons issuableWeapons)
@@ -1740,7 +1742,10 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("s_m_y_clubbar_01",100,100),
             new DispatchablePerson("a_f_y_clubcust_01",100,100),
         };
-
+        HaircutPeds = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("s_f_m_fembarber",100,100),
+        };
     }
     private void DefaultConfig()
     {
@@ -1799,6 +1804,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
+        //
 
         Serialization.SerializeParams(PeopleGroupLookup, ConfigFileName);
     }
@@ -1936,6 +1943,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         Serialization.SerializeParams(PeopleGroupLookup_Old, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\DispatchablePeople_LosSantos2008.xml");
     }
     private void DefaultConfig_Simple()
@@ -2105,6 +2113,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         Serialization.SerializeParams(PeopleGroupLookup_Simple, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\DispatchablePeople_Simple.xml");
     }
     private void DefaultConfig_FullExpandedJurisdiction()
@@ -14380,6 +14389,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
+
 
         //NEW
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("LSFDPeds", LSFD_Fire_FEJ));

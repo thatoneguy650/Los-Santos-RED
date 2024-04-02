@@ -1227,7 +1227,7 @@ public class PedSwap : IPedSwap
         GameFiber.Wait(50);
         Player.DisplayPlayerNotification();
     }
-    private void ResetOffsetForCurrentModel()
+    public void ResetOffsetForCurrentModel()
     {
         EntryPoint.WriteToConsole($"PEDSWAP ResetOffsetForCurrentModel START CurrentModelPlayerIs {CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
         if ((Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || HasSetOffset) && CurrentModelPlayerIs != 0)
@@ -1257,7 +1257,7 @@ public class PedSwap : IPedSwap
             *((ulong*)(SkinPtr + 0x18)) = ModelHash;
         }
     }
-    private void SetPlayerOffset()
+    public void SetPlayerOffset()
     {
         if(!Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
         {

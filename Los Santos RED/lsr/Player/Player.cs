@@ -253,7 +253,7 @@ namespace Mod
         public VehicleExt CurrentVehicle { get; set; }
         public PedExt PedLastKilledPlayer { get; private set; }
 
-
+        public PedSwap PedSwap { get; set; }
         public bool CurrentVehicleIsInAir { get; set; }
         public bool CurrentVehicleIsRolledOver { get; set; }
         public string DebugString { get; set; }
@@ -841,6 +841,7 @@ namespace Mod
             {
                 FreeModeVoice = voiceName;
             }
+
             //EntryPoint.WriteToConsole($"PLAYER EVENT: SetDemographics MoneyToSet {money} Current: {BankAccounts.Money} {NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias)}");
         }
         public void SetVoice(string voiceName)

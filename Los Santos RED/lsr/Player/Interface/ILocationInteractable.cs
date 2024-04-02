@@ -53,6 +53,8 @@ namespace LosSantosRED.lsr.Interface
         Violations Violations { get; }
         bool IsFireFighter { get; }
         Investigation Investigation { get; }
+        PedSwap PedSwap { get; }
+        bool CharacterModelIsPrimaryCharacter { get; }
 
         void ChangeName(string newName);
 

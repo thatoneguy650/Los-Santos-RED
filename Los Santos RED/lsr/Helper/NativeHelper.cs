@@ -926,8 +926,15 @@ namespace LosSantosRED.lsr.Helper
 
         }
 
+        internal static Vector3 GetOffsetPosition(Vector3 posI, float v, object barberXOffset)
+        {
+            throw new NotImplementedException();
+        }
 
-
+        internal static Vector3 GetOffsetPosition(Vector3 posI, object value, float barberXOffset)
+        {
+            throw new NotImplementedException();
+        }
     }
     [StructLayout(LayoutKind.Explicit, Size = 80)]
     public struct HeadBlendDataStruct

@@ -73,7 +73,20 @@ public class Interiors : IInteriors
             {
                 new BarberShopInterior(13058,"Herr Kutz Paleto"){ 
                     HaircutInteracts = new List<HaircutInteract>() { 
-                        new HaircutInteract("herrkutzpaletointeract1",new Vector3(-281.3866f, 6228.842f, 31.69553f), 171.1638f,"Get Haircut") 
+                        new HaircutInteract("herrkutzpaletointeract1",new Vector3(-276.8453f, 6225.595f, 31.69551f), 120.1309f,"Get Haircut") {
+                            AnimEnterPosition = new Vector3(-278.348f,6225.873f,30.93535f), 
+                            AnimEnterRotation = new Vector3(0f, 0f, -138.969f),
+
+                            //More front on
+                            CameraPosition = new Vector3(-279.3672f, 6225.189f, 32.20325f), 
+                            CameraDirection = new Vector3(0.869201f, 0.4895405f, -0.06956866f), 
+                            CameraRotation = new Rotator(-3.989213f, -8.558471E-07f, -60.61147f),
+
+                            //SIde
+                            //CameraPosition = new Vector3(-279.7066f, 6226.082f, 32.33117f), 
+                            //CameraDirection = new Vector3(0.9767442f, -0.212151f, -0.03102671f), 
+                            //CameraRotation = new Rotator(-1.777985f, 5.365348E-06f, -102.2544f)
+                        } 
                     }, 
                     Doors = new List<InteriorDoor>() 
                     { 

@@ -4,6 +4,7 @@ using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player.Activity;
 using LSR.Vehicles;
+using Microsoft.VisualBasic.Logging;
 using NAudio.Gui;
 using Rage;
 using Rage.Native;
@@ -1595,15 +1596,41 @@ private void DebugNumpad6()
 
     private void DebugNumpad7()
     {
-        if(Game.TimeScale == 1.0f)
-        {
-            Game.TimeScale = Settings.SettingsManager.DebugSettings.SlowMoScaleTime;
-        }
-        else
-        {
-            Game.TimeScale = 1.0f;
-        }
-        GameFiber.Sleep(500);
+        //barberPosition = new Vector3(-278.348f,6225.873f,30.93535f);
+        //barberrotation = new Vector3(0f, 0f, -498.969f);
+        //barberrotationMAYBE>? = new Vector3(0f, 0f, -138.969f);
+
+
+        //TaskPlayAnimAdvanced(p:ped(), anim, "player_enterchair", data.posI, data.anim_pos, 1000.0, -1000.0, -1, 5642, 0.0, 2, 1)
+
+        AnimationDictionary.RequestAnimationDictionay("misshair_shop@hair_dressers");
+        //Game.LocalPlayer.Character.Position = new Vector3(-277.76483154297f, 6224.8930664063f, 31.135352325439f);
+
+        Vector3 posI = new Vector3(-277.76483154297f, 6224.8930664063f, 31.135352325439f);
+        Vector3 anim_pos = new Vector3(0.0f, 0.0f, -2.6f * 57.29578f - 350f);
+
+
+        Vector3 posINew = NativeHelper.GetOffsetPosition(posI, 136.0184f + Settings.SettingsManager.DebugSettings.BarberHeadingXOffset, Settings.SettingsManager.DebugSettings.BarberXOffset);
+
+
+        posINew = NativeHelper.GetOffsetPosition(posINew, 136.0184f + Settings.SettingsManager.DebugSettings.BarberHeadingYOffset, Settings.SettingsManager.DebugSettings.BarberYOffset);
+
+        posINew = new Vector3(posINew.X, posINew.Y, posINew.Z - Settings.SettingsManager.DebugSettings.BarberZOffset);
+
+        EntryPoint.WriteToConsole($"barberPosition = new Vector3({posINew.X}f,{posINew.Y}f,{posINew.Z}f);");
+        EntryPoint.WriteToConsole($"barberrotation = new Vector3({anim_pos.X}f,{anim_pos.Y}f,{anim_pos.Z}f);");
+
+        NativeFunction.Natives.TASK_PLAY_ANIM_ADVANCED(Game.LocalPlayer.Character, "misshair_shop@hair_dressers", "player_enterchair", posINew.X, posINew.Y, posINew.Z, anim_pos.X, anim_pos.Y, anim_pos.Z, 1000f, -1000f, -1, 5642, 0.0f, 2, 1);
+        GameFiber.Sleep(3000);
+        //if(Game.TimeScale == 1.0f)
+        //{
+        //    Game.TimeScale = Settings.SettingsManager.DebugSettings.SlowMoScaleTime;
+        //}
+        //else
+        //{
+        //    Game.TimeScale = 1.0f;
+        //}
+        //GameFiber.Sleep(500);
 
         //if (Game.TimeScale >= 0.4f)
         //{
@@ -1613,7 +1640,7 @@ private void DebugNumpad6()
         //{
         //    Game.TimeScale -= 0.05f;
         //}
-        GameFiber.Sleep(500);
+        //GameFiber.Sleep(500);
 
 
         //while (!Game.IsKeyDownRightNow(Keys.Space))

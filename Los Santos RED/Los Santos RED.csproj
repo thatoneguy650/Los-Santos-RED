@@ -158,6 +158,7 @@
     <Compile Include="lsr\Locations\Interiors\BankDrawerInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\BankInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\Barber\BarberShopInterior.cs" />
+    <Compile Include="lsr\Locations\Interiors\Barber\ChangeHaircutProcess.cs" />
     <Compile Include="lsr\Locations\Interiors\Barber\HaircutInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\GangDenInterior.cs" />

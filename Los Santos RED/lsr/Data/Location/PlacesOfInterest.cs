@@ -266,12 +266,14 @@ public class PlacesOfInterest : IPlacesOfInterest
         BarberShopPlaces = new List<BarberShop>()
         {
             //OFF FOR RELEASE TEMP
-            //new BarberShop(new Vector3(-281.8168f, 6232.678f, 31.69073f), 45.57799f,"Herr Kutz Barber","") 
-            //{ 
-            //    DisableRegularInteract = true,
-            //    VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-277.812f, 6229.735f, 30.69552f), 50.82846f) }, 
-            //    InteriorID = 13058 
-            //},
+            new BarberShop(new Vector3(-281.8168f, 6232.678f, 31.69073f), 45.57799f,"Herr Kutz Barber","")
+            {
+                DisableRegularInteract = true,
+                VendorPersonnelID = "HaircutPeds",
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-277.812f, 6229.735f, 30.69552f), 50.82846f) },
+                InteriorID = 13058,
+                BannerImagePath = "stores\\herrkutz.png",
+            },
 
             //new Vector3(-282.1472f, 6227.552f, 31.88528f)
         };

@@ -37,6 +37,8 @@ public class DebugPositionLoggingSubMenu : DebugSubMenu
     private Vector3 CurrentPosition;
     private float CurrentHeading;
     private UIMenuItem setPlayerMenu;
+    private float HomeHeading;
+    private Vector3 HomePosition;
 
     public UIMenuItem setPositionMenu { get; private set; }
 
@@ -58,7 +60,18 @@ public class DebugPositionLoggingSubMenu : DebugSubMenu
     private void CreateMenu()
     {
         //Set position
-        setPositionMenu = new UIMenuItem("Set Position Current", "Reset the standard position to current");
+
+        UIMenuItem setHomePositionMenu = new UIMenuItem("Set Home Position", "Set Home Position");
+        setHomePositionMenu.Activated += (sender, selectedItem) =>
+        {
+            HomePosition = Game.LocalPlayer.Character.Position;
+            HomeHeading = Game.LocalPlayer.Character.Heading;
+        };
+        SubMenu.AddItem(setHomePositionMenu);
+
+
+
+        setPositionMenu = new UIMenuItem("Set Test Position", "Set test position");
         setPositionMenu.Activated += (sender, selectedItem) =>
         {
             CurrentPosition = Game.LocalPlayer.Character.Position;
@@ -68,7 +81,14 @@ public class DebugPositionLoggingSubMenu : DebugSubMenu
 
 
         //Set Player
-        setPlayerMenu = new UIMenuItem("Move Player", "Move Player to the current position");
+        UIMenuItem setPlayerHomeMenu = new UIMenuItem("Move Player Home", "Move Player to the current position");
+        setPlayerHomeMenu.Activated += (sender, selectedItem) =>
+        {
+            SetPlayerAtHome();
+        };
+        SubMenu.AddItem(setPlayerHomeMenu);
+
+        setPlayerMenu = new UIMenuItem("Move Player Test", "Move Player to the current position");
         setPlayerMenu.Activated += (sender, selectedItem) =>
         {
             SetPlayerAtCurrent();
@@ -114,7 +134,7 @@ public class DebugPositionLoggingSubMenu : DebugSubMenu
 
 
         //Add Heading
-        UIMenuNumericScrollerItem<float> headingChanger = new UIMenuNumericScrollerItem<float>("Change Heading", "", -5.0f, 5.0f, 0.1f) { Value = 0f };
+        UIMenuNumericScrollerItem<float> headingChanger = new UIMenuNumericScrollerItem<float>("Change Heading", "", -5.0f, 5.0f, 1f) { Value = 0f };
         headingChanger.Activated += (sender, selectedItem) =>
         {
             CurrentHeading += headingChanger.Value;
@@ -122,7 +142,7 @@ public class DebugPositionLoggingSubMenu : DebugSubMenu
         };
         SubMenu.AddItem(headingChanger);
 
-
+        
 
     }
     private void SetPlayerAtCurrent()
@@ -133,7 +153,14 @@ public class DebugPositionLoggingSubMenu : DebugSubMenu
         EntryPoint.WriteToConsole($"CURRENT POSITION {CurrentPosition} {CurrentHeading}");
 
     }
+    private void SetPlayerAtHome()
+    {
+        Game.LocalPlayer.Character.Position = HomePosition;
+        Game.LocalPlayer.Character.Heading = HomeHeading;
 
-   
+        EntryPoint.WriteToConsole($"CURRENT POSITION {HomePosition} {HomeHeading}");
+
+    }
+
 }
 
