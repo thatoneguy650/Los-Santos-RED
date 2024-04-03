@@ -306,7 +306,7 @@ public class ChangeHaircutProcess
     private void AddBeardMenu()
     {
         BeardsSubMenu = MenuPool.AddSubMenu(InteractionMenu, $"Beards");
-        BeardsSubMenuItem = InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1];
+        BeardsSubMenuItem = InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1]; 
         BeardsSubMenu.OnMenuOpen += (sender) =>
         {
             if (Player.CharacterModelIsFreeMode)
