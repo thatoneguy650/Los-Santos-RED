@@ -84,6 +84,7 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> TellerPeds;
     private List<DispatchablePerson> BarPeds;
     private List<DispatchablePerson> HaircutPeds;
+    private List<DispatchablePerson> BobMuletPeds;
 
     public List<DispatchablePersonGroup> AllPeople => PeopleGroupLookup;
 
@@ -1746,6 +1747,10 @@ public class DispatchablePeople : IDispatchablePeople
         {
             new DispatchablePerson("s_f_m_fembarber",100,100),
         };
+        BobMuletPeds = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("s_m_m_hairdress_01",100,100),
+        };
     }
     private void DefaultConfig()
     {
@@ -1805,6 +1810,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
         //
 
         Serialization.SerializeParams(PeopleGroupLookup, ConfigFileName);
@@ -1944,6 +1950,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
         Serialization.SerializeParams(PeopleGroupLookup_Old, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\DispatchablePeople_LosSantos2008.xml");
     }
     private void DefaultConfig_Simple()
@@ -2114,6 +2121,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
         Serialization.SerializeParams(PeopleGroupLookup_Simple, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\DispatchablePeople_Simple.xml");
     }
     private void DefaultConfig_FullExpandedJurisdiction()
@@ -14390,7 +14398,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
-
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
 
         //NEW
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("LSFDPeds", LSFD_Fire_FEJ));

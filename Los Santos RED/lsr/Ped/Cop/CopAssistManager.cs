@@ -65,14 +65,14 @@ public class CopAssistManager
             {
                 float length = copCar.Model.Dimensions.Y;
                 float speed = copCar.Speed;
-                float distanceInFront = 3f + 1.25f;
+                float distanceInFront = 4.25f;
                 if (1==1)//Cop.DistanceToPlayer >= 120f)//if (speed >= 5f || Cop.DistanceToPlayer >= 150f) //if (speed >= 18f || Cop.DistanceToPlayer >= 150f)//~40mph
                 {
-                    float range = 6f + 1.25f;// 4f;
-                    if (speed >= 27f || Cop.DistanceToPlayer >= 120f)//if(speed >= 27f || Cop.DistanceToPlayer >= 150f)//~60mph
+                    float range = 7.25f;// 4f;
+                    if (speed >= 27f || Cop.DistanceToPlayer >= 120f)//if(speed >= 27f || Cop.DistanceToPlayer >= 150f)//~60mph//if (speed >= 27f || Cop.DistanceToPlayer >= 120f)//if(speed >= 27f || Cop.DistanceToPlayer >= 150f)//~60mph
                     {
-                        distanceInFront = 5f + 1.25f;
-                        range = 10f;
+                        distanceInFront = 9.0f;// 6.25f;
+                        range = 12f;// 10f;
                     }
                     Entity ClosestCarEntity = Rage.World.GetClosestEntity(copCar.GetOffsetPositionFront(length/2f + distanceInFront), range, GetEntitiesFlags.ConsiderGroundVehicles | GetEntitiesFlags.ExcludePoliceCars | GetEntitiesFlags.ExcludePlayerVehicle);
                     GameFiber.Yield();
@@ -106,7 +106,7 @@ public class CopAssistManager
     }
     public void PowerAssist(bool isWanted)
     {
-        if (Cop.IsDriver && Cop.DistanceToPlayer <= 200f && Cop.DistanceToPlayer >= 30f && isWanted && !Cop.IsInHelicopter && Cop.Pedestrian.Exists())
+        if (Cop.IsDriver && Cop.DistanceToPlayer <= 200f && isWanted && !Cop.IsInHelicopter && Cop.Pedestrian.Exists())//if (Cop.IsDriver && Cop.DistanceToPlayer <= 200f && Cop.DistanceToPlayer >= 30f && isWanted && !Cop.IsInHelicopter && Cop.Pedestrian.Exists())
         {
             Vehicle copCar = Cop.Pedestrian.CurrentVehicle;
             if (copCar.Exists())

@@ -245,7 +245,7 @@ public class Pedestrians : ITaskerReportable
         {
             uint localHandle = Pedestrian.Handle;
             string modelName = Pedestrian.Model.Name.ToLower();
-            if (Settings.SettingsManager.WorldSettings.ReplaceVanillaShopKeepers && !ServiceWorkers.Any(x => x.Handle == localHandle) && (modelName == "mp_m_shopkeep_01" || modelName == "s_f_m_fembarber"))// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
+            if (Settings.SettingsManager.WorldSettings.ReplaceVanillaShopKeepers && !ServiceWorkers.Any(x => x.Handle == localHandle) && (modelName == "mp_m_shopkeep_01" || modelName == "s_f_m_fembarber" || modelName == "s_m_m_hairdress_01"))// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
             {
                 Delete(Pedestrian);
                 continue;

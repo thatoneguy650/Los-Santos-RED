@@ -265,8 +265,8 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         BarberShopPlaces = new List<BarberShop>()
         {
-            //OFF FOR RELEASE TEMP
-            new BarberShop(new Vector3(-281.8168f, 6232.678f, 31.69073f), 45.57799f,"Herr Kutz Barber","")
+
+            new BarberShop(new Vector3(-281.8168f, 6232.678f, 31.69073f), 45.57799f,"Herr Kutz Barber","")//Paleto
             {
                 DisableRegularInteract = true,
                 VendorPersonnelID = "HaircutPeds",
@@ -274,8 +274,56 @@ public class PlacesOfInterest : IPlacesOfInterest
                 InteriorID = 13058,
                 BannerImagePath = "stores\\herrkutz.png",
             },
+            new BarberShop(new Vector3(-1288.16f, -1116.506f, 6.985249f), 88.56965f,"Beach Combover Barbers","")//Vespucci
+            {
+                DisableRegularInteract = true,
+                VendorPersonnelID = "HaircutPeds",
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1283.989f, -1116.012f, 6.5f), 84.55875f) },
+                InteriorID = 113922,//,113922,
+                BannerImagePath = "stores\\beachcombover.png",
+            },
+            new BarberShop(new Vector3(-823.5811f, -188.0995f, 37.61986f), 120.2507f,"Bob Mulet","")//Rockford
+            {
+                DisableRegularInteract = true,
+                VendorPersonnelID = "BobMuletPeds",
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-816.2922f, -186.2247f, 37.06889f), 77.19087f) },
+                InteriorID = 37378,
+                BannerImagePath = "stores\\bobmulet.png",
+            },
 
-            //new Vector3(-282.1472f, 6227.552f, 31.88528f)
+            //TBD
+            new BarberShop(new Vector3(132.5413f, -1712.248f, 29.29169f), 138.2942f,"Herr Kutz Barber","")//Davis
+            {
+                DisableRegularInteract = true,
+                VendorPersonnelID = "HaircutPeds",
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(135.5252f, -1708.4f, 28.79162f), 155.3674f) },
+                InteriorID = 102146,
+                BannerImagePath = "stores\\herrkutz.png",
+            },
+            new BarberShop(new Vector3(1206.914f, -470.6263f, 66.15982f), 75.04634f,"Herr Kutz Barber","")//Mirror park
+            {
+                DisableRegularInteract = true,
+                VendorPersonnelID = "HaircutPeds",
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1211.615f, -471.4896f, 65.70802f), 100.3488f) },
+                InteriorID = 112642,
+                BannerImagePath = "stores\\herrkutz.png",
+            },
+            new BarberShop(new Vector3(1934.142f, 3724.473f, 32.80219f), 208.5416f,"O'Sheas Barbers","")//Sandy Shores
+            {
+                DisableRegularInteract = true,
+                VendorPersonnelID = "HaircutPeds",
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1931.117f, 3729.002f, 32.34442f), 232.3928f) },
+                InteriorID = 10242,
+                BannerImagePath = "stores\\osheas.png",
+            },
+            new BarberShop(new Vector3(-30.23092f, -147.3315f, 57.0774f), 338.3362f,"Hair on Hawick","")//Hawick
+            {
+                DisableRegularInteract = true,
+                VendorPersonnelID = "HaircutPeds",
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-31.60344f, -151.6067f, 56.57654f), 15.62799f) },
+                InteriorID = 34306,
+                BannerImagePath = "stores\\haironhawick.png",
+            },
         };
     }
     private void DefaultConfig_PlasticSurgeryClinics()

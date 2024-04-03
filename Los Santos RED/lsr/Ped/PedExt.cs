@@ -1536,6 +1536,11 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         {
             return;
         }
+        bool hasLandingGear = NativeFunction.Natives.GET_VEHICLE_HAS_LANDING_GEAR<bool>(Pedestrian.CurrentVehicle);
+        if(!hasLandingGear)
+        {
+            return;
+        }
         int landingGearState = NativeFunction.Natives.GET_LANDING_GEAR_STATE<int>(Pedestrian.CurrentVehicle);
         float height = Pedestrian.HeightAboveGround;
         EntryPoint.WriteToConsole($"I AM PED {Handle} IsInHelicopter{IsInHelicopter} IsInPlane{IsInPlane} landingGearState{landingGearState} height{height}");

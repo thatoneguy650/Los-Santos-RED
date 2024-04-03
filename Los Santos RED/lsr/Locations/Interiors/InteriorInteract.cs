@@ -19,6 +19,7 @@ using System.Xml.Serialization;
 [XmlInclude(typeof(TheftInteract))]
 [XmlInclude(typeof(MoneyTheftInteract))]
 [XmlInclude(typeof(ItemTheftInteract))]
+[XmlInclude(typeof(HaircutInteract))]
 //UrinalInteract
 //ToiletInteract
 public class InteriorInteract

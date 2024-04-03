@@ -1373,8 +1373,12 @@ GameFiber.StartNew(delegate
 
 }
 
-private void DebugNumpad6()
-{
+    private void DebugNumpad6()
+    {
+        foreach(HeadOverlayData ho in Player.CurrentModelVariation.HeadOverlays)
+        {
+            EntryPoint.WriteToConsole($"OverlayID:{ho.OverlayID} Index:{ho.Index} Opacity:{ho.Opacity} PriColor:{ho.PrimaryColor} SecColor:{ho.SecondaryColor} ColorType:{ho.ColorType}");
+        }
         //if (Player.CurrentVehicle != null)
         //{
         //    //Player.CurrentVehicle.Engine.SetState(false);
@@ -1392,18 +1396,18 @@ private void DebugNumpad6()
         //        );
         //}
 
-        if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int seatIndex) && Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
-        {
-            uint GameTimeStarted = Game.GameTime;
-            while (Game.GameTime - GameTimeStarted <= 2000)
-            {
-                NativeFunction.Natives.SET_CONTROL_VALUE_NEXT_FRAME<bool>(0, (int)GameControl.Enter, 1.0f);
-                GameFiber.Yield();
-            }
-            
-            //NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, Player.InterestedVehicle.Vehicle, -1, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);
-        }
-       // GameFiber.Sleep(500);
+        //if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int seatIndex) && Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+        //{
+        //    uint GameTimeStarted = Game.GameTime;
+        //    while (Game.GameTime - GameTimeStarted <= 2000)
+        //    {
+        //        NativeFunction.Natives.SET_CONTROL_VALUE_NEXT_FRAME<bool>(0, (int)GameControl.Enter, 1.0f);
+        //        GameFiber.Yield();
+        //    }
+
+        //    //NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, Player.InterestedVehicle.Vehicle, -1, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);
+        //}
+        // GameFiber.Sleep(500);
 
         //int interiorID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(347.2686f, -999.2955f, -99.19622f);
 
@@ -1606,14 +1610,15 @@ private void DebugNumpad6()
         AnimationDictionary.RequestAnimationDictionay("misshair_shop@hair_dressers");
         //Game.LocalPlayer.Character.Position = new Vector3(-277.76483154297f, 6224.8930664063f, 31.135352325439f);
 
-        Vector3 posI = new Vector3(-277.76483154297f, 6224.8930664063f, 31.135352325439f);
-        Vector3 anim_pos = new Vector3(0.0f, 0.0f, -2.6f * 57.29578f - 350f);
+        Vector3 posI = new Vector3(-35.654655456543f, -154.29956054688f, 57.82421875f - 1.50f);
+        float heading = 65.38319f;
+        Vector3 anim_pos = new Vector3(0.0f, 0.0f, -2.6f * 57.29578f - 50f);
 
 
-        Vector3 posINew = NativeHelper.GetOffsetPosition(posI, 136.0184f + Settings.SettingsManager.DebugSettings.BarberHeadingXOffset, Settings.SettingsManager.DebugSettings.BarberXOffset);
+        Vector3 posINew = NativeHelper.GetOffsetPosition(posI, heading + Settings.SettingsManager.DebugSettings.BarberHeadingXOffset, Settings.SettingsManager.DebugSettings.BarberXOffset);
 
 
-        posINew = NativeHelper.GetOffsetPosition(posINew, 136.0184f + Settings.SettingsManager.DebugSettings.BarberHeadingYOffset, Settings.SettingsManager.DebugSettings.BarberYOffset);
+        posINew = NativeHelper.GetOffsetPosition(posINew, heading + Settings.SettingsManager.DebugSettings.BarberHeadingYOffset, Settings.SettingsManager.DebugSettings.BarberYOffset);
 
         posINew = new Vector3(posINew.X, posINew.Y, posINew.Z - Settings.SettingsManager.DebugSettings.BarberZOffset);
 

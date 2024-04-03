@@ -70,7 +70,8 @@ public class InteriorManager
         }
         foreach(GameLocation gameLocation in World.Places.ActiveLocations.ToList())
         {
-            if(!gameLocation.HasInterior || gameLocation.Interior == null || gameLocation.Interior.IsTeleportEntry)
+
+            if (!gameLocation.HasInterior || gameLocation.Interior == null || gameLocation.Interior.IsTeleportEntry)
             {
                 continue;
             }

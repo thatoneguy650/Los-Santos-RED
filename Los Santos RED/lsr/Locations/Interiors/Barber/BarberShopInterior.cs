@@ -32,6 +32,10 @@ public class BarberShopInterior : Interior
         foreach (HaircutInteract test in HaircutInteracts)
         {
             test.BarberShop = newBarber;
+            if (newBarber != null)
+            {
+                EntryPoint.WriteToConsole($"SET BARBER SHOP FOR {newBarber.Name}");
+            }
             //test.TotalCash = RandomItems.GetRandomNumberInt(Bank.DrawerCashMin, Bank.DrawerCashMax);
         }
     }

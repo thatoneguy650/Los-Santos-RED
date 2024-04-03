@@ -1519,6 +1519,11 @@ public class LEDispatcher
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, NOT IN VEHICLE DELETE YES ROADBLOCK");
             return true;
         }
+        else if (cop.IsInVehicle && Player.IsWanted && cop.DistanceToPlayer >= 300f && !cop.IsRespondingToWanted && !cop.IsInHelicopter)
+        {
+            EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, Ambient NOT RESPONDING");
+            return true;
+        }
         else if (cop.DistanceToPlayer >= 300f && cop.ClosestDistanceToPlayer <= 15f && !cop.IsInHelicopter) //Got Close and Then got away
         {
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, CLOSE THEN FAR");
