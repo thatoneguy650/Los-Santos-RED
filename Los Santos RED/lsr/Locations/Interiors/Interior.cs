@@ -83,7 +83,7 @@ public class Interior
     public virtual List<InteriorInteract> AllInteractPoints => InteractPoints;
     public InteriorInteract ClosestInteract => AllInteractPoints.Where(x => x.CanAddPrompt).OrderBy(x => x.DistanceTo).FirstOrDefault();
 
-    public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ILocationInteractable locationInteractable, IModItems modItems)
+    public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ILocationInteractable locationInteractable, IModItems modItems, IClothesNames clothesNames)
     {
         Settings = settings;
         Player = player;
@@ -94,7 +94,7 @@ public class Interior
         }
         foreach (InteriorInteract interiorInteract in AllInteractPoints)//InteractPoints)
         {
-            interiorInteract.Setup(modItems);
+            interiorInteract.Setup(modItems, clothesNames);
         }
     }
     public void DebugOpenDoors()

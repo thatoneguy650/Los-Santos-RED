@@ -21,9 +21,20 @@ public class BarberShop : GameLocation
     public override string TypeName { get; set; } = "Barber Shop";
     public override int MapIcon { get; set; } = (int)BlipSprite.Barber;
 
+    public int StandardMaleHaircutPrice { get; set; } = 25;
+    public int StandardFemaleHaircutPrice { get; set; } = 35;
+    public int StandardBeardTrimPrice { get; set; } = 30;
+    public int StandardHairColoringPrice { get; set; } = 45;
+    public int StandardMakeupPrice { get; set; } = 55;
+    public int PremiumHaircutExtra { get; set; } = 15;
+    public int PremiumBearTrimExtra { get; set; } = 10;
+    public int PremiumColoringExtra { get; set; } = 25;
+    public int PremiumMakeupExtra { get; set; } = 25;
+    public bool AllowsMakeup { get; set; } = true;
 
     [XmlIgnore]
     public BarberShopInterior BarberShopInterior { get; set; }
+
 
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {

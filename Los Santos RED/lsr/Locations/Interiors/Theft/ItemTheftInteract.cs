@@ -31,9 +31,9 @@ public class ItemTheftInteract : TheftInteract
     public int MinItems { get; set; }
     public int MaxItems { get; set; }
     public List<AnimationPoint> RightHandAnimationPoints { get; set; } = new List<AnimationPoint>();
-    public override void Setup(IModItems modItems)
+    public override void Setup(IModItems modItems, IClothesNames clothesNames)
     {
-        ModItems = modItems;
+        base.Setup(modItems, clothesNames);
         if (PossibleItems == null || !PossibleItems.Any())
         {
             return;

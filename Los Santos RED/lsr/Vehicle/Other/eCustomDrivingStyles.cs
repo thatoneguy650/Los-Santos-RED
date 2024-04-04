@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 public enum eCustomDrivingStyles : int
 {
-    //ORIGINAL
-    /*	
+	//ORIGINAL
+	/*	
 	 *	RegularDriving = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians | 8 | (int)VehicleDrivingFlags.RespectIntersections | 256,
 	RegularDrivingClose = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians | 8 | (int)VehicleDrivingFlags.RespectIntersections | 256 | (int)VehicleDrivingFlags.DriveBySight,
 	Code2 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,  //20220531 allowwrongway and median crossing is new
@@ -22,31 +22,43 @@ public enum eCustomDrivingStyles : int
 	*/
 
 
-    RegularDriving = 1 | 2 | 8 | 128 | 256 | 16384 | 524288,
+	RegularDriving = 1 | 2 | 8 | 128 | 256 | 16384 | 524288,
 
 
 
 
-    Taxi_StandardDrivingMode = VanillaDrivingStyles.DF_StopForCars | VanillaDrivingStyles.DF_StopForPeds | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_SteerAroundStationaryCars | VanillaDrivingStyles.DF_StopAtLights |
-    VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | VanillaDrivingStyles.DF_AdjustCruiseSpeedBasedOnRoadSpeed,
+	Taxi_StandardDrivingMode = VanillaDrivingStyles.DF_StopForCars | VanillaDrivingStyles.DF_StopForPeds | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_SteerAroundStationaryCars | VanillaDrivingStyles.DF_StopAtLights |
+	VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | VanillaDrivingStyles.DF_AdjustCruiseSpeedBasedOnRoadSpeed,
 
-    TaxiRushed_AvoidCarsObeyLights = VanillaDrivingStyles.DF_SwerveAroundAllCars | VanillaDrivingStyles.DF_StopAtLights | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | VanillaDrivingStyles.DF_StopForCars,
-
-
-    TaxiCrazy_AvoidCars = VanillaDrivingStyles.DF_SwerveAroundAllCars | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | VanillaDrivingStyles.DF_StopForCars,
+	TaxiRushed_AvoidCarsObeyLights = VanillaDrivingStyles.DF_SwerveAroundAllCars | VanillaDrivingStyles.DF_StopAtLights | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | VanillaDrivingStyles.DF_StopForCars,
 
 
-    VanillaStandardDrivingMode = VanillaDrivingStyles.DF_StopForCars | VanillaDrivingStyles.DF_StopForPeds | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_SteerAroundStationaryCars | VanillaDrivingStyles.DF_StopAtLights |
-        VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions,
-
-    VanillaAvoidCarsObeyLights = VanillaDrivingStyles.DF_SwerveAroundAllCars | VanillaDrivingStyles.DF_StopAtLights | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | VanillaDrivingStyles.DF_StopForCars,
+	TaxiCrazy_AvoidCars = VanillaDrivingStyles.DF_SwerveAroundAllCars | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | VanillaDrivingStyles.DF_StopForCars,
 
 
+	VanillaStandardDrivingMode = VanillaDrivingStyles.DF_StopForCars | VanillaDrivingStyles.DF_StopForPeds | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_SteerAroundStationaryCars | VanillaDrivingStyles.DF_StopAtLights |
+		VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions,
 
-    //RegularDrivingClose = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians | 8 | (int)VehicleDrivingFlags.RespectIntersections | 256 | (int)VehicleDrivingFlags.DriveBySight,
-    Code2 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,// | (int)VanillaDrivingStyles.DF_StopForCars,  //20220531 allowwrongway and median crossing is new
-    Code3 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,// | (int)VanillaDrivingStyles.DF_StopForCars,
-    Code3Close = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | (int)VehicleDrivingFlags.DriveBySight | 524288,// | (int)VanillaDrivingStyles.DF_StopForCars,
+	VanillaAvoidCarsObeyLights = VanillaDrivingStyles.DF_SwerveAroundAllCars | VanillaDrivingStyles.DF_StopAtLights | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | VanillaDrivingStyles.DF_StopForCars,
+
+
+
+	//RegularDrivingClose = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians | 8 | (int)VehicleDrivingFlags.RespectIntersections | 256 | (int)VehicleDrivingFlags.DriveBySight,
+	Code2 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,// | (int)VanillaDrivingStyles.DF_StopForCars,  //20220531 allowwrongway and median crossing is new
+	
+	
+	
+	Code3 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,// | (int)VanillaDrivingStyles.DF_StopForCars,
+    
+	
+	
+	Code3Close = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | (int)VehicleDrivingFlags.DriveBySight | 524288,// | (int)VanillaDrivingStyles.DF_StopForCars,
+
+
+
+
+
+
     //Panic = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,
 
     Vanilla_Alerted = (int)786469,

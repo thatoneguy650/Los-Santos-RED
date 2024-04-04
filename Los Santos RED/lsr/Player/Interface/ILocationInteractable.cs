@@ -55,6 +55,7 @@ namespace LosSantosRED.lsr.Interface
         Investigation Investigation { get; }
         PedSwap PedSwap { get; }
         bool CharacterModelIsPrimaryCharacter { get; }
+        bool IsMale { get; }
 
         void ChangeName(string newName);
 

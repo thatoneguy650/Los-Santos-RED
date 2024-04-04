@@ -31,6 +31,7 @@ public class InteriorInteract
     protected GameLocation InteractableLocation;
     protected Interior Interior;
     protected LocationCamera LocationCamera;
+    protected IClothesNames ClothesNames;
     protected bool canAddPrompt = false;
     protected float distanceTo;
     protected float GroundZ;
@@ -63,18 +64,15 @@ public class InteriorInteract
     public bool UseNavmesh { get; set; } = true;
     public bool WithWarp { get; set; } = false;
     public virtual bool ShouldAddPrompt => !Interior.IsMenuInteracting && distanceTo <= InteractDistance && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanPerformActivitiesOnFoot;
-    public virtual void Setup(IModItems modItems)
+    public virtual void Setup(IModItems modItems, IClothesNames clothesNames)
     {
         ModItems = modItems;
+        ClothesNames = clothesNames;
     }
-
-
     public virtual void OnInteriorLoaded()
     {
 
     }
-
-
     public void DisplayMarker(int markerType, float zOffset, float markerScale)
     {
         if(DistanceTo >= 30)
@@ -96,17 +94,12 @@ public class InteriorInteract
             EntryPoint.LSRedColor.R, EntryPoint.LSRedColor.G, EntryPoint.LSRedColor.B, EntryPoint.LSRedColor.A,
             false, false, 2, true, 0, 0, false);//false, true, 2, true, 0, 0, false);
     }
-
-
-
     public virtual void UpdateDistances(IInteractionable player)
     {
         Player = player;
         distanceTo = Player.Character.DistanceTo(Position);
         canAddPrompt = distanceTo <= InteractDistance;     
     }
-
-
     public virtual void UpdateActivated(IInteractionable player, ISettingsProvideable settings, GameLocation interactableLocation, Interior interior, ILocationInteractable locationInteractable)
     {
         Player = player;
@@ -123,8 +116,6 @@ public class InteriorInteract
             OnInteract();
         }
     }
-
-
     public virtual void Update(IInteractionable player, ISettingsProvideable settings, GameLocation interactableLocation, Interior interior, ILocationInteractable locationInteractable)
     {
         Player = player;
@@ -281,7 +272,6 @@ public class InteriorInteract
         return isInPosition;
     }
     protected virtual bool MoveToPosition() => MoveToPosition(1.0f);
-
     protected virtual bool MoveToPosition(float speed)
     {
         if (UseNavmesh)

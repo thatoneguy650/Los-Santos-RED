@@ -120,10 +120,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public virtual bool IsTrustingOfPlayer { get; set; } = true;
     public virtual bool CanTransact => HasMenu;
-
     public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
     public bool RecentlySeenPlayer => PlayerPerception.RecentlySeenTarget;
     public bool IsCowering { get; set; }
+    public bool IsLSRFleeing => IsCowering || (Pedestrian.Exists() && Pedestrian.IsFleeing);
     public int CellX { get; set; }
     public int CellY { get; set; }
     public bool CanSurrender { get; set; } = false;
@@ -243,10 +243,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool PlayerKnownsName { get; set; }
     public bool HatesPlayer { get; set; } = false;
     public int Health { get; set; }
-
-
-
-
     public virtual int InsultLimit => 3;
     public virtual int CollideWithPlayerLimit => 2;
     public virtual int PlayerStandTooCloseLimit => 2;
@@ -254,12 +250,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public int TimesInsultedByPlayer { get; protected set; }
     public int TimesCollidedWithPlayer { get; private set; }
     public int TimesPlayerStoodTooClose { get; private set; }
-
-
-
-
-
-
     public bool IsArrested { get; set; }
     public bool IsBusted { get; set; } = false;
     public bool IsCop { get; set; } = false;
@@ -270,7 +260,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsDrivingRecklessly { get; set; } = false;
     public bool IsDriver { get; private set; } = false;
     public bool IsDrunk { get; set; } = false;
-
     public bool IsFreeModePed { get; set; } = false;
     public virtual bool IsGangMember { get; set; } = false;
     public bool IsInAPC { get; private set; }
@@ -373,7 +362,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
     }
     public uint TimeContinuoslySeenPlayer => PlayerPerception.TimeContinuoslySeenTarget;
-
     public ShopMenu ShopMenu { get; private set; }
     public VehicleExt VehicleLastSeenPlayerIn => PlayerPerception.VehicleLastSeenTargetIn;
     public int WantedLevel => PedViolations.WantedLevel;
@@ -386,16 +374,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual bool WillCallPoliceIntense { get; set; } = false;
     public virtual bool WillFight { get; set; } = false;
     public virtual bool WillFightPolice { get; set; } = false;
-
-
     public virtual bool WillAlwaysFightPolice { get; set; } = false;
-
-
-
     public virtual bool WillCower { get; set; } = false;
-
-
-
     public bool IsGroupMember { get; set; } = false;
     public bool WithinWeaponsAudioRange => PlayerPerception.WithinWeaponsAudioRange;
     public string VoiceName { get; set; } = "";
@@ -451,16 +431,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public uint GameTimeLastInjured { get; set; }
     public bool RecentlyInjured => GameTimeLastInjured != 0 && Game.GameTime - GameTimeLastInjured <= 3000;
     public bool HasBeenSeenUnconscious { get; set; } = false;
-
-    public bool HasBeenSeenDead { get; set; } = false;
-
-
-
-   
+    public bool HasBeenSeenDead { get; set; } = false;   
     public bool HasStartedEMTTreatment { get; set; } = false;
-
     public bool WasSeenInDistressByServicePed { get; set; } = false;
-
     public uint GameTimeSeenDead => Game.GameTime - GameTimeFirstSeenDead;
     public uint GameTimeSeenUnconscious => Game.GameTime - GameTimeFirstSeenUnconscious;
     public bool HasBeenLooted { get; set; } = false;
@@ -486,13 +459,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual bool CanBeIdleTasked { get; set; } = true;
     public bool IsManuallyDeleted { get; set; } = false;
     public bool CanBeBuried => IsUnconscious || IsDead;
-
     public bool IsLoadedInTrunk { get; set; }
-
-
-    //public bool RideInPlayerVehicle { get; set; } = false;
-    //public bool AlwaysInCombat { get; set; } = false;
-    //public bool AlwaysFollow { get; set; } = false;
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;

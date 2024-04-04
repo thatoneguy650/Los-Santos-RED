@@ -134,6 +134,7 @@
     <Compile Include="lsr\Data\Other\PossibleSpawnBlocks.cs" />
     <Compile Include="lsr\Data\Other\ScenarioBlock.cs" />
     <Compile Include="lsr\Data\Other\SpawnBlocks.cs" />
+    <Compile Include="lsr\Data\Peds\PedOverlayNames.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ_2008.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ_Modern.cs" />

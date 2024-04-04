@@ -32,9 +32,10 @@ public class MoneyTheftInteract : TheftInteract
     public List<AnimationPoint> RightHandAnimationPoints { get; set; } = new List<AnimationPoint>();
     public List<AnimationPoint> LeftHandAnimationPoints { get; set; } = new List<AnimationPoint>();
 
-    public override void Setup(IModItems modItems)
+    public override void Setup(IModItems modItems, IClothesNames clothesNames)
     {
-        if(RightHandAnimationPoints == null || !RightHandAnimationPoints.Any())
+        base.Setup(modItems, clothesNames);
+        if (RightHandAnimationPoints == null || !RightHandAnimationPoints.Any())
         {
             RightHandAnimationPoints = new List<AnimationPoint>() { new AnimationPoint(0, 0.01f, true), new AnimationPoint(1, 0.4f, false), new AnimationPoint(2, 0.6f, true), new AnimationPoint(3, 0.8f, false) };
         }
@@ -42,7 +43,6 @@ public class MoneyTheftInteract : TheftInteract
         {
             LeftHandAnimationPoints = new List<AnimationPoint>() { new AnimationPoint(0, 0.1f, true), new AnimationPoint(1, 0.45f, false), new AnimationPoint(2, 0.7f, true), new AnimationPoint(3, 0.85f, false) };
         }
-        base.Setup(modItems);
     }
     public override void OnInteriorLoaded()
     {

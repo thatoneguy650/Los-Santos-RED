@@ -37,10 +37,11 @@ public class StaticPlaces
     private IIssuableWeapons IssuableWeapons;
     private IHeads Heads;
     private IDispatchablePeople DispatchablePeople;
+    private IClothesNames ClothesNames;
 
     public StaticPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, IZones zones, IStreets streets, IGangs gangs,
         IAgencies agencies, ITimeControllable time, INameProvideable names, IPedGroups pedGroups, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ILocationTypes locationTypes, IPlateTypes plateTypes, 
-        IOrganizations associations, IContacts contacts, IModItems modItems, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople)
+        IOrganizations associations, IContacts contacts, IModItems modItems, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople, IClothesNames clothesNames)
     {
         Places = places;
         PlacesOfInterest = placesOfInterest;
@@ -67,6 +68,7 @@ public class StaticPlaces
         IssuableWeapons = issuableWeapons;
         Heads = heads;
         DispatchablePeople= dispatchablePeople;
+        ClothesNames = clothesNames;
     }
     public void Setup(IInteractionable player, ILocationInteractable locationInteractable)
     {
@@ -80,7 +82,7 @@ public class StaticPlaces
         }
         foreach(Interior interior in Interiors.PossibleInteriors.AllInteriors())
         {
-            interior.Setup(player, PlacesOfInterest, Settings, locationInteractable, ModItems);
+            interior.Setup(player, PlacesOfInterest, Settings, locationInteractable, ModItems, ClothesNames);
         }
 
         foreach(StoredSpawn spawnPlace in PlacesOfInterest.PossibleLocations.StoredSpawns)

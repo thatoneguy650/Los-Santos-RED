@@ -52,7 +52,7 @@ public class ClothesNames : IClothesNames
     public HashSet<FashionItemLookup> MaleProp3Items { get; set; } = new HashSet<FashionItemLookup>();
     public HashSet<FashionItemLookup> MaleProp6Items { get; set; } = new HashSet<FashionItemLookup>();
     public HashSet<FashionItemLookup> MaleProp7Items { get; set; } = new HashSet<FashionItemLookup>();
-
+    public HashSet<FashionItemLookup> PedOverlays { get; set; } = new HashSet<FashionItemLookup>();
     public ClothesNames()
     {
 
@@ -259,6 +259,10 @@ public class ClothesNames : IClothesNames
 
     public void DefaultConfig()
     {
+        PedOverlayNames pon = new PedOverlayNames();
+        pon.Setup(PedOverlays);
+
+
 
         FemaleComponent1Items = new HashSet<FashionItemLookup>()
         {

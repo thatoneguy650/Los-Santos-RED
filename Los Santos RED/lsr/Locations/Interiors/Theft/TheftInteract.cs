@@ -40,10 +40,6 @@ public class TheftInteract : InteriorInteract
     {
 
     }
-    public override void Setup(IModItems modItems)
-    {
-        ModItems = modItems;
-    }
 
     public override void OnInteract()
     {
