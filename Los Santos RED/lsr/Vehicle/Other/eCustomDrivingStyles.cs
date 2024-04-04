@@ -56,7 +56,7 @@ public enum eCustomDrivingStyles : int
 
 
 
-
+	 
 
 
     //Panic = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,
