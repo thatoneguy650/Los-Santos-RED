@@ -265,7 +265,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         BarberShopPlaces = new List<BarberShop>()
         {
-
+            new BarberShop(new Vector3(1705.34f, 3780.338f, 34.7582f), 214.8316f, "Aunt Tammy's Hair Salon", ""),
             new BarberShop(new Vector3(-281.8168f, 6232.678f, 31.69073f), 45.57799f,"Herr Kutz Barber","")//Paleto
             {
                 DisableRegularInteract = true,
@@ -1666,7 +1666,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new BeautyShop(new Vector3(442.8802f, -2044.086f, 23.73479f), 317.6541f, "Chantelle's Beauty Salon", "") { IsTemporarilyClosed = true },
             new BeautyShop(new Vector3(-342.2452f, -1482.83f, 30.70707f), 269.4036f, "Discount Beauty Store", "") { IsTemporarilyClosed = true },
             new BeautyShop(new Vector3(-3050.165f, 625.066f, 7.269026f), 290.7953f, "Belinda May's Beauty Salon", "") { IsTemporarilyClosed = true },
-            new BeautyShop(new Vector3(1705.34f, 3780.338f, 34.7582f), 214.8316f, "Aunt Tammy's Hair Salon", "") { IsTemporarilyClosed = true },
+           // new BeautyShop(new Vector3(1705.34f, 3780.338f, 34.7582f), 214.8316f, "Aunt Tammy's Hair Salon", "") { IsTemporarilyClosed = true },
         };
     }
     private void DefaultConfig_SubwayStations()

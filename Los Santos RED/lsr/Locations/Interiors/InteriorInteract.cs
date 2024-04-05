@@ -116,6 +116,13 @@ public class InteriorInteract
             OnInteract();
         }
     }
+    public virtual void SetupFake(IInteractionable player, ISettingsProvideable settings, GameLocation interactableLocation, ILocationInteractable locationInteractable)
+    {
+        Player = player;
+        Settings = settings;
+        InteractableLocation = interactableLocation;
+        LocationInteractable = locationInteractable;
+    }
     public virtual void Update(IInteractionable player, ISettingsProvideable settings, GameLocation interactableLocation, Interior interior, ILocationInteractable locationInteractable)
     {
         Player = player;

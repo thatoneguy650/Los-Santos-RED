@@ -27,6 +27,11 @@ public class Vehicles
     private TaxiFirm DefaultTaxiFirm;
     private IOrganizations Organizations;
     private bool IsSetTaxiSupressed = false;
+    private bool IsSetFEJSupressed;
+    private uint GameTimeLastRanFEJSuppression;
+    private uint TaxiHashKey;
+    private List<uint> FEJSuppressedHashes;
+
     public Vehicles(IAgencies agencies,IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes, IModItems modItems, IEntityProvideable world, IOrganizations organizations)
     {
         Zones = zones;
@@ -127,15 +132,31 @@ public class Vehicles
     public void Setup()
     {
         DefaultTaxiFirm = Organizations.GetDefaultTaxiFirm();
+        TaxiHashKey = Game.GetHashKey("taxi");
 
+        FEJSuppressedHashes = new List<uint>() { 
+            TaxiHashKey, 
+            Game.GetHashKey("sovereign"), 
+            Game.GetHashKey("buffalo3"),
+            Game.GetHashKey("blista3"),
+            Game.GetHashKey("stalion2"),
+            Game.GetHashKey("gauntlet2"),
+            Game.GetHashKey("dominator2"),
+        };
     }
     public void Dispose()
     {
         ClearSpawned(true);
         if (Settings.SettingsManager.WorldSettings.SetVanillaTaxiSuppressed)
         {
-            NativeFunction.Natives.SET_VEHICLE_MODEL_IS_SUPPRESSED(Game.GetHashKey("taxi"), false);
+            NativeFunction.Natives.SET_VEHICLE_MODEL_IS_SUPPRESSED(TaxiHashKey, false);
         }
+
+        if(World.IsFEJInstalled && Settings.SettingsManager.WorldSettings.SuppressFEJVehiclesFromGenerators)
+        {
+            SetFEJSuppressionStatus(false);
+        }
+
     }
     public void Prune()
     {
@@ -152,18 +173,44 @@ public class Vehicles
         SecurityVehicles.RemoveAll(x => !x.Vehicle.Exists());
         GameFiber.Yield();//TR 29
         TaxiVehicles.RemoveAll(x => !x.Vehicle.Exists());
+        GameFiber.Yield();//TR 29
         HandleVanillaTaxiSupression();
+        HandleFEJSuppression();
     }
+
+    private void HandleFEJSuppression()
+    {
+        if(!World.IsFEJInstalled || !Settings.SettingsManager.WorldSettings.SuppressFEJVehiclesFromGenerators)
+        {
+            return;
+        }
+        if(Game.GameTime - GameTimeLastRanFEJSuppression >= 10000)
+        {
+            SetFEJSuppressionStatus(true);
+            GameTimeLastRanFEJSuppression = Game.GameTime;
+        }
+    }
+
     private void HandleVanillaTaxiSupression()
     {
         if (Settings.SettingsManager.WorldSettings.SetVanillaTaxiSuppressed)
         {
             IsSetTaxiSupressed = true;
-            NativeFunction.Natives.SET_VEHICLE_MODEL_IS_SUPPRESSED(Game.GetHashKey("taxi"), true);
+            NativeFunction.Natives.SET_VEHICLE_MODEL_IS_SUPPRESSED(TaxiHashKey, true);
         }
         if (IsSetTaxiSupressed && !Settings.SettingsManager.WorldSettings.SetVanillaTaxiSuppressed)
         {
-            NativeFunction.Natives.SET_VEHICLE_MODEL_IS_SUPPRESSED(Game.GetHashKey("taxi"), false);
+            NativeFunction.Natives.SET_VEHICLE_MODEL_IS_SUPPRESSED(TaxiHashKey, false);
+        }
+
+
+
+    }
+    private void SetFEJSuppressionStatus(bool isSuppressed)
+    {
+        foreach (uint suppressedHash in FEJSuppressedHashes)
+        {
+            NativeFunction.Natives.SET_VEHICLE_MODEL_IS_SUPPRESSED(suppressedHash, isSuppressed);
         }
     }
     public void CreateNew()

@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -15,6 +16,7 @@ public class HaircutInteract : InteriorInteract
     public Vector3 AnimEnterRotation { get; set; }
     public override bool ShouldAddPrompt => (BarberShop == null || !BarberShop.SpawnedVendors.Any()) ? false : base.ShouldAddPrompt;
     public BarberShop BarberShop { get; set; }
+    public bool WaitForCameraReturn { get; set; } = true;
     public HaircutInteract()
     {
 
@@ -27,35 +29,55 @@ public class HaircutInteract : InteriorInteract
     {
 
     }
+    public void SetStylist(PedExt hairstylist)
+    {
+        Hairstylist = hairstylist;
+        if (Hairstylist != null && Hairstylist.Pedestrian.Exists())
+        {
+            EntryPoint.WriteToConsole("THE HAIRSTYLIST WAS JUST SET WITH A VALID PED");
+        }
+        EntryPoint.WriteToConsole("I JUST SET THE FUCKING HAIRSTYLISTING SADKLASNDKJLAZSBNDMKABSKM<NDBASKJHXZDBKHJASDVBJKHASDJVHGADSVJGHSATGUJYHVCFL");
+    }
+
     public override void OnInteract()
     {
         if (BarberShop == null)
         {
             return;
         }
-        if(BarberShop.SpawnedVendors == null || !BarberShop.SpawnedVendors.Any())
+        //if(BarberShop.SpawnedVendors == null || !BarberShop.SpawnedVendors.Any())
+        //{
+        //    Game.DisplayHelp("No barbers available");
+        //    return;
+        //}
+        if (Hairstylist == null)
         {
-            Game.DisplayHelp("No barbers available");
-            return;
+            EntryPoint.WriteToConsole("HAIRSTYLIST DOESNT EXIST I GUESS!!!!");
+            Hairstylist = BarberShop.SpawnedVendors?.PickRandom();
         }
-        Hairstylist = BarberShop.SpawnedVendors?.PickRandom();
         if (Hairstylist == null || !Hairstylist.Pedestrian.Exists() || Hairstylist.IsLSRFleeing)
         {
             Game.DisplayHelp("No barbers available");
-            return;
+            //return;
         }
-        Interior.IsMenuInteracting = true;
+        if (Interior != null)
+        {
+            Interior.IsMenuInteracting = true;
+        }
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
         SetupCamera(false);
         PerformAnimation();
-        Interior.IsMenuInteracting = false;
-        if(Scissors.Exists())
+        if (Interior != null)
+        {
+            Interior.IsMenuInteracting = false;
+        }
+        if (Scissors.Exists())
         {
             Scissors.Delete();
         }
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-        LocationCamera?.ReturnToGameplay(true);
+        LocationCamera?.ReturnToGameplay(WaitForCameraReturn);
         LocationCamera?.StopImmediately(true);
     }
     public override void AddPrompt()
@@ -74,6 +96,9 @@ public class HaircutInteract : InteriorInteract
     {
         Player.ActivityManager.StopDynamicActivity();
         AnimationDictionary.RequestAnimationDictionay("misshair_shop@hair_dressers");
+
+
+
         unsafe
         {
             int lol = 0;
@@ -93,10 +118,20 @@ public class HaircutInteract : InteriorInteract
         {
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM_ADVANCED", Scissors, "misshair_shop@hair_dressers", "scissors_enterchair", AnimEnterPosition.X, AnimEnterPosition.Y, AnimEnterPosition.Z, AnimEnterRotation.X, AnimEnterRotation.Y, AnimEnterRotation.Z, 1000f, -1000f, -1, 5642, 0.0f, 2, 1);
         }
-
+        uint GameTimeStarted = Game.GameTime;
         bool IsCancelled = false;
+        bool CheckedFaded = false;
         while (Player.ActivityManager.CanPerformActivitiesExtended)
         {
+            if(Game.GameTime - GameTimeStarted >= 1000 && !CheckedFaded)
+            {
+                if (Game.IsScreenFadedOut || Game.IsScreenFadingOut)
+                {
+                    Game.FadeScreenIn(1000, false);
+                }
+                CheckedFaded = true;
+            }
+
             Player.WeaponEquipment.SetUnarmed();
             float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, "misshair_shop@hair_dressers", "player_enterchair");
             if (Player.IsMoveControlPressed || !Player.Character.IsAlive)

@@ -58,49 +58,87 @@ public class CopAssistManager
 
     public void ClearFront(bool isWanted)
     {
-        if(Cop.IsDriver && Cop.DistanceToPlayer <= 500f && isWanted && !Cop.IsInHelicopter && Cop.Pedestrian.Exists())
+        if(!Cop.IsDriver || Cop.DistanceToPlayer > 500f || !isWanted || Cop.IsInHelicopter || !Cop.Pedestrian.Exists())
         {
-            Vehicle copCar = Cop.Pedestrian.CurrentVehicle;
-            if(copCar.Exists())
+            return;
+        }
+        Vehicle copCar = Cop.Pedestrian.CurrentVehicle;
+        if(!copCar.Exists())
+        {
+            return;
+        }
+
+
+        if(Cop.DistanceToPlayer <= 50f || copCar.IsOnScreen)
+        {
+            CarefulFrontDelete(copCar);
+        }
+        else
+        {
+            LargeFrontDelete(copCar);
+        }
+
+
+    }
+
+    private void LargeFrontDelete(Vehicle copCar)
+    {
+        if (!copCar.Exists())
+        {
+            return;
+        }
+        float length = copCar.Model.Dimensions.Y;
+        float speed = copCar.Speed;
+        float distanceInFront = 4.25f;
+        float range = 7.25f;// 4f;
+        if (speed >= 27f || Cop.DistanceToPlayer >= 120f)//if(speed >= 27f || Cop.DistanceToPlayer >= 150f)//~60mph//if (speed >= 27f || Cop.DistanceToPlayer >= 120f)//if(speed >= 27f || Cop.DistanceToPlayer >= 150f)//~60mph
+        {
+            distanceInFront = 9.0f;// 6.25f;
+            range = 12f;// 10f;
+        }
+        Vector3 Position = copCar.GetOffsetPositionFront(length / 2f + distanceInFront);
+        NativeFunction.Natives.CLEAR_AREA(Position.X, Position.Y, Position.Z, range, true, false, false, false);
+    }
+
+    private void CarefulFrontDelete(Vehicle copCar)
+    {
+        if (!copCar.Exists())
+        {
+            return;
+        }
+        float length = copCar.Model.Dimensions.Y;
+        float speed = copCar.Speed;
+        float distanceInFront = 4.25f;
+        float range = 7.25f;// 4f;
+        if (speed >= 27f || Cop.DistanceToPlayer >= 120f)//if(speed >= 27f || Cop.DistanceToPlayer >= 150f)//~60mph//if (speed >= 27f || Cop.DistanceToPlayer >= 120f)//if(speed >= 27f || Cop.DistanceToPlayer >= 150f)//~60mph
+        {
+            distanceInFront = 9.0f;// 6.25f;
+            range = 12f;// 10f;
+        }
+        Entity ClosestCarEntity = Rage.World.GetClosestEntity(copCar.GetOffsetPositionFront(length / 2f + distanceInFront), range, GetEntitiesFlags.ConsiderGroundVehicles | GetEntitiesFlags.ExcludePoliceCars | GetEntitiesFlags.ExcludePlayerVehicle);
+        GameFiber.Yield();
+        if (Cop.Pedestrian.Exists() && ClosestCarEntity.Exists() && Cop.Pedestrian.CurrentVehicle.Exists())
+        {
+            if (ClosestCarEntity != null && ClosestCarEntity.Handle != Cop.Pedestrian.CurrentVehicle.Handle && !ClosestCarEntity.IsOnScreen && !ClosestCarEntity.IsPersistent)
             {
-                float length = copCar.Model.Dimensions.Y;
-                float speed = copCar.Speed;
-                float distanceInFront = 4.25f;
-                if (1==1)//Cop.DistanceToPlayer >= 120f)//if (speed >= 5f || Cop.DistanceToPlayer >= 150f) //if (speed >= 18f || Cop.DistanceToPlayer >= 150f)//~40mph
+                Vehicle ClosestCar = (Vehicle)ClosestCarEntity;
+                foreach (Ped carOccupant in ClosestCar.Occupants.ToList())
                 {
-                    float range = 7.25f;// 4f;
-                    if (speed >= 27f || Cop.DistanceToPlayer >= 120f)//if(speed >= 27f || Cop.DistanceToPlayer >= 150f)//~60mph//if (speed >= 27f || Cop.DistanceToPlayer >= 120f)//if(speed >= 27f || Cop.DistanceToPlayer >= 150f)//~60mph
+                    if (carOccupant.Exists())
                     {
-                        distanceInFront = 9.0f;// 6.25f;
-                        range = 12f;// 10f;
-                    }
-                    Entity ClosestCarEntity = Rage.World.GetClosestEntity(copCar.GetOffsetPositionFront(length/2f + distanceInFront), range, GetEntitiesFlags.ConsiderGroundVehicles | GetEntitiesFlags.ExcludePoliceCars | GetEntitiesFlags.ExcludePlayerVehicle);
-                    GameFiber.Yield();
-                    if (Cop.Pedestrian.Exists() && ClosestCarEntity.Exists() && Cop.Pedestrian.CurrentVehicle.Exists())
-                    {
-                        if (ClosestCarEntity != null && ClosestCarEntity.Handle != Cop.Pedestrian.CurrentVehicle.Handle && !ClosestCarEntity.IsOnScreen && !ClosestCarEntity.IsPersistent)
+                        if (carOccupant.IsPersistent)
                         {
-                            Vehicle ClosestCar = (Vehicle)ClosestCarEntity;
-                            foreach (Ped carOccupant in ClosestCar.Occupants.ToList())
-                            {
-                                if (carOccupant.Exists())
-                                {
-                                    if (carOccupant.IsPersistent)
-                                    {
-                                        return;
-                                    }
-                                    carOccupant.Delete();
-                                }
-                            }
-                            if (ClosestCar.Exists())
-                            {
-                                ClosestCar.Delete();
-                            }
-                            GameFiber.Yield();
-                            EntryPoint.WriteToConsole($"DELETED CAR IN FRONT USING ASSIST MANAGER {Cop.Handle}");
+                            return;
                         }
+                        carOccupant.Delete();
                     }
                 }
+                if (ClosestCar.Exists())
+                {
+                    ClosestCar.Delete();
+                }
+                GameFiber.Yield();
+                EntryPoint.WriteToConsole($"DELETED CAR IN FRONT USING ASSIST MANAGER {Cop.Handle}");
             }
         }
     }

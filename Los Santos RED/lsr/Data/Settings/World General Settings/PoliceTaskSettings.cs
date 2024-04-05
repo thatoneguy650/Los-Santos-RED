@@ -139,7 +139,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
         AllowFixOffScreenVehiclesAssist = true;
 
         AllowDriveBySightDuringChase = true;
-        DriveBySightDuringChaseDistance = 150f;
+        DriveBySightDuringChaseDistance = 100f;//150f;
         AllowDriveBySightDuringInvestigate = true;
         DriveBySightDuringInvestigateDistance = 150f;
         AllowDriveBySightDuringLocate = true;

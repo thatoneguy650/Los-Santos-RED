@@ -10,36 +10,14 @@ public class WorldSettings : ISettingsDefaultable
 {
     [Description("Updates vehicle plates for the given state, plate style, and number format given in PlateTypes.xml.")]
     public bool UpdateVehiclePlates { get; set; }
-
-
-
-
-
-
-
     [Description("Percentage of vehicles that will get a plate type to match your current state (if not San Andreas).")]
     public float OutOfStateRandomVehiclePlatesPercent { get; set; }
-
-
-
-
     [Description("Percentage of vehicles that will get a random plate type (not dependant on state).")]
     public float RandomVehiclePlatesPercent { get; set; }
-
-
-
     [Description("Allow settings random vanity plates.")]
     public bool AllowRandomVanityPlates { get; set; }
     [Description("Percentage of vehicles that will get a random vanity plate.")]
     public float RandomVehicleVanityPlatesPercent { get; set; }
-
-
-
-
-
-
-
-
     [Description("Remove ambient vehicles that are empty from the game world. Not recommended to be disabled.")]
     public bool CleanupVehicles { get; set; }
     [Description("Delete the ambient shopkeeper peds as they spawn to not interfere with mod spawned merchant peds.")]
@@ -49,9 +27,6 @@ public class WorldSettings : ISettingsDefaultable
 
     [Description("Sets the default spawn multiplier when LSR is active. Vanilla/Default is 1.0")]
     public float DefaultSpawnMultiplier { get; set; }
-
-
-
     [Description("If enabled, the civilian ped population will be lessened at 4+ stars.")]
     public bool LowerPedSpawnsAtHigherWantedLevels { get; set; }
     [Description("Civilian ped density multiplier at 4 stars.")]
@@ -68,12 +43,6 @@ public class WorldSettings : ISettingsDefaultable
     public float LowerPedSpawnsAtHigherWantedLevels_Wanted9Multiplier { get; set; }
     [Description("Civilian ped density multiplier at 10 stars.")]
     public float LowerPedSpawnsAtHigherWantedLevels_Wanted10Multiplier { get; set; }
-
-
-
-
-
-
     [Description("If enabled, ALL static blips will be added to the map.")]
     public bool ShowAllBlipsOnMap { get; set; }
     [Description("If enabled, there will be a 3D entrance marker around location entrances. Performance Intensive")]
@@ -90,26 +59,17 @@ public class WorldSettings : ISettingsDefaultable
     [Description("If enabled, airports will require you to have a valid pilots license to take off.")]
     public bool AirportsRequireLicenseForPrivateFlights { get; set; }
     public bool AllowSettingDistantSirens { get; set; }
-
-
-
     public uint DeadBodyAlertTimeout { get; set; }
     public uint UnconsciousBodyAlertTimeout { get; set; }
     public uint GunshotAlertTimeout { get; set; }
-
     public uint HelpCryAlertTimeout { get; set; }
-
     public float OfficerMIACallInExpireDistance { get; set; }
     public float OfficerMIACallInDistance { get; set; }
     public uint OfficerMIACallInTimeMin { get; set; }
-
-
     public uint OfficerMIACallInTimeMax { get; set; }
-
     public bool AllowOfficerMIACallIn { get; set; }
     public float OfficerMIAStartPercentage_Alterted { get; set; }
     public float OfficerMIAStartPercentage_Regular { get; set; }
-
     [Description("If enabled, LSR set the siren state for any vehicle an AI Cop is in.")]
     public bool AllowSettingSirenState { get; set; }
     [Description("If enabled, LSR will set the vanilla taxi model as suppressed and only LSR will spawn them.")]
@@ -122,13 +82,10 @@ public class WorldSettings : ISettingsDefaultable
     [Description("If enabled, LSR will cancel a vehicle spawn if there is a mission entity within a certain radius")]
     public bool CheckAreaBeforeVehicleSpawn { get; set; }
 
-
     [Description("More aggressively remove abandoned or empty vehicle from the game world.")]
     public bool ExtendedVehicleCleanup { get;  set; }
-
-    //[Description("If enabled, the reduced props of the MP map will be loaded. THIS OPTION IS REQUIRED FOR THE TIME BEING, UNLESS YOU ARE RUNNING A CUSTOM GAMECONFIG (most should work)!")]
-    //public bool SetReducedPropsOnMap { get; set; }
-
+    public bool SuppressFEJVehiclesFromGenerators { get; set; }
+    public bool SetMissionFlagOn { get; set; }
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -202,6 +159,9 @@ public class WorldSettings : ISettingsDefaultable
 
         CheckAreaBeforeVehicleSpawn = true;
         ExtendedVehicleCleanup = true;
+
+        SuppressFEJVehiclesFromGenerators = true;
+        SetMissionFlagOn = true;
     }
 
 }

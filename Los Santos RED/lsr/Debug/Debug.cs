@@ -88,6 +88,7 @@ public class Debug
     private string CurrentDictionary;
     private string CurrentAnimation;
     private bool isShowingTunnel;
+    private Rage.Object chairProp;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Mod.Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, WeatherReporting weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
@@ -1375,10 +1376,51 @@ GameFiber.StartNew(delegate
 
     private void DebugNumpad6()
     {
-        foreach(HeadOverlayData ho in Player.CurrentModelVariation.HeadOverlays)
+
+        //X:124.8145 Y:-747.5364 Z:242.152
+        //[4 / 4 / 2024 5:09:09 PM.832] Player ped heading: 248.4043
+
+
+        //Player Holding Pos new Vector3(123.7631f, -745.737f, 242.152f);   216.5336f;
+        //BARBER HOLDING POS new Vector3(122.921f, -748.2304f, 242.152f), 305.9934f
+
+
+        AnimationDictionary.RequestAnimationDictionay("misshair_shop@hair_dressers");
+        //Game.LocalPlayer.Character.Position = new Vector3(-277.76483154297f, 6224.8930664063f, 31.135352325439f);
+
+        Vector3 posI = new Vector3(124.8145f, -747.5364f, 242.152f);
+        float heading = 239.2449f;
+        Vector3 anim_pos = new Vector3(0.0f, 0.0f, -2.6f * 57.29578f - Settings.SettingsManager.DebugSettings.BarberRotationYaw);
+        if(chairProp.Exists())
         {
-            EntryPoint.WriteToConsole($"OverlayID:{ho.OverlayID} Index:{ho.Index} Opacity:{ho.Opacity} PriColor:{ho.PrimaryColor} SecColor:{ho.SecondaryColor} ColorType:{ho.ColorType}");
+            chairProp.Delete();
         }
+ 
+        chairProp = new Rage.Object("vw_prop_casino_track_chair_01", posI, 360f-239.2449f);
+        if(chairProp.Exists())
+        {
+            NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(chairProp);
+        }
+
+        Vector3 posINew = NativeHelper.GetOffsetPosition(posI, heading + Settings.SettingsManager.DebugSettings.BarberHeadingXOffset, Settings.SettingsManager.DebugSettings.BarberXOffset);
+
+
+        posINew = NativeHelper.GetOffsetPosition(posINew, heading + Settings.SettingsManager.DebugSettings.BarberHeadingYOffset, Settings.SettingsManager.DebugSettings.BarberYOffset);
+
+        posINew = new Vector3(posINew.X, posINew.Y, posINew.Z - Settings.SettingsManager.DebugSettings.BarberZOffset);
+
+        EntryPoint.WriteToConsole($"barberPosition = new Vector3({posINew.X}f,{posINew.Y}f,{posINew.Z}f);");
+        EntryPoint.WriteToConsole($"barberrotation = new Vector3({anim_pos.X}f,{anim_pos.Y}f,{anim_pos.Z}f);");
+
+        NativeFunction.Natives.TASK_PLAY_ANIM_ADVANCED(Game.LocalPlayer.Character, "misshair_shop@hair_dressers", "player_enterchair", posINew.X, posINew.Y, posINew.Z, anim_pos.X, anim_pos.Y, anim_pos.Z, 1000f, -1000f, -1, 5642, 0.0f, 2, 1);
+        GameFiber.Sleep(3000);
+
+
+
+        //foreach(HeadOverlayData ho in Player.CurrentModelVariation.HeadOverlays)
+        //{
+        //    EntryPoint.WriteToConsole($"OverlayID:{ho.OverlayID} Index:{ho.Index} Opacity:{ho.Opacity} PriColor:{ho.PrimaryColor} SecColor:{ho.SecondaryColor} ColorType:{ho.ColorType}");
+        //}
         //if (Player.CurrentVehicle != null)
         //{
         //    //Player.CurrentVehicle.Engine.SetState(false);

@@ -69,6 +69,7 @@ namespace Mod
         public List<SpawnError> SpawnErrors { get; private set; }
         public ModDataFileManager ModDataFileManager { get; private set; }
         public ILocationInteractable LocationInteractable { get; private set; }
+        public bool IsFEJInstalled { get; private set; }
         public string DebugString => "";
         public void Setup(IInteractionable player, ILocationInteractable locationInteractable)
         {
@@ -79,6 +80,20 @@ namespace Mod
             Vehicles.Setup();
             AddBlipsToMap();
             SetMemoryItems();
+            CheckSpecialCircumstances();
+        }
+
+        private void CheckSpecialCircumstances()
+        {
+            IsFEJInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("greskfej"));
+            EntryPoint.WriteToConsole($"FEJ Installed: {IsFEJInstalled}",0);
+
+
+
+            if(Settings.SettingsManager.WorldSettings.SetMissionFlagOn)
+            {
+                NativeFunction.Natives.SET_MINIGAME_IN_PROGRESS(true);
+            }
         }
 
         private void SetMemoryItems()
@@ -140,6 +155,10 @@ namespace Mod
             Pedestrians.Dispose();
             Vehicles.Dispose();
             RemoveBlips();
+            if (Settings.SettingsManager.WorldSettings.SetMissionFlagOn)
+            {
+                NativeFunction.Natives.SET_MINIGAME_IN_PROGRESS(false);
+            }
         }
         public void ClearSpawned(bool includeCivilians)
         {

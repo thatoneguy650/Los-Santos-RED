@@ -160,6 +160,7 @@
     <Compile Include="lsr\Locations\Interiors\BankInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\Barber\BarberShopInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\Barber\ChangeHaircutProcess.cs" />
+    <Compile Include="lsr\Locations\Interiors\Barber\FakeCustomizeInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\Barber\HaircutInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\GangDenInterior.cs" />
@@ -670,7 +671,7 @@
     <Compile Include="lsr\Locations\Interiors\InteriorDoor.cs" />
     <Compile Include="lsr\Old\BasicLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\Bank.cs" />
-    <Compile Include="lsr\Locations\Places\GameLocations\BeautyShop.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\CustomizeShops\BeautyShop.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Firestation\FireStation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Hospital\Hospital.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Landmark.cs" />

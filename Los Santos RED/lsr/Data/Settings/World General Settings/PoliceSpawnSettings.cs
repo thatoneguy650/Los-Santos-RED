@@ -414,11 +414,11 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
 
 
-        MaxDistanceToSpawn_WantedSeen = 550f;// 650f;//550f
+        MaxDistanceToSpawn_WantedSeen = 450f;// 550f;// 650f;//550f
         MaxDistanceToSpawn_WantedUnseen = 350f;// 450f;//350f
         MaxDistanceToSpawn_NotWanted = 750f;// 900f;
         MinDistanceToSpawn_WantedUnseen = 250f;// 350f;//250f
-        MinDistanceToSpawn_WantedSeen = 400f;// 500f;//400f
+        MinDistanceToSpawn_WantedSeen = 300f;// 400f;// 500f;//400f
         MinDistanceToSpawn_NotWanted = 150f;// 200f;//350f;//150f
 
         MinDistanceToSpawn_WantedUnseenScalar = 40f;
@@ -428,13 +428,13 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
         TimeBetweenCopSpawn_Unseen = 5000;//3000
         TimeBetweenCopSpawn_Seen_Min = 3000;//2000
-        TimeBetweenCopSpawn_Seen_AdditionalTimeScaler = 3000;//2000
+        TimeBetweenCopSpawn_Seen_AdditionalTimeScaler = 1000;// 3000;//2000
         TimeBetweenCopDespawn_Unseen = 2000;
         TimeBetweenCopDespawn_Seen_Min = 1000;
         TimeBetweenCopDespawn_Seen_AdditionalTimeScaler = 1000;
 
 
-        AmbientTimeBetweenSpawn = 10000;//10000;
+        AmbientTimeBetweenSpawn = 8000;// 10000;//10000;
         AmbientTimeBetweenSpawn_DowntownAdditional = 5000;
         AmbientTimeBetweenSpawn_WildernessAdditional = 20000;
         AmbientTimeBetweenSpawn_RuralAdditional = 12000;

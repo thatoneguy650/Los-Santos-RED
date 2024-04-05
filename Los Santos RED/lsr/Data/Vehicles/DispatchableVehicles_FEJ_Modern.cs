@@ -350,7 +350,7 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceBison(15,15,0,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceBuffaloSTX(15,15,0,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceTerminus(5,5,0,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","",10),
-            DispatchableVehicles_FEJ.Create_PoliceRiata(20,20,0,false,PoliceVehicleType.Marked,-1,-1,-1,1,2,"","",4),
+            DispatchableVehicles_FEJ.Create_PoliceRiata(35,35,0,false,PoliceVehicleType.Marked,-1,-1,-1,1,2,"","",4),
             DispatchableVehicles_FEJ.Create_PoliceGauntlet(2,2,15,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
 
             DispatchableVehicles_FEJ.Create_PoliceCaracara(10,10,0,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
@@ -419,11 +419,11 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceInterceptor(25,25,8,false,PoliceVehicleType.Marked,134,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceLandstalkerXL(20,20,16,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceBuffaloSTX(15,15,8,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
-            DispatchableVehicles_FEJ.Create_PoliceCaracara(15,15,8,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_PoliceCaracara(25,25,8,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceBison(10,10,8,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
                   
-            DispatchableVehicles_FEJ.Create_PoliceTerminus(5,5,6,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","",10),
-            DispatchableVehicles_FEJ.Create_PoliceRiata(15,15,2,false,PoliceVehicleType.Marked,-1,-1,-1,1,2,"","",4),
+            DispatchableVehicles_FEJ.Create_PoliceTerminus(10,10,6,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","",10),
+            DispatchableVehicles_FEJ.Create_PoliceRiata(35,35,2,false,PoliceVehicleType.Marked,-1,-1,-1,1,2,"","",4),
             DispatchableVehicles_FEJ.Create_PoliceFugitive(2,2,8,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
 
             DispatchableVehicles_FEJ.Create_PoliceLandstalkerXL(1,1,-1,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"",""),     
@@ -548,7 +548,7 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceCaracara(25,25,13,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceGranger3600(20,20,19,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceAleutian(20,20,19,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
-            DispatchableVehicles_FEJ.Create_PoliceRiata(20,20,4,false,PoliceVehicleType.Marked,134,-1,-1,1,2,"","",4),
+            DispatchableVehicles_FEJ.Create_PoliceRiata(35,35,4,false,PoliceVehicleType.Marked,134,-1,-1,1,2,"","",4),
 
         };
         LSDPRParkRangersVehicles_FEJ_Modern.ForEach(x => x.MaxRandomDirtLevel = 15.0f);

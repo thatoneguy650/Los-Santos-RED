@@ -20,7 +20,6 @@ public class BarberShop : GameLocation
     }
     public override string TypeName { get; set; } = "Barber Shop";
     public override int MapIcon { get; set; } = (int)BlipSprite.Barber;
-
     public int StandardMaleHaircutPrice { get; set; } = 25;
     public int StandardFemaleHaircutPrice { get; set; } = 35;
     public int StandardBeardTrimPrice { get; set; } = 30;
@@ -31,32 +30,12 @@ public class BarberShop : GameLocation
     public int PremiumColoringExtra { get; set; } = 25;
     public int PremiumMakeupExtra { get; set; } = 25;
     public bool AllowsMakeup { get; set; } = true;
-
     [XmlIgnore]
     public BarberShopInterior BarberShopInterior { get; set; }
-
-
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Shop At {Name}";
         return true;
-    }
-    public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
-    {
-        //Player = player;
-        //ModItems = modItems;
-        //World = world;
-        //Settings = settings;
-        //Weapons = weapons;
-        //Time = time;
-        if (IsLocationClosed())
-        {
-            return;
-        }
-        if (CanInteract)
-        {
-            Game.DisplayHelp("Closed for Renovations. Check back Later.~r~WIP~s~");
-        }
     }
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups, IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors, ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople)
     {
@@ -70,6 +49,27 @@ public class BarberShop : GameLocation
             }
         }
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest, issuableWeapons, heads, dispatchablePeople);
+    }
+    public override void StandardInteract(LocationCamera locationCamera, bool isInside)
+    {
+        FakeCustomizeInterior fakeCustomizeInterior = new FakeCustomizeInterior(Player,World, Settings, ModItems, World.ModDataFileManager.ClothesNames, this,
+            new Vector3(124.8145f, -747.5364f, 241.152f),//ANim Stuff
+            new Vector3(0f, 0f, -388.969f),
+
+            new Vector3(124.8145f, -747.5364f, 242.152f),//Chair Pos
+             69.98466f,//239.2449f,//252.4096f
+
+            new Vector3(123.7631f, -745.737f, 242.152f),//Player Pos
+            216.5336f,
+
+            new Vector3(122.921f, -748.2304f, 241.652f),//Barber Pos
+            305.9934f,
+
+            new Vector3(125.9692f, -748.0427f, 242.6188f), //Camera
+            new Vector3(-0.8899927f, 0.4485282f, -0.08206987f),
+            new Rotator(-4.707552f, 4.283317E-06f, 63.25334f)
+            );
+        fakeCustomizeInterior.Start();
     }
 }
 

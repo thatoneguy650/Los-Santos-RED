@@ -128,6 +128,7 @@ public class DebugSettings : ISettingsDefaultable
     public float BarberYOffset { get; set; }
     public float BarberHeadingXOffset { get; set; }
     public float BarberHeadingYOffset { get; set; }
+    public float BarberRotationYaw { get; set; }
 
     //public float BlendInIdleDrink { get;  set; }
     //public float BlendOutIdleDrink { get;  set; }
@@ -325,5 +326,7 @@ public class DebugSettings : ISettingsDefaultable
         BarberHeadingXOffset = 0f;
 
         BarberHeadingYOffset = -90f;
+
+        BarberRotationYaw = 50f;
     }
 }

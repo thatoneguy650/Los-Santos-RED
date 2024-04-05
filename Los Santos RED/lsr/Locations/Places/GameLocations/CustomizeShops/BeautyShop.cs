@@ -19,27 +19,15 @@ public class BeautyShop : GameLocation
     }
     public override string TypeName { get; set; } = "Beauty Shop";
     public override int MapIcon { get; set; } = (int)BlipSprite.Barber;
+    public int StandardHairColoringPrice { get; set; } = 45;
+    public int StandardMakeupPrice { get; set; } = 55;
+    public int PremiumColoringExtra { get; set; } = 25;
+    public int PremiumMakeupExtra { get; set; } = 25;
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Shop At {Name}";
         return true;
     }
-    public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
-    {
-        //Player = player;
-        //ModItems = modItems;
-        //World = world;
-        //Settings = settings;
-        //Weapons = weapons;
-        //Time = time;
-        if (IsLocationClosed())
-        {
-            return;
-        }
-        if (CanInteract)
-        {
-            Game.DisplayHelp("Closed for Renovations. Check back Later.~r~WIP~s~");
-        }
-    }
+
 }
 
