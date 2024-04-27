@@ -14,6 +14,7 @@ public class UIGeneralSettings : ISettingsDefaultable
     public bool AlwaysShowRadar { get; set; }
     public bool NeverShowRadar { get; set; }
     public bool ShowRadarInVehicleOnly { get; set; }
+    public bool ShowRadarWhenCellPhoneActiveOnly { get; set; }
     public bool ShowRadarOnFootWhenCellPhoneActiveOnly { get; set; }
     public bool HideLSRUIUnlessActionWheelActive { get; set; }
     public bool HideRadarUnlessActionWheelActive { get; set; }
@@ -98,6 +99,7 @@ public class UIGeneralSettings : ISettingsDefaultable
         AlwaysShowRadar = true;
         NeverShowRadar = false;
         ShowRadarInVehicleOnly = false;
+        ShowRadarWhenCellPhoneActiveOnly = false;
         ShowRadarOnFootWhenCellPhoneActiveOnly = false;
         HideLSRUIUnlessActionWheelActive = false;
         HideRadarUnlessActionWheelActive = false;
