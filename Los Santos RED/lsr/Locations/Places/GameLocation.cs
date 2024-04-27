@@ -363,13 +363,25 @@ public class GameLocation : ILocationDispatchable
         world.AddBlip(Blip);
         RestrictedAreas?.Activate(world);
     }
-    public virtual void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
+    public virtual void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world, bool isInterior)
     {
         EntryPoint.WriteToConsole($"ATTEMPT VENDOR SPAWN AT {Name}");
         int VendorsSpawned = 0;
-        foreach (SpawnPlace spawnPlace in VendorLocations)
+        List<SpawnPlace> spawns = new List<SpawnPlace>();
+        if(isInterior)
         {
-            if (IsOpen(time.CurrentHour) && settings.SettingsManager.CivilianSettings.ManageDispatching && world.Pedestrians.TotalSpawnedServiceWorkers < settings.SettingsManager.CivilianSettings.TotalSpawnedServiceMembersLimit && (VendorsSpawned == 0 || RandomItems.RandomPercent(ExtaVendorSpawnPercentage)))
+            if (Interior != null && Interior.VendorLocations != null && Interior.VendorLocations.Any())
+            {
+                spawns = Interior.VendorLocations.ToList();
+            }
+        }
+        else
+        {
+            spawns = VendorLocations;
+        }
+        foreach (SpawnPlace spawnPlace in spawns)
+        {
+            if (IsOpen(time.CurrentHour) && settings.SettingsManager.CivilianSettings.ManageDispatching && (isInterior || world.Pedestrians.TotalSpawnedServiceWorkers < settings.SettingsManager.CivilianSettings.TotalSpawnedServiceMembersLimit) && (VendorsSpawned == 0 || RandomItems.RandomPercent(ExtaVendorSpawnPercentage)))
             {
                 EntryPoint.WriteToConsole($"ATTEMPT VENDOR SPAWN AT {Name} 2");
                 if (SpawnVendor(spawnPlace))
@@ -597,7 +609,7 @@ public class GameLocation : ILocationDispatchable
         {
             StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
         }
-        StoreCamera.MoveToPosition(desiredPosition, desiredDirection, desiredRotation, true, true);
+        StoreCamera.MoveToPosition(desiredPosition, desiredDirection, desiredRotation, true, true, false);
         StandardInteract(StoreCamera, true);
     }
     public virtual void OnPlayerBecameClose()
@@ -1049,6 +1061,12 @@ public class GameLocation : ILocationDispatchable
         merchantSpawnTask.SpawnWithAllWeapons = true;
         merchantSpawnTask.AllowBuddySpawn = false;
         merchantSpawnTask.AttemptSpawn();
+        EntryPoint.WriteToConsole($"ADDING VENDOR TO SPAWNED VENDORS LIST {Name} {VendorPersonType.ModelName}");
+
+        foreach(Merchant merchant in merchantSpawnTask.SpawnedVendors)
+        {
+            EntryPoint.WriteToConsole($"I HAVE CREATED {merchant.Handle}");
+        }
 
         Vendors.AddRange(merchantSpawnTask.SpawnedVendors);
 
@@ -1115,6 +1133,7 @@ public class GameLocation : ILocationDispatchable
                 EntryPoint.WriteToConsole($"AttemptVendorDespawn MADE NON PERSIST");
             }
         }
+        SpawnedVendors.Clear();
     }
 
     public IssuableWeapon GetRandomWeapon(bool isSidearm, IWeapons weapons)

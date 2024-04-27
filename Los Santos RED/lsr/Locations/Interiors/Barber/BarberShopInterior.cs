@@ -6,7 +6,7 @@ public class BarberShopInterior : Interior
 {
     protected BarberShop barberShop;
     public BarberShop BarberShop => barberShop;
-    public List<HaircutInteract> HaircutInteracts { get; set; } = new List<HaircutInteract>();
+    public List<SalonInteract> HaircutInteracts { get; set; } = new List<SalonInteract>();
     [XmlIgnore]
     public override List<InteriorInteract> AllInteractPoints
     {
@@ -29,7 +29,7 @@ public class BarberShopInterior : Interior
     public void SetBarberShop(BarberShop newBarber)
     {
         barberShop = newBarber;
-        foreach (HaircutInteract test in HaircutInteracts)
+        foreach (SalonInteract test in HaircutInteracts)
         {
             test.BarberShop = newBarber;
             if (newBarber != null)

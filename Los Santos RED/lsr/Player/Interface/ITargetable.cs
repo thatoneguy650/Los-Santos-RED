@@ -63,6 +63,7 @@ namespace LosSantosRED.lsr.Interface
         bool HasBustPowers { get; }
         CriminalHistory CriminalHistory { get; }
         GroupManager GroupManager { get; }
+        Cop ClosestCopDriverToPlayer { get; }
         //bool IsHostile(Gang gang);
     }
 }

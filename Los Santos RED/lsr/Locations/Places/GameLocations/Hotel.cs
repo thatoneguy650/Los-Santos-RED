@@ -149,7 +149,7 @@ public class Hotel : GameLocation
             if(hotelRoom != null)
             {
                 isInRoom = true;
-                StoreCamera.MoveToPosition(hotelRoom.CameraPosition, hotelRoom.CameraDirection, hotelRoom.CameraRotation, true, false);
+                StoreCamera.MoveToPosition(hotelRoom.CameraPosition, hotelRoom.CameraDirection, hotelRoom.CameraRotation, true, false, false);
             }
         }
         Player.ButtonPrompts.AddPrompt("HotelStay", "Cancel Stay", "CancelHotelStay", Settings.SettingsManager.KeySettings.InteractCancel, 99);

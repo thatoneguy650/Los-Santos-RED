@@ -66,7 +66,7 @@ public class IllicitMarketplace : GameLocation
         ShownWarning = false;
         base.Activate(interiors, settings, crimes, weapons, time, world);
     }
-    public override void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
+    public override void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world, bool isInterior)
     {
         if(AppearPercentages != null && AppearPercentages.Any())
         {
@@ -82,7 +82,7 @@ public class IllicitMarketplace : GameLocation
             }
         }
         IsVendorSpawned = true;
-        base.AttemptVendorSpawn(isOpen, interiors, settings, crimes, weapons, time, world);
+        base.AttemptVendorSpawn(isOpen, interiors, settings, crimes, weapons, time, world, isInterior);
     }
     public override void OnPlayerBecameClose()
     {

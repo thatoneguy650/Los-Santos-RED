@@ -137,6 +137,7 @@
     <Compile Include="lsr\Data\Peds\PedOverlayNames.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ_2008.cs" />
+    <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ_2015.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ_Modern.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_Gangs.cs" />
     <Compile Include="lsr\Data\Organizations\Contacts.cs" />
@@ -159,14 +160,18 @@
     <Compile Include="lsr\Locations\Interiors\BankDrawerInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\BankInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\Barber\BarberShopInterior.cs" />
-    <Compile Include="lsr\Locations\Interiors\Barber\ChangeHaircutProcess.cs" />
+    <Compile Include="lsr\Locations\Interiors\Barber\PedComponentShopMenu.cs" />
+    <Compile Include="lsr\Locations\Interiors\Barber\PedOverlayShopMenu.cs" />
+    <Compile Include="lsr\Locations\Interiors\Barber\PedVariationShopMenu.cs" />
+    <Compile Include="lsr\Locations\Interiors\Barber\SalonPurchaseMenu.cs" />
     <Compile Include="lsr\Locations\Interiors\Barber\FakeCustomizeInterior.cs" />
-    <Compile Include="lsr\Locations\Interiors\Barber\HaircutInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\Barber\SalonInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\GangDenInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\InteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\InventoryInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\IRestableInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\PropSpawn.cs" />
     <Compile Include="lsr\Locations\Interiors\Theft\AnimationPoint.cs" />
     <Compile Include="lsr\Locations\Interiors\Theft\ItemTheftInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\Theft\MoneyTheftInteract.cs" />
@@ -671,7 +676,6 @@
     <Compile Include="lsr\Locations\Interiors\InteriorDoor.cs" />
     <Compile Include="lsr\Old\BasicLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Bank\Bank.cs" />
-    <Compile Include="lsr\Locations\Places\GameLocations\CustomizeShops\BeautyShop.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Firestation\FireStation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Hospital\Hospital.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Landmark.cs" />

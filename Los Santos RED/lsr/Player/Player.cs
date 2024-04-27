@@ -239,6 +239,7 @@ namespace Mod
         public bool CharacterModelIsFreeMode => ModelName.ToLower() == "mp_f_freemode_01" || ModelName.ToLower() == "mp_m_freemode_01";
         public bool CharacterModelIsPrimaryCharacter => ModelName.ToLower() == "player_zero" || ModelName.ToLower() == "player_one" || ModelName.ToLower() == "player_two";
         public Cop ClosestCopToPlayer { get; set; }
+        public Cop ClosestCopDriverToPlayer { get; set; }
         public Agency AssignedAgency { get; set; }
         public GameLocation ClosestInteractableLocation { get; private set; }
         public float ClosestPoliceDistanceToPlayer { get; set; }

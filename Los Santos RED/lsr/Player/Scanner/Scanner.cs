@@ -1884,32 +1884,32 @@ namespace LosSantosRED.lsr
             EntryPoint.WriteToConsole($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}", 5);
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
-               // EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
+                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
                 AbortedAudio = true;
                 Abort();
             }
             if (CurrentlyPlaying != null && CurrentlyPlayingCallIn != null && !CurrentlyPlayingCallIn.SeenByOfficers && dispatchDescription.SeenByOfficers)
             {
-               // EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! OFFICER REPORTED STOPPING CIV REPORTING Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
+                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! OFFICER REPORTED STOPPING CIV REPORTING Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
                 AbortedAudio = true;
                 Abort();
             }
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlayingCallIn != null && (CurrentlyPlayingDispatch.Name == SuspectEvaded.Name ||CurrentlyPlayingDispatch.Name == AttemptToReacquireSuspect.Name) && Player.AnyPoliceCanSeePlayer)
             {
-               // EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Special Case, Lost Visual Being Cancelled Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
+                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Special Case, Lost Visual Being Cancelled Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
                 AbortedAudio = true;
                 Abort();
             }
             if (AudioPlayer.IsAudioPlaying && AudioPlayer.IsPlayingLowPriority)
             {
-                //EntryPoint.WriteToConsole("ScannerScript ABORT! LOW PRIORITY PLAYING", 4);
+                EntryPoint.WriteToConsole("ScannerScript ABORT! LOW PRIORITY PLAYING", 4);
                 AbortedAudio = true;
                 Abort();
             }
 
             if (CurrentlyPlaying != null && CurrentlyPlaying.AnyDispatchInterrupts)
             {
-                //EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
+                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
                 AbortedAudio = true;
                 Abort();
             }
@@ -1923,7 +1923,7 @@ namespace LosSantosRED.lsr
                     GameFiber.Yield();
                     if (AbortedAudio)
                     {
-                        //EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}", 5);
+                        EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}", 5);
                         if (Settings.SettingsManager.ScannerSettings.SetVolume)
                         {
                             AudioPlayer.Play(RadioEnd.PickRandom(), DesiredVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
@@ -1935,24 +1935,28 @@ namespace LosSantosRED.lsr
                         AbortedAudio = false;
                         GameFiber.Sleep(1000);
                     }
+                    EntryPoint.WriteToConsole($"PLAY AUDIO LIST TEST 1", 5);
                     uint GameTimeStartedWaitingForAudio = Game.GameTime;
                     while (AudioPlayer.IsAudioPlaying && Game.GameTime - GameTimeStartedWaitingForAudio <= 15000)
                     {
                         GameFiber.Yield();
                     }
+                    EntryPoint.WriteToConsole($"PLAY AUDIO LIST TEST 2", 5);
                     if (MyAudioEvent.NotificationTitle != "" && Settings.SettingsManager.ScannerSettings.EnableNotifications)
                     {
                         RemoveAllNotifications();
                         NotificationHandles.Add(Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", MyAudioEvent.NotificationTitle, MyAudioEvent.NotificationSubtitle, MyAudioEvent.NotificationText));
                     }
+                    EntryPoint.WriteToConsole($"PLAY AUDIO LIST TEST 3", 5);
                     CurrentlyPlaying = MyAudioEvent;
                     CurrentlyPlayingCallIn = dispatchDescription;
                     CurrentlyPlayingDispatch = dispatchToPlay;
+                    EntryPoint.WriteToConsole($"PLAY AUDIO LIST TEST 4", 5);
                     if (Settings.SettingsManager.ScannerSettings.EnableAudio)
                     {
                         foreach (string audioname in soundsToPlayer)
                         {
-                            //EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname == ""}", 5);
+                            EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname == ""}", 5);
                             if (audioname != "" && audioname != null && audioname.Length > 2 && EntryPoint.ModController.IsRunning)
                             {
                                 if (Settings.SettingsManager.ScannerSettings.SetVolume)
@@ -2025,6 +2029,7 @@ namespace LosSantosRED.lsr
 
         private void PlayAmbientDispatch(DispatchEvent MyAudioEvent)
         {
+            return;
             List<string> soundsToPlayer = MyAudioEvent.SoundsToPlay.ToList();
             GameFiber PlayAudioList = GameFiber.StartNew(delegate
             {

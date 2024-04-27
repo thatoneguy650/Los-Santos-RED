@@ -12,5 +12,6 @@ public interface IPlayerChaseable
     WeaponInventory WeaponInventory { get; }
     List<uint> BlackListedVehicles { get; }
     bool HasTaser { get; }
+    uint Handle { get; }
 }
 

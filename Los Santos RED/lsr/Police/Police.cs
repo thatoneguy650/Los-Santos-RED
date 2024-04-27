@@ -63,7 +63,9 @@ namespace LosSantosRED.lsr
             TotalChecked = 0;
             int localRan = 0;
             float closestCopDistance = 999f;
+            float closestCopDriverDistance = 999f;
             Cop PrimaryPlayerCop = null;
+            Cop PrimaryDriverPlayerCop = null;
             foreach (Cop Cop in World.Pedestrians.AllPoliceList)
             {
 
@@ -104,6 +106,13 @@ namespace LosSantosRED.lsr
                             PrimaryPlayerCop = Cop;
                             closestCopDistance = Cop.DistanceToPlayer;
                         }
+
+
+                        if(Cop.IsDriver && Cop.DistanceToPlayer < closestCopDriverDistance)
+                        {
+                            PrimaryDriverPlayerCop = Cop;
+                            closestCopDriverDistance = Cop.DistanceToPlayer;
+                        }
                     }
                 }
                 catch (Exception e)
@@ -126,6 +135,20 @@ namespace LosSantosRED.lsr
             {
                 Player.ClosestCopToPlayer = PrimaryPlayerCop;
             }
+
+
+            if(Player.ClosestCopDriverToPlayer != null && PrimaryDriverPlayerCop != null && Player.ClosestCopDriverToPlayer.Handle != PrimaryDriverPlayerCop.Handle)
+            {
+                if (Math.Abs(Player.ClosestCopDriverToPlayer.DistanceToPlayer - PrimaryDriverPlayerCop.DistanceToPlayer) >= 2f)
+                {
+                    Player.ClosestCopDriverToPlayer = PrimaryDriverPlayerCop;
+                }
+            }
+            else
+            {
+                Player.ClosestCopDriverToPlayer = PrimaryDriverPlayerCop;
+            }
+
             Player.ClosestPoliceDistanceToPlayer = closestDistanceToPlayer;
         }
         private void UpdateRecognition()

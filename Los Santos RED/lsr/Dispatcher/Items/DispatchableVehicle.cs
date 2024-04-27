@@ -39,6 +39,12 @@ public class DispatchableVehicle
     public List<int> CaninePossibleSeats { get; set; }
     public int RequiredPrimaryColorID { get; set; } = -1;
     public int RequiredSecondaryColorID { get; set; } = -1;
+
+
+
+    public int RequiredInteriorColorID { get; set; } = -1;
+    public int RequiredDashColorID { get; set; } = -1;
+
     public List<int> RequiredLiveries { get; set; } = new List<int>();
     public List<DispatchableVehicleExtra> VehicleExtras { get; set; } = new List<DispatchableVehicleExtra>();
     public List<DispatchableVehicleMod> VehicleMods { get; set; } = new List<DispatchableVehicleMod>();
@@ -272,6 +278,14 @@ public class DispatchableVehicle
         if (RequiredPrimaryColorID != -1)
         {
             NativeFunction.Natives.SET_VEHICLE_COLOURS(vehicleExt.Vehicle, RequiredPrimaryColorID, RequiredSecondaryColorID == -1 ? RequiredPrimaryColorID : RequiredSecondaryColorID);
+        }
+        if (RequiredInteriorColorID != -1)
+        {
+            NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_5(vehicleExt.Vehicle, RequiredInteriorColorID);
+        }
+        if (RequiredDashColorID != -1)
+        {
+            NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_6(vehicleExt.Vehicle, RequiredDashColorID);
         }
         GameFiber.Yield();
         if (!vehicleExt.Vehicle.Exists())

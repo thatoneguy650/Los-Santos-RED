@@ -3,6 +3,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Xml.Serialization;
 
@@ -16,6 +17,7 @@ public class Interior
     protected ISettingsProvideable Settings;
     private bool IsActive = false;
     private bool IsRunningInteriorUpdate = false;
+    protected List<Rage.Object> SpawnedProps = new List<Rage.Object>();
 
     public Interior()
     {
@@ -79,6 +81,13 @@ public class Interior
     public bool IsTunnel { get; set; } = false;
     public List<InteriorInteract> InteractPoints { get; set; } = new List<InteriorInteract>();
     public List<Vector3> ClearPositions { get; set; } = new List<Vector3>();
+
+
+
+    public string ForceAutoInteractName { get; set; }
+    public List<PropSpawn> PropSpawns { get; set; }
+    public List<SpawnPlace> VendorLocations { get; set; } = new List<SpawnPlace>();
+
     [XmlIgnore]
     public virtual List<InteriorInteract> AllInteractPoints => InteractPoints;
     public InteriorInteract ClosestInteract => AllInteractPoints.Where(x => x.CanAddPrompt).OrderBy(x => x.DistanceTo).FirstOrDefault();
@@ -290,23 +299,68 @@ public class Interior
         if (InteractableLocation.Interior != null && InteractableLocation.Interior.IsTeleportEntry)
         {
             Game.FadeScreenOut(1500, true);
-
             InteractableLocation.Interior.Load(true);
-
-
             Player.Character.Position = InteractableLocation.Interior.InteriorEgressPosition;
             Player.Character.Heading = InteractableLocation.Interior.InteriorEgressHeading;
             IsInside = true;
             IsMenuInteracting = false;
             locationCamera?.StopImmediately(true);
             Player.InteriorManager.OnTeleportedInside(InteractableLocation);
-            GameFiber.Sleep(1000);
+            GameFiber.Sleep(500);
             RemoveExistingPeds();
-
-
-            Game.FadeScreenIn(1500, true);
-
+            if(VendorLocations != null && VendorLocations.Any())
+            {
+                SpawnInteriorVendors();
+            }
+            if (PropSpawns != null && PropSpawns.Any())
+            {
+                SpawnInteriorProps();
+            }
+            if (!string.IsNullOrEmpty(ForceAutoInteractName))
+            {
+                GameFiber.Sleep(250);
+                Player.ActivityManager.IsInteractingWithLocation = true;
+                DoAutoInteract();
+                Exit();
+                Player.ActivityManager.IsInteractingWithLocation = false;
+            }
+            else
+            {
+                Game.FadeScreenIn(1500, true);
+            }
         }
+    }
+
+    private void DoAutoInteract()
+    {
+        InteriorInteract ii = AllInteractPoints.FirstOrDefault(x => x.Name == ForceAutoInteractName);
+        if(ii == null)
+        {
+            return;
+        }
+        ii.SetupFake(Player, Settings, InteractableLocation, LocationInteractable);
+        ii.OnInteract();
+    }
+
+    private void SpawnInteriorProps()
+    {
+        foreach(PropSpawn ps in PropSpawns)
+        {
+            Rage.Object newProp = new Rage.Object(ps.ModelName, ps.SpawnPlace.Position, ps.SpawnPlace.Heading);// 239.2449f);
+            if (newProp.Exists())
+            {
+                SpawnedProps.Add(newProp);
+                if (ps.PlaceOnGround)
+                {
+                    NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(newProp);
+                }
+            }
+        }
+    }
+    private void SpawnInteriorVendors()
+    {
+        Player.Dispatcher.LocationDispatcher.SpawnInteriorServiceWorker(InteractableLocation);
+        //GameFiber.Sleep(1000);
     }
     protected virtual void RemoveExistingPeds()
     {
@@ -361,16 +415,42 @@ public class Interior
         IsInside = false;
         if (InteractableLocation != null)
         {
-            Game.FadeScreenOut(1500, true);
+
+            if (!string.IsNullOrEmpty(ForceAutoInteractName))
+            {
+                Game.FadeScreenOut(500, false);
+            }
+            else
+            {
+                Game.FadeScreenOut(1500, true);
+            }
+
+
             Player.Character.Position = InteractableLocation.EntrancePosition;
             Player.Character.Heading = InteractableLocation.EntranceHeading;
             Player.Character.IsVisible = false;
-            InteractableLocation.Interior?.Unload();
+            if (VendorLocations != null && VendorLocations.Any())
+            {
+                InteractableLocation.AttemptVendorDespawn();
+            }
+            RemoveSpawnedProps();
             GameFiber.Sleep(500);
             Game.FadeScreenIn(1000, true);
             InteractableLocation.DoExitCamera(false);
             Player.InteriorManager.OnTeleportedOutside(InteractableLocation);
             //GameFiber.Sleep(1000);
         }
+    }
+
+    private void RemoveSpawnedProps()
+    {
+        foreach(Rage.Object prop in SpawnedProps)
+        {
+            if(prop.Exists())
+            {
+                prop.Delete();
+            }
+        }
+        SpawnedProps.Clear();
     }
 }

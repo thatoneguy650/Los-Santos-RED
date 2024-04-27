@@ -30,6 +30,8 @@ public class DebugVehicleSubMenu : DebugSubMenu
     private int WheelColor;
     private bool SetInteriorColor;
     private int InteriorColor;
+    private int selectedInteriorColor;
+    private int selectedDashboardColor;
 
     private int FinalPrimaryColor => PrimaryColor == -1 ? 0 : PrimaryColor;
     private int FinalSecondaryColor => SecondaryColor == -1 ? 0 : SecondaryColor;
@@ -497,10 +499,40 @@ public class DebugVehicleSubMenu : DebugSubMenu
             if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
             {
                 NativeFunction.Natives.SET_VEHICLE_COLOURS(Player.InterestedVehicle.Vehicle, selectedPrimaryColor, selectedSecondaryColor);
-                Game.DisplaySubtitle($"SET COLOR {VehicleColorMenuItem.Value}");
+                Game.DisplaySubtitle($"SET COLOR {selectedSecondaryColor}");
             }
         };
         colorSimpleMenu.AddItem(vehicleSecondaryColorScroller);
+
+
+
+        UIMenuNumericScrollerItem<int> vehicleInteriorColorScroller = new UIMenuNumericScrollerItem<int>("Interior Color", "Set the interior color selected", 0, 159, 1);
+        vehicleInteriorColorScroller.Value = vehicleInteriorColorScroller.Minimum;
+        vehicleInteriorColorScroller.Activated += (sender, selectedItem) =>
+        {
+            selectedInteriorColor = vehicleInteriorColorScroller.Value;
+            if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+            {
+                NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_5(Player.InterestedVehicle.Vehicle, selectedInteriorColor);
+                Game.DisplaySubtitle($"SET COLOR {selectedInteriorColor}");
+            }
+        };
+        colorSimpleMenu.AddItem(vehicleInteriorColorScroller);
+
+        UIMenuNumericScrollerItem<int> vehicleDashboardColorScroller = new UIMenuNumericScrollerItem<int>("Dashboard Color", "Set the dashboard color selected", 0, 159, 1);
+        vehicleDashboardColorScroller.Value = vehicleDashboardColorScroller.Minimum;
+        vehicleDashboardColorScroller.Activated += (sender, selectedItem) =>
+        {
+            selectedDashboardColor = vehicleDashboardColorScroller.Value;
+            if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+            {
+                NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_6(Player.InterestedVehicle.Vehicle, selectedDashboardColor);
+                Game.DisplaySubtitle($"SET COLOR {selectedDashboardColor}");
+            }
+        };
+        colorSimpleMenu.AddItem(vehicleDashboardColorScroller);
+
+
 
 
         UIMenuItem setWHiteMenu = new UIMenuItem("Set Color White", "Set Color White");

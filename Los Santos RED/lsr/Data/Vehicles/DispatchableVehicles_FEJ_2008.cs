@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 public class DispatchableVehicles_FEJ_2008
 {
     private DispatchableVehicles_FEJ DispatchableVehicles_FEJ;
-
-
     public List<DispatchableVehicle> LSPD2008_FEJ { get; private set; }
     public List<DispatchableVehicle> LSSD2008_FEJ { get; private set; }
     public List<DispatchableVehicle> SAHP2008_FEJ { get; private set; }

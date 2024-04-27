@@ -64,8 +64,8 @@ public class CellPhone
 
     public BurnerPhone BurnerPhone { get; private set; }
 
-    public string RingTone => !string.IsNullOrEmpty(CustomRingtone) ? CustomRingtone : Settings.SettingsManager.CellphoneSettings.DefaultCustomRingtoneName;
-    public string TextTone => !string.IsNullOrEmpty(CustomTextTone) ? CustomTextTone : Settings.SettingsManager.CellphoneSettings.DefaultCustomTexttoneName;
+    public string RingTone => !string.IsNullOrEmpty(CustomRingtone) ? CustomRingtone : Settings.SettingsManager.CellphoneSettings.DefaultCustomRingtoneNameNew;
+    public string TextTone => !string.IsNullOrEmpty(CustomTextTone) ? CustomTextTone : Settings.SettingsManager.CellphoneSettings.DefaultCustomTexttoneNameNew;
     public int Theme => CustomTheme != -1 ? CustomTheme : Settings.SettingsManager.CellphoneSettings.DefaultBurnerCellThemeID;
     public int Background => CustomBackground != -1 ? CustomBackground : Settings.SettingsManager.CellphoneSettings.DefaultBurnerCellBackgroundID;
     public float Volume => CustomVolume != -1.0f ? CustomVolume : Settings.SettingsManager.CellphoneSettings.DefaultCustomToneVolume;
@@ -447,7 +447,7 @@ public class CellPhone
             return;
         }
         float volumeToUse = Volume.Clamp(0.0f, 1.0f);
-        string ringToneToUse = Settings.SettingsManager.CellphoneSettings.DefaultCustomRingtoneName;
+        string ringToneToUse = Settings.SettingsManager.CellphoneSettings.DefaultCustomRingtoneNameNew;
         if (!string.IsNullOrEmpty(CustomRingtone))
         {
             ringToneToUse = CustomRingtone;
@@ -472,7 +472,7 @@ public class CellPhone
             return;
         }
         float volumeToUse = Volume.Clamp(0.0f, 1.0f);
-        string textToneToUse = Settings.SettingsManager.CellphoneSettings.DefaultCustomTexttoneName;
+        string textToneToUse = Settings.SettingsManager.CellphoneSettings.DefaultCustomTexttoneNameNew;
         if (!string.IsNullOrEmpty(CustomTextTone))
         {
             textToneToUse = CustomTextTone;

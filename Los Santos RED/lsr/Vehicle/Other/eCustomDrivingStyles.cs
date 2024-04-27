@@ -44,15 +44,15 @@ public enum eCustomDrivingStyles : int
 
 
 	//RegularDrivingClose = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians | 8 | (int)VehicleDrivingFlags.RespectIntersections | 256 | (int)VehicleDrivingFlags.DriveBySight,
-	Code2 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,// | (int)VanillaDrivingStyles.DF_StopForCars,  //20220531 allowwrongway and median crossing is new
+	Code2 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288 | (int)VanillaDrivingStyles.DF_StopForCars,  //20220531 allowwrongway and median crossing is new
 	
 	
 	
-	Code3 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,// | (int)VanillaDrivingStyles.DF_StopForCars,
+	Code3 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288 | (int)VanillaDrivingStyles.DF_StopForCars,
     
 	
 	
-	Code3Close = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | (int)VehicleDrivingFlags.DriveBySight | 524288,// | (int)VanillaDrivingStyles.DF_StopForCars,
+	Code3Close = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | (int)VehicleDrivingFlags.DriveBySight | 524288 | (int)VanillaDrivingStyles.DF_StopForCars,
 
 
 

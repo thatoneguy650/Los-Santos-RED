@@ -346,6 +346,15 @@ public class ShopMenus : IShopMenus
         }
         return GetSpecificMenu(MenuID);
     }
+
+
+    public PedVariationShopMenu GetPedVariationMenu(string pedVariationShopMenuID)
+    {
+        return PossibleShopMenus.PedVariationShopMenus.FirstOrDefault(x => x.ID == pedVariationShopMenuID);
+        //public PedVariationShopMenu PedVariationShopMenu
+    }
+
+
     private void DefaultConfig()
     {
         SetupPropMenus();
@@ -365,7 +374,37 @@ public class ShopMenus : IShopMenus
         MenuGroupList();
         DealerHangouts();
         SetupTreatments();
+        SetupPedVariationMenus();
         Serialization.SerializeParam(PossibleShopMenus, ConfigFileName);
+    }
+    private void SetupPedVariationMenus()
+    {
+        PedVariationShopMenu pedVariationShopMenu = new PedVariationShopMenu();
+        pedVariationShopMenu.ID = "GenericBarberShop";
+        pedVariationShopMenu.PedVariationComponentMenu = new List<PedComponentShopMenu>()
+        {
+            new PedComponentShopMenu("player_one","Fade",2,0,0,25),
+            new PedComponentShopMenu("player_one","Triple Rails",2,0,1,28),
+            new PedComponentShopMenu("player_one","Wavy Siderows",2,0,2,30),
+            new PedComponentShopMenu("player_one","Snakes",2,0,3,28),
+            new PedComponentShopMenu("player_one","Tramlines",2,0,4,25),
+            new PedComponentShopMenu("player_one","Star Kutz",2,0,5,35),
+            new PedComponentShopMenu("player_one","Shutters",2,0,6,38),
+            new PedComponentShopMenu("player_one","Berms",2,0,7,40),
+            new PedComponentShopMenu("player_one","Mellowplex",2,0,8,45),
+            new PedComponentShopMenu("player_one",2,0,9,25),
+            new PedComponentShopMenu("player_one",2,0,10,35),
+            new PedComponentShopMenu("player_one",2,0,11,33),
+            new PedComponentShopMenu("player_one",2,0,12,30),
+            new PedComponentShopMenu("player_one",2,0,13,23),
+            new PedComponentShopMenu("player_one",2,0,14,45),
+            new PedComponentShopMenu("player_one",2,0,15,22),
+            new PedComponentShopMenu("player_one","The Feud",2,1,0,50),
+            new PedComponentShopMenu("player_one","Lo Fro",2,2,0,95),
+            new PedComponentShopMenu("player_one","Corn Rows",2,3,0,150),
+            new PedComponentShopMenu("player_one","Shape Up",2,4,0,20),
+        };
+        PossibleShopMenus.PedVariationShopMenus.Add(pedVariationShopMenu);
     }
     private void SetupTreatments()
     {
@@ -5728,5 +5767,7 @@ public class ShopMenus : IShopMenus
             }
         }
     }
+
+
 }
 

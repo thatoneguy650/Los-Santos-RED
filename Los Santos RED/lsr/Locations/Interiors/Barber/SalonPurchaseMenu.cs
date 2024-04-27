@@ -14,7 +14,7 @@ using ExtensionsMethods;
 using Extensions = ExtensionsMethods.Extensions;
 using Microsoft.Win32;
 
-public class ChangeHaircutProcess
+public class SalonPurchaseMenu
 {
     private BarberShop BarberShop;
     private ILocationInteractable Player;
@@ -43,11 +43,11 @@ public class ChangeHaircutProcess
     private UIMenuListScrollerItem<ColorLookup> PrimaryColorMenu;
     private UIMenuNumericScrollerItem<int> OverlayIndexMenu;
     private IClothesNames ClothesNames;
-    private HaircutInteract HaircutInteract;
+    private SalonInteract HaircutInteract;
     private UIMenuItem setHairColoringMenu;
 
 
-    public ChangeHaircutProcess(ILocationInteractable player, BarberShop barberShop, HaircutInteract haircutInteract, PedExt hairstylist,Rage.Object scissors, ISettingsProvideable settings, Vector3 animEnterPosition, Vector3 animEnterRotation, IClothesNames clothesNames)
+    public SalonPurchaseMenu(ILocationInteractable player, BarberShop barberShop, SalonInteract haircutInteract, PedExt hairstylist,Rage.Object scissors, ISettingsProvideable settings, Vector3 animEnterPosition, Vector3 animEnterRotation, IClothesNames clothesNames)
     {
         Player = player;
         BarberShop = barberShop;
@@ -72,26 +72,38 @@ public class ChangeHaircutProcess
         };
         Setup();
         //Reset Offset for current model in pedswap
-        Player.PedSwap.ResetOffsetForCurrentModel();
-        AddHairMenu();
-        if (Player.CharacterModelIsFreeMode)
+        if(Player == null)
         {
-            AddHairColorMenu();
-        }  
-        AddBeardMenu();
+            EntryPoint.WriteToConsole("PLAYER IS NULL");
+        }
+        if (Player.PedSwap == null)
+        {
+            EntryPoint.WriteToConsole("PLAYER PEDSWAP IS NULL");
+        }
+        Player.PedSwap.ResetOffsetForCurrentModel();
+        if (BarberShop != null && BarberShop.AllowsHaircuts)
+        {
+            AddHairMenu();
+
+            if (Player.CharacterModelIsFreeMode)
+            {
+                AddHairColorMenu();
+            }
+        }
+        if (BarberShop != null && BarberShop.AllowsBeards)
+        {
+            AddBeardMenu();
+        }
         if (BarberShop != null && BarberShop.AllowsMakeup)
         {
-            AddOverlayMenu(2, "Eyebrows", 1, BarberShop.StandardMakeupPrice, BarberShop.PremiumMakeupExtra, "None", "Strength", false);
-            AddOverlayMenu(4, "Makeup", 1, BarberShop.StandardMakeupPrice, BarberShop.PremiumMakeupExtra, "None", "Strength", false);
-            AddOverlayMenu(5, "Blush", 2, BarberShop.StandardMakeupPrice, BarberShop.PremiumMakeupExtra, "None", "Strength", false);
-            AddOverlayMenu(8, "Lipstick", 2, BarberShop.StandardMakeupPrice, BarberShop.PremiumMakeupExtra, "None", "Strength", false);
+            AddOverlayMenu(2, "Eyebrows", 1, BarberShop.PedVariationShopMenu.StandardMakeupPrice, BarberShop.PedVariationShopMenu.PremiumMakeupExtra, "None", "Strength", false);
+            AddOverlayMenu(4, "Makeup", 1, BarberShop.PedVariationShopMenu.StandardMakeupPrice, BarberShop.PedVariationShopMenu.PremiumMakeupExtra, "None", "Strength", false);
+            AddOverlayMenu(5, "Blush", 2, BarberShop.PedVariationShopMenu.StandardMakeupPrice, BarberShop.PedVariationShopMenu.PremiumMakeupExtra, "None", "Strength", false);
+            AddOverlayMenu(8, "Lipstick", 2, BarberShop.PedVariationShopMenu.StandardMakeupPrice, BarberShop.PedVariationShopMenu.PremiumMakeupExtra, "None", "Strength", false);
         }
         InteractionMenu.Visible = true;
         EntryPoint.WriteToConsole("HAIRCUT INTERCATION SHOWING MENU");
     }
-
-    
-
     public void Dispose()
     {
         Game.RawFrameRender -= (s, e) => MenuPool.DrawBanners(e.Graphics);
@@ -162,8 +174,8 @@ public class ChangeHaircutProcess
         int premiumHaircutCostExtra = 15;
         if (BarberShop != null)
         {
-            baseHaircutCost = Player.IsMale ? BarberShop.StandardMaleHaircutPrice : BarberShop.StandardFemaleHaircutPrice;
-            premiumHaircutCostExtra = BarberShop.PremiumHaircutExtra;
+            baseHaircutCost = Player.IsMale ? BarberShop.PedVariationShopMenu.StandardMaleHaircutPrice : BarberShop.PedVariationShopMenu.StandardFemaleHaircutPrice;
+            premiumHaircutCostExtra = BarberShop.PedVariationShopMenu.PremiumHaircutExtra;
         }
         AddSelectionItems(2, baseHaircutCost, premiumHaircutCostExtra, HaircutsSubMenu, ref HairLookup);
     }
@@ -287,10 +299,10 @@ public class ChangeHaircutProcess
         int TotalCost = 45;
         if (BarberShop != null)
         {
-            TotalCost = BarberShop.StandardHairColoringPrice;
+            TotalCost = BarberShop.PedVariationShopMenu.StandardHairColoringPrice;
             if (addHighlights)
             {
-                TotalCost += BarberShop.PremiumColoringExtra;
+                TotalCost += BarberShop.PedVariationShopMenu.PremiumColoringExtra;
             }
         }
         return TotalCost;
@@ -343,11 +355,11 @@ public class ChangeHaircutProcess
         }
         if (Player.CharacterModelIsFreeMode)
         {
-            AddBeardOverlayItems(new HeadOverlayData(1, "Facial Hair") { ColorType = 1 }, BarberShop.StandardBeardTrimPrice,BarberShop.PremiumBearTrimExtra, BeardsSubMenu, "Clean Shaven","Thickness");
+            AddBeardOverlayItems(new HeadOverlayData(1, "Facial Hair") { ColorType = 1 }, BarberShop.PedVariationShopMenu.StandardBeardTrimPrice,BarberShop.PedVariationShopMenu.PremiumBearTrimExtra, BeardsSubMenu, "Clean Shaven","Thickness");
         }
         else
         {
-            AddSelectionItems(1, BarberShop.StandardBeardTrimPrice,BarberShop.PremiumBearTrimExtra, BeardsSubMenu, ref BeardLookup);
+            AddSelectionItems(1, BarberShop.PedVariationShopMenu.StandardBeardTrimPrice,BarberShop.PedVariationShopMenu.PremiumBearTrimExtra, BeardsSubMenu, ref BeardLookup);
         }
     }
     private void AddSelectionItems(int componentID, int baseCost,int extraCost, UIMenu toAdd, ref List<MenuLookup> lookupList)
@@ -362,6 +374,12 @@ public class ChangeHaircutProcess
             for (int TextureNumber = 0; TextureNumber < NumberOfTextureVariations; TextureNumber++)
             {
                 string drawableName = $"Style #{styleNumber}";
+
+
+
+
+
+
                 if (Player.CharacterModelIsFreeMode)
                 {
                     string newName = ClothesNames.GetName(false, componentID, drawableID, TextureNumber, Player.Gender);
@@ -370,15 +388,41 @@ public class ChangeHaircutProcess
                         drawableName = newName;
                     }
                 }
+
+
+
+
+
+
                 int textureID = TextureNumber;
-                EntryPoint.WriteToConsole($"NAME: {drawableName} componentID:{componentID} drawableID:{drawableID} TextureNumber:{textureID}");
-                lookupList.Add(new MenuLookup(toAdd.MenuItems.Count(), drawableID, textureID));
 
                 int TotalCost = baseCost;
-                if(drawableID >= 15)
+                if (drawableID >= 15)
                 {
                     TotalCost += extraCost;
                 }
+                if (BarberShop != null && BarberShop.PedVariationShopMenu != null)
+                {
+                    PedComponentShopMenu pcsm = BarberShop.PedVariationShopMenu.GetDrawableCost(Player, componentID, drawableID, textureID);
+                    if (pcsm != null)
+                    {
+                        TotalCost = pcsm.Price;
+                        EntryPoint.WriteToConsole($"SPECIAL COMPONENT COST ITEM ADDED {componentID} {drawableID} {textureID} ${pcsm.Price}");
+                        if (!string.IsNullOrEmpty(pcsm.DebugName))
+                        {
+                            drawableName = pcsm.DebugName;
+                        }
+                    }
+                }
+
+
+
+
+
+
+                EntryPoint.WriteToConsole($"NAME: {drawableName} componentID:{componentID} drawableID:{drawableID} TextureNumber:{textureID}");
+                lookupList.Add(new MenuLookup(toAdd.MenuItems.Count(), drawableID, textureID));
+
 
 
                 UIMenuItem SetStyle1 = new UIMenuItem(drawableName, "Select to purchase this item") { RightLabel = $"${TotalCost}" };
@@ -480,6 +524,20 @@ public class ChangeHaircutProcess
 
 
         int TotalCost = baseCost;
+
+        if (BarberShop != null && BarberShop.PedVariationShopMenu != null)
+        {
+            int customizedCost = BarberShop.PedVariationShopMenu.GetOverlayCost(Player, ho.OverlayID);
+            if (customizedCost != -1)
+            {
+                TotalCost = customizedCost;
+                EntryPoint.WriteToConsole($"SPECIAL OVERLAY COST ITEM ADDED {ho.OverlayID} ${customizedCost}");
+            }
+        }
+
+
+
+
         UIMenuItem purchaseStyle = new UIMenuItem("Purchase", "Select to purchase this item") { RightLabel = $"${TotalCost}" };
         purchaseStyle.Activated += (sender, e) =>
         {
@@ -521,13 +579,6 @@ public class ChangeHaircutProcess
         };
         toAdd.AddItem(purchaseStyle);
     }
-
-
-
-
-
-
-
     private void AddOverlayMenu(int overlayID, string menuName, int colorType, int standardCost, int extraCost, string noneName, string opacityName, bool hasSecondaryColor)
     {
         if (!Player.CharacterModelIsFreeMode)
@@ -641,6 +692,18 @@ public class ChangeHaircutProcess
         overLaySubMenu.AddItem(OpacityMenuNEW);
 
         int TotalCost = standardCost;
+
+        if (BarberShop != null && BarberShop.PedVariationShopMenu != null)
+        {
+            int customizedCost = BarberShop.PedVariationShopMenu.GetOverlayCost(Player, ho.OverlayID);
+            if (customizedCost != -1)
+            {
+                TotalCost = customizedCost;
+                EntryPoint.WriteToConsole($"SPECIAL OVERLAY COST ITEM ADDED {ho.OverlayID} ${customizedCost}");
+            }
+        }
+
+
         UIMenuItem purchaseStyle = new UIMenuItem("Purchase", "Select to purchase this item") { RightLabel = $"${TotalCost}" };
         purchaseStyle.Activated += (sender, e) =>
         {
@@ -684,9 +747,7 @@ public class ChangeHaircutProcess
 
 
     }
-   
-
-
+  
     private void Setup()
     {
         HeadOverlayLookups = new List<HeadOverlayData>() {

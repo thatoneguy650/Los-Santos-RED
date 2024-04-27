@@ -56,6 +56,7 @@ namespace LosSantosRED.lsr.Interface
         PedSwap PedSwap { get; }
         bool CharacterModelIsPrimaryCharacter { get; }
         bool IsMale { get; }
+        string ModelName { get; }
 
         void ChangeName(string newName);
 

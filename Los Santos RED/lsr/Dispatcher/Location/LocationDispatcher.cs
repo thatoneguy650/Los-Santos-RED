@@ -114,7 +114,7 @@ public class LocationDispatcher
     {
         foreach (GameLocation ps in World.Places.ActiveLocations.ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= x.ActivateDistance && x.IsNearby && !x.IsServiceFilled).ToList())
         {
-            ps.AttemptVendorSpawn(ps.IsOpen(Time.CurrentHour),Interiors,Settings,Crimes,Weapons,Time,World);
+            ps.AttemptVendorSpawn(ps.IsOpen(Time.CurrentHour),Interiors,Settings,Crimes,Weapons,Time,World, false);
             ps.IsServiceFilled = true;
             GameFiber.Yield();
         }
@@ -125,6 +125,14 @@ public class LocationDispatcher
             //EntryPoint.WriteToConsole($"VENDOR DESPAWN AT {ps.Name} ");
             ps.IsServiceFilled = false;
         }
+    }
+    public void SpawnInteriorServiceWorker(GameLocation ps)
+    {
+        if(ps == null)
+        {
+            return;
+        }
+        ps.AttemptVendorSpawn(ps.IsOpen(Time.CurrentHour), Interiors, Settings, Crimes, Weapons, Time, World, true);
     }
 
 }

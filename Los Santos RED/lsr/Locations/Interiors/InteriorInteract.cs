@@ -19,7 +19,7 @@ using System.Xml.Serialization;
 [XmlInclude(typeof(TheftInteract))]
 [XmlInclude(typeof(MoneyTheftInteract))]
 [XmlInclude(typeof(ItemTheftInteract))]
-[XmlInclude(typeof(HaircutInteract))]
+[XmlInclude(typeof(SalonInteract))]
 //UrinalInteract
 //ToiletInteract
 public class InteriorInteract
@@ -63,6 +63,10 @@ public class InteriorInteract
 
     public bool UseNavmesh { get; set; } = true;
     public bool WithWarp { get; set; } = false;
+    public bool ForceIsntantCamera { get; set; } = false;
+
+
+    public bool IsAutoInteract { get; set; } = false;
     public virtual bool ShouldAddPrompt => !Interior.IsMenuInteracting && distanceTo <= InteractDistance && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanPerformActivitiesOnFoot;
     public virtual void Setup(IModItems modItems, IClothesNames clothesNames)
     {
@@ -176,7 +180,7 @@ public class InteriorInteract
         }
         if (CameraPosition != Vector3.Zero)
         {
-            LocationCamera.MoveToPosition(CameraPosition, CameraDirection, CameraRotation, wait, true);
+            LocationCamera.MoveToPosition(CameraPosition, CameraDirection, CameraRotation, wait, true, ForceIsntantCamera);
         }
         else if (CameraPosition == Vector3.Zero && AutoCamera)
         {

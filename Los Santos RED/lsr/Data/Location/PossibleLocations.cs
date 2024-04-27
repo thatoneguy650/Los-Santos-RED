@@ -30,7 +30,7 @@ public class PossibleLocations
     public List<HardwareStore> HardwareStores { get; private set; } = new List<HardwareStore>();
     public List<PawnShop> PawnShops { get; private set; } = new List<PawnShop>();
     public List<Landmark> Landmarks { get; private set; } = new List<Landmark>();
-    public List<BeautyShop> BeautyShops { get; private set; } = new List<BeautyShop>();
+   // public List<BeautyShop> BeautyShops { get; private set; } = new List<BeautyShop>();
     public List<Bank> Banks { get; private set; } = new List<Bank>();
     public List<ConvenienceStore> ConvenienceStores { get; private set; } = new List<ConvenienceStore>();
     public List<GasStation> GasStations { get; private set; } = new List<GasStation>();
@@ -73,7 +73,7 @@ public class PossibleLocations
         AllLocations.AddRange(Hospitals);
         AllLocations.AddRange(FireStations);
         AllLocations.AddRange(Banks);
-        AllLocations.AddRange(BeautyShops);
+        //AllLocations.AddRange(BeautyShops);
         AllLocations.AddRange(Landmarks);
         AllLocations.AddRange(Prisons);
         AllLocations.AddRange(SubwayStations);
@@ -121,7 +121,7 @@ public class PossibleLocations
     {
         List<GameLocation> AllLocations = new List<GameLocation>();
         AllLocations.AddRange(Banks);
-        AllLocations.AddRange(BeautyShops);
+        //AllLocations.AddRange(BeautyShops);
         AllLocations.AddRange(Hotels);
         AllLocations.AddRange(Residences);
         AllLocations.AddRange(ApartmentBuildings);
@@ -148,7 +148,7 @@ public class PossibleLocations
         List<GameLocation> AllLocations = new List<GameLocation>();
         AllLocations.AddRange(Banks);
         AllLocations.AddRange(Bars);
-        AllLocations.AddRange(BeautyShops);
+        //AllLocations.AddRange(BeautyShops);
         AllLocations.AddRange(CarDealerships);
         AllLocations.AddRange(CityHalls);
         AllLocations.AddRange(ConvenienceStores);

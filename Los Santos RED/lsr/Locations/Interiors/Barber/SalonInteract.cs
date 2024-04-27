@@ -5,8 +5,9 @@ using Rage.Native;
 using RAGENativeUI;
 using System;
 using System.Linq;
+using System.Security.Policy;
 
-public class HaircutInteract : InteriorInteract
+public class SalonInteract : InteriorInteract
 {
     private Texture BannerImage;
     private PedExt Hairstylist;
@@ -16,12 +17,11 @@ public class HaircutInteract : InteriorInteract
     public Vector3 AnimEnterRotation { get; set; }
     public override bool ShouldAddPrompt => (BarberShop == null || !BarberShop.SpawnedVendors.Any()) ? false : base.ShouldAddPrompt;
     public BarberShop BarberShop { get; set; }
-    public bool WaitForCameraReturn { get; set; } = true;
-    public HaircutInteract()
+    public SalonInteract()
     {
 
     }
-    public HaircutInteract(string name, Vector3 position, float heading, string buttonPromptText) : base(name, position, heading, buttonPromptText)
+    public SalonInteract(string name, Vector3 position, float heading, string buttonPromptText) : base(name, position, heading, buttonPromptText)
     {
 
     }
@@ -53,7 +53,11 @@ public class HaircutInteract : InteriorInteract
         if (Hairstylist == null)
         {
             EntryPoint.WriteToConsole("HAIRSTYLIST DOESNT EXIST I GUESS!!!!");
-            Hairstylist = BarberShop.SpawnedVendors?.PickRandom();
+            foreach(PedExt bs in BarberShop.Vendors)
+            {
+                EntryPoint.WriteToConsole($"HAIRSTYLIST AVAILABLE {bs.Handle}");
+            }
+            Hairstylist = BarberShop.Vendors?.Where(x=> x.Pedestrian.Exists()).PickRandom();
         }
         if (Hairstylist == null || !Hairstylist.Pedestrian.Exists() || Hairstylist.IsLSRFleeing)
         {
@@ -64,6 +68,16 @@ public class HaircutInteract : InteriorInteract
         {
             Interior.IsMenuInteracting = true;
         }
+        if (Hairstylist != null)
+        {
+            Hairstylist.CanBeTasked = false;
+            Hairstylist.CanBeAmbientTasked = false;
+            if(Hairstylist.Pedestrian.Exists())
+            {
+                Hairstylist.Pedestrian.BlockPermanentEvents = true;
+            }
+        }
+        Player.IsTransacting = true;
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
         SetupCamera(false);
@@ -77,8 +91,19 @@ public class HaircutInteract : InteriorInteract
             Scissors.Delete();
         }
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-        LocationCamera?.ReturnToGameplay(WaitForCameraReturn);
+        LocationCamera?.ReturnToGameplay(!IsAutoInteract);
         LocationCamera?.StopImmediately(true);
+        if (Hairstylist != null)
+        {
+            Hairstylist.CanBeTasked = true;
+            Hairstylist.CanBeAmbientTasked = true;
+            if (Hairstylist.Pedestrian.Exists())
+            {
+                Hairstylist.Pedestrian.BlockPermanentEvents = false;
+            }
+        }
+        Hairstylist = null;
+        Player.IsTransacting = false;
     }
     public override void AddPrompt()
     {
@@ -96,9 +121,6 @@ public class HaircutInteract : InteriorInteract
     {
         Player.ActivityManager.StopDynamicActivity();
         AnimationDictionary.RequestAnimationDictionay("misshair_shop@hair_dressers");
-
-
-
         unsafe
         {
             int lol = 0;
@@ -112,6 +134,7 @@ public class HaircutInteract : InteriorInteract
         CreateScissors();
         if (Hairstylist != null && Hairstylist.Pedestrian.Exists())
         {
+            Hairstylist.Pedestrian.BlockPermanentEvents = true;
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM_ADVANCED", Hairstylist.Pedestrian, "misshair_shop@hair_dressers", "keeper_enterchair", AnimEnterPosition.X, AnimEnterPosition.Y, AnimEnterPosition.Z, AnimEnterRotation.X, AnimEnterRotation.Y, AnimEnterRotation.Z, 1000f, -1000f, -1, 5642, 0.0f, 2, 1);    
         }
         if(Scissors != null && Scissors.Exists())
@@ -131,7 +154,6 @@ public class HaircutInteract : InteriorInteract
                 }
                 CheckedFaded = true;
             }
-
             Player.WeaponEquipment.SetUnarmed();
             float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, "misshair_shop@hair_dressers", "player_enterchair");
             if (Player.IsMoveControlPressed || !Player.Character.IsAlive)
@@ -142,6 +164,10 @@ public class HaircutInteract : InteriorInteract
             if (AnimationTime >= 1.0f)
             {
                 break;
+            }
+            if (Hairstylist != null && Hairstylist.Pedestrian.Exists())
+            {
+                Hairstylist.Pedestrian.BlockPermanentEvents = true; 
             }
             GameFiber.Yield();
         }
@@ -168,6 +194,7 @@ public class HaircutInteract : InteriorInteract
             }
         }
         //LocationCamera?.ReturnToGameplay(true);
+        bool hasNotCheckedFadeOut = false;
         while (Player.ActivityManager.CanPerformActivitiesExtended)
         {
             Player.WeaponEquipment.SetUnarmed();
@@ -177,15 +204,28 @@ public class HaircutInteract : InteriorInteract
                 IsCancelled = true;
                 break;
             }
+            if(AnimationTime >= 0.4f && !hasNotCheckedFadeOut)
+            {
+                if (IsAutoInteract && !Game.IsScreenFadedOut)
+                {
+                    Game.FadeScreenOut(1000, false);
+                }
+                hasNotCheckedFadeOut = true;
+            }
             if (AnimationTime >= 0.7f)
             {
                 break;
+            }
+            if (Hairstylist != null && Hairstylist.Pedestrian.Exists())
+            {
+                Hairstylist.Pedestrian.BlockPermanentEvents = true;
             }
             GameFiber.Yield();
         }
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         if (Hairstylist != null && Hairstylist.Pedestrian.Exists())
         {
+            Hairstylist.Pedestrian.BlockPermanentEvents = false;
             NativeFunction.Natives.CLEAR_PED_TASKS(Hairstylist.Pedestrian);
         }
         if (IsCancelled)
@@ -252,7 +292,6 @@ public class HaircutInteract : InteriorInteract
         }
         //Scissors = new Rage.Object("p_cs_scissors_s", AnimEnterPosition);
     }
-
     private void ShowHaircutMenu()
     {
         MenuPool MenuPool = new MenuPool();
@@ -266,7 +305,7 @@ public class HaircutInteract : InteriorInteract
             EntryPoint.WriteToConsole($"SET BANNER IMAGE FOR HAIRCUT MENU!");
         }
         MenuPool.Add(InteractionMenu);
-        ChangeHaircutProcess changeHaircutProcess = new ChangeHaircutProcess(LocationInteractable,BarberShop, this, Hairstylist,Scissors, Settings, AnimEnterPosition, AnimEnterRotation, ClothesNames);
+        SalonPurchaseMenu changeHaircutProcess = new SalonPurchaseMenu(LocationInteractable,BarberShop, this, Hairstylist,Scissors, Settings, AnimEnterPosition, AnimEnterRotation, ClothesNames);
         changeHaircutProcess.Start(MenuPool, InteractionMenu);
         while (MenuPool.IsAnyMenuOpen() && Player.ActivityManager.CanPerformActivitiesExtended)
         {

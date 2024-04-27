@@ -141,11 +141,23 @@ public class Bank : GameLocation
         base.Activate(interiors, settings, crimes, weapons, time, world);
     }
 
-    public override void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
+    public override void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world, bool isInterior)
     {
         int TellersSpawned = 0;
         BankDrawers.Clear();
-        foreach (SpawnPlace spawnPlace in VendorLocations)
+        List<SpawnPlace> spawns = new List<SpawnPlace>();
+        if (isInterior)
+        {
+            if (Interior != null && Interior.VendorLocations != null && Interior.VendorLocations.Any())
+            {
+                spawns = Interior.VendorLocations.ToList();
+            }
+        }
+        else
+        {
+            spawns = VendorLocations;
+        }
+        foreach (SpawnPlace spawnPlace in spawns)
         {
             if (IsOpen(time.CurrentHour) && settings.SettingsManager.CivilianSettings.ManageDispatching && world.Pedestrians.TotalSpawnedServiceWorkers < settings.SettingsManager.CivilianSettings.TotalSpawnedServiceMembersLimit && (TellersSpawned == 0 || RandomItems.RandomPercent(ExtaTellerSpawnPercentage)))
             {
@@ -198,6 +210,8 @@ public class Bank : GameLocation
                 EntryPoint.WriteToConsole($"AttemptVendorDespawn MADE NON PERSIST TELLER");
             }
         }
+        SpawnedTellers.Clear();
+        SpawnedVendors.Clear();
     }
 
 

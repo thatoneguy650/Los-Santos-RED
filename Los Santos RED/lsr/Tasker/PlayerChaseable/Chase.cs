@@ -669,28 +669,37 @@ public class Chase : ComplexTask
 
             if (!Ped.IsInHelicopter && !Ped.IsInBoat && !Ped.IsInPlane)
             {
+                //bool shouldThisCopChasePassivly = false;
+                bool shouldThisCopChaseRecklessly = false;
+                bool shouldThisCopChaseVeryRecklessly = false;
+
                 if (Game.GameTime - GameTimeLastUpdatedChaseItems >= 2000)
                 {
-                    bool shouldChasePassivly = false;
-                    bool shouldChaseRecklessly = false;
-                    bool shouldChaseVeryRecklessly = false;
-                    if (ShouldChaseRecklessly && !Ped.IsOnBike)
+                    bool isShouldChaseRecklessly = ShouldChaseRecklessly;
+                    bool isShouldChaseVeryRecklessly = ShouldChaseVeryRecklessly;
+
+                    if (isShouldChaseRecklessly && !Ped.IsOnBike)
                     {
-                        if (ShouldChaseVeryRecklessly)
+                        if (Player.ClosestCopDriverToPlayer != null && Player.ClosestCopDriverToPlayer.Handle == Cop.Handle)
                         {
-                            shouldChaseVeryRecklessly = true;
-                        }
-                        else
-                        {
-                            shouldChaseRecklessly = true;
+
+
+                            if (isShouldChaseVeryRecklessly)
+                            {
+                                shouldThisCopChaseVeryRecklessly = true;
+                            }
+                            else
+                            {
+                                shouldThisCopChaseRecklessly = true;
+                            }
                         }
                     }
-                    else
-                    {
-                        shouldChasePassivly = true;
-                    }
+                    //else
+                    //{
+                    //    shouldThisCopChasePassivly = true;
+                    //}
                     NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 150f);//tr cruise speed test
-                    if (ShouldChaseVeryRecklessly)// && !IsSetVeryReckless)
+                    if (shouldThisCopChaseVeryRecklessly)// && !IsSetVeryReckless)
                     {
 
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, false);
@@ -707,7 +716,7 @@ public class Chase : ComplexTask
                         IsSetVeryReckless = true;
                         IsSetNotReckless = false;
                     }
-                    else if (ShouldChaseRecklessly)// && !IsSetNotReckless)
+                    else if (shouldThisCopChaseRecklessly)// && !IsSetNotReckless)
                     {
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, false);
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableSpinOutDuringVehicleChase, false);
@@ -723,7 +732,7 @@ public class Chase : ComplexTask
                         IsSetNotReckless = true;
                         IsSetVeryReckless = false;
                     }
-                    else if (shouldChasePassivly)// && !IsSetPassive)
+                    else //if (shouldChasePassivly)// && !IsSetPassive)
                     {
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, true);
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableSpinOutDuringVehicleChase, true);

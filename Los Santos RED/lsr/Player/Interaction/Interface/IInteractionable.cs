@@ -45,6 +45,7 @@ namespace LosSantosRED.lsr.Interface
         Violations Violations { get; }
         bool IsAiming { get; }
         bool IsAlive { get; }
+        Dispatcher Dispatcher { get; }
 
         // void OnDamagedVehicle();
         void PlaySpeech(string v1, bool v2);

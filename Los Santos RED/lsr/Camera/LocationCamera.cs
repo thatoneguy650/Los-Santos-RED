@@ -236,7 +236,7 @@ public class LocationCamera
             GameFiber.Sleep(1500);
         }
     }
-    public void MoveToPosition(Vector3 desiredPosition, Vector3 desiredDirection, Rotator desiredRotation, bool wait, bool setHomePosition)
+    public void MoveToPosition(Vector3 desiredPosition, Vector3 desiredDirection, Rotator desiredRotation, bool wait, bool setHomePosition, bool instant)
     {
         if (!StoreCam.Exists())
         {
@@ -287,8 +287,12 @@ public class LocationCamera
             HomeRotator = desiredRotation;
             HomeDirection = desiredDirection;
         }
-
-        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(CameraTo, StoreCam, 1500, true, true);
+        int waitTime = 1500;
+        if(instant)
+        {
+            waitTime = 0;
+        }
+        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(CameraTo, StoreCam, waitTime, true, true);
         if (wait)
         {
             GameFiber.Sleep(1500);

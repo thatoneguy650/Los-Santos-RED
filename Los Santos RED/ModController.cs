@@ -64,27 +64,18 @@ namespace LosSantosRED.lsr
             Time = new Mod.Time(ModDataFileManager.Settings);
             Time.Setup();
             GameFiber.Yield();
-            World = new Mod.World(ModDataFileManager.Agencies, ModDataFileManager.Zones, ModDataFileManager.Jurisdictions, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest, ModDataFileManager.PlateTypes, ModDataFileManager.Names, ModDataFileManager.RelationshipGroups, ModDataFileManager.Weapons, 
-                ModDataFileManager.Crimes, Time, ModDataFileManager.ShopMenus, ModDataFileManager.Interiors, NAudioPlayer, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Streets, ModDataFileManager.ModItems, ModDataFileManager.RelationshipGroups, 
-                ModDataFileManager.LocationTypes, ModDataFileManager.Organizations, ModDataFileManager.Contacts, ModDataFileManager);
-
-
-            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, ModDataFileManager.Names.GetRandomName(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale), World, Time, ModDataFileManager.Streets,
-    ModDataFileManager.Zones, ModDataFileManager.Settings, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.Scenarios, ModDataFileManager.Crimes, NAudioPlayer, NAudioPlayer2, ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors,
-    ModDataFileManager.ModItems, ModDataFileManager.Intoxicants, ModDataFileManager.Gangs, ModDataFileManager.Jurisdictions, ModDataFileManager.GangTerritories, ModDataFileManager.GameSaves, ModDataFileManager.Names, ModDataFileManager.ShopMenus,
-    ModDataFileManager.RelationshipGroups, ModDataFileManager.DanceList, ModDataFileManager.SpeechList, ModDataFileManager.Seats, ModDataFileManager.Agencies, ModDataFileManager.SavedOutfits, ModDataFileManager.VehicleSeatDoorData, ModDataFileManager.Cellphones, ModDataFileManager.Contacts);
-
-
+            World = new Mod.World(ModDataFileManager.Agencies, ModDataFileManager.Zones, ModDataFileManager.Jurisdictions, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest, ModDataFileManager.PlateTypes, 
+                ModDataFileManager.Names, ModDataFileManager.RelationshipGroups, ModDataFileManager.Weapons, ModDataFileManager.Crimes, Time, ModDataFileManager.ShopMenus, ModDataFileManager.Interiors, NAudioPlayer, 
+                ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Streets, ModDataFileManager.ModItems, ModDataFileManager.RelationshipGroups, ModDataFileManager.LocationTypes, 
+                ModDataFileManager.Organizations, ModDataFileManager.Contacts, ModDataFileManager);
+            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, ModDataFileManager.Names.GetRandomName(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale), World, Time, 
+                ModDataFileManager.Streets,ModDataFileManager.Zones, ModDataFileManager.Settings, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.Scenarios, ModDataFileManager.Crimes, NAudioPlayer, 
+                NAudioPlayer2, ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors,ModDataFileManager.ModItems, ModDataFileManager.Intoxicants, ModDataFileManager.Gangs, ModDataFileManager.Jurisdictions, 
+                ModDataFileManager.GangTerritories, ModDataFileManager.GameSaves, ModDataFileManager.Names, ModDataFileManager.ShopMenus,ModDataFileManager.RelationshipGroups, ModDataFileManager.DanceList, ModDataFileManager.SpeechList,
+                ModDataFileManager.Seats, ModDataFileManager.Agencies, ModDataFileManager.SavedOutfits, ModDataFileManager.VehicleSeatDoorData, ModDataFileManager.Cellphones, ModDataFileManager.Contacts);
             World.Setup(Player, Player);
             GameFiber.Yield();
-            
-            
-
-            
-            
-            
             Player.Setup();
-
             GameFiber.Yield();
             Police = new Police(World, Player, Player, ModDataFileManager.Settings, Player, Time);
             GameFiber.Yield();
@@ -155,7 +146,6 @@ namespace LosSantosRED.lsr
         public void Dispose()
         {
             IsRunning = false;
-            //GameFiber.Sleep(500);
             Player.Dispose();
             World.Dispose();
             PedSwap.Dispose();
@@ -193,30 +183,17 @@ namespace LosSantosRED.lsr
                     new ModTask(250, "Player.TrafficViolationsUpdate", Player.Violations.TrafficViolations.Update, 4),
                     new ModTask(250, "Player.LocationUpdate", Player.LocationUpdate, 5),
                     new ModTask(250, "Player.ArrestWarrantUpdate",Player.CriminalHistory.Update, 6),//these were all 500
-
-                   // new ModTask(250, "Player.SecurityResponse.Update", Player.SecurityResponse.Update, 7),//did nothing
                 }),
                 new ModTaskGroup("RG3:World Gen", new List<ModTask>()//something in here is causing a hang on some crapola computers
                 {
                     new ModTask(1000, "World.PrunePedestrians", World.Pedestrians.Prune, 0),
 
-
-
-
-
                     //THIS IS THE ISSUE!
-                  new ModTask(500, "World.CreateNewPedestrians", World.Pedestrians.CreateNew, 1), //this is the freezer, what the fucko
-
-
-
-
+                    new ModTask(500, "World.CreateNewPedestrians", World.Pedestrians.CreateNew, 1), //this is the freezer, what the fucko
 
                     new ModTask(1000, "World.PruneVehicles", World.Vehicles.Prune, 2),//500
                     new ModTask(500, "World.CreateNewVehicles", World.Vehicles.CreateNew, 3),//1000 //very bad performance   
                     new ModTask(1000, "World.UpdateVehiclePlates", World.Vehicles.PlateController.UpdatePlates, 5),
-
-
-
 
                     new ModTask(1500, "Player.ScannerUpdate", Player.Scanner.Update, 6),
                     new ModTask(1000, "World.Pedestrians.UpdateDead", World.Pedestrians.UpdateDead, 7),
@@ -253,23 +230,13 @@ namespace LosSantosRED.lsr
                 {
                     new ModTask(1000, "World.ActiveNearLocations", World.Places.ActivateLocations, 0),//1000 //????MAYBE BAD?
 
-
-
-
                     new ModTask(4000, "Weather.Update", Weather.Update, 1),//1000
                     new ModTask(2000,"WeatherManager.Update",WeatherManager.Update,2),
 
-
-
                     new ModTask(1000, "World.UpdateNear", World.Places.UpdateLocations, 3),//500//1000//????MAYBE BAD?
-
-
-
 
                     new ModTask(2000, "Player.GangRelationshipsUpdate", Player.RelationshipManager.GangRelationships.Update, 4),//might become a priority...
                     new ModTask(5000, "Player.Properties.Update", Player.Properties.Update, 5),//might become a priority...
-
-
 
                     new ModTask(1000, "World.Update", World.Update, 6),///????MAYBE BAD?
                 }),
@@ -278,10 +245,6 @@ namespace LosSantosRED.lsr
                     new ModTask(500, "Tasker.UpdatePolice", Tasker.UpdatePolice, 0),
                     new ModTask(500, "Tasker.UpdateCivilians", Tasker.UpdateCivilians, 1),
                 }),
-                //new ModTaskGroup("RG12:Entities", new List<ModTask>()
-                //{
-                //    new ModTask(500, "Tasker.UpdatePolice", World.StoreEntities, 0),
-                //})
             };
         }
         private void StartCoreLogic()

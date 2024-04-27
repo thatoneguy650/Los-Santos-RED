@@ -71,10 +71,38 @@ public class Interiors : IInteriors
         PossibleInteriors.BarberShopInteriors.AddRange(
             new List<BarberShopInterior>()
             {
+                new BarberShopInterior(-99099,"Barber Shop")
+                {
+                    IsTeleportEntry = true,
+
+                    ForceAutoInteractName = "genericheaircutinteract1",
+                    InteriorEgressPosition = new Vector3(123.7631f, -745.737f, 242.152f),
+                    InteriorEgressHeading = 216.5336f,
+                    PropSpawns = new List<PropSpawn>() { new PropSpawn("vw_prop_casino_track_chair_01", new SpawnPlace(new Vector3(124.8145f, -747.5364f, 242.152f), 69.98466f)) {PlaceOnGround = true } },
+                    VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(122.921f, -748.2304f, 241.652f), 305.9934f) },
+                    HaircutInteracts = new List<SalonInteract>() 
+                    {
+                        new SalonInteract("genericheaircutinteract1",new Vector3(125.0691f, -743.9323f, 242.1519f),216.5336f,"Get Haircut") 
+                        {
+                            IsAutoInteract = true,
+                            //WaitForCameraReturn = false,
+                            //ForceIsntantCamera = true,
+                            //DoFadeOutAndFadeIn = true,
+                            AnimEnterPosition = new Vector3(124.8145f, -747.5364f, 241.152f),
+                            AnimEnterRotation = new Vector3(0f, 0f, -388.969f),
+                            CameraPosition = new Vector3(125.9692f, -748.0427f, 242.6188f),
+                            CameraDirection = new Vector3(-0.8899927f, 0.4485282f, -0.08206987f),
+                            CameraRotation = new Rotator(-4.707552f, 4.283317E-06f, 63.25334f),
+                        }
+                    },
+                },
+
+
+
                 new BarberShopInterior(13058,"Herr Kutz Paleto")
                 { 
-                    HaircutInteracts = new List<HaircutInteract>() { 
-                        new HaircutInteract("herrkutzpaletointeract1",new Vector3(-276.8453f, 6225.595f, 31.69551f), 120.1309f,"Get Haircut") {
+                    HaircutInteracts = new List<SalonInteract>() { 
+                        new SalonInteract("herrkutzpaletointeract1",new Vector3(-276.8453f, 6225.595f, 31.69551f), 120.1309f,"Get Haircut") {
                             AnimEnterPosition = new Vector3(-278.348f,6225.873f,30.93535f), 
                             AnimEnterRotation = new Vector3(0f, 0f, -138.969f),
                             CameraPosition = new Vector3(-279.3672f, 6225.189f, 32.20325f), 
@@ -90,8 +118,8 @@ public class Interiors : IInteriors
 
                 new BarberShopInterior(113922,"Beach Combover Vespucci")
                 {
-                    HaircutInteracts = new List<HaircutInteract>() {
-                        new HaircutInteract("beachcombvespucciinteract1",new Vector3(-1280.101f, -1117.949f, 6.50118f), 152.0002f,"Get Haircut") 
+                    HaircutInteracts = new List<SalonInteract>() {
+                        new SalonInteract("beachcombvespucciinteract1",new Vector3(-1280.101f, -1117.949f, 6.50118f), 152.0002f,"Get Haircut") 
                         {
                             AnimEnterPosition = new Vector3(-1281.245f,-1118.945f,6.240114f),
                             AnimEnterRotation = new Vector3(0f, 0f, -93.969f),//new Vector3(0f,0f,-453.969f);
@@ -107,8 +135,8 @@ public class Interiors : IInteriors
                 },
                 new BarberShopInterior(37378,"Bob Mulet Rockford Hills")
                 {
-                    HaircutInteracts = new List<HaircutInteract>() {
-                        new HaircutInteract("bobmuletrockfordinteract1",new Vector3(-817.1225f, -185.375f, 37.56889f), 343.7052f,"Get Haircut")
+                    HaircutInteracts = new List<SalonInteract>() {
+                        new SalonInteract("bobmuletrockfordinteract1",new Vector3(-817.1225f, -185.375f, 37.56889f), 343.7052f,"Get Haircut")
                         {
                             AnimEnterPosition = new Vector3(-816.22f,-182.97f,36.67f),
                             AnimEnterRotation = new Vector3(0f,0f,-238.969f),
@@ -125,8 +153,8 @@ public class Interiors : IInteriors
                 },
                 new BarberShopInterior(102146,"Herr Kutz Davis")
                 {
-                    HaircutInteracts = new List<HaircutInteract>() {
-                        new HaircutInteract("herrkutzdavisinteract1",new Vector3(139.1199f, -1706.163f, 29.29162f), 212.893f,"Get Haircut") {
+                    HaircutInteracts = new List<SalonInteract>() {
+                        new SalonInteract("herrkutzdavisinteract1",new Vector3(139.1199f, -1706.163f, 29.29162f), 212.893f,"Get Haircut") {
                             AnimEnterPosition = new Vector3(139.2859f,-1708.033f,28.48875f),
                             AnimEnterRotation = new Vector3(0f,0f,-43.969f),//new Vector3(0f,0f,-403.969f),
                             CameraPosition = new Vector3(140.1534f, -1709.204f, 29.92947f), 
@@ -141,8 +169,8 @@ public class Interiors : IInteriors
                 },
                 new BarberShopInterior(112642,"Herr Kutz Mirror Park")
                 {
-                    HaircutInteracts = new List<HaircutInteract>() {
-                        new HaircutInteract("herrkutzmirrorinteract1",new Vector3(1215.068f, -474.1496f, 66.20802f), 135.4196f,"Get Haircut") {
+                    HaircutInteracts = new List<SalonInteract>() {
+                        new SalonInteract("herrkutzmirrorinteract1",new Vector3(1215.068f, -474.1496f, 66.20802f), 135.4196f,"Get Haircut") {
                             AnimEnterPosition = new Vector3(1213.349f,-474.8473f,65.45633f),
                             AnimEnterRotation = new Vector3(0f, 0f, -93.969f),//new Vector3(0f,0f,-453.969f);
                             CameraPosition = new Vector3(1213.009f, -476.0569f, 66.90621f), 
@@ -157,8 +185,8 @@ public class Interiors : IInteriors
                 },
                 new BarberShopInterior(10242,"O'Sheas Sandy Shores")
                 {
-                    HaircutInteracts = new List<HaircutInteract>() {
-                        new HaircutInteract("osheassandyinteract1",new Vector3(1930.365f, 3732.802f, 32.84443f), 264.8277f,"Get Haircut") {
+                    HaircutInteracts = new List<SalonInteract>() {
+                        new SalonInteract("osheassandyinteract1",new Vector3(1930.365f, 3732.802f, 32.84443f), 264.8277f,"Get Haircut") {
                             AnimEnterPosition = new Vector3(1932.398f,3732.411f,32.08461f),
                             AnimEnterRotation = new Vector3(0f,0f,-318.969f),
                              CameraPosition = new Vector3(1933.77f, 3733.082f, 33.58648f), 
@@ -174,8 +202,8 @@ public class Interiors : IInteriors
 
                 new BarberShopInterior(34306,"Hair on Hawick")
                 {
-                    HaircutInteracts = new List<HaircutInteract>() {
-                        new HaircutInteract("haironhawickinteract1",new Vector3(-34.39177f, -154.897f, 57.07654f), 38.9985f,"Get Haircut") {
+                    HaircutInteracts = new List<SalonInteract>() {
+                        new SalonInteract("haironhawickinteract1",new Vector3(-34.39177f, -154.897f, 57.07654f), 38.9985f,"Get Haircut") {
                             AnimEnterPosition = new Vector3(-35.08471f,-153.2957f,56.32422f),
                             AnimEnterRotation = new Vector3(0f,0f,-198.969f),
                             CameraPosition = new Vector3(-36.2537f, -152.7489f, 57.84624f),
@@ -189,7 +217,7 @@ public class Interiors : IInteriors
                     }
                 },
             }
-        );
+        );;
     }
     private void Stores()
     {

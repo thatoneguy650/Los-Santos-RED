@@ -19,5 +19,6 @@ namespace LosSantosRED.lsr.Interface
         ShopMenu GetWeightedRandomMenuFromContainer(string lookingForID);
         ShopMenuGroup GetSpecificMenuGroup(string shopMenuGroupID);
         List<MedicalTreatment> GetMedicalTreatments(string treatmentOptionsID);
+        PedVariationShopMenu GetPedVariationMenu(string pedVariationShopMenuID);
     }
 }

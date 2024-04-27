@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,14 +32,21 @@ public class CellphoneSettings : ISettingsDefaultable
     public int DefaultBurnerCellBackgroundID { get; set; }
     [Description("Enable or disable custom ringtones.")]
     public bool UseCustomRingtone { get; set; }
-    [Description("Set the default custom ringtone filename. Use the filename from the LosSantosRED\audio\tones folder. Ex. STTHOMAS.wav")]
-    public string DefaultCustomRingtoneName { get; set; }
+    [Description("Set the default custom ringtone filename. Use the filename from the LosSantosRED\audio\tones folder. Ex. STTHOMAS.mp3")]
+    public string DefaultCustomRingtoneNameNew { get; set; }
     [Description("Enable or disable custom texttones.")]
     public bool UseCustomTexttone { get; set; }
-    [Description("Set the default custom texttone filename. Use the filename from the LosSantosRED\audio\tones folder. Ex. STTHOMAS.wav")]
-    public string DefaultCustomTexttoneName { get; set; }
+    [Description("Set the default custom texttone filename. Use the filename from the LosSantosRED\audio\tones folder. Ex. STTHOMAS.mp3")]
+    public string DefaultCustomTexttoneNameNew { get; set; }
     [Description("Set volume of custom tones. Min 0.0 Max 1.0")]
     public float DefaultCustomToneVolume { get; set; }
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
+
     public CellphoneSettings()
     {
         SetDefault();
@@ -62,9 +70,9 @@ public class CellphoneSettings : ISettingsDefaultable
         DefaultBurnerCellBackgroundID = 0;
 
         UseCustomRingtone = true;
-        DefaultCustomRingtoneName = "GTA5TONE2.wav";
+        DefaultCustomRingtoneNameNew = "GTA5TONE2.mp3";
         UseCustomTexttone = true;
-        DefaultCustomTexttoneName = "GTA5TONE7.wav";
+        DefaultCustomTexttoneNameNew = "GTA5TONE7.mp3";
         DefaultCustomToneVolume = 0.25f;
 
     }
