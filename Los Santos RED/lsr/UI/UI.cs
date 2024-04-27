@@ -403,10 +403,32 @@ public class UI : IMenuProvideable
                     ShowRadar = false;
                 }
             }
+            else if (Settings.SettingsManager.UIGeneralSettings.ShowRadarWhenCellPhoneActiveOnly)
+            {
+                if (DisplayablePlayer.CellPhone.IsActive)
+                {
+                    ShowRadar = true;
+                }
+                else
+                {
+                    ShowRadar = false;
+                }
+            }
         }
         else if (!DisplayablePlayer.IsInVehicle)
         {
             if (Settings.SettingsManager.UIGeneralSettings.ShowRadarOnFootWhenCellPhoneActiveOnly)
+            {
+                if (DisplayablePlayer.CellPhone.IsActive)
+                {
+                    ShowRadar = true;
+                }
+                else
+                {
+                    ShowRadar = false;
+                }
+            }
+            else if (Settings.SettingsManager.UIGeneralSettings.ShowRadarWhenCellPhoneActiveOnly)
             {
                 if (DisplayablePlayer.CellPhone.IsActive)
                 {
