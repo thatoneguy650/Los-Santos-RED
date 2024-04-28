@@ -1504,12 +1504,17 @@ public class LEDispatcher
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, CANNOT SPAWN AGENCY");
             return true;
         }
+        else if (!cop.WasModSpawned && cop.DistanceToPlayer >= 175f)
+        {
+            EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, NON MOD SPAWNED COPS");
+            return true;
+        }
         else if (cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDelete) //Beyond Caring
         {
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, IN VEHICLE DELETE");
             return true;
         }
-        else if (!cop.IsInVehicle && !cop.IsRoadblockSpawned && cop.HasBeenSpawnedFor >= 25000 && ((cop.DistanceToPlayer > DistanceToDeleteOnFoot && cop.ClosestDistanceToPlayer <= 50f) || cop.DistanceToPlayer > 300f)) //Beyond Caring
+        else if (!cop.IsInVehicle && !cop.IsRoadblockSpawned && (!cop.WasModSpawned || cop.HasBeenSpawnedFor >= 25000) && ((cop.DistanceToPlayer > DistanceToDeleteOnFoot && cop.ClosestDistanceToPlayer <= 50f) || cop.DistanceToPlayer > 300f)) //Beyond Caring
         {
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, NOT IN VEHICLE DELETE NOT ROADBLOCK");
             return true;

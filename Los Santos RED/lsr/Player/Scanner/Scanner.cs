@@ -1744,7 +1744,7 @@ namespace LosSantosRED.lsr
             new CrimeDispatch(StaticStrings.TrespassingOnMilitaryBaseCrimeID,TrespassingOnMilitaryBase),
 
             new CrimeDispatch(StaticStrings.TrespessingCrimeID,Trespassing),
-
+            new CrimeDispatch(StaticStrings.SevereTrespessingCrimeID,Trespassing),
             new CrimeDispatch(StaticStrings.VehicleInvasionCrimeID,SuspiciousActivity),
 
             new CrimeDispatch(StaticStrings.SuspiciousVehicleCrimeID,SuspiciousActivity),

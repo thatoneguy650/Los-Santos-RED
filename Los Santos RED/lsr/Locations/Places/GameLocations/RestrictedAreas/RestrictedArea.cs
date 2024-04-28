@@ -35,7 +35,7 @@ public class RestrictedArea
     public List<InteriorDoor> Gates { get; set; }
     public List<SecurityCamera> SecurityCameras { get; set; } 
     public RestrictedAreaType RestrictedAreaType { get; set; } = RestrictedAreaType.None;
-
+    public bool IsTrespassingSevere { get; set; }
     public bool CanSeeOnCameras => canSeeOnCameras;
 
     public bool IsPlayerViolating => isPlayerViolating;

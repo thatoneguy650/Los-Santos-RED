@@ -77,6 +77,7 @@ public class Interior
     public bool NeedsActivation { get; set; } = false;
     public bool NeedsSetDisabled { get; set; } = false;
     public bool IsRestricted { get; set; } = false;
+    public bool IsSeverelyRestricted { get; set; } = false;
     public bool IsWeaponRestricted { get; set; } = false;
     public bool IsTunnel { get; set; } = false;
     public List<InteriorInteract> InteractPoints { get; set; } = new List<InteriorInteract>();

@@ -247,7 +247,14 @@ public class OtherViolations
         }
         if(Player.RestrictedAreaManager.IsTrespassing && !Violations.CanEnterRestrictedAreas)
         {
-            Violations.AddViolating(StaticStrings.TrespessingCrimeID);
+            if (Player.RestrictedAreaManager.IsSevereTrespassing)
+            {
+                Violations.AddViolating(StaticStrings.SevereTrespessingCrimeID);
+            }
+            else
+            {
+                Violations.AddViolating(StaticStrings.TrespessingCrimeID);
+            }
         }
         if (Player.RestrictedAreaManager.IsTrespassingOnMilitaryBase && !Violations.CanEnterRestrictedAreas)
         {

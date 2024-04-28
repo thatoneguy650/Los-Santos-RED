@@ -235,7 +235,7 @@ public abstract class SpawnTask
 
     public virtual void PostRun(ConditionalLocation conditionalLocation, GameLocation gameLocation)
     {
-        CreatedPeople.ForEach(x => { 
+        CreatedPeople.ForEach(x => {
             World.Pedestrians.AddEntity(x); 
             x.IsLocationSpawned = true; 
             conditionalLocation?.AddLocationRequirements(x); 

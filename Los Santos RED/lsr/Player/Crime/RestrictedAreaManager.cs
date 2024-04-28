@@ -19,6 +19,7 @@ public class RestrictedAreaManager
     private RestrictedArea CurrentRestrictedArea;
     private Interior CurrentRestrictedInterior;
     public bool IsTrespassing { get; private set; }
+    public bool IsSevereTrespassing { get; private set; }
     public bool IsTrespassingOnMilitaryBase { get; private set; }
     public RestrictedAreaManager(IRestrictedAreaManagable player, ILocationInteractable locationInteractable, IEntityProvideable world, ISettingsProvideable settings)
     {
@@ -52,6 +53,7 @@ public class RestrictedAreaManager
         }
         IsTrespassing = false;
         IsTrespassingOnMilitaryBase = false;
+        IsSevereTrespassing = false;
         if (Player.Violations.CanEnterRestrictedAreas)
         {        
             return;
@@ -66,6 +68,10 @@ public class RestrictedAreaManager
             return;
         }
         IsTrespassing = true;
+        if (Player.CurrentLocation.CurrentInterior.IsSeverelyRestricted)
+        {
+            IsSevereTrespassing = true;
+        }
     }
     private void UpdateLocationRestrictions()
     {
@@ -79,10 +85,14 @@ public class RestrictedAreaManager
         {
             if (CurrentRestrictedArea.CanSeeOnCameras == true && Game.GameTime - GameTimeLastReportedCamera >= 20000)
             {
-                Player.OnSeenInRestrictedAreaOnCamera();
+                Player.OnSeenInRestrictedAreaOnCamera(CurrentRestrictedArea.IsTrespassingSevere);
                 GameTimeLastReportedCamera = Game.GameTime;
             }
             IsTrespassing = true;
+            if(CurrentRestrictedArea.IsTrespassingSevere)
+            {
+                IsSevereTrespassing = true;
+            }
         }
         VanillaRestrictedArea CurrentVanillaRestrictedArea = restrictedLocation.RestrictedAreas.VanillaRestrictedAreas.Where(x => x.IsPlayerViolating).FirstOrDefault();
         if (CurrentVanillaRestrictedArea != null)

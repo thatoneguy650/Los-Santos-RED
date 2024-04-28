@@ -52,6 +52,7 @@ public class Interiors : IInteriors
         GangDens();
         Banks();
         BarberShops();
+        ClothingShops();
         Serialization.SerializeParam(PossibleInteriors, ConfigFileName);
     }
     public List<Interior> GetAllPlaces()
@@ -7122,17 +7123,87 @@ public class Interiors : IInteriors
         {
             new BankInterior(71682,"Fleeca Bank") {
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+                   new InteriorDoor(2121050683,new Vector3(-353.2158f,-53.87801f,49.03653f)) { ForceRotateOpen = true },//unknown door1
                    new InteriorDoor(73386408,new Vector3(-348.8109f, -47.26213f, 49.38759f)) { LockWhenClosed = true },//Front Door1
                    new InteriorDoor(3142793112,new Vector3(-351.2598f, -46.41221f, 49.38765f)) { LockWhenClosed = true },//Front Door1
-                    new InteriorDoor(4163212883, new Vector3(-355.3892f, -51.06768f, 49.31105f)) { ForceRotateOpen = true },//teller door
+                   new InteriorDoor(4163212883, new Vector3(-355.3892f, -51.06768f, 49.31105f)) { ForceRotateOpen = true },//teller door
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>() 
                 {
                     new BankDrawerInteract("fleeca1Drawer1",new Vector3(-351.3789f, -51.64762f, 49.03649f), 336.6109f,"Steal from Drawer") { AutoCamera = false },
-                }, },
+                },
+
+
+                InteractPoints = new List<InteriorInteract> () {
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca1vaultleft",
+                        Position = new Vector3( - 350.4557f, -58.93706f, 49.01488f),
+                        Heading = 251.1714f,
+                        CameraPosition = new Vector3(-350.751f, -60.13727f, 50.7495f),
+                        CameraDirection = new Vector3(-0.3681353f, 0.6738781f, -0.6405972f),
+                        CameraRotation = new Rotator(-39.83636f, 1.223048E-05f, 28.6475f),
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+
+                        Name = "fleeca1vaultright",
+                        Position = new Vector3( - 353.7186f, -57.80367f, 49.0148f),
+                        Heading = 72.45023f,
+                        CameraPosition = new Vector3( - 350.751f, -60.13727f, 50.7495f),
+                        CameraDirection = new Vector3( - 0.3681353f, 0.6738781f, -0.6405972f),
+                        CameraRotation = new Rotator( - 39.83636f, 1.223048E-05f, 28.6475f),
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca1vaulttop",
+                        Position = new Vector3( - 352.4845f, -59.79395f, 49.01487f),
+                        Heading = 162.354f,
+                        CameraPosition = new Vector3( - 350.751f, -60.13727f, 50.7495f),
+                        CameraDirection = new Vector3( - 0.3681353f, 0.6738781f, -0.6405972f),
+                        CameraRotation = new Rotator( - 39.83636f, 1.223048E-05f, 28.6475f),
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                },
+
+            },
             new BankInterior(76802,"Fleeca Bank"){
                IsWeaponRestricted = true
                , Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(2121050683,new Vector3(148.2597f,-1045.38f,29.34628f)) { ForceRotateOpen = true, },
                     new InteriorDoor(3142793112,new Vector3(149.6298f, -1037.231f, 29.71915f)){ LockWhenClosed = true, } ,//Front Door1
                     new InteriorDoor(73386408,new Vector3(152.0632f, -1038.124f, 29.71909f)) { LockWhenClosed = true, } ,//Front Door2
                     new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)) { ForceRotateOpen = true },//teller door
@@ -7141,10 +7212,74 @@ public class Interiors : IInteriors
                 {
                     new BankDrawerInteract("fleeca2Drawer1",new Vector3(147.8368f, -1041.57f, 29.36793f), 338.927f,"Steal from Drawer") { AutoCamera = false },
                     new BankDrawerInteract("fleeca2Drawer2",new Vector3(149.4326f, -1042.337f, 29.368f), 340.193f,"Steal from Drawer") { AutoCamera = false },
-                }, },
+                },
+                InteractPoints = new List < InteriorInteract > () {
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca2vaultleft",
+                        Position = new Vector3(150.1338f, -1049.841f, 29.3464f),
+                        Heading = 250.8819f,
+                        CameraPosition = new Vector3(149.8349f, -1051.176f, 31.3536f),
+                        CameraDirection = new Vector3( - 0.5062351f, 0.7241401f, -0.468345f),
+                        CameraRotation = new Rotator( - 27.92692f, 1.642717E-05f, 34.9568f),
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca2vaultright",
+                        Position = new Vector3(146.9373f, -1048.566f, 29.3463f),
+                        Heading = 70.71257f,
+                        CameraPosition = new Vector3(146.7075f, -1049.683f, 31.4293f),
+                        CameraDirection = new Vector3(0.7448676f, 0.3106417f, -0.5904863f),
+                        CameraRotation = new Rotator( - 36.19152f, 1.375267E-05f, -67.36177f),
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca2vaulttop",
+                        Position = new Vector3(148.2065f, -1050.615f, 29.34638f),
+                        Heading = 159.0868f,
+                        CameraPosition = new Vector3(150.5642f, -1044.893f, 31.26001f),
+                        CameraDirection = new Vector3( - 0.3296868f, -0.8698641f, -0.3669374f),
+                        CameraRotation = new Rotator( - 21.52686f, 1.835587E-06f, 159.2428f),
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                },
+            },
             new BankInterior(11266,"Fleeca Bank") {
                 IsWeaponRestricted = true,
                 Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(2121050683,new Vector3(311.8455f, -283.0915f, 54.16475f)) { ForceRotateOpen = true, },
                     new InteriorDoor(73386408,new Vector3(316.3925f, -276.4888f, 54.5158f)) { LockWhenClosed = true }, //Front Door1
                     new InteriorDoor(3142793112,new Vector3(313.9587f, -275.5965f, 54.51586f)) { LockWhenClosed = true }, //Front Door2
                     new InteriorDoor(4163212883, new Vector3(309.7491f, -280.1797f, 54.43926f)) { ForceRotateOpen = true },//teller door
@@ -7153,9 +7288,73 @@ public class Interiors : IInteriors
                 {
                     new BankDrawerInteract("fleeca3Drawer1",new Vector3(313.6212f, -280.8588f, 54.1647f), 335.8324f,"Steal from Drawer") { AutoCamera = false },
                     new BankDrawerInteract("fleeca3Drawer2",new Vector3(312.5256f, -280.4068f, 54.1647f), 338.1261f,"Steal from Drawer") { AutoCamera = false },
-                }, },
+                },
+                InteractPoints = new List < InteriorInteract > () {
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca3vaultleft",
+                        Position = new Vector3(314.826f, -288.2838f, 54.1431f),
+                        Heading = 250.2773f,
+                        CameraPosition = new Vector3(314.3101f, -289.4625f, 56.25073f),
+                        CameraDirection = new Vector3( - 0.2966053f, 0.6950718f, -0.6549049f),
+                        CameraRotation = new Rotator( - 40.91244f, 6.778568E-06f, 23.10921f),
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca3vaultright",
+                        Position = new Vector3(311.3073f, -286.9115f, 54.14302f),
+                        Heading = 71.48337f,
+                        CameraPosition = new Vector3(314.3101f, -289.4625f, 56.25073f),
+                        CameraDirection = new Vector3( - 0.2966053f, 0.6950718f, -0.6549049f),
+                        CameraRotation = new Rotator( - 40.91244f, 6.778568E-06f, 23.10921f),
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca3vaulttop",
+                        Position = new Vector3(312.443f, -289.0419f, 54.14309f),
+                        Heading = 161.7028f,
+                        CameraPosition = new Vector3(314.3101f, -289.4625f, 56.25073f),
+                        CameraDirection = new Vector3( - 0.2966053f, 0.6950718f, -0.6549049f),
+                        CameraRotation = new Rotator( - 40.91244f, 6.778568E-06f, 23.10921f),
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                },
+            },
             new BankInterior(20226,"Fleeca Bank") {
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(2121050683,new Vector3(-2957.66f, 482.8094f, 15.67528f)) { ForceRotateOpen = true, },
                     new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { LockWhenClosed = true }, //Front Door1
                     new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { LockWhenClosed = true }, //Front Door2
                     new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true },//teller door
@@ -7163,9 +7362,64 @@ public class Interiors : IInteriors
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
                     new BankDrawerInteract("fleeca4Drawer1",new Vector3(-2960.644f, 482.839f, 15.69701f), 81.83675f,"Steal from Drawer") { AutoCamera = false },
-                }, },
+                },
+                InteractPoints = new List < InteriorInteract > () {
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4vaultleft",
+                        Position = new Vector3( - 2954.013f, 486.0489f, 15.67541f),
+                        Heading = 358.9159f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4vaultright",
+                        Position = new Vector3( - 2954.152f, 482.4714f, 15.67532f),
+                        Heading = 171.9128f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4vaulttop",
+                        Position = new Vector3( - 2952.514f, 484.314f, 15.67538f),
+                        Heading = 264.5385f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                },
+            },
             new BankInterior(90626,"Fleeca Bank") {
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+                   new InteriorDoor(2121050683,new Vector3(1174.963f, 2711.711f, 38.06625f)) { ForceRotateOpen = true, },
                    new InteriorDoor(3142793112,new Vector3(1176.495f, 2703.613f, 38.43911f)) { LockWhenClosed = true },
                    new InteriorDoor(73386408,new Vector3(1173.903f, 2703.613f, 38.43904f)) { LockWhenClosed = true },
                     new InteriorDoor(4163212883, new Vector3(1178.87f, 2709.365f, 38.36251f)) { ForceRotateOpen = true },//teller door
@@ -7173,9 +7427,64 @@ public class Interiors : IInteriors
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
                     new BankDrawerInteract("fleeca5Drawer1",new Vector3(1175.087f, 2708.431f, 38.08793f), 177.2366f,"Steal from Drawer") { AutoCamera = false },
-                }, },
+                },
+                InteractPoints = new List < InteriorInteract > () {
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca5vaultleft",
+                        Position = new Vector3(1171.215f, 2715.287f, 38.06635f),
+                        Heading = 90.35101f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca5vaultright",
+                        Position = new Vector3(1175.178f, 2715.24f, 38.06626f),
+                        Heading = 271.4401f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca5vaulttop",
+                        Position = new Vector3(1173.201f, 2716.751f, 38.06634f),
+                        Heading = 357.0772f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                },
+            },
             new BankInterior(87810,"Fleeca Bank") {
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+                   new InteriorDoor(2121050683,new Vector3( - 1210.374f, -335.0283f, 37.75924f)) { ForceRotateOpen = true, },
                    new InteriorDoor(3142793112,new Vector3(-1215.386f, -328.5237f, 38.13211f)) { LockWhenClosed = true },
                    new InteriorDoor(73386408,new Vector3(-1213.074f, -327.3524f, 38.13205f)) { LockWhenClosed = true },
                     new InteriorDoor(4163212883, new Vector3(-1214.906f, -334.7281f, 38.05551f)) { ForceRotateOpen = true },//teller door
@@ -7184,11 +7493,70 @@ public class Interiors : IInteriors
                 {
                     new BankDrawerInteract("fleeca6Drawer1",new Vector3(-1211.815f, -332.2156f, 37.78094f), 25.86222f,"Steal from Drawer") { AutoCamera = false },
                     new BankDrawerInteract("fleeca6Drawer2",new Vector3(-1213.225f, -333.1036f, 37.78089f), 22.51491f,"Steal from Drawer") { AutoCamera = false },
-                }, },
+                },
+                InteractPoints = new List < InteriorInteract > () {
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca6vaultleft",
+                        Position = new Vector3( - 1205.487f, -336.3931f, 37.75935f),
+                        Heading = 296.6526f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca6vaultright",
+                        Position = new Vector3( - 1208.928f, -338.272f, 37.75927f),
+                        Heading = 116.7019f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca6vaulttop",
+                        Position = new Vector3( - 1206.709f, -338.908f, 37.75932f),
+                        Heading = 207.8481f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                },
+            },
 
 
             new BankInterior(103170,"Pacific Standard Bank") {
                 IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
+
+
+                    new InteriorDoor(961976194,new Vector3(255.2283f, 223.976f, 102.3932f)) { ForceRotateOpen = true },//?
+                    new InteriorDoor(1956494919,new Vector3(266.3624f, 217.5697f, 110.4328f)) { ForceRotateOpen = true },//?
+                    new InteriorDoor(4072696575,new Vector3(256.3116f, 220.6579f, 106.4296f)) { ForceRotateOpen = true },//?
 
                     new InteriorDoor(2253282288,new Vector3(232.6054f, 214.1584f, 106.4049f)) { LockWhenClosed = true },//FRONT LEFT
                     new InteriorDoor(2253282288,new Vector3(231.5075f, 216.5148f, 106.4049f)) { LockWhenClosed = true },//FRONT RIGHT
@@ -7202,7 +7570,180 @@ public class Interiors : IInteriors
                 {
                     new BankDrawerInteract("pacstdDrawer1",new Vector3(249.3135f, 224.6261f, 106.287f), 147.2702f,"Steal from Drawer") { AutoCamera = false },
                     new BankDrawerInteract("pacstdDrawer2",new Vector3(253.0091f, 223.5203f, 106.2868f), 151.6559f,"Steal from Drawer") { AutoCamera = false },
-                }, },
+                },
+                InteractPoints = new List < InteriorInteract > () {
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdOuterVaultL1",
+                        Position = new Vector3(258.57f, 218.4534f, 101.6834f),
+                        Heading = 340.07f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdOuterVaultL2",
+                        Position = new Vector3(260.6405f, 217.6998f, 101.6834f),
+                        Heading = 340.7092f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdOuterVaultR1",
+                        Position = new Vector3(257.0691f, 214.541f, 101.6834f),
+                        Heading = 160.8612f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdOuterVaultR2",
+                        Position = new Vector3(259.4067f, 213.6903f, 101.6834f),
+                        Heading = 159.7794f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdInnerVaultL1",
+                        Position = new Vector3(263.6108f, 216.4729f, 101.6834f),
+                        Heading = 342.1166f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdInnerVaultL2",
+                        Position = new Vector3(265.6564f, 215.8741f, 101.6834f),
+                        Heading = 342.004f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdInnerVaultT1",
+                        Position = new Vector3(266.4569f, 214.4251f, 101.6834f),
+                        Heading = 250.5221f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdInnerVaultT2",
+                        Position = new Vector3(265.6734f, 212.6927f, 101.6834f),
+                        Heading = 249.6621f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdInnerVaultR1",
+                        Position = new Vector3(262.3621f, 213.0617f, 101.6834f),
+                        Heading = 167.3309f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdInnerVaultR2",
+                        Position = new Vector3(264.2992f, 212.1149f, 101.6834f),
+                        Heading = 161.562f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                },
+            },
 
             new BankInterior(42754,"Blaine County Savings") {
                 IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
@@ -7216,7 +7757,857 @@ public class Interiors : IInteriors
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
                     new BankDrawerInteract("bcsDrawer1",new Vector3(-111.1494f, 6470.298f, 31.6267f), 133.0098f,"Steal from Drawer") { AutoCamera = false },
-                }, },
+                },
+                InteractPoints = new List < InteriorInteract > () {
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "bcsvaultleft",
+                        Position = new Vector3( - 105.9199f, 6478.416f, 31.62671f),
+                        Heading = 47.10064f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "bcsvaultright",
+                        Position = new Vector3( - 102.9088f, 6475.624f, 31.62673f),
+                        Heading = 226.068f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = new List < TheftInteractItem > () {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        },
+                        MinItems = 5,
+                        MaxItems = 10,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "bcsvaulttop",
+                        Position = new Vector3( - 103.1819f, 6478.17f, 31.62672f),
+                        Heading = 315.1491f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                },
+            },
+        });
+    }
+    private void ClothingShops()
+    {
+        PossibleInteriors.GeneralInteriors.AddRange(new List<Interior>()
+        {
+                new Interior(82690, "Vangelico")
+                {
+                    LocalID = 82690,
+                    Name = "Vangelico",
+                    Doors = new List<InteriorDoor>() 
+                    {
+                        new InteriorDoor() 
+                        {
+                            Position = new Vector3(-631.1723f, -236.7114f, 38.06244f),
+                            LockWhenClosed = true,
+                        },
+                        new InteriorDoor() 
+                        {
+                            Position = new Vector3(-630.4095f, -237.7712f, 38.0971f),
+                            LockWhenClosed = true,
+                        },
+                    },
+                    IsWeaponRestricted = true,
+                    InteractPoints = new List<InteriorInteract>() 
+                    {
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngFrontR1",
+                            Position = new Vector3( - 626.624f, -238.5478f, 38.05702f),
+                            Heading = 211.9446f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngFrontR2",
+                            Position = new Vector3( - 625.6374f, -237.7162f, 38.05702f),
+                            Heading = 207.4052f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngMidL1",
+                            Position = new Vector3( - 627.9446f, -233.8257f, 38.05702f),
+                            Heading = 212.1647f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngMidL2",
+                            Position = new Vector3( - 626.9693f, -233.037f, 38.05702f),
+                            Heading = 212.0368f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngMidR1",
+                            Position = new Vector3( - 626.7f, -235.4685f, 38.05702f),
+                            Heading = 33.27945f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngMidR2",
+                            Position = new Vector3( - 625.7751f, -234.5709f, 38.05702f),
+                            Heading = 32.57174f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Kronos Silver Watch",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Kronos Gold Watch",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngCenter1",
+                            Position = new Vector3( - 623.116f, -233.0139f, 38.05702f),
+                            Heading = 306.5918f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngCenter2",
+                            Position = new Vector3( - 620.101f, -233.5278f, 38.05702f),
+                            Heading = 37.02949f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Kronos Silver Watch",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Kronos Gold Watch",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngCenter3",
+                            Position = new Vector3( - 619.5614f, -230.3965f, 38.05702f),
+                            Heading = 126.2357f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngCenter4",
+                            Position = new Vector3( - 621.0455f, -228.5942f, 38.05702f),
+                            Heading = 122.6166f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngCenter5",
+                            Position = new Vector3( - 624.0377f, -228.1052f, 38.05702f),
+                            Heading = 217.7205f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngCenter6",
+                            Position = new Vector3( - 624.5729f, -231.036f, 38.05702f),
+                            Heading = 307.6254f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngOuter1",
+                            Position = new Vector3( - 624.9713f, -227.9358f, 38.05702f),
+                            Heading = 35.42755f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngOuter2",
+                            Position = new Vector3( - 623.9496f, -227.0906f, 38.05702f),
+                            Heading = 34.9143f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Kronos Silver Watch",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Kronos Gold Watch",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngOuter3",
+                            Position = new Vector3( - 620.6199f, -226.6056f, 38.05702f),
+                            Heading = 306.7109f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngOuter4",
+                            Position = new Vector3( - 619.5996f, -227.6832f, 38.05702f),
+                            Heading = 297.4792f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngOuter5",
+                            Position = new Vector3( - 618.4504f, -229.4612f, 38.05702f),
+                            Heading = 296.6827f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngOuter6",
+                            Position = new Vector3( - 617.5781f, -230.695f, 38.05702f),
+                            Heading = 296.4518f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngOuter7",
+                            Position = new Vector3( - 619.2208f, -233.6226f, 38.05702f),
+                            Heading = 216.0172f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+                        new ItemTheftInteract() {
+                            PossibleItems = new List < TheftInteractItem > () {
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Gold Ring",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Gold Ring",
+                                    MinItems = 8,
+                                    MaxItems = 8,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Fake Silver Ring",
+                                    MinItems = 3,
+                                    MaxItems = 3,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Silver Ring",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Kronos Silver Watch",
+                                    MinItems = 6,
+                                    MaxItems = 6,
+                                    Percentage = 100,
+                                },
+                                new TheftInteractItem() {
+                                    ModItemName = "Kronos Gold Watch",
+                                    MinItems = 5,
+                                    MaxItems = 5,
+                                    Percentage = 100,
+                                },
+                            },
+                            MinItems = 4,
+                            MaxItems = 5,
+                            ViolatingCrimeID = "JewelRobbery",
+                            Name = "vngOuter8",
+                            Position = new Vector3( - 620.0914f, -234.3648f, 38.05702f),
+                            Heading = 213.1084f,
+                            ButtonPromptText = "Rob",
+                            UseNavmesh = false,
+                        },
+            },
+            }
         });
     }
     private void Other()
@@ -7360,7 +8751,6 @@ public class Interiors : IInteriors
             ,new Interior(272129, "Terrorbyte Interior")// { IsMPOnly = true }
         });
     }
-
     private ItemTheftInteract Generate247Interact1(string name,Vector3 position,float heading)
     {
         int minItems = RandomItems.GetRandomNumberInt(10, 25);

@@ -54,7 +54,7 @@ public class SecurityGuardBrain : PedBrain
             }
         }
     }
-    private void UpdateCurrentTask()
+    protected override void UpdateCurrentTask()
     {
         if (PedExt.DistanceToPlayer <= 150f)//50f
         {

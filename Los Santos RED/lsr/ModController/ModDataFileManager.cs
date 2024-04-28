@@ -278,7 +278,14 @@ public class ModDataFileManager
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction");
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations");
         string Description =
-            "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' and 'Emergency uniforms pack - Serve and Rescue' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, AllenKennedy, and my own mapped default police/service vehicles. Looking for modern only? Try the Modern vehicle config in the Variations subfolder "
+            "The preferred way to play LSR. This alternate config is made to include add on ped and vehicles models to completely flesh out the Emergency Services, Military, and Service part of GTA 5. " +
+            "Most lore friendly departments are included and have their own marked units and uniforms. " + 
+            "Ped models are from 'Emergency uniforms pack - Law & Order 8.3' and 'Emergency uniforms pack - Serve and Rescue' by Alex_Ashford. " +
+            "Vehicle models are from myself, Yard1, Lt.Caine, and AllenKennedy. " +
+            "The Variations subfolder contains some different options. " +
+            "The default FEJ config includes only modern vehicles and is mostly DLC vehicles. (buffalo stx, granger 3600, caracara, aleutian, riata, etc.)" +
+            "The 2015 config contains only vehicles that were in the game for the PC release. (buffalo 1st gen, stanier 2nd gen, interceptor, gresley, etc.)" +
+            "If you are looking for older vehicles, see the Los Santos 2008 alternate config folder as it includes some of the more dated ones (esperanto, patriot, stanier 1st gen, etc.)."
             + Environment.NewLine +
             "These vehicles are all replace, open the dlc.rpf file to see modelnames"
             + Environment.NewLine + Environment.NewLine +
@@ -290,7 +297,7 @@ public class ModDataFileManager
             + Environment.NewLine +
             "2. Install EUP Serve and Rescue. Follow the instructions at https://www.lcpdfr.com/downloads/gta5mods/character/16256-emergency-uniforms-pack-serve-rescue/"
             + Environment.NewLine + Environment.NewLine +
-            "Expanded Department Liveries Installation: "
+            "Vehicle Installation: "
             + Environment.NewLine +
             "1. Install the greskfejinstaller.oiv with OpenIV"
             + Environment.NewLine +

@@ -776,9 +776,11 @@ public class Pedestrians : ITaskerReportable
             }
             else if (pedExt.GetType() == typeof(SecurityGuard))
             {
+                EntryPoint.WriteToConsole($"SECURITY CHECK IF EXISTS {pedExt.Handle}");
                 if (!SecurityGuards.Any(x => x.Handle == pedExt.Handle))
                 {
                     SecurityGuards.Add((SecurityGuard)pedExt);
+                    EntryPoint.WriteToConsole($"SECURITY WAS ADDED AS NEW {pedExt.Handle}");
                 }
             }
             else if (pedExt.GetType() == typeof(Teller))

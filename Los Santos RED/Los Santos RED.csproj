@@ -136,9 +136,9 @@
     <Compile Include="lsr\Data\Other\SpawnBlocks.cs" />
     <Compile Include="lsr\Data\Peds\PedOverlayNames.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ.cs" />
-    <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ_2008.cs" />
-    <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ_2015.cs" />
-    <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ_Modern.cs" />
+    <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_2008.cs" />
+    <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_2015.cs" />
+    <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_Modern.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_Gangs.cs" />
     <Compile Include="lsr\Data\Organizations\Contacts.cs" />
     <Compile Include="lsr\Data\Organizations\PossibleContacts.cs" />
@@ -152,6 +152,7 @@
     <Compile Include="lsr\Data\Vehicles\ePoliceVehicleType.cs" />
     <Compile Include="lsr\Data\Vehicles\eServiceVehicleType.cs" />
     <Compile Include="lsr\Data\Vehicles\OldDispatchableVehicles.cs" />
+    <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_Stanier.cs" />
     <Compile Include="lsr\Dispatcher\Items\eSpawnAdjustment.cs" />
     <Compile Include="lsr\Dispatcher\Items\SpawnAdjustmentAmount.cs" />
     <Compile Include="lsr\Dispatcher\LE\MarshalDispatcher.cs" />

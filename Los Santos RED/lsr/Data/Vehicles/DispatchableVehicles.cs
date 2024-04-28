@@ -143,6 +143,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         DefaultConfig_FullExpandedJurisdiction_2015();
         DefaultConfig_FullExpandedJurisdiction_Modern();
         DefaultConfig_LosSantos_2008();
+        DefaultConfig_FullExpandedJurisdiction_Stanier();
     }
 
     public void Setup()
@@ -1612,6 +1613,111 @@ public class DispatchableVehicles : IDispatchableVehicles
         };
 
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\DispatchableVehicles_FullExpandedJurisdiction.xml");
+    }
+    private void DefaultConfig_FullExpandedJurisdiction_Stanier()
+    {
+
+        List<DispatchableVehicleGroup> VehicleGroupLookupFEJ = new List<DispatchableVehicleGroup>
+        {
+            new DispatchableVehicleGroup("UnmarkedVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.UnmarkedVehicles_FEJ),
+            new DispatchableVehicleGroup("CoastGuardVehicles", DispatchableVehicles_FEJ.CoastGuardVehicles_FEJ),
+
+            new DispatchableVehicleGroup("ParkRangerVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.ParkRangerVehicles_FEJ),//san andreas state parks
+            new DispatchableVehicleGroup("SADFWParkRangersVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.SADFWParkRangersVehicles_FEJ),
+            new DispatchableVehicleGroup("USNPSParkRangersVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.USNPSParkRangersVehicles_FEJ),
+            new DispatchableVehicleGroup("LSDPRParkRangersVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.LSDPRParkRangersVehicles_FEJ),
+            new DispatchableVehicleGroup("LSLifeguardVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.LSLifeguardVehicles_FEJ),
+
+            new DispatchableVehicleGroup("FIBVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.FIBVehicles_FEJ),
+            new DispatchableVehicleGroup("NOOSEVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.NOOSESEPVehicles_FEJ),
+            new DispatchableVehicleGroup("PrisonVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.PrisonVehicles_FEJ),
+            new DispatchableVehicleGroup("LSPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.LSPDVehicles_FEJ),
+            new DispatchableVehicleGroup("SAHPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.SAHPVehicles_FEJ),
+            new DispatchableVehicleGroup("LSSDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.LSSDVehicles_FEJ),
+            new DispatchableVehicleGroup("BCSOVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.BCSOVehicles_FEJ),
+            new DispatchableVehicleGroup("LSIAPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.LSIAPDVehicles_FEJ),
+            new DispatchableVehicleGroup("LSPPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.LSPPVehicles_FEJ),
+            new DispatchableVehicleGroup("VWHillsLSSDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.VWHillsLSSDVehicles_FEJ),
+            new DispatchableVehicleGroup("DavisLSSDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.DavisLSSDVehicles_FEJ),
+            new DispatchableVehicleGroup("MajesticLSSDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.MajesticLSSDVehicles_FEJ),
+            new DispatchableVehicleGroup("RHPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.RHPDVehicles_FEJ),
+            new DispatchableVehicleGroup("DPPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.DPPDVehicles_FEJ),
+            new DispatchableVehicleGroup("VWPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.VWPDVehicles_FEJ),
+            new DispatchableVehicleGroup("EastLSPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.EastLSPDVehicles_FEJ),
+            new DispatchableVehicleGroup("PoliceHeliVehicles", DispatchableVehicles_FEJ.PoliceHeliVehicles_FEJ),
+            new DispatchableVehicleGroup("SheriffHeliVehicles", DispatchableVehicles_FEJ.SheriffHeliVehicles_FEJ),
+            new DispatchableVehicleGroup("ArmyVehicles", DispatchableVehicles_FEJ.ArmyVehicles_FEJ),
+            new DispatchableVehicleGroup("USMCVehicles", DispatchableVehicles_FEJ.USMCVehicles_FEJ),
+            new DispatchableVehicleGroup("USAFVehicles", DispatchableVehicles_FEJ.USAFVehicles_FEJ),
+            new DispatchableVehicleGroup("Firetrucks", Firetrucks),
+            new DispatchableVehicleGroup("Amublance1", Amublance1),
+            new DispatchableVehicleGroup("Amublance2", Amublance2),
+            new DispatchableVehicleGroup("Amublance3", Amublance3),
+            new DispatchableVehicleGroup("NYSPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.NYSPVehicles_FEJ),
+            new DispatchableVehicleGroup("LCPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.LCPDVehicles_FEJ),
+            new DispatchableVehicleGroup("BorderPatrolVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.BorderPatrolVehicles_FEJ),
+            new DispatchableVehicleGroup("NOOSEPIAVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.NOOSEPIAVehicles_FEJ),
+            new DispatchableVehicleGroup("NOOSESEPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.NOOSESEPVehicles_FEJ),
+            new DispatchableVehicleGroup("MarshalsServiceVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.MarshalsServiceVehicles_FEJ),
+            new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
+
+            //EMT
+            new DispatchableVehicleGroup("LSFDEMTVehicles", DispatchableVehicles_FEJ.LSFDEMTVehicles_FEJ),
+            new DispatchableVehicleGroup("LSCOFDEMSVehicles", DispatchableVehicles_FEJ.LSCOFDEMSVehicles_FEJ),
+            new DispatchableVehicleGroup("BCFDEMSVehicles", DispatchableVehicles_FEJ.BCFDEMSVehicles_FEJ),
+            new DispatchableVehicleGroup("SAMSVehicles", DispatchableVehicles_FEJ.SAMSVehicles_FEJ),
+
+
+            new DispatchableVehicleGroup("LSMCVehicles", DispatchableVehicles_FEJ.LSMCVehicles_FEJ),
+            new DispatchableVehicleGroup("MRHVehicles", DispatchableVehicles_FEJ.MRHVehicles_FEJ),
+
+
+            //Fire
+            new DispatchableVehicleGroup("LSFDVehicles", DispatchableVehicles_FEJ.LSFDVehicles_FEJ),
+            new DispatchableVehicleGroup("LSCOFDVehicles", DispatchableVehicles_FEJ.LSCOFDVehicles_FEJ),
+            new DispatchableVehicleGroup("BCFDVehicles", DispatchableVehicles_FEJ.BCFDVehicles_FEJ),
+            new DispatchableVehicleGroup("SanFireVehicles", DispatchableVehicles_FEJ.SanFireVehicles_FEJ),
+
+
+            //Security
+
+            new DispatchableVehicleGroup("MerryweatherPatrolVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.MerryweatherPatrolVehicles_FEJ),
+            new DispatchableVehicleGroup("BobcatSecurityVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.BobcatSecurityVehicles_FEJ),
+            new DispatchableVehicleGroup("GroupSechsVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.GroupSechsVehicles_FEJ),
+            new DispatchableVehicleGroup("SecuroservVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.SecuroservVehicles_FEJ),
+            new DispatchableVehicleGroup("LNLVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.LNLVehicles_FEJ),
+            new DispatchableVehicleGroup("ChuffVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.CHUFFVehicles_FEJ),
+
+            //Gang stuff
+            new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
+            new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles),
+            new DispatchableVehicleGroup("BallasVehicles", BallasVehicles),
+            new DispatchableVehicleGroup("VagosVehicles", VagosVehicles),
+            new DispatchableVehicleGroup("MarabuntaVehicles", MarabuntaVehicles),
+            new DispatchableVehicleGroup("KoreanVehicles", KoreanVehicles),
+            new DispatchableVehicleGroup("TriadVehicles", TriadVehicles),
+            new DispatchableVehicleGroup("YardieVehicles", YardieVehicles),
+            new DispatchableVehicleGroup("DiablosVehicles", DiablosVehicles),
+            new DispatchableVehicleGroup("GambettiVehicles", GambettiVehicles),
+            new DispatchableVehicleGroup("PavanoVehicles", PavanoVehicles),
+            new DispatchableVehicleGroup("LupisellaVehicles", LupisellaVehicles),
+            new DispatchableVehicleGroup("MessinaVehicles", MessinaVehicles),
+            new DispatchableVehicleGroup("AncelottiVehicles", AncelottiVehicles),
+            new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles),
+            new DispatchableVehicleGroup("CartelVehicles", CartelVehicles),
+            new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles),
+            new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles),
+
+            //Other
+            new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
+            new DispatchableVehicleGroup("DowntownTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.DowntownTaxiVehicles),
+            new DispatchableVehicleGroup("HellTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.HellTaxiVehicles),
+            new DispatchableVehicleGroup("PurpleTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.PurpleTaxiVehicles),
+            new DispatchableVehicleGroup("ShitiTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.ShitiTaxiVehicles),
+            new DispatchableVehicleGroup("SunderedTaxiVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.SunderedTaxiVehicles),
+        };
+
+        Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\DispatchableVehicles_FullExpandedJurisdiction_AttackOfTheStaniers.xml");
     }
 }
 

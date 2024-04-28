@@ -62,6 +62,9 @@ public class DispatchableVehicle
     public int FirstPassengerIndex { get; set; } = 0;
     public List<SpawnAdjustmentAmount> SpawnAdjustmentAmounts { get; set; }
     public bool RequiredGroupIsDriverOnly { get; set; }
+    public bool MatchDashColorToBaseColor { get; set; } = false;
+    public bool MatchInteriorColorToBaseColor { get; set; } = false;
+
     public string GetDescription()
     {
         string description = "";
@@ -274,6 +277,14 @@ public class DispatchableVehicle
         {
             int chosenColor = OptionalColors.PickRandom();
             NativeFunction.Natives.SET_VEHICLE_COLOURS(vehicleExt.Vehicle, chosenColor, chosenColor);
+            if (MatchInteriorColorToBaseColor)
+            {
+                NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_5(vehicleExt.Vehicle, chosenColor);
+            }
+            if (MatchDashColorToBaseColor)
+            {
+                NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_6(vehicleExt.Vehicle, chosenColor);
+            }
         }
         if (RequiredPrimaryColorID != -1)
         {

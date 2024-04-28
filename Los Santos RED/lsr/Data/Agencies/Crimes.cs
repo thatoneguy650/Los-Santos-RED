@@ -38,6 +38,7 @@ public class Crimes : ICrimes
     private Crime DealingDrugs;
     private Crime DealingGuns;
     private Crime SuspiciousVehicle;
+    private Crime SevereTrespessing;
     private Crime HitCarWithCar;
     private Crime PublicIntoxication;
     private Crime ChangingPlates;
@@ -147,6 +148,9 @@ public class Crimes : ICrimes
         DealingGuns = new Crime(StaticStrings.DealingGunsCrimeID, "Illegal Weapons Dealing", 2, false, 24, true, false, false) { MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~dealing illegal guns~s~~n~Avoid dealing in public" };
         DrugPossession = new Crime(StaticStrings.DrugPossessionCrimeID, "Drug Possession", 2, false, 25, true, false, false) { MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~in possession of illegal drugs~s~~n~Avoid using in public" };
         SuspiciousVehicle = new Crime(StaticStrings.SuspiciousVehicleCrimeID, "Suspicious Vehicle", 2, false, 26, true, false, false) { MaxObservingDistance = 30f, MaxReportingDistance = 15f, ShowsWarning = true, WarningMessage = "This vehicle is ~r~suspicious~s~~n~Remove offending items" };
+
+        SevereTrespessing = new Crime(StaticStrings.SevereTrespessingCrimeID, "Trespassing", 2, false, 27, true, true, false) { ShowsWarning = true, WarningMessage = "You are ~r~trespassing~s~~n~Leave the area or avoid being spotted" };
+
         Trespassing = new Crime(StaticStrings.TrespessingCrimeID, "Trespassing", 2, false, 27, true, false, false) { ShowsWarning = true, WarningMessage = "You are ~r~trespassing~s~~n~Leave the area or avoid being spotted" };
         VehicleInvasion = new Crime(StaticStrings.VehicleInvasionCrimeID, "Vehicle Invasion", 2, false, 28, true, true, true) { MaxReportingDistance = 15f  };
 
@@ -188,6 +192,7 @@ public class Crimes : ICrimes
              BrandishingHeavyWeapon,
              TrespessingOnGovtProperty,
              TrespassingOnMilitaryBase,
+             SevereTrespessing,
              Trespassing,
              VehicleInvasion,
              SuspiciousVehicle,
@@ -256,6 +261,7 @@ public class Crimes : ICrimes
              HurtingPolice,
              SuspiciousVehicle,
              BrandishingHeavyWeapon,
+             SevereTrespessing,
              Trespassing,
              VehicleInvasion,
              TrespessingOnGovtProperty,

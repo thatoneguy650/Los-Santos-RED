@@ -4950,7 +4950,9 @@ private void contacttest()
 
             }
 
-            //EntryPoint.WriteToConsoleTestLong(Text);
+
+
+            EntryPoint.WriteToConsole(Text);
 
 
         }

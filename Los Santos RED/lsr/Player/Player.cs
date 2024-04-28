@@ -1735,13 +1735,17 @@ namespace Mod
             Investigation.Start(position, false, true, false, false);
             Scanner.OnOfficerMIA();
         }
-        public void OnSeenInRestrictedAreaOnCamera()
+        public void OnSeenInRestrictedAreaOnCamera(bool isSevere)
         {
             if(Violations.CanEnterRestrictedAreas)
             {
                 return;
             }
             Crime crimeObserved = Crimes.GetCrime(StaticStrings.TrespessingCrimeID);
+            if(isSevere)
+            {
+                crimeObserved = Crimes.GetCrime(StaticStrings.SevereTrespessingCrimeID);
+            }
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, false, Position, true);
             PoliceResponse.AddCrime(crimeObserved, description, false);
             Investigation.Start(Position, true, true, false, false);

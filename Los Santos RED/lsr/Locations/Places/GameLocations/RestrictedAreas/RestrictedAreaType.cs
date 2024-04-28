@@ -7,4 +7,5 @@
     GovernmentFacility,
     Airport,
     Port,
+    Bank,
 }

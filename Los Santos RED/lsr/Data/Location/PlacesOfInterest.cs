@@ -775,6 +775,53 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 new ClothingShop(new Vector3(-837.588f, -161.6364f, 37.90956f), 0f, "Didier Sachs","Fashion never cost so much","",Vector3.Zero) { OpenTime = 8, CloseTime = 20, IsTemporarilyClosed = true, ScannerFilePath = "01_specific_location\\0x0092CBCB.mp3"},//rockford hills
                 new ClothingShop(new Vector3(-717.36f, -157.29f, 38.2f), 117.6851f, "Ponsonbys","Catering to the Elite","",Vector3.Zero) { OpenTime = 8, CloseTime = 20, IsTemporarilyClosed = true, ScannerFilePath = "01_specific_location\\0x0289F802.mp3"},//rockford hills
+        
+                new ClothingShop(new Vector3(-622.108f, -230.744f, 38.05705f), 359.4608f, "Vangelico", "Retailer of high-end jewelry and blood diamonds", "", Vector3.Zero) {
+                    Name = "Vangelico",
+                    FullName = "Vangelico",
+                    Description = "Retailer of high-end jewelry and blood diamonds",
+                    EntrancePosition = new Vector3( - 622.108f, -230.744f, 38.05705f),
+                    EntranceHeading = 359.4608f,
+                    OpenTime = 4,
+                    CloseTime = 22,
+                    InteriorID = 82690,
+                    IsOnSPMap = false,
+	                //MenuID = "VangelicoMenu",
+	                PossiblePedSpawns = new List < ConditionalLocation > () {
+                        new SecurityConditionalLocation() {
+                            Location = new Vector3( - 623.1132f, -225.5436f, 38.05704f),
+                            Heading = 166.1438f,
+                            Percentage = 95f,
+                            AssociationID = "SECURO",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<string>() {"WORLD_HUMAN_GUARD_STAND",},
+                            MinHourSpawn = 6,
+                            MaxHourSpawn = 20,
+                            ForceSidearm = true,
+                            ForceLongGun = true,
+                        },
+                        new SecurityConditionalLocation() {
+                            Location = new Vector3( - 617.5581f, -233.1718f, 38.05704f),
+                            Heading = 94.85792f,
+                            Percentage = 95f,
+                            AssociationID = "SECURO",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<string>() {"WORLD_HUMAN_GUARD_STAND",
+                            },
+                            MinHourSpawn = 6,
+                            MaxHourSpawn = 20,
+                            LongGunAlwaysEquipped = true,
+                            ForceSidearm = true,
+                            ForceLongGun = true,
+                        },
+                    },
+                    VendorLocations = new List<SpawnPlace>() 
+                    {
+                        new SpawnPlace(new Vector3(-622.4784f, -229.6247f, 38.05705f),305.908f)
+                    },
+                    VendorPersonnelID = "TellerPeds",
+                },
+
         };
     }
     private void DefaultConfig_DriveThrus()
@@ -1536,13 +1583,34 @@ public class PlacesOfInterest : IPlacesOfInterest
     }
     private void DefaultConfig_Banks()
     {
+        Vector2[] fleeca1RestrictedArea = new Vector2[]
+        {
+            new Vector2 { X = -352.0612f, Y = -53.76372f },
+            new Vector2 { X = -349.4093f, Y = -55.09093f },
+            new Vector2 { X = -350.9847f, Y = -60.41546f },
+            new Vector2 { X = -354.1934f, Y = -58.88084f },
+        };
+        Vector2[] fleeca1RestrictedArea2 = new Vector2[]
+        {
+            new Vector2 { X = -354.5473f, Y = -50.24043f },
+            new Vector2 { X = -348.8781f, Y = -52.28946f },
+            new Vector2 { X = -356.3486f, Y = -53.77395f },
+            new Vector2 { X = -349.7612f, Y = -56.4671f },
+        };
+        List<InteriorDoor> fleeca1Gates = new List<InteriorDoor>() 
+        {
+            new InteriorDoor(2121050683,new Vector3(-353.2158f,-53.87801f,49.03653f)) { ForceRotateOpen = true },
+        };
+
+
+
+
         Banks = new List<Bank>()
         {
             new Bank(new Vector3(-1318f, -831.5065f, 16.97263f), 125.3848f, "Maze Bank", "Invest in the red", "Maze")
             {
                 BannerImagePath = "stores\\maze.png",
             },
-
             new Bank(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, "Fleeca Bank", "Everything, at a price","Fleeca")
             {
                 BannerImagePath = "stores\\fleeca.png",
@@ -1551,14 +1619,24 @@ public class PlacesOfInterest : IPlacesOfInterest
             {
                 BannerImagePath = "stores\\fleeca.png",
                 InteriorID = 71682,
-                VendorLocations = new List<SpawnPlace>() {
+                VendorLocations = new List<SpawnPlace>() 
+                {
                     new SpawnPlace(new Vector3(-351.3789f, -51.64762f, 49.03649f), 336.6109f),
                 },
                 ActivateCells = 3,
                 ActivateDistance = 75f,
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    RestrictedAreasList = new List<RestrictedArea>()
+                    {
+                        new RestrictedArea("Fleeca Vault Room",fleeca1RestrictedArea,null,RestrictedAreaType.Bank) { IsTrespassingSevere = true, },
+                        new RestrictedArea("Fleeca Front Room",fleeca1RestrictedArea2,null,RestrictedAreaType.Bank) { IsTrespassingSevere = true, },
+                    }
+                },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new SecurityConditionalLocation(new Vector3(-352.5154f,-46.69918f,49.03637f),158.5911f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(-350.0684f,-55.37014f,49.01481f),72.79137f,95f) { AssociationID = "GRP6", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
                 },
             },
             new Bank(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f,  "Fleeca Bank", "Everything, at a price","Fleeca")
@@ -1574,6 +1652,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new SecurityConditionalLocation(new Vector3(148.3287f,-1037.451f,29.3679f),155.8272f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(150.8173f,-1046.188f,29.34632f),69.36922f,95f) { AssociationID = "GRP6", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
                 },
             },
             new Bank(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f,  "Fleeca Bank", "Everything, at a price","Fleeca")
@@ -1589,6 +1668,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new SecurityConditionalLocation(new Vector3(312.5207f,-275.8242f,54.16462f),158.9338f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(315.2496f,-284.7239f,54.14301f),70.262f,95f) { AssociationID = "GRP6", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
                 },
             },
             new Bank(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f,  "Fleeca Bank", "Everything, at a price","Fleeca")
@@ -1603,6 +1683,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new SecurityConditionalLocation(new Vector3(-2965.206f,480.3015f,15.6969f),268.606f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(-2957.569f,485.632f,15.67533f),174.1285f,95f) { AssociationID = "GRP6", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
                 },
             },
             new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", "Everything, at a price","Fleeca")
@@ -1617,6 +1698,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new SecurityConditionalLocation(new Vector3(1177.713f,2704.353f,38.08786f),0.2107314f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(1172.005f,2711.791f,38.06627f), 270.1688f,95f) { AssociationID = "GRP6", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
                 },
             },
             new Bank(new Vector3(-1214.902f, -327.0157f, 37.6686f), 26.31765f, "Fleeca Bank", "Everything, at a price","Fleeca")
@@ -1632,6 +1714,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new SecurityConditionalLocation(new Vector3(-1216.203f,-329.709f,37.78087f),205.3641f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(-1207.684f,-333.7042f,37.75927f), 116.2364f,95f) { AssociationID = "GRP6", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
                 },
             },
 
@@ -1652,6 +1735,12 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new SecurityConditionalLocation(new Vector3(246.5008f,214.1364f,106.2868f),345.16f,80f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
                     new SecurityConditionalLocation(new Vector3(240.2741f,214.4063f,110.283f),160.8276f,80f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
 
+
+                    new SecurityConditionalLocation(new Vector3(256.9742f,220.4982f,106.2852f), 159.0666f,95f) { AssociationID = "GRP6", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(253.94f,221.3301f,101.6834f), 342.1928f,95f) { AssociationID = "GRP6", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(251.7139f,222.3622f,101.6834f), 332.5652f,95f) { AssociationID = "GRP6", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+
+
                 },
             },
 
@@ -1671,9 +1760,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new SecurityConditionalLocation(new Vector3(-116.1009f,6471.834f,31.62671f),222.2569f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(-107.3023f,6474.917f,31.62671f), 225.9335f,95f) { AssociationID = "GRP6", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+
                 },
             },
-
             new Bank(new Vector3(-1103.88f, -1353.062f, 5.037252f), 206.2566f, "Lombank", "Our time is your money", "Lombank")
             {
                 BannerImagePath = "stores\\lombank.png" 

@@ -12,6 +12,6 @@ namespace LosSantosRED.lsr.Interface
         Violations Violations { get; }
         LocationData CurrentLocation { get; }
 
-        void OnSeenInRestrictedAreaOnCamera();
+        void OnSeenInRestrictedAreaOnCamera(bool isSevere);
     }
 }
