@@ -51,7 +51,7 @@ public class ActivitySettings : ISettingsDefaultable
     public uint DrinkTimeBetween { get; set; }
     [Description("Does the base animation play when drinking")]
     public bool DrinkStartsBase { get; set; }
-
+    public uint DrinkSipsAllowed { get; set; }
     public float BlendInIdleDrink { get; set; }
     public float BlendOutIdleDrink { get; set; }
     public float BlendInBaseDrink { get; set; }
@@ -131,6 +131,7 @@ public class ActivitySettings : ISettingsDefaultable
         PlateTheftFloat = 1.0f;
         DrinkTimeBetween = 0;
         DrinkStartsBase = false;
+        DrinkSipsAllowed = 5;
         DisplayBodyArmor = false;
         BodyArmorDefaultDrawableID = 11;
         BodyArmorDefaultTextureID = 1;
