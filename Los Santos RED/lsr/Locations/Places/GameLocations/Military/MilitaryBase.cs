@@ -34,6 +34,21 @@ public class MilitaryBase : GameLocation, ILocationRespawnable,  ILocationAreaRe
         {
             AssignedAgency = zones.GetZone(EntrancePosition)?.AssignedLEAgency;
         }
+
+        if (AssignedAgency == null)
+        {
+            Zone assignedZone = zones.GetZone(EntrancePosition);
+            if (assignedZone != null)
+            {
+                AssignedAgency = assignedZone.AssignedLEAgency;
+            }
+            if (AssignedAgency == null && assignedZone != null)
+            {
+                EntryPoint.WriteToConsole("MILITARY BASE FALLBACK TO COUNTY AGENCY");
+                AssignedAgency = jurisdictions.GetRespondingAgency(null, assignedZone.CountyID, ResponseType.LawEnforcement);
+            }
+        }
+
     }
 
 }

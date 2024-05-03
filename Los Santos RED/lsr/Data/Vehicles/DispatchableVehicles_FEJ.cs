@@ -1209,6 +1209,12 @@ public class DispatchableVehicles_FEJ
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         return toReturn;
     }
+    public DispatchableVehicle Create_PoliceGresley(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int requiredDashboardColor)
+    {
+        DispatchableVehicle intermediate = Create_PoliceGresley(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        intermediate.RequiredDashColorID = requiredDashboardColor;
+        return intermediate;
+    }
     public DispatchableVehicle Create_PoliceGresley(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceGresley, ambientPercent, wantedPercent);
@@ -1218,13 +1224,18 @@ public class DispatchableVehicles_FEJ
         }
         if (policeVehicleType == PoliceVehicleType.Marked)
         {
-            //Gresley - 1 = Front Bar, 2 = siren, 4 = searchligh, 8 = antenna, 9 = divider
+            //Gresley - 1 = Front Bar, 2 = siren, 4 = searchligh,7 = antenna, 8 = dashcam, 9 = divider, 10 = shotguns, 11 = computer, 12 = radio
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
                 new DispatchableVehicleExtra(1, true, 65),
                 new DispatchableVehicleExtra(2, true, 100),
                 new DispatchableVehicleExtra(4, true, 65),
-                new DispatchableVehicleExtra(8, true, 65),
+                new DispatchableVehicleExtra(7, true, 65),
+
+                new DispatchableVehicleExtra(8, true, 100),
                 new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(10, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
             };
         }
         if (policeVehicleType == PoliceVehicleType.MarkedWithColor)
@@ -1234,8 +1245,13 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(1, true, 65),
                 new DispatchableVehicleExtra(2, true, 100),
                 new DispatchableVehicleExtra(4, true, 65),
-                new DispatchableVehicleExtra(8, true, 65),
+                new DispatchableVehicleExtra(7, true, 65),
+
+                new DispatchableVehicleExtra(8, true, 100),
                 new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(10, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
             };
             toReturn.RequiredPrimaryColorID = requiredColor;//base white
             toReturn.RequiredSecondaryColorID = requiredColor;//base black
@@ -1247,8 +1263,13 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(1, true, 65),
                 new DispatchableVehicleExtra(2, false, 100),
                 new DispatchableVehicleExtra(4, true, 65),
-                new DispatchableVehicleExtra(8, true, 65),
+                new DispatchableVehicleExtra(7, true, 65),
+
+                new DispatchableVehicleExtra(8, true, 100),
                 new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(10, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
             };
         }
         else if (policeVehicleType == PoliceVehicleType.Unmarked)
@@ -1258,8 +1279,12 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(1, true, 65),
                 new DispatchableVehicleExtra(2, false, 100),
                 new DispatchableVehicleExtra(4, true, 65),
-                new DispatchableVehicleExtra(8, true, 65),
+                new DispatchableVehicleExtra(7, true, 65),
+                new DispatchableVehicleExtra(8, true, 100),
                 new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(10, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
             };
             toReturn.RequiredLiveries = new List<int>() { 11 };
         }
@@ -1270,11 +1295,20 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(1, false, 70),
                 new DispatchableVehicleExtra(2, false, 100),
                 new DispatchableVehicleExtra(4, false, 65),
-                new DispatchableVehicleExtra(8, false, 65),
+                new DispatchableVehicleExtra(7, false, 65),
+                new DispatchableVehicleExtra(8, false, 100),
                 new DispatchableVehicleExtra(9, false, 100),
+                new DispatchableVehicleExtra(10, false, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, false, 100),
             };
             toReturn.RequiredLiveries = new List<int>() { 11 };
         }
+        if (requiredColor != -1)
+        {
+            toReturn.RequiredDashColorID = requiredColor;
+        }
+        toReturn.MatchDashColorToBaseColor = true;
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         return toReturn;
     }
@@ -1763,6 +1797,13 @@ public class DispatchableVehicles_FEJ
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, -1, -1, requiredPedGroup, groupName);
         return toReturn;
     }
+
+    public DispatchableVehicle Create_PoliceInterceptor(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int requiredDashboardColor)
+    {
+        DispatchableVehicle intermediate = Create_PoliceInterceptor(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        intermediate.RequiredDashColorID = requiredDashboardColor;
+        return intermediate;
+    }
     public DispatchableVehicle Create_PoliceInterceptor(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType PoliceVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string groupName, string requiredPedGroup)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceTorrence, ambientPercent, wantedPercent);
@@ -1772,14 +1813,22 @@ public class DispatchableVehicles_FEJ
         }
         if (PoliceVehicleType == PoliceVehicleType.Marked)
         {
-            //1 = Searchlught, 2 = ram bar, 3 = siren, 9 partition, 11 = radio, 12 = vanilla
+            //1 = Searchlught, 2 = ram bar, 3 = siren,6 = top antenna alprs, 7 = rear alprs,8 = dash cam top, 9 partition,10 = shotguns, 11 = computer, 12 = radio
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
                 new DispatchableVehicleExtra(1, true, 70),
                 new DispatchableVehicleExtra(2, true, 85),
                 new DispatchableVehicleExtra(3, true, 100),
+
+                new DispatchableVehicleExtra(6, true, 65),
+                new DispatchableVehicleExtra(7, true, 35),
+                new DispatchableVehicleExtra(8, true, 100),
+
                 new DispatchableVehicleExtra(9, true, 100),
+
+                new DispatchableVehicleExtra(10, true, 100),
+
                 new DispatchableVehicleExtra(11, true, 100),
-                new DispatchableVehicleExtra(12, true, 20),
+                new DispatchableVehicleExtra(12, true, 100),
             };
         }
         if (PoliceVehicleType == PoliceVehicleType.SlicktopMarked)
@@ -1789,9 +1838,16 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(1, true, 70),
                 new DispatchableVehicleExtra(2, true, 85),
                 new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(6, true, 65),
+                new DispatchableVehicleExtra(7, true, 35),
+                new DispatchableVehicleExtra(8, true, 100),
+
                 new DispatchableVehicleExtra(9, true, 100),
+
+                new DispatchableVehicleExtra(10, true, 100),
+
                 new DispatchableVehicleExtra(11, true, 100),
-                new DispatchableVehicleExtra(12, true, 20),
+                new DispatchableVehicleExtra(12, true, 100),
             };
         }
         else if (PoliceVehicleType == PoliceVehicleType.Unmarked)
@@ -1800,8 +1856,14 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(1, true, 35),
                 new DispatchableVehicleExtra(2, true, 40),
                 new DispatchableVehicleExtra(3, false, 100),
+
+                new DispatchableVehicleExtra(6, false, 100),
+                new DispatchableVehicleExtra(7, false, 100),
+
+                new DispatchableVehicleExtra(8, true, 100),
                 new DispatchableVehicleExtra(9, true, 65),
-                new DispatchableVehicleExtra(11, true, 75),
+                new DispatchableVehicleExtra(10, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
                 new DispatchableVehicleExtra(12, true, 20),
             };
         }
@@ -1811,11 +1873,22 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(1, true, 15),
                 new DispatchableVehicleExtra(2, true, 20),
                 new DispatchableVehicleExtra(3, false, 100),
+
+                new DispatchableVehicleExtra(6, false, 100),
+                new DispatchableVehicleExtra(7, false, 100),
+
+                new DispatchableVehicleExtra(8, true, 100),
                 new DispatchableVehicleExtra(9, false, 100),
-                new DispatchableVehicleExtra(11, true, 20),
+                new DispatchableVehicleExtra(10, false, 100),
+                new DispatchableVehicleExtra(11, true, 100),
                 new DispatchableVehicleExtra(12, true, 20),
             };
         }
+        if (requiredColor != -1)
+        {
+            toReturn.RequiredDashColorID = requiredColor;
+        }
+        toReturn.MatchDashColorToBaseColor = true;
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         return toReturn;
     }

@@ -41,7 +41,16 @@ public class Prison : GameLocation, ILocationRespawnable, ILocationAreaRestricta
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest, issuableWeapons, heads, dispatchablePeople);
         if (AssignedAgency == null)
         {
-            AssignedAgency = zones.GetZone(EntrancePosition)?.AssignedLEAgency;
+            Zone assignedZone = zones.GetZone(EntrancePosition);
+            if (assignedZone != null)
+            {
+                AssignedAgency = assignedZone.AssignedLEAgency;
+            }
+            if (AssignedAgency == null && assignedZone != null)
+            {
+                EntryPoint.WriteToConsole("PRISON FALLBACK TO COUNTY AGENCY");
+                AssignedAgency = jurisdictions.GetRespondingAgency(null, assignedZone.CountyID, ResponseType.LawEnforcement);
+            }
         }
     }
     public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)

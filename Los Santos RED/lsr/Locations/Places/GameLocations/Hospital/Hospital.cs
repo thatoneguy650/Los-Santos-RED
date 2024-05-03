@@ -37,7 +37,16 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest, issuableWeapons, heads, dispatchablePeople);
         if (AssignedAgency == null)
         {
-            AssignedAgency = zones.GetZone(EntrancePosition)?.AssignedEMSAgency;
+            Zone assignedZone = zones.GetZone(EntrancePosition);
+            if (assignedZone != null)
+            {
+                AssignedAgency = assignedZone.AssignedEMSAgency;
+            }
+            if(AssignedAgency == null && assignedZone != null)
+            {
+                EntryPoint.WriteToConsole("HOSPITAL FALLBACK TO COUNTY AGENCY");
+                AssignedAgency = jurisdictions.GetRespondingAgency(null, assignedZone.CountyID, ResponseType.EMS);
+            }
         }
         if(!string.IsNullOrEmpty(TreatmentOptionsID))
         {

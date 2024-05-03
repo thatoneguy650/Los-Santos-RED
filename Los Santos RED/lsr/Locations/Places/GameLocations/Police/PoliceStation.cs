@@ -53,7 +53,16 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
         VehicleImpoundLot?.Setup(this);
         if (AssignedAgency == null)
         {
-            AssignedAgency = zones.GetZone(EntrancePosition)?.AssignedLEAgency;
+            Zone assignedZone = zones.GetZone(EntrancePosition);
+            if (assignedZone != null)
+            {
+                AssignedAgency = assignedZone.AssignedLEAgency;
+            }
+            if (AssignedAgency == null && assignedZone != null)
+            {
+                EntryPoint.WriteToConsole("POLICE STATION FALLBACK TO COUNTY AGENCY");
+                AssignedAgency = jurisdictions.GetRespondingAgency(null, assignedZone.CountyID, ResponseType.LawEnforcement);
+            }
         }
     }
     public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)

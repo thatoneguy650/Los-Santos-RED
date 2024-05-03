@@ -144,7 +144,7 @@ public class SearchActivity
             return;
         }
 
-        bool isOpen = CarToSearch != null && CarToSearch.Vehicle.Exists() && CarToSearch.Vehicle.Doors[5].IsOpen;
+        bool isOpen = CarToSearch != null && CarToSearch.Vehicle.Exists() && CarToSearch.Vehicle.Doors[5] != null && CarToSearch.Vehicle.Doors[5].IsOpen;
         animDict = "anim_heist@hs4f@ig14_open_car_trunk@male@";
         anim = setOpen ? "open_trunk_rushed" : "close_trunk";
         AnimationToggleTime = setOpen ? Settings.SettingsManager.DoorToggleSettings.OpenHoodAnimationTime : Settings.SettingsManager.DoorToggleSettings.CloseHoodAnimationTime;

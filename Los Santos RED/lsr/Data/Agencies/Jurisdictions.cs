@@ -163,10 +163,11 @@ public class Jurisdictions : IJurisdictions
         if(!string.IsNullOrEmpty(zoneInternalGameName))
         {
             toReturn = GetMainAgency(zoneInternalGameName, responseType);
-            if(toReturn == null)
-            {
-                toReturn = GetRandomCountyAgency(countyID, 0, responseType);
-            }
+
+        }
+        if (toReturn == null)
+        {
+            toReturn = GetRandomCountyAgency(countyID, 0, responseType);
         }
         return toReturn;
     }

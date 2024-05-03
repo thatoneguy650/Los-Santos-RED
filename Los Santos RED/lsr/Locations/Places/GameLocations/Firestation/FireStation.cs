@@ -32,7 +32,16 @@ public class FireStation : GameLocation, ILicensePlatePreviewable
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors,player,modItems,weapons,time,placesOfInterest, issuableWeapons, heads, dispatchablePeople);
         if (AssignedAgency == null)
         {
-            AssignedAgency = zones.GetZone(EntrancePosition)?.AssignedFireAgency;
+            Zone assignedZone = zones.GetZone(EntrancePosition);
+            if (assignedZone != null)
+            {
+                AssignedAgency = assignedZone.AssignedFireAgency;
+            }
+            if (AssignedAgency == null && assignedZone != null)
+            {
+                EntryPoint.WriteToConsole("FIRE STATION FALLBACK TO COUNTY AGENCY");
+                AssignedAgency = jurisdictions.GetRespondingAgency(null, assignedZone.CountyID, ResponseType.Fire);
+            }
         }
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
