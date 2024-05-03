@@ -1,4 +1,4 @@
-﻿using ExtensionsMethods;
+using ExtensionsMethods;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player.Activity;
 using Rage;
@@ -108,14 +108,16 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
-
             bool IsFinishedWithSip = false;
+            bool FinishDrink = false;
             StartNewIdleAnimation();
             TimesDrank++;
             isPlayingBase = false;
             ConsumableItemNeedGain = new ConsumableRefresher(Player, DrinkItem, Settings) { IsIntervalBased = true };
             ConsumableItemNeedGain.Update();
             uint GameTimeStartedSip = 0;
+            uint comboSip = 0; // variable name is trash sorry
+            uint DrinkSipsAllowed = Settings.SettingsManager.ActivitySettings.DrinkSipsAllowed;
             Player.Intoxication.AddIntervalConsumption(CurrentIntoxicant);
             while (Player.ActivityManager.CanPerformActivitiesMiddle && !IsCancelled)
             {
@@ -133,6 +135,56 @@ namespace LosSantosRED.lsr.Player
                     {
                         IsCancelled = true;
                     }
+                    if (comboSip > 0 && comboSip != DrinkSipsAllowed)
+                    {
+                        ConsumableItemNeedGain.Update();
+                        TimesDrank++;
+                        comboSip++;
+                        StartNewIdleAnimation();
+                        Player.Intoxication.AddIntervalConsumption(CurrentIntoxicant);
+
+                        GameTimeStartedSip = Game.GameTime;
+                        IsFinishedWithSip = false;
+                        Player.ButtonPrompts.RemovePrompts("DrinkingActivity");
+                    }
+                    if (FinishDrink && TimesDrank < DrinkItem.AnimationCycles)
+                    {
+                        ConsumableItemNeedGain.Update();
+                        TimesDrank++;
+                        StartNewIdleAnimation();
+                        Player.Intoxication.AddIntervalConsumption(CurrentIntoxicant);
+
+                        GameTimeStartedSip = Game.GameTime;
+                        IsFinishedWithSip = false;
+                        Player.ButtonPrompts.RemovePrompts("DrinkingActivity");
+                    }
+                    else if (IsFinishedWithSip && Player.ButtonPrompts.IsPressed("DrinkingChug") && (Game.GameTime - GameTimeStartedSip >= 1500 || AnimationTime >= 1.0f))
+                    {
+                        FinishDrink = true;
+                        ConsumableItemNeedGain.Update();
+                        TimesDrank++;
+                        StartNewIdleAnimation();
+                        Player.Intoxication.AddIntervalConsumption(CurrentIntoxicant);
+
+                        GameTimeStartedSip = Game.GameTime;
+                        IsFinishedWithSip = false;
+                        Player.ButtonPrompts.RemovePrompts("DrinkingActivity");
+                        //EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank}");
+                    }
+                    else if (IsFinishedWithSip && Player.ButtonPrompts.IsPressed("DrinkingMultipleSips") && (Game.GameTime - GameTimeStartedSip >= 1500 || AnimationTime >= 1.0f))
+                    {
+                        comboSip = 0;
+                        ConsumableItemNeedGain.Update();
+                        TimesDrank++;
+                        comboSip++;
+                        StartNewIdleAnimation();
+                        Player.Intoxication.AddIntervalConsumption(CurrentIntoxicant);
+
+                        GameTimeStartedSip = Game.GameTime;
+                        IsFinishedWithSip = false;
+                        Player.ButtonPrompts.RemovePrompts("DrinkingActivity");
+                        //EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank}");
+                    }
                     else if (IsFinishedWithSip && Player.ButtonPrompts.IsPressed("DrinkingTakeSip") && (Game.GameTime - GameTimeStartedSip >= 1500 || AnimationTime >= 1.0f))
                     {
                         ConsumableItemNeedGain.Update();
@@ -146,13 +198,15 @@ namespace LosSantosRED.lsr.Player
                         //EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank}");
                     }
                 }
-                if(isPlayingBase && AnimationTime >= Settings.SettingsManager.ActivitySettings.DrinkAnimBaseEndingPercentage)// 0.5f)
+                if (isPlayingBase && AnimationTime >= Settings.SettingsManager.ActivitySettings.DrinkAnimBaseEndingPercentage)// 0.5f)
                 {
                     NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, 0.0f);
                 }
-                if(IsFinishedWithSip)
+                if (IsFinishedWithSip)
                 {
                     Player.ButtonPrompts.AddPrompt("DrinkingActivity", "Take Sip", "DrinkingTakeSip", GameControl.Attack, 10);
+                    Player.ButtonPrompts.AddPrompt("DrinkingActivity", $"Take {DrinkSipsAllowed} Sips", "DrinkingMultipleSips", GameControl.Aim, 10);
+                    Player.ButtonPrompts.AddPrompt("DrinkingActivity", "Finish Drink", "DrinkingChug", GameControl.Detonate, 10);
                 }
                 else
                 {
@@ -175,6 +229,7 @@ namespace LosSantosRED.lsr.Player
             Game.DisableControlAction(0, GameControl.Attack2, true);// false);
             Game.DisableControlAction(0, GameControl.MeleeAttack1, true);// false);
             Game.DisableControlAction(0, GameControl.MeleeAttack2, true);// false);
+            Game.DisableControlAction(0, GameControl.Detonate, true);// false);
 
 
             Game.DisableControlAction(0, GameControl.Aim, true);// false);
