@@ -57,6 +57,8 @@ public class ActivitySettings : ISettingsDefaultable
     public float BlendInBaseDrink { get; set; }
     public float BlendOutBaseDrink { get; set; }
     public float DrinkAnimBaseEndingPercentage { get; set; }
+    public uint BitesAllowed { get; set; }
+    [Description("Bite X amount of times")]
 
 
 
@@ -162,6 +164,7 @@ public class ActivitySettings : ISettingsDefaultable
         BlendOutBaseDrink = 1.0f;
 
         DrinkAnimBaseEndingPercentage = 0.7f;
+        BitesAllowed = 5;
 
 
 
