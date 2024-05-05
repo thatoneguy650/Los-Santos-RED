@@ -135,7 +135,7 @@ namespace LosSantosRED.lsr.Player
                     {
                         IsCancelled = true;
                     }
-                    if (comboSip > 0 && comboSip != DrinkSipsAllowed)
+                    else if (comboSip > 0 && comboSip != DrinkSipsAllowed)
                     {
                         ConsumableItemNeedGain.Update();
                         TimesDrank++;
@@ -147,7 +147,7 @@ namespace LosSantosRED.lsr.Player
                         IsFinishedWithSip = false;
                         Player.ButtonPrompts.RemovePrompts("DrinkingActivity");
                     }
-                    if (FinishDrink && TimesDrank < DrinkItem.AnimationCycles)
+                    else if (FinishDrink && TimesDrank < DrinkItem.AnimationCycles)
                     {
                         ConsumableItemNeedGain.Update();
                         TimesDrank++;

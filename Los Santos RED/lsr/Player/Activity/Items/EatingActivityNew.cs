@@ -1,4 +1,4 @@
-﻿using ExtensionsMethods;
+using ExtensionsMethods;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player.Activity;
 using Rage;
@@ -87,6 +87,7 @@ namespace LosSantosRED.lsr.Player
             uint GameTimeBetweenBites = RandomItems.GetRandomNumber(1500, 2500);
             uint GameTimeLastChangedIdle = Game.GameTime;
             bool IsFinishedWithBite = false;
+            bool FinishMeal = false;
             StartNewIdleAnimation();
             TimesAte++;
             isPlayingBase = false;
@@ -95,6 +96,8 @@ namespace LosSantosRED.lsr.Player
             Player.Intoxication.AddIntervalConsumption(CurrentIntoxicant);
 
             uint GameTimeStartedBite = 0;
+            uint comboBite = 0; // variable name is trash sorry
+            uint BitesAllowed = Settings.SettingsManager.ActivitySettings.BitesAllowed;
             while (Player.ActivityManager.CanPerformActivitiesMiddle && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
@@ -110,6 +113,62 @@ namespace LosSantosRED.lsr.Player
                     if (TimesAte >= FoodItem.AnimationCycles && ConsumableItemNeedGain.IsFinished)
                     {
                         IsCancelled = true;
+                    }
+                    else if (comboBite > 0 && comboBite != BitesAllowed)
+                    {
+                        ConsumableItemNeedGain.Update();
+                        TimesAte++;
+                        comboBite++;
+                        StartNewIdleAnimation();
+                        Player.Intoxication.AddIntervalConsumption(CurrentIntoxicant);
+
+                        GameTimeStartedBite = Game.GameTime;
+                        IsFinishedWithBite = false;
+                        Player.ButtonPrompts.RemovePrompts("EatingActivity");
+                    }
+                    else if (FinishMeal && TimesAte < FoodItem.AnimationCycles)
+                    {
+                        ConsumableItemNeedGain.Update();
+                        TimesAte++;
+                        StartNewIdleAnimation();
+                        Player.Intoxication.AddIntervalConsumption(CurrentIntoxicant);
+
+                        GameTimeStartedBite = Game.GameTime;
+                        IsFinishedWithBite = false;
+                        Player.ButtonPrompts.RemovePrompts("EatingActivity");
+                    }
+                    else if (IsFinishedWithBite && Player.ButtonPrompts.IsPressed("EatingFinish") && (Game.GameTime - GameTimeStartedBite >= 1500 || AnimationTime >= 1.0f))
+                    {
+                        FinishMeal = true;
+                        ConsumableItemNeedGain.Update();
+
+                        Player.Intoxication.AddIntervalConsumption(CurrentIntoxicant);
+
+
+                        TimesAte++;
+                        StartNewIdleAnimation();
+                        IsFinishedWithBite = false;
+
+                        GameTimeStartedBite = Game.GameTime;
+                        Player.ButtonPrompts.RemovePrompts("EatingActivity");
+                        //EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank}");
+                    }
+                    else if (IsFinishedWithBite && Player.ButtonPrompts.IsPressed("EatingMultipleBites") && (Game.GameTime - GameTimeStartedBite >= 1500 || AnimationTime >= 1.0f))
+                    {
+                        comboBite = 0;
+                        ConsumableItemNeedGain.Update();
+
+                        Player.Intoxication.AddIntervalConsumption(CurrentIntoxicant);
+
+
+                        TimesAte++;
+                        comboBite++;
+                        StartNewIdleAnimation();
+                        IsFinishedWithBite = false;
+
+                        GameTimeStartedBite = Game.GameTime;
+                        Player.ButtonPrompts.RemovePrompts("EatingActivity");
+                        //EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank}");
                     }
                     else if (IsFinishedWithBite && Player.ButtonPrompts.IsPressed("EatingTakeBite") && (Game.GameTime - GameTimeStartedBite >= 1500 || AnimationTime >= 1.0f))
                     {
@@ -136,6 +195,8 @@ namespace LosSantosRED.lsr.Player
                 if (IsFinishedWithBite)
                 {
                     Player.ButtonPrompts.AddPrompt("EatingActivity", "Take Bite", "EatingTakeBite", GameControl.Attack, 10);
+                    Player.ButtonPrompts.AddPrompt("EatingActivity", $"Take {BitesAllowed} Bites", "EatingMultipleBites", GameControl.Aim, 10);
+                    Player.ButtonPrompts.AddPrompt("EatingActivity", "Finish Food", "EatingFinish", GameControl.Detonate, 10);
                 }
                 else
                 {
@@ -156,6 +217,7 @@ namespace LosSantosRED.lsr.Player
             Game.DisableControlAction(0, GameControl.Attack2, true);// false);
             Game.DisableControlAction(0, GameControl.MeleeAttack1, true);// false);
             Game.DisableControlAction(0, GameControl.MeleeAttack2, true);// false);
+            Game.DisableControlAction(0, GameControl.Detonate, true);// false);
 
 
             Game.DisableControlAction(0, GameControl.Aim, true);// false);
