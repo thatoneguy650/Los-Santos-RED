@@ -1135,7 +1135,7 @@ namespace Mod
 
             PlayerVoice.OnCrashedCar();
 
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleCrashed");
+            EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleCrashed");
         }
         public void OnVehicleEngineHealthDecreased(float amount, bool isCollision)
         {

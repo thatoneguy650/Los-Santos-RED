@@ -20,6 +20,7 @@ public class Engine
     private VehicleExt VehicleToMonitor;
     private ISettingsProvideable Settings;
     private uint GameTimeLastToggleEngine;
+    private uint GameTimeLastUpdatedDamage;
 
     public bool IsRunning { get; private set; }
     public bool CanToggle => VehicleToMonitor.Vehicle.Exists() && VehicleToMonitor.Vehicle.Speed < 4f && !VehicleToMonitor.Vehicle.MustBeHotwired;
@@ -58,6 +59,11 @@ public class Engine
     }
     private void UpdateDamage(IDriveable driver)
     {
+        if(!(Game.GameTime - GameTimeLastUpdatedDamage >= 1000))
+        {
+            return;
+        }
+        GameTimeLastUpdatedDamage = Game.GameTime;
         if (Health > VehicleToMonitor.Vehicle.EngineHealth)
         {
             float Difference = Health - VehicleToMonitor.Vehicle.EngineHealth;

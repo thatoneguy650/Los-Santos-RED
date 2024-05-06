@@ -31,6 +31,7 @@ public class TrafficViolations
     private bool isRegularSpeeding;
     private bool isFelonySpeeding;
     private bool isDrivingSuspiciously;
+    private uint GameTimeLastSentCrash;
 
     public TrafficViolations(IViolateable player, Violations violations, ISettingsProvideable settings, ITimeReportable time, IEntityProvideable world)
     {
@@ -138,17 +139,18 @@ public class TrafficViolations
         if (RecentlyHitVehicle && IsFastEnoughToCheckViolations)
         {
             isDrivingSuspiciously = true;
-            if (!SentRecentCrash)
+            if (Game.GameTime - GameTimeLastSentCrash >= 2000)// !SentRecentCrash)
             {
-                SentRecentCrash = true;
+                //SentRecentCrash = true;
                 Player.OnVehicleCrashed();
+                GameTimeLastSentCrash = Game.GameTime;
             }
             Violations.AddViolating(StaticStrings.HitCarWithCarCrimeID);
         }
-        if (!RecentlyHitVehicle)
-        {
-            SentRecentCrash = false;
-        }
+        //if (!RecentlyHitVehicle)
+        //{
+        //    SentRecentCrash = false;
+        //}
     }
     private void UpdateTrafficStats()
     {

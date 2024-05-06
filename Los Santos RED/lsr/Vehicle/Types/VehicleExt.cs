@@ -33,6 +33,7 @@ namespace LSR.Vehicles
         protected bool HasAddedRandomCash = false;
         protected uint GameTimeLastAddedSonarBlip;
         private uint GameTimeLastDamagedByPlayer;
+        private uint GameTimeLastUpdatedDamage;
 
         public VehicleInteractionMenu VehicleInteractionMenu { get; set; }
         public SimpleInventory SimpleInventory { get; private set; }
@@ -873,10 +874,16 @@ namespace LSR.Vehicles
         }
         private void OnHealthDecreased(IDriveable driver)
         {
+            if (!(Game.GameTime - GameTimeLastUpdatedDamage >= 1000))
+            {
+                Health = Vehicle.Health;
+                return;
+            }
+            GameTimeLastUpdatedDamage = Game.GameTime;
             int Damage = Health - Vehicle.Health;
             bool Collided = NativeFunction.Natives.HAS_ENTITY_COLLIDED_WITH_ANYTHING<bool>(Vehicle);
             driver.OnVehicleHealthDecreased(Damage, Collided);
-            //EntryPoint.WriteToConsole($"PLAYER EVENT Vehicle Crashed Damage {Damage} Collided {Collided}", 5);
+            EntryPoint.WriteToConsole($"PLAYER EVENT Vehicle Crashed Damage {Damage} Collided {Collided}", 5);
             Health = Vehicle.Health;
         }
         public void Setup()
