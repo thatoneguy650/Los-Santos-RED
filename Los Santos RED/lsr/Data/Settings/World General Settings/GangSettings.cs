@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -150,7 +150,18 @@ public class GangSettings : ISettingsDefaultable
     [Description("Maximum additional time (in ms) between gang members speaking when in weapons free mode.")]
     public int TimeBetweenGangSpeak_HighCombat_Randomizer_Max { get; set; }
 
-
+    public int RepDeductedKilled { get; set; }
+    [Description("Reputation deducted when killing an enemy Gang Member.")]
+    public int RepDeductedKilledTerritory { get; set; }
+    [Description("Additional reputation deducted if an enemy Gang Member is killed in their territory.")]
+    public int RepDeductedInjured { get; set; }
+    [Description("Reputation deducted when injuring an enemy Gang Member.")]
+    public int RepDeductedInjuredTerritory { get; set; }
+    [Description("Additional reputation deducted if an enemy Gang Member is injured in their territory.")]
+    public int RepDeductedCarjacked { get; set; }
+    [Description("Reputation deducted when carjacking an enemy Gang Member.")]
+    public int RepDeductedCarjackedTerritory { get; set; }
+    [Description("Additional reputation deducted if an enemy Gang Member is carjacked in their territory.")]
 
     public int IdleSpeakPercentage { get; set; }
     public int SevereCombatSpeakPercentage { get; set; }
@@ -288,6 +299,12 @@ public class GangSettings : ISettingsDefaultable
         TimeBetweenGangSpeak_HighCombat_Randomizer_Min = 20000;
         TimeBetweenGangSpeak_HighCombat_Randomizer_Max = 35000;
 
+        RepDeductedKilled = 1000;
+        RepDeductedKilledTerritory = 4000;
+        RepDeductedInjured = 500;
+        RepDeductedInjuredTerritory = 2500;
+        RepDeductedCarjacked = 2500;
+        RepDeductedCarjackedTerritory = 2500;
 
         IdleSpeakPercentage = 10;
         SevereCombatSpeakPercentage = 35;
