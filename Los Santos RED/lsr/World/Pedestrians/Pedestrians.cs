@@ -984,7 +984,7 @@ public class Pedestrians : ITaskerReportable
         {
             return;
         }
-        Pedestrian.IsPersistent = true;
+        //Pedestrian.IsPersistent = true;
         if (!Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Pedestrian.Handle))
         {
             Police.Add(myCop);
@@ -1016,7 +1016,7 @@ public class Pedestrians : ITaskerReportable
         {
             return;
         }
-        Pedestrian.IsPersistent = true;
+        //Pedestrian.IsPersistent = true;
         if (!SecurityGuards.Any(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Pedestrian.Handle))
         {
             SecurityGuards.Add(mySecurityGuard);

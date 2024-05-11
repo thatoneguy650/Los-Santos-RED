@@ -84,6 +84,37 @@ public class DebugHelperSubMenu : DebugSubMenu
         };
         HelperMenuItem.AddItem(setSSMode);
 
+        UIMenuItem spawnNearbyItems = new UIMenuItem("Fill Nearby Station", "Fill nearby station with all cars descending");
+        spawnNearbyItems.Activated += (menu, item) =>
+        {
+            FillClosestStaion();
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(spawnNearbyItems);
+
+
+
+
+
+
+        UIMenuListScrollerItem<Agency> spawnCarPark = new UIMenuListScrollerItem<Agency>("Fill Car Park", "Spawn le agency car park", World.ModDataFileManager.Agencies.GetAgencies());
+        spawnCarPark.Activated += (menu, item) =>
+        {
+            FillCarPark(spawnCarPark.SelectedItem);
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(spawnCarPark);
+
+
+
+        UIMenuListScrollerItem<string> setlocalSirens = new UIMenuListScrollerItem<string>("Set Local Sirens", "force local sirens for cars", new List<string> { "On","Off" });
+        setlocalSirens.Activated += (menu, item) =>
+        {
+            SetSirens(setlocalSirens.SelectedItem == "On");
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(setlocalSirens);
+
 
 
         UIMenuItem highlightProp = new UIMenuItem("Highlight Prop", "Get some info about the nearest prop.");
@@ -346,6 +377,72 @@ public class DebugHelperSubMenu : DebugSubMenu
 
 
 
+    }
+
+    private void SetSirens(bool setOn)
+    {
+        foreach(VehicleExt vehicleExt in World.Vehicles.PoliceVehicles.ToList())
+        {
+            if(!vehicleExt.Vehicle.Exists())
+            {
+                continue;
+            }
+            if(!vehicleExt.Vehicle.HasSiren)
+            {
+                continue;
+            }
+            vehicleExt.Vehicle.IsSirenOn= setOn;
+        }
+    }
+
+    private void FillClosestStaion()
+    {
+        GameLocation gl = World.Places.ActiveLocations.Where(x=> x.AssignedAgency != null && x.PossibleVehicleSpawns.Any()).OrderBy(x=> x.DistanceToPlayer).FirstOrDefault();
+        if(gl == null)
+        {
+            return;
+        }
+        World.Vehicles.ClearSpawned(true);
+        Player.Dispatcher.LocationDispatcher.ForceSpawnAllVehicles(gl);
+    }
+    private void FillCarPark(Agency agency)
+    {
+        if(agency == null)
+        {
+            return;
+        }
+        if(Player.Character.DistanceTo(new Vector3(638.7681f, 635.7558f, 128.9111f))>= 100f)
+        {
+            return;
+        }
+        List<ConditionalLocation> list = new List<ConditionalLocation>()
+        {
+            new LEConditionalLocation(new Vector3(638.7681f, 635.7558f, 128.9111f), 248.3244f, 100f),
+            new LEConditionalLocation(new Vector3(637.551f, 632.4586f, 128.9111f), 249.2319f, 100f),
+            new LEConditionalLocation(new Vector3(636.3085f, 629.0381f, 128.9111f), 247.6597f, 100f),
+            new LEConditionalLocation(new Vector3(634.639f, 626.0833f, 128.9111f), 249.1287f, 100f),
+            new LEConditionalLocation(new Vector3(633.4773f, 622.7151f, 128.9111f), 247.7914f, 100f),
+            new LEConditionalLocation(new Vector3(632.2473f, 619.6294f, 128.9111f), 247.3871f, 100f),
+            new LEConditionalLocation(new Vector3(630.8295f, 616.2911f, 128.9111f), 246.7872f, 100f),
+            new LEConditionalLocation(new Vector3(629.7604f, 612.856f, 128.9111f), 249.0674f, 100f),
+            new LEConditionalLocation(new Vector3(628.8015f, 609.6461f, 128.9111f), 248.2168f, 100f),
+            new LEConditionalLocation(new Vector3(627.4628f, 606.449f, 128.9111f), 245.4982f, 100f),
+            new LEConditionalLocation(new Vector3(622.7714f, 637.9483f, 128.9111f), 248.426f, 100f),
+            new LEConditionalLocation(new Vector3(621.7044f, 634.6458f, 128.9111f), 248.9079f, 100f),
+            new LEConditionalLocation(new Vector3(620.6009f, 631.4076f, 128.9111f), 249.7423f, 100f),
+            new LEConditionalLocation(new Vector3(619.4406f, 627.96f, 128.9111f), 247.8293f, 100f),
+            new LEConditionalLocation(new Vector3(618.3074f, 624.7338f, 128.9111f), 247.3478f, 100f),
+            new LEConditionalLocation(new Vector3(617.0331f, 621.3472f, 128.9111f), 248.2468f, 100f),
+            new LEConditionalLocation(new Vector3(615.9576f, 618.2318f, 128.9111f), 243.997f, 100f),
+            new LEConditionalLocation(new Vector3(614.4206f, 614.8268f, 128.9111f), 246.6588f, 100f),
+            new LEConditionalLocation(new Vector3(613.1279f, 611.5945f, 128.9111f), 248.3828f, 100f),
+
+        };
+        World.Vehicles.ClearSpawned(true);
+        bool preSettings = Settings.SettingsManager.WorldSettings.CheckAreaBeforeVehicleSpawn;
+        Settings.SettingsManager.WorldSettings.CheckAreaBeforeVehicleSpawn = false;
+        Player.Dispatcher.LocationDispatcher.ForceSpawnAllVehicles(list, agency);
+        Settings.SettingsManager.WorldSettings.CheckAreaBeforeVehicleSpawn = preSettings;
     }
     private void AddTrunkItems()
     {

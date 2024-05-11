@@ -75,6 +75,7 @@ namespace LosSantosRED.lsr.Interface
         TaxiManager TaxiManager { get; }
         InteriorManager InteriorManager { get; }
         CuffManager CuffManager { get; }
+        Dispatcher Dispatcher { get; }
 
         void DisplayPlayerNotification();
         void SetWantedLevel(int selectedItem, string v1, bool v2);

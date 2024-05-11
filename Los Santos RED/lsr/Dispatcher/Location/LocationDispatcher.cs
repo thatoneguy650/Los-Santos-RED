@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Mod;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -134,6 +135,56 @@ public class LocationDispatcher
         }
         ps.AttemptVendorSpawn(ps.IsOpen(Time.CurrentHour), Interiors, Settings, Crimes, Weapons, Time, World, true);
     }
+    public void ForceSpawnAllVehicles(GameLocation ps)
+    {
+        if(ps == null || ps.PossibleVehicleSpawns == null || ps.AssignedAgency == null)
+        {
+            return;
+        }
+        List<DispatchableVehicle> priorityList = ps.AssignedAgency.Vehicles.OrderByDescending(x => x.AmbientSpawnChance).ToList();
+        if(!priorityList.Any())
+        {
+            return;
+        }
+        foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)
+        {
+            EntryPoint.WriteToConsole($"FORCING VEHICLE SPAWN AT {ps.Name}");
 
+            DispatchableVehicle selected = priorityList.OrderByDescending(x => x.AmbientSpawnChance).FirstOrDefault();
+            if(selected == null)
+            {
+                return;
+            }
+            cl.SetVehicle(selected);
+            cl.ForceSpawn(Player, false, true, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World,ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, ps);
+            GameFiber.Yield();
+            priorityList.Remove(selected);
+        }
+    }
+
+    public void ForceSpawnAllVehicles(List<ConditionalLocation> conditionalLocations, Agency agency)
+    {
+        if (conditionalLocations == null || agency== null)
+        {
+            return;
+        }
+        List<DispatchableVehicle> priorityList = agency.Vehicles.OrderByDescending(x => x.AmbientSpawnChance).ToList();
+        if (!priorityList.Any())
+        {
+            return;
+        }
+        foreach (ConditionalLocation cl in conditionalLocations)
+        {
+            DispatchableVehicle selected = priorityList.OrderByDescending(x => x.AmbientSpawnChance).FirstOrDefault();
+            if (selected == null)
+            {
+                return;
+            }
+            cl.SetVehicle(selected);
+            cl.ForceSpawn(Player, false, true, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, agency.ID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, null);
+            GameFiber.Yield();
+            priorityList.Remove(selected);
+        }
+    }
 }
 

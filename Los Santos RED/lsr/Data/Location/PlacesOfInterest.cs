@@ -1778,7 +1778,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             },
         };
     }
-
     private void DefaultConfig_SubwayStations()
     {
         SubwayStations = new List<SubwayStation>()

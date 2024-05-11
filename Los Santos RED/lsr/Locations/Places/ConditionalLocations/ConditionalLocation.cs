@@ -77,6 +77,7 @@ public class ConditionalLocation
     public bool AttemptedSpawn { get; private set; }
     [XmlIgnore]
     public bool Ignore { get; private set; }
+
     //public virtual void Setup(IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, ITimeControllable time, IModItems modItems)
     //{
     //    Agencies = agencies;
@@ -131,6 +132,34 @@ public class ConditionalLocation
         GenerateSpawnLocation();
         GetDispatchableGenerator();
         GenerateSpawnTypes();
+        RunSpawnTask();
+    }
+
+    public virtual void ForceSpawn(IDispatchable player, bool isPerson, bool force, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings,
+    IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IWeatherReportable weatherReporter, ITimeControllable time,
+    IModItems modItems, GameLocation gameLocation)
+    {
+        Player = player;
+        IsPerson = isPerson;
+        Agencies = agencies;
+        Gangs = gangs;
+        Zones = zones;
+        Jurisdictions = jurisdictions;
+        GangTerritories = gangTerritories;
+        Settings = settings;
+        World = world;
+        MasterAssociationID = masterAssociationID;
+        Weapons = weapons;
+        Names = names;
+        Crimes = crimes;
+        PedGroups = pedGroups;
+        ShopMenus = shopMenus;
+        WeatherReporter = weatherReporter;
+        Time = time;
+        ModItems = modItems;
+        GameLocation = gameLocation;
+        GenerateSpawnLocation();
+        GetDispatchableGenerator();
         RunSpawnTask();
     }
     private bool IsValidTimeToSpawn()
@@ -226,6 +255,10 @@ public class ConditionalLocation
     public void AddDistanceOffset(Vector3 offsetToAdd)
     {
         Location += offsetToAdd;
+    }
+    public void SetVehicle(DispatchableVehicle dv)
+    {
+        DispatchableVehicle = dv;
     }
 }
 

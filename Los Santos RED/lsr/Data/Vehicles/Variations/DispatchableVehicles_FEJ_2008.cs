@@ -71,7 +71,7 @@ public class DispatchableVehicles_FEJ_2008
             new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceBuffalo, 5, 5) { RequiredLiveries = new List<int>() { 7 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
             new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceGranger, 20, 20) { CaninePossibleSeats = new List<int>{ 1 },RequiredLiveries = new List<int>() {7 } },
             new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceStanier, 5, 5){  RequiredLiveries = new List<int>() { 7 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            DispatchableVehicles_FEJ.Create_PolicePatriot(15,35,7,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"StandardSAHP","StandardSAHP"),
+            DispatchableVehicles_FEJ.Create_PolicePatriot(15,35,7,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceFugitive(2,2,7,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
 
 

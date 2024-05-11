@@ -148,39 +148,43 @@ public class CopAssistManager
         {
             Vehicle copCar = Cop.Pedestrian.CurrentVehicle;
             if (copCar.Exists())
-            { 
-                if(!IsCheatFiberRunning)
-                {
-                    //EntryPoint.WriteToConsoleTestLong($"POWER ASSIST STARTED {Cop.Handle}");
-                    IsCheatFiberRunning = true;
-                    GameFiber.StartNew(delegate
-                    {
-                        try
-                        {
-                            while (copCar.Exists() && IsCheatFiberRunning)
-                            {
-                                NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(copCar, 1.8f);
-                                GameFiber.Sleep(100);
-                                //GameFiber.Yield();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                            EntryPoint.ModController.CrashUnload();
-                        }
-                    }, "cheatfiber");
-                }
-            }
-            else
             {
-                IsCheatFiberRunning = false;
+
+                NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(copCar, 1.8f);
+
+
+                //if (!IsCheatFiberRunning)
+                //{
+                //    //EntryPoint.WriteToConsoleTestLong($"POWER ASSIST STARTED {Cop.Handle}");
+                //    IsCheatFiberRunning = true;
+                //    GameFiber.StartNew(delegate
+                //    {
+                //        try
+                //        {
+                //            while (copCar.Exists() && IsCheatFiberRunning)
+                //            {
+                //                NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(copCar, 1.8f);
+                //                GameFiber.Sleep(100);
+                //                //GameFiber.Yield();
+                //            }
+                //        }
+                //        catch (Exception ex)
+                //        {
+                //            EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                //            //EntryPoint.ModController.CrashUnload();
+                //        }
+                //    }, "cheatfiber");
+                //}
             }
+            //else
+            //{
+            //    IsCheatFiberRunning = false;
+            //}
         }
-        else
-        {
-            IsCheatFiberRunning = false;
-        }
+        //else
+        //{
+        //    IsCheatFiberRunning = false;
+        //}
     }
 }
 
