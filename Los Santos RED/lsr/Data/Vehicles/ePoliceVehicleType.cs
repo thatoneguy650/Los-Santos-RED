@@ -12,4 +12,6 @@ public enum PoliceVehicleType
     SlicktopMarked = 3,
     MarkedWithColor = 4,
     OlderMarked = 5,
+    MarkedFlatLightbar = 6,
+    MarkedValorLightbar = 7,
 }
