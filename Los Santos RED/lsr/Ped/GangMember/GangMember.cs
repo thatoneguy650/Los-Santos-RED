@@ -1,4 +1,4 @@
-﻿using ExtensionsMethods;
+using ExtensionsMethods;
 using LosSantosRED.lsr.Interface;
 using Mod;
 using Rage;
@@ -251,7 +251,7 @@ public class GangMember : PedExt, IWeaponIssuable
     }
     public override void OnKilledByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
     {
-        int RepToRemove = -1000;
+        int RepToRemove = -Settings.SettingsManager.GangSettings.RepDeductedKilled; 
         GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(Gang);//.MembersKilled++;
         if (gr != null)
         {
@@ -267,7 +267,7 @@ public class GangMember : PedExt, IWeaponIssuable
                     if (totalTerritories != null && totalTerritories.Any(x => x.ZoneInternalGameName.ToLower() == KillingZone.InternalGameName.ToLower()))
                     {
                         //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName} IS GANG TERRITORY!", 5);
-                        RepToRemove -= 4000;// 1000;
+                        RepToRemove -= Settings.SettingsManager.GangSettings.RepDeductedKilledTerritory;// 1000;
                         gr.MembersKilledInTerritory++;
                         //EntryPoint.WriteToConsole($"VIOLATIONS: Killing GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersKilledInTerritory}", 5);
                     }
@@ -293,7 +293,7 @@ public class GangMember : PedExt, IWeaponIssuable
     }
     public override void OnInjuredByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
     {
-        int RepToRemove = -500;
+        int RepToRemove = -Settings.SettingsManager.GangSettings.RepDeductedInjured;
         GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(Gang);//.MembersKilled++;
         if (gr != null)
         {
@@ -309,7 +309,7 @@ public class GangMember : PedExt, IWeaponIssuable
                     if (totalTerritories != null && totalTerritories.Any(x => x.ZoneInternalGameName.ToLower() == KillingZone.InternalGameName.ToLower()))
                     {
                         //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName} IS GANG TERRITORY!", 5);
-                        RepToRemove -= 2500;// 500;
+                        RepToRemove -= Settings.SettingsManager.GangSettings.RepDeductedInjuredTerritory;// 500;
                         gr.MembersHurtInTerritory++;
                         //EntryPoint.WriteToConsole($"VIOLATIONS: Hurting GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersHurtInTerritory}", 5);
                     }
@@ -327,7 +327,7 @@ public class GangMember : PedExt, IWeaponIssuable
     }
     public override void OnCarjackedByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
     {
-        int RepToRemove = -2500;
+        int RepToRemove = -Settings.SettingsManager.GangSettings.RepDeductedCarjacked;
         GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(Gang);//.MembersKilled++;
         if (gr != null)
         {
@@ -341,7 +341,7 @@ public class GangMember : PedExt, IWeaponIssuable
                     List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(Gang.ID);
                     if (totalTerritories.Any(x => x.ZoneInternalGameName == KillingZone.InternalGameName))
                     {
-                        RepToRemove -= 2500;
+                        RepToRemove -= Settings.SettingsManager.GangSettings.RepDeductedCarjackedTerritory;
                         gr.MembersCarJackedInTerritory++;
                         //EntryPoint.WriteToConsole($"VIOLATIONS: Carjacking GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersCarJackedInTerritory}", 5);
                     }
