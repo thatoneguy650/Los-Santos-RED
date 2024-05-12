@@ -62,7 +62,7 @@ public static class StaticStrings
 
     public static readonly string TrespessingCrimeID = "Trespassing";
 
-    public static readonly string SevereTrespessingCrimeID = "SevereTrespassing";
+    public static readonly string CivilianTrespessingCrimeID = "CivilianTrespassing";
 
 
     public static readonly string GotInAirVehicleDuringChaseCrimeID = "GotInAirVehicleDuringChase";

@@ -59,6 +59,12 @@ public class DebugLocationSubMenu : DebugSubMenu
             LogSpawnPosition();
             menu.Visible = false;
         };
+        UIMenuItem logVector2 = new UIMenuItem("Log Vector2", "Logs a vector2 point for spawning");
+        logVector2.Activated += (menu, item) =>
+        {
+            LogVector2Position();
+            menu.Visible = false;
+        };
         UIMenuItem LogLocationSimpleMenu = new UIMenuItem("Log Game Location (Simple)", "Location Type, Then Name");
         LogLocationSimpleMenu.Activated += (menu, item) =>
         {
@@ -182,6 +188,7 @@ public class DebugLocationSubMenu : DebugSubMenu
         LocationItemsMenu.AddItem(LogSpawnPositionMenu);
         LocationItemsMenu.AddItem(LogLocationMenu);
         LocationItemsMenu.AddItem(LogLocationSimpleMenu);
+        LocationItemsMenu.AddItem(logVector2);
         LocationItemsMenu.AddItem(LogInteriorMenu);
         LocationItemsMenu.AddItem(LogCameraPositionMenu);
         LocationItemsMenu.AddItem(FreeCamMenu);
@@ -283,6 +290,16 @@ public class DebugLocationSubMenu : DebugSubMenu
 
 
     }
+
+    private void LogVector2Position()
+    {
+        IsWritingPosition = true;
+        Vector3 pos = Game.LocalPlayer.Character.Position;
+        float Heading = Game.LocalPlayer.Character.Heading;
+        WriteToLogLocations($"new Vector2({pos.X}f, {pos.Y}f),");
+        IsWritingPosition = false;
+    }
+
     private void Frecam()
     {
         GameFiber.StartNew(delegate

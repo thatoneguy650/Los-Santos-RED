@@ -1583,24 +1583,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     }
     private void DefaultConfig_Banks()
     {
-        Vector2[] fleeca1RestrictedArea = new Vector2[]
-        {
-            new Vector2 { X = -352.0612f, Y = -53.76372f },
-            new Vector2 { X = -349.4093f, Y = -55.09093f },
-            new Vector2 { X = -350.9847f, Y = -60.41546f },
-            new Vector2 { X = -354.1934f, Y = -58.88084f },
-        };
-        Vector2[] fleeca1RestrictedArea2 = new Vector2[]
-        {
-            new Vector2 { X = -354.5473f, Y = -50.24043f },
-            new Vector2 { X = -348.8781f, Y = -52.28946f },
-            new Vector2 { X = -356.3486f, Y = -53.77395f },
-            new Vector2 { X = -349.7612f, Y = -56.4671f },
-        };
-        List<InteriorDoor> fleeca1Gates = new List<InteriorDoor>() 
-        {
-            new InteriorDoor(2121050683,new Vector3(-353.2158f,-53.87801f,49.03653f)) { ForceRotateOpen = true },
-        };
+
 
 
 
@@ -1629,8 +1612,22 @@ public class PlacesOfInterest : IPlacesOfInterest
                 {
                     RestrictedAreasList = new List<RestrictedArea>()
                     {
-                        new RestrictedArea("Fleeca Vault Room",fleeca1RestrictedArea,null,RestrictedAreaType.Bank) { IsTrespassingSevere = true, },
-                        new RestrictedArea("Fleeca Front Room",fleeca1RestrictedArea2,null,RestrictedAreaType.Bank) { IsTrespassingSevere = true, },
+                        new RestrictedArea("Fleeca Vault Room",new Vector2[]
+                                                                {
+                                                                    new Vector2 { X = -352.0612f, Y = -53.76372f },
+                                                                    new Vector2 { X = -349.4093f, Y = -55.09093f },
+                                                                    new Vector2 { X = -350.9847f, Y = -60.41546f },
+                                                                    new Vector2 { X = -354.1934f, Y = -58.88084f },
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                        new RestrictedArea("Fleeca Front Room",new Vector2[]
+                                                                {
+                                                                    new Vector2 { X = -354.5473f, Y = -50.24043f },
+                                                                    new Vector2 { X = -348.8781f, Y = -52.28946f },
+                                                                    new Vector2 { X = -356.3486f, Y = -53.77395f },
+                                                                    new Vector2 { X = -349.7612f, Y = -56.4671f },
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
                     }
                 },
                 PossiblePedSpawns = new List<ConditionalLocation>()
@@ -1649,6 +1646,28 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 ActivateCells = 3,
                 ActivateDistance = 75f,
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    RestrictedAreasList = new List<RestrictedArea>()
+                    {
+                        new RestrictedArea("Fleeca Front Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(146.3237f, -1041.013f),
+                                                                    new Vector2(151.9075f, -1043.154f),
+                                                                    new Vector2(151.6074f, -1044.077f),
+                                                                    new Vector2(146.7068f, -1042.238f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                        new RestrictedArea("Fleeca Vault Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(144.9341f, -1043.125f),
+                                                                    new Vector2(151.3388f, -1045.964f),
+                                                                    new Vector2(149.6541f, -1051.236f),
+                                                                    new Vector2(144.7694f, -1045.295f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                    }
+                },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new SecurityConditionalLocation(new Vector3(148.3287f,-1037.451f,29.3679f),155.8272f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
@@ -1665,6 +1684,29 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 ActivateCells = 3,
                 ActivateDistance = 75f,
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    RestrictedAreasList = new List<RestrictedArea>()
+                    {
+                        new RestrictedArea("Fleeca Front Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(310.6702f, -279.3873f),
+                                                                    new Vector2(316.2504f, -281.5169f),
+                                                                    new Vector2(315.9381f, -282.4389f),
+                                                                    new Vector2(311.0368f, -280.6021f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                        new RestrictedArea("Fleeca Vault Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(309.2658f, -281.4929f),
+                                                                    new Vector2(315.6672f, -284.3145f),
+                                                                    new Vector2(313.9878f, -289.6013f),
+                                                                    new Vector2(310.8114f, -288.0096f),
+                                                                    new Vector2(308.7519f, -282.864f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                    }
+                },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new SecurityConditionalLocation(new Vector3(312.5207f,-275.8242f,54.16462f),158.9338f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
@@ -1680,6 +1722,29 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 ActivateCells = 3,
                 ActivateDistance = 75f,
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    RestrictedAreasList = new List<RestrictedArea>()
+                    {
+                        new RestrictedArea("Fleeca Front Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(-2961.179f, 479.6267f),
+                                                                    new Vector2(-2960.874f, 485.6059f),
+                                                                    new Vector2(-2959.902f, 485.5941f),
+                                                                    new Vector2(-2960.162f, 480.3656f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                        new RestrictedArea("Fleeca Vault Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(-2958.778f, 478.9443f),
+                                                                    new Vector2(-2958.035f, 485.9171f),
+                                                                    new Vector2(-2952.487f, 485.9096f),
+                                                                    new Vector2(-2953.033f, 482.3984f),
+                                                                    new Vector2(-2957.316f, 478.8758f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                    }
+                },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new SecurityConditionalLocation(new Vector3(-2965.206f,480.3015f,15.6969f),268.606f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
@@ -1695,6 +1760,29 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 ActivateCells = 3,
                 ActivateDistance = 75f,
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    RestrictedAreasList = new List<RestrictedArea>()
+                    {
+                        new RestrictedArea("Fleeca Front Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(1178.291f, 2708.304f),
+                                                                    new Vector2(1172.311f, 2708.387f),
+                                                                    new Vector2(1172.286f, 2709.354f),
+                                                                    new Vector2(1177.512f, 2709.322f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                        new RestrictedArea("Fleeca Vault Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(1178.821f, 2710.764f),
+                                                                    new Vector2(1171.883f, 2711.214f),
+                                                                    new Vector2(1171.645f, 2716.751f),
+                                                                    new Vector2(1175.179f, 2716.31f),
+                                                                    new Vector2(1178.877f, 2712.224f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                    }
+                },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new SecurityConditionalLocation(new Vector3(1177.713f,2704.353f,38.08786f),0.2107314f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
@@ -1711,6 +1799,29 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 ActivateCells = 3,
                 ActivateDistance = 75f,
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    RestrictedAreasList = new List<RestrictedArea>()
+                    {
+                        new RestrictedArea("Fleeca Front Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(-1214.961f, -333.622f),
+                                                                    new Vector2(-1209.498f, -330.8935f),
+                                                                    new Vector2(-1209.025f, -331.7485f),
+                                                                    new Vector2(-1213.733f, -334.0669f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                        new RestrictedArea("Fleeca Vault Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(-1214.247f, -335.963f),
+                                                                    new Vector2(-1207.838f, -333.2203f),
+                                                                    new Vector2(-1205.152f, -338.0285f),
+                                                                    new Vector2(-1207.979f, -339.5f),
+                                                                    new Vector2(-1213.623f, -337.2863f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                    }
+                },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new SecurityConditionalLocation(new Vector3(-1216.203f,-329.709f,37.78087f),205.3641f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
@@ -1729,14 +1840,46 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 ActivateCells = 3,
                 ActivateDistance = 100f,
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    RestrictedAreasList = new List<RestrictedArea>()
+                    {
+                        new RestrictedArea("Pacific Standard Teller Area",new Vector2[]
+                                                                {
+                                                                    new Vector2(240.7343f, 227.4087f),
+                                                                    new Vector2(242.9524f, 233.4778f),
+                                                                    new Vector2(259.9221f, 219.8555f),
+                                                                    new Vector2(269.7702f, 223.7066f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                        new RestrictedArea("Pacific Standard Vault Stairs",new Vector2[]
+                                                                {
+                                                                    new Vector2(261.7909f, 219.8125f),
+                                                                    new Vector2(267.5229f, 217.7241f),
+                                                                    new Vector2(269.7004f, 223.6757f),
+                                                                    new Vector2(253.7455f, 229.3237f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                        new RestrictedArea("Pacific Standard Vault",new Vector2[]
+                                                                {
+                                                                    new Vector2(251.6466f, 224.2327f),
+                                                                    new Vector2(248.9319f, 216.9391f),
+                                                                    new Vector2(265.0714f, 211.7376f),
+                                                                    new Vector2(266.5878f, 215.077f),
+                                                                    new Vector2(255.3204f, 222.8831f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsZRestricted = true, ZRestrictionMin = 101.6835f - 3f,ZRestrictionMax = 101.6835f + 3f, IsCivilianReactableRestricted = true, },
+                    }
+                },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new SecurityConditionalLocation(new Vector3(233.8826f,213.5529f,106.2868f),292.8797f,80f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
-                    new SecurityConditionalLocation(new Vector3(246.5008f,214.1364f,106.2868f),345.16f,80f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
-                    new SecurityConditionalLocation(new Vector3(240.2741f,214.4063f,110.283f),160.8276f,80f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(233.8826f,213.5529f,106.2868f),292.8797f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(246.5008f,214.1364f,106.2868f),345.16f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(240.2741f,214.4063f,110.283f),160.8276f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(256.9109f, 226.4966f, 106.2868f), 162.127f, 95f){ AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(262.8836f, 220.7263f, 101.6833f), 340.696f, 95f){ AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
 
-
-                    new SecurityConditionalLocation(new Vector3(256.9742f,220.4982f,106.2852f), 159.0666f,95f) { AssociationID = "GRP6", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    //new SecurityConditionalLocation(new Vector3(256.9742f,220.4982f,106.2852f), 159.0666f,95f) { AssociationID = "GRP6", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
                     new SecurityConditionalLocation(new Vector3(253.94f,221.3301f,101.6834f), 342.1928f,95f) { AssociationID = "GRP6", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
                     new SecurityConditionalLocation(new Vector3(251.7139f,222.3622f,101.6834f), 332.5652f,95f) { AssociationID = "GRP6", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
 
@@ -1757,6 +1900,28 @@ public class PlacesOfInterest : IPlacesOfInterest
                 },
                 ActivateCells = 4,
                 ActivateDistance = 150f,
+                                RestrictedAreas = new RestrictedAreas()
+                {
+                    RestrictedAreasList = new List<RestrictedArea>()
+                    {
+                        new RestrictedArea("BCS Front Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(-109.946f, 6468.715f),
+                                                                    new Vector2(-114.6681f, 6473.577f),
+                                                                    new Vector2(-114.1351f, 6474.118f),
+                                                                    new Vector2(-109.2746f, 6469.363f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                        new RestrictedArea("BCS Vault Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(-106.348f, 6472.824f),
+                                                                    new Vector2(-107.8746f, 6475.334f),
+                                                                    new Vector2(-105.0669f, 6479.51f),
+                                                                    new Vector2(-102.1165f, 6476.42f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                    }
+                },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new SecurityConditionalLocation(new Vector3(-116.1009f,6471.834f,31.62671f),222.2569f,95f) { AssociationID = "GRP6", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },

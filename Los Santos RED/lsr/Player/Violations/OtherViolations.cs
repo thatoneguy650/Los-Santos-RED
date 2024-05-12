@@ -247,9 +247,9 @@ public class OtherViolations
         }
         if(Player.RestrictedAreaManager.IsTrespassing && !Violations.CanEnterRestrictedAreas)
         {
-            if (Player.RestrictedAreaManager.IsSevereTrespassing)
+            if (Player.RestrictedAreaManager.IsCivilianReactableTrespassing)
             {
-                Violations.AddViolating(StaticStrings.SevereTrespessingCrimeID);
+                Violations.AddViolating(StaticStrings.CivilianTrespessingCrimeID);
             }
             else
             {

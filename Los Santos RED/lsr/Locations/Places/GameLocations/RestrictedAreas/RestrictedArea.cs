@@ -35,11 +35,15 @@ public class RestrictedArea
     public List<InteriorDoor> Gates { get; set; }
     public List<SecurityCamera> SecurityCameras { get; set; } 
     public RestrictedAreaType RestrictedAreaType { get; set; } = RestrictedAreaType.None;
-    public bool IsTrespassingSevere { get; set; }
+    public bool IsCivilianReactableRestricted { get; set; }
     public bool CanSeeOnCameras => canSeeOnCameras;
 
     public bool IsPlayerViolating => isPlayerViolating;
     public uint GameTimeViolating => GameTimStartedViolating == 0 ? 0 : Game.GameTime - GameTimStartedViolating;
+
+    public bool IsZRestricted { get; set; } = false;
+    public float ZRestrictionMin { get; set; }
+    public float ZRestrictionMax { get; set; }
     public void Setup(ILocationAreaRestrictable location)
     {
         Location = location;
@@ -95,6 +99,25 @@ public class RestrictedArea
             }
         }
         isPlayerViolating = NativeHelper.IsPointInPolygon(new Vector2(Player.Position.X, Player.Position.Y), Boundaries);
+
+        if(isPlayerViolating)
+        {
+            EntryPoint.WriteToConsole($"Violating {Name}");
+        }
+
+        if(IsZRestricted)
+        {
+            if (Player.Position.Z < ZRestrictionMin || Player.Position.Z > ZRestrictionMax)
+            {
+                if (isPlayerViolating)
+                {
+                    EntryPoint.WriteToConsole("PLAYER NOT WITHIN Z RESTRICTION NOT TRESPASSING");
+                }
+                isPlayerViolating = false;
+            }
+        }
+
+
         if(previsPlayerViolating != isPlayerViolating)
         {
             if(isPlayerViolating)

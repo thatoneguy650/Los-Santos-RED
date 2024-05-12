@@ -1744,7 +1744,7 @@ namespace Mod
             Crime crimeObserved = Crimes.GetCrime(StaticStrings.TrespessingCrimeID);
             if(isSevere)
             {
-                crimeObserved = Crimes.GetCrime(StaticStrings.SevereTrespessingCrimeID);
+                crimeObserved = Crimes.GetCrime(StaticStrings.CivilianTrespessingCrimeID);
             }
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, false, Position, true);
             PoliceResponse.AddCrime(crimeObserved, description, false);
