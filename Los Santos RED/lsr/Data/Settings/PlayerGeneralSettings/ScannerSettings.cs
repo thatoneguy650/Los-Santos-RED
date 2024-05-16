@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
@@ -42,9 +42,12 @@ public class ScannerSettings : ISettingsDefaultable
     public uint AmbientDispatchesMinTimeBetween { get; set; }
     [Description("Maximum time between ambient dispatches (if enabled).")]
     public uint AmbientDispatchesMaxTimeBetween { get; set; }
-
     public bool ShowPoliceVehicleBlipsWithScanner { get; set; }
     public uint PoliceBlipUpdateTime { get; set; }
+    public bool AlertIfPoliceCarsNearby { get; set; }
+    [Description("Enable or disable the beeping noise that indicates if a police car is nearby")]
+    public float AlertDistance { get; set; }
+    [Description("Distance at which police cars are detected")]
 
     public ScannerSettings()
     {
@@ -78,6 +81,8 @@ public class ScannerSettings : ISettingsDefaultable
         AmbientDispatchesMaxTimeBetween = 800000;
         ShowPoliceVehicleBlipsWithScanner = false;
         PoliceBlipUpdateTime = 10000;
+        AlertIfPoliceCarsNearby = true;
+        AlertDistance = 300f;
     }
 
 }
