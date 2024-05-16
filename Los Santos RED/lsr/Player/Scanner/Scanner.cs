@@ -1,13 +1,17 @@
-﻿using ExtensionsMethods;
+using ExtensionsMethods;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
+using Mod;
+using NAudio.Wave;
 using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
+using System.Windows.Media.Animation;
 using static DispatchScannerFiles;
 
 //Needs some refactoring
@@ -165,6 +169,10 @@ namespace LosSantosRED.lsr
         private bool ExecutingAmbientQueue;
 
         private bool ShouldAddAmbientDispatch => Game.GameTime - GameTimeLastAddedAmbientDispatch >= GameTimeBetweenAmbientDispatches;
+        private bool IsDispatchEnabled = false;
+        private bool IsDetectorEnabled = false;
+        private bool isAborted = false;
+        private float AlertDistance => Settings.SettingsManager.ScannerSettings.AlertDistance;
         private float DesiredVolume => Settings.SettingsManager.ScannerSettings.AudioVolume + (ScannerBoostLevel * Settings.SettingsManager.ScannerSettings.AudioVolumeBoostAmount);
 
         public Scanner(IEntityProvideable world, IPoliceRespondable currentPlayer, IAudioPlayable audioPlayer, IAudioPlayable secondaryAudioPlayer,  ISettingsProvideable settings, ITimeReportable time, IPlacesOfInterest placesOfInterest)
@@ -204,7 +212,7 @@ namespace LosSantosRED.lsr
         {
             if (Settings.SettingsManager.ScannerSettings.IsEnabled && Player.ActivityManager.CanHearScanner)
             {
-                UpdateDispatch();
+                SwitchScannerMode();
             }
             if(Player.ActivityManager.CanHearScanner != canHearScanner)
             {
@@ -245,8 +253,75 @@ namespace LosSantosRED.lsr
         }
         public void Abort()
         {
+            isAborted = true;
             AudioPlayer.Abort();
+            Player.ButtonPrompts.RemovePrompts("DispatchActivity");
+            Player.ButtonPrompts.RemovePrompts("DetectorActivity");
             RemoveAllNotifications();
+        }
+        public void AlertIfPoliceCarsNearby()
+        {
+            float repeatDelayMax = 1f;
+            float repeatDelayMin = 0.1f;
+            uint gameTimeAudioPlayed = 0;
+            while (!isAborted && IsDetectorEnabled && Player.IsInVehicle && Player.IsAlive)
+            {
+                Player.ButtonPrompts.AddPrompt("DetectorActivity", "Disable Police Radar", "DisablePoliceRadar", Settings.SettingsManager.KeySettings.ToggleDetectorSounds, 10);
+                Player.ButtonPrompts.AddPrompt("DispatchActivity", "Enable Police Dispatch", "EnablePoliceDispatch", Settings.SettingsManager.KeySettings.ToggleDispatchAudio, 10);
+                if (Player.ButtonPrompts.IsPressed("DisablePoliceRadar") || Player.ButtonPrompts.IsPressed("EnablePoliceDispatch"))
+                {
+                    Player.ButtonPrompts.RemovePrompts("DetectorActivity");
+                    IsDetectorEnabled = false;
+                    if (Player.ButtonPrompts.IsPressed("EnablePoliceDispatch"))
+                    {
+                        Player.ButtonPrompts.RemovePrompts("DispatchActivity");
+                        IsDispatchEnabled = true;
+                    }
+                }
+                VehicleExt ClosestPoliceCar = GetClosestPoliceCar();
+                if (ClosestPoliceCar != null)
+                {
+                    float currentDistance = ClosestPoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character);
+                    if (currentDistance <= AlertDistance)
+                    {
+                        EntryPoint.WriteToConsole($"SCANNER EVENT: Closest {ClosestPoliceCar.VehicleModelName} is {currentDistance} away", 3);
+
+                        if (!SecondaryAudioPlayer.IsAudioPlaying) // fixes naudio initialization playback bug
+                        {
+                            SecondaryAudioPlayer.Play("tones\\CHIRP.wav", DesiredVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
+                            gameTimeAudioPlayed = Game.GameTime;
+                        }
+                        float t = currentDistance / (AlertDistance - currentDistance);
+                        float repeatDelay = MathHelper.Clamp(repeatDelayMin + (repeatDelayMax - repeatDelayMin) * t, repeatDelayMin, repeatDelayMax); //clamp to fix naudio value bug
+                        uint wait = (uint)(repeatDelay * 1000);
+
+                        while (((Game.GameTime - gameTimeAudioPlayed) < wait) && !isAborted)
+                        {
+                            if (Player.ButtonPrompts.IsPressed("DisablePoliceRadar") || Player.ButtonPrompts.IsPressed("EnablePoliceDispatch"))
+                            {
+                                Player.ButtonPrompts.RemovePrompts("DetectorActivity");
+                                IsDetectorEnabled = false;
+                                if (Player.ButtonPrompts.IsPressed("EnablePoliceDispatch"))
+                                {
+                                    Player.ButtonPrompts.RemovePrompts("DispatchActivity");
+                                    IsDispatchEnabled = true;
+                                }
+                            }
+                            GameFiber.Yield();
+                        }
+                    }
+                }
+                GameFiber.Yield();
+            }
+        }
+        private VehicleExt GetClosestPoliceCar()
+        {
+            return World.Vehicles.PoliceVehicles.Where(IsCloseEnoughToPlayer).OrderBy(car => car.Vehicle.DistanceTo2D(Game.LocalPlayer.Character)).FirstOrDefault();
+        }
+
+        private bool IsCloseEnoughToPlayer(VehicleExt vehicle)
+        {
+            return !vehicle.IsOwnedByPlayer && vehicle.Vehicle.Exists() && vehicle.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) <= AlertDistance;
         }
         public void AnnounceCrime(Crime crimeAssociated, CrimeSceneDescription reportInformation)
         {
@@ -290,9 +365,66 @@ namespace LosSantosRED.lsr
             {
                 return;//don't care right when you become a new person
             }
-            AddStatusDispatchesToQueue();
-            AddAmbientDispatchesToQueue();
-            AnnounceQueue();
+            while (!isAborted && IsDispatchEnabled && Player.IsInVehicle && Player.IsAlive)
+            {
+                Player.ButtonPrompts.AddPrompt("DispatchActivity", "Disable Police Dispatch", "DisablePoliceDispatch", Settings.SettingsManager.KeySettings.ToggleDispatchAudio, 10);
+                if (Settings.SettingsManager.ScannerSettings.AlertIfPoliceCarsNearby)
+                {
+                    Player.ButtonPrompts.AddPrompt("DetectorActivity", "Enable Police Radar", "EnablePoliceRadar", Settings.SettingsManager.KeySettings.ToggleDetectorSounds, 10);
+                }
+                if (Player.ButtonPrompts.IsPressed("DisablePoliceDispatch") || Player.ButtonPrompts.IsPressed("EnablePoliceRadar"))
+                {
+                    Player.ButtonPrompts.RemovePrompts("DispatchActivity");
+                    DispatchQueue.Clear();
+                    IsDispatchEnabled = false;
+                    if (Player.ButtonPrompts.IsPressed("EnablePoliceRadar"))
+                    {
+                        Player.ButtonPrompts.RemovePrompts("DetectorActivity");
+                        IsDetectorEnabled = true;
+                    }
+                }
+                else
+                {
+                    AddStatusDispatchesToQueue();
+                    AddAmbientDispatchesToQueue();
+                    AnnounceQueue();
+                }
+                GameFiber.Yield();
+            }
+        }
+        private void SwitchScannerMode()
+        {
+            while (Player.IsInVehicle && !isAborted)
+            {
+                if (Settings.SettingsManager.ScannerSettings.AlertIfPoliceCarsNearby)
+                {
+                    if (!IsDetectorEnabled)
+                    {
+                        Player.ButtonPrompts.AddPrompt("DetectorActivity", "Enable Police Radar", "EnablePoliceRadar", Settings.SettingsManager.KeySettings.ToggleDetectorSounds, 10);
+                        if (Player.ButtonPrompts.IsPressed("EnablePoliceRadar"))
+                        {
+                            Player.ButtonPrompts.RemovePrompts("DetectorActivity");
+                            IsDetectorEnabled = true;
+                            IsDispatchEnabled = false;
+                        }
+                    }
+                }
+                if (!IsDispatchEnabled)
+                {
+                    Player.ButtonPrompts.AddPrompt("DispatchActivity", "Enable Police Dispatch", "EnablePoliceDispatch", Settings.SettingsManager.KeySettings.ToggleDispatchAudio, 10);
+                    if (Player.ButtonPrompts.IsPressed("EnablePoliceDispatch"))
+                    {
+                        Player.ButtonPrompts.RemovePrompts("DispatchActivity");
+                        IsDispatchEnabled = true;
+                        IsDetectorEnabled = false;
+                    }
+                }
+                UpdateDispatch();
+                AlertIfPoliceCarsNearby();
+                GameFiber.Yield();
+            }
+            Player.ButtonPrompts.RemovePrompts("DetectorActivity");
+            Player.ButtonPrompts.RemovePrompts("DispatchActivity");
         }
         private void AddStatusDispatchesToQueue()
         {
@@ -1744,7 +1876,7 @@ namespace LosSantosRED.lsr
             new CrimeDispatch(StaticStrings.TrespassingOnMilitaryBaseCrimeID,TrespassingOnMilitaryBase),
 
             new CrimeDispatch(StaticStrings.TrespessingCrimeID,Trespassing),
-            new CrimeDispatch(StaticStrings.CivilianTrespessingCrimeID,Trespassing),
+
             new CrimeDispatch(StaticStrings.VehicleInvasionCrimeID,SuspiciousActivity),
 
             new CrimeDispatch(StaticStrings.SuspiciousVehicleCrimeID,SuspiciousActivity),
@@ -1884,32 +2016,32 @@ namespace LosSantosRED.lsr
             EntryPoint.WriteToConsole($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}", 5);
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
-                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
+               // EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
                 AbortedAudio = true;
                 Abort();
             }
             if (CurrentlyPlaying != null && CurrentlyPlayingCallIn != null && !CurrentlyPlayingCallIn.SeenByOfficers && dispatchDescription.SeenByOfficers)
             {
-                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! OFFICER REPORTED STOPPING CIV REPORTING Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
+               // EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! OFFICER REPORTED STOPPING CIV REPORTING Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
                 AbortedAudio = true;
                 Abort();
             }
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlayingCallIn != null && (CurrentlyPlayingDispatch.Name == SuspectEvaded.Name ||CurrentlyPlayingDispatch.Name == AttemptToReacquireSuspect.Name) && Player.AnyPoliceCanSeePlayer)
             {
-                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Special Case, Lost Visual Being Cancelled Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
+               // EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Special Case, Lost Visual Being Cancelled Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
                 AbortedAudio = true;
                 Abort();
             }
             if (AudioPlayer.IsAudioPlaying && AudioPlayer.IsPlayingLowPriority)
             {
-                EntryPoint.WriteToConsole("ScannerScript ABORT! LOW PRIORITY PLAYING", 4);
+                //EntryPoint.WriteToConsole("ScannerScript ABORT! LOW PRIORITY PLAYING", 4);
                 AbortedAudio = true;
                 Abort();
             }
 
             if (CurrentlyPlaying != null && CurrentlyPlaying.AnyDispatchInterrupts)
             {
-                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
+                //EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
                 AbortedAudio = true;
                 Abort();
             }
@@ -1923,7 +2055,7 @@ namespace LosSantosRED.lsr
                     GameFiber.Yield();
                     if (AbortedAudio)
                     {
-                        EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}", 5);
+                        //EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}", 5);
                         if (Settings.SettingsManager.ScannerSettings.SetVolume)
                         {
                             AudioPlayer.Play(RadioEnd.PickRandom(), DesiredVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
@@ -1935,28 +2067,24 @@ namespace LosSantosRED.lsr
                         AbortedAudio = false;
                         GameFiber.Sleep(1000);
                     }
-                    EntryPoint.WriteToConsole($"PLAY AUDIO LIST TEST 1", 5);
                     uint GameTimeStartedWaitingForAudio = Game.GameTime;
                     while (AudioPlayer.IsAudioPlaying && Game.GameTime - GameTimeStartedWaitingForAudio <= 15000)
                     {
                         GameFiber.Yield();
                     }
-                    EntryPoint.WriteToConsole($"PLAY AUDIO LIST TEST 2", 5);
                     if (MyAudioEvent.NotificationTitle != "" && Settings.SettingsManager.ScannerSettings.EnableNotifications)
                     {
                         RemoveAllNotifications();
                         NotificationHandles.Add(Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", MyAudioEvent.NotificationTitle, MyAudioEvent.NotificationSubtitle, MyAudioEvent.NotificationText));
                     }
-                    EntryPoint.WriteToConsole($"PLAY AUDIO LIST TEST 3", 5);
                     CurrentlyPlaying = MyAudioEvent;
                     CurrentlyPlayingCallIn = dispatchDescription;
                     CurrentlyPlayingDispatch = dispatchToPlay;
-                    EntryPoint.WriteToConsole($"PLAY AUDIO LIST TEST 4", 5);
                     if (Settings.SettingsManager.ScannerSettings.EnableAudio)
                     {
                         foreach (string audioname in soundsToPlayer)
                         {
-                            EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname == ""}", 5);
+                            //EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname == ""}", 5);
                             if (audioname != "" && audioname != null && audioname.Length > 2 && EntryPoint.ModController.IsRunning)
                             {
                                 if (Settings.SettingsManager.ScannerSettings.SetVolume)
@@ -2029,7 +2157,6 @@ namespace LosSantosRED.lsr
 
         private void PlayAmbientDispatch(DispatchEvent MyAudioEvent)
         {
-            return;
             List<string> soundsToPlayer = MyAudioEvent.SoundsToPlay.ToList();
             GameFiber PlayAudioList = GameFiber.StartNew(delegate
             {
