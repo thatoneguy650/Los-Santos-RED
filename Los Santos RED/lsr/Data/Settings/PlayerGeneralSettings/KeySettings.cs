@@ -1,4 +1,4 @@
-﻿using Rage;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,6 +30,8 @@ public class KeySettings : ISettingsDefaultable
     public Keys InteractNegativeOrNo { get; set; }
     public Keys InteractCancel { get; set; }
     public Keys ScenarioStart { get; set; }
+    public Keys ToggleDispatchAudio { get; set; }
+    public Keys ToggleDetectorSounds { get; set; }
     public Keys SelectorKey { get; set; }
     public Keys SelectorKeyModifier { get; set; }
     public Keys GestureKey { get; set; }
@@ -98,6 +100,9 @@ public class KeySettings : ISettingsDefaultable
         InteractNegativeOrNo = Keys.K;
         InteractCancel = Keys.L;
         ScenarioStart = Keys.P;
+
+        ToggleDispatchAudio = Keys.B; // 
+        ToggleDetectorSounds = Keys.N;
 
         SelectorKey = Keys.X;
         SelectorKeyModifier = Keys.LShiftKey;
