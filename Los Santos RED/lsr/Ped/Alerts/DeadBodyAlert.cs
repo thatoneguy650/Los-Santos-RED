@@ -34,6 +34,14 @@ public class DeadBodyAlert : PedAlert
         List<PedExt> deadBodyPeds = world.Pedestrians.DeadPeds.Where(x => !BodiesSeen.Any(y => y.PedBody?.Handle == x.Handle) && !x.IsLoadedInTrunk && x.Pedestrian.Exists() && PedExt.Pedestrian.Exists()).ToList();
         foreach (PedExt deadBody in deadBodyPeds)
         {
+            if(PedExt == null || !PedExt.Pedestrian.Exists())
+            {
+                return;
+            }
+            if (!deadBody.Pedestrian.Exists())
+            {
+                continue;
+            }
             float distanceToBody = PedExt.Pedestrian.DistanceTo2D(deadBody.Pedestrian);
             bool CanSeeBody = false;
 

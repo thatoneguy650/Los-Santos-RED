@@ -39,14 +39,14 @@ public class NAudioPlayer : IAudioPlayable
             {
                 return;
             }
-            EntryPoint.WriteToConsole($"ACTUAL PLAY 1", 5);
+            //EntryPoint.WriteToConsole($"ACTUAL PLAY 1", 5);
             IsPlayingLowPriority = isLowPriority;
             if (outputDevice == null)
             {
                 outputDevice = new WaveOutEvent();
                 outputDevice.PlaybackStopped += OnPlaybackStopped;
             }
-            EntryPoint.WriteToConsole($"ACTUAL PLAY 2", 5);
+            //EntryPoint.WriteToConsole($"ACTUAL PLAY 2", 5);
             if (volume > 1.0f)
             {
                 volume = 1.0f;
@@ -55,7 +55,7 @@ public class NAudioPlayer : IAudioPlayable
             {
                 volume = 0.0f;
             }
-            EntryPoint.WriteToConsole($"ACTUAL PLAY 3", 5);
+            //EntryPoint.WriteToConsole($"ACTUAL PLAY 3", 5);
             if (audioFile == null)
             {
                 audioFile = new AudioFileReader(string.Format("Plugins\\LosSantosRED\\audio\\{0}", FileName))
@@ -77,7 +77,7 @@ public class NAudioPlayer : IAudioPlayable
                 //    toPlay = audioFile;
                 //}
             }
-            EntryPoint.WriteToConsole($"ACTUAL PLAY 4", 5);
+            //EntryPoint.WriteToConsole($"ACTUAL PLAY 4", 5);
             if (applyFilter)
             {
                 MyWaveProvider filter = new MyWaveProvider(audioFile, 1400);
@@ -88,9 +88,9 @@ public class NAudioPlayer : IAudioPlayable
             {
                 outputDevice.Init(audioFile);
             }
-            EntryPoint.WriteToConsole($"ACTUAL PLAY 5", 5);
+            //EntryPoint.WriteToConsole($"ACTUAL PLAY 5", 5);
             outputDevice.Play();
-            EntryPoint.WriteToConsole($"ACTUAL PLAY 6", 5);
+            //EntryPoint.WriteToConsole($"ACTUAL PLAY 6", 5);
         }
         catch (Exception e)
         {

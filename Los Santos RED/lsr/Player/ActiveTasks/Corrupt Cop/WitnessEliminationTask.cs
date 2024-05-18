@@ -339,6 +339,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 World.Pedestrians.CleanupAmbient();
                 Ped ped = new Ped(WitnessModel, WitnessSpawnPosition, WitnessSpawnHeading);
                 GameFiber.Yield();
+                NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(Game.GetHashKey(WitnessModel));
                 if (ped.Exists())
                 {
                     string GroupName = "Man";

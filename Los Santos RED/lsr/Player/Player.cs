@@ -170,7 +170,7 @@ namespace Mod
             GangBackupManager = new GangBackupManager(World, this);
             InteriorManager = new InteriorManager(World, PlacesOfInterest, Settings, this, this, this);
             CuffManager = new CuffManager(this, Settings);
-
+            RadarDetector = new RadarDetector(this, World, Settings);
 
 
         }
@@ -213,6 +213,7 @@ namespace Mod
         public OfficerMIAWatcher OfficerMIAWatcher { get; private set; }
         public RestrictedAreaManager RestrictedAreaManager { get; private set; }
         public TaxiManager TaxiManager { get; private set; }
+        public RadarDetector RadarDetector { get; private set; }
 
         public GangBackupManager GangBackupManager { get; private set; }
         public InteriorManager InteriorManager { get; private set; }
@@ -514,6 +515,7 @@ namespace Mod
             RestrictedAreaManager.Setup();
             InteriorManager.Setup();
             CuffManager.Setup();
+            RadarDetector.Setup();
             ModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
             FreeModeVoice = Game.LocalPlayer.Character.IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
@@ -588,6 +590,8 @@ namespace Mod
             GangBackupManager.Update();
             InteriorManager.Update();
             CuffManager.Update();
+            GameFiber.Yield();//TR Yield RemovedTest 1
+            RadarDetector.Update();
         }
         public void SetNotBusted()
         {
@@ -775,6 +779,7 @@ namespace Mod
             GangBackupManager.Dispose();
             InteriorManager.Dispose();
             CuffManager.Dispose();
+            RadarDetector.Dispose();
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);

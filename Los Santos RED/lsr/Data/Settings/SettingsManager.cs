@@ -56,7 +56,9 @@ public class SettingsManager
     public PlayerOtherSettings PlayerOtherSettings { get; set; } = new PlayerOtherSettings();
 
 
-
+    [Category("Player")]
+    [Description("Radar Detector Settings")]
+    public RadarDetectorSettings RadarDetectorSettings { get; set; } = new RadarDetectorSettings();
 
 
 
@@ -206,7 +208,7 @@ public class SettingsManager
             RespawnSettings, VehicleSettings, PedSwapSettings, ActivitySettings, SprintSettings, ViolationSettings, RecoilSettings, SwaySettings, SelectorSettings, InvestigationSettings, CriminalHistorySettings, ScannerSettings, KeySettings, PlayerOtherSettings, CellphoneSettings,
             PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherSettings, VanillaSettings,DebugSettings,PerformanceSettings,TaxiSettings,
             UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings, NeedsSettings, RoadblockSettings, PoliceSpawnSettings,PoliceTaskSettings,PoliceSpeechSettings,PlayerSpeechSettings,FlashlightSettings, SecuritySettings,DragSettings,BinocularSettings
-            ,DoorToggleSettings,ShovelSettings,PedLoadingSettings
+            ,DoorToggleSettings,ShovelSettings,PedLoadingSettings,RadarDetectorSettings
         };
     }
     public void SetDefault()

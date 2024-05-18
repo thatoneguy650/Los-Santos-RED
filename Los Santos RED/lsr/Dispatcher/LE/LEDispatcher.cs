@@ -931,8 +931,9 @@ public class LEDispatcher
                     if (!PoliceCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
                     {
                         PoliceCar.SetBecameEmpty();
-                        float distanceTo = PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character);
-                        PoliceCar.DistanceChecker.UpdateMovement(distanceTo);
+                        //float distanceTo = PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character);
+                        float distanceTo = PoliceCar.DistanceChecker.DistanceToPlayer;
+                       // PoliceCar.DistanceChecker.UpdateMovement(distanceTo);
                         if (isNearLimit /*TotalPoliceCars >= 15*/ && PoliceCar.HasBeenEmptyFor >= 60000 && PoliceCar.Vehicle.Exists() && !PoliceCar.Vehicle.IsOnScreen && PoliceCar.Vehicle.IsPersistent)
                         {
                             PoliceCar.Vehicle.IsPersistent = false;
@@ -982,8 +983,9 @@ public class LEDispatcher
                     if (!PoliceCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
                     {
                         PoliceCar.SetBecameEmpty();
-                        float distanceTo = PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character);
-                        PoliceCar.DistanceChecker.UpdateMovement(distanceTo);
+                        float distanceTo = PoliceCar.DistanceChecker.DistanceToPlayer;
+                        //float distanceTo = PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character);
+                        //PoliceCar.DistanceChecker.UpdateMovement(distanceTo);
                         if (PoliceCar.DistanceChecker.IsMovingAway && distanceTo >= 225f && PoliceCar.HasBeenEmptyFor >= 15000)//300f//10000))
                         {
                             PoliceCar.Vehicle.IsPersistent = false;

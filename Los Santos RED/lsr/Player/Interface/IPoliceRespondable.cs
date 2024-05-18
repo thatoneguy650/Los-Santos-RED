@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Locations;
+using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
 using Rage;
 using RAGENativeUI.Elements;
@@ -80,6 +81,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsRidingOnTrain { get; }
         bool IsArrested { get; }
         Cop ClosestCopDriverToPlayer { get; set; }
+        Inventory Inventory { get; }
 
         void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription, bool announceCrime, bool IsForPlayer);
         void AddMedicalEvent(Vector3 positionLastSeenDistressedPed);

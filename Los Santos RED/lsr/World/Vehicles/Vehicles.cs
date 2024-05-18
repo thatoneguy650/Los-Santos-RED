@@ -177,7 +177,6 @@ public class Vehicles
         HandleVanillaTaxiSupression();
         HandleFEJSuppression();
     }
-
     private void HandleFEJSuppression()
     {
         if(!World.IsFEJInstalled || !Settings.SettingsManager.WorldSettings.SuppressFEJVehiclesFromGenerators)
@@ -190,7 +189,6 @@ public class Vehicles
             GameTimeLastRanFEJSuppression = Game.GameTime;
         }
     }
-
     private void HandleVanillaTaxiSupression()
     {
         if (Settings.SettingsManager.WorldSettings.SetVanillaTaxiSuppressed)

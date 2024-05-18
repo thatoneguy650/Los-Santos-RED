@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -124,6 +125,18 @@ namespace LosSantosRED.lsr
                 TotalChecked++;
                 GameFiber.Yield();
             }
+
+            GameFiber.Yield();
+
+            foreach (PoliceVehicleExt copCar in World.Vehicles.PoliceVehicles.ToList())
+            {
+                if(!copCar.Vehicle.Exists())
+                {
+                    continue;
+                }
+                copCar.DistanceChecker.UpdateMovement(Player.Character.DistanceTo2D(copCar.Vehicle));
+            }
+            GameFiber.Yield();
             if (Player.ClosestCopToPlayer != null && PrimaryPlayerCop != null && Player.ClosestCopToPlayer.Handle != PrimaryPlayerCop.Handle)
             {
                 if (Math.Abs(Player.ClosestCopToPlayer.DistanceToPlayer - PrimaryPlayerCop.DistanceToPlayer) >= 2f)

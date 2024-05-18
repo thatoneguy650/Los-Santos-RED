@@ -38,6 +38,7 @@ public class PossibleItems
     public List<VehicleItem> VehicleItems { get; private set; } = new List<VehicleItem>();
     public List<BinocularsItem> BinocularsItems { get; private set; } = new List<BinocularsItem>();
     public List<RadioItem> RadioItems { get; private set; } = new List<RadioItem>();
+    public List<RadarDetectorItem> RadarDetectorItems { get; private set; } = new List<RadarDetectorItem>();
     public List<ValuableItem> ValuableItems { get; private set; } = new List<ValuableItem>();
     public List<EquipmentItem> EquipmentItems { get; private set; } = new List<EquipmentItem>();
     public List<BodyArmorItem> BodyArmorItems { get; private set; } = new List<BodyArmorItem>();

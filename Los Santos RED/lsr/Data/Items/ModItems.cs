@@ -193,6 +193,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.ValuableItems);
         AllItems.AddRange(PossibleItems.EquipmentItems);
         AllItems.AddRange(PossibleItems.BodyArmorItems);
+        AllItems.AddRange(PossibleItems.RadarDetectorItems);
         return AllItems;
     }
     public List<ModItem> PropItems()
@@ -222,7 +223,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.RollingPapersItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
         AllItems.AddRange(PossibleItems.RadioItems);
-
+        AllItems.AddRange(PossibleItems.RadarDetectorItems);
         return AllItems;
     }
     public List<ModItem> PossibleFoundItems()
@@ -250,6 +251,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.RollingPapersItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
         AllItems.AddRange(PossibleItems.RadioItems);
+        AllItems.AddRange(PossibleItems.RadarDetectorItems);
         return AllItems.Where(x => x.FindPercentage > 0).ToList();
     }
     public List<WeaponItem> PossibleFoundWeapons()
@@ -286,6 +288,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.ValuableItems);
         AllItems.AddRange(PossibleItems.EquipmentItems);
         AllItems.AddRange(PossibleItems.BodyArmorItems);
+        AllItems.AddRange(PossibleItems.RadarDetectorItems);
         return AllItems;
     }
     public void Setup(PhysicalItems physicalItems, IWeapons weapons, IIntoxicants intoxicants, ICellphones cellphones)
@@ -2191,6 +2194,11 @@ public class ModItems : IModItems
         {
             new RadioItem("Schmidt & Priss TL6 Scanner","Ever wonder what the LSPD talks about behind your back? Wonder no further.") {
                 ModelItemID = "prop_cs_hand_radio", FindPercentage = 10,ItemSubType = ItemSubType.Tool },
+        });
+        PossibleItems.RadarDetectorItems.AddRange(new List<RadarDetectorItem>
+        {
+            new RadarDetectorItem("Schmidt & Priss RD4 Radar Detector","Feel the buzz from the fuzz.") {
+                ModelItemID = "prop_cs_hand_radio", FindPercentage = 1,ItemSubType = ItemSubType.Tool },
         });
         PossibleItems.ScrewdriverItems.AddRange(new List<ScrewdriverItem>
         {

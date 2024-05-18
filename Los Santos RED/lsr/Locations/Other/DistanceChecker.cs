@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 public class DistanceChecker
 {
+    private float currentDistanceToPlayer;
     private float prevDistanceToPlayer;
     private uint GameTimeStartingMovingTowards;
     private uint GameTimeStartingMovingAway;
@@ -21,9 +22,11 @@ public class DistanceChecker
 
     public bool IsMovingTowards => GameTimeStartingMovingTowards != 0 && Game.GameTime - GameTimeStartingMovingTowards >= Settings.SettingsManager.DebugSettings.MovingTowardsTime;
     public bool IsMovingAway => GameTimeStartingMovingAway != 0 && Game.GameTime - GameTimeStartingMovingAway >= Settings.SettingsManager.DebugSettings.MovingAwayTime;
+    public float DistanceToPlayer => currentDistanceToPlayer;
     public void UpdateMovement(float distanceToPlayer)
     {
-        if(prevDistanceToPlayer == 0)//first update, cant tell
+        currentDistanceToPlayer = distanceToPlayer;
+        if (prevDistanceToPlayer == 0)//first update, cant tell
         {
             prevDistanceToPlayer = distanceToPlayer;
             return;

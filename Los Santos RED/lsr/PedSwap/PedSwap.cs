@@ -373,6 +373,7 @@ public class PedSwap : IPedSwap
             Ped TargetPed = new Ped(toBecome.ModelName, Player.Character.Position.Around2D(15f), Game.LocalPlayer.Character.Heading);
             EntryPoint.SpawnedEntities.Add(TargetPed);
             GameFiber.Yield();
+            NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(Game.GetHashKey(toBecome.ModelName));
             if (!TargetPed.Exists())
             {
                 Game.FadeScreenIn(0);
@@ -437,6 +438,7 @@ public class PedSwap : IPedSwap
             Ped TargetPed = new Ped(toBecome.ModelName, Player.Character.Position.Around2D(15f), Game.LocalPlayer.Character.Heading);
             EntryPoint.SpawnedEntities.Add(TargetPed);
             GameFiber.Yield();
+            NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(Game.GetHashKey(toBecome.ModelName));
             if (!TargetPed.Exists())
             {
                 Game.FadeScreenIn(0);
@@ -501,6 +503,7 @@ public class PedSwap : IPedSwap
             Ped TargetPed = new Ped(toBecome.ModelName, Player.Character.Position.Around2D(15f), Game.LocalPlayer.Character.Heading);
             EntryPoint.SpawnedEntities.Add(TargetPed);
             GameFiber.Yield();
+            NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(Game.GetHashKey(toBecome.ModelName));
             if (!TargetPed.Exists())
             {
                 Game.FadeScreenIn(0);
@@ -565,6 +568,7 @@ public class PedSwap : IPedSwap
             Ped TargetPed = new Ped(toBecome.ModelName, Player.Character.Position.Around2D(15f), Game.LocalPlayer.Character.Heading);
             EntryPoint.SpawnedEntities.Add(TargetPed);
             GameFiber.Yield();
+            NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(Game.GetHashKey(toBecome.ModelName));
             if (!TargetPed.Exists())
             {
                 Game.FadeScreenIn(0);
@@ -626,6 +630,7 @@ public class PedSwap : IPedSwap
             Ped TargetPed = new Ped(toBecome.ModelName, Player.Character.Position.Around2D(15f), Game.LocalPlayer.Character.Heading);
             EntryPoint.SpawnedEntities.Add(TargetPed);
             GameFiber.Yield();
+            NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(Game.GetHashKey(toBecome.ModelName));
             if (!TargetPed.Exists())
             {
                 Game.FadeScreenIn(0);
@@ -711,6 +716,7 @@ public class PedSwap : IPedSwap
             Ped TargetPed = new Ped(modelName, Game.LocalPlayer.Character.GetOffsetPositionFront(15f), Game.LocalPlayer.Character.Heading);
             EntryPoint.SpawnedEntities.Add(TargetPed);
             GameFiber.Yield();
+            NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(Game.GetHashKey(modelName));
             if (!TargetPed.Exists())
             {
                 return;

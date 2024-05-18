@@ -6632,7 +6632,7 @@ public class DispatchablePeople : IDispatchablePeople
             //SWAT
             new DispatchablePerson("mp_m_freemode_01",0,50) {
                 AccuracyMin = 30
-                ,AccuracyMax = 50
+                ,AccuracyMax = 40
                 ,ShootRateMin = 400
                 ,ShootRateMax = 500
                 ,CombatAbilityMin = 2
@@ -6664,7 +6664,7 @@ public class DispatchablePeople : IDispatchablePeople
                }) },
             new DispatchablePerson("mp_f_freemode_01",0,50) {
                 AccuracyMin = 30
-                ,AccuracyMax = 50
+                ,AccuracyMax = 40
                 ,ShootRateMin = 400
                 ,ShootRateMax = 500
                 ,CombatAbilityMin = 2

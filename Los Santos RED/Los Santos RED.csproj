@@ -135,6 +135,7 @@
     <Compile Include="lsr\Data\Other\ScenarioBlock.cs" />
     <Compile Include="lsr\Data\Other\SpawnBlocks.cs" />
     <Compile Include="lsr\Data\Peds\PedOverlayNames.cs" />
+    <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\RadarDetectorSettings.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_2008.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_2015.cs" />
@@ -421,6 +422,7 @@
     <Compile Include="lsr\Player\Inventory\Items\CellphoneItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\EquipmentItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\PipeItem.cs" />
+    <Compile Include="lsr\Player\Inventory\Items\RadarDetectorItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\RollingPapersItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\ValuableItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\VariablePriceMenuItem.cs" />
@@ -430,6 +432,7 @@
     <Compile Include="lsr\Player\Respawning\PedGeneralInteract.cs" />
     <Compile Include="lsr\Player\Respawning\PedPlayerInteract.cs" />
     <Compile Include="lsr\Player\Respawning\PedVehicleInteract.cs" />
+    <Compile Include="lsr\Player\Scanner\Radar Detector\RadarDetector.cs" />
     <Compile Include="lsr\Player\Taxi\TaxiManager.cs" />
     <Compile Include="lsr\Player\Taxi\TaxiRide.cs" />
     <Compile Include="lsr\Player\Money\BankAccount.cs" />

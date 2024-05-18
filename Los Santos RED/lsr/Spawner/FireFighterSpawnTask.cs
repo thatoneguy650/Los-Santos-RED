@@ -87,6 +87,7 @@ public class FireFighterSpawnTask : SpawnTask
             //Ped createdPed = new Ped(PersonType.ModelName, new Vector3(CreatePos.X, CreatePos.Y, CreatePos.Z), SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(createdPed);
             GameFiber.Yield();
+            NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(Game.GetHashKey(PersonType.ModelName));
             if (createdPed.Exists())
             {
                 SetupPed(createdPed);

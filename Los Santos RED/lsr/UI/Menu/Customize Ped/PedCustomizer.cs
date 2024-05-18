@@ -303,6 +303,7 @@ public class PedCustomizer
                 ModelPedExt = null;
                 ModelPed.ResetVariation();
             }
+            NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(Game.GetHashKey(WorkingModelName));
         }
         catch (Exception ex)
         {

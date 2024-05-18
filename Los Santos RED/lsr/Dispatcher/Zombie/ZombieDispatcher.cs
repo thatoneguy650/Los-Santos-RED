@@ -75,6 +75,7 @@ public class ZombieDispatcher
                     Zombie myZombie = new Zombie(zombie, Settings, zombie.Health, true, Crimes, Weapons, "Unknown","Zombie", World);
                     World.Pedestrians.AddEntity(myZombie);
                 }
+                NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(Game.GetHashKey("u_m_y_zombie_01"));
             }
             else
             {

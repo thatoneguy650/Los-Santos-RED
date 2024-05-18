@@ -453,7 +453,7 @@ public class ShopMenus : IShopMenus
                 new VariablePriceMenuItem("Schmidt & Priss TL6 Scanner", 500,800,100, 150) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
                 new VariablePriceMenuItem("SCHEISS AS Binoculars", 500, 700,150, 200) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
                 new VariablePriceMenuItem("SCHEISS RP Binoculars", 900, 1500, 220, 400) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
-
+                new VariablePriceMenuItem("Schmidt & Priss RD4 Radar Detector", 300,500,25, 45) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
 
 
                 new VariablePriceMenuItem("Hawk & Little PTF092F",850, 1100, 100, 150) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
@@ -4633,7 +4633,7 @@ public class ShopMenus : IShopMenus
 
 
                 new MenuItem("Schmidt & Priss TL6 Scanner", 85),
-
+                new MenuItem("Schmidt & Priss RD4 Radar Detector",45),
 
                     }),
         });
@@ -4836,6 +4836,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 150 },
 
                 new MenuItem("Schmidt & Priss TL6 Scanner", 85),
+                new MenuItem("Schmidt & Priss RD4 Radar Detector",45),
                // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
                     }),
         });
@@ -4998,6 +4999,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 150 },
 
                 new MenuItem("Schmidt & Priss TL6 Scanner", 85),
+                new MenuItem("Schmidt & Priss RD4 Radar Detector",45),
                // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
                     }),
         });
@@ -5246,6 +5248,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 150 },
 
                 new MenuItem("Schmidt & Priss TL6 Scanner", 85),
+               new MenuItem("Schmidt & Priss RD4 Radar Detector",45),
                // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
                     }),
         });
@@ -5492,6 +5495,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 150 },
 
                 new MenuItem("Schmidt & Priss TL6 Scanner", 85),
+                new MenuItem("Schmidt & Priss RD4 Radar Detector",45),
                // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
                     }),
         });
