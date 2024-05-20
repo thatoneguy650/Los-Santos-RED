@@ -2824,6 +2824,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new LEConditionalLocation(new Vector3(392.7548f, -1608.376f, 29.21355f), 50f,45f),
                     new LEConditionalLocation(new Vector3(399.393f, -1621.396f, 29.20119f), 50f,45f),
                     new LEConditionalLocation(new Vector3(351.3006f, -1556.711f, 29.24393f), 230f,45f),
+                    new LEConditionalLocation(new Vector3(385.5102f, -1624.759f, 29.29195f), 312.3226f, 30f) { ForceVehicleGroup = true, AssociationID = "LSSD", RequiredVehicleGroup = "Historic" },
                 },
                 VehicleImpoundLot = new VehicleImpoundLot("Impound Lot 1",new List<SpawnPlace>()
                 {
@@ -2953,7 +2954,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new LEConditionalLocation(new Vector3(496.3721f, -1016.798f, 28.687f), 178.4318f,30f),
 
                      new LEConditionalLocation(new Vector3(449.7793f, -981.5451f, 43.69165f), 83.32257f,35f) { AllowAirVehicle = true,AssociationID = "LSPD-ASD" },
-
+                     new LEConditionalLocation(new Vector3(454.1368f, -1016.551f, 28.43479f), 107.0836f, 30f) { RequiredVehicleGroup = "Historic",ForceVehicleGroup = true, },
 
                 } },
             new PoliceStation(new Vector3(827.5469f, -1289.998f, 28.24066f), 86.95251f, "La Mesa Police Station","Obey and Survive") {
@@ -2970,29 +2971,30 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(823.9117f, -1288.765f, 28.24066f), 74.91795f, 40f),
                     new LEConditionalLocation(new Vector3(823.3896f, -1291.954f, 28.24066f), 102.1528f, 40f),
-                    new LEConditionalLocation(new Vector3(821.5445f, -1275.796f, 26.38955f), 61.38755f, 40f),
+                    new LEConditionalLocation(new Vector3(821.5445f, -1275.796f, 26.38955f), 61.38755f, 40f) { AssociationID = "SAHP" },
                     new LEConditionalLocation(new Vector3(843.4933f, -1314.606f, 26.25885f), 126.1716f, 40f),
                 }
                 ,PossibleVehicleSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(822.8635f, -1258.039f, 26.34347f), 0f,20f),
                     new LEConditionalLocation(new Vector3(828.0373f, -1258.039f, 26.34347f), 0f,20f),
-                    new LEConditionalLocation(new Vector3(833.577f, -1258.954f, 26.34347f), 180f,20f),
+                    new LEConditionalLocation(new Vector3(833.577f, -1258.954f, 26.34347f), 180f,20f) { AssociationID = "SAHP" },
                     new LEConditionalLocation(new Vector3(838.7137f, -1271.55f, 26.34347f), 180f,20f),
                     new LEConditionalLocation(new Vector3(833.4279f, -1271.55f, 26.34347f), 0f,20f),
                     new LEConditionalLocation(new Vector3(822.5837f, -1271.55f, 26.34347f), 0f,20f),
-                    new LEConditionalLocation(new Vector3(828.1719f, -1333.792f, 26.18776f), 242f,20f),
+                    new LEConditionalLocation(new Vector3(828.1719f, -1333.792f, 26.18776f), 242f,20f) { AssociationID = "SAHP" },
                     new LEConditionalLocation(new Vector3(828.1719f, -1339.649f, 26.18776f), 242f,20f),
-                    new LEConditionalLocation(new Vector3(828.1719f, -1345.815f, 26.18776f), 242f,20f),
+                    new LEConditionalLocation(new Vector3(828.1719f, -1345.815f, 26.18776f), 242f,20f) { AssociationID = "SAHP" },
                     new LEConditionalLocation(new Vector3(828.362f, -1351.482f, 26.21234f), 65f,20f),
                     new LEConditionalLocation(new Vector3(843.9627f, -1334.354f, 26.17253f), 65f,20f),
                     new LEConditionalLocation(new Vector3(843.874f, -1340.518f, 26.18776f), 242f,20f),
                     new LEConditionalLocation(new Vector3(844.3544f, -1346.3f, 26.21234f), 65f,20f),
                     new LEConditionalLocation(new Vector3(843.7897f, -1352.283f, 26.21234f), 65f,20f),
-                    new LEConditionalLocation(new Vector3(865.7624f, -1378.407f, 26.21234f), 216f,20f),
+                    new LEConditionalLocation(new Vector3(865.7624f, -1378.407f, 26.21234f), 216f,20f) { AssociationID = "SAHP" },
                     new LEConditionalLocation(new Vector3(862.8425f, -1383.55f, 26.21234f), 216f,20f),
                     new LEConditionalLocation(new Vector3(859.8381f, -1388.58f, 26.21234f), 216f,20f),
-                    new LEConditionalLocation(new Vector3(857.2202f, -1393.802f, 26.21234f), 216f,20f),
+                    new LEConditionalLocation(new Vector3(857.2202f, -1393.802f, 26.21234f), 216f,20f) { AssociationID = "SAHP" },
                     new LEConditionalLocation(new Vector3(854.2248f, -1398.952f, 26.21234f), 216f,20f),
+                    new LEConditionalLocation(new Vector3(831.9248f, -1370.362f, 26.13427f), 266.9978f, 20f) { RequiredVehicleGroup = "Historic",AssociationID = "SAHP",ForceVehicleGroup = true, },
                 } },
             new PoliceStation(new Vector3(638.4491f, 1.559977f, 82.78642f), 247.7514f,"Vinewood Police Station","Obey and Survive") {
                 BannerImagePath = "agencies\\lspdmain.png",
@@ -3120,7 +3122,11 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new LEConditionalLocation(new Vector3(381.8302f, 789.8931f, 186.6757f), 178f,55f) { AssociationID = "LSDPR" },
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>(){ 
-                    new LEConditionalLocation(new Vector3(374.2932f, 795.6959f, 186.5305f), 178f,70f) { AssociationID = "LSDPR" }, } },
+                    new LEConditionalLocation(new Vector3(374.2932f, 795.6959f, 186.5305f), 178f,70f) { AssociationID = "LSDPR" },
+
+                    new LEConditionalLocation(new Vector3(366.0268f, 791.4189f, 187.3132f), 240.688f, 35f){ RequiredVehicleGroup = "Historic", AssociationID = "SAPR",ForceVehicleGroup = true, },
+
+                } },
             new PoliceStation(new Vector3(-893.9146f, -2401.547f, 14.02436f), 148.8757f, "NOoSE LSIA","Let's tighten the noose!") { 
                 AssignedAssociationID = "NOOSE", 
                 OpenTime = 0,

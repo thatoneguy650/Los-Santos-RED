@@ -257,6 +257,10 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
     }
     public DispatchableVehicle GetRandomVehicle(int wantedLevel, bool includeHelicopters, bool includeBoats, bool includeMotorcycles, string requiredGroup, ISettingsProvideable settings)
     {
+        return GetRandomVehicle(wantedLevel, includeHelicopters, includeBoats, includeMotorcycles, requiredGroup, settings, false);
+    }
+    public DispatchableVehicle GetRandomVehicle(int wantedLevel, bool includeHelicopters, bool includeBoats, bool includeMotorcycles, string requiredGroup, ISettingsProvideable settings, bool forceGroup)
+    {
         if(Vehicles == null || !Vehicles.Any())
         {
             return null;
@@ -276,7 +280,20 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
         }
         if (requiredGroup != "" && !string.IsNullOrEmpty(requiredGroup))
         {
-            ToPickFrom = ToPickFrom.Where(x => x.GroupName == requiredGroup).ToList();
+            if (forceGroup)
+            {
+                //EntryPoint.WriteToConsole($"FORCE GROUP RAN FOR AGENCY {requiredGroup}");
+
+                ToPickFrom = Vehicles.Where(x => x.GroupName == requiredGroup).ToList();
+                if(!ToPickFrom.Any(x=> x.CurrentSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles) > 0))
+                {
+                    return ToPickFrom.PickRandom();
+                }
+            }
+            else
+            {
+                ToPickFrom = ToPickFrom.Where(x => x.GroupName == requiredGroup).ToList();
+            }
         }
         int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles));
         int RandomPick = RandomItems.MyRand.Next(0, Total);

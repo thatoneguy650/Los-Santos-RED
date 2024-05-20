@@ -100,7 +100,7 @@ public class SecurityConditionalLocation : ConditionalLocation
         }
         if (!IsPerson)
         {
-            DispatchableVehicle = Agency.GetRandomVehicle(World.TotalWantedLevel, false, false, true, RequiredVehicleGroup, Settings);
+            DispatchableVehicle = Agency.GetRandomVehicle(World.TotalWantedLevel, false, false, true, RequiredVehicleGroup, Settings, ForceVehicleGroup);
             if (!IsEmpty && DispatchableVehicle != null)
             {
                 DispatchablePerson = Agency.GetRandomPed(World.TotalWantedLevel, DispatchableVehicle.RequiredPedGroup);

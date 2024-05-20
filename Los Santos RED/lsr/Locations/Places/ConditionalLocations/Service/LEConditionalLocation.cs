@@ -46,7 +46,7 @@ public class LEConditionalLocation : ConditionalLocation
     {
         try
         {
-            //EntryPoint.WriteToConsoleTestLong("ATTEMPT LE SPAWN");
+            EntryPoint.WriteToConsole("ATTEMPT LE SPAWN");
             LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddOptionalPassengerPercentage), World, ModItems, false);
             spawnTask.AllowAnySpawn = true;
             spawnTask.AllowBuddySpawn = false;
@@ -102,12 +102,12 @@ public class LEConditionalLocation : ConditionalLocation
         }
         if(!IsPerson)
         {
-            DispatchableVehicle = Agency.GetRandomVehicle(World.TotalWantedLevel, AllowAirVehicle, AllowBoat, true, RequiredVehicleGroup, Settings);
+            DispatchableVehicle = Agency.GetRandomVehicle(World.TotalWantedLevel, AllowAirVehicle, AllowBoat, true, RequiredVehicleGroup, Settings, ForceVehicleGroup);
             if(!IsEmpty && DispatchableVehicle != null)
             {
                 DispatchablePerson = Agency.GetRandomPed(World.TotalWantedLevel, DispatchableVehicle.RequiredPedGroup);
             }
         }
-        //EntryPoint.WriteToConsole($"LECONDITIONAL IsPerson:{IsPerson} IsEmpty:{IsEmpty} GenerateSpawnTypes: {DispatchableVehicle?.ModelName} AllowAirVehicle:{AllowAirVehicle}");
+        EntryPoint.WriteToConsole($"LECONDITIONAL IsPerson:{IsPerson} IsEmpty:{IsEmpty} RequiredVehicleGroup:{RequiredVehicleGroup} GenerateSpawnTypes: {DispatchableVehicle?.ModelName} AllowAirVehicle:{AllowAirVehicle}");
     }
 }

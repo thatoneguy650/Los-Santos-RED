@@ -19,6 +19,7 @@ public class RadarDetector
     private bool hasAudio = false;
     private uint gameTimeAudioPlayed = 0;
     private PoliceVehicleExt ClosestCopCar;
+    public bool IsTurnedOn { get; private set; } = true;
 
     public RadarDetector(IPoliceRespondable player, IEntityProvideable world, ISettingsProvideable settings)
     {
@@ -28,6 +29,11 @@ public class RadarDetector
     }
 
     private float MaxAlertDistance => Settings.SettingsManager.RadarDetectorSettings.MaxAlertDistance;// 100f;////Settings.SettingsManager.ScannerSettings.AlertDistance;
+    public void SetState(bool isTurnedOn)
+    {
+        IsTurnedOn = isTurnedOn;
+        EntryPoint.WriteToConsole($"Radar Detector IsTurnedOn {IsTurnedOn}");
+    }
     public void Setup()
     {
         AudioPlayer = new NAudioPlayer(Settings);
@@ -58,7 +64,11 @@ public class RadarDetector
         {
             return;
         }
-        if(Settings.SettingsManager.RadarDetectorSettings.DisableWithoutItem && !Player.Inventory.Has(typeof(RadarDetectorItem)))
+        if (Settings.SettingsManager.RadarDetectorSettings.DisableWithoutItem && !Player.Inventory.Has(typeof(RadarDetectorItem)))
+        {
+            return;
+        }
+        if(!IsTurnedOn)
         {
             return;
         }
@@ -67,7 +77,7 @@ public class RadarDetector
         {
             return;
         }
-        float repeatDelayMax = 1.3f;
+        float repeatDelayMax = 1.6f;
         float repeatDelayMin = 0.3f;
         float currentDistance = ClosestCopCar.DistanceChecker.DistanceToPlayer;
         float t = currentDistance / (MaxAlertDistance - currentDistance);

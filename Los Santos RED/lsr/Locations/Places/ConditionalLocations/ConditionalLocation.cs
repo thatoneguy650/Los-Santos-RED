@@ -73,6 +73,9 @@ public class ConditionalLocation
     public bool ForceMelee { get; set; } = false;
     public bool ForceSidearm { get; set; } = false;
     public bool ForceLongGun { get; set; } = false;
+
+    public bool ForceVehicleGroup { get; set; } = false;
+
     [XmlIgnore]
     public bool AttemptedSpawn { get; private set; }
     [XmlIgnore]

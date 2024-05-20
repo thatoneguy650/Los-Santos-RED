@@ -219,6 +219,7 @@
     <Compile Include="lsr\Player\Activity\Items\DrinkingActivityNew.cs" />
     <Compile Include="lsr\Player\Activity\Items\DrinkingActivityOld.cs" />
     <Compile Include="lsr\Player\Activity\Items\EatingActivityNew.cs" />
+    <Compile Include="lsr\Player\Activity\Items\RadarDetectorActivity.cs" />
     <Compile Include="lsr\Player\Activity\UrinatingActivity.cs" />
     <Compile Include="lsr\Player\BackupManager\GangBackup.cs" />
     <Compile Include="lsr\Player\BackupManager\GangBackupManager.cs" />

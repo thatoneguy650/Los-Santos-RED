@@ -365,7 +365,7 @@ public class GameLocation : ILocationDispatchable
     }
     public virtual void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world, bool isInterior)
     {
-        EntryPoint.WriteToConsole($"ATTEMPT VENDOR SPAWN AT {Name}");
+        //EntryPoint.WriteToConsole($"ATTEMPT VENDOR SPAWN AT {Name}");
         int VendorsSpawned = 0;
         List<SpawnPlace> spawns = new List<SpawnPlace>();
         if(isInterior)
@@ -383,10 +383,10 @@ public class GameLocation : ILocationDispatchable
         {
             if (IsOpen(time.CurrentHour) && settings.SettingsManager.CivilianSettings.ManageDispatching && (isInterior || world.Pedestrians.TotalSpawnedServiceWorkers < settings.SettingsManager.CivilianSettings.TotalSpawnedServiceMembersLimit) && (VendorsSpawned == 0 || RandomItems.RandomPercent(ExtaVendorSpawnPercentage)))
             {
-                EntryPoint.WriteToConsole($"ATTEMPT VENDOR SPAWN AT {Name} 2");
+                //EntryPoint.WriteToConsole($"ATTEMPT VENDOR SPAWN AT {Name} START");
                 if (SpawnVendor(spawnPlace))
                 {
-                    EntryPoint.WriteToConsole($"ATTEMPT VENDOR SPAWN AT {Name} 3");
+                    EntryPoint.WriteToConsole($"VENDOR SPAWNED AT {Name}");
                     VendorsSpawned++;
                 }
             }

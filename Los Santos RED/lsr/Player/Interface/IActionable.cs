@@ -76,6 +76,7 @@ namespace LosSantosRED.lsr.Interface
         InteriorManager InteriorManager { get; }
         CuffManager CuffManager { get; }
         Dispatcher Dispatcher { get; }
+        RadarDetector RadarDetector { get; }
 
         void DisplayPlayerNotification();
         void SetWantedLevel(int selectedItem, string v1, bool v2);

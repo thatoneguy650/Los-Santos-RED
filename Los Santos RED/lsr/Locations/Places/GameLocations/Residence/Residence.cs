@@ -123,6 +123,11 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             StandardInteract(storeCamera, false);
         }
     }
+    public override bool CanCurrentlyInteract(ILocationInteractable player)
+    {
+        ButtonPromptText = GetButtonPromptText();
+        return true;
+    }
     public override void OnInteract()
     {
         if (IsLocationClosed())
@@ -633,9 +638,11 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     }
     private void UpdateStoredData()
     {
+        EntryPoint.WriteToConsole($"UPDATE STORED DATA RAN FOR {Name} ");
         ButtonPromptText = GetButtonPromptText();
         if (Blip.Exists())
         {
+            EntryPoint.WriteToConsole($"UPDATE STORED DATA RAN FOR {Name} BLIP SPRITE EXISTS IsOwned{IsOwned} IsRented{IsRented}");
             Blip.Sprite = IsOwned || IsRented ? BlipSprite.Garage : BlipSprite.PropertyForSale;
         }
 
@@ -690,7 +697,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         if (Blip.Exists())
         {
             MapIconColorString = (IsOwned ? "Green" : IsRented ? "Yellow" : "White");
-           // Blip.Sprite = IsOwned || IsRented ? BlipSprite.Garage: BlipSprite.PropertyForSale;
+            Blip.Sprite = IsOwned || IsRented ? BlipSprite.Garage: BlipSprite.PropertyForSale;
             Blip.Color = Color.FromName(IsOwned ? "Green" : IsRented ? "Yellow" : "White");//NEED TO SET THE COLOR AFTER THE SPRITE OR IT DOESNT WORK!
         }
         if(IsOwnedOrRented)//shouldnt need blip updates?
