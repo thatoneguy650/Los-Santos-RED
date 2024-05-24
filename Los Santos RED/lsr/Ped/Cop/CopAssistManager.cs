@@ -22,7 +22,7 @@ public class CopAssistManager
     {
         if (Cop.Pedestrian.Exists() && Cop.IsDriver && Cop.Pedestrian.CurrentVehicle.Exists())
         {
-            if (IsWanted && Cop.DistanceToPlayer > 15f)
+            if (IsWanted)// && Cop.DistanceToPlayer > 15f)
             {
                 if (!IsSetNoCollision)
                 {
@@ -69,7 +69,7 @@ public class CopAssistManager
         }
 
 
-        if(Cop.DistanceToPlayer <= 50f || copCar.IsOnScreen)
+        if(Cop.DistanceToPlayer <= 20f || copCar.IsOnScreen)//50f
         {
             CarefulFrontDelete(copCar);
         }
@@ -150,7 +150,9 @@ public class CopAssistManager
             if (copCar.Exists())
             {
 
-                NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(copCar, 1.8f);
+
+
+                NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(copCar, 2.0f);
 
 
                 //if (!IsCheatFiberRunning)

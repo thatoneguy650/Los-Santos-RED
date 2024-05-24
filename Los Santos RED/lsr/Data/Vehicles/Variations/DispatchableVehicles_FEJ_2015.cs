@@ -192,7 +192,7 @@ public class DispatchableVehicles_FEJ_2015
             new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceStanier, 20,20){ RequiredLiveries = new List<int>() { 16 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             DispatchableVehicles_FEJ.Create_PoliceMerit(20,20,6,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceBuffalo, 10, 10){ RequiredLiveries = new List<int>() { 16 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
-            DispatchableVehicles_FEJ.Create_PoliceGresley(10,10,16,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_PoliceGresley(10,10,16,false,PoliceVehicleType.Marked,134,-1,-1,-1,-1,"",""),
             new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceGranger, 25, 25){ RequiredLiveries = new List<int>() { 16 } },
             DispatchableVehicles_FEJ.Create_PoliceBison(25,25,16,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
         };
@@ -204,7 +204,7 @@ public class DispatchableVehicles_FEJ_2015
             DispatchableVehicles_FEJ.Create_PoliceMerit(25,25,5,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceMerit(1,1,3,true,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceMerit(1,1,3,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"",""),
-            DispatchableVehicles_FEJ.Create_PoliceGresley(48,35,15,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_PoliceGresley(48,35,15,false,PoliceVehicleType.Marked,134,-1,-1,-1,-1,"",""),
             new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceBuffalo, 25, 20){ RequiredLiveries = new List<int>() { 15 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
             new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceGranger, 15, 12){ RequiredLiveries = new List<int>() { 15 } },
             new DispatchableVehicle(DispatchableVehicles_FEJ.StanierUnmarked, 1,1),

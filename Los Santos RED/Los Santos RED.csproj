@@ -137,6 +137,7 @@
     <Compile Include="lsr\Data\Peds\PedOverlayNames.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\RadarDetectorSettings.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ.cs" />
+    <Compile Include="lsr\Data\Vehicles\MilitaryVehicleType.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_2008.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_2015.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_Modern.cs" />

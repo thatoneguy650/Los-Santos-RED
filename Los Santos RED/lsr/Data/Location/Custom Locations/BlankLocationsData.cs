@@ -5326,7 +5326,7 @@ new List<ConditionalGroup>() {
             //    },
             //},
         };
-        BlankLocationPlaces.Add(KKANGPAESteps);
+        //BlankLocationPlaces.Add(KKANGPAESteps);
 
 
 
