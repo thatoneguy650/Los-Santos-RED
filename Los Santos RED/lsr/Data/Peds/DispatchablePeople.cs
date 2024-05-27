@@ -2371,6 +2371,7 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("mp_m_freemode_01",0,20) {
                 AccuracyMin = 25
                 ,AccuracyMax = 30
+                ,GroupName = "SWAT"
                 ,DebugName = "<Male LSPD SWAT>"
                 ,ShootRateMin = 400
                 ,ShootRateMax = 500
@@ -2400,6 +2401,7 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("mp_f_freemode_01",0,20) {
                 AccuracyMin = 25
                 ,AccuracyMax = 30
+                ,GroupName = "SWAT"
                 ,DebugName = "<Female LSPD SWAT>"
                 ,ShootRateMin = 400
                 ,ShootRateMax = 500
@@ -2460,7 +2462,7 @@ public class DispatchablePeople : IDispatchablePeople
              },
 
             //LSPD Detective
-            new DispatchablePerson("mp_m_freemode_01",5,5) { DebugName = "<Male LSPD Detective>",RandomizeHead = true,MaxWantedLevelSpawn = 2,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
+            new DispatchablePerson("mp_m_freemode_01",5,5) { GroupName = "Detective", DebugName = "<Male LSPD Detective>",RandomizeHead = true,MaxWantedLevelSpawn = 2,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {
                         new PedComponent(1, 0, 0, 0),
@@ -2475,7 +2477,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(11, 349, 0, 0)},
                     new List<PedPropComponent>() {  }),
             },
-            new DispatchablePerson("mp_f_freemode_01",5,5) { DebugName = "<Female LSPD Detective>",RandomizeHead = true,MaxWantedLevelSpawn = 2,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
+            new DispatchablePerson("mp_f_freemode_01",5,5) { GroupName = "Detective", DebugName = "<Female LSPD Detective>",RandomizeHead = true,MaxWantedLevelSpawn = 2,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {
                         new PedComponent(1, 0, 0, 0),
@@ -2492,7 +2494,7 @@ public class DispatchablePeople : IDispatchablePeople
              },
 
             //LSPD Detective Windbraker
-            new DispatchablePerson("mp_m_freemode_01",5,5) { DebugName = "<Male LSPD Detective Windbreaker>",RandomizeHead = true,MaxWantedLevelSpawn = 2,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
+            new DispatchablePerson("mp_m_freemode_01",5,5) { GroupName = "Detective", DebugName = "<Male LSPD Detective Windbreaker>",RandomizeHead = true,MaxWantedLevelSpawn = 2,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {
                         new PedComponent(1, 0, 0, 0),
@@ -2507,7 +2509,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(11, 325, 0, 0)},
                     new List<PedPropComponent>() {  }),
             },
-            new DispatchablePerson("mp_f_freemode_01",5,5) { DebugName = "<Female LSPD Detective Windbreaker>",RandomizeHead = true,MaxWantedLevelSpawn = 2,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
+            new DispatchablePerson("mp_f_freemode_01",5,5) { GroupName = "Detective", DebugName = "<Female LSPD Detective Windbreaker>",RandomizeHead = true,MaxWantedLevelSpawn = 2,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {
                         new PedComponent(1, 0, 0, 0),
@@ -2801,7 +2803,7 @@ public class DispatchablePeople : IDispatchablePeople
                }) },
 
             //Detective (with armor)            
-            new DispatchablePerson("mp_m_freemode_01",1,1) { ArmorMin = 50,ArmorMax = 50,MaxWantedLevelSpawn = 3, DebugName = "<Male LSPD Armor Protection>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
+            new DispatchablePerson("mp_m_freemode_01",1,1) { GroupName = "Detective", ArmorMin = 50,ArmorMax = 50,MaxWantedLevelSpawn = 3, DebugName = "<Male LSPD Armor Protection>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               new PedPropComponent(6,3,0), }, new List<PedComponent>() {
               new PedComponent(1,0,0),
               new PedComponent(11,292,1),
@@ -2814,7 +2816,7 @@ public class DispatchablePeople : IDispatchablePeople
               new PedComponent(9,24,0),
               new PedComponent(5,0,0),
                }) },
-            new DispatchablePerson("mp_m_freemode_01",1,1) { ArmorMin = 50,ArmorMax = 50,MaxWantedLevelSpawn = 3, DebugName = "<Male LSPD Raid Jacket>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
+            new DispatchablePerson("mp_m_freemode_01",1,1) { GroupName = "Detective", ArmorMin = 50,ArmorMax = 50,MaxWantedLevelSpawn = 3, DebugName = "<Male LSPD Raid Jacket>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
               new PedComponent(11,325,0),
@@ -3520,7 +3522,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 65, 6),
                     })},
             new DispatchablePerson("mp_m_freemode_01", 0, 0){
-                MaxWantedLevelSpawn = 3, DebugName = "<Male RHPD Suit>", RandomizeHead = true,
+                MaxWantedLevelSpawn = 3,GroupName = "Detective",  DebugName = "<Male RHPD Suit>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedPropComponent>(){
@@ -3540,7 +3542,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 68, 0),
                     })},
             new DispatchablePerson("mp_m_freemode_01", 1,1){
-                MaxWantedLevelSpawn = 3, DebugName = "<Male RHPD Detective>", RandomizeHead = true,
+                MaxWantedLevelSpawn = 3,GroupName = "Detective",  DebugName = "<Male RHPD Detective>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedPropComponent>(){
@@ -3559,7 +3561,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 10, 2),
                     })},
             new DispatchablePerson("mp_m_freemode_01", 5,5){
-                MaxWantedLevelSpawn = 3, DebugName = "<Male RHPD Armor Protection>", RandomizeHead = true,MinWantedLevelSpawn = 3,
+                MaxWantedLevelSpawn = 3,GroupName = "Detective",  DebugName = "<Male RHPD Armor Protection>", RandomizeHead = true,MinWantedLevelSpawn = 3,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedPropComponent>(){
@@ -3578,7 +3580,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 0, 0),
                     })},
             new DispatchablePerson("mp_m_freemode_01", 0, 50){
-                ArmorMin = 50,ArmorMax = 50,DebugName = "<Male RHPD SWAT>", RandomizeHead = true,MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4,
+                ArmorMin = 50,ArmorMax = 50,GroupName = "SWAT",DebugName = "<Male RHPD SWAT>", RandomizeHead = true,MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4,
                 OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" },
                 RequiredVariation = new PedVariation(
                     new List<PedPropComponent>(){
@@ -3716,7 +3718,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 48, 0),
                     })},
             new DispatchablePerson("mp_f_freemode_01", 1,1){
-                MaxWantedLevelSpawn = 3, DebugName = "<Female RHPD Detective>", RandomizeHead = true,
+                MaxWantedLevelSpawn = 3, GroupName = "Detective", DebugName = "<Female RHPD Detective>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedPropComponent>(){
@@ -3735,7 +3737,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 0, 0),
                     })},
             new DispatchablePerson("mp_f_freemode_01", 1,1){
-                MaxWantedLevelSpawn = 3, DebugName = "<Female RHPD Detective (vest)>", RandomizeHead = true,
+                MaxWantedLevelSpawn = 3, GroupName = "Detective", DebugName = "<Female RHPD Detective (vest)>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedPropComponent>(){
@@ -3754,7 +3756,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 0, 0),
                     })},
             new DispatchablePerson("mp_f_freemode_01", 0,50){
-                ArmorMin = 50,ArmorMax = 50,DebugName = "<Female RHPD SWAT>", RandomizeHead = true,MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4,
+                ArmorMin = 50,ArmorMax = 50,GroupName = "SWAT", DebugName = "<Female RHPD SWAT>", RandomizeHead = true,MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedPropComponent>(){
@@ -4111,7 +4113,7 @@ public class DispatchablePeople : IDispatchablePeople
 
             //SWAT
             new DispatchablePerson("mp_m_freemode_01", 0, 50){
-                ArmorMin = 50,ArmorMax = 50,
+                ArmorMin = 50,ArmorMax = 50,GroupName = "SWAT",
                 DebugName = "<Male DPPD SWAT>", RandomizeHead = true,MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4,
                 OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" },
                 RequiredVariation = new PedVariation(
@@ -4133,7 +4135,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 48, 0),
                     })},
             new DispatchablePerson("mp_f_freemode_01", 0, 50){
-                ArmorMin = 50,ArmorMax = 50,
+                ArmorMin = 50,ArmorMax = 50,GroupName = "SWAT",
                 DebugName = "<Female DPPD SWAT>", RandomizeHead = true,MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
@@ -4217,6 +4219,7 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
             {
                 DebugName = "<Male DPPD Suit>",
+                GroupName = "Detective",
                 RandomizeHead = true,
                 OverrideVoice = new List<string>()
                 {
@@ -4243,6 +4246,7 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
             {
                 DebugName = "<Male DPPD Detective>",
+                GroupName = "Detective",
                 RandomizeHead = true,
                 OverrideVoice = new List<string>()
                 {
@@ -4652,6 +4656,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,ArmorMin = 100
                 ,ArmorMax = 100,
                 DebugName = "<Male LSSD SWAT Uniform>",
+                GroupName = "SWAT",
                 RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" },
                 RequiredVariation = new PedVariation(
@@ -4684,6 +4689,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,ArmorMin = 100
                 ,ArmorMax = 100,
                 DebugName = "<Female LSSD SWAT Uniform>",
+                GroupName = "SWAT",
                 RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
@@ -4706,7 +4712,7 @@ public class DispatchablePeople : IDispatchablePeople
 
             // Detective
             new DispatchablePerson("mp_m_freemode_01", 1, 1){
-                MaxWantedLevelSpawn = 3,DebugName = "<Male LSSD Armor Protection>", RandomizeHead = true,
+                MaxWantedLevelSpawn = 3,GroupName = "Detective", DebugName = "<Male LSSD Armor Protection>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_SHERIFF_01_WHITE_FULL_01", "S_M_Y_SHERIFF_01_WHITE_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedPropComponent>(){
@@ -4725,7 +4731,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 0, 0),
                     })},
             new DispatchablePerson("mp_m_freemode_01", 1, 1){
-                MaxWantedLevelSpawn = 3,DebugName = "<Male LSSD Raid Jacket>", RandomizeHead = true,
+                MaxWantedLevelSpawn = 3,GroupName = "Detective", DebugName = "<Male LSSD Raid Jacket>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_SHERIFF_01_WHITE_FULL_01", "S_M_Y_SHERIFF_01_WHITE_FULL_02" },
                 RequiredVariation = new PedVariation(new List<PedPropComponent>(){},
                                                         new List<PedComponent>(){
@@ -4741,7 +4747,7 @@ public class DispatchablePeople : IDispatchablePeople
                                                             new PedComponent(5, 60, 1),
                                                         })},
             new DispatchablePerson("mp_m_freemode_01", 1, 1){
-                MaxWantedLevelSpawn = 3,DebugName = "<Male LSSD Gang Detail Jacket>", RandomizeHead = true,
+                MaxWantedLevelSpawn = 3,GroupName = "Detective", DebugName = "<Male LSSD Gang Detail Jacket>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_SHERIFF_01_WHITE_FULL_01", "S_M_Y_SHERIFF_01_WHITE_FULL_02" },
                 RequiredVariation = new PedVariation(new List<PedPropComponent>(){},
                                                         new List<PedComponent>(){
@@ -4757,7 +4763,7 @@ public class DispatchablePeople : IDispatchablePeople
                                                             new PedComponent(5, 60, 1),
                                                         })},
             new DispatchablePerson("mp_f_freemode_01", 1, 1){
-                MaxWantedLevelSpawn = 3,DebugName = "<Female LSSD Armor Protection>", RandomizeHead = true,
+                MaxWantedLevelSpawn = 3,GroupName = "Detective", DebugName = "<Female LSSD Armor Protection>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(new List<PedPropComponent>(){},
                                                         new List<PedComponent>(){
@@ -4773,7 +4779,7 @@ public class DispatchablePeople : IDispatchablePeople
                                                             new PedComponent(5, 0, 0),
                                                         })},
             new DispatchablePerson("mp_f_freemode_01", 1, 1){
-                MaxWantedLevelSpawn = 3,DebugName = "<Female LSSD Raid Jacket>", RandomizeHead = true,
+                MaxWantedLevelSpawn = 3,GroupName = "Detective", DebugName = "<Female LSSD Raid Jacket>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(new List<PedPropComponent>(){},
                                                         new List<PedComponent>(){
@@ -4789,7 +4795,7 @@ public class DispatchablePeople : IDispatchablePeople
                                                             new PedComponent(5, 60, 1),
                                                         })},
             new DispatchablePerson("mp_f_freemode_01", 1, 1){
-                MaxWantedLevelSpawn = 3,DebugName = "<Female LSSD Plain Clothes>", RandomizeHead = true,
+                MaxWantedLevelSpawn = 3,GroupName = "Detective", DebugName = "<Female LSSD Plain Clothes>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(new List<PedPropComponent>(){},
                                                         new List<PedComponent>(){
@@ -4805,7 +4811,7 @@ public class DispatchablePeople : IDispatchablePeople
                                                             new PedComponent(5, 68, 0),
                                                         })},
             new DispatchablePerson("mp_f_freemode_01", 1, 1){
-                MaxWantedLevelSpawn = 3,DebugName = "<Female LSSD Gang Detail Jacket>", RandomizeHead = true,
+                MaxWantedLevelSpawn = 3,GroupName = "Detective", DebugName = "<Female LSSD Gang Detail Jacket>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(new List<PedPropComponent>(){},
                                                         new List<PedComponent>(){
@@ -5177,7 +5183,7 @@ public class DispatchablePeople : IDispatchablePeople
 
             // Detective (with armor (male))
             new DispatchablePerson("mp_m_freemode_01", 1, 1){
-                ArmorMin = 50,ArmorMax = 50,MaxWantedLevelSpawn = 3, DebugName = "<Male BCSO Armor Protection>", RandomizeHead = true,
+                ArmorMin = 50,ArmorMax = 50,MaxWantedLevelSpawn = 3,GroupName = "Detective",  DebugName = "<Male BCSO Armor Protection>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_SHERIFF_01_WHITE_FULL_01", "S_M_Y_SHERIFF_01_WHITE_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedPropComponent>(){
@@ -5196,7 +5202,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 29, 8),
                     })},
             new DispatchablePerson("mp_f_freemode_01", 1, 1){
-                ArmorMin = 50,ArmorMax = 50,MaxWantedLevelSpawn = 3, DebugName = "<Female BCSO Suit>", RandomizeHead = true,
+                ArmorMin = 50,ArmorMax = 50,MaxWantedLevelSpawn = 3,GroupName = "Detective",  DebugName = "<Female BCSO Suit>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(new List<PedPropComponent>(){},
                                                      new List<PedComponent>(){
@@ -5224,6 +5230,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,HealthMax = 100
                 ,ArmorMin = 100
                 ,ArmorMax = 100
+                ,GroupName = "SWAT"
                 ,MinWantedLevelSpawn = 3, DebugName = "<Male BCSO SWAT Uniform>",
                 RandomizeHead = true, OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" },
                 RequiredVariation = new PedVariation(
@@ -5254,6 +5261,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,HealthMax = 100
                 ,ArmorMin = 100
                 ,ArmorMax = 100
+                ,GroupName = "SWA"
                 ,MinWantedLevelSpawn = 3, DebugName = "<Female BCSO SWAT Uniform>",
                 RandomizeHead = true, OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
@@ -5671,7 +5679,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,HealthMax = 100
                 ,ArmorMin = 100
                 ,ArmorMax = 100,
-                DebugName = "<Male PIA TRU Uniform>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" }, 
+                DebugName = "<Male PIA TRU Uniform>",GroupName = "SWAT", RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" }, 
                 RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               new PedPropComponent(0,39,1),
               new PedPropComponent(1,25,4),//new PedPropComponent(1,26,0),
@@ -5700,6 +5708,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,HealthMax = 100
                 ,ArmorMin = 100
                 ,ArmorMax = 100,
+                GroupName = "SWAT",
                 DebugName = "<Female PIA TRU Uniform>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, 
                 RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               new PedPropComponent(0,38,1),
@@ -6077,6 +6086,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,HealthMax = 100
                 ,ArmorMin = 100
                 ,ArmorMax = 100
+                ,GroupName = "SWAT"
                 ,DebugName = "<Male SEP TRU Uniform>", RandomizeHead = true, OverrideVoice = new List < string > () {
                     "S_M_Y_COP_01_WHITE_FULL_01",
                     "S_M_Y_COP_01_WHITE_FULL_02",
@@ -6111,6 +6121,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,HealthMax = 100
                 ,ArmorMin = 100
                 ,ArmorMax = 100
+                ,GroupName = "SWAT"
                 ,DebugName = "<Female SEP TRU Uniform>", RandomizeHead = true, OverrideVoice = new List < string > () {
                     "S_F_Y_COP_01_WHITE_FULL_01",
                     "S_F_Y_COP_01_WHITE_FULL_02",
@@ -8060,7 +8071,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 48, 0),
                     })},
             new DispatchablePerson("mp_m_freemode_01", 0, 0){
-                DebugName = "<Male LSPP Plain Clothes>", RandomizeHead = true,
+                DebugName = "<Male LSPP Plain Clothes>", GroupName = "Detective", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedPropComponent>(){
@@ -8079,7 +8090,7 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 0, 0),
                     })},
             new DispatchablePerson("mp_f_freemode_01", 0, 0){
-                DebugName = "<Female LSPP Plain clothes>", RandomizeHead = true,
+                DebugName = "<Female LSPP Plain clothes>",GroupName = "Detective",  RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedPropComponent>(){

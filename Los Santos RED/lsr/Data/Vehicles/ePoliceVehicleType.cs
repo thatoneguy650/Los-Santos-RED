@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-public enum PoliceVehicleType
+﻿public enum PoliceVehicleType
 {
     Marked = 0,
     Unmarked = 1,
@@ -14,4 +8,6 @@ public enum PoliceVehicleType
     OlderMarked = 5,
     MarkedFlatLightbar = 6,
     MarkedValorLightbar = 7,
+    MarkedOriginalLightbar = 8,
+    MarkedNewSlicktop = 9,
 }
