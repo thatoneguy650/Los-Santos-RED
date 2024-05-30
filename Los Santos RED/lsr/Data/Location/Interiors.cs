@@ -7119,6 +7119,17 @@ public class Interiors : IInteriors
     }
     private void Banks()
     {
+        List<TheftInteractItem> VaultDefaultPossibleItems = new List<TheftInteractItem>() {
+                            new TheftInteractItem() {
+                                ModItemName = "Cash Bundle",
+                                MaxItems = 5,
+                                Percentage = 100,
+                            },
+                        };
+        int VaultDefaultMinItems = 5;
+        int VaultDefaultMaxItems = 10;
+
+
         PossibleInteriors.BankInteriors.AddRange(new List<BankInterior>()
         {
             new BankInterior(71682,"Fleeca Bank") {
@@ -7136,16 +7147,9 @@ public class Interiors : IInteriors
 
                 InteractPoints = new List<InteriorInteract> () {
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
-
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca1vaultleft",
                         Position = new Vector3( - 350.4557f, -58.93706f, 49.01488f),
@@ -7157,17 +7161,10 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-
                         Name = "fleeca1vaultright",
                         Position = new Vector3( - 353.7186f, -57.80367f, 49.0148f),
                         Heading = 72.45023f,
@@ -7178,15 +7175,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca1vaulttop",
                         Position = new Vector3( - 352.4845f, -59.79395f, 49.01487f),
@@ -7215,15 +7206,9 @@ public class Interiors : IInteriors
                 },
                 InteractPoints = new List < InteriorInteract > () {
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca2vaultleft",
                         Position = new Vector3(150.1338f, -1049.841f, 29.3464f),
@@ -7235,15 +7220,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca2vaultright",
                         Position = new Vector3(146.9373f, -1048.566f, 29.3463f),
@@ -7255,15 +7234,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca2vaulttop",
                         Position = new Vector3(148.2065f, -1050.615f, 29.34638f),
@@ -7291,15 +7264,9 @@ public class Interiors : IInteriors
                 },
                 InteractPoints = new List < InteriorInteract > () {
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca3vaultleft",
                         Position = new Vector3(314.826f, -288.2838f, 54.1431f),
@@ -7311,15 +7278,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca3vaultright",
                         Position = new Vector3(311.3073f, -286.9115f, 54.14302f),
@@ -7331,15 +7292,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca3vaulttop",
                         Position = new Vector3(312.443f, -289.0419f, 54.14309f),
@@ -7365,15 +7320,9 @@ public class Interiors : IInteriors
                 },
                 InteractPoints = new List < InteriorInteract > () {
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca4vaultleft",
                         Position = new Vector3( - 2954.013f, 486.0489f, 15.67541f),
@@ -7382,15 +7331,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca4vaultright",
                         Position = new Vector3( - 2954.152f, 482.4714f, 15.67532f),
@@ -7399,15 +7342,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca4vaulttop",
                         Position = new Vector3( - 2952.514f, 484.314f, 15.67538f),
@@ -7430,15 +7367,9 @@ public class Interiors : IInteriors
                 },
                 InteractPoints = new List < InteriorInteract > () {
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca5vaultleft",
                         Position = new Vector3(1171.215f, 2715.287f, 38.06635f),
@@ -7447,15 +7378,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca5vaultright",
                         Position = new Vector3(1175.178f, 2715.24f, 38.06626f),
@@ -7464,15 +7389,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca5vaulttop",
                         Position = new Vector3(1173.201f, 2716.751f, 38.06634f),
@@ -7496,15 +7415,9 @@ public class Interiors : IInteriors
                 },
                 InteractPoints = new List < InteriorInteract > () {
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca6vaultleft",
                         Position = new Vector3( - 1205.487f, -336.3931f, 37.75935f),
@@ -7513,15 +7426,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca6vaultright",
                         Position = new Vector3( - 1208.928f, -338.272f, 37.75927f),
@@ -7530,15 +7437,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca6vaulttop",
                         Position = new Vector3( - 1206.709f, -338.908f, 37.75932f),
@@ -7573,15 +7474,9 @@ public class Interiors : IInteriors
                 },
                 InteractPoints = new List < InteriorInteract > () {
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdOuterVaultL1",
                         Position = new Vector3(258.57f, 218.4534f, 101.6834f),
@@ -7590,15 +7485,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdOuterVaultL2",
                         Position = new Vector3(260.6405f, 217.6998f, 101.6834f),
@@ -7607,15 +7496,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdOuterVaultR1",
                         Position = new Vector3(257.0691f, 214.541f, 101.6834f),
@@ -7624,15 +7507,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdOuterVaultR2",
                         Position = new Vector3(259.4067f, 213.6903f, 101.6834f),
@@ -7641,15 +7518,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultL1",
                         Position = new Vector3(263.6108f, 216.4729f, 101.6834f),
@@ -7658,15 +7529,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultL2",
                         Position = new Vector3(265.6564f, 215.8741f, 101.6834f),
@@ -7675,15 +7540,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultT1",
                         Position = new Vector3(266.4569f, 214.4251f, 101.6834f),
@@ -7692,15 +7551,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultT2",
                         Position = new Vector3(265.6734f, 212.6927f, 101.6834f),
@@ -7709,15 +7562,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultR1",
                         Position = new Vector3(262.3621f, 213.0617f, 101.6834f),
@@ -7726,15 +7573,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultR2",
                         Position = new Vector3(264.2992f, 212.1149f, 101.6834f),
@@ -7760,15 +7601,9 @@ public class Interiors : IInteriors
                 },
                 InteractPoints = new List < InteriorInteract > () {
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "bcsvaultleft",
                         Position = new Vector3( - 105.9199f, 6478.416f, 31.62671f),
@@ -7777,15 +7612,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "bcsvaultright",
                         Position = new Vector3( - 102.9088f, 6475.624f, 31.62673f),
@@ -7794,15 +7623,9 @@ public class Interiors : IInteriors
                         UseNavmesh = false,
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = new List < TheftInteractItem > () {
-                            new TheftInteractItem() {
-                                ModItemName = "Cash Bundle",
-                                MaxItems = 5,
-                                Percentage = 100,
-                            },
-                        },
-                        MinItems = 5,
-                        MaxItems = 10,
+                        PossibleItems = VaultDefaultPossibleItems,
+                        MinItems = VaultDefaultMinItems,
+                        MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "bcsvaulttop",
                         Position = new Vector3( - 103.1819f, 6478.17f, 31.62672f),

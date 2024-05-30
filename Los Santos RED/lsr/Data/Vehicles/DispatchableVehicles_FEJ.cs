@@ -1815,7 +1815,7 @@ public class DispatchableVehicles_FEJ
         }
         if (policeVehicleType == PoliceVehicleType.Marked)
         {
-            //Gresley - 1 = Front Bar, 2 = siren,3 = flat siren, 4 = valor siren ,5 = alprs1, 6 = alprs 2,7 = searchligh 8 = dashcam, 9 = divider, 10 = shotguns, 11 = computer, 12 = radio
+            //Gresley - 1 = Front Bar, 2 = siren,3 = flat siren, 4 = valor siren ,5 = alprs1, 6 = alprs 2,7 = searchligh , 9 = divider, 10 = shotguns, 11 = computer, 12 = radio
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
                 new DispatchableVehicleExtra(1, true, 65),
                 new DispatchableVehicleExtra(2, true, 100),
@@ -1824,7 +1824,6 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(5, true, 65),
                 new DispatchableVehicleExtra(6, true, 65),
                 new DispatchableVehicleExtra(7, true, 65),
-                new DispatchableVehicleExtra(8, true, 100),
                 new DispatchableVehicleExtra(9, true, 100),
                 new DispatchableVehicleExtra(10, true, 100),
                 new DispatchableVehicleExtra(11, true, 100),
@@ -1841,7 +1840,6 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(5, true, 65),
                 new DispatchableVehicleExtra(6, true, 65),
                 new DispatchableVehicleExtra(7, true, 65),
-                new DispatchableVehicleExtra(8, true, 100),
                 new DispatchableVehicleExtra(9, true, 100),
                 new DispatchableVehicleExtra(10, true, 100),
                 new DispatchableVehicleExtra(11, true, 100),
@@ -1858,7 +1856,6 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(5, true, 65),
                 new DispatchableVehicleExtra(6, true, 65),
                 new DispatchableVehicleExtra(7, true, 65),
-                new DispatchableVehicleExtra(8, true, 100),
                 new DispatchableVehicleExtra(9, true, 100),
                 new DispatchableVehicleExtra(10, true, 100),
                 new DispatchableVehicleExtra(11, true, 100),
@@ -1875,7 +1872,6 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(5, true, 65),
                 new DispatchableVehicleExtra(6, true, 65),
                 new DispatchableVehicleExtra(7, true, 65),
-                new DispatchableVehicleExtra(8, true, 100),
                 new DispatchableVehicleExtra(9, true, 100),
                 new DispatchableVehicleExtra(10, true, 100),
                 new DispatchableVehicleExtra(11, true, 100),
@@ -1894,7 +1890,6 @@ public class DispatchableVehicles_FEJ
 
                 new DispatchableVehicleExtra(5, true, 65),
                 new DispatchableVehicleExtra(6, true, 65),
-                new DispatchableVehicleExtra(8, true, 100),
                 new DispatchableVehicleExtra(9, true, 100),
                 new DispatchableVehicleExtra(10, true, 100),
                 new DispatchableVehicleExtra(11, true, 100),
@@ -1914,7 +1909,6 @@ public class DispatchableVehicles_FEJ
 
                 new DispatchableVehicleExtra(5, false, 100),
                 new DispatchableVehicleExtra(6, false, 100),
-                new DispatchableVehicleExtra(8, false, 100),
                 new DispatchableVehicleExtra(9, false, 100),
                 new DispatchableVehicleExtra(10, false, 100),
                 new DispatchableVehicleExtra(11, true, 100),

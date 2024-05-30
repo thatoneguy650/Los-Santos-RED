@@ -60,6 +60,8 @@ public class Investigation
     public float Distance => Settings.SettingsManager.InvestigationSettings.ActiveDistance;
     public bool IsActive { get; private set; }
     public bool IsSuspicious => IsActive && IsNearPosition && HavePlayerDescription;
+
+    public Vector3 StreetPosition { get; private set; }
     public Vector3 Position { get; private set; }
     private bool IsOutsideInvestigationRange { get; set; }
 
@@ -160,7 +162,7 @@ public class Investigation
         {
             RequiresFirefighters = true;
         }
-       // Position = NativeHelper.GetStreetPosition(postionToInvestigate, true);
+        StreetPosition = NativeHelper.GetStreetPosition(postionToInvestigate, true);
 
 
         Position = postionToInvestigate;

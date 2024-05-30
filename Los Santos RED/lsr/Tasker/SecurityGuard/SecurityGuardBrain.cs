@@ -179,6 +179,10 @@ public class SecurityGuardBrain : PedBrain
         {
             GameTimeLastSeenCrime = 0;
             PedExt.ReportCrime(Player);
+
+
+
+
            // EntryPoint.WriteToConsole("SECURITY REPORTED CRIME", debugLevel);
         }
     }

@@ -22,6 +22,7 @@ public class Forger : GameLocation
     private UIMenu SellPlateSubMenu;
     private UIMenu IDSubMenu;
     private UIMenu SellIDSubMenu;
+    private UIMenu MarkedCashSubMenu;
 
     public Forger(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -44,6 +45,10 @@ public class Forger : GameLocation
     public int IdentificationSalesPrice { get; set; } = 45;
 
     public int IdentificationPurchasePrice { get; set; } = 450;
+
+
+    public int MarkedBillsSalesPrice { get; set; } = 2500;
+
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Enter {Name}";
@@ -108,6 +113,28 @@ public class Forger : GameLocation
     {
         AddLicensePlateItems();
         AddIdentificationItems();
+        AddMarkedBillsItems();
+    }
+
+    private void AddMarkedBillsItems()
+    {
+        MarkedCashSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Clean Money");
+        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Get cash for your marked bills";
+        if (HasBannerImage)
+        {
+            BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
+            IDSubMenu.SetBannerType(BannerImage);
+        }
+        AddMoneyClean();
+    }
+    private void AddMoneyClean()
+    {
+        InventoryItem cashBundleItem = Player.Inventory.ItemsList.FirstOrDefault(x => x.ModItem != null && x.ModItem.ItemSubType == ItemSubType.Money && x.ModItem.Name.ToLower() == "cash bundle");
+        if (cashBundleItem != null)
+        {
+            MenuItem mi = new MenuItem("Marked Bills", 0, MarkedBillsSalesPrice);
+            cashBundleItem.ModItem.CreateSellMenuItem(Transaction, mi, MarkedCashSubMenu, Settings, Player, false, World);
+        }
     }
 
     private void AddIdentificationItems()

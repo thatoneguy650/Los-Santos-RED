@@ -49,7 +49,14 @@ public class FireGeneralInvestigate : GeneralInvestigate
     {
         if (Player.Investigation.IsActive)
         {
-            PlaceToDriveTo = Player.Investigation.Position;
+            if (Player.Investigation.StreetPosition != Vector3.Zero)
+            {
+                PlaceToDriveTo = Player.Investigation.StreetPosition;
+            }
+            else
+            {
+                PlaceToDriveTo = Player.Investigation.Position;
+            }
             PlaceToWalkTo = Player.Investigation.Position;
         }
         else if (Ped.PedAlerts.IsAlerted)

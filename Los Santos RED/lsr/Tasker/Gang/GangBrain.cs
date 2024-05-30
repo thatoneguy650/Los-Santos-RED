@@ -123,7 +123,7 @@ public class GangBrain : PedBrain
             {
                 if (SeenPlayerReactiveCrime)
                 {
-                    if (GangMember.WillFight && !arePoliceNearby && Player.IsNotWanted)
+                    if (GangMember.WillFight && !arePoliceNearby && Player.IsNotWanted && isNearHomeTerritory)
                     {
                         WillAttackPlayer = true;
                     }
@@ -143,7 +143,7 @@ public class GangBrain : PedBrain
                         WillFleeFromPlayer = true;
                     }
                 }
-                else if (isHostile && GangMember.CanRecognizePlayer && isNearHomeTerritory && !arePoliceNearby && Player.IsNotWanted)//changed from see to recognize, leave hit squads as is
+                else if (isHostile && GangMember.CanRecognizePlayer && GangMember.ClosestDistanceToPlayer <= 20f && isNearHomeTerritory && !arePoliceNearby && Player.IsNotWanted)//changed from see to recognize, leave hit squads as is
                 {
                     if (GangMember.WillFight)
                     {
