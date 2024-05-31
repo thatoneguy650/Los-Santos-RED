@@ -7122,11 +7122,11 @@ public class Interiors : IInteriors
         List<TheftInteractItem> VaultDefaultPossibleItems = new List<TheftInteractItem>() {
                             new TheftInteractItem() {
                                 ModItemName = "Cash Bundle",
-                                MaxItems = 5,
+                                MaxItems = 1,
                                 Percentage = 100,
                             },
                         };
-        int VaultDefaultMinItems = 5;
+        int VaultDefaultMinItems = 2;
         int VaultDefaultMaxItems = 10;
 
 
@@ -7159,6 +7159,8 @@ public class Interiors : IInteriors
                         CameraRotation = new Rotator(-39.83636f, 1.223048E-05f, 28.6475f),
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7173,6 +7175,8 @@ public class Interiors : IInteriors
                         CameraRotation = new Rotator( - 39.83636f, 1.223048E-05f, 28.6475f),
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7187,6 +7191,8 @@ public class Interiors : IInteriors
                         CameraRotation = new Rotator( - 39.83636f, 1.223048E-05f, 28.6475f),
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                 },
 
@@ -7218,6 +7224,8 @@ public class Interiors : IInteriors
                         CameraRotation = new Rotator( - 27.92692f, 1.642717E-05f, 34.9568f),
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7232,6 +7240,8 @@ public class Interiors : IInteriors
                         CameraRotation = new Rotator( - 36.19152f, 1.375267E-05f, -67.36177f),
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7246,6 +7256,8 @@ public class Interiors : IInteriors
                         CameraRotation = new Rotator( - 21.52686f, 1.835587E-06f, 159.2428f),
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                 },
             },
@@ -7276,6 +7288,8 @@ public class Interiors : IInteriors
                         CameraRotation = new Rotator( - 40.91244f, 6.778568E-06f, 23.10921f),
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7290,6 +7304,8 @@ public class Interiors : IInteriors
                         CameraRotation = new Rotator( - 40.91244f, 6.778568E-06f, 23.10921f),
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7304,6 +7320,8 @@ public class Interiors : IInteriors
                         CameraRotation = new Rotator( - 40.91244f, 6.778568E-06f, 23.10921f),
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                 },
             },
@@ -7329,6 +7347,8 @@ public class Interiors : IInteriors
                         Heading = 358.9159f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7340,6 +7360,8 @@ public class Interiors : IInteriors
                         Heading = 171.9128f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7351,6 +7373,8 @@ public class Interiors : IInteriors
                         Heading = 264.5385f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                 },
             },
@@ -7376,6 +7400,8 @@ public class Interiors : IInteriors
                         Heading = 90.35101f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7387,6 +7413,8 @@ public class Interiors : IInteriors
                         Heading = 271.4401f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7398,6 +7426,8 @@ public class Interiors : IInteriors
                         Heading = 357.0772f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                 },
             },
@@ -7424,6 +7454,8 @@ public class Interiors : IInteriors
                         Heading = 296.6526f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7435,6 +7467,8 @@ public class Interiors : IInteriors
                         Heading = 116.7019f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7446,6 +7480,8 @@ public class Interiors : IInteriors
                         Heading = 207.8481f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                 },
             },
@@ -7479,21 +7515,30 @@ public class Interiors : IInteriors
                         MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdOuterVaultL1",
-                        Position = new Vector3(258.57f, 218.4534f, 101.6834f),
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(258.57f, 218.4534f, 101.6834f),360f-340.07f,-.4f),
                         Heading = 340.07f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
                     },
+                    
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
                         MinItems = VaultDefaultMinItems,
                         MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdOuterVaultL2",
-                        Position = new Vector3(260.6405f, 217.6998f, 101.6834f),
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(260.6405f, 217.6998f, 101.6834f),360f-340.7092f,-.4f),
                         Heading = 340.7092f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7501,10 +7546,14 @@ public class Interiors : IInteriors
                         MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdOuterVaultR1",
-                        Position = new Vector3(257.0691f, 214.541f, 101.6834f),
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(257.0691f, 214.541f, 101.6834f),360f-160.8612f,-.4f),
                         Heading = 160.8612f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7512,10 +7561,14 @@ public class Interiors : IInteriors
                         MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdOuterVaultR2",
-                        Position = new Vector3(259.4067f, 213.6903f, 101.6834f),
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(259.4067f, 213.6903f, 101.6834f),360f-159.7794f,-.4f),
                         Heading = 159.7794f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7523,10 +7576,14 @@ public class Interiors : IInteriors
                         MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultL1",
-                        Position = new Vector3(263.6108f, 216.4729f, 101.6834f),
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(263.6108f, 216.4729f, 101.6834f),360f-342.1166f,-.4f),
                         Heading = 342.1166f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7534,10 +7591,14 @@ public class Interiors : IInteriors
                         MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultL2",
-                        Position = new Vector3(265.6564f, 215.8741f, 101.6834f),
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(265.6564f, 215.8741f, 101.6834f),360f-342.004f,-.4f),
                         Heading = 342.004f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7545,10 +7606,14 @@ public class Interiors : IInteriors
                         MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultT1",
-                        Position = new Vector3(266.4569f, 214.4251f, 101.6834f),
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(266.4569f, 214.4251f, 101.6834f),360f-250.5221f,-.4f),
                         Heading = 250.5221f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7556,10 +7621,14 @@ public class Interiors : IInteriors
                         MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultT2",
-                        Position = new Vector3(265.6734f, 212.6927f, 101.6834f),
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(265.6734f, 212.6927f, 101.6834f),360f-249.6621f,-.4f),
                         Heading = 249.6621f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7567,10 +7636,13 @@ public class Interiors : IInteriors
                         MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultR1",
-                        Position = new Vector3(262.3621f, 213.0617f, 101.6834f),
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(262.3621f, 213.0617f, 101.6834f),360f-167.3309f,-.4f),
                         Heading = 167.3309f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7578,10 +7650,12 @@ public class Interiors : IInteriors
                         MaxItems = VaultDefaultMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultR2",
-                        Position = new Vector3(264.2992f, 212.1149f, 101.6834f),
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(264.2992f, 212.1149f, 101.6834f),360f-161.562f,-.4f),
                         Heading = 161.562f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                 },
             },
@@ -7610,6 +7684,8 @@ public class Interiors : IInteriors
                         Heading = 47.10064f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7621,6 +7697,8 @@ public class Interiors : IInteriors
                         Heading = 226.068f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
                         PossibleItems = VaultDefaultPossibleItems,
@@ -7632,6 +7710,8 @@ public class Interiors : IInteriors
                         Heading = 315.1491f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                 },
             },

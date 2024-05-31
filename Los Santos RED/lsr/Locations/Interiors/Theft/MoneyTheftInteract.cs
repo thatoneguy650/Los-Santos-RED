@@ -53,6 +53,7 @@ public class MoneyTheftInteract : TheftInteract
             return;
         }
         CashAmount = RandomItems.GetRandomNumberInt(CashMinAmount, CashMaxAmount);
+        base.OnInteriorLoaded();
     }
     protected override void GiveReward()
     {

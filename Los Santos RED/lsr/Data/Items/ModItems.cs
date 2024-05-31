@@ -2219,6 +2219,17 @@ public class ModItems : IModItems
                 ModelItemID = "gr_prop_gr_driver_01a",ItemSubType = ItemSubType.Tool  },
             new DrillItem("Flint Cordless Drill","2-Speed Battery Drill. Impact-resistant casing. Light, compact and easy to use.") {
                 ModelItemID = "prop_tool_drill" ,ItemSubType = ItemSubType.Tool },
+
+
+            new DrillItem("Power Metal Side Drill",""){ 
+                ModelItemID = "hei_prop_heist_drill",ItemSubType = ItemSubType.Tool },
+
+            new DrillItem("Power Metal Custom Side Drill",""){
+                ModelItemID = "ch_prop_ch_heist_drill",ItemSubType = ItemSubType.Tool },
+
+            new DrillItem("Power Metal Laser Side Drill",""){
+                ModelItemID = "ch_prop_laserdrill_01a",ItemSubType = ItemSubType.Tool },
+
         });
         PossibleItems.PliersItems.AddRange(new List<PliersItem>
         {

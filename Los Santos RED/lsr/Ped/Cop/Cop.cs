@@ -480,7 +480,21 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     {
         return $"Talk to {FormattedName}";
     }
+    public override void OnHeardGunfire(IPoliceRespondable policeRespondable)
+    {
+        if(policeRespondable.Investigation.IsActive)
+        {
+            policeRespondable.Investigation.ExtendPoliceTime();
+        }
+    }
 
+    public override void OnSeenDeadBody(IPoliceRespondable policeRespondable)
+    {
+        if (policeRespondable.Investigation.IsActive)
+        {
+            policeRespondable.Investigation.ExtendPoliceTime();
+        }
+    }
 
     //public void AddDivision(string forceGroupName)
     //{

@@ -243,6 +243,7 @@ public class SpawnBlocks : ISpawnBlocks
             new ScenarioBlock(new Vector3(-764.3928f, -923.0778f, 18.72722f), "KoreanSteps") { Distance = 4.0f },
             new ScenarioBlock(new Vector3(-763.5527f, -932.0254f, 18.14868f), "KoreanSteps") { Distance = 4.0f },
 
+
             //Cartel Mansion
             new ScenarioBlock(new Vector3(1382.979f, 1147.941f, 113.3342f),"VagosCartel"),
             new ScenarioBlock(new Vector3(1382.747f, 1146.689f, 113.3342f),"VagosCartel"),

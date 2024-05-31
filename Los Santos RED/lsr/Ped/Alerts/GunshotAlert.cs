@@ -41,7 +41,7 @@ public class GunshotAlert : PedAlert
         }  
         base.Update(policeRespondable, world);
 
-
+        PedExt.OnHeardGunfire(policeRespondable);
 
 
     }

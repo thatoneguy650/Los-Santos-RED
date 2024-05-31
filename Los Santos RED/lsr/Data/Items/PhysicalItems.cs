@@ -427,18 +427,57 @@ public class PhysicalItems : IPropItems
                 new PropAttachment("RightHandWeapon","BONETAG_R_PH_HAND",new Vector3(0.02f,0f,-0.03f),new Rotator(0f, 0f, 0f)),      
             }) { AliasWeaponHash = 1317494643,IsLarge = true },//flint rubber hammer
 
+
+
             new PhysicalItem("prop_tool_drill", new List<PropAttachment>() {
                 new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
                 new PropAttachment("RightHandWeapon","BONETAG_R_PH_HAND",new Vector3(0.03f,0.05f,0f),new Rotator(70f, 280f, -90f)),
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(-0.01f, 0.05f, 0.05f),new Rotator(0f, 0f, 90f)),
             }){ AliasWeaponHash = 1317494643 },
+
+
+
             new PhysicalItem("gr_prop_gr_driver_01a", new List<PropAttachment>() { 
                 new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)),
                 new PropAttachment("RightHandWeapon","BONETAG_R_PH_HAND",new Vector3(0.03f,-0.11f,-0.07f),new Rotator(160f, 243f, 278f)),
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0f, 0.05f, -0.12f),new Rotator(0f, 0f, 0f)),
             }){ AliasWeaponHash = 1317494643 },//power metal impact driver
+
+
+
+
+
             new PhysicalItem("gr_prop_gr_drill_01a", new List<PropAttachment>() { 
                 new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)),
                 new PropAttachment("RightHandWeapon","BONETAG_R_PH_HAND",new Vector3(0.19f,-0.1f,-0.09f),new Rotator(10f, 70f, 104f)),
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(-0.01f, -0.05f, -0.14f),new Rotator(0f, 0f, 0f)),
             }){ AliasWeaponHash = 1317494643 },//power metal cordless drill
+
+
+
+
+            new PhysicalItem("hei_prop_heist_drill", new List<PropAttachment>() {
+                new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0f, 0f, 0f), new Rotator(0f, 0f, 0f)),
+                new PropAttachment("RightHandWeapon", "BONETAG_R_PH_HAND", new Vector3(0.14f, 0.02f, -0.02f),new Rotator(-180f, -80f, -90f)),
+                new PropAttachment("RightHand","BONETAG_R_PH_HAND",new Vector3(0f,0f,0f),new Rotator(0f, 0f, 0f)),
+            }){ AliasWeaponHash = 1317494643 },
+            new PhysicalItem("ch_prop_ch_heist_drill", new List<PropAttachment>() {
+                new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0f, 0f, 0f), new Rotator(0f, 0f, 0f)),
+                new PropAttachment("RightHandWeapon", "BONETAG_R_PH_HAND", new Vector3(0.14f, 0.02f, -0.02f),new Rotator(-180f, -80f, -90f)),
+                new PropAttachment("RightHand","BONETAG_R_PH_HAND",new Vector3(0f,0f,0f),new Rotator(0f, 0f, 0f)),
+            }){ AliasWeaponHash = 1317494643 },
+            new PhysicalItem("ch_prop_laserdrill_01a", new List<PropAttachment>() {
+                new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0f, 0f, 0f), new Rotator(0f, 0f, 0f)),
+                new PropAttachment("RightHandWeapon", "BONETAG_R_PH_HAND", new Vector3(0.14f, 0.02f, -0.02f),new Rotator(-180f, -80f, -90f)),
+                new PropAttachment("RightHand","BONETAG_R_PH_HAND",new Vector3(0f,0f,0f),new Rotator(0f, 0f, 0f)),
+            }){ AliasWeaponHash = 1317494643 },
+
+
+
+
+
+
+
 
             new PhysicalItem("prop_binoc_01", new List<PropAttachment>() {
                 new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), Rotator.Zero),

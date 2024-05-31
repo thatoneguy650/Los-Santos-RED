@@ -100,19 +100,19 @@ public class RestrictedArea
         }
         isPlayerViolating = NativeHelper.IsPointInPolygon(new Vector2(Player.Position.X, Player.Position.Y), Boundaries);
 
-        if(isPlayerViolating)
-        {
-            EntryPoint.WriteToConsole($"Violating {Name}");
-        }
+        //if(isPlayerViolating)
+        //{
+        //    EntryPoint.WriteToConsole($"Violating {Name}");
+        //}
 
         if(IsZRestricted)
         {
             if (Player.Position.Z < ZRestrictionMin || Player.Position.Z > ZRestrictionMax)
             {
-                if (isPlayerViolating)
-                {
-                    EntryPoint.WriteToConsole("PLAYER NOT WITHIN Z RESTRICTION NOT TRESPASSING");
-                }
+                //if (isPlayerViolating)
+                //{
+                //    EntryPoint.WriteToConsole("PLAYER NOT WITHIN Z RESTRICTION NOT TRESPASSING");
+                //}
                 isPlayerViolating = false;
             }
         }

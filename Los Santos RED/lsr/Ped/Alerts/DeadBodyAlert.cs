@@ -73,6 +73,7 @@ public class DeadBodyAlert : PedAlert
                 if (deadBody.GeneratesBodyAlerts)
                 {
                     AddAlert(deadBody);
+                    PedExt.OnSeenDeadBody(policeRespondable);
                 }
             }
         }

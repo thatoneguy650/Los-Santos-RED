@@ -18,6 +18,7 @@ public class TheftInteract : InteriorInteract
 {
     protected uint GameTimeGotReward;
     protected uint IncrementGameTime;
+    protected bool IsUnlockedForPlayer = false;
 
     protected virtual bool CanInteract => false;
     public string StealPrimptText { get; set; } = "Steal";
@@ -31,6 +32,13 @@ public class TheftInteract : InteriorInteract
     public string LoopAnimationDictionary { get; set; }
     public string LoopAnimation { get; set; }
     public string ViolatingCrimeID { get; set; }
+
+
+
+    public virtual bool HasPreInteractRequirement { get; set; } = false;
+    public virtual ItemUsePreInteract ItemUsePreInteract { get; set; }
+
+
     public TheftInteract()
     {
 
@@ -40,13 +48,20 @@ public class TheftInteract : InteriorInteract
     {
 
     }
-
+    public override void OnInteriorLoaded()
+    {
+        IsUnlockedForPlayer = false;
+        base.OnInteriorLoaded();
+    }
     public override void OnInteract()
     {
         Interior.IsMenuInteracting = true;
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
-        SetupCamera(false);
+        if (Settings.SettingsManager.ActivitySettings.UseCameraForTheftInteracts)
+        {
+            SetupCamera(false);
+        }
         if (!WithWarp)
         {
             if (!MoveToPosition(3.0f))
@@ -64,7 +79,18 @@ public class TheftInteract : InteriorInteract
             LocationCamera?.StopImmediately(true);
             return;
         }
-        PerformAnimation();
+        if(HasPreInteractRequirement && !IsUnlockedForPlayer)
+        {
+            ItemUsePreInteract.Start(Player,LocationInteractable,Settings,ModItems, this);
+            if(IsUnlockedForPlayer)
+            {
+                PerformAnimation();
+            }
+        }
+        else
+        {
+            PerformAnimation();
+        }
         Interior.IsMenuInteracting = false;
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         LocationCamera?.ReturnToGameplay(true);
@@ -197,6 +223,10 @@ public class TheftInteract : InteriorInteract
     protected virtual void HandlePostLoop()
     {
 
+    }
+    public void SetUnlocked()
+    {
+        IsUnlockedForPlayer = true;
     }
 }
 

@@ -98,7 +98,7 @@ public class ActivitySettings : ISettingsDefaultable
     public float PoopRotatePitch { get; set; }
     public float PoopRotateRoll { get; set; }
     public float PoopRotateYaw { get; set; }
-
+    public bool UseCameraForTheftInteracts { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -174,6 +174,8 @@ public class ActivitySettings : ISettingsDefaultable
         BlendOutBaseEat = 2.0f;
 
         EatAnimBaseEndingPercentage = 0.4f;
+
+        UseCameraForTheftInteracts = false;
 
     }
 }

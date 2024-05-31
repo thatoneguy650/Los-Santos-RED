@@ -530,5 +530,10 @@ public class Investigation
         RespondingPolice = 0;
         Player.OnInvestigationExpire();
     }
+
+    public void ExtendPoliceTime()
+    {
+        GameTimePoliceArrived = Game.GameTime;
+    }
 }
 

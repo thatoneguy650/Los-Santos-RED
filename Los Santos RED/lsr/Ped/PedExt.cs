@@ -1551,5 +1551,13 @@ ENDENUM
         EntryPoint.WriteToConsole($"OnPlayerDidBodilyFunctionsNear triggered {Handle}");
     }
 
+    public virtual void OnHeardGunfire(IPoliceRespondable policeRespondable)
+    {
 
+    }
+
+    public virtual void OnSeenDeadBody(IPoliceRespondable policeRespondable)
+    {
+
+    }
 }

@@ -476,11 +476,16 @@ public class ShopMenus : IShopMenus
                 new VariablePriceMenuItem("Flint Crowbar", 56, 85, 12, 20){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
                 new VariablePriceMenuItem("Flint Hatchet", 195, 290, 35, 50){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
                 new VariablePriceMenuItem("Vom Feuer Machete", 95, 150,25, 40){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
-                new VariablePriceMenuItem("Flint Pliers", 20, 45, 5, 10){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
-                new VariablePriceMenuItem("Flint Heavy Duty Pipe Wrench",30, 45, 15, 25){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
-                new VariablePriceMenuItem("Flint Shovel",95,  120, 20, 35){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
-                new VariablePriceMenuItem("Flint Cordless Drill", 98, 150, 18, 25){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
-                new VariablePriceMenuItem("Power Metal Cordless Drill",78,  110, 22, 30){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
+                new VariablePriceMenuItem("Flint Pliers", 20, 45, 5, 10){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 2, },
+                new VariablePriceMenuItem("Flint Heavy Duty Pipe Wrench",30, 45, 15, 25){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 2, },
+                new VariablePriceMenuItem("Flint Shovel",95,  120, 20, 35){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 2, },
+                new VariablePriceMenuItem("Flint Cordless Drill", 98, 150, 18, 25){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 2, },
+                new VariablePriceMenuItem("Power Metal Cordless Drill",78,  110, 22, 30){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 2, },
+
+                new VariablePriceMenuItem("Power Metal Side Drill", 185,265,45,140){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 2, },
+                new VariablePriceMenuItem("Power Metal Custom Side Drill", 375,675,120,160){ NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 2, },
+
+
 
                 new VariablePriceMenuItem("Fake Gold Ring", 0,0,1,2){ NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 5, },
                 new VariablePriceMenuItem("Gold Ring", 0,0,85,155){ NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 5, },
@@ -532,6 +537,12 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Flint Cordless Drill", 75),
                 new MenuItem("Power Metal Cordless Drill", 90),
                 new MenuItem("Power Metal Cordless Impact Driver", 150),
+
+
+
+
+                new MenuItem("Power Metal Side Drill", 250),
+                new MenuItem("Power Metal Custom Side Drill", 575),
             }),
             new ShopMenu("SportingGoodsMenu","SportingGoods",new List<MenuItem>() {
                 new MenuItem("GASH Black Umbrella", 25),
@@ -921,6 +932,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Flint Cordless Drill", 75),
                 new MenuItem("Power Metal Cordless Drill", 90),
                 new MenuItem("Power Metal Cordless Impact Driver", 150),
+                new MenuItem("Power Metal Side Drill", 250),
+                new MenuItem("Power Metal Custom Side Drill", 575),
             }),
             new ShopMenu("InternetCafeMenu","InternetCafe",new List<MenuItem>() {
                 new MenuItem("Donut", 1),

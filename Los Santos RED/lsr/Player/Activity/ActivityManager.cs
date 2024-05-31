@@ -69,7 +69,8 @@ public class ActivityManager
     public bool HasScrewdriverInHand { get; set; }
     public ScrewdriverItem CurrentScrewdriver { get; set; }
 
-
+    public bool HasDrillInHand { get; set; }
+    public DrillItem CurrentDrill { get; set; }
 
     //DO I NEED ALL 3?
     public bool CanPerformActivitesBase => Player.IsAliveAndFree && !Player.CuffManager.IsHandcuffed && !Player.IsIncapacitated && !Player.IsGettingIntoAVehicle && !Player.RecentlyGotOutOfVehicle && !Player.IsBreakingIntoCar && (!Player.IsInVehicle || Player.CurrentVehicle == null || Player.CurrentVehicle.CanPerformActivitiesInside);// && (Interaction == null || Interaction.CanPerformActivities);

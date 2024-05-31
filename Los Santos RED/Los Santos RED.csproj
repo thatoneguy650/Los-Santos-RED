@@ -177,7 +177,9 @@
     <Compile Include="lsr\Locations\Interiors\IRestableInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\PropSpawn.cs" />
     <Compile Include="lsr\Locations\Interiors\Theft\AnimationPoint.cs" />
+    <Compile Include="lsr\Locations\Interiors\Theft\DrillUsePreInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\Theft\ItemTheftInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\Theft\ItemUsePreInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\Theft\MoneyTheftInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\OutfitInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ResidenceInterior.cs" />

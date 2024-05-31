@@ -37,7 +37,10 @@ public class BankDrawerInteract : InteriorInteract
         Interior.IsMenuInteracting = true;
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
-        SetupCamera(false);
+        if (Settings.SettingsManager.ActivitySettings.UseCameraForTheftInteracts)
+        {
+            SetupCamera(false);
+        }
         if (!WithWarp)
         {
             if (!MoveToPosition(3.0f))

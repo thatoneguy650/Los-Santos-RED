@@ -19,6 +19,7 @@ public class DebugAnimationSubMenu : DebugSubMenu
     private UIMenu ModelSearchResultSubMenu;
     private ModDataFileManager ModDataFileManager;
     private TestAnimation SelectedAnimation;
+    private DebugMenu DebugMenu;
 
     private float BlendIn = 8.0f;
     private float BlendOut = -8.0f;
@@ -27,9 +28,10 @@ public class DebugAnimationSubMenu : DebugSubMenu
     private UIMenuItem playAnimationMenu;
     private UIMenuCheckboxItem IsFacialMenu;
 
-    public DebugAnimationSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, ModDataFileManager modDataFileManager) : base(debug, menuPool, player)
+    public DebugAnimationSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, ModDataFileManager modDataFileManager, DebugMenu debugMenu) : base(debug, menuPool, player)
     {
         ModDataFileManager = modDataFileManager;
+        DebugMenu = debugMenu;
     }
     public override void AddItems()
     {
@@ -181,6 +183,8 @@ public class DebugAnimationSubMenu : DebugSubMenu
             animationMenuItem.Activated += (sender, e) =>
             {
                 SelectedAnimation = testAnimation;
+                DebugMenu.SelectedAnimationDictionary = testAnimation.Dictionary;
+                DebugMenu.SelectedAnimationName = testAnimation.Name;
                 if(playAnimationMenu != null)
                 {
                     playAnimationMenu.Description = $"Selected: {testAnimation.Dictionary} {testAnimation.Name}";

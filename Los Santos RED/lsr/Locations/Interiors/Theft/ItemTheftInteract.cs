@@ -76,6 +76,7 @@ public class ItemTheftInteract : TheftInteract
         {
             nextItem = Items.PickRandom();
         }
+        base.OnInteriorLoaded();
     }
     private TheftInteractItem PickRandomItem()
     {

@@ -76,7 +76,7 @@ public class InteriorDoor
         doorEntity = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Position.X, Position.Y, Position.Z, 3.0f, ModelHash, true, false, true);
         if (!doorEntity.Exists())
         {
-            EntryPoint.WriteToConsole($"ForceRotateOpenDoor DOES NOT EXIST OPEN");
+            //EntryPoint.WriteToConsole($"ForceRotateOpenDoor DOES NOT EXIST OPEN");
             return;
         }
        // doorEntity.Delete();
@@ -84,7 +84,7 @@ public class InteriorDoor
         {
             originalHeading = doorEntity.Rotation.Yaw;
             HasOriginalHeading = true;
-            EntryPoint.WriteToConsole($"originalHeading{originalHeading}");
+            //EntryPoint.WriteToConsole($"originalHeading{originalHeading}");
         }
         NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, false);
         doorEntity.Rotation = new Rotator(0f, 0f, originalHeading - 100f);
@@ -93,7 +93,7 @@ public class InteriorDoor
 
         HasBeenForceRotatedOpen = true;
 
-        EntryPoint.WriteToConsole($"ForceRotateOpenDoor {originalHeading - 100f}");
+        //EntryPoint.WriteToConsole($"ForceRotateOpenDoor {originalHeading - 100f}");
     }
     private void ForceRotateCloseDoor()
     {
@@ -104,7 +104,7 @@ public class InteriorDoor
 
         if (!doorEntity.Exists())
         {
-            EntryPoint.WriteToConsole($"ForceRotateOpenDoor DOES NOT EXIST CLOSE");
+            //EntryPoint.WriteToConsole($"ForceRotateOpenDoor DOES NOT EXIST CLOSE");
             return;
         }
         if (!HasOriginalHeading)
@@ -117,7 +117,7 @@ public class InteriorDoor
         NativeFunction.Natives.FREEZE_ENTITY_POSITION(doorEntity, true);
         doorEntity.IsPersistent = false;
 
-        EntryPoint.WriteToConsole($"ForceRotateCloseDoor {originalHeading}");
+        //EntryPoint.WriteToConsole($"ForceRotateCloseDoor {originalHeading}");
     }
 }
 

@@ -44,6 +44,9 @@ public class DebugMenu : ModUIMenu
     private IPlateTypes PlateTypes;
     private ModDataFileManager ModDataFileManager;
     private List<DebugSubMenu> DebugSubMenus = new List<DebugSubMenu>();
+
+
+
     public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, 
         IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems, ICrimes crimes, IPlateTypes plateTypes, INameProvideable names, ModDataFileManager modDataFileManager, 
         IPoliceRespondable policeRespondable, IInteractionable interactionable)
@@ -88,7 +91,7 @@ public class DebugMenu : ModUIMenu
         DebugSubMenus.Add(new DebugTimeSubMenu(Debug, MenuPool, Player, Time));
         DebugSubMenus.Add(new DebugVehicleSubMenu(Debug, MenuPool, Player, PlateTypes));
 
-        DebugSubMenus.Add(new DebugAnimationSubMenu(Debug, MenuPool, Player, ModDataFileManager));
+        DebugSubMenus.Add(new DebugAnimationSubMenu(Debug, MenuPool, Player, ModDataFileManager, this));
         DebugSubMenus.Add(new DebugHelperSubMenu(Debug, MenuPool, Player, World, PlacesOfInterest, Settings,Time,PoliceRespondable, ModDataFileManager, Gangs));
         //DebugSubMenus.Add(new DebugOtherSubMenu(Debug, MenuPool, Player));
 
@@ -97,7 +100,7 @@ public class DebugMenu : ModUIMenu
 
         DebugSubMenus.Add(new DebugPerformanceSubMenu(Debug, MenuPool, Player));
 
-        DebugSubMenus.Add(new DebugPropAttachSubMenu(Debug, MenuPool, Player, ModDataFileManager));
+        DebugSubMenus.Add(new DebugPropAttachSubMenu(Debug, MenuPool, Player, ModDataFileManager, this));
 
 
         DebugSubMenus.Add(new DebugPositionLoggingSubMenu(Debug, MenuPool, Player, ModDataFileManager));
@@ -138,4 +141,8 @@ public class DebugMenu : ModUIMenu
             debugSubMenu.AddItems();
         }
     } 
+
+
+    public string SelectedAnimationDictionary { get; set; }
+    public string SelectedAnimationName { get; set; }
 }

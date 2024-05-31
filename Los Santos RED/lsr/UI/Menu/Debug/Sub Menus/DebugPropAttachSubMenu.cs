@@ -24,6 +24,7 @@ public class DebugPropAttachSubMenu : DebugSubMenu
     private UIMenu ModelSearchResultSubMenu;
     private ModDataFileManager ModDataFileManager;
     private TestAnimation SelectedAnimation;
+    private DebugMenu DebugMenu;
 
     private float BlendIn = 8.0f;
     private float BlendOut = -8.0f;
@@ -31,10 +32,12 @@ public class DebugPropAttachSubMenu : DebugSubMenu
     private int Flags = 0;
     private UIMenuItem playAnimationMenu;
     private UIMenuCheckboxItem IsFacialMenu;
+    private UIMenuListScrollerItem<AnimationSelector> animationsScroller;
 
-    public DebugPropAttachSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, ModDataFileManager modDataFileManager) : base(debug, menuPool, player)
+    public DebugPropAttachSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, ModDataFileManager modDataFileManager, DebugMenu debugMenu) : base(debug, menuPool, player)
     {
         ModDataFileManager = modDataFileManager;
+        DebugMenu = debugMenu;
     }
     public override void AddItems()
     {
@@ -46,7 +49,18 @@ public class DebugPropAttachSubMenu : DebugSubMenu
         CreateMenu();
 
     }
+    public override void Update()
+    {
+        if(!string.IsNullOrEmpty(DebugMenu.SelectedAnimationDictionary) && !string.IsNullOrEmpty(DebugMenu.SelectedAnimationName))
+        {
+            if(!animationsScroller.Items.Any(x=> x.Dictionary == DebugMenu.SelectedAnimationDictionary && x.Animation == DebugMenu.SelectedAnimationName))
+            {
+                animationsScroller.Items.Add(new AnimationSelector(DebugMenu.SelectedAnimationDictionary, DebugMenu.SelectedAnimationName));
+            }
+        }
 
+        base.Update();
+    }
     private void CreateMenu()
     {
         UIMenuListScrollerItem<PhysicalItem> physicalItemsScroller = new UIMenuListScrollerItem<PhysicalItem>("Select Item", "", ModDataFileManager.PhysicalItems.Items.ToList());
@@ -69,8 +83,9 @@ public class DebugPropAttachSubMenu : DebugSubMenu
             new AnimationSelector("mp_common","givetake1_b"),
             new AnimationSelector("oddjobs@shop_robbery@rob_till", "loop"),
             new AnimationSelector("anim@scripted@heist@ig1_table_grab@cash@male@","grab"),
+            new AnimationSelector("anim@heists@fleeca_bank@drilling","drill_straight_start")
         };
-        UIMenuListScrollerItem<AnimationSelector> animationsScroller = new UIMenuListScrollerItem<AnimationSelector>("Select Animation", "", PossibleAnimations.ToList());
+        animationsScroller = new UIMenuListScrollerItem<AnimationSelector>("Select Animation", "", PossibleAnimations.ToList());
 
         SubMenu.AddItem(animationsScroller);
 

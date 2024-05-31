@@ -54,6 +54,8 @@ namespace LosSantosRED.lsr.Player
                     Setup();
                     meleeWeaponAlias = new MeleeWeaponAlias(Player, Settings, DrillItem);
                     meleeWeaponAlias.Start();
+                    Player.ActivityManager.HasDrillInHand = true;
+                    Player.ActivityManager.CurrentDrill = DrillItem;
                     while (!IsCancelled)
                     {
                         meleeWeaponAlias.Update();
@@ -95,6 +97,8 @@ namespace LosSantosRED.lsr.Player
             //EntryPoint.WriteToConsoleTestLong("Drill ACTIVITY END");
             IsCancelled = true;
             Player.ActivityManager.IsPerformingActivity = false;
+            Player.ActivityManager.HasDrillInHand = false;
+            Player.ActivityManager.CurrentDrill = null;
             meleeWeaponAlias?.Dispose();
         }
     }
