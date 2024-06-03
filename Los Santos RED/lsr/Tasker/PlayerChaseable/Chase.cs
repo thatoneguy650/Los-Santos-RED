@@ -38,6 +38,7 @@ public class Chase : ComplexTask
     private bool isSetRegularCode3;
     private bool IsSetPassive;
     private uint GameTimeLastUpdatedChaseItems;
+    private bool IsSetFollow;
 
     public Chase(IComplexTaskable myPed, ITargetable player, IEntityProvideable world, IPlayerChaseable cop, ISettingsProvideable settings) : base(player, myPed, 500)//was 500
     {
@@ -92,11 +93,11 @@ public class Chase : ComplexTask
     public bool ShouldStopCar => Ped.DistanceToPlayer < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed > 0.5f && !Player.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;
     private bool ChaseRecentlyStarted => false;
     private bool ShouldAim => !UseWantedLevel || Player.WantedLevel > 1;
-    private bool ShouldCarJackPlayer => (!UseWantedLevel || Player.WantedLevel > 1) && Cop.DistanceToPlayer <= 50f && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast && !Ped.Pedestrian.IsInAnyVehicle(true) && !Ped.IsAnimal;
+    private bool ShouldCarJackPlayer => (!UseWantedLevel || Player.WantedLevel > 1 || !Player.IsBusted) && Cop.DistanceToPlayer <= 50f && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast && !Ped.Pedestrian.IsInAnyVehicle(true) && !Ped.IsAnimal;
     private bool ShouldGoToPlayerCar => Player.WantedLevel == 1 && Cop.DistanceToPlayer <= 50f && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;
     private bool ShouldChasePedInVehicle => Ped.IsDriver && !Ped.IsAnimal && (Ped.DistanceToPlayer >= 55f || Ped.IsInBoat || Ped.IsInHelicopter || World.Pedestrians.PoliceList.Count(x => x.DistanceToPlayer <= 25f && !x.IsInVehicle) > 3);
-    private bool ShouldChaseRecklessly => Player.WantedLevel >= Settings.SettingsManager.PoliceTaskSettings.PITVehicleChaseWantedLevelRequirement || Player.PoliceResponse.LethalForceAuthorized;
-    private bool ShouldChaseVeryRecklessly => Player.WantedLevel >= Settings.SettingsManager.PoliceTaskSettings.VeryRecklessVehicleChaseWantedLevelRequirement && Settings.SettingsManager.PoliceTaskSettings.AllowVeryRecklessVehicleChaseWithLethalForce && Player.PoliceResponse.LethalForceAuthorized;
+    private bool ShouldChaseRecklessly => !Player.IsBusted && (Player.WantedLevel >= Settings.SettingsManager.PoliceTaskSettings.PITVehicleChaseWantedLevelRequirement || Player.PoliceResponse.LethalForceAuthorized);
+    private bool ShouldChaseVeryRecklessly => !Player.IsBusted && Player.WantedLevel >= Settings.SettingsManager.PoliceTaskSettings.VeryRecklessVehicleChaseWantedLevelRequirement && Settings.SettingsManager.PoliceTaskSettings.AllowVeryRecklessVehicleChaseWithLethalForce && Player.PoliceResponse.LethalForceAuthorized;
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && Player.CurrentVehicle != null;
     private bool ShouldExitPoliceVehicle => !Ped.RecentlyGotInVehicle && Ped.DistanceToPlayer < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed < 0.5f && !Player.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;
     private bool ShouldExitPlayersVehicle => Ped.Pedestrian.CurrentVehicle.Exists() && TaskedEnterVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Handle == TaskedEnterVehicle.Handle;
@@ -640,7 +641,29 @@ public class Chase : ComplexTask
             //}
             else
             {
-                NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
+                if (Player.WantedLevel == 1)
+                {
+                    IsSetFollow = true;
+                    NativeFunction.Natives.TASK_VEHICLE_FOLLOW(Ped.Pedestrian,Ped.Pedestrian.CurrentVehicle, Player.Character, 100f, (int)eCustomDrivingStyles.Code3, 20);
+                }
+                else
+                {
+                    IsSetFollow = false;
+                    NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
+                    NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 8f);
+
+                    NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, true);
+                    NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableSpinOutDuringVehicleChase, true);
+                    NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableBlockFromPursueDuringVehicleChase, true);
+
+
+                    NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.FullContact, false);
+                    NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.MediumContact, false);
+                    NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.LowContact, false);
+                    NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.PIT, false);
+                    NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.NoContact, true);
+                }
+
                 //if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
                 //{
 
@@ -664,8 +687,11 @@ public class Chase : ComplexTask
             //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, false);
             //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableSpinOutDuringVehicleChase, false);
 
+            if(Player.WantedLevel > 1 && IsSetFollow)
+            {
+                NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
+            }
 
-            NativeFunction.Natives.SET_DRIVE_TASK_MAX_CRUISE_SPEED(Ped.Pedestrian, 150f);
 
             if (!Ped.IsInHelicopter && !Ped.IsInBoat && !Ped.IsInPlane)
             {
@@ -698,10 +724,11 @@ public class Chase : ComplexTask
                     //{
                     //    shouldThisCopChasePassivly = true;
                     //}
-                    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 150f);//tr cruise speed test
+
                     if (shouldThisCopChaseVeryRecklessly)// && !IsSetVeryReckless)
                     {
-
+                        NativeFunction.Natives.SET_DRIVE_TASK_MAX_CRUISE_SPEED(Ped.Pedestrian, 150f);
+                        NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 150f);//tr cruise speed test
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, false);
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableSpinOutDuringVehicleChase, false);
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableBlockFromPursueDuringVehicleChase, false);
@@ -718,6 +745,8 @@ public class Chase : ComplexTask
                     }
                     else if (shouldThisCopChaseRecklessly)// && !IsSetNotReckless)
                     {
+                        NativeFunction.Natives.SET_DRIVE_TASK_MAX_CRUISE_SPEED(Ped.Pedestrian, 150f);
+                        NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 150f);//tr cruise speed test
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, false);
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableSpinOutDuringVehicleChase, false);
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableBlockFromPursueDuringVehicleChase, false);
@@ -734,6 +763,9 @@ public class Chase : ComplexTask
                     }
                     else //if (shouldChasePassivly)// && !IsSetPassive)
                     {
+
+                        NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 8f);
+
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, true);
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableSpinOutDuringVehicleChase, true);
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableBlockFromPursueDuringVehicleChase, true);

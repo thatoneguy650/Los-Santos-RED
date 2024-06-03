@@ -89,6 +89,7 @@ public class Debug
     private string CurrentAnimation;
     private bool isShowingTunnel;
     private Rage.Object chairProp;
+    private PedExt LastPed;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Mod.Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, WeatherReporting weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
@@ -507,6 +508,56 @@ public class Debug
 			BRAIN::REGISTER_OBJECT_SCRIPT_BRAIN("atm_trigger", -639162137, 100, 4f, -1, 8);
          */
 
+        if(LastPed != null && LastPed.Pedestrian.Exists())
+        {
+            LastPed.Pedestrian.IsPersistent = false;
+        }
+        PedExt Ped = World.Pedestrians.Citizens.Where(x=> x.Pedestrian.Exists() && x.IsInVehicle && x.IsDriver && !x.IsDead).OrderBy(x=> x.DistanceToPlayer).FirstOrDefault();
+
+
+
+        if (Ped != null)
+        {
+            LastPed = Ped;
+            Ped.Pedestrian.IsPersistent = true;
+            Ped.Pedestrian.BlockPermanentEvents = true;
+            Ped.Pedestrian.KeepTasks = true;
+            NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 8f);
+
+            //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, true);
+            //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableSpinOutDuringVehicleChase, true);
+            //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableBlockFromPursueDuringVehicleChase, true);
+
+
+            /*VEHICLE_CHASE_CANT_BLOCK						= 1,
+	VEHICLE_CHASE_CANT_BLOCK_FROM_PURSUE			= 2,
+	VEHICLE_CHASE_CANT_PURSUE						= 4,
+	VEHICLE_CHASE_CANT_RAM							= 8,
+	VEHICLE_CHASE_CANT_SPIN_OUT						= 16,
+	VEHICLE_CHASE_CANT_MAKE_AGGRESSIVE_MOVE			= 32,
+	VEHICLE_CHASE_CANT_CRUISE_IN_FRONT_DURING_BLOCK	= 64,
+	VEHICLE_CHASE_USE_CONTINUOUS_RAM				= 128,
+	VEHICLE_CHASE_CANT_PULL_ALONGSIDE				= 256,
+	VEHICLE_CHASE_CANT_PULL_ALONGSIDE_INFRONT		= 512*/
+
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 1, true);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 2, true);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 4, false);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 8, true);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 16, true);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 32, true);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 64, true);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 128, false);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 256, true);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 512, true);
+
+            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
+
+
+            GameFiber.Sleep(1000);
+        }
+
 
         //if(!isShowingTunnel)
         //{
@@ -519,16 +570,16 @@ public class Debug
         //}
 
 
-        GameFiber.StartNew(delegate
-        {
-            uint GameTimeStarted = Game.GameTime;
-            while (!Game.IsKeyDownRightNow(Keys.Space))
-            {
-                Game.DisplaySubtitle($"IsInTunnel {Player.CurrentLocation.IsInTunnel} PossiblyInTunnel {Player.CurrentLocation.PossiblyInTunnel} IsInside {Player.CurrentLocation.IsInside} SPACE TO STOP");
-                GameFiber.Yield();
-            }
+        //GameFiber.StartNew(delegate
+        //{
+        //    uint GameTimeStarted = Game.GameTime;
+        //    while (!Game.IsKeyDownRightNow(Keys.Space))
+        //    {
+        //        Game.DisplaySubtitle($"IsInTunnel {Player.CurrentLocation.IsInTunnel} PossiblyInTunnel {Player.CurrentLocation.PossiblyInTunnel} IsInside {Player.CurrentLocation.IsInside} SPACE TO STOP");
+        //        GameFiber.Yield();
+        //    }
 
-        }, "Run Debug Logic");
+        //}, "Run Debug Logic");
 
 
         //if(Game.TimeScale >= 0.1f)
@@ -3994,83 +4045,83 @@ private void contacttest()
 //        _iFruit.RightButtonIcon = SoftKeyIcon.Website;
 //        */
 
-        //        // New contact (wait 4 seconds (4000ms) before picking up the phone)
-        //        iFruitContact contactA = new iFruitContact("Unknown Gang Boss", 40);
-        //        contactA.Answered += ContactAnswered;   // Linking the Answered event with our function
-        //        contactA.DialTimeout = 4000;            // Delay before answering
-        //        contactA.Active = true;                 // true = the contact is available and will answer the phone
-        //        contactA.Icon = ContactIcon.MP_MexBoss;      // Contact's icon
-        //        _iFruit.Contacts.Add(contactA);         // Add the contact to the phone
+            //        // New contact (wait 4 seconds (4000ms) before picking up the phone)
+            //        iFruitContact contactA = new iFruitContact("Unknown Gang Boss", 40);
+            //        contactA.Answered += ContactAnswered;   // Linking the Answered event with our function
+            //        contactA.DialTimeout = 4000;            // Delay before answering
+            //        contactA.Active = true;                 // true = the contact is available and will answer the phone
+            //        contactA.Icon = ContactIcon.MP_MexBoss;      // Contact's icon
+            //        _iFruit.Contacts.Add(contactA);         // Add the contact to the phone
 
-        //        // New contact (wait 4 seconds before displaying "Busy...")
-        //        iFruitContact contactB = new iFruitContact("Families Boss", 41);
-        //        contactB.DialTimeout = 4000;
-        //        contactB.Active = false;                // false = the contact is busy
-        //        contactB.Icon = ContactIcon.Blocked;
-        //        contactB.Bold = true;                   // Set the contact name in bold
-        //        _iFruit.Contacts.Add(contactB);
+            //        // New contact (wait 4 seconds before displaying "Busy...")
+            //        iFruitContact contactB = new iFruitContact("Families Boss", 41);
+            //        contactB.DialTimeout = 4000;
+            //        contactB.Active = false;                // false = the contact is busy
+            //        contactB.Icon = ContactIcon.Blocked;
+            //        contactB.Bold = true;                   // Set the contact name in bold
+            //        _iFruit.Contacts.Add(contactB);
 
 
 
-        //        while (!Game.IsKeyDownRightNow(Keys.P))
+            //        while (!Game.IsKeyDownRightNow(Keys.P))
+            //        {
+            //            Game.DisplayHelp($"Press P to Stop");
+            //            _iFruit.Update();
+
+            //            GameFiber.Yield();
+            //        }
+
+            //    }, "Run Debug Logic");
+            //}
+            //catch (Exception ex)
+            //{
+            //    Game.DisplayNotification("Shit CRASHES!!!");
+            //}
+
+
+
+
+
+        }
+
+        //private void ContactAnswered(iFruitContact contact)
+        //{
+        //    // The contact has answered, we can execute our code
+        //    Game.DisplayNotification("The contact has answered.");
+
+        //    // We need to close the phone at a moment.
+        //    // We can close it as soon as the contact pick up calling _iFruit.Close().
+        //    // Here, we will close the phone in 5 seconds (5000ms).
+        //    _iFruit.Close(5000);
+        //}
+
+        //private void CreatePointChecker()
+        //{
+
+        //    Vector3 CoolPos = Game.LocalPlayer.Character.Position.Around2D(10f);
+        //    Color coolColor = Color.Yellow;
+        //    GameFiber.StartNew(delegate
+        //    {
+        //        while (!Game.IsKeyDown(Keys.O))
         //        {
-        //            Game.DisplayHelp($"Press P to Stop");
-        //            _iFruit.Update();
+        //            if(Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character,CoolPos))
+        //            {
+        //                coolColor = Color.Red;
+        //            }
+        //            else
+        //            {
+        //                coolColor = Color.Yellow;
+        //            }
+        //            float Result = Extensions.GetDotVectorResult(Game.LocalPlayer.Character, CoolPos);
+        //            Game.DisplayHelp($"Press O to Stop GetDotVectorResult {Result}");
+        //            Rage.Debug.DrawArrowDebug(CoolPos, Vector3.Zero, Rotator.Zero, 1f, coolColor);
 
         //            GameFiber.Yield();
         //        }
 
         //    }, "Run Debug Logic");
         //}
-        //catch (Exception ex)
-        //{
-        //    Game.DisplayNotification("Shit CRASHES!!!");
-        //}
-
-
-
-
-
-    }
-
-    //private void ContactAnswered(iFruitContact contact)
-    //{
-    //    // The contact has answered, we can execute our code
-    //    Game.DisplayNotification("The contact has answered.");
-
-    //    // We need to close the phone at a moment.
-    //    // We can close it as soon as the contact pick up calling _iFruit.Close().
-    //    // Here, we will close the phone in 5 seconds (5000ms).
-    //    _iFruit.Close(5000);
-    //}
-
-    //private void CreatePointChecker()
-    //{
-
-    //    Vector3 CoolPos = Game.LocalPlayer.Character.Position.Around2D(10f);
-    //    Color coolColor = Color.Yellow;
-    //    GameFiber.StartNew(delegate
-    //    {
-    //        while (!Game.IsKeyDown(Keys.O))
-    //        {
-    //            if(Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character,CoolPos))
-    //            {
-    //                coolColor = Color.Red;
-    //            }
-    //            else
-    //            {
-    //                coolColor = Color.Yellow;
-    //            }
-    //            float Result = Extensions.GetDotVectorResult(Game.LocalPlayer.Character, CoolPos);
-    //            Game.DisplayHelp($"Press O to Stop GetDotVectorResult {Result}");
-    //            Rage.Debug.DrawArrowDebug(CoolPos, Vector3.Zero, Rotator.Zero, 1f, coolColor);
-
-    //            GameFiber.Yield();
-    //        }
-
-    //    }, "Run Debug Logic");
-    //}
-    private void BrowseTimecycles()
+        private void BrowseTimecycles()
     {
         try
         {

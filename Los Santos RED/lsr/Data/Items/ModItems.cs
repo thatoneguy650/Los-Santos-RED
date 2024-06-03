@@ -412,6 +412,11 @@ public class ModItems : IModItems
                 ItemSubType = ItemSubType.Money },
 
 
+
+            new ValuableItem("Marked Cash Stack","Stack of marked cash", ItemType.Valuables) { ModelItemID = "prop_cash_pile_02",
+                ItemSubType = ItemSubType.Money },
+
+
             new ValuableItem("Drivers License","Drivers License", ItemType.Valuables) { 
                 ModelItemID = "p_ld_id_card_002",
                 ItemSubType = ItemSubType.Identification },
@@ -2213,22 +2218,22 @@ public class ModItems : IModItems
         });
         PossibleItems.DrillItems.AddRange(new List<DrillItem>
         {
-            new DrillItem("Power Metal Cordless Drill","Not recommended for dentistry") {
-                ModelItemID = "gr_prop_gr_drill_01a",ItemSubType = ItemSubType.Tool  },
+            new DrillItem("Power Metal Cordless Drill","Not recommended for dentistry.") {
+                ModelItemID = "gr_prop_gr_drill_01a",ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 10000,MaxSafeDrillTime = 19000  },
             new DrillItem("Power Metal Cordless Impact Driver","DRIVE it right in!") {
-                ModelItemID = "gr_prop_gr_driver_01a",ItemSubType = ItemSubType.Tool  },
+                ModelItemID = "gr_prop_gr_driver_01a",ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 15000,MaxSafeDrillTime = 20000  },
             new DrillItem("Flint Cordless Drill","2-Speed Battery Drill. Impact-resistant casing. Light, compact and easy to use.") {
-                ModelItemID = "prop_tool_drill" ,ItemSubType = ItemSubType.Tool },
+                ModelItemID = "prop_tool_drill" ,ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 8000,MaxSafeDrillTime = 17000 },
 
 
-            new DrillItem("Power Metal Side Drill",""){ 
-                ModelItemID = "hei_prop_heist_drill",ItemSubType = ItemSubType.Tool },
+            new DrillItem("Power Metal Side Drill","Make quick work of a safe deposit box!"){ 
+                ModelItemID = "hei_prop_heist_drill",ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 6000,MaxSafeDrillTime = 9000 },
 
-            new DrillItem("Power Metal Custom Side Drill",""){
-                ModelItemID = "ch_prop_ch_heist_drill",ItemSubType = ItemSubType.Tool },
+            new DrillItem("Power Metal Custom Side Drill","Make quick work of a safe deposit box! Now with more bells and whistles!"){
+                ModelItemID = "ch_prop_ch_heist_drill",ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 6000,MaxSafeDrillTime = 9000 },
 
-            new DrillItem("Power Metal Laser Side Drill",""){
-                ModelItemID = "ch_prop_laserdrill_01a",ItemSubType = ItemSubType.Tool },
+            new DrillItem("Power Metal Laser Side Drill","Use space age tech to drill holes in things!"){
+                ModelItemID = "ch_prop_laserdrill_01a",ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 4000,MaxSafeDrillTime = 6000 },
 
         });
         PossibleItems.PliersItems.AddRange(new List<PliersItem>

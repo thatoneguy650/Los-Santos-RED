@@ -34,6 +34,7 @@ public class DebugLocationSubMenu : DebugSubMenu
     private bool IsWritingPosition;
     private bool isPaused;
     private bool isSlowMode;
+    private float DepthOfField;
 
     public DebugLocationSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IEntityProvideable world, ISettingsProvideable settings, IStreets streets, IPlacesOfInterest placesOfInterest) : base(debug, menuPool, player)
     {
@@ -397,15 +398,51 @@ public class DebugLocationSubMenu : DebugSubMenu
                             isSlowMode = !isSlowMode;
                             GameFiber.Sleep(200);
                         }
+    
 
+
+                        if (Game.IsKeyDownRightNow(Keys.Up))
+                        {
+                            FreeCam.FOV += 1.0f;
+                            Game.DisplaySubtitle($"FOV: {FreeCam.FOV}");
+                            GameFiber.Sleep(100);
+                        }
+                        if (Game.IsKeyDownRightNow(Keys.Down))
+                        {
+                            FreeCam.FOV -= 1.0f;
+                            Game.DisplaySubtitle($"FOV: {FreeCam.FOV}");
+                            GameFiber.Sleep(100);
+                        }
+
+                        if (Game.IsKeyDownRightNow(Keys.Left))
+                        {
+
+                            DepthOfField += 0.1f;
+                            DepthOfField.Clamp(0.0f, 1.0f);
+                            NativeFunction.Natives.SET_CAM_DOF_STRENGTH(FreeCam, DepthOfField);
+                            Game.DisplaySubtitle($"DepthOfField: {DepthOfField}");
+                            GameFiber.Sleep(100);
+                        }
+                        if (Game.IsKeyDownRightNow(Keys.Right))
+                        {
+                            DepthOfField -= 0.1f;
+                            DepthOfField.Clamp(0.0f, 1.0f);
+                            NativeFunction.Natives.SET_CAM_DOF_STRENGTH(FreeCam, DepthOfField);
+                            Game.DisplaySubtitle($"DepthOfField: {DepthOfField}");
+                            GameFiber.Sleep(100);
+                        }
+                        //SET_CAM_DOF_STRENGTH
 
 
 
                         //string FreeCamString = FreeCamScale == 1.0f ? "Regular Scale" : "Slow Scale";
                         if (!isHidingHelp)
                         {
-                            Game.DisplayHelp($"Press Z to Exit~n~Press O To Increase Scale~n~Press L To Decrease Scale~n~Current Scale: {FreeCamScale}~n~Press J To Move Player to Position~n~Press K to Toggle Controls ~n~N=pausM=slow");
+                            Game.DisplayHelp($"Press Z to Exit~n~Press O To Increase Scale~n~Press L To Decrease Scale~n~Current Scale: {FreeCamScale}~n~Press J To Move Player to Position~n~Press K to Toggle Controls ~n~N=pausM=slow~n~Up/Down FOV Left/Right DOF");
                         }
+
+                        NativeFunction.Natives.SET_USE_HI_DOF();
+
                     }
                     GameFiber.Yield();
                 }

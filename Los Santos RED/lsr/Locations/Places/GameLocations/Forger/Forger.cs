@@ -129,10 +129,10 @@ public class Forger : GameLocation
     }
     private void AddMoneyClean()
     {
-        InventoryItem cashBundleItem = Player.Inventory.ItemsList.FirstOrDefault(x => x.ModItem != null && x.ModItem.ItemSubType == ItemSubType.Money && x.ModItem.Name.ToLower() == "cash bundle");
+        InventoryItem cashBundleItem = Player.Inventory.ItemsList.FirstOrDefault(x => x.ModItem != null && x.ModItem.ItemSubType == ItemSubType.Money && x.ModItem.Name.ToLower() == "marked cash stack");
         if (cashBundleItem != null)
         {
-            MenuItem mi = new MenuItem("Marked Bills", 0, MarkedBillsSalesPrice);
+            MenuItem mi = new MenuItem("Marked Cash Stack", 0, MarkedBillsSalesPrice);
             cashBundleItem.ModItem.CreateSellMenuItem(Transaction, mi, MarkedCashSubMenu, Settings, Player, false, World);
         }
     }

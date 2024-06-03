@@ -71,14 +71,19 @@ public class RespawnSettings : ISettingsDefaultable
     public bool ClearIllicitInventoryOnDeath { get; set; }
     [Description("Remove weapons from player after respawning at a hospital")]
     public bool RemoveWeaponsOnDeath { get; set; }
-    [Description("If enabled, the player will need to get booked at the closest station instead of being able to surrender to any station. If disabled, advanced booking is unavailable. CURRENTLY DISABLED")]
-    public bool ForceBooking { get; set; }
-    [Description("CURRENTLY DISABLED")]
+
+    [Description("If enabled, the player will need to get booked at the closest station instead of being able to surrender to any station. If disabled, advanced booking is unavailable. WIP")]
+    public bool AllowBookingSurrender { get; set; }
+    [Description("Create a new camera when being booked")]
     public bool UseCustomCameraWhenBooking { get; set; }
-    [Description("CURRENTLY DISABLED")]
-    public float OffsetX { get; set; }
-    [Description("CURRENTLY DISABLED")]
-    public float OffsetY { get; set; }
+
+    //[Description("If enabled, the player will need to get booked at the closest station instead of being able to surrender to any station. If disabled, advanced booking is unavailable. CURRENTLY DISABLED")]
+    //public bool ForceBooking { get; set; }
+
+    //[Description("CURRENTLY DISABLED")]
+    //public float OffsetX { get; set; }
+    //[Description("CURRENTLY DISABLED")]
+    //public float OffsetY { get; set; }
     [Description("If enabled, vehicles will be impounded when arrested")]
     public bool ImpoundVehicles { get; set; }
     [Description("Daily fee applied for impounded vehicles")]
@@ -143,10 +148,11 @@ public class RespawnSettings : ISettingsDefaultable
         PermanentDeathMode = false;
         ClearIllicitInventoryOnDeath = true;
         ClearIllicitInventoryOnSurrender = true;
-        ForceBooking = false;
+        AllowBookingSurrender = false;
+        //ForceBooking = false;
         UseCustomCameraWhenBooking = true;
-        OffsetX = 0.7f;
-        OffsetY = 0.5f;
+        //OffsetX = 0.7f;
+        //OffsetY = 0.5f;
 
 
         //ShowRequiredBribeAmount = true;

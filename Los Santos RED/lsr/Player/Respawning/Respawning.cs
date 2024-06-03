@@ -199,8 +199,6 @@ public class Respawning// : IRespawning
         {
             GameFiber.Sleep(500);
         }
-
-
         EntryPoint.WriteToConsole("GetBooked Start");
         VehicleExt vehicleToSearch = GetVehicleToSearch();
         SearchActivity searchActivity = new SearchActivity(Player, World, PoliceRespondable, SeatAssignable, Settings, Time, ModItems, vehicleToSearch, Weapons);
@@ -208,9 +206,8 @@ public class Respawning// : IRespawning
         searchActivity.Start();
         if (!searchActivity.IsActive)
         {
-            EntryPoint.WriteToConsole("GetBooked SearchACtiivyt DIdnt start, ending");
-            SurrenderToPolice(respawnableLocation);
-            Player.IsBeingBooked =false;
+            EntryPoint.WriteToConsole("GetBooked Search Didnt start, ending");
+            SkipBooking(respawnableLocation);
             return;
         }
         GameFiber.StartNew(delegate
@@ -218,16 +215,28 @@ public class Respawning// : IRespawning
             try
             {
                 EntryPoint.WriteToConsole("GetBooked Waiting for search acitivty start");
+                Player.ButtonPrompts.AddPrompt("GetBooked", "Skip To Booking", "SkipBooking", GameControl.Attack, 15);
+                bool shouldSkip = false;
                 while (searchActivity.IsActive)
                 {
+                    if(Player.ButtonPrompts.IsPressed("SkipBooking"))
+                    {
+                        shouldSkip = true;
+                        break;
+                    }
                     GameFiber.Yield();
                 }
-                EntryPoint.WriteToConsole("GetBooked SearchAcitivyt Ended");
+                if(shouldSkip)
+                {
+                    EntryPoint.WriteToConsole("GetBooked skip triggered 1");
+                    SkipBooking(respawnableLocation);
+                    return;
+                }
+                EntryPoint.WriteToConsole("GetBooked Search Ended");
                 if (!searchActivity.CompletedSearch)
                 {
-                    EntryPoint.WriteToConsole("GetBooked search acitivty didnt complete enging");
-                    SurrenderToPolice(respawnableLocation);
-                    Player.IsBeingBooked = false;
+                    EntryPoint.WriteToConsole("GetBooked search didnt complete, ending with skip");
+                    SkipBooking(respawnableLocation);
                     return;
                 }
                 BookingActivity bookingActivity = new BookingActivity(Player, World, PoliceRespondable, respawnableLocation, SeatAssignable, Settings);
@@ -236,14 +245,39 @@ public class Respawning// : IRespawning
                 EntryPoint.WriteToConsole("GetBooked Bookingactivty started");
                 while (bookingActivity.IsActive)
                 {
+                    if (Player.ButtonPrompts.IsPressed("SkipBooking"))
+                    {
+                        shouldSkip = true;
+                        break;
+                    }
                     GameFiber.Yield();
                 }
-                if(Player.IsArrested && EntryPoint.ModController.IsRunning && !Player.IsInVehicle)
+                if (shouldSkip)
                 {
-                    SurrenderToPolice(respawnableLocation);
-                    EntryPoint.WriteToConsole("GetBooked Ending but you are not in a vehicle ");
-                    Player.IsBeingBooked = false;
+                    EntryPoint.WriteToConsole("GetBooked skip triggered 2");
+                    SkipBooking(respawnableLocation);
                     return;
+                }
+                while (Player.IsArrested && EntryPoint.ModController.IsRunning && Player.IsInVehicle)
+                {
+                    if (Player.ButtonPrompts.IsPressed("SkipBooking"))
+                    {
+                        shouldSkip = true;
+                        break;
+                    }
+                    GameFiber.Yield();
+                }
+                if (shouldSkip)
+                {
+                    EntryPoint.WriteToConsole("GetBooked skip triggered 2");
+                    SkipBooking(respawnableLocation);
+                    return;
+                }
+                //Finally just fade out as we cant escape yet
+
+                if (Player.IsArrested)
+                {
+                    SkipBooking(respawnableLocation);
                 }
             }
             catch (Exception ex)
@@ -253,6 +287,13 @@ public class Respawning// : IRespawning
             }
         }, "Searching");
     }
+    private void SkipBooking(ILocationRespawnable respawnableLocation)
+    {
+        SurrenderToPolice(respawnableLocation);
+        Player.IsBeingBooked = false;
+        Player.ButtonPrompts.RemovePrompts("GetBooked");
+    }
+
     public void AskAboutCrimes()
     {
         List<string> AttemptTalkOut = new List<string>()

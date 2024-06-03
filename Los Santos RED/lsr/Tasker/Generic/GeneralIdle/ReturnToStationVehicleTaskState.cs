@@ -20,6 +20,8 @@ class ReturnToStationVehicleTaskState : TaskState
     private Vector3 taskedPosition;
     private ISettingsProvideable Settings;
     private bool BlockPermanentEvents = false;
+    private bool IsNearStation;
+    private PoliceStation closestPoliceStation;
 
     public ReturnToStationVehicleTaskState(PedExt pedGeneral, IEntityProvideable world, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents)
     {
@@ -48,6 +50,14 @@ class ReturnToStationVehicleTaskState : TaskState
     }
     public void Update()
     {
+        if(!IsNearStation && PedGeneral.Pedestrian.DistanceTo2D(taskedPosition) < 50f)
+        {
+            IsNearStation = true;
+            TaskReturnToStation();//retask to get correct parking spot
+        }
+
+
+
         if (!HasArrivedAtStation && PedGeneral.Pedestrian.DistanceTo2D(taskedPosition) < 10f && PedGeneral.Pedestrian.CurrentVehicle.Exists() && PedGeneral.Pedestrian.CurrentVehicle.Speed <= 1.0f && !PedGeneral.Pedestrian.CurrentVehicle.IsEngineOn)//arrived, wait then drive away
         {
             HasArrivedAtStation = true;
@@ -74,11 +84,32 @@ class ReturnToStationVehicleTaskState : TaskState
         }
         if ((PedGeneral.IsDriver || PedGeneral.Pedestrian.SeatIndex == -1) && PedGeneral.Pedestrian.CurrentVehicle.Exists())
         {
-            PoliceStation closestPoliceStation = PlacesOfInterest.PossibleLocations.PoliceStations.OrderBy(x => PedGeneral.Pedestrian.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
+            if (closestPoliceStation == null)
+            {
+                closestPoliceStation = PlacesOfInterest.PossibleLocations.PoliceStations.OrderBy(x => PedGeneral.Pedestrian.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
+            }
             if (closestPoliceStation != null)
             {
-                ConditionalLocation parkingSpot = closestPoliceStation.PossibleVehicleSpawns.PickRandom();
+                ConditionalLocation parkingSpot = null;//closestPoliceStation.PossibleVehicleSpawns.PickRandom();
 
+                if(closestPoliceStation.PossibleVehicleSpawns != null)
+                {
+                    if (closestPoliceStation.EntrancePosition.DistanceTo2D(PedGeneral.Pedestrian.Position) >= 150f)
+                    {
+                        parkingSpot = closestPoliceStation.PossibleVehicleSpawns.PickRandom();
+                    }
+                    else
+                    {
+                        foreach (ConditionalLocation cl in closestPoliceStation.PossibleVehicleSpawns)
+                        {
+                            if (!World.Vehicles.AllVehicleList.Any(x => x.Vehicle.Exists() && x.Vehicle.DistanceTo2D(cl.Location) <= 4.0f))
+                            {
+                                parkingSpot = cl;
+                                break;
+                            }
+                        }
+                    }
+                }
                 if(parkingSpot != null)
                 {
                     taskedPosition = parkingSpot.Location;

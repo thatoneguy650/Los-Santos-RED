@@ -61,6 +61,30 @@ public class WeaponItem : ModItem
         [FieldOffset(0xB8)] public IntPtr desc2Label; // usually "the" + name
         [FieldOffset(0xF8)] public IntPtr upperCaseNameLabel;
     };
+
+    public override string GetTypeDescription()
+    {
+        string description;
+        if (Description.Length >= 200)
+        {
+            description = Description.Substring(0, 200) + "...";//menu cant show more than 225?, need some for below
+        }
+        else
+        {
+            description = Description;
+        }
+        if (!string.IsNullOrEmpty(VanillaName))
+        {
+            description += $"~n~Alias: {VanillaName}"; //LOWER CASE OR IT ERRORS!
+        }
+        description += $"~n~Category: {MenuCategory}";
+        if (RequiresDLC)
+        {
+            description += $"~n~~b~DLC Weapon";
+        }
+        return Description;
+    }
+
     public override void CreateSellMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu sellMenuRNUI, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
 
@@ -74,10 +98,10 @@ public class WeaponItem : ModItem
             description = Description;
         }
         description += "~n~~s~";
-        //if (!string.IsNullOrEmpty(VanillaName))
-        //{
-        //    description += $"~n~Alias: {VanillaName}"; //LOWER CASE OR IT ERRORS!
-        //}
+        if (!string.IsNullOrEmpty(VanillaName))
+        {
+            description += $"~n~Alias: {VanillaName}"; //LOWER CASE OR IT ERRORS!
+        }
         if (RequiresDLC)
         {
             description += $"~n~~b~DLC Weapon";
@@ -274,10 +298,10 @@ public class WeaponItem : ModItem
             description = Description;
         }
         description += "~n~~s~";
-        //if (!string.IsNullOrEmpty(VanillaName))
-        //{
-        //    description += $"~n~Alias: {VanillaName}";//LOWERCASE OR IT ERRORS!
-        //}
+        if (!string.IsNullOrEmpty(VanillaName))
+        {
+            description += $"~n~Alias: {VanillaName}";//LOWERCASE OR IT ERRORS!
+        }
         if (RequiresDLC)
         {
             description += $"~n~~b~DLC Weapon";

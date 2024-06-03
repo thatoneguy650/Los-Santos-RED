@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
@@ -34,6 +35,7 @@ public class BookingVehicleManager
     private string PlayerCuffedAnimation;
     private bool canEnterCar;
     private bool isAttached;
+    private uint GameTimeLastTaskedOpenDoor;
 
     public bool IsActive { get; private set; }
     public BookingVehicleManager(IRespawnable player, IEntityProvideable world, IPoliceRespondable policeRespondable, ILocationRespawnable location, ISeatAssignable seatAssignable, ISettingsProvideable settings, BookingActivity bookingActivity, Cop cop)
@@ -61,41 +63,48 @@ public class BookingVehicleManager
     {
         canEnterCar = false;
         bool hasOpenedDoor = false;
+        uint GameStartEntered = 0;
         uint GameTimeOpenedDoor = 0;
         while (!Player.IsInVehicle && BookingActivity.CanContinueBooking)// && !Game.IsKeyDown(System.Windows.Forms.Keys.I))
         {
             PlayerEnterCarLoop();
-            if(VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists())
+            if(VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists() && Cop.Pedestrian.Exists())
             {
                 float doorAngle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(VehicleTryingToEnter.Vehicle, DoorTryingToEnter);//VehicleTryingToEnter.Vehicle.GetDoors()[DoorTryingToEnter].IsOpen;
                 bool isOpen = doorAngle > 0;
                 float distanceTo = VehicleTryingToEnter.Vehicle.DistanceTo(Game.LocalPlayer.Character);
-                if(!isOpen && !hasOpenedDoor && distanceTo <= 5f)
+                if(!isOpen && Game.GameTime - GameTimeLastTaskedOpenDoor >= 2000 && distanceTo <= 10f)
                 {
                     EntryPoint.WriteToConsole("BOOKING ACTIVITY OPEN DOOR RAN");
                     NativeFunction.Natives.TASK_OPEN_VEHICLE_DOOR(Cop.Pedestrian, VehicleTaskedToEnter, -1, SeatTaskedToEnter, 2.0f);
                     hasOpenedDoor = true;
+                    GameTimeLastTaskedOpenDoor = Game.GameTime;
                 }
-                if (isOpen && distanceTo <= 5f)
+                if (isOpen && distanceTo <= 10f)
                 {
-                    if(GameTimeOpenedDoor == 0)
+                    if (GameTimeOpenedDoor == 0)
                     {
                         GameTimeOpenedDoor = Game.GameTime;
-                        ReleasePeds();
-                        EntryPoint.WriteToConsole("BOOKING ACTIVITY OPEN DOOR RELEASE PEDS RAN");
+                        //ReleasePeds();
+                        //EntryPoint.WriteToConsole("BOOKING ACTIVITY OPEN DOOR RELEASE PEDS RAN");
                     }
                 }
                 else
                 {
                     GameTimeOpenedDoor = 0;
                 }
-
-                if(isOpen && distanceTo <= 5f && GameTimeOpenedDoor != 0 && Game.GameTime - GameTimeOpenedDoor >= 1500)
+                if(isOpen && distanceTo <= 10f && GameTimeOpenedDoor != 0 && Game.GameTime - GameTimeOpenedDoor >= 1500 && Game.GameTime - GameStartEntered >= 3000)
                 {
                     EntryPoint.WriteToConsole("BOOKING ACTIVITY ENTER VEHICLE RAN 1!");
                     EnterVehicle();
-                    ReleasePeds();
+                    //ReleasePeds();
                     //canEnterCar = true;
+                    //break;
+                    GameStartEntered = Game.GameTime;
+                }
+                if(Player.IsInVehicle)
+                {
+                    ReleasePeds();
                     break;
                 }
                 //Game.DisplaySubtitle($"Seat {SeatTryingToEnter} Door {DoorTryingToEnter} doorAngle {doorAngle} Open {isOpen} Dist {distanceTo}");
@@ -117,29 +126,15 @@ public class BookingVehicleManager
     {
         if (VehicleTryingToEnter.Vehicle.Exists())
         {
-
             EntryPoint.WriteToConsole("BOOKING ACTIVITY ENTER VEHICLE RAN 2!");
-            //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Game.LocalPlayer.Character, VehicleTryingToEnter.Vehicle, -1, SeatTryingToEnter, 1f, 9);
             GameFiber.Sleep(3000);
         }
-        //else
-        //{
-        //    NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-        //}
-        //if (Player.IsInVehicle)
-        //{
-        //    Player.SetNotBusted();
-        //    Player.SetWantedLevel(0, "Handcuffed", true);
-        //    Player.IsArrested = true;
-        //}
     }
-
     private void ReleasePeds()
     {
         if (Cop.Pedestrian.Exists())
         {
-            //NativeFunction.Natives.CLEAR_PED_TASKS(Cop.Pedestrian);
             Cop.CanBeTasked = true;
             Cop.CanBeAmbientTasked = true;
         }
@@ -168,32 +163,27 @@ public class BookingVehicleManager
     {
         if (Player.Character.Exists() && VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists() && Cop.Pedestrian.Exists())
         {
-            //Cop.Pedestrian.BlockPermanentEvents = true;
-            //Cop.Pedestrian.KeepTasks = true;
             VehicleTaskedToEnter = VehicleTryingToEnter.Vehicle;
             SeatTaskedToEnter = SeatTryingToEnter;
+            float vehicleHEading = VehicleTaskedToEnter.Heading;
             Player.LastFriendlyVehicle = VehicleTryingToEnter.Vehicle;
-
-
-
             Vector3 TargetPosition = NativeFunction.Natives.GET_ENTRY_POINT_POSITION<Vector3>(VehicleTryingToEnter.Vehicle, DoorTryingToEnter);
-            float TargetHeading = Game.LocalPlayer.Character.Heading;
+            float TargetHeading = vehicleHEading;// Game.LocalPlayer.Character.Heading;
 
+
+            bool isEven = DoorTryingToEnter % 2 == 0;
+
+            TargetPosition = NativeHelper.GetOffsetPosition(TargetPosition, isEven ? vehicleHEading - 90f : vehicleHEading + 90f, 1.0f);
+
+            //NativeHelper.GetOffsetPosition(TargetPosition)
 
             NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Game.LocalPlayer.Character, TargetPosition.X, TargetPosition.Y, TargetPosition.Z, 1.0f, -1, 0.1f, 0, TargetHeading);
-
-
             //NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Game.LocalPlayer.Character, VehicleTryingToEnter.Vehicle, -1, SeatTryingToEnter, 1f, 9);
-
             //PedVehicleInteract PedVehicleInteract = new PedVehicleInteract(Player, Cop, -0.9f, VehicleTaskedToEnter, Settings);
             //PedVehicleInteract.Start();
-
-
            // VehicleDoorSeatData vdsd = new VehicleDoorSeatData("unknow", "unknow", 5, SeatTaskedToEnter);
             //TargetPosition = vdsd.GetDoorOffset(VehicleTaskedToEnter, Settings);
             //TargetHeading = vdsd.GetDoorHeading(VehicleTaskedToEnter, Settings);
-
-
             //NativeFunction.Natives.TASK_OPEN_VEHICLE_DOOR(Player.Character, VehicleTaskedToEnter, -1, SeatTaskedToEnter, 1.0f);
         }
     }
@@ -203,5 +193,6 @@ public class BookingVehicleManager
         VehicleTryingToEnter = SeatAssigner.VehicleAssigned;
         SeatTryingToEnter = SeatAssigner.SeatAssigned;
         DoorTryingToEnter = SeatAssigner.GetDoorFromSeat(SeatTryingToEnter);
+        EntryPoint.WriteToConsole($" SeatTryingToEnter:{SeatTryingToEnter} DoorTryingToEnter:{DoorTryingToEnter}");
     }
 }

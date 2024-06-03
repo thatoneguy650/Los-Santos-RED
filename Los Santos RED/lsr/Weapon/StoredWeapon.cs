@@ -21,7 +21,7 @@ public class StoredWeapon
     private WeaponInformation WeaponInformation;
     private WeaponItem WeaponItem;
     private string DisplayName => WeaponItem != null ? WeaponItem.Name : WeaponInformation != null ? WeaponInformation.ModelName : WeaponHash.ToString();
-    private string DisplayDesription => WeaponItem != null ? WeaponItem.Description : "";
+    private string DisplayDesription => WeaponItem != null ? WeaponItem.GetTypeDescription() : "";
     public uint WeaponHash { get; set; }
     public Vector3 CoordinatedDropped { get; set; }
     public WeaponVariation Variation { get; set; }

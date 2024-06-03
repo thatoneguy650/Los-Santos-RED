@@ -509,11 +509,21 @@ public class ModItem
         }
         return false;
     }
+
+
+
+    public virtual string GetTypeDescription()
+    {
+        return Description;
+    }
     public virtual void CreateInventoryManageMenu(IInteractionable player, MenuPool menuPool, SimpleInventory simpleInventory, UIMenu headerMenu, bool withAnimations, ISettingsProvideable settings, bool removeBanner)
     {
         inventoryItemSubMenu = menuPool.AddSubMenu(headerMenu, Name);
         inventoryItemSubMenuItem = headerMenu.MenuItems[headerMenu.MenuItems.Count() - 1];
-        inventoryItemSubMenuItem.Description = Description;
+        inventoryItemSubMenuItem.Description = GetTypeDescription();// Description;
+
+
+
         if (removeBanner)
         {
             inventoryItemSubMenu.RemoveBanner();

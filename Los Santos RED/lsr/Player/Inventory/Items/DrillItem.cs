@@ -7,6 +7,8 @@ using System.Xml.Serialization;
 [Serializable()]
 public class DrillItem : ModItem
 {
+    public uint MinSafeDrillTime { get; set; } = 9000;
+    public uint MaxSafeDrillTime { get; set; } = 18000;
     public DrillItem()
     {
 

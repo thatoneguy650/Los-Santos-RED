@@ -335,39 +335,38 @@ public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, I
             surrenderDescription += $" (~r~${Respawning.Respawning.BailFeePastDue} past due~s~)";
         }
         surrenderDescription += $"~n~Bail Length: ~y~{Respawning.Respawning.BailDuration}~s~ days";
-        if (Settings.SettingsManager.RespawnSettings.ForceBooking)
+
+        //if (Player.IsBeingBooked || Player.IsArrested)
+        //{
+        //    Surrender = new UIMenuListScrollerItem<ILocationRespawnable>("Skip Booking", "Skip booking.", PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)).Take(1));
+        //    Surrender.Activated += (sender, selectedItem) =>
+        //    {
+        //        Respawning.Respawning.SurrenderToPolice(Surrender.SelectedItem);
+        //        Menu.Visible = false;
+        //    };
+        //    Menu.AddItem(Surrender);
+        //}
+        //else
+        //{
+
+        if (Settings.SettingsManager.RespawnSettings.AllowBookingSurrender)
         {
-            if (Player.IsBeingBooked || Player.IsArrested)
+            GetBooked = new UIMenuItem("Full Surrender", $"Go through the full process of getting booked ~r~WIP~s~. {surrenderDescription}");
+            GetBooked.Activated += (sender, selectedItem) =>
             {
-                Surrender = new UIMenuListScrollerItem<ILocationRespawnable>("Skip Booking", "Skip booking.", PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)).Take(1));
-                Surrender.Activated += (sender, selectedItem) =>
-                {
-                    Respawning.Respawning.SurrenderToPolice(Surrender.SelectedItem);
-                    Menu.Visible = false;
-                };
-                Menu.AddItem(Surrender);
-            }
-            else
-            {
-                GetBooked = new UIMenuItem("Get Booked", "Get Booked. Lose bail money and your guns.");
-                GetBooked.Activated += (sender, selectedItem) =>
-                {
-                    Respawning.Respawning.GetBooked(PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)).FirstOrDefault());
-                    Menu.Visible = false;
-                };
-                Menu.AddItem(GetBooked);
-            }
-        }
-        else
-        {
-            Surrender = new UIMenuListScrollerItem<ILocationRespawnable>(surrenderText, surrenderDescription, PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
-            Surrender.Activated += (sender, selectedItem) =>
-            {
-                Respawning.Respawning.SurrenderToPolice(Surrender.SelectedItem);
+                Respawning.Respawning.GetBooked(PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)).FirstOrDefault());
                 Menu.Visible = false;
             };
-            Menu.AddItem(Surrender);
+            Menu.AddItem(GetBooked);
         }
+       // }
+        Surrender = new UIMenuListScrollerItem<ILocationRespawnable>(surrenderText, surrenderDescription, PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
+        Surrender.Activated += (sender, selectedItem) =>
+        {
+            Respawning.Respawning.SurrenderToPolice(Surrender.SelectedItem);
+            Menu.Visible = false;
+        };
+        Menu.AddItem(Surrender);   
     }
 
 

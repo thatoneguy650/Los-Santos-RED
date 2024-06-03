@@ -110,7 +110,7 @@ public class DrillUsePreInteract : ItemUsePreInteract
     {
         Player.ActivityManager.StopDynamicActivity();
         uint GameTimeStarted = Game.GameTime;
-        uint DrillingTime = RandomItems.GetRandomNumber(DrilTimeMin, DrilTimeMax);
+        uint DrillingTime = RandomItems.GetRandomNumber(DrillItem.MinSafeDrillTime, DrillItem.MaxSafeDrillTime);
 
 
 
@@ -134,7 +134,6 @@ public class DrillUsePreInteract : ItemUsePreInteract
             {
                 break;
             }
-
             if(!hasStartedSound && Game.GameTime - GameTimeStarted >= 500 && CreatedDrillProp.Exists())
             {
                 EntryPoint.WriteToConsole("START PLAYING SOUND");
@@ -156,6 +155,8 @@ public class DrillUsePreInteract : ItemUsePreInteract
             }
             GameFiber.Yield();
         }
+        NativeFunction.Natives.STOP_SOUND(soundID);
+        NativeFunction.Natives.RELEASE_SOUND_ID(soundID);
         Dipose();
     }
 }
