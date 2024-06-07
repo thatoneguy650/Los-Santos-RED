@@ -231,6 +231,7 @@ public class ModDataFileManager
         SetupSimple();
         SetupFullModernTraffic();
         SetupFullExpandedExperience();
+        SetupRemoveVanillaGangs();
     }
 
     private void SetupFullExpandedExperience()
@@ -242,11 +243,19 @@ public class ModDataFileManager
             "";
         //File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedExperience\\readme.txt", Description);
     }
-
+    private void SetupRemoveVanillaGangs()
+    {
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\RemoveVanillaGangs");
+        string Description = "Will remove all vanilla gang popgroups and spawning from the world.";
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\RemoveVanillaGangs\\readme.txt", Description);
+    }
     private void SetupFullModernTraffic()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic");
-        string Description = "Adds DLC vehicles to the traffic by modifying the popgroups.ymt file. Adds most normal vehicles to the corresponding traffic. Works with MP or SP map (traffic groups are identical). Install the greskfullmoderntraffic_base.oiv file if you do not use FEJ and the greskfullmoderntraffic_fej.oiv otherwise. Incompatible with Los Santos 2008 config.";
+        string Description = "Adds DLC vehicles to the traffic by modifying the popgroups.ymt file. Adds most normal vehicles to the corresponding traffic. Works with MP or SP map (traffic groups are identical). " +
+            "Install the greskfullmoderntraffic_base.oiv file if you do not use FEJ and the greskfullmoderntraffic_fej.oiv otherwise. " +
+            "The _novanillagang versions will remove all vanilla gang spawns from the world. " +
+            "Incompatible with Los Santos 2008 config.";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\readme.txt", Description);
     }
 

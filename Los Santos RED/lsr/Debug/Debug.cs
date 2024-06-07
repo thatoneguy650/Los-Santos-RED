@@ -493,6 +493,10 @@ public class Debug
     }
     private void DebugNumpad4()
     {
+
+
+        Vector3 Corner1 = new Vector3(984.8781f, -1777.009f, 31.19557f);
+        Vector3 Corner2 = new Vector3(919.2766f, -1919.417f, 40.12272f);
         /*			BRAIN::REGISTER_OBJECT_SCRIPT_BRAIN("ob_vend1", joaat("prop_vend_soda_01"), 100, 10f, -1, 9);
 			BRAIN::REGISTER_OBJECT_SCRIPT_BRAIN("ob_vend2", joaat("prop_vend_soda_02"), 100, 10f, -1, 9);
 			BRAIN::REGISTER_OBJECT_SCRIPT_BRAIN("ob_vend1", joaat("sf_prop_sf_vend_drink_01a"), 100, 10f, -1, 8);
@@ -508,55 +512,59 @@ public class Debug
 			BRAIN::REGISTER_OBJECT_SCRIPT_BRAIN("atm_trigger", -639162137, 100, 4f, -1, 8);
          */
 
-        if(LastPed != null && LastPed.Pedestrian.Exists())
-        {
-            LastPed.Pedestrian.IsPersistent = false;
-        }
-        PedExt Ped = World.Pedestrians.Citizens.Where(x=> x.Pedestrian.Exists() && x.IsInVehicle && x.IsDriver && !x.IsDead).OrderBy(x=> x.DistanceToPlayer).FirstOrDefault();
+
+
+        NativeFunction.Natives.SET_PED_NON_CREATION_AREA(Corner1.X, Corner1.Y, Corner1.Z, Corner2.X, Corner2.Y, Corner2.Z);
+
+        //       if(LastPed != null && LastPed.Pedestrian.Exists())
+        //       {
+        //           LastPed.Pedestrian.IsPersistent = false;
+        //       }
+        //       PedExt Ped = World.Pedestrians.Citizens.Where(x=> x.Pedestrian.Exists() && x.IsInVehicle && x.IsDriver && !x.IsDead).OrderBy(x=> x.DistanceToPlayer).FirstOrDefault();
 
 
 
-        if (Ped != null)
-        {
-            LastPed = Ped;
-            Ped.Pedestrian.IsPersistent = true;
-            Ped.Pedestrian.BlockPermanentEvents = true;
-            Ped.Pedestrian.KeepTasks = true;
-            NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
-            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 8f);
+        //       if (Ped != null)
+        //       {
+        //           LastPed = Ped;
+        //           Ped.Pedestrian.IsPersistent = true;
+        //           Ped.Pedestrian.BlockPermanentEvents = true;
+        //           Ped.Pedestrian.KeepTasks = true;
+        //           NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
+        //           NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 8f);
 
-            //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, true);
-            //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableSpinOutDuringVehicleChase, true);
-            //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableBlockFromPursueDuringVehicleChase, true);
-
-
-            /*VEHICLE_CHASE_CANT_BLOCK						= 1,
-	VEHICLE_CHASE_CANT_BLOCK_FROM_PURSUE			= 2,
-	VEHICLE_CHASE_CANT_PURSUE						= 4,
-	VEHICLE_CHASE_CANT_RAM							= 8,
-	VEHICLE_CHASE_CANT_SPIN_OUT						= 16,
-	VEHICLE_CHASE_CANT_MAKE_AGGRESSIVE_MOVE			= 32,
-	VEHICLE_CHASE_CANT_CRUISE_IN_FRONT_DURING_BLOCK	= 64,
-	VEHICLE_CHASE_USE_CONTINUOUS_RAM				= 128,
-	VEHICLE_CHASE_CANT_PULL_ALONGSIDE				= 256,
-	VEHICLE_CHASE_CANT_PULL_ALONGSIDE_INFRONT		= 512*/
-
-            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 1, true);
-            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 2, true);
-            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 4, false);
-            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 8, true);
-            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 16, true);
-            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 32, true);
-            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 64, true);
-            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 128, false);
-            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 256, true);
-            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 512, true);
-
-            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
+        //           //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, true);
+        //           //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableSpinOutDuringVehicleChase, true);
+        //           //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableBlockFromPursueDuringVehicleChase, true);
 
 
-            GameFiber.Sleep(1000);
-        }
+        //           /*VEHICLE_CHASE_CANT_BLOCK						= 1,
+        //VEHICLE_CHASE_CANT_BLOCK_FROM_PURSUE			= 2,
+        //VEHICLE_CHASE_CANT_PURSUE						= 4,
+        //VEHICLE_CHASE_CANT_RAM							= 8,
+        //VEHICLE_CHASE_CANT_SPIN_OUT						= 16,
+        //VEHICLE_CHASE_CANT_MAKE_AGGRESSIVE_MOVE			= 32,
+        //VEHICLE_CHASE_CANT_CRUISE_IN_FRONT_DURING_BLOCK	= 64,
+        //VEHICLE_CHASE_USE_CONTINUOUS_RAM				= 128,
+        //VEHICLE_CHASE_CANT_PULL_ALONGSIDE				= 256,
+        //VEHICLE_CHASE_CANT_PULL_ALONGSIDE_INFRONT		= 512*/
+
+        //           NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 1, true);
+        //           NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 2, true);
+        //           NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 4, false);
+        //           NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 8, true);
+        //           NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 16, true);
+        //           NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 32, true);
+        //           NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 64, true);
+        //           NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 128, false);
+        //           NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 256, true);
+        //           NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, 512, true);
+
+        //           NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
+
+
+        //           GameFiber.Sleep(1000);
+        //       }
 
 
         //if(!isShowingTunnel)

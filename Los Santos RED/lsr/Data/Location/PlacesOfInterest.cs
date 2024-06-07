@@ -92,9 +92,14 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             EntryPoint.WriteToConsole($"No Locations config found, creating default", 0);
             DefaultConfig_LibertyCity();
+
             DefaultConfig();
+            DefaultConfig_2008();
         }
     }
+
+
+
     public List<GameLocation> InteractableLocations()
     {
         return PossibleLocations.InteractableLocations();
@@ -257,8 +262,6 @@ public class PlacesOfInterest : IPlacesOfInterest
 
         Serialization.SerializeParam(PossibleLocations, ConfigFileName);
     }
-
-
     private void DefaultConfig_BarberShops()
     {
         BarberShopPlaces = new List<BarberShop>()
@@ -361,9 +364,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             },
         };
     }
-
-
-
     private void DefaultConfig_PlasticSurgeryClinics()
     {
         PlasticSurgeryClinics = new List<PlasticSurgeryClinic>()
@@ -5443,100 +5443,125 @@ public class PlacesOfInterest : IPlacesOfInterest
             }
         }
     }
-    //private void DefaultConfig_2008()
-    //{
-    //    //PossibleLocations OldPossibleLocations = new PossibleLocations();
-    //    //List<GangDen> GangDens2008 = new List<GangDen>();
-    //    //foreach (GangDen gd in GangDens)
-    //    //{
-    //    //    if (gd.GangID != "AMBIENT_GANG_BALLAS" && gd.GangID != "AMBIENT_GANG_FAMILY" && gd.GangID != "AMBIENT_GANG_SALVA")
-    //    //    {
-    //    //        GangDens2008.Add(gd);
-    //    //    }
-    //    //}
-    //    //GangDens2008.Add(new GangDen(new Vector3(393.403f, -782.4543f, 29.28772f), 269.1115f, "Ballas Den", "", "BallasDenMenu", "AMBIENT_GANG_BALLAS")
-    //    //{
-    //    //    CanInteractWhenWanted = true,
-    //    //    BannerImagePath = "stores\\ballas.png",
-    //    //    OpenTime = 0,
-    //    //    CloseTime = 24,
-    //    //    IsEnabled = false,
-    //    //    PossiblePedSpawns = new List<ConditionalLocation>() {
+    private void DefaultConfig_2008()
+    {
+        PossibleLocations OldPossibleLocations = new PossibleLocations();
+        List<GangDen> GangDens2008 = new List<GangDen>();
+        foreach (GangDen gd in GangDens)
+        {
+            if (gd.AssignedAssociationID != "AMBIENT_GANG_BALLAS" && gd.AssignedAssociationID != "AMBIENT_GANG_FAMILY" && gd.AssignedAssociationID != "AMBIENT_GANG_SALVA"
+                && gd.AssignedAssociationID != "AMBIENT_GANG_PAVANO"
+                && gd.AssignedAssociationID != "AMBIENT_GANG_LUPISELLA"
+                && gd.AssignedAssociationID != "AMBIENT_GANG_MESSINA"
+                && gd.AssignedAssociationID != "AMBIENT_GANG_ANCELOTTI")
+            {
+                GangDens2008.Add(gd);
+            }
+        }
+        OldPossibleLocations.DeadDrops.AddRange(DeadDrops);
+        OldPossibleLocations.CarCrushers.AddRange(CarCrushers);
+        OldPossibleLocations.ScrapYards.AddRange(ScrapYards);
+        OldPossibleLocations.GangDens.AddRange(GangDens2008);
+        OldPossibleLocations.GunStores.AddRange(GunStores);
+        OldPossibleLocations.Hotels.AddRange(Hotels);
+        OldPossibleLocations.ApartmentBuildings.AddRange(ApartmentBuildings);
+        OldPossibleLocations.Residences.AddRange(Residences);
+        OldPossibleLocations.CityHalls.AddRange(CityHalls);
+        OldPossibleLocations.PoliceStations.AddRange(PoliceStations);
+        OldPossibleLocations.Hospitals.AddRange(Hospitals);
+        OldPossibleLocations.FireStations.AddRange(FireStations);
+        OldPossibleLocations.Restaurants.AddRange(Restaurants);
+        OldPossibleLocations.Pharmacies.AddRange(Pharmacies);
+        OldPossibleLocations.Dispensaries.AddRange(Dispensaries);
+        OldPossibleLocations.HeadShops.AddRange(HeadShops);
+        OldPossibleLocations.HardwareStores.AddRange(HardwareStores);
+        OldPossibleLocations.PawnShops.AddRange(PawnShops);
+        OldPossibleLocations.Landmarks.AddRange(Landmarks);
+        OldPossibleLocations.Banks.AddRange(Banks);
+        OldPossibleLocations.ConvenienceStores.AddRange(ConvenienceStores);
+        OldPossibleLocations.LiquorStores.AddRange(LiquorStores);
+        OldPossibleLocations.GasStations.AddRange(GasStations);
+        OldPossibleLocations.Bars.AddRange(Bars);
+        OldPossibleLocations.FoodStands.AddRange(FoodStands);
+        OldPossibleLocations.CarDealerships.AddRange(Dealerships);
+        OldPossibleLocations.VehicleExporters.AddRange(VehicleExporters);
+        OldPossibleLocations.Forgers.AddRange(Forgers);
+        OldPossibleLocations.RepairGarages.AddRange(RepairGarages);
+        OldPossibleLocations.DriveThrus.AddRange(DriveThrus);
+        OldPossibleLocations.ClothingShops.AddRange(ClothingShops);
+        OldPossibleLocations.BusStops.AddRange(BusStops);
+        OldPossibleLocations.Prisons.AddRange(Prisons);
+        OldPossibleLocations.SubwayStations.AddRange(SubwayStations);
+        OldPossibleLocations.Morgues.AddRange(Morgues);
+        OldPossibleLocations.SportingGoodsStores.AddRange(SportingGoodsStores);
+        OldPossibleLocations.Airports.AddRange(Airports);
+        OldPossibleLocations.IllicitMarketplaces.AddRange(illicitMarketplaces);
+        OldPossibleLocations.BlankLocations.AddRange(BlankLocationPlaces);
+        OldPossibleLocations.MilitaryBases.AddRange(MilitaryBasePlaces);
+        OldPossibleLocations.StoredSpawns.AddRange(TunnelSpawnPlaces);
+        OldPossibleLocations.BarberShops.AddRange(BarberShopPlaces);
+        OldPossibleLocations.PlasticSurgeryClinics.AddRange(PlasticSurgeryClinics);
+        OldPossibleLocations.TattooShops.AddRange(TattooShopPlaces);
 
-    //    //        new ConditionalLocation(new Vector3(395.0874f, -779.8005f, 29.29059f), 295.3088f, 50f),
-    //    //        new ConditionalLocation(new Vector3(395.585f, -786.7841f, 29.28836f), 236.7289f, 50f),
-    //    //        new ConditionalLocation(new Vector3(393.6364f, -771.2427f, 29.2868f), 321.6246f, 50f),
-    //    //        new ConditionalLocation(new Vector3(385.2623f, -771.7565f, 29.2923f), 356.8999f, 50f),
-    //    //        new ConditionalLocation(new Vector3(398.6558f, -788.6539f, 29.28695f), 214.5293f, 50f),
-    //    //    }
-    //    //});
-    //    //GangDens2008.Add(new GangDen(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, "The Families Den", "The OGs", "FamiliesDenMenu", "AMBIENT_GANG_FAMILY")
-    //    //{
-    //    //    CanInteractWhenWanted = true,
-    //    //    BannerImagePath = "stores\\families.png",
-    //    //    OpenTime = 0,
-    //    //    CloseTime = 24,
-    //    //    IsEnabled = false,
-    //    //    PossiblePedSpawns = new List<ConditionalLocation>() {
+        //OldPossibleLocations.GangDens.RemoveAll(x => x.AssignedAssociationID == "AMBIENT_GANG_BALLAS" || x.AssignedAssociationID == "AMBIENT_GANG_FAMILY" || x.AssignedAssociationID == "AMBIENT_GANG_SALVA");
+        OldPossibleLocations.GangDens.Add(new GangDen(new Vector3(393.403f, -782.4543f, 29.28772f), 269.1115f, "Ballas Den", "", "BallasDenMenu", "AMBIENT_GANG_BALLAS")
+        {
+            CanInteractWhenWanted = true,
+            BannerImagePath = "gangs\\ballas.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            IsPrimaryGangDen = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
 
-    //    //        new ConditionalLocation(new Vector3(84.76484f, -1953.536f, 20.8518f), 334.0088f, 50f),
-    //    //        new ConditionalLocation(new Vector3(87.02995f, -1947.637f, 20.74858f), 303.2596f, 50f),
-    //    //        new ConditionalLocation(new Vector3(95.30958f, -1954.979f, 20.75126f), 314.5049f, 50f),
-    //    //        new ConditionalLocation(new Vector3(84.23887f, -1932.319f, 20.74922f), 19.71852f, 50f),
-    //    //    }
-    //    //});//This is in DAVIS near Grove Street
-    //    //GangDens2008.Add(new GangDen(new Vector3(511.4065f, -1790.909f, 28.50743f), 90.88252f, "Varrios Los Aztecas Den", "", "VarriosDenMenu", "AMBIENT_GANG_SALVA")
-    //    //{
-    //    //    CanInteractWhenWanted = true,
-    //    //    BannerImagePath = "stores\\varrios.png",
-    //    //    OpenTime = 0,
-    //    //    CloseTime = 24,
-    //    //    IsEnabled = false,
-    //    //    PossiblePedSpawns = new List<ConditionalLocation>() {
+                new GangConditionalLocation(new Vector3(395.0874f, -779.8005f, 29.29059f), 295.3088f, 50f),
+                new GangConditionalLocation(new Vector3(395.585f, -786.7841f, 29.28836f), 236.7289f, 50f),
+                new GangConditionalLocation(new Vector3(393.6364f, -771.2427f, 29.2868f), 321.6246f, 50f),
+                new GangConditionalLocation(new Vector3(385.2623f, -771.7565f, 29.2923f), 356.8999f, 50f),
+                new GangConditionalLocation(new Vector3(398.6558f, -788.6539f, 29.28695f), 214.5293f, 50f),
+            }
+        });
+        OldPossibleLocations.GangDens.Add(new GangDen(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, "The Families Den", "The OGs", "FamiliesDenMenu", "AMBIENT_GANG_FAMILY")
+        {
+            CanInteractWhenWanted = true,
+            BannerImagePath = "gangs\\families.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            IsPrimaryGangDen = true,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(84.76484f, -1953.536f, 20.8518f), 334.0088f, 35f),
+                new GangConditionalLocation(new Vector3(87.02995f, -1947.637f, 20.74858f), 303.2596f, 35f),
+                new GangConditionalLocation(new Vector3(95.30958f, -1954.979f, 20.75126f), 314.5049f, 35f),
+                new GangConditionalLocation(new Vector3(84.23887f, -1932.319f, 20.74922f), 19.71852f, 35f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(94.70525f, -1960.741f, 20.06409f), 322.6508f, 45f),
+                new GangConditionalLocation(new Vector3(108.7719f, -1951.384f, 20.01156f), 294.1027f, 45f),
+                new GangConditionalLocation(new Vector3(113.3118f, -1933.905f, 19.9819f), 36.83981f, 45f),
+                new GangConditionalLocation(new Vector3(68.90487f, -1922.226f, 20.57331f), 130.7354f, 45f),
+            }
+        });//This is in DAVIS near Grove Street
+        OldPossibleLocations.GangDens.Add(new GangDen(new Vector3(511.4065f, -1790.909f, 28.50743f), 90.88252f, "Varrios Los Aztecas Den", "", "VarriosDenMenu", "AMBIENT_GANG_SALVA")
+        {
+            CanInteractWhenWanted = true,
+            BannerImagePath = "gangs\\varrios.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            IsPrimaryGangDen = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
 
-    //    //        new ConditionalLocation(new Vector3(511.2142f, -1794.088f, 28.50298f), 102.9549f, 50f),
-    //    //        new ConditionalLocation(new Vector3(507.1f, -1787.592f, 28.4884f), 82.19876f, 50f),
-    //    //        new ConditionalLocation(new Vector3(506.4553f, -1793.272f, 28.49493f), 68.23071f, 50f),
-    //    //        new ConditionalLocation(new Vector3(503.4097f, -1782.823f, 28.49299f), 107.5499f, 50f),
-    //    //        new ConditionalLocation(new Vector3(529.1724f, -1793.627f, 28.50298f), 148.2789f, 50f),
-    //    //    }
-    //    //});//THIS IS IN RANCHO Near a motel and the davis polcie station?
+                new GangConditionalLocation(new Vector3(511.2142f, -1794.088f, 28.50298f), 102.9549f, 50f),
+                new GangConditionalLocation(new Vector3(507.1f, -1787.592f, 28.4884f), 82.19876f, 50f),
+                new GangConditionalLocation(new Vector3(506.4553f, -1793.272f, 28.49493f), 68.23071f, 50f),
+                new GangConditionalLocation(new Vector3(503.4097f, -1782.823f, 28.49299f), 107.5499f, 50f),
+                new GangConditionalLocation(new Vector3(529.1724f, -1793.627f, 28.50298f), 148.2789f, 50f),
+            }
+        });//THIS IS IN RANCHO Near a motel and the davis polcie station?
 
-    //    //OldPossibleLocations.DeadDrops.AddRange(DeadDrops);
-    //    //OldPossibleLocations.ScrapYards.AddRange(ScrapYards);
-    //    //OldPossibleLocations.CarCrushers.AddRange(CarCrushers);
-    //    //OldPossibleLocations.GangDens.AddRange(GangDens2008);
-    //    //OldPossibleLocations.GunStores.AddRange(GunStores);
-    //    //OldPossibleLocations.Hotels.AddRange(Hotels);
-    //    //OldPossibleLocations.Residences.AddRange(Residences);
-    //    //OldPossibleLocations.CityHalls.AddRange(CityHalls);
-    //    //OldPossibleLocations.PoliceStations.AddRange(PoliceStations);
-    //    //OldPossibleLocations.Hospitals.AddRange(Hospitals);
-    //    //OldPossibleLocations.FireStations.AddRange(FireStations);
-    //    //OldPossibleLocations.Restaurants.AddRange(Restaurants);
-    //    //OldPossibleLocations.Pharmacies.AddRange(Pharmacies);
-    //    ////OldPossibleLocations.Dispensaries.AddRange(Dispensaries);//weed wasnt legal there?
-    //    //OldPossibleLocations.HeadShops.AddRange(HeadShops);
-    //    //OldPossibleLocations.HardwareStores.AddRange(HardwareStores);
-    //    //OldPossibleLocations.PawnShops.AddRange(PawnShops);
-    //    //OldPossibleLocations.Landmarks.AddRange(Landmarks);
-    //    //OldPossibleLocations.BeautyShops.AddRange(BeautyShops);
-    //    //OldPossibleLocations.Banks.AddRange(Banks);
-    //    //OldPossibleLocations.ConvenienceStores.AddRange(ConvenienceStores);
-    //    //OldPossibleLocations.LiquorStores.AddRange(LiquorStores);
-    //    //OldPossibleLocations.GasStations.AddRange(GasStations);
-    //    //OldPossibleLocations.Bars.AddRange(Bars);
-    //    //OldPossibleLocations.FoodStands.AddRange(FoodStands);
-    //    //OldPossibleLocations.CarDealerships.AddRange(Dealerships);
-    //    //OldPossibleLocations.DriveThrus.AddRange(DriveThrus);
-    //    //OldPossibleLocations.ClothingShops.AddRange(ClothingShops);
-    //    //OldPossibleLocations.BusStops.AddRange(BusStops);
-    //    //OldPossibleLocations.Prisons.AddRange(Prisons);
-    //    //OldPossibleLocations.SubwayStations.AddRange(SubwayStations);
-    //    //OldPossibleLocations.Morgues.AddRange(Morgues);
-    //    //OldPossibleLocations.SportingGoodsStores.AddRange(SportingGoodsStores);
-    //    //OldPossibleLocations.Airports.AddRange(Airports);
-    //    //OldPossibleLocations.IllicitMarketplaces.AddRange(illicitMarketplaces);
-    //    //Serialization.SerializeParam(OldPossibleLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Locations_LosSantos2008.xml");
-    //}
+        Serialization.SerializeParam(OldPossibleLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Locations_LosSantos2008.xml");
+    }
 }

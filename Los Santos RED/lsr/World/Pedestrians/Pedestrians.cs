@@ -313,13 +313,26 @@ public class Pedestrians : ITaskerReportable
                     }
                     else if (Settings.SettingsManager.GangSettings.RemoveNonSpawnedGangMembersOnFoot && Pedestrian.Exists() && !Pedestrian.IsInAnyVehicle(false))
                     {
-                        //if(Settings.SettingsManager.GangSettings.RemoveNonSpawnedGangMembersOnFoot_Extra)
+                        //if (Settings.SettingsManager.GangSettings.RemoveNonSpawnedGangMembersOnFoot_Extra)
                         //{
-                        //    Vector3 blockPos = Pedestrian.Position;
-                        //    new ScenarioBlock(blockPos, "").Block();
-                        //    EntryPoint.WriteToConsole($"SETTING NEW SCENARIO BLOCK AT {blockPos}");
+                            Vector3 blockPos = Pedestrian.Position;
+
+
+                        //Vector3 Corner1 = NativeHelper.GetOffsetPosition(blockPos, Pedestrian.Heading, 1.0f);
+
+                        //Vector3 Corner2 = NativeHelper.GetOffsetPosition(blockPos, Pedestrian.Heading, -1.0f);
+
+                        //new ScenarioBlock(blockPos, "").Block();
+                        //EntryPoint.WriteToConsole($"SETTING NEW SCENARIO BLOCK AT {blockPos} Corner1:{Corner1} Corner2{Corner2}");
+
+
+                        //NativeFunction.Natives.SET_PED_NON_CREATION_AREA(Corner1.X, Corner1.Y, Corner1.Z +1.0f, Corner2.X, Corner2.Y, Corner2.Z-1.0f);
+
+
                         //}
                         Delete(Pedestrian);
+
+                        //MoveToHell(Pedestrian);
                         continue;
                     }
                     AddAmbientGangMember(Pedestrian);
@@ -357,6 +370,16 @@ public class Pedestrians : ITaskerReportable
         }
         GameTimeLastCreatedPeds = Game.GameTime;
     }
+
+    private void MoveToHell(Ped pedestrian)
+    {
+       if(pedestrian.Exists())
+        {
+            pedestrian.Position = new Vector3(136.5146f, -2203.149f, 7.30914f);
+            AddAmbientGangMember(pedestrian);
+        }
+    }
+
     public void Prune()
     {
         PruneServicePeds();

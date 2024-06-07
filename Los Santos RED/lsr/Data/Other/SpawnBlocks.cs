@@ -123,6 +123,11 @@ public class SpawnBlocks : ISpawnBlocks
 
             new CarGeneratorBlock(new Vector3(1855.314f, 2578.854f, 46.42464f),"BoilingbrokePrison"),
             new CarGeneratorBlock(new Vector3(1799.826f, 2600.908f, 45.58898f),"BoilingbrokePrison"),
+
+
+
+            //
+            new CarGeneratorBlock(new Vector3(-178.2882f, -1607.417f, 33.43019f),"familesgang1"),
         });
     }
     private void Scenarios()

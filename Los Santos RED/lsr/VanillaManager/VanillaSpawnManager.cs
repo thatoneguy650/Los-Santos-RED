@@ -289,7 +289,6 @@ public class VanillaSpawnManager
                 ran = 0;
             }
         }
-
         foreach (ScenarioBlock scenarioBlock in SpawnBlocks.PossibleSpawnBlocks.ScenarioBlocks)
         {
             scenarioBlock.Block();
@@ -300,99 +299,6 @@ public class VanillaSpawnManager
                 ran = 0;
             }
         }
-
-        //if (Settings.SettingsManager.VanillaSettings.BlockVanillaPoliceCarGenerators)
-        //{
-        //    foreach (Vector3 carGenSPot in PoliceCarGeneratorsToDisable)
-        //    {
-        //        NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false, false);
-        //        NativeFunction.Natives.REMOVE_VEHICLES_FROM_GENERATORS_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false);
-        //        ran++;
-        //        if(ran > 2)
-        //        {
-        //            GameFiber.Yield();
-        //            ran = 0;
-        //        }
-        //    }
-        //}
-        //if (Settings.SettingsManager.VanillaSettings.BlockVanillaPrisonCarGenerators)
-        //{
-        //    foreach (Vector3 carGenSPot in PrisonCarGeneratorsToDisable)
-        //    {
-        //        NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false, false);
-        //        NativeFunction.Natives.REMOVE_VEHICLES_FROM_GENERATORS_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false);
-        //        ran++;
-        //        if (ran > 2)
-        //        {
-        //            GameFiber.Yield();
-        //            ran = 0;
-        //        }
-        //    }
-        //}
-        //if (Settings.SettingsManager.VanillaSettings.BlockVanillaPoliceScenarios)
-        //{
-        //    ran = 0;
-        //    float ScenarioBlockingDistance = 2f;
-        //    foreach (Vector3 scenario in PoliceScenariosToDisable)
-        //    {
-        //        NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(scenario.X - ScenarioBlockingDistance, scenario.Y - ScenarioBlockingDistance, scenario.Z - ScenarioBlockingDistance, scenario.X + ScenarioBlockingDistance, scenario.Y + ScenarioBlockingDistance, scenario.Z + ScenarioBlockingDistance, false, true, true, true);
-        //        ran++;
-        //        if (ran > 2)
-        //        {
-        //            GameFiber.Yield();
-        //            ran = 0;
-        //        }
-        //    }          
-        //}
-        //if (Settings.SettingsManager.VanillaSettings.BlockVanillaSecurityScenarios)
-        //{
-        //    ran = 0;
-        //    float ScenarioBlockingDistance = 2f;
-        //    foreach (Vector3 scenario in SecurityScenariosToDisable)
-        //    {
-        //        NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(scenario.X - ScenarioBlockingDistance, scenario.Y - ScenarioBlockingDistance, scenario.Z - ScenarioBlockingDistance, scenario.X + ScenarioBlockingDistance, scenario.Y + ScenarioBlockingDistance, scenario.Z + ScenarioBlockingDistance, false, true, true, true);
-        //        ran++;
-        //        if (ran > 2)
-        //        {
-        //            GameFiber.Yield();
-        //            ran = 0;
-        //        }
-        //    }
-
-        //}
-        //if (Settings.SettingsManager.VanillaSettings.BlockVanillaPrisonScenarios)
-        //{
-        //    ran = 0;
-        //    float ScenarioBlockingDistance = 2f;
-        //    foreach (Vector3 scenario in PrisonScenariosToDisable)
-        //    {
-        //        NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(scenario.X - ScenarioBlockingDistance, scenario.Y - ScenarioBlockingDistance, scenario.Z - ScenarioBlockingDistance, scenario.X + ScenarioBlockingDistance, scenario.Y + ScenarioBlockingDistance, scenario.Z + ScenarioBlockingDistance, false, true, true, true);
-        //        ran++;
-        //        if (ran > 2)
-        //        {
-        //            GameFiber.Yield();
-        //            ran = 0;
-        //        }
-        //    }
-        //    Vector3 PrisonMainBlock = new Vector3(1862.066f, 2593.06f, 45.67203f);
-        //    float largeBlockingRange = 50f;
-        //    NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(PrisonMainBlock.X - largeBlockingRange, PrisonMainBlock.Y - largeBlockingRange, PrisonMainBlock.Z - largeBlockingRange, PrisonMainBlock.X + largeBlockingRange, PrisonMainBlock.Y + largeBlockingRange, PrisonMainBlock.Z + largeBlockingRange, false, true, true, true);
-        //}
-        //if (Settings.SettingsManager.VanillaSettings.BlockVanillaOtherScenarios)
-        //{
-        //    ran = 0;
-        //    float ScenarioBlockingDistance = 3f;
-        //    foreach (Vector3 scenario in OtherScenariosToDisable)
-        //    {
-        //        NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(scenario.X - ScenarioBlockingDistance, scenario.Y - ScenarioBlockingDistance, scenario.Z - ScenarioBlockingDistance, scenario.X + ScenarioBlockingDistance, scenario.Y + ScenarioBlockingDistance, scenario.Z + ScenarioBlockingDistance, false, true, true, true);
-        //        ran++;
-        //        if (ran > 2)
-        //        {
-        //            GameFiber.Yield();
-        //            ran = 0;
-        //        }
-        //    } 
-        //}
     }
 
 }
