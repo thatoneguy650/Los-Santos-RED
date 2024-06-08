@@ -227,6 +227,7 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
         }
         if (ToPickFrom.Any())
         {
+            //EntryPoint.WriteToConsole($"RequiredPedGroup: {RequiredPedGroup} TOPICKFROM {string.Join(",",ToPickFrom.ToList())}");
             return ToPickFrom.PickRandom();
         }
         return null;

@@ -438,6 +438,12 @@ public class ButtonPrompts
                 Prompts.RemoveAll(x => x.Group == "Drag");
             }
         }
+
+        //if(Player.ActivityManager.CanGrabLookedAtPed || Player.ActivityManager.CanGrabPed)
+        //{
+        //    EntryPoint.WriteToConsole($"CanGrabLookedAtPed{Player.ActivityManager.CanGrabLookedAtPed} CanGrabPed{Player.ActivityManager.CanGrabPed}");
+        //}
+
         if (Settings.SettingsManager.KeySettings.GrabPedGameControl >= 0 && !Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.ActivityManager.CanGrabLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowGrabbingPeds)
         {
             PersonGrabPrompts();

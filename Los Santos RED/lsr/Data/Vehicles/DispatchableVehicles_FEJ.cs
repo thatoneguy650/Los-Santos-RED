@@ -1747,6 +1747,27 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(12, true, 100),
             };
         }
+        else if (policeVehicleType == PoliceVehicleType.MarkedNewSlicktop)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
+                new DispatchableVehicleExtra(1, true, 65),
+                new DispatchableVehicleExtra(2, false, 100),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+
+                new DispatchableVehicleExtra(5, true, 45),
+
+                new DispatchableVehicleExtra(6, true, 65),
+
+
+                new DispatchableVehicleExtra(7, true, 65),
+
+                new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(10, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
+            };
+        }
         else if (policeVehicleType == PoliceVehicleType.Unmarked)
         {
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
@@ -1863,6 +1884,22 @@ public class DispatchableVehicles_FEJ
             };
         }
         else if (policeVehicleType == PoliceVehicleType.SlicktopMarked)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
+                 new DispatchableVehicleExtra(1, true, 65),
+                new DispatchableVehicleExtra(2, false, 100),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, true, 65),
+                new DispatchableVehicleExtra(6, true, 65),
+                new DispatchableVehicleExtra(7, true, 65),
+                new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(10, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
+            };
+        }
+        else if (policeVehicleType == PoliceVehicleType.MarkedNewSlicktop)
         {
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
                  new DispatchableVehicleExtra(1, true, 65),

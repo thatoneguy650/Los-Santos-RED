@@ -72,10 +72,6 @@ public class DispatchablePerson
     public List<IssuableWeapon> OverrideLongGuns { get; set; } = new List<IssuableWeapon>();
     [XmlIgnore]
     public List<IssuableWeapon> OverrideLessLethalWeapons { get; set; } = new List<IssuableWeapon>();
-
-
-
-
     public PedVariation RequiredVariation { get; set; }
     public List<PedPropComponent> OptionalProps { get; set; }
     public int OptionalPropChance { get; set; } = 30;
@@ -85,31 +81,19 @@ public class DispatchablePerson
     public PedComponent FullHolster { get; set; }
     public List<string> OverrideVoice { get; set; }
     public List<CustomPropAttachment> CustomPropAttachments { get; set; }
-
-
     public bool DisableWrithe { get; set; } = true;
     public bool DisableWritheShooting { get; set; } = true;
-
     public bool DisableCriticalHits { get; set; } = false;
     public bool DisableBulletRagdoll { get; set; } = false;
     public bool HasFullBodyArmor { get; set; } = false;
     public int FiringPatternHash { get; set; } = 0;
-
-
     public List<PedConfigFlagToSet> PedConfigFlagsToSet { get; set; }
     public List<CombatAttributeToSet> CombatAttributesToSet { get; set; }
     public List<CombatFloatToSet> CombatFloatsToSet { get; set; }
     public float FaceFeatureRandomizePercentage { get; set; } = 90f;
-
     public bool AlwaysHasLongGun { get; set; } = false;
-
     public bool IsAnimal { get; set; } = false;
-
-   // public bool IsVehicleRestricted { get; set; } = false;
-
-
     public float OverrideSightDistance { get; set; } = -1.0f;
-
     public string GetDescription()
     {
         string description = "";

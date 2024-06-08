@@ -367,7 +367,7 @@ namespace LosSantosRED.lsr
             {
                 if (Player.IsBusted)
                 {
-                    RespondingPolice = 4;
+                    RespondingPolice = 3;
                 }
                 else
                 {
@@ -376,7 +376,14 @@ namespace LosSantosRED.lsr
             }
             else if (Player.IsWanted)
             {
-                RespondingPolice = 999;
+                if (Player.IsBusted)
+                {
+                    RespondingPolice = 4;
+                }
+                else
+                {
+                    RespondingPolice = 999;
+                }
             }
             int tasked = 0;
             int updated = 0;
@@ -391,7 +398,7 @@ namespace LosSantosRED.lsr
                     cop.IsRespondingToWanted = true;
                     tasked++;
                 }
-                else if (!cop.IsDead && !cop.IsUnconscious && Player.WantedLevel == 2 && !Player.IsBusted && cop.DistanceToPlayer <= 75f)
+                else if (!cop.IsDead && !cop.IsUnconscious && Player.WantedLevel >= 2 && !Player.IsBusted && cop.DistanceToPlayer <= 75f)
                 {
                     cop.IsRespondingToWanted = true;
                     tasked++;

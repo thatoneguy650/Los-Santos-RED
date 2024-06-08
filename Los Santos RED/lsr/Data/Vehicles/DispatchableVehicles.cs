@@ -227,19 +227,25 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("sheriff", 10, 10) { MaxRandomDirtLevel = 10.0f,VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("sheriff2", 50, 50) { MaxRandomDirtLevel = 10.0f },
             SheriffStanierNew,
+
+            new DispatchableVehicle("dinghy5", 0, 0) { RequiredPrimaryColorID = 0, RequiredSecondaryColorID = 0,FirstPassengerIndex = 3, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4 },
         };
         BCSOVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("sheriff", 10, 10) { MaxRandomDirtLevel = 10.0f,VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(2, true, 100) } },
             new DispatchableVehicle("sheriff2", 50, 50) { MaxRandomDirtLevel = 10.0f },
             SheriffStanierNew,
+
+            new DispatchableVehicle("dinghy5", 0, 0) { RequiredPrimaryColorID = 0, RequiredSecondaryColorID = 0,FirstPassengerIndex = 3, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4 },
         };
         VWHillsLSSDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("sheriff2", 70, 70),
-            SheriffStanierNew
+            SheriffStanierNew,
+
+            new DispatchableVehicle("dinghy5", 0, 0) { RequiredPrimaryColorID = 0, RequiredSecondaryColorID = 0,FirstPassengerIndex = 3, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4 },
         };
         DavisLSSDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("sheriff2", 30, 30),
-            SheriffStanierNew
+            SheriffStanierNew,
         };
         RHPDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police2", 100, 85){ VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,25) } },

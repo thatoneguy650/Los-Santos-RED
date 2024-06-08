@@ -644,7 +644,7 @@ public class Chase : ComplexTask
                 if (Player.WantedLevel == 1)
                 {
                     IsSetFollow = true;
-                    NativeFunction.Natives.TASK_VEHICLE_FOLLOW(Ped.Pedestrian,Ped.Pedestrian.CurrentVehicle, Player.Character, 100f, (int)eCustomDrivingStyles.Code3, 20);
+                    NativeFunction.Natives.TASK_VEHICLE_FOLLOW(Ped.Pedestrian,Ped.Pedestrian.CurrentVehicle, Player.Character, 100f, (int)eCustomDrivingStyles.Code3, 15);
                 }
                 else
                 {
