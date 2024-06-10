@@ -76,7 +76,7 @@ public class DebugMenu : ModUIMenu
 
         DebugSubMenus.Add(new DebugPlayerStateSubMenu(Debug, MenuPool, Player, Settings, Crimes, Tasker, World, Weapons, ModItems, Time, RadioStations, Names));
         DebugSubMenus.Add(new DebugTeleportSubMenu(Debug, MenuPool, Player, PlacesOfInterest, World, interactionable));
-
+        DebugSubMenus.Add(new DebugInventorySubMenu(Debug, MenuPool, Player, Settings, Crimes, Tasker, World, Weapons, ModItems, Time, RadioStations, Names));
         DebugSubMenus.Add(new DebugWeaponsSubMenu(Debug, MenuPool, Player, Settings, Crimes, Tasker, World, Weapons, ModItems, Time, RadioStations, Names));
         DebugSubMenus.Add(new DebugMoneySubMenu(Debug, MenuPool, Player, Settings, Crimes, Tasker, World, Weapons, ModItems, Time, RadioStations, Names, ModDataFileManager));
 

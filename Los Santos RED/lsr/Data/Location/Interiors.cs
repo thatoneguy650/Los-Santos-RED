@@ -7157,6 +7157,9 @@ public class Interiors : IInteriors
         PossibleInteriors.BankInteriors.AddRange(new List<BankInterior>()
         {
             new BankInterior(71682,"Fleeca Bank") {
+
+                SearchLocations = new List<Vector3>() { new Vector3(-350.3549f, -55.11609f, 49.01482f) },
+
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
                    new InteriorDoor(2121050683,new Vector3(-353.2158f,-53.87801f,49.03653f)) { ForceRotateOpen = true },//unknown door1
                    new InteriorDoor(73386408,new Vector3(-348.8109f, -47.26213f, 49.38759f)) { LockWhenClosed = true },//Front Door1
@@ -7223,6 +7226,7 @@ public class Interiors : IInteriors
             },
             new BankInterior(76802,"Fleeca Bank"){
                IsWeaponRestricted = true
+               ,SearchLocations = new List<Vector3>() { new Vector3(145.6724f, -1038.203f, 29.36784f) }//,new Vector3(150.2974f, -1046.151f, 29.34631f) }
                , Doors =  new List<InteriorDoor>() {
                     new InteriorDoor(2121050683,new Vector3(148.2597f,-1045.38f,29.34628f)) { ForceRotateOpen = true, },
                     new InteriorDoor(3142793112,new Vector3(149.6298f, -1037.231f, 29.71915f)){ LockWhenClosed = true, } ,//Front Door1
@@ -7287,6 +7291,7 @@ public class Interiors : IInteriors
             },
             new BankInterior(11266,"Fleeca Bank") {
                 IsWeaponRestricted = true,
+                SearchLocations = new List<Vector3>() { new Vector3(314.503f, -284.7157f, 54.14304f) },
                 Doors =  new List<InteriorDoor>() {
                     new InteriorDoor(2121050683,new Vector3(311.8455f, -283.0915f, 54.16475f)) { ForceRotateOpen = true, },
                     new InteriorDoor(73386408,new Vector3(316.3925f, -276.4888f, 54.5158f)) { LockWhenClosed = true }, //Front Door1
@@ -7350,7 +7355,9 @@ public class Interiors : IInteriors
                 },
             },
             new BankInterior(20226,"Fleeca Bank") {
-               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+               IsWeaponRestricted = true,
+                SearchLocations = new List<Vector3>() { new Vector3(-2957.383f, 484.7245f, 15.67531f) },
+                Doors =  new List<InteriorDoor>() {
                     new InteriorDoor(2121050683,new Vector3(-2957.66f, 482.8094f, 15.67528f)) { ForceRotateOpen = true, },
                     new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { LockWhenClosed = true }, //Front Door1
                     new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { LockWhenClosed = true }, //Front Door2
@@ -7403,7 +7410,7 @@ public class Interiors : IInteriors
                 },
             },
             new BankInterior(90626,"Fleeca Bank") {
-               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+               IsWeaponRestricted = true, SearchLocations = new List<Vector3>() {new Vector3(1173.287f, 2711.514f, 38.06627f) }, Doors =  new List<InteriorDoor>() {
                    new InteriorDoor(2121050683,new Vector3(1174.963f, 2711.711f, 38.06625f)) { ForceRotateOpen = true, },
                    new InteriorDoor(3142793112,new Vector3(1176.495f, 2703.613f, 38.43911f)) { LockWhenClosed = true },
                    new InteriorDoor(73386408,new Vector3(1173.903f, 2703.613f, 38.43904f)) { LockWhenClosed = true },
@@ -7456,7 +7463,7 @@ public class Interiors : IInteriors
                 },
             },
             new BankInterior(87810,"Fleeca Bank") {
-               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
+               IsWeaponRestricted = true, SearchLocations = new List<Vector3>() {new Vector3(-1208.728f, -333.9911f, 37.75927f) }, Doors =  new List<InteriorDoor>() {
                    new InteriorDoor(2121050683,new Vector3( - 1210.374f, -335.0283f, 37.75924f)) { ForceRotateOpen = true, },
                    new InteriorDoor(3142793112,new Vector3(-1215.386f, -328.5237f, 38.13211f)) { LockWhenClosed = true },
                    new InteriorDoor(73386408,new Vector3(-1213.074f, -327.3524f, 38.13205f)) { LockWhenClosed = true },
@@ -7512,6 +7519,10 @@ public class Interiors : IInteriors
 
 
             new BankInterior(103170,"Pacific Standard Bank") {
+
+
+                SearchLocations = new List<Vector3>(){new Vector3(257.4755f, 223.8576f, 106.2864f),new Vector3(252.2917f, 218.485f, 101.6834f),new Vector3(249.9998f, 209.9364f, 110.2829f)},
+
                 IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
 
 
@@ -7685,7 +7696,7 @@ public class Interiors : IInteriors
             },
 
             new BankInterior(42754,"Blaine County Savings") {
-                IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
+                IsWeaponRestricted = true,SearchLocations = new List<Vector3>() {new Vector3(-106.8916f, 6474.261f, 31.62672f) }, Doors =  new List<InteriorDoor>() {
                     new InteriorDoor(3110375179, new Vector3(-108.9147f,6469.105f,31.91028f)) { LockWhenClosed = true },//teller
                     new InteriorDoor(2628496933, new Vector3(-109.65f,6462.11f,31.98499f)) { LockWhenClosed = true },//FRONT 1
                     new InteriorDoor(3941780146, new Vector3(-111.48f,6463.94f,31.98499f)) { LockWhenClosed = true },//FRONT 2
@@ -8498,8 +8509,25 @@ public class Interiors : IInteriors
             new Interior(78338,"Maze Bank Arena",new List<string>() { "sp1_10_real_interior" },new List<string>() { "sp1_10_fake_interior" }),   
             new Interior(31746,"O'Neil Ranch",
                 new List<string>() { "farm", "farmint", "farm_lod", "farm_props","des_farmhs_startimap","des_farmhs_start_occl" },
-                new List<string>() { "farm_burnt", "farm_burnt_lod", "farm_burnt_props", "farmint_cap", "farmint_cap_lod", "des_farmhouse", "des_farmhs_endimap", "des_farmhs_end_occl"}),
-            new Interior(3330,"Lifeinvader",new List<string>() { "facelobby","facelobby_lod" },new List<string>() { "facelobbyfake","facelobbyfake_lod" }),
+                new List<string>() { "farm_burnt", "farm_burnt_lod", "farm_burnt_props", "farmint_cap", "farmint_cap_lod", "des_farmhouse", "des_farmhs_endimap", "des_farmhs_end_occl"})
+
+            { SearchLocations = new List<Vector3>()
+            {
+                new Vector3(2452.9f, 4973.177f, 46.81016f),
+                new Vector3(2438.356f, 4963.151f, 46.8106f),
+                new Vector3(2432.671f, 4966.289f, 42.34761f),
+                new Vector3(2440.33f, 4976.595f, 46.8106f),
+                new Vector3(2448.677f, 4983.571f, 46.84687f),
+                new Vector3(2442.995f, 4971.742f, 51.56486f),
+                new Vector3(2447.533f, 4985.781f, 51.56487f),
+            }, }
+            
+            
+            ,
+            new Interior(3330,"Lifeinvader",new List<string>() { "facelobby","facelobby_lod" },new List<string>() { "facelobbyfake","facelobbyfake_lod" }) { SearchLocations = new List<Vector3>() { 
+                new Vector3(-1075.071f, -250.3029f, 37.76332f),
+new Vector3(-1077.251f, -251.8201f, 44.02116f),
+new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
             new Interior(119042,"Union Depository",new List<string>() { "FINBANK" },new List<string>() { }){ IsRestricted = true },
             new Interior(28162,"Clucking Bell Farms",new List<string>() { "CS1_02_cf_onmission1","CS1_02_cf_onmission2","CS1_02_cf_onmission3","CS1_02_cf_onmission4" },new List<string>() { "CS1_02_cf_offmission" }){ IsRestricted = true },
             new Interior(35330,"Clucking Bell Farms",new List<string>() {  },new List<string>() {  }){ IsRestricted = true },
@@ -8530,10 +8558,10 @@ public class Interiors : IInteriors
             new Interior(-999565,"Split Sides Comedy Club",new List<string>() { },new List<string>() { }),
 
 
+            new Interior(104450,"Liquor Ace") { SearchLocations = new List<Vector3>() { new Vector3(1391.579f, 3608.259f, 34.98093f), new Vector3(1390.555f, 3613.684f, 38.94193f), new Vector3(1392.507f, 3602.898f, 38.94189f) } },
 
 
-
-            new Interior(89602,"Yellow Jacket Inn"),
+            new Interior(89602,"Yellow Jacket Inn") { SearchLocations = new List<Vector3>() { new Vector3(1993.187f, 3045.516f, 47.21509f) } },
             new Interior(118018,"Vanilla Unicorn"),
 
             //new Interior(171777,"Apartment"){ RemoveIPLs = new List<string>() { "vb_30_crimetape"}, InteriorSets = new List<string>() { "swap_clean_apt", "layer_debra_pic", "layer_whiskey", "swap_sofa_A","swap_mrJam_A" } },

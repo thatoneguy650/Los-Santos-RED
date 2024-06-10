@@ -11,7 +11,10 @@ using System.Threading.Tasks;
 
 public class PoliceGeneralLocate : GeneralLocate
 {
-
+    public override void Start()
+    {
+        base.Start();
+    }
     public PoliceGeneralLocate(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents, IWeaponIssuable weaponIssuable, bool hasSixthSense) : base(pedGeneral, ped, player, world, possibleVehicles, placesOfInterest, settings, blockPermanentEvents, weaponIssuable, hasSixthSense)
     {
 

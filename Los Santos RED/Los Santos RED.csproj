@@ -579,6 +579,7 @@
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugDispatcherSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugGangSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugHelperSubMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugInventorySubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugLCYMAPSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugLocationSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugMoneySubMenu.cs" />

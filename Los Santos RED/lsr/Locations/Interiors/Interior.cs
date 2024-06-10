@@ -89,6 +89,9 @@ public class Interior
     public List<PropSpawn> PropSpawns { get; set; }
     public List<SpawnPlace> VendorLocations { get; set; } = new List<SpawnPlace>();
 
+
+    public List<Vector3> SearchLocations { get; set; }
+
     [XmlIgnore]
     public virtual List<InteriorInteract> AllInteractPoints => InteractPoints;
     public InteriorInteract ClosestInteract => AllInteractPoints.Where(x => x.CanAddPrompt).OrderBy(x => x.DistanceTo).FirstOrDefault();

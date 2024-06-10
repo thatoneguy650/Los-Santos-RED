@@ -44,6 +44,10 @@ public class GeneralIdle : ComplexTask
     {
         CurrentTaskState?.Stop();
         GetNewTaskState();
+        if (Ped.Pedestrian.Exists())
+        {
+            NativeFunction.Natives.SET_PED_USING_ACTION_MODE(Ped.Pedestrian, false, -1, "DEFAULT_ACTION");
+        }
         CurrentTaskState?.Start();
     }
     public override void Stop()

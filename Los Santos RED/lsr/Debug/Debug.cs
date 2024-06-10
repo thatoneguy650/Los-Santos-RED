@@ -89,7 +89,7 @@ public class Debug
     private string CurrentAnimation;
     private bool isShowingTunnel;
     private Rage.Object chairProp;
-    private PedExt LastPed;
+    private Cop LastPed;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Mod.Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, WeatherReporting weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
@@ -493,10 +493,62 @@ public class Debug
     }
     private void DebugNumpad4()
     {
+        //TASK_INVESTIGATE_COORDS
+        if (LastPed != null && LastPed.Pedestrian.Exists())
+        {
+            LastPed.CanBeAmbientTasked = true;
+            LastPed.CanBeTasked = true;
+            LastPed.WeaponInventory.ShouldAutoSetWeaponState = true;
+            NativeFunction.Natives.SET_PED_USING_ACTION_MODE(LastPed.Pedestrian, false, -1, "DEFAULT_ACTION");
+        }
+        Cop Ped = World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && !x.IsInVehicle && !x.IsDead).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        if (Ped != null)
+        {
+            LastPed = Ped;
+            Ped.CanBeAmbientTasked = false;
+            Ped.CanBeTasked = false;
+
+        }
+        Ped.Pedestrian.Tasks.ClearImmediately();
+        Ped.WeaponInventory.SetDeadly(true);
+        Ped.WeaponInventory.ShouldAutoSetWeaponState = false;
+        Vector3 SearchCoords = Player.Character.GetOffsetPositionFront(50f);
+
+        //AnimationDictionary.RequestAnimationDictionay("amb@code_human_police_investigate@base");
 
 
-        Vector3 Corner1 = new Vector3(984.8781f, -1777.009f, 31.19557f);
-        Vector3 Corner2 = new Vector3(919.2766f, -1919.417f, 40.12272f);
+        //NativeFunction.Natives.TASK_WANDER_SPECIFIC(Ped.Pedestrian, "amb@code_human_police_investigate@base","base", 0);
+
+        NativeFunction.Natives.SET_PED_USING_ACTION_MODE(Ped.Pedestrian, true, -1, "DEFAULT_ACTION");
+
+
+        NativeFunction.Natives.TASK_AGITATED_ACTION_CONFRONT_RESPONSE(Ped.Pedestrian, Player.Character);
+
+        //unsafe
+        //{
+        //    int lol = 0;
+        //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+        //    if (Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.CurrentVehicle.Exists())
+        //    {
+        //        EntryPoint.WriteToConsole("LOCATE SET TO LEAVE VEHICLE AND WANDER");
+        //        NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Ped.Pedestrian.CurrentVehicle, 27, 1000);
+        //        NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Ped.Pedestrian.CurrentVehicle, 256);
+        //    }
+        //    Vector3 RandomPlaceOnFoot = SearchCoords.Around2D(2f);
+        //    NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot.X, RandomPlaceOnFoot.Y, RandomPlaceOnFoot.Z, 1.5f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
+        //    NativeFunction.CallByName<bool>("TASK_WANDER_STANDARD", 0, 0, 0);
+        //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+        //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+        //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+        //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        //}
+
+
+
+        //amb@code_human_police_investigate@base
+
+        //Vector3 Corner1 = new Vector3(984.8781f, -1777.009f, 31.19557f);
+        //Vector3 Corner2 = new Vector3(919.2766f, -1919.417f, 40.12272f);
         /*			BRAIN::REGISTER_OBJECT_SCRIPT_BRAIN("ob_vend1", joaat("prop_vend_soda_01"), 100, 10f, -1, 9);
 			BRAIN::REGISTER_OBJECT_SCRIPT_BRAIN("ob_vend2", joaat("prop_vend_soda_02"), 100, 10f, -1, 9);
 			BRAIN::REGISTER_OBJECT_SCRIPT_BRAIN("ob_vend1", joaat("sf_prop_sf_vend_drink_01a"), 100, 10f, -1, 8);
@@ -514,7 +566,7 @@ public class Debug
 
 
 
-        NativeFunction.Natives.SET_PED_NON_CREATION_AREA(Corner1.X, Corner1.Y, Corner1.Z, Corner2.X, Corner2.Y, Corner2.Z);
+        // NativeFunction.Natives.SET_PED_NON_CREATION_AREA(Corner1.X, Corner1.Y, Corner1.Z, Corner2.X, Corner2.Y, Corner2.Z);
 
         //       if(LastPed != null && LastPed.Pedestrian.Exists())
         //       {

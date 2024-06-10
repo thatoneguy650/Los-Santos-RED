@@ -14,6 +14,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     private bool IsShootingCheckerActive;
     private uint GameTimeFirstSawPlayerViolating;
     private uint GameTimeLastRagdolled;
+    private bool prevIsRespondingToInvestigation = false;
 
 
     public Cop(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, string modelName, IEntityProvideable world) : base(pedestrian, settings, crimes, weapons, name, "Cop", world)
@@ -174,11 +175,33 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                     }
                     //UpdateAlerts(perceptable, policeRespondable, world);
                     PlayerViolationChecker(policeRespondable, world);
+
+
+                    if(prevIsRespondingToInvestigation != IsRespondingToInvestigation)
+                    {
+                        OnStartedRespondingToInvestigation();
+                        prevIsRespondingToInvestigation = IsRespondingToInvestigation;
+                    }
+
                 }
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok 
+    }
+    private void OnStartedRespondingToInvestigation()
+    {
+        if (IsRespondingToInvestigation)
+        {
+            if (IsInVehicle && !WeaponInventory.HasHeavyWeaponOnPerson)
+            {
+                if (PlayerToCheck.Investigation.InvestigationWantedLevel >= 3 || (PlayerToCheck.Investigation.InvestigationWantedLevel == 2 && RandomItems.RandomPercent(45)))
+                {
+                    WeaponInventory.GiveHeavyWeapon();
+                    EntryPoint.WriteToConsole("Responding to Investigation, Giving Heavy Weapon");
+                }
+            }
+        }
     }
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {

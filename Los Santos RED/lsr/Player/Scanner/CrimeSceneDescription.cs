@@ -33,4 +33,5 @@ public class CrimeSceneDescription
     public int InstancesObserved { get; set; } = 1;
     public Vector3 PlaceSeen { get; set; }
     public bool HaveDescription { get; set; }
+    public Interior InteriorSeen { get; set; }
 }

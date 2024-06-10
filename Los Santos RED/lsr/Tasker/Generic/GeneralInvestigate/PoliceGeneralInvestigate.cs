@@ -68,7 +68,17 @@ public class PoliceGeneralInvestigate : GeneralInvestigate
             {
                 PlaceToDriveTo = Player.Investigation.Position;
             }
-            PlaceToWalkTo = Player.Investigation.Position;
+
+            if(Player.Investigation.Interior != null && Player.Investigation.Interior.SearchLocations != null && Player.Investigation.Interior.SearchLocations.Any())
+            {
+                PlaceToWalkTo = Player.Investigation.Interior.SearchLocations.FirstOrDefault();
+                SearchPoints = Player.Investigation.Interior.SearchLocations.ToList();
+            }
+            else
+            {
+                PlaceToWalkTo = Player.Investigation.Position;
+            }
+
         }
         else
         {

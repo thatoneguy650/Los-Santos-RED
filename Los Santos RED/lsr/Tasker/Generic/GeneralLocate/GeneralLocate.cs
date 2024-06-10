@@ -28,6 +28,7 @@ public class GeneralLocate : ComplexTask, ILocationReachable
     protected Vector3 prevPlaceToDriveTo;
     protected Vector3 prevPlaceToWalkTo;
     public bool HasReachedLocatePosition { get; protected set; } = false;
+    public List<Vector3> SearchPoints { get; protected set; }
 
     protected virtual bool ShouldInvestigateOnFoot => !Ped.IsInHelicopter && Player.IsOnFoot;
 
@@ -44,7 +45,7 @@ public class GeneralLocate : ComplexTask, ILocationReachable
         BlockPermanentEvents = blockPermanentEvents;
         WeaponIssuable = weaponIssuable;
         HasSixthSense = hasSixthSense;
-        SeatAssigner = new SeatAssigner(Ped, World, possibleVehicles);     
+        SeatAssigner = new SeatAssigner(Ped, World, possibleVehicles);
     }
     
     public override void ReTask()
@@ -110,7 +111,7 @@ public class GeneralLocate : ComplexTask, ILocationReachable
         }
         else if (ShouldInvestigateOnFoot)
         {
-            CurrentTaskState = new SearchLocationOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToWalkTo, this, WeaponIssuable, false, true);
+            CurrentTaskState = new SearchLocationOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToWalkTo, this, WeaponIssuable, false, true, SearchPoints);
             SubTaskName = "SearchLocationOnFootTaskState";
         }
         else

@@ -38,7 +38,17 @@ public class CayoPericoAirport : Airport
         NativeFunction.Natives.SET_AMBIENT_ZONE_STATE_PERSISTENT("AZL_DLC_Hei4_Island_Zones", true, true);
         NativeFunction.Natives.SET_AMBIENT_ZONE_STATE_PERSISTENT("AZL_DLC_Hei4_Island_Disabled_Zones", false, true);
         NativeFunction.Natives.SET_ALLOW_STREAM_HEIST_ISLAND_NODES(true);
+
+
+        //int zone = NativeFunction.Natives.GET_ZONE_FROM_NAME_ID<int>("IsHeist");
+        //NativeFunction.Natives.SET_ZONE_ENABLED(zone, 1);
+
         base.OnArrive(setPos);
+
+
+
+
+
     }
 }
 

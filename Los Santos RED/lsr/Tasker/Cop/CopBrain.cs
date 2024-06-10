@@ -72,6 +72,7 @@ public class CopBrain : PedBrain
     {
         if (Cop.DistanceToPlayer <= Player.ActiveDistance)// && !Cop.IsInHelicopter)//heli, dogs, boats come next?
         {
+
             PedExt MainTarget = PedToAttack();
             GameFiber.Yield();
             if (MainTarget != null)

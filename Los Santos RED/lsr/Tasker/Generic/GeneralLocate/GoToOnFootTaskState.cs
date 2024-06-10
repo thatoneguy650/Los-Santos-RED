@@ -75,6 +75,7 @@ class GoToOnFootTaskState : TaskState
         {
             return;
         }
+        NativeFunction.Natives.SET_PED_USING_ACTION_MODE(PedGeneral.Pedestrian, true, -1, "DEFAULT_ACTION");
         NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(PedGeneral.Pedestrian, PlaceToWalkTo.X, PlaceToWalkTo.Y, PlaceToWalkTo.Z, 2.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
 
         //NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(PedGeneral.Pedestrian, PlaceToWalkTo.X, PlaceToWalkTo.Y, PlaceToWalkTo.Z, 15f, -1, 0.25f, 0, 40000.0f);

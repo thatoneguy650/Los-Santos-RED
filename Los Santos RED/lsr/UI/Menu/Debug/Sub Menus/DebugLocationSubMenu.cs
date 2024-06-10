@@ -172,19 +172,206 @@ public class DebugLocationSubMenu : DebugSubMenu
 
         };
 
+
+
+        List<string> cayoIPLs = new List<string>()
+        {
+            "h4_islandairstrip",
+            "h4_islandairstrip_props",
+            "h4_islandx_mansion",
+            "h4_islandx_mansion_props",
+            "h4_islandx_props",
+            "h4_islandxdock",
+            "h4_islandxdock_props",
+            "h4_islandxdock_props_2",
+            "h4_islandxtower",
+            "h4_islandx_maindock",
+            "h4_islandx_maindock_props",
+            "h4_islandx_maindock_props_2",
+            "h4_IslandX_Mansion_Vault",
+            "h4_islandairstrip_propsb",
+            "h4_beach",
+            "h4_beach_props",
+            "h4_beach_bar_props",
+            "h4_islandx_barrack_props",
+            "h4_islandx_checkpoint",
+            "h4_islandx_checkpoint_props",
+            "h4_islandx_Mansion_Office",
+            "h4_islandx_Mansion_LockUp_01",
+            "h4_islandx_Mansion_LockUp_02",
+            "h4_islandx_Mansion_LockUp_03",
+            "h4_islandairstrip_hangar_props",
+            "h4_IslandX_Mansion_B",
+            "h4_islandairstrip_doorsclosed",
+            "h4_Underwater_Gate_Closed",
+            "h4_mansion_gate_closed",
+            "h4_aa_guns",
+            "h4_IslandX_Mansion_GuardFence",
+            "h4_IslandX_Mansion_Entrance_Fence",
+            "h4_IslandX_Mansion_B_Side_Fence",
+            "h4_IslandX_Mansion_Lights",
+            "h4_islandxcanal_props",
+            "h4_beach_props_party",
+            "h4_islandX_Terrain_props_06_a",
+            "h4_islandX_Terrain_props_06_b",
+            "h4_islandX_Terrain_props_06_c",
+            "h4_islandX_Terrain_props_05_a",
+            "h4_islandX_Terrain_props_05_b",
+            "h4_islandX_Terrain_props_05_c",
+            "h4_islandX_Terrain_props_05_d",
+            "h4_islandX_Terrain_props_05_e",
+            "h4_islandX_Terrain_props_05_f",
+            "H4_islandx_terrain_01",
+            "H4_islandx_terrain_02",
+            "H4_islandx_terrain_03",
+            "H4_islandx_terrain_04",
+            "H4_islandx_terrain_05",
+            "H4_islandx_terrain_06",
+            "h4_ne_ipl_00",
+            "h4_ne_ipl_01",
+            "h4_ne_ipl_02",
+            "h4_ne_ipl_03",
+            "h4_ne_ipl_04",
+            "h4_ne_ipl_05",
+            "h4_ne_ipl_06",
+            "h4_ne_ipl_07",
+            "h4_ne_ipl_08",
+            "h4_ne_ipl_09",
+            "h4_nw_ipl_00",
+            "h4_nw_ipl_01",
+            "h4_nw_ipl_02",
+            "h4_nw_ipl_03",
+            "h4_nw_ipl_04",
+            "h4_nw_ipl_05",
+            "h4_nw_ipl_06",
+            "h4_nw_ipl_07",
+            "h4_nw_ipl_08",
+            "h4_nw_ipl_09",
+            "h4_se_ipl_00",
+            "h4_se_ipl_01",
+            "h4_se_ipl_02",
+            "h4_se_ipl_03",
+            "h4_se_ipl_04",
+            "h4_se_ipl_05",
+            "h4_se_ipl_06",
+            "h4_se_ipl_07",
+            "h4_se_ipl_08",
+            "h4_se_ipl_09",
+            "h4_sw_ipl_00",
+            "h4_sw_ipl_01",
+            "h4_sw_ipl_02",
+            "h4_sw_ipl_03",
+            "h4_sw_ipl_04",
+            "h4_sw_ipl_05",
+            "h4_sw_ipl_06",
+            "h4_sw_ipl_07",
+            "h4_sw_ipl_08",
+            "h4_sw_ipl_09",
+            "h4_islandx_mansion",
+            "h4_islandxtower_veg",
+            "h4_islandx_sea_mines",
+            "h4_islandx",
+            "h4_islandx_barrack_hatch",
+            "h4_islandxdock_water_hatch",
+            "h4_beach_party",
+
+        };
+
+
         UIMenuItem TurnOffCayo = new UIMenuItem("Turn Off Cayo", "Turn Off Cayo Perico");
         TurnOffCayo.Activated += (menu, item) =>
         {
             menu.Visible = false;
+
+
+            foreach (string removeIPL in cayoIPLs)
+            {
+                NativeFunction.Natives.REMOVE_IPL(removeIPL);
+            }
             NativeFunction.Natives.SET_ISLAND_ENABLED("HeistIsland", false);
             NativeFunction.Natives.SET_USE_ISLAND_MAP(false);
             NativeFunction.Natives.SET_ALLOW_STREAM_HEIST_ISLAND_NODES(false);
             NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("Heist_Island_Peds", false);
-            NativeFunction.Natives.SET_AMBIENT_ZONE_STATE_PERSISTENT("AZL_DLC_Hei4_Island_Zones", false, false);
-            NativeFunction.Natives.SET_AMBIENT_ZONE_STATE_PERSISTENT("AZL_DLC_Hei4_Island_Disabled_Zones", true, false);
+            NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("Heist_Island_Peds_2", false);
+            //NativeFunction.Natives.SET_AMBIENT_ZONE_STATE_PERSISTENT("AZL_DLC_Hei4_Island_Zones", false, false);
+            //NativeFunction.Natives.SET_AMBIENT_ZONE_STATE_PERSISTENT("AZL_DLC_Hei4_Island_Disabled_Zones", true, false);
             NativeFunction.Natives.SET_ALLOW_STREAM_HEIST_ISLAND_NODES(false);
 
+            int zone = NativeFunction.Natives.GET_ZONE_FROM_NAME_ID<int>("IsHeist");
+            NativeFunction.Natives.SET_ZONE_ENABLED(zone, false);
+
+
+            //NativeFunction.Natives.LOAD_GLOBAL_WATER_FILE(0);
+
+
         };
+        UIMenuItem TurnOnCayo = new UIMenuItem("Turn On Cayo", "Turn On Cayo Perico");
+        TurnOnCayo.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+
+
+            foreach (string requestIPL in cayoIPLs)
+            {
+                NativeFunction.Natives.REQUEST_IPL(requestIPL);
+            }
+
+
+
+
+            NativeFunction.Natives.SET_ISLAND_ENABLED("HeistIsland", true);
+            NativeFunction.Natives.SET_USE_ISLAND_MAP(true);
+            NativeFunction.Natives.SET_ALLOW_STREAM_HEIST_ISLAND_NODES(true);
+            NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("Heist_Island_Peds", true);
+            NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("Heist_Island_Peds_2", true);
+            //NativeFunction.Natives.SET_AMBIENT_ZONE_STATE_PERSISTENT("AZL_DLC_Hei4_Island_Zones", true, true);
+            //NativeFunction.Natives.SET_AMBIENT_ZONE_STATE_PERSISTENT("AZL_DLC_Hei4_Island_Disabled_Zones", false, true);
+            NativeFunction.Natives.SET_ALLOW_STREAM_HEIST_ISLAND_NODES(true);
+
+            int zone = NativeFunction.Natives.GET_ZONE_FROM_NAME_ID<int>("IsHeist");
+            NativeFunction.Natives.SET_ZONE_ENABLED(zone, 1);
+
+
+
+            //NativeFunction.Natives.LOAD_GLOBAL_WATER_FILE(1);
+
+            Player.Character.Position = new Vector3(4524.132f, -4498.074f, 4.23596f);
+
+        };
+
+
+
+
+        UIMenuItem TurnOffCayo1 = new UIMenuItem("Turn Off Cayo ALT", "Turn Off Cayo Perico");
+        TurnOffCayo1.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+            NativeFunction.Natives.x9A9D1BA639675CF1("HeistIsland", false);
+            NativeFunction.Natives.xF74B1FFA4A15FBEA(false);
+            //NativeFunction.Natives.xDD3D5F9CA0C715D0(false);
+            NativeFunction.Natives.x5E1460624D194A38(false);
+
+        };
+        UIMenuItem TurnOnCayo1 = new UIMenuItem("Turn On Cayo ALT", "Turn On Cayo Perico");
+        TurnOnCayo1.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+            NativeFunction.Natives.x9A9D1BA639675CF1("HeistIsland", true);
+            NativeFunction.Natives.xF74B1FFA4A15FBEA(true);
+            //NativeFunction.Natives.xDD3D5F9CA0C715D0(true);
+            NativeFunction.Natives.x5E1460624D194A38(true);
+
+
+            Player.Character.Position = new Vector3(4524.132f, -4498.074f, 4.23596f);
+
+        };
+
+
+
+        /*  Function.Call((Hash)0x9A9D1BA639675CF1, "HeistIsland", true);//SET_ISLAND_ENABLED
+                        Function.Call((Hash)0xF74B1FFA4A15FBEA, true);//0xF74B1FFA4A15FBEA
+                        Function.Call((Hash)0xDD3D5F9CA0C715D0, true);???
+                        Function.Call((Hash)0x5E1460624D194A38, true);//SET_USE_ISLAND_MAP*/
         LocationItemsMenu.AddItem(LogInteriorPositionMenu);
         LocationItemsMenu.AddItem(LogSpawnPositionMenu);
         LocationItemsMenu.AddItem(LogLocationMenu);
@@ -202,9 +389,10 @@ public class DebugLocationSubMenu : DebugSubMenu
         LocationItemsMenu.AddItem(SetLCSettingAndItemsMenu);
         LocationItemsMenu.AddItem(TurnOffInterior);
         LocationItemsMenu.AddItem(TurnOffCayo);
+        LocationItemsMenu.AddItem(TurnOnCayo);
 
-
-
+        LocationItemsMenu.AddItem(TurnOffCayo1);
+        LocationItemsMenu.AddItem(TurnOnCayo1);
 
         UIMenuItem RemoveIPL = new UIMenuItem("Remove IPL", "Remove an IPL by text entry");
         RemoveIPL.Activated += (menu, item) =>

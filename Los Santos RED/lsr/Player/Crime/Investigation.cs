@@ -63,6 +63,7 @@ public class Investigation
 
     public Vector3 StreetPosition { get; private set; }
     public Vector3 Position { get; private set; }
+    public Interior Interior { get; private set; }
     private bool IsOutsideInvestigationRange { get; set; }
 
 
@@ -117,6 +118,7 @@ public class Investigation
     public void Reset()
     {
         IsActive = false;
+        Interior = null;
         HavePlayerDescription = false;
         GameTimeStartedInvestigation = 0;
         GameTimeLastInvestigationExpired = 0;
@@ -144,7 +146,12 @@ public class Investigation
             InvestigationBlip.Delete();
         }
     }
-    public void Start(Vector3 postionToInvestigate, bool havePlayerDescription, bool requiresPolice, bool requiresEMS, bool requiresFirefighters)
+
+
+
+    public void Start(Vector3 postionToInvestigate, bool havePlayerDescription, bool requiresPolice, bool requiresEMS, bool requiresFirefighters) => Start(postionToInvestigate, havePlayerDescription, requiresPolice, requiresEMS, requiresFirefighters, null);
+
+    public void Start(Vector3 postionToInvestigate, bool havePlayerDescription, bool requiresPolice, bool requiresEMS, bool requiresFirefighters, Interior interiorToInvestigate)
     {
         if(Player.IsWanted)
         {
@@ -165,6 +172,15 @@ public class Investigation
         StreetPosition = NativeHelper.GetStreetPosition(postionToInvestigate, true);
 
 
+        if (interiorToInvestigate != null)
+        {
+            Interior = interiorToInvestigate;
+        }
+
+        if(Interior != null)
+        {
+            EntryPoint.WriteToConsole($"START INVESTIGATION IN {Interior.Name}");
+        }
         Position = postionToInvestigate;
         GameFiber.Yield();
         if (havePlayerDescription)
@@ -504,6 +520,7 @@ public class Investigation
     {
         EntryPoint.WriteToConsole($"Investigation Expiring RequiresPolice{RequiresPolice} RequiresEMS{RequiresEMS} RequiresFirefighters{RequiresFirefighters}");
         IsActive = false;
+        Interior = null;
         HavePlayerDescription = false;
         GameTimeStartedInvestigation = 0;
         GameTimeLastInvestigationExpired = Game.GameTime;

@@ -46,30 +46,30 @@ public class DebugPlayerStateSubMenu : DebugSubMenu
             menu.Visible = false;
         };
 
-        UIMenuItem GetAllItems = new UIMenuItem("Get All Items", "Gets 10 of every item");
-        GetAllItems.Activated += (menu, item) =>
-        {
-            foreach (ModItem modItem in ModItems.InventoryItems())
-            {
-                if (!modItem.ConsumeOnPurchase)
-                {
-                    Player.Inventory.Add(modItem, 10);
-                }
-            }
-            menu.Visible = false;
-        };
-        UIMenuItem GetSomeItems = new UIMenuItem("Get Some Items", "Gets 10 of 30 random items");
-        GetSomeItems.Activated += (menu, item) =>
-        {
-            foreach (ModItem modItem in ModItems.InventoryItems().OrderBy(x => RandomItems.MyRand.Next()).Take(30))
-            {
-                if (!modItem.ConsumeOnPurchase)
-                {
-                    Player.Inventory.Add(modItem, 10);
-                }
-            }
-            menu.Visible = false;
-        };
+        //UIMenuItem GetAllItems = new UIMenuItem("Get All Items", "Gets 10 of every item");
+        //GetAllItems.Activated += (menu, item) =>
+        //{
+        //    foreach (ModItem modItem in ModItems.InventoryItems())
+        //    {
+        //        if (!modItem.ConsumeOnPurchase)
+        //        {
+        //            Player.Inventory.Add(modItem, 10);
+        //        }
+        //    }
+        //    menu.Visible = false;
+        //};
+        //UIMenuItem GetSomeItems = new UIMenuItem("Get Some Items", "Gets 10 of 30 random items");
+        //GetSomeItems.Activated += (menu, item) =>
+        //{
+        //    foreach (ModItem modItem in ModItems.InventoryItems().OrderBy(x => RandomItems.MyRand.Next()).Take(30))
+        //    {
+        //        if (!modItem.ConsumeOnPurchase)
+        //        {
+        //            Player.Inventory.Add(modItem, 10);
+        //        }
+        //    }
+        //    menu.Visible = false;
+        //};
         UIMenuItem FillHealth = new UIMenuItem("Fill Health", "Refill health only");
         FillHealth.Activated += (menu, item) =>
         {
@@ -207,8 +207,8 @@ public class DebugPlayerStateSubMenu : DebugSubMenu
         PlayerStateItemsMenu.AddItem(ResetNeeds);
         PlayerStateItemsMenu.AddItem(SetRandomNeeds);
         PlayerStateItemsMenu.AddItem(ForceSober);
-        PlayerStateItemsMenu.AddItem(GetAllItems);
-        PlayerStateItemsMenu.AddItem(GetSomeItems);
+        //PlayerStateItemsMenu.AddItem(GetAllItems);
+        //PlayerStateItemsMenu.AddItem(GetSomeItems);
         PlayerStateItemsMenu.AddItem(GetDriversLicense);
         PlayerStateItemsMenu.AddItem(GetCCWLicense);
         PlayerStateItemsMenu.AddItem(GetPilotsLicense);

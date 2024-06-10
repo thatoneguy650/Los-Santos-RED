@@ -1712,11 +1712,11 @@ namespace Mod
                 return;
             }
             GameFiber.Yield();//TR 6 this is new, seems helpful so far with no downsides
-            CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
+            CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { InteriorSeen = isForPlayer ? CurrentLocation.CurrentInterior : null, VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
             PoliceResponse.AddCrime(crimeObserved, description, isForPlayer);
             if (!isObservedByPolice && IsNotWanted)
             {
-                Investigation.Start(Location, PoliceResponse.PoliceHaveDescription, true, false, false);
+                Investigation.Start(Location, PoliceResponse.PoliceHaveDescription, true, false, false, isForPlayer ? CurrentLocation.CurrentInterior : null);
             }
             if (AnnounceCrime)
             {
@@ -1753,7 +1753,7 @@ namespace Mod
             }
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, false, Position, true);
             PoliceResponse.AddCrime(crimeObserved, description, false);
-            Investigation.Start(Position, true, true, false, false);
+            Investigation.Start(Position, true, true, false, false, CurrentLocation.CurrentInterior);
             Scanner.AnnounceCrime(crimeObserved, description);
             EntryPoint.WriteToConsole("OnSeenInRestrictedAreaOnCamera");
         }

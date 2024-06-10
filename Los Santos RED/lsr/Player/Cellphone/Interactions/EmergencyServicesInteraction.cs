@@ -166,7 +166,7 @@ public class EmergencyServicesInteraction : IContactMenuInteraction
         if (Settings.SettingsManager.EMSSettings.ManageDispatching && Settings.SettingsManager.EMSSettings.ManageTasking)// && World.TotalWantedLevel <= 1)
         {
             Player.Scanner.Reset();
-            Player.Investigation.Start(Player.Position, false, false, true, false);
+            Player.Investigation.Start(Player.Position, false, false, true, false, Player.CurrentLocation.CurrentInterior);
             Player.Dispatcher.EMSDispatcher.OnMedicalServicesRequested();
             Player.Scanner.OnMedicalServicesRequested();
         }
@@ -176,7 +176,7 @@ public class EmergencyServicesInteraction : IContactMenuInteraction
         if (Settings.SettingsManager.FireSettings.ManageDispatching && Settings.SettingsManager.FireSettings.ManageTasking)//World.TotalWantedLevel <= 1)
         {
             Player.Scanner.Reset();
-            Player.Investigation.Start(Player.Position, false, false, false, true);
+            Player.Investigation.Start(Player.Position, false, false, false, true, Player.CurrentLocation.CurrentInterior);
             Player.Dispatcher.FireDispatcher.OnFirefightingServicesRequested();
             Player.Scanner.OnFirefightingServicesRequested();
         }
@@ -193,13 +193,13 @@ public class EmergencyServicesInteraction : IContactMenuInteraction
         }
         else
         {
-            description = new CrimeSceneDescription(false, Player.IsCop, Player.Position);
+            description = new CrimeSceneDescription(false, Player.IsCop, Player.Position) { InteriorSeen = Player.CurrentLocation.CurrentInterior };
         }
         if (Player.IsCop)
         {
             Player.Scanner.Reset();
             Player.Scanner.AnnounceCrime(ToCallIn, description);
-            Player.Investigation.Start(Player.Position, false, true, false, false);
+            Player.Investigation.Start(Player.Position, false, true, false, false, Player.CurrentLocation.CurrentInterior);
         }
         else
         {

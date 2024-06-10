@@ -53,6 +53,7 @@ namespace LosSantosRED.lsr
         public string ObservedCrimesDisplay => string.Join(",", CrimesObserved.Select(x => x.AssociatedCrime.Name));
         public int ObservedMaxWantedLevel => CrimesObserved == null ? -1 : CrimesObserved.Max(x => x.AssociatedCrime.ResultingWantedLevel);
         public Vector3 PlaceLastReportedCrime { get; private set; }
+        public Interior PlaceLastReportedCrimeInterior { get; private set; }
         public Vector3 PlaceWantedStarted { get; private set; }
         public bool PlayerSeenDuringCurrentWanted { get; set; }
         public bool PlayerSeenDuringWanted { get; set; } = false;
@@ -195,6 +196,7 @@ namespace LosSantosRED.lsr
             //dont really care that it was assocaited with THIS crime, just if im going to report the crime and what the info IS
             //EntryPoint.WriteToConsole($"PLAYER EVENT: ADD CRIME: {CrimeInstance.Name} ByPolice: {crimeSceneDescription.SeenByOfficers} PlaceLastReportedCrime {PlaceLastReportedCrime} New PlaceLastReportedCrime {crimeSceneDescription.PlaceSeen} HaveDescription {crimeSceneDescription.HaveDescription}", 3);
             PlaceLastReportedCrime = crimeSceneDescription.PlaceSeen;
+            PlaceLastReportedCrimeInterior = crimeSceneDescription.InteriorSeen;
             if (Player.IsAlive)//Player.IsAliveAndFree)// && !CurrentPlayer.RecentlyBribedPolice)
             {
                 if (crimeSceneDescription.HaveDescription && isForPlayer)
@@ -246,7 +248,7 @@ namespace LosSantosRED.lsr
                     CrimeEvent PreviousViolation = CrimesObserved.FirstOrDefault(x => x.AssociatedCrime == MyCrimes.AssociatedCrime);
                     if (PreviousViolation == null)
                     {
-                        CrimesObserved.Add(new CrimeEvent(MyCrimes.AssociatedCrime, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position, true)));
+                        CrimesObserved.Add(new CrimeEvent(MyCrimes.AssociatedCrime, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position, true) { InteriorSeen = Player.CurrentLocation.CurrentInterior }));
                     }
                     else if (PreviousViolation.CanAddInstance)
                     {
@@ -329,6 +331,7 @@ namespace LosSantosRED.lsr
             PlayerSeenDuringWanted = false;
             PlayerSeenInVehicleDuringWanted = false;
             PlaceLastReportedCrime = Vector3.Zero;
+            PlaceLastReportedCrimeInterior = null;
             PoliceHaveDescription = false;
             CurrentPoliceState = PoliceState.Normal;
             GameTimeWantedLevelStarted = 0;
@@ -665,6 +668,7 @@ namespace LosSantosRED.lsr
                 instances = worst.Instances;
             }
             Vector3 prevPlaceLastReportedCrime = PlaceLastReportedCrime;
+            Interior prevPlaceLastReportedCrimeInterior = PlaceLastReportedCrimeInterior;
             bool policeHaveDescription = PoliceHaveDescription;
             bool reqPolice = Player.Investigation.RequiresPolice;
             bool reqEMS = Player.Investigation.RequiresEMS;
@@ -675,7 +679,7 @@ namespace LosSantosRED.lsr
             if (worst != null && prevPlaceLastReportedCrime != Vector3.Zero)
             {
                 CrimesReported.Add(new CrimeEvent(crime, csd) { Instances = instances });
-                Player.Investigation.Start(prevPlaceLastReportedCrime, policeHaveDescription, true, reqEMS, reqFire);
+                Player.Investigation.Start(prevPlaceLastReportedCrime, policeHaveDescription, true, reqEMS, reqFire, prevPlaceLastReportedCrimeInterior);
                 EntryPoint.WriteToConsole($"STARTING INVESTIGATION {crime.ID}");
             }
         }

@@ -18,6 +18,7 @@ using System.Windows.Forms;
 [assembly: Rage.Attributes.Plugin("Los Santos RED", Description = "Total Conversion", Author = "Greskrendtregk", PrefersSingleInstance = true, ShouldTickInPauseMenu = true)]
 public static class EntryPoint
 {
+    private static bool HasDependencies = true;
     public static int LogLevel { get; set; } = 0;
     private static System.Reflection.Assembly LSRAssembly;
     private static System.Diagnostics.FileVersionInfo LSRInstalledVersionInfo;
@@ -41,6 +42,7 @@ public static class EntryPoint
     public static uint NotificationID { get; set; }
     public static void Main()
     {
+
 #if DEBUG
         LogLevel = 5;
 #endif
@@ -50,7 +52,7 @@ public static class EntryPoint
         }
 
         Startup();
-        Loop();
+        Loop();      
     }
     private static void Startup()
     {
