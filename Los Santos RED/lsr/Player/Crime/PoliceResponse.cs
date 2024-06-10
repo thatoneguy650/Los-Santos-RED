@@ -655,20 +655,35 @@ namespace LosSantosRED.lsr
         private void ResetWanted()
         {
             EntryPoint.WriteToConsole("Cops Did Not Radio In, Resetting Wanted");
-            List<CrimeEvent> PrevCrimesReported = CrimesReported.Copy();
+            //List<CrimeEvent> PrevCrimesReported = CrimesReported.Copy();
 
             CrimeEvent worst = CrimesReported.OrderBy(x => x.AssociatedCrime.Priority).FirstOrDefault();
             Crime crime = null;
             CrimeSceneDescription csd = null;
             int instances = 0;
+            //EntryPoint.WriteToConsole("Cops Did Not Radio In, Resetting Wanted 2");
             if (worst != null)
             {
                 crime = worst.AssociatedCrime;
-                csd = worst.CurrentInformation.Copy();
+                //csd = worst.CurrentInformation.Copy();
+
+                csd = new CrimeSceneDescription();
+
+                csd.Speed = worst.CurrentInformation.Speed;
+                csd.WeaponSeen = worst.CurrentInformation.WeaponSeen;
+                csd.VehicleSeen = worst.CurrentInformation.VehicleSeen;
+                csd.SeenOnFoot = worst.CurrentInformation.SeenOnFoot;
+                csd.SeenByOfficers = worst.CurrentInformation.SeenByOfficers;
+                csd.InstancesObserved = worst.CurrentInformation.InstancesObserved;
+                csd.PlaceSeen = worst.CurrentInformation.PlaceSeen;
+                csd.HaveDescription = worst.CurrentInformation.HaveDescription;
+                csd.InteriorSeen = worst.CurrentInformation.InteriorSeen;
                 instances = worst.Instances;
             }
+            //EntryPoint.WriteToConsole("Cops Did Not Radio In, Resetting Wanted 3");
             Vector3 prevPlaceLastReportedCrime = PlaceLastReportedCrime;
             Interior prevPlaceLastReportedCrimeInterior = PlaceLastReportedCrimeInterior;
+            //EntryPoint.WriteToConsole("Cops Did Not Radio In, Resetting Wanted 4");
             bool policeHaveDescription = PoliceHaveDescription;
             bool reqPolice = Player.Investigation.RequiresPolice;
             bool reqEMS = Player.Investigation.RequiresEMS;

@@ -25,6 +25,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Windows.Forms;
 //using System.Windows.Media;
+//using System.Windows.Media;
 using System.Xml.Linq;
 //using System.Windows.Media;
 //using System.Windows.Media;
@@ -1052,10 +1053,47 @@ public class Debug
     private void DebugNumpad5()
 {
 
-        if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int seatIndex) && Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+        //if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int seatIndex) && Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+        //{
+        //    NativeFunction.Natives.TASK_WARP_PED_INTO_VEHICLE(Player.Character, Player.InterestedVehicle.Vehicle, seatIndex);
+        //}
+
+        GameFiber DoorWatcher = GameFiber.StartNew(delegate
         {
-            NativeFunction.Natives.TASK_WARP_PED_INTO_VEHICLE(Player.Character, Player.InterestedVehicle.Vehicle, seatIndex);
-        }
+            Vector3 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(5f);
+            float Heading = Game.LocalPlayer.Character.Heading;
+            uint GameTimeStarted = Game.GameTime;
+            Color color = Color.Green;
+            while (Game.GameTime - GameTimeStarted <= 5000)
+            {
+
+                //bool isObscured = NativeFunction.Natives.IS_POINT_OBSCURED_BY_A_MISSION_ENTITY<bool>(Position.X, Position.Y, Position.Z, Settings.SettingsManager.DebugSettings.ObscuredX, Settings.SettingsManager.DebugSettings.ObscuredY, Settings.SettingsManager.DebugSettings.ObscuredZ, Game.LocalPlayer.Character);
+                Vector3 MinCoords = NativeHelper.GetOffsetPosition(Position, Heading, -1.0f * Settings.SettingsManager.DebugSettings.ObscuredX);
+                MinCoords = NativeHelper.GetOffsetPosition(MinCoords, Heading -90, -1.0f * Settings.SettingsManager.DebugSettings.ObscuredX);
+
+
+                Vector3 MaxCoords = NativeHelper.GetOffsetPosition(Position, Heading, 1.0f * Settings.SettingsManager.DebugSettings.ObscuredX);
+                MaxCoords = NativeHelper.GetOffsetPosition(MinCoords, Heading + 90, 1.0f * Settings.SettingsManager.DebugSettings.ObscuredX);
+
+                bool isObscured = NativeFunction.Natives.IS_AREA_OCCUPIED<bool>(MinCoords.X, MinCoords.Y, MinCoords.Z, MaxCoords.X, MaxCoords.Y, MaxCoords.Z, true,true,true,true,false,0,true);
+                //NativeFunction.Natives.DRAW_DEBUG_BOX(MinCoords.X, MinCoords.Y, MinCoords.Z, MaxCoords.X, MaxCoords.Y, MaxCoords.Z, 0, 0, 255, 200);
+
+                if (isObscured)
+                {
+                    color = Color.Red;
+                }
+                else
+                {
+                    color = Color.Green;
+                }
+
+                Rage.Debug.DrawArrowDebug(Position, Vector3.Zero, Rotator.Zero, 1f, color);
+
+                GameFiber.Yield();
+            }
+        }, "DoorWatcher");
+        
+
         GameFiber.Sleep(500);
 
 

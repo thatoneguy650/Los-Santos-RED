@@ -116,7 +116,7 @@ class SearchLocationOnFootTaskState : TaskState
                 foreach(Vector3 point in SearchPoints.Take(5))
                 {
                     NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, point.X, point.Y, point.Z, 2.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
-                    EntryPoint.WriteToConsole($"COP TASKED TO GO {point}");
+                    //EntryPoint.WriteToConsole($"COP TASKED TO GO {point}");
                 }
             }
             else
@@ -125,6 +125,10 @@ class SearchLocationOnFootTaskState : TaskState
             }
 
             NativeFunction.CallByName<bool>("TASK_WANDER_STANDARD", 0, 0, 0);
+
+            //NativeFunction.CallByName<bool>("TASK_WANDER_IN_AREA", 0, RandomPlaceOnFoot.X, RandomPlaceOnFoot.Y, RandomPlaceOnFoot.Z,50f,3.0f,6.0f);//SEEMS THEY JUST STAND around
+
+            //
             //NativeFunction.CallByName<bool>("TASK_WANDER_IN_AREA", 0, RandomPlaceOnFoot.X, RandomPlaceOnFoot.Y, RandomPlaceOnFoot.Z, 250f, 0.0f, 0.0f);//DONT REALLY WNADER MOST TIMES....
             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);

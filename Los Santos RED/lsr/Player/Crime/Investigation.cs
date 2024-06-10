@@ -169,7 +169,7 @@ public class Investigation
         {
             RequiresFirefighters = true;
         }
-        StreetPosition = NativeHelper.GetStreetPosition(postionToInvestigate, true);
+
 
 
         if (interiorToInvestigate != null)
@@ -180,6 +180,20 @@ public class Investigation
         if(Interior != null)
         {
             EntryPoint.WriteToConsole($"START INVESTIGATION IN {Interior.Name}");
+            GameLocation gameLocation = World.Places.ActiveLocations.Where(x=> x.InteriorID == Interior.InternalID).FirstOrDefault();
+            if (gameLocation != null)
+            {
+                EntryPoint.WriteToConsole($"START INVESTIGATION IN {Interior.Name} ALSO FOUND {gameLocation.Name}");
+                StreetPosition = NativeHelper.GetStreetPosition(gameLocation.EntrancePosition, true);
+            }
+            else
+            {
+                StreetPosition = NativeHelper.GetStreetPosition(postionToInvestigate, true);
+            }
+        }
+        else
+        {
+            StreetPosition = NativeHelper.GetStreetPosition(postionToInvestigate, true);
         }
         Position = postionToInvestigate;
         GameFiber.Yield();

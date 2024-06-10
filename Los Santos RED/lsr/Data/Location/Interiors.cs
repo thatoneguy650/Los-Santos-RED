@@ -7158,7 +7158,7 @@ public class Interiors : IInteriors
         {
             new BankInterior(71682,"Fleeca Bank") {
 
-                SearchLocations = new List<Vector3>() { new Vector3(-350.3549f, -55.11609f, 49.01482f) },
+                SearchLocations = new List<Vector3>() { new Vector3(-355.2124f, -47.33231f, 49.03636f) },
 
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
                    new InteriorDoor(2121050683,new Vector3(-353.2158f,-53.87801f,49.03653f)) { ForceRotateOpen = true },//unknown door1
@@ -7226,7 +7226,7 @@ public class Interiors : IInteriors
             },
             new BankInterior(76802,"Fleeca Bank"){
                IsWeaponRestricted = true
-               ,SearchLocations = new List<Vector3>() { new Vector3(145.6724f, -1038.203f, 29.36784f) }//,new Vector3(150.2974f, -1046.151f, 29.34631f) }
+               ,SearchLocations = new List<Vector3>() { new Vector3(145.943f, -1037.929f, 29.36783f) }//,new Vector3(150.2974f, -1046.151f, 29.34631f) }
                , Doors =  new List<InteriorDoor>() {
                     new InteriorDoor(2121050683,new Vector3(148.2597f,-1045.38f,29.34628f)) { ForceRotateOpen = true, },
                     new InteriorDoor(3142793112,new Vector3(149.6298f, -1037.231f, 29.71915f)){ LockWhenClosed = true, } ,//Front Door1
@@ -7291,7 +7291,7 @@ public class Interiors : IInteriors
             },
             new BankInterior(11266,"Fleeca Bank") {
                 IsWeaponRestricted = true,
-                SearchLocations = new List<Vector3>() { new Vector3(314.503f, -284.7157f, 54.14304f) },
+                SearchLocations = new List<Vector3>() { new Vector3(310.2834f, -276.4164f, 54.16457f) },
                 Doors =  new List<InteriorDoor>() {
                     new InteriorDoor(2121050683,new Vector3(311.8455f, -283.0915f, 54.16475f)) { ForceRotateOpen = true, },
                     new InteriorDoor(73386408,new Vector3(316.3925f, -276.4888f, 54.5158f)) { LockWhenClosed = true }, //Front Door1
@@ -7356,7 +7356,7 @@ public class Interiors : IInteriors
             },
             new BankInterior(20226,"Fleeca Bank") {
                IsWeaponRestricted = true,
-                SearchLocations = new List<Vector3>() { new Vector3(-2957.383f, 484.7245f, 15.67531f) },
+                SearchLocations = new List<Vector3>() { new Vector3(-2963.338f, 477.7827f, 15.69686f) },
                 Doors =  new List<InteriorDoor>() {
                     new InteriorDoor(2121050683,new Vector3(-2957.66f, 482.8094f, 15.67528f)) { ForceRotateOpen = true, },
                     new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { LockWhenClosed = true }, //Front Door1
@@ -7410,7 +7410,7 @@ public class Interiors : IInteriors
                 },
             },
             new BankInterior(90626,"Fleeca Bank") {
-               IsWeaponRestricted = true, SearchLocations = new List<Vector3>() {new Vector3(1173.287f, 2711.514f, 38.06627f) }, Doors =  new List<InteriorDoor>() {
+               IsWeaponRestricted = true, SearchLocations = new List<Vector3>() {new Vector3(1180.423f, 2705.902f, 38.08785f) }, Doors =  new List<InteriorDoor>() {
                    new InteriorDoor(2121050683,new Vector3(1174.963f, 2711.711f, 38.06625f)) { ForceRotateOpen = true, },
                    new InteriorDoor(3142793112,new Vector3(1176.495f, 2703.613f, 38.43911f)) { LockWhenClosed = true },
                    new InteriorDoor(73386408,new Vector3(1173.903f, 2703.613f, 38.43904f)) { LockWhenClosed = true },
@@ -7463,7 +7463,7 @@ public class Interiors : IInteriors
                 },
             },
             new BankInterior(87810,"Fleeca Bank") {
-               IsWeaponRestricted = true, SearchLocations = new List<Vector3>() {new Vector3(-1208.728f, -333.9911f, 37.75927f) }, Doors =  new List<InteriorDoor>() {
+               IsWeaponRestricted = true, SearchLocations = new List<Vector3>() {new Vector3(-1217.313f, -331.7081f, 37.7808f) }, Doors =  new List<InteriorDoor>() {
                    new InteriorDoor(2121050683,new Vector3( - 1210.374f, -335.0283f, 37.75924f)) { ForceRotateOpen = true, },
                    new InteriorDoor(3142793112,new Vector3(-1215.386f, -328.5237f, 38.13211f)) { LockWhenClosed = true },
                    new InteriorDoor(73386408,new Vector3(-1213.074f, -327.3524f, 38.13205f)) { LockWhenClosed = true },
