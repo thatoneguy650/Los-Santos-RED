@@ -124,7 +124,7 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
         List<Tuple<CategoryAttribute,UIMenu>> CategoryMenus = new List<Tuple<CategoryAttribute, UIMenu>>();
 
         List<CategoryAttribute> Categories = properties.Select(x=> (System.ComponentModel.CategoryAttribute)x.GetCustomAttribute(typeof(CategoryAttribute), true)).Distinct().ToList();
-        foreach(CategoryAttribute ca in Categories.OrderBy(x=> x.Category))
+        foreach(CategoryAttribute ca in Categories)//.OrderBy(x=> x.Category))
         {
             UIMenu categorysubMenu = MenuPool.AddSubMenu(changesettingsMenu, $"{ca.Category} SubMenu");
             categorysubMenu.SetBannerType(EntryPoint.LSRedColor);

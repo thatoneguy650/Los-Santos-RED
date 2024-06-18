@@ -11,6 +11,9 @@ using System.Threading.Tasks;
         PIT = 8,
         LowContact = 16,
         NoContact = 32,
+		UseContinuousRam = 128,
+		CantPullAlongside = 256,
+		CantPullAlongsideInFront = 512,
     }
 /*	VEHICLE_CHASE_CANT_BLOCK						= 1,
 	VEHICLE_CHASE_CANT_BLOCK_FROM_PURSUE			= 2,

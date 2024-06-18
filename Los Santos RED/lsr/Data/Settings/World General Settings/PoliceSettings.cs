@@ -193,8 +193,8 @@ public class PoliceSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
-        GeneralFineAmount = 500;
-        TalkFailFineAmount = 500;
+        GeneralFineAmount = 250;
+        TalkFailFineAmount = 250;
         DrivingWithoutLicenseFineAmount = 500;
         TakeExclusiveControlOverWantedLevel = true;
         TakeExclusiveControlOverWantedLevelOneStarAndBelow = false;
@@ -202,8 +202,8 @@ public class PoliceSettings : ISettingsDefaultable
         OverrideAccuracy = true;
         AutoRecognizeDistance = 15f;
         AlwaysRecognizeDistance = 7f;
-        RecentlySeenTime = 15000;// 15000;
-        RecentlySeenTimeAdditionalAircraft = 15000;
+        RecentlySeenTime = 10000;// 15000;// 15000;
+        RecentlySeenTimeAdditionalAircraft = 7000;// 15000;
         ManageLoadout = true;
         BustDistance = 4f;//5f;
         OverrideHealth = true;

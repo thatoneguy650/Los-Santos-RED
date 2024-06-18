@@ -1513,7 +1513,15 @@ namespace LosSantosRED.lsr
             if (DispatchToPlay.HasPreamble)
             {
                 EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
-                AddAudioSet(EventToPlay, DispatchToPlay.PreambleAudioSet.PickRandom());
+
+                if (Player.AnyPoliceInHeliCanSeePlayer && DispatchToPlay.LatestInformation.SeenByOfficers && DispatchToPlay.PreambleHelicopterAudioSet != null && DispatchToPlay.PreambleHelicopterAudioSet.Any())
+                {
+                    AddAudioSet(EventToPlay, DispatchToPlay.PreambleHelicopterAudioSet.PickRandom());
+                }
+                else
+                {
+                    AddAudioSet(EventToPlay, DispatchToPlay.PreambleAudioSet.PickRandom());
+                }
                 EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
             }
 
@@ -1668,6 +1676,27 @@ namespace LosSantosRED.lsr
                     EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
                 }
             }
+
+
+
+            if (DispatchToPlay.HasEpilogue)
+            {
+                EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
+
+                if (Player.AnyPoliceInHeliCanSeePlayer && DispatchToPlay.LatestInformation.SeenByOfficers && DispatchToPlay.EpilogueHelicopterAudioSet != null && DispatchToPlay.EpilogueHelicopterAudioSet.Any())
+                {
+                    AddAudioSet(EventToPlay, DispatchToPlay.EpilogueHelicopterAudioSet.PickRandom());
+                }
+                else
+                {
+                    AddAudioSet(EventToPlay, DispatchToPlay.EpilogueAudioSet.PickRandom());
+                }
+                EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
+            }
+
+
+
+
 
             if (EventToPlay.Subtitles != "")
             {
@@ -2881,6 +2910,15 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { officer_requests_air_support.Unitsrequestingairsupport.FileName },"units requesting air support"),
                 new AudioSet(new List<string>() { officer_requests_air_support.Unitsrequestinghelicoptersupport.FileName },"units requesting helicopter support"),
             },
+
+
+                EpilogueAudioSet = new List<AudioSet>()
+                {
+                    //s_m_y_cop_white_full_01
+
+                    new AudioSet(new List<string>() { s_m_y_cop_white_full_01.WeAreAirbornAndMovingIn.FileName },"we are airborn and moving in"),
+
+                }
             };
 
             RequestMilitaryUnits = new Dispatch()
@@ -3094,6 +3132,17 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual6.FileName },"suspect spotted"),
                 new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual7.FileName },"suspect spotted"),
              },
+
+
+                //PreambleHelicopterAudioSet = new List<AudioSet>()
+                //{
+                //    new AudioSet(new List<string>() { s_m_y_cop_white_full_01.AirSupportSuspectIsHeadingNorth.FileName },"suspect spotted"),
+                //    new AudioSet(new List<string>() { s_m_y_cop_white_full_01.AirSupportSuspectIsHeadingEast.FileName },"suspect spotted"),
+                    //new AudioSet(new List<string>() { s_m_y_cop_white_full_01.AirSupportSuspectIsHeadingWest.FileName },"suspect spotted"),
+                //    //new AudioSet(new List<string>() { s_m_y_cop_white_full_01.AirSupportSuspectIsHeadingSouth.FileName },"suspect spotted"),
+                //},
+
+
             };
 
             SuspectSpottedSimple = new Dispatch()
@@ -3163,11 +3212,21 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual6.FileName },"suspect spotted"),
                 new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual7.FileName },"suspect spotted"),
              },
+
+                PreambleHelicopterAudioSet = new List<AudioSet>()
+                {
+                    new AudioSet(new List<string>() { s_m_y_cop_white_full_01.AirSupportSuspectIsHeadingNorth.FileName },"suspect spotted"),
+                    new AudioSet(new List<string>() { s_m_y_cop_white_full_01.AirSupportSuspectIsHeadingEast.FileName },"suspect spotted"),
+                    new AudioSet(new List<string>() { s_m_y_cop_white_full_01.AirSupportSuspectIsHeadingWest.FileName },"suspect spotted"),
+                },
+
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { crime_wanted_felon_on_the_loose.Awantedfelonontheloose.FileName },"a wanted felon on the loose"),
             },
             };
+
+
             OnFoot = new Dispatch()
             {
                 Name = "On Foot",
@@ -3260,41 +3319,87 @@ namespace LosSantosRED.lsr
                 CanAlwaysBeInterrupted = true,
                 MainAudioSet = new List<AudioSet>()
             {
-                new AudioSet(new List<string>() { s_f_y_cop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_f_y_cop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_f_y_cop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_f_y_cop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_cop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_cop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_cop_black_mini_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_cop_black_mini_03.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_cop_black_mini_04.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_cop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_cop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_cop_white_mini_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_cop_white_mini_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_cop_white_mini_03.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_cop_white_mini_04.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_f_y_cop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_f_y_cop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_f_y_cop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_f_y_cop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_cop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_cop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_cop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_cop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
-                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+
+
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual1.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual2.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual3.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual4.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual5.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual6.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual7.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual8.FileName },"suspect spotted entering a tunnel"),
+
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual1.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual2.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual3.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual4.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual5.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual6.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual7.FileName },"suspect spotted entering a tunnel"),
+
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual1.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual2.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual3.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual4.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual5.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual6.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual7.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual8.FileName },"suspect spotted entering a tunnel"),
+
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual1.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual2.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual3.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual4.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual5.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual6.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual7.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual8.FileName },"suspect spotted entering a tunnel"),
+
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual1.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual2.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual3.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual4.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual5.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual6.FileName },"suspect spotted entering a tunnel"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual7.FileName },"suspect spotted entering a tunnel"),
+
+
+                //new AudioSet(new List<string>() { s_f_y_cop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_f_y_cop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_f_y_cop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_f_y_cop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_cop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_cop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_cop_black_mini_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_cop_black_mini_03.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_cop_black_mini_04.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_cop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_cop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_cop_white_mini_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_cop_white_mini_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_cop_white_mini_03.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_cop_white_mini_04.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_sheriff_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_sheriff_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_f_y_cop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_f_y_cop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_f_y_cop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_f_y_cop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_cop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_cop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_cop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_cop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_sheriff_white_full_01.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
+                //new AudioSet(new List<string>() { s_m_y_sheriff_white_full_02.SuspectEnteredMetro.FileName },"suspect has entered a tunnel"),
             },
             };
             GotOnFreeway = new Dispatch()
@@ -3731,6 +3836,12 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_01.CantSeeSuspect1.FileName },"need location on suspect"),
                 new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_02.CantSeeSuspect1.FileName },"need location on suspect"),
              },
+
+
+                PreambleHelicopterAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_01.AirSupportLostSuspect.FileName },"air support lost suspect"),
+             },
             };
             SuspectEvadedSimple = new Dispatch()
             {
@@ -3798,6 +3909,10 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_02.CantSeeSuspect1.FileName },"need location on suspect"),
                 new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_01.CantSeeSuspect1.FileName },"need location on suspect"),
                 new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_02.CantSeeSuspect1.FileName },"need location on suspect"),
+             },
+                PreambleHelicopterAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_01.AirSupportLostSuspect.FileName },"air support lost suspect"),
              },
             };
             ResumePatrol = new Dispatch()

@@ -225,6 +225,7 @@ namespace Mod
         public bool AnyPoliceCanHearPlayer { get; set; }
         public bool AnyPoliceCanRecognizePlayer { get; set; }
         public bool AnyPoliceCanSeePlayer { get; set; }
+        public bool AnyPoliceInHeliCanSeePlayer { get; set; }
         public bool AnyPoliceKnowInteriorLocation { get; set; }
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
         public bool AnyPoliceSawPlayerViolating { get; set; }

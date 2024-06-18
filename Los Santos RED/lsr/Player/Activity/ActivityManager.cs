@@ -1205,7 +1205,7 @@ public class ActivityManager
                 bool isCancelled = false;
                 uint GameTimeStartedGettingIntoVehicle = 0;
                 //string modelName = toEnter.Vehicle.Model.Name.ToLower();
-                //EntryPoint.WriteToConsole($"WATCH VEHICLE ENTRY RAN! FOR {modelName}");
+                EntryPoint.WriteToConsole($"WATCH VEHICLE ENTRY RAN! FOR {toEnter.VehicleModelName}");
                 if (toEnter.HasSpecialPassengerEntry)//  modelName == "0xd227bdbb" || modelName == "caddy3")
                 {
                     NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);

@@ -46,6 +46,7 @@ namespace LosSantosRED.lsr
         public bool WantedLevelHasBeenRadioedIn { get; private set; } = false;
         public bool HasObservedCrimes => CrimesObserved.Any();
         public bool IsDeadlyChase => CurrentPoliceState == PoliceState.DeadlyChase;
+        public int CountCloseVehicleChasingCops { get; private set; }
         public bool IsWeaponsFree { get; set; }
         public DateTime DateTimeLastWantedEnded { get; private set; }
         public Vector3 LastWantedCenterPosition { get; set; }
@@ -262,6 +263,10 @@ namespace LosSantosRED.lsr
                 }
             }
         }
+        public void SetCloseChasingCops(int countCloseChasingCops)
+        {
+            CountCloseVehicleChasingCops = countCloseChasingCops;
+        }
         public int InstancesOfCrime(string CrimeID)
         {
             CrimeEvent MyStuff = CrimesObserved.Where(x => x.AssociatedCrime.ID == CrimeID).FirstOrDefault();
@@ -340,6 +345,7 @@ namespace LosSantosRED.lsr
             CrimesObserved.Clear();
             CrimesReported.Clear();
             TrainStopper.Reset();
+            CountCloseVehicleChasingCops = 0;
         }
         private void AssignCops()
         {

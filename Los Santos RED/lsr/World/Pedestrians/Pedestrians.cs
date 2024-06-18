@@ -322,8 +322,8 @@ public class Pedestrians : ITaskerReportable
 
                         //Vector3 Corner2 = NativeHelper.GetOffsetPosition(blockPos, Pedestrian.Heading, -1.0f);
 
-                        //new ScenarioBlock(blockPos, "").Block();
-                        //EntryPoint.WriteToConsole($"SETTING NEW SCENARIO BLOCK AT {blockPos} Corner1:{Corner1} Corner2{Corner2}");
+                        new ScenarioBlock(blockPos, "") { Distance = 20f }.Block();
+                        EntryPoint.WriteToConsole($"SETTING NEW SCENARIO BLOCK AT {blockPos}");
 
 
                         //NativeFunction.Natives.SET_PED_NON_CREATION_AREA(Corner1.X, Corner1.Y, Corner1.Z +1.0f, Corner2.X, Corner2.Y, Corner2.Z-1.0f);

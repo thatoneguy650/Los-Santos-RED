@@ -4,6 +4,7 @@ using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using static DispatchScannerFiles;
 
@@ -25,7 +26,7 @@ namespace LosSantosRED.lsr
         private ITimeReportable Time;
         private Vector3 prevPlacePoliceShouldSearchForPlayer;
         private Vector3 prevPlacePoliceLastSeenPlayer;
-
+        private List<Cop> CloseDriverCops = new List<Cop>();
 
         public Police(IEntityProvideable world, IPoliceRespondable currentPlayer, IPerceptable perceptable, ISettingsProvideable settings, IItemEquipable itemEquipablePlayer, ITimeReportable time)
         {
@@ -36,6 +37,8 @@ namespace LosSantosRED.lsr
             ItemEquipablePlayer = itemEquipablePlayer;
             Time = time;
         }
+        //public int CountCloseVehicleChasingCops => CloseDriverCops.ToList().Count;
+        public List<Cop> CloseVehicleChasingCops { get; private set; } = new List<Cop>();
         public void Update()
         {
             UpdateCops();
@@ -67,6 +70,7 @@ namespace LosSantosRED.lsr
             float closestCopDriverDistance = 999f;
             Cop PrimaryPlayerCop = null;
             Cop PrimaryDriverPlayerCop = null;
+            CloseDriverCops.Clear();
             foreach (Cop Cop in World.Pedestrians.AllPoliceList)
             {
 
@@ -107,12 +111,17 @@ namespace LosSantosRED.lsr
                             PrimaryPlayerCop = Cop;
                             closestCopDistance = Cop.DistanceToPlayer;
                         }
-
-
-                        if(Cop.IsDriver && Cop.DistanceToPlayer < closestCopDriverDistance)
+                        if (Cop.IsDriver)
                         {
-                            PrimaryDriverPlayerCop = Cop;
-                            closestCopDriverDistance = Cop.DistanceToPlayer;
+                            if (Cop.DistanceToPlayer < closestCopDriverDistance)
+                            { 
+                                PrimaryDriverPlayerCop = Cop;
+                                closestCopDriverDistance = Cop.DistanceToPlayer;
+                            }
+                            if(Cop.DistanceToPlayer <= 35f)
+                            {
+                                CloseDriverCops.Add(Cop);
+                            }
                         }
                     }
                 }
@@ -161,8 +170,36 @@ namespace LosSantosRED.lsr
             {
                 Player.ClosestCopDriverToPlayer = PrimaryDriverPlayerCop;
             }
-
             Player.ClosestPoliceDistanceToPlayer = closestDistanceToPlayer;
+
+            CloseVehicleChasingCops.Clear();
+
+            if (Player.IsNotWanted)
+            {
+                Player.PoliceResponse.SetCloseChasingCops(0);
+                return;
+            }
+            float playerHeading = Player.Character.Heading;
+            float playerSpeed = Player.Character.Speed;
+            foreach (Cop cop in CloseDriverCops.ToList())
+            {
+                if (!cop.Pedestrian.Exists())
+                {
+                    continue;
+                }
+                float headingDiff = Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(playerHeading, cop.Pedestrian.Heading));
+                if (headingDiff >= 20f)
+                {
+                    continue;
+                }
+                float speedDiff = Math.Abs(playerSpeed - cop.Pedestrian.Speed);
+                if (speedDiff >= 15f)
+                {
+                    continue;
+                }
+                CloseVehicleChasingCops.Add(cop);
+            }
+            Player.PoliceResponse.SetCloseChasingCops(CloseVehicleChasingCops.Count());
         }
         private void UpdateRecognition()
         {
@@ -178,8 +215,9 @@ namespace LosSantosRED.lsr
             bool anyPoliceCanRecognizePlayer = false;
             bool anyPoliceRecentlySeenPlayer = false;
             bool anyPoliceSawPlayerViolating = false;
+            bool anyPoliceInHeliCanSeePlayer = false;
             int tested = 0;
-            foreach (Cop cop in World.Pedestrians.AllPoliceList)
+            foreach (Cop cop in World.Pedestrians.AllPoliceList.OrderBy(x=>x.DistanceToPlayer))
             {
                 if (cop.Pedestrian.Exists() && cop.Pedestrian.IsAlive && !cop.IsUnconscious)
                 {
@@ -188,6 +226,11 @@ namespace LosSantosRED.lsr
                         anyPoliceCanSeePlayer = true;
                         anyPoliceCanHearPlayer = true;
                         anyPoliceRecentlySeenPlayer = true;
+                        if(cop.IsInHelicopter)
+                        {
+                            anyPoliceInHeliCanSeePlayer = true;
+                        }
+
                     }
                     else if (cop.WithinWeaponsAudioRange)
                     {
@@ -212,7 +255,7 @@ namespace LosSantosRED.lsr
                     break;
                 }
                 tested++;
-                if (tested >= 10)//20//10
+                if (tested >= 20)//10//20//10
                 {
                     tested = 0;
                     GameFiber.Yield();
@@ -224,6 +267,7 @@ namespace LosSantosRED.lsr
             Player.AnyPoliceCanRecognizePlayer = anyPoliceCanRecognizePlayer;
             Player.AnyPoliceRecentlySeenPlayer = anyPoliceRecentlySeenPlayer;
             Player.AnyPoliceSawPlayerViolating = anyPoliceSawPlayerViolating;
+            Player.AnyPoliceInHeliCanSeePlayer = anyPoliceInHeliCanSeePlayer;
         }
         private void UpdateGeneralItmes()
         {

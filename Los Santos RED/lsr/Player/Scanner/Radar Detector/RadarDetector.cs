@@ -19,7 +19,7 @@ public class RadarDetector
     private bool hasAudio = false;
     private uint gameTimeAudioPlayed = 0;
     private PoliceVehicleExt ClosestCopCar;
-    public bool IsTurnedOn { get; private set; } = true;
+    public bool IsTurnedOn { get; private set; } = false;
 
     public RadarDetector(IPoliceRespondable player, IEntityProvideable world, ISettingsProvideable settings)
     {

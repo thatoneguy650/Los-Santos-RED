@@ -22,6 +22,7 @@ namespace LosSantosRED.lsr.Interface
         bool AnyPoliceCanHearPlayer { get; set; }
         bool AnyPoliceCanRecognizePlayer { get; set; }
         bool AnyPoliceCanSeePlayer { get; set; }
+        bool AnyPoliceInHeliCanSeePlayer { get; set; }
         bool AnyPoliceRecentlySeenPlayer { get; set; }
         Ped Character { get; }
         Cop ClosestCopToPlayer { get; set; }

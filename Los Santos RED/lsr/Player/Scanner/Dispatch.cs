@@ -15,16 +15,8 @@ public class Dispatch
     public bool CanAlwaysInterrupt { get; set; }
     public bool CanBeReportedMultipleTimes { get; set; } = true;
     public bool HasBeenPlayedThisWanted { get; set; }
-    public bool HasPreamble
-    {
-        get
-        {
-            if (PreambleAudioSet.Any())
-                return true;
-            else
-                return false;
-        }
-    }
+    public bool HasPreamble => PreambleAudioSet.Any() || PreambleHelicopterAudioSet.Any();
+    public bool HasEpilogue => EpilogueAudioSet.Any() || EpilogueHelicopterAudioSet.Any();
     public bool HasRecentlyBeenPlayed
     {
         get
@@ -80,6 +72,11 @@ public class Dispatch
     public LocationSpecificity LocationDescription { get; set; } = LocationSpecificity.Nothing;
     public List<AudioSet> MainAudioSet { get; set; } = new List<AudioSet>();
     public List<AudioSet> MainMultiAudioSet { get; set; } = new List<AudioSet>();
+
+    public List<AudioSet> MainHelicopterAudioSet { get; set; } = new List<AudioSet>();
+
+
+
     public bool MarkVehicleAsStolen { get; set; }
     public string Name { get; set; } = "Unknown";
     public string NotificationSubtitle { get; set; } = "";
@@ -92,6 +89,25 @@ public class Dispatch
     }
     public string NotificationTitle { get; set; } = "Police Scanner";
     public List<AudioSet> PreambleAudioSet { get; set; } = new List<AudioSet>();
+
+
+
+
+
+    public List<AudioSet> PreambleHelicopterAudioSet { get; set; } = new List<AudioSet>();
+
+
+
+
+
+
+    public List<AudioSet> EpilogueAudioSet { get; set; } = new List<AudioSet>();
+
+
+    public List<AudioSet> EpilogueHelicopterAudioSet { get; set; } = new List<AudioSet>();
+
+
+
     public int Priority { get; set; } = 99;
     public bool ResultsInLethalForce { get; set; }
     public List<AudioSet> SecondaryAudioSet { get; set; } = new List<AudioSet>();
