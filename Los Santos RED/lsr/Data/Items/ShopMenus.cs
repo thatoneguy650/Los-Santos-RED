@@ -107,7 +107,7 @@ public class ShopMenus : IShopMenus
                 //new MenuItem("Emperor Lokus",31000, 25000),
                 new MenuItem("Bravado Gauntlet",32000,28000),
                 new MenuItem("Bravado Buffalo",35000,27000),
-                //new MenuItem("Declasse Merit",29000,21000),
+                new MenuItem("Declasse Merit",29000,21000),
                 new MenuItem("Bravado Banshee",105000,78000),
                 //new MenuItem("Dinka Perennial",15000,10000),
 
@@ -231,16 +231,35 @@ public class ShopMenus : IShopMenus
         ShopMenu vapidMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "VapidMenu").FirstOrDefault();
         if(vapidMenu != null)
         {
-            vapidMenu.Items.Add(new MenuItem("Vapid Gemini", 35000, 15000));
+            vapidMenu.Items.Add(new MenuItem("Vapid Interceptor", 35000, 15000));
             vapidMenu.Items.Add(new MenuItem("Vapid Stanier 2nd Gen", 25000, 12000));
         }
-
-
+        //KarinMenu
+        ShopMenu karinMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "KarinMenu").FirstOrDefault();
+        if (karinMenu != null)
+        {
+            karinMenu.Items.Add(new MenuItem("Karin Everon V8", 58000, 255000));
+        }
         ShopMenu albanyMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "AlbanyMenu").FirstOrDefault();
         if (albanyMenu != null)
         {
             albanyMenu.Items.Add(new MenuItem("Albany Esperanto", 22000, 10000));
         }
+        ShopMenu premiumDeluxMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "PremiumDeluxeMenu").FirstOrDefault();
+        if (premiumDeluxMenu != null)
+        {
+            premiumDeluxMenu.Items.Add(new MenuItem("Declasse Merit", 23000, 7800));
+        }
+
+
+        ShopMenu elitasMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "ElitasMenu").FirstOrDefault();
+        if (elitasMenu != null)
+        {
+            elitasMenu.Items.Add(new MenuItem("Buckingham Maverick 2nd Gen", 1800000));
+        }
+
+
+        //new MenuItem("Declasse Impaler LX",35000,16000),
         Serialization.SerializeParam(fejPossibleShopMenus, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\ShopMenus_FullExpandedJurisdiction.xml");
     }
     private void DefaultConfig_FullExpandedExperience()
@@ -1811,15 +1830,35 @@ public class ShopMenus : IShopMenus
             new ShopMenu("ElitasMenu","PlaneMan",new List<MenuItem>() {
 
                 //Heli
-                new MenuItem("Buckingham SuperVolito",2000000),
-                new MenuItem("Buckingham SuperVolito Carbon",2100000),
-                new MenuItem("Buckingham Swift",1500000),
-                new MenuItem("Buckingham Swift Deluxe",1600000),
-                new MenuItem("Buckingham Volatus",1200000),
+
+                new MenuItem("Buckingham Conada",2500000),
+
+                new MenuItem("Sparrow",175000),
+                new MenuItem("Sea Sparrow",185000),
+
                 new MenuItem("Nagasaki Havok",155000),
+
+                new MenuItem("Buckingham Volatus",1200000),
+
+                new MenuItem("Buckingham SuperVolito Carbon",2100000),
+                new MenuItem("Buckingham SuperVolito",2000000),
+
+                new MenuItem("Buckingham Swift Deluxe",1600000),
+                new MenuItem("Buckingham Swift",1500000),
+
+                new MenuItem("Western Cargobob",5500000),
+                new MenuItem("HVY Skylift",6500000),
 
 
                 new MenuItem("Buckingham Maverick",1100000),
+
+
+
+
+                new MenuItem("Maibatsu Frogger",1400000),
+                new MenuItem("Nagasaki Buzzard",1250000),
+
+
 
                 //Airplane
                 new MenuItem("Buckingham Alpha-Z1",350000),

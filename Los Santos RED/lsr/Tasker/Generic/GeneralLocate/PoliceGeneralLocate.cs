@@ -44,6 +44,7 @@ public class PoliceGeneralLocate : GeneralLocate
         PlaceToDriveTo = HasSixthSense ? Player.StreetPlacePoliceShouldSearchForPlayer : Player.StreetPlacePoliceLastSeenPlayer;
         PlaceToWalkTo = HasSixthSense ? Player.PlacePoliceShouldSearchForPlayer : Player.PlacePoliceLastSeenPlayer; 
     }
+
     public override void OnLocationReached()
     {
         if (!Ped.IsInVehicle)

@@ -67,6 +67,7 @@ public class GameSaves : IGameSaves
     {
         if (PlayingSave != null)
         {
+            EntryPoint.WriteToConsole($"Game Save Deleted {PlayingSave.SaveNumber} {PlayingSave.ModelName} {PlayingSave.PlayerName}");
             GameSaveList.Remove(PlayingSave);
             PlayingSave = null;
         }

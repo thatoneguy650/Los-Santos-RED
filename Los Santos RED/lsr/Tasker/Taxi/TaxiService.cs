@@ -199,5 +199,9 @@ public class TaxiService : ComplexTask, ILocationReachable
         PlaceToDriveToHeading = TaxiDriver.TaxiRide.CurrentDriveToHeading;
     }
 
+    public void OnFinalSearchLocationReached()
+    {
+
+    }
 }
 

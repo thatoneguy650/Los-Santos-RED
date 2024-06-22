@@ -20,6 +20,8 @@ public class Investigation
     private uint GameTimePoliceArrived;
     private uint GameTimeEMSArrived;
     private uint GameTimeFireArrived;
+
+
     private int PoliceToRespond(int wantedLevel)
     {
         {
@@ -68,14 +70,14 @@ public class Investigation
 
 
 
-    public bool HasPoliceInvestigated => HasPoliceArrived && Game.GameTime - GameTimePoliceArrived >= Settings.SettingsManager.InvestigationSettings.ExtraTimeAfterReachingInvestigationCenterBeforeExpiring;
+    public bool HasPoliceInvestigated => HasPoliceArrived && Game.GameTime - GameTimePoliceArrived >= Settings.SettingsManager.InvestigationSettings.ExtraTimeAfterReachingInvestigationCenterBeforeExpiring && (Player.IsInVehicle || HasInvestigatedArea);
 
     public bool HasEMSInvestigated => HasEMSArrived && Game.GameTime - GameTimeEMSArrived >= Settings.SettingsManager.InvestigationSettings.ExtraTimeAfterReachingInvestigationCenterBeforeExpiring;
 
     public bool HasFireInvestigated => HasFireArrived && Game.GameTime - GameTimeFireArrived >= Settings.SettingsManager.InvestigationSettings.ExtraTimeAfterReachingInvestigationCenterBeforeExpiring;
 
 
-
+    public bool HasInvestigatedArea { get; private set; }
     public bool HasPoliceArrived { get; private set; }
     public bool HasEMSArrived { get; private set; }
     public bool HasFireArrived { get; private set; }
@@ -128,6 +130,7 @@ public class Investigation
         IsNearPosition = false;
 
         HasPoliceArrived = false;
+        HasInvestigatedArea = false;
         HasFireArrived = false;
         HasEMSArrived = false;
         GameTimeEMSArrived = 0;
@@ -247,7 +250,11 @@ public class Investigation
         GameTimeLastUpdatedInvestigation = Game.GameTime;
     }
 
-
+    public void OnPoliceInvestigatedArea()
+    {
+        HasInvestigatedArea = true;
+        EntryPoint.WriteToConsole("OnPoliceInvestigatedArea triggered");
+    }
     public void OnPoliceArrived()
     {
         if(HasPoliceArrived || !IsActive)
@@ -289,11 +296,11 @@ public class Investigation
             EntryPoint.WriteToConsole("Investigation Expire OUTSIDE RANGE");
             Expire();
         }
-        else if(IsTimedOut)
-        {
-            EntryPoint.WriteToConsole("Investigation Expire TIMED OUT");
-            Expire();
-        }
+        //else if(IsTimedOut)
+        //{
+        //    EntryPoint.WriteToConsole("Investigation Expire TIMED OUT");
+        //    Expire();
+        //}
         else if (IsMinTimedOut && CheckCriteria())
         {
             EntryPoint.WriteToConsole("Investigation Expire MIN TIME AND CRITERIA EXPIRE");
@@ -353,6 +360,9 @@ public class Investigation
         {
             RequiresEMS = false;
         }
+
+
+        EntryPoint.WriteToConsole($"IsMinTimedOut {IsMinTimedOut} CanPoliceExpire {CanPoliceExpire} CanFireExpire {CanFireExpire} CanEMSExpire {CanEMSExpire} TotalInvestigationTime:{Game.GameTime - GameTimeStartedInvestigation} HasPoliceArrived{HasPoliceArrived} TotalTimeSIncePoliceArrived{Game.GameTime - GameTimePoliceArrived} TotalWantedLevel{World.TotalWantedLevel}");
         return CanPoliceExpire && CanFireExpire && CanEMSExpire;
     }
     private void AssignResponders()
@@ -543,6 +553,7 @@ public class Investigation
         RequiresFirefighters = false;
         HasPoliceArrived = false;
         HasFireArrived = false;
+        HasInvestigatedArea = false;
         HasEMSArrived = false;
         GameTimeEMSArrived = 0;
         GameTimeFireArrived = 0;
@@ -565,6 +576,7 @@ public class Investigation
     public void ExtendPoliceTime()
     {
         GameTimePoliceArrived = Game.GameTime;
+        EntryPoint.WriteToConsole("EXTEND POLICE INVESTIGATION TIME RAN");
     }
 }
 

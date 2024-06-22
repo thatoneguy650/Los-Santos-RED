@@ -123,6 +123,10 @@ public class DeathMenu : ModUIMenu
         UIMenuListScrollerItem<DistanceSelect> TakeoverRandomPed = new UIMenuListScrollerItem<DistanceSelect>(takeoverRespawnText, takeoverrespawnDescription, Distances);
         TakeoverRandomPed.Activated += (sender, selectedItem) =>
         {
+            if (Settings.SettingsManager.RespawnSettings.PermanentDeathMode)//shouldnt be here!
+            {
+                GameSaves.DeleteSave();
+            }
             if (TakeoverRandomPed.SelectedItem.Distance == -2f)
             {
                 PedSwap.BecomeKnownPed(Player.PedLastKilledPlayer, false, false);
@@ -135,10 +139,7 @@ public class DeathMenu : ModUIMenu
             {
                 PedSwap.BecomeExistingPed(TakeoverRandomPed.SelectedItem.Distance, false, false, true, true);
             }
-            if (Settings.SettingsManager.RespawnSettings.PermanentDeathMode)//shouldnt be here!
-            {
-                GameSaves.DeleteSave();
-            }
+
             Menu.Visible = false;
         };
         Menu.AddItem(TakeoverRandomPed);

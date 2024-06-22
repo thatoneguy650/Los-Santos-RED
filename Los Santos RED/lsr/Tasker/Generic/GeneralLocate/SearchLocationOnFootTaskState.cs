@@ -27,6 +27,8 @@ class SearchLocationOnFootTaskState : TaskState
     private bool SetArmed = false;
     private bool ShouldSearchArea;
     private List<Vector3> SearchPoints;
+    private Vector3 FinalSearchLocation;
+    private bool HasReachedFinalSearchLocation;
     public SearchLocationOnFootTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, bool blockPermanentEvents, Vector3 placeToWalkTo, ILocationReachable locationReachable, 
         IWeaponIssuable weaponIssuable, bool setArmed, bool shouldSearchArea, List<Vector3> searcPoints)
     {
@@ -69,6 +71,15 @@ class SearchLocationOnFootTaskState : TaskState
             }
             ResetWeapons = true;
         }
+        if(!PedGeneral.Pedestrian.Exists())
+        {
+            return;
+        }
+        if(!HasReachedFinalSearchLocation && PedGeneral.Pedestrian.DistanceTo(FinalSearchLocation) <= 3.0f)
+        {
+            LocationReachable.OnFinalSearchLocationReached();
+            HasReachedFinalSearchLocation = true;
+        }
     }
     private void TaskEntry()
     {
@@ -85,7 +96,11 @@ class SearchLocationOnFootTaskState : TaskState
         {
             return;
         }
-        NativeFunction.Natives.SET_PED_USING_ACTION_MODE(PedGeneral.Pedestrian, true, -1, "DEFAULT_ACTION");
+        if (SetArmed)
+        { 
+            NativeFunction.Natives.SET_PED_USING_ACTION_MODE(PedGeneral.Pedestrian, true, -1, "DEFAULT_ACTION");
+        }   
+        HasReachedFinalSearchLocation = false;
         unsafe
         {
             int lol = 0;
@@ -99,29 +114,33 @@ class SearchLocationOnFootTaskState : TaskState
             //if (ShouldSearchArea)
             //{
             Vector3 RandomPlaceOnFoot = PlaceToWalkTo.Around2D(2f);// PlaceToWalkTo.Around2D(5f);//15f
-            //    Vector3 RandomPlaceOnFoot2 = PlaceToWalkTo.Around2D(5f);//15f
-            //    //Vector3 RandomPlaceOnFoot3 = RandomPlaceOnFoot2.Around2D(10f);//15f
-            //    NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot.X, RandomPlaceOnFoot.Y, RandomPlaceOnFoot.Z, 2.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
-            //    NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot2.X, RandomPlaceOnFoot2.Y, RandomPlaceOnFoot2.Z, 2.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
-            //    //NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot3.X, RandomPlaceOnFoot3.Y, RandomPlaceOnFoot3.Z, 100.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
-            //}
-            //else
-            //{
-               // NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot.X, RandomPlaceOnFoot.Y, RandomPlaceOnFoot.Z, 2.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
-            //}
-
+                                                                   //    Vector3 RandomPlaceOnFoot2 = PlaceToWalkTo.Around2D(5f);//15f
+                                                                   //    //Vector3 RandomPlaceOnFoot3 = RandomPlaceOnFoot2.Around2D(10f);//15f
+                                                                   //    NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot.X, RandomPlaceOnFoot.Y, RandomPlaceOnFoot.Z, 2.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
+                                                                   //    NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot2.X, RandomPlaceOnFoot2.Y, RandomPlaceOnFoot2.Z, 2.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
+                                                                   //    //NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot3.X, RandomPlaceOnFoot3.Y, RandomPlaceOnFoot3.Z, 100.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
+                                                                   //}
+                                                                   //else
+                                                                   //{
+                                                                   // NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot.X, RandomPlaceOnFoot.Y, RandomPlaceOnFoot.Z, 2.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
+                                                                   //}
+            FinalSearchLocation = RandomPlaceOnFoot;
 
             if(SearchPoints != null && SearchPoints.Any())
             {
+                Vector3 LastPoint = RandomPlaceOnFoot;
                 foreach(Vector3 point in SearchPoints.Take(5))
                 {
+                    LastPoint = point;
                     NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, point.X, point.Y, point.Z, 2.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
                     //EntryPoint.WriteToConsole($"COP TASKED TO GO {point}");
                 }
+                FinalSearchLocation = LastPoint;
             }
             else
             {
                 NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot.X, RandomPlaceOnFoot.Y, RandomPlaceOnFoot.Z, 2.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
+                FinalSearchLocation = RandomPlaceOnFoot;
             }
 
             NativeFunction.CallByName<bool>("TASK_WANDER_STANDARD", 0, 0, 0);

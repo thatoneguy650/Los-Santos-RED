@@ -409,6 +409,8 @@ public class DispatchableVehicles_FEJ_2015
             new DispatchableVehicle("frogger2",0,30) { RequiredGroupIsDriverOnly = true, RequiredLiveries = new List<int>() { 3 },MinOccupants = 3,MaxOccupants = 4, GroupName = "Helicopter",RequiredPedGroup = "Pilot",MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
             new DispatchableVehicle("polmav", 1,1) { RequiredPedGroup = "Pilot", GroupName = "Helicopter",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 2 }, MaxWantedLevelSpawn = 2,MinOccupants = 2,MaxOccupants = 4 },
             new DispatchableVehicle("polmav", 0,30) { RequiredPedGroup = "Pilot", GroupName = "Helicopter",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 2 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
+            DispatchableVehicles_FEJ.Create_PoliceMaverick1stGen(0,5,3,false,PoliceVehicleType.Marked,134,3,4,3,4,"Pilot","Helicopter",-1),
+            DispatchableVehicles_FEJ.Create_PoliceMaverick1stGen(1,1,3,false,PoliceVehicleType.Marked,134,0,2,2,3,"Pilot","Helicopter",-1),
             DispatchableVehicles_FEJ.Create_PoliceSanchez(1,0,2,false,PoliceVehicleType.Marked,0,-1,2,1,1,"DirtBike","DirtBike",10),
             new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceBike, 45, 20) { GroupName = "Motorcycle", MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 1 } },
             DispatchableVehicles_FEJ.Create_PoliceVindicator(45,20,0,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",25),
@@ -476,6 +478,8 @@ public class DispatchableVehicles_FEJ_2015
             new DispatchableVehicle(DispatchableVehicles_FEJ.GrangerUnmarked, 0, 30) { MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHET",MinOccupants = 3, MaxOccupants = 4 },
             new DispatchableVehicle("frogger2", 0, 30) { MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5,RequiredPrimaryColorID = 1,RequiredSecondaryColorID = 1, RequiredPedGroup = "FIBHET",MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 0 } },
             new DispatchableVehicle("polmav", 0, 30) { MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5,RequiredPrimaryColorID = 1,RequiredSecondaryColorID = 1, RequiredPedGroup = "FIBHET",MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 3 } },
+            DispatchableVehicles_FEJ.Create_PoliceMaverick1stGen(0,1,6,false,PoliceVehicleType.Marked,1,5,5,3,4,"FIBHET","",-1),
+
             //new DispatchableVehicle("annihilator", 0, 30) { RequiredLiveries = new List<int>() { 2 },RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 1, RequiredPedGroup = "FIBHET", MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, MinOccupants = 3, MaxOccupants = 4 },
             DispatchableVehicles_FEJ.Create_PoliceTransporter(0,35,7,false,0,true,true,1,5,5,3,4,"FIBHET"),
             DispatchableVehicles_FEJ.Create_PoliceFugitive(0,10,11,false,PoliceVehicleType.Unmarked,1,5,5,3,4,"FIBHET",""),
@@ -538,6 +542,7 @@ public class DispatchableVehicles_FEJ_2015
             DispatchableVehicles_FEJ.Create_PoliceGresley(0,40,18,false,PoliceVehicleType.Marked,134,4,5,3,4,"",""),
             DispatchableVehicles_FEJ.Create_PoliceTransporter(0,35,5,false,50,false,true,134,4,-1,3,4,""),
             DispatchableVehicles_FEJ.Create_PoliceFugitive(0,15,15,false,PoliceVehicleType.Marked,134,4,5,3,4,"",""),
+            DispatchableVehicles_FEJ.Create_PoliceMaverick1stGen(0,5,5,false,PoliceVehicleType.Marked,134,4,4,3,4,"","",-1),
             new DispatchableVehicle("polmav", 0, 100) { RequiredLiveries = new List<int>() { 9 }, MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 5 },
             new DispatchableVehicle("annihilator", 0, 100) { RequiredLiveries = new List<int>() { 6 },MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 5 },
         };

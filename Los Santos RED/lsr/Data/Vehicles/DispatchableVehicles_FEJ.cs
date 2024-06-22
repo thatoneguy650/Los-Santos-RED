@@ -48,6 +48,7 @@ public class DispatchableVehicles_FEJ
     public string PoliceKurumaUnmarked = "zr380";//SOUND
     public string PoliceOracle = "zr3802";//SOUND
     public string PoliceRadius = "monster3";//SOUND
+    public string PoliceMaverick1stGen = "deathbike2";
 
     //Civilian
     public string CivilianEsperanto = "phantom2";
@@ -112,12 +113,15 @@ public class DispatchableVehicles_FEJ
             new DispatchableVehicle("polmav", 1,100) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 0 },RequiredPrimaryColorID = 134, RequiredSecondaryColorID = 0, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
             new DispatchableVehicle("frogger2", 1,50) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 2 },RequiredPrimaryColorID = 134, RequiredSecondaryColorID = 0, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
             new DispatchableVehicle("annihilator", 1,50) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 1 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
+            Create_PoliceMaverick1stGen(1,5,0,false,PoliceVehicleType.Marked,134,0,4,3,4,"Pilot","",-1),
+            Create_PoliceMaverick1stGen(1,5,1,false,PoliceVehicleType.Marked,134,0,4,3,4,"Pilot","",0),
         };
 
         SheriffHeliVehicles_FEJ = new List<DispatchableVehicle>()
         {
             new DispatchableVehicle("frogger2", 1,200) { RequiredPedGroup = "Pilot", RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 4 },MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
             new DispatchableVehicle("polmav", 1,100) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 1 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
+            Create_PoliceMaverick1stGen(1,5,4,false,PoliceVehicleType.Marked,134,0,4,3,4,"Pilot","",-1),
         };
 
         ArmyVehicles_FEJ = new List<DispatchableVehicle>()
@@ -1506,6 +1510,21 @@ public class DispatchableVehicles_FEJ
         return toReturn;
     }
 
+    public DispatchableVehicle Create_PoliceMaverick1stGen(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int requiredSecondaryColor)
+    {
+        DispatchableVehicle toReturn = new DispatchableVehicle(PoliceMaverick1stGen, ambientPercent, wantedPercent);
+        if (liveryID != -1)
+        {
+            toReturn.RequiredLiveries = new List<int>() { liveryID };
+        }
+        SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        toReturn.RequiredGroupIsDriverOnly = true;
+        if(requiredSecondaryColor != -1)
+        {
+            toReturn.RequiredSecondaryColorID = requiredSecondaryColor;
+        }
+        return toReturn;
+    }
 
     public DispatchableVehicle Create_PoliceMerit(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
     {

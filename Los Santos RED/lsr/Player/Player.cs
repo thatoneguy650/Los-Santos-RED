@@ -299,8 +299,8 @@ namespace Mod
         public bool IsBeingANuisance { get; set; }
         public bool IsBeingBooked { get; set; }
         public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || isJacking;
-        public bool IsBustable => !Settings.SettingsManager.ViolationSettings.IsUnBustable && IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !ActivityManager.IsCommitingSuicide && !ActivityManager.IsHoldingHostage && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || WantedLevel == 1 || IsIncapacitated);
-        public bool IsDetainable => !Settings.SettingsManager.ViolationSettings.IsUnBustable && IsAliveAndFree && !ActivityManager.IsCommitingSuicide && !ActivityManager.IsHoldingHostage && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || IsIncapacitated);
+        public bool IsBustable => !Settings.SettingsManager.ViolationSettings.IsUnBustable && IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !ActivityManager.IsCommitingSuicide && !ActivityManager.IsHoldingHostage && !RecentlyBusted && !IsAiming && !RecentlyShot && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || WantedLevel == 1 || IsIncapacitated);
+        public bool IsDetainable => !Settings.SettingsManager.ViolationSettings.IsUnBustable && IsAliveAndFree && !ActivityManager.IsCommitingSuicide && !ActivityManager.IsHoldingHostage && !RecentlyBusted && !RecentlyResistedArrest && !IsAiming && !RecentlyShot && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || IsIncapacitated);
         public bool IsAnimal => false;
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }

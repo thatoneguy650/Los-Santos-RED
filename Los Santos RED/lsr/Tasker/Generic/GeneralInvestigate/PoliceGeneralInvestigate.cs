@@ -93,5 +93,10 @@ public class PoliceGeneralInvestigate : GeneralInvestigate
         HasReachedLocatePosition = true;
         EntryPoint.WriteToConsole($"{PedGeneral.Handle} Police Located HasReachedLocatePosition");
     }
+    public override void OnFinalSearchLocationReached()
+    {
+        Player.Investigation.OnPoliceInvestigatedArea();
+        EntryPoint.WriteToConsole($"{PedGeneral.Handle} POLICE HAS SEARCHED LOCATION ON FOOT");
+    }
 }
 

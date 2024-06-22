@@ -98,12 +98,28 @@ public class ModItems : IModItems
     private void DefaultConfig_FullExpandedJurisdiction()
     {
         PossibleItems newPossibleItems = PossibleItems.Copy();
+
+        //Sedans
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "issi2");
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "tornado3");
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "phantom2");
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Gemini", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Sedan", ModelName = "issi2", Description = "The civilian version of the police classic. So what if they couldn't sell it to law enforcement? It still can get you to Burger Shot without breaking down. Often.", });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Interceptor", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Sedan", ModelName = "issi2", Description = "The civilian version of the police classic. So what if they couldn't sell it to law enforcement? It still can get you to Burger Shot without breaking down. Often.", });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { OverrideMakeName = "Vapid",OverrideClassName = "Sedan", ModelName = "tornado3", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", }); newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { ModelName = "tornado3", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Esperanto", true, ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "phantom2" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Esperanto", true, ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "phantom2", Description = "Heavy, slow, and full of chrome. See why this was one of the the top police vehicles.... 40 years ago." });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Declasse Merit", true, ItemType.Vehicles) { OverrideMakeName = "Declasse", OverrideClassName = "Sedan", ModelName = "technical2", Description = "Take home a classic for the Declasse brand! LARP as a Libery City cabbie without all the vaomit and drug use!", });
+
+
+        //Trucks
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "contender");
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Everon V8", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "contender" });//swapped from vaid to KARIN and renamed
+
+        //HELIS
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "deathbike2");
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "deathbike3");     
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick Classic Police", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "deathbike2" });//police 1st gen mav
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick 2nd Gen", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "deathbike3" });//civ 2nd gen mav
+
+
         Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\ModItems_FullExpandedJurisdiction.xml");
     }
     private void DefaultConfig_LosSantos2008()
@@ -111,6 +127,8 @@ public class ModItems : IModItems
         PossibleItems oldPossibleItems = PossibleItems.Copy();
         oldPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "phantom2");
         oldPossibleItems.VehicleItems.Add(new VehicleItem("Albany Esperanto", true, ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "phantom2" });
+        oldPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "deathbike2");
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick Classic Police", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "deathbike2" });//police 1st gen mav
         Serialization.SerializeParam(oldPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\ModItems_LosSantos2008.xml");
     }
     private void DefaultConfig_FullExpandedExperience()
@@ -2895,16 +2913,24 @@ public class ModItems : IModItems
             new VehicleItem("Vapid Tow Truck Utility", ItemType.Vehicles) { ModelName = "towtruck2",OverrideMakeName = "Vapid", OverrideClassName = "Utility", },
 
             //Heli
-            new VehicleItem("Buckingham SuperVolito", true, ItemType.Vehicles) { ModelName = "supervolito" },
-            new VehicleItem("Buckingham SuperVolito Carbon", true, ItemType.Vehicles) { ModelName = "supervolito2" },
-            new VehicleItem("Buckingham Swift", true, ItemType.Vehicles) { ModelName = "swift" },
-            new VehicleItem("Buckingham Swift Deluxe", true, ItemType.Vehicles) { ModelName = "swift2" },
-            new VehicleItem("Buckingham Volatus", true, ItemType.Vehicles) { ModelName = "volatus" },
-            new VehicleItem("Mammoth Thruster", true, ItemType.Vehicles) { ModelName = "thruster" },
-            new VehicleItem("Nagasaki Havok", true, ItemType.Vehicles) { ModelName = "havok" },
 
+            //DLC
+            new VehicleItem("Buckingham Conada", ItemType.Vehicles) { ModelName = "conada", RequiresDLC = true, Description = "'What is a utility helicopter?' we hear you ask. Well, a utility helicopter is like a utility belt, but it weighs over 1.6 tons and was responsible for 131 highly spectacular fatalities last year in Los Santos alone. We'd say you can't buy that kind of convenience – but as of now, you can."},
+            new VehicleItem("Sparrow", ItemType.Vehicles) { OverrideMakeName = "Western",ModelName = "seasparrow2", RequiresDLC = true, },
+            new VehicleItem("Sea Sparrow", ItemType.Vehicles) { OverrideMakeName = "Western",ModelName = "seasparrow3", RequiresDLC = true, },
+            new VehicleItem("Nagasaki Havok", true, ItemType.Vehicles) { ModelName = "havok", Description = "In the world of tactical air support, bigger is better, right? Wrong." },
+            new VehicleItem("Buckingham Volatus", true, ItemType.Vehicles) { ModelName = "volatus", Description = "The sleekest aerodynamics on the market, double swept blades, fantail rotor: when you're coming off a weekend's team-building ketamine workshop there's no more costly way to move at immense speeds in perfect comfort and near-total silence. This is the real business class." },
+            new VehicleItem("Buckingham SuperVolito Carbon", true, ItemType.Vehicles) { ModelName = "supervolito2",Description = "Originally designed for alpine rescue and humanitarian relief, the SuperVolito has since found its true calling as this year's must-have trinket for the high-T exec with a fetish for military hardware." },
+            new VehicleItem("Buckingham SuperVolito", true, ItemType.Vehicles) { ModelName = "supervolito",Description = "Originally designed for alpine rescue and humanitarian relief, the SuperVolito has since found its true calling as this year's must-have trinket for the high-T exec with a fetish for military hardware." },
+            new VehicleItem("Buckingham Swift Deluxe", true, ItemType.Vehicles) { ModelName = "swift2",Description = "You're not just buying a three-ton, nitro-charged, solid gold helicopter. You're not just subsidizing third world mining corporations, hysterical dictatorships, thousands of child laborers and dozens of NGOs pretending to fight human rights abuse. You're making a statement. You're making a statement about you, and the kind of meaningless decadence the world barely even notices anymore." },
+            new VehicleItem("Buckingham Swift", true, ItemType.Vehicles) { ModelName = "swift",Description = "Special edition lightweight, twin-engine, four-seat multi-purpose helicopter." },
+            new VehicleItem("Western Cargobob", false, ItemType.Vehicles) { OverrideMakeName = "Western", ModelName = "cargobob2", Description = "This ex-industry Cargobob has transported tons of chemical dispersants and dead sea life up and down the length of the Pacific coast, so you can be sure it'll handle whatever you throw at it." },
+            new VehicleItem("HVY Skylift", false, ItemType.Vehicles) { OverrideMakeName = "HVY",ModelName = "skylift" },
             new VehicleItem("Buckingham Maverick", "Used by law enforcement for surveillance operations, you'll often see them hovering above inner city African American neighborhoods.", false, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "maverick" },
-
+            new VehicleItem("Maibatsu Frogger", true, ItemType.Vehicles) { OverrideMakeName = "Maibatsu", ModelName = "frogger", Description = "Stylish, roomy, easy to handle with a cruise speed of 130 knots, this 4-seat single-engine light helicopter is popular with both private pilots and charter companies." },
+            new VehicleItem("Nagasaki Buzzard", false, ItemType.Vehicles) { OverrideMakeName = "Nagasaki",ModelName = "buzzard2" },
+   
+            
             //Plane
             new VehicleItem("Buckingham Alpha-Z1", true, ItemType.Vehicles) { ModelName = "alphaz1" },
             new VehicleItem("Buckingham Howard NX-25", true, ItemType.Vehicles) { ModelName = "howard" },
@@ -2966,7 +2992,7 @@ public class ModItems : IModItems
             new VehicleItem("Dewbauchee Champion", ItemType.Vehicles) { ModelName = "champion", RequiresDLC = true, },
             new VehicleItem("Lampadati Cinquemila", ItemType.Vehicles) { ModelName = "cinquemila", RequiresDLC = true, },
             new VehicleItem("Pfister Comet S2", ItemType.Vehicles) { ModelName = "comet7", RequiresDLC = true, },
-            new VehicleItem("Buckingham Conada", ItemType.Vehicles) { ModelName = "conada", RequiresDLC = true, },
+            
             new VehicleItem("Lampadati Corsita", ItemType.Vehicles) { ModelName = "corsita", RequiresDLC = true, },
             new VehicleItem("Enus Deity", ItemType.Vehicles) { ModelName = "deity", RequiresDLC = true, },
             new VehicleItem("Declasse Dragur", ItemType.Vehicles) { ModelName = "draugur", RequiresDLC = true, },
@@ -3019,7 +3045,7 @@ public class ModItems : IModItems
             new VehicleItem("Penaud La Coureuse", ItemType.Vehicles) { ModelName = "coureur", RequiresDLC = true, },
             new VehicleItem("Coil Inductor", ItemType.Vehicles) { ModelName = "inductor", RequiresDLC = true, },
             new VehicleItem("Coil Junk Energy Inductor", ItemType.Vehicles) { ModelName = "inductor2", RequiresDLC = true, },
-            new VehicleItem("Buckingham Weaponized Conada", ItemType.Vehicles) { ModelName = "conada2", RequiresDLC = true, },
+            new VehicleItem("Mammoth Thruster", true, ItemType.Vehicles) { ModelName = "thruster" },
 
             //CHOP SHOP DLC
             new VehicleItem("Grotti Turismo Omaggio","In a world where it often feels like the best you can hope for is an all-electric fap to some hybrid porn, Grotti's stunning farewell tribute to the mighty V8 is the booty call of your hot, heavy dreams.", ItemType.Vehicles) { ModelName = "turismo3", RequiresDLC = true, },

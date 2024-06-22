@@ -90,7 +90,11 @@ public class Engine
     {
         if (Settings.SettingsManager.VehicleSettings.AllowSetEngineState)
         {
-            if(VehicleToMonitor.IsHotWireLocked)
+            if (!VehicleToMonitor.Vehicle.Exists())
+            {
+                return;
+            }
+            if (VehicleToMonitor.IsHotWireLocked)
             {
                 if(!VehicleToMonitor.HasShowHotwireLockPrompt && Settings.SettingsManager.VehicleSettings.AutoHotwire)
                 {

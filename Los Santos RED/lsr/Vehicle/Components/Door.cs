@@ -37,10 +37,13 @@ namespace LSR.Vehicles
             }
             if (Close)
             {
-                NativeFunction.Natives.SET_VEHICLE_DOOR_SHUT(VehicleToMonitor.Vehicle, ID, false, false);
-                IsClosed = true;
-                EntryPoint.WriteToConsole($"SET_VEHICLE_DOOR_SHUT 1 {ID} IsClosed{IsClosed}");
-                player.OnManuallyClosedDoor();
+                if (!IsClosed)
+                {
+                    NativeFunction.Natives.SET_VEHICLE_DOOR_SHUT(VehicleToMonitor.Vehicle, ID, false, false);
+                    IsClosed = true;
+                    EntryPoint.WriteToConsole($"SET_VEHICLE_DOOR_SHUT 1 {ID} IsClosed{IsClosed}");
+                    player.OnManuallyClosedDoor();
+                }
             }
             else
             {

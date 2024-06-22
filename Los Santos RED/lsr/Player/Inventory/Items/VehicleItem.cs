@@ -181,13 +181,10 @@ public class VehicleItem : ModItem
         };
         VehicleMenu.AddItem(Sell);
     }
-
-
     public override string FullDescription(ISettingsProvideable Settings)
     {
         return GetGeneralDescription();
     }
-
     private bool SellVehicle(Transaction transaction, MenuItem CurrentMenuItem, ILocationInteractable player, ISettingsProvideable settings, IEntityProvideable world)
     {
         VehicleExt toSell = player.VehicleOwnership.OwnedVehicles.Where(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(ModelItem.ModelName)).OrderBy(x => x.Vehicle.DistanceTo2D(player.Position)).FirstOrDefault();
@@ -481,7 +478,7 @@ public class VehicleItem : ModItem
         SpawnPlace ChosenSpawn = null;
         foreach (SpawnPlace sp in transaction.VehicleDeliveryLocations.OrderBy(x => RandomItems.GetRandomNumber(0f, 1f)))
         {
-            ItemInDeliveryBay = false;// Rage.World.GetEntities(sp.Position, 7f, GetEntitiesFlags.ConsiderAllVehicles).Any();
+            ItemInDeliveryBay = NativeFunction.Natives.IS_POINT_OBSCURED_BY_A_MISSION_ENTITY<bool>(sp.Position.X, sp.Position.Y, sp.Position.Z, 0.1f, 0.5f, 1f, 0);// Rage.World.GetEntities(sp.Position, 7f, GetEntitiesFlags.ConsiderAllVehicles).Any();
             if (!ItemInDeliveryBay)
             {
                 ChosenSpawn = sp;
@@ -492,11 +489,22 @@ public class VehicleItem : ModItem
         {
             world.Vehicles.CleanupAmbient();
             NativeFunction.Natives.REQUEST_COLLISION_AT_COORD(ChosenSpawn.Position.X, ChosenSpawn.Position.Y, ChosenSpawn.Position.Z + 5.0f);
-            Vehicle NewVehicle = new Vehicle(ModelItem.ModelName, ChosenSpawn.Position, ChosenSpawn.Heading);
+
+
+
+            Vector3 position = new Vector3(ChosenSpawn.Position.X, ChosenSpawn.Position.Y, ChosenSpawn.Position.Z + 1.0f);
+            if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(position.X, position.Y, position.Z, out float GroundZ, true, false))
+            {
+                position = new Vector3(position.X, position.Y, GroundZ);
+            }
+
+
+            Vehicle NewVehicle = new Vehicle(ModelItem.ModelName, position, ChosenSpawn.Heading);
             GameFiber.Yield();
-            NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(Game.GetHashKey(ModelItem.ModelName));
+
             if (NewVehicle.Exists())
             {
+                NewVehicle.IsPersistent = true;
                 VehicleExt MyNewCar = new VehicleExt(NewVehicle, settings);
                 MyNewCar.AddVehicleToList(world);
                 MyNewCar.Setup();
@@ -534,6 +542,7 @@ public class VehicleItem : ModItem
                 transaction.DisplayMessage("~r~Delivery Failed", "We are sorry, we are unable to complete this delivery");
                 return false;
             }
+            NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(Game.GetHashKey(ModelItem.ModelName));
         }
         else
         {

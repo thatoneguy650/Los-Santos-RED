@@ -74,6 +74,10 @@ public class GeneralInvestigate : ComplexTask, ILocationReachable
         StandardUpdate();
         UpdateVehicleState();
     }
+    public virtual void OnFinalSearchLocationReached()
+    {
+
+    }
     public virtual void OnLocationReached()
     {
         Ped.GameTimeReachedInvestigationPosition = Game.GameTime;

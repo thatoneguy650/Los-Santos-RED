@@ -388,7 +388,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
 
     private void PlayerViolationChecker(IPoliceRespondable policeRespondable, IEntityProvideable world)
     {
-        if(policeRespondable.IsNotWanted && SawPlayerViolating)
+        if(policeRespondable.IsNotWanted && policeRespondable.PoliceResponse.HasBeenNotWantedFor >= 2000 && SawPlayerViolating)
         {
             SawPlayerViolating = false;
             GameTimeFirstSawPlayerViolating = 0;

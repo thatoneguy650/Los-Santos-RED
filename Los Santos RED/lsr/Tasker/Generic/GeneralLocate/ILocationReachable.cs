@@ -10,6 +10,7 @@ namespace LosSantosRED.lsr.Interface
     {
         bool HasReachedLocatePosition { get; }
 
+        void OnFinalSearchLocationReached();
         void OnLocationReached();
     }
 }

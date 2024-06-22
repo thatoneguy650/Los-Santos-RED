@@ -74,6 +74,10 @@ public class GeneralLocate : ComplexTask, ILocationReachable
         StandardUpdate();
         UpdateVehicleState();
     }
+    public virtual void OnFinalSearchLocationReached()
+    {
+
+    }
     public virtual void OnLocationReached()
     {
         HasReachedLocatePosition = true;
