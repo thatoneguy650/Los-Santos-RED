@@ -200,7 +200,7 @@ public class Pedestrians : ITaskerReportable
 
     public void Setup()
     {
-        foreach (Gang gang in Gangs.AllGangs)
+        foreach (Gang gang in Gangs.AllGangs) 
         {
             RelationshipGroup thisGangGroup = new RelationshipGroup(gang.ID);
            // RelationshipGroup policeGroup = new RelationshipGroup("COP");
