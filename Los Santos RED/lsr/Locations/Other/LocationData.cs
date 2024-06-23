@@ -34,6 +34,9 @@ namespace LosSantosRED.lsr.Locations
         private uint GameTimeGotOffRoad;
         private uint GameTimeGotOnRoad;
 
+        private uint GameTimeStartedStationary;
+        private Vector3 StationaryPosition;
+
 
         private uint GameTimeWentInside;
         private uint GameTimeWentOutside;
@@ -41,6 +44,8 @@ namespace LosSantosRED.lsr.Locations
         private bool treatAsInTunnel;
         private uint GameTimeWentInTunnel;
         private uint GameTimeLeftTunnel;
+        private bool isMostlyStationary;
+        private bool isVeryStationary;
 
         public LocationData(Entity characterToLocate, IStreets streets, IZones zones, IInteriors interiors, ISettingsProvideable settings)
         {
@@ -79,6 +84,14 @@ namespace LosSantosRED.lsr.Locations
         public bool HasBeenOffRoad => isCurrentlyOffroad && GameTimeGotOffRoad != 0 && Game.GameTime - GameTimeGotOffRoad >= 15000;
         public bool HasBeenOnHighway => CurrentStreetIsHighway && GameTimeGotOnFreeway != 0 && Game.GameTime - GameTimeGotOnFreeway >= 5000;
         public bool HasBeenOffHighway => !CurrentStreetIsHighway && GameTimeGotOffFreeway != 0 && Game.GameTime - GameTimeGotOffFreeway >= 5000 && !HasThrownGotOffFreeway;
+
+        public bool IsMostlyStationary => GameTimeStartedStationary != 0 && Game.GameTime - GameTimeStartedStationary >= Settings.SettingsManager.PlayerOtherSettings.StationaryTime;
+
+        public bool IsVeryStationary => GameTimeStartedStationary != 0 && Game.GameTime - GameTimeStartedStationary >= Settings.SettingsManager.PlayerOtherSettings.VeryStationaryTime;
+
+        public uint StationaryTime => GameTimeStartedStationary == 0 ? 0 : Game.GameTime - GameTimeStartedStationary;
+
+
         public void Update(Entity entityToLocate, bool isInVehicle)
         {
             if (entityToLocate.Exists())
@@ -95,6 +108,7 @@ namespace LosSantosRED.lsr.Locations
                 GameFiber.Yield();
                 UpdateStreets(isInVehicle);
                 GameFiber.Yield();
+                UpdateStationary();
             }
             else
             {
@@ -120,6 +134,39 @@ namespace LosSantosRED.lsr.Locations
                     GameTimeGotOffFreeway = Game.GameTime;
                     CurrentStreetIsHighway = false;
                 }
+            }
+        }
+
+        private void UpdateStationary()
+        {
+            if(!EntityToLocate.Exists())
+            {
+                return;
+            }
+            if(StationaryPosition == Vector3.Zero)
+            {
+                StationaryPosition = EntityToLocate.Position;
+            }
+            if(EntityToLocate.Position.DistanceTo(StationaryPosition) >= Settings.SettingsManager.PlayerOtherSettings.StationaryDistance)
+            {
+                StationaryPosition = EntityToLocate.Position;
+                GameTimeStartedStationary = 0;
+            }
+            else if (GameTimeStartedStationary == 0)
+            {
+                GameTimeStartedStationary = Game.GameTime;
+                //EntryPoint.WriteToConsole("You STARTED BECOMING StationaryISH");
+            }
+
+            if(isMostlyStationary != IsMostlyStationary)
+            {
+                EntryPoint.WriteToConsole($"OnIsMostlyStationaryChanged IsMostlyStationary:{IsMostlyStationary}");
+                isMostlyStationary = IsMostlyStationary;
+            }
+            if(isVeryStationary != IsVeryStationary)
+            {
+                EntryPoint.WriteToConsole($"OnIsVeryStationaryChanged IsVeryStationary:{IsVeryStationary}");
+                isVeryStationary = IsVeryStationary;
             }
         }
 

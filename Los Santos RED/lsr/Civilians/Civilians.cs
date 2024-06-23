@@ -327,6 +327,11 @@ public class Civilians
             {     
                 RelationshipGroup.Cop.SetRelationshipWith(gangRG, Relationship.Neutral);
                 gangRG.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Neutral);
+
+                RelationshipGroup.SecurityGuard.SetRelationshipWith(gangRG, Relationship.Neutral);
+                gangRG.SetRelationshipWith(RelationshipGroup.SecurityGuard, Relationship.Neutral);
+
+
                 gang.HasWantedMembers = false;
                 //EntryPoint.WriteToConsoleTestLong($"GANG {gang.ID} has no wanted members, settings relationship with cops to neutral");
             }

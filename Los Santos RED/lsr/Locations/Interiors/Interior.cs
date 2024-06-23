@@ -445,7 +445,13 @@ public class Interior
             //GameFiber.Sleep(1000);
         }
     }
-
+    public virtual void OnCarryingWeaponInside(IViolateable player)
+    {
+        if(IsWeaponRestricted)
+        {
+            player.Violations.AddViolating(StaticStrings.ArmedRobberyCrimeID);
+        }
+    }
     private void RemoveSpawnedProps()
     {
         foreach(Rage.Object prop in SpawnedProps)

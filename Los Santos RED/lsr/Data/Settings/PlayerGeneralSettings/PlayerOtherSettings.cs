@@ -120,6 +120,9 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public bool SetCutToBlackDeath { get; set; }
     public bool AllowRunningInInteriors { get; set; }
     public bool SetHintCameraWhenUsingMachineInteractions { get; set; }
+    public uint StationaryTime { get; set; }
+    public uint VeryStationaryTime { get; set; }
+    public float StationaryDistance { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -215,6 +218,11 @@ public class PlayerOtherSettings : ISettingsDefaultable
         AllowRunningInInteriors = true;
 
         SetHintCameraWhenUsingMachineInteractions = false;
+
+
+        StationaryTime = 8000;
+        VeryStationaryTime = 20000;
+        StationaryDistance = 40f;
     }
 
 }

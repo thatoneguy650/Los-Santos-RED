@@ -81,6 +81,7 @@ namespace LosSantosRED.lsr.Interface
         PedViolations PedViolations { get; }
         bool ShouldSurrender { get; set; }
         bool IsInPlane { get; }
+      //  bool IsAssignedToHover { get; set; }
 
         void ControlLandingGear();
         void PlaySpeech(string name, bool v);

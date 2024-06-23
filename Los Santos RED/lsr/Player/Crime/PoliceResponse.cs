@@ -294,6 +294,9 @@ namespace LosSantosRED.lsr
             PlaceWantedStarted = Game.LocalPlayer.Character.Position;
             RelationshipGroup.Cop.SetRelationshipWith(RelationshipGroup.Player, Relationship.Hate);
             RelationshipGroup.Player.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
+
+            RelationshipGroup.SecurityGuard.SetRelationshipWith(RelationshipGroup.Player, Relationship.Hate);
+            RelationshipGroup.Player.SetRelationshipWith(RelationshipGroup.SecurityGuard, Relationship.Hate);
         }
         public void OnLostWanted()
         {
@@ -309,6 +312,9 @@ namespace LosSantosRED.lsr
             DateTimeLastWantedEnded = Time.CurrentDateTime;
             RelationshipGroup.Cop.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
             RelationshipGroup.Player.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Neutral);
+
+            RelationshipGroup.SecurityGuard.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
+            RelationshipGroup.Player.SetRelationshipWith(RelationshipGroup.SecurityGuard, Relationship.Neutral);
             //EntryPoint.WriteToConsole($"POLICE RESPONSE: Lost Wanted DateTimeLastWantedEnded {DateTimeLastWantedEnded}");
         }
         public void OnWantedLevelIncreased()

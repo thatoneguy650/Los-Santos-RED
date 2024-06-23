@@ -224,6 +224,9 @@ public class Pedestrians : ITaskerReportable
             }
             thisGangGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Neutral);//was like
             RelationshipGroup.Cop.SetRelationshipWith(thisGangGroup, Relationship.Neutral);//was like
+
+            thisGangGroup.SetRelationshipWith(RelationshipGroup.SecurityGuard, Relationship.Neutral);//was like
+            RelationshipGroup.SecurityGuard.SetRelationshipWith(thisGangGroup, Relationship.Neutral);//was like
         }
         NativeFunction.Natives.SET_AMBIENT_PEDS_DROP_MONEY(false);
         formerPlayer = new RelationshipGroup("FORMERPLAYER");

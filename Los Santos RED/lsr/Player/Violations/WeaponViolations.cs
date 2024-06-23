@@ -88,10 +88,15 @@ public class WeaponViolations
             {
                 Violations.AddViolating(StaticStrings.BrandishingCloseCombatWeaponCrimeID);// "BrandishingCloseCombatWeapon");//.IsCurrentlyViolating = true;
             }
-            if(Player.CurrentLocation?.CurrentInterior?.IsWeaponRestricted == true)
+            //if(Player.CurrentLocation?.CurrentInterior?.IsWeaponRestricted == true)
+            //{
+            //    Violations.AddViolating(StaticStrings.ArmedRobberyCrimeID);             
+            //}
+            if(Player.CurrentLocation != null && Player.CurrentLocation.CurrentInterior != null)
             {
-                Violations.AddViolating(StaticStrings.ArmedRobberyCrimeID);             
+                Player.CurrentLocation?.CurrentInterior?.OnCarryingWeaponInside(Player);
             }
+            
         }
         if (isBrandishing && Player.CurrentTargetedPed != null && Player.WeaponEquipment?.CurrentWeapon?.Category != WeaponCategory.Melee)
         {

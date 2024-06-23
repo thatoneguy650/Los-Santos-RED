@@ -64,6 +64,7 @@ public class Crimes : ICrimes
     private Crime BuringABody;
     private Crime Theft;
     private Crime Shoplifting;
+    private Crime BankRobbery;
     public Crimes()
     {
     }
@@ -112,6 +113,7 @@ public class Crimes : ICrimes
         AimingWeaponAtPolice = new Crime(StaticStrings.AimingWeaponAtPoliceCrimeID, "Aiming Weapons At Police", 3, true, 4, false, false, true);
         HurtingPolice = new Crime(StaticStrings.HurtingPoliceCrimeID, "Assaulting Police", 3, false, 5, true, false, true);// { CanViolateWithoutPerception = true };
         BrandishingHeavyWeapon = new Crime(StaticStrings.BrandishingHeavyWeaponCrimeID, "Brandishing Heavy Weapon", 3, false, 6, true, true, true);
+        BankRobbery = new Crime(StaticStrings.BankRobberyCrimeID, "Bank Robbery", 3, false, 6, true, true, true);
 
 
 
@@ -124,6 +126,8 @@ public class Crimes : ICrimes
 
         GotInAirVehicleDuringChase = new Crime(StaticStrings.GotInAirVehicleDuringChaseCrimeID, "Stealing an Air Vehicle", 3, false, 8, false, false, true);
         
+
+
         FiringWeapon = new Crime(StaticStrings.FiringWeaponCrimeID, "Firing Weapon", 2, false, 9, true, true, true) { CanReportBySound = true };
         FiringSilencedWeapon = new Crime(StaticStrings.FiringSilencedWeaponCrimeID, "Firing Weapon(!)", 2, false, 9, true, true, true) { MaxHearingDistance = 10f, CanReportBySound = true };
         Kidnapping = new Crime(StaticStrings.KidnappingCrimeID, "Kidnapping", 2, false, 10, true, false, true);
@@ -202,6 +206,7 @@ public class Crimes : ICrimes
              Kidnapping,
              KillingCivilians,
              ArmedRobbery,
+             BankRobbery,
              Mugging,
              AttemptingSuicide,
              HitPedWithCar,
@@ -272,6 +277,7 @@ public class Crimes : ICrimes
              Kidnapping,
              KillingCivilians,
              ArmedRobbery,
+             BankRobbery,
              Mugging,
              AttemptingSuicide,
              HitPedWithCar,

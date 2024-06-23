@@ -964,14 +964,14 @@
     //}
     //public class crime_attack_on_a_vehicle { public static ScannerFile Anattackonavehicle { get { return new ScannerFile("01_crime_attack_on_a_vehicle\\0x0BCD234E.mp3", "An attack on a vehicle.", "crime_attack_on_a_vehicle"); } } }
     //public class crime_attempted_homicide { public static ScannerFile Anattemptedhomicide { get { return new ScannerFile("01_crime_attempted_homicide\\0x137F395C.mp3", "An attempted homicide.", "crime_attempted_homicide"); } } }
-    //public class crime_bank_robbery
-    //{
-    //    public static ScannerFile Abankrobbery { get { return new ScannerFile("01_crime_bank_robbery\\0x08797576.mp3", "A bank robbery.", "crime_bank_robbery"); } }
-    //    public static ScannerFile Abankheist { get { return new ScannerFile("01_crime_bank_robbery\\0x0D703F9D.mp3", "A bank heist.", "crime_bank_robbery"); } }
-    //    public static ScannerFile Abankrobbery1 { get { return new ScannerFile("01_crime_bank_robbery\\0x12590970.mp3", "A bank robbery.", "crime_bank_robbery"); } }
-    //    public static ScannerFile Apossiblebankrobbery { get { return new ScannerFile("01_crime_bank_robbery\\0x18C2D609.mp3", "A possible bank robbery.", "crime_bank_robbery"); } }
-    //    public static ScannerFile Apossiblebankrobbery1 { get { return new ScannerFile("01_crime_bank_robbery\\0x1B249B06.mp3", "A possible bank robbery.", "crime_bank_robbery"); } }
-    //}
+    public class crime_bank_robbery
+    {
+        public static ScannerFile Abankrobbery { get { return new ScannerFile("01_crime_bank_robbery\\0x08797576.mp3", "A bank robbery.", "crime_bank_robbery"); } }
+        public static ScannerFile Abankheist { get { return new ScannerFile("01_crime_bank_robbery\\0x0D703F9D.mp3", "A bank heist.", "crime_bank_robbery"); } }
+        public static ScannerFile Abankrobbery1 { get { return new ScannerFile("01_crime_bank_robbery\\0x12590970.mp3", "A bank robbery.", "crime_bank_robbery"); } }
+        public static ScannerFile Apossiblebankrobbery { get { return new ScannerFile("01_crime_bank_robbery\\0x18C2D609.mp3", "A possible bank robbery.", "crime_bank_robbery"); } }
+        public static ScannerFile Apossiblebankrobbery1 { get { return new ScannerFile("01_crime_bank_robbery\\0x1B249B06.mp3", "A possible bank robbery.", "crime_bank_robbery"); } }
+    }
     //public class crime_burglary { public static ScannerFile Apossibleburglary { get { return new ScannerFile("01_crime_burglary\\0x065CDE1D.mp3", "A possible burglary.", "crime_burglary"); } } }
     //public class crime_car_jacking
     //{

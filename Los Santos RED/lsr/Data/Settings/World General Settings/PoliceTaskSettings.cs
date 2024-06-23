@@ -118,6 +118,13 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public bool AllowAutoDispatchWhenCop { get; set; }
     public bool StopWeaponFiringWhenDropped { get; set; }
 
+    public bool AllowRappelling { get; set; }
+    public bool RappellingRequiresLethalForce { get; set; }
+    public uint RappellingStationaryTime { get; set; }
+    public uint CircleStationaryTime { get; set; }
+    public uint MinCircleTimeToStartRappelling { get; set; }
+    public bool RappellingRequiresWeaponsFree { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -224,5 +231,12 @@ public class PoliceTaskSettings : ISettingsDefaultable
         UseLegacyLocateTasking = false;
         AllowAutoDispatchWhenCop = false;
         StopWeaponFiringWhenDropped = false;
+
+        AllowRappelling = true;
+        RappellingRequiresLethalForce = true;
+        RappellingStationaryTime = 35000;
+        CircleStationaryTime = 8000;
+        MinCircleTimeToStartRappelling = 8000;
+        RappellingRequiresWeaponsFree = false;
     }
 }

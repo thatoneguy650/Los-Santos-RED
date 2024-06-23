@@ -442,6 +442,7 @@ public class Roadblock
     }
     private bool CreateSpikeStrip(Vector3 position, float heading)
     {
+        
         position = new Vector3(position.X, position.Y, position.Z + 1.0f);
         if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(position.X, position.Y, position.Z, out float GroundZ, true, false))
         {

@@ -99,6 +99,11 @@ public class GangMember : PedExt, IWeaponIssuable
         }
         RelationshipGroup.Cop.SetRelationshipWith(Pedestrian.RelationshipGroup, Relationship.Hate);
         Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
+
+        RelationshipGroup.SecurityGuard.SetRelationshipWith(Pedestrian.RelationshipGroup, Relationship.Hate);
+        Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.SecurityGuard, Relationship.Hate);
+
+
         Gang.HasWantedMembers = true;
         //EntryPoint.WriteToConsoleTestLong($"{Pedestrian.Handle} BECAME WANTED (GANG MEMBER) SET {Gang.ID} TO HATES COPS");
     }

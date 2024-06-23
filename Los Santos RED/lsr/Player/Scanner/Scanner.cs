@@ -20,6 +20,7 @@ namespace LosSantosRED.lsr
         private Dispatch AimingWeaponAtPolice;
         private Dispatch AnnounceStolenVehicle;
         private Dispatch ArmedRobbery;
+        private Dispatch BankRobbery;
         private Dispatch AssaultingCivilians;
         private Dispatch AssaultingCiviliansWithDeadlyWeapon;
         private Dispatch AssaultingOfficer;
@@ -1793,7 +1794,8 @@ namespace LosSantosRED.lsr
             new CrimeDispatch("DealingDrugs",DealingDrugs),
             new CrimeDispatch("DealingGuns",DealingGuns),
             new CrimeDispatch("AimingWeaponAtPolice",AimingWeaponAtPolice),
-            new CrimeDispatch("ArmedRobbery",ArmedRobbery),
+            new CrimeDispatch(StaticStrings.ArmedRobberyCrimeID,ArmedRobbery),
+            new CrimeDispatch(StaticStrings.BankRobberyCrimeID,BankRobbery),
             new CrimeDispatch("PublicNuisance",PublicNuisance),
             new CrimeDispatch("Speeding",Speeding),
             new CrimeDispatch("PublicVagrancy",PublicVagrancy),
@@ -1880,6 +1882,7 @@ namespace LosSantosRED.lsr
             ,VehicleCrashed
             ,VehicleStartedFire
             ,ArmedRobbery
+            ,BankRobbery
             ,MedicalServicesRequired
             ,FirefightingServicesRequired
             ,PublicNuisance
@@ -2498,7 +2501,19 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_hold_up.Aholdup.FileName },"a hold up"),
             },
             };
-
+            BankRobbery = new Dispatch()
+            {
+                Name = "Bank Robbery",
+                LocationDescription = LocationSpecificity.Street,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_bank_robbery.Abankheist.FileName },"a bank robbery"),
+                new AudioSet(new List<string>() { crime_bank_robbery.Abankrobbery.FileName },"a bank robbery"),
+                new AudioSet(new List<string>() { crime_bank_robbery.Abankrobbery1.FileName },"a bank firearm"),
+                new AudioSet(new List<string>() { crime_bank_robbery.Apossiblebankrobbery.FileName },"a possible bank robbery"),
+                new AudioSet(new List<string>() { crime_bank_robbery.Apossiblebankrobbery1.FileName },"a possible bank robbery"),
+            },
+            };
             PublicNuisance = new Dispatch()
             {
                 Name = "Public Nuisance",

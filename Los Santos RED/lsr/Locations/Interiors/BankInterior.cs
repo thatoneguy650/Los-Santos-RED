@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using LosSantosRED.lsr.Interface;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
@@ -34,6 +35,11 @@ public class BankInterior : Interior
             test.Bank = newBank;
             //test.TotalCash = RandomItems.GetRandomNumberInt(Bank.DrawerCashMin, Bank.DrawerCashMax);
         }
+    }
+    public override void OnCarryingWeaponInside(IViolateable player)
+    {
+        player.Violations.AddViolating(StaticStrings.BankRobberyCrimeID);
+        base.OnCarryingWeaponInside(player);
     }
 }
 

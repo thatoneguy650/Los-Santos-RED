@@ -155,7 +155,7 @@ public class WeaponInventory
 
         if (HasVehicleWeapon && CurrentVehicleWeapon == 3450622333 || (HasSearchlight && WeaponOwner.IsDriver))//searchlight
         {
-            EntryPoint.WriteToConsole($"{WeaponOwner.Handle} HANDLE SEARCHLIGHT IS RUNNING");
+            //EntryPoint.WriteToConsole($"{WeaponOwner.Handle} HANDLE SEARCHLIGHT IS RUNNING");
             HandleSearchlight(isNightTime);
             return;
         }
@@ -715,7 +715,7 @@ public class WeaponInventory
             else if (NativeFunction.Natives.IS_VEHICLE_SEARCHLIGHT_ON<bool>(WeaponOwner.Pedestrian.CurrentVehicle))
             {
                 NativeFunction.Natives.SET_VEHICLE_SEARCHLIGHT(WeaponOwner.Pedestrian.CurrentVehicle, false, true);
-                EntryPoint.WriteToConsole("TURNING SPOTLIGHT OFF");
+                //EntryPoint.WriteToConsole("TURNING SPOTLIGHT OFF");
             }
         }
     }

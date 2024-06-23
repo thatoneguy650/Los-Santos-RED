@@ -46,7 +46,7 @@ public class GunshotAlert : PedAlert
 
         if(addAlert)
         {
-            EntryPoint.WriteToConsole("GUNSHOT ALERT");
+            //EntryPoint.WriteToConsole("GUNSHOT ALERT");
             PedExt.OnHeardGunfire(policeRespondable);
         }
         base.Update(policeRespondable, world);

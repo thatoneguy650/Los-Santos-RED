@@ -34,6 +34,8 @@ namespace LSR.Vehicles
         protected uint GameTimeLastAddedSonarBlip;
         private uint GameTimeLastDamagedByPlayer;
         private uint GameTimeLastUpdatedDamage;
+        private bool HasHadPedsRappelOrParachute;
+        private List<int> EjectedSeats = new List<int>();
 
         public VehicleInteractionMenu VehicleInteractionMenu { get; set; }
         public SimpleInventory SimpleInventory { get; private set; }
@@ -874,6 +876,10 @@ namespace LSR.Vehicles
         }
         private void OnHealthDecreased(IDriveable driver)
         {
+            if(!Vehicle.Exists())
+            {
+                return;
+            }
             if (!(Game.GameTime - GameTimeLastUpdatedDamage >= 1000))
             {
                 Health = Vehicle.Health;
@@ -1661,6 +1667,16 @@ namespace LSR.Vehicles
                 return true;
             }
             return false;
+        }
+
+        public void AddRappelled(int seatIndex)
+        {
+            if(!EjectedSeats.Contains(seatIndex))
+            {
+                EjectedSeats.Add(seatIndex);
+            }
+            HasHadPedsRappelOrParachute = true;
+            EntryPoint.WriteToConsole($"VEHICLE MARKED AS RAPPELLED FROM SEAT {seatIndex}");
         }
     }
 }

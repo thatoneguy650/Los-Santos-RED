@@ -265,6 +265,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsInAPC { get; private set; }
     public bool IsInBoat { get; private set; } = false;
     public bool IsWaitingAtTrafficLight { get; set; }
+    //public bool IsAssignedToHover { get; set; }
     public bool IsTurningLeftAtTrafficLight { get; set; }
     public bool IsTurningRightAtTrafficLight { get; set; }
     public bool IsInHelicopter { get; private set; } = false;
@@ -515,6 +516,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             Pedestrian.RelationshipGroup = CriminalsRG;
             RelationshipGroup.Cop.SetRelationshipWith(CriminalsRG, Relationship.Hate);
             CriminalsRG.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
+            RelationshipGroup.SecurityGuard.SetRelationshipWith(CriminalsRG, Relationship.Hate);
+            CriminalsRG.SetRelationshipWith(RelationshipGroup.SecurityGuard, Relationship.Hate);
             //EntryPoint.WriteToConsoleTestLong($"{Pedestrian.Handle} BECAME WANTED (CIVILIAN) SET TO CRIMINALS");
         }
     }

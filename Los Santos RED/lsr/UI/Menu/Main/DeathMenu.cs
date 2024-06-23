@@ -117,7 +117,7 @@ public class DeathMenu : ModUIMenu
         Distances.AddRange(RegularDistances);
 
 
-
+        
         string takeoverRespawnText = "Takeover Pedestrian";
         string takeoverrespawnDescription = "Takeover a random pedestrian around the player.";
         UIMenuListScrollerItem<DistanceSelect> TakeoverRandomPed = new UIMenuListScrollerItem<DistanceSelect>(takeoverRespawnText, takeoverrespawnDescription, Distances);

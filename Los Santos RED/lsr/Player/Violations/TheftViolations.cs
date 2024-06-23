@@ -68,8 +68,9 @@ public class TheftViolations
         }
         if (IsRobbingBank)
         {
-            Violations.AddViolating(StaticStrings.ArmedRobberyCrimeID);//.IsCurrentlyViolating = true;
+            Violations.AddViolating(StaticStrings.BankRobberyCrimeID);//.IsCurrentlyViolating = true;
         }
+
         CheckStolenVehicles();
     }
     private void CheckStolenVehicles()

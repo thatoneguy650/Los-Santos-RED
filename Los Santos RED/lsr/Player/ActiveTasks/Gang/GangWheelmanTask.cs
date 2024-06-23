@@ -302,6 +302,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 RelationshipGroup.Cop.SetRelationshipWith(RobberRelationshipGroup, Relationship.Hate);
                 RobberRelationshipGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
+
+                RelationshipGroup.SecurityGuard.SetRelationshipWith(RobberRelationshipGroup, Relationship.Hate);
+                RobberRelationshipGroup.SetRelationshipWith(RelationshipGroup.SecurityGuard, Relationship.Hate);
                 NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(RobberAccomplice.Pedestrian, 500000, 0);//TR
             }
             hasSetRobbersViolent = true;

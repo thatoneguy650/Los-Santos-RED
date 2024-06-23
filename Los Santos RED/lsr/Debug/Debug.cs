@@ -453,18 +453,42 @@ public class Debug
         //Dispatcher.DebugSpawnCop();
 
 
-       // Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth - 50;
+        // Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth - 50;
 
 
 
-       PedExt toControl = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-        if (toControl == null)
+        //PedExt toControl = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        // if (toControl == null)
+        // {
+        //     return;
+        // }
+        // NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP(toControl.Pedestrian, toControl.Pedestrian.Position.X, toControl.Pedestrian.Position.Y, toControl.Pedestrian.Position.Z, 10f, 0);
+        // GameFiber.Sleep(1000);
+        // Game.DisplaySubtitle("RAN ONE");
+
+
+        ///Burglar_Bell
+
+        int alarmSoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
+
+        Vector3 Coords = Game.LocalPlayer.Character.Position;
+        uint GameTimeStarted = Game.GameTime;
+        while(!NativeFunction.Natives.REQUEST_SCRIPT_AUDIO_BANK<bool>("Alarms",false,-1) && Game.GameTime - GameTimeStarted <= 2000)
         {
-            return;
+            GameFiber.Yield();
         }
-        NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP(toControl.Pedestrian, toControl.Pedestrian.Position.X, toControl.Pedestrian.Position.Y, toControl.Pedestrian.Position.Z, 10f, 0);
-        GameFiber.Sleep(1000);
-        Game.DisplaySubtitle("RAN ONE");
+
+        NativeFunction.Natives.PLAY_SOUND_FROM_COORD(alarmSoundID, "Burglar_Bell", Coords.X, Coords.Y, Coords.Z, "Generic_Alarms", false, 0, false);
+
+
+        //NativeFunction.Natives.PLAY_SOUND_FROM_COORD(alarmSoundID, "ALARMS_KLAXON_03_CLOSE", Coords.X, Coords.Y, Coords.Z, "", false,0,false);
+
+        GameFiber.Sleep(5000);
+
+        NativeFunction.Natives.STOP_SOUND(alarmSoundID);
+
+        NativeFunction.Natives.RELEASE_SOUND_ID(alarmSoundID);
+
     }
     private void DebugNumpad3()
     {
@@ -514,6 +538,11 @@ public class Debug
         Ped.WeaponInventory.SetDeadly(true);
         Ped.WeaponInventory.ShouldAutoSetWeaponState = false;
         Vector3 SearchCoords = Player.Character.GetOffsetPositionFront(50f);
+
+
+
+
+
 
         //AnimationDictionary.RequestAnimationDictionay("amb@code_human_police_investigate@base");
 
@@ -647,7 +676,7 @@ public class Debug
         //{
         //    Game.TimeScale -= 0.05f;
         //}
-        GameFiber.Sleep(500);
+        //GameFiber.Sleep(500);
 
         //CurrentDictionary = NativeHelper.GetKeyboardInput("dict");
         //CurrentAnimation = NativeHelper.GetKeyboardInput("anim");

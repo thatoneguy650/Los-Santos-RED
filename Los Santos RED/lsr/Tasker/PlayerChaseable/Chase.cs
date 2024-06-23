@@ -2,8 +2,9 @@
 using Rage;
 using Rage.Native;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-
+using System.Security.Cryptography.X509Certificates;
 
 public class Chase : ComplexTask
 {
@@ -39,6 +40,10 @@ public class Chase : ComplexTask
     private bool IsSetPassive;
     private uint GameTimeLastUpdatedChaseItems;
     private bool IsSetFollow;
+    private bool IsAssignedHover;
+    private uint GameTimeAssignedHover;
+
+    private HeliEngage HeliEngage;
 
     public Chase(IComplexTaskable myPed, ITargetable player, IEntityProvideable world, IPlayerChaseable cop, ISettingsProvideable settings) : base(player, myPed, 500)//was 500
     {
@@ -47,6 +52,7 @@ public class Chase : ComplexTask
         World = world;
         Cop = cop;
         Settings = settings;
+        HeliEngage = new HeliEngage(myPed, Cop, World, Settings, player);
     }
     private enum eVehicleMissionType
     {
@@ -615,7 +621,9 @@ public class Chase : ComplexTask
             }
             if (Ped.IsInHelicopter)
             {
-                NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(35f, 50f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -35f, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(80f, 120f)); // NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -50f, 50f, 60f);
+                HeliEngage.AssignTask();
+                //IsAssignedHover = false;
+                //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(35f, 50f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -35f, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(80f, 120f)); // NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -50f, 50f, 60f);
 
                 //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.GetRandomNumber(40f, 60f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -35f, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(80f, 120f)); // NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -50f, 50f, 60f);
 
@@ -865,9 +873,121 @@ public class Chase : ComplexTask
             {
                 Ped.ControlLandingGear();
             }
+            //HeliChase_UpdateTask();
+            if(Ped.IsInHelicopter)
+            {
+                HeliEngage.UpdateTask();
+            }
             VehicleChase_CheckStuck();
         }
     }
+    //private void HeliChase_UpdateTask()
+    //{
+    //    //EntryPoint.WriteToConsole("HeliChase_UpdateTask RAN");
+    //    if (Ped.IsInHelicopter && Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists())
+    //    {
+    //        if (Ped.IsDriver)
+    //        {
+    //            //EntryPoint.WriteToConsole("HeliChase_UpdateTask RAN 1");
+    //            if (Player.CurrentLocation.IsMostlyStationary)
+    //            {
+    //                if (!IsAssignedHover)
+    //                {
+    //                    NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, Player.Character, 0f, 0f, 0f, Settings.SettingsManager.DebugSettings.HeliMission,
+    //                    Settings.SettingsManager.DebugSettings.HeliMissionCruiseSpeed,//20f, //Cruise SPeed
+    //                        30f, // Target Reached DIst
+    //                        -1f, //Heli Orientation
+    //                        30, //flight height
+    //                        30,//min hiehg tabove terrain
+    //                        -1, //slowdown distance
+    //                        0);//HELIMODE heli flags, 0 is none
+    //                    IsAssignedHover = true;
+    //                    GameTimeAssignedHover = Game.GameTime;
+
+
+    //                    //        NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle,
+    //                    //0, Player.Character,//target vehicle and ped
+    //                    //0f, 0f, 0f,//coordinated, shouldnt be needed
+    //                    //Settings.SettingsManager.DebugSettings.HeliMission,//MISSION
+    //                    //100f,//Cruise SPeed
+    //                    //50f,//Target Reached DIst
+    //                    //-1f,//Heli Orientation
+    //                    //50,//flight height
+    //                    //50, //min hiehg tabove terrain
+    //                    //-1.0f,//slowdown distance
+    //                    //0//HELIMODE heli flags, 0 is none
+    //                    //);
+
+    //                    EntryPoint.WriteToConsole($"IsAssignedHover CHANGED TO {IsAssignedHover}");
+    //                }
+    //                else
+    //                {
+    //                    if (GameTimeAssignedHover != 0 && Game.GameTime - GameTimeAssignedHover >= 3000 && !Ped.IsAssignedToHover && !Ped.IsMovingFast)
+    //                    {
+    //                        Ped.IsAssignedToHover = true;
+    //                        EntryPoint.WriteToConsole($"PED HAS BEEN ASSIGNED AS HOVERING");
+
+    //                        StartRappell();
+
+    //                    }
+    //                }
+    //            }
+    //            else
+    //            {
+    //                if (IsAssignedHover)
+    //                {
+    //                    NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(35f, 50f));
+    //                    IsAssignedHover = false;
+    //                    GameTimeAssignedHover = 0;
+    //                    Ped.IsAssignedToHover = false;
+    //                    EntryPoint.WriteToConsole($"IsAssignedHover CHANGED TO {IsAssignedHover}");
+    //                }
+    //            }
+    //        }
+    //        else
+    //        {
+
+    //        }
+    //    }
+    //}
+
+    //private void StartRappell()
+    //{
+    //    if(!Ped.Pedestrian.Exists() || !Ped.Pedestrian.CurrentVehicle.Exists() || !NativeFunction.Natives.DOES_VEHICLE_ALLOW_RAPPEL<bool>(Ped.Pedestrian.CurrentVehicle))
+    //    {
+    //        return;
+    //    }
+    //    uint heliHandle = Ped.Pedestrian.CurrentVehicle.Handle;
+
+    //    List<Cop> Passengers = World.Pedestrians.PoliceList.Where(x => x.Handle != Ped.Handle && !x.IsDriver && x.IsInVehicle && x.Pedestrian.Exists() && x.Pedestrian.CurrentVehicle.Exists() && x.Pedestrian.CurrentVehicle.Handle == heliHandle).ToList();
+    //    foreach(Cop c in Passengers)
+    //    {
+    //        EntryPoint.WriteToConsole($"RAPPEL START FOR {c.Handle}");
+    //        int seatIndex = -2;
+    //        if (c.Pedestrian.CurrentVehicle.Exists())
+    //        {
+    //            seatIndex = c.Pedestrian.SeatIndex;
+    //        }
+    //        if(seatIndex != 1 && seatIndex != 2)
+    //        {
+    //            continue;
+    //        }
+    //        EntryPoint.WriteToConsole($"RAPPEL FINISH FOR {c.Handle}");
+    //        int DoorID = seatIndex == 1 ? 2 : 3;
+
+    //        //if (Ped.Pedestrian.CurrentVehicle.Doors[DoorID].IsValid())
+    //        //{
+    //        //    Ped.Pedestrian.CurrentVehicle.Doors[DoorID].Open(false, false);
+    //        //    GameFiber.Wait(500);
+    //        //    if (Ped.Pedestrian.CurrentVehicle.Exists())
+    //        //    {
+    //        //        Ped.Pedestrian.CurrentVehicle.Doors[DoorID].Open(true, false);
+    //        //    }
+    //        //}
+    //        NativeFunction.Natives.TASK_RAPPEL_FROM_HELI(c.Pedestrian, 10f);
+    //    }
+    //}
+
     private void VehicleChase_CheckStuck()
     {
         if (Ped.Pedestrian.Exists())
@@ -896,15 +1016,16 @@ public class Chase : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            if (Ped.Pedestrian.CurrentVehicle.Exists())
-            {
-                NeedsUpdates = false;
-            }
-            else
-            {
-                NeedsUpdates = true;
-                return;
-            }
+            NeedsUpdates = true;
+            //if (Ped.Pedestrian.CurrentVehicle.Exists())
+            //{
+            //    NeedsUpdates = false;
+            //}
+            //else
+            //{
+            //    NeedsUpdates = true;
+            //    //return;
+            //}
             if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringVehicleChase)
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
@@ -921,6 +1042,7 @@ public class Chase : ComplexTask
             }
             if (IsFirstRun)
             {
+                EntryPoint.WriteToConsole("VEHICLE CHASE PED FIRST RUN");
                 if (Ped.IsInHelicopter)
                 {
                     NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.GetRandomNumber(40f, 60f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -35f, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(50f, 70f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(50f, 80f));
@@ -951,9 +1073,11 @@ public class Chase : ComplexTask
                         }
                     }
                 }
+                IsFirstRun = false;
             }
             else
             {
+                //EntryPoint.WriteToConsole("VEHICLE CHASE PED UPDATE");
                 Speed = 30f;
                 if (Ped.DistanceToPlayer <= 15f)//10f
                 {
@@ -970,6 +1094,9 @@ public class Chase : ComplexTask
                     //{
                     //    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 100f);
                     //}
+                    //HeliChase_UpdateTask();
+                    HeliEngage.UpdateTask();
+
                 }
                 else
                 {

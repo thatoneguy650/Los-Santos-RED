@@ -4,6 +4,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,13 +18,14 @@ public class Kill : ComplexTask
     private bool CanSiege = false;
     private bool isSetCode3Close;
     private bool isSetRegularCode3;
-
+    private HeliEngage HeliEngage;
     private bool ShouldGoToBeforeAttack => Ped.IsAnimal || (Settings.SettingsManager.PoliceTaskSettings.AllowSiegeMode && Player.CurrentLocation.IsInside && Player.AnyPoliceKnowInteriorLocation && !Player.AnyPoliceRecentlySeenPlayer && CanSiege);
-    public Kill(IComplexTaskable cop, ITargetable player, ISettingsProvideable settings) : base(player, cop, 1000)
+    public Kill(IComplexTaskable cop, IPlayerChaseable playerchaseable,IEntityProvideable world, ITargetable player, ISettingsProvideable settings) : base(player, cop, 1000)
     {
         Name = "Kill";
         SubTaskName = "";
         Settings = settings;
+        HeliEngage = new HeliEngage(cop, playerchaseable, world, Settings, player);
     }
     public override void Start()
     {
@@ -83,10 +85,14 @@ public class Kill : ComplexTask
             {
                 if (Ped.IsInHelicopter)
                 {
-                    Vector3 pedPos = Player.Character.Position;
-                    if (Ped.Pedestrian.CurrentVehicle.Exists())
-                    {
-                        NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.GetRandomNumber(40f, 60f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(50f, 70f));
+                    HeliEngage.AssignTask();
+                    //Vector3 pedPos = Player.Character.Position;
+                    //if (Ped.Pedestrian.CurrentVehicle.Exists())
+                    //{
+                    //    HeliEngage.AssignTask();
+
+
+                        //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.RandomPercent(50) ? -40f : 40f, RandomItems.GetRandomNumber(40f, 60f)); //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.RandomPercent(50) ? -35f : 35f, RandomItems.GetRandomNumber(50f, 70f));
 
 
 
@@ -141,7 +147,7 @@ ENDENUM */
                         //{
                         //    NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, 0.0f, 0.0f, RandomItems.GetRandomNumber(70f, 80f)); //NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, Player.Character, pedPos.X, pedPos.Y, pedPos.Z, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);//NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, Player.Character, pedPos.X, pedPos.Y, pedPos.Z, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);
                         //}
-                    }
+                    //}
                 }
                 else if (Ped.IsInPlane)
                 {
@@ -284,6 +290,13 @@ ENDENUM */
             {
                 NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, Settings.SettingsManager.DebugSettings.CanineRunSpeed);
             }
+
+            if (Ped.IsInHelicopter)
+            {
+                HeliEngage.UpdateTask();
+            }
+
+
         }
     }
     public override void ReTask()

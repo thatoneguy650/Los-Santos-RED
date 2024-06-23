@@ -98,6 +98,7 @@ public class DebugSettings : ISettingsDefaultable
     public bool DoBothAttachments { get; set; }
     public bool DoPhysicalAttachment { get; set; }
     public int HeliMission { get; set; }
+    public float HeliMissionCruiseSpeed { get; set; }
     public bool UseNewDrag { get; set; }
 
 
@@ -303,7 +304,8 @@ public class DebugSettings : ISettingsDefaultable
         //RagdollTeleport = false;
         //RagdollRotationOrder = 1;
 
-        HeliMission = 6;
+        HeliMission = 9;
+        HeliMissionCruiseSpeed = 20f;
 
 
         UseNewDrag = false;
