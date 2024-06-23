@@ -223,6 +223,19 @@ public class DebugPlayerStateSubMenu : DebugSubMenu
             menu.Visible = false;
         };
         PlayerStateItemsMenu.AddItem(setUnCuffed);
+
+
+
+        UIMenuItem SayItem = new UIMenuItem("Say", "Have Player Say");
+        SayItem.Activated += (menu, item) =>
+        {
+            
+            menu.Visible = false;
+            Player.PlayerVoice.DebugSayRandom();
+
+
+        };
+        PlayerStateItemsMenu.AddItem(SayItem);
     }
 }
 

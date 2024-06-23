@@ -64,6 +64,7 @@ namespace LosSantosRED.lsr.Interface
         CriminalHistory CriminalHistory { get; }
         GroupManager GroupManager { get; }
         Cop ClosestCopDriverToPlayer { get; }
+        IntimidationManager IntimidationManager { get; }
         //bool IsHostile(Gang gang);
     }
 }

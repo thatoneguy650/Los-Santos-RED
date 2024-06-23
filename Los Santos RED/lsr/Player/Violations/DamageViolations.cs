@@ -24,7 +24,7 @@ public class DamageViolations
     private uint GameTimeLastKilledCivilian; 
     private uint GameTimeLastHurtCop;
     private uint GameTimeLastKilledCop;
-
+    private List<SecurityGuard> PlayerKilledSecurityGuards = new List<SecurityGuard>();
     private List<PedExt> PlayerKilledCivilians = new List<PedExt>();
     private List<Cop> PlayerKilledCops = new List<Cop>();
     public int CountKilledCopsByAgency(string agencyID) => PlayerKilledCops.Where(x => x.AssignedAgency != null && x.AssignedAgency.ID == agencyID).Count();
@@ -33,6 +33,11 @@ public class DamageViolations
     public bool NearCivilianMurderVictim => CountNearCivilianMurderVictim > 0;
     public int CountNearCivilianMurderVictim => PlayerKilledCivilians.Count(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Player.Character) <= Settings.SettingsManager.ViolationSettings.MurderDistance);
     public int CountRecentCivilianMurderVictim => PlayerKilledCivilians.Count(x => x.Pedestrian.Exists() && Game.GameTime - x.GameTimeKilled <= 15000);
+
+    public int CountRecentCivilianMurderVictimWithoutSecurity => PlayerKilledCivilians.Count(x => x.Pedestrian.Exists() && Game.GameTime - x.GameTimeKilled <= 15000) - PlayerKilledSecurityGuards.Count(x => x.Pedestrian.Exists() && Game.GameTime - x.GameTimeKilled <= 15000);
+
+
+
     public bool RecentlyHurtCivilian => GameTimeLastHurtCivilian != 0 && Game.GameTime - GameTimeLastHurtCivilian <= Settings.SettingsManager.ViolationSettings.RecentlyHurtCivilianTime;
     public bool RecentlyKilledCivilian => GameTimeLastKilledCivilian != 0 && Game.GameTime - GameTimeLastKilledCivilian <= Settings.SettingsManager.ViolationSettings.RecentlyKilledCivilianTime;
     public bool RecentlyHurtCop => GameTimeLastHurtCop != 0 && Game.GameTime - GameTimeLastHurtCop <= Settings.SettingsManager.ViolationSettings.RecentlyHurtPoliceTime;
@@ -64,6 +69,7 @@ public class DamageViolations
         GameTimeLastKilledCop = 0;
         PlayerKilledCops.Clear();
         PlayerKilledCivilians.Clear();
+        PlayerKilledSecurityGuards.Clear();
     }
     public void AddKilledCivilian()
     {
@@ -136,6 +142,10 @@ public class DamageViolations
                 return;
             }
             PlayerKilledCivilians.Add(myPed);
+            if (myPed.GetType() == typeof(SecurityGuard))
+            {
+                PlayerKilledSecurityGuards.Add((SecurityGuard)myPed);
+            }
             GameTimeLastKilledCivilian = Game.GameTime;
             GameTimeLastHurtCivilian = Game.GameTime;       
         }

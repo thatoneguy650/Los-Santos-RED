@@ -53,6 +53,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsAlive { get; }
         bool IsSetDisabledControls { get; set; }
         CuffManager CuffManager { get; }
+        IntimidationManager IntimidationManager { get; }
 
         //   void CancelCurrentActivity();
         //  void CloseDriverDoor();

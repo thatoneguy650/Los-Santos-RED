@@ -420,9 +420,11 @@
     <Compile Include="lsr\Player\Interface\ICuffable.cs" />
     <Compile Include="lsr\Player\Interface\IGangBackupable.cs" />
     <Compile Include="lsr\Player\Interface\IInteriorManageable.cs" />
+    <Compile Include="lsr\Player\Interface\IIntimidationManageable.cs" />
     <Compile Include="lsr\Player\Interface\IOutfitManageable.cs" />
     <Compile Include="lsr\Player\Interface\IRestrictedAreaManagable.cs" />
     <Compile Include="lsr\Player\Interface\ITaxiRideable.cs" />
+    <Compile Include="lsr\Player\IntimidationManager\IntimidationManager.cs" />
     <Compile Include="lsr\Player\Inventory\Items\BodyArmorItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\CellphoneItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\EquipmentItem.cs" />

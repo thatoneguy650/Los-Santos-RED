@@ -109,13 +109,13 @@ public class HeliEngage
     }
     private void UpdatePilotTask()
     {
-# if DEBUG
-        EntryPoint.WriteToConsole($"ShouldRappel:{ShouldRappel} ShouldCircle:{ShouldCircle} StationaryTime{Player.CurrentLocation.StationaryTime} GameTimeAssignedCircle{GameTimeAssignedCircle} CircleTime{Game.GameTime - GameTimeAssignedCircle} HasStartedRappel{HasStartedRappel} HasFinishedRappel{HasFinishedRappel} CanHelicopterRappel{CanHelicopterRappel}");
-        if(Helicopter != null && Helicopter.Vehicle.Exists())
-        {
-            EntryPoint.WriteToConsole($"PassengerCount:{Helicopter.Vehicle.PassengerCount}");
-        }
-#endif
+//# if DEBUG
+//        EntryPoint.WriteToConsole($"ShouldRappel:{ShouldRappel} ShouldCircle:{ShouldCircle} StationaryTime{Player.CurrentLocation.StationaryTime} GameTimeAssignedCircle{GameTimeAssignedCircle} CircleTime{Game.GameTime - GameTimeAssignedCircle} HasStartedRappel{HasStartedRappel} HasFinishedRappel{HasFinishedRappel} CanHelicopterRappel{CanHelicopterRappel}");
+//        if(Helicopter != null && Helicopter.Vehicle.Exists())
+//        {
+//            EntryPoint.WriteToConsole($"PassengerCount:{Helicopter.Vehicle.PassengerCount}");
+//        }
+//#endif
         if (ShouldRappel)
         {
             PilotReppelTask();

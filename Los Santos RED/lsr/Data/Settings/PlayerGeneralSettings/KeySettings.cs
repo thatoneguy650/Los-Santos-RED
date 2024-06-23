@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -58,6 +59,16 @@ public class KeySettings : ISettingsDefaultable
     public int GrabPedGameControl { get; set; }
 
     public int HoldUpPedGameControl { get; set; }
+
+
+    public Keys YellKey { get; set; }
+    public Keys YellKeyModifier { get; set; }
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        SetDefault();
+    }
     public KeySettings()
     {
         SetDefault();
@@ -89,6 +100,10 @@ public class KeySettings : ISettingsDefaultable
 
         CrouchKey = Keys.LControlKey;
         CrouchKeyModifier = Keys.None;
+
+
+        YellKey = Keys.L;
+        YellKeyModifier = Keys.None;
 
         SprintKey = Keys.Z;
         SprintKeyModifier = Keys.None;

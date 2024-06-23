@@ -11,5 +11,6 @@ namespace LosSantosRED.lsr.Interface
     {
         Ped Character { get; }
         bool IsSetDisabledControls { get; set; }
+
     }
 }

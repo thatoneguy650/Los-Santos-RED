@@ -41,6 +41,7 @@ public class Chase : ComplexTask
     private uint GameTimeLastUpdatedChaseItems;
     private bool IsSetFollow;
     private bool IsAssignedHover;
+    private bool IsSetActionMode;
     private uint GameTimeAssignedHover;
 
     private HeliEngage HeliEngage;
@@ -99,7 +100,7 @@ public class Chase : ComplexTask
     public bool ShouldStopCar => Ped.DistanceToPlayer < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed > 0.5f && !Player.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;
     private bool ChaseRecentlyStarted => false;
     private bool ShouldAim => !UseWantedLevel || Player.WantedLevel > 1;
-    private bool ShouldCarJackPlayer => (!UseWantedLevel || Player.WantedLevel > 1 || !Player.IsBusted) && Cop.DistanceToPlayer <= 50f && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast && !Ped.Pedestrian.IsInAnyVehicle(true) && !Ped.IsAnimal;
+    private bool ShouldCarJackPlayer => !Player.IsBusted && (!UseWantedLevel || Player.WantedLevel > 1 /*|| !Player.IsBusted*/) && Cop.DistanceToPlayer <= 50f && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast && !Ped.Pedestrian.IsInAnyVehicle(true) && !Ped.IsAnimal;
     private bool ShouldGoToPlayerCar => Player.WantedLevel == 1 && Cop.DistanceToPlayer <= 50f && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;
     private bool ShouldChasePedInVehicle => Ped.IsDriver && !Ped.IsAnimal && (Ped.DistanceToPlayer >= 55f || Ped.IsInBoat || Ped.IsInHelicopter || World.Pedestrians.PoliceList.Count(x => x.DistanceToPlayer <= 25f && !x.IsInVehicle) > 3);
     private bool ShouldChaseRecklessly => !Player.IsBusted && (!UseWantedLevel || Player.PoliceResponse.CountCloseVehicleChasingCops >= 2) && (Player.WantedLevel >= Settings.SettingsManager.PoliceTaskSettings.PITVehicleChaseWantedLevelRequirement || Player.PoliceResponse.LethalForceAuthorized);
@@ -114,7 +115,16 @@ public class Chase : ComplexTask
         if (Ped.Pedestrian.Exists())
         {
             NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
-            NativeFunction.Natives.SET_PED_USING_ACTION_MODE(Ped.Pedestrian, true, -1, "DEFAULT_ACTION");
+            if (Player.WantedLevel > 1 || !UseWantedLevel)
+            {
+                NativeFunction.Natives.SET_PED_USING_ACTION_MODE(Ped.Pedestrian, true, -1, "DEFAULT_ACTION");
+                IsSetActionMode = true;
+            }
+            else
+            {
+                NativeFunction.Natives.SET_PED_USING_ACTION_MODE(Ped.Pedestrian, false, -1, "DEFAULT_ACTION");
+                IsSetActionMode = false;
+            }
             SeatAssigner = new SeatAssigner(Ped, World, World.Vehicles.SimplePoliceVehicles);
 
             //EntryPoint.WriteToConsole($"TASKER: Chase Start: {Ped.Pedestrian.Handle} ChaseDistance: {ChaseDistance}", 5);
@@ -211,6 +221,12 @@ public class Chase : ComplexTask
                     }
                 }
             }
+        }
+
+        if(!IsSetActionMode && Player.WantedLevel >= 2)
+        {
+            NativeFunction.Natives.SET_PED_USING_ACTION_MODE(Ped.Pedestrian, true, -1, "DEFAULT_ACTION");
+            IsSetActionMode = true;
         }
         GameTimeLastRan = Game.GameTime;
         

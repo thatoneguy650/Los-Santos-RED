@@ -45,6 +45,8 @@ namespace LosSantosRED.lsr
         private bool CanToggleAltMenu;
         private bool IsPressingActionWheelMenu;
         private uint GameTimeLastPressedStartTransaction;
+        private uint GameTimeLastPressedYell;
+
         private bool IsPressingSurrender => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKeyModifier, true);
         private bool IsPressingSprint => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SprintKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SprintKeyModifier, true);
         private bool IsPressingRightIndicator => IsKeyDownSafe(Settings.SettingsManager.KeySettings.RightIndicatorKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.RightIndicatorKeyModifer, true);
@@ -57,6 +59,11 @@ namespace LosSantosRED.lsr
         private bool IsPressingSelectorToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SelectorKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SelectorKeyModifier, true);
         private bool IsPressingCrouchToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.CrouchKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.CrouchKeyModifier, true);
         private bool IsPressingSimpleCellphone => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SimplePhoneKey,false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SimplePhoneKeyModifer, true);
+
+
+        private bool IsPressingYell => IsKeyDownSafe(Settings.SettingsManager.KeySettings.YellKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.YellKeyModifier, true);
+
+
         private bool ReleasedFireWeapon => NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.Attack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.Attack2) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehicleAttack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehicleAttack2) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehiclePassengerAttack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehiclePassengerAttack);
         private bool IsPressingFireWeapon => Game.IsControlPressed(0, GameControl.Attack) || Game.IsControlPressed(0, GameControl.Attack2) || Game.IsControlPressed(0, GameControl.VehicleAttack) || Game.IsControlPressed(0, GameControl.VehicleAttack2) || Game.IsControlPressed(0, GameControl.VehiclePassengerAttack) || Game.IsControlPressed(0, GameControl.VehiclePassengerAttack);
         private bool IsMoveControlPressed => Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft);
@@ -69,6 +76,7 @@ namespace LosSantosRED.lsr
         private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 500;
         private bool RecentlyPressedAltMenu => Game.GameTime - GameTimeLastPressedAltMenu <= 200;
         private bool RecentlyPressedSimplePhone => Game.GameTime - GameTimeLastPressedSimplePhone <= 500;
+        private bool RecentlyPressedYell => Game.GameTime - GameTimeLastPressedYell <= 500;
         public Input(IInputable player, ISettingsProvideable settings, IMenuProvideable menuProvider, IPedSwap pedswap)
         {
             Player = player;
@@ -221,6 +229,12 @@ namespace LosSantosRED.lsr
             {
                 Player.ActivityManager.Gesture();
                 GameTimeLastPressedGesture = Game.GameTime;
+            }
+            if(IsPressingYell && !RecentlyPressedYell)
+            {
+                EntryPoint.WriteToConsole("INPUT YELL RAN");
+                Player.IntimidationManager.YellGetDown();
+                GameTimeLastPressedYell = Game.GameTime;
             }
         }
         private void ProcessBurnerControls()

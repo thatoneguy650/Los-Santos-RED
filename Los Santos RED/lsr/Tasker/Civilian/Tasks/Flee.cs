@@ -19,8 +19,12 @@ public class Flee : ComplexTask
     private bool isCowering = false;
     private ISettingsProvideable Settings;
     private uint GameTimeLastCheckedSurrender;
+
+    private bool IsSetCower = false;
+
+    private bool WillCowerBasedOnIntimidation = false;
     private bool IsWithinCowerDistance => Ped.DistanceToPlayer <= Ped.CowerDistance;
-    private bool ShouldCower => Ped.WillCower && IsWithinCowerDistance && !Player.RecentlyShot;
+    //private bool ShouldCower => Ped.WillCower && IsWithinCowerDistance && !Player.RecentlyShot;
     private bool ShouldCallIn => Ped.HasCellPhone && (Ped.WillCallPolice || (Ped.WillCallPoliceIntense && Ped.PedReactions.HasSeenIntenseCrime));
     public Flee(IComplexTaskable ped, ITargetable player, ISettingsProvideable settings) : base(player, ped, 5000)
     {
@@ -37,13 +41,16 @@ public class Flee : ComplexTask
         }
         NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
         isInVehicle = Ped.Pedestrian.IsInAnyVehicle(false);
+        WillCowerBasedOnIntimidation = RandomItems.RandomPercent(Player.IntimidationManager.IntimidationPercent);
+
+        EntryPoint.WriteToConsole($"FLEE START WillCower:{Ped.WillCower} WillCowerBasedOnIntimidation{WillCowerBasedOnIntimidation}");
         ReTask();
         GameTimeStartedFlee = Game.GameTime;
         GameTimeLastRan = Game.GameTime;    
-        if(ShouldCallIn)
-        {
+        //if(ShouldCallIn)
+        //{
             RunInterval = 1000;
-        }
+        //}
     }
     public override void Update()
     {
@@ -59,23 +66,41 @@ public class Flee : ComplexTask
             NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 1.0f);
             NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, 1.0f);
         }
-        if(ShouldCower != isCowering)
+        //if(ShouldCower != isCowering)
+        //{
+        //    ReTask();
+        //}
+
+        if(isCowering)
         {
-            ReTask();
+            UpdateCowering();
         }
-        CheckCallIn();
-        
+
+        CheckCallIn();      
         if(Ped.WantedLevel > 0)
         {
             HandleSurrendering();
-        }
-        
-        
+        }  
         GameTimeLastRan = Game.GameTime;
+    }
 
-
-
-
+    private void UpdateCowering()
+    {
+        if(!IsWithinCowerDistance)
+        {
+            EntryPoint.WriteToConsole("PED FLEE: PED IS NOT WITHIN COWER DISTANCE RESETTING");
+            ReTask();
+           
+        }
+        if(!Ped.WillCower && Player.IntimidationManager.IntimidationPercent <= Settings.SettingsManager.PlayerOtherSettings.IntimidationMinBeforeCanFlee)
+        {
+            if (!RandomItems.RandomPercent(Player.IntimidationManager.IntimidationPercent))
+            {
+                WillCowerBasedOnIntimidation = false;
+                EntryPoint.WriteToConsole("PED FLEE: INTIMIDATION LEVEL FELL TOO LOW RESETTING");
+                ReTask();
+            }
+        }
     }
 
     private void HandleSurrendering()
@@ -102,7 +127,6 @@ public class Flee : ComplexTask
             GameTimeLastCheckedSurrender = Game.GameTime;
         }
     }
-
     public override void Stop()
     {
 
@@ -115,22 +139,23 @@ public class Flee : ComplexTask
         }
         Ped.Pedestrian.BlockPermanentEvents = true;
         Ped.Pedestrian.KeepTasks = true;
+        isCowering = false;
         if (isInVehicle)
         {
             TaskVehicleFlee();
         }
         else
         {
-            if (Ped.WillCower && IsWithinCowerDistance)
+            if ((Ped.WillCower || WillCowerBasedOnIntimidation) && IsWithinCowerDistance)
             {
                 TaskCowerOnFoot();
+                isCowering = true;
             }
             else
             {
                 TaskFleeOnFoot();
             }
         }
-        isCowering = ShouldCower;
     }
     private void CheckCallIn()
     {
@@ -207,12 +232,14 @@ public class Flee : ComplexTask
             NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, 1.0f);
             EntryPoint.WriteToConsole("FLEE SET PED FLEE IN VEHICLE");
         }
+        SubTaskName = "VehicleFlee";
     }
     private void TaskCowerOnFoot()
     {
         Ped.IsCowering = true;
         NativeFunction.Natives.TASK_COWER(Ped.Pedestrian, -1);
         EntryPoint.WriteToConsole("FLEE SET PED COWER");
+        SubTaskName = "Cower";
     }
     private void TaskFleeOnFoot()
     {
@@ -220,6 +247,7 @@ public class Flee : ComplexTask
         Vector3 CurrentPos = Ped.Pedestrian.Position;
         NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 5000f, -1, true, false);
         EntryPoint.WriteToConsole("FLEE SET PED FLEE");
+        SubTaskName = "FootFlee";
     }
 }
 

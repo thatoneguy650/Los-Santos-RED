@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
@@ -21,8 +22,12 @@ public class PlayerVoice
     private List<string> GenericWonPossibilities;
     private List<string> GenericPoliceFightPossibilities;
     private List<string> AnnoyedPossibilities;
+    private List<string> GetDownPossibilities;
     private List<string> Insults;
-    private bool CanSpeak => Player.IsAliveAndFree && !Player.IsIncapacitated && !Player.Stance.IsBeingStealthy && Game.GameTime - GameTimeLastSpoke >= (GameTimeBetweenSpeaking + TimeBetweenSpeakingRandomizer) && !Player.Character.IsCurrentWeaponSilenced;
+    private uint GametimeLastYelled;
+
+    private bool CanSpeak => Player.IsAliveAndFree && !Player.IsIncapacitated && !Player.Stance.IsBeingStealthy && !Player.Character.IsCurrentWeaponSilenced;
+    private bool CanSpeakTimeWise => Game.GameTime - GameTimeLastSpoke >= (GameTimeBetweenSpeaking + TimeBetweenSpeakingRandomizer);
     private uint GameTimeBetweenSpeaking
     {
         get
@@ -56,7 +61,7 @@ public class PlayerVoice
         GenericPoliceFightPossibilities = new List<string>(){"CHASED_BY_POLICE","FIGHT","FIGHT_RUN","GENERIC_CURSE_HIGH","GENERIC_CURSE_MED","GENERIC_SHOCKED_MED","PROVOKE_GENERIC","WON_DISPUTE","CHALLENGE_THREATEN"};
         Insults = new List<string>() { "GENERIC_CURSE_MED", "GENERIC_CURSE_HIGH", "GENERIC_INSULT_HIGH", "GENERIC_INSULT_MED", "GENERIC_FUCK_YOU" };
         AnnoyedPossibilities = new List<string>() { "GENERIC_CURSE_MED", "GENERIC_CURSE_HIGH", "GENERIC_SHOCKED_MED" };
-
+        GetDownPossibilities = new List<string>() { "GUN_DRAW", "CHALLENGE_THREATEN", "CHALLENGE_ACCEPTED_GENERIC" };
     }
     public void Update()
     {
@@ -68,64 +73,70 @@ public class PlayerVoice
     }
     public void OnWantedActiveMode()
     {
-        SayAvailableAmbient(GenericPoliceFightPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnWantedActiveModePercentage);
+        SayAvailableAmbient(GenericPoliceFightPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnWantedActiveModePercentage, false);
         //EntryPoint.WriteToConsoleTestLong("Player Voice OnWantedActiveMode");
     }
     public void OnWantedSearchMode()
     {
-        SayAvailableAmbient(GenericWonPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnWantedSearchModePercentage);
+        SayAvailableAmbient(GenericWonPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnWantedSearchModePercentage, true);
         //EntryPoint.WriteToConsoleTestLong("Player Voice OnWantedSearchMode");
     }
     public void OnBecameWanted()
     {
         if (Player.WantedLevel < 2)
         {
-            SayAvailableAmbient(GenericPoliceFightPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnBecameWantedPercentage);
+            SayAvailableAmbient(GenericPoliceFightPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnBecameWantedPercentage, false);
         }
         else
         {
-            SayAvailableAmbient(GenericPoliceFightPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnBecameWantedPercentage);
+            SayAvailableAmbient(GenericPoliceFightPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnBecameWantedPercentage,false);
         }
         //EntryPoint.WriteToConsoleTestLong("Player Voice OnBecameWanted");
     }
     public void OnLostWanted()
     {
-        SayAvailableAmbient(GenericWonPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnLostWantedPercentage);
+        SayAvailableAmbient(GenericWonPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnLostWantedPercentage, false);
         //EntryPoint.WriteToConsoleTestLong("Player Voice OnLostWanted");
     }
     public void OnSuspectEluded()
     {
-        SayAvailableAmbient(GenericWonPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnSuspectEludedPercentage);
+        SayAvailableAmbient(GenericWonPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnSuspectEludedPercentage, false);
         //EntryPoint.WriteToConsoleTestLong("Player Voice OnSuspectEluded");
     }
     public void OnCrashedCar()
     {
-        SayAvailableAmbient(GenericCrashPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnCrashedCarPercentage);
+        SayAvailableAmbient(GenericCrashPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnCrashedCarPercentage, true);
         //EntryPoint.WriteToConsoleTestLong("Player Voice OnCrashedCar");
     }
     public void OnShotGun()
     {
-        SayAvailableAmbient(GenericFightPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnShotGunPercentage);    
+        SayAvailableAmbient(GenericFightPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnShotGunPercentage, true);    
         //EntryPoint.WriteToConsoleTestLong("Player Voice OnShotGun");
     }
     public void OnKilledCop()
     {
-        SayAvailableAmbient(GenericFightPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnKilledCopPercentage);
+        SayAvailableAmbient(GenericFightPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnKilledCopPercentage, true);
         //EntryPoint.WriteToConsoleTestLong("Player Voice OnKilledCop");
     }
     public void OnKilledCivilian()
     {
-        SayAvailableAmbient(GenericFightPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnKilledCivilianPercentage);
+        SayAvailableAmbient(GenericFightPossibilities, false, Settings.SettingsManager.PlayerSpeechSettings.OnKilledCivilianPercentage, true);
         //EntryPoint.WriteToConsoleTestLong("Player Voice OnKilledCivilian");
     }
     public void SayInsult()
     {
-        SayAvailableAmbient(Insults, false, 100f);
+        SayAvailableAmbient(Insults, false, 100f, false);
     }
-    private bool SayAvailableAmbient(List<string> Possibilities, bool WaitForComplete, float percentage)
+    public void DebugSayRandom()
+    {
+        List<List<string>> listOfLists = new List<List<string>>() { GenericFightPossibilities, GenericCrashPossibilities, GenericWonPossibilities, GenericPoliceFightPossibilities, Insults, GetDownPossibilities };
+        List<string> selected = listOfLists.PickRandom();
+        SayAvailableAmbient(selected, false, 100f, false);
+    }
+    private bool SayAvailableAmbient(List<string> Possibilities, bool WaitForComplete, float percentage, bool doTimeCheck)
     {
         bool Spoke = false;
-        if (Settings.SettingsManager.PlayerSpeechSettings.EnableSpeech && CanSpeak && (percentage == 100f || RandomItems.RandomPercent(percentage)))
+        if (Settings.SettingsManager.PlayerSpeechSettings.EnableSpeech && CanSpeak && (percentage == 100f || RandomItems.RandomPercent(percentage)) && (!doTimeCheck || CanSpeakTimeWise))
         {
             foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()).Take(3))
             {
@@ -141,7 +152,7 @@ public class PlayerVoice
                 {
                     Spoke = true;
                 }
-                //EntryPoint.WriteToConsole($"PlayerVoice: {Player.Character.Handle} Attempting {AmbientSpeech}, Result: {Spoke}");
+                EntryPoint.WriteToConsole($"PlayerVoice: {Player.Character.Handle} Attempting {AmbientSpeech}, Result: {Spoke}");
                 if (Spoke)
                 {
                     break;
@@ -162,6 +173,16 @@ public class PlayerVoice
         return Spoke;
     }
 
- 
+    public void YellGetDown()
+    {
+        if(GametimeLastYelled != 0 && Game.GameTime - GametimeLastYelled <= 2000)
+        {
+            return;
+        }
+        EntryPoint.WriteToConsole("PV YELL GET DOWN RAN");
+        SayAvailableAmbient(GetDownPossibilities, false, 100f, false);
+        GametimeLastYelled = Game.GameTime;
+    }
+
 }
 

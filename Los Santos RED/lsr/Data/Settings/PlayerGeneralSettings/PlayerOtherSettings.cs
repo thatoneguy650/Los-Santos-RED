@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 public class PlayerOtherSettings : ISettingsDefaultable
 {
+
     [Description("Time an NPC needs to have seen you to determine if they can recognize you. Used for BOLOs and some crimes.")]
     public uint Recognize_BaseTime { get; set; }
     [Description("Additional Time an NPC needs to have seen you to determine if they can recognize you when it is night")]
@@ -124,6 +125,18 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public uint VeryStationaryTime { get; set; }
     public float StationaryDistance { get; set; }
 
+    public float InsideIntimidationBoost { get; set; }
+    public float RecentlyShotIntimidationBoost { get; set; }
+    public float VisiblyArmedIntimidationBoost { get; set; }
+    public float WeaponLevelBoostScalar { get; set; }
+    public float RecentlyYelledIntimidationBoost { get; set; }
+    public float KilledCivilianIntimidationBoost { get; set; }
+    public float MurderRampageIntimidationBoost { get; set; }
+    public float KilledCopIntimidationBoost { get; set; }
+    public uint RecentlyYellingIntimidationTime { get; set; }
+    public float PlayerWantedIntimidationBoost { get; set; }
+    public float IntimidationMinBeforeCanFlee { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -135,6 +148,19 @@ public class PlayerOtherSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
+        InsideIntimidationBoost = 35f;
+        RecentlyShotIntimidationBoost = 20f;
+        VisiblyArmedIntimidationBoost = 20f;
+        WeaponLevelBoostScalar = 20f;
+        RecentlyYelledIntimidationBoost = 30f;
+        KilledCivilianIntimidationBoost = -20f;
+        MurderRampageIntimidationBoost = -70f;
+        KilledCopIntimidationBoost = -50f;
+        PlayerWantedIntimidationBoost = -30f;
+        IntimidationMinBeforeCanFlee = 30f;
+
+        RecentlyYellingIntimidationTime = 20000;
+
         Recognize_BaseTime = 3000;//2000;
         Recognize_NightPenalty = 3000;// 3500;
         Recognize_VehiclePenalty = 1500;// 750;

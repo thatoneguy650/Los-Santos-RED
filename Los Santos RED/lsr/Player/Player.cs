@@ -18,7 +18,8 @@ namespace Mod
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherAnnounceable,
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IContactRelateable, ILicenseable, IPropertyOwnable,
                           ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable, IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable,
-                          IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable, IRestrictedAreaManagable, ITaxiRideable, IGangBackupable, IInteriorManageable, ICuffable
+                          IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable, IRestrictedAreaManagable, ITaxiRideable, IGangBackupable, IInteriorManageable, 
+                            ICuffable, IIntimidationManageable
     {
         public int UpdateState = 0;
         private float CurrentVehicleRoll;
@@ -171,9 +172,10 @@ namespace Mod
             InteriorManager = new InteriorManager(World, PlacesOfInterest, Settings, this, this, this);
             CuffManager = new CuffManager(this, Settings);
             RadarDetector = new RadarDetector(this, World, Settings);
-
+            IntimidationManager = new IntimidationManager(this, World, Settings);
 
         }
+        public IntimidationManager IntimidationManager { get; private set; }
         public CuffManager CuffManager { get; private set; }
         public RelationshipManager RelationshipManager { get; private set; }
         public GPSManager GPSManager { get; private set; }
@@ -549,6 +551,7 @@ namespace Mod
             WeaponEquipment.Setup();
             CellPhone.Start();
             GangBackupManager.Setup();
+            IntimidationManager.Setup();
             SpeechSkill = RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max);
             Update();
             foreach(GameLocation bl in PlacesOfInterest.PossibleLocations.InteractableLocations())
@@ -593,6 +596,7 @@ namespace Mod
             CuffManager.Update();
             GameFiber.Yield();//TR Yield RemovedTest 1
             RadarDetector.Update();
+            IntimidationManager.Update();
         }
         public void SetNotBusted()
         {
@@ -743,6 +747,9 @@ namespace Mod
 
             CuffManager.Reset();
 
+            IntimidationManager.Reset();
+
+
            // NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Character, 313, false);
         }
         public void Dispose()
@@ -781,6 +788,7 @@ namespace Mod
             InteriorManager.Dispose();
             CuffManager.Dispose();
             RadarDetector.Dispose();
+            IntimidationManager.Dispose();
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
