@@ -49,6 +49,7 @@ public class LEDispatcher
     private uint GameTimeLastAttemptedAssaultSpawn;
     private bool IsTunnelSpawn;
     private StoredSpawn SelectedTunnelSpawn;
+    private uint GameTimeLastCheckedHeliFill;
 
     private bool HasNeedToSpawnHeli => World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit;
     private bool HasNeedToSpawnBoat => (Player.CurrentVehicle?.IsBoat == true || Player.IsSwimming) && World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit;
@@ -735,7 +736,7 @@ public class LEDispatcher
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
-        if(!Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
+        if (!Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
         {
             return HasDispatchedThisTick;
         }
@@ -746,7 +747,65 @@ public class LEDispatcher
             HasDispatchedThisTick = true;
         }
         HandleAssaultSpawns();
+        HandleHelicopterRefill();
         return HasDispatchedThisTick;
+    }
+
+    private void HandleHelicopterRefill()
+    {
+        //EntryPoint.WriteToConsole("CHECK HELI REFIL RAN 0");
+        if (!Settings.SettingsManager.PoliceSpawnSettings.AllowHelicopterRespawn)
+        {
+            return;
+        }
+        bool shouldAttempt = GameTimeLastCheckedHeliFill == 0 || Game.GameTime - GameTimeLastCheckedHeliFill >= 9000;
+        if (!shouldAttempt)
+        {
+            return;
+        }
+        //EntryPoint.WriteToConsole("CHECK HELI REFIL RAN 1");
+        GameTimeLastCheckedHeliFill = Game.GameTime;
+        VehicleExt helicopter = World.Vehicles.PoliceVehicles.Where(x => !x.HasBeenPassengerRefilled && x.HasHadPedsRappelOrParachute && Game.GameTime - x.GameTimeLastHadPedsRappelOrParachute >= 25000).FirstOrDefault();
+        if(helicopter == null || !helicopter.Vehicle.Exists())
+        {
+            return;
+        }
+       // EntryPoint.WriteToConsole("CHECK HELI REFIL RAN 2");
+        if (helicopter.RappelledSeats == null || !helicopter.RappelledSeats.Any())
+        {
+            return;
+        }
+        //EntryPoint.WriteToConsole("CHECK HELI REFIL RAN 3");
+        foreach (RappelledSeat rs in helicopter.RappelledSeats)
+        {
+            if(helicopter == null || !helicopter.Vehicle.Exists())
+            {
+                return;
+            }
+            if (helicopter.Vehicle.IsSeatFree(rs.SeatRappelledFrom))
+            {
+                //EntryPoint.WriteToConsole("CHECK HELI REFIL RAN SPAWN !");
+                CallRefillSpawnTask(helicopter, rs.SeatRappelledFrom);
+            }
+            GameFiber.Yield();
+        }
+        if (helicopter == null || !helicopter.Vehicle.Exists())
+        {
+            return;
+        }
+        helicopter.HasBeenPassengerRefilled = true;
+    }
+    private void CallRefillSpawnTask(VehicleExt vehicleExt,int seatIndex)
+    {
+        LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, vehicleExt.DispatchableVehicle, null, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, World, ModItems, false);
+        spawnTask.SpawnWithAllWeapons = true;
+        EntryPoint.WriteToConsole($"DEBUG LE DISPATCH RESPAWNING RAPPELLED PED VehicleType:{VehicleType?.ModelName} PersonType:{PersonType?.ModelName} RequiredPedGroup:{VehicleType?.RequiredPedGroup} GroupName:{PersonType?.GroupName}");
+        spawnTask.SpawnAsPassenger(vehicleExt, seatIndex);
+        GameFiber.Yield();
+        spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = false; });
+        //spawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));
+        HasDispatchedThisTick = true;
+        Player.OnLawEnforcementSpawn(Agency, VehicleType, PersonType);
     }
 
     private void HandleAssaultSpawns()
@@ -1173,7 +1232,6 @@ public class LEDispatcher
         while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 3);//2//10
         return isValidSpawn && SpawnLocation.HasSpawns;
     }
-
     private bool CheckSpecialSpawnCases()
     {
         if (Player.WantedLevel >= Settings.SettingsManager.PoliceSpawnSettings.TunnelSpawnWantedLevelMinimum && Player.CurrentLocation.TreatAsInTunnel && (Player.CurrentLocation.IsOffroad || Player.CurrentLocation.IsInside))
@@ -1210,7 +1268,6 @@ public class LEDispatcher
         }
         return false;
     }
-
     private bool GetSpawnTypes()
     {
         Agency = null;
@@ -1393,8 +1450,6 @@ public class LEDispatcher
             MyBlip.Delete();
         }
     }
-
-
     private List<Agency> GetAgencies(Vector3 Position, int WantedLevel, Zone positionZone, Street positionStreet)
     {
         List<Agency> ToReturn = new List<Agency>();

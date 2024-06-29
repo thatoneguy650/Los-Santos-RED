@@ -888,7 +888,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,RandomizeHead = true
                 ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
                 ,RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(3, 11, 0, 0), new PedComponent(4, 10, 9, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 153, 0, 0), new PedComponent(11, 319, 2, 0)},
+                    new List<PedComponent>() { new PedComponent(3, 11, 0, 0), new PedComponent(4, 22, 1, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 153, 0, 0), new PedComponent(11, 319, 2, 0)},
                     new List<PedPropComponent>() { })
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 58, 1),new PedPropComponent(1, 5, 0) }
                 ,OptionalPropChance = 25
@@ -903,7 +903,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,RandomizeHead = true
                 ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
                 ,RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(3, 1, 0, 0), new PedComponent(4, 10, 9, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 153, 0, 0), new PedComponent(11, 317, 2, 0)},
+                    new List<PedComponent>() { new PedComponent(3, 1, 0, 0), new PedComponent(4, 22, 1, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 153, 0, 0), new PedComponent(11, 317, 2, 0)},
                     new List<PedPropComponent>() { })
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 58, 1),new PedPropComponent(1, 5, 0) }
                 ,OptionalPropChance = 25
@@ -1211,7 +1211,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,RandomizeHead = true
                 ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
                 ,RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(3, 11, 0, 0), new PedComponent(4, 10, 3, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 122, 0, 0), new PedComponent(9, 11, 1, 0), new PedComponent(11, 319, 5, 0)},
+                    new List<PedComponent>() { new PedComponent(3, 11, 0, 0), new PedComponent(4, 10, 2, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 122, 0, 0), new PedComponent(9, 11, 1, 0), new PedComponent(11, 319, 5, 0)},
                     new List<PedPropComponent>() { })
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 5, 0) }
                 ,OptionalPropChance = 25
@@ -1222,7 +1222,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,RandomizeHead = true
                 ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
                 ,RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(3, 1, 0, 0), new PedComponent(4, 10, 3, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 122, 0, 0), new PedComponent(9, 11, 1, 0), new PedComponent(11, 317, 5, 0)},
+                    new List<PedComponent>() { new PedComponent(3, 1, 0, 0), new PedComponent(4, 10, 2, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 122, 0, 0), new PedComponent(9, 11, 1, 0), new PedComponent(11, 317, 5, 0)},
                     new List<PedPropComponent>() { })
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 5, 0) }
                 ,OptionalPropChance = 25
@@ -1233,7 +1233,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,RandomizeHead = true
                 ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
                 ,RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(3, 11, 0, 0), new PedComponent(4, 10, 3, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 153, 0, 0), new PedComponent(11, 319, 5, 0)},
+                    new List<PedComponent>() { new PedComponent(3, 11, 0, 0), new PedComponent(4, 10, 2, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 153, 0, 0), new PedComponent(11, 319, 5, 0)},
                     new List<PedPropComponent>() { })
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 5, 0) }
                 ,OptionalPropChance = 25
@@ -1248,7 +1248,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,RandomizeHead = true
                 ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
                 ,RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(3, 1, 0, 0), new PedComponent(4, 10, 3, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 153, 0, 0), new PedComponent(11, 317, 5, 0)},
+                    new List<PedComponent>() { new PedComponent(3, 1, 0, 0), new PedComponent(4, 10, 2, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 153, 0, 0), new PedComponent(11, 317, 5, 0)},
                     new List<PedPropComponent>() { })
                 ,OptionalProps = new List<PedPropComponent>() {  new PedPropComponent(1, 5, 0) }
                 ,OptionalPropChance = 25

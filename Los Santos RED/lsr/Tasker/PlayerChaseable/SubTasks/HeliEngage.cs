@@ -33,11 +33,32 @@ public class HeliEngage
         && Player.CurrentLocation.StationaryTime >= Settings.SettingsManager.PoliceTaskSettings.RappellingStationaryTime
         && GameTimeAssignedCircle != 0 
         && Game.GameTime - GameTimeAssignedCircle >= Settings.SettingsManager.PoliceTaskSettings.MinCircleTimeToStartRappelling 
-        && (!Settings.SettingsManager.PoliceTaskSettings.RappellingRequiresLethalForce || Player.PoliceResponse.LethalForceAuthorized) 
+        //&& (!Settings.SettingsManager.PoliceTaskSettings.RappellingRequiresLethalForce || Player.PoliceResponse.LethalForceAuthorized) 
+
+        && IsAbleToEngage
+        && Cop.PlayerPerception.HeightToTarget <= 65f
+
+
         //&& (!Settings.SettingsManager.PoliceTaskSettings.RappellingRequiresWeaponsFree || Player.PoliceResponse.IsWeaponsFree)
         && Helicopter != null
         && Helicopter.Vehicle.Exists()
         && ((HasStartedRappel && !HasFinishedRappel) || Helicopter.Vehicle.PassengerCount >= 2);
+
+    private bool IsAbleToEngage
+    {
+        get
+        {
+            if(Settings.SettingsManager.PoliceTaskSettings.RappellingRequiresWeaponsFree)
+            {
+                return Player.PoliceResponse.IsWeaponsFree;
+            }
+            else if (Settings.SettingsManager.PoliceTaskSettings.RappellingRequiresLethalForce)
+            {
+                return Player.PoliceResponse.LethalForceAuthorized;
+            }
+            return true;
+        }
+    }
 
     public HeliEngage(IComplexTaskable ped, IPlayerChaseable cop, IEntityProvideable world, ISettingsProvideable settings, ITargetable player)
     {
@@ -161,6 +182,7 @@ public class HeliEngage
             IsAssignedRappel = true;
             GameTimeAssignedRappel = Game.GameTime;
             GameTimeStartedRappel = 0;
+            HasFinishedRappel = false;
             EntryPoint.WriteToConsole("Heli Engage Assigned Hover Rappel Task");
         }
         else
@@ -264,7 +286,7 @@ public class HeliEngage
             int DoorID = seatIndex == 1 ? 2 : 3;
             NativeFunction.Natives.TASK_RAPPEL_FROM_HELI(c.Pedestrian, 10f);
             HasStartedRappel = true;
-            Helicopter.AddRappelled(seatIndex);
+            Helicopter.AddRappelled(c,seatIndex);
         }
         GameTimeStartedRappel = Game.GameTime;
     }

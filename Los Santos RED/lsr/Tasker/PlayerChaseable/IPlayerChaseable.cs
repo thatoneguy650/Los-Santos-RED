@@ -13,5 +13,6 @@ public interface IPlayerChaseable
     List<uint> BlackListedVehicles { get; }
     bool HasTaser { get; }
     uint Handle { get; }
+    PlayerPerception PlayerPerception { get; }
 }
 

@@ -93,6 +93,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public int AssignedSeat { get; set; }
     public VehicleExt AssignedVehicle { get; set; }
     public Vector3 Position => position;
+    public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
     public bool HasCalledInCrimesRecently => GameTimeLastReportedCrime != 0 && Game.GameTime - GameTimeLastReportedCrime <= 15000;
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool CanAttackPlayer => IsFedUpWithPlayer || HatesPlayer;
@@ -439,7 +440,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public uint GameTimeSeenUnconscious => Game.GameTime - GameTimeFirstSeenUnconscious;
     public bool HasBeenLooted { get; set; } = false;
     public bool IsDead { get; set; } = false;
-    public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
+   // public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
     public bool WasModSpawned { get; set; } = false;
     public Vector3 SpawnPosition { get; set; }
     public float SpawnHeading { get; set; }

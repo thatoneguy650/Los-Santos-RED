@@ -469,6 +469,21 @@ public class ButtonPrompts
         {
             RemovePrompts("ShowStopSurrender");
         }
+
+
+
+        if (Settings.SettingsManager.PlayerOtherSettings.AllowYellGetDownPrompt && Player.CurrentLookedAtPed == null && !Player.ActivityManager.IsInteractingWithLocation && !Prompts.Any(x=> x.Identifier != "YellGetDown") && !Player.IsShowingFrontEndMenus && !Player.AnyPoliceRecentlySeenPlayer && Player.ClosestPoliceDistanceToPlayer > 40f && Player.IsAliveAndFree && Player.IsAiming && Player.IsOnFoot)
+        {
+            AddPrompt("YellGetDown", "Force All Down", "YellGetDown", Settings.SettingsManager.KeySettings.YellKeyModifier, Settings.SettingsManager.KeySettings.YellKey, 999);
+        }
+        else
+        {
+            RemovePrompts("YellGetDown");
+        }
+
+
+
+
     }
     private void SittingPrompts()
     {

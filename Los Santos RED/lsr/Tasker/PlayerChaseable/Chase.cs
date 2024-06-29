@@ -520,57 +520,65 @@ public class Chase : ComplexTask
     }
     private void GoToPlayersCar()
     {
-        if (Ped.Pedestrian.Exists())
+        if (!Ped.Pedestrian.Exists())
         {
-            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringChase)
-            {
-                Ped.Pedestrian.BlockPermanentEvents = true;
-            }
-            else
-            {
-                Ped.Pedestrian.BlockPermanentEvents = false;
-            }
-            Ped.Pedestrian.KeepTasks = true;
-            NeedsUpdates = true;
-
-            if (Ped.Pedestrian.Exists() && Player.IsInVehicle && Player.Character.IsInAnyVehicle(false) && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
-            {
-                if (CurrentSubTask != SubTask.CarJackPlayer)
-                {
-                    Cop.WeaponInventory.SetCompletelyUnarmed();
-                    IsChasingSlowly = false;
-                    TaskedEnterVehicle = Player.CurrentVehicle.Vehicle;
-
-                    if (!Cop.BlackListedVehicles.Any(x => x == Player.CurrentVehicle.Vehicle.Handle))
-                    {
-                        Cop.BlackListedVehicles.Add(Player.CurrentVehicle.Vehicle.Handle);
-                    }
-
-
-                    //TaskedSeatIndex = Player.Character.SeatIndex;
-                    NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Ped.Pedestrian, Player.CurrentVehicle.Vehicle, -1, Player.Character.SeatIndex, 5.0f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_JACK_ANYONE | (int)eEnter_Exit_Vehicle_Flags.ECF_JUST_PULL_PED_OUT );//   9);//caused them to get confused about getting back in thier car
-                    CurrentSubTask = SubTask.CarJackPlayer;
-                }
-            }
-            //else
-            //{
-            //    if(CurrentSubTask == SubTask.CarJackPlayer)
-            //    {
-            //        EntryPoint.WriteToConsole("Car Jack, Retasking Ped");
-            //        unsafe
-            //        {
-            //            int lol = 0;
-            //            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-            //            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
-            //            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-            //            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-            //            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-            //            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-            //        }
-            //        CurrentSubTask = SubTask.None;
-            //    }
-            //}
+            return;
         }
+
+        if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringChase)
+        {
+            Ped.Pedestrian.BlockPermanentEvents = true;
+        }
+        else
+        {
+            Ped.Pedestrian.BlockPermanentEvents = false;
+        }
+        Ped.Pedestrian.KeepTasks = true;
+        NeedsUpdates = true;
+
+
+        if(IsFirstRun)
+        {
+            CurrentSubTask = SubTask.None;
+            IsFirstRun = false;
+        }
+
+        if (Ped.Pedestrian.Exists() && Player.IsInVehicle && Player.Character.IsInAnyVehicle(false) && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        {
+            if (CurrentSubTask != SubTask.CarJackPlayer)
+            {
+                Cop.WeaponInventory.SetCompletelyUnarmed();
+                IsChasingSlowly = false;
+                TaskedEnterVehicle = Player.CurrentVehicle.Vehicle;
+                if (!Cop.BlackListedVehicles.Any(x => x == Player.CurrentVehicle.Vehicle.Handle))
+                {
+                    Cop.BlackListedVehicles.Add(Player.CurrentVehicle.Vehicle.Handle);
+                }
+                //TaskedSeatIndex = Player.Character.SeatIndex;
+                NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Ped.Pedestrian, Player.CurrentVehicle.Vehicle, -1, Player.Character.SeatIndex, 5.0f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_JACK_ANYONE | (int)eEnter_Exit_Vehicle_Flags.ECF_JUST_PULL_PED_OUT );//   9);//caused them to get confused about getting back in thier car
+                CurrentSubTask = SubTask.CarJackPlayer;
+                EntryPoint.WriteToConsole($"TASKED CAR JACK COP {Ped.Handle}");
+            }
+        }
+        //else
+        //{
+        //    if(CurrentSubTask == SubTask.CarJackPlayer)
+        //    {
+        //        EntryPoint.WriteToConsole("Car Jack, Retasking Ped");
+        //        unsafe
+        //        {
+        //            int lol = 0;
+        //            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+        //            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
+        //            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+        //            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+        //            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+        //            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        //        }
+        //        CurrentSubTask = SubTask.None;
+        //    }
+        //}
+        
     }
     private void SetSiren()
     {

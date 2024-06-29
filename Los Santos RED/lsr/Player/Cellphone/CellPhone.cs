@@ -366,6 +366,10 @@ public class CellPhone
     }
     public void AddScheduledText(PhoneContact phoneContact, string MessageToSend, DateTime timeToAdd, bool sendImmediately)
     {
+        if (phoneContact == null)
+        {
+            return;
+        }
         if (!AddedTexts.Any(x => x.ContactName == phoneContact.Name && x.Message == MessageToSend))
         {
             ScheduledTexts.Add(new ScheduledText(timeToAdd, phoneContact, MessageToSend) { SendImmediately = sendImmediately });
@@ -373,6 +377,10 @@ public class CellPhone
     }
     public void AddCustomScheduledText(PhoneContact phoneContact, string MessageToSend, DateTime timeToAdd, string customPicture, bool sendImmediately)
     {
+        if (phoneContact == null)
+        {
+            return;
+        }
         if (!AddedTexts.Any(x => x.ContactName == phoneContact.Name && x.Message == MessageToSend))
         {
             EntryPoint.WriteToConsole($"CUSTOM PICTURE SENT {customPicture}");

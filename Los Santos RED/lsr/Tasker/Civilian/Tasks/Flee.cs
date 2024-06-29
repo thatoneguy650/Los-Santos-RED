@@ -70,18 +70,29 @@ public class Flee : ComplexTask
         //{
         //    ReTask();
         //}
-
-        if(isCowering)
+        WillCowerBasedOnIntimidation = RandomItems.RandomPercent(Player.IntimidationManager.IntimidationPercent);
+        if (isCowering)
         {
             UpdateCowering();
         }
-
+        else
+        {
+            UpdateFleeing();
+        }
         CheckCallIn();      
         if(Ped.WantedLevel > 0)
         {
             HandleSurrendering();
         }  
         GameTimeLastRan = Game.GameTime;
+    }
+
+    private void UpdateFleeing()
+    {
+        if((Ped.WillCower || WillCowerBasedOnIntimidation) && IsWithinCowerDistance)
+        {
+            ReTask();
+        }
     }
 
     private void UpdateCowering()
@@ -243,6 +254,7 @@ public class Flee : ComplexTask
     }
     private void TaskFleeOnFoot()
     {
+        NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
         Ped.IsCowering = false;
         Vector3 CurrentPos = Ped.Pedestrian.Position;
         NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 5000f, -1, true, false);

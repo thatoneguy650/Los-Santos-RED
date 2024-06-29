@@ -299,6 +299,8 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
     [Description("Minimum wanted level required to allow police to spawn on the tunnel spawn points.")]
     public int TunnelSpawnWantedLevelMinimum { get; set; }
+    public bool AllowHelicopterRespawn { get; set; }
+    public int HelicopterRespawnSeatLimit { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -498,5 +500,8 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
         FootPatrolSpawnPercentage = 55f;
         TunnelSpawnWantedLevelMinimum = 0;
+
+        AllowHelicopterRespawn = true;
+        HelicopterRespawnSeatLimit = 1;
     }
 }

@@ -59,6 +59,17 @@ public class LESpawnTask : SpawnTask
             Cleanup(true);
         }
     }
+    public override void SpawnAsPassenger(VehicleExt vehicleExt, int seatIndex)
+    {
+        if(vehicleExt == null || !vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+        Setup();
+        SpawnedVehicle = vehicleExt.Vehicle;
+        LastCreatedVehicle = vehicleExt;
+        PassengerCreate(seatIndex);
+    }
     private void AddCaninePassengers()
     {
         GameFiber.Yield();
@@ -336,6 +347,7 @@ public class LESpawnTask : SpawnTask
                 CreatedVehicle.Setup();
                 CreatedVehicle.AssociatedAgency = Agency;
                 CreatedVehicle.AddVehicleToList(World);
+                CreatedVehicle.DispatchableVehicle = VehicleType;
             }
             CreatedVehicle.IsPolice = true;
             CreatedVehicle.WasModSpawned = true;

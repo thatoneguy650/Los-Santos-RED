@@ -230,7 +230,7 @@ namespace LosSantosRED.lsr
                 Player.ActivityManager.Gesture();
                 GameTimeLastPressedGesture = Game.GameTime;
             }
-            if(IsPressingYell && !RecentlyPressedYell)
+            if(!RecentlyPressedYell && (IsPressingYell || Player.ButtonPrompts.IsPressed("YellGetDown")))
             {
                 EntryPoint.WriteToConsole("INPUT YELL RAN");
                 Player.IntimidationManager.YellGetDown();

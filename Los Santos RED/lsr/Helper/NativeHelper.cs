@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using ExtensionsMethods;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -711,7 +712,26 @@ namespace LosSantosRED.lsr.Helper
         }
         public static void ChangeModel(string ModelRequested)
         {
-            Model characterModel = new Model(ModelRequested);
+            //0x5d0c5325
+            EntryPoint.WriteToConsole($"ChangeModel START:{ModelRequested}");
+            Model characterModel;
+            if (uint.TryParse(ModelRequested, out uint result))
+            {
+                EntryPoint.WriteToConsole($"ChangeModel SET AS UINT INPUT:{ModelRequested} result:{result}");
+                characterModel = new Model(result);
+                
+            }
+            else if(ModelRequested.Left(2) == "0x")
+            {
+                EntryPoint.WriteToConsole($"ChangeModel LEFT IS 0x");
+                uint newModel = Convert.ToUInt32(ModelRequested,16);
+                EntryPoint.WriteToConsole($"ChangeModel LEFT IS 0x newModel{newModel}");
+                characterModel = new Model(newModel);
+            }
+            else
+            {
+                characterModel = new Model(ModelRequested);
+            }
             characterModel.LoadAndWait();
             characterModel.LoadCollisionAndWait();
             Game.LocalPlayer.Model = characterModel;

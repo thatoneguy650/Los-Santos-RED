@@ -175,7 +175,8 @@ public class PlayerVoice
 
     public void YellGetDown()
     {
-        if(GametimeLastYelled != 0 && Game.GameTime - GametimeLastYelled <= 2000)
+        bool shouldRun = GametimeLastYelled == 0 || Game.GameTime - GametimeLastYelled > 1000;
+        if (!shouldRun)
         {
             return;
         }

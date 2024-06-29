@@ -62,6 +62,8 @@ namespace LosSantosRED.lsr.Interface
         VehicleOwnership VehicleOwnership { get; }
         Ped Character { get; }
         ButtonPrompts ButtonPrompts { get; }
+        bool IsAiming { get; }
+        bool IsOnFoot { get; }
 
         void ShowVehicleInteractMenu(bool showDefault);
         // bool IsSitting { get; }

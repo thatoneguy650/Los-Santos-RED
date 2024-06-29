@@ -34,9 +34,14 @@ namespace LSR.Vehicles
         protected uint GameTimeLastAddedSonarBlip;
         private uint GameTimeLastDamagedByPlayer;
         private uint GameTimeLastUpdatedDamage;
-        private bool HasHadPedsRappelOrParachute;
-        private List<int> EjectedSeats = new List<int>();
+        public bool HasHadPedsRappelOrParachute { get; private set; }
+        public uint GameTimeLastHadPedsRappelOrParachute { get; private set; }
+        //private List<int> EjectedSeats = new List<int>();
 
+        public List<RappelledSeat> RappelledSeats = new List<RappelledSeat>();
+
+
+        public DispatchableVehicle DispatchableVehicle { get; set; }
         public VehicleInteractionMenu VehicleInteractionMenu { get; set; }
         public SimpleInventory SimpleInventory { get; private set; }
         public CashStorage CashStorage { get; private set; }
@@ -207,19 +212,20 @@ namespace LSR.Vehicles
         public bool CanPerformActivitiesInside => !IsBicycle && !IsMotorcycle && !IsJetSki && !IsQuad;
         public bool IsRandomlyLocked { get; set; } = false;
         public bool UsePlayerAnimations => !IsMotorcycle && !IsBicycle && !IsJetSki && !IsQuad;// VehicleClass != VehicleClass.Motorcycle && VehicleClass != VehicleClass.Cycle;
-
+        public bool HasBeenPassengerRefilled { get; set; } = false;
         public bool HasSpecialPassengerEntry
         {
             get
             {
-                if(!Vehicle.Exists())
+                return false;//no longer needed? TURN OFF THE FLAG_HAS_REAR_SEAT_ACTIVITIES WHILE KEEPING THE SAME LAYOUT
+                if (!Vehicle.Exists())
                 {
                     return false;
                 }
                 string modelName = Vehicle.Model.Name;
                 if (modelName == "0xd227bdbb" || modelName == "caddy3")
                 {
-                    return true;
+                    return false;// true;
                 }
                 return false;
             }
@@ -702,7 +708,7 @@ namespace LSR.Vehicles
         }
         public void UpgradePerformance()//should be an inherited class? VehicleExt and CopCar? For now itll stay in here 
         {
-            if (Vehicle.Exists() || Vehicle.IsHelicopter)
+            if (!Vehicle.Exists() || Vehicle.IsHelicopter)
             {
                 return;
             }
@@ -905,6 +911,7 @@ namespace LSR.Vehicles
             //}
             GetFuelTankCapacity();
             IsRandomlyLocked = RandomItems.RandomPercent(Settings.SettingsManager.VehicleSettings.LockVehiclePercentage);
+            
         }
         public void ForcePlateType(string text, int index)
         {
@@ -1669,13 +1676,13 @@ namespace LSR.Vehicles
             return false;
         }
 
-        public void AddRappelled(int seatIndex)
+        public void AddRappelled(PedExt ped, int seatIndex)
         {
-            if(!EjectedSeats.Contains(seatIndex))
-            {
-                EjectedSeats.Add(seatIndex);
-            }
+            RappelledSeat rs = new RappelledSeat(ped);
+            rs.AddRappelled(Game.GameTime, seatIndex);
+            RappelledSeats.Add(rs);
             HasHadPedsRappelOrParachute = true;
+            GameTimeLastHadPedsRappelOrParachute = Game.GameTime;
             EntryPoint.WriteToConsole($"VEHICLE MARKED AS RAPPELLED FROM SEAT {seatIndex}");
         }
     }

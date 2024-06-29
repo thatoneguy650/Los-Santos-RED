@@ -613,6 +613,7 @@
     <Compile Include="lsr\Vehicle\Components\Window.cs" />
     <Compile Include="lsr\Vehicle\Components\Windows.cs" />
     <Compile Include="lsr\Vehicle\Menu\TaxiInteractionMenu.cs" />
+    <Compile Include="lsr\Vehicle\Other\RappelledSeat.cs" />
     <Compile Include="lsr\Vehicle\Other\VehicleNameSelect.cs" />
     <Compile Include="lsr\Vehicle\Types\TaxiVehicleExt.cs" />
     <Compile Include="lsr\Vehicle\Variation\DispatchableVehicleExtra.cs" />

@@ -86,6 +86,11 @@ public abstract class SpawnTask
         }
     }
     public abstract void AttemptSpawn();
+
+    public virtual void SpawnAsPassenger(VehicleExt vehicleExt, int seatIndex)
+    {
+
+    }
     protected virtual void PlacePed(Ped ped)
     {
         if (PlacePedOnGround)
@@ -232,7 +237,6 @@ public abstract class SpawnTask
     {
 
     }
-
     public virtual void PostRun(ConditionalLocation conditionalLocation, GameLocation gameLocation)
     {
         CreatedPeople.ForEach(x => {

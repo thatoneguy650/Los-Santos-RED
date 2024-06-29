@@ -136,6 +136,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public uint RecentlyYellingIntimidationTime { get; set; }
     public float PlayerWantedIntimidationBoost { get; set; }
     public float IntimidationMinBeforeCanFlee { get; set; }
+    public bool AllowYellGetDownPrompt { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -152,7 +153,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         RecentlyShotIntimidationBoost = 20f;
         VisiblyArmedIntimidationBoost = 20f;
         WeaponLevelBoostScalar = 20f;
-        RecentlyYelledIntimidationBoost = 30f;
+        RecentlyYelledIntimidationBoost = 35f;
         KilledCivilianIntimidationBoost = -20f;
         MurderRampageIntimidationBoost = -70f;
         KilledCopIntimidationBoost = -50f;
@@ -249,6 +250,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         StationaryTime = 8000;
         VeryStationaryTime = 20000;
         StationaryDistance = 40f;
+        AllowYellGetDownPrompt = true;
     }
 
 }
