@@ -299,7 +299,17 @@ public class LowerRightDisplay
             }
         }
 
-
+        if(DisplayablePlayer.IntimidationManager.IsMinimumIntimidating)
+        {
+            if (PlayerDisplay == "")
+            {
+                PlayerDisplay = $"{UI.CurrentDefaultTextColor}{DisplayablePlayer.IntimidationManager.IntimidationDisplay}";
+            }
+            else
+            {
+                PlayerDisplay += $" {UI.CurrentDefaultTextColor}{DisplayablePlayer.IntimidationManager.IntimidationDisplay}";
+            }
+        }
 
         if ((DisplayablePlayer.IsNotWanted && Settings.SettingsManager.LSRHUDSettings.PlayerStatusIncludeTime) || (Settings.SettingsManager.LSRHUDSettings.PlayerStatusShowWhenSleeping && DisplayablePlayer.IsSleeping) || Time.ForceShowClock)
         {

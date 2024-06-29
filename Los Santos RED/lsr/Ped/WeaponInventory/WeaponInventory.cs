@@ -167,7 +167,11 @@ public class WeaponInventory
             }
             else
             {
-                if (Player.IsNotWanted)
+                if(WeaponOwner.PedAlerts.IsAlerted)
+                {
+                    AutoSetWeapons_Deadly();
+                }
+                else if (Player.IsNotWanted)
                 {
                     AutoSetWeapons_Default();
                 }

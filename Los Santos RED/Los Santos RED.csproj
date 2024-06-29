@@ -440,6 +440,7 @@
     <Compile Include="lsr\Player\Respawning\PedPlayerInteract.cs" />
     <Compile Include="lsr\Player\Respawning\PedVehicleInteract.cs" />
     <Compile Include="lsr\Player\Scanner\Radar Detector\RadarDetector.cs" />
+    <Compile Include="lsr\Player\Scanner\ScannerDispatchInformation.cs" />
     <Compile Include="lsr\Player\Taxi\TaxiManager.cs" />
     <Compile Include="lsr\Player\Taxi\TaxiRide.cs" />
     <Compile Include="lsr\Player\Money\BankAccount.cs" />
@@ -870,7 +871,6 @@
     <Compile Include="lsr\Player\Scanner\New2\DispatchReportInformation.cs" />
     <Compile Include="lsr\Player\Scanner\New2\IDispatches.cs" />
     <Compile Include="lsr\Player\Scanner\New2\IScannerPlayable.cs" />
-    <Compile Include="lsr\Player\Scanner\New2\ScannerNew.cs" />
     <Compile Include="lsr\Player\HumanState\Sprinting.cs" />
     <Compile Include="lsr\Player\Stance\Stance.cs" />
     <Compile Include="lsr\Player\Equipment\WeaponEquipment.cs" />

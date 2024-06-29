@@ -26,6 +26,9 @@ public class PlayerVoice
     private List<string> Insults;
     private uint GametimeLastYelled;
 
+
+    private bool CanForceSpeak => Player.IsAliveAndFree && !Player.IsIncapacitated;
+
     private bool CanSpeak => Player.IsAliveAndFree && !Player.IsIncapacitated && !Player.Stance.IsBeingStealthy && !Player.Character.IsCurrentWeaponSilenced;
     private bool CanSpeakTimeWise => Game.GameTime - GameTimeLastSpoke >= (GameTimeBetweenSpeaking + TimeBetweenSpeakingRandomizer);
     private uint GameTimeBetweenSpeaking
@@ -136,7 +139,7 @@ public class PlayerVoice
     private bool SayAvailableAmbient(List<string> Possibilities, bool WaitForComplete, float percentage, bool doTimeCheck)
     {
         bool Spoke = false;
-        if (Settings.SettingsManager.PlayerSpeechSettings.EnableSpeech && CanSpeak && (percentage == 100f || RandomItems.RandomPercent(percentage)) && (!doTimeCheck || CanSpeakTimeWise))
+        if (Settings.SettingsManager.PlayerSpeechSettings.EnableSpeech && (CanSpeak || (!doTimeCheck && CanForceSpeak)) && (percentage == 100f || RandomItems.RandomPercent(percentage)) && (!doTimeCheck || CanSpeakTimeWise))
         {
             foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()).Take(3))
             {

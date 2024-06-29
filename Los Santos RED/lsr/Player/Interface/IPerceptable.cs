@@ -24,6 +24,7 @@ namespace LosSantosRED.lsr.Interface
         bool AnyGangMemberRecentlySeenPlayer { get; set; }
         bool IsInVehicle { get; }
         Stance Stance { get; }
+        IntimidationManager IntimidationManager { get; }
 
         void AddMedicalEvent(Vector3 positionLastSeenDistressedPed);
     }

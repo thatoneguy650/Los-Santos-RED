@@ -754,7 +754,7 @@ public class LEDispatcher
     private void HandleHelicopterRefill()
     {
         //EntryPoint.WriteToConsole("CHECK HELI REFIL RAN 0");
-        if (!Settings.SettingsManager.PoliceSpawnSettings.AllowHelicopterRespawn)
+        if (!Settings.SettingsManager.PoliceSpawnSettings.AllowHelicopterPassengerRespawn)
         {
             return;
         }
@@ -765,7 +765,7 @@ public class LEDispatcher
         }
         //EntryPoint.WriteToConsole("CHECK HELI REFIL RAN 1");
         GameTimeLastCheckedHeliFill = Game.GameTime;
-        VehicleExt helicopter = World.Vehicles.PoliceVehicles.Where(x => !x.HasBeenPassengerRefilled && x.HasHadPedsRappelOrParachute && Game.GameTime - x.GameTimeLastHadPedsRappelOrParachute >= 25000).FirstOrDefault();
+        VehicleExt helicopter = World.Vehicles.PoliceVehicles.Where(x => x.TimesPassengersRefilled <= Settings.SettingsManager.PoliceSpawnSettings.HelicopterPassengerRespawnLimit && x.HasHadPedsRappelOrParachute && Game.GameTime - x.GameTimeLastHadPedsRappelOrParachute >= 25000 && x.Vehicle.Exists() && !x.Vehicle.IsOnScreen).FirstOrDefault();
         if(helicopter == null || !helicopter.Vehicle.Exists())
         {
             return;
@@ -793,7 +793,7 @@ public class LEDispatcher
         {
             return;
         }
-        helicopter.HasBeenPassengerRefilled = true;
+        helicopter.TimesPassengersRefilled++;
     }
     private void CallRefillSpawnTask(VehicleExt vehicleExt,int seatIndex)
     {

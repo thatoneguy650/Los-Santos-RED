@@ -33,6 +33,7 @@ namespace LosSantosRED.lsr.Interface
         LocationTaskRequirements LocationTaskRequirements { get; }
         bool CanSeePlayer { get; }
         bool RecentlySeenPlayer { get; }
+        PedAlerts PedAlerts { get; }
 
         IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons);
         IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons);

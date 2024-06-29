@@ -23,6 +23,7 @@ public class Flee : ComplexTask
     private bool IsSetCower = false;
 
     private bool WillCowerBasedOnIntimidation = false;
+    private uint GameTimeLastUpdatedCower;
     private bool IsWithinCowerDistance => Ped.DistanceToPlayer <= Ped.CowerDistance;
     //private bool ShouldCower => Ped.WillCower && IsWithinCowerDistance && !Player.RecentlyShot;
     private bool ShouldCallIn => Ped.HasCellPhone && (Ped.WillCallPolice || (Ped.WillCallPoliceIntense && Ped.PedReactions.HasSeenIntenseCrime));
@@ -41,6 +42,8 @@ public class Flee : ComplexTask
         }
         NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
         isInVehicle = Ped.Pedestrian.IsInAnyVehicle(false);
+
+
         WillCowerBasedOnIntimidation = RandomItems.RandomPercent(Player.IntimidationManager.IntimidationPercent);
 
         EntryPoint.WriteToConsole($"FLEE START WillCower:{Ped.WillCower} WillCowerBasedOnIntimidation{WillCowerBasedOnIntimidation}");
@@ -70,7 +73,11 @@ public class Flee : ComplexTask
         //{
         //    ReTask();
         //}
-        WillCowerBasedOnIntimidation = RandomItems.RandomPercent(Player.IntimidationManager.IntimidationPercent);
+        if (Game.GameTime - GameTimeLastUpdatedCower >= 4000)
+        {
+            WillCowerBasedOnIntimidation = RandomItems.RandomPercent(Player.IntimidationManager.IntimidationPercent);
+            GameTimeLastUpdatedCower = Game.GameTime;
+        }
         if (isCowering)
         {
             UpdateCowering();

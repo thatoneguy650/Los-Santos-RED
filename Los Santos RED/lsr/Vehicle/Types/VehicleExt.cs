@@ -212,7 +212,7 @@ namespace LSR.Vehicles
         public bool CanPerformActivitiesInside => !IsBicycle && !IsMotorcycle && !IsJetSki && !IsQuad;
         public bool IsRandomlyLocked { get; set; } = false;
         public bool UsePlayerAnimations => !IsMotorcycle && !IsBicycle && !IsJetSki && !IsQuad;// VehicleClass != VehicleClass.Motorcycle && VehicleClass != VehicleClass.Cycle;
-        public bool HasBeenPassengerRefilled { get; set; } = false;
+        public int TimesPassengersRefilled { get; set; }
         public bool HasSpecialPassengerEntry
         {
             get

@@ -61,5 +61,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsAlive { get; }
         bool IsNotShowingFrontEndMenus { get; set; }
         InteriorManager InteriorManager { get; }
+        IntimidationManager IntimidationManager { get; }
     }
 }

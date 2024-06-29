@@ -17,5 +17,6 @@ namespace LosSantosRED.lsr.Interface
         int WantedLevel { get; }
         PlayerVoice PlayerVoice { get; }
         bool IsInVehicle { get; }
+        bool SemiRecentlyShot { get; }
     }
 }

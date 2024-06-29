@@ -20,8 +20,39 @@ public class IntimidationManager
     private uint GameTimeLastYelled;
     private uint GameTimeLastPrinted;
 
-    private bool RecentlyYelled => GameTimeLastYelled != 0 && Game.GameTime - GameTimeLastYelled <= Settings.SettingsManager.PlayerOtherSettings.RecentlyYellingIntimidationTime;
+    public bool RecentlyYelled => GameTimeLastYelled != 0 && Game.GameTime - GameTimeLastYelled <= Settings.SettingsManager.PlayerOtherSettings.RecentlyYellingIntimidationTime;
     public float IntimidationPercent { get; private set; }
+    public string IntimidationDisplay
+    {
+        get
+        {
+            if(!IsMinimumIntimidating)
+            {
+                return "";
+            }
+            string colorString = "";
+            if (IntimidationPercent >= 90f)
+            {
+                colorString = "~g~";
+            }
+            else if (IntimidationPercent>= 75f)
+            {
+                colorString = "~y~";
+            }
+            else if(IntimidationPercent >= 50f)
+            {
+                colorString = "~o~";
+            }
+            else if (IntimidationPercent > Settings.SettingsManager.PlayerOtherSettings.IntimidationMinBeforeCanFlee)
+            {
+                colorString = "~r~";
+            }
+            return $"Intimidation: {colorString}{IntimidationPercent}%";
+        }
+
+    }
+
+    public bool IsMinimumIntimidating => IntimidationPercent > 0f;// Settings.SettingsManager.PlayerOtherSettings.IntimidationMinBeforeCanFlee;
     public IntimidationManager(IIntimidationManageable player, IEntityProvideable world, ISettingsProvideable settings)
     {
         Player = player;
@@ -47,11 +78,8 @@ public class IntimidationManager
     private void UpdateIntimidationLevel()
     {
         float boostLevel = 0f;
-        if(Player.CurrentLocation.IsInside)
-        {
-            boostLevel += Settings.SettingsManager.PlayerOtherSettings.InsideIntimidationBoost;
-        }
-        if(Player.RecentlyShot)
+
+        if(Player.SemiRecentlyShot)
         {
             boostLevel += Settings.SettingsManager.PlayerOtherSettings.RecentlyShotIntimidationBoost;
         }
@@ -66,7 +94,11 @@ public class IntimidationManager
                 boostLevel += Settings.SettingsManager.PlayerOtherSettings.VisiblyArmedIntimidationBoost;
             }
         }
-        if(Player.Violations.DamageViolations.RecentlyKilledCivilian)
+        if (Player.CurrentLocation.IsInside && boostLevel > 0f)
+        {
+            boostLevel += Settings.SettingsManager.PlayerOtherSettings.InsideIntimidationBoost;
+        }
+        if (Player.Violations.DamageViolations.RecentlyKilledCivilian)
         {
             boostLevel += Settings.SettingsManager.PlayerOtherSettings.KilledCivilianIntimidationBoost;
         }
@@ -86,16 +118,18 @@ public class IntimidationManager
         {
             boostLevel += Settings.SettingsManager.PlayerOtherSettings.PlayerWantedIntimidationBoost;
         }
+
+
         IntimidationPercent = boostLevel.Clamp(0f,100f);
 
-#if DEBUG
-        if(Game.GameTime - GameTimeLastPrinted >= 2000)
-        {
-            EntryPoint.WriteToConsole($"IntimidationPercent: {IntimidationPercent} boostLevel{boostLevel}");
-            GameTimeLastPrinted = Game.GameTime;
-        }
+//#if DEBUG
+//        if(Game.GameTime - GameTimeLastPrinted >= 2000)
+//        {
+//            EntryPoint.WriteToConsole($"IntimidationPercent: {IntimidationPercent} boostLevel{boostLevel}");
+//            GameTimeLastPrinted = Game.GameTime;
+//        }
         
-#endif
+//#endif
     }
     public void YellGetDown()
     {
