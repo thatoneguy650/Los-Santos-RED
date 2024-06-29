@@ -147,10 +147,6 @@ public class TrafficViolations
             }
             Violations.AddViolating(StaticStrings.HitCarWithCarCrimeID);
         }
-        //if (!RecentlyHitVehicle)
-        //{
-        //    SentRecentCrash = false;
-        //}
     }
     private void UpdateTrafficStats()
     {

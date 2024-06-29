@@ -793,13 +793,24 @@ public class LEDispatcher
         {
             return;
         }
+        helicopter.RappelledSeats.Clear();
         helicopter.TimesPassengersRefilled++;
+        EntryPoint.WriteToConsole($"HandleHelicopterRefill Filled Heli TimesPassengersRefilled:{helicopter.TimesPassengersRefilled}");
     }
     private void CallRefillSpawnTask(VehicleExt vehicleExt,int seatIndex)
     {
+        if (vehicleExt == null)
+        {
+            return;
+        }
+        Agency = vehicleExt.AssociatedAgency;
+        if (Agency == null)
+        {
+            return;
+        }
         LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, vehicleExt.DispatchableVehicle, null, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, World, ModItems, false);
         spawnTask.SpawnWithAllWeapons = true;
-        EntryPoint.WriteToConsole($"DEBUG LE DISPATCH RESPAWNING RAPPELLED PED VehicleType:{VehicleType?.ModelName} PersonType:{PersonType?.ModelName} RequiredPedGroup:{VehicleType?.RequiredPedGroup} GroupName:{PersonType?.GroupName}");
+        EntryPoint.WriteToConsole($"DEBUG LE DISPATCH RESPAWNING RAPPELLED PED VehicleType:{vehicleExt?.DispatchableVehicle} PersonType:{null} RequiredPedGroup:{vehicleExt?.DispatchableVehicle?.RequiredPedGroup} GroupName:{null}");
         spawnTask.SpawnAsPassenger(vehicleExt, seatIndex);
         GameFiber.Yield();
         spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = false; });
@@ -830,27 +841,27 @@ public class LEDispatcher
         ILEDispatchableLocation ClosestStation = PlacesOfInterest.LEDispatchLocations().Where(x => x.DistanceToPlayer <= 150f && x.IsEnabled && x.IsActivated && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
         if(ClosestStation == null || ClosestStation.AssignedAgency == null)
         {
-            EntryPoint.WriteToConsole("Assault Spawn failed no station or agency");
+            //EntryPoint.WriteToConsole("Assault Spawn failed no station or agency");
             return;
         }
         if(ClosestStation.TotalAssaultSpawns >= ClosestStation.MaxAssaultSpawns)
         {
-            EntryPoint.WriteToConsole("Assault Spawn failed too many spawns already");
+            //EntryPoint.WriteToConsole("Assault Spawn failed too many spawns already");
             return;
         }
         if (!ClosestStation.AssignedAgency.CanSpawn(World.TotalWantedLevel))
         {
-            EntryPoint.WriteToConsole("Assault Spawn failed cantspawn");
+            //EntryPoint.WriteToConsole("Assault Spawn failed cantspawn");
             return;
         }
         if (!GetAssaultSpawnTypes(ClosestStation.AssignedAgency))
         {
-            EntryPoint.WriteToConsole("Assault Spawn failed type");
+            //EntryPoint.WriteToConsole("Assault Spawn failed type");
             return;
         }
         if (!GetAssaultSpawnLocation(ClosestStation))
         {
-            EntryPoint.WriteToConsole("Assault Spawn failed location");
+            //EntryPoint.WriteToConsole("Assault Spawn failed location");
             return;
         }
         EntryPoint.WriteToConsole($"Assault Spawn EXECUTED TotalAssaultSpawns SO FAR:{ClosestStation.TotalAssaultSpawns}");

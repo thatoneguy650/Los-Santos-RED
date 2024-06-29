@@ -120,5 +120,6 @@ public class SecuritySettings : ISettingsDefaultable
         AllowShootingInvestigations = true;
         AllowAlerts = true;
         TotalSpawnedMembersLimit = 3;
+        ForceDefaultWeaponAnimations = true;
     }
 }

@@ -23,7 +23,6 @@ public class VehicleItem : ModItem
     private UIMenu VehicleMenu;
     private bool HasLivery1 = false;
     private bool HasLivery2 = false;
-
     private bool SetPrimaryColor = false;
     private bool SetSecondaryColor = false;
     private bool SetLivery1 = false;
@@ -34,21 +33,17 @@ public class VehicleItem : ModItem
     private int WheelColor;
     private bool SetInteriorColor;
     private int InteriorColor;
-
     private int FinalPrimaryColor => PrimaryColor == -1 ? 0 : PrimaryColor;
     private int FinalSecondaryColor => SecondaryColor == -1 ? 0 : SecondaryColor;
     private int FinalPearlColor => PearlescentColor == -1 ? 0 : PearlescentColor;
     private int FinalWheelColor => WheelColor == -1 ? 156 : WheelColor;
     private int FinalInteriorColor => InteriorColor == -1 ? 0 : InteriorColor;
-
     public bool RequiresDLC { get; set; } = false;
     public string ModelName { get; set; }
     public uint ModelHash { get; set; }
     public string OverrideMakeName { get; set; }
     public string OverrideClassName { get; set; }
-
     public bool OverrideCannotLoadBodiesInRear { get; set; } = false;
-
     public bool OverrideLoadBodiesInBed { get; set; } = false;
     public Vector3 BedLoadOffsetOverride { get; set; }
     public bool OverrideTrunkAttachment { get; set; } = false;
@@ -583,8 +578,26 @@ public class VehicleItem : ModItem
         {
             if (isPurchase)
             {
-                NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, FinalPrimaryColor, FinalSecondaryColor);
-                NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(Transaction.SellingVehicle, FinalPearlColor, FinalWheelColor);
+
+                int primaryColor;
+                int secondaryColor;
+                unsafe
+                {
+                    NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", Transaction.SellingVehicle, &primaryColor, &secondaryColor);
+                }
+                PrimaryColor = primaryColor;
+                SecondaryColor = secondaryColor;
+
+                int pearlescentColor;
+                int wheelColor;
+                unsafe
+                {
+                    NativeFunction.CallByName<int>("GET_VEHICLE_EXTRA_COLOURS", Transaction.SellingVehicle, &pearlescentColor, &wheelColor);
+                }
+                PearlescentColor = pearlescentColor;
+                WheelColor = wheelColor;
+                //NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, FinalPrimaryColor, FinalSecondaryColor);
+                //NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(Transaction.SellingVehicle, FinalPearlColor, FinalWheelColor);
             }
             else
             {

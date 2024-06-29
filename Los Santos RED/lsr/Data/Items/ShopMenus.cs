@@ -249,6 +249,7 @@ public class ShopMenus : IShopMenus
         if (premiumDeluxMenu != null)
         {
             premiumDeluxMenu.Items.Add(new MenuItem("Declasse Merit", 23000, 7800));
+            premiumDeluxMenu.Items.Add(new MenuItem("Karin Everon V8", 58000, 255000));
         }
 
 
@@ -256,6 +257,22 @@ public class ShopMenus : IShopMenus
         if (elitasMenu != null)
         {
             elitasMenu.Items.Add(new MenuItem("Buckingham Maverick 2nd Gen", 1800000));
+        }
+
+
+        foreach(ShopMenu menu in fejPossibleShopMenus.ShopMenuList)//swap some model names over
+        {
+            if (menu.ID != "KarinMenu")
+            {
+                foreach (MenuItem mi in menu.Items)
+                {
+                    if (mi.ModItemName == "Karin Kuruma")
+                    {
+                        mi.ModItemName = "Maibatsu Kuruma";
+                    }
+                }
+            }
+            menu.Items.RemoveAll(x => x.ModItemName == "Vapid Contender" || x.ModItemName == "Karin Kuruma");
         }
 
 
@@ -1511,6 +1528,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Benefactor Streiter",156000,105000),
                 new MenuItem("Benefactor Schlagen GT",500000,250000),
                 new MenuItem("Benefactor Krieger",750000,500000),
+                new MenuItem("Benefactor Vorschlaghammer",55000,23000),
             }),
             new ShopMenu("VapidMenu","Vapid",new List<MenuItem>() {
                 new MenuItem("Vapid Stanier",28000, 12000),
@@ -1527,7 +1545,6 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Vapid Guardian",85000,46000),
                 new MenuItem("Vapid Trophy Truck",50000,36000),
                 new MenuItem("Vapid Dominator",55000,33000),
-                //new MenuItem("Vapid Pisswasser Dominator",65000,45000),
                 new MenuItem("Vapid Dominator ASP",75000,50000),
                 new MenuItem("Vapid Dominator GTT",95000,70000),
                 new MenuItem("Vapid Dominator GTX",105000,82000),
@@ -1536,6 +1553,11 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Vapid Bullet",155000,105050),
                 new MenuItem("Vapid Aleutian",55000,25000),
                 new MenuItem("Vapid Dominator GT",85000,45000),
+                new MenuItem("Vapid Dominator FX",19000,5000),
+
+                //Dundreary
+                new MenuItem("Dundreary Landstalker",34000,12000),
+                new MenuItem("Dundreary Landstalker XL",49000,18000),
             }),
             new ShopMenu("HelmutMenu","Helmut",new List<MenuItem>() {
                 new MenuItem("BF Surfer",11000, 6000),
@@ -1549,20 +1571,24 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Maibatsu Sanchez Custom",7500,3200),
                 new MenuItem("Maibatsu Manchez",9500,4600),
                 new MenuItem("Maibatsu Manchez Scout",9600,4500),
+
                 new MenuItem("Shitzu PCJ 600",9000,3900),
                 new MenuItem("Shitzu Vader",9500,4200),
                 new MenuItem("Shitzu Defiler",34000,15340),
                 new MenuItem("Shitzu Hakuchou",19000,11200),
                 new MenuItem("Shitzu Hakuchou Drag",25000,12500),
+
                 new MenuItem("Dinka Enduro",6500,4300),
                 new MenuItem("Dinka Akuma",10000,5000),
                 new MenuItem("Dinka Double-T",12000,7500),
                 new MenuItem("Dinka Thrust",13000,8000),
                 new MenuItem("Dinka Vindicator",10000,5000),
+
                 new MenuItem("Principe Nemesis",13500,6700),
                 new MenuItem("Principe Diabolus",15000,8000),
                 new MenuItem("Principe Diabolus Custom",17000,10500),
                 new MenuItem("Principe Lectro",18000,12400),
+
                 new MenuItem("Nagasaki Carbon RS",40000,22500),
                 new MenuItem("Nagasaki BF400",12000,6200),
 
@@ -1588,6 +1614,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Enus Paragon R (Armored)",550000,340000),
                 new MenuItem("Enus Windsor",634000,450000),
                 new MenuItem("Enus Windsor Drop",655000,467000),
+                new MenuItem("Enus Paragon S",295000,120000),
+
                 new MenuItem("Grotti Carbonizzare",78000,56000),
                 new MenuItem("Grotti Stinger",95000,76000),
                 new MenuItem("Grotti Stinger GT",98000,77000),
@@ -1602,6 +1630,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Grotti Turismo R",150000,86000),
                 new MenuItem("Grotti Visione",676500,450000),
                 new MenuItem("Grotti Turismo Omaggio",325000,125000),
+
                 new MenuItem("Pfister Comet",100000,78000),
                 new MenuItem("Pfister Comet Retro Custom",130000,65000),
                 new MenuItem("Pfister Comet Safari",135000,95000),
@@ -1610,6 +1639,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Pfister Growler",167000,98000),
                 new MenuItem("Pfister Neon",177000,122000),
                 new MenuItem("Pfister 811",189000,105000),
+
                 new MenuItem("Pegassi Faggio",5000,1500),
                 new MenuItem("Pegassi Faggio Sport",5500,2000),
                 new MenuItem("Pegassi Faggio Mod",6000,2300),
@@ -1643,10 +1673,32 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Obey 9F Cabrio",47000,20000),
                 new MenuItem("Obey 8F Drafter",90000,34000),
 
+                //Ocelot
+                new MenuItem("Ocelot F620",89000,45000),
+                new MenuItem("Ocelot Jackal",45000,22000),
+                new MenuItem("Ocelot Jugular",95000,42000),
+                new MenuItem("Ocelot Lynx",103000,34000),
+                new MenuItem("Ocelot Pariah",150000,76000),
+                new MenuItem("Ocelot Penetrator",160000,79000),
+                new MenuItem("Ocelot Virtue",170000,74000),
+                new MenuItem("Ocelot XA-21",190000,89000),
+                new MenuItem("Ocelot Swinger",110000,49000),
+
+                //Overflod
+                new MenuItem("Overflod Pipistrello",1500000,324000),
+
                 //Coil
                 new MenuItem("Coil Voltic",90000,45000),
                 new MenuItem("Coil Cyclone",120000,56000),
                 new MenuItem("Coil Raiden",135000,67000),
+
+                //Lampadati
+                new MenuItem("Lampadati Cinquemila",135000,67000),
+                new MenuItem("Lampadati Felon",67000,23000),
+                new MenuItem("Lampadati Felon GT",75000,24000),
+                new MenuItem("Lampadati Furore GT",156000,67000),
+                new MenuItem("Lampadati Komoda",96000,23000),
+                new MenuItem("Lampadati Novak",110000,45000),
 
                 //Ubermacht
                 new MenuItem("Ubermacht Oracle XS",45000,20000),
@@ -1663,6 +1715,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Ubermacht Rebla GTS",87000,34000),
                 new MenuItem("Ubermacht Rhinehart",95000,34000),
                 new MenuItem("Ubermacht Sentinel Classic Widebody",50000),
+                new MenuItem("Ubermacht Niobe",168000,101000),
+
             }),
             new ShopMenu("BravadoMenu","Bravado",new List<MenuItem>() {
                 new MenuItem("Bravado Youga",26000),
@@ -1729,6 +1783,18 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Karin Vivanite",37000,12000),
                 new MenuItem("Karin Asterope GZ",38000,23500),
 
+                //Annis
+                new MenuItem("Annis Euros X32",25000,14000),
+                new MenuItem("Annis 300R",36000,16000),
+                new MenuItem("Annis Elegy RH8",96000,46000),
+                new MenuItem("Annis Euros",38000,19000),
+                new MenuItem("Annis Hellion",23000,8000),
+                new MenuItem("Annis ZR350",29000,9500),
+
+                //Bollokan
+                new MenuItem("Bollokan Prairie",15000,6000),
+                new MenuItem("Bollokan Envisage",267000,124000),
+
                 //Emperor
                 new MenuItem("Emperor Habanero",19000,8000),
                 new MenuItem("Emperor Vectre",85000,35000),
@@ -1746,6 +1812,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Invetero Coquette Classic", 70000,30000),// { ModelName = "coquette2" },
                 new MenuItem("Invetero Coquette BlackFin", 80000,40000),// { ModelName = "coquette3" },
                 new MenuItem("Invetero Coquette D10", 150000,80000),// { ModelName = "coquette4" },
+                new MenuItem("Invetero Coquette D1",250000,95000),
 
                 //Cheval
                 new MenuItem("Cheval Fugitive",25000,12000),
@@ -1766,12 +1833,34 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Declasse Vigero ZX Convertible",75000,35000),
                 new MenuItem("Declasse Impaler SZ",34000,15000),
                 new MenuItem("Declasse Impaler LX",35000,16000),
+                new MenuItem("Declasse Yosemite 1500",17000,8000),
 
                 //Fathom
                 new MenuItem("Fathom FR36",45000,23000),
+                new MenuItem("Fathom FQ 2",26000,13000),
 
                 //Canis
                 new MenuItem("Canis Terminus",49000,25000),
+                new MenuItem("Canis Castigator",24000,12000),
+                new MenuItem("Canis Mesa",21000,8000),
+                new MenuItem("Canis Kamacho",45000,23000),
+                new MenuItem("Canis Seminole",29000,13000),
+                new MenuItem("Canis Seminole Frontier",22000,12000),
+
+                //Zirconium
+                new MenuItem("Zirconium Stratum",21000, 11000),
+
+                //Schyster
+                new MenuItem("Schyster Fusilade",25000, 12000),
+                new MenuItem("Schyster Deviant",29000, 11000),
+
+
+                //Vulcar
+                new MenuItem("Vulcar Fagaloa",17000, 5000),
+                new MenuItem("Vulcar Ingot",19000, 7000),
+                new MenuItem("Vulcar Nebula Turbo",21000, 11100),
+                new MenuItem("Vulcar Warrener",22000, 11500),
+                new MenuItem("Vulcar Warrener HKR",25000, 12000),
             }),
             new ShopMenu("AlbanyMenu","Albany",new List<MenuItem>() {
                 new MenuItem("Albany Alpha",45000,27500),
@@ -1787,6 +1876,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Albany Virgo",36000,18000),
                 new MenuItem("Albany V-STR",130000,65000),
                 new MenuItem("Albany Washington",48000,19000),
+                new MenuItem("Albany Cavalcade XL",65000,37500),
             }),
             new ShopMenu("LarrysRVMenu","Larry's RV",new List<MenuItem>() {
                 new MenuItem("Zirconium Journey",25000, 15000),

@@ -135,7 +135,36 @@ public class DispatchablePeople : IDispatchablePeople
     }
     private void SetupDefault()
     {
-       // Game.DisplaySubtitle(Game.LocalPlayer.Character.SeatIndex.ToString());
+        // Game.DisplaySubtitle(Game.LocalPlayer.Character.SeatIndex.ToString());
+
+        int optionalpropschance = 20;
+
+
+        List<PedPropComponent> MaleCopShortSleeveOptionalProps = new List<PedPropComponent>() {
+            new PedPropComponent(1, 37, 0),
+            new PedPropComponent(1, 38, 0),
+            new PedPropComponent(1, 8, 3),
+            new PedPropComponent(1, 8, 5),
+            new PedPropComponent(1, 8, 6),
+            new PedPropComponent(1, 7, 0),
+            new PedPropComponent(1, 2, 3),
+
+            new PedPropComponent(6, 3, 0),
+        };
+
+        List<PedPropComponent> FemaleCopShortSleeveOptionalProps = new List<PedPropComponent>() {
+            new PedPropComponent(1, 39, 0),
+            new PedPropComponent(1, 40, 0),
+            new PedPropComponent(1, 11, 0),
+            new PedPropComponent(1, 11, 1),
+            new PedPropComponent(1, 11, 3),
+            new PedPropComponent(1, 24, 0),
+
+            new PedPropComponent(6, 20, 2),
+        };
+        
+
+
         //Cops
         StandardCops = new List<DispatchablePerson>() {
             new DispatchablePerson("s_f_y_cop_01",0,0) {
@@ -165,8 +194,8 @@ public class DispatchablePeople : IDispatchablePeople
                 ,RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(10, 7, 1, 0), new PedComponent(11, 48, 0, 0)},
                     new List<PedPropComponent>() {  })
-                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 45, 0), new PedPropComponent(1, 25, 9) }
-                ,OptionalPropChance = 10
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 25, 9),new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), }
+                ,OptionalPropChance = optionalpropschance
             },//no body armor with hat and glasses possible
             new DispatchablePerson("mp_f_freemode_01",0,40) {
                 DebugName = "LSPDMPArmorFemale"
@@ -178,8 +207,8 @@ public class DispatchablePeople : IDispatchablePeople
                 ,RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(9, 6, 1, 0), new PedComponent(10, 7, 3, 0), new PedComponent(11, 48, 0, 0)},
                     new List<PedPropComponent>() {  })
-                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 123, 15), new PedPropComponent(1, 25, 9) }
-                ,OptionalPropChance = 10
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 123, 15), new PedPropComponent(1, 25, 9), new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), }
+                ,OptionalPropChance = optionalpropschance
             },//body armor, with riot helmet and glasses possible
 
             new DispatchablePerson("mp_m_freemode_01",60,60) {
@@ -190,8 +219,8 @@ public class DispatchablePeople : IDispatchablePeople
                 ,RequiredVariation = new PedVariation(
                     new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0), new PedComponent(10, 8, 2, 0), new PedComponent(11, 55, 0, 0)},
                     new List<PedPropComponent>() { })
-                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 46, 0), new PedPropComponent(1, 23, 9) }
-                ,OptionalPropChance = 10
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 23, 9),new PedPropComponent(1, 37, 0),new PedPropComponent(1, 38, 0),new PedPropComponent(1, 8, 3),new PedPropComponent(1, 8, 5),new PedPropComponent(1, 8, 6),new PedPropComponent(1, 7, 0),new PedPropComponent(1, 2, 3),new PedPropComponent(6, 3, 0), }
+                ,OptionalPropChance = optionalpropschance
             },
             new DispatchablePerson("mp_m_freemode_01",0,60) {
                 DebugName = "LSPDMPArmorMale"
@@ -203,8 +232,8 @@ public class DispatchablePeople : IDispatchablePeople
                 ,RequiredVariation = new PedVariation(
                     new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0), new PedComponent(9, 11, 1, 0), new PedComponent(10, 8, 2, 0), new PedComponent(11, 55, 0, 0)},
                     new List<PedPropComponent>() { })
-                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 124, 15), new PedPropComponent(1, 23, 9) }
-                ,OptionalPropChance = 10
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 124, 15), new PedPropComponent(1, 23, 9), new PedPropComponent(1, 37, 0), new PedPropComponent(1, 38, 0), new PedPropComponent(1, 8, 3), new PedPropComponent(1, 8, 5), new PedPropComponent(1, 8, 6), new PedPropComponent(1, 7, 0), new PedPropComponent(1, 2, 3), new PedPropComponent(6, 3, 0), }
+                ,OptionalPropChance = optionalpropschance
             },
 
 
@@ -218,8 +247,8 @@ public class DispatchablePeople : IDispatchablePeople
                 ,RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 1, 0, 0), new PedComponent(4, 35, 0, 0),new PedComponent(6, 10, 0, 0), new PedComponent(7, 0, 0, 0), new PedComponent(8, 130, 0, 0), new PedComponent(10, 0, 0, 0), new PedComponent(11, 348, 0, 0)},
                     new List<PedPropComponent>() { })
-                ,OptionalProps = new List<PedPropComponent>() {  }
-                ,OptionalPropChance = 0
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 37, 0), new PedPropComponent(1, 38, 0), new PedPropComponent(1, 8, 3), new PedPropComponent(1, 8, 5), new PedPropComponent(1, 8, 6), new PedPropComponent(1, 7, 0), new PedPropComponent(1, 2, 3), }
+                ,OptionalPropChance = optionalpropschance
             },
 
             new DispatchablePerson("mp_f_freemode_01",2,2) {
@@ -231,8 +260,8 @@ public class DispatchablePeople : IDispatchablePeople
                 ,RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 3, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 29, 0, 0), new PedComponent(7, 0, 0, 0), new PedComponent(8, 160, 0, 0), new PedComponent(10, 0, 0, 0), new PedComponent(11, 366, 0, 0)},
                     new List<PedPropComponent>() {  })
-                ,OptionalProps = new List<PedPropComponent>() {  }
-                ,OptionalPropChance = 10
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), }
+                ,OptionalPropChance = optionalpropschance
             },
 
 

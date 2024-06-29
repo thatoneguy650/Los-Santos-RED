@@ -23,6 +23,7 @@ public class PlayerVoice
     private List<string> GenericPoliceFightPossibilities;
     private List<string> AnnoyedPossibilities;
     private List<string> GetDownPossibilities;
+    private List<string> GetDownPossibilitiesPlayer;
     private List<string> Insults;
     private uint GametimeLastYelled;
 
@@ -58,13 +59,23 @@ public class PlayerVoice
     }
     public void Setup()
     {
+        //Other to USe AS Franklin
+           //"ARRESTED"
+
         GenericFightPossibilities = new List<string>() { "FIGHT", "FIGHT_RUN", "GENERIC_CURSE_HIGH", "GENERIC_CURSE_MED", "PROVOKE_GENERIC", "CHALLENGE_THREATEN" };
         GenericCrashPossibilities = new List<string>(){"BUMP","CRASH_CAR","CRASH_GENERIC","GENERIC_CURSE_HIGH","GENERIC_CURSE_MED","GENERIC_SHOCKED_MED","CHALLENGE_THREATEN"};
         GenericWonPossibilities = new List<string>(){ "WON_DISPUTE","GENERIC_WHATEVER" };
         GenericPoliceFightPossibilities = new List<string>(){"CHASED_BY_POLICE","FIGHT","FIGHT_RUN","GENERIC_CURSE_HIGH","GENERIC_CURSE_MED","GENERIC_SHOCKED_MED","PROVOKE_GENERIC","WON_DISPUTE","CHALLENGE_THREATEN"};
         Insults = new List<string>() { "GENERIC_CURSE_MED", "GENERIC_CURSE_HIGH", "GENERIC_INSULT_HIGH", "GENERIC_INSULT_MED", "GENERIC_FUCK_YOU" };
         AnnoyedPossibilities = new List<string>() { "GENERIC_CURSE_MED", "GENERIC_CURSE_HIGH", "GENERIC_SHOCKED_MED" };
-        GetDownPossibilities = new List<string>() { "GUN_DRAW", "CHALLENGE_THREATEN", "CHALLENGE_ACCEPTED_GENERIC" };
+        GetDownPossibilities = new List<string>() { 
+                       
+            
+            "GUN_DRAW","FIGHT", "CHALLENGE_THREATEN", "CHALLENGE_ACCEPTED_GENERIC" };
+
+
+        GetDownPossibilitiesPlayer = new List<string>() {
+            "STAY_DOWN", "DRAW_GUN", "CHALLENGE_THREATEN" };
     }
     public void Update()
     {
@@ -141,7 +152,7 @@ public class PlayerVoice
         bool Spoke = false;
         if (Settings.SettingsManager.PlayerSpeechSettings.EnableSpeech && (CanSpeak || (!doTimeCheck && CanForceSpeak)) && (percentage == 100f || RandomItems.RandomPercent(percentage)) && (!doTimeCheck || CanSpeakTimeWise))
         {
-            foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()).Take(3))
+            foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()).Take(5))
             {
                 string voiceName = null;
                 if (Player.CharacterModelIsFreeMode)
@@ -149,7 +160,7 @@ public class PlayerVoice
                     voiceName = Player.FreeModeVoice;
                 }
                 //bool hasContext = NativeFunction.Natives.DOES_CONTEXT_EXIST_FOR_THIS_PED<bool>(Player.Character, AmbientSpeech, false);
-                Player.Character.PlayAmbientSpeech(voiceName, AmbientSpeech, 0, SpeechModifier.Force | SpeechModifier.AllowRepeat);
+                Player.Character.PlayAmbientSpeech(voiceName, AmbientSpeech, 0,  SpeechModifier.Force | SpeechModifier.AllowRepeat);
                 GameFiber.Sleep(300);
                 if (Player.Character.IsAnySpeechPlaying)
                 {
@@ -184,7 +195,14 @@ public class PlayerVoice
             return;
         }
         EntryPoint.WriteToConsole("PV YELL GET DOWN RAN");
-        SayAvailableAmbient(GetDownPossibilities, false, 100f, false);
+        if (Player.CharacterModelIsPrimaryCharacter)
+        {
+            SayAvailableAmbient(GetDownPossibilitiesPlayer, false, 100f, false);
+        }
+        else
+        {
+            SayAvailableAmbient(GetDownPossibilities, false, 100f, false);
+        }
         GametimeLastYelled = Game.GameTime;
     }
 

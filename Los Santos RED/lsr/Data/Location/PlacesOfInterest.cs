@@ -3995,6 +3995,8 @@ public class PlacesOfInterest : IPlacesOfInterest
             IsOnMPMap = true,
             IsOnSPMap = true,
             MaxAssaultSpawns = 30,
+            DisableNearbyScenarios = true,
+            DisableScenarioDistance = 100f,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
                 new GangConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 55f) { TaskRequirements = TaskRequirements.Guard },

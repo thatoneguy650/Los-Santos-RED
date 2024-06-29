@@ -137,6 +137,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public float PlayerWantedIntimidationBoost { get; set; }
     public float IntimidationMinBeforeCanFlee { get; set; }
     public bool AllowYellGetDownPrompt { get; set; }
+    public bool AllowIntimidation { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -251,6 +252,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         VeryStationaryTime = 20000;
         StationaryDistance = 40f;
         AllowYellGetDownPrompt = true;
+        AllowIntimidation = true;
     }
 
 }

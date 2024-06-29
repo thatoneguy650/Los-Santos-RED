@@ -242,24 +242,24 @@ public class SpawnBlocks : ISpawnBlocks
             new ScenarioBlock(new Vector3(1761.915f, 2521.84f, 54.39047f),"PrisonGeneral"),
 
             //Korean/Triad Steps
-            new ScenarioBlock(new Vector3(-755.6989f, -920.1201f, 19.07203f), "KoreanSteps") { Distance = 4.0f },
-            new ScenarioBlock(new Vector3(-762.5551f, -919.5652f, 20.15879f), "KoreanSteps") { Distance = 4.0f },
-            new ScenarioBlock(new Vector3(-764.7227f, -917.3176f, 20.80979f), "KoreanSteps") { Distance = 4.0f },
-            new ScenarioBlock(new Vector3(-764.3928f, -923.0778f, 18.72722f), "KoreanSteps") { Distance = 4.0f },
-            new ScenarioBlock(new Vector3(-763.5527f, -932.0254f, 18.14868f), "KoreanSteps") { Distance = 4.0f },
+            new ScenarioBlock(new Vector3(-755.6989f, -920.1201f, 19.07203f), "KoreanSteps") { Distance = 10.0f },
+            new ScenarioBlock(new Vector3(-762.5551f, -919.5652f, 20.15879f), "KoreanSteps") { Distance = 10.0f },
+            new ScenarioBlock(new Vector3(-764.7227f, -917.3176f, 20.80979f), "KoreanSteps") { Distance = 10.0f },
+            new ScenarioBlock(new Vector3(-764.3928f, -923.0778f, 18.72722f), "KoreanSteps") { Distance = 10.0f },
+            new ScenarioBlock(new Vector3(-763.5527f, -932.0254f, 18.14868f), "KoreanSteps") { Distance = 10.0f },
 
 
             //Cartel Mansion
-            new ScenarioBlock(new Vector3(1382.979f, 1147.941f, 113.3342f),"VagosCartel"),
-            new ScenarioBlock(new Vector3(1382.747f, 1146.689f, 113.3342f),"VagosCartel"),
-            new ScenarioBlock(new Vector3(1392.486f, 1154.698f, 113.4431f),"VagosCartel"),
-            new ScenarioBlock(new Vector3(1392.104f, 1155.521f, 113.4431f),"VagosCartel"),
-            new ScenarioBlock(new Vector3(1391.452f, 1157.046f, 113.4431f),"VagosCartel"),
-            new ScenarioBlock(new Vector3(1390.901f, 1157.986f, 113.4431f),"VagosCartel"),
-            new ScenarioBlock(new Vector3(1387.192f, 1158.324f, 113.3342f),"VagosCartel"),
-            new ScenarioBlock(new Vector3(1413.152f, 1153.463f, 113.3341f),"VagosCartel"),
-            new ScenarioBlock(new Vector3(1419.978f, 1151.363f, 113.6739f),"VagosCartel"),
-            new ScenarioBlock(new Vector3(1416.658f, 1163.833f, 114.3532f),"VagosCartel"),
+            new ScenarioBlock(new Vector3(1382.979f, 1147.941f, 113.3342f),"VagosCartel") { Distance = 10.0f },
+            new ScenarioBlock(new Vector3(1382.747f, 1146.689f, 113.3342f),"VagosCartel") { Distance = 10.0f },
+            new ScenarioBlock(new Vector3(1392.486f, 1154.698f, 113.4431f),"VagosCartel") { Distance = 10.0f },
+            new ScenarioBlock(new Vector3(1392.104f, 1155.521f, 113.4431f),"VagosCartel") { Distance = 10.0f },
+            new ScenarioBlock(new Vector3(1391.452f, 1157.046f, 113.4431f),"VagosCartel") { Distance = 10.0f },
+            new ScenarioBlock(new Vector3(1390.901f, 1157.986f, 113.4431f),"VagosCartel") { Distance = 10.0f },
+            new ScenarioBlock(new Vector3(1387.192f, 1158.324f, 113.3342f),"VagosCartel") { Distance = 10.0f },
+            new ScenarioBlock(new Vector3(1413.152f, 1153.463f, 113.3341f),"VagosCartel") { Distance = 10.0f },
+            new ScenarioBlock(new Vector3(1419.978f, 1151.363f, 113.6739f),"VagosCartel") { Distance = 10.0f },
+            new ScenarioBlock(new Vector3(1416.658f, 1163.833f, 114.3532f),"VagosCartel") { Distance = 10.0f },
         });
     }
 }

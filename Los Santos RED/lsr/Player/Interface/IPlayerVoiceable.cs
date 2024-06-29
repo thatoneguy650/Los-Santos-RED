@@ -18,5 +18,6 @@ namespace LosSantosRED.lsr.Interface
         int WantedLevel { get; }
         Stance Stance { get; }
         WeaponEquipment WeaponEquipment { get; }
+        bool CharacterModelIsPrimaryCharacter { get; }
     }
 }

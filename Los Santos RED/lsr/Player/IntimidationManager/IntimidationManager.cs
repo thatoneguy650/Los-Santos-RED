@@ -77,6 +77,11 @@ public class IntimidationManager
     }
     private void UpdateIntimidationLevel()
     {
+        if(!Settings.SettingsManager.PlayerOtherSettings.AllowIntimidation)
+        {
+            IntimidationPercent = 0f;
+            return;
+        }
         float boostLevel = 0f;
 
         if(Player.SemiRecentlyShot)
