@@ -37,9 +37,9 @@ public class Heads : IHeads
         RandomHeadDataLookup = new List<HeadDataGroup>();
 
         //HEADS
-        List<int> WhiteHairStyles_Male = new List<int>() { 2, 3, 4, 5, 7, 9, 10, 11, 12, 18, 19, 66 };
-        List<int> BrownHairStyles_Male = new List<int>() { 2, 3, 4, 9, 10, 11, 12, 18, 19, 66 };
-        List<int> AsianHairStyles_Male = new List<int>() { 2, 3, 4, 9, 10, 11, 12, 18, 19, 66 };
+        List<int> WhiteHairStyles_Male = new List<int>() { 2, 3, 4, 5, 7, 9, 10, 11, 12, 18, 19, 31, 40, 41, 43, 45, 46, 54, 55, 66, 80 };
+        List<int> BrownHairStyles_Male = new List<int>() { 2, 3, 4, 9, 10, 11, 12, 18, 19, 31, 40, 41, 43, 45, 46, 54, 55, 66, 80 };
+        List<int> AsianHairStyles_Male = new List<int>() { 2, 3, 4, 9, 10, 11, 12, 18, 19, 31, 40, 41, 43, 45, 46, 54, 55, 66, 80 };
         List<int> BlackHairStyles_Male = new List<int>() { 0, 1, 8, 14, 24, 25, 30, 72 };
 
         List<int> WhiteHairColors_Male = new List<int>() { 0, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13 };
@@ -63,6 +63,12 @@ public class Heads : IHeads
         List<int> BrownEyeColors = new List<int>() { 1, 4, 5, 6 };
         List<int> AsianEyeColors = new List<int>() { 1, 4, 5, 6 };
         List<int> BlackEyeColors = new List<int>() { 1, 4, 5, 6 };
+
+
+        List<int> MafiaHairColors_Male = new List<int>() { 0, 1,2,3,4 };
+        List<int> MafiaHairStyles_Male = new List<int>() { 4, 5, 7, 9, 10, 12, 18, 19, 31,40,41,43,45,46,54,55,66,80 };
+
+
 
         //haircolor
         List<RandomHeadData> RandomHeadList = new List<RandomHeadData>()
@@ -119,15 +125,15 @@ public class Heads : IHeads
         RandomHeadDataLookup.Add(new HeadDataGroup("AllHeads", RandomHeadList));
         List<RandomHeadData> MafiaHeadList = new List<RandomHeadData>()
                     {
-                        new RandomHeadData(0,"Benjamin",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true) { FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
-                        new RandomHeadData(1,"Daniel",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
-                        new RandomHeadData(4,"Andrew",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
-                        new RandomHeadData(5,"Juan",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
-                        new RandomHeadData(12,"Diego",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
-                        new RandomHeadData(13,"Adrian",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
-                        new RandomHeadData(42,"Claude",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
-                        new RandomHeadData(43,"Niko",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
-                        new RandomHeadData(44,"John",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(0,"Benjamin",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true) { FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(1,"Daniel",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(4,"Andrew",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(5,"Juan",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(12,"Diego",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(13,"Adrian",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(42,"Claude",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(43,"Niko",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(44,"John",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
                     };
         RandomHeadDataLookup.Add(new HeadDataGroup("MafiaHeads", MafiaHeadList));
         List<RandomHeadData> DiablosHeadList = new List<RandomHeadData>()

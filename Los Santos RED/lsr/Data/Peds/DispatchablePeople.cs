@@ -1637,7 +1637,7 @@ public class DispatchablePeople : IDispatchablePeople
         };
         MafiaPeds = new List<DispatchablePerson>() {
             //Dark Grey Unbuttoned Suit with Red Tie and buttoned undershirt
-            new DispatchablePerson("mp_m_freemode_01",100,100,5,10,400,600,0,1) {
+            new DispatchablePerson("mp_m_freemode_01",25,25,5,10,400,600,0,1) {
                 RandomizeHead = true
                 ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
                  ,RequiredVariation = new PedVariation(new List<PedComponent>() {
@@ -1683,7 +1683,7 @@ public class DispatchablePeople : IDispatchablePeople
                  ,OptionalComponentChance = 80,
             },
             //Dark Grey Unbuttoned Suit with unbuttoned undershirt
-            new DispatchablePerson("mp_m_freemode_01",100,100,5,10,400,600,0,1) {
+            new DispatchablePerson("mp_m_freemode_01",25,25,5,10,400,600,0,1) {
                 RandomizeHead = true
                 ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
                 ,RequiredVariation = new PedVariation(new List<PedComponent>() {
@@ -1712,6 +1712,147 @@ public class DispatchablePeople : IDispatchablePeople
                     new PedComponent(8, 11, 15, 0),
 
                     new PedComponent(11, 10, 0, 0),//closed jacket
+                }
+                ,OptionalComponentChance = 80,
+             },
+
+            //
+            new DispatchablePerson("mp_m_freemode_01",75,75,5,10,400,600,0,1) {
+                RandomizeHead = true
+                ,DebugName = "GTA4MafiaRemadeShirtPulledUp"
+                ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
+
+                     new PedComponent(3, 3, 0, 0),
+                     new PedComponent(4, 10, 0, 0),
+                     new PedComponent(6, 21, 0, 0),
+                     new PedComponent(7, 0, 0, 0),
+                     new PedComponent(8, 5, 0, 0),
+                     new PedComponent(11, 346, 25, 0),
+                     new PedComponent(2, 10, 0, 0),
+
+                },new List<PedPropComponent>() { })
+                ,OptionalComponents = new List<PedComponent>() {
+                    //Undershirts
+                    new PedComponent(8, 5, 1, 0),
+                    new PedComponent(8, 5, 2, 0),
+
+                    //Jackets/Shirts
+                    new PedComponent(11, 346, 0, 0),
+                    new PedComponent(11, 346, 1, 0),
+                    new PedComponent(11, 346, 2, 0),
+                    new PedComponent(11, 346, 3, 0),
+                    new PedComponent(11, 346, 4, 0),
+                    new PedComponent(11, 346, 5, 0),
+                    new PedComponent(11, 346, 18, 0),
+                    new PedComponent(11, 346, 20, 0),
+                    new PedComponent(11, 346, 21, 0),
+                    new PedComponent(11, 346, 22, 0),
+                    new PedComponent(11, 346, 23, 0),
+
+                    //Pants
+                    new PedComponent(4, 10, 1, 0),
+                    new PedComponent(4, 10, 3, 0),
+                    new PedComponent(4, 10, 4, 0),
+                }
+                ,OptionalComponentChance = 80,
+             },
+            new DispatchablePerson("mp_m_freemode_01",75,75,5,10,400,600,0,1) {
+                RandomizeHead = true
+                ,DebugName = "GTA4MafiaRemadeNoJacket"
+                ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
+
+                     new PedComponent(3, 5, 0, 0),
+                     new PedComponent(4, 10, 0, 0),
+                     new PedComponent(6, 21, 0, 0),
+                     new PedComponent(7, 17, 0, 0),
+                     new PedComponent(8, 15, 0, 0),
+                     new PedComponent(11, 5, 0, 0),
+                     new PedComponent(2, 10, 0, 0),
+
+                },new List<PedPropComponent>() { })
+                ,OptionalComponents = new List<PedComponent>() {
+                    //Chain
+                    new PedComponent(7, 17, 1, 0),
+                    new PedComponent(7, 17, 2, 0),
+
+                    //Pants
+                    new PedComponent(4, 10, 1, 0),
+                    new PedComponent(4, 10, 3, 0),
+                    new PedComponent(4, 10, 4, 0),
+                }
+                ,OptionalComponentChance = 80,
+             },
+            new DispatchablePerson("mp_m_freemode_01",75,75,5,10,400,600,0,1) {
+                RandomizeHead = true
+                ,DebugName = "GTA4MafiaRemadeTracksuitTop"
+                ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
+
+                     new PedComponent(3, 3, 0, 0),
+                     new PedComponent(4, 13, 0, 0),
+                     new PedComponent(6, 30, 0, 0),
+                     new PedComponent(7, 0, 0, 0),
+                     new PedComponent(8, 15, 0, 0),
+                     new PedComponent(11, 113, 3, 0),
+                     new PedComponent(2, 19, 0, 0),
+
+                },new List<PedPropComponent>() { })
+                ,OptionalComponents = new List<PedComponent>() {
+                    //Chain
+                    new PedComponent(7, 17, 0, 0),
+                    new PedComponent(7, 17, 1, 0),
+                    new PedComponent(7, 17, 2, 0),
+                    //Tracksuit
+                    new PedComponent(11, 113, 0, 0),
+                    new PedComponent(11, 113, 1, 0),
+                    new PedComponent(11, 113, 2, 0),
+
+                    new PedComponent(11, 141, 0, 0),
+                    new PedComponent(11, 141, 1, 0),
+                    new PedComponent(11, 141, 2, 0),
+                    new PedComponent(11, 141, 3, 0),
+                    new PedComponent(11, 141, 4, 0),
+                    new PedComponent(11, 141, 5, 0),
+                    new PedComponent(11, 141, 6, 0),
+                    new PedComponent(11, 141, 7, 0),
+                    new PedComponent(11, 141, 8, 0),
+                    new PedComponent(11, 141, 9, 0),
+                    new PedComponent(11, 141, 10, 0),
+
+                    //Pants
+                    new PedComponent(4, 13, 1, 0),
+                    new PedComponent(4, 13, 2, 0),
+                }
+                ,OptionalComponentChance = 80,
+             },
+
+            new DispatchablePerson("mp_m_freemode_01",75,75,5,10,400,600,0,1) {
+                RandomizeHead = true
+                ,DebugName = "GTA4MafiaRemadeLeatherJacket"
+                ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
+
+                     new PedComponent(3, 1, 0, 0),
+                     new PedComponent(4, 13, 0, 0),
+                     new PedComponent(6, 10, 0, 0),
+                     new PedComponent(7, 0, 0, 0),
+                     new PedComponent(8, 10, 14, 0),
+                     new PedComponent(11, 38, 0, 0),
+                     new PedComponent(2, 19, 0, 0),
+
+                },new List<PedPropComponent>() { })
+                ,OptionalComponents = new List<PedComponent>() {                  
+                    //Jacket
+                    new PedComponent(11, 38, 1, 0),
+                    new PedComponent(11, 38, 2, 0),
+                    new PedComponent(11, 38, 3, 0),
+                    new PedComponent(11, 38, 4, 0),
+
+                    //Pants
+                    new PedComponent(4, 13, 1, 0),
+                    new PedComponent(4, 13, 2, 0),
                 }
                 ,OptionalComponentChance = 80,
              },
