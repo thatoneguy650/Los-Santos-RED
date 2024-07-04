@@ -151,7 +151,7 @@ public class GeneralFollow : ComplexTask
             SetCombat = true;
             SetFollow = false;
         }
-        else if (Player.Character.IsInCombat || PedGeneral.IsWanted || Player.IsWanted || PedGeneral.Pedestrian.IsInCombat)
+        else if (Player.RecentlyShot || Player.Character.IsInCombat || PedGeneral.IsWanted || Player.IsWanted || PedGeneral.Pedestrian.IsInCombat)
         {
             SetCombat = true;
             SetFollow = false;
@@ -161,6 +161,12 @@ public class GeneralFollow : ComplexTask
             SetCombat = false;
             SetFollow = true;
         }
+
+
+
+
+
+
         RunSpeed = 1.0f;
         if (SetCombat)
         {

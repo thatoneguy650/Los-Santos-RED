@@ -52,6 +52,8 @@ public class GangMember : PedExt, IWeaponIssuable
     public override bool KnowsDrugAreas => true;
     public override bool KnowsGangAreas => true;
     public override bool IsGangMember { get; set; } = true;
+    public bool IsGeneralBackup { get; internal set; }
+
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
@@ -145,7 +147,7 @@ public class GangMember : PedExt, IWeaponIssuable
         WillCallPolice = false;
         WillFightPolice = RandomItems.RandomPercent(Gang.FightPolicePercentage);
         WillAlwaysFightPolice = RandomItems.RandomPercent(Gang.AlwaysFightPolicePercentage);
-        if (IsHitSquad || IsBackupSquad)
+        if (IsHitSquad || IsBackupSquad || IsGeneralBackup)
         {
             WillFight = true;
             WillFightPolice = true;
@@ -169,7 +171,7 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             return;
         }
-        WeaponInventory.IssueWeapons(weapons, IsHitSquad || IsBackupSquad || forceMelee || RandomItems.RandomPercent(Gang.PercentageWithMelee), IsHitSquad || IsBackupSquad || forceSidearm || RandomItems.RandomPercent(Gang.PercentageWithSidearms), IsHitSquad || IsBackupSquad || forceLongGun || RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson);
+        WeaponInventory.IssueWeapons(weapons, IsHitSquad || IsBackupSquad || IsGeneralBackup || forceMelee || RandomItems.RandomPercent(Gang.PercentageWithMelee), IsHitSquad || IsBackupSquad ||IsGeneralBackup || forceSidearm || RandomItems.RandomPercent(Gang.PercentageWithSidearms), IsHitSquad || IsBackupSquad || IsGeneralBackup || forceLongGun || RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson);
         if (Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.SightDistance > 60f)
         {
             NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.CivilianSettings.SightDistance);

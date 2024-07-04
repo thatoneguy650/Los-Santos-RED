@@ -32,6 +32,7 @@ public class GangSpawnTask : SpawnTask
     private bool HasGang => Gang != null;
     public bool IsHitSquad { get; set; } = false;
     public bool IsBackupSquad { get; set; } = false;
+    public bool IsGeneralBackup { get; set; } = false;
     public int PedSpawnLimit { get; set; } = 99;
 
     public override void AttemptSpawn()
@@ -225,7 +226,7 @@ public class GangSpawnTask : SpawnTask
         if (VehicleType != null)
         {
 
-            if ((IsHitSquad || IsBackupSquad) && RandomItems.RandomPercent(80))
+            if ((IsHitSquad || IsBackupSquad || IsGeneralBackup) && RandomItems.RandomPercent(80))
             {
                 OccupantsToAdd = VehicleType.MaxOccupants - 1;
                 EntryPoint.WriteToConsole($"HITSQUAD BACKUP OCCUPANTS TO ADD 1 {OccupantsToAdd} PedSpawnLimit{PedSpawnLimit}");
@@ -285,8 +286,9 @@ public class GangSpawnTask : SpawnTask
         }
         GangMember.IsHitSquad = IsHitSquad;
         GangMember.IsBackupSquad = IsBackupSquad;
+        GangMember.IsGeneralBackup = IsGeneralBackup;
         World.Pedestrians.AddEntity(GangMember);
-        if(GangMember.IsHitSquad || GangMember.IsBackupSquad)
+        if(GangMember.IsHitSquad || GangMember.IsBackupSquad || GangMember.IsGeneralBackup)
         {
             ForceMelee = true;
             ForceSidearm = true;

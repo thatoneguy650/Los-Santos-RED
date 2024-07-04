@@ -1856,6 +1856,73 @@ public class DispatchablePeople : IDispatchablePeople
                 }
                 ,OptionalComponentChance = 80,
              },
+
+            new DispatchablePerson("mp_m_freemode_01",75,75,5,10,400,600,0,1) {
+                RandomizeHead = true
+                ,DebugName = "GTA4MafiaRemadeOpenJacket"
+                ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
+
+                     new PedComponent(3, 12, 0, 0),
+                     new PedComponent(4, 10, 0, 0),
+                     new PedComponent(6, 36, 3, 0),
+                     new PedComponent(7, 0, 0, 0),
+                     new PedComponent(8, 63, 5, 0),
+                     new PedComponent(11, 59, 2, 0),
+                     new PedComponent(2, 10, 0, 0),
+
+                },new List<PedPropComponent>() { })
+                ,OptionalComponents = new List<PedComponent>() {                  
+                    //Jacket
+                    new PedComponent(11, 59, 0, 0),
+                    new PedComponent(11, 59, 1, 0),
+
+                    new PedComponent(8, 63, 0, 0),
+                    new PedComponent(8, 63, 1, 0),
+                    new PedComponent(8, 63, 2, 0),
+                    new PedComponent(8, 63, 3, 0),
+                    new PedComponent(8, 63, 4, 0),
+
+                    //Pants
+                    new PedComponent(4, 10, 1, 0),
+                    new PedComponent(4, 10, 3, 0),
+                    new PedComponent(4, 10, 4, 0),
+                }
+                ,OptionalComponentChance = 80,
+             },
+            new DispatchablePerson("mp_m_freemode_01",75,75,5,10,400,600,0,1) {
+                RandomizeHead = true
+                ,DebugName = "GTA4MafiaRemadeOpenShirt2"
+                ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
+
+                     new PedComponent(3, 5, 0, 0),
+                     new PedComponent(4, 13, 0, 0),
+                     new PedComponent(6, 111, 1, 0),
+                     new PedComponent(7, 0, 0, 0),
+                     new PedComponent(8, 5, 0, 0),
+                     new PedComponent(11, 429, 14, 0),
+                     new PedComponent(2, 10, 0, 0),
+
+                },new List<PedPropComponent>() { })
+                ,OptionalComponents = new List<PedComponent>() {                  
+                    //Jacket
+                    new PedComponent(11, 429, 9, 0),
+                    new PedComponent(11, 429, 15, 0),
+
+                    new PedComponent(11, 428, 0, 0),
+                    new PedComponent(11, 428, 1, 0),
+                    new PedComponent(11, 428, 2, 0),
+                    new PedComponent(11, 428, 3, 0),
+                    new PedComponent(11, 428, 4, 0),
+                    new PedComponent(11, 428, 5, 0),
+
+                    //Pants
+                    new PedComponent(4, 13, 1, 0),
+                    new PedComponent(4, 13, 2, 0),
+                }
+                ,OptionalComponentChance = 80,
+             },
         };
         YardiesPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("a_m_m_og_boss_01",30,30,5,10,400,600,0,1) { DebugName = "YardiesMale1" },

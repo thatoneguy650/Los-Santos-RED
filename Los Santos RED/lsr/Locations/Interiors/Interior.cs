@@ -80,6 +80,7 @@ public class Interior
     public bool IsCivilianReactableRestricted { get; set; } = false;
     public bool IsWeaponRestricted { get; set; } = false;
     public bool IsTunnel { get; set; } = false;
+    public float MaxUpdateDistance { get; set; } = 50f;
     public List<InteriorInteract> InteractPoints { get; set; } = new List<InteriorInteract>();
     public List<Vector3> ClearPositions { get; set; } = new List<Vector3>();
 

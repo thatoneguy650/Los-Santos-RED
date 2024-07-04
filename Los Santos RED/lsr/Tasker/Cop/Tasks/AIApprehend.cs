@@ -675,7 +675,7 @@ public class AIApprehend : ComplexTask
                                 Ped.Pedestrian.BlockPermanentEvents = false;
                             }
                             Ped.Pedestrian.KeepTasks = true;
-                            LocalDistance = Ped.Pedestrian.DistanceTo2D(OtherTarget.Pedestrian);
+                            LocalDistance = Ped.Pedestrian.DistanceTo(OtherTarget.Pedestrian);
                             GameFiber.Yield();
                             if (Ped != null && OtherTarget != null && Ped.Pedestrian.Exists() && OtherTarget.Pedestrian.Exists())
                             {
@@ -787,7 +787,7 @@ public class AIApprehend : ComplexTask
                 Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
                 TaskGoTo();
             }
-            if ((OtherTarget.Pedestrian.IsStunned || OtherTarget.Pedestrian.IsRagdoll || OtherTarget.Pedestrian.Speed <= 0.25f) && !OtherTarget.IsBusted && LocalDistance <= 5f && !OtherTarget.IsZombie)
+            if ((OtherTarget.Pedestrian.IsStunned || OtherTarget.Pedestrian.IsRagdoll || (!OtherTarget.PedViolations.IsVisiblyArmed && OtherTarget.Pedestrian.Speed <= 0.25f)) && !OtherTarget.IsBusted && LocalDistance <= 5f && !OtherTarget.IsZombie)
             {
                 OtherTarget.SetBusted();
                 if (Ped.Pedestrian.Exists())

@@ -304,7 +304,8 @@ public class GameLocation : ILocationDispatchable
     public int TotalAssaultSpawns { get; set; } = 0;
 
 
-
+    [XmlIgnore]
+    public float InteriorMaxUpdateDistance => Interior == null ? 50f : Interior.MaxUpdateDistance;
 
 
 

@@ -65,6 +65,7 @@ namespace LosSantosRED.lsr.Interface
         GroupManager GroupManager { get; }
         Cop ClosestCopDriverToPlayer { get; }
         IntimidationManager IntimidationManager { get; }
+        Vector3 Position { get; }
         //bool IsHostile(Gang gang);
     }
 }

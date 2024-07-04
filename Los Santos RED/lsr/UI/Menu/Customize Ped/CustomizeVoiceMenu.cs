@@ -99,8 +99,12 @@ public class CustomizeVoiceMenu
         FilteredVoices = new UIMenuListScrollerItem<string>("Filtered Voice List", "Update the current set voice from a list of filtered items.", VoiceList.Where(x => FilterString == "" || x.ToLower().Contains(FilterString.ToLower())).OrderBy(x => x));
         FilteredVoices.Activated += (sender, selectedItem) =>
         {
-            Game.DisplaySubtitle($"Voice Set to {FilteredVoices.SelectedItem}");
-            SetVoiceFromString(FilteredVoices.SelectedItem);
+            if(!string.IsNullOrEmpty(FilteredVoices.SelectedItem))
+            {
+                Game.DisplaySubtitle($"Voice Set to {FilteredVoices.SelectedItem}");
+                SetVoiceFromString(FilteredVoices.SelectedItem);
+            }
+
         };
         VoiceSubMenu.AddItem(FilteredVoices);
 

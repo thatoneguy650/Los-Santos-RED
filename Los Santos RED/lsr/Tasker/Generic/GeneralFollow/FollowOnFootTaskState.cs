@@ -28,12 +28,15 @@ class FollowOnFootTaskState : TaskState
     private GroupManager GroupManager;
     private bool isSetCombat = false;
     private bool isSetFollow = false;
+    private bool isSetFollowThenCombat;
+
     //private bool IsStandardFollow = true;
     //private bool IsCombat = false;
     private float followSpeed;
     //private float RunSpeed;
     private GeneralFollow GeneralFollow;
     private bool isSetForce = false;
+    private bool isSetAiming;
 
     public FollowOnFootTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, GroupManager groupManager, IWeaponIssuable weaponissueable, GeneralFollow generalFollow)
     {
@@ -79,13 +82,37 @@ class FollowOnFootTaskState : TaskState
     {
         if (GeneralFollow.SetCombat)
         {
-            if (!isSetCombat || isSetForce != Player.GroupManager.SetForceTasking)
-            {
-                NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(PedGeneral.Pedestrian, 100f, 0);//TR
-                isSetCombat = true;
-                isSetForce = Player.GroupManager.SetForceTasking;
-                isSetFollow = false;
-            }
+            //if (!isSetCombat || isSetForce != Player.GroupManager.SetForceTasking)
+            //{
+            //    //NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(PedGeneral.Pedestrian, 100f, 0);//TR
+            //    isSetCombat = true;
+            //    isSetForce = Player.GroupManager.SetForceTasking;
+            //    isSetFollow = false;
+            //    //isSetFollowThenCombat = false;
+            //}
+
+            UpdateCombat();
+
+
+
+            //if(PedGeneral.DistanceToPlayer >= 20f && !isSetFollowThenCombat)
+            //{
+                //unsafe
+                //{
+                //    float offsetX = RandomItems.GetRandomNumber(-1.0f * Player.GroupManager.GroupFollowDistance, Player.GroupManager.GroupFollowDistance);
+                //    float offsetY = RandomItems.GetRandomNumber(-1.0f * Player.GroupManager.GroupFollowDistance, Player.GroupManager.GroupFollowDistance);
+                //    int lol = 0;
+                //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                //    NativeFunction.CallByName<bool>("TASK_FOLLOW_TO_OFFSET_OF_ENTITY", 0, Player.Character, offsetX, offsetY, 0f, GeneralFollow.RunSpeed, -1, 12.0f, true);//NativeFunction.Natives.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(0, Player.Character, 3.0f, 3.0f, 0f, 0.75f, 20000, 5f, true);
+                //    NativeFunction.CallByName<bool>("TASK_COMBAT_HATED_TARGETS_AROUND_PED", 0, 100f,0);
+                //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", PedGeneral.Pedestrian, lol);
+                //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                //}
+                //isSetFollowThenCombat = true;
+           // }
+
         }
         else
         {
@@ -118,9 +145,61 @@ class FollowOnFootTaskState : TaskState
                 EntryPoint.WriteToConsole($"Assign Follow speed:{GeneralFollow.RunSpeed}");
                 isSetFollow = true;
                 isSetCombat = false;
+                isSetFollowThenCombat = false;
             }
         }
     }
-   
+
+    private void UpdateCombat()
+    {
+        //Vector3 PlayerPos = Player.Position;
+        //if(PedGeneral.DistanceToPlayer >= 12.0f)
+        //{
+        //    //GOTOPLAYER AIMING
+        //    if (!isSetAiming)
+        //    {
+        //        unsafe
+        //        {
+        //            float offsetX = RandomItems.GetRandomNumber(-1.0f * Player.GroupManager.GroupFollowDistance, Player.GroupManager.GroupFollowDistance);
+        //            float offsetY = RandomItems.GetRandomNumber(-1.0f * Player.GroupManager.GroupFollowDistance, Player.GroupManager.GroupFollowDistance);
+        //            int lol = 0;
+        //            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+        //            NativeFunction.CallByName<bool>("TASK_GO_TO_COORD_AND_AIM_AT_HATED_ENTITIES_NEAR_COORD", 0, 
+        //                PlayerPos.X, PlayerPos.Y, PlayerPos.Z, 
+        //                PlayerPos.X, PlayerPos.Y, PlayerPos.Z, 
+        //                GeneralFollow.RunSpeed,
+        //                true,
+        //                3.0f,
+        //                4.0f,
+        //                true,
+        //                0,
+        //                0,
+        //                0
+        //                );//NativeFunction.Natives.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(0, Player.Character, 3.0f, 3.0f, 0f, 0.75f, 20000, 5f, true);
+        //            NativeFunction.CallByName<bool>("TASK_COMBAT_HATED_TARGETS_AROUND_PED", 0, 100f, 0);
+        //            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+        //            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+        //            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", PedGeneral.Pedestrian, lol);
+        //            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        //        }
+        //        isSetAiming = true;
+        //        EntryPoint.WriteToConsole("SET GO TO THEN COMBAT");
+        //    }
+
+
+        //}
+        //else
+        //{
+            if (!isSetCombat || isSetForce != Player.GroupManager.SetForceTasking)
+            {
+                NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(PedGeneral.Pedestrian, 100f, 0);//TR
+                isSetCombat = true;
+                isSetForce = Player.GroupManager.SetForceTasking;
+                isSetFollow = false;
+                isSetAiming = false;
+                EntryPoint.WriteToConsole("SET COMBAT ONLY");
+            }
+        //}
+    }
 }
 

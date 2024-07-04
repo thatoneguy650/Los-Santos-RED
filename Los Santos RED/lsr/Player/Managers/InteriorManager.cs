@@ -61,7 +61,7 @@ public class InteriorManager
     {
         if (IsUpdatingSingleLocation)
         {
-            if(CurrentTeleportInteriorLocation != null && CurrentTeleportInteriorLocation.Interior != null && CurrentTeleportInteriorLocation.Interior.InteriorEgressPosition.DistanceTo(Player.Character) >= 50f)
+            if(CurrentTeleportInteriorLocation != null && CurrentTeleportInteriorLocation.Interior != null && CurrentTeleportInteriorLocation.Interior.InteriorEgressPosition.DistanceTo(Player.Character) >= CurrentTeleportInteriorLocation.InteriorMaxUpdateDistance)// 50f)
             {
                 EntryPoint.WriteToConsole($"YOU MOVED AWAY FROM {CurrentTeleportInteriorLocation.Name} TURNING OFF INTERIOR UPDATE");
                 OnTeleportedOutside(CurrentTeleportInteriorLocation);
@@ -70,7 +70,6 @@ public class InteriorManager
         }
         foreach(GameLocation gameLocation in World.Places.ActiveLocations.ToList())
         {
-
             if (!gameLocation.HasInterior || gameLocation.Interior == null || gameLocation.Interior.IsTeleportEntry)
             {
                 continue;
@@ -79,7 +78,7 @@ public class InteriorManager
             {
                 continue;
             }
-            if(gameLocation.IsActivated && gameLocation.DistanceToPlayer <= 50f)
+            if(gameLocation.IsActivated && gameLocation.DistanceToPlayer <= gameLocation.InteriorMaxUpdateDistance)// 50f)
             {
                 if(!InteriorUpdateLocations.Any(x=> x.Interior?.LocalID == gameLocation.Interior?.LocalID))
                 {
@@ -88,7 +87,7 @@ public class InteriorManager
                 StartInteriorChecking();
             }
         }
-        InteriorUpdateLocations.RemoveAll(x => !x.IsActivated || !x.IsNearby || x.DistanceToPlayer >= 50f);
+        InteriorUpdateLocations.RemoveAll(x => !x.IsActivated || !x.IsNearby || x.DistanceToPlayer >= x.InteriorMaxUpdateDistance);// 50f);
     }
     public void OnStoppedInteracting()
     {
