@@ -43,7 +43,7 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> EMTs;
     private List<DispatchablePerson> GreenEMTs;
     private List<DispatchablePerson> BlueEMTs;
-    private List<DispatchablePerson> LostMCPeds;
+    public List<DispatchablePerson> LostMCPeds { get; set; }
     private List<DispatchablePerson> VagosPeds;
     private List<DispatchablePerson> DiablosPeds;
     private List<DispatchablePerson> FamiliesPeds;
@@ -86,6 +86,7 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> HaircutPeds;
     private List<DispatchablePerson> BobMuletPeds;
 
+    private DispatchablePeople_LostMC DispatchablePeople_LostMC;
     public List<DispatchablePersonGroup> AllPeople => PeopleGroupLookup;
 
     public void Setup(IIssuableWeapons issuableWeapons)
@@ -98,9 +99,8 @@ public class DispatchablePeople : IDispatchablePeople
             }
             foreach (DispatchablePerson dispatchPerson in dpg.DispatchablePeople)
             {
-                dispatchPerson.OverrideLessLethalWeapons = issuableWeapons.GetWeaponData(dispatchPerson.OverrideLessLethalWeaponsID);
-                dispatchPerson.OverrideLongGuns = issuableWeapons.GetWeaponData(dispatchPerson.OverrideLongGunsID);
-                dispatchPerson.OverrideSideArms = issuableWeapons.GetWeaponData(dispatchPerson.OverrideSideArmsID);
+                dispatchPerson.Setup(issuableWeapons);
+
             }
         }
     }
@@ -1396,7 +1396,6 @@ public class DispatchablePeople : IDispatchablePeople
         EMTs = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_m_paramedic_01", 0, 0) { DebugName = "EMTMaleDefault" },
         };
-
         GreenEMTs = new List<DispatchablePerson>() {
             new DispatchablePerson("mp_m_freemode_01",100,100) {
                 DebugName = "EMTMaleGreen1"
@@ -1535,13 +1534,18 @@ public class DispatchablePeople : IDispatchablePeople
         };
 
         //Gangs
-        LostMCPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("g_m_y_lost_01",30,30,5,10,400,600,0,1) { DebugName = "LOSTMale1" },
-            new DispatchablePerson("g_m_y_lost_02",30,30,5,10,400,600,0,1) { DebugName = "LOSTMale2" },
-            new DispatchablePerson("g_m_y_lost_03",30,30,5,10,400,600,0,1) { DebugName = "LOSTMale3" },
-            //new DispatchablePerson("ig_clay",30,30,5,10,400,600,0,1) { DebugName = "LOSTClay" },
-            new DispatchablePerson("g_f_y_lost_01",10,10,5,10,400,600,0,1) { DebugName = "LOSTFemale1" },
-        };
+        
+        //LostMCPeds = new List<DispatchablePerson>() {
+        //    new DispatchablePerson("g_m_y_lost_01",30,30,5,10,400,600,0,1) { DebugName = "LOSTMale1" },
+        //    new DispatchablePerson("g_m_y_lost_02",30,30,5,10,400,600,0,1) { DebugName = "LOSTMale2" },
+        //    new DispatchablePerson("g_m_y_lost_03",30,30,5,10,400,600,0,1) { DebugName = "LOSTMale3" },
+        //    //new DispatchablePerson("ig_clay",30,30,5,10,400,600,0,1) { DebugName = "LOSTClay" },
+        //    new DispatchablePerson("g_f_y_lost_01",10,10,5,10,400,600,0,1) { DebugName = "LOSTFemale1" },
+        //};
+        DispatchablePeople_LostMC = new DispatchablePeople_LostMC(this);
+        DispatchablePeople_LostMC.Setup();
+
+
         VagosPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("g_m_y_mexgoon_01",30,30,5,10,400,600,0,1) { DebugName = "VagosMale1" },
             new DispatchablePerson("g_m_y_mexgoon_02",30,30,5,10,400,600,0,1) { DebugName = "VagosMale2" },

@@ -84,7 +84,10 @@ public class PedVariation
                 //NativeFunction.Natives.CLEAR_PED_DECORATIONS(ped);
                 foreach(AppliedOverlay ao in AppliedOverlays)
                 {
-                    NativeFunction.Natives.ADD_PED_DECORATION_FROM_HASHES(ped, Game.GetHashKey(ao.CollectionName), Game.GetHashKey(ao.OverlayName));
+                    uint collectionHash = Game.GetHashKey(ao.CollectionName);
+                    uint overlayHash = Game.GetHashKey(ao.OverlayName);
+                    NativeFunction.Natives.ADD_PED_DECORATION_FROM_HASHES(ped, collectionHash, overlayHash);
+                    setVariation.AppliedOverlays.Add(new AppliedOverlay(ao.CollectionName, ao.OverlayName, ao.ZoneName, collectionHash, overlayHash));
                 }
             }
             //Freemode only below
@@ -181,7 +184,10 @@ public class PedVariation
                 NativeFunction.Natives.CLEAR_PED_DECORATIONS(ped);
                 foreach (AppliedOverlay ao in AppliedOverlays)
                 {
-                    NativeFunction.Natives.ADD_PED_DECORATION_FROM_HASHES(ped, Game.GetHashKey(ao.CollectionName), Game.GetHashKey(ao.OverlayName));
+                    uint collectionHash = Game.GetHashKey(ao.CollectionName);
+                    uint overlayHash = Game.GetHashKey(ao.OverlayName);
+                    NativeFunction.Natives.ADD_PED_DECORATION_FROM_HASHES(ped, collectionHash, overlayHash);
+                    setVariation.AppliedOverlays.Add(new AppliedOverlay(ao.CollectionName, ao.OverlayName, ao.ZoneName, collectionHash, overlayHash));
                 }
             }
             //Freemode only below

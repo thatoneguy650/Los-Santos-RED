@@ -547,7 +547,7 @@ public class Chase : ComplexTask
         {
             if (CurrentSubTask != SubTask.CarJackPlayer)
             {
-                Cop.WeaponInventory.SetCompletelyUnarmed();
+                //Cop.WeaponInventory.SetCompletelyUnarmed();
                 IsChasingSlowly = false;
                 TaskedEnterVehicle = Player.CurrentVehicle.Vehicle;
                 if (!Cop.BlackListedVehicles.Any(x => x == Player.CurrentVehicle.Vehicle.Handle))

@@ -134,6 +134,10 @@
     <Compile Include="lsr\Data\Other\PossibleSpawnBlocks.cs" />
     <Compile Include="lsr\Data\Other\ScenarioBlock.cs" />
     <Compile Include="lsr\Data\Other\SpawnBlocks.cs" />
+    <Compile Include="lsr\Data\Peds\Dispatchable People\AppliedOverlayZonePercentage.cs" />
+    <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_LostMC.cs" />
+    <Compile Include="lsr\Data\Peds\Dispatchable People\OptionalAppliedOverlay.cs" />
+    <Compile Include="lsr\Data\Peds\Dispatchable People\OptionalAppliedOverlayLogic.cs" />
     <Compile Include="lsr\Data\Peds\PedOverlayNames.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\RadarDetectorSettings.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ.cs" />
@@ -267,7 +271,7 @@
     <Compile Include="lsr\Data\Other\LanguageStrings.cs" />
     <Compile Include="lsr\Data\Peds\CombatAttributeToSet.cs" />
     <Compile Include="lsr\Data\Peds\CombatFloatToSet.cs" />
-    <Compile Include="lsr\Data\Peds\DispatchablePeopleExtra.cs" />
+    <Compile Include="lsr\Data\Peds\Dispatchable People\DispatchablePeopleExtra.cs" />
     <Compile Include="lsr\Data\Peds\eSpeechType.cs" />
     <Compile Include="lsr\Data\Peds\PedConfigFlagToSet.cs" />
     <Compile Include="lsr\Data\Peds\SavedOutfits.cs" />
@@ -514,7 +518,7 @@
     <Compile Include="lsr\Data\Location\Seats.cs" />
     <Compile Include="lsr\Data\Peds\CustomPropAttachment.cs" />
     <Compile Include="lsr\Data\Peds\Dances.cs" />
-    <Compile Include="lsr\Data\Peds\DispatchablePersonGroup.cs" />
+    <Compile Include="lsr\Data\Peds\Dispatchable People\DispatchablePersonGroup.cs" />
     <Compile Include="lsr\Data\Peds\Gestures.cs" />
     <Compile Include="lsr\Data\Peds\HeadDataGroup.cs" />
     <Compile Include="lsr\Data\Peds\Heads.cs" />
@@ -620,7 +624,7 @@
     <Compile Include="lsr\Vehicle\Variation\DispatchableVehicleExtra.cs" />
     <Compile Include="lsr\Vehicle\Variation\DispatchableVehicleGroup.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles.cs" />
-    <Compile Include="lsr\Data\Peds\DispatchablePeople.cs" />
+    <Compile Include="lsr\Data\Peds\Dispatchable People\DispatchablePeople.cs" />
     <Compile Include="lsr\Data\Vehicles\PlateTypeManager.cs" />
     <Compile Include="lsr\Vehicle\Types\EMSVehicleExt.cs" />
     <Compile Include="lsr\Vehicle\Types\FireVehicleExt.cs" />

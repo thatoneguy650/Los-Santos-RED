@@ -123,6 +123,66 @@ public class Heads : IHeads
                     };
 
         RandomHeadDataLookup.Add(new HeadDataGroup("AllHeads", RandomHeadList));
+
+
+
+
+
+        List<RandomHeadData> LostMCHeadsList = new List<RandomHeadData>()
+                    {
+                        new RandomHeadData(0,"Benjamin",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true) { FacialHairPercentage = 55f },//white male
+                        new RandomHeadData(1,"Daniel",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 55f },//white male
+                        new RandomHeadData(4,"Andrew",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 55f },//white male
+                        new RandomHeadData(5,"Juan",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 55f },//white male
+                        new RandomHeadData(12,"Diego",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 55f },//white male
+                        new RandomHeadData(13,"Adrian",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 55f },//white male
+                        new RandomHeadData(42,"Claude",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 55f },//white male
+                        new RandomHeadData(43,"Niko",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 55f },//white male
+                        new RandomHeadData(44,"John",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 55f },///white male
+                        new RandomHeadData(2,"Joshua",BlackHairColors_Male,BlackHairStyles_Male,BlackEyeColors, true){ FacialHairPercentage = 55f },//black male
+                        new RandomHeadData(3,"Noah",BlackHairColors_Male,BlackHairStyles_Male,BlackEyeColors, true){ FacialHairPercentage = 55f },//black male
+                        new RandomHeadData(15,"Michael",BlackHairColors_Male,BlackHairStyles_Male,BlackEyeColors, true){ FacialHairPercentage = 55f },//black male
+                        new RandomHeadData(19,"Samuel",BlackHairColors_Male,BlackHairStyles_Male,BlackEyeColors, true){ FacialHairPercentage = 55f },//black male
+                        new RandomHeadData(8,"Evan",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true){ FacialHairPercentage = 55f },//brown male
+                        new RandomHeadData(9,"Ethan",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true){ FacialHairPercentage = 55f },//brown male
+                        new RandomHeadData(10,"Vincent",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true){ FacialHairPercentage = 55f },//brown male
+                        new RandomHeadData(11,"Angel",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true){ FacialHairPercentage = 55f },//brown male
+                        new RandomHeadData(16,"Santiago",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true){ FacialHairPercentage = 55f },//brown male
+                        new RandomHeadData(20,"Anthony",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true){ FacialHairPercentage = 55f },//brown male
+                        new RandomHeadData(7,"Isaac",AsianHairColors_Male,AsianHairStyles_Male,AsianEyeColors, true){ FacialHairPercentage = 55f },//asian male
+                        new RandomHeadData(17,"Kevin",AsianHairColors_Male,AsianHairStyles_Male,AsianEyeColors, true){ FacialHairPercentage = 55f },//asian male
+                        new RandomHeadData(18,"Louis",AsianHairColors_Male,AsianHairStyles_Male,AsianEyeColors, true){ FacialHairPercentage = 55f },//asian male            
+
+                        new RandomHeadData(6,"Alex",AsianHairColors_Female,AsianHairStyles_Female,AsianEyeColors,false),//asian female
+                        new RandomHeadData(27,"Zoe",AsianHairColors_Female,AsianHairStyles_Female,AsianEyeColors,false),//asian female
+                        new RandomHeadData(28,"Ava",AsianHairColors_Female,AsianHairStyles_Female,AsianEyeColors,false),//asian female
+                        new RandomHeadData(39,"Elizabeth",AsianHairColors_Female,AsianHairStyles_Female,AsianEyeColors,false),//asian female
+                        new RandomHeadData(33,"Nicole",WhiteHairColors_Female,WhiteHairStyles_Female,WhiteEyeColors,false),//white female
+                        new RandomHeadData(34,"Ashley",WhiteHairColors_Female,WhiteHairStyles_Female,WhiteEyeColors,false),//white female
+                        new RandomHeadData(21,"Hannah",WhiteHairColors_Female,WhiteHairStyles_Female,WhiteEyeColors,false),//white female
+                        new RandomHeadData(22,"Audrey",WhiteHairColors_Female,WhiteHairStyles_Female,WhiteEyeColors,false),//white female
+                        new RandomHeadData(40,"Charlotte",WhiteHairColors_Female,WhiteHairStyles_Female,WhiteEyeColors,false),//white female
+                        new RandomHeadData(45,"Misty",WhiteHairColors_Female,WhiteHairStyles_Female,WhiteEyeColors,false),//white female
+                        new RandomHeadData(14,"Gabriel",BlackHairColors_Female,BlackHairStyles_Female,BlackEyeColors,false),//black female
+                        new RandomHeadData(23,"Jasmine",BlackHairColors_Female,BlackHairStyles_Female,BlackEyeColors,false),//black female
+                        new RandomHeadData(24,"Giselle",BlackHairColors_Female,BlackHairStyles_Female,BlackEyeColors,false),//black female
+                        new RandomHeadData(35,"Grace",BlackHairColors_Female,BlackHairStyles_Female,BlackEyeColors,false),//black female
+                        new RandomHeadData(36,"Brianna",BlackHairColors_Female,BlackHairStyles_Female,BlackEyeColors,false),//black female
+                        new RandomHeadData(25,"Amelia",BrownHairColors_Female,BrownHairStyles_Female,BrownEyeColors,false),//brown female
+                        new RandomHeadData(26,"Isabella",BrownHairColors_Female,BrownHairStyles_Female,BrownEyeColors,false),//brown female
+                        new RandomHeadData(29,"Camila",BrownHairColors_Female,BrownHairStyles_Female,BrownEyeColors,false),//brown female
+                        new RandomHeadData(30,"Violet",BrownHairColors_Female,BrownHairStyles_Female,BrownEyeColors,false),//brown female
+                        new RandomHeadData(31,"Sophia",BrownHairColors_Female,BrownHairStyles_Female,BrownEyeColors,false),//brown female
+                        new RandomHeadData(32,"Evelyn",BrownHairColors_Female,BrownHairStyles_Female,BrownEyeColors,false),//brown female
+                        new RandomHeadData(37,"Natalie",BrownHairColors_Female,BrownHairStyles_Female,BrownEyeColors,false),//brown female
+                        new RandomHeadData(38,"Olivia",BrownHairColors_Female,BrownHairStyles_Female,BrownEyeColors,false),//brown female     
+                        new RandomHeadData(41,"Emma",BrownHairColors_Female,BrownHairStyles_Female,BrownEyeColors,false),//brown female            
+                    };
+
+        RandomHeadDataLookup.Add(new HeadDataGroup("LostMCHeads", LostMCHeadsList));
+
+
+
         List<RandomHeadData> MafiaHeadList = new List<RandomHeadData>()
                     {
                         new RandomHeadData(0,"Benjamin",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true) { FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male

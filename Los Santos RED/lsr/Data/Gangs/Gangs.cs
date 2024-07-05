@@ -108,6 +108,7 @@ public class Gangs : IGangs
         LOST = new Gang("~w~", "AMBIENT_GANG_LOST", "The Lost MC", "LOST MC", "White", "LostMCPeds", "LostMCVehicles", "LOST ", "MeleeWeapons", "LostSidearms", "LostLongGuns", "LOST MC", "CHAR_BLANK_ENTRY", "LOST Member")
         {
             DenName = "Clubhouse",
+            HeadDataGroupID = "LostMCHeads",
             AmbientMemberMoneyMin = 100,
             AmbientMemberMoneyMax = 1000,
             DealerMemberMoneyMin = 400,

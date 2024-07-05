@@ -76,6 +76,7 @@ public class DispatchablePerson
     public List<PedPropComponent> OptionalProps { get; set; }
     public int OptionalPropChance { get; set; } = 30;
     public List<PedComponent> OptionalComponents { get; set; }
+    public OptionalAppliedOverlayLogic OptionalAppliedOverlayLogic { get; set; }
     public int OptionalComponentChance { get; set; } = 30;
     public PedComponent EmptyHolster { get; set; }
     public PedComponent FullHolster { get; set; }
@@ -94,6 +95,9 @@ public class DispatchablePerson
     public bool AlwaysHasLongGun { get; set; } = false;
     public bool IsAnimal { get; set; } = false;
     public float OverrideSightDistance { get; set; } = -1.0f;
+
+    public PedPropComponent OverrideHelmet { get; set; }
+    public float NoHelmetPercentage { get; set; } = 0f;
     public string GetDescription()
     {
         string description = "";
@@ -246,6 +250,18 @@ public class DispatchablePerson
         {
             return;
         }
+        if (RandomItems.RandomPercent(NoHelmetPercentage))
+        {
+            NativeFunction.Natives.SET_PED_HELMET(pedExt.Pedestrian, false);
+        }
+        else
+        {
+            if (OverrideHelmet != null)
+            {
+                NativeFunction.Natives.SET_PED_HELMET_PROP_INDEX(pedExt.Pedestrian, OverrideHelmet.DrawableID, true);
+                NativeFunction.Natives.SET_PED_HELMET_TEXTURE_INDEX(pedExt.Pedestrian, OverrideHelmet.TextureID);
+            }
+        }
         if (PedConfigFlagsToSet != null && PedConfigFlagsToSet.Any())
         {
             PedConfigFlagsToSet.ForEach(x => x.ApplyToPed(pedExt.Pedestrian));
@@ -258,6 +274,7 @@ public class DispatchablePerson
         {
             CombatFloatsToSet.ForEach(x => x.ApplyToPed(pedExt.Pedestrian));
         }
+
 
     }
     public DispatchablePerson()
@@ -385,6 +402,10 @@ public class DispatchablePerson
                         }
                     }
                 }
+            }
+            if(OptionalAppliedOverlayLogic != null)
+            {
+                OptionalAppliedOverlayLogic.ApplyToPed(ped,variationToSet);
             }
             if (isFreemode)
             {
@@ -560,5 +581,13 @@ public class DispatchablePerson
             toReturn = ModelName;
         }
         return toReturn;
+    }
+
+    public void Setup(IIssuableWeapons issuableWeapons)
+    {
+        OverrideLessLethalWeapons = issuableWeapons.GetWeaponData(OverrideLessLethalWeaponsID);
+        OverrideLongGuns = issuableWeapons.GetWeaponData(OverrideLongGunsID);
+        OverrideSideArms = issuableWeapons.GetWeaponData(OverrideSideArmsID);
+        OptionalAppliedOverlayLogic?.Setup();     
     }
 }
