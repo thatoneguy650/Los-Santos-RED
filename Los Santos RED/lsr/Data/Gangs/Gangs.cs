@@ -183,6 +183,7 @@ public class Gangs : IGangs
             AmbientMemberMoneyMax = 300,
             DealerMemberMoneyMin = 350,
             DealerMemberMoneyMax = 1100,
+            HeadDataGroupID = "VarriosHeads",
             EnemyGangs = new List<string>() { "AMBIENT_GANG_WEICHENG" },
             DealerMenuGroup = "CrackDealerMenu",
 

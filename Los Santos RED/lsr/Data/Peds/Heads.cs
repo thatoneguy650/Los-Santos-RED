@@ -57,21 +57,18 @@ public class Heads : IHeads
         List<int> AsianHairColors_Female = new List<int>() { 0, 1, 2, 3 };
         List<int> BlackHairColors_Female = new List<int>() { 0, 1, 2, 3 };
 
-
-
         List<int> WhiteEyeColors = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8 };
         List<int> BrownEyeColors = new List<int>() { 1, 4, 5, 6 };
         List<int> AsianEyeColors = new List<int>() { 1, 4, 5, 6 };
         List<int> BlackEyeColors = new List<int>() { 1, 4, 5, 6 };
 
-
         List<int> MafiaHairColors_Male = new List<int>() { 0, 1,2,3,4 };
         List<int> MafiaHairStyles_Male = new List<int>() { 4, 5, 7, 9, 10, 12, 18, 19, 31,40,41,43,45,46,54,55,66,80 };
 
+        List<int> VariosHairStyles_Male = new List<int>() { 1,12,31,35 };
+        List<int> VarriosHairStyles_Female = new List<int>() { 1, 3, 4, 10, 11, 14, 16, 31,36 };
 
-
-        //haircolor
-        List<RandomHeadData> RandomHeadList = new List<RandomHeadData>()
+        List<RandomHeadData> AllHeadsList = new List<RandomHeadData>()
                     {
                         new RandomHeadData(0,"Benjamin",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
                         new RandomHeadData(1,"Daniel",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
@@ -121,13 +118,7 @@ public class Heads : IHeads
                         new RandomHeadData(38,"Olivia",BrownHairColors_Female,BrownHairStyles_Female,BrownEyeColors,false),//brown female     
                         new RandomHeadData(41,"Emma",BrownHairColors_Female,BrownHairStyles_Female,BrownEyeColors,false),//brown female            
                     };
-
-        RandomHeadDataLookup.Add(new HeadDataGroup("AllHeads", RandomHeadList));
-
-
-
-
-
+        RandomHeadDataLookup.Add(new HeadDataGroup("AllHeads", AllHeadsList));
         List<RandomHeadData> LostMCHeadsList = new List<RandomHeadData>()
                     {
                         new RandomHeadData(0,"Benjamin",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true) { FacialHairPercentage = 55f },//white male
@@ -178,11 +169,27 @@ public class Heads : IHeads
                         new RandomHeadData(38,"Olivia",BrownHairColors_Female,BrownHairStyles_Female,BrownEyeColors,false),//brown female     
                         new RandomHeadData(41,"Emma",BrownHairColors_Female,BrownHairStyles_Female,BrownEyeColors,false),//brown female            
                     };
-
         RandomHeadDataLookup.Add(new HeadDataGroup("LostMCHeads", LostMCHeadsList));
+        List<RandomHeadData> VarriosHeadsList = new List<RandomHeadData>()
+                    {
+                        new RandomHeadData(8,"Evan",BrownHairColors_Male,VariosHairStyles_Male,BrownEyeColors, true){ FacialHairPercentage = 65f },//brown male
+                        new RandomHeadData(9,"Ethan",BrownHairColors_Male,VariosHairStyles_Male,BrownEyeColors, true){ FacialHairPercentage = 65f },//brown male
+                        new RandomHeadData(10,"Vincent",BrownHairColors_Male,VariosHairStyles_Male,BrownEyeColors, true){ FacialHairPercentage = 65f },//brown male
+                        new RandomHeadData(11,"Angel",BrownHairColors_Male,VariosHairStyles_Male,BrownEyeColors, true){ FacialHairPercentage = 65f },//brown male
+                        new RandomHeadData(16,"Santiago",BrownHairColors_Male,VariosHairStyles_Male,BrownEyeColors, true){ FacialHairPercentage = 65f },//brown male
+                        new RandomHeadData(20,"Anthony",BrownHairColors_Male,VariosHairStyles_Male,BrownEyeColors, true){ FacialHairPercentage = 65f },//brown male        
 
-
-
+                        new RandomHeadData(25,"Amelia",BrownHairColors_Female,VarriosHairStyles_Female,BrownEyeColors,false) { LipstickAndMakeupPercentage = 95f, },//brown female
+                        new RandomHeadData(26,"Isabella",BrownHairColors_Female,VarriosHairStyles_Female,BrownEyeColors,false){ LipstickAndMakeupPercentage = 95f, },//brown female
+                        new RandomHeadData(29,"Camila",BrownHairColors_Female,VarriosHairStyles_Female,BrownEyeColors,false){ LipstickAndMakeupPercentage = 95f, },//brown female
+                        new RandomHeadData(30,"Violet",BrownHairColors_Female,VarriosHairStyles_Female,BrownEyeColors,false){ LipstickAndMakeupPercentage = 95f, },//brown female
+                        new RandomHeadData(31,"Sophia",BrownHairColors_Female,VarriosHairStyles_Female,BrownEyeColors,false){ LipstickAndMakeupPercentage = 95f, },//brown female
+                        new RandomHeadData(32,"Evelyn",BrownHairColors_Female,VarriosHairStyles_Female,BrownEyeColors,false){ LipstickAndMakeupPercentage = 95f, },//brown female
+                        new RandomHeadData(37,"Natalie",BrownHairColors_Female,VarriosHairStyles_Female,BrownEyeColors,false){ LipstickAndMakeupPercentage = 95f, },//brown female
+                        new RandomHeadData(38,"Olivia",BrownHairColors_Female,VarriosHairStyles_Female,BrownEyeColors,false){ LipstickAndMakeupPercentage = 95f, },//brown female     
+                        new RandomHeadData(41,"Emma",BrownHairColors_Female,VarriosHairStyles_Female,BrownEyeColors,false){ LipstickAndMakeupPercentage = 95f, },//brown female            
+                    };
+        RandomHeadDataLookup.Add(new HeadDataGroup("VarriosHeads", VarriosHeadsList));
         List<RandomHeadData> MafiaHeadList = new List<RandomHeadData>()
                     {
                         new RandomHeadData(0,"Benjamin",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true) { FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
@@ -198,25 +205,15 @@ public class Heads : IHeads
         RandomHeadDataLookup.Add(new HeadDataGroup("MafiaHeads", MafiaHeadList));
         List<RandomHeadData> DiablosHeadList = new List<RandomHeadData>()
                     {
-                        new RandomHeadData(4,"Andrew",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
-                        new RandomHeadData(9,"Ethan",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true),//brown male
-                        new RandomHeadData(10,"Vincent",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true),//brown male
-                        new RandomHeadData(11,"Angel",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true),//brown male
-                        new RandomHeadData(16,"Santiago",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true),//brown male
-                        new RandomHeadData(20,"Anthony",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true),//brown male
-                        new RandomHeadData(44,"John",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),///white male
-                        //new RandomHeadData(0,"Benjamin",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true) { FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
-                        //new RandomHeadData(1,"Daniel",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
-                        //new RandomHeadData(4,"Andrew",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
-                        //new RandomHeadData(5,"Juan",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
-                        //new RandomHeadData(12,"Diego",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
-                        //new RandomHeadData(13,"Adrian",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
-                        //new RandomHeadData(42,"Claude",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
-                        //new RandomHeadData(43,"Niko",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
-                        //new RandomHeadData(44,"John",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(4,"Andrew",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true) { FacialHairPercentage = 45f, },//white male
+                        new RandomHeadData(9,"Ethan",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true) { FacialHairPercentage = 45f, },//brown male
+                        new RandomHeadData(10,"Vincent",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true) { FacialHairPercentage = 45f },//brown male
+                        new RandomHeadData(11,"Angel",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true) { FacialHairPercentage = 45f },//brown male
+                        new RandomHeadData(16,"Santiago",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true) { FacialHairPercentage = 45f },//brown male
+                        new RandomHeadData(20,"Anthony",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true) { FacialHairPercentage = 45f },//brown male
+                        new RandomHeadData(44,"John",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true) { FacialHairPercentage = 45f },///white male
                     };
         RandomHeadDataLookup.Add(new HeadDataGroup("DiablosHeads", DiablosHeadList));
-
         Serialization.SerializeParams(RandomHeadDataLookup, ConfigFileName);
 
     }

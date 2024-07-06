@@ -164,11 +164,6 @@ public class HealthState
     }
     public void UpdatePlayer(IPoliceRespondable CurrentPlayer)
     {
-
-
-
-
-
         if (Game.GameTime - GameTimeLastCheckedDamage >= 300 && MyPed.Pedestrian.Exists())
         {
             GameTimeLastCheckedDamage = Game.GameTime;
@@ -177,7 +172,6 @@ public class HealthState
             CurrentTotal = CurrentHealth + CurrentArmor;
             if (!HasLoggedDeath && MyPed.Pedestrian.IsDead)
             {
-
                 CurrentPlayer.GetKillingPed();
                 HasLoggedDeath = true;//need to check once after the ped died to see who killed them, but checking more is wasteful
                 return;
@@ -201,17 +195,49 @@ public class HealthState
                 Health = CurrentHealth;
                 Armor = CurrentArmor;
                 Total = CurrentHealth + CurrentArmor;
+
+
+                CheckPainYells(CurrentPlayer, prevHealth);
+
             }
-            if (Settings.SettingsManager.DamageSettings.AllowPlayerPainYells && Health - prevHealth >= Settings.SettingsManager.DamageSettings.PlayerPainYellsDamageNeeded && MyPed.HasExistedFor >= 4000)
-            {
-                CurrentPlayer.ActivityManager.YellInPain();
-                MyPed.GameTimeLastInjured = Game.GameTime;
-                //EntryPoint.WriteToConsole($"HEALTHSTATE PLAYER DAMAGE DETECTED {MyPed.Pedestrian.Handle} YELLING! MyPed.GameTimeLastInjured {MyPed.GameTimeLastInjured}");
-            }
+
+        }
+    }
+    private void CheckPainYells(IPoliceRespondable CurrentPlayer, int prevHealth)
+    {
+        if (Settings.SettingsManager.DamageSettings.AllowPlayerPainYells && Health - prevHealth >= Settings.SettingsManager.DamageSettings.PlayerPainYellsDamageNeeded && MyPed.HasExistedFor >= 4000)
+        {
+            CurrentPlayer.ActivityManager.YellInPain();
+            MyPed.GameTimeLastInjured = Game.GameTime;
+            //EntryPoint.WriteToConsole($"HEALTHSTATE PLAYER DAMAGE DETECTED {MyPed.Pedestrian.Handle} YELLING! MyPed.GameTimeLastInjured {MyPed.GameTimeLastInjured}");
         }
     }
 
+    public void SimpleRefresh(IPoliceRespondable CurrentPlayer)
+    {
+        if(MyPed == null || !MyPed.Pedestrian.Exists())
+        {
+            return;
+        }
 
+        int prevHealth = Health;
+
+
+        CurrentHealth = MyPed.Pedestrian.Health;
+        CurrentArmor = MyPed.Pedestrian.Armor;
+        CurrentTotal = CurrentHealth + CurrentArmor;
+
+
+
+
+
+        Health = CurrentHealth;
+        Armor = CurrentArmor;
+        Total = CurrentHealth + CurrentArmor;
+
+        CheckPainYells(CurrentPlayer, prevHealth);
+
+    }
 
     public void Reset()
     {

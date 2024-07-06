@@ -274,8 +274,6 @@ public class DispatchablePerson
         {
             CombatFloatsToSet.ForEach(x => x.ApplyToPed(pedExt.Pedestrian));
         }
-
-
     }
     public DispatchablePerson()
     {
@@ -556,7 +554,7 @@ public class DispatchablePerson
             }
             if(RandomItems.RandomPercent(FaceFeatureRandomizePercentage))
             {
-                float newScale = RandomItems.GetRandomNumber(faceFeature.RangeLow, faceFeature.RangeHigh);
+                float newScale = RandomItems.GetRandomNumber(faceFeature.RangeLow/2.0f, faceFeature.RangeHigh/2.0f);
                 NativeFunction.Natives.x71A5C1DBA060049E(ped, faceFeature.Index, newScale);
                 pedVariation.FaceFeatures.Add(new FaceFeature(faceFeature.Index, faceFeature.Name) { Index = faceFeature.Index, Scale = newScale, RangeLow = faceFeature.RangeLow, RangeHigh = faceFeature.RangeHigh });
                 GameFiber.Yield();

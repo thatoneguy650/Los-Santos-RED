@@ -22,7 +22,9 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> ParkRangers;
     private List<DispatchablePerson> DOAPeds;
     private List<DispatchablePerson> SAHPPeds;
-    //private List<DispatchablePerson> MilitaryPeds;
+    private List<DispatchablePerson> LSLifeguardPeds;
+    private List<DispatchablePerson> LSPDASDPeds;
+    private List<DispatchablePerson> LSSDASDPeds;
 
     private List<DispatchablePerson> ArmyPeds;
     private List<DispatchablePerson> USMCPeds;
@@ -43,27 +45,35 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> EMTs;
     private List<DispatchablePerson> GreenEMTs;
     private List<DispatchablePerson> BlueEMTs;
-    public List<DispatchablePerson> LostMCPeds { get; set; }
+
     private List<DispatchablePerson> VagosPeds;
-    private List<DispatchablePerson> DiablosPeds;
+
     private List<DispatchablePerson> FamiliesPeds;
     private List<DispatchablePerson> BallasPeds;
     private List<DispatchablePerson> MarabuntaPeds;
     private List<DispatchablePerson> AltruistPeds;
-    private List<DispatchablePerson> VarriosPeds;
+
     private List<DispatchablePerson> TriadsPeds;
     private List<DispatchablePerson> KoreanPeds;
     private List<DispatchablePerson> RedneckPeds;
     private List<DispatchablePerson> ArmenianPeds;
     private List<DispatchablePerson> CartelPeds;
-    private List<DispatchablePerson> MafiaPeds;
     private List<DispatchablePerson> YardiesPeds;
+
     private List<DispatchablePerson> OtherPeds;
     private List<DispatchablePerson> TaxiDrivers;
+    private List<DispatchablePerson> VendorPeds;
+    private List<DispatchablePerson> IllicitMarketplacePeds;
+    private List<DispatchablePerson> TellerPeds;
+    private List<DispatchablePerson> BarPeds;
+    private List<DispatchablePerson> HaircutPeds;
+    private List<DispatchablePerson> BobMuletPeds;
+
     private List<DispatchablePerson> StandardCops_Old;
     private List<DispatchablePerson> FIBPeds_Old;
     private List<DispatchablePerson> NOOSEPeds_Old;
     private List<DispatchablePerson> SheriffPeds_Old;
+
     private List<DispatchablePerson> StandardCops_Simple;
     private List<DispatchablePerson> FIBPeds_Simple;
     private List<DispatchablePerson> NOOSEPeds_Simple;
@@ -74,19 +84,18 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> SecuroservPeds_Simple;
     private List<DispatchablePerson> BobcatPeds_Simple;
     private List<DispatchablePerson> MerryweatherSecurityPeds_Simple;
-    private List<DispatchablePerson> LSLifeguardPeds;
-    private List<DispatchablePerson> LSPDASDPeds;
-    private List<DispatchablePerson> LSSDASDPeds;
-
-
-    private List<DispatchablePerson> VendorPeds;
-    private List<DispatchablePerson> IllicitMarketplacePeds;
-    private List<DispatchablePerson> TellerPeds;
-    private List<DispatchablePerson> BarPeds;
-    private List<DispatchablePerson> HaircutPeds;
-    private List<DispatchablePerson> BobMuletPeds;
 
     private DispatchablePeople_LostMC DispatchablePeople_LostMC;
+    private DispatchablePeople_Mafia DispatchablePeople_Mafia;
+    private DispatchablePeople_Diablos DispatchablePeople_Diablos;
+    private DispatchablePeople_Varrios DispatchablePeople_Varrios;
+
+
+    public List<DispatchablePerson> MafiaPeds { get; set; }
+    public List<DispatchablePerson> LostMCPeds { get; set; }
+    public List<DispatchablePerson> DiablosPeds { get; set; }
+    public List<DispatchablePerson> VarriosPeds { get; set; }
+
     public List<DispatchablePersonGroup> AllPeople => PeopleGroupLookup;
 
     public void Setup(IIssuableWeapons issuableWeapons)
@@ -1534,51 +1543,19 @@ public class DispatchablePeople : IDispatchablePeople
         };
 
         //Gangs
-        
-        //LostMCPeds = new List<DispatchablePerson>() {
-        //    new DispatchablePerson("g_m_y_lost_01",30,30,5,10,400,600,0,1) { DebugName = "LOSTMale1" },
-        //    new DispatchablePerson("g_m_y_lost_02",30,30,5,10,400,600,0,1) { DebugName = "LOSTMale2" },
-        //    new DispatchablePerson("g_m_y_lost_03",30,30,5,10,400,600,0,1) { DebugName = "LOSTMale3" },
-        //    //new DispatchablePerson("ig_clay",30,30,5,10,400,600,0,1) { DebugName = "LOSTClay" },
-        //    new DispatchablePerson("g_f_y_lost_01",10,10,5,10,400,600,0,1) { DebugName = "LOSTFemale1" },
-        //};
         DispatchablePeople_LostMC = new DispatchablePeople_LostMC(this);
         DispatchablePeople_LostMC.Setup();
-
-
+        DispatchablePeople_Mafia = new DispatchablePeople_Mafia(this);
+        DispatchablePeople_Mafia.Setup();
+        DispatchablePeople_Diablos = new DispatchablePeople_Diablos(this);
+        DispatchablePeople_Diablos.Setup();
+        DispatchablePeople_Varrios = new DispatchablePeople_Varrios(this);
+        DispatchablePeople_Varrios.Setup();
         VagosPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("g_m_y_mexgoon_01",30,30,5,10,400,600,0,1) { DebugName = "VagosMale1" },
             new DispatchablePerson("g_m_y_mexgoon_02",30,30,5,10,400,600,0,1) { DebugName = "VagosMale2" },
             new DispatchablePerson("g_m_y_mexgoon_03",30,30,5,10,400,600,0,1) { DebugName = "VagosMale3" },
             new DispatchablePerson("g_f_y_vagos_01",10,10,5,10,400,600,0,1) { DebugName = "VagosFemale1" },
-        };
-        DiablosPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("mp_m_freemode_01",30,30,5,10,400,600,0,1) { 
-                DebugName = "DiablosMale1",
-                OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" },
-                RandomizeHead = true,
-                RequiredVariation = new PedVariation(new List<PedComponent>() {
-                     new PedComponent(2, 1, 4, 0),
-                     new PedComponent(3, 18, 0, 0),
-                     new PedComponent(4, 1, 8, 0),
-                     new PedComponent(6, 7, 0, 0),
-                     new PedComponent(7, 0, 0, 0),
-                     new PedComponent(8, 15, 0, 0),
-                     new PedComponent(11, 224, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(0,14,3), })
-            },
-            new DispatchablePerson("mp_m_freemode_01",30,30,5,10,400,600,0,1) { 
-                DebugName = "DiablosMale2",
-                OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" },
-                RandomizeHead = true,
-                RequiredVariation = new PedVariation(new List<PedComponent>() {
-                    new PedComponent(2, 4, 0, 0),
-                    new PedComponent(3, 18, 0, 0),
-                     new PedComponent(4, 9, 0, 0),
-                     new PedComponent(6, 7, 0, 0),
-                     new PedComponent(7, 0, 0, 0),
-                     new PedComponent(8, 15, 0, 0),
-                     new PedComponent(11, 224, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(0,14,2), })
-            },
         };
         FamiliesPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("g_m_y_famca_01",30,30,5,10,400,600,0,1) { DebugName = "FamiliesMale1" },
@@ -1606,10 +1583,10 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("a_m_y_acult_02",10,10,5,10,400,600,0,1) { DebugName = "CultMale5" },
             new DispatchablePerson("a_f_m_fatcult_01",10,10,5,10,400,600,0,1) { DebugName = "CultFemale1" },
         };
-        VarriosPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("g_m_y_azteca_01",100,100,5,10,400,600,0,1) { DebugName = "VarriosMale" },
-            //new DispatchablePerson("ig_ortega",20,20,5,10,400,600,0,1) { DebugName = "VarriosOrtegaMale" },
-        };
+        //VarriosPeds = new List<DispatchablePerson>() {
+            
+        //    //new DispatchablePerson("ig_ortega",20,20,5,10,400,600,0,1) { DebugName = "VarriosOrtegaMale" },
+        //};
         TriadsPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("g_m_m_chigoon_01",33,33,5,10,400,600,0,1) { DebugName = "TriadMale1" },
             new DispatchablePerson("g_m_m_chigoon_02",33,33,5,10,400,600,0,1) { DebugName = "TriadMale2" },
@@ -1639,295 +1616,9 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("g_m_y_mexgang_01",30,30,5,10,400,600,0,1) { DebugName = "CartelMale3" },
             new DispatchablePerson("a_m_y_mexthug_01",30,30,5,10,400,600,0,1) { DebugName = "CartelMale4" },
         };
-        MafiaPeds = new List<DispatchablePerson>() {
-            //Dark Grey Unbuttoned Suit with Red Tie and buttoned undershirt
-            new DispatchablePerson("mp_m_freemode_01",25,25,5,10,400,600,0,1) {
-                RandomizeHead = true
-                ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
-                 ,RequiredVariation = new PedVariation(new List<PedComponent>() {
-                     new PedComponent(3, 4, 0, 0),
-                     new PedComponent(4, 10, 0, 0),
-                     new PedComponent(6, 10, 0, 0),
-                     new PedComponent(7, 21, 2, 0),
-                     new PedComponent(8, 10, 0, 0),
-                     new PedComponent(11, 4, 0, 0) },new List<PedPropComponent>() { })
-                 ,OptionalComponents = new List<PedComponent>() {
-                    new PedComponent(7, 21, 1, 0),//7-21 is a tie in lotsa colors
-                    new PedComponent(7, 21, 2, 0),
-                    new PedComponent(7, 21, 3, 0),
-                    new PedComponent(7, 21, 4, 0),
-                    new PedComponent(7, 21, 5, 0),
-                    new PedComponent(7, 21, 6, 0),
-                    new PedComponent(7, 21, 7, 0),
-                    new PedComponent(7, 21, 8, 0),
-                    new PedComponent(7, 21, 9, 0),
-                    new PedComponent(7, 21, 10, 0),
-                    new PedComponent(7, 21, 11, 0),
-                    new PedComponent(7, 21, 12, 0),
 
-                    new PedComponent(8, 31, 0, 0),//undershirt in a few colors, buttoned
-                    new PedComponent(8, 31, 1, 0),
-                    new PedComponent(8, 31, 2, 0),
-                    new PedComponent(8, 31, 3, 0),
-                    new PedComponent(8, 31, 4, 0),
-                    new PedComponent(8, 31, 5, 0),
-                    new PedComponent(8, 31, 6, 0),
-                    new PedComponent(8, 31, 7, 0),
-                    new PedComponent(8, 31, 8, 0),
-                    new PedComponent(8, 31, 9, 0),
-                    new PedComponent(8, 31, 10, 0),
-                    new PedComponent(8, 31, 11, 0),
-                    new PedComponent(8, 31, 12, 0),
-                    new PedComponent(8, 31, 13, 0),
-                    new PedComponent(8, 31, 14, 0),
-                    new PedComponent(8, 31, 15, 0),
 
-                    new PedComponent(11, 10, 0, 0),//closed jacket
-                 }
-                 ,OptionalComponentChance = 80,
-            },
-            //Dark Grey Unbuttoned Suit with unbuttoned undershirt
-            new DispatchablePerson("mp_m_freemode_01",25,25,5,10,400,600,0,1) {
-                RandomizeHead = true
-                ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
-                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
-                     new PedComponent(3, 4, 0, 0),
-                     new PedComponent(4, 10, 0, 0),
-                     new PedComponent(6, 10, 0, 0),
-                     new PedComponent(7, 0, 0, 0),
-                     new PedComponent(8, 11, 0, 0),
-                     new PedComponent(11, 4, 0, 0) },new List<PedPropComponent>() { })
-                ,OptionalComponents = new List<PedComponent>() {
-                    new PedComponent(8, 11, 0, 0),//undershirt in a few colors, unbuttoned
-                    new PedComponent(8, 11, 1, 0),
-                    new PedComponent(8, 11, 2, 0),
-                    new PedComponent(8, 11, 3, 0),
-                    new PedComponent(8, 11, 4, 0),
-                    new PedComponent(8, 11, 5, 0),
-                    new PedComponent(8, 11, 6, 0),
-                    new PedComponent(8, 11, 7, 0),
-                    new PedComponent(8, 11, 8, 0),
-                    new PedComponent(8, 11, 9, 0),
-                    new PedComponent(8, 11, 10, 0),
-                    new PedComponent(8, 11, 11, 0),
-                    new PedComponent(8, 11, 12, 0),
-                    new PedComponent(8, 11, 13, 0),
-                    new PedComponent(8, 11, 14, 0),
-                    new PedComponent(8, 11, 15, 0),
 
-                    new PedComponent(11, 10, 0, 0),//closed jacket
-                }
-                ,OptionalComponentChance = 80,
-             },
-
-            //
-            new DispatchablePerson("mp_m_freemode_01",75,75,5,10,400,600,0,1) {
-                RandomizeHead = true
-                ,DebugName = "GTA4MafiaRemadeShirtPulledUp"
-                ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
-                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
-
-                     new PedComponent(3, 3, 0, 0),
-                     new PedComponent(4, 10, 0, 0),
-                     new PedComponent(6, 21, 0, 0),
-                     new PedComponent(7, 0, 0, 0),
-                     new PedComponent(8, 5, 0, 0),
-                     new PedComponent(11, 346, 25, 0),
-                     new PedComponent(2, 10, 0, 0),
-
-                },new List<PedPropComponent>() { })
-                ,OptionalComponents = new List<PedComponent>() {
-                    //Undershirts
-                    new PedComponent(8, 5, 1, 0),
-                    new PedComponent(8, 5, 2, 0),
-
-                    //Jackets/Shirts
-                    new PedComponent(11, 346, 0, 0),
-                    new PedComponent(11, 346, 1, 0),
-                    new PedComponent(11, 346, 2, 0),
-                    new PedComponent(11, 346, 3, 0),
-                    new PedComponent(11, 346, 4, 0),
-                    new PedComponent(11, 346, 5, 0),
-                    new PedComponent(11, 346, 18, 0),
-                    new PedComponent(11, 346, 20, 0),
-                    new PedComponent(11, 346, 21, 0),
-                    new PedComponent(11, 346, 22, 0),
-                    new PedComponent(11, 346, 23, 0),
-
-                    //Pants
-                    new PedComponent(4, 10, 1, 0),
-                    new PedComponent(4, 10, 3, 0),
-                    new PedComponent(4, 10, 4, 0),
-                }
-                ,OptionalComponentChance = 80,
-             },
-            new DispatchablePerson("mp_m_freemode_01",75,75,5,10,400,600,0,1) {
-                RandomizeHead = true
-                ,DebugName = "GTA4MafiaRemadeNoJacket"
-                ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
-                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
-
-                     new PedComponent(3, 5, 0, 0),
-                     new PedComponent(4, 10, 0, 0),
-                     new PedComponent(6, 21, 0, 0),
-                     new PedComponent(7, 17, 0, 0),
-                     new PedComponent(8, 15, 0, 0),
-                     new PedComponent(11, 5, 0, 0),
-                     new PedComponent(2, 10, 0, 0),
-
-                },new List<PedPropComponent>() { })
-                ,OptionalComponents = new List<PedComponent>() {
-                    //Chain
-                    new PedComponent(7, 17, 1, 0),
-                    new PedComponent(7, 17, 2, 0),
-
-                    //Pants
-                    new PedComponent(4, 10, 1, 0),
-                    new PedComponent(4, 10, 3, 0),
-                    new PedComponent(4, 10, 4, 0),
-                }
-                ,OptionalComponentChance = 80,
-             },
-            new DispatchablePerson("mp_m_freemode_01",75,75,5,10,400,600,0,1) {
-                RandomizeHead = true
-                ,DebugName = "GTA4MafiaRemadeTracksuitTop"
-                ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
-                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
-
-                     new PedComponent(3, 3, 0, 0),
-                     new PedComponent(4, 13, 0, 0),
-                     new PedComponent(6, 30, 0, 0),
-                     new PedComponent(7, 0, 0, 0),
-                     new PedComponent(8, 15, 0, 0),
-                     new PedComponent(11, 113, 3, 0),
-                     new PedComponent(2, 19, 0, 0),
-
-                },new List<PedPropComponent>() { })
-                ,OptionalComponents = new List<PedComponent>() {
-                    //Chain
-                    new PedComponent(7, 17, 0, 0),
-                    new PedComponent(7, 17, 1, 0),
-                    new PedComponent(7, 17, 2, 0),
-                    //Tracksuit
-                    new PedComponent(11, 113, 0, 0),
-                    new PedComponent(11, 113, 1, 0),
-                    new PedComponent(11, 113, 2, 0),
-
-                    new PedComponent(11, 141, 0, 0),
-                    new PedComponent(11, 141, 1, 0),
-                    new PedComponent(11, 141, 2, 0),
-                    new PedComponent(11, 141, 3, 0),
-                    new PedComponent(11, 141, 4, 0),
-                    new PedComponent(11, 141, 5, 0),
-                    new PedComponent(11, 141, 6, 0),
-                    new PedComponent(11, 141, 7, 0),
-                    new PedComponent(11, 141, 8, 0),
-                    new PedComponent(11, 141, 9, 0),
-                    new PedComponent(11, 141, 10, 0),
-
-                    //Pants
-                    new PedComponent(4, 13, 1, 0),
-                    new PedComponent(4, 13, 2, 0),
-                }
-                ,OptionalComponentChance = 80,
-             },
-
-            new DispatchablePerson("mp_m_freemode_01",75,75,5,10,400,600,0,1) {
-                RandomizeHead = true
-                ,DebugName = "GTA4MafiaRemadeLeatherJacket"
-                ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
-                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
-
-                     new PedComponent(3, 1, 0, 0),
-                     new PedComponent(4, 13, 0, 0),
-                     new PedComponent(6, 10, 0, 0),
-                     new PedComponent(7, 0, 0, 0),
-                     new PedComponent(8, 10, 14, 0),
-                     new PedComponent(11, 38, 0, 0),
-                     new PedComponent(2, 19, 0, 0),
-
-                },new List<PedPropComponent>() { })
-                ,OptionalComponents = new List<PedComponent>() {                  
-                    //Jacket
-                    new PedComponent(11, 38, 1, 0),
-                    new PedComponent(11, 38, 2, 0),
-                    new PedComponent(11, 38, 3, 0),
-                    new PedComponent(11, 38, 4, 0),
-
-                    //Pants
-                    new PedComponent(4, 13, 1, 0),
-                    new PedComponent(4, 13, 2, 0),
-                }
-                ,OptionalComponentChance = 80,
-             },
-
-            new DispatchablePerson("mp_m_freemode_01",75,75,5,10,400,600,0,1) {
-                RandomizeHead = true
-                ,DebugName = "GTA4MafiaRemadeOpenJacket"
-                ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
-                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
-
-                     new PedComponent(3, 12, 0, 0),
-                     new PedComponent(4, 10, 0, 0),
-                     new PedComponent(6, 36, 3, 0),
-                     new PedComponent(7, 0, 0, 0),
-                     new PedComponent(8, 63, 5, 0),
-                     new PedComponent(11, 59, 2, 0),
-                     new PedComponent(2, 10, 0, 0),
-
-                },new List<PedPropComponent>() { })
-                ,OptionalComponents = new List<PedComponent>() {                  
-                    //Jacket
-                    new PedComponent(11, 59, 0, 0),
-                    new PedComponent(11, 59, 1, 0),
-
-                    new PedComponent(8, 63, 0, 0),
-                    new PedComponent(8, 63, 1, 0),
-                    new PedComponent(8, 63, 2, 0),
-                    new PedComponent(8, 63, 3, 0),
-                    new PedComponent(8, 63, 4, 0),
-
-                    //Pants
-                    new PedComponent(4, 10, 1, 0),
-                    new PedComponent(4, 10, 3, 0),
-                    new PedComponent(4, 10, 4, 0),
-                }
-                ,OptionalComponentChance = 80,
-             },
-            new DispatchablePerson("mp_m_freemode_01",75,75,5,10,400,600,0,1) {
-                RandomizeHead = true
-                ,DebugName = "GTA4MafiaRemadeOpenShirt2"
-                ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
-                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
-
-                     new PedComponent(3, 5, 0, 0),
-                     new PedComponent(4, 13, 0, 0),
-                     new PedComponent(6, 111, 1, 0),
-                     new PedComponent(7, 0, 0, 0),
-                     new PedComponent(8, 5, 0, 0),
-                     new PedComponent(11, 429, 14, 0),
-                     new PedComponent(2, 10, 0, 0),
-
-                },new List<PedPropComponent>() { })
-                ,OptionalComponents = new List<PedComponent>() {                  
-                    //Jacket
-                    new PedComponent(11, 429, 9, 0),
-                    new PedComponent(11, 429, 15, 0),
-
-                    new PedComponent(11, 428, 0, 0),
-                    new PedComponent(11, 428, 1, 0),
-                    new PedComponent(11, 428, 2, 0),
-                    new PedComponent(11, 428, 3, 0),
-                    new PedComponent(11, 428, 4, 0),
-                    new PedComponent(11, 428, 5, 0),
-
-                    //Pants
-                    new PedComponent(4, 13, 1, 0),
-                    new PedComponent(4, 13, 2, 0),
-                }
-                ,OptionalComponentChance = 80,
-             },
-        };
         YardiesPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("a_m_m_og_boss_01",30,30,5,10,400,600,0,1) { DebugName = "YardiesMale1" },
             new DispatchablePerson("a_m_o_soucent_01",30,30,5,10,400,600,0,1) { DebugName = "YardiesMale2" },
@@ -17229,6 +16920,208 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("Coroner_FEJ", Coroner_FEJ));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("MedicalGeneric_FEJ", MedicalGeneric_FEJ));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("Prisoner_FEJ", Prisoner_FEJ));
+    }
+    public OptionalAppliedOverlayLogic GenericGangTattoos(bool isMale, float headPercent, float torsoPercent, float armsPercent, float legsPercent)
+    {
+        return GenericGangTattoos(isMale, headPercent,1, torsoPercent,1, armsPercent,1, legsPercent,1);
+    }  
+    public OptionalAppliedOverlayLogic GenericGangTattoos(bool isMale, float headPercent, int headLimit, float torsoPercent, int torsoLimit, float armsPercent, int armsLimit, float legsPercent, int legsLimit)
+    {
+        OptionalAppliedOverlayLogic toreturn = new OptionalAppliedOverlayLogic();
+        if (headPercent > 0f)
+        {
+            toreturn.AppliedOverlayZonePercentages.Add(new AppliedOverlayZonePercentage("ZONE_HEAD", headPercent, headLimit));
+            if (isMale)
+            {
+                toreturn.OptionalAppliedOverlays.AddRange(new List<OptionalAppliedOverlay>()
+                {
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_000_M","ZONE_HEAD","FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_001_M","ZONE_HEAD","FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_018_M","ZONE_HEAD","FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_019_M","ZONE_HEAD","FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_020_M","ZONE_HEAD","FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_021_M","ZONE_HEAD","FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_022_M","ZONE_HEAD","FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_023_M","ZONE_HEAD","FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_024_M","ZONE_HEAD","FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_027_M","ZONE_HEAD","NECK_FRONT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_025_M","ZONE_HEAD","NECK_LEFT_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_026_M","ZONE_HEAD","NECK_LEFT_FULL"),
+                });
+            }
+            else
+            {
+                toreturn.OptionalAppliedOverlays.AddRange(new List<OptionalAppliedOverlay>()
+                {
+                    new OptionalAppliedOverlay("mpSum2_overlays", "MP_Sum2_Tat_000_F", "ZONE_HEAD", "FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays", "MP_Sum2_Tat_001_F", "ZONE_HEAD", "FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays", "MP_Sum2_Tat_018_F", "ZONE_HEAD", "FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays", "MP_Sum2_Tat_019_F", "ZONE_HEAD", "FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays", "MP_Sum2_Tat_020_F", "ZONE_HEAD", "FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays", "MP_Sum2_Tat_021_F", "ZONE_HEAD", "FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays", "MP_Sum2_Tat_022_F", "ZONE_HEAD", "FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays", "MP_Sum2_Tat_023_F", "ZONE_HEAD", "FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays", "MP_Sum2_Tat_024_F", "ZONE_HEAD", "FACE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays", "MP_Sum2_Tat_027_F", "ZONE_HEAD", "NECK_FRONT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays", "MP_Sum2_Tat_025_F", "ZONE_HEAD", "NECK_LEFT_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays", "MP_Sum2_Tat_026_F", "ZONE_HEAD", "NECK_LEFT_FULL"),
+                });
+            }
+
+        }
+        if (torsoPercent > 0f)
+        {
+            toreturn.AppliedOverlayZonePercentages.Add(new AppliedOverlayZonePercentage("ZONE_TORSO", torsoPercent, torsoLimit));
+            if (isMale)
+            {
+                toreturn.OptionalAppliedOverlays.AddRange(new List<OptionalAppliedOverlay>()
+                {
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_038_M","ZONE_TORSO","BACK_FULL_SHORT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_007_M","ZONE_TORSO","BACK_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_035_M","ZONE_TORSO","BACK_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_037_M","ZONE_TORSO","BACK_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_006_M","ZONE_TORSO","BACK_UPPER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_036_M","ZONE_TORSO","BACK_UPPER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_039_M","ZONE_TORSO","BACK_UPPER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_057_M","ZONE_TORSO","BACK_UPPER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_041_M","ZONE_TORSO","CHEST_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_042_M","ZONE_TORSO","CHEST_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_058_M","ZONE_TORSO","CHEST_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_003_M","ZONE_TORSO","CHEST_LEFT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_004_M","ZONE_TORSO","CHEST_LEFT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_040_M","ZONE_TORSO","CHEST_LEFT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_059_M","ZONE_TORSO","CHEST_RIGHT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_044_M","ZONE_TORSO","CHEST_STOM_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_043_M","ZONE_TORSO","STOMACH_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_060_M","ZONE_TORSO","STOMACH_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_061_M","ZONE_TORSO","STOMACH_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_062_M","ZONE_TORSO","STOMACH_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_005_M","ZONE_TORSO","STOMACH_LOWER_RIGHT"),
+                });
+            }
+            else
+            {
+                toreturn.OptionalAppliedOverlays.AddRange(new List<OptionalAppliedOverlay>()
+                {
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_038_F","ZONE_TORSO","BACK_FULL_SHORT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_007_F","ZONE_TORSO","BACK_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_035_F","ZONE_TORSO","BACK_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_037_F","ZONE_TORSO","BACK_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_006_F","ZONE_TORSO","BACK_UPPER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_036_F","ZONE_TORSO","BACK_UPPER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_039_F","ZONE_TORSO","BACK_UPPER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_057_F","ZONE_TORSO","BACK_UPPER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_041_F","ZONE_TORSO","CHEST_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_042_F","ZONE_TORSO","CHEST_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_058_F","ZONE_TORSO","CHEST_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_003_F","ZONE_TORSO","CHEST_LEFT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_004_F","ZONE_TORSO","CHEST_LEFT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_040_F","ZONE_TORSO","CHEST_LEFT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_059_F","ZONE_TORSO","CHEST_RIGHT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_044_F","ZONE_TORSO","CHEST_STOM_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_043_F","ZONE_TORSO","STOMACH_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_060_F","ZONE_TORSO","STOMACH_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_061_F","ZONE_TORSO","STOMACH_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_062_F","ZONE_TORSO","STOMACH_FULL"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_005_F","ZONE_TORSO","STOMACH_LOWER_RIGHT"),
+                });
+            }
+        }
+        if (armsPercent > 0f)
+        {
+            toreturn.AppliedOverlayZonePercentages.Add(new AppliedOverlayZonePercentage("ZONE_RIGHT_ARM", armsPercent, armsLimit));
+            toreturn.AppliedOverlayZonePercentages.Add(new AppliedOverlayZonePercentage("ZONE_LEFT_ARM", armsPercent, armsLimit));
+            if (isMale)
+            {
+                toreturn.OptionalAppliedOverlays.AddRange(new List<OptionalAppliedOverlay>()
+                {
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_049_M","ZONE_LEFT_ARM","ARM_LEFT_FULL_SLEEVE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_029_M","ZONE_LEFT_ARM","ARM_LEFT_LOWER_INNER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_009_M","ZONE_LEFT_ARM","ARM_LEFT_LOWER_OUTER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_028_M","ZONE_LEFT_ARM","ARM_LEFT_LOWER_SLEEVE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_008_M","ZONE_LEFT_ARM","ARM_LEFT_UPPER_SIDE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_010_M","ZONE_LEFT_ARM","ARM_LEFT_UPPER_SIDE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_013_M","ZONE_RIGHT_ARM","ARM_RIGHT_FULL_SLEEVE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_045_M","ZONE_RIGHT_ARM","ARM_RIGHT_FULL_SLEEVE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_047_M","ZONE_RIGHT_ARM","ARM_RIGHT_LOWER_OUTER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_046_M","ZONE_RIGHT_ARM","ARM_RIGHT_SHOULDER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_011_M","ZONE_RIGHT_ARM","ARM_RIGHT_UPPER_SIDE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_012_M","ZONE_RIGHT_ARM","ARM_RIGHT_UPPER_SIDE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_030_M","ZONE_RIGHT_ARM","ARM_RIGHT_UPPER_SIDE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_031_M","ZONE_RIGHT_ARM","HAND_RIGHT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_048_M","ZONE_RIGHT_ARM","HAND_RIGHT"),
+                });
+            }
+            else
+            {
+                toreturn.OptionalAppliedOverlays.AddRange(new List<OptionalAppliedOverlay>()
+                {
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_049_F","ZONE_LEFT_ARM","ARM_LEFT_FULL_SLEEVE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_029_F","ZONE_LEFT_ARM","ARM_LEFT_LOWER_INNER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_009_F","ZONE_LEFT_ARM","ARM_LEFT_LOWER_OUTER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_028_F","ZONE_LEFT_ARM","ARM_LEFT_LOWER_SLEEVE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_008_F","ZONE_LEFT_ARM","ARM_LEFT_UPPER_SIDE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_010_F","ZONE_LEFT_ARM","ARM_LEFT_UPPER_SIDE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_013_F","ZONE_RIGHT_ARM","ARM_RIGHT_FULL_SLEEVE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_045_F","ZONE_RIGHT_ARM","ARM_RIGHT_FULL_SLEEVE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_047_F","ZONE_RIGHT_ARM","ARM_RIGHT_LOWER_OUTER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_046_F","ZONE_RIGHT_ARM","ARM_RIGHT_SHOULDER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_011_F","ZONE_RIGHT_ARM","ARM_RIGHT_UPPER_SIDE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_012_F","ZONE_RIGHT_ARM","ARM_RIGHT_UPPER_SIDE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_030_F","ZONE_RIGHT_ARM","ARM_RIGHT_UPPER_SIDE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_031_F","ZONE_RIGHT_ARM","HAND_RIGHT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_048_F","ZONE_RIGHT_ARM","HAND_RIGHT"),
+                });
+            }
+        }
+        if (legsPercent > 0f)
+        {
+            toreturn.AppliedOverlayZonePercentages.Add(new AppliedOverlayZonePercentage("ZONE_LEFT_LEG", legsPercent, legsLimit));
+            toreturn.AppliedOverlayZonePercentages.Add(new AppliedOverlayZonePercentage("ZONE_RIGHT_LEG", legsPercent, legsLimit));
+            if (isMale)
+            {
+                toreturn.OptionalAppliedOverlays.AddRange(new List<OptionalAppliedOverlay>()
+                {
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_034_M","ZONE_RIGHT_LEG","LEG_RIGHT_FULL_SLEEVE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_051_M","ZONE_RIGHT_LEG","LEG_RIGHT_FULL_SLEEVE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_050_M","ZONE_RIGHT_LEG","LEG_RIGHT_LOWER_BACK"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_052_M","ZONE_RIGHT_LEG","LEG_RIGHT_LOWER_OUTER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_017_M","ZONE_RIGHT_LEG","LEG_RIGHT_UPPER_FRONT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_033_M","ZONE_RIGHT_LEG","LEG_RIGHT_UPPER_FRONT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_054_M","ZONE_LEFT_LEG","LEG_LEFT_CALF"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_002_M","ZONE_LEFT_LEG","LEG_LEFT_LOWER_OUTER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_014_M","ZONE_LEFT_LEG","LEG_LEFT_LOWER_OUTER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_015_M","ZONE_LEFT_LEG","LEG_LEFT_LOWER_OUTER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_016_M","ZONE_LEFT_LEG","LEG_LEFT_LOWER_OUTER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_055_M","ZONE_LEFT_LEG","LEG_LEFT_LOWER_OUTER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_056_M","ZONE_LEFT_LEG","LEG_LEFT_LOWER_SLEEVE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_032_M","ZONE_LEFT_LEG","LEG_LEFT_UPPER_FRONT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_053_M","ZONE_LEFT_LEG","LEG_LEFT_UPPER_FRONT"),
+                });
+            }
+            else
+            {
+                toreturn.OptionalAppliedOverlays.AddRange(new List<OptionalAppliedOverlay>()
+                {
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_054_F","ZONE_LEFT_LEG","LEG_LEFT_CALF"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_002_F","ZONE_LEFT_LEG","LEG_LEFT_LOWER_OUTER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_014_F","ZONE_LEFT_LEG","LEG_LEFT_LOWER_OUTER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_015_F","ZONE_LEFT_LEG","LEG_LEFT_LOWER_OUTER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_016_F","ZONE_LEFT_LEG","LEG_LEFT_LOWER_OUTER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_055_F","ZONE_LEFT_LEG","LEG_LEFT_LOWER_OUTER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_056_F","ZONE_LEFT_LEG","LEG_LEFT_LOWER_SLEEVE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_032_F","ZONE_LEFT_LEG","LEG_LEFT_UPPER_FRONT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_053_F","ZONE_LEFT_LEG","LEG_LEFT_UPPER_FRONT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_034_F","ZONE_RIGHT_LEG","LEG_RIGHT_FULL_SLEEVE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_051_F","ZONE_RIGHT_LEG","LEG_RIGHT_FULL_SLEEVE"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_050_F","ZONE_RIGHT_LEG","LEG_RIGHT_LOWER_BACK"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_052_F","ZONE_RIGHT_LEG","LEG_RIGHT_LOWER_OUTER"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_017_F","ZONE_RIGHT_LEG","LEG_RIGHT_UPPER_FRONT"),
+                    new OptionalAppliedOverlay("mpSum2_overlays","MP_Sum2_Tat_033_F","ZONE_RIGHT_LEG","LEG_RIGHT_UPPER_FRONT"),
+                });
+            }
+        }
+        return toreturn;
     }
 }
 

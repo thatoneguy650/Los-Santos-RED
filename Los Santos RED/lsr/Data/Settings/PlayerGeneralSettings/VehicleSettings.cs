@@ -91,6 +91,9 @@ public class VehicleSettings : ISettingsDefaultable
     [Description("If enabled, the player will perform an animation when manipulating vehicle controls (engine off, opening/closing door, rolling windows up/down, etc.")]
     public bool PlayControlAnimations { get; set; }
     public bool AutoHotwire { get; set; }
+    public bool InjureOnVehicleCrash { get; set; }
+    public float VehicleCrashInjureScalar { get; set; }
+    public int VehicleCrashInjureMinVehicleDamageTrigger { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -149,5 +152,11 @@ public class VehicleSettings : ISettingsDefaultable
         AttachOwnedVehicleBlips = true;
         PlayControlAnimations = true;
         AutoHotwire = false;
+
+        InjureOnVehicleCrash = true;
+
+        VehicleCrashInjureScalar = 0.35f;
+
+        VehicleCrashInjureMinVehicleDamageTrigger = 55;
     }
 }

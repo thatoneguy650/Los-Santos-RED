@@ -1182,6 +1182,14 @@ namespace Mod
                 CurrentVehicle?.VehicleBodyManager.OnVehicleCrashed();
                 GameTimeLastCrashedVehicle = Game.GameTime;
             }
+            if (Settings.SettingsManager.VehicleSettings.InjureOnVehicleCrash && (amount >= Settings.SettingsManager.VehicleSettings.VehicleCrashInjureMinVehicleDamageTrigger) && IsInVehicle)
+            {
+                float HealthToRemove = amount * Settings.SettingsManager.VehicleSettings.VehicleCrashInjureScalar;
+                int healthToRemove = (int)Math.Ceiling(HealthToRemove);
+                HealthManager.ChangeHealth(-1 * healthToRemove);
+                HealthState.SimpleRefresh(this);
+                EntryPoint.WriteToConsole($"PLAYER EVENT: REMOVING HEALTH IN CRASH DamageAmount:{amount} healthToRemove:{healthToRemove}");
+            }
             EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleHealthDecreased {amount} {isCollision}");
         }
         public void OnVehicleStartedFire()

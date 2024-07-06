@@ -21,10 +21,18 @@ public class OptionalAppliedOverlay
         OverlayName = overlayName;
         ZoneName = zoneName;
     }
+    public OptionalAppliedOverlay(string collectionName, string overlayName, string zoneName, string subZoneName)
+    {
+        CollectionName = collectionName;
+        OverlayName = overlayName;
+        ZoneName = zoneName;
+        SubZoneName = subZoneName;
+    }
     public string CollectionName { get; set; }
     public string OverlayName { get; set; }
     public string ZoneName { get; set; }
-   // public float Percentage { get; set; } = 20f;
+    public string SubZoneName { get; set; }
+    // public float Percentage { get; set; } = 20f;
     public bool Apply(Ped ped, PedVariation variationToSet)
     {
         if (!ped.Exists())
