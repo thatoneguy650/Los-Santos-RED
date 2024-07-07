@@ -3,6 +3,24 @@ using System.Security.Policy;
 
 public class DebugSettings : ISettingsDefaultable
 {
+
+    public float DebugLastX { get; set; }
+    public float DebugLastY { get; set; }
+    public float DebugLastZ { get; set; }
+
+
+
+    public float DebugRotate1 { get; set; }
+    public float DebugRotate2 { get; set; }
+    public float DebugRotate3 { get; set; }
+
+
+    public string DebugLastBone { get; set; }
+
+
+
+
+
     public bool ShowPoliceTaskArrows { get; set; }
     public bool ShowCivilianTaskArrows { get; set; }
     public bool ShowCivilianPerceptionArrows { get; set; }
@@ -130,6 +148,7 @@ public class DebugSettings : ISettingsDefaultable
     public float BarberHeadingXOffset { get; set; }
     public float BarberHeadingYOffset { get; set; }
     public float BarberRotationYaw { get; set; }
+
 
     //public float BlendInIdleDrink { get;  set; }
     //public float BlendOutIdleDrink { get;  set; }

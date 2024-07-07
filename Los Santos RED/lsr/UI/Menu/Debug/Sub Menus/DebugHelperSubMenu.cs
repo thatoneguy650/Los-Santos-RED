@@ -143,6 +143,16 @@ public class DebugHelperSubMenu : DebugSubMenu
         };
         HelperMenuItem.AddItem(propAttachMenu);
 
+
+
+        UIMenuItem propVehicleAttachMenu = new UIMenuItem("Prop Vehicle Attachment", "Do some prop vehicle attachments");
+        propVehicleAttachMenu.Activated += (menu, item) =>
+        {
+            SetPropVehicleAttachment();
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(propVehicleAttachMenu);
+
         UIMenuItem weaponAliasMenu = new UIMenuItem("Weapon Alias Attachment", "Do some weapon alias prop attachments");
         weaponAliasMenu.Activated += (menu, item) =>
         {
@@ -727,11 +737,94 @@ public class DebugHelperSubMenu : DebugSubMenu
             Game.DisplayNotification("ERROR DEBUG");
         }
     }
+
+
+    private void SetPropVehicleAttachment()
+    {
+
+        //hub_lr =  new Vector3(0.07999999f, 0.05f, 0f);new Rotator(-30f, -80f, -120f);
+
+
+        string PropName = NativeHelper.GetKeyboardInput("prop_cs_fuel_nozle");
+        try
+        {
+            Rage.Object SmokedItem = new Rage.Object(Game.GetHashKey(PropName), Player.Character.GetOffsetPositionUp(50f));
+            GameFiber.Yield();
+            string headBoneName = "wheel_lf";
+            string boneName = headBoneName;
+            string wantedBone = NativeHelper.GetKeyboardInput("wheel_lr");
+            boneName = wantedBone;   
+            uint GameTimeLastAttached = 0;
+            Offset = new Vector3();
+            Rotation = new Rotator();
+            isPrecise = false;
+            if (SmokedItem.Exists())
+            {
+               isRunning = true;
+                AttachVehicleItem(Player.InterestedVehicle, SmokedItem, boneName, new Vector3(0.0f, 0.0f, 0f), new Rotator(0f, 0f, 0f));
+                GameFiber.StartNew(delegate
+                {
+                    try
+                    {
+                        while (!Game.IsKeyDownRightNow(Keys.Space) && SmokedItem.Exists())
+                        {
+                            if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
+                            {
+                                AttachVehicleItem(Player.InterestedVehicle, SmokedItem, boneName, Offset, Rotation);
+                                GameTimeLastAttached = Game.GameTime;
+                            }
+                            if (Game.IsKeyDown(Keys.B))
+                            {
+                                //EntryPoint.WriteToConsoleTestLong($"Item {PropName} Attached to  {boneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+
+                                EntryPoint.WriteToConsole($"new PropAttachment(\"NAMEHERE\", \"{boneName}\", new Vector3({Offset.X}f, {Offset.Y}f, {Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)),");
+                                GameFiber.Sleep(500);
+                            }
+                            if (Game.IsKeyDown(Keys.N))
+                            {
+                                isPrecise = !isPrecise;
+                                GameFiber.Sleep(500);
+                            }
+                            Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise} ~n~Press 0 Pause{isRunning}");
+                            Game.DisplaySubtitle($"{Offset.X}f,{Offset.Y}f,{Offset.Z}f -- {Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f");
+                            //Game.DisplaySubtitle($"Current Animation Time {AnimationTime}");
+                            GameFiber.Yield();
+                        }
+
+                        if (SmokedItem.Exists())
+                        {
+                            SmokedItem.Delete();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                        EntryPoint.ModController.CrashUnload();
+                    }
+                }, "Run Debug Logic");
+            }
+        }
+        catch (Exception e)
+        {
+            Game.DisplayNotification("ERROR DEBUG");
+        }
+    }
+
+
+
     private void AttachItem(Rage.Object SmokedItem, string boneName, Vector3 offset, Rotator rotator)
     {
         if (SmokedItem.Exists())
         {
             SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, boneName), offset, rotator);
+
+        }
+    }
+    private void AttachVehicleItem(VehicleExt vehicleExt, Rage.Object SmokedItem, string boneName, Vector3 offset, Rotator rotator)
+    {
+        if (SmokedItem.Exists() && vehicleExt != null && vehicleExt.Vehicle.Exists())
+        {
+            SmokedItem.AttachTo(vehicleExt.Vehicle, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", vehicleExt.Vehicle, boneName), offset, rotator);
 
         }
     }

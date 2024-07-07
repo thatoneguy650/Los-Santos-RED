@@ -91,6 +91,7 @@ public class Debug
     private bool isShowingTunnel;
     private Rage.Object chairProp;
     private Cop LastPed;
+    private Rage.Object PumpHandleProp;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Mod.Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, WeatherReporting weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
@@ -518,41 +519,83 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        //TASK_INVESTIGATE_COORDS
-        if (LastPed != null && LastPed.Pedestrian.Exists())
-        {
-            LastPed.CanBeAmbientTasked = true;
-            LastPed.CanBeTasked = true;
-            LastPed.WeaponInventory.ShouldAutoSetWeaponState = true;
-            NativeFunction.Natives.SET_PED_USING_ACTION_MODE(LastPed.Pedestrian, false, -1, "DEFAULT_ACTION");
-        }
-        Cop Ped = World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && !x.IsInVehicle && !x.IsDead).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-        if (Ped != null)
-        {
-            LastPed = Ped;
-            Ped.CanBeAmbientTasked = false;
-            Ped.CanBeTasked = false;
-
-        }
-        Ped.Pedestrian.Tasks.ClearImmediately();
-        Ped.WeaponInventory.SetDeadly(true);
-        Ped.WeaponInventory.ShouldAutoSetWeaponState = false;
-        Vector3 SearchCoords = Player.Character.GetOffsetPositionFront(50f);
 
 
 
 
+        //if (PumpHandleProp.Exists())
+        //{
+        //    PumpHandleProp.Delete();
+        //    return;
+        //}
+
+        //try
+        //{
+        //    PumpHandleProp = new Rage.Object("prop_cs_fuel_nozle", Player.Character.GetOffsetPositionUp(50f));// new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
+        //}
+        //catch (Exception ex)
+        //{
+
+        //}
+        //if (!PumpHandleProp.Exists())
+        //{
+
+        //    return;
+        //}
+
+        //VehicleExt vehicleExt = Player.CurrentLookedAtVehicle;
+        //if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
+        //{
+        //    return;
+        //}
+        //string vehicleBoneName = string.IsNullOrEmpty(Settings.SettingsManager.DebugSettings.DebugLastBone) ? "wheel_lr" : Settings.SettingsManager.DebugSettings.DebugLastBone;
+        //Vector3 VehicleOffset = new Vector3(Settings.SettingsManager.DebugSettings.DebugLastX, Settings.SettingsManager.DebugSettings.DebugLastY, Settings.SettingsManager.DebugSettings.DebugLastZ);
+        //Rotator VehicleRotation = new Rotator(Settings.SettingsManager.DebugSettings.DebugRotate1, Settings.SettingsManager.DebugSettings.DebugRotate2, Settings.SettingsManager.DebugSettings.DebugRotate3);
+        //PumpHandleProp.AttachTo(vehicleExt.Vehicle, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", vehicleExt.Vehicle, vehicleBoneName), VehicleOffset, VehicleRotation);
+
+        //GameFiber.Sleep(5000);
+
+        //if (PumpHandleProp.Exists())
+        //{
+        //    PumpHandleProp.Delete();
+        //    return;
+        //}
+
+        ////TASK_INVESTIGATE_COORDS
+        //if (LastPed != null && LastPed.Pedestrian.Exists())
+        //{
+        //    LastPed.CanBeAmbientTasked = true;
+        //    LastPed.CanBeTasked = true;
+        //    LastPed.WeaponInventory.ShouldAutoSetWeaponState = true;
+        //    NativeFunction.Natives.SET_PED_USING_ACTION_MODE(LastPed.Pedestrian, false, -1, "DEFAULT_ACTION");
+        //}
+        //Cop Ped = World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && !x.IsInVehicle && !x.IsDead).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        //if (Ped != null)
+        //{
+        //    LastPed = Ped;
+        //    Ped.CanBeAmbientTasked = false;
+        //    Ped.CanBeTasked = false;
+
+        //}
+        //Ped.Pedestrian.Tasks.ClearImmediately();
+        //Ped.WeaponInventory.SetDeadly(true);
+        //Ped.WeaponInventory.ShouldAutoSetWeaponState = false;
+        //Vector3 SearchCoords = Player.Character.GetOffsetPositionFront(50f);
 
 
-        //AnimationDictionary.RequestAnimationDictionay("amb@code_human_police_investigate@base");
 
 
-        //NativeFunction.Natives.TASK_WANDER_SPECIFIC(Ped.Pedestrian, "amb@code_human_police_investigate@base","base", 0);
-
-        NativeFunction.Natives.SET_PED_USING_ACTION_MODE(Ped.Pedestrian, true, -1, "DEFAULT_ACTION");
 
 
-        NativeFunction.Natives.TASK_AGITATED_ACTION_CONFRONT_RESPONSE(Ped.Pedestrian, Player.Character);
+        ////AnimationDictionary.RequestAnimationDictionay("amb@code_human_police_investigate@base");
+
+
+        ////NativeFunction.Natives.TASK_WANDER_SPECIFIC(Ped.Pedestrian, "amb@code_human_police_investigate@base","base", 0);
+
+        //NativeFunction.Natives.SET_PED_USING_ACTION_MODE(Ped.Pedestrian, true, -1, "DEFAULT_ACTION");
+
+
+        //NativeFunction.Natives.TASK_AGITATED_ACTION_CONFRONT_RESPONSE(Ped.Pedestrian, Player.Character);
 
         //unsafe
         //{

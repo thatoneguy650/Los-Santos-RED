@@ -373,6 +373,34 @@ namespace LosSantosRED.lsr.Helper
             Game.DisableControlAction(0, GameControl.MeleeAttack2, true);
 
         }
+        public static void DisablePlayerMovementControl()
+        {
+
+            //NativeFunction.Natives.DISABLE_ALL_CONTROL_ACTIONS(0);
+
+
+
+
+            Game.DisableControlAction(0, GameControl.MoveUpDown, true);
+            Game.DisableControlAction(0, GameControl.MoveLeftRight, true);
+            Game.DisableControlAction(0, GameControl.VehicleAccelerate, true);
+            Game.DisableControlAction(0, GameControl.VehicleBrake, true);
+            Game.DisableControlAction(0, GameControl.Jump, true);
+
+
+
+
+            Game.DisableControlAction(0, GameControl.VehicleExit, true);
+            Game.DisableControlAction(0, GameControl.Enter, true);
+
+
+            Game.DisableControlAction(0, GameControl.Attack, true);
+            Game.DisableControlAction(0, GameControl.Attack2, true);
+
+            Game.DisableControlAction(0, GameControl.MeleeAttack1, true);
+            Game.DisableControlAction(0, GameControl.MeleeAttack2, true);
+
+        }
         public static bool IsUsingKeyboard => NativeFunction.Natives.IS_USING_KEYBOARD_AND_MOUSE<bool>(2);
         public static bool IsUsingController => !NativeFunction.Natives.IS_USING_KEYBOARD_AND_MOUSE<bool>(2);
 

@@ -24,8 +24,30 @@ public class DispatchablePeople_LostMC
     private int defaultCombatAbilityMin = 0;
     private int defaultCombatAbilityMax = 1;
 
-    private List<string> DefaultVoicesMale = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" };
-    private List<string> DefaultVoicesFemale = new List<string>() { "A_F_Y_BUSINESS_01_WHITE_FULL_01", "A_F_Y_BUSINESS_02_WHITE_FULL_01", "A_F_Y_SKATER_01_WHITE_FULL_01" };
+    private List<string> DefaultVoicesMale = new List<string>() { 
+        "G_M_Y_LOST_01_BLACK_FULL_01",
+        "G_M_Y_LOST_01_BLACK_FULL_02",
+        "G_M_Y_LOST_01_BLACK_MINI_01",
+        "G_M_Y_LOST_01_BLACK_MINI_02",
+        "G_M_Y_LOST_01_BLACK_MINI_03",
+        "G_M_Y_LOST_01_WHITE_FULL_01",
+        "G_M_Y_LOST_01_WHITE_MINI_01",
+        "G_M_Y_LOST_01_WHITE_MINI_02",
+        "G_M_Y_LOST_02_LATINO_FULL_01",
+        "G_M_Y_LOST_02_LATINO_FULL_02",
+        "G_M_Y_LOST_02_LATINO_MINI_01",
+        "G_M_Y_LOST_02_LATINO_MINI_02",
+        "G_M_Y_LOST_02_LATINO_MINI_03",
+        "G_M_Y_LOST_02_WHITE_FULL_01",
+        "G_M_Y_LOST_02_WHITE_MINI_01",
+        "G_M_Y_LOST_02_WHITE_MINI_02",
+        "G_M_Y_LOST_03_WHITE_FULL_01",
+        "G_M_Y_LOST_03_WHITE_MINI_02",
+        "G_M_Y_LOST_03_WHITE_MINI_03",
+       // "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01"
+    };
+    private List<string> DefaultVoicesFemale = new List<string>() { "A_F_Y_TOURIST_01_WHITE_FULL_01", "A_F_Y_TOURIST_01_WHITE_MINI_01", "A_F_Y_TOURIST_02_WHITE_MINI_01", "A_F_Y_VINEWOOD_01_WHITE_MINI_01",
+        "A_F_Y_TOURIST_01_BLACK_FULL_01", "A_F_Y_TOURIST_01_BLACK_MINI_01","A_F_Y_TOURIST_01_LATINO_FULL_01","A_F_Y_TOURIST_01_LATINO_MINI_01" };
     public DispatchablePeople_LostMC(DispatchablePeople dispatchablePeople)
     {
         DispatchablePeople = dispatchablePeople;
