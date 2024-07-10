@@ -131,7 +131,7 @@ namespace LosSantosRED.lsr.Player
                         IsFinishedWithSip = true;
                         StartBaseAnimation();
                     }
-                    if (TimesDrank >= DrinkItem.AnimationCycles && ConsumableItemNeedGain.IsFinished)
+                    if (ConsumableItemNeedGain.IsFinished)
                     {
                         IsCancelled = true;
                     }
@@ -147,7 +147,7 @@ namespace LosSantosRED.lsr.Player
                         IsFinishedWithSip = false;
                         Player.ButtonPrompts.RemovePrompts("DrinkingActivity");
                     }
-                    else if (FinishDrink && TimesDrank < DrinkItem.AnimationCycles)
+                    else if (FinishDrink)
                     {
                         ConsumableItemNeedGain.Update();
                         TimesDrank++;
