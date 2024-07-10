@@ -91,7 +91,7 @@ namespace LosSantosRED.lsr.Player
             StartNewIdleAnimation();
             TimesAte++;
             isPlayingBase = false;
-            ConsumableItemNeedGain = new ConsumableRefresher(Player, FoodItem, Settings) { IsIntervalBased = true };
+            ConsumableItemNeedGain = new ConsumableRefresher(Player, FoodItem, Settings) { IsIntervalBased = Settings.SettingsManager.ActivitySettings.IntervalBasedConsumption };
             ConsumableItemNeedGain.Update();
             Player.Intoxication.AddIntervalConsumption(CurrentIntoxicant);
 
@@ -110,7 +110,7 @@ namespace LosSantosRED.lsr.Player
                         IsFinishedWithBite = true;
                         StartBaseAnimation();
                     }
-                    if (TimesAte >= FoodItem.AnimationCycles && ConsumableItemNeedGain.IsFinished)
+                    if (ConsumableItemNeedGain.IsFinished)
                     {
                         IsCancelled = true;
                     }
@@ -126,7 +126,7 @@ namespace LosSantosRED.lsr.Player
                         IsFinishedWithBite = false;
                         Player.ButtonPrompts.RemovePrompts("EatingActivity");
                     }
-                    else if (FinishMeal && TimesAte < FoodItem.AnimationCycles)
+                    else if (FinishMeal)
                     {
                         ConsumableItemNeedGain.Update();
                         TimesAte++;
