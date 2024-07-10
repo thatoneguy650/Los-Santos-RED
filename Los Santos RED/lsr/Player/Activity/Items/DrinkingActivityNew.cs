@@ -113,7 +113,7 @@ namespace LosSantosRED.lsr.Player
             StartNewIdleAnimation();
             TimesDrank++;
             isPlayingBase = false;
-            ConsumableItemNeedGain = new ConsumableRefresher(Player, DrinkItem, Settings) { IsIntervalBased = true };
+            ConsumableItemNeedGain = new ConsumableRefresher(Player, DrinkItem, Settings) { IsIntervalBased = Settings.SettingsManager.ActivitySettings.IntervalBasedConsumption };
             ConsumableItemNeedGain.Update();
             uint GameTimeStartedSip = 0;
             uint comboSip = 0; // variable name is trash sorry
