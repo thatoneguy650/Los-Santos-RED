@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -68,8 +68,10 @@ public class ActivitySettings : ISettingsDefaultable
     public float BlendInBaseEat { get; set; }
     public float BlendOutBaseEat { get; set; }
     public float EatAnimBaseEndingPercentage { get; set; }
-
-
+    public bool IntervalBasedConsumption { get; set; }
+    public float IntervalHungerScalar { get; set; }
+    public float IntervalSleepScalar { get; set; }
+    public float IntervalThirstScalar { get; set; }
 
 
     [Description("Show body armor on player when using the freemode characters. NOT FULLY IMPLEMENTED")]
@@ -135,6 +137,10 @@ public class ActivitySettings : ISettingsDefaultable
         DrinkStartsBase = false;
         DrinkSipsAllowed = 5;
         DisplayBodyArmor = false;
+        IntervalBasedConsumption = false;
+        IntervalHungerScalar = 4.0f;
+        IntervalSleepScalar = 4.0f;
+        IntervalThirstScalar = 4.0f;
         BodyArmorDefaultDrawableID = 11;
         BodyArmorDefaultTextureID = 1;
 
