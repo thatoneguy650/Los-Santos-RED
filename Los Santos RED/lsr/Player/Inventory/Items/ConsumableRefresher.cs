@@ -1,4 +1,4 @@
-﻿using LosSantosRED.lsr.Interface;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -20,11 +20,11 @@ public class ConsumableRefresher
     private uint GameTimeLastGivenArmor;
     private uint GameTimeLastGivenNeeds;
     private float HungerGiven;
-    private bool GivenFullHunger;
+    private bool GivenFullHunger { get; set; } = false;
     private float ThirstGiven;
-    private bool GivenFullThirst;
+    private bool GivenFullThirst { get; set; } = false;
     private float SleepGiven;
-    private bool GivenFullSleep;
+    private bool GivenFullSleep { get; set; } = false;
 
     public ConsumableRefresher(IActionable player, ConsumableItem foodItem, ISettingsProvideable settings)
     {
@@ -39,13 +39,10 @@ public class ConsumableRefresher
     public bool IsIntervalBased { get; set; } = false;
     public int IntervalHealthScalar { get; set; } = 2;
     public int IntervalArmorScalar { get; set; } = 2;
-    public float IntervalHungerScalar { get; set; } = 4.0f;
-    public float IntervalSleepScalar { get; set; } = 4.0f;
-    public float IntervalThirstScalar { get; set; } = 4.0f;
 
     public void Update()
     {
-        if(ConsumableItem == null)
+        if (ConsumableItem == null)
         {
             IsFinished = true;
             return;
@@ -93,7 +90,7 @@ public class ConsumableRefresher
             {
                 Player.HumanState.Thirst.Change(ConsumableItem.ThirstChangeAmount, true);
             }
-        }        
+        }
     }
     private void CheckStatus()
     {
@@ -116,7 +113,7 @@ public class ConsumableRefresher
     }
     private void UpdateHealthGain()
     {
-        if (Game.GameTime - GameTimeLastGivenHealth >= (Settings.SettingsManager.NeedsSettings.TimeBetweenGain/ SpeedMultiplier))
+        if (Game.GameTime - GameTimeLastGivenHealth >= (Settings.SettingsManager.NeedsSettings.TimeBetweenGain / SpeedMultiplier))
         {
             if (ConsumableItem.ChangesHealth && (!Settings.SettingsManager.NeedsSettings.ApplyNeeds || ConsumableItem.AlwaysChangesHealth))
             {
@@ -141,7 +138,7 @@ public class ConsumableRefresher
     }
     private void UpdateArmorGain()
     {
-        if (Game.GameTime - GameTimeLastGivenArmor >= (Settings.SettingsManager.NeedsSettings.TimeBetweenGain/ SpeedMultiplier))
+        if (Game.GameTime - GameTimeLastGivenArmor >= (Settings.SettingsManager.NeedsSettings.TimeBetweenGain / SpeedMultiplier))
         {
             if (ConsumableItem.ChangesArmor)
             {
@@ -217,7 +214,7 @@ public class ConsumableRefresher
                     }
                     else
                     {
-                        if (!Player.HumanState.Hunger.IsMax && ThirstGiven < ConsumableItem.ThirstChangeAmount)
+                        if (!Player.HumanState.Thirst.IsMax && ThirstGiven < ConsumableItem.ThirstChangeAmount)
                         {
                             Player.HumanState.Thirst.Change(1.0f, true);
                             ThirstGiven++;
@@ -323,8 +320,8 @@ public class ConsumableRefresher
                 {
                     if (!Player.HumanState.Hunger.IsMin && HungerGiven > ConsumableItem.HungerChangeAmount)
                     {
-                        Player.HumanState.Hunger.Change(-1.0f * IntervalHungerScalar, true);
-                        HungerGiven--;
+                        Player.HumanState.Hunger.Change(-Settings.SettingsManager.ActivitySettings.IntervalHungerScalar, true);
+                        HungerGiven-=Settings.SettingsManager.ActivitySettings.IntervalHungerScalar;
                     }
                     else
                     {
@@ -335,8 +332,8 @@ public class ConsumableRefresher
                 {
                     if (!Player.HumanState.Hunger.IsMax && HungerGiven < ConsumableItem.HungerChangeAmount)
                     {
-                        Player.HumanState.Hunger.Change(1.0f * IntervalHungerScalar, true);
-                        HungerGiven++;
+                        Player.HumanState.Hunger.Change(Settings.SettingsManager.ActivitySettings.IntervalHungerScalar, true);
+                        HungerGiven+=Settings.SettingsManager.ActivitySettings.IntervalHungerScalar;
                     }
                     else
                     {
@@ -354,8 +351,8 @@ public class ConsumableRefresher
                 {
                     if (!Player.HumanState.Thirst.IsMin && ThirstGiven > ConsumableItem.ThirstChangeAmount)
                     {
-                        Player.HumanState.Thirst.Change(-1.0f * IntervalThirstScalar, true);
-                        ThirstGiven--;
+                        Player.HumanState.Thirst.Change(-Settings.SettingsManager.ActivitySettings.IntervalThirstScalar, true);
+                        ThirstGiven-=Settings.SettingsManager.ActivitySettings.IntervalThirstScalar;
                     }
                     else
                     {
@@ -364,10 +361,10 @@ public class ConsumableRefresher
                 }
                 else
                 {
-                    if (!Player.HumanState.Hunger.IsMax && ThirstGiven < ConsumableItem.ThirstChangeAmount)
+                    if (!Player.HumanState.Thirst.IsMax && ThirstGiven < ConsumableItem.ThirstChangeAmount)
                     {
-                        Player.HumanState.Thirst.Change(1.0f * IntervalThirstScalar, true);
-                        ThirstGiven++;
+                        Player.HumanState.Thirst.Change(Settings.SettingsManager.ActivitySettings.IntervalThirstScalar, true);
+                        ThirstGiven+=Settings.SettingsManager.ActivitySettings.IntervalThirstScalar;
                     }
                     else
                     {
@@ -385,8 +382,8 @@ public class ConsumableRefresher
                 {
                     if (!Player.HumanState.Sleep.IsMin && SleepGiven > ConsumableItem.SleepChangeAmount)
                     {
-                        Player.HumanState.Sleep.Change(-1.0f * IntervalSleepScalar, true);
-                        SleepGiven--;
+                        Player.HumanState.Sleep.Change(-Settings.SettingsManager.ActivitySettings.IntervalSleepScalar, true);
+                        SleepGiven-=Settings.SettingsManager.ActivitySettings.IntervalSleepScalar;
                     }
                     else
                     {
@@ -397,8 +394,8 @@ public class ConsumableRefresher
                 {
                     if (!Player.HumanState.Sleep.IsMax && SleepGiven < ConsumableItem.SleepChangeAmount)
                     {
-                        Player.HumanState.Sleep.Change(1.0f * IntervalSleepScalar, true);
-                        SleepGiven++;
+                        Player.HumanState.Sleep.Change(Settings.SettingsManager.ActivitySettings.IntervalSleepScalar, true);
+                        SleepGiven+=Settings.SettingsManager.ActivitySettings.IntervalSleepScalar;
                     }
                     else
                     {
