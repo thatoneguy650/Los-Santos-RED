@@ -42,8 +42,7 @@ public class BustedMenu : ModUIMenu
             return bribedesc;
         }
     }
-
-public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable, ITimeReportable time)
+    public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable, ITimeReportable time)
     {
         PedSwap = pedSwap;
         Respawning = respawning;
@@ -110,12 +109,10 @@ public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, I
         }
         AddRespawningOptions();    
     }
-
     private void CreateArrestedItems()
     {
         AddSurrenderToPolice();
     }
-
     private void CreateDetainItems()
     {
         AddListOffenses();
@@ -192,9 +189,6 @@ public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, I
         };
         Menu.AddItem(TakeoverRandomPed);
     }
-
-
-
     private void AddResist()
     {
         string resistArrestText = "Resist Arrest";
@@ -272,8 +266,6 @@ public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, I
         };
         Menu.AddItem(TalkItOut);
     }
-
-
     private void AddBribeOptions()
     {
         string bribeText = "Bribe Police";
@@ -313,7 +305,6 @@ public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, I
         };
         Menu.AddItem(Bribe);
     }
-
     private void AddSurrenderToPolice()//fallback, always works
     {
         string surrenderText = "Surrender";
@@ -335,20 +326,6 @@ public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, I
             surrenderDescription += $" (~r~${Respawning.Respawning.BailFeePastDue} past due~s~)";
         }
         surrenderDescription += $"~n~Bail Length: ~y~{Respawning.Respawning.BailDuration}~s~ days";
-
-        //if (Player.IsBeingBooked || Player.IsArrested)
-        //{
-        //    Surrender = new UIMenuListScrollerItem<ILocationRespawnable>("Skip Booking", "Skip booking.", PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)).Take(1));
-        //    Surrender.Activated += (sender, selectedItem) =>
-        //    {
-        //        Respawning.Respawning.SurrenderToPolice(Surrender.SelectedItem);
-        //        Menu.Visible = false;
-        //    };
-        //    Menu.AddItem(Surrender);
-        //}
-        //else
-        //{
-
         if (Settings.SettingsManager.RespawnSettings.AllowBookingSurrender)
         {
             GetBooked = new UIMenuItem("Full Surrender", $"Go through the full process of getting booked ~r~WIP~s~. {surrenderDescription}");
@@ -359,7 +336,6 @@ public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, I
             };
             Menu.AddItem(GetBooked);
         }
-       // }
         Surrender = new UIMenuListScrollerItem<ILocationRespawnable>(surrenderText, surrenderDescription, PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
         Surrender.Activated += (sender, selectedItem) =>
         {
@@ -368,6 +344,4 @@ public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, I
         };
         Menu.AddItem(Surrender);   
     }
-
-
 }

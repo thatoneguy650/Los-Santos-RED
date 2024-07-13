@@ -129,6 +129,7 @@
     <Compile Include="lsr\Data\Interface\ICellphones.cs" />
     <Compile Include="lsr\Data\Interface\IContacts.cs" />
     <Compile Include="lsr\Data\Interface\ISpawnBlocks.cs" />
+    <Compile Include="lsr\Data\Location\Custom Locations\PlacesOfInterest_SunshineDream.cs" />
     <Compile Include="lsr\Data\Location\PossibleInteriors.cs" />
     <Compile Include="lsr\Data\Other\CarGeneratorBlock.cs" />
     <Compile Include="lsr\Data\Other\PossibleSpawnBlocks.cs" />

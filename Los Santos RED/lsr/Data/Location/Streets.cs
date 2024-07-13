@@ -542,5 +542,14 @@ public class Streets : IStreets
         };
         Serialization.SerializeParams(LCStreetsList, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Streets_LibertyCity.xml");
     }
+    private void DefaultConfig_SunshineDream()
+    {
+        List<Street> LCStreetsList = new List<Street>
+        {
+            new Street("Alton Road", 40f, "MPH"),
+            new Street("63rd Street",50f,"MPH"),
+        };
+        Serialization.SerializeParams(LCStreetsList, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\Streets_SunshineDream.xml");
+    }
 }
 

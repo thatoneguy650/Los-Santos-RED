@@ -92,7 +92,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             EntryPoint.WriteToConsole($"No Locations config found, creating default", 0);
             DefaultConfig_LibertyCity();
-
+            DefaultConfig_ShunshineDream();
             DefaultConfig();
             DefaultConfig_2008();
         }
@@ -715,7 +715,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 "A city run by dealers and weasels" +
                 "~n~" +
                 "~n~City: ~y~Vice City~s~" +
-                "~n~State: ~p~Florida~s~") { IsEnabled = false,StateID = StaticStrings.FloridaStateID },
+                "~n~State: ~p~Leonida~s~") { IsEnabled = false,StateID = StaticStrings.LeonidaStateID },
 
             };
     }
@@ -5430,6 +5430,11 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         PlacesOfInterest_Liberty placesOfInterest_Liberty = new PlacesOfInterest_Liberty();
         placesOfInterest_Liberty.DefaultConfig();
+    }
+    private void DefaultConfig_ShunshineDream()
+    {
+        PlacesOfInterest_SunshineDream placesOfInterest_SunshineDream = new PlacesOfInterest_SunshineDream();
+        placesOfInterest_SunshineDream.DefaultConfig();
     }
     public void Setup()
     {

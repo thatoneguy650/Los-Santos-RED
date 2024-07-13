@@ -37,7 +37,7 @@ public class DebugDispatcherSubMenu : DebugSubMenu
 
         CreateAgencySubMenu();
         CreateGangSubMenu();
-
+        CreateRoadblockSubMenu();
 
 
 
@@ -142,19 +142,8 @@ public class DebugDispatcherSubMenu : DebugSubMenu
 
 
 
-        UIMenuNumericScrollerItem<float> SpawnRockblock = new UIMenuNumericScrollerItem<float>("Spawn Roadblock", "Spawn roadblock", 10f, 200f, 10f);
-        SpawnRockblock.Activated += (menu, item) =>
-        {
-            Dispatcher.DebugSpawnRoadblock(SpawnRockblock.Value);
-            menu.Visible = false;
-        };
 
-        UIMenuItem DespawnRockblock = new UIMenuItem("Despawn Roadblock", "Despawn roadblock");
-        DespawnRockblock.Activated += (menu, item) =>
-        {
-            Dispatcher.DebugRemoveRoadblock();
-            menu.Visible = false;
-        };
+
 
         UIMenuItem PlayScanner = new UIMenuItem("Play Scanner", "Play some random scanner audio");
         PlayScanner.Activated += (menu, item) =>
@@ -188,11 +177,41 @@ public class DebugDispatcherSubMenu : DebugSubMenu
         DispatcherMenu.AddItem(SpawnGangVehicle);
         DispatcherMenu.AddItem(SpawnEmptyGangVehicle);
         DispatcherMenu.AddItem(SpawnTaxi);
-        DispatcherMenu.AddItem(SpawnRockblock);
-        DispatcherMenu.AddItem(DespawnRockblock);
+
+
         DispatcherMenu.AddItem(PlayScanner);
         DispatcherMenu.AddItem(RemoveCops);
         DispatcherMenu.AddItem(ClearSpawned);
+    }
+
+    private void CreateRoadblockSubMenu()
+    {
+        UIMenu RoadblockNewMenu = MenuPool.AddSubMenu(DispatcherMenu, "Roadblock Spawn Menu");
+        RoadblockNewMenu.SetBannerType(EntryPoint.LSRedColor);
+        RoadblockNewMenu.Width = 0.6f;
+
+
+        UIMenuCheckboxItem EnableCars = new UIMenuCheckboxItem("Enable Cars", true);
+        UIMenuCheckboxItem EnableSpike = new UIMenuCheckboxItem("Enable Spikes", true);
+        UIMenuCheckboxItem EnableProps = new UIMenuCheckboxItem("Enable Props", true);
+        RoadblockNewMenu.AddItem(EnableCars);
+        RoadblockNewMenu.AddItem(EnableSpike);
+        RoadblockNewMenu.AddItem(EnableProps);
+        UIMenuNumericScrollerItem<float> SpawnRockblock = new UIMenuNumericScrollerItem<float>("Spawn Roadblock", "Spawn roadblock", 10f, 300f, 10f) { Value = 150f };
+        SpawnRockblock.Activated += (menu, item) =>
+        {
+            Dispatcher.DebugSpawnRoadblock(EnableCars.Checked, EnableSpike.Checked, EnableProps.Checked, SpawnRockblock.Value);
+            menu.Visible = false;
+        };
+        RoadblockNewMenu.AddItem(SpawnRockblock);
+        UIMenuItem DespawnRockblock = new UIMenuItem("Despawn Roadblock", "Despawn roadblock");
+        DespawnRockblock.Activated += (menu, item) =>
+        {
+            Dispatcher.DebugRemoveRoadblock();
+            menu.Visible = false;
+        };
+        RoadblockNewMenu.AddItem(DespawnRockblock);
+
     }
 
     private void CreateAgencySubMenu()

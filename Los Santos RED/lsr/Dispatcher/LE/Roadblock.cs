@@ -41,7 +41,8 @@ public class Roadblock
     private RoadNode RoadNode;
     private int roadblockSpeedZoneID1;
     private int roadblockSpeedZoneID2;
-
+    private Vector3 PedSideOfRoadPosition;
+    private float PedSideOfRoadHeading;
 
     private int VehiclesToAddFront = 0;
     private int VehiclesToAddRear = 0;
@@ -49,6 +50,14 @@ public class Roadblock
     private int BarriersToAddRear = 0;
 
     private Vector3 VehicleNodeCenter;
+    private bool HasSpawnedAnySpikeStrips = false;
+    private bool HasSpawnedAnyBarrierProps;
+
+    public bool EnableCarBlocks { get; set; } = true;
+    public bool EnableSpikeStrips { get; set; } = true;
+    public bool EnableOtherBarriers { get; set; } = true;
+    private bool EnableBlockadeProps => EnableOtherBarriers || EnableSpikeStrips;
+    private bool ShouldMonitorSpawnedProps => HasSpawnedAnySpikeStrips || HasSpawnedAnyBarrierProps;
 
     private enum LocationCreate
     {
@@ -56,7 +65,8 @@ public class Roadblock
         Front = 1,
         Back = 2,
     }
-    public Roadblock(IDispatchable player, IEntityProvideable world, Agency agency, DispatchableVehicle vehicle, DispatchablePerson person, Vector3 initialPosition, float initialHeading, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool allowAnySpawn, IModItems modItems)
+    public Roadblock(IDispatchable player, IEntityProvideable world, Agency agency, DispatchableVehicle vehicle, DispatchablePerson person, Vector3 initialPosition, float initialHeading, ISettingsProvideable settings, 
+        IWeapons weapons, INameProvideable names, bool allowAnySpawn, IModItems modItems, bool enableCarBlocks, bool enableSpikeStrips, bool enableOtherBarriers)
     {
         Player = player;
         World = world;
@@ -72,6 +82,9 @@ public class Roadblock
         Names = names;
         AllowAnySpawn = allowAnySpawn;
         ModItems = modItems;
+        EnableCarBlocks = enableCarBlocks;
+        EnableSpikeStrips = enableSpikeStrips;
+        EnableOtherBarriers = enableOtherBarriers;
     }
     public Vector3 CenterPosition => NodeCenter;
     private float RotatedNodeHeading => NodeHeading - 90f;
@@ -86,9 +99,6 @@ public class Roadblock
     {
         GameFiber.Yield();
         AnimationDictionary.RequestAnimationDictionay("p_ld_stinger_s");
-       // GameFiber.Yield();
-       // VehicleModel.LoadAndWait();
-        //SpikeStripModel.LoadAndWait();
         if (GetPosition())
         {
             GameFiber.Yield();
@@ -97,9 +107,9 @@ public class Roadblock
             FillInBlockade();
         }
         GameFiber.Yield();
-        if (Settings.SettingsManager.RoadblockSettings.RoadblockSpikeStripsEnabled)
+        if (ShouldMonitorSpawnedProps)
         {
-            CheckSpikeStrips();
+            MonitorSpawnedProps();
         }
     }
     private void ClearArea()
@@ -110,7 +120,7 @@ public class Roadblock
             NativeFunction.Natives.CLEAR_AREA(NodeOffset.X, NodeOffset.Y, NodeOffset.Z, Settings.SettingsManager.RoadblockSettings.RemoveGeneratedVehiclesAroundRoadblockDistance, true, false, false, false);
         }
     }
-    private void CheckSpikeStrips()
+    private void MonitorSpawnedProps()
     {
         GameFiber.StartNew(delegate
         {
@@ -138,7 +148,11 @@ public class Roadblock
                     }
                     GameFiber.Sleep(500);
                 }
-
+                if(!HasSpawnedAnySpikeStrips)
+                {
+                    EntryPoint.WriteToConsole("NO SPIKE STRIPS SPAWNED FOR ROADBLOCK ENDING CHECKING OF COLLISION");
+                    return;
+                }
                 while (!IsDisposed)
                 {
                     if (Player.IsInVehicle && Player.CurrentVehicle != null)
@@ -190,8 +204,7 @@ public class Roadblock
         {
             float extendedDistance = Settings.SettingsManager.RoadblockSettings.RemoveGeneratedVehiclesAroundRoadblockDistance;
             NativeFunction.Natives.REMOVE_VEHICLES_FROM_GENERATORS_IN_AREA(CenterPosition.X - extendedDistance, CenterPosition.Y - extendedDistance, CenterPosition.Z - extendedDistance, CenterPosition.X + extendedDistance, CenterPosition.Y + extendedDistance, CenterPosition.Z + extendedDistance, false);
-            NativeFunction.Natives.REMOVE_VEHICLES_FROM_GENERATORS_IN_AREA(NodeOffset.X - extendedDistance, NodeOffset.Y - extendedDistance, NodeOffset.Z - extendedDistance, NodeOffset.X + extendedDistance, NodeOffset.Y + extendedDistance, NodeOffset.Z + extendedDistance, false);
-            
+            NativeFunction.Natives.REMOVE_VEHICLES_FROM_GENERATORS_IN_AREA(NodeOffset.X - extendedDistance, NodeOffset.Y - extendedDistance, NodeOffset.Z - extendedDistance, NodeOffset.X + extendedDistance, NodeOffset.Y + extendedDistance, NodeOffset.Z + extendedDistance, false);        
         }
     }
     private void UnSetRoadGenerators()
@@ -248,42 +261,70 @@ public class Roadblock
         GameFiber.Yield();
         DeterminePositions();
         GameFiber.Yield();
-        if (AddVehicles(LocationCreate.Middle, 1))//need at least one car to spawn?
-        {    
-            //EntryPoint.WriteToConsoleTestLong($"ROADBLOCK Road Node Properties {RoadNode.Position} {RoadNode.Heading} FW: {RoadNode.ForwardLanes} BW: {RoadNode.BackwardsLanes} WIDTH: {RoadNode.Width} POS: {RoadNode.RoadPosition}");
-            //EntryPoint.WriteToConsoleTestLong($"VFront: {VehiclesToAddFront} VRear: {VehiclesToAddRear} BFront: {BarriersToAddFront} BRear: {BarriersToAddRear} ");
-            GameFiber.Yield();
-            if (VehiclesToAddFront > 0)
+        if(EnableCarBlocks)//need at least one car to spawn?
+        {
+            if (AddVehicles(LocationCreate.Middle, 1))
             {
-                AddVehicles(LocationCreate.Front, VehiclesToAddFront);
-            }
-            GameFiber.Yield();
-            if (VehiclesToAddRear > 0)
-            {
-                AddVehicles(LocationCreate.Back, VehiclesToAddRear);
-            }
-            GameFiber.Yield();
-            if (Settings.SettingsManager.RoadblockSettings.RoadblockSpikeStripsEnabled)
-            {
-                AddSpikeStrips(LocationCreate.Middle, 1);
+                //EntryPoint.WriteToConsoleTestLong($"ROADBLOCK Road Node Properties {RoadNode.Position} {RoadNode.Heading} FW: {RoadNode.ForwardLanes} BW: {RoadNode.BackwardsLanes} WIDTH: {RoadNode.Width} POS: {RoadNode.RoadPosition}");
+                //EntryPoint.WriteToConsoleTestLong($"VFront: {VehiclesToAddFront} VRear: {VehiclesToAddRear} BFront: {BarriersToAddFront} BRear: {BarriersToAddRear} ");
                 GameFiber.Yield();
-                if (BarriersToAddFront > 0)
+                if (VehiclesToAddFront > 0)
                 {
-                    AddSpikeStrips(LocationCreate.Front, BarriersToAddFront);
+                    AddVehicles(LocationCreate.Front, VehiclesToAddFront);
                 }
                 GameFiber.Yield();
-                if (BarriersToAddRear > 0)
+                if (VehiclesToAddRear > 0)
                 {
-                    AddSpikeStrips(LocationCreate.Back, BarriersToAddRear);
+                    AddVehicles(LocationCreate.Back, VehiclesToAddRear);
                 }
                 GameFiber.Yield();
             }
-            SetSpeedZone();
+        }
+        else
+        {
+            SpawnSideVehicle();
+        }
+        if (EnableBlockadeProps)
+        {
+            AddBlockadeProps(LocationCreate.Middle, 1);
             GameFiber.Yield();
-            SetRoadGenerators();
+            if (BarriersToAddFront > 0)
+            {
+                AddBlockadeProps(LocationCreate.Front, BarriersToAddFront);
+            }
+            GameFiber.Yield();
+            if (BarriersToAddRear > 0)
+            {
+                AddBlockadeProps(LocationCreate.Back, BarriersToAddRear);
+            }
             GameFiber.Yield();
         }
+        SetSpeedZone();
+        GameFiber.Yield();
+        SetRoadGenerators();
+        GameFiber.Yield();
     }
+    private void SpawnSideVehicle()
+    {
+        SpawnLocation SideVehicleSpawnPosition = new SpawnLocation(VehicleNodeCenter);
+        SideVehicleSpawnPosition.GetClosestStreet(false);
+        SideVehicleSpawnPosition.GetClosestSideOfRoad();
+        if(SideVehicleSpawnPosition.HasSideOfRoadPosition)
+        {
+            PedSideOfRoadPosition = SideVehicleSpawnPosition.StreetPosition;
+        }
+        else
+        {
+            PedSideOfRoadPosition = VehicleNodeCenter;
+        }
+        SideVehicleSpawnPosition.GetRoadBoundaryPosition();
+        if (SideVehicleSpawnPosition.HasRoadBoundaryPosition)
+        {
+            SideVehicleSpawnPosition.StreetPosition = SideVehicleSpawnPosition.RoadBoundaryPosition;
+        }
+        CreateVehicle(SideVehicleSpawnPosition.FinalPosition, NodeHeading, true, true);
+    }
+
     private void DetermineVehiclesToAdd()
     {
         VehicleNodeCenter = NodeCenter;
@@ -350,7 +391,7 @@ public class Roadblock
                 addPed = false;
             }
             Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(VehicleNodeCenter, NodeHeading, Offset);
-            Created = CreateVehicle(SpawnPosition, RotatedNodeHeading, addPed);
+            Created = CreateVehicle(SpawnPosition, RotatedNodeHeading, addPed, false);
             if (Created)
             {
                 CarsAdded++;
@@ -359,7 +400,7 @@ public class Roadblock
         } while (Created && CarsAdded <= toAdd);//5
         return Created;
     }
-    private bool CreateVehicle(Vector3 position, float heading, bool addPed)
+    private bool CreateVehicle(Vector3 position, float heading, bool addPed, bool useAltPedPos)
     {
         SpawnLocation pos1 = new SpawnLocation(position);
         pos1.StreetPosition = position;
@@ -376,6 +417,14 @@ public class Roadblock
         {
             SpawnLocation pos2 = new SpawnLocation(PedPosition);
             pos2.StreetPosition = PedPosition;
+
+            if(useAltPedPos)
+            {
+                pos2.InitialPosition = PedSideOfRoadPosition;
+                pos2.StreetPosition = PedSideOfRoadPosition;
+                pos2.Heading = heading;
+            }
+
             LESpawnTask pedSpawn = new LESpawnTask(Agency, pos2, null, Person, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, World, ModItems, false);
             pedSpawn.AllowAnySpawn = AllowAnySpawn;
             pedSpawn.SpawnWithAllWeapons = true;
@@ -417,32 +466,44 @@ public class Roadblock
         }
         return spawnTask.CreatedVehicles.Any();
     }
-    private void AddSpikeStrips(LocationCreate locationCreate, int toAdd)
+    private void AddBlockadeProps(LocationCreate locationCreate, int toAdd)
     {
-        int StripsAdded = 1;
+        int IncrementsAdded = 1;
         float Spacing = GetPositionBetweenSpikeStrips(0.25f);
-        bool Created;
+        bool Created = false;
         do
         {
             float Offset = 0f;// (InFront ? 1.0f : -1.0f) * StripsAdded * Spacing;
             if (locationCreate != LocationCreate.Middle)
             {
-                Offset = (locationCreate == LocationCreate.Front ? 1.0f : -1.0f) * StripsAdded * Spacing;
+                Offset = (locationCreate == LocationCreate.Front ? 1.0f : -1.0f) * IncrementsAdded * Spacing;
             }
             Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(NodeOffset, NodeHeading, Offset);
-            Created = CreateSpikeStrip(SpawnPosition, RotatedNodeHeading);
-            if (Created)
+            if (EnableSpikeStrips)
             {
-                CreateCone(NativeHelper.GetOffsetPosition(ConeOffset, NodeHeading, Offset), NodeHeading);
-                CreateBarrier(NativeHelper.GetOffsetPosition(BarrierOffset, NodeHeading, Offset), NodeHeading);
-                StripsAdded++;
-                GameFiber.Yield();
+                Created = CreateSpikeStrip(SpawnPosition, RotatedNodeHeading);
+                if (Created)
+                {
+                    HasSpawnedAnySpikeStrips = true;
+                    GameFiber.Yield();
+                }
             }
-        } while (Created && StripsAdded <= toAdd);
+            if (EnableOtherBarriers)
+            {
+                bool createdCone = CreateCone(NativeHelper.GetOffsetPosition(ConeOffset, NodeHeading, Offset), NodeHeading);
+                bool createdBarrier = CreateBarrier(NativeHelper.GetOffsetPosition(BarrierOffset, NodeHeading, Offset), NodeHeading);
+                Created = createdCone || createdBarrier;
+                if (Created)
+                {
+                    HasSpawnedAnyBarrierProps = true;
+                    GameFiber.Yield();
+                }
+            }
+            IncrementsAdded++;
+        } while (Created && IncrementsAdded <= toAdd);
     }
     private bool CreateSpikeStrip(Vector3 position, float heading)
-    {
-        
+    {    
         position = new Vector3(position.X, position.Y, position.Z + 1.0f);
         if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(position.X, position.Y, position.Z, out float GroundZ, true, false))
         {

@@ -61,12 +61,13 @@ public class LocationTypes : ILocationTypes
             new GameCounty(StaticStrings.BlaineCountyID, "Blaine County"),
             new GameCounty(StaticStrings.PacificOceanCountyID, "Pacific Ocean"),       
             new GameCounty(StaticStrings.CrookCountyID, "Crook County") { ColorPrefix = "~b~" },
-            new GameCounty(StaticStrings.NorthYanktonCountyID, "North Yankton"),
-            new GameCounty(StaticStrings.ViceCountyID, "City of Vice"),
+            new GameCounty(StaticStrings.NorthYanktonCountyID, "North Yankton"),      
             new GameCounty(StaticStrings.VenturaCountyID, "Ventura County"),
             new GameCounty(StaticStrings.MajesticCountyID, "Majestic County"),
             new GameCounty(StaticStrings.LibertyCityCountyID, "Liberty City"),
             new GameCounty(StaticStrings.AlderneyCountyID, "Alderney"),
+            new GameCounty(StaticStrings.CityOfViceCountyID, "City of Vice"),
+            new GameCounty(StaticStrings.ViceCountyID, "Vice County"),
             new GameCounty("Unknown", "Unknown"),
         };
 
@@ -76,7 +77,7 @@ public class LocationTypes : ILocationTypes
             new GameState(StaticStrings.NorthYanktonStateID, "North Yankton"),
             new GameState(StaticStrings.LibertyStateID, "Liberty") { SisterStateIDs = new List<string>() { StaticStrings.AlderneyStateID } },
             new GameState(StaticStrings.AlderneyStateID, "Alderney") { SisterStateIDs = new List<string>() { StaticStrings.LibertyStateID } },
-            new GameState(StaticStrings.FloridaStateID, "Florida"),
+            new GameState(StaticStrings.LeonidaStateID, "Leonida"),
             new GameState(StaticStrings.ColombiaStateID, "Colombia") { ColorPrefix = "~p~" },
             new GameState("Unknown", "Unknown"),
         };

@@ -733,6 +733,42 @@ public class LEDispatcher
             return ambientSpawnPercent;
         }
     }
+
+
+    private float CurrentRoadblockSpawnChance()
+    {
+        if (Player.WantedLevel == 0)
+        {
+            return 0;
+        }
+        else if(Player.WantedLevel == 1)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockSpawnPercentage_Wanted1;
+        }
+        else if (Player.WantedLevel == 2)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockSpawnPercentage_Wanted2;
+        }
+        else if (Player.WantedLevel == 3)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockSpawnPercentage_Wanted3;
+        }
+        else if (Player.WantedLevel == 4)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockSpawnPercentage_Wanted4;
+        }
+        else if (Player.WantedLevel == 5)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockSpawnPercentage_Wanted5;
+        }
+        else if (Player.WantedLevel >= 6)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockSpawnPercentage_Wanted6;
+        }
+        return 0;
+    }
+
+
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
@@ -1163,7 +1199,36 @@ public class LEDispatcher
         if (IsTimeToDispatchRoadblock && HasNeedToDispatchRoadblock)
         {
             GameFiber.Yield();
-            SpawnRoadblock(false,225f);//300f
+            bool enableCarBlocks = true;
+            if(!Settings.SettingsManager.RoadblockSettings.RoadblockCarBlocksEnabled)
+            {
+                enableCarBlocks = false;
+            }
+            bool enableSpikeStrips = true;
+            if(!Settings.SettingsManager.RoadblockSettings.RoadblockSpikeStripsEnabled)
+            {
+                enableSpikeStrips = false;
+            }
+            bool enableOtherBarriers = true;
+            if (!Settings.SettingsManager.RoadblockSettings.RoadblockOtherBarriersEnabled)
+            {
+                enableOtherBarriers = false;
+            }
+
+            if(Player.WantedLevel <= 2)
+            {
+                enableCarBlocks = false;
+            }
+
+            if (RandomItems.RandomPercent(CurrentRoadblockSpawnChance()))
+            {
+                SpawnRoadblock(false, enableCarBlocks, enableSpikeStrips, enableOtherBarriers, Settings.SettingsManager.RoadblockSettings.RoadblockSpawnDistance);// 225f);//300f
+            }
+            else
+            {
+                GameTimeLastSpawnedRoadblock = Game.GameTime;
+                EntryPoint.WriteToConsole("Roadblock not spawning (chance)");
+            }
         }
     }
     private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement, bool forcek9, bool isOffDuty, bool spawnsWithAllWeapons)
@@ -1615,46 +1680,49 @@ public class LEDispatcher
        // if(cop.DistanceToPlayer >= 150f && cop.IsUnconscious)
         return false;
     }
-    public void SpawnRoadblock(bool force, float distance)//temp public
+    public void SpawnRoadblock(bool force, bool enableCarBlocks, bool enableSpikeStrips, bool enableOtherBarriers, float distance)//temp public
     {
         GetRoadblockLocation(force, distance);
         GameFiber.Yield();
-        if(GetRoadblockNode(force))
+        if(!GetRoadblockNode(force))
         {
-            Zone zoneAtPosition = Zones.GetZone(RoadblockFinalPosition);
-            Street streetAtPosition = Streets.GetStreet(RoadblockFinalPosition);
-            SpawnLocation roadblockSpawnLocations = new SpawnLocation(RoadblockFinalPosition);
-            Agency ToSpawn = GetRandomAgency(roadblockSpawnLocations, zoneAtPosition, streetAtPosition);
-            GameFiber.Yield();
-            if (ToSpawn != null)
-            {
-                DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(World.TotalWantedLevel, false, false, false, "", Settings);
-                GameFiber.Yield();
-                if (VehicleToUse != null)
-                {
-                    string RequiredGroup = "";
-                    if (VehicleToUse != null)
-                    {
-                        RequiredGroup = VehicleToUse.RequiredPedGroup;
-                    }
-                    DispatchablePerson OfficerType = ToSpawn.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
-                    GameFiber.Yield();
-                    if (OfficerType != null)
-                    {
-                        if (Roadblock != null)
-                        {
-                            Roadblock.Dispose();
-                            GameFiber.Yield();
-                        }
-                        Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, RoadblockFinalPosition, RoadblockFinalHeading, Settings, Weapons, Names, force, ModItems);
-                        Roadblock.SpawnRoadblock();
-                        GameFiber.Yield();
-                        GameTimeLastSpawnedRoadblock = Game.GameTime;
-                    }
-                }
-            }
+            return;
         }
-
+        Zone zoneAtPosition = Zones.GetZone(RoadblockFinalPosition);
+        Street streetAtPosition = Streets.GetStreet(RoadblockFinalPosition);
+        SpawnLocation roadblockSpawnLocations = new SpawnLocation(RoadblockFinalPosition);
+        Agency ToSpawn = GetRandomAgency(roadblockSpawnLocations, zoneAtPosition, streetAtPosition);
+        GameFiber.Yield();
+        if(ToSpawn == null)
+        { 
+            return;
+        }
+        DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(World.TotalWantedLevel, false, false, false, "", Settings);
+        GameFiber.Yield();
+        if(VehicleToUse == null)
+        {
+            return;
+        }
+        string RequiredGroup = "";
+        if (VehicleToUse != null)
+        {
+            RequiredGroup = VehicleToUse.RequiredPedGroup;
+        }
+        DispatchablePerson OfficerType = ToSpawn.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
+        GameFiber.Yield();
+        if(OfficerType == null)
+        {
+            return;
+        }
+        if (Roadblock != null)
+        {
+            Roadblock.Dispose();
+            GameFiber.Yield();
+        }
+        Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, RoadblockFinalPosition, RoadblockFinalHeading, Settings, Weapons, Names, force, ModItems, enableCarBlocks,enableSpikeStrips,enableOtherBarriers);
+        Roadblock.SpawnRoadblock();
+        GameFiber.Yield();
+        GameTimeLastSpawnedRoadblock = Game.GameTime;    
     }
     private void GetRoadblockLocation(bool force, float forceDistance)
     {

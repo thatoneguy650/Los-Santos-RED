@@ -136,6 +136,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             EntryPoint.WriteToConsole($"No Dispatchable Vehicles config found, creating default", 0);
             SetupDefaults();
             DefaultConfig_Simple();
+            DefaultConfig_SunshineDream();
             DefaultConfig_FullExpandedJurisdiction();
             DefaultConfig();
         }
@@ -1496,6 +1497,62 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles)
         };
         Serialization.SerializeParams(SimpleVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\DispatchableVehicles_Simple.xml");
+        Serialization.SerializeParams(SimpleVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\DispatchableVehicles_SunshineDream.xml");
+        //SunshineDream
+    }
+
+
+    private void DefaultConfig_SunshineDream()
+    {
+
+        List<DispatchableVehicle> ArmeniaVehicles_Old = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("fugitive", 50, 50) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("washington", 50, 50) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            //new DispatchableVehicle("pmp600", 50, 50) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+        };
+        List<DispatchableVehicle> VCPDVehicles = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("police", 48,35) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("police2", 48, 35),
+            new DispatchableVehicle("police4", 1,1) { RequiredPedGroup = "Detectives", GroupName = "Unmarked" },
+            new DispatchableVehicle("fbi2", 1,1),
+            new DispatchableVehicle("policet", 0, 15) { MinOccupants = 3, MaxOccupants = 4, MinWantedLevelSpawn = 3,CaninePossibleSeats = new List<int>{ 1,2 } }};
+
+        List<DispatchableVehicle> VCPDHeliVehicles = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("buzzard2", 1,150) { MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 },
+        };
+
+        List<DispatchableVehicleGroup> SunshineDreamVehicleLoopupGroup = new List<DispatchableVehicleGroup>
+        {
+            //Police
+            new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles),
+            new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles),
+            new DispatchableVehicleGroup("FIBVehicles", FIBVehicles),
+            new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles),
+            new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles),
+            new DispatchableVehicleGroup("VCPDVehicles", VCPDVehicles),
+            new DispatchableVehicleGroup("VCPDHeliVehicles", VCPDHeliVehicles),
+            new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles),
+            new DispatchableVehicleGroup("USMCVehicles", USMCVehicles),
+            new DispatchableVehicleGroup("USAFVehicles", USAFVehicles),
+            new DispatchableVehicleGroup("Firetrucks", Firetrucks),
+            new DispatchableVehicleGroup("Amublance1", Amublance1),
+            new DispatchableVehicleGroup("Amublance2", Amublance2),
+            new DispatchableVehicleGroup("Amublance3", Amublance3),
+            new DispatchableVehicleGroup("NYSPVehicles", NYSPVehicles),
+            new DispatchableVehicleGroup("MerryweatherPatrolVehicles", MerryweatherPatrolVehicles),
+            new DispatchableVehicleGroup("BobcatSecurityVehicles", BobcatSecurityVehicles),
+            new DispatchableVehicleGroup("GroupSechsVehicles", GroupSechsVehicles),
+            new DispatchableVehicleGroup("SecuroservVehicles", SecuroservVehicles),
+            new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles),
+            new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
+
+            //Gang
+            new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles_Old),
+
+            //Other
+            new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles)
+        };
+        Serialization.SerializeParams(SunshineDreamVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\DispatchableVehicles_SunshineDream.xml");
     }
     private void DefaultConfig_LosSantos_2008()
     {

@@ -76,6 +76,7 @@ public class Agencies : IAgencies
             DefaultConfig_FullExpanded();
             DefaultConfig_LosSantos2008();
             DefaultConfig_LibertyCity();
+            DefaultConfig_SunshineDream();
             DefaultConfig();
         }
     }
@@ -125,7 +126,6 @@ public class Agencies : IAgencies
     {
         return AgenciesList.Where(x => x.ResponseType == responseType).ToList();
     }
-
     private void SetupDefault()
     {
         LSPD = new Agency("~b~", "LSPD", "LSPD", "Los Santos Police Department", "Blue", Classification.Police, "StandardCops", "LSPDVehicles", "LS ", "Tasers", "AllSidearms", "AllLongGuns", "LSPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1 ,OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
@@ -184,7 +184,6 @@ public class Agencies : IAgencies
         
         UNK = new Agency("~s~", "UNK", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "", null, null, null, "Officer") { MaxWantedLevelSpawn = 0 };
     }
-
     private void DefaultConfig()
     {
         DefaultAgency = new Agency("~b~", "LSPD", "LSPD", "Los Santos Police Department", "Blue", Classification.Police, "StandardCops", "LSPDVehicles", "LS ", "Tasers", "AllSidearms", "AllLongGuns", "LSPD Officer");
@@ -378,6 +377,21 @@ public class Agencies : IAgencies
         };
         Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Agencies_LibertyCity.xml");
     }
+    private void DefaultConfig_SunshineDream()
+    {
+        List<Agency> SimpleAgenicesList = new List<Agency>
+        {
+            new Agency("~b~", "VCPD","VCPD", "Vice City Police Department", "Blue", Classification.Police, "VCPDPeds", "VCPDVehicles", "ASP ","Tasers","AllSidearms","AllLongGuns", "VCPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1,OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" },
+            new Agency("~b~", "VCPD-ASD","VCPD-ASD", "Vice City Police Department - Air Support Division", "Blue", Classification.Police, "VCPDHeliPeds", "VCPDHeliVehicles", "ASD ","Tasers","HeliSidearms","HeliLongGuns", "VCPD Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6  },
+            NYSP,
+            NOOSE,FIB,DOA,ARMY,USMC,USAF,USMS,
+            new Agency("~r~", "FDVC","FDVC", "Vice City Fire Department", "Red", Classification.Fire, "Firefighters", "Firetrucks", "FD ","FireExtinguisher",null, null, "FDLC Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~w~", "VCMC","VCMC", "Vice City Medical Center", "White", Classification.EMS, "BlueEMTs", "Amublance1", "MC ",null,null, null, "LCMC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            GRPSECHS,SECURO,MERRY,BOBCAT,
+            UNK,
+        };
+        Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\Agencies_SunshineDream.xml");
+    }
     private void DefaultConfig_Simple()
     {
         Agency LSMC_Simple = LSMC.Copy();
@@ -417,7 +431,6 @@ public class Agencies : IAgencies
         };
         Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\Agencies_Simple.xml");
     }
-
     public void Setup(IHeads heads, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople, IIssuableWeapons issuableWeapons)
     {
         foreach(Agency agency in AgenciesList)

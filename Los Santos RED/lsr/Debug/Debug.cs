@@ -520,7 +520,7 @@ public class Debug
     private void DebugNumpad4()
     {
 
-
+        Player.GroupManager.SetInvincible();
 
 
         //if (PumpHandleProp.Exists())

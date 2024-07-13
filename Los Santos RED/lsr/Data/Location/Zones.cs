@@ -33,8 +33,12 @@ public class Zones : IZones
             EntryPoint.WriteToConsole($"No Zones config found, creating default", 0);
             DefaultConfig();
             DefaultConfig_LibertyCity();
+            DefaultConfig_SunshineDream();
         }
     }
+
+
+
     public Zone GetZone(Vector3 ZonePosition)
     {
         Zone ListResult = null;
@@ -337,6 +341,51 @@ public class Zones : IZones
             };
         Serialization.SerializeParams(LibertyCityZones, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Zones_LibertyCity.xml");
     }
+
+    private void DefaultConfig_SunshineDream()
+    {
+        List<Zone> MiamiDriver3Zones = new List<Zone>
+        {
+            new Zone("MFLATO", "Atlantic Ocean", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLBSB", "Biscayne Bay", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLMIA", "Vice", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLMIB", "Vice Beach", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLSPB", "South Point Beach", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLADD", "Art Deco District", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLBKL", "Brickell", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLCCG", "Coconut Grove", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLCRW", "Douglas", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLCRG", "Coral Gables", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLMB", "Mid Beach", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLCC", "City Center", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLFMG", "Flamingo", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLBSH", "Bayshore", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLSB", "South Beach", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLBI", "Belle Isle", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLSI", "Star Island", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLWI", "Watson Island", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLDI", "Port of Vice", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFSMRI", "San Marco Island", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLDLI", "Di-Lido Island", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLSMI", "San Marino Island", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLFSI", "Fisher Island", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLFMP", "Flamingo Park", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLSPP", "South Point Park", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFDMIA", "Downtown Vice", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFOMNI", "Omni", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLPKW", "Park West", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFOTWN", "Overtown", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLUMP", "Riverside", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLSPG", "Spring Garden", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLHVA", "Little Havana", StaticStrings.CityOfViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("MFLFMI", "Flagler Memorial Island", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            //Other
+            new Zone("OCEANA", "Atlantic Ocean", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Middle, eLocationType.Rural),
+            new Zone("SANAND", "Outskirts", StaticStrings.ViceCountyID, StaticStrings.LeonidaStateID, false, eLocationEconomy.Middle, eLocationType.Rural),
+            };
+        Serialization.SerializeParams(MiamiDriver3Zones, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\Zones_SunshineDream.xml");
+    }
+
     //private bool IsPointInPolygon(Vector2 point, Vector2[] polygon)
     //{
     //    int polygonLength = polygon.Length, i = 0;

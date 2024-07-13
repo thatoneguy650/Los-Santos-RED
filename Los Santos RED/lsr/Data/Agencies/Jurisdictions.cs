@@ -43,6 +43,7 @@ public class Jurisdictions : IJurisdictions
             DefaultZoneConfig_FullExpandedJurisdiction();
             DefaultZoneConfig_LosSantos2008();
             DefaultZoneConfig_LibertyCity();
+            DefaultZoneConfig_SunshineDream();
             DefaultZoneConfig_Simple();
             DefaultZoneConfig();
         }
@@ -65,6 +66,7 @@ public class Jurisdictions : IJurisdictions
             DefaultCountyConfig_FullExpandedJurisdiction();
             DefaultCountyConfig_LosSantos2008();
             DefaultCountyConfig_LibertyCity();
+            DefaultCountyConfig_SunshineDream();
             DefaultCountyConfig_Simple();
             DefaultCountyConfig();
         }
@@ -1040,6 +1042,69 @@ public class Jurisdictions : IJurisdictions
         };
         Serialization.SerializeParams(CountyJurisdictionList2008, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\CountyJurisdictions_LibertyCity.xml");
     }
+
+
+    private void DefaultZoneConfig_SunshineDream()
+    {
+        List<ZoneJurisdiction> ZoneJurisdictionsListSunshineDream = new List<ZoneJurisdiction>()
+        {
+            new ZoneJurisdiction("VCPD","MFLATO", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLBSB", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLMIA", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLMIB", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLSPB", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLADD", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLBKL", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLCCG", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLCRW", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLCRG", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLMB", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLCC", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLFMG", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLBSH", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLSB", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLBI", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLSI", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLWI", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLDI", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFSMRI", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLDLI", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLSMI", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLFSI", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLFMP", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLSPP", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFDMIA", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFOMNI", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLPKW", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFOTWN", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLUMP", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLSPG", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLHVA", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","MFLFMI", 0, 100, 100),
+            //Other
+            new ZoneJurisdiction("VCPD","OCEANA", 0, 100, 100),
+            new ZoneJurisdiction("VCPD","SANAND", 0, 100, 100),
+        };
+        Serialization.SerializeParams(ZoneJurisdictionsListSunshineDream, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\ZoneJurisdictions_SunshineDream.xml");
+    }
+    private void DefaultCountyConfig_SunshineDream()
+    {
+        List<CountyJurisdiction> CountyJurisdictionListSunshineDream = new List<CountyJurisdiction>()
+        {
+            new CountyJurisdiction("VCPD-ASD",StaticStrings.CityOfViceCountyID, 0, 100, 100),
+            new CountyJurisdiction("VCPD-ASD",StaticStrings.ViceCountyID, 0, 100, 100),
+
+
+            new CountyJurisdiction("FDVC",StaticStrings.CityOfViceCountyID, 0, 100, 100),
+            new CountyJurisdiction("FDVC",StaticStrings.ViceCountyID, 0, 100, 100),
+
+            new CountyJurisdiction("VCMC",StaticStrings.CityOfViceCountyID, 0, 100, 100),
+            new CountyJurisdiction("VCMC",StaticStrings.ViceCountyID, 0, 100, 100),
+
+        };
+        Serialization.SerializeParams(CountyJurisdictionListSunshineDream, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\CountyJurisdictions_SunshineDream.xml");
+    }
+
     private void DefaultZoneConfig_Simple()
     {
         List<ZoneJurisdiction> ZoneJurisdictionsListSimple = new List<ZoneJurisdiction>()

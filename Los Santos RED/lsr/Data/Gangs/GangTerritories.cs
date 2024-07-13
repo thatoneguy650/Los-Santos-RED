@@ -39,7 +39,7 @@ public class GangTerritories : IGangTerritories
             DefaultConfig_LosSantos2008();
             DefaultConfig_Simple();
             DefaultConfig_LibertyCity();
-            
+            DefaultConfig_SunshineDream();
         }
     }
     public Gang GetMainGang(string ZoneName)
@@ -316,6 +316,17 @@ public class GangTerritories : IGangTerritories
         };
         Serialization.SerializeParams(LibertyZOneJurisdictionsList, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\GangTerritories_LibertyCity.xml");
     }
+
+    private void DefaultConfig_SunshineDream()
+    {
+        List<ZoneJurisdiction> LibertyZOneJurisdictionsList = new List<ZoneJurisdiction>()
+        {
+            new ZoneJurisdiction("AMBIENT_GANG_ARMENIAN","MFLSB", 0, 100, 100),//the triangle
+        };
+        Serialization.SerializeParams(LibertyZOneJurisdictionsList, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\GangTerritories_SunshineDream.xml");
+    }
+
+
     private void DefaultConfig_LosSantos2008()
     {
         List<ZoneJurisdiction> OldZoneJurisdictionsList = new List<ZoneJurisdiction>()

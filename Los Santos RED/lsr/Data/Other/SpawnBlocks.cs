@@ -35,6 +35,7 @@ public class SpawnBlocks : ISpawnBlocks
         {
             EntryPoint.WriteToConsole($"No Spawn Blocks config found, creating default", 0);
             DefaultConfig_LibertyCity();
+            DefaultConfig_SunshineDream();
             DefaultConfig();
         }
     }
@@ -42,6 +43,11 @@ public class SpawnBlocks : ISpawnBlocks
     {
         PossibleSpawnBlocks spawnBlocksLC = new PossibleSpawnBlocks();
         Serialization.SerializeParam(spawnBlocksLC, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\SpawnBlocks_LibertyCity.xml");
+    }
+    private void DefaultConfig_SunshineDream()
+    {
+        PossibleSpawnBlocks spawnBlocksLC = new PossibleSpawnBlocks();
+        Serialization.SerializeParam(spawnBlocksLC, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\SpawnBlocks_SunshineDream.xml");
     }
     public void DefaultConfig()
     {

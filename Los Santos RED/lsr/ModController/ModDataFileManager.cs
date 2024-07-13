@@ -228,6 +228,7 @@ public class ModDataFileManager
         SetupFullExpandedJurisdiction();
         SetupLosSantos2008();
         SetupLibertyCity();
+        SetupSunshineDream();
         SetupSimple();
         SetupFullModernTraffic();
         SetupFullExpandedExperience();
@@ -380,8 +381,14 @@ public class ModDataFileManager
     private void SetupLibertyCity()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity");
-        string Description = "For use with Liberty City (centered). Not complete. Credit to box for the locations. The Full Expanded Jurisdiction config has some LCPD liveries if you need some vehicles.";
+        string Description = "For use with Liberty City (centered). Not complete. Credit to box for the locations.";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\readme.txt", Description);
+    }
+    private void SetupSunshineDream()
+    {
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream");
+        string Description = "For use with Sunshine Dream (Miami) https://www.gta5-mods.com/maps/sunshine-dream. Not complete.";
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\readme.txt", Description);
     }
     private void SetupSimple()
     {

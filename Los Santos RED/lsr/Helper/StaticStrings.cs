@@ -16,11 +16,12 @@ public static class StaticStrings
     //Zones and Locations
     public static readonly string LosSantosCountyID = "LosSantosCounty";
     public static readonly string CityOfLosSantosCountyID = "CityOfLosSantos";
+    public static readonly string CityOfViceCountyID = "CityOfVice";
     public static readonly string BlaineCountyID = "BlaineCounty";
     public static readonly string MajesticCountyID = "MajesticCounty";
     public static readonly string VenturaCountyID = "VenturaCounty";
     public static readonly string ViceCountyID = "Vice";
-    public static readonly string CrookCountyID = "Vice";
+    public static readonly string CrookCountyID = "Crook";
     public static readonly string SanAndreasStateID = "SanAndreas";
     public static readonly string NorthYanktonCountyID = "NorthYankton";
     public static readonly string NorthYanktonStateID = "NorthYankton";
@@ -30,7 +31,7 @@ public static class StaticStrings
     public static readonly string LibertyCityCountyID = "LibertyCity";
     public static readonly string LibertyStateID = "Liberty";
     public static readonly string ColombiaStateID = "Colombia";
-    public static readonly string FloridaStateID = "Florida";
+    public static readonly string LeonidaStateID = "Leonida";
 
     //Contacts
     public static readonly string OfficerFriendlyContactName = "Officer Friendly";//these have gotta go, but where?

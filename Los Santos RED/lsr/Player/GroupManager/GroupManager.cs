@@ -23,7 +23,7 @@ public class GroupManager
 
     public float GroupFollowDistance { get; set; } = 3.0f;
 
-    public bool SetForceTasking { get; set; } = false;
+    public bool SetForceTasking { get; set; } = true;
     public bool SetFollowIfPossible { get; set; } = false;
     public bool SetCombatIfPossible { get; set; } = false;
     public bool RideInPlayerVehicleIfPossible { get; set; } = true;
@@ -137,6 +137,18 @@ public class GroupManager
     {
         SetForceTasking = !SetForceTasking;
         UpdateAllTasking();
+    }
+
+    public void SetInvincible()
+    {
+        foreach (GroupMember groupMember in CurrentGroupMembers)
+        {
+            if(groupMember.PedExt != null && groupMember.PedExt.Pedestrian.Exists())
+            {
+                groupMember.PedExt.Pedestrian.IsInvincible = true;
+            }
+        }
+        Game.DisplaySubtitle("SET GROUP INVINCIBLE");
     }
 }
 

@@ -113,7 +113,7 @@ public class GeneralFollow : ComplexTask
                 {
                     if (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsInAnyVehicle(false) && SeatAssigner.HasPedsWaitingToEnter(World.Vehicles.GetVehicleExt(Ped.Pedestrian.CurrentVehicle), Ped.Pedestrian.SeatIndex))
                     {
-                        CurrentTaskState = new WaitInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false);
+                        CurrentTaskState = new WaitInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, Player.GroupManager.SetForceTasking);
                     }
                     else
                     {
@@ -131,7 +131,7 @@ public class GeneralFollow : ComplexTask
             bool isAssignmentValid = SeatAssigner.IsAssignmentValid(false);
             if(ShouldGetInVehicle && isAssignmentValid)
             {
-                CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false) { IsGang = true,DefaultEnterSpeed = 2.0f };
+                CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, Player.GroupManager.SetForceTasking) { IsGang = true,DefaultEnterSpeed = 2.0f };
             }
             else
             {
@@ -151,16 +151,16 @@ public class GeneralFollow : ComplexTask
             SetCombat = true;
             SetFollow = false;
         }
-        else if (Player.RecentlyShot || Player.Character.IsInCombat || PedGeneral.IsWanted || Player.IsWanted || PedGeneral.Pedestrian.IsInCombat)
+        else if (Player.RecentlyShot || Player.Character.IsInCombat || PedGeneral.Pedestrian.IsInCombat)
         {
             SetCombat = true;
             SetFollow = false;
         }
-        else
-        {
-            SetCombat = false;
-            SetFollow = true;
-        }
+        //else
+        //{
+        //    SetCombat = false;
+        //    SetFollow = true;
+        //}
 
 
 

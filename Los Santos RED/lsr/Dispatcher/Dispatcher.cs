@@ -234,9 +234,9 @@ public class Dispatcher
     {
         LEDispatcher.Dispose();
     }
-    public void DebugSpawnRoadblock(float distance)
+    public void DebugSpawnRoadblock(bool enableCars, bool enableSpike, bool enableProps, float distance)
     {
-        LEDispatcher.SpawnRoadblock(true, distance);
+        LEDispatcher.SpawnRoadblock(true, enableCars, enableSpike, enableProps, distance);
     }
     public void DebugRemoveRoadblock()
     {

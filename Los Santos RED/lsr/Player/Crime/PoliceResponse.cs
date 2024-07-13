@@ -404,7 +404,11 @@ namespace LosSantosRED.lsr
             int updated = 0;
             foreach (Cop cop in World.Pedestrians.AllPoliceList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
             {
-                if (!cop.IsInVehicle && cop.DistanceToPlayer >= 150f)
+                if(cop.IsRoadblockSpawned)
+                {
+                    cop.IsRespondingToWanted = true;
+                }
+                else if (!cop.IsInVehicle && cop.DistanceToPlayer >= 150f)
                 {
                     cop.IsRespondingToWanted = false;
                 }
