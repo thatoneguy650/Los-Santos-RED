@@ -178,7 +178,7 @@ public class BookingActivity
         {
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
             Cop.WeaponInventory.RemoveHeavyWeapon();
-            Cop.WeaponInventory.UpdateLoadout(PoliceRespondable, false, Settings.SettingsManager.PoliceSettings.OverrideAccuracy);
+            Cop.WeaponInventory.UpdateLoadout(PoliceRespondable, World, false, Settings.SettingsManager.PoliceSettings.OverrideAccuracy);
             endLoop = false;
             while (Cop.Pedestrian.Exists() && !endLoop)
             {

@@ -75,7 +75,7 @@ class RideInVehicleTaskState : TaskState
     {
         if (GeneralFollow.SetCombat)
         {
-            if (!isSetCombat || isSetForce != Player.GroupManager.SetForceTasking)
+            if (!isSetCombat || isSetForce != Player.GroupManager.BlockPermanentEvents)
             {
                // PedGeneral.Pedestrian.BlockPermanentEvents = false;// Player.GroupManager.ForceTasking;
                 NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(PedGeneral.Pedestrian, 100f, 0);//TR
@@ -85,12 +85,12 @@ class RideInVehicleTaskState : TaskState
 
                 isSetCombat = true;
                 isSetFollow = false;
-                isSetForce = Player.GroupManager.SetForceTasking;
+                isSetForce = Player.GroupManager.BlockPermanentEvents;
             }
         }
         else
         {
-            if (!isSetFollow || isSetForce != Player.GroupManager.SetForceTasking)
+            if (!isSetFollow || isSetForce != Player.GroupManager.BlockPermanentEvents)
             {
                 //PedGeneral.Pedestrian.BlockPermanentEvents = Player.GroupManager.SetForceFollow;
                
@@ -101,7 +101,7 @@ class RideInVehicleTaskState : TaskState
                 EntryPoint.WriteToConsole("GENERAL FOLLOW RideInVehicleTaskState PAUSE SET");
 
 
-                isSetForce = Player.GroupManager.SetForceTasking;
+                isSetForce = Player.GroupManager.BlockPermanentEvents;
                 isSetFollow = true;
                 isSetCombat = false;
             }

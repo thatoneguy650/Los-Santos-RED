@@ -40,6 +40,12 @@ public class SettingsManager
     [Category("Player")]
     [Description("Needs Settings")]
     public NeedsSettings NeedsSettings { get; set; } = new NeedsSettings();
+
+
+    [Category("Player")]
+    [Description("Group Settings")]
+    public GroupSettings GroupSettings { get; set; } = new GroupSettings();
+
     [Category("Player")]
     [Description("Investigation Settings")]
     public InvestigationSettings InvestigationSettings { get; set; } = new InvestigationSettings();
@@ -240,7 +246,7 @@ public class SettingsManager
             RespawnSettings, VehicleSettings, PedSwapSettings, ActivitySettings, SprintSettings, ViolationSettings, RecoilSettings, SwaySettings, SelectorSettings, InvestigationSettings, CriminalHistorySettings, ScannerSettings, KeySettings, PlayerOtherSettings, CellphoneSettings,
             PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherSettings, VanillaSettings,DebugSettings,PerformanceSettings,TaxiSettings,
             UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings, NeedsSettings, RoadblockSettings, PoliceSpawnSettings,PoliceTaskSettings,PoliceSpeechSettings,PlayerSpeechSettings,FlashlightSettings, SecuritySettings,DragSettings,BinocularSettings
-            ,DoorToggleSettings,ShovelSettings,PedLoadingSettings,RadarDetectorSettings
+            ,DoorToggleSettings,ShovelSettings,PedLoadingSettings,RadarDetectorSettings, GroupSettings
         };
     }
     public void SetDefault()

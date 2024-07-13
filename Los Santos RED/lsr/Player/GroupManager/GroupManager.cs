@@ -23,13 +23,31 @@ public class GroupManager
 
     public float GroupFollowDistance { get; set; } = 3.0f;
 
-    public bool SetForceTasking { get; set; } = true;
-    public bool SetFollowIfPossible { get; set; } = false;
-    public bool SetCombatIfPossible { get; set; } = false;
+    public bool BlockPermanentEvents { get; set; } = true;
+
+
+
+
+    public bool IsSetFollow { get; set; } = false;
+    public bool IsSetCombat { get; set; } = false;
+
+
+
+
+
     public bool RideInPlayerVehicleIfPossible { get; set; } = true;
+
+
+
+
+
     public bool AlwaysArmed { get; set; } = false;
     public bool NeverArmed { get; set; } = false;
     public bool AutoArmed { get; set; } = true;
+
+
+
+
     public GroupManager(IGroupManageable player, ITargetable targetable, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, IWeapons weapons)
     {
         Player = player;
@@ -129,14 +147,15 @@ public class GroupManager
     {
         foreach (GroupMember groupMember in CurrentGroupMembers)
         {
-            groupMember.UpdateTasking(SetForceTasking);
+            groupMember.UpdateTasking(BlockPermanentEvents);
         }
     }
 
     public void ToggleForceTasking()
     {
-        SetForceTasking = !SetForceTasking;
+        BlockPermanentEvents = !BlockPermanentEvents;
         UpdateAllTasking();
+        Game.DisplaySubtitle($"Force Tasking {(BlockPermanentEvents ? "Enabled" : "Disabled")}");
     }
 
     public void SetInvincible()
@@ -149,6 +168,69 @@ public class GroupManager
             }
         }
         Game.DisplaySubtitle("SET GROUP INVINCIBLE");
+    }
+
+    public void OnSetAutoTasking()
+    {
+        IsSetFollow = false;
+        IsSetCombat = false;
+        UpdateAllTasking();
+        Game.DisplaySubtitle($"Set Auto Tasking");
+    }
+
+    public void OnSetCombatTasking()
+    {
+        IsSetCombat = true;
+        IsSetFollow = false;
+        UpdateAllTasking();
+        Game.DisplaySubtitle($"Set Combat Tasking");
+    }
+
+    public void OnSetNonCombatTasking()
+    {
+        IsSetFollow = true;
+        IsSetCombat = false;
+        UpdateAllTasking();
+        Game.DisplaySubtitle($"Set Non Combat Tasking");
+    }
+    public void OnToggleUsePlayerCar()
+    {
+        RideInPlayerVehicleIfPossible = !RideInPlayerVehicleIfPossible;
+        UpdateAllTasking();
+        Game.DisplaySubtitle($"RideInPlayerVehicleIfPossible {(RideInPlayerVehicleIfPossible ? "Enabled" : "Disabled")}");
+    }
+    public void OnSetAutoArmed()
+    {
+        AlwaysArmed = false;
+        NeverArmed = false;
+        UpdateAllTasking();
+        Game.DisplaySubtitle($"Auto Armed Enabled");
+    }
+    public void OnSetAlwaysArmed()
+    {
+        AlwaysArmed = true;
+        NeverArmed = false;
+        UpdateAllTasking();
+        Game.DisplaySubtitle($"Always Armed Enabled");
+    }
+    public void OnSetNeverArmed()
+    {
+        NeverArmed = true;
+        AlwaysArmed = false;
+        UpdateAllTasking();
+        Game.DisplaySubtitle($"Never Armed Enabled");
+    }
+
+    public void ToggleMode()
+    {
+        if(IsSetCombat)
+        {
+            OnSetNonCombatTasking();
+        }
+        else
+        {
+            OnSetCombatTasking();
+        }
     }
 }
 

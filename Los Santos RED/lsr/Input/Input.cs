@@ -46,6 +46,7 @@ namespace LosSantosRED.lsr
         private bool IsPressingActionWheelMenu;
         private uint GameTimeLastPressedStartTransaction;
         private uint GameTimeLastPressedYell;
+        private uint GameTimeLastPressedGroupModeToggle;
 
         private bool IsPressingSurrender => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKeyModifier, true);
         private bool IsPressingSprint => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SprintKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SprintKeyModifier, true);
@@ -63,6 +64,7 @@ namespace LosSantosRED.lsr
 
         private bool IsPressingYell => IsKeyDownSafe(Settings.SettingsManager.KeySettings.YellKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.YellKeyModifier, true);
 
+        private bool IsPressingGroupModeToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.GroupModeToggleKey, false) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.GroupModeToggleKeyModifier, true);
 
         private bool ReleasedFireWeapon => NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.Attack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.Attack2) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehicleAttack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehicleAttack2) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehiclePassengerAttack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehiclePassengerAttack);
         private bool IsPressingFireWeapon => Game.IsControlPressed(0, GameControl.Attack) || Game.IsControlPressed(0, GameControl.Attack2) || Game.IsControlPressed(0, GameControl.VehicleAttack) || Game.IsControlPressed(0, GameControl.VehicleAttack2) || Game.IsControlPressed(0, GameControl.VehiclePassengerAttack) || Game.IsControlPressed(0, GameControl.VehiclePassengerAttack);
@@ -77,6 +79,7 @@ namespace LosSantosRED.lsr
         private bool RecentlyPressedAltMenu => Game.GameTime - GameTimeLastPressedAltMenu <= 200;
         private bool RecentlyPressedSimplePhone => Game.GameTime - GameTimeLastPressedSimplePhone <= 500;
         private bool RecentlyPressedYell => Game.GameTime - GameTimeLastPressedYell <= 500;
+        private bool RecentlyPressedGroupModeToggle => Game.GameTime - GameTimeLastPressedGroupModeToggle <= 750;
         public Input(IInputable player, ISettingsProvideable settings, IMenuProvideable menuProvider, IPedSwap pedswap)
         {
             Player = player;
@@ -236,6 +239,15 @@ namespace LosSantosRED.lsr
                 Player.IntimidationManager.YellGetDown();
                 GameTimeLastPressedYell = Game.GameTime;
             }
+
+
+            if (!RecentlyPressedGroupModeToggle && (IsPressingGroupModeToggle || Player.ButtonPrompts.IsPressed("ToggleGroupMode")))
+            {
+                EntryPoint.WriteToConsole("INPUT TOGGLE GROUP MODE RAN");
+                Player.GroupManager.ToggleMode();
+                GameTimeLastPressedGroupModeToggle = Game.GameTime;
+            }
+
         }
         private void ProcessBurnerControls()
         {

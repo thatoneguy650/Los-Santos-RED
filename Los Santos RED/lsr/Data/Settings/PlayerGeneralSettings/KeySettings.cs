@@ -64,6 +64,11 @@ public class KeySettings : ISettingsDefaultable
     public Keys YellKey { get; set; }
     public Keys YellKeyModifier { get; set; }
 
+
+
+    public Keys GroupModeToggleKey { get; set; }
+    public Keys GroupModeToggleKeyModifier { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -101,6 +106,8 @@ public class KeySettings : ISettingsDefaultable
         CrouchKey = Keys.LControlKey;
         CrouchKeyModifier = Keys.None;
 
+        GroupModeToggleKey = Keys.N;
+        GroupModeToggleKeyModifier = Keys.LShiftKey;
 
         YellKey = Keys.L;
         YellKeyModifier = Keys.None;

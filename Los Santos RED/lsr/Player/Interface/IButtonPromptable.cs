@@ -64,6 +64,7 @@ namespace LosSantosRED.lsr.Interface
         ButtonPrompts ButtonPrompts { get; }
         bool IsAiming { get; }
         bool IsOnFoot { get; }
+        GroupManager GroupManager { get; }
 
         void ShowVehicleInteractMenu(bool showDefault);
         // bool IsSitting { get; }

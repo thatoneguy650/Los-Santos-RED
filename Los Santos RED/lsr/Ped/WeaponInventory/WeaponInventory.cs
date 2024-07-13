@@ -142,7 +142,7 @@ public class WeaponInventory
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 3, true);//can leave vehicle
 
     }
-    public void UpdateLoadout(IPoliceRespondable policeRespondablePlayer, bool isNightTime, bool overrideAccuracy)
+    public void UpdateLoadout(IPoliceRespondable policeRespondablePlayer, IEntityProvideable world, bool isNightTime, bool overrideAccuracy)
     {
         Player = policeRespondablePlayer;
         if(!WeaponOwner.Pedestrian.Exists() || Player == null)
@@ -163,7 +163,7 @@ public class WeaponInventory
         {
             if (WeaponOwner.CurrentTask?.Name == "AIApprehend")
             {
-                AutoSetWeapons_AI();
+                AutoSetWeapons_AI(world);
             }
             else
             {
@@ -197,7 +197,7 @@ public class WeaponInventory
             }
         }   
     }
-    private void AutoSetWeapons_AI()
+    private void AutoSetWeapons_AI(IEntityProvideable world)
     {
         HasHeavyWeaponOnPerson = true;
         if (WeaponOwner.CurrentTask.OtherTarget != null && WeaponOwner.CurrentTask.OtherTarget.IsDeadlyChase)
@@ -206,7 +206,11 @@ public class WeaponInventory
         }
         else
         {
-            if (WeaponOwner.IsInVehicle)
+            if(world.TotalWantedLevel >= 2)
+            {
+                SetDeadly(true);
+            }
+            else if (WeaponOwner.IsInVehicle)
             {
                 SetUnarmed();
             }

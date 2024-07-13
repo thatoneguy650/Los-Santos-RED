@@ -113,7 +113,7 @@ public class GeneralFollow : ComplexTask
                 {
                     if (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsInAnyVehicle(false) && SeatAssigner.HasPedsWaitingToEnter(World.Vehicles.GetVehicleExt(Ped.Pedestrian.CurrentVehicle), Ped.Pedestrian.SeatIndex))
                     {
-                        CurrentTaskState = new WaitInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, Player.GroupManager.SetForceTasking);
+                        CurrentTaskState = new WaitInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, Player.GroupManager.BlockPermanentEvents);
                     }
                     else
                     {
@@ -131,7 +131,7 @@ public class GeneralFollow : ComplexTask
             bool isAssignmentValid = SeatAssigner.IsAssignmentValid(false);
             if(ShouldGetInVehicle && isAssignmentValid)
             {
-                CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, Player.GroupManager.SetForceTasking) { IsGang = true,DefaultEnterSpeed = 2.0f };
+                CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, Player.GroupManager.BlockPermanentEvents) { IsGang = true,DefaultEnterSpeed = 2.0f };
             }
             else
             {
@@ -141,31 +141,21 @@ public class GeneralFollow : ComplexTask
     }
     private void UpdateParameters()
     {
-        if (Player.GroupManager.SetFollowIfPossible)//PedGeneral.AlwaysFollow)
+        if (Player.GroupManager.IsSetFollow)//PedGeneral.AlwaysFollow)
         {
             SetCombat = false;
             SetFollow = true;
         }
-        else if (Player.GroupManager.SetCombatIfPossible)//PedGeneral.AlwaysInCombat)
+        else if (Player.GroupManager.IsSetCombat)//PedGeneral.AlwaysInCombat)
         {
             SetCombat = true;
             SetFollow = false;
         }
-        else if (Player.RecentlyShot || Player.Character.IsInCombat || PedGeneral.Pedestrian.IsInCombat)
+        else if (Player.RecentlyShot || Player.Character.IsInCombat || PedGeneral.Pedestrian.IsInCombat || PedGeneral.PedViolations.WantedLevel > 0)
         {
             SetCombat = true;
             SetFollow = false;
         }
-        //else
-        //{
-        //    SetCombat = false;
-        //    SetFollow = true;
-        //}
-
-
-
-
-
 
         RunSpeed = 1.0f;
         if (SetCombat)

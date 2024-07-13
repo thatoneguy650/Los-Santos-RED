@@ -482,7 +482,14 @@ public class ButtonPrompts
         }
 
 
-
+        if (Settings.SettingsManager.GroupSettings.EnableGroupButtonPrompts && Player.GroupManager.CurrentGroupMembers.Any() && !Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.IsAliveAndFree)
+        {
+            AddPrompt("ToggleGroupMode", "Toggle Group Mode", "ToggleGroupMode", Settings.SettingsManager.KeySettings.GroupModeToggleKeyModifier, Settings.SettingsManager.KeySettings.GroupModeToggleKey, 999);
+        }
+        else
+        {
+            RemovePrompts("ToggleGroupMode");
+        }
 
     }
     private void SittingPrompts()

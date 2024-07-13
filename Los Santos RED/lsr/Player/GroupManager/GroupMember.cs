@@ -96,6 +96,24 @@ public class GroupMember
        // AddInternal(PedExt);
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(PedExt.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(PedExt.Pedestrian, (int)eCombatAttributes.BF_CanDoDrivebys, true);
+
+        if(Settings.SettingsManager.GroupSettings.EnableIncreasedGroupHealth)
+        {
+            PedExt.Pedestrian.MaxHealth = Settings.SettingsManager.GroupSettings.IncreasedHealthMax;
+            PedExt.Pedestrian.Health = RandomItems.GetRandomNumberInt(Settings.SettingsManager.GroupSettings.IncreasedHealthMin, Settings.SettingsManager.GroupSettings.IncreasedHealthMax);
+        }
+        if(Settings.SettingsManager.GroupSettings.EnableAutoArmor)
+        {
+            PedExt.Pedestrian.Armor = RandomItems.GetRandomNumberInt(Settings.SettingsManager.GroupSettings.AutoArmorMin, Settings.SettingsManager.GroupSettings.AutoArmorMax);
+        }
+        if(Settings.SettingsManager.GroupSettings.AlwaysSetSpecialist)
+        {
+            SetSpecialist();
+        }
+        //Set combat defensive
+        NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(PedExt.Pedestrian, 1);
+
+
         uint bestWeapon = NativeFunction.Natives.GET_BEST_PED_WEAPON<uint>(PedExt.Pedestrian, 0);
         WeaponInformation wi = Weapons.GetWeapon(bestWeapon);
         string weaponString = "Unarmed";
@@ -158,7 +176,7 @@ public class GroupMember
         PedExt.Pedestrian.Accuracy = 95;
         NativeFunction.Natives.SET_PED_SHOOT_RATE(PedExt.Pedestrian, 700);
         NativeFunction.Natives.SET_PED_COMBAT_ABILITY(PedExt.Pedestrian, 2);
-        NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(PedExt.Pedestrian, 1);
+        //NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(PedExt.Pedestrian, 1);
     }
     public void ResetStatus(bool clearTasks)
     {
