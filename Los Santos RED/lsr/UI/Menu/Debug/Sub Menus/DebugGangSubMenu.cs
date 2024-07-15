@@ -36,22 +36,22 @@ public class DebugGangSubMenu : DebugSubMenu
             Player.RelationshipManager.GangRelationships.ResetGang(true);
             menu.Visible = false;
         };
-        UIMenuListScrollerItem<Gang> SetGangRepDefault = new UIMenuListScrollerItem<Gang>("Set Gang Default", "Sets the selected gang to the default reputation", Gangs.GetAllGangs());
+        UIMenuListScrollerItem<Gang> SetGangRepDefault = new UIMenuListScrollerItem<Gang>("Set Gang Neutral", "Sets the selected gang to the neutral reputation", Gangs.GetAllGangs());
         SetGangRepDefault.Activated += (menu, item) =>
         {
-            Player.RelationshipManager.GangRelationships.SetReputation(SetGangRepDefault.SelectedItem, 200, false);
+            Player.RelationshipManager.GangRelationships.SetReputation(SetGangRepDefault.SelectedItem, SetGangRepDefault.SelectedItem.NeutralRepLevel, false);
             menu.Visible = false;
         };
         UIMenuListScrollerItem<Gang> SetGangRepFriendly = new UIMenuListScrollerItem<Gang>("Set Gang Friendly", "Sets the selected gang to a friendly reputation", Gangs.GetAllGangs());
         SetGangRepFriendly.Activated += (menu, item) =>
         {
-            Player.RelationshipManager.GangRelationships.SetReputation(SetGangRepFriendly.SelectedItem, 5000, false);
+            Player.RelationshipManager.GangRelationships.SetReputation(SetGangRepFriendly.SelectedItem, SetGangRepFriendly.SelectedItem.FriendlyRepLevel, false);
             menu.Visible = false;
         };
         UIMenuListScrollerItem<Gang> SetGangRepHostile = new UIMenuListScrollerItem<Gang>("Set Gang Hostile", "Sets the selected gang to a hostile reputation", Gangs.GetAllGangs());
         SetGangRepHostile.Activated += (menu, item) =>
         {
-            Player.RelationshipManager.GangRelationships.SetReputation(SetGangRepHostile.SelectedItem, -5000, false);
+            Player.RelationshipManager.GangRelationships.SetReputation(SetGangRepHostile.SelectedItem, SetGangRepHostile.SelectedItem.HostileRepLevel, false);
             menu.Visible = false;
         };
         UIMenuItem DefaultGangRep = new UIMenuItem("Set Gang Rep Default", "Sets the player reputation to each gang to the default value");
