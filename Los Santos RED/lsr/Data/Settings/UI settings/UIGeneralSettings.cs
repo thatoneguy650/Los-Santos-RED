@@ -56,7 +56,7 @@ public class UIGeneralSettings : ISettingsDefaultable
     public bool UseCustomInvestigationMarks { get; set; }
     public float CustomInvestigationMarksScale { get; set; }
     public float CustomInvestigationMarksSpacingPixelReduction { get; set; }
-
+    public float CustomGroupIconsSpacingPixelReduction { get; set; }
     public bool ShowVehicleInteractionPrompt { get; set; }
     public bool ShowVehicleInteractionPromptInVehicle { get; set; }
     [OnDeserialized()]

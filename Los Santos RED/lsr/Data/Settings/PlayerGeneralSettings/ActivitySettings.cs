@@ -137,7 +137,7 @@ public class ActivitySettings : ISettingsDefaultable
         DrinkStartsBase = false;
         DrinkSipsAllowed = 5;
         DisplayBodyArmor = false;
-        IntervalBasedConsumption = false;
+        IntervalBasedConsumption = true;
         IntervalHungerScalar = 4.0f;
         IntervalSleepScalar = 4.0f;
         IntervalThirstScalar = 4.0f;

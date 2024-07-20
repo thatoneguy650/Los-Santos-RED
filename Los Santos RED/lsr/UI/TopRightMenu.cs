@@ -33,12 +33,20 @@ public class TopRightMenu
     private Texture QuestionDarkOrange;
     private Texture QuestionRed;
 
+    private Texture StanceBlack;
+    private Texture WeaponsBlack;
+    private Texture GroupBlack;
+    private Texture WeaponsRed;
+    private Texture GroupGrey;
+
     private bool willShowCustomStars;
+    private bool willShowGroup;
     private float CustomStarsPosition;
     private uint lastGameTime;
     private bool isPaused;
     private uint GameTimeLastFlashedWantedStars;
     private bool isShowingGreyedWantedStars;
+    private float GroupPosition;
 
     public TopRightMenu(IDisplayable displayablePlayer, ITimeReportable time, ISettingsProvideable settings, UI uI)
     {
@@ -63,6 +71,12 @@ public class TopRightMenu
         QuestionOrange = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\questionmarkorange.png");
         QuestionDarkOrange = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\questionmarkdarkorange.png");
         QuestionRed = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\questionmarkred.png");
+
+        GroupBlack = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\hudicons\\group_black.png");
+        StanceBlack = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\hudicons\\stance_black.png");
+        WeaponsBlack = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\hudicons\\weapons_black.png");
+        WeaponsRed = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\hudicons\\weapons_red.png");
+        GroupGrey = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\hudicons\\group_grey.png");
         Game.RawFrameRender += DrawSprites;
     }
     public void Dispose()
@@ -105,12 +119,14 @@ public class TopRightMenu
         bool willShowNeeds = (UI.IsDrawingWheelMenu || DisplayablePlayer.HumanState.RecentlyChangedNeed || DisplayablePlayer.HealthManager.RecentlyDrainedHealth || DisplayablePlayer.HealthManager.RecentlyRegenedHealth || DisplayablePlayer.IsSleeping) && Settings.SettingsManager.NeedsSettings.ApplyNeeds;
         willShowCustomStars =  (DisplayablePlayer.IsAlive || UI.IsDrawingWheelMenu) 
             && ((DisplayablePlayer.IsWanted && Settings.SettingsManager.UIGeneralSettings.UseCustomWantedLevelStars) || (DisplayablePlayer.Investigation.IsActive && DisplayablePlayer.Investigation.RequiresPolice && Settings.SettingsManager.UIGeneralSettings.UseCustomInvestigationMarks));
+        willShowGroup = DisplayablePlayer.GroupManager.MemberCount > 0 && DisplayablePlayer.IsAliveAndFree;
 
         CustomStarsPosition = 0.0f;
         float WeaponPosition = 0.0f;
         float CashPosition = 0.0f;
         float CashChangePosition = 0.0f;
         float NeedsPosition = 0.0f;
+        GroupPosition = 0.0f;
         float StartingPosition = Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionX;
         if (IsVanillaStarsHUDVisible)
         {
@@ -153,6 +169,12 @@ public class TopRightMenu
             StartingPosition += Settings.SettingsManager.LSRHUDSettings.TopDisplaySpacing;//0.035f;
         }
 
+        if(willShowGroup)
+        {
+            GroupPosition = StartingPosition;
+            StartingPosition += Settings.SettingsManager.LSRHUDSettings.TopDisplaySpacing;//0.035f;
+        }
+
 
 
 
@@ -192,8 +214,6 @@ public class TopRightMenu
             }
             DisplayTextOnScreen(NeedsString, NeedsPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
         }
-
-
 
         if (DisplayablePlayer.IsInSearchMode && Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsFlashWhenSearching)
         {
@@ -379,21 +399,34 @@ public class TopRightMenu
 
     private void GetStuff(GraphicsEventArgs args)
     {
-        if(!willShowCustomStars || isPaused || !EntryPoint.ModController.IsRunning)
+        if(isPaused || !EntryPoint.ModController.IsRunning)
         {
             return;
         }
-        float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
-        float InitialPosX = Game.Resolution.Width * Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY;
-        float InitialPosY = Game.Resolution.Height * CustomStarsPosition;
-        if (DisplayablePlayer.IsWanted)
+        if (willShowCustomStars || willShowGroup)
         {
-            DisplayWantedLevel(args, InitialPosX, InitialPosY, ConsistencyScale * Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsScale);
+            float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
+            float InitialPosX = Game.Resolution.Width * Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY;
+            if(willShowCustomStars)
+            {
+                float InitialPosY = Game.Resolution.Height * CustomStarsPosition;
+                if (DisplayablePlayer.IsWanted)
+                {
+                    DisplayWantedLevel(args, InitialPosX, InitialPosY, ConsistencyScale * Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsScale);
+                }
+                else if (DisplayablePlayer.Investigation.IsActive)
+                {
+                    DisplayInvestigationMarks(args, InitialPosX, InitialPosY, ConsistencyScale * Settings.SettingsManager.UIGeneralSettings.CustomInvestigationMarksScale);
+                }
+            }
+            if (willShowGroup)
+            {
+                float InitialPosY = Game.Resolution.Height * GroupPosition;
+                DisplayGroupIcons(args, InitialPosX, InitialPosY, ConsistencyScale * Settings.SettingsManager.UIGeneralSettings.CustomInvestigationMarksScale);
+            }
         }
-        else if (DisplayablePlayer.Investigation.IsActive)
-        {
-            DisplayInvestigationMarks(args, InitialPosX, InitialPosY, ConsistencyScale * Settings.SettingsManager.UIGeneralSettings.CustomInvestigationMarksScale);
-        }
+
+
     }
     private void DisplayWantedLevel(GraphicsEventArgs args, float InitialPosX, float InitialPosY, float Scale)
     {
@@ -437,6 +470,29 @@ public class TopRightMenu
             RectangleF rectangleF = new RectangleF(FinalPosX, FinalPosY, toShow.Size.Width * Scale, toShow.Size.Height * Scale);
             args.Graphics.DrawTexture(toShow, rectangleF);
         }
+    }
+    private void DisplayGroupIcons(GraphicsEventArgs args, float InitialPosX, float InitialPosY, float Scale)
+    {
+        Texture toShow;
+        if (DisplayablePlayer.GroupManager.IsSetCombat)
+        {
+            toShow = WeaponsRed;
+        }
+        else if (DisplayablePlayer.GroupManager.IsSetFollow)
+        {
+            toShow = StanceBlack;
+        }
+        else
+        {
+            toShow = GroupGrey;
+        }
+        float FinalPosX = InitialPosX - ((toShow.Size.Width - Settings.SettingsManager.UIGeneralSettings.CustomGroupIconsSpacingPixelReduction) * Scale);//InitialPosX - (i * (toShow.Size.Width * Scale));
+        float FinalPosY = InitialPosY;
+        if (toShow != null && toShow.Size != null)
+        {
+            args.Graphics.DrawTexture(toShow, new RectangleF(FinalPosX, FinalPosY, toShow.Size.Width * Scale, toShow.Size.Height * Scale));
+        }
+        
     }
     private void DisplayInvestigationMarks(GraphicsEventArgs args, float InitialPosX, float InitialPosY, float Scale)
     {    

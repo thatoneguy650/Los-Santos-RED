@@ -3425,8 +3425,8 @@ public class ModItems : IModItems
 
             //Unused
             new WeaponItem("Gas Can","", true, ItemType.Weapons) { ModelName = "weapon_petrolcan",PoliceFindDuringPlayerSearchPercentage = 100},
-            new WeaponItem("Parachute","", true, ItemType.Weapons) { ModelName = "gadget_parachute",PoliceFindDuringPlayerSearchPercentage = 100},
-            new WeaponItem("Fire Extinguisher","", true, ItemType.Weapons) { ModelName = "weapon_fireextinguisher",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Parachute","", true, ItemType.Weapons) { ModelName = "gadget_parachute",PoliceFindDuringPlayerSearchPercentage = 0},
+            new WeaponItem("Fire Extinguisher","", true, ItemType.Weapons) { ModelName = "weapon_fireextinguisher",PoliceFindDuringPlayerSearchPercentage = 0},
             new WeaponItem("Hazardous Jerry Can","", true, ItemType.Weapons) { ModelName = "weapon_hazardcan",PoliceFindDuringPlayerSearchPercentage = 100},
             new WeaponItem("Fertilizer Can","", true, ItemType.Weapons) { ModelName = "weapon_fertilizercan",PoliceFindDuringPlayerSearchPercentage = 100},
 

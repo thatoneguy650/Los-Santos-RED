@@ -285,6 +285,7 @@ public class Transaction
             ,new VehicleColorLookup(138,"Orange","Standard","Orange",150) { RGBColor = System.Drawing.Color.FromArgb(246, 174, 32) }
             ,new VehicleColorLookup(139,"Green","Standard","Green",150) { RGBColor = System.Drawing.Color.FromArgb(176, 238, 110) }
             ,new VehicleColorLookup(140,"Blue","Standard","Blue",150) { RGBColor = System.Drawing.Color.FromArgb(8, 233, 250) }
+            ,new VehicleColorLookup(156,"DEFAULT ALLOY COLOR","Standard","DEFAULT ALLOY COLOR",150)
 
             ,new VehicleColorLookup(120,"Chrome","Chrome","Chrome",199) { RGBColor = System.Drawing.Color.FromArgb(88, 112, 161) }
 
@@ -297,7 +298,7 @@ public class Transaction
 
 
             //,new ColorLookup(127,"police car blue","Unknown","police car blue",205)
-            //,new ColorLookup(156,"DEFAULT ALLOY COLOR","Unknown","DEFAULT ALLOY COLOR",206)
+            //
             //,new ColorLookup(157,"Epsilon Blue","Unknown","Epsilon Blue",207)
             //,new ColorLookup(144,"hunter green","Unknown","hunter green",208)
             //,new ColorLookup(147,"MODSHOP BLACK1","Unknown","MODSHOP BLACK1",209)

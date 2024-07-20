@@ -17,6 +17,7 @@ public class GroupManager
     private IWeapons Weapons;
     private ITargetable Targetable;
     private bool IsSetCombatSpacing = false;
+    private int selectedMode = 0;
     public List<GroupMember> CurrentGroupMembers { get; private set; } = new List<GroupMember>();
     public int PlayerGroup { get; private set; }
     public int MemberCount => CurrentGroupMembers.Count();
@@ -183,7 +184,7 @@ public class GroupManager
         IsSetCombat = true;
         IsSetFollow = false;
         UpdateAllTasking();
-        Game.DisplaySubtitle($"Set Combat Tasking");
+        Game.DisplaySubtitle($"Set Combat");
     }
 
     public void OnSetNonCombatTasking()
@@ -191,7 +192,7 @@ public class GroupManager
         IsSetFollow = true;
         IsSetCombat = false;
         UpdateAllTasking();
-        Game.DisplaySubtitle($"Set Non Combat Tasking");
+        Game.DisplaySubtitle($"Set Follow");
     }
     public void OnToggleUsePlayerCar()
     {
@@ -205,6 +206,7 @@ public class GroupManager
         NeverArmed = false;
         UpdateAllTasking();
         Game.DisplaySubtitle($"Auto Armed Enabled");
+        //PlayToggleSound();
     }
     public void OnSetAlwaysArmed()
     {
@@ -212,6 +214,7 @@ public class GroupManager
         NeverArmed = false;
         UpdateAllTasking();
         Game.DisplaySubtitle($"Always Armed Enabled");
+        //PlayToggleSound();
     }
     public void OnSetNeverArmed()
     {
@@ -219,18 +222,33 @@ public class GroupManager
         AlwaysArmed = false;
         UpdateAllTasking();
         Game.DisplaySubtitle($"Never Armed Enabled");
+        //PlayToggleSound();
     }
 
     public void ToggleMode()
     {
-        if(IsSetCombat)
+        selectedMode++;
+        if(selectedMode >= 3)
         {
-            OnSetNonCombatTasking();
+            selectedMode = 0;
+        }
+        if(selectedMode == 0)
+        {
+            OnSetAutoTasking();      
+        }
+        else if (selectedMode == 1)
+        {
+            OnSetNonCombatTasking();       
         }
         else
         {
             OnSetCombatTasking();
         }
+        PlayToggleSound();
+    }
+    private void PlayToggleSound()
+    {
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
     }
 }
 

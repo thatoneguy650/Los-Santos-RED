@@ -206,9 +206,9 @@ public class WeaponInventory
         }
         else
         {
-            if(world.TotalWantedLevel >= 2)
+            if(Player.WantedLevel >= 2 && Player.PoliceResponse.IsDeadlyChase)
             {
-                SetDeadly(true);
+                SetDeadly(false);
             }
             else if (WeaponOwner.IsInVehicle)
             {

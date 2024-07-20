@@ -61,7 +61,7 @@ public class PlayerPoliceSearch
             WeaponItem wi = ModItems.PossibleItems.WeaponItems.FirstOrDefault(x => x.ModelName == weapon.ModelName);
             if (wi == null)
             {
-                //EntryPoint.WriteToConsoleTestLong($"SEARCH WEAPON {weapon.ModelName} DID NOT FIND WEAPON, CONTINUING");
+                EntryPoint.WriteToConsole($"SEARCH WEAPON {weapon.ModelName} DID NOT FIND WEAPON, CONTINUING");
                 continue;
             }
             if (weapon.Category == WeaponCategory.Throwable)
@@ -69,7 +69,7 @@ public class PlayerPoliceSearch
                 TimesToCheck = NativeFunction.Natives.GET_AMMO_IN_PED_WEAPON<int>(Player.Character, weapon.Hash);
                 TimesToCheck.Clamp(1, 10);
             }
-            //EntryPoint.WriteToConsoleTestLong($"SEARCH WEAPON {weapon.ModelName} FOUND MODITEM %:{wi.PoliceFindDuringPlayerSearchPercentage} TimesToCheck {TimesToCheck}");
+            EntryPoint.WriteToConsole($"SEARCH WEAPON {weapon.ModelName} FOUND MODITEM %:{wi.PoliceFindDuringPlayerSearchPercentage} TimesToCheck {TimesToCheck}");
             if (RandomItems.RandomPercent(wi.PoliceFindDuringPlayerSearchPercentage * TimesToCheck))
             {
                 Player.Violations.WeaponViolations.AddFoundWeapon(worstWeapon, hasCCW);
@@ -93,14 +93,14 @@ public class PlayerPoliceSearch
             {
                 ItemsOwned = ii.Amount;
             }
-            //EntryPoint.WriteToConsoleTestLong($"SEARCH WEAPON {modItem.Name} %:{modItem.PoliceFindDuringPlayerSearchPercentage} ItemsOwned {ItemsOwned} Total%{modItem.PoliceFindDuringPlayerSearchPercentage * ItemsOwned}");
+            EntryPoint.WriteToConsole($"SEARCH WEAPON {modItem.Name} %:{modItem.PoliceFindDuringPlayerSearchPercentage} ItemsOwned {ItemsOwned} Total%{modItem.PoliceFindDuringPlayerSearchPercentage * ItemsOwned}");
             if (RandomItems.RandomPercent(modItem.PoliceFindDuringPlayerSearchPercentage * ItemsOwned))
             {
                 Player.Violations.OtherViolations.AddFoundIllegalItem();
                 FoundIllegalDrugs = true;
                 FoundIllegalItems = true;
                 Player.Inventory.RemoveIllicitInventoryItems();
-                //EntryPoint.WriteToConsoleTestLong($"SEARCH ITEMS {modItem.Name} PERCENTAGE MET, ITEMS FOUND");
+                EntryPoint.WriteToConsole($"SEARCH ITEMS {modItem.Name} PERCENTAGE MET, ITEMS FOUND");
                 break;
             }
         }
