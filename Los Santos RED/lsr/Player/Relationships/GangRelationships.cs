@@ -303,14 +303,14 @@ public class GangRelationships
     {
         foreach (GangReputation rg in GangReputations)
         {
-            rg.SetReputation(rg.RepMaximum,false);
+            rg.SetReputation(rg.FriendlyRepLevel,false);
         }
     }
     public void SetHostileReputations()
     {
         foreach (GangReputation rg in GangReputations)
         {
-            rg.SetReputation(rg.RepMinimum,false);
+            rg.SetReputation(rg.HostileRepLevel,false);
         }
     }
     public void SetSingleRandomReputation()
