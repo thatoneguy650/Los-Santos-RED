@@ -236,8 +236,8 @@ public class GameLocation : ILocationDispatchable
     public Rotator VehiclePreviewCameraRotation { get; set; }
     public SpawnPlace VehiclePreviewLocation { get; set; }
     public List<SpawnPlace> VehicleDeliveryLocations { get; set; } = new List<SpawnPlace>();
-    public virtual int RegisterCash { get; set; } = 3500;
-
+    public virtual int RegisterCashMin { get; set; } = 250;
+    public virtual int RegisterCashMax { get; set; } = 1550;
     public bool NoEntryCam { get; set; } = false;
 
     public virtual int MinPriceRefreshHours { get; set; }

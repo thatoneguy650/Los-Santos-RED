@@ -7119,40 +7119,60 @@ public class Interiors : IInteriors
     }
     private void Banks()
     {
-        List<TheftInteractItem> VaultDefaultPossibleItems = new List<TheftInteractItem>() {
+        List<TheftInteractItem> SafetyDepositBoxStealItems = new List<TheftInteractItem>() {
                             new TheftInteractItem() {
-                                ModItemName = "Marked Cash Stack",
-                                MaxItems = 1,
-                                Percentage = 300,
+                                ModItemName = "Marked Cash Stack",//2500 at forger
+                                Percentage = 150,
                             },
                             new TheftInteractItem() {
-                                ModItemName = "Fake Gold Ring",
-                                MinItems = 1,
-                                MaxItems = 1,
-                                Percentage = 25,
+                                ModItemName = "Gold Ring",//125
+                                Percentage = 55,
                             },
                             new TheftInteractItem() {
-                                ModItemName = "Gold Ring",
-                                MinItems = 1,
-                                MaxItems = 1,
-                                Percentage = 25,
+                                ModItemName = "Silver Ring",//13
+                                Percentage = 35,
                             },
                             new TheftInteractItem() {
-                                ModItemName = "Fake Silver Ring",
-                                MinItems = 1,
-                                MaxItems = 1,
-                                Percentage = 25,
+                                ModItemName = "Fake Gold Ring",//worht 2 dollars
+                                Percentage = 7,
                             },
                             new TheftInteractItem() {
-                                ModItemName = "Silver Ring",
-                                MinItems = 1,
-                                MaxItems = 1,
-                                Percentage = 25,
+                                ModItemName = "Fake Silver Ring",//worth 1 dollar
+                                Percentage = 5,
                             },
                         };
-        int VaultDefaultMinItems = 1;
-        int VaultDefaultMaxItems = 10;
+        int SafetyDepositBoxStealMinItems = 1;
+        int SafetyDepositBoxStealMaxItems = 10;
 
+
+        List<TheftInteractItem> SafetyDepositBoxLargeStealItems = new List<TheftInteractItem>() {
+                            new TheftInteractItem() {
+                                ModItemName = "Marked Cash Stack",//2500 at forger
+                                MaxItems = 3,
+                                Percentage = 400,
+                            },
+                            new TheftInteractItem() {
+                                ModItemName = "Gold Ring",//125
+                                MaxItems = 4,
+                                Percentage = 55,
+                            },
+                            new TheftInteractItem() {
+                                ModItemName = "Silver Ring",//13
+                                MaxItems = 5,
+                                Percentage = 35,
+                            },
+                            new TheftInteractItem() {
+                                ModItemName = "Fake Gold Ring",//worht 2 dollars
+                                Percentage = 2,
+                            },
+                            new TheftInteractItem() {
+                                ModItemName = "Fake Silver Ring",//worth 1 dollar
+                                Percentage = 2,
+                            },
+                        };
+
+        int SafetyDepositBoxStealMinLargeItems = 1;
+        int SafetyDepositBoxStealMaxLargeItems = 15;
 
         PossibleInteriors.BankInteriors.AddRange(new List<BankInterior>()
         {
@@ -7174,9 +7194,9 @@ public class Interiors : IInteriors
 
                 InteractPoints = new List<InteriorInteract> () {
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca1vaultleft",
                         Position = NativeHelper.GetOffsetPosition(new Vector3( - 350.4557f, -58.93706f, 49.01488f),360f-251.1714f,-.4f),
@@ -7190,9 +7210,9 @@ public class Interiors : IInteriors
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca1vaultright",
                         Position = NativeHelper.GetOffsetPosition(new Vector3( - 353.7186f, -57.80367f, 49.0148f),360f-72.45023f,-.4f),
@@ -7206,9 +7226,9 @@ public class Interiors : IInteriors
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca1vaulttop",
                         Position = NativeHelper.GetOffsetPosition(new Vector3( - 352.4845f, -59.79395f, 49.01487f),360f-162.354f,-.4f),
@@ -7240,9 +7260,9 @@ public class Interiors : IInteriors
                 },
                 InteractPoints = new List < InteriorInteract > () {
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca2vaultleft",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(150.1338f, -1049.841f, 29.3464f),360f-250.8819f,-.4f),
@@ -7256,9 +7276,9 @@ public class Interiors : IInteriors
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca2vaultright",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(146.9373f, -1048.566f, 29.3463f),360f-70.71257f,-.4f),
@@ -7272,9 +7292,9 @@ public class Interiors : IInteriors
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca2vaulttop",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(148.2065f, -1050.615f, 29.34638f),360f-159.0868f,-.4f),
@@ -7305,9 +7325,9 @@ public class Interiors : IInteriors
                 },
                 InteractPoints = new List < InteriorInteract > () {
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca3vaultleft",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(314.826f, -288.2838f, 54.1431f),360f-250.2773f,-.4f),
@@ -7321,9 +7341,9 @@ public class Interiors : IInteriors
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca3vaultright",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(311.3073f, -286.9115f, 54.14302f),360f-71.48337f,-.4f),
@@ -7337,9 +7357,9 @@ public class Interiors : IInteriors
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca3vaulttop",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(312.443f, -289.0419f, 54.14309f),360f-161.7028f,-.4f),
@@ -7369,9 +7389,9 @@ public class Interiors : IInteriors
                 },
                 InteractPoints = new List < InteriorInteract > () {
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca4vaultleft",
                         Position = NativeHelper.GetOffsetPosition(new Vector3( - 2954.013f, 486.0489f, 15.67541f),360f-358.9159f,-.4f),
@@ -7382,9 +7402,9 @@ public class Interiors : IInteriors
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca4vaultright",
                         Position = NativeHelper.GetOffsetPosition(new Vector3( - 2954.152f, 482.4714f, 15.67532f),360f-171.9128f,-.4f),
@@ -7395,9 +7415,9 @@ public class Interiors : IInteriors
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca4vaulttop",
                         Position = NativeHelper.GetOffsetPosition(new Vector3( - 2952.514f, 484.314f, 15.67538f),360f-264.5385f,-.4f),
@@ -7422,9 +7442,9 @@ public class Interiors : IInteriors
                 },
                 InteractPoints = new List < InteriorInteract > () {
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca5vaultleft",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(1171.215f, 2715.287f, 38.06635f),360f-90.35101f,-.4f),
@@ -7435,9 +7455,9 @@ public class Interiors : IInteriors
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca5vaultright",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(1175.178f, 2715.24f, 38.06626f),360f-271.4401f,-.4f),
@@ -7448,9 +7468,9 @@ public class Interiors : IInteriors
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca5vaulttop",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(1173.201f, 2716.751f, 38.06634f),360f-357.0772f,-.4f),
@@ -7476,9 +7496,9 @@ public class Interiors : IInteriors
                 },
                 InteractPoints = new List < InteriorInteract > () {
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca6vaultleft",
                         Position = NativeHelper.GetOffsetPosition(new Vector3( - 1205.487f, -336.3931f, 37.75935f),360f-296.6526f,-.4f),
@@ -7489,9 +7509,9 @@ public class Interiors : IInteriors
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca6vaultright",
                         Position = NativeHelper.GetOffsetPosition(new Vector3( - 1208.928f, -338.272f, 37.75927f),360f-116.7019f,-.4f),
@@ -7502,9 +7522,9 @@ public class Interiors : IInteriors
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca6vaulttop",
                         Position = NativeHelper.GetOffsetPosition(new Vector3( - 1206.709f, -338.908f, 37.75932f),360f-207.8481f,-.4f),
@@ -7517,12 +7537,8 @@ public class Interiors : IInteriors
                 },
             },
 
-
             new BankInterior(103170,"Pacific Standard Bank") {
-
-
                 SearchLocations = new List<Vector3>(){new Vector3(257.4755f, 223.8576f, 106.2864f),new Vector3(252.2917f, 218.485f, 101.6834f),new Vector3(249.9998f, 209.9364f, 110.2829f)},
-
                 IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
 
 
@@ -7545,40 +7561,35 @@ public class Interiors : IInteriors
                 },
                 InteractPoints = new List < InteriorInteract > () {
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdOuterVaultL1",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(258.57f, 218.4534f, 101.6834f),360f-340.07f,-.4f),
                         Heading = 340.07f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
-
                         HasPreInteractRequirement = true,
                         ItemUsePreInteract = new DrillUsePreInteract(),
-
-                    },
-                    
+                    },               
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdOuterVaultL2",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(260.6405f, 217.6998f, 101.6834f),360f-340.7092f,-.4f),
                         Heading = 340.7092f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
-
                         HasPreInteractRequirement = true,
                         ItemUsePreInteract = new DrillUsePreInteract(),
-
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdOuterVaultR1",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(257.0691f, 214.541f, 101.6834f),360f-160.8612f,-.4f),
@@ -7591,9 +7602,9 @@ public class Interiors : IInteriors
 
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdOuterVaultR2",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(259.4067f, 213.6903f, 101.6834f),360f-159.7794f,-.4f),
@@ -7606,9 +7617,9 @@ public class Interiors : IInteriors
 
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultL1",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(263.6108f, 216.4729f, 101.6834f),360f-342.1166f,-.4f),
@@ -7621,9 +7632,9 @@ public class Interiors : IInteriors
 
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultL2",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(265.6564f, 215.8741f, 101.6834f),360f-342.004f,-.4f),
@@ -7636,9 +7647,9 @@ public class Interiors : IInteriors
 
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultT1",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(266.4569f, 214.4251f, 101.6834f),360f-250.5221f,-.4f),
@@ -7651,9 +7662,9 @@ public class Interiors : IInteriors
 
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultT2",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(265.6734f, 212.6927f, 101.6834f),360f-249.6621f,-.4f),
@@ -7666,9 +7677,9 @@ public class Interiors : IInteriors
 
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultR1",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(262.3621f, 213.0617f, 101.6834f),360f-167.3309f,-.4f),
@@ -7680,9 +7691,9 @@ public class Interiors : IInteriors
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "pacstdInnerVaultR2",
                         Position = NativeHelper.GetOffsetPosition(new Vector3(264.2992f, 212.1149f, 101.6834f),360f-161.562f,-.4f),
@@ -7700,9 +7711,6 @@ public class Interiors : IInteriors
                     new InteriorDoor(3110375179, new Vector3(-108.9147f,6469.105f,31.91028f)) { LockWhenClosed = true },//teller
                     new InteriorDoor(2628496933, new Vector3(-109.65f,6462.11f,31.98499f)) { LockWhenClosed = true },//FRONT 1
                     new InteriorDoor(3941780146, new Vector3(-111.48f,6463.94f,31.98499f)) { LockWhenClosed = true },//FRONT 2
-                    //new InteriorDoor(-1184592117, new Vector3(-108.9147f,6469.105f,31.91028f)),//teller
-                    //new InteriorDoor(-1666470363, new Vector3(-109.65f,6462.11f,31.98499f)),//FRONT 1
-                    //new InteriorDoor(-353187150, new Vector3(-111.48f,6463.94f,31.98499f)),//FRONT 2
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -7710,9 +7718,9 @@ public class Interiors : IInteriors
                 },
                 InteractPoints = new List < InteriorInteract > () {
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "bcsvaultleft",
                         Position = NativeHelper.GetOffsetPosition(new Vector3( - 105.9199f, 6478.416f, 31.62671f),360f-47.10064f,-.4f),
@@ -7723,9 +7731,9 @@ public class Interiors : IInteriors
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "bcsvaultright",
                         Position = NativeHelper.GetOffsetPosition(new Vector3( - 102.9088f, 6475.624f, 31.62673f),360f-226.068f,-.4f),
@@ -7736,9 +7744,9 @@ public class Interiors : IInteriors
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = VaultDefaultPossibleItems,
-                        MinItems = VaultDefaultMinItems,
-                        MaxItems = VaultDefaultMaxItems,
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "bcsvaulttop",
                         Position = NativeHelper.GetOffsetPosition(new Vector3( - 103.1819f, 6478.17f, 31.62672f),360f-315.1491f,-.4f),

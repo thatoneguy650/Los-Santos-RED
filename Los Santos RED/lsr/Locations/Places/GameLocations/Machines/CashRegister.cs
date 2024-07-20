@@ -24,6 +24,9 @@ public class CashRegister : GameLocation
     private bool hasAttachedProp;
     private MachineInteraction MachineInteraction;
     private string registerStealEmptyText = "Register Empty";
+
+    private int RegisterCurrentCash;
+
     public CashRegister() : base()
     {
 
@@ -45,7 +48,7 @@ public class CashRegister : GameLocation
     }
     public CashRegister(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, Rage.Object machineProp, int cash) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
-        RegisterCash = cash;
+        RegisterCurrentCash = cash;
         MenuID = menuID;
         RegisterProp = machineProp;
     }
@@ -79,7 +82,7 @@ public class CashRegister : GameLocation
                     MachineInteraction.CloseDistance = 0.5f;
                     if (MachineInteraction.MoveToMachine(3.0f))
                     {
-                        if (RegisterCash == 0)
+                        if (RegisterCurrentCash == 0)
                         {
                             Game.DisplaySubtitle(registerStealEmptyText);
                         }
@@ -146,7 +149,7 @@ public class CashRegister : GameLocation
             }
             float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, "oddjobs@shop_robbery@rob_till", "loop");
             HandleCashItem(AnimationTime);
-            if (RegisterCash <= 0)
+            if (RegisterCurrentCash <= 0)
             {
                 break;
             }
@@ -241,21 +244,21 @@ public class CashRegister : GameLocation
     }
     private void GiveCash()
     {
-        if (RegisterCash <= Settings.SettingsManager.PlayerOtherSettings.RobberyCashPerSwipe)
+        if (RegisterCurrentCash <= Settings.SettingsManager.PlayerOtherSettings.RobberyCashPerSwipe)
         {
-            Player.BankAccounts.GiveMoney(RegisterCash, false);
+            Player.BankAccounts.GiveMoney(RegisterCurrentCash, false);
             PlaySuccessSound();
-            RegisterCash = 0;
-            EntryPoint.WriteToConsole($"REGISTER GAVE CASH 1 {RegisterCash}");
+            RegisterCurrentCash = 0;
+            EntryPoint.WriteToConsole($"REGISTER GAVE CASH 1 {RegisterCurrentCash}");
         }
         else
         {
             Player.BankAccounts.GiveMoney(Settings.SettingsManager.PlayerOtherSettings.RobberyCashPerSwipe, false);
             PlaySuccessSound();
-            RegisterCash -= Settings.SettingsManager.PlayerOtherSettings.RobberyCashPerSwipe;
-            EntryPoint.WriteToConsole($"REGISTER GAVE CASH 2 {RegisterCash}");
+            RegisterCurrentCash -= Settings.SettingsManager.PlayerOtherSettings.RobberyCashPerSwipe;
+            EntryPoint.WriteToConsole($"REGISTER GAVE CASH 2 {RegisterCurrentCash}");
         }
-        if(RegisterCash <= 0)
+        if(RegisterCurrentCash <= 0)
         {
             Game.DisplaySubtitle(registerStealEmptyText);
         }

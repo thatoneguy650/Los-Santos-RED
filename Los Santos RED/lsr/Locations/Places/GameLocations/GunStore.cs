@@ -25,7 +25,8 @@ public class GunStore : GameLocation
     public override string ButtonPromptText { get; set; }
     public int MoneyToUnlock { get; set; } = 0;
     public string ContactName { get; set; } = "";
-    public override int RegisterCash { get; set; } = 7000;
+    public override int RegisterCashMin { get; set; } = 1000;
+    public override int RegisterCashMax { get; set; } = 2550;
     [XmlIgnore]
     public PhoneContact PhoneContact { get; set; }
     public GunStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)

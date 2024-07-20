@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 public class GroupSettings : ISettingsDefaultable
 {
-
-
+    [Description("Max number of group members allowed.")]
+    public int MaxGroupMembers { get; set; }
 
     [Description("If enabled group members will have increase health applied.")]
     public bool EnableIncreasedGroupHealth { get; set; }
@@ -26,6 +26,7 @@ public class GroupSettings : ISettingsDefaultable
     public float MaxPlayerDistanceDuringCombatBeforeForceReturn { get; set; }
     public bool EnableGroupButtonPrompts { get; set; }
 
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -37,6 +38,7 @@ public class GroupSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
+        MaxGroupMembers = 15;
         EnableIncreasedGroupHealth = true;
         IncreasedHealthMin = 250;
         IncreasedHealthMax = 350;

@@ -19,7 +19,8 @@ public class Restaurant : GameLocation
     public override string TypeName { get; set; } = "Restaurant";
     public override int MapIcon { get; set; } = 621;
     public override string ButtonPromptText { get; set; }
-    public override int RegisterCash { get; set; } = 2000;
+    public override int RegisterCashMin { get; set; } = 200;
+    public override int RegisterCashMax { get; set; } = 1450;
     public Restaurant(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID,FoodType foodType) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;

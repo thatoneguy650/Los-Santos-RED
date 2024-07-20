@@ -204,7 +204,6 @@
     <Compile Include="lsr\Locations\Other\StoredSpawn.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\MerchantConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\AppearPercentage.cs" />
-    <Compile Include="lsr\Locations\Places\GameLocations\Bank\BankDrawer.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\CustomizeShops\BarberShop.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\CustomizeShops\PlasticSurgeryClinic.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\CustomizeShops\TattooShop.cs" />

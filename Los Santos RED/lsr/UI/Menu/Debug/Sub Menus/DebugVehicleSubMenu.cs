@@ -198,6 +198,7 @@ public class DebugVehicleSubMenu : DebugSubMenu
             ,new VehicleColorLookup(138,"Orange","Standard","Orange",150) { RGBColor = System.Drawing.Color.FromArgb(246, 174, 32) }
             ,new VehicleColorLookup(139,"Green","Standard","Green",150) { RGBColor = System.Drawing.Color.FromArgb(176, 238, 110) }
             ,new VehicleColorLookup(140,"Blue","Standard","Blue",150) { RGBColor = System.Drawing.Color.FromArgb(8, 233, 250) }
+            ,new VehicleColorLookup(156,"DEFAULT ALLOY COLOR","Standard","DEFAULT ALLOY COLOR",206)
 
             ,new VehicleColorLookup(120,"Chrome","Chrome","Chrome",199) { RGBColor = System.Drawing.Color.FromArgb(88, 112, 161) }
 

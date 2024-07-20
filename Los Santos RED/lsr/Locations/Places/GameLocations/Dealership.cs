@@ -22,7 +22,8 @@ public class Dealership : GameLocation, ILicensePlatePreviewable
     public override int MapIcon { get; set; } = 810;// (int)BlipSprite.GangVehicle;
     public override string ButtonPromptText { get; set; }
     public string LicensePlatePreviewText { get; set; } = "BUYMENOW";
-    public override int RegisterCash { get; set; } = 10000;
+    public override int RegisterCashMin { get; set; } = 1000;
+    public override int RegisterCashMax { get; set; } = 3050;
     public Dealership(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;

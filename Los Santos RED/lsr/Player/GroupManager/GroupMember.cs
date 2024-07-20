@@ -31,17 +31,12 @@ public class GroupMember
 
     public PedExt PedExt { get; set; }
     public int Index { get; set; }
-
-
     public bool SetForceTasking { get; set; } = false;
     public bool SetFollowIfPossible { get; set; } = false;
     public bool SetCombatIfPossible { get; set; } = false;
     public bool RideInPlayerVehicleIfPossible { get; set; } = true;
     public bool AlwaysArmed { get; set; } = false;
     public bool NeverArmed { get; set; } = false;
-
-
-
     public void UpdateTasking(bool SetForceTasking)
     {
         if (PedExt == null || !PedExt.Pedestrian.Exists())
@@ -96,7 +91,6 @@ public class GroupMember
        // AddInternal(PedExt);
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(PedExt.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(PedExt.Pedestrian, (int)eCombatAttributes.BF_CanDoDrivebys, true);
-
         if(Settings.SettingsManager.GroupSettings.EnableIncreasedGroupHealth)
         {
             PedExt.Pedestrian.MaxHealth = Settings.SettingsManager.GroupSettings.IncreasedHealthMax;
@@ -112,8 +106,6 @@ public class GroupMember
         }
         //Set combat defensive
         NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(PedExt.Pedestrian, 1);
-
-
         uint bestWeapon = NativeFunction.Natives.GET_BEST_PED_WEAPON<uint>(PedExt.Pedestrian, 0);
         WeaponInformation wi = Weapons.GetWeapon(bestWeapon);
         string weaponString = "Unarmed";

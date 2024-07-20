@@ -19,7 +19,8 @@ public class LiquorStore : GameLocation
     public override string TypeName { get; set; } = "Liquor Store";
     public override int MapIcon { get; set; } = (int)BlipSprite.Bar;
     public override string ButtonPromptText { get; set; }
-    public override int RegisterCash { get; set; } = 5000;
+    public override int RegisterCashMin { get; set; } = 500;
+    public override int RegisterCashMax { get; set; } = 1750;
     public LiquorStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;

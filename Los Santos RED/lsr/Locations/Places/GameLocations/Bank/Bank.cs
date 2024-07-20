@@ -13,17 +13,17 @@ using System.Xml.Serialization;
 
 public class Bank : GameLocation
 {
-    private string drawerStealPromptGroup = "BankSteal";
-    private string drawerStealPromptIdentity = "BankStealDrawer";
-    private string drawerStealPromptText = "Steal from Drawer";
-    private string drawerStealEmptyText = "Drawer Empty";
+    //private string drawerStealPromptGroup = "BankSteal";
+    //private string drawerStealPromptIdentity = "BankStealDrawer";
+    //private string drawerStealPromptText = "Steal from Drawer";
+    //private string drawerStealEmptyText = "Drawer Empty";
     private BankInteraction BankInteraction;
     private List<Teller> SpawnedTellers = new List<Teller>();
-    private BankDrawer ClosestBankDrawer;
-    private bool IsCancelled;
+    //private BankDrawer ClosestBankDrawer;
+    //private bool IsCancelled;
     protected readonly List<string> FallBackTellerModels = new List<string>() { "s_f_m_shop_high", "s_f_y_airhostess_01", "s_m_m_highsec_01" };
-    private List<BankDrawer> BankDrawers = new List<BankDrawer>();
-    private bool IsStealingFromDrawer;
+    //private List<BankDrawer> BankDrawers = new List<BankDrawer>();
+    //private bool IsStealingFromDrawer;
     public Bank(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string shortName) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         ShortName = shortName;
@@ -35,8 +35,8 @@ public class Bank : GameLocation
     public override string TypeName { get; set; } = "Bank";
     public override int MapIcon { get; set; } = (int)BlipSprite.Devin;
     public bool HasTellers => VendorLocations != null && VendorLocations.Any();
-    public int DrawerCashMin { get; set; } = 1000;
-    public int DrawerCashMax { get; set; } = 9000;
+    public int DrawerCashMin { get; set; } = 500;
+    public int DrawerCashMax { get; set; } = 3000;
     public int DrawerCashGainedPerAnimation { get; set; } = 500;
     public float ExtaTellerSpawnPercentage { get; set; } = 70f;
     public override string VendorPersonnelID => "TellerPeds";
@@ -133,7 +133,7 @@ public class Bank : GameLocation
     }
     public override void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
-        BankDrawers.Clear();
+        //BankDrawers.Clear();
         if(HasTellers)
         {
             CanInteract = false;
@@ -144,7 +144,7 @@ public class Bank : GameLocation
     public override void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world, bool isInterior)
     {
         int TellersSpawned = 0;
-        BankDrawers.Clear();
+        //BankDrawers.Clear();
         List<SpawnPlace> spawns = new List<SpawnPlace>();
         if (isInterior)
         {

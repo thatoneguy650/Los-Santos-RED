@@ -208,12 +208,12 @@ public class DynamicPlaces
         Vector3 EntrancePos = obj.GetOffsetPositionFront(0.5f);
 
         GameLocation closestLocation = Places.ActiveLocations.OrderBy(x => x.EntrancePosition.DistanceTo2D(obj.GetOffsetPositionFront(0.5f))).FirstOrDefault();//maybe store anyothe list of stations?
-        int RegisterCash = 3500;
+        int newRegisterCash = RandomItems.GetRandomNumberInt(200, 1200); //3500;
         if(closestLocation != null)
         {
-            RegisterCash = closestLocation.RegisterCash;
+            newRegisterCash = RandomItems.GetRandomNumberInt(closestLocation.RegisterCashMin, closestLocation.RegisterCashMax);
         }
-        CashRegister newVend = new CashRegister(EntrancePos, heading, "Cash Register", "Cash Register", "", obj, RegisterCash) { OpenTime = 0, CloseTime = 24 };
+        CashRegister newVend = new CashRegister(EntrancePos, heading, "Cash Register", "Cash Register", "", obj, newRegisterCash) { OpenTime = 0, CloseTime = 24 };
         newVend.CanInteractWhenWanted = true;
         newVend.StoreData(ShopMenus, World.ModDataFileManager.Agencies, World.ModDataFileManager.Gangs, World.ModDataFileManager.Zones, World.ModDataFileManager.Jurisdictions, World.ModDataFileManager.GangTerritories, World.ModDataFileManager.Names,
     World.ModDataFileManager.Crimes, World.ModDataFileManager.RelationshipGroups, World, World.ModDataFileManager.Streets, World.ModDataFileManager.LocationTypes, Settings, World.ModDataFileManager.PlateTypes, World.ModDataFileManager.Organizations, World.ModDataFileManager.Contacts, Interiors, World.LocationInteractable, World.ModDataFileManager.ModItems, World.ModDataFileManager.Weapons, Time, PlacesOfInterest, World.ModDataFileManager.IssueableWeapons, World.ModDataFileManager.Heads, World.ModDataFileManager.DispatchablePeople);

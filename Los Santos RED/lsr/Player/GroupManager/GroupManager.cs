@@ -9,7 +9,7 @@ using System.Linq;
 
 public class GroupManager
 {
-    private int maxMembers => 15;// Settings.SettingsManager.PlayerOtherSettings.UseVanillaGroup ? 7 : 15;
+    private int maxMembers => Settings.SettingsManager.GroupSettings.MaxGroupMembers;// 15;// Settings.SettingsManager.PlayerOtherSettings.UseVanillaGroup ? 7 : 15;
     private IGroupManageable Player;
     private ISettingsProvideable Settings;
     private IEntityProvideable World;
@@ -21,33 +21,14 @@ public class GroupManager
     public List<GroupMember> CurrentGroupMembers { get; private set; } = new List<GroupMember>();
     public int PlayerGroup { get; private set; }
     public int MemberCount => CurrentGroupMembers.Count();
-
     public float GroupFollowDistance { get; set; } = 3.0f;
-
     public bool BlockPermanentEvents { get; set; } = true;
-
-
-
-
     public bool IsSetFollow { get; set; } = false;
     public bool IsSetCombat { get; set; } = false;
-
-
-
-
-
     public bool RideInPlayerVehicleIfPossible { get; set; } = true;
-
-
-
-
-
     public bool AlwaysArmed { get; set; } = false;
     public bool NeverArmed { get; set; } = false;
     public bool AutoArmed { get; set; } = true;
-
-
-
 
     public GroupManager(IGroupManageable player, ITargetable targetable, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, IWeapons weapons)
     {
