@@ -254,9 +254,10 @@ public class ModDataFileManager
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic");
         string Description = "Adds DLC vehicles to the traffic by modifying the popgroups.ymt file. Adds most normal vehicles to the corresponding traffic. Works with MP or SP map (traffic groups are identical). " +
-            "Install the greskfullmoderntraffic_base.oiv file if you do not use FEJ and the greskfullmoderntraffic_fej.oiv otherwise. " +
-            "The _novanillagang versions will remove all vanilla gang spawns from the world. " +
-            "Incompatible with Los Santos 2008 config.";
+            "greskfullmoderntraffic.oiv includes all DLC pop groups and some additional traffic vehicles. The _novanillagang_addon.oiv should be installed AFTER the greskfullmoderntraffic.oiv if you want to remove vanilla gangs. An uninstaller is also included. " +
+            "greskmoderntrafficbase.oiv includes only r* dlc cars. Can choose either _novanillagang.oiv or regular." +
+            "Incompatible with Los Santos 2008 config." + Environment.NewLine +
+            "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1.";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\readme.txt", Description);
     }
 
@@ -349,9 +350,11 @@ public class ModDataFileManager
             + Environment.NewLine + Environment.NewLine +
             "1. Navigate to the Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Files folder and install the greskfejinstaller.oiv with OpenIV (Vehicles from the Full Expanded Jurisdiction config are used in this config)"
             + Environment.NewLine +
-            "2. Navigate to the Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008 folder and install the gresk2008installer.oiv with OpenIV"
+            "2. Navigate to the Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Files folder and install the greskfullmoderntraffic.oiv with OpenIV (Vehicles from the Full Modern Traffic config are used in this config)"
             + Environment.NewLine +
-            "3. Copy all of the .xml files from the AlternateConfigs\\LosSantos2008 folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)"
+            "3. Navigate to the Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008 folder and install the gresk2008installer.oiv with OpenIV"
+            + Environment.NewLine +
+            "4. Copy all of the .xml files from the AlternateConfigs\\LosSantos2008 folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)"
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
             ""
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +

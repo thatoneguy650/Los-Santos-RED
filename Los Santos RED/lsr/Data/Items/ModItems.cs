@@ -89,39 +89,15 @@ public class ModItems : IModItems
         {
             EntryPoint.WriteToConsole($"No Mod Items config found, creating default", 0);
             DefaultConfig();
+            DefaultConfig_FullModernTraffic();
             DefaultConfig_FullExpandedJurisdiction();
             DefaultConfig_FullExpandedExperience();
             DefaultConfig_LosSantos2008();
         }
     }
-
     private void DefaultConfig_FullExpandedJurisdiction()
     {
         PossibleItems newPossibleItems = PossibleItems.Copy();
-
-        //Sedans
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "issi2");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "tornado3");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "phantom2");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "kuruma");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "merit");
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Interceptor", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Sedan", ModelName = "issi2", Description = "The civilian version of the police classic. So what if they couldn't sell it to law enforcement? It still can get you to Burger Shot without breaking down. Often.", });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { OverrideMakeName = "Vapid",OverrideClassName = "Sedan", ModelName = "tornado3", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", }); newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { ModelName = "tornado3", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Esperanto", true, ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "phantom2", Description = "Heavy, slow, and full of chrome. See why this was one of the the top police vehicles.... 40 years ago." });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Maibatsu Kuruma", ItemType.Vehicles) { OverrideMakeName = "Maibatsu", OverrideClassName = "Sedan", ModelName = "kuruma", Description = "The perfect car to go with your flesh tunnel earrings, frosted spikes, and oversize jeans. Buy this and you'll never fail to be mistaken for a small town drug dealer again.", });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Declasse Merit", ItemType.Vehicles) { OverrideMakeName = "Declasse", OverrideClassName = "Sedan", ModelName = "technical2" });
-
-
-        //Trucks
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "contender");
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Everon V8", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "contender" });//swapped from vaid to KARIN and renamed
-
-        //HELIS
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "deathbike2");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "deathbike3");     
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick Classic Police", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "deathbike2" });//police 1st gen mav
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick 2nd Gen", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "deathbike3" });//civ 2nd gen mav
-
 
         //Taxi Service 
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "lurcher");
@@ -137,7 +113,7 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "sheriff");
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "ruiner3");
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "policeold1");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "pranger");      
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "pranger");
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "blista3");
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "stalion2");
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "gauntlet2");
@@ -152,7 +128,7 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "wastelander");
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "hotring");
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "blazer5");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "tampa3");     
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "tampa3");
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "oppressor");
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "shotaro");
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "zhaba");
@@ -185,7 +161,36 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.Add(new VehicleItem("Ubermacht Oracle Police", true, ItemType.Vehicles) { OverrideMakeName = "Ubermacht", ModelName = "zr3802" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Radius Police", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "monster3" });
 
-        Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\ModItems_FullExpandedJurisdiction.xml");
+        //Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\ModItems_FullExpandedJurisdiction.xml");
+    }
+    private void DefaultConfig_FullModernTraffic()
+    {
+        PossibleItems newPossibleItems = PossibleItems.Copy();
+
+        //Sedans
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "issi2");
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "tornado3");
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "phantom2");
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "kuruma");
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "merit");
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Interceptor", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Sedan", ModelName = "issi2", Description = "The civilian version of the police classic. So what if they couldn't sell it to law enforcement? It still can get you to Burger Shot without breaking down. Often.", });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { OverrideMakeName = "Vapid",OverrideClassName = "Sedan", ModelName = "tornado3", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", }); newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { ModelName = "tornado3", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Esperanto", true, ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "phantom2", Description = "Heavy, slow, and full of chrome. See why this was one of the the top police vehicles.... 40 years ago." });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Maibatsu Kuruma", ItemType.Vehicles) { OverrideMakeName = "Maibatsu", OverrideClassName = "Sedan", ModelName = "kuruma", Description = "The perfect car to go with your flesh tunnel earrings, frosted spikes, and oversize jeans. Buy this and you'll never fail to be mistaken for a small town drug dealer again.", });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Declasse Merit", ItemType.Vehicles) { OverrideMakeName = "Declasse", OverrideClassName = "Sedan", ModelName = "technical2" });
+
+
+        //Trucks
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "contender");
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Everon V8", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "contender" });//swapped from vaid to KARIN and renamed
+
+        //HELIS
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "deathbike2");
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "deathbike3");     
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick Classic Police", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "deathbike2" });//police 1st gen mav
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick 2nd Gen", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "deathbike3" });//civ 2nd gen mav
+
+        Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\ModItems_FullModernTraffic.xml");
     }
     private void DefaultConfig_LosSantos2008()
     {

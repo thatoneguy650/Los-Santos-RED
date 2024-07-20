@@ -45,7 +45,7 @@ public class ShopMenus : IShopMenus
             EntryPoint.WriteToConsole($"No Shop Menus config found, creating default", 0);
             DefaultConfig();
             DefaultConfig_LosSantos2008();
-            DefaultConfig_FullExpandedJurisdiction();
+            DefaultConfig_FullModernTraffic();
             DefaultConfig_FullExpandedExperience();
         }
     }
@@ -220,7 +220,7 @@ public class ShopMenus : IShopMenus
         });
         Serialization.SerializeParam(oldPossibleShopMenus, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\ShopMenus_LosSantos2008.xml");
     }
-    private void DefaultConfig_FullExpandedJurisdiction()
+    private void DefaultConfig_FullModernTraffic()
     {
         ShopMenuTypes fejPossibleShopMenus = PossibleShopMenus.Copy();
         List<string> toRemoveModItems = new List<string>() { "Weeny Issi", "Declasse Tornado 3" };
@@ -277,7 +277,7 @@ public class ShopMenus : IShopMenus
 
 
         //new MenuItem("Declasse Impaler LX",35000,16000),
-        Serialization.SerializeParam(fejPossibleShopMenus, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\ShopMenus_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParam(fejPossibleShopMenus, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\ShopMenus_FullModernTraffic.xml");
     }
     private void DefaultConfig_FullExpandedExperience()
     {
