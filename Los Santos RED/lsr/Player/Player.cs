@@ -19,7 +19,7 @@ namespace Mod
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IContactRelateable, ILicenseable, IPropertyOwnable,
                           ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable, IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable,
                           IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable, IRestrictedAreaManagable, ITaxiRideable, IGangBackupable, IInteriorManageable, 
-                            ICuffable, IIntimidationManageable
+                            ICuffable, IIntimidationManageable, ICasinoGamePlayable
     {
         public int UpdateState = 0;
         private float CurrentVehicleRoll;

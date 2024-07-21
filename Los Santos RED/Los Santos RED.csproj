@@ -180,6 +180,11 @@
     <Compile Include="lsr\Locations\Interiors\Barber\FakeCustomizeInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\Barber\SalonInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\BlackJackInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\Existing\BlackJackGameInternal.cs" />
+    <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\Existing\Card.cs" />
+    <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\Existing\Casino.cs" />
+    <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\Existing\Deck.cs" />
     <Compile Include="lsr\Locations\Interiors\GangDenInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\InteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\InventoryInteract.cs" />
@@ -424,6 +429,7 @@
     <Compile Include="lsr\Old\TreatmentActivity_Old.cs" />
     <Compile Include="lsr\Player\Interface\IArmorManageable.cs" />
     <Compile Include="lsr\Player\Interface\IBasicUseable.cs" />
+    <Compile Include="lsr\Player\Interface\ICasinoGamePlayable.cs" />
     <Compile Include="lsr\Player\Interface\IClipsetManageable.cs" />
     <Compile Include="lsr\Player\Interface\ICuffable.cs" />
     <Compile Include="lsr\Player\Interface\IGangBackupable.cs" />
