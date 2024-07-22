@@ -692,6 +692,10 @@ public class GameLocation : ILocationDispatchable
         }
         RestrictedAreas?.AddDistanceOffset(offsetToAdd);
     }
+    public virtual void RemoveMessage()
+    {
+        Game.RemoveNotification(NotificationHandle);
+    }
     public virtual void DisplayMessage(string header, string message)
     {
         Game.RemoveNotification(NotificationHandle);

@@ -212,6 +212,8 @@
     <Compile Include="lsr\Locations\Places\GameLocations\CustomizeShops\BarberShop.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\CustomizeShops\PlasticSurgeryClinic.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\CustomizeShops\TattooShop.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Gambling\GamblingDen.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Gambling\GamblingParameters.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\IAssaultSpawnable.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\IGasPumpable.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\ILEDispatchableLocation.cs" />

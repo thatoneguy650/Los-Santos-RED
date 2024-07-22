@@ -17,12 +17,14 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading;
 
 using Blackjack;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using NAudio.Gui;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -35,9 +37,10 @@ namespace Blackjack
         private uint notificationID;
         private Deck deck = new Deck();
         private CasinoPlayer CasinoPlayer;
-        private Casino Casino = new Casino();
-        private Dealer Dealer = new Dealer();
+        private Casino Casino;
+        private Dealer Dealer;
         private MenuPool MenuPool;
+        private BigMessageThread BigMessage;
         private bool isCompleted;
         private string selectedAction;
         private bool isCancelled;
@@ -45,19 +48,26 @@ namespace Blackjack
         private UIMenu BetMenu;
         private UIMenuNumericScrollerItem<int> betAmountScroller;
         private UIMenu ActionMenu;
-        private ICasinoGamePlayable ModPlayer;
+        private ICasinoGamePlayable Player;
         private bool ShowNoStats;
         private ISettingsProvideable Settings;
         private bool ShowHands;
+        private bool IsUICreated;
+        private GameLocation GameLocation;
+        private GamblingParameters GamblingParameters;
+        private int LastBet;
 
-        public BlackJackGameInternal(ICasinoGamePlayable modPlayer, ISettingsProvideable settings)
+        public BlackJackGameInternal(ICasinoGamePlayable player, ISettingsProvideable settings, bool enableAnimations, GameLocation gameLocation, GamblingParameters gamblingParameters)
         {
-            ModPlayer = modPlayer;
+            Player = player;
             Settings = settings;
+            EnableAnimations = enableAnimations;
+            GameLocation = gameLocation;
+            GamblingParameters = gamblingParameters;
         }
-
+        public bool EnableAnimations { get; private set; }
         public bool IsActive { get; private set; }
-
+        public int DelayTime { get; set; } = 2000;
         private enum RoundResult
         {
             PUSH,
@@ -69,13 +79,247 @@ namespace Blackjack
             INVALID_BET,
             CANCELLED
         }
-        /// <summary>
-        /// Initialize Deck, deal the player and dealer hands, and display them.
-        /// </summary>
+        public void StartRound()
+        {
+            Player.IsTransacting = true;
+            IsActive = true;
+            CasinoPlayer = new CasinoPlayer(Player.PlayerName, Player);
+            Casino = new Casino(GamblingParameters.BlackJackMinBet,GamblingParameters.BlackJackMaxBet);
+            Dealer = new Dealer(GamblingParameters.DealerName);
+            MenuPool = new MenuPool();
+
+            BigMessage = new BigMessageThread(true);
+            DoRound();
+        }
+        private void DoRound()
+        {
+            RemoveNotifications();
+            if (!TakeBet())
+            {
+                if (isCancelled)
+                {
+                    EndRound(RoundResult.CANCELLED);
+                }
+                else
+                {
+                    EndRound(RoundResult.INVALID_BET);
+                }
+                ChooseErrorSound();
+                return;
+            }
+            CreateUI();
+            InitializeHands();
+
+            TakeActions();
+            if (isCancelled)
+            {
+                EndRound(RoundResult.CANCELLED);
+                return;
+            }
+
+
+            StartDelay();
+
+            Card revealedCard = Dealer.RevealCard();
+
+            CasinoPlayer.HandsCompleted++;
+            if (CasinoPlayer.Hand.Count == 0)
+            {
+                EndRound(RoundResult.SURRENDER);
+                ChooseErrorSound();
+                return;
+            }
+            else if (CasinoPlayer.GetHandValue() > 21)
+            {
+                EndRound(RoundResult.PLAYER_BUST);
+                ChooseErrorSound();
+                return;
+            }
+            DisplayCustomMessage(GamblingParameters.DealerName, $"Reveals {revealedCard.Description()}~n~Hand Value: {Dealer.GetHandValue()}");
+            StartDelay();
+            while (Dealer.GetHandValue() <= 16)
+            {
+                Card drawncard = deck.DrawCard();
+                Dealer.RevealedCards.Add(drawncard);
+                DisplayCustomMessage($"{GamblingParameters.DealerName} ", $"Draws {drawncard.Description()}~n~Hand Value: {Dealer.GetHandValue()}");
+                StartDelay();
+            }
+            StartDelay();
+
+
+            if (CasinoPlayer.GetHandValue() > Dealer.GetHandValue())
+            {
+                CasinoPlayer.Wins++;
+                if (Casino.IsHandBlackjack(CasinoPlayer.Hand))
+                {
+                    EndRound(RoundResult.PLAYER_BLACKJACK);
+                }
+                else
+                {
+                    EndRound(RoundResult.PLAYER_WIN);
+                }
+                ChooseSuccessSound();
+            }
+            else if (Dealer.GetHandValue() > 21)
+            {
+                CasinoPlayer.Wins++;
+                EndRound(RoundResult.PLAYER_WIN);
+                ChooseSuccessSound();
+            }
+            else if (Dealer.GetHandValue() > CasinoPlayer.GetHandValue())
+            {
+                EndRound(RoundResult.DEALER_WIN);
+                ChooseErrorSound();
+            }
+            else
+            {
+                EndRound(RoundResult.PUSH);
+                ChooseErrorSound();
+            }
+        }
+
+        private void StartDelay()
+        {
+            uint GameTimeStarted = Game.GameTime;
+            while(Game.GameTime - GameTimeStarted <= DelayTime)
+            {
+                GameFiber.Sleep(50);
+                if(Player.IsMoveControlPressed)
+                {
+                    return;
+                }
+            }
+            //GameFiber.Sleep(DelayTime);
+        }
+
+        private void RemoveNotifications()
+        {
+            //BigMessage.MessageInstance?.Dispose();
+
+            if (GameLocation == null)
+            {
+                Game.RemoveNotification(notificationID);
+            }
+            else
+            {
+                GameLocation.RemoveMessage();
+            }
+        }
+
+        private bool TakeBet()
+        {
+            if (Player.BankAccounts.GetMoney(false) < Casino.MinimumBet)
+            {
+                isCancelled = true;
+                OnCannotMakeMinBet();
+                return false;
+            }
+            isCompleted = false;
+            isCancelled = false;
+            bet = 0;
+            if (BetMenu == null)
+            {
+                BetMenu = new UIMenu("Bet", "Enter Bet Amount");
+
+                SetupMenu(BetMenu);
+
+                MenuPool.Add(BetMenu);
+
+                int maxValue = Casino.MaximumBet;
+                if (Player.BankAccounts.GetMoney(false) < maxValue)
+                {
+                    maxValue = Player.BankAccounts.GetMoney(false);
+                }
+                betAmountScroller = new UIMenuNumericScrollerItem<int>("Bet Amount", "Enter Bet Amount for Hand", Casino.MinimumBet, maxValue, 1) { Formatter = v => "$" + v + "",Value = Casino.MinimumBet };
+                betAmountScroller.Activated += (menu, item) =>
+                {
+                    //bet = betAmountScroller.Value;
+                    //isCompleted = true;
+                    //menu.Visible = false;
+
+
+                    int maxValue2 = Casino.MaximumBet;
+                    if (Player.BankAccounts.GetMoney(false) < maxValue2)
+                    {
+                        maxValue2 = Player.BankAccounts.GetMoney(false);
+                    }
+
+
+                    if (int.TryParse(NativeHelper.GetKeyboardInput(betAmountScroller.Value.ToString()), out int eneteredAmount))
+                    {
+                        if(eneteredAmount <= maxValue2 && eneteredAmount > Casino.MinimumBet)
+                        {
+                            betAmountScroller.Value = eneteredAmount;
+                            //ChooseSuccessSound();
+                        }
+                    }
+
+
+                };
+                BetMenu.AddItem(betAmountScroller);
+
+
+                UIMenuItem PlaceBetMenu = new UIMenuItem("Place Bet", "Place the current bet amount");
+                PlaceBetMenu.Activated += (menu, item) =>
+                {
+                    bet = betAmountScroller.Value;
+                    isCompleted = true;
+                    menu.Visible = false;
+                };
+                BetMenu.AddItem(PlaceBetMenu);
+
+                UIMenuItem CancelGame = new UIMenuItem("Cancel", "Cancel current Game");
+                CancelGame.Activated += (menu, item) =>
+                {
+                    isCancelled = true;
+                    menu.Visible = false;
+                };
+                BetMenu.AddItem(CancelGame);
+            }
+            else
+            {
+                int maxValue = Casino.MaximumBet;
+                if (Player.BankAccounts.GetMoney(false) < maxValue)
+                {
+                    maxValue = Player.BankAccounts.GetMoney(false);
+                }
+                betAmountScroller.Maximum = maxValue;
+
+                if (LastBet >= betAmountScroller.Minimum && LastBet <= betAmountScroller.Maximum)
+                {
+                    betAmountScroller.Value = LastBet;
+                }
+                else
+                {
+
+                    betAmountScroller.Value = Casino.MinimumBet;
+                }
+            }
+            BetMenu.Visible = true;
+            ProcessMenuItems();
+            if (isCompleted && !isCancelled)
+            {
+                CasinoPlayer.AddBet(bet);
+                LastBet = bet;
+                return true;
+            }
+            return false;
+        }
+
+        private void SetupMenu(UIMenu uIMenu)
+        {
+            if (GameLocation != null && uIMenu != null && GameLocation.HasBannerImage)
+            {
+                uIMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{GameLocation.BannerImagePath}"));
+            }
+        }
+
         private void InitializeHands()
         {
             deck.Initialize();
             CasinoPlayer.Hand = deck.DealHand();
+
+
             Dealer.HiddenCards = deck.DealHand();
             Dealer.RevealedCards = new List<Card>();
             // If hand contains two aces, make one Hard.
@@ -88,223 +332,114 @@ namespace Blackjack
             {
                 Dealer.HiddenCards[1].Value = 1;
             }
-            Dealer.RevealCard();
             ShowHands = true;
-            DisplayHands();
+            DisplayCustomMessage(Player.PlayerName, $"Initial Hand: ~n~{CasinoPlayer.PrintCards()}");
+            StartDelay();
+            Card revealedCard = Dealer.RevealCard();
+            DisplayCustomMessage(GamblingParameters.DealerName, $"Initial Card: {revealedCard.Description()}");
+            StartDelay();
+
         }
-
-        private void DoRound()
-        {
-            if (!TakeBet())
-            {
-                if (isCancelled)
-                {
-                    EndRound(RoundResult.CANCELLED);
-                }
-                else
-                {
-                    EndRound(RoundResult.INVALID_BET);
-                }
-                NativeHelper.PlayErrorSound();
-                return;
-            }
-
-            InitializeHands();
-
-            CreateUI();
-            TakeActions();
-            if(isCancelled)
-            {
-                EndRound(RoundResult.CANCELLED);
-                NativeHelper.PlayErrorSound();
-                return;
-            }
-            GameFiber.Sleep(1500);
-            Dealer.RevealCard();
-            DisplayHands();
-            CasinoPlayer.HandsCompleted++;
-            if (CasinoPlayer.Hand.Count == 0)
-            {
-                EndRound(RoundResult.SURRENDER);
-                NativeHelper.PlayErrorSound();
-                return;
-            }
-            else if (CasinoPlayer.GetHandValue() > 21)
-            {
-                EndRound(RoundResult.PLAYER_BUST);
-                NativeHelper.PlayErrorSound();
-                return;
-            }
-
-            while (Dealer.GetHandValue() <= 16)
-            {
-
-                Card drawncard = deck.DrawCard();
-                Dealer.RevealedCards.Add(drawncard);
-                Game.RemoveNotification(notificationID);
-                notificationID = Game.DisplayNotification($"Dealer Draws: {drawncard.Description()}");
-
-                NativeHelper.PlaySuccessSound();
-                GameFiber.Sleep(1500);
-                //DisplayHands();
-            }
-            if (CasinoPlayer.GetHandValue() > Dealer.GetHandValue())
-            {
-                CasinoPlayer.Wins++;
-                if (Casino.IsHandBlackjack(CasinoPlayer.Hand))
-                {
-                    EndRound(RoundResult.PLAYER_BLACKJACK);
-                }
-                else
-                {
-                    EndRound(RoundResult.PLAYER_WIN);
-                }
-                NativeHelper.PlaySuccessSound();
-            }
-            else if (Dealer.GetHandValue() > 21)
-            {
-                CasinoPlayer.Wins++;
-                EndRound(RoundResult.PLAYER_WIN);
-                NativeHelper.PlaySuccessSound();
-            }
-            else if (Dealer.GetHandValue() > CasinoPlayer.GetHandValue())
-            {
-                EndRound(RoundResult.DEALER_WIN);
-                NativeHelper.PlayErrorSound();
-            }
-            else
-            {
-                EndRound(RoundResult.PUSH);
-                NativeHelper.PlayErrorSound();
-            }
-        }
-
-
-        /// <summary>
-        /// Handles everything for the round.
-        /// </summary>
-        public void StartRound()
-        {
-            ModPlayer.IsTransacting = true;
-            IsActive = true;
-            CasinoPlayer = new CasinoPlayer(ModPlayer);
-            Casino = new Casino();
-            Dealer = new Dealer();
-            MenuPool = new MenuPool();
-            DoRound();
-        }
-
-        private void CreateUI()
-        {
-            GameFiber DoorWatcher = GameFiber.StartNew(delegate
-            {
-                while (IsActive && !isCancelled)
-                {
-                    DisplayGameStats();
-                    GameFiber.Yield();
-                }
-            }, "DoorWatcher");
-        }
-
-    
-
-        /// <summary>
-        /// Ask user for action and perform that action until they stand, double, or bust.
-        /// </summary>
         private void TakeActions()
         {
-
             do
             {
-                DisplayHands();
                 isCompleted = false;
                 selectedAction = "";
                 if (ActionMenu == null)
                 {
                     ActionMenu = new UIMenu("Action", "Enter Action");
+                    SetupMenu(ActionMenu);
                     MenuPool.Add(ActionMenu);
-                    //List<string> actions = new List<string>() { "HIT", "STAND", "SURRENDER", "DOUBLE" };
-                    //UIMenuListScrollerItem<string> actionScroller = new UIMenuListScrollerItem<string>("Action", "Enter action", actions);//  { Value = Casino.MinimumBet };
-                    //actionScroller.Activated += (menu, item) =>
-                    //{
-                    //    action = actionScroller.SelectedItem;
-                    //    isCompleted = true;
-                    //    menu.Visible = false;
-                    //};
-                    //ActionMenu.AddItem(actionScroller);
-                    UIMenuItem hitAction = new UIMenuItem("Hit", "Do the hit action");
+                    UIMenuItem hitAction = new UIMenuItem("Hit", "Take another card.");
                     hitAction.Activated += (menu, item) =>
                     {
                         isCompleted = true;
                         selectedAction = "HIT";
                         menu.Visible = false;
-                        EntryPoint.WriteToConsole($"HIT ACTION RAN {selectedAction}");
                     };
                     ActionMenu.AddItem(hitAction);
-                    UIMenuItem standAction = new UIMenuItem("Stand", "Do the stand action");
+                    UIMenuItem standAction = new UIMenuItem("Stand", "Take no more cards; also known as \"stand pat\", \"sit\", \"stick\", or \"stay\".");
                     standAction.Activated += (menu, item) =>
                     {
                         isCompleted = true;
                         selectedAction = "STAND";
                         menu.Visible = false;
-                        EntryPoint.WriteToConsole($"STAND ACTION RAN {selectedAction}");
                     };
                     ActionMenu.AddItem(standAction);
-                    UIMenuItem surrenderAction = new UIMenuItem("Surrender", "Do the surrender action");
-                    surrenderAction.Activated += (menu, item) =>
-                    {
-                        isCompleted = true;
-                        selectedAction = "SURRENDER";
-                        menu.Visible = false;
-                        EntryPoint.WriteToConsole($"SURRENDER ACTION RAN {selectedAction}");
-                    };
-                    ActionMenu.AddItem(surrenderAction);
-                    UIMenuItem doubleAction = new UIMenuItem("Double", "Do the double action");
+
+                    UIMenuItem doubleAction = new UIMenuItem("Double Down", "Increase the initial bet by 100% and take exactly one more card.");
                     doubleAction.Activated += (menu, item) =>
                     {
                         isCompleted = true;
                         selectedAction = "DOUBLE";
                         menu.Visible = false;
-                        EntryPoint.WriteToConsole($"DOUBLE ACTION RAN {selectedAction}");
                     };
                     ActionMenu.AddItem(doubleAction);
+                    UIMenuItem splitAction = new UIMenuItem("Split", "Create two hands from a starting hand where both cards are the same value. Each new hand gets a second card resulting in two starting hands.");
+                    splitAction.Activated += (menu, item) =>
+                    {
+                        isCompleted = true;
+                        selectedAction = "SPLIT";
+                        menu.Visible = false;
+                    };
+                    if(!GamblingParameters.BlackJackCanSplit)
+                    {
+                        splitAction.Enabled = false;
+                    }
+                    splitAction.Enabled = false;//no logic for this yet
+
+                    ActionMenu.AddItem(splitAction);
+                    
+                    UIMenuItem surrenderAction = new UIMenuItem("Surrender", "Forfeit half the bet and end the hand immediately.");
+                    surrenderAction.Activated += (menu, item) =>
+                    {
+                        isCompleted = true;
+                        selectedAction = "SURRENDER";
+                        menu.Visible = false;
+                    };
+                    if (!GamblingParameters.BlackJackCanSurrender)
+                    {
+                        surrenderAction.Enabled = false;
+                    }
+                    ActionMenu.AddItem(surrenderAction);
+                    
                     UIMenuItem CancelGame = new UIMenuItem("Cancel", "Cancel current Game");
                     CancelGame.Activated += (menu, item) =>
                     {
                         isCompleted = false;
                         isCancelled = true;
                         menu.Visible = false;
-                        EntryPoint.WriteToConsole($"CANCEL RAN {selectedAction}");
                     };
                     ActionMenu.AddItem(CancelGame);
                 }
                 ActionMenu.Visible = true;
-                while (!isCompleted && !isCancelled && MenuPool.IsAnyMenuOpen())
-                {
-                    MenuPool.ProcessMenus();
-                    GameFiber.Yield();
-                }
-                EntryPoint.WriteToConsole($"ACTION: {selectedAction}");
-
+                ProcessMenuItems();
                 if(isCancelled)
                 {
                     return;
                 }
-
                 switch (selectedAction.ToUpper())
                 {
                     case "HIT":
-                        CasinoPlayer.Hand.Add(deck.DrawCard());
+                        Card drawnCard = deck.DrawCard();
+                        CasinoPlayer.Hand.Add(drawnCard);
+                        DisplayCustomMessage("Player ", $"Draws {drawnCard.Description()}~n~Hand Value: {CasinoPlayer.GetHandValue()}");
+                        StartDelay();
+                        //GameFiber.Sleep(DelayTime);
                         break;
                     case "STAND":
+                        DisplayCustomMessage("Player ", $"Stand at {CasinoPlayer.GetHandValue()}");
+                        //GameFiber.Sleep(DelayTime);
+                        StartDelay();
                         break;
                     case "SURRENDER":
                         CasinoPlayer.Hand.Clear();
                         break;
                     case "DOUBLE":
-                        if (ModPlayer.BankAccounts.GetMoney(false) <= CasinoPlayer.Bet)
+                        if (Player.BankAccounts.GetMoney(false) <= CasinoPlayer.Bet)
                         {
-                            CasinoPlayer.AddBet(ModPlayer.BankAccounts.GetMoney(false));
+                            CasinoPlayer.AddBet(Player.BankAccounts.GetMoney(false));
                         }
                         else
                         {
@@ -313,8 +448,7 @@ namespace Blackjack
                         CasinoPlayer.Hand.Add(deck.DrawCard());
                         break;
                     default:
-                        Game.RemoveNotification(notificationID);
-                        notificationID = Game.DisplayNotification("INVALID MOVE.");
+                        //DisplayCustomMessage("Alert", "Invalid Move");
                         break;
                 }
 
@@ -329,237 +463,166 @@ namespace Blackjack
                         }
                     }
                 }
-            } while (!selectedAction.ToUpper().Equals("STAND") && !selectedAction.ToUpper().Equals("DOUBLE")
-                && !selectedAction.ToUpper().Equals("SURRENDER") && CasinoPlayer.GetHandValue() <= 21 && !isCancelled);
+            } while (!selectedAction.ToUpper().Equals("STAND") && !selectedAction.ToUpper().Equals("DOUBLE") && !selectedAction.ToUpper().Equals("SURRENDER") && CasinoPlayer.GetHandValue() <= 21 && !isCancelled);
         }
-
-        private void DisplayHands()
-        {
-           // Game.DisplayNotification($"{player.WriteHand()} ~n~~n~{Dealer.WriteHand()}");
-        }
-
-        /// <summary>
-        /// Take player's bet
-        /// </summary>
-        /// <returns>Was the bet valid</returns>
-        private bool TakeBet()
-        {
-            if(ModPlayer.BankAccounts.GetMoney(false) < Casino.MinimumBet)
-            {
-                isCancelled = true;
-                Game.RemoveNotification(notificationID);
-                notificationID = Game.DisplayNotification($"You do not have enough money to start a game");
-                return false;
-            }
-
-            isCompleted = false;
-            isCancelled = false;
-            bet = 0;
-            if (BetMenu == null)
-            {
-                BetMenu = new UIMenu("Bet", "Enter Bet Amount");
-                MenuPool.Add(BetMenu);
-
-                int maxValue = Casino.MaximumBet;
-                if(ModPlayer.BankAccounts.GetMoney(false) < maxValue)
-                {
-                    maxValue = ModPlayer.BankAccounts.GetMoney(false);
-                }
-
-                betAmountScroller = new UIMenuNumericScrollerItem<int>("Bet Amount", "Enter Bet Amount for Hand", Casino.MinimumBet, maxValue, 1) { Value = Casino.MinimumBet };
-                betAmountScroller.Activated += (menu, item) =>
-                {
-                    bet = betAmountScroller.Value;
-                    isCompleted = true;
-                    menu.Visible = false;
-                    EntryPoint.WriteToConsole("BET AMOUNT RAN");
-                };
-                BetMenu.AddItem(betAmountScroller);
-                UIMenuItem CancelGame = new UIMenuItem("Cancel", "Cancel current Game");
-                CancelGame.Activated += (menu, item) =>
-                {
-                    isCancelled = true;
-                    menu.Visible = false;
-                };
-                BetMenu.AddItem(CancelGame);
-            }
-            else
-            {
-                int maxValue = Casino.MaximumBet;
-                if (ModPlayer.BankAccounts.GetMoney(false) < maxValue)
-                {
-                    maxValue = ModPlayer.BankAccounts.GetMoney(false);
-                }
-                betAmountScroller.Maximum = maxValue;
-                betAmountScroller.Value = Casino.MinimumBet;
-            }
-            BetMenu.Visible = true;
-            while(!isCompleted && !isCancelled && MenuPool.IsAnyMenuOpen())
-            {
-                MenuPool.ProcessMenus();
-                GameFiber.Yield();
-            }
-            if(isCompleted && !isCancelled)
-            {
-                EntryPoint.WriteToConsole("ADD BET RAN");
-                CasinoPlayer.AddBet(bet);
-                return true;
-            }
-            return false;
-        }
-        /// <summary>
-        /// Perform action based on result of round and start next round.
-        /// </summary>
-        /// <param name="result">The result of the round</param>
         private void EndRound(RoundResult result)
         {
+
+            EntryPoint.WriteToConsole($"END ROUND RAN {result}");
             switch (result)
             {
                 case RoundResult.PUSH:
                     CasinoPlayer.ReturnBet();
-                    Game.RemoveNotification(notificationID);
-                    notificationID = Game.DisplayNotification("Player and Dealer Push.");
+                    //DisplayCustomMessage("Result", "Player and Dealer Push.");
+                    BigMessage.MessageInstance.ShowColoredShard("Player and Dealer Push.", "", HudColor.Black, HudColor.Blue, DelayTime);
                     break;
                 case RoundResult.PLAYER_WIN:
-                    Game.RemoveNotification(notificationID);
-                    notificationID = Game.DisplayNotification("Player Wins $" + CasinoPlayer.WinBet(false));
+                    //DisplayCustomMessage("Result", "~g~Player Wins $" + CasinoPlayer.WinBet(false) + "~s~");
+                    ChooseSuccessSound();
+                    BigMessage.MessageInstance.ShowColoredShard("~g~Player Wins $" + CasinoPlayer.WinBet(false) + "~s~", "", HudColor.Black, HudColor.GreenDark, DelayTime);
                     break;
                 case RoundResult.PLAYER_BUST:
                     CasinoPlayer.ClearBet();
-                    Game.RemoveNotification(notificationID);
-                    notificationID = Game.DisplayNotification("Player Busts");
+                    ChooseErrorSound();
+                    //DisplayCustomMessage("Result", "~r~Player Busts~s~");
+                    BigMessage.MessageInstance.ShowColoredShard("~r~Player Busts~s~", "", HudColor.Black, HudColor.RedDark, DelayTime);
                     break;
                 case RoundResult.PLAYER_BLACKJACK:
-                    Game.RemoveNotification(notificationID);
-                    notificationID = Game.DisplayNotification("Player Wins $" + CasinoPlayer.WinBet(true) + " with Blackjack.");
+                    //DisplayCustomMessage("Result", "~g~Player Wins $" + CasinoPlayer.WinBet(true) + "~s~ with ~o~Blackjack.~s~");
+                    ChooseSuccessSound();
+                    BigMessage.MessageInstance.ShowColoredShard("~g~Player Wins $" + CasinoPlayer.WinBet(true) + "~s~ with ~o~Blackjack.~s~", "", HudColor.Black, HudColor.GreenDark, DelayTime);
                     break;
                 case RoundResult.DEALER_WIN:
                     CasinoPlayer.ClearBet();
-                    Game.RemoveNotification(notificationID);
-                    notificationID = Game.DisplayNotification("Dealer Wins.");
+                    ChooseErrorSound();
+                    //DisplayCustomMessage("Result", "~r~Dealer Wins.~s~");
+                    BigMessage.MessageInstance.ShowColoredShard("~r~Dealer Wins.~s~", "", HudColor.Black, HudColor.RedDark, DelayTime);
                     break;
                 case RoundResult.SURRENDER:
-                    Game.RemoveNotification(notificationID);
-                    notificationID = Game.DisplayNotification("Player Surrenders $" + (CasinoPlayer.Bet / 2) + "");
-                    ModPlayer.BankAccounts.GiveMoney(CasinoPlayer.Bet / 2, false);
+                    //DisplayCustomMessage("Result", "~o~Player Surrenders $" + (CasinoPlayer.Bet / 2) + "~s~");
+                    BigMessage.MessageInstance.ShowColoredShard("~o~Player Surrenders $" + (CasinoPlayer.Bet / 2) + "~s~", "", HudColor.Black, HudColor.Orange, DelayTime);
+                    ChooseErrorSound();
+                    Player.BankAccounts.GiveMoney(CasinoPlayer.Bet / 2, false);
                     CasinoPlayer.ClearBet();
                     break;
 
                 case RoundResult.CANCELLED:
-                    Game.RemoveNotification(notificationID);
-                    notificationID = Game.DisplayNotification("Player Cancelled");
+                    DisplayCustomMessage("Result", "Cancelled.");
                     CasinoPlayer.ClearBet();
                     break;
 
                 case RoundResult.INVALID_BET:
-                    Game.RemoveNotification(notificationID);
-                    notificationID = Game.DisplayNotification("Invalid Bet.");
+                    DisplayCustomMessage("Alert", "~y~Invalid Bet.~s~");
                     break;
             }
-
-            if (ModPlayer.BankAccounts.GetMoney(false) <= Casino.MinimumBet)
+            if (Player.BankAccounts.GetMoney(false) <= Casino.MinimumBet)
             {
-                GameFiber.Sleep(2500);
-                Game.RemoveNotification(notificationID);
-                notificationID = Game.DisplayNotification("You do not have the minimum required bet amount. You have completed " + (CasinoPlayer.HandsCompleted - 1) + " rounds.");
+                StartDelay();
+                //GameFiber.Sleep(DelayTime * 2);
+                DisplayCustomMessage("Minimum Bet ", "You do not have the minimum required bet amount. You have completed " + (CasinoPlayer.HandsCompleted - 1) + " rounds.");
                 isCancelled = true;
             }
-            if(isCancelled)
+            if (isCancelled)
             {
                 IsActive = false;
-                ModPlayer.IsTransacting = false;
+                Player.IsTransacting = false;
+                RemoveNotifications();
+                BigMessage.Fiber?.Abort();
                 return;
             }
             ShowHands = false;
-            GameFiber.Sleep(2000);
+            StartDelay();
+            //GameFiber.Sleep(DelayTime * 2);
             DoRound();
         }
-
-
-
+        private void ProcessMenuItems()
+        {
+            while (!isCompleted && !isCancelled && MenuPool.IsAnyMenuOpen())
+            {
+                MenuPool.ProcessMenus();
+                GameFiber.Yield();
+            }
+        }
+        private void OnCannotMakeMinBet()
+        {
+            DisplayCustomMessage("Alert", $"You do not have enough money to start a game");
+        }
+        private void DisplayCustomMessage(string header, string message)
+        {
+            if (GameLocation != null)
+            {
+                if (string.IsNullOrEmpty(header))
+                {
+                    header = "Message";
+                }
+                GameLocation.DisplayMessage(header, message);
+            }
+            else
+            {
+                Game.RemoveNotification(notificationID);
+                if (string.IsNullOrEmpty(header))
+                {
+                    notificationID = Game.DisplayNotification($"{message}");
+                }
+                else
+                {
+                    notificationID = Game.DisplayNotification($"{header} {message}");
+                }
+            }
+        }
+        private void ChooseSuccessSound()
+        {
+            if(GameLocation != null)
+            {
+                GameLocation.PlaySuccessSound();
+            }
+            else
+            {
+                NativeHelper.PlaySuccessSound();
+            }
+        }
+        private void ChooseErrorSound()
+        {
+            if (GameLocation != null)
+            {
+                GameLocation.PlayErrorSound();
+            }
+            else
+            {
+                NativeHelper.PlayErrorSound();
+            }
+        }
+        private void CreateUI()
+        {
+            if(IsUICreated)
+            {
+                return;
+            }
+            GameFiber DoorWatcher = GameFiber.StartNew(delegate
+            {
+                IsUICreated = true;
+                while (IsActive && !isCancelled)
+                {
+                    DisplayGameStats();
+                    GameFiber.Yield();
+                }
+                IsUICreated = false;
+            }, "DoorWatcher");
+        }
         private void DisplayGameStats()
         {
             if (ShowNoStats)
             {
                 return;
             }
-
-            float StartingPosition = Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionX + 0.2f;
-            DrawMainStats(StartingPosition += Settings.SettingsManager.LSRHUDSettings.TopDisplaySpacing);
-
-            if(!ShowHands)
+            float StartingPosition = Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayPositionX + Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayPositionXMediumOffset;// 0.2f;
+            NativeHelper.DisplayTextOnScreen($"Current Bet: ${CasinoPlayer.Bet} Wins: ~g~{CasinoPlayer.Wins}~s~ Hands: {CasinoPlayer.HandsCompleted}", StartingPosition, Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayScale, Color.White, (GTAFont)Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayFont, (GTATextJustification)2, true);
+            if (!ShowHands)
             {
                 return;
             }
-
-            DrawPlayerHand(StartingPosition += Settings.SettingsManager.LSRHUDSettings.TopDisplaySpacing);
-            DrawDealerHand(StartingPosition += Settings.SettingsManager.LSRHUDSettings.TopDisplaySpacing);
-        }
-
-        private void DrawDealerHand(float pos)
-        {
-            DisplayTextOnScreen(Dealer.WriteHand(), pos, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, false);
-        }
-
-        private void DrawPlayerHand(float pos)
-        {
-            DisplayTextOnScreen(CasinoPlayer.WriteHand(), pos, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, false);
-        }
-
-        private void DrawMainStats(float pos)
-        {
-            string MainStats = $"Bet: {CasinoPlayer.Bet} Wins: {CasinoPlayer.Wins} Hands: {CasinoPlayer.HandsCompleted}";
-            DisplayTextOnScreen(MainStats, pos, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, false);
-        }
-
-        private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, bool outline)
-        {
-            DisplayTextOnScreen(TextToShow, X, Y, Scale, TextColor, Font, Justification, outline, 255);
-        }
-        private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, bool outline, int alpha)
-        {
-            try
-            {
-                if (TextToShow == "" || alpha == 0 || TextToShow is null)
-                {
-                    return;
-                }
-                NativeFunction.Natives.SET_TEXT_FONT((int)Font);
-                NativeFunction.Natives.SET_TEXT_SCALE(Scale, Scale);
-                NativeFunction.Natives.SET_TEXT_COLOUR((int)TextColor.R, (int)TextColor.G, (int)TextColor.B, alpha);
-
-                NativeFunction.Natives.SetTextJustification((int)Justification);
-
-                NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
-
-                if (outline)
-                {
-                    NativeFunction.Natives.SET_TEXT_OUTLINE(true);
-
-
-                    NativeFunction.Natives.SET_TEXT_EDGE(1, 0, 0, 0, 255);
-                }
-                NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
-                //NativeFunction.Natives.SetTextDropshadow(20, 255, 255, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
-                //NativeFunction.Natives.SetTextJustification((int)GTATextJustification.Center);
-                if (Justification == GTATextJustification.Right)
-                {
-                    NativeFunction.Natives.SET_TEXT_WRAP(0f, Y);
-                }
-                else
-                {
-                    NativeFunction.Natives.SET_TEXT_WRAP(0f, 1f);
-                }
-                NativeFunction.Natives.x25fbb336df1804cb("STRING"); //NativeFunction.Natives.x25fbb336df1804cb("STRING");
-                                                                    //NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
-                NativeFunction.Natives.x6C188BE134E074AA(TextToShow);
-                NativeFunction.Natives.xCD015E5BB0D96A57(Y, X);
-            }
-            catch (Exception ex)
-            {
-                EntryPoint.WriteToConsole($"UI ERROR {ex.Message} {ex.StackTrace}", 0);
-            }
-            //return;
-        }
+            NativeHelper.DisplayTextOnScreen(CasinoPlayer.WriteHand(), StartingPosition += Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplaySpacing, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayScale, Color.White, (GTAFont)Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayFont, (GTATextJustification)2, true);
+            NativeHelper.DisplayTextOnScreen(Dealer.WriteHand(), StartingPosition += Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplaySpacing, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayScale, Color.White, (GTAFont)Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayFont, (GTATextJustification)2, true);
+        }       
     }
 }

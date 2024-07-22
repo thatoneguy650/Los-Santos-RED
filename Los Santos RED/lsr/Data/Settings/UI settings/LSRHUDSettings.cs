@@ -94,6 +94,17 @@ public class LSRHUDSettings : ISettingsDefaultable
     public bool TopDisplayShowWeapon { get; set; }
     public bool TopDisplayWeaponSimpleSelector { get; set; }
 
+
+
+
+    public float ExtraTopDisplayPositionX { get; set; }
+    public float ExtraTopDisplayPositionY { get; set; }
+    public float ExtraTopDisplayScale { get; set; }
+    public float ExtraTopDisplaySpacing { get; set; }
+    public float ExtraTopDisplayPositionXMediumOffset { get; set; }
+    public int ExtraTopDisplayFont { get; set; }
+
+
     //public float LowerDisplayPositionX { get; set; }
     //public float LowerDisplayPositionY { get; set; }
     //public float LowerDisplayScale { get; set; }
@@ -105,6 +116,8 @@ public class LSRHUDSettings : ISettingsDefaultable
     public bool ShowStaminaDisplay { get; set; }
     public bool ShowIntoxicationDisplay { get; set; }
     public bool ShowSearchModeDisplay { get; set; }
+
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -192,6 +205,19 @@ public class LSRHUDSettings : ISettingsDefaultable
         TopDisplayScale = 0.65f;
         TopDisplaySpacing = 0.035f;
 
+        
+
+        //Extra
+        ExtraTopDisplayPositionX = 0.0175f;
+        ExtraTopDisplayPositionY = 0.985f;
+        ExtraTopDisplayScale = 0.8f;
+        ExtraTopDisplaySpacing = 0.07f;
+        ExtraTopDisplayPositionXMediumOffset = 0.4f;
+
+        ExtraTopDisplayFont = 4;
+
+
+
 
         //Lower Display
         //LowerDisplayPositionX = 0.93f;
@@ -216,6 +242,5 @@ public class LSRHUDSettings : ISettingsDefaultable
         ZoneDisplayShowState = false;
         ZoneDisplayShowBorough = true;
         ZoneDisplayShowCounty = true;
-
     }
 }

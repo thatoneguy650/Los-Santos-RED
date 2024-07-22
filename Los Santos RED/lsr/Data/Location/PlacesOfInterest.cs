@@ -50,6 +50,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     private List<Bar> Bars;
     private List<FoodStand> FoodStands;
     private List<Forger> Forgers;
+    private List<GamblingDen> GamblingDens;
     private List<RepairGarage> RepairGarages;
     private List<IllicitMarketplace> illicitMarketplaces;
     private List<Dealership> Dealerships;
@@ -201,6 +202,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         DefaultConfig_Dealerships();
         DefaultConfig_VehicleExporters();
         DefaultConfig_Forgers();
+        DefaultConfig_GamblingDens();
         DefaultConfig_PayNSprays();
 
         DefaultConfig_DriveThrus();
@@ -243,6 +245,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.CarDealerships.AddRange(Dealerships);
         PossibleLocations.VehicleExporters.AddRange(VehicleExporters);
         PossibleLocations.Forgers.AddRange(Forgers);
+        PossibleLocations.GamblingDens.AddRange(GamblingDens);
         PossibleLocations.RepairGarages.AddRange(RepairGarages);
         PossibleLocations.DriveThrus.AddRange(DriveThrus);
         PossibleLocations.ClothingShops.AddRange(ClothingShops);
@@ -1120,6 +1123,24 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
 
         
+    }
+    private void DefaultConfig_GamblingDens()
+    {
+        GamblingDens = new List<GamblingDen>()
+        {     
+            new GamblingDen(new Vector3(-358.2999f, 91.13467f, 70.5202f), 267.5716f,"The Hush Casino","We'll take care of you Win or Lose!")
+            {
+                GamblingParameters = new GamblingParameters()
+                {
+                    DealerName = "The House",
+                    BlackJackMinBet = 50,
+                    BlackJackMaxBet = 5000, 
+                },
+                CameraPosition = new Vector3(-338.0188f, 40.86187f, 81.43283f), 
+                CameraDirection = new Vector3(-0.3936391f, 0.8768913f, -0.2758803f),
+                CameraRotation = new Rotator(-16.01448f, 1.154718E-05f, 24.17545f),
+            }
+        };
     }
     private void DefaultConfig_PayNSprays()
     {
@@ -5492,6 +5513,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         OldPossibleLocations.FoodStands.AddRange(FoodStands);
         OldPossibleLocations.CarDealerships.AddRange(Dealerships);
         OldPossibleLocations.VehicleExporters.AddRange(VehicleExporters);
+        OldPossibleLocations.GamblingDens.AddRange(GamblingDens);
         OldPossibleLocations.Forgers.AddRange(Forgers);
         OldPossibleLocations.RepairGarages.AddRange(RepairGarages);
         OldPossibleLocations.DriveThrus.AddRange(DriveThrus);

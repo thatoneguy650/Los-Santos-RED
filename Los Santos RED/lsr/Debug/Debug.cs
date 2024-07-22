@@ -1131,7 +1131,7 @@ public class Debug
 
             while (true)
             {
-                BlackJackGameInternal blackJackGameInternal = new BlackJackGameInternal(Player, Settings);
+                BlackJackGameInternal blackJackGameInternal = new BlackJackGameInternal(Player, Settings, false, null, new GamblingParameters());
                 blackJackGameInternal.StartRound();
 
                 if(!blackJackGameInternal.IsActive)

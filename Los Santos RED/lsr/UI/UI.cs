@@ -83,7 +83,7 @@ public class UI : IMenuProvideable
         Tasker = tasker;
         World = world;
         LocationTypes = locationTypes;
-        BigMessage = new BigMessageThread(true);
+        //BigMessage = new BigMessageThread(true);
         MenuPool = new MenuPool();
         TimerBarPool = new TimerBarPool();
         DeathMenu = new DeathMenu(MenuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
@@ -297,6 +297,8 @@ public class UI : IMenuProvideable
                 }
                 if (Settings.SettingsManager.UIGeneralSettings.DisplayWastedMessage)
                 {
+                    BigMessage?.Fiber?.Abort();
+                    BigMessage = new BigMessageThread(true);
                     BigMessage.MessageInstance.ShowColoredShard(Settings.SettingsManager.UIGeneralSettings.WastedMessageText, "", HudColor.Black, HudColor.RedDark, 2000);
                 }
                 StartedDeathEffect = true;
@@ -328,6 +330,8 @@ public class UI : IMenuProvideable
                 }
                 if (Settings.SettingsManager.UIGeneralSettings.DisplayBustedMessage)
                 {
+                    BigMessage?.Fiber?.Abort();
+                    BigMessage = new BigMessageThread(true);
                     BigMessage.MessageInstance.ShowColoredShard(DisplayablePlayer.IsNotWanted ? Settings.SettingsManager.UIGeneralSettings.DetainedMessageText : Settings.SettingsManager.UIGeneralSettings.BustedMessageText, "", HudColor.Black, HudColor.Blue, 2000);
                 }
                 StartedBustedEffect = true;
@@ -347,6 +351,13 @@ public class UI : IMenuProvideable
             //{
             //    BigMessage.MessageInstance.Dispose();
             //}
+
+
+            if(StartedBustedEffect || StartedDeathEffect)
+            {
+                BigMessage.Fiber?.Abort();
+                EntryPoint.WriteToConsole("REMOVE FIBER RAN!");
+            }
             StartedBustedEffect = false;
             StartedDeathEffect = false;
             if (Settings.SettingsManager.UIGeneralSettings.AllowScreenEffectReset && IsShowingCustomOverlay)

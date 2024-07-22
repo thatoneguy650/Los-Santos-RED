@@ -349,7 +349,7 @@ namespace Mod
         public bool IsOnBicycle { get; private set; }
         public bool IsIncapacitated => IsStunned || IsRagdoll;
         public bool IsInCover { get; private set; }
-
+        public ICasinoGamePlayable CasinoGamePlayer => this;
         public bool IsInCombat { get; private set; }
 
         public bool IsInFirstPerson { get; private set; }

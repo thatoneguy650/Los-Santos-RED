@@ -123,7 +123,7 @@ public class Forger : GameLocation
         if (HasBannerImage)
         {
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
-            IDSubMenu.SetBannerType(BannerImage);
+            MarkedCashSubMenu.SetBannerType(BannerImage);
         }
         AddMoneyClean();
     }
