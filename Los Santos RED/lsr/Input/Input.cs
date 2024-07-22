@@ -241,7 +241,7 @@ namespace LosSantosRED.lsr
             }
 
 
-            if (!RecentlyPressedGroupModeToggle && (IsPressingGroupModeToggle || Player.ButtonPrompts.IsPressed("ToggleGroupMode")))
+            if (!RecentlyPressedGroupModeToggle && Player.GroupManager.MemberCount > 0 && (IsPressingGroupModeToggle || Player.ButtonPrompts.IsPressed("ToggleGroupMode")))
             {
                 EntryPoint.WriteToConsole("INPUT TOGGLE GROUP MODE RAN");
                 Player.GroupManager.ToggleMode();

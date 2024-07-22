@@ -56,6 +56,9 @@ namespace Blackjack
         private GameLocation GameLocation;
         private GamblingParameters GamblingParameters;
         private int LastBet;
+        private bool isPaused;
+        private uint lastGameTime;
+
 
         public BlackJackGameInternal(ICasinoGamePlayable player, ISettingsProvideable settings, bool enableAnimations, GameLocation gameLocation, GamblingParameters gamblingParameters)
         {
@@ -87,7 +90,7 @@ namespace Blackjack
             Casino = new Casino(GamblingParameters.BlackJackMinBet,GamblingParameters.BlackJackMaxBet);
             Dealer = new Dealer(GamblingParameters.DealerName);
             MenuPool = new MenuPool();
-
+            SetupTextures();
             BigMessage = new BigMessageThread(true);
             DoRound();
         }
@@ -528,6 +531,12 @@ namespace Blackjack
                 Player.IsTransacting = false;
                 RemoveNotifications();
                 BigMessage.Fiber?.Abort();
+                if(BigMessage != null && BigMessage.MessageInstance != null)
+                {
+                    BigMessage.MessageInstance.Dispose();
+                }
+                ReleaseTextures();
+                Game.RawFrameRender -= DrawSprites;
                 return;
             }
             ShowHands = false;
@@ -535,6 +544,12 @@ namespace Blackjack
             //GameFiber.Sleep(DelayTime * 2);
             DoRound();
         }
+
+        private void ReleaseTextures()
+        {
+
+        }
+
         private void ProcessMenuItems()
         {
             while (!isCompleted && !isCancelled && MenuPool.IsAnyMenuOpen())
@@ -603,6 +618,8 @@ namespace Blackjack
                 IsUICreated = true;
                 while (IsActive && !isCancelled)
                 {
+                    isPaused = lastGameTime == Game.GameTime;
+                    lastGameTime = Game.GameTime;
                     DisplayGameStats();
                     GameFiber.Yield();
                 }
@@ -623,6 +640,108 @@ namespace Blackjack
             }
             NativeHelper.DisplayTextOnScreen(CasinoPlayer.WriteHand(), StartingPosition += Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplaySpacing, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayScale, Color.White, (GTAFont)Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayFont, (GTATextJustification)2, true);
             NativeHelper.DisplayTextOnScreen(Dealer.WriteHand(), StartingPosition += Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplaySpacing, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayScale, Color.White, (GTAFont)Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayFont, (GTATextJustification)2, true);
-        }       
+        }
+        private void DrawSprites(object sender, GraphicsEventArgs args)
+        {
+            try
+            {
+                if (isPaused)
+                {
+                    return;
+                }
+                GetStuff(args);
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole($"UI: Draw ERROR {ex.Message} {ex.StackTrace} ", 0);
+            }
+        }
+        private void GetStuff(GraphicsEventArgs args)
+        {
+            if (isPaused || !EntryPoint.ModController.IsRunning)
+            {
+                return;
+            }
+            if(!ShowHands)
+            {
+                return;
+            }
+            float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
+            float InitialPosX = Game.Resolution.Width * (Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayIconPositionX);//Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayPositionY;
+            float InitialPosY = Game.Resolution.Height * (Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayIconPositionY);
+            float SecondPosY = Game.Resolution.Height * (Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayIconPositionY + Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayIconSpacing);
+            DisplayCardIcons(args, InitialPosX, InitialPosY, SecondPosY, ConsistencyScale * Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayIconScale);
+        }
+        private void DisplayCardIcons(GraphicsEventArgs args, float InitialPosX, float InitialPosY, float secondPosY, float Scale)
+        {
+            int DisplayedCards = 1;
+            foreach(Card card in CasinoPlayer.Hand)
+            {
+                Texture toShow = GetTextureFromCard(card);
+                if (toShow == null || toShow.Size == null)
+                {
+                    continue;
+                }
+                float FinalPosX = InitialPosX - (DisplayedCards * ((toShow.Size.Width - Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayIconSpacingPixelReduction) * Scale));//InitialPosX - (i * (toShow.Size.Width * Scale));
+                float FinalPosY = InitialPosY;
+                if (toShow == null || toShow.Size == null)
+                {
+                    continue;
+                }
+                RectangleF rectangleF = new RectangleF(FinalPosX, FinalPosY, toShow.Size.Width * Scale, toShow.Size.Height * Scale);
+                args.Graphics.DrawTexture(toShow, rectangleF);
+                DisplayedCards++;
+            }
+            DisplayedCards = 1;
+            foreach (Card card in Dealer.HiddenCards)
+            {
+                Texture toShow = Player.UnknownCardTexture;
+                if (toShow == null || toShow.Size == null)
+                {
+                    continue;
+                }
+                float FinalPosX = InitialPosX - (DisplayedCards * ((toShow.Size.Width - Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayIconSpacingPixelReduction) * Scale));//InitialPosX - (i * (toShow.Size.Width * Scale));
+                float FinalPosY = secondPosY;// InitialPosY + Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayIconSpacing;
+                if (toShow == null || toShow.Size == null)
+                {
+                    continue;
+                }
+                RectangleF rectangleF = new RectangleF(FinalPosX, FinalPosY, toShow.Size.Width * Scale, toShow.Size.Height * Scale);
+                args.Graphics.DrawTexture(toShow, rectangleF);
+                DisplayedCards++;
+            }
+            foreach (Card card in Dealer.RevealedCards)
+            {
+                Texture toShow = GetTextureFromCard(card);
+                if (toShow == null || toShow.Size == null)
+                {
+                    continue;
+                }
+                float FinalPosX = InitialPosX - (DisplayedCards * ((toShow.Size.Width - Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayIconSpacingPixelReduction) * Scale));//InitialPosX - (i * (toShow.Size.Width * Scale));
+                float FinalPosY = secondPosY;// InitialPosY + Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayIconSpacing;
+                if (toShow == null || toShow.Size == null)
+                {
+                    continue;
+                }
+                RectangleF rectangleF = new RectangleF(FinalPosX, FinalPosY, toShow.Size.Width * Scale, toShow.Size.Height * Scale);
+                args.Graphics.DrawTexture(toShow, rectangleF);
+                DisplayedCards++;
+            }
+        }
+        private Texture GetTextureFromCard(Card card)
+        {
+            Tuple<Card, Texture> returned = Player.CardIconList.Where(x => x.Item1.Face == card.Face && x.Item1.Suit == card.Suit).FirstOrDefault();
+            if(returned == null)
+            {
+                EntryPoint.WriteToConsole($"{card.Face} {card.Suit} NOT FOUND");
+                return null;
+            }
+            return returned.Item2;
+        }
+        private void SetupTextures()
+        {
+            Player.SetupSharedTextures();
+            Game.RawFrameRender += DrawSprites;
+        }
     }
 }

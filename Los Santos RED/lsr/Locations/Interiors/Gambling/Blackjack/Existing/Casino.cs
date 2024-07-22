@@ -89,11 +89,19 @@ namespace Blackjack
             }
             string toReturn = $"~b~{Name}:~s~ ({GetHandValue()})";
             int i = 0;
-            foreach (Card card in Hand)
+            //foreach (Card card in Hand)
+            //{
+            //    toReturn = toReturn + (i == 0 ? " " : ", ") + card.Description();
+            //    i++;
+            //}
+
+            for (int i3 = Hand.Count - 1; i3 >= 0; i3--)
             {
-                toReturn = toReturn + (i == 0 ? " " : ", ") + card.Description();
+                toReturn = toReturn + (i == 0 ? " " : ", ") + Hand[i3].Description();
                 i++;
             }
+
+
             return toReturn;
         }
         public string PrintCards()
@@ -104,11 +112,18 @@ namespace Blackjack
             }
             string toReturn = $"";
             int i = 0;
-            foreach (Card card in Hand)
+            //foreach (Card card in Hand)
+            //{
+            //    toReturn = toReturn + (i == 0 ? " " : "~n~") + card.Description();
+            //    i++;
+            //}
+
+            for (int i3 = Hand.Count - 1; i3 >= 0; i3--)
             {
-                toReturn = toReturn + (i == 0 ? " " : "~n~") + card.Description();
+                toReturn = toReturn + (i == 0 ? " " : "~n~") + Hand[i3].Description();
                 i++;
             }
+
             return toReturn;
         }
     }
@@ -120,6 +135,18 @@ namespace Blackjack
         }
 
         public string Name { get; set; }
+
+        public List<Card> TotalCards
+        {
+            get
+            {
+                List<Card> totalList = new List<Card>();
+                totalList.AddRange(HiddenCards);
+                totalList.AddRange(RevealedCards);
+                return TotalCards;
+            }
+        }
+
         public List<Card> HiddenCards { get; set; } = new List<Card>();
         public List<Card> RevealedCards { get; set; } = new List<Card>();
         public Card RevealCard()
@@ -142,11 +169,19 @@ namespace Blackjack
         {
             string toReturn = $"~o~{Name}:~s~ ({GetHandValue()})";
             int i2 = 0;
-            foreach (Card card in RevealedCards)
+            //foreach (Card card in RevealedCards)
+            //{
+            //    toReturn = toReturn + (i2 == 0 ? " " : ", ") + card.Description();
+            //    i2++;
+            //}
+
+            for (int i3 = RevealedCards.Count - 1; i3 >= 0; i3--)
             {
-                toReturn = toReturn + (i2 == 0 ? " " : ", ") + card.Description();
+                toReturn = toReturn + (i2 == 0 ? " " : ", ") + RevealedCards[i3].Description();
                 i2++;
             }
+
+
             for (int i = 0; i < HiddenCards.Count; i++)
             {
                 toReturn = toReturn + ", ~o~?~s~";

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Blackjack;
+using Rage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +14,9 @@ namespace LosSantosRED.lsr.Interface
         BankAccounts BankAccounts { get; }
         string PlayerName { get; }
         bool IsMoveControlPressed { get; }
+        List<Tuple<Card, Texture>> CardIconList { get; }
+        Texture UnknownCardTexture { get; }
+
+        void SetupSharedTextures();
     }
 }

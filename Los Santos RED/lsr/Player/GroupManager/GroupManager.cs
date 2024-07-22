@@ -208,6 +208,10 @@ public class GroupManager
 
     public void ToggleMode()
     {
+        if(MemberCount == 0)
+        {
+            return;
+        }
         selectedMode++;
         if(selectedMode >= 3)
         {

@@ -1,4 +1,5 @@
-﻿using ExtensionsMethods;
+﻿using Blackjack;
+using ExtensionsMethods;
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
@@ -96,6 +97,7 @@ namespace Mod
         private bool prevIsSleeping;
         private uint KillerHandle;
         private bool HasThrownInTunnel;
+        private bool HasSetupSharedTextures;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -488,6 +490,10 @@ namespace Mod
         public Dispatcher Dispatcher { get; set; }
         public bool IsBlockingTraffic { get; set; }
 
+        public Texture UnknownCardTexture { get; set; }
+        public List<Tuple<Card, Texture>> CardIconList { get; set; } = new List<Tuple<Card, Texture>>();
+
+
         //Required
         public void Setup()
         {
@@ -560,6 +566,96 @@ namespace Mod
                 bl.SetupPlayer(this);
             }
         }
+
+        public void SetupSharedTextures()
+        {
+            if(HasSetupSharedTextures)
+            {
+                return;
+            }
+            HasSetupSharedTextures = true;
+            UnknownCardTexture = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\cards\\unknown.png");
+            CardIconList = new List<Tuple<Card, Texture>>();
+            List<string> suits = new List<string>() { "diamonds", "spade", "hearts", "club" };
+            foreach (string suitName in suits)
+            {
+                for (int faceValue = 2; faceValue <= 14; faceValue++)
+                {
+                    Suit chosenSuit = suitName == "hearts" ? Suit.Hearts : suitName == "diamonds" ? Suit.Diamonds : suitName == "spade" ? Suit.Spades : suitName == "club" ? Suit.Clubs : Suit.Hearts;
+                    Face choseFace = Face.Two;
+                    string filePrefix = faceValue.ToString();
+                    if (faceValue == 2)
+                    {
+                        choseFace = Face.Two;
+                        filePrefix = "2";
+                    }
+                    else if (faceValue == 3)
+                    {
+                        choseFace = Face.Three;
+                        filePrefix = "3";
+                    }
+                    else if (faceValue == 4)
+                    {
+                        choseFace = Face.Four;
+                        filePrefix = "4";
+                    }
+                    else if (faceValue == 5)
+                    {
+                        choseFace = Face.Five;
+                        filePrefix = "5";
+                    }
+                    else if (faceValue == 6)
+                    {
+                        choseFace = Face.Six;
+                        filePrefix = "6";
+                    }
+                    else if (faceValue == 7)
+                    {
+                        choseFace = Face.Seven;
+                        filePrefix = "7";
+                    }
+                    else if (faceValue == 8)
+                    {
+                        choseFace = Face.Eight;
+                        filePrefix = "8";
+                    }
+                    else if (faceValue == 9)
+                    {
+                        choseFace = Face.Nine;
+                        filePrefix = "9";
+                    }
+                    else if (faceValue == 10)
+                    {
+                        choseFace = Face.Ten;
+                        filePrefix = "10";
+                    }
+                    else if (faceValue == 11)
+                    {
+                        choseFace = Face.Jack;
+                        filePrefix = "J";
+                    }
+                    else if (faceValue == 12)
+                    {
+                        choseFace = Face.Queen;
+                        filePrefix = "Q";
+                    }
+                    else if (faceValue == 13)
+                    {
+                        choseFace = Face.King;
+                        filePrefix = "K";
+                    }
+                    else if (faceValue == 14)
+                    {
+                        choseFace = Face.Ace;
+                        filePrefix = "A";
+                    }
+                    string fileSuffix = suitName;
+                    Card myCard = new Card(chosenSuit, choseFace);
+                    CardIconList.Add(new Tuple<Card, Texture>(myCard, Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\cards\\{filePrefix}_{fileSuffix}.png")));
+                }
+            }
+        }
+
         public void Update()
         {
             UpdateVehicleData();

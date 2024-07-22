@@ -1128,7 +1128,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         GamblingDens = new List<GamblingDen>()
         {     
-            new GamblingDen(new Vector3(-358.2999f, 91.13467f, 70.5202f), 267.5716f,"The Hush Casino","We'll take care of you Win or Lose!")
+            new GamblingDen(new Vector3(-358.2999f, 91.13467f, 70.5202f), 267.5716f,"The Hush Casino","We'll take care of you Win or Lose!")//Scatino Casino, Davey's Dive
             {
                 GamblingParameters = new GamblingParameters()
                 {

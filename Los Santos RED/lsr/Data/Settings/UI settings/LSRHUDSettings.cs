@@ -105,6 +105,14 @@ public class LSRHUDSettings : ISettingsDefaultable
     public int ExtraTopDisplayFont { get; set; }
 
 
+    public float ExtraTopDisplayIconPositionX { get; set; }
+    public float ExtraTopDisplayIconPositionY { get; set; }
+    public float ExtraTopDisplayIconSpacing { get; set; }
+    public float ExtraTopDisplayIconScale { get; set; }
+    public float ExtraTopDisplayIconSpacingPixelReduction { get; set; }
+
+
+
     //public float LowerDisplayPositionX { get; set; }
     //public float LowerDisplayPositionY { get; set; }
     //public float LowerDisplayScale { get; set; }
@@ -211,12 +219,17 @@ public class LSRHUDSettings : ISettingsDefaultable
         ExtraTopDisplayPositionX = 0.0175f;
         ExtraTopDisplayPositionY = 0.985f;
         ExtraTopDisplayScale = 0.8f;
-        ExtraTopDisplaySpacing = 0.07f;
+        ExtraTopDisplaySpacing = 0.12f;// 0.07f;
         ExtraTopDisplayPositionXMediumOffset = 0.4f;
 
         ExtraTopDisplayFont = 4;
 
+        ExtraTopDisplayIconPositionX = 0.98f;// 0.985f;
+        ExtraTopDisplayIconPositionY = 0.6f;// 0.52f;// 0.0175f;
 
+        ExtraTopDisplayIconScale = 0.5f;
+        ExtraTopDisplayIconSpacingPixelReduction = 10f;
+        ExtraTopDisplayIconSpacing = 0.12f;
 
 
         //Lower Display
