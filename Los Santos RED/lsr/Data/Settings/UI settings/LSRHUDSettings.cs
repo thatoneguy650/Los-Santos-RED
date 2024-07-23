@@ -220,12 +220,12 @@ public class LSRHUDSettings : ISettingsDefaultable
         ExtraTopDisplayPositionY = 0.985f;
         ExtraTopDisplayScale = 0.8f;
         ExtraTopDisplaySpacing = 0.12f;// 0.07f;
-        ExtraTopDisplayPositionXMediumOffset = 0.4f;
+        ExtraTopDisplayPositionXMediumOffset = 0.2f;
 
         ExtraTopDisplayFont = 4;
 
         ExtraTopDisplayIconPositionX = 0.98f;// 0.985f;
-        ExtraTopDisplayIconPositionY = 0.6f;// 0.52f;// 0.0175f;
+        ExtraTopDisplayIconPositionY = 0.4f;// 0.52f;// 0.0175f;
 
         ExtraTopDisplayIconScale = 0.5f;
         ExtraTopDisplayIconSpacingPixelReduction = 10f;

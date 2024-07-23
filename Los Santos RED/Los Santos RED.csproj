@@ -181,7 +181,7 @@
     <Compile Include="lsr\Locations\Interiors\Barber\SalonInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\BlackJackInteract.cs" />
-    <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\Existing\BlackJackGameInternal.cs" />
+    <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\Existing\BlackJackGame.cs" />
     <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\Existing\Card.cs" />
     <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\Existing\Casino.cs" />
     <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\Existing\Deck.cs" />

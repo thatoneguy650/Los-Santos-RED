@@ -137,11 +137,11 @@ public class GamblingDen : GameLocation
     {
         if(Player.BankAccounts.GetMoney(false) < GamblingParameters.BlackJackMinBet)
         {
-            DisplayMessage("Error","You do not have enought cash on hand to play.");
+            DisplayMessage("Error","You do not have enough cash on hand to play.");
             PlayErrorSound();
             return;
         }
-        BlackJackGameInternal blackJackGameInternal = new BlackJackGameInternal(Player.CasinoGamePlayer, Settings, false, this, GamblingParameters);
+        BlackJackGame blackJackGameInternal = new BlackJackGame(Player.CasinoGamePlayer, Settings, false, this, GamblingParameters);
         blackJackGameInternal.StartRound();
     }
 }
