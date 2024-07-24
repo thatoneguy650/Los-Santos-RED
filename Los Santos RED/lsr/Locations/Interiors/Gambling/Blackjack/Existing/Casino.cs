@@ -224,6 +224,11 @@ namespace Blackjack
             {
                 hand.Cards.Remove(selectedCard);
                 SplitHands.Add(new Hand() { HandBet = Bet, Cards = new List<Card>() { selectedCard } });
+
+                CasinoGamePlayable.BankAccounts.GiveMoney(-1 * Bet, false);
+                TotalMoneyBet += Bet;
+
+
                 return true;
             }
             return false;

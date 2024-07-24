@@ -127,7 +127,7 @@ public class DispatchablePeople_Mafia
             OverrideVoice = DefaultVoicesMale,
             RequiredVariation = new PedVariation(new List<PedComponent>() 
             {
-                new PedComponent(3, 3, 0, 0),
+                new PedComponent(3, 5, 0, 0),//3,3
                 new PedComponent(4, 10, 0, 0),
                 new PedComponent(6, 21, 0, 0),
                 new PedComponent(7, 0, 0, 0),
@@ -156,8 +156,7 @@ public class DispatchablePeople_Mafia
 
                 //Pants
                 new PedComponent(4, 10, 1, 0),
-                new PedComponent(4, 10, 3, 0),
-                new PedComponent(4, 10, 4, 0),
+                new PedComponent(4, 10, 2, 0),
             },
             OptionalComponentChance = optionalComponentDefault,
         };
@@ -185,8 +184,7 @@ public class DispatchablePeople_Mafia
 
                 //Pants
                 new PedComponent(4, 10, 1, 0),
-                new PedComponent(4, 10, 3, 0),
-                new PedComponent(4, 10, 4, 0),
+                new PedComponent(4, 10, 2, 0),
             },
             OptionalComponentChance = optionalComponentDefault,
         };
@@ -198,7 +196,7 @@ public class DispatchablePeople_Mafia
             OverrideVoice = DefaultVoicesMale,
             RequiredVariation = new PedVariation(new List<PedComponent>() 
             {
-                new PedComponent(3, 3, 0, 0),
+                new PedComponent(3, 6, 0, 0),//3,3
                 new PedComponent(4, 13, 0, 0),
                 new PedComponent(6, 30, 0, 0),
                 new PedComponent(7, 0, 0, 0),
@@ -249,16 +247,16 @@ public class DispatchablePeople_Mafia
                 new PedComponent(6, 10, 0, 0),
                 new PedComponent(7, 0, 0, 0),
                 new PedComponent(8, 10, 14, 0),
-                new PedComponent(11, 38, 0, 0),
+                new PedComponent(11, 508, 0, 0),//38
                 new PedComponent(2, 19, 0, 0),
             }, new List<PedPropComponent>() { }),
             OptionalComponents = new List<PedComponent>() 
             {                  
                 //Jacket
-                new PedComponent(11, 38, 1, 0),
-                new PedComponent(11, 38, 2, 0),
-                new PedComponent(11, 38, 3, 0),
-                new PedComponent(11, 38, 4, 0),
+                new PedComponent(11, 508, 1, 0),//38
+                new PedComponent(11, 508, 2, 0),//38
+                new PedComponent(11, 508, 3, 0),//38
+                new PedComponent(11, 508, 4, 0),//38
 
                 //Pants
                 new PedComponent(4, 13, 1, 0),
@@ -296,8 +294,7 @@ public class DispatchablePeople_Mafia
 
                 //Pants
                 new PedComponent(4, 10, 1, 0),
-                new PedComponent(4, 10, 3, 0),
-                new PedComponent(4, 10, 4, 0),
+                new PedComponent(4, 10, 2, 0),
             },
             OptionalComponentChance = optionalComponentDefault,
         };
