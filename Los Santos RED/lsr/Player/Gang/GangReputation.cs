@@ -18,9 +18,10 @@ public class GangReputation
     public int NeutralRepLevel = 0;
     public int HostileRepLevel = -200;
     public int FriendlyRepLevel = 500;
-    public bool CanAskToJoin => !IsMember && ReputationLevel >= Gang.MemberOfferRepLevel;
-
     private IGangRelateable Player;
+
+    public bool CanAskToJoin => !IsMember && ReputationLevel >= Gang.MemberOfferRepLevel;
+    public GangLoan GangLoan { get; private set; }
     public int ReputationLevel
     {
         get => reputationLevel;
@@ -179,7 +180,8 @@ public class GangReputation
         MembersHurtInTerritory = 0;
         MembersKilledInTerritory = 0;
         MembersCarJackedInTerritory = 0;
-        PlayerDebt = 0;
+        ClearDebt();
+        GangLoan?.Reset();
         Player.SetDenStatus(Gang, false);
         GameTimeLastAttacked = 0;
     }
@@ -334,7 +336,6 @@ public class GangReputation
         }
         return ending;
     }
-
     public string ToZoneString()
     {
         string ending = "";
@@ -356,8 +357,6 @@ public class GangReputation
         }
         return ending;
     }
-
-
     public string ToBlip()
     {
         string ending = "";
@@ -379,9 +378,6 @@ public class GangReputation
         }
         return ending;
     }
-
-
-
     public void SendInfoText(PhoneContact phoneContact, Gang gang, bool isPositive)
     {
         if (gang != null)
@@ -460,6 +456,32 @@ public class GangReputation
             Player.CellPhone.AddScheduledText(phoneContact, MessageToSend, 1, false);
         }
     }
+    public void AddDebt(int value)
+    {
+        PlayerDebt += value;
+    }
+    public void ClearDebt()
+    {
+        PlayerDebt = 0;
+    }
+    public void TakeLoan(int value,ITimeReportable time, LoanParameter loanParameter, bool sendMessage)
+    {
+        GangLoan = new GangLoan(Player, Gang, time, loanParameter, value);
+        GangLoan.Start(sendMessage);
+    }
 
-
+    public void RestartLoan(GangLoanSave gls, ITimeReportable time)
+    {
+        if(Gang == null)
+        {
+            return;
+        }   
+        LoanParameter lp = Gang.LoanParameters.GetParameters(GangRelationship);
+        if(lp == null)
+        {
+            return;
+        }
+        GangLoan = new GangLoan(Player, Gang, time, lp, gls.DueAmount);
+        GangLoan.RestartFromSaved(gls.DueAmount, gls.MissedPeriods, gls.DueDate, lp);
+    }
 }

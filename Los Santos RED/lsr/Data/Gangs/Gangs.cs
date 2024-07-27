@@ -33,6 +33,7 @@ public class Gangs : IGangs
     private Gang Armenian;
     private Gang Yardies;
     private Gang Diablos;
+    private LoanParameters defaultLoanParameters;
 
     public Gangs()
     {
@@ -102,8 +103,17 @@ public class Gangs : IGangs
     {
         return GangsList.Where(x => x.CanSpawnAnywhere && x.CanSpawn(WantedLevel)).ToList();
     }
+    private void SetupLoanItems()
+    {
+        defaultLoanParameters = new LoanParameters();
+        defaultLoanParameters.AddParameter(new LoanParameter(GangRespect.Neutral, 0.03f, 4, 500, 5000));
+        defaultLoanParameters.AddParameter(new LoanParameter(GangRespect.Friendly, 0.02f, 4, 500, 15000));
+        defaultLoanParameters.AddParameter(new LoanParameter(GangRespect.Member, 0.015f, 4, 500, 25000));
+    }
     private void SetupDefaults()
     {
+        SetupLoanItems();
+
         DefaultGang = new Gang("~s~", "UNK", "Unknown Gang", "Unk", "White", null, null, "", null, null, null, "Gang Member") { MaxWantedLevelSpawn = 0 };
         LOST = new Gang("~w~", "AMBIENT_GANG_LOST", "The Lost MC", "LOST MC", "White", "LostMCPeds", "LostMCVehicles", "LOST ", "MeleeWeapons", "LostSidearms", "LostLongGuns", "LOST MC", "CHAR_BLANK_ENTRY", "LOST Member")
         {
@@ -141,6 +151,7 @@ public class Gangs : IGangs
             GangClassification = GangClassification.Biker,
             MembersGetFreeVehicles = true,
             MembersGetFreeWeapons = true,
+            LoanParameters = defaultLoanParameters,
         };//Meth
         Vagos = new Gang("~y~", "AMBIENT_GANG_MEXICAN", "Vagos", "Vagos", "Yellow", "VagosPeds", "VagosVehicles", "", "MeleeWeapons", "VagosSidearms", "VagosLongGuns", "Vagos", "CHAR_BLANK_ENTRY", "Vagos Member")
         {
@@ -174,6 +185,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 2200,
             DrugDealerPercentage = 65f,
             LicensePlatePrefix = "VAG ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Street,
         };//marijuana
         Varrios = new Gang("~b~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas", "Varrios", "Blue", "VarriosPeds", "VarriosVehicles", "", "MeleeWeapons", "VarriosSidearms", "VarriosLongGuns", "Varrios", "CHAR_BLANK_ENTRY", "Varrios Member")
@@ -209,6 +221,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 2200,
             DrugDealerPercentage = 65f,
             LicensePlatePrefix = "VAR ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Street,
         };//crack//Varrios are light blue
         Marabunte = new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande", "Marabunta", "Blue", "MarabuntaPeds", "MarabuntaVehicles", "", "MeleeWeapons", "MarabuntaSidearms", "MarabuntaLongGuns", "Marabunta", "CHAR_BLANK_ENTRY", "Marabunta Member")
@@ -243,6 +256,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 2000,
             DrugDealerPercentage = 70f,
             LicensePlatePrefix = "MAR ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Street,
         };//marijuana
         Families = new Gang("~g~", "AMBIENT_GANG_FAMILY", "The Families", "Families", "Green", "FamiliesPeds", "FamiliesVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Families", "CHAR_BLANK_ENTRY", "Families Member")
@@ -277,6 +291,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 2500,
             DrugDealerPercentage = 65f,
             LicensePlatePrefix = "FAM ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Street,
         };//marijuana
         Ballas = new Gang("~p~", "AMBIENT_GANG_BALLAS", "Ballas", "Ballas", "Purple", "BallasPeds", "BallasVehicles", "", "MeleeWeapons", "BallasSidearms", "BallasLongGuns", "Ballas", "CHAR_BLANK_ENTRY", "Ballas Member")
@@ -311,6 +326,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 2700,
             DrugDealerPercentage = 65f,
             LicensePlatePrefix = "BAL ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Street,
         };//crack
         Triads = new Gang("~r~", "AMBIENT_GANG_WEICHENG", "Triads", "Triads", "Red", "TriadsPeds", "TriadVehicles", "", "MeleeWeapons", "TriadsSidearms", "TriadsLongGuns", "Triads", "CHAR_BLANK_ENTRY", "Triad Member")
@@ -345,6 +361,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 3000,
             DrugDealerPercentage = 65f,
             LicensePlatePrefix = "TRI ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Cartel,
         };//heroin
         Redneck = new Gang("~b~", "AMBIENT_GANG_HILLBILLY", "Rednecks", "Rednecks", "Black", "RedneckPeds", "RedneckVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Rednecks", "CHAR_BLANK_ENTRY", "Redneck")
@@ -379,6 +396,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 1500,
             DrugDealerPercentage = 65f,
             LicensePlatePrefix = "RED ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Generic,
             MembersGetFreeWeapons = true,
         };//TOILET CLEANER
@@ -414,6 +432,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 3200,
             DrugDealerPercentage = 65f,
             LicensePlatePrefix = "KKA ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Street,
         };//heroin
         float pistolPercentage = 55f;
@@ -451,6 +470,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 6000,
             DrugDealerPercentage = 65f,
             LicensePlatePrefix = "GAM ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Mafia,
         };//cocaine
         Pavano = new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family", "Pavano", "Green", "MafiaPeds", "PavanoVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Pavano", "CHAR_BLANK_ENTRY", "Pavano Assocaite")
@@ -486,6 +506,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 5500,
             DrugDealerPercentage = 65f,
             LicensePlatePrefix = "PAV ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Mafia,
         };//cocaine
         Lupisella = new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family", "Lupisella", "Green", "MafiaPeds", "LupisellaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Lupisella", "CHAR_BLANK_ENTRY", "Lupisella Assocaite")
@@ -521,6 +542,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 5700,
             DrugDealerPercentage = 65f,
             LicensePlatePrefix = "LUP ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Mafia,
         };//cocaine
         Messina = new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family", "Messina", "Green", "MafiaPeds", "MessinaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Messina", "CHAR_BLANK_ENTRY", "Messina Assocaite")
@@ -556,6 +578,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 5200,
             DrugDealerPercentage = 65f,
             LicensePlatePrefix = "MES ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Mafia,
         };//cocaine
         Ancelotti = new Gang("~g~", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Crime Family", "Ancelotti", "Green", "MafiaPeds", "AncelottiVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Ancelotti", "CHAR_BLANK_ENTRY", "Ancelotti Associate")
@@ -591,6 +614,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 5500,
             DrugDealerPercentage = 65f,
             LicensePlatePrefix = "ANC ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Mafia,
         };//cocaine
         Cartel = new Gang("~r~", "AMBIENT_GANG_MADRAZO", "Madrazo Cartel", "Cartel", "Red", "CartelPeds", "CartelVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Cartel", "CHAR_BLANK_ENTRY", "Cartel Member")
@@ -625,6 +649,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 2800,
             DrugDealerPercentage = 65f,
             LicensePlatePrefix = "CAR ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Cartel,
             MembersGetFreeWeapons = true,
         };//Meth
@@ -660,6 +685,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 3000,
             DrugDealerPercentage = 65f,
             LicensePlatePrefix = "ARM ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Cartel,
             MembersGetFreeVehicles = true,
         };//heroin
@@ -686,6 +712,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 1500,
             DrugDealerPercentage = 90f,
             LicensePlatePrefix = "YAR ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Mafia,
         };//marijuana
         Diablos = new Gang("~r~", "AMBIENT_GANG_DIABLOS", "Diablos", "Diablos", "Red", "DiablosPeds", "DiablosVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Diablos", "CHAR_BLANK_ENTRY", "Diablo Soldier")
@@ -711,6 +738,7 @@ public class Gangs : IGangs
             DrugDealerPercentage = 65f,
             HeadDataGroupID = "DiablosHeads",
             LicensePlatePrefix = "DIA ",
+            LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Street,
         };//SPANK
         //new Gang("~w~", "AMBIENT_GANG_CULT", "Altruist Cult","Altruist", "White", "AltruistPeds", "GenericGangVehicles", "","MeleeWeapons","FamiliesSidearms","FamiliesLongGuns","Altruist Leader","CHAR_PA_MALE","Altruist Member") { 

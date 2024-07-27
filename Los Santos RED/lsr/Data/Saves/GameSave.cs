@@ -81,6 +81,7 @@ namespace LosSantosRED.lsr.Data
         public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();
         public CellPhoneSave CellPhoneSave { get; set; } = new CellPhoneSave();
 
+        public List<GangLoanSave> GangLoanSaves { get; set; } = new List<GangLoanSave>();
 
         [OnDeserialized()]
         private void SetValuesOnDeserialized(StreamingContext context)
@@ -194,12 +195,17 @@ namespace LosSantosRED.lsr.Data
             foreach (GangReputation gr in player.RelationshipManager.GangRelationships.GangReputations)
             {
                 GangReputationsSave.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt, gr.MembersKilled, gr.MembersCarJacked, gr.MembersHurtInTerritory, gr.MembersKilledInTerritory, gr.MembersCarJackedInTerritory, gr.PlayerDebt, gr.IsMember, gr.IsEnemy, gr.TasksCompleted));
+                if(gr.GangLoan != null && gr.GangLoan.DueAmount > 0)
+                {
+                    GangLoanSaves.Add(new GangLoanSave(gr.Gang.ID, gr.GangLoan.DueAmount,gr.GangLoan.MissedPeriods,gr.GangLoan.DueDate));
+                }
             }
 
             if (player.RelationshipManager.GangRelationships.CurrentGang != null && player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
             {
                 GangKickSave = new GangKickSave(player.RelationshipManager.GangRelationships.CurrentGang.ID, player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueDate, player.RelationshipManager.GangRelationships.CurrentGangKickUp.MissedPeriods, player.RelationshipManager.GangRelationships.CurrentGangKickUp.MissedAmount);
             }
+            
         }
         private void SaveContacts(ISaveable player, ITimeReportable time)
         {
@@ -320,7 +326,7 @@ namespace LosSantosRED.lsr.Data
                 LoadLicenses(player);
                 LoadVehicles(player, world,settings, modItems, placesOfInterest, time, weapons);
                 LoadPosition(player, placesOfInterest, world, interactionable);
-                LoadRelationships(player, gangs, contacts);
+                LoadRelationships(player, gangs, contacts, time);
                 LoadContacts(player, gangs);    
                 LoadResidences(player, placesOfInterest, modItems, settings);
                 LoadHumanState(player);
@@ -517,7 +523,7 @@ namespace LosSantosRED.lsr.Data
                 }
             }
         }
-        private void LoadRelationships(IInventoryable player, IGangs gangs, IContacts contacts)
+        private void LoadRelationships(IInventoryable player, IGangs gangs, IContacts contacts, ITimeReportable time)
         {
             player.RelationshipManager.GangRelationships.ResetGang(false);
             player.RelationshipManager.Reset(false);
@@ -545,6 +551,25 @@ namespace LosSantosRED.lsr.Data
                 player.RelationshipManager.Add(contactRelationship);
                 contactRelationship.Activate();
             }
+            if(GangLoanSaves == null || !GangLoanSaves.Any())
+            {
+                return;
+            }
+            foreach(GangLoanSave gls in GangLoanSaves)
+            {
+                Gang gang = gangs.GetGang(gls.GangID);
+                if(gang == null)
+                {
+                    continue;
+                }
+                GangReputation gr = player.RelationshipManager.GangRelationships.GetReputation(gang);
+                if(gr == null)
+                {
+                    continue;
+                }
+                gr.RestartLoan(gls, time);
+            }
+
         }
         private void LoadContacts(IInventoryable player, IGangs gangs)
         {

@@ -30,9 +30,9 @@ namespace Blackjack
     public class Hand
     {
         public bool IsActive { get; set; }
-        public string WriteHeader(string Name)
+        public string WriteHeader(string PlayerName)
         {
-            string toReturn = $"{(IsActive ? "->" : "")}~b~{Name}:~s~ ({GetHandValue()})";
+            string toReturn = $"{(IsActive ? "->" : "")}~b~{GetHandName(PlayerName)}:~s~ ({GetHandValue()})";
             return toReturn;
         }
         public int HandBet { get; set; }
@@ -41,6 +41,20 @@ namespace Blackjack
         public List<Card> Cards { get; set; } = new List<Card>();
         public bool WasSplit { get; internal set; }
         public bool IsBust => GetHandValue() > 21;
+        public bool IsSurrendered { get; set; }
+        public string GetHandName(string PlayerName)
+        {
+            string toRetun = "";
+            if(Order == 0)
+            {
+                toRetun = "Primary Hand";
+            }
+            else
+            {
+                toRetun = $"Split Hand #{Order}";
+            }
+            return toRetun;
+        }
         public int GetHandValue()
         {
             int value = 0;
@@ -104,15 +118,22 @@ namespace Blackjack
             }
             return toReturn;
         }
+
+        public void OnSurrendered()
+        {
+            IsSurrendered = true;
+        }
     }
 
     public class CasinoPlayer
     {
         private ICasinoGamePlayable CasinoGamePlayable;
-        public CasinoPlayer(string name,ICasinoGamePlayable casinoGamePlayable)
+        private GamblingDen GameLocation;
+        public CasinoPlayer(string name, ICasinoGamePlayable casinoGamePlayable, GamblingDen gameLocation)
         {
             Name = name;
             CasinoGamePlayable = casinoGamePlayable;
+            GameLocation = gameLocation;
         }
         public string Name { get; set; }
         public int Bet { get; set; }
@@ -123,11 +144,11 @@ namespace Blackjack
         public Hand PrimaryHand { get; set; }
         public List<Hand> SplitHands { get; set; }
         public Hand ActiveHand { get; private set; }
-
         public void AddBet(int bet)
         {
             Bet += bet;
             CasinoGamePlayable.BankAccounts.GiveMoney(-1 * bet, false);
+            CasinoGamePlayable.GamblingManager.OnMoneyWon(GameLocation, -1 * bet);
             TotalMoneyBet += bet;
         }
         public void ClearBet()
@@ -137,8 +158,8 @@ namespace Blackjack
         public void ReturnBet()
         {
             CasinoGamePlayable.BankAccounts.GiveMoney(Bet, false);
+            CasinoGamePlayable.GamblingManager.OnMoneyWon(GameLocation, Bet);
             TotalMoneyWon += Bet;
-            //ClearBet();
         }
         public int WinBet(bool blackjack)
         {
@@ -152,52 +173,20 @@ namespace Blackjack
                 chipsWon = Bet * 2;
             }
             CasinoGamePlayable.BankAccounts.GiveMoney(chipsWon,false);
+            CasinoGamePlayable.GamblingManager.OnMoneyWon(GameLocation, chipsWon);
             TotalMoneyWon += chipsWon;
-            //ClearBet();
             return chipsWon;
         }
-        //public int GetActiveHandValue()
-        //{
-        //    int value = 0;
-        //    if (ActiveHand == null)
-        //    {
-        //        return value;
-        //    }
-        //    foreach (Card card in ActiveHand.Cards)
-        //    {
-        //        value += card.Value;
-        //    }
-        //    return value;
-        //}
-
-        public int GetHandValue()
-        {
-            int value = 0;
-            if(PrimaryHand == null)
-            {
-                return value;
-            }
-            foreach (Card card in PrimaryHand.Cards)
-            {
-                value += card.Value;
-            }
-            return value;
-        }
-        //public string WriteHeader()
-        //{
-        //    string toReturn = $"~b~{Name}:~s~ ({GetActiveHandValue()})";
-        //    return toReturn;
-        //}
         public string GetGameStatus()
         {
-            string toReturn = "";
+            string toReturn = "Session: ";
             if(Bet > 0)
             {
                 toReturn = $"Current Bet: ${Bet}";
             }
             if (HandsCompleted > 0)
             {
-                toReturn += $"  Wins: ~g~{Wins}~s~ Hands: {HandsCompleted}";
+                toReturn += $" Wins: ~g~{Wins}~s~ Hands: {HandsCompleted}";
             }
             if(TotalMoneyBet > 0)
             {
@@ -223,19 +212,28 @@ namespace Blackjack
             if (selectedCard!= null)
             {
                 hand.Cards.Remove(selectedCard);
-                SplitHands.Add(new Hand() { HandBet = Bet, Cards = new List<Card>() { selectedCard } });
-
+                int currentOrder = 1;
+                if (SplitHands != null && SplitHands.Any())
+                {
+                    currentOrder = SplitHands.Max(x => x.Order) + 1;
+                }
+                SplitHands.Add(new Hand() { HandBet = Bet, Cards = new List<Card>() { selectedCard }, Order = currentOrder });
                 CasinoGamePlayable.BankAccounts.GiveMoney(-1 * Bet, false);
+                CasinoGamePlayable.GamblingManager.OnMoneyWon(GameLocation, -1 * Bet);
                 TotalMoneyBet += Bet;
-
-
                 return true;
             }
             return false;
         }
-        public void OnSurrendered()
+        public void OnSurrendered(Hand hand)
         {
-            ClearAllHands();
+            if(hand == null)
+            {
+                return;
+            }
+            CasinoGamePlayable.BankAccounts.GiveMoney((int)Math.Floor(Bet * 0.5), false);
+            CasinoGamePlayable.GamblingManager.OnMoneyWon(GameLocation, (int)Math.Floor(Bet * 0.5));
+            TotalMoneyWon += (int)Math.Floor(Bet * 0.5);
         }
         public void OnHit()
         {
@@ -244,6 +242,7 @@ namespace Blackjack
         public void ClearAllHands()
         {
             PrimaryHand = new Hand();
+            PrimaryHand.Order = 0;
             SplitHands?.Clear();
         }
         public void SetActiveHand(Hand hand)

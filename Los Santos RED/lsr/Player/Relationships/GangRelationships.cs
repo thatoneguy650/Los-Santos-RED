@@ -17,6 +17,11 @@ public class GangRelationships
     public List<GangReputation> GangReputations { get; private set; } = new List<GangReputation>();
     public Gang CurrentGang { get; private set; }
     public GangKickUp CurrentGangKickUp { get; private set; }
+
+
+
+
+
     public List<Gang> EnemyGangs => GangReputations.Where(x => x.IsEnemy).Select(x => x.Gang).ToList();
     public List<Gang> HitSquadGangs => GangReputations.Where(x=> x.CanDispatchHitSquad).Select(x => x.Gang).ToList();
 
@@ -35,6 +40,7 @@ public class GangRelationships
     {
         Reset();
         CurrentGangKickUp?.Dispose();
+        GangReputations.ForEach(x => x.GangLoan?.Dispose());
     }
     public void Setup()
     {
@@ -79,8 +85,10 @@ public class GangRelationships
                     }
                 }
             }
+            rg.GangLoan?.Update();
         }
         CurrentGangKickUp?.Update();
+        
     }
     public void ChangeReputation(Gang gang, int amount, bool sendNotification)
     {
@@ -146,7 +154,8 @@ public class GangRelationships
         }
         if (!gr.IsMember)
         {
-            gr.PlayerDebt += Math.Abs(amount);
+            gr.AddDebt(Math.Abs(amount));
+            //gr.PlayerDebt += Math.Abs(amount);
         }
     }
     public void SetDebt(Gang gang, int amount)
@@ -163,9 +172,6 @@ public class GangRelationships
         }
         gr.PlayerDebt = Math.Abs(amount);
     }
-
-
-
     public void SetRepStats(Gang gang, int hurt, int hurtInTerritory, int killed, int killedInTerritory, int carjacked, int carjackedInTerritory, int playerDebt, bool isMember, bool isEnemy, int tasksCompleted)
     {
         if (gang == null)
@@ -402,7 +408,6 @@ public class GangRelationships
             CurrentGang = null;
         }
     }
-
     public void SetCompletedTask(Gang gang)
     {
         if (gang == null)
@@ -432,6 +437,10 @@ public class GangRelationships
             GangReputations.Add(gr);
         }
         gr.TasksCompleted--;
+    }
+    public void AddLoan(Gang gang)
+    {
+        
     }
 }
 

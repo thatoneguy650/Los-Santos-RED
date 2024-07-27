@@ -54,14 +54,13 @@ namespace Blackjack
         private ISettingsProvideable Settings;
         private bool ShowHands;
         private bool IsUICreated;
-        private GameLocation GameLocation;
+        private GamblingDen GameLocation;
         private GamblingParameters GamblingParameters;
         private int LastBet;
         private bool isPaused;
         private uint lastGameTime;
         private UIMenuItem splitAction;
-
-        public BlackJackGame(ICasinoGamePlayable player, ISettingsProvideable settings, bool enableAnimations, GameLocation gameLocation, GamblingParameters gamblingParameters)
+        public BlackJackGame(ICasinoGamePlayable player, ISettingsProvideable settings, bool enableAnimations, GamblingDen gameLocation, GamblingParameters gamblingParameters)
         {
             Player = player;
             Settings = settings;
@@ -87,8 +86,8 @@ namespace Blackjack
         {
             Player.IsTransacting = true;
             IsActive = true;
-            CasinoPlayer = new CasinoPlayer(Player.PlayerName, Player);
-            Casino = new Casino(GamblingParameters.BlackJackMinBet,GamblingParameters.BlackJackMaxBet);
+            CasinoPlayer = new CasinoPlayer(Player.PlayerName, Player, GameLocation);
+            Casino = new Casino(GamblingParameters.BlackjackGamblingParameters.MinBet,GamblingParameters.BlackjackGamblingParameters.MaxBet);
             Dealer = new Dealer(GamblingParameters.DealerName);
             MenuPool = new MenuPool();
             SetupTextures();
@@ -123,12 +122,17 @@ namespace Blackjack
                 return;
             }
             StartDelay();
-            Card revealedCard = Dealer.RevealCard();
-            CasinoPlayer.HandsCompleted++;
-            if(!CheckHandValidConditions())
+
+
+            if (!CheckHandValidConditions())
             {
                 return;
             }
+
+
+            Card revealedCard = Dealer.RevealCard();
+            CasinoPlayer.HandsCompleted++;
+
             DisplayCustomMessage(GamblingParameters.DealerName, $"Reveals {revealedCard.Description()}~n~Hand Value: {Dealer.GetHandValue()}");
             StartDelay();
             while (Dealer.GetHandValue() <= 16)
@@ -153,35 +157,47 @@ namespace Blackjack
         }
         private void EvaluateHand(Hand hand)
         {
-            if (hand.GetHandValue() > Dealer.GetHandValue())
+            if(hand.IsSurrendered)
+            {
+                CasinoPlayer.OnSurrendered(hand);
+                BigMessage.MessageInstance.ShowColoredShard("Surrendered", hand.GetHandName(CasinoPlayer.Name), HudColor.Black, HudColor.Blue, DelayTime);
+                ChooseErrorSound();
+            }
+            else if (hand.IsBust)
+            {
+                BigMessage.MessageInstance.ShowColoredShard("~r~Player Busts~s~", hand.GetHandName(CasinoPlayer.Name), HudColor.Black, HudColor.RedDark, DelayTime);
+            }
+            else if (hand.GetHandValue() > Dealer.GetHandValue())
             {
                 CasinoPlayer.Wins++;
                 if (hand.IsHandBlackjack())//    Casino.IsHandBlackjack(CasinoPlayer.PrimaryHand.Cards))
                 {
-                    BigMessage.MessageInstance.ShowColoredShard("~g~Player Wins $" + CasinoPlayer.WinBet(true) + "~s~ with ~o~Blackjack.~s~", "", HudColor.Black, HudColor.GreenDark, DelayTime);
+                    BigMessage.MessageInstance.ShowColoredShard("~g~Player Wins $" + CasinoPlayer.WinBet(true) + "~s~ with ~o~Blackjack.~s~", hand.GetHandName(CasinoPlayer.Name), HudColor.Black, HudColor.GreenDark, DelayTime);
                 }
                 else
                 {
-                    BigMessage.MessageInstance.ShowColoredShard("~g~Player Wins $" + CasinoPlayer.WinBet(false) + "~s~", "", HudColor.Black, HudColor.GreenDark, DelayTime);
+                    BigMessage.MessageInstance.ShowColoredShard("~g~Player Wins $" + CasinoPlayer.WinBet(false) + "~s~", hand.GetHandName(CasinoPlayer.Name), HudColor.Black, HudColor.GreenDark, DelayTime);
                 }
                 ChooseSuccessSound();
+                EntryPoint.WriteToConsole("HAND GREATER THAN DEALER");
             }
             else if (Dealer.GetHandValue() > 21)
             {
                 CasinoPlayer.Wins++;
-                BigMessage.MessageInstance.ShowColoredShard("~g~Player Wins $" + CasinoPlayer.WinBet(false) + "~s~", "", HudColor.Black, HudColor.GreenDark, DelayTime);
+                BigMessage.MessageInstance.ShowColoredShard("~g~Player Wins $" + CasinoPlayer.WinBet(false) + "~s~", hand.GetHandName(CasinoPlayer.Name), HudColor.Black, HudColor.GreenDark, DelayTime);
                 ChooseSuccessSound();
+                EntryPoint.WriteToConsole("DEALER HAND > 21");
             }
             else if (Dealer.GetHandValue() > hand.GetHandValue())
             {
                 hand.HandBet = 0;
-                BigMessage.MessageInstance.ShowColoredShard("~r~Dealer Wins.~s~", "", HudColor.Black, HudColor.RedDark, DelayTime);
+                BigMessage.MessageInstance.ShowColoredShard("~r~Dealer Wins.~s~", hand.GetHandName(CasinoPlayer.Name), HudColor.Black, HudColor.RedDark, DelayTime);
                 ChooseErrorSound();
             }
             else
             {
                 CasinoPlayer.ReturnBet();
-                BigMessage.MessageInstance.ShowColoredShard("Player and Dealer Push.", "", HudColor.Black, HudColor.Blue, DelayTime);
+                BigMessage.MessageInstance.ShowColoredShard("Player and Dealer Push.", hand.GetHandName(CasinoPlayer.Name), HudColor.Black, HudColor.Blue, DelayTime);
                 ChooseErrorSound();
             }
 
@@ -193,13 +209,13 @@ namespace Blackjack
             {
                 //CasinoPlayer.ClearBet();
                 ChooseErrorSound();
-                BigMessage.MessageInstance.ShowColoredShard("~r~Player Busts~s~", "", HudColor.Black, HudColor.RedDark, DelayTime);
-                CasinoPlayer.PrimaryHand.Cards.Clear();
+                BigMessage.MessageInstance.ShowColoredShard("~r~Player Busts~s~", CasinoPlayer.PrimaryHand.GetHandName(CasinoPlayer.Name), HudColor.Black, HudColor.RedDark, DelayTime);
+                //CasinoPlayer.PrimaryHand.Cards.Clear();
                 StartDelay();
             }
             else if (CasinoPlayer.PrimaryHand.Cards.Count == 0)
             {
-                BigMessage.MessageInstance.ShowColoredShard("~o~Player Surrenders $" + (CasinoPlayer.Bet / 2) + "~s~", "", HudColor.Black, HudColor.Orange, DelayTime);
+                BigMessage.MessageInstance.ShowColoredShard("~o~Player Surrenders $" + (CasinoPlayer.Bet / 2) + "~s~", CasinoPlayer.PrimaryHand.GetHandName(CasinoPlayer.Name), HudColor.Black, HudColor.Orange, DelayTime);
                 ChooseErrorSound();
                 Player.BankAccounts.GiveMoney(CasinoPlayer.Bet / 2, false);
                 //CasinoPlayer.ClearBet();
@@ -215,13 +231,13 @@ namespace Blackjack
                     if(splitHand.IsBust)
                     {
                         ChooseErrorSound();
-                        BigMessage.MessageInstance.ShowColoredShard("~r~Player Busts~s~", "", HudColor.Black, HudColor.RedDark, DelayTime);
-                        splitHand.Cards.Clear();
+                        BigMessage.MessageInstance.ShowColoredShard("~r~Player Busts~s~", splitHand.GetHandName(CasinoPlayer.Name), HudColor.Black, HudColor.RedDark, DelayTime);
+                        //splitHand.Cards.Clear();
                         StartDelay();
                     }
                     else if (splitHand.Cards.Count == 0)
                     {
-                        BigMessage.MessageInstance.ShowColoredShard("~o~Player Surrenders $" + (CasinoPlayer.Bet / 2) + "~s~", "", HudColor.Black, HudColor.Orange, DelayTime);
+                        BigMessage.MessageInstance.ShowColoredShard("~o~Player Surrenders $" + (CasinoPlayer.Bet / 2) + "~s~", splitHand.GetHandName(CasinoPlayer.Name), HudColor.Black, HudColor.Orange, DelayTime);
                         ChooseErrorSound();
                         Player.BankAccounts.GiveMoney(CasinoPlayer.Bet / 2, false);
                         //CasinoPlayer.ClearBet();
@@ -239,14 +255,18 @@ namespace Blackjack
             }
             return true;
         }
-
         private void EndRound()
         {
             if (Player.BankAccounts.GetMoney(false) <= Casino.MinimumBet)
             {
-                StartDelay();
-                //GameFiber.Sleep(DelayTime * 2);
                 DisplayCustomMessage("Minimum Bet ", "You do not have the minimum required bet amount. You have completed " + (CasinoPlayer.HandsCompleted - 1) + " rounds.");
+                StartDelay();
+                isCancelled = true;
+            }
+            if(Player.GamblingManager.IsWinBanned(GameLocation))
+            {
+                DisplayCustomMessage("Banned ", "You have been temporarily banned for winning too much.");
+                StartDelay();
                 isCancelled = true;
             }
             if (isCancelled)
@@ -272,13 +292,13 @@ namespace Blackjack
         {
             Hand selectedHand = CasinoPlayer.PrimaryHand;
             TakeActions(selectedHand);
-            if(CasinoPlayer.SplitHands == null || !CasinoPlayer.SplitHands.Any())
+            if (CasinoPlayer.SplitHands == null || !CasinoPlayer.SplitHands.Any())
             {
                 return;
             }
             while(!isCancelled)
             {
-                DisplayCustomMessage("Active Hand ", "Active hand has changed.");
+
                 Hand selectedSplitHand = CasinoPlayer.SplitHands.FirstOrDefault(x => !x.HasTakenAction);
                 if(selectedSplitHand == null)
                 {
@@ -286,22 +306,44 @@ namespace Blackjack
                 }
                 else
                 {
-                    TakeActions(selectedSplitHand);
+                    CasinoPlayer.SetActiveHand(selectedSplitHand);
+                    DisplayCustomMessage("Active Hand ", "Active hand has changed.");
+                    StartDelay();
+                    if (selectedSplitHand.Cards.Count() == 1 && selectedSplitHand.Cards[0].Face == Face.Ace)//required ace hit
+                    {
+                        Card drawnCard = deck.DrawCard();
+                        selectedSplitHand.Cards.Add(drawnCard);
+                        CasinoPlayer.OnHit();
+                        DisplayCustomMessage("Player ", $"Ace Split Force Draws {drawnCard.Description()}~n~Hand Value: {selectedSplitHand.GetHandValue()}");
+                        StartDelay();
+                        selectedSplitHand.HasTakenAction = true;
+                    }
+                    else
+                    {
+                        Card drawnCard = deck.DrawCard();
+                        selectedSplitHand.Cards.Add(drawnCard);
+                        CasinoPlayer.OnHit();
+                        DisplayCustomMessage("Player ", $"Draws {drawnCard.Description()}~n~Hand Value: {selectedSplitHand.GetHandValue()}");
+                        StartDelay();
+                        TakeActions(selectedSplitHand);
+                    }
                 }
             }
         }
-
         private void StartDelay()
         {
+            Player.ButtonPrompts.AttemptAddPrompt("casinoGame", "Skip", "casinoGameSkip", GameControl.Attack, 9999);
             uint GameTimeStarted = Game.GameTime;
             while(Game.GameTime - GameTimeStarted <= DelayTime)
             {
-                GameFiber.Sleep(50);
-                if(Player.IsMoveControlPressed)
+                GameFiber.Yield();
+                if(Player.ButtonPrompts.IsPressed("casinoGameSkip"))
                 {
+                    Player.ButtonPrompts.RemovePrompts("casinoGame");
                     return;
                 }
             }
+            Player.ButtonPrompts.RemovePrompts("casinoGame");
             //GameFiber.Sleep(DelayTime);
         }
         private void RemoveNotifications()
@@ -439,8 +481,13 @@ namespace Blackjack
         {
             do
             {
-                CasinoPlayer.SetActiveHand(hand);
 
+                CasinoPlayer.SetActiveHand(hand);
+                if (hand.IsBust)
+                {
+                    hand.HasTakenAction = true;
+                    return;
+                }
                 EntryPoint.WriteToConsole($"SET ACTIVE HAND TO: {hand.PrintCards()} CanSplit:{hand.CanSplit()}");
 
                 isCompleted = false;
@@ -482,7 +529,7 @@ namespace Blackjack
                         menu.Visible = false;
                     };
                     splitAction.Enabled = false;
-                    if (GamblingParameters.BlackJackCanSplit && hand.CanSplit())//if the hand has any DOUBLES
+                    if (GamblingParameters.BlackjackGamblingParameters.CanSplit && hand.CanSplit())//if the hand has any DOUBLES
                     {
                         splitAction.Enabled = true;//no logic for this yet
                     }
@@ -494,7 +541,7 @@ namespace Blackjack
                         selectedAction = "SURRENDER";
                         menu.Visible = false;
                     };
-                    if (!GamblingParameters.BlackJackCanSurrender)
+                    if (!GamblingParameters.BlackjackGamblingParameters.CanSurrender)
                     {
                         surrenderAction.Enabled = false;
                     }
@@ -511,7 +558,7 @@ namespace Blackjack
                 }
                 else
                 {
-                    if (GamblingParameters.BlackJackCanSplit && hand.CanSplit())//if the hand has any DOUBLES
+                    if (GamblingParameters.BlackjackGamblingParameters.CanSplit && hand.CanSplit())//if the hand has any DOUBLES
                     {
                         splitAction.Enabled = true;//no logic for this yet
                     }
@@ -536,19 +583,22 @@ namespace Blackjack
                         CasinoPlayer.OnHit();
                         DisplayCustomMessage("Player ", $"Draws {drawnCard.Description()}~n~Hand Value: {hand.GetHandValue()}");
                         StartDelay();
-                        //GameFiber.Sleep(DelayTime);
                         break;
                     case "STAND":
                         DisplayCustomMessage("Player ", $"Stand at {hand.GetHandValue()}");
-                        //GameFiber.Sleep(DelayTime);
                         StartDelay();
                         break;
                     case "SURRENDER":
-                        CasinoPlayer.OnSurrendered();
+                        hand.OnSurrendered();
+                        DisplayCustomMessage("Player ", $"Surrendered Hand");
+                        StartDelay();
                         break;
                     case "SPLIT":
                         if (CasinoPlayer.OnSplitHands(hand))
                         {
+                            DisplayCustomMessage("Player ", $"Hand has been split");
+                            StartDelay();
+
                             Card drawnCard2 = deck.DrawCard();
                             hand.Cards.Add(drawnCard2);
                             hand.WasSplit = true;
@@ -592,7 +642,6 @@ namespace Blackjack
             } while (!selectedAction.ToUpper().Equals("STAND") && !selectedAction.ToUpper().Equals("DOUBLE") && !selectedAction.ToUpper().Equals("SURRENDER") && hand.GetHandValue() <= 21 && !isCancelled);
             hand.HasTakenAction = true;
         }
-
         private void ReleaseTextures()
         {
 
@@ -679,8 +728,12 @@ namespace Blackjack
             {
                 return;
             }
+            ;
+
             float StartingPosition = Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayPositionX + Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayPositionXMediumOffset;// 0.2f;
-            NativeHelper.DisplayTextOnScreen(CasinoPlayer.GetGameStatus(), StartingPosition, Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayScale, Color.White, (GTAFont)Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayFont, (GTATextJustification)2, true);
+            NativeHelper.DisplayTextOnScreen($"{CasinoPlayer.GetGameStatus()}", StartingPosition, Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayScale, Color.White, (GTAFont)Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayFont, (GTATextJustification)2, true);
+            NativeHelper.DisplayTextOnScreen($"{Player.GamblingManager.GetStats(GameLocation)}", StartingPosition + (Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplaySpacing / 2), Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayScale, Color.White, (GTAFont)Settings.SettingsManager.LSRHUDSettings.ExtraTopDisplayFont, (GTATextJustification)2, true);
+
             if (!ShowHands)
             {
                 return;
@@ -734,7 +787,7 @@ namespace Blackjack
             int DisplayedCards = 1;
             foreach (Card card in Dealer.HiddenCards)
             {
-                DisplayIconSmall(args, Player.UnknownCardTexture, DisplayedCards, InitialPosX, InitialPosY, Scale);
+                DisplayIconSmall(args, Player.GamblingManager.UnknownCardTexture, DisplayedCards, InitialPosX, InitialPosY, Scale);
                 DisplayedCards++;
             }
             foreach (Card card in Dealer.RevealedCards)
@@ -782,7 +835,7 @@ namespace Blackjack
         }
         private Texture GetTextureFromCard(Card card)
         {
-            Tuple<Card, Texture> returned = Player.CardIconList.Where(x => x.Item1.Face == card.Face && x.Item1.Suit == card.Suit).FirstOrDefault();
+            Tuple<Card, Texture> returned = Player.GamblingManager.CardIconList.Where(x => x.Item1.Face == card.Face && x.Item1.Suit == card.Suit).FirstOrDefault();
             if(returned == null)
             {
                 EntryPoint.WriteToConsole($"{card.Face} {card.Suit} NOT FOUND");
@@ -792,12 +845,9 @@ namespace Blackjack
         }
         private void SetupTextures()
         {
-            Player.SetupSharedTextures();
+            Player.GamblingManager.SetupSharedTextures();
             Game.RawFrameRender += DrawSprites;
         }
-
-
-
         //private void EndRound(RoundResult result)
         //{
 

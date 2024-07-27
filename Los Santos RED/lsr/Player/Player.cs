@@ -97,7 +97,7 @@ namespace Mod
         private bool prevIsSleeping;
         private uint KillerHandle;
         private bool HasThrownInTunnel;
-        private bool HasSetupSharedTextures;
+
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -175,7 +175,7 @@ namespace Mod
             CuffManager = new CuffManager(this, Settings);
             RadarDetector = new RadarDetector(this, World, Settings);
             IntimidationManager = new IntimidationManager(this, World, Settings);
-
+            GamblingManager = new GamblingManager(this, Settings, TimeControllable);
         }
         public IntimidationManager IntimidationManager { get; private set; }
         public CuffManager CuffManager { get; private set; }
@@ -218,6 +218,7 @@ namespace Mod
         public RestrictedAreaManager RestrictedAreaManager { get; private set; }
         public TaxiManager TaxiManager { get; private set; }
         public RadarDetector RadarDetector { get; private set; }
+        public GamblingManager GamblingManager { get; private set; }
 
         public GangBackupManager GangBackupManager { get; private set; }
         public InteriorManager InteriorManager { get; private set; }
@@ -490,8 +491,7 @@ namespace Mod
         public Dispatcher Dispatcher { get; set; }
         public bool IsBlockingTraffic { get; set; }
 
-        public Texture UnknownCardTexture { get; set; }
-        public List<Tuple<Card, Texture>> CardIconList { get; set; } = new List<Tuple<Card, Texture>>();
+
 
 
         //Required
@@ -526,6 +526,7 @@ namespace Mod
             InteriorManager.Setup();
             CuffManager.Setup();
             RadarDetector.Setup();
+            GamblingManager.Setup();
             ModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
             FreeModeVoice = Game.LocalPlayer.Character.IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
@@ -567,94 +568,7 @@ namespace Mod
             }
         }
 
-        public void SetupSharedTextures()
-        {
-            if(HasSetupSharedTextures)
-            {
-                return;
-            }
-            HasSetupSharedTextures = true;
-            UnknownCardTexture = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\cards\\unknown.png");
-            CardIconList = new List<Tuple<Card, Texture>>();
-            List<string> suits = new List<string>() { "diamonds", "spade", "hearts", "club" };
-            foreach (string suitName in suits)
-            {
-                for (int faceValue = 2; faceValue <= 14; faceValue++)
-                {
-                    Suit chosenSuit = suitName == "hearts" ? Suit.Hearts : suitName == "diamonds" ? Suit.Diamonds : suitName == "spade" ? Suit.Spades : suitName == "club" ? Suit.Clubs : Suit.Hearts;
-                    Face choseFace = Face.Two;
-                    string filePrefix = faceValue.ToString();
-                    if (faceValue == 2)
-                    {
-                        choseFace = Face.Two;
-                        filePrefix = "2";
-                    }
-                    else if (faceValue == 3)
-                    {
-                        choseFace = Face.Three;
-                        filePrefix = "3";
-                    }
-                    else if (faceValue == 4)
-                    {
-                        choseFace = Face.Four;
-                        filePrefix = "4";
-                    }
-                    else if (faceValue == 5)
-                    {
-                        choseFace = Face.Five;
-                        filePrefix = "5";
-                    }
-                    else if (faceValue == 6)
-                    {
-                        choseFace = Face.Six;
-                        filePrefix = "6";
-                    }
-                    else if (faceValue == 7)
-                    {
-                        choseFace = Face.Seven;
-                        filePrefix = "7";
-                    }
-                    else if (faceValue == 8)
-                    {
-                        choseFace = Face.Eight;
-                        filePrefix = "8";
-                    }
-                    else if (faceValue == 9)
-                    {
-                        choseFace = Face.Nine;
-                        filePrefix = "9";
-                    }
-                    else if (faceValue == 10)
-                    {
-                        choseFace = Face.Ten;
-                        filePrefix = "10";
-                    }
-                    else if (faceValue == 11)
-                    {
-                        choseFace = Face.Jack;
-                        filePrefix = "J";
-                    }
-                    else if (faceValue == 12)
-                    {
-                        choseFace = Face.Queen;
-                        filePrefix = "Q";
-                    }
-                    else if (faceValue == 13)
-                    {
-                        choseFace = Face.King;
-                        filePrefix = "K";
-                    }
-                    else if (faceValue == 14)
-                    {
-                        choseFace = Face.Ace;
-                        filePrefix = "A";
-                    }
-                    string fileSuffix = suitName;
-                    Card myCard = new Card(chosenSuit, choseFace);
-                    CardIconList.Add(new Tuple<Card, Texture>(myCard, Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\cards\\{filePrefix}_{fileSuffix}.png")));
-                }
-            }
-        }
+ 
 
         public void Update()
         {
@@ -700,8 +614,9 @@ namespace Mod
             BeingArrested = false;
             IsBusted = false;
         }
-        public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, 
-            bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod, bool resetBankAccounts, bool resetSavedGame, bool resetMessages, bool resetInteriors)
+        public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, 
+            bool resetCellphone, bool resetActiveTasks, bool resetProperties, bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod, 
+            bool resetBankAccounts, bool resetSavedGame, bool resetMessages, bool resetInteriors, bool resetGambling)
         {
             IsDead = false;
             IsBusted = false;
@@ -824,6 +739,10 @@ namespace Mod
             {
                  InteriorManager.Reset();
             }
+            if(resetGambling)
+            {
+                GamblingManager.Reset();
+            }
             if (Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart)
             {
                 NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
@@ -840,13 +759,8 @@ namespace Mod
             {
                 NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Game.LocalPlayer.Character, true, false);
             }
-
-
             CuffManager.Reset();
-
             IntimidationManager.Reset();
-
-
            // NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Character, 313, false);
         }
         public void Dispose()
@@ -886,6 +800,7 @@ namespace Mod
             CuffManager.Dispose();
             RadarDetector.Dispose();
             IntimidationManager.Dispose();
+            GamblingManager.Dipsose();
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);

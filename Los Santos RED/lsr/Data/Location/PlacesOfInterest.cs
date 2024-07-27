@@ -1127,15 +1127,17 @@ public class PlacesOfInterest : IPlacesOfInterest
     private void DefaultConfig_GamblingDens()
     {
         GamblingDens = new List<GamblingDen>()
-        {     
+        {
             new GamblingDen(new Vector3(-358.2999f, 91.13467f, 70.5202f), 267.5716f,"The Hush Casino","We'll take care of you Win or Lose!")//Scatino Casino, Davey's Dive
             {
                 GamblingParameters = new GamblingParameters()
                 {
                     DealerName = "The House",
-                    BlackJackMinBet = 50,
-                    BlackJackMaxBet = 5000, 
+                    BlackjackGamblingParameters = new BlackjackGamblingParameters(true,25,500,true,true),
                 },
+                WinLimit = 10000,
+                WinLimitResetHours = 24,
+                AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
                 CameraPosition = new Vector3(-338.0188f, 40.86187f, 81.43283f), 
                 CameraDirection = new Vector3(-0.3936391f, 0.8768913f, -0.2758803f),
                 CameraRotation = new Rotator(-16.01448f, 1.154718E-05f, 24.17545f),
@@ -3074,19 +3076,19 @@ public class PlacesOfInterest : IPlacesOfInterest
 
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(-1072.822f, -880.3561f, 4.809089f), 208f,30f),
-                    new LEConditionalLocation(new Vector3(-1075.95f, -882.3492f, 4.809089f), 208f,30f),
-                    new LEConditionalLocation(new Vector3(-1051.726f, -867.1277f, 4.809089f), 230f,30f),
-                    new LEConditionalLocation(new Vector3(-1045.53f, -861.5321f, 4.809089f), 230f,30f),
-                    new LEConditionalLocation(new Vector3(-1042.226f, -857.9979f, 4.809089f), 230f,30f),
-                    new LEConditionalLocation(new Vector3(-1047.814f, -846.7044f, 4.809089f), 37f,30f),
-                    new LEConditionalLocation(new Vector3(-1052.352f, -846.8544f, 4.809089f), 37f,30f),
-                    new LEConditionalLocation(new Vector3(-1055.076f, -849.5068f, 4.809089f), 37f,30f),
-                    new LEConditionalLocation(new Vector3(-1058.752f, -851.4465f, 4.809089f), 37f,30f),
-                    new LEConditionalLocation(new Vector3(-1126.5f, -864.8307f, 13.63185f), 220f,30f),
-                    new LEConditionalLocation(new Vector3(-1122.896f, -863.4746f, 13.6122f), 220f,30f),
-                    new LEConditionalLocation(new Vector3(-1115.937f, -857.7859f, 13.65187f), 220f,30f),
-                    new LEConditionalLocation(new Vector3(-1138.613f, -845.7916f, 13.98058f), 220f,30f),
+                    new LEConditionalLocation(new Vector3(-1072.822f, -880.3561f, 4.809089f), 208f,10f),
+                    new LEConditionalLocation(new Vector3(-1075.95f, -882.3492f, 4.809089f), 208f,10f),
+                    new LEConditionalLocation(new Vector3(-1051.726f, -867.1277f, 4.809089f), 230f,10f),
+                    new LEConditionalLocation(new Vector3(-1045.53f, -861.5321f, 4.809089f), 230f,10f),
+                    new LEConditionalLocation(new Vector3(-1042.226f, -857.9979f, 4.809089f), 230f,10f),
+                    new LEConditionalLocation(new Vector3(-1047.814f, -846.7044f, 4.809089f), 37f,10f),
+                    new LEConditionalLocation(new Vector3(-1052.352f, -846.8544f, 4.809089f), 37f,10f),
+                    new LEConditionalLocation(new Vector3(-1055.076f, -849.5068f, 4.809089f), 37f,10f),
+                    new LEConditionalLocation(new Vector3(-1058.752f, -851.4465f, 4.809089f), 37f,10f),
+                    new LEConditionalLocation(new Vector3(-1126.5f, -864.8307f, 13.63185f), 220f,10f),
+                    new LEConditionalLocation(new Vector3(-1122.896f, -863.4746f, 13.6122f), 220f,10f),
+                    new LEConditionalLocation(new Vector3(-1115.937f, -857.7859f, 13.65187f), 220f,10f),
+                    new LEConditionalLocation(new Vector3(-1138.613f, -845.7916f, 13.98058f), 220f,10f),
                 } },
             new PoliceStation(new Vector3(-1633.314f, -1010.025f, 13.08503f), 351.7007f, "Del Perro Police Station","Obey and Survive") {
                 BannerImagePath = "agencies\\lspdmain.png",

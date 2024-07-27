@@ -122,7 +122,11 @@ public class VehicleSettings : ISettingsDefaultable
         CustomFuelSystemFuelConsumptionScalar = 3.0f;
         AllowSetEngineState = true;
         AllowSetEngineStateOnlyCars = false;
+
         ScaleEngineDamage = true;
+
+
+
         ScaleEngineDamageMultiplier = 3.0f;
         AllowSetIndicatorState = true;
         ForceFirstPersonOnVehicleDuck = true;

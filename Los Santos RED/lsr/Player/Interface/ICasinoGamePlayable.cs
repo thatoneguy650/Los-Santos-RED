@@ -14,9 +14,8 @@ namespace LosSantosRED.lsr.Interface
         BankAccounts BankAccounts { get; }
         string PlayerName { get; }
         bool IsMoveControlPressed { get; }
-        List<Tuple<Card, Texture>> CardIconList { get; }
-        Texture UnknownCardTexture { get; }
 
-        void SetupSharedTextures();
+        GamblingManager GamblingManager { get; }
+        ButtonPrompts ButtonPrompts { get; }
     }
 }

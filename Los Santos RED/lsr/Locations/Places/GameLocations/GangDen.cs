@@ -2,6 +2,7 @@
 using Mod;
 using Rage;
 using Rage.Native;
+using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
     private bool KeepInteractionGoing;
     private UIMenuItem LayLowMenuItem;
     private UIMenuItem dropoffKick;
+    private UIMenu LoanSubMenu;
+
     public GangDen() : base()
     {
 
@@ -184,7 +187,21 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
         {
             CreateRestInteractionMenu();
         }
+        CreateLoanMenuItems();
     }
+
+    private void CreateLoanMenuItems()
+    {
+        LoanSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Cash Loans");
+        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Just front me some cash, I'll catch it up on the backend!";
+        if (HasBannerImage)
+        {
+            BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
+            LoanSubMenu.SetBannerType(BannerImage);
+        }
+        AssociatedGang.AddLoanItems(Player, LoanSubMenu, this, Time);
+    }
+
     private void CreateTaskMenuItems()
     {
         PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);

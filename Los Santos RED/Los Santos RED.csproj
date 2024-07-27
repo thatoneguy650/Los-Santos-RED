@@ -126,6 +126,10 @@
     <Compile Include="lsr\Camera\CameraRotator.cs" />
     <Compile Include="lsr\Data\Agencies\IPlatePrefixable.cs" />
     <Compile Include="lsr\Data\Agencies\WantedLevels.cs" />
+    <Compile Include="lsr\Data\Gangs\GangLoan.cs" />
+    <Compile Include="lsr\Data\Gangs\GangLoanSave.cs" />
+    <Compile Include="lsr\Data\Gangs\LoanParameter.cs" />
+    <Compile Include="lsr\Data\Gangs\LoanParameters.cs" />
     <Compile Include="lsr\Data\Interface\ICellphones.cs" />
     <Compile Include="lsr\Data\Interface\IContacts.cs" />
     <Compile Include="lsr\Data\Interface\ISpawnBlocks.cs" />
@@ -212,8 +216,10 @@
     <Compile Include="lsr\Locations\Places\GameLocations\CustomizeShops\BarberShop.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\CustomizeShops\PlasticSurgeryClinic.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\CustomizeShops\TattooShop.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Gambling\BlackjackGamblingParameters.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Gambling\GamblingDen.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Gambling\GamblingParameters.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Gambling\RouletteGamblingParameters.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\IAssaultSpawnable.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\IGasPumpable.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\ILEDispatchableLocation.cs" />
@@ -419,6 +425,9 @@
     <Compile Include="lsr\Player\Crime\RestrictedAreaManager.cs" />
     <Compile Include="lsr\Player\Crime\WantedLevel.cs" />
     <Compile Include="lsr\Player\Equipment\ClipsetManager.cs" />
+    <Compile Include="lsr\Player\Gambling\GamblingManager.cs" />
+    <Compile Include="lsr\Player\Gambling\GamblingIncident.cs" />
+    <Compile Include="lsr\Player\Gambling\LocationGamblingStatus.cs" />
     <Compile Include="lsr\Player\HumanState\ArmorManager.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\AdvancedConversation.cs" />
     <Compile Include="lsr\Old\FullConversation_Old.cs" />
