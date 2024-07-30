@@ -1132,8 +1132,12 @@ public class PlacesOfInterest : IPlacesOfInterest
             {
                 GamblingParameters = new GamblingParameters()
                 {
-                    DealerName = "The House",
-                    BlackjackGamblingParameters = new BlackjackGamblingParameters(true,25,500,true,true),
+                    BlackJackGameRulesList = new List<BlackJackGameRules>()
+                    {
+                        new BlackJackGameRules("Low Stakes Blackjack","The House",25,500,true,true, false, false),
+                        new BlackJackGameRules("Associate Blackjack","The House",100,1500,false,true, true, false),
+                        new BlackJackGameRules("Members Blackjack","The House",500,5000,false,true, false, true),
+                    },
                 },
                 WinLimit = 10000,
                 WinLimitResetHours = 24,

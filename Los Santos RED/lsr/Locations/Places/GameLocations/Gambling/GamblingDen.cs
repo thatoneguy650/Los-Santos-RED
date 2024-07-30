@@ -128,36 +128,33 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
             GameChoiceSubMenu.SetBannerType(BannerImage);
         }
-        if(GamblingParameters.BlackjackGamblingParameters.IsEnabled)
+
+        if (GamblingParameters.BlackJackGameRulesList != null)
         {
-            UIMenuItem playBlackjackMenuItem = new UIMenuItem("Play Blackjack", $"Also know as 'twenty-one'.~n~Limits: ~n~Min Bet: ${GamblingParameters.BlackjackGamblingParameters.MinBet}~n~Max Bet: ${GamblingParameters.BlackjackGamblingParameters.MaxBet} ~n~Surrender: {(GamblingParameters.BlackjackGamblingParameters.CanSurrender ? "Allowed" : "Unavailable")}");
-            playBlackjackMenuItem.Activated += (sender, e) =>
+            foreach (BlackJackGameRules blackJackGameRules in GamblingParameters.BlackJackGameRulesList)
             {
-                sender.Visible = false;
-                StartBlackjackGame();
-                sender.Visible = true;
-            };
-            GameChoiceSubMenu.AddItem(playBlackjackMenuItem);
+                UIMenuItem playBlackjackMenuItem = new UIMenuItem(blackJackGameRules.GameName, $"Also know as 'twenty-one'.{(blackJackGameRules.IsRestrictedToMember ? "~n~~r~Members Only~s~" : "")}{(blackJackGameRules.IsRestrictedToFriendly ? "~n~~r~Associates and Members Only~s~" : "")} ~n~Limits: ~n~Min Bet: ${blackJackGameRules.MinBet}~n~Max Bet: ${blackJackGameRules.MaxBet} ~n~Surrender: {(blackJackGameRules.CanSurrender ? "Allowed" : "Unavailable")}");
+                playBlackjackMenuItem.Activated += (sender, e) =>
+                {
+                    sender.Visible = false;
+                    StartBlackjackGame(blackJackGameRules);
+                    sender.Visible = true;
+                };
+                GameChoiceSubMenu.AddItem(playBlackjackMenuItem);
+            }
         }
-        //if (GamblingParameters.BlackjackGamblingParameters.HasPoker)
-        //{
-        //    UIMenuItem playPokerMenuItem = new UIMenuItem("Play Seven-Card Stud Poker", "Also known as Seven-Toed Pete or Down-The-River. Texas What Em? We Play poker here.");
-        //    playPokerMenuItem.Activated += (sender, e) =>
-        //    {
-        //        sender.Visible = false;
-        //    };
-        //    playPokerMenuItem.Enabled = false;
-        //    GameChoiceSubMenu.AddItem(playPokerMenuItem);
-        //}
-        if (GamblingParameters.RouletteGamblingParameters.IsEnabled)
+        if (GamblingParameters.RouletteGameRulesList != null)
         {
-            UIMenuItem playrouletteMenuItem = new UIMenuItem("Play Roulette", "Means 'Little Wheel' in french. Enjoy watching balls? This is the game for you.");
-            playrouletteMenuItem.Activated += (sender, e) =>
+            foreach (RouletteGameRules rouletteGameRules in GamblingParameters.RouletteGameRulesList)
             {
-                sender.Visible = false;
-            };
-            playrouletteMenuItem.Enabled = false;
-            GameChoiceSubMenu.AddItem(playrouletteMenuItem);
+                UIMenuItem playrouletteMenuItem = new UIMenuItem("Play Roulette", "Means 'Little Wheel' in french. Enjoy watching balls? This is the game for you.");
+                playrouletteMenuItem.Activated += (sender, e) =>
+                {
+                    sender.Visible = false;
+                };
+                playrouletteMenuItem.Enabled = false;
+                GameChoiceSubMenu.AddItem(playrouletteMenuItem);
+            }
         }
         if(AssociatedGang == null)
         {
@@ -174,9 +171,9 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
         AssociatedGang.AddLoanItems(Player,LoanSubMenu,this, Time);
     }
 
-    private void StartBlackjackGame()
+    private void StartBlackjackGame(BlackJackGameRules blackJackGameRules)
     {
-        if(Player.BankAccounts.GetMoney(false) < GamblingParameters.BlackjackGamblingParameters.MinBet)
+        if(Player.BankAccounts.GetMoney(false) < blackJackGameRules.MinBet)
         {
             DisplayMessage("Error","You do not have enough cash on hand to play.");
             PlayErrorSound();
@@ -188,7 +185,25 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
             PlayErrorSound();
             return;
         }
-        BlackJackGame blackJackGameInternal = new BlackJackGame(Player.CasinoGamePlayer, Settings, false, this, GamblingParameters);
+        GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang);
+        GangRespect currentRespect = GangRespect.Neutral;
+        if(gr != null)
+        {
+            currentRespect = gr.GangRelationship;
+        }
+        if (blackJackGameRules.IsRestrictedToMember && currentRespect != GangRespect.Member)
+        {
+            DisplayMessage("Error", "This game is restricted to members.");
+            PlayErrorSound();
+            return;
+        }
+        else if (blackJackGameRules.IsRestrictedToFriendly && currentRespect != GangRespect.Friendly && currentRespect != GangRespect.Member)
+        {
+            DisplayMessage("Error", "You do not have enough rep to play in this game.");
+            PlayErrorSound();
+            return;
+        }
+        BlackJackGame blackJackGameInternal = new BlackJackGame(Player.CasinoGamePlayer, Settings, false, this, blackJackGameRules);
         blackJackGameInternal.StartRound();
     }
 }

@@ -75,6 +75,10 @@ namespace LosSantosRED.lsr.Helper
             NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
             //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
         }
+        public static void PlayAcceptSound()
+        {
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Accept", "Phone_SoundSet_Michael", 0);
+        }
 
         public static bool IsStringHash(string value, out uint hash)
         {

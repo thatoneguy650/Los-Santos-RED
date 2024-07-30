@@ -190,7 +190,7 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick Classic Police", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "deathbike2" });//police 1st gen mav
         newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick 2nd Gen", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "deathbike3" });//civ 2nd gen mav
 
-        Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\ModItems_FullModernTraffic.xml");
+        Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Full Modern Traffic\\ModItems_FullModernTraffic.xml");
     }
     private void DefaultConfig_LosSantos2008()
     {

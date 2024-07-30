@@ -32,37 +32,15 @@ namespace Blackjack
         Queen,
         King
     }
-
     public class Card
     {
         public Suit Suit { get; }
         public Face Face { get; }
         public int Value { get; set; }
-        //public char Symbol { get; }
-
-        /// <summary>
-        /// Initilize Value and Suit Symbol
-        /// </summary> 
         public Card(Suit suit, Face face)
         {
             Suit = suit;
             Face = face;
-
-            //switch (Suit)
-            //{
-            //    case Clubs:
-            //        //Symbol = '♣';
-            //        break;
-            //    case Spades:
-            //        //Symbol = '♠';
-            //        break;
-            //    case Diamonds:
-            //        //Symbol = '♦';
-            //        break;
-            //    case Hearts:
-            //        //Symbol = '♥';
-            //        break;
-            //}
             switch (Face)
             {
                 case Ten:
@@ -79,10 +57,6 @@ namespace Blackjack
                     break;
             }
         }
-
-        /// <summary>
-        /// Print out the description of the card, marking Aces as Soft or Hard.
-        /// </summary>
         public string Description()
         {
             if (Face == Ace)

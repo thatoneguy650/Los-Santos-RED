@@ -253,12 +253,33 @@ public class ModDataFileManager
     private void SetupFullModernTraffic()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic");
-        string Description = "Adds DLC vehicles to the traffic by modifying the popgroups.ymt file. Adds most normal vehicles to the corresponding traffic. Works with MP or SP map (traffic groups are identical). " +
-            "greskfullmoderntraffic.oiv includes all DLC pop groups and some additional traffic vehicles. The _novanillagang_addon.oiv should be installed AFTER the greskfullmoderntraffic.oiv if you want to remove vanilla gangs. An uninstaller is also included. " +
-            "greskmoderntrafficbase.oiv includes only r* dlc cars. Can choose either _novanillagang.oiv or regular." +
+        string Description = "Adds DLC vehicles to the vanilla traffic. Adds most normal vehicles to the corresponding traffic. Works with MP or SP map (traffic groups are identical). " +
+            "There are two variations available:" + Environment.NewLine +
+            "'Full Modern Traffic' adds some new vehicles and includes some edits to DLC vehicles to allow them to blend in better with traffic." + Environment.NewLine +
+            "'Modern Traffic Base' does not include any edits to DLC vehicles and adds no new models." + Environment.NewLine +
+            "" + Environment.NewLine +
             "Incompatible with Los Santos 2008 config." + Environment.NewLine +
             "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1.";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\readme.txt", Description);
+
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Full Modern Traffic\\");
+        string Description2 = "" +
+            "Adds DLC vehicles to the vanilla traffic." +
+            "Also adds some new vehicles and includes some edits to DLC vehicles to allow them to blend in better with traffic." +
+            "Incompatible with Los Santos 2008 config." + Environment.NewLine +
+            "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1.";
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Full Modern Traffic\\readme.txt", Description2);
+
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Modern Traffic Base\\");
+        string Description3 = "" +
+            "Adds DLC vehicles to the vanilla traffic." +
+            "Does not add any new vehicles." +
+            "Incompatible with Los Santos 2008 config.";
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Modern Traffic Base\\readme.txt", Description3);
+
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Uninstaller\\");
+        string Description4 = "Uninstaller OIV for any version.";
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Uninstaller\\readme.txt", Description4);
     }
 
     private void SetupAddonPlatesConfig()

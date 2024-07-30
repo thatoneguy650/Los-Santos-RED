@@ -70,7 +70,7 @@ public class FootChase
         {
             MoveRate = Settings.SettingsManager.DebugSettings.CanineRunSpeed;
         }
-        AnimationDictionary.RequestAnimationDictionay("random@arrests");
+        AnimationDictionary.RequestAnimationDictionay("random@arrests");//THIS HAS YIELDS!
         //Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
         //Cop.WeaponInventory.SetLessLethal();
     }

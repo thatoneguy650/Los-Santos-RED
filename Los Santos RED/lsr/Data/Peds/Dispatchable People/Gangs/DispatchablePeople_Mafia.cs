@@ -127,19 +127,19 @@ public class DispatchablePeople_Mafia
             OverrideVoice = DefaultVoicesMale,
             RequiredVariation = new PedVariation(new List<PedComponent>() 
             {
-                new PedComponent(3, 5, 0, 0),//3,3
+                new PedComponent(3, 11, 0, 0),//5,3
                 new PedComponent(4, 10, 0, 0),
                 new PedComponent(6, 21, 0, 0),
                 new PedComponent(7, 0, 0, 0),
-                new PedComponent(8, 5, 0, 0),
+                new PedComponent(8, 0, 0, 0),//0
                 new PedComponent(11, 346, 25, 0),
                 new PedComponent(2, 10, 0, 0),
             }, new List<PedPropComponent>() { }),
             OptionalComponents = new List<PedComponent>() 
             {
                 //Undershirts
-                new PedComponent(8, 5, 1, 0),
-                new PedComponent(8, 5, 2, 0),
+                new PedComponent(8, 0, 1, 0),
+                new PedComponent(8, 0, 2, 0),
 
                 //Jackets/Shirts
                 new PedComponent(11, 346, 0, 0),
@@ -306,11 +306,11 @@ public class DispatchablePeople_Mafia
             OverrideVoice = DefaultVoicesMale,
             RequiredVariation = new PedVariation(new List<PedComponent>() 
             {
-                new PedComponent(3, 5, 0, 0),
+                new PedComponent(3, 0, 0, 0),//5
                 new PedComponent(4, 13, 0, 0),
                 new PedComponent(6, 111, 1, 0),
                 new PedComponent(7, 0, 0, 0),
-                new PedComponent(8, 5, 0, 0),
+                new PedComponent(8, 0, 0, 0),//5
                 new PedComponent(11, 429, 14, 0),
                 new PedComponent(2, 10, 0, 0),
             }, new List<PedPropComponent>() { })

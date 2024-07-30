@@ -9,6 +9,7 @@ using Microsoft.VisualBasic.Logging;
 using NAudio.Gui;
 using Rage;
 using Rage.Native;
+using Roulette;
 //using RNUIExamples;
 using System;
 using System.Collections;
@@ -1126,24 +1127,48 @@ public class Debug
     private void DebugNumpad5()
 {
 
+        //GameFiber DoorWatcher = GameFiber.StartNew(delegate
+        //{
+
+        //    while (true)
+        //    {
+        //        BlackJackGame blackJackGameInternal = new BlackJackGame(Player, Settings, false, null, new BlackJackGameRules());
+        //        blackJackGameInternal.StartRound();
+
+        //        if(!blackJackGameInternal.IsActive)
+        //        {
+        //            break;   
+        //        }
+        //        GameFiber.Yield();
+        //    }
+        //}, "DoorWatcher");
+
+
         GameFiber DoorWatcher = GameFiber.StartNew(delegate
         {
 
             while (true)
             {
-                BlackJackGame blackJackGameInternal = new BlackJackGame(Player, Settings, false, null, new GamblingParameters());
-                blackJackGameInternal.StartRound();
-
-                if(!blackJackGameInternal.IsActive)
+                try
                 {
-                    break;   
+
+
+                    RouletteGame rouletteGame = new RouletteGame(Player, Settings, ModDataFileManager.PlacesOfInterest.PossibleLocations.GamblingDens.FirstOrDefault(), new RouletteGameRules());
+                    rouletteGame.Setup();
+                    rouletteGame.StartRound();
+
+                    if (!rouletteGame.IsActive)
+                    {
+                        break;
+                    }
+                    GameFiber.Yield();
                 }
-                GameFiber.Yield();
+                catch(Exception ex)
+                {
+                    Game.DisplaySubtitle(ex.ToString());
+                }
             }
         }, "DoorWatcher");
-
-
-
 
         //if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int seatIndex) && Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
         //{

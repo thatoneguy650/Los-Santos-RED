@@ -160,7 +160,7 @@ public class VehicleSettings : ISettingsDefaultable
 
         InjureOnVehicleCrash = true;
 
-        VehicleCrashInjureScalar = 0.35f;
+        VehicleCrashInjureScalar = 0.1f;// 0.35f;
 
         VehicleCrashInjureMinVehicleDamageTrigger = 55;
 

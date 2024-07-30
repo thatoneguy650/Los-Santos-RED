@@ -29,6 +29,13 @@ public class WorldSettings : ISettingsDefaultable
     public float DefaultSpawnMultiplier { get; set; }
     [Description("If enabled, the civilian ped population will be lessened at 4+ stars.")]
     public bool LowerPedSpawnsAtHigherWantedLevels { get; set; }
+
+    [Description("Civilian ped density multiplier at 2 stars.")]
+    public float LowerPedSpawnsAtHigherWantedLevels_Wanted2Multiplier { get; set; }
+
+    [Description("Civilian ped density multiplier at 3 stars.")]
+    public float LowerPedSpawnsAtHigherWantedLevels_Wanted3Multiplier { get; set; }
+
     [Description("Civilian ped density multiplier at 4 stars.")]
     public float LowerPedSpawnsAtHigherWantedLevels_Wanted4Multiplier { get; set; }
     [Description("Civilian ped density multiplier at 5 stars.")]
@@ -86,6 +93,9 @@ public class WorldSettings : ISettingsDefaultable
     public bool ExtendedVehicleCleanup { get;  set; }
     public bool SuppressFEJVehiclesFromGenerators { get; set; }
     public bool SetMissionFlagOn { get; set; }
+    public int MaxPedsBeforeDispatchPause { get; set; }
+    public int MaxVehiclesBeforeDispatchPause { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -110,6 +120,8 @@ public class WorldSettings : ISettingsDefaultable
 
         DefaultSpawnMultiplier = 1.0f;
 
+        LowerPedSpawnsAtHigherWantedLevels_Wanted2Multiplier = 0.9f;
+        LowerPedSpawnsAtHigherWantedLevels_Wanted3Multiplier = 0.75f;
         LowerPedSpawnsAtHigherWantedLevels_Wanted4Multiplier = 0.5f;
         LowerPedSpawnsAtHigherWantedLevels_Wanted5Multiplier = 0.3f;
         LowerPedSpawnsAtHigherWantedLevels_Wanted6Multiplier = 0.1f;
@@ -162,6 +174,10 @@ public class WorldSettings : ISettingsDefaultable
 
         SuppressFEJVehiclesFromGenerators = true;
         SetMissionFlagOn = true;
+
+        MaxPedsBeforeDispatchPause = 120;
+        MaxVehiclesBeforeDispatchPause = 180;
+
     }
 
 }

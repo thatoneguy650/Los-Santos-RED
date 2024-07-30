@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 public class GamblingParameters
 {
-    public string DealerName { get; set; } = "Dealer";
-    public BlackjackGamblingParameters BlackjackGamblingParameters { get; set; } = new BlackjackGamblingParameters();
-    public RouletteGamblingParameters RouletteGamblingParameters { get; set; } = new RouletteGamblingParameters();
+    public List<BlackJackGameRules> BlackJackGameRulesList { get; set; } = new List<BlackJackGameRules>();
+    public List<RouletteGameRules> RouletteGameRulesList { get; set; } = new List<RouletteGameRules>();
     public GamblingParameters()
     {
 

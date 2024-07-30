@@ -277,7 +277,7 @@ public class ShopMenus : IShopMenus
 
 
         //new MenuItem("Declasse Impaler LX",35000,16000),
-        Serialization.SerializeParam(fejPossibleShopMenus, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\ShopMenus_FullModernTraffic.xml");
+        Serialization.SerializeParam(fejPossibleShopMenus, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Full Modern Traffic\\ShopMenus_FullModernTraffic.xml");
     }
     private void DefaultConfig_FullExpandedExperience()
     {

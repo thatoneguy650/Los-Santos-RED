@@ -140,16 +140,31 @@ public class DebugPerformanceSubMenu : DebugSubMenu
     {
         int TotalEntities = 0;
         List<Entity> AllEntities = Rage.World.GetAllEntities().ToList();
+        int pedCount = 0;
+        int vehCount = 0;
+        int objectcount = 0;
         EntryPoint.WriteToConsole($"ENTITIES ===============================", 0);
         foreach (Entity ent in AllEntities)
         {
             if (ent.Exists())
             {
+                if(ent.GetType() == typeof(Ped))
+                {
+                    pedCount++;
+                }
+                else if (ent.GetType() == typeof(Vehicle))
+                {
+                    vehCount++;
+                }
+                else if (ent.GetType() == typeof(Rage.Object))
+                {
+                    objectcount++;
+                }
                 TotalEntities++;
                 EntryPoint.WriteToConsole($"ENTITY {ent.Handle} {ent.GetType()}  {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position} Heading {ent.Heading}", 0);
             }
         }
-        EntryPoint.WriteToConsole($"ENTITIES =============================== TOTAL: {TotalEntities}", 0);
+        EntryPoint.WriteToConsole($"ENTITIES =============================== TOTAL: {TotalEntities} Ped:{pedCount} Veh:{vehCount} Obj:{objectcount}", 0);
     }
 }
 

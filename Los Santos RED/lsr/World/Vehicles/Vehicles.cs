@@ -31,6 +31,8 @@ public class Vehicles
     private uint GameTimeLastRanFEJSuppression;
     private uint TaxiHashKey;
     private List<uint> FEJSuppressedHashes;
+    private HashSet<uint> VehicleModelHashes = new HashSet<uint>();
+    private uint GameTimeLastClearedModels;
 
     public Vehicles(IAgencies agencies,IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes, IModItems modItems, IEntityProvideable world, IOrganizations organizations)
     {
@@ -249,12 +251,28 @@ public class Vehicles
             }
             //GameFiber.Yield();//TR 29
         }
+        //ClearModels();
         if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Vehicles.CreateNew Ran Time Since {Game.GameTime - GameTimeLastCreatedVehicles}", 5);
         }
         GameTimeLastCreatedVehicles = Game.GameTime;
     }
+    private void ClearModels()
+    {
+        if(Game.GameTime - GameTimeLastClearedModels <= 15000)
+        {
+            return;
+        }
+        foreach(uint modelHash in VehicleModelHashes)
+        {
+            NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(modelHash);
+        }
+        VehicleModelHashes.Clear();
+        EntryPoint.WriteToConsole("SET MODELS AS NO LONGER NEEDED");
+        GameTimeLastClearedModels = Game.GameTime;
+    }
+
     public bool AddEntity(Vehicle vehicle)
     {
         if(!vehicle.Exists())
@@ -276,7 +294,8 @@ public class Vehicles
                 CreateCivilianVehicleFromAmbient(vehicle);
                 return true;
             }
-        }    
+        }
+        //VehicleModelHashes.Add(vehicle.Model.Hash);
         return false;
     }
     private void CreatePoliceFromAmbient(Vehicle vehicle)

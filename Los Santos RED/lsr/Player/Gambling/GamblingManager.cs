@@ -25,14 +25,15 @@ public class GamblingManager
     }
     public void Setup()
     {
-
+        locationGamblingWins = new List<LocationGamblingStatus>();
     }
     public void Dipsose()
     {
-
+        locationGamblingWins.Clear();
     }
     public void Reset()
     {
+        locationGamblingWins.Clear();
         //Reset win limit shit?
     }
     public void SetupSharedTextures()
@@ -168,7 +169,6 @@ public class GamblingManager
             locationGamblingWin.GamblingIncidents.Add(new GamblingIncident(totalMoneyWon, Time.CurrentDateTime));
         }
 # if DEBUG
-
         EntryPoint.WriteToConsole($"OnMoneyWon: {gameLocation.Name} ADDING: {totalMoneyWon} CurrentTotal {TotalWon(gameLocation)}");
 #endif
     }

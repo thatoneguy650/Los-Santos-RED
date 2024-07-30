@@ -231,7 +231,7 @@ public class BlankLocationsData
                 {
                     new LEConditionalLocation(new Vector3(2389.632f, 5837.942f, 46.33297f), 60.37991f, defaultSpawnPercentage) {
                         AssociationID = "SAHP",
-                        RequiredVehicleGroup = "StandardSAHP",
+                        //RequiredVehicleGroup = "StandardSAHP",
                         IsEmpty = false,
                         TaskRequirements = TaskRequirements.Guard,
                         OverrideNightPercentage = 55.0f,
@@ -269,7 +269,7 @@ public class BlankLocationsData
                 {
                     new LEConditionalLocation(new Vector3(2716.348f, 3428.547f, 55.57796f), 248.8778f, defaultSpawnPercentage) {
                         AssociationID = "SAHP",
-                        RequiredVehicleGroup = "StandardSAHP",
+                        //RequiredVehicleGroup = "StandardSAHP",
                         IsEmpty = false,
                         TaskRequirements = TaskRequirements.Guard,
                         OverrideNightPercentage = 55.0f,
@@ -361,7 +361,7 @@ public class BlankLocationsData
                 {
                     new LEConditionalLocation(new Vector3(1863.335f, -754.3698f, 81.10484f), 223.2417f, defaultSpawnPercentage) {
                         AssociationID = "SAHP",
-                        RequiredVehicleGroup = "StandardSAHP",
+                        //RequiredVehicleGroup = "StandardSAHP",
                         IsEmpty = false,
                         OverrideNightPercentage = 55.0f,
                         OverridePoorWeatherPercentage = 0.0f,
@@ -375,7 +375,7 @@ public class BlankLocationsData
                 {
                     new LEConditionalLocation(new Vector3(1290.652f, -2548.193f, 42.99783f), 8.77529f, defaultSpawnPercentage) {
                         AssociationID = "SAHP",
-                        RequiredVehicleGroup = "StandardSAHP",
+                        //RequiredVehicleGroup = "StandardSAHP",
                         IsEmpty = false,
                         OverrideNightPercentage = 55.0f,
                         OverridePoorWeatherPercentage = 0.0f,
