@@ -117,6 +117,8 @@ namespace Roulette
         }
         public void OnWheelSpun(string v)
         {
+            DisplayCustomMessage("Alert", "No More Bets");
+            StartDelay();
             BigMessage.MessageInstance.ShowColoredShard(v, "", HudColor.Black, HudColor.Blue, DelayTime);
             StartDelay();
         }

@@ -16,6 +16,7 @@ namespace Roulette
         private UIMenuListScrollerItem<RoulettePocket> SingleBetPocketScroller;
         public override string MainTitle => "Single Bets";
         public override string MainDescription => "Make bets on a single pocket. ~n~Pays ~r~35 to 1~s~.";
+        public override int SortOrder => 0;
         public SingleBetMenu(ICasinoGamePlayable player, ISettingsProvideable settings, GamblingDen gameLocation, RouletteGameRules gamblingParameters, RouletteGame rouletteGame) : base(player, settings, gameLocation, gamblingParameters, rouletteGame)
         {
 

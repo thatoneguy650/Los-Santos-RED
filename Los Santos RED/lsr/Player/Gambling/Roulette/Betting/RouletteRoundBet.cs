@@ -23,6 +23,12 @@ namespace Roulette
                 toReturn.AddRange(ColumnBets.ToList());
                 toReturn.AddRange(TopLineBets.ToList());
                 toReturn.AddRange(RowBets.ToList());
+                toReturn.AddRange(SplitBets.ToList());
+                toReturn.AddRange(StreetBets.ToList());
+                toReturn.AddRange(CornerBets.ToList());
+                toReturn.AddRange(CornerBets.ToList());
+                toReturn.AddRange(DoubleStreetBets.ToList());
+                toReturn.AddRange(HalfBets.ToList());
                 return toReturn;
             }
         }
@@ -33,5 +39,10 @@ namespace Roulette
         public List<ColumnBet> ColumnBets { get; set; } = new List<ColumnBet>();
         public List<TopLineBet> TopLineBets { get; set; } = new List<TopLineBet>();
         public List<RowBet> RowBets { get; set; } = new List<RowBet>();
+        public List<SplitBet> SplitBets { get; set; } = new List<SplitBet>();
+        public List<StreetBet> StreetBets { get; set; } = new List<StreetBet>();
+        public List<CornerBet> CornerBets { get; set; } = new List<CornerBet>();
+        public List<DoubleStreetBet> DoubleStreetBets { get; set; } = new List<DoubleStreetBet>();
+        public List<HalfBet> HalfBets { get; set; } = new List<HalfBet>();
     }
 }

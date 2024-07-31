@@ -12,7 +12,7 @@ namespace Roulette
         public int PocketID { get; private set; }
         public bool IsOdd {get; private set; }
         public string Color { get; private set; }
-        public string FullDisplay => GameColor + PocketDisplay;
+        public string FullDisplay => GameColor + PocketDisplay + "~s~";
         public string GameColor => Color == "Red" ? "~r~" : Color == "Black" ? "~u~" : Color == "Green" ? "~g~" : "~s~";
         public RoulettePocket(int pocketID)
         {

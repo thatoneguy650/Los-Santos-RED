@@ -1138,6 +1138,12 @@ public class PlacesOfInterest : IPlacesOfInterest
                         new BlackJackGameRules("Associate Blackjack","The House",100,1500,false,true, true, false),
                         new BlackJackGameRules("Members Blackjack","The House",500,5000,false,true, false, true),
                     },
+                    RouletteGameRulesList = new List<RouletteGameRules>()
+                    {
+                        new RouletteGameRules("Low Stakes Roulette","The House",50,500, false, false),
+                        new RouletteGameRules("Associate Roulette","The House",250,2500,true,false),
+                        new RouletteGameRules("Members Roulette","The House",500,5000,false, true),
+                    },
                 },
                 WinLimit = 10000,
                 WinLimitResetHours = 24,

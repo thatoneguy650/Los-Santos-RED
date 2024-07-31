@@ -27,6 +27,7 @@ namespace Roulette
 
         public virtual string MainTitle { get; set; } = "Generic Bet";
         public virtual string MainDescription { get; set; } = "Make Generic Bet";
+        public virtual int SortOrder { get; set; } = 999;
 
         public RouletteBetMenu(ICasinoGamePlayable player, ISettingsProvideable settings, GamblingDen gameLocation, RouletteGameRules gamblingParameters, RouletteGame rouletteGame)
         {
@@ -85,7 +86,14 @@ namespace Roulette
             UIMenuItem MakeBet = new UIMenuItem("Make Bet", "Select to add the current bet.");
             MakeBet.Activated += (menu, item) =>
             {
-                MakeBetActivated(menu);
+                if (Player.BankAccounts.GetMoney(false) < BetAmountScroller.Value)
+                {
+                    Game.DisplaySubtitle("You do not have enough cash on hand to place this bet");
+                }
+                else
+                {
+                    MakeBetActivated(menu);
+                }
             };
             MakeNewBetMenu.AddItem(MakeBet);
         }

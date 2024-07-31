@@ -11,12 +11,13 @@ using Rage;
 
 namespace Roulette
 {
-    public class RowBetMenu : RouletteBetMenu
+    public class HalfBetMenu : RouletteBetMenu
     {
-        public override string MainTitle => "Row Bet";
-        public override string MainDescription => "Make bet on the row of the pocket. ~n~Winning Pockets: 0, 00 ~n~Pays ~o~17 to 1~s~.";
-        public override int SortOrder => 1;
-        public RowBetMenu(ICasinoGamePlayable player, ISettingsProvideable settings, GamblingDen gameLocation, RouletteGameRules gamblingParameters, RouletteGame rouletteGame) : base(player, settings, gameLocation, gamblingParameters, rouletteGame)
+        protected UIMenuListScrollerItem<string> BetTypeScroller;
+        public override string MainTitle => "1 to 18 19 to 36 Bets";
+        public override string MainDescription => "Make bets on the pocket being in the first or second half. ~n~Pays 1 to 1.";
+        public override int SortOrder => 32;
+        public HalfBetMenu(ICasinoGamePlayable player, ISettingsProvideable settings, GamblingDen gameLocation, RouletteGameRules gamblingParameters, RouletteGame rouletteGame) : base(player, settings, gameLocation, gamblingParameters, rouletteGame)
         {
 
         }
@@ -24,28 +25,34 @@ namespace Roulette
         {
             RemoveBetsMenu.Clear();
             RemoveBetsMenu.RefreshIndex();
-            foreach (RowBet sb in RouletteGame.RouletteRoundBet.RowBets)
+            foreach (HalfBet sb in RouletteGame.RouletteRoundBet.HalfBets)
             {
                 UIMenuItem removeBet = new UIMenuItem(sb.BetName, "Select to remove this bet") { RightLabel = $"${sb.Amount}" };
                 removeBet.Activated += (menu, item) =>
                 {
                     Player.BankAccounts.GiveMoney(sb.Amount, false);
-                    RouletteGame.RouletteRoundBet.RowBets.Remove(sb);
+                    RouletteGame.RouletteRoundBet.HalfBets.Remove(sb);
                     UpdateBetAmount();
                     removeBet.Enabled = false;
                 };
                 RemoveBetsMenu.AddItem(removeBet);
             }
         }
+        protected override void CreateBetTypeScroller()
+        {
+            BetTypeScroller = new UIMenuListScrollerItem<string>("Type", "Selected type", new List<string> { "1 to 18", "19 to 36" });
+            MakeNewBetMenu.AddItem(BetTypeScroller);
+        }
         protected override void MakeBetActivated(UIMenu menu)
         {
-            if (RouletteGame.RouletteRoundBet.RowBets != null && RouletteGame.RouletteRoundBet.RowBets.Any())
+            bool isFirst = BetTypeScroller.SelectedItem == "1 to 18";
+            if (RouletteGame.RouletteRoundBet.HalfBets != null && RouletteGame.RouletteRoundBet.HalfBets.Any(x => x.IsFirst == isFirst))
             {
                 Game.DisplaySubtitle("You already have a bet for this item");
             }
             else
             {
-                RouletteGame.RouletteRoundBet.RowBets.Add(new RowBet(BetAmountScroller.Value));
+                RouletteGame.RouletteRoundBet.HalfBets.Add(new HalfBet(isFirst, BetAmountScroller.Value));
                 Player.BankAccounts.GiveMoney(-1 * BetAmountScroller.Value, false);
                 menu.Visible = false;
                 UpdateBetAmount();
@@ -54,7 +61,7 @@ namespace Roulette
         }
         protected override void UpdateBetAmount()
         {
-            int totalBets = RouletteGame.RouletteRoundBet.RowBets.Sum(x => x.Amount);
+            int totalBets = RouletteGame.RouletteRoundBet.HalfBets.Sum(x => x.Amount);
             SetBetLabel(totalBets);
         }
     }

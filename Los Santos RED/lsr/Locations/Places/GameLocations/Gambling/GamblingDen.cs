@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Interface;
 using Rage;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using Roulette;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -133,7 +134,7 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
         {
             foreach (BlackJackGameRules blackJackGameRules in GamblingParameters.BlackJackGameRulesList)
             {
-                UIMenuItem playBlackjackMenuItem = new UIMenuItem(blackJackGameRules.GameName, $"Also know as 'twenty-one'.{(blackJackGameRules.IsRestrictedToMember ? "~n~~r~Members Only~s~" : "")}{(blackJackGameRules.IsRestrictedToFriendly ? "~n~~r~Associates and Members Only~s~" : "")} ~n~Limits: ~n~Min Bet: ${blackJackGameRules.MinBet}~n~Max Bet: ${blackJackGameRules.MaxBet} ~n~Surrender: {(blackJackGameRules.CanSurrender ? "Allowed" : "Unavailable")}");
+                UIMenuItem playBlackjackMenuItem = new UIMenuItem(blackJackGameRules.GameName, $"Also know as 'twenty-one'. {blackJackGameRules.Display}");
                 playBlackjackMenuItem.Activated += (sender, e) =>
                 {
                     sender.Visible = false;
@@ -147,12 +148,13 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
         {
             foreach (RouletteGameRules rouletteGameRules in GamblingParameters.RouletteGameRulesList)
             {
-                UIMenuItem playrouletteMenuItem = new UIMenuItem("Play Roulette", "Means 'Little Wheel' in french. Enjoy watching balls? This is the game for you.");
+                UIMenuItem playrouletteMenuItem = new UIMenuItem(rouletteGameRules.GameName, $"Means 'Little Wheel' in french. Enjoy watching balls? This is the game for you. {rouletteGameRules.Display}");
                 playrouletteMenuItem.Activated += (sender, e) =>
                 {
                     sender.Visible = false;
+                    StartRouletteGame(rouletteGameRules);
+                    sender.Visible = true;
                 };
-                playrouletteMenuItem.Enabled = false;
                 GameChoiceSubMenu.AddItem(playrouletteMenuItem);
             }
         }
@@ -170,7 +172,42 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
         }
         AssociatedGang.AddLoanItems(Player,LoanSubMenu,this, Time);
     }
-
+    private void StartRouletteGame(RouletteGameRules rouletteGameRules)
+    {
+        if (Player.BankAccounts.GetMoney(false) < rouletteGameRules.MinBet)
+        {
+            DisplayMessage("Error", "You do not have enough cash on hand to play.");
+            PlayErrorSound();
+            return;
+        }
+        if (Player.CasinoGamePlayer.GamblingManager.IsWinBanned(this))
+        {
+            DisplayMessage("Error", "You have been temporarily banned for winning too much.");
+            PlayErrorSound();
+            return;
+        }
+        GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang);
+        GangRespect currentRespect = GangRespect.Neutral;
+        if (gr != null)
+        {
+            currentRespect = gr.GangRelationship;
+        }
+        if (rouletteGameRules.IsRestrictedToMember && currentRespect != GangRespect.Member)
+        {
+            DisplayMessage("Error", "This game is restricted to members.");
+            PlayErrorSound();
+            return;
+        }
+        else if (rouletteGameRules.IsRestrictedToFriendly && currentRespect != GangRespect.Friendly && currentRespect != GangRespect.Member)
+        {
+            DisplayMessage("Error", "You do not have enough rep to play in this game.");
+            PlayErrorSound();
+            return;
+        }
+        RouletteGame rouletteGame = new RouletteGame(Player.CasinoGamePlayer, Settings, this, rouletteGameRules);
+        rouletteGame.Setup();
+        rouletteGame.StartRound();
+    }
     private void StartBlackjackGame(BlackJackGameRules blackJackGameRules)
     {
         if(Player.BankAccounts.GetMoney(false) < blackJackGameRules.MinBet)

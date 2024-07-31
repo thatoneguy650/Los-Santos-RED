@@ -13,7 +13,7 @@ namespace Roulette
             RoulettePocket = roulettePocket;
         }
         public RoulettePocket RoulettePocket { get; set; }
-        public override string BetName => $"Single Bet {RoulettePocket.FullDisplay}";
+        public override string BetName => $"{RoulettePocket.FullDisplay} Single Bet";
         public override bool IsWinner(RoulettePocket selectedPocket)
         {
             return selectedPocket.PocketID == RoulettePocket.PocketID;

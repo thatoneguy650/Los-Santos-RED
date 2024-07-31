@@ -16,6 +16,8 @@ namespace Roulette
         protected UIMenuListScrollerItem<string> BetTypeScroller;
         public override string MainTitle => "Even/Odd Bets";
         public override string MainDescription => "Make bets on the pocket being even or odd. ~n~Pays 1 to 1.";
+
+        public override int SortOrder => 30;
         public EvenOddBetMenu(ICasinoGamePlayable player, ISettingsProvideable settings, GamblingDen gameLocation, RouletteGameRules gamblingParameters, RouletteGame rouletteGame) : base(player, settings, gameLocation, gamblingParameters, rouletteGame)
         {
 

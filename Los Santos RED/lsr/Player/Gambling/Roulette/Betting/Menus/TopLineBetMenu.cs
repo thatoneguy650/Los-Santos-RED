@@ -15,6 +15,11 @@ namespace Roulette
     {
         public override string MainTitle => "Top Line Bet";
         public override string MainDescription => "Make bet on the top line.~n~Winning Pockets: 0, 00, 1, 2, 3 ~n~Pays ~o~6 to 1~s~.";
+
+
+        public override int SortOrder => 10;
+
+
         public TopLineBetMenu(ICasinoGamePlayable player, ISettingsProvideable settings, GamblingDen gameLocation, RouletteGameRules gamblingParameters, RouletteGame rouletteGame) : base(player, settings, gameLocation, gamblingParameters, rouletteGame)
         {
 

@@ -21,6 +21,7 @@ public class BlackJackGameRules
         IsRestrictedToFriendly = isRestrictedToFriendly;
         IsRestrictedToMember = isRestrictedToMember;
     }
+    public string Display => $"{(IsRestrictedToMember ? "~n~~r~Members Only~s~" : "")}{(IsRestrictedToFriendly ? "~n~~r~Associates and Members Only~s~" : "")} ~n~Limits: ~n~Min Bet: ${MinBet}~n~Max Bet: ${MaxBet} ~n~Surrender: {(CanSurrender ? "Allowed" : "Unavailable")}";
     public string GameName { get; set; } = "Blackjack";
     public string DealerName { get; set; } = "Dealer";
     public int MinBet { get; set; } = 5;

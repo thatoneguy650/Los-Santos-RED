@@ -16,6 +16,8 @@ namespace Roulette
         protected UIMenuListScrollerItem<int> BetTypeScroller;
         public override string MainTitle => "Column Bets";
         public override string MainDescription => "Make bets on the column of the pocket. ~n~Winning Pockets: ~n~1st Column: 1,4,7,10,13,16,19,22,25,28,31,34 ~n~2nd Column: 2,5,8,11,14,17,20,23,26,29,32,35 ~n~3rd Column: 3,6,9,12,15,18,21,24,27,30,33,36 ~n~Pays ~y~2 to 1~s~.";
+
+        public override int SortOrder => 20;
         public ColumnBetMenu(ICasinoGamePlayable player, ISettingsProvideable settings, GamblingDen gameLocation, RouletteGameRules gamblingParameters, RouletteGame rouletteGame) : base(player, settings, gameLocation, gamblingParameters, rouletteGame)
         {
 

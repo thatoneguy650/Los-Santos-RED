@@ -16,6 +16,7 @@ namespace Roulette
         protected UIMenuListScrollerItem<int> BetTypeScroller;
         public override string MainTitle => "Dozen Bets";
         public override string MainDescription => "Make bets on the dozen of the pocket.~n~Winning Pockets: ~n~1st Dozen: 1-12 ~n~2nd Dozen: 13-24 ~n~3rd Dozen: 25-36 ~n~Pays ~y~2 to 1~s~.";
+        public override int SortOrder => 21;
         public DozenBetMenu(ICasinoGamePlayable player, ISettingsProvideable settings, GamblingDen gameLocation, RouletteGameRules gamblingParameters, RouletteGame rouletteGame) : base(player, settings, gameLocation, gamblingParameters, rouletteGame)
         {
 
