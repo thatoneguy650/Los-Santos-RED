@@ -158,6 +158,7 @@ namespace Roulette
                     int winAmount = rb.WinAmount();
                     RouletteGameUI.OnWonBet(rb.BetName, winAmount);
                     Player.BankAccounts.GiveMoney(winAmount, false);
+                    Player.GamblingManager.OnMoneyWon(GameLocation, winAmount);
                 }
                 else
                 {

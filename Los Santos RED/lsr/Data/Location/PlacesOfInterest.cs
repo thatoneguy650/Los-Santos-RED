@@ -1,4 +1,5 @@
-﻿using ExtensionsMethods;
+﻿using Blackjack;
+using ExtensionsMethods;
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
@@ -1124,34 +1125,187 @@ public class PlacesOfInterest : IPlacesOfInterest
 
         
     }
+    private GamblingParameters GetParameters(int Scalar)
+    {
+        GamblingParameters defaultParameters = new GamblingParameters()
+        {
+            BlackJackGameRulesList = new List<BlackJackGameRules>()
+                    {
+                        new BlackJackGameRules("Low Stakes Blackjack","The House",25,500 * Scalar,true,true, false, false),
+                        new BlackJackGameRules("Associate Blackjack","The House",100,1500 * Scalar,false,true, true, false),
+                        new BlackJackGameRules("Members Blackjack","The House",500,5000 * Scalar,false,true, false, true),
+                    },
+            RouletteGameRulesList = new List<RouletteGameRules>()
+                    {
+                        new RouletteGameRules("Low Stakes Roulette","The House",50,500 * Scalar, false, false),
+                        new RouletteGameRules("Associate Roulette","The House",250,2500* Scalar,true,false),
+                        new RouletteGameRules("Members Roulette","The House",500,5000 * Scalar,false, true),
+                    },
+        };
+        return defaultParameters;
+    }
     private void DefaultConfig_GamblingDens()
     {
+        GamblingParameters defaultParameters = GetParameters(1);
+        //Scatino Casino, Davey's Dive,
         GamblingDens = new List<GamblingDen>()
         {
-            new GamblingDen(new Vector3(-358.2999f, 91.13467f, 70.5202f), 267.5716f,"The Hush Casino","We'll take care of you Win or Lose!")//Scatino Casino, Davey's Dive
+            new GamblingDen(new Vector3(929.9568f, 41.6748f, 81.09632f), 58.06394f,"The Vinewood Casino","Finally Open!")//Regular Casino
             {
                 GamblingParameters = new GamblingParameters()
                 {
                     BlackJackGameRulesList = new List<BlackJackGameRules>()
                     {
-                        new BlackJackGameRules("Low Stakes Blackjack","The House",25,500,true,true, false, false),
-                        new BlackJackGameRules("Associate Blackjack","The House",100,1500,false,true, true, false),
-                        new BlackJackGameRules("Members Blackjack","The House",500,5000,false,true, false, true),
+                        new BlackJackGameRules("Blackjack","The Dealer",15,400,true,true, false, false),
                     },
                     RouletteGameRulesList = new List<RouletteGameRules>()
                     {
-                        new RouletteGameRules("Low Stakes Roulette","The House",50,500, false, false),
-                        new RouletteGameRules("Associate Roulette","The House",250,2500,true,false),
-                        new RouletteGameRules("Members Roulette","The House",500,5000,false, true),
+                        new RouletteGameRules("Roulette","The Dealer",15,450, false, false),
                     },
                 },
-                WinLimit = 10000,
+                OpenTime = 0,
+                CloseTime = 24,
+                ShowsOnDirectory = true,
+                WinLimit = 1000000,
                 WinLimitResetHours = 24,
+                CameraPosition = new Vector3(851.0151f, 50.54535f, 97.35239f), 
+                CameraDirection = new Vector3(0.9805309f, -0.1052597f, -0.1657695f), 
+                CameraRotation = new Rotator(-9.541942f, 7.250671E-06f, -96.12722f),
+                IsOnMPMap = false,
+                IsOnSPMap = true,
+            },
+
+            new GamblingDen(new Vector3(935.4767f, 47.33501f, 81.09575f), 137.8167f,"The Diamond Casino & Resort","Welcome to the Diamond")//Regular Casino
+            {
+                GamblingParameters = new GamblingParameters()
+                {
+                    BlackJackGameRulesList = new List<BlackJackGameRules>()
+                    {
+                        new BlackJackGameRules("Blackjack","The Dealer",15,400,true,true, false, false),
+                    },
+                    RouletteGameRulesList = new List<RouletteGameRules>()
+                    {
+                        new RouletteGameRules("Roulette","The Dealer",15,450, false, false),
+                    },
+                },
+                OpenTime = 0,
+                CloseTime = 24,
+                ShowsOnDirectory = true,
+                WinLimit = 1000000,
+                WinLimitResetHours = 24,
+                CameraPosition = new Vector3(820.244f, 26.93432f, 106.9623f), 
+                CameraDirection = new Vector3(0.9816462f, 0.02359661f, -0.1892456f), 
+                CameraRotation = new Rotator(-10.90876f, 2.445427E-07f, -88.623f),
+                IsOnMPMap = true,
+                IsOnSPMap = false,
+            },
+
+
+            new GamblingDen(new Vector3(-1383.725f, 268.0395f, 61.23847f), 194.1238f,"The Scatino Casino","It was just a stutter step!")//Messina Casino, fancy
+            {
+                GamblingParameters = GetParameters(3),
+                WinLimit = 45000,
+                WinLimitResetHours = 24,
+                OpenTime = 18,
+                CloseTime = 4,
+                AssignedAssociationID = "AMBIENT_GANG_MESSINA",
+                CameraPosition = new Vector3(-1384.766f, 206.0768f, 86.17978f),
+                CameraDirection = new Vector3(0.1247992f, 0.951241f, -0.2820741f),
+                CameraRotation = new Rotator(-16.38403f, 2.247024E-05f, -7.474297f),
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-1377.991f, 255.1484f, 60.3684f), 138.936f, 40f) { AssociationID = "AMBIENT_GANG_MESSINA"},
+                    new GangConditionalLocation(new Vector3(-1377.991f, 255.1484f, 60.3684f), 138.936f, 40f) { AssociationID = "AMBIENT_GANG_MESSINA"},
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-1351.666f, 246.2108f, 60.47062f), 186.2948f, 40f) { IsEmpty = true, AssociationID = "AMBIENT_GANG_MESSINA"},
+                },
+            },
+            new GamblingDen(new Vector3(-358.2999f, 91.13467f, 70.5202f), 267.5716f,"The Hush Casino","We'll take care of you Win or Lose!")// Gambetti Casino, decnet condo
+            {
+                GamblingParameters = GetParameters(2),
+                WinLimit = 35000,
+                WinLimitResetHours = 24,
+                OpenTime = 18,
+                CloseTime = 4,
                 AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
                 CameraPosition = new Vector3(-338.0188f, 40.86187f, 81.43283f), 
                 CameraDirection = new Vector3(-0.3936391f, 0.8768913f, -0.2758803f),
                 CameraRotation = new Rotator(-16.01448f, 1.154718E-05f, 24.17545f),
-            }
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-357.4808f, 88.34515f, 70.52021f), 326.8036f, 40f) { AssociationID = "AMBIENT_GANG_GAMBETTI"},
+                    new GangConditionalLocation(new Vector3(-353.4513f, 109.2422f, 66.49493f), 322.5599f, 40f) { AssociationID = "AMBIENT_GANG_GAMBETTI"},
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-345.571f, 107.8305f, 66.68494f), 182.9895f, 40f) { IsEmpty = true, AssociationID = "AMBIENT_GANG_GAMBETTI"},
+                },
+            },
+            new GamblingDen(new Vector3(-84.90887f, 6362.521f, 35.50074f), 227.6975f,"Room 22 Casino","Not just for close encounters")//Lupisella Casino, low end hotel
+            {
+                GamblingParameters = defaultParameters,
+                WinLimit = 25000,
+                WinLimitResetHours = 24,
+                OpenTime = 18,
+                CloseTime = 4,
+                AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
+                CameraPosition = new Vector3(-57.9878f, 6354.977f, 41.67742f), 
+                CameraDirection = new Vector3(-0.9333099f, 0.2792642f, -0.2257083f), 
+                CameraRotation = new Rotator(-13.04453f, -2.190972E-06f, 73.34181f),
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-81.87692f, 6364.329f, 31.49035f), 253.9082f, 40f) { AssociationID = "AMBIENT_GANG_LUPISELLA"},
+                    new GangConditionalLocation(new Vector3(-86.91302f, 6360.526f, 35.50075f), 239.8991f, 40f) { AssociationID = "AMBIENT_GANG_LUPISELLA"},
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-81.51994f, 6357.41f, 31.49035f), 40.8159f, 40f) { IsEmpty = true, AssociationID = "AMBIENT_GANG_LUPISELLA"},
+                },
+            },
+            new GamblingDen(new Vector3(-3149.372f, 1043.472f, 20.69423f), 246.6364f,"The Hardware Casino","Lots of hammers nearby, remember that.")//Ancelotti Casino
+            {
+                GamblingParameters = defaultParameters,
+                WinLimit = 20000,
+                WinLimitResetHours = 24,
+                OpenTime = 18,
+                CloseTime = 4,
+                AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
+                CameraPosition = new Vector3(-3124.243f, 1061.832f, 26.74071f), 
+                CameraDirection = new Vector3(-0.9221458f, -0.3260281f, -0.2082135f), 
+                CameraRotation = new Rotator(-12.01768f, 6.983239E-06f, 109.4712f),
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-3150.791f, 1040.369f, 20.71614f), 211.2361f, 40f) { AssociationID = "AMBIENT_GANG_ANCELOTTI"},
+                    new GangConditionalLocation(new Vector3(-3144.495f, 1051.607f, 20.67891f), 354.6758f, 40f) { AssociationID = "AMBIENT_GANG_ANCELOTTI"},
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-3141.35f, 1074.772f, 20.61019f), 82.58844f, 40f) { IsEmpty = true, AssociationID = "AMBIENT_GANG_ANCELOTTI"},
+                },
+            },
+            new GamblingDen(new Vector3(1366.062f, 4358.021f, 44.50027f), 356.1247f,"The Cove Casino","Out of the way, out of prying eyes!")//Pavano Casino
+            {
+                GamblingParameters = defaultParameters,
+                WinLimit = 15000,
+                WinLimitResetHours = 24,
+                OpenTime = 18,
+                CloseTime = 4,
+                AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+                CameraPosition = new Vector3(1358.505f, 4371.237f, 48.73557f),
+                CameraDirection = new Vector3(0.3603207f, -0.8906768f, -0.2772433f),
+                CameraRotation = new Rotator(-16.09575f, -5.775947E-06f, -157.9743f),
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(1363.469f, 4360.977f, 44.4992f), 327.1165f, 40f) { AssociationID = "AMBIENT_GANG_PAVANO"},
+                    new GangConditionalLocation(new Vector3(1372.259f, 4358.026f, 44.49716f), 327.7067f, 40f) { AssociationID = "AMBIENT_GANG_PAVANO"},
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(1369.516f, 4365.044f, 44.32616f), 78.89337f, 40f) { IsEmpty = true, AssociationID = "AMBIENT_GANG_PAVANO"},
+                },
+            },
         };
     }
     private void DefaultConfig_PayNSprays()

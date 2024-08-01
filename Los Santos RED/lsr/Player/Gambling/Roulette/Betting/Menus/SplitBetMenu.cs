@@ -32,6 +32,7 @@ namespace Roulette
                 removeBet.Activated += (menu, item) =>
                 {
                     Player.BankAccounts.GiveMoney(sb.Amount, false);
+                    Player.GamblingManager.OnMoneyWon(GameLocation, sb.Amount);
                     RouletteGame.RouletteRoundBet.SplitBets.Remove(sb);
                     UpdateBetAmount();
                     removeBet.Enabled = false;
@@ -67,6 +68,7 @@ namespace Roulette
             {
                 RouletteGame.RouletteRoundBet.SplitBets.Add(new SplitBet(BetTypeScroller1.SelectedItem, BetTypeScroller2.SelectedItem, BetAmountScroller.Value));
                 Player.BankAccounts.GiveMoney(-1 * BetAmountScroller.Value, false);
+                Player.GamblingManager.OnMoneyWon(GameLocation, -1 * BetAmountScroller.Value);
                 menu.Visible = false;
                 UpdateBetAmount();
                 MainBetsMenu.Visible = true;

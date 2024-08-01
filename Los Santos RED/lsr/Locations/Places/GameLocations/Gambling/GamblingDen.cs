@@ -53,30 +53,37 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
         {
             return;
         }
-        GangReputation currentReputation = Player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang);
-        GangRespect gangRespect = GangRespect.Hostile;
-        if(currentReputation != null)
+
+
+        if(AssociatedGang != null)
         {
-            gangRespect = currentReputation.GangRelationship;
+            GangReputation currentReputation = Player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang);
+            GangRespect gangRespect = GangRespect.Hostile;
+            if (currentReputation != null)
+            {
+                gangRespect = currentReputation.GangRelationship;
+            }
+            if (IsRestrictedToMember && gangRespect != GangRespect.Member)
+            {
+                Game.DisplayHelp($"{Name} is only available to members");
+                PlayErrorSound();
+                return;
+            }
+            else if (IsRestrictedToFriendly && gangRespect != GangRespect.Member && gangRespect != GangRespect.Friendly)
+            {
+                Game.DisplayHelp($"{Name} is only available to associates");
+                PlayErrorSound();
+                return;
+            }
+            else if (gangRespect == GangRespect.Hostile)
+            {
+                Game.DisplayHelp($"{Name} is not available to hostile gang members");
+                PlayErrorSound();
+                return;
+            }
         }
-        if(IsRestrictedToMember && gangRespect != GangRespect.Member)
-        {
-            Game.DisplayHelp($"{Name} is only available to members");
-            PlayErrorSound();
-            return;
-        }
-        else if (IsRestrictedToFriendly && gangRespect != GangRespect.Member && gangRespect != GangRespect.Friendly)
-        {
-            Game.DisplayHelp($"{Name} is only available to associates");
-            PlayErrorSound();
-            return;
-        }
-        else if(gangRespect == GangRespect.Hostile)
-        {
-            Game.DisplayHelp($"{Name} is not available to hostile gang members");
-            PlayErrorSound();
-            return;
-        }
+
+
         if (!CanInteract)
         {
             return;
@@ -160,7 +167,7 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
         }
         if(AssociatedGang == null)
         {
-            EntryPoint.WriteToConsole("SETUP IS NULL");
+            EntryPoint.WriteToConsole("No gang, not adding loan options");
             return;
         }
         LoanSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Cash Loans");
@@ -186,23 +193,26 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
             PlayErrorSound();
             return;
         }
-        GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang);
-        GangRespect currentRespect = GangRespect.Neutral;
-        if (gr != null)
+        if (AssociatedGang != null)
         {
-            currentRespect = gr.GangRelationship;
-        }
-        if (rouletteGameRules.IsRestrictedToMember && currentRespect != GangRespect.Member)
-        {
-            DisplayMessage("Error", "This game is restricted to members.");
-            PlayErrorSound();
-            return;
-        }
-        else if (rouletteGameRules.IsRestrictedToFriendly && currentRespect != GangRespect.Friendly && currentRespect != GangRespect.Member)
-        {
-            DisplayMessage("Error", "You do not have enough rep to play in this game.");
-            PlayErrorSound();
-            return;
+            GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang);
+            GangRespect currentRespect = GangRespect.Neutral;
+            if (gr != null)
+            {
+                currentRespect = gr.GangRelationship;
+            }
+            if (rouletteGameRules.IsRestrictedToMember && currentRespect != GangRespect.Member)
+            {
+                DisplayMessage("Error", "This game is restricted to members.");
+                PlayErrorSound();
+                return;
+            }
+            else if (rouletteGameRules.IsRestrictedToFriendly && currentRespect != GangRespect.Friendly && currentRespect != GangRespect.Member)
+            {
+                DisplayMessage("Error", "You do not have enough rep to play in this game.");
+                PlayErrorSound();
+                return;
+            }
         }
         RouletteGame rouletteGame = new RouletteGame(Player.CasinoGamePlayer, Settings, this, rouletteGameRules);
         rouletteGame.Setup();
@@ -222,23 +232,26 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
             PlayErrorSound();
             return;
         }
-        GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang);
-        GangRespect currentRespect = GangRespect.Neutral;
-        if(gr != null)
+        if (AssociatedGang != null)
         {
-            currentRespect = gr.GangRelationship;
-        }
-        if (blackJackGameRules.IsRestrictedToMember && currentRespect != GangRespect.Member)
-        {
-            DisplayMessage("Error", "This game is restricted to members.");
-            PlayErrorSound();
-            return;
-        }
-        else if (blackJackGameRules.IsRestrictedToFriendly && currentRespect != GangRespect.Friendly && currentRespect != GangRespect.Member)
-        {
-            DisplayMessage("Error", "You do not have enough rep to play in this game.");
-            PlayErrorSound();
-            return;
+            GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang);
+            GangRespect currentRespect = GangRespect.Neutral;
+            if (gr != null)
+            {
+                currentRespect = gr.GangRelationship;
+            }
+            if (blackJackGameRules.IsRestrictedToMember && currentRespect != GangRespect.Member)
+            {
+                DisplayMessage("Error", "This game is restricted to members.");
+                PlayErrorSound();
+                return;
+            }
+            else if (blackJackGameRules.IsRestrictedToFriendly && currentRespect != GangRespect.Friendly && currentRespect != GangRespect.Member)
+            {
+                DisplayMessage("Error", "You do not have enough rep to play in this game.");
+                PlayErrorSound();
+                return;
+            }
         }
         BlackJackGame blackJackGameInternal = new BlackJackGame(Player.CasinoGamePlayer, Settings, false, this, blackJackGameRules);
         blackJackGameInternal.StartRound();

@@ -781,7 +781,21 @@ public class GameLocation : ILocationDispatchable
         {
             return false;
         }
-        return (CloseTime == 24 && OpenTime == 0) || (currentHour >= OpenTime && currentHour <= CloseTime);
+        if(CloseTime == 24 && OpenTime == 0)
+        {
+            return true;
+        }//18 & 4, NEW BAD
+        //8 & 20, OLD GOOD
+        if(OpenTime < CloseTime)
+        {
+            return (currentHour >= OpenTime && currentHour <= CloseTime);
+        }
+        else
+        {
+            return (currentHour >= OpenTime || currentHour <= CloseTime);
+        }
+
+        //return (currentHour >= OpenTime && currentHour <= CloseTime);
     }
     public override string ToString()
     {
@@ -1077,6 +1091,7 @@ public class GameLocation : ILocationDispatchable
 
         return merchantSpawnTask.CreatedPeople.Any();
     }
+
     protected bool IsLocationClosed()
     {
         if (IsTemporarilyClosed)
@@ -1089,8 +1104,9 @@ public class GameLocation : ILocationDispatchable
         {
             Game.RemoveNotification(NotificationHandle);
 
-            string openRange = $"{OpenTime}{(OpenTime <= 11 ? " am" : " pm")}-{CloseTime - 12}{(CloseTime <= 11 ? " am" : " pm")}";
-
+            int newOpenTime = OpenTime > 12 ? OpenTime - 12 : OpenTime;
+            int newCloseTime = CloseTime > 12 ? CloseTime - 12 : CloseTime;
+            string openRange = $"{newOpenTime}{(OpenTime <= 11 ? " am" : " pm")} to {newCloseTime}{(CloseTime <= 11 ? " am" : " pm")}";
             NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Closed", $"We're sorry, this location is now closed.~n~Hours: {openRange}");
             return true;
         }

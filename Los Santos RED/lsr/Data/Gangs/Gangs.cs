@@ -473,7 +473,7 @@ public class Gangs : IGangs
             LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Mafia,
         };//cocaine
-        Pavano = new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family", "Pavano", "Green", "MafiaPeds", "PavanoVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Pavano", "CHAR_BLANK_ENTRY", "Pavano Assocaite")
+        Pavano = new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family", "Pavano", "Green", "MafiaPeds", "PavanoVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Pavano", "CHAR_BLANK_ENTRY", "Pavano Associate")
         {
             DenName = "Safehouse",
             AmbientMemberMoneyMin = 200,
@@ -509,7 +509,7 @@ public class Gangs : IGangs
             LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Mafia,
         };//cocaine
-        Lupisella = new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family", "Lupisella", "Green", "MafiaPeds", "LupisellaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Lupisella", "CHAR_BLANK_ENTRY", "Lupisella Assocaite")
+        Lupisella = new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family", "Lupisella", "Green", "MafiaPeds", "LupisellaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Lupisella", "CHAR_BLANK_ENTRY", "Lupisella Associate")
         {
             DenName = "Safehouse",
             AmbientMemberMoneyMin = 200,
@@ -545,7 +545,7 @@ public class Gangs : IGangs
             LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Mafia,
         };//cocaine
-        Messina = new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family", "Messina", "Green", "MafiaPeds", "MessinaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Messina", "CHAR_BLANK_ENTRY", "Messina Assocaite")
+        Messina = new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family", "Messina", "Green", "MafiaPeds", "MessinaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Messina", "CHAR_BLANK_ENTRY", "Messina Associate")
         {
             DenName = "Safehouse",
             AmbientMemberMoneyMin = 200,

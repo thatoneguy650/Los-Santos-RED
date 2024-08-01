@@ -31,6 +31,7 @@ namespace Roulette
                 removeBet.Activated += (menu, item) =>
                 {
                     Player.BankAccounts.GiveMoney(sb.Amount, false);
+                    Player.GamblingManager.OnMoneyWon(GameLocation, sb.Amount);
                     RouletteGame.RouletteRoundBet.SingleBets.Remove(sb);
                     UpdateBetAmount();
                     removeBet.Enabled = false;
@@ -53,6 +54,7 @@ namespace Roulette
             {
                 RouletteGame.RouletteRoundBet.SingleBets.Add(new SingleBet(SingleBetPocketScroller.SelectedItem, BetAmountScroller.Value));
                 Player.BankAccounts.GiveMoney(-1 * BetAmountScroller.Value, false);
+                Player.GamblingManager.OnMoneyWon(GameLocation, -1 * BetAmountScroller.Value);
                 menu.Visible = false;
                 MainBetsMenu.Visible = true;
                 UpdateBetAmount();
