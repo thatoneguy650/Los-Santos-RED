@@ -24,8 +24,6 @@ public class BarberShop : GameLocation
     public bool AllowsBeards { get; set; } = true;
     public bool AllowsMakeup { get; set; } = true;
     public string PedVariationShopMenuID { get; set; } = "GenericBarberShop";
-
-
     [XmlIgnore]
     public PedVariationShopMenu PedVariationShopMenu { get; set; } = new PedVariationShopMenu();
     [XmlIgnore]

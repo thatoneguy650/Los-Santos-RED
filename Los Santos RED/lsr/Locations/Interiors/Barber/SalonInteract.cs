@@ -62,7 +62,7 @@ public class SalonInteract : InteriorInteract
         if (Hairstylist == null || !Hairstylist.Pedestrian.Exists() || Hairstylist.IsLSRFleeing)
         {
             Game.DisplayHelp("No barbers available");
-            //return;
+            return;
         }
         if (Interior != null)
         {

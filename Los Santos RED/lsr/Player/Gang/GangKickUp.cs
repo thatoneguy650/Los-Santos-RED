@@ -104,7 +104,7 @@ public class GangKickUp
             Reset();
             Player.RelationshipManager.GangRelationships.ResetGang(false);
             Player.RelationshipManager.GangRelationships.SetDebt(Gang, test);
-            Player.RelationshipManager.GangRelationships.SetReputation(Gang, -500, true);
+            Player.RelationshipManager.GangRelationships.SetReputation(Gang, -1 * test, true);
         }
         else
         {

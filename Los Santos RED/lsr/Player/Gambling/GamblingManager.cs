@@ -168,6 +168,10 @@ public class GamblingManager
         {
             locationGamblingWin.GamblingIncidents.Add(new GamblingIncident(totalMoneyWon, Time.CurrentDateTime));
         }
+        if(gameLocation.AssociatedGang != null)
+        {
+            Player.RelationshipManager.GangRelationships.OnMoneyWon(gameLocation.AssociatedGang,totalMoneyWon);
+        }
 # if DEBUG
         EntryPoint.WriteToConsole($"OnMoneyWon: {gameLocation.Name} ADDING: {totalMoneyWon} CurrentTotal {TotalWon(gameLocation)}");
 #endif

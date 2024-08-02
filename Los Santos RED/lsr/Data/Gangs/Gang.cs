@@ -19,6 +19,7 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     private UIMenuNumericScrollerItem<int> setLoanValueMenuItem;
     private UIMenuItem payoffDebtMenuItem;
     private UIMenuItem takeLoanMenuItem;
+    private UIMenuItem payVigMenuItem;
 
     public Gang()
     {
@@ -369,12 +370,23 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
         payoffDebtMenuItem = new UIMenuItem("Payoff Debt", $"Payoff your current debt to the gang. ~n~{(gr.GangLoan == null ? "" : gr.GangLoan.ToString())}") { RightLabel = $"$~r~{(gr.GangLoan == null ? 0 : gr.GangLoan.DueAmount)}~s~" };
         payoffDebtMenuItem.Activated += (sender, e) =>
         {
-            if (PayOffDebt(Player, gr, gameLocation))
+            if (PayOffLoanDebt(Player, gr, gameLocation))
             {
                 UpdateDebtMenus(gr);
             }
         };
-        LoanSubMenu.AddItem(payoffDebtMenuItem);   
+        LoanSubMenu.AddItem(payoffDebtMenuItem);
+
+        payVigMenuItem = new UIMenuItem("Make Vig Payment", $"Make a vig payment. ~n~{(gr.GangLoan == null ? "" : gr.GangLoan.ToString())}") { RightLabel = $"$~r~{(gr.GangLoan == null ? 0 : gr.GangLoan.VigAmount)}~s~" };
+        payVigMenuItem.Activated += (sender, e) =>
+        {
+            if (PayLoanVig(Player, gr, gameLocation))
+            {
+                UpdateDebtMenus(gr);
+            }
+        };
+        LoanSubMenu.AddItem(payVigMenuItem);
+
         LoanParameter lp = LoanParameters.GetParameters(gr.GangRelationship);
         setLoanValueMenuItem = new UIMenuNumericScrollerItem<int>("Loan Amount", $"Set the loan amount. ~n~Rate: {lp.Rate * 100f}% Per Week ~n~Max Duration: {lp.MaxPeriods} Weeks.~n~Max Amount: ${lp.MaxAmount}",
             lp.MinAmount, lp.MaxAmount, 100)
@@ -401,7 +413,6 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
             }
         };
         LoanSubMenu.AddItem(takeLoanMenuItem);
-
         UpdateDebtMenus(gr);
     }
 
@@ -420,19 +431,27 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
             setLoanValueMenuItem.Enabled = false;
             takeLoanMenuItem.Enabled = false;
             payoffDebtMenuItem.Enabled = true;
+            payVigMenuItem.Enabled = true;
             payoffDebtMenuItem.Description = $"Payoff your current debt to the gang. ~n~{(gr.GangLoan == null ? "" : gr.GangLoan.ToString())}";
             payoffDebtMenuItem.RightLabel = $"$~r~{(gr.GangLoan == null ? 0 : gr.GangLoan.DueAmount)}~s~";
+
+            payVigMenuItem.Description = $"Make a vig payment. ~n~{(gr.GangLoan == null ? "" : gr.GangLoan.ToString())}";
+            payVigMenuItem.RightLabel = $"$~r~{(gr.GangLoan == null ? 0 : gr.GangLoan.VigAmount)}~s~";
+
         }
         else
         {
             setLoanValueMenuItem.Enabled = true;
             takeLoanMenuItem.Enabled = true;
             payoffDebtMenuItem.Enabled = false;
+            payVigMenuItem.Enabled = false;
+            payVigMenuItem.Description = "";
+            payVigMenuItem.RightLabel = "";
             payoffDebtMenuItem.Description = "";
             payoffDebtMenuItem.RightLabel = "";
         }
     }
-    private bool PayOffDebt(ILocationInteractable Player, GangReputation gr, GameLocation gameLocation)
+    private bool PayOffLoanDebt(ILocationInteractable Player, GangReputation gr, GameLocation gameLocation)
     {
         if(gr == null || gr.GangLoan == null)
         {
@@ -440,15 +459,30 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
         }
         if(Player.BankAccounts.GetMoney(false) < gr.GangLoan.DueAmount)
         {
-            gameLocation.DisplayMessage("Error", "You do not have enough cash on hand to payoff your debt.");
+            gameLocation.DisplayMessage("Error", "You do not have enough cash on hand to payoff your loan debt.");
             return false;
         }
         Player.BankAccounts.GiveMoney(-1 * gr.GangLoan.DueAmount, false);
-        gr.ClearDebt();
-        gameLocation.DisplayMessage("Success", "You have paid off your debt.");
+        gr.GangLoan.PayLoan();
+        gameLocation.DisplayMessage("Success", "You have paid off your loan debt.");
         return true;
     }
-
+    private bool PayLoanVig(ILocationInteractable Player, GangReputation gr, GameLocation gameLocation)
+    {
+        if (gr == null || gr.GangLoan == null)
+        {
+            return false;
+        }
+        if (Player.BankAccounts.GetMoney(false) < gr.GangLoan.VigAmount)
+        {
+            gameLocation.DisplayMessage("Error", "You do not have enough cash on hand to pay the loan vig.");
+            return false;
+        }
+        Player.BankAccounts.GiveMoney(-1 * gr.GangLoan.VigAmount, false);
+        gr.GangLoan.MakeVigPayment();
+        gameLocation.DisplayMessage("Success", "You have paid you loan vig.");
+        return true;
+    }
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {

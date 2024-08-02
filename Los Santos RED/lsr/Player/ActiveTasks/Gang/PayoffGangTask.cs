@@ -127,6 +127,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             DeadDrop?.Reset();
             DeadDrop?.Deactivate(true);
             SendCompletedMessage();
+            //Player.RelationshipManager.GangRelationships.ClearDebt(HiringGang);//debt is auto cleared on complete task, maybe shouldnt be
             PlayerTasks.CompleteTask(HiringGang.Contact,false);         
         }
         private void GetDeadDrop()

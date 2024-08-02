@@ -17,5 +17,6 @@ namespace LosSantosRED.lsr.Interface
 
         GamblingManager GamblingManager { get; }
         ButtonPrompts ButtonPrompts { get; }
+        RelationshipManager RelationshipManager { get; }
     }
 }

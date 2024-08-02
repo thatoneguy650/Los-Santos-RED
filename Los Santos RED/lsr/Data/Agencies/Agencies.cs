@@ -88,8 +88,6 @@ public class Agencies : IAgencies
         }
         return AgenciesList.Where(x => x.ID.ToLower() == AgencyInitials.ToLower()).FirstOrDefault();
     }
-
-
     public Agency GetRandomAgency(ResponseType responseType)
     {
         return AgenciesList.Where(x => x.ResponseType == responseType).PickRandom();
@@ -154,9 +152,7 @@ public class Agencies : IAgencies
         NOOSE = new Agency("~r~", "NOOSE", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Classification.Federal, "NOOSEPeds", "NOOSEVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "NOOSE Officer") { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         FIB = new Agency("~p~", "FIB", "FIB", "Federal Investigation Bureau", "Purple", Classification.Federal, "FIBPeds", "FIBVehicles", "FIB ", "Tasers", "BestSidearms", "BestLongGuns", "FIB Agent") { MaxWantedLevelSpawn = 5, SpawnLimit = 6, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         DOA = new Agency("~p~", "DOA", "DOA", "Drug Observation Agency", "Purple", Classification.Federal, "DOAPeds", "UnmarkedVehicles", "DOA ", "Tasers", "AllSidearms", "AllLongGuns", "DOA Agent") { MaxWantedLevelSpawn = 3, SpawnLimit = 4, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };    
-        
-        
-        
+           
         
         ARMY = new Agency("~u~", "ARMY", "ARMY", "U.S. Army", "Black", Classification.Military, "ArmyPeds", "ArmyVehicles", "", null, "MilitarySidearms", "MilitaryLongGuns", "Soldier") { MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         USAF = new Agency("~u~", "USAF", "USAF", "U.S. Air Force", "Black", Classification.Military, "USAFPeds", "USAFVehicles", "", null, "MilitarySidearms", "MilitaryLongGuns", "Airman") { MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
@@ -169,7 +165,7 @@ public class Agencies : IAgencies
         USMS = new Agency("~r~", "USMS", "Marshals Service", "US Marshals Service", "DarkSlateGray", Classification.Marshal, "MarshalsServicePeds", "MarshalsServiceVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "Marshals Service Officer") { MaxWantedLevelSpawn = 3, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
 
 
-        LSLFG = new Agency("~r~", "LSLFG", "LS Lifeguards", "Los Santos Lifeguards", "Red", Classification.Police, "LSLifeguardPeds", "LSLifeguardVehicles", "LFG ", null, "ConcealableSidearms", null, "Lifeguard") { MaxWantedLevelSpawn = 2,SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
+        LSLFG = new Agency("~r~", "LSLFG", "LS Lifeguards", "Los Santos Lifeguards", "Red", Classification.EMS, "LSLifeguardPeds", "LSLifeguardVehicles", "LFG ", null, null, null, "Lifeguard") { MaxWantedLevelSpawn = 2,SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
 
         LSFDFire = new Agency("~r~", "LSFD", "LSFD", "Los Santos Fire Department", "Red", Classification.Fire, "Firefighters", "Firetrucks", "LSFD ", "FireExtinguisher", null, null, "LSFD Firefighter") { MaxWantedLevelSpawn = 0,  HeadDataGroupID = "AllHeads" };
         
@@ -192,7 +188,7 @@ public class Agencies : IAgencies
             LSPD,LSPDVW,LSPDELS,LSPDDP,LSPDRH,LSPDASD,
             LSSD,LSSDVW,LSSDDV,LSSDBC,LSSDMJ,LSSDASD,LSPP,LSIAPD,
             SAHP,SASPA,SAPR,USCG,
-            NYSP,LCPD,
+            NYSP,//LCPD,
             LSLFG,
             NOOSE,FIB,DOA,ARMY,USMC,USAF,USMS,
             LSFDFire,LSMC,MRH,LSFD, 
@@ -218,7 +214,6 @@ public class Agencies : IAgencies
         LSIAPDFEJ.PersonnelID = "LSIAPDPeds";
         LSIAPDFEJ.VehiclesID = "LSIAPDVehicles";
 
-
         Agency SAHPFEJ = Extensions.DeepCopy(SAHP);
         Agency LSPDFEJ = Extensions.DeepCopy(LSPD);
         Agency LSPDVWFEJ = Extensions.DeepCopy(LSPDVW);
@@ -237,8 +232,6 @@ public class Agencies : IAgencies
         LSSDDVFEJ.MaxWantedLevelSpawn = 4;
         LSSDMJFEJ.MaxWantedLevelSpawn = 4;
 
-
-
         Agency LSFDFireFEJ = Extensions.DeepCopy(LSFDFire);
 
         Agency LSFDFEJ = Extensions.DeepCopy(LSFD);
@@ -251,9 +244,6 @@ public class Agencies : IAgencies
         Agency USNPS = new Agency("~g~","USNPS","USNPS","US National Park Service","Green",Classification.Federal, "USNPSParkRangers", "USNPSParkRangersVehicles", "NPS ", "Tasers", "AllSidearms", "AllLongGuns", "US Park Ranger") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
         Agency LSDPR = new Agency("~g~", "LSDPR", "LSDPR", "Los Santos Dept. Parks & Rec", "Green", Classification.Police, "LSDPRParkRangers", "LSDPRParkRangersVehicles", "DPR ", "Tasers", "AllSidearms", "AllLongGuns", "LSDPR Park Ranger") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
         Agency SADFW = new Agency("~g~", "SADFW", "SADFW", "San Andreas Dept. Fish and Wildlife", "Green", Classification.State, "SADFWParkRangers", "SADFWParkRangersVehicles", "DFW ", "Tasers", "AllSidearms", "AllLongGuns", "Game Warden") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
-
-
-
 
         Agency CHUFFSEC = new Agency("~w~", "CHUFF", "Chuff", "Chuff Security", "White", Classification.Security, "ChuffPeds", "ChuffVehicles", "MW ", "Tasers", "LimitedSidearms", null, "Chuff Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
         Agency LNLSEC = new Agency("~w~", "LNL", "Lock & Load", "Lock & Load Security", "White", Classification.Security, "LNLPeds", "LNLVehicles", "BC ", "Tasers", "LimitedSidearms", null, "L&L Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
@@ -279,10 +269,6 @@ public class Agencies : IAgencies
         LSMCFEJ.VehiclesID = "LSMCVehicles";
         MRHFEJ.VehiclesID = "MRHVehicles";
 
-
-
-
-
         List <Agency> FullAgenciesList = new List<Agency>
         {
             LSPDFEJ,LSPDVWFEJ,LSPDELSFEJ,
@@ -296,7 +282,7 @@ public class Agencies : IAgencies
 
             USNPS,LSDPR,SADFW,
 
-            NYSP,LCPD,
+            NYSP,//LCPD,
             LSLFG,
             FIB,BorderPatrol,NOOSEPIA,NOOSESEP,DOA,ARMY,USMC,USAF,USMS,
             LSFDFireFEJ,LSCoFDFire,BCFDFire,SanFire,
@@ -337,9 +323,6 @@ public class Agencies : IAgencies
         LSFDFire2008.VehiclesID = "LSFDVehicles";
         Agency LSFD2008 = Extensions.DeepCopy(LSFD);
         LSFD2008.VehiclesID = "LSFDEMTVehicles";
-
-
-
         List<Agency> AgenciesList2008 = new List<Agency>
         {
             LSPD2008,LSPDASD2008,
@@ -437,7 +420,6 @@ public class Agencies : IAgencies
         {
             agency.Setup(heads, dispatchableVehicles, dispatchablePeople, issuableWeapons);
             //EntryPoint.WriteToConsole($"AGENCY NAME {agency.FullName} LongGunsID {agency.LongGunsID} SideArmsID {agency.SideArmsID} PersonnelID {agency.PersonnelID} VehiclesID {agency.VehiclesID} HeadDataGroupID {agency.HeadDataGroupID}");
-
         }
     }
 

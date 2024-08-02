@@ -17,17 +17,8 @@ public class GangRelationships
     public List<GangReputation> GangReputations { get; private set; } = new List<GangReputation>();
     public Gang CurrentGang { get; private set; }
     public GangKickUp CurrentGangKickUp { get; private set; }
-
-
-
-
-
     public List<Gang> EnemyGangs => GangReputations.Where(x => x.IsEnemy).Select(x => x.Gang).ToList();
     public List<Gang> HitSquadGangs => GangReputations.Where(x=> x.CanDispatchHitSquad).Select(x => x.Gang).ToList();
-
-
-
-
     public GangRelationships(IGangs gangs, IGangRelateable player, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, ITimeReportable time)
     {
         Gangs = gangs;
@@ -157,6 +148,10 @@ public class GangRelationships
             gr.AddDebt(Math.Abs(amount));
             //gr.PlayerDebt += Math.Abs(amount);
         }
+    }
+    public void ClearDebt(Gang gang)
+    {
+        SetDebt(gang, 0);
     }
     public void SetDebt(Gang gang, int amount)
     {
@@ -438,9 +433,18 @@ public class GangRelationships
         }
         gr.TasksCompleted--;
     }
-    public void AddLoan(Gang gang)
+    public void OnMoneyWon(Gang associatedGang, int totalMoneyWon)
     {
-        
+        if(associatedGang == null)
+        {
+            return;
+        }
+        if(totalMoneyWon >= 0)
+        {
+            return;
+        }
+        ChangeReputation(associatedGang, Math.Abs(totalMoneyWon), true);
+        EntryPoint.WriteToConsole($"OnMoneyWon {associatedGang.ShortName} YOU WON {totalMoneyWon} ADDING REP:{Math.Abs(totalMoneyWon)}");
     }
 }
 

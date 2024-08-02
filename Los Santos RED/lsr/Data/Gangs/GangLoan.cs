@@ -20,6 +20,7 @@ public class GangLoan
     public DateTime DueDate { get; private set; }
     public int DueAmount { get; private set; }
     public int MissedPeriods { get; private set; }
+    public int VigAmount { get; private set; }
     private bool IsPassedDueDate => DateTime.Compare(Time.CurrentDateTime, DueDate) >= 0;//is past the due date
     private bool ShouldSendWarning => !HasSentWarning && DateTime.Compare(DueDate.AddDays(-1), Time.CurrentDateTime) < 0;//Is within 1 day 
     public GangLoan(IGangRelateable player, Gang gang, ITimeReportable time, LoanParameter loanParameter, int loanAmount)
@@ -45,6 +46,13 @@ public class GangLoan
             SendWarningMessage();
         }
     }
+    public void MakeVigPayment()
+    {
+        HasSentWarning = false;
+        DateTime NextDueDate = DueDate.AddDays(7);
+        DueDate = new DateTime(NextDueDate.Year, NextDueDate.Month, NextDueDate.Day, 12, 0, 0);
+        SendVigMessage();
+    }
     public void Dispose()
     {
         Reset();
@@ -60,15 +68,17 @@ public class GangLoan
         DateTime NextDueDate = Time.CurrentDateTime.AddDays(7);
         DueDate = new DateTime(NextDueDate.Year, NextDueDate.Month, NextDueDate.Day, 12, 0, 0);
         int LoanExtra = (int)Math.Floor(LoanParameter.Rate * LoanAmount);
+        VigAmount = LoanExtra;
         DueAmount = LoanAmount + LoanExtra;
         if (sendMessage)
         {
             SendStartMessage();
         }
     }
-    public void RestartFromSaved(int dueAmount, int missedPeriods, DateTime dueDate, LoanParameter loanParameter)
+    public void RestartFromSaved(int dueAmount, int vigAmount, int missedPeriods, DateTime dueDate, LoanParameter loanParameter)
     {
         Reset();
+        VigAmount = vigAmount;
         DueAmount = dueAmount;
         MissedPeriods = missedPeriods;
         DueDate = dueDate;
@@ -79,6 +89,7 @@ public class GangLoan
         MissedPeriods = 0;
         HasSentWarning = false;
         DueAmount = 0;
+        VigAmount = 0;
     }
     private void SetMissedPayment()
     {
@@ -88,12 +99,14 @@ public class GangLoan
             Reset();
             Player.RelationshipManager.GangRelationships.ResetGang(false);
             Player.RelationshipManager.GangRelationships.SetDebt(Gang, test);
-            Player.RelationshipManager.GangRelationships.SetReputation(Gang, -500, true);
+            Player.RelationshipManager.GangRelationships.SetReputation(Gang, -1 * test, true);
         }
         else
         {
             MissedPeriods++;
-            DueAmount += (int)Math.Floor(LoanParameter.Rate * DueAmount);
+            int toAdd = (int)Math.Floor(LoanParameter.Rate * DueAmount);
+            DueAmount += toAdd;
+            VigAmount += toAdd;
             HasSentWarning = false;
             DateTime NextDueDate = DueDate.AddDays(7);
             DueDate = new DateTime(NextDueDate.Year, NextDueDate.Month, NextDueDate.Day, 12, 0, 0);
@@ -106,6 +119,13 @@ public class GangLoan
             $"Expecting ${DueAmount} by {DueDate}. You pay an additional {LoanParameter.Rate * 100f} points each week. You've got {LoanParameter.MaxPeriods} weeks to pay up.",
         };
         Player.CellPhone.AddScheduledText(Gang.Contact, StartMessages.PickRandom(), 2, false);
+    }
+    private void SendVigMessage()
+    {
+        List<string> StartMessages = new List<string>() {
+            $"This will do for now.",
+        };
+        NativeHelper.DisplayNotificationCustom(Gang.Contact.IconName, Gang.Contact.IconName, Gang.ContactName, "~g~Response", StartMessages.PickRandom(), NotificationIconTypes.DollarSign, false);
     }
     private void SendPaymentMessage()
     {
@@ -136,7 +156,7 @@ public class GangLoan
     }
     public override string ToString()
     {
-        return $"Loan: ~r~${DueAmount}~s~ by {DueDate:g}~n~Days: {(DueDate.Date - Time.CurrentDateTime.Date).Days} ~n~Currently: {Time?.CurrentDateTime:g}";
+        return $"Loan: ~r~${DueAmount}~s~ by {DueDate:g}~n~Days: {(DueDate.Date - Time.CurrentDateTime.Date).Days} ~n~Vig: ${VigAmount} ~n~Currently: {Time?.CurrentDateTime:g}";
     }
 }
 

@@ -299,14 +299,11 @@ public class PlacesOfInterest : IPlacesOfInterest
                 VendorPersonnelID = "HaircutPeds",
                 TypeName = "Beauty Salon",
             },
-
-
             new BarberShop(new Vector3(1705.34f, 3780.338f, 34.7582f), 214.8316f, "Aunt Tammy's Hair Salon", "")
             {
                 InteriorID = -99099,
                 VendorPersonnelID = "HaircutPeds",
             },
-
 
             new BarberShop(new Vector3(-281.8168f, 6232.678f, 31.69073f), 45.57799f,"Herr Kutz Barber","")//Paleto
             {
@@ -1168,6 +1165,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ShowsOnDirectory = true,
                 WinLimit = 1000000,
                 WinLimitResetHours = 24,
+                TypeName = "Casino",
+                MapIcon = 679,
                 CameraPosition = new Vector3(851.0151f, 50.54535f, 97.35239f), 
                 CameraDirection = new Vector3(0.9805309f, -0.1052597f, -0.1657695f), 
                 CameraRotation = new Rotator(-9.541942f, 7.250671E-06f, -96.12722f),
@@ -1193,6 +1192,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ShowsOnDirectory = true,
                 WinLimit = 1000000,
                 WinLimitResetHours = 24,
+                TypeName = "Casino",
+                MapIcon = 679,
                 CameraPosition = new Vector3(820.244f, 26.93432f, 106.9623f), 
                 CameraDirection = new Vector3(0.9816462f, 0.02359661f, -0.1892456f), 
                 CameraRotation = new Rotator(-10.90876f, 2.445427E-07f, -88.623f),
@@ -2174,6 +2175,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24,
                 ScannerFilePath = "01_specific_location\\0x0431FE2B.mp3",
                 AssignedAssociationID = "MERRY",
+                TypeName = "Country Club",
+                MapIcon = 109,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new SecurityConditionalLocation(new Vector3(-3018.087f, 82.32686f, 11.6775f), 342.6718f, 75f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol | TaskRequirements.StandardScenario, RequiredPedGroup = "UnarmedSecurity" },
@@ -2270,16 +2273,18 @@ public class PlacesOfInterest : IPlacesOfInterest
                 AssignedAssociationID = "LSLFG",
                 ActivateDistance = 100f,
                 ActivateCells = 3,
+                TypeName = "Lifeguard Tower",
+                MapIcon = 767,
                 IgnoreEntranceInteract = true,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1465.816f, -1393.664f, 2.514868f), 116.3505f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1466.981f, -1389.29f, 4.138116f), 102.6992f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1470.935f, -1389.578f, 2.575922f), 81.81424f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1465.816f, -1393.664f, 2.514868f), 116.3505f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1466.981f, -1389.29f, 4.138116f), 102.6992f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1470.935f, -1389.578f, 2.575922f), 81.81424f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1460.457f, -1384.924f, 2.665404f), 200.9588f, 15f) { IsEmpty = true },
+                    new EMSConditionalLocation(new Vector3(-1460.457f, -1384.924f, 2.665404f), 200.9588f, 15f) { IsEmpty = true },
                 },
             },
 
@@ -2290,16 +2295,18 @@ public class PlacesOfInterest : IPlacesOfInterest
                 AssignedAssociationID = "LSLFG",
                 ActivateDistance = 100f,
                 ActivateCells = 3,
+                TypeName = "Lifeguard Tower",
+                MapIcon = 767,
                 IgnoreEntranceInteract = true,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1435.112f, -1515.844f, 2.078523f), 103.4944f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1435.203f, -1509.865f, 2.148914f), 104.9742f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1431.285f, -1509.428f, 3.710496f), 119.8205f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1435.112f, -1515.844f, 2.078523f), 103.4944f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1435.203f, -1509.865f, 2.148914f), 104.9742f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1431.285f, -1509.428f, 3.710496f), 119.8205f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1424.351f, -1506.575f, 2.379463f), 205.7631f, 15f) { IsEmpty = true },
+                    new EMSConditionalLocation(new Vector3(-1424.351f, -1506.575f, 2.379463f), 205.7631f, 15f) { IsEmpty = true },
                 },
             },
             new Landmark(new Vector3(-1376.505f, -1625.246f, 2.149354f), 110.8102f,"Vespucci Lifeguard Tower 3","")
@@ -2309,16 +2316,18 @@ public class PlacesOfInterest : IPlacesOfInterest
                 AssignedAssociationID = "LSLFG",
                 ActivateDistance = 100f,
                 ActivateCells = 3,
+                TypeName = "Lifeguard Tower",
+                MapIcon = 767,
                 IgnoreEntranceInteract = true,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1376.505f, -1625.246f, 2.149354f), 110.8102f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1373.504f, -1630.074f, 2.120056f), 119.2209f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1372.801f, -1624.591f, 3.725401f), 108.1343f, 15f) { TaskRequirements = TaskRequirements.Guard| TaskRequirements.Patrol,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1376.505f, -1625.246f, 2.149354f), 110.8102f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1373.504f, -1630.074f, 2.120056f), 119.2209f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1372.801f, -1624.591f, 3.725401f), 108.1343f, 15f) { TaskRequirements = TaskRequirements.Guard| TaskRequirements.Patrol,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1366.556f, -1622.076f, 2.320448f), 21.83072f, 15f) { IsEmpty = true },
+                    new EMSConditionalLocation(new Vector3(-1366.556f, -1622.076f, 2.320448f), 21.83072f, 15f) { IsEmpty = true },
                 },
             },
             new Landmark(new Vector3(-1294.84f, -1756.572f, 2.144996f), 139.373f,"Vespucci Lifeguard Tower 4","")
@@ -2328,16 +2337,18 @@ public class PlacesOfInterest : IPlacesOfInterest
                 AssignedAssociationID = "LSLFG",
                 ActivateDistance = 100f,
                 ActivateCells = 3,
+                TypeName = "Lifeguard Tower",
+                MapIcon = 767,
                 IgnoreEntranceInteract = true,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1294.84f, -1756.572f, 2.144996f), 139.373f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1290.009f, -1758.995f, 2.14688f), 156.2117f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1290.237f, -1752.75f, 3.71381f), 129.6491f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1294.84f, -1756.572f, 2.144996f), 139.373f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1290.009f, -1758.995f, 2.14688f), 156.2117f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1290.237f, -1752.75f, 3.71381f), 129.6491f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1283.365f, -1750.417f, 2.18823f), 33.92455f, 15f) { IsEmpty = true },
+                    new EMSConditionalLocation(new Vector3(-1283.365f, -1750.417f, 2.18823f), 33.92455f, 15f) { IsEmpty = true },
                 },
             },
 
@@ -2348,16 +2359,18 @@ public class PlacesOfInterest : IPlacesOfInterest
                 AssignedAssociationID = "LSLFG",
                 ActivateDistance = 100f,
                 ActivateCells = 3,
+                TypeName = "Lifeguard Tower",
+                MapIcon = 767,
                 IgnoreEntranceInteract = true,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1518.476f, -1277.654f, 1.935055f), 96.05882f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1523.732f, -1272.069f, 2.043999f), 94.24842f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1518.378f, -1273.304f, 3.459242f), 84.8428f, 15f) { TaskRequirements = TaskRequirements.Guard| TaskRequirements.Patrol,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1518.476f, -1277.654f, 1.935055f), 96.05882f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1523.732f, -1272.069f, 2.043999f), 94.24842f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1518.378f, -1273.304f, 3.459242f), 84.8428f, 15f) { TaskRequirements = TaskRequirements.Guard| TaskRequirements.Patrol,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1511.761f, -1274.091f, 1.985983f), 4.970569f, 15f) { IsEmpty = true },
+                    new EMSConditionalLocation(new Vector3(-1511.761f, -1274.091f, 1.985983f), 4.970569f, 15f) { IsEmpty = true },
                 },
             },
             new Landmark(new Vector3(-1557.982f, -1159.784f, 2.222632f), 127.8208f,"Vespucci Lifeguard Tower 6","")
@@ -2367,16 +2380,18 @@ public class PlacesOfInterest : IPlacesOfInterest
                 AssignedAssociationID = "LSLFG",
                 ActivateDistance = 100f,
                 ActivateCells = 3,
+                TypeName = "Lifeguard Tower",
+                MapIcon = 767,
                 IgnoreEntranceInteract = true,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1557.982f, -1159.784f, 2.222632f), 127.8208f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1564.454f, -1156.393f, 2.326566f), 130.6304f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1560.814f, -1155.022f, 3.911213f), 125.2697f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1557.982f, -1159.784f, 2.222632f), 127.8208f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1564.454f, -1156.393f, 2.326566f), 130.6304f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1560.814f, -1155.022f, 3.911213f), 125.2697f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1554.836f, -1151.656f, 2.336557f), 34.48763f, 15f) { IsEmpty = true },
+                    new EMSConditionalLocation(new Vector3(-1554.836f, -1151.656f, 2.336557f), 34.48763f, 15f) { IsEmpty = true },
                 },
             },
 
@@ -2391,16 +2406,18 @@ public class PlacesOfInterest : IPlacesOfInterest
                 AssignedAssociationID = "LSLFG",
                 ActivateDistance = 100f,
                 ActivateCells = 3,
+                TypeName = "Lifeguard Tower",
+                MapIcon = 767,
                 IgnoreEntranceInteract = true,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1795.943f, -860.3762f, 7.491427f), 112.3975f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1800.148f, -856.9856f, 7.514591f), 98.28096f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1795.827f, -855.4499f, 9.2f), 106.6543f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1795.943f, -860.3762f, 7.491427f), 112.3975f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1800.148f, -856.9856f, 7.514591f), 98.28096f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1795.827f, -855.4499f, 9.2f), 106.6543f, 15f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1789.967f, -854.0302f, 7.722801f), 205.7013f, 15f) { IsEmpty = true },
+                    new EMSConditionalLocation(new Vector3(-1789.967f, -854.0302f, 7.722801f), 205.7013f, 15f) { IsEmpty = true },
                 },
             },
 
@@ -2411,16 +2428,18 @@ public class PlacesOfInterest : IPlacesOfInterest
                 AssignedAssociationID = "LSLFG",
                 ActivateDistance = 100f,
                 ActivateCells = 3,
+                TypeName = "Lifeguard Tower",
+                MapIcon = 767,
                 IgnoreEntranceInteract = true,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1899.692f, -714.9308f, 7.042809f), 119.4366f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1908.717f, -712.2696f, 6.794119f), 120.6255f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-1903.039f, -711.0178f, 8.832595f), 109.4467f, 15f) { TaskRequirements = TaskRequirements.Guard| TaskRequirements.Patrol,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1899.692f, -714.9308f, 7.042809f), 119.4366f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1908.717f, -712.2696f, 6.794119f), 120.6255f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-1903.039f, -711.0178f, 8.832595f), 109.4467f, 15f) { TaskRequirements = TaskRequirements.Guard| TaskRequirements.Patrol,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-1897.314f, -707.5889f, 7.498323f), 35.62716f, 15f) { IsEmpty = true },
+                    new EMSConditionalLocation(new Vector3(-1897.314f, -707.5889f, 7.498323f), 35.62716f, 15f) { IsEmpty = true },
                 },
             },
             new Landmark(new Vector3(-2004.317f, -562.2349f, 11.08815f), 120.6884f,"Del Perro Lifeguard Tower 3","")
@@ -2430,16 +2449,18 @@ public class PlacesOfInterest : IPlacesOfInterest
                 AssignedAssociationID = "LSLFG",
                 ActivateDistance = 100f,
                 ActivateCells = 3,
+                TypeName = "Lifeguard Tower",
+                MapIcon = 767,
                 IgnoreEntranceInteract = true,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-2004.317f, -562.2349f, 11.08815f), 120.6884f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-2011.097f, -559.4583f, 10.93443f), 120.7562f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
-                    new LEConditionalLocation(new Vector3(-2006.434f, -557.8543f, 12.88624f), 121.3164f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-2004.317f, -562.2349f, 11.08815f), 120.6884f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-2011.097f, -559.4583f, 10.93443f), 120.7562f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
+                    new EMSConditionalLocation(new Vector3(-2006.434f, -557.8543f, 12.88624f), 121.3164f, 15f) { TaskRequirements = TaskRequirements.Guard,ForcedScenarios = new List<string>(){ "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND", "WORLD_HUMAN_BINOCULARS" }, },
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
-                    new LEConditionalLocation(new Vector3(-2000.737f, -553.7861f, 11.47833f), 32.91222f, 15f) { IsEmpty = true },
+                    new EMSConditionalLocation(new Vector3(-2000.737f, -553.7861f, 11.47833f), 32.91222f, 15f) { IsEmpty = true },
                 },
             },
 

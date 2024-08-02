@@ -75,14 +75,27 @@ public class PlayerInfoMenu
     }
     public void Toggle()
     {
-        if (!TabView.IsAnyPauseMenuVisible)
+        try
         {
-            if (!tabView.Visible)
+            if (!TabView.IsAnyPauseMenuVisible)
             {
-                UpdateMenu();
-                Game.IsPaused = true;
+                if (!tabView.Visible)
+                {
+                    UpdateMenu();
+                    Game.IsPaused = true;
+                }
+                tabView.Visible = !tabView.Visible;
             }
-            tabView.Visible = !tabView.Visible;
+        }
+        catch(Exception ex)
+        {
+            if (tabView != null && tabView.Visible)
+            {
+                tabView.Visible = false;
+            }
+            Game.IsPaused = false;
+            Game.DisplayNotification("Error Opening Menu");
+            EntryPoint.WriteToConsole($"Player Info Menu Toggle Error: {ex.Message} STACKTRACE:{ex.StackTrace}",0);
         }
     }
     public void Update()

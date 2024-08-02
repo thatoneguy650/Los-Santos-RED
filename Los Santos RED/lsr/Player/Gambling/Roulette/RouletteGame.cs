@@ -137,6 +137,18 @@ namespace Roulette
         {
             IsCancelled = false;
             IsCompleted = false;
+            if (Player.BankAccounts.GetMoney(false) <= GamblingParameters.MinBet)
+            {
+                RouletteGameUI.DisplayGameEvent("Minimum Bet ", "You do not have the minimum required bet amount.", true);
+                EndGame();
+                return;
+            }
+            if (Player.GamblingManager.IsWinBanned(GameLocation))
+            {
+                RouletteGameUI.DisplayGameEvent("Banned ", "You have been temporarily banned for winning too much.", true);
+                EndGame();
+                return;
+            }
             RouletteGameUI.DisplayGameEvent("Alert", "Place your bets.", true);
             if (!TakeBets())
             {
@@ -149,6 +161,9 @@ namespace Roulette
             CheckWins();
             StartRound();
         }
+
+
+
         private void CheckWins()
         {
             foreach(RouletteBet rb in RouletteRoundBet.RouletteBets)
@@ -229,7 +244,6 @@ namespace Roulette
                 MainPocketID = mainPocketID;
                 AdjoiningPockets = adjoiningPockets;
             }
-
             public int MainPocketID { get; set; }
             public List<int> AdjoiningPockets { get; set; } = new List<int>();
         }

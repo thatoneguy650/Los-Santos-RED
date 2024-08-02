@@ -20,19 +20,8 @@ public class Landmark : GameLocation
 
     }
     public override string TypeName { get; set; } = "Landmark";
-    public override int MapIcon { get; set; } = 162;
+    public override int MapIcon { get; set; } = 873;//162;
     public override float MapIconScale { get; set; } = 0.5f;
-
-
-
-
-
-
-
-
-
-
-
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Interact With {Name}";
@@ -40,12 +29,6 @@ public class Landmark : GameLocation
     }
     public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
-        //Player = player;
-        //ModItems = modItems;
-        //World = world;
-        //Settings = settings;
-        //Weapons = weapons;
-        //Time = time;
         if (IsLocationClosed())
         {
             return;

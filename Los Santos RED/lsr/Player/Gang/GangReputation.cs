@@ -482,6 +482,8 @@ public class GangReputation
             return;
         }
         GangLoan = new GangLoan(Player, Gang, time, lp, gls.DueAmount);
-        GangLoan.RestartFromSaved(gls.DueAmount, gls.MissedPeriods, gls.DueDate, lp);
+        GangLoan.RestartFromSaved(gls.DueAmount,gls.VigAmount, gls.MissedPeriods, gls.DueDate, lp);
     }
+
+
 }
