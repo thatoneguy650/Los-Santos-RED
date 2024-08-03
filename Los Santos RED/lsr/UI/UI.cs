@@ -355,7 +355,7 @@ public class UI : IMenuProvideable
 
             if(StartedBustedEffect || StartedDeathEffect)
             {
-                BigMessage.Fiber?.Abort();
+                BigMessage?.Fiber?.Abort();
                 EntryPoint.WriteToConsole("REMOVE FIBER RAN!");
             }
             StartedBustedEffect = false;
