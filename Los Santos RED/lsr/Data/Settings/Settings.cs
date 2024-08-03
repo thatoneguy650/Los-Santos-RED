@@ -321,7 +321,7 @@ public class Settings : ISettingsProvideable
         SettingsManager.ScannerSettings.EnableNotifications = false;
         SettingsManager.ScannerSettings.ShowPoliceVehicleBlipsWithScanner = false;
 
-
+        SettingsManager.GangSettings.AllowNonEnemyTargets = false;
 
     }
 

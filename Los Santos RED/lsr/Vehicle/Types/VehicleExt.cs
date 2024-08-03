@@ -1109,7 +1109,7 @@ namespace LSR.Vehicles
         }
         public VehicleDoorSeatData GetClosestPedStorageBone(IInteractionable Player, float maxDistance, IVehicleSeatAndDoorLookup vehicleSeatDoorData)
         {
-            if(!Vehicle.Exists() || !CanLoadBodies) 
+            if(!Vehicle.Exists() || !CanLoadBodies || vehicleSeatDoorData == null) 
             {
                 return null;
             }

@@ -197,7 +197,7 @@ namespace LosSantosRED.lsr.Data
                 GangReputationsSave.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt, gr.MembersKilled, gr.MembersCarJacked, gr.MembersHurtInTerritory, gr.MembersKilledInTerritory, gr.MembersCarJackedInTerritory, gr.PlayerDebt, gr.IsMember, gr.IsEnemy, gr.TasksCompleted));
                 if(gr.GangLoan != null && gr.GangLoan.DueAmount > 0)
                 {
-                    GangLoanSaves.Add(new GangLoanSave(gr.Gang.ID, gr.GangLoan.DueAmount,gr.GangLoan.MissedPeriods,gr.GangLoan.DueDate));
+                    GangLoanSaves.Add(new GangLoanSave(gr.Gang.ID, gr.GangLoan.DueAmount,gr.GangLoan.VigAmount,gr.GangLoan.MissedPeriods,gr.GangLoan.DueDate));
                 }
             }
 

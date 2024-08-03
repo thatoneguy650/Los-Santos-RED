@@ -70,6 +70,7 @@ namespace Mod
         public ModDataFileManager ModDataFileManager { get; private set; }
         public ILocationInteractable LocationInteractable { get; private set; }
         public bool IsFEJInstalled { get; private set; }
+        public bool IsFMTInstalled { get; private set; }
         public string DebugString => "";
         public void Setup(IInteractionable player, ILocationInteractable locationInteractable)
         {
@@ -88,9 +89,10 @@ namespace Mod
             IsFEJInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("greskfej"));
             EntryPoint.WriteToConsole($"FEJ Installed: {IsFEJInstalled}",0);
 
+            IsFMTInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("greskfmt"));
+            EntryPoint.WriteToConsole($"FMT Installed: {IsFMTInstalled}", 0);
 
-
-            if(Settings.SettingsManager.WorldSettings.SetMissionFlagOn)
+            if (Settings.SettingsManager.WorldSettings.SetMissionFlagOn)
             {
                 NativeFunction.Natives.SET_MINIGAME_IN_PROGRESS(true);
             }

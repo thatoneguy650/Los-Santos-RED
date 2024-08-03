@@ -182,6 +182,7 @@ public class GangReputation
         MembersCarJackedInTerritory = 0;
         ClearDebt();
         GangLoan?.Reset();
+        GangLoan = null;
         Player.SetDenStatus(Gang, false);
         GameTimeLastAttacked = 0;
     }
@@ -485,5 +486,8 @@ public class GangReputation
         GangLoan.RestartFromSaved(gls.DueAmount,gls.VigAmount, gls.MissedPeriods, gls.DueDate, lp);
     }
 
-
+    public void ClearLoan()
+    {
+        GangLoan = null;
+    }
 }

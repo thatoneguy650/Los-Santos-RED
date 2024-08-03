@@ -29,6 +29,9 @@ namespace Roulette
         private TopLineBetMenu TopLineBetMenu;
         private HalfBetMenu HalfBetMenu;
         private SplitBetMenu SplitBetMenu;
+        private CornerBetMenu CornerBetMenu;
+        private StreetBetMenu StreetBetMenu;
+        private DoubleStreetBetMenu DoubleStreetBetMenu;
         private List<RouletteBetMenu> RouletteBetMenus = new List<RouletteBetMenu>();
         public bool IsCancelled { get; private set; }
         public bool IsCompleted { get; private set; }
@@ -57,6 +60,9 @@ namespace Roulette
             EvenOddBetMenu = new EvenOddBetMenu(player, settings, gameLocation, gamblingParameters, this);
             HalfBetMenu = new HalfBetMenu(player, settings, gameLocation, gamblingParameters, this);
             SplitBetMenu = new SplitBetMenu(player, settings, gameLocation, gamblingParameters, this);
+            CornerBetMenu = new CornerBetMenu(player, settings, gameLocation, gamblingParameters, this);
+            StreetBetMenu = new StreetBetMenu(player, settings, gameLocation, gamblingParameters, this);
+            DoubleStreetBetMenu = new DoubleStreetBetMenu(player, settings, gameLocation, gamblingParameters, this);
 
             RouletteBetMenus.Add(SingleBetMenu);
             RouletteBetMenus.Add(RowBetMenu);
@@ -67,6 +73,9 @@ namespace Roulette
             RouletteBetMenus.Add(EvenOddBetMenu);
             RouletteBetMenus.Add(HalfBetMenu);
             RouletteBetMenus.Add(SplitBetMenu);
+            RouletteBetMenus.Add(CornerBetMenu);
+            RouletteBetMenus.Add(StreetBetMenu);
+            RouletteBetMenus.Add(DoubleStreetBetMenu);
         }
         public void Setup()
         {

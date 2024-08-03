@@ -26,7 +26,7 @@ public class GamblingDen : GameLocation
     }
     public override string TypeName { get; set; } = "Casino";
     public override int MapIcon { get; set; } = 680;//402 = car repair
-    public override bool ShowsOnDirectory => false;
+    public override bool ShowsOnDirectory { get; set; } = false;
     public GamblingParameters GamblingParameters { get; set; } = new GamblingParameters();
     public bool IsRestrictedToFriendly { get; set; } = false;
     public bool IsRestrictedToMember { get; set; } = false;

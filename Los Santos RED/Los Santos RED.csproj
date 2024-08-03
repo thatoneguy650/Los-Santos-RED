@@ -437,6 +437,8 @@
     <Compile Include="lsr\Player\Gambling\Roulette\Betting\Bet Types\SplitBet.cs" />
     <Compile Include="lsr\Player\Gambling\Roulette\Betting\Bet Types\StreetBet.cs" />
     <Compile Include="lsr\Player\Gambling\Roulette\Betting\Menus\ColumnBetMenu.cs" />
+    <Compile Include="lsr\Player\Gambling\Roulette\Betting\Menus\CornerBetMenu.cs" />
+    <Compile Include="lsr\Player\Gambling\Roulette\Betting\Menus\DoubleStreetBetMenu.cs" />
     <Compile Include="lsr\Player\Gambling\Roulette\Betting\Menus\DozenBetMenu.cs" />
     <Compile Include="lsr\Player\Gambling\Roulette\Betting\Menus\HalfBetMenu.cs" />
     <Compile Include="lsr\Player\Gambling\Roulette\Betting\Menus\RouletteBetMenu.cs" />
@@ -449,6 +451,7 @@
     <Compile Include="lsr\Player\Gambling\Roulette\Betting\Bet Types\TopLineBet.cs" />
     <Compile Include="lsr\Player\Gambling\Roulette\Betting\Menus\RowBetMenu.cs" />
     <Compile Include="lsr\Player\Gambling\Roulette\Betting\Menus\SplitBetMenu.cs" />
+    <Compile Include="lsr\Player\Gambling\Roulette\Betting\Menus\StreetBetMenu.cs" />
     <Compile Include="lsr\Player\Gambling\Roulette\Betting\Menus\TopLineBetMenu.cs" />
     <Compile Include="lsr\Player\Gambling\Roulette\RouletteGame.cs" />
     <Compile Include="lsr\Player\Gambling\Roulette\RouletteGameUI.cs" />

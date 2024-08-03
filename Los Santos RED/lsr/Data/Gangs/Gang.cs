@@ -464,6 +464,7 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
         }
         Player.BankAccounts.GiveMoney(-1 * gr.GangLoan.DueAmount, false);
         gr.GangLoan.PayLoan();
+        gr.ClearLoan();
         gameLocation.DisplayMessage("Success", "You have paid off your loan debt.");
         return true;
     }

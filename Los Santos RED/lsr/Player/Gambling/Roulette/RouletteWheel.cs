@@ -20,10 +20,11 @@ namespace Roulette
         {
             RouletteGame = rouletteGame;
         }
+        public RoulettePocket GetPocket(int pocketId) => PocketsList.Where(x=> x.PocketID == pocketId).FirstOrDefault();
         public void Setup()
         {
             PocketsList = new List<RoulettePocket>();
-            for (int pocketID = 0; pocketID <= 35; pocketID++)
+            for (int pocketID = 0; pocketID <= 36; pocketID++)
             {
                 RoulettePocket rp = new RoulettePocket(pocketID);
                 rp.Setup();

@@ -123,7 +123,7 @@ public class GangTab
         toReturn.Add(new Tuple<string, string>("Relationship:", gr.ToStringSimple()));
         toReturn.Add(new Tuple<string, string>("Rep Level:", gr.ReputationLevel.ToString()));
 
-        if (gr.GangLoan != null)
+        if (gr.GangLoan != null && gr.GangLoan.DueAmount > 0)
         {
             toReturn.Add(new Tuple<string, string>("Loan:", gr.GangLoan.ToString()));
         }

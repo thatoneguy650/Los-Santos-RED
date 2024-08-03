@@ -168,8 +168,7 @@ public class GangSettings : ISettingsDefaultable
     public int LowCombatSpeakPercentage { get; set; }
     public int FleeingSpeakPercentage { get; set; }
     public bool AllowBackupAssaultSpawns { get; set; }
-
-    // public bool RemoveNonSpawnedGangMembersOnFoot_Extra { get; set; }
+    public bool AllowNonEnemyTargets { get; set; }
 
     public GangSettings()
     {
@@ -314,6 +313,8 @@ public class GangSettings : ISettingsDefaultable
         FleeingSpeakPercentage = 15;
 
         AllowBackupAssaultSpawns = true;
+
+        AllowNonEnemyTargets = true;
 
        // RemoveNonSpawnedGangMembersOnFoot_Extra = false;
     }

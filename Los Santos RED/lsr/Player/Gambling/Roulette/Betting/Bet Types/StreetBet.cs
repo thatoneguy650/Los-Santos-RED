@@ -17,7 +17,7 @@ namespace Roulette
         public RoulettePocket PrimaryPocketID { get; set; }
         public RoulettePocket SecondaryPocketID { get; set; }
         public RoulettePocket TeritaryPocketID { get; set; }
-        public override string BetName => $"{PrimaryPocketID.FullDisplay} {SecondaryPocketID.FullDisplay} {TeritaryPocketID.FullDisplay} Street Bet";
+        public override string BetName => $"{PrimaryPocketID?.FullDisplay} {SecondaryPocketID?.FullDisplay} {TeritaryPocketID?.FullDisplay} Street Bet";
         public override bool IsWinner(RoulettePocket selectedPocket)
         {
             return selectedPocket.PocketID == PrimaryPocketID.PocketID || selectedPocket.PocketID == SecondaryPocketID.PocketID || selectedPocket.PocketID == TeritaryPocketID.PocketID;

@@ -306,7 +306,15 @@ public class GangInteraction : IContactMenuInteraction
         JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].Description = $"Do a hit for the gang on a rival.";
         JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.HitPaymentMin:C0}-{ActiveGang.HitPaymentMax:C0}~s~";
         GangHitSubMenu.RemoveBanner();
-        UIMenuListScrollerItem<Gang> TargetMenu = new UIMenuListScrollerItem<Gang>("Target Gang", $"Choose a target gang", Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID && ActiveGang.EnemyGangs.Contains(x.ID)).ToList());
+        //UIMenuListScrollerItem<Gang> TargetMenu = new UIMenuListScrollerItem<Gang>("Target Gang", $"Choose a target gang", Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID && ActiveGang.EnemyGangs.Contains(x.ID)).ToList());
+
+        UIMenuListScrollerItem<Gang> TargetMenu = new UIMenuListScrollerItem<Gang>("Target Gang", $"Choose a target gang", 
+            Settings.SettingsManager.GangSettings.AllowNonEnemyTargets ? Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID ).ToList()
+             : Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID && ActiveGang.EnemyGangs.Contains(x.ID)).ToList());
+
+
+
+
         UIMenuNumericScrollerItem<int> TargetCountMenu = new UIMenuNumericScrollerItem<int>("Targets", $"Select the number of targets", 1, 3, 1) { Value = 1 };
         UIMenuItem TaskStartMenu = new UIMenuItem("Start", $"Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.HitPaymentMin * TargetCountMenu.Value:C0}-{ActiveGang.HitPaymentMax * TargetCountMenu.Value:C0}~s~" };
         TaskStartMenu.Activated += (sender, selectedItem) =>

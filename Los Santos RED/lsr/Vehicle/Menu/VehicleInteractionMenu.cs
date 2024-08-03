@@ -26,6 +26,12 @@ public class VehicleInteractionMenu
     {
         VehicleDoorSeatData = vehicleDoorSeatData;
         Player = player;
+
+        if(VehicleExt == null)
+        {
+            return;
+        }
+
         CreateInteractionMenu();
         if (!player.IsInVehicle)
         {

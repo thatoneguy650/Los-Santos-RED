@@ -282,7 +282,8 @@ public class SettingsManager
         UIGeneralSettings.ShowVehicleInteractionPrompt = false;
         UIGeneralSettings.ShowVehicleInteractionPromptInVehicle = false;
         UIGeneralSettings.DisplayButtonPrompts = false;
-
+        UIGeneralSettings.ShowVehicleInteractionPrompt = false;
+        UIGeneralSettings.ShowVehicleInteractionPromptInVehicle = false;
     }
 
     public void DisableScreenshotMode()

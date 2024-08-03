@@ -23,7 +23,7 @@ namespace Roulette
         public RoulettePocket QuaternaryPocketID { get; set; }
         public RoulettePocket QuinaryPocketID { get; set; }
         public RoulettePocket SenaryPocketID { get; set; }
-        public override string BetName => $"{PrimaryPocketID.FullDisplay} {SecondaryPocketID.FullDisplay} {TeritaryPocketID.FullDisplay}  {QuaternaryPocketID.FullDisplay} {QuinaryPocketID.FullDisplay} {SenaryPocketID.FullDisplay} Bet";
+        public override string BetName => $"{PrimaryPocketID?.FullDisplay} {SecondaryPocketID?.FullDisplay} {TeritaryPocketID?.FullDisplay}  {QuaternaryPocketID?.FullDisplay} {QuinaryPocketID?.FullDisplay} {SenaryPocketID?.FullDisplay} Bet";
         public override bool IsWinner(RoulettePocket selectedPocket)
         {
             return selectedPocket.PocketID == PrimaryPocketID.PocketID || selectedPocket.PocketID == SecondaryPocketID.PocketID || selectedPocket.PocketID == TeritaryPocketID.PocketID
