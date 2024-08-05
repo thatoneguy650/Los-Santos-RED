@@ -106,9 +106,9 @@ public class Gangs : IGangs
     private void SetupLoanItems()
     {
         defaultLoanParameters = new LoanParameters();
-        defaultLoanParameters.AddParameter(new LoanParameter(GangRespect.Neutral, 0.03f, 4, 500, 5000));
-        defaultLoanParameters.AddParameter(new LoanParameter(GangRespect.Friendly, 0.02f, 4, 500, 15000));
-        defaultLoanParameters.AddParameter(new LoanParameter(GangRespect.Member, 0.015f, 4, 500, 25000));
+        defaultLoanParameters.AddParameter(new LoanParameter(GangRespect.Neutral, 0.1f, 4, 500, 5000));
+        defaultLoanParameters.AddParameter(new LoanParameter(GangRespect.Friendly, 0.04f, 4, 500, 15000));
+        defaultLoanParameters.AddParameter(new LoanParameter(GangRespect.Member, 0.02f, 4, 500, 25000));
     }
     private void SetupDefaults()
     {

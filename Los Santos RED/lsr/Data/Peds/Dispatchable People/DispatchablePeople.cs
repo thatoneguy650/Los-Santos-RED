@@ -864,11 +864,11 @@ public class DispatchablePeople : IDispatchablePeople
         };
         LSPDASDPeds = new List<DispatchablePerson>()
         {
-            new DispatchablePerson("s_m_y_pilot_01",0,0) { DebugName = "Police and LSPD Labeled Pilot",GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } }, //HAS LSPD STUFF ON HIM!!!!
+            new DispatchablePerson("s_m_y_pilot_01",5,5) { DebugName = "Police and LSPD Labeled Pilot",GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } }, //HAS LSPD STUFF ON HIM!!!!
         };
         LSSDASDPeds = new List<DispatchablePerson>()
         {
-            new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } },
+            new DispatchablePerson("s_m_m_pilot_02",5,5){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } },
         };
         OffDutyCops = new List<DispatchablePerson>()
         { 

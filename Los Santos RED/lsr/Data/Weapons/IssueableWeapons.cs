@@ -1266,6 +1266,7 @@ public class IssueableWeapons : IIssuableWeapons
 
         };
         Serialization.SerializeParams(IssuableWeaponsGroupLookup_Modern, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\IssuableWeapons_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParams(IssuableWeaponsGroupLookup_Modern, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\IssuableWeapons_FullExpandedJurisdiction.xml");
     }
 
 

@@ -309,6 +309,7 @@ public class ModDataFileManager
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction");
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations");
+        
         string Description =
             "The preferred way to play LSR. This alternate config is made to include add on ped and vehicles models to completely flesh out the Emergency Services, Military, and Service part of GTA 5. " +
             "Most lore friendly departments are included and have their own marked units and uniforms. " + 
@@ -363,6 +364,10 @@ public class ModDataFileManager
             + Environment.NewLine +
             "";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\readme.txt", Description);
+        
+        string Description2 = "Want to use the built in peds along with the FEJ vehicles? This is the config for you. Be sure to install the FEJ OIV without EUP. Copys over the xmls to the main directory.";
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds");
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\readme.txt", Description2);
     }
     private void SetupLosSantos2008()
     {
