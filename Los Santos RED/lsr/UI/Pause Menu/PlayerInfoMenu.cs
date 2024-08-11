@@ -73,7 +73,7 @@ public class PlayerInfoMenu
         LicensesTab = new LicensesTab(Player, Time, tabView, LocationTypes);
         CrimesTab = new CrimesTab(Player, tabView);
         GangTab = new GangTab(Player,PlacesOfInterest,ShopMenus,ModItems,Weapons,GangTerritories,Zones, tabView, Time, Settings, World);
-        ZonesTab = new ZonesTab(Zones, tabView);
+        ZonesTab = new ZonesTab(Player, PlacesOfInterest, ShopMenus, ModItems, Zones, tabView, GangTerritories, Settings, World);
     }
     public void Toggle()
     {
