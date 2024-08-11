@@ -32,6 +32,7 @@ public class PlayerInfoMenu
     private LicensesTab LicensesTab;
     private CrimesTab CrimesTab;
     private GangTab GangTab;
+    private ZonesTab ZonesTab;
 
     private ISettingsProvideable Settings;
     private ILocationTypes LocationTypes;
@@ -72,6 +73,7 @@ public class PlayerInfoMenu
         LicensesTab = new LicensesTab(Player, Time, tabView, LocationTypes);
         CrimesTab = new CrimesTab(Player, tabView);
         GangTab = new GangTab(Player,PlacesOfInterest,ShopMenus,ModItems,Weapons,GangTerritories,Zones, tabView, Time, Settings, World);
+        ZonesTab = new ZonesTab(Player, PlacesOfInterest, ShopMenus, ModItems, Zones, tabView, GangTerritories, Settings, World);
     }
     public void Toggle()
     {
@@ -117,6 +119,7 @@ public class PlayerInfoMenu
         LicensesTab.AddItems();
         CrimesTab.AddItems();
         GangTab.AddItems();
+        ZonesTab.AddItems();
         LocationsTab.AddItems();
 
         tabView.RefreshIndex();
