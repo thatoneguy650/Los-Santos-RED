@@ -41,7 +41,7 @@ public class ZonesTab
         items = new List<TabItem>();
         addedItems = false;
         string currentState = Player.CurrentLocation.CurrentZone?.GameState?.StateID;
-        foreach (Zone zone in Zones.ZoneList.Where(x => x.GameState?.StateID == currentState).OrderBy(x => x.DisplayName))
+        foreach (Zone zone in Zones.ZoneList.Where(x => x.GameState?.StateID == currentState || (x.GameState != null && Player.CurrentLocation.CurrentZone?.GameState != null && x.GameState.IsSisterState(Player.CurrentLocation.CurrentZone?.GameState))).OrderBy(x => x.DisplayName))
         {
             AddItem(zone);
         }
@@ -60,7 +60,11 @@ public class ZonesTab
         List<Tuple<string, string>> gangTuples = AddGangs(zone);
         MissionInformation GangInformation = new MissionInformation("Gangs", "", gangTuples);
         zoneMissionInfos.Add(GangInformation);
-        // police
+
+        // police+ other agencyies
+        zoneMissionInfos.Add(new MissionInformation("Law Enforcement", "", AddAgency(zone, ResponseType.LawEnforcement)));
+        zoneMissionInfos.Add(new MissionInformation("Medical Services", "", AddAgency(zone, ResponseType.EMS)));
+        zoneMissionInfos.Add(new MissionInformation("Fire-Fighting", "", AddAgency(zone, ResponseType.Fire)));
 
         // drugs
         List<Tuple<string, string>> drugTuples = AddDrugs(zone);
@@ -93,6 +97,21 @@ public class ZonesTab
         }
         return toReturn;
     }
+
+    private List<Tuple<string, string>> AddAgency(Zone zone, ResponseType responseType)
+    {
+        List<Tuple<string, string>> toReturn = new List<Tuple<string, string>>();
+        if(zone.Agencies == null || !zone.Agencies.Any(x=> x.ResponseType == responseType))
+        {
+            return toReturn;
+        }
+        foreach (Agency agency in zone.Agencies.Where(x => x.ResponseType == responseType).OrderBy(x=> x.Classification).ThenBy(x => x.ShortName))
+        {
+            toReturn.Add(new Tuple<string, string>($"{agency.ShortName} {agency.Classification}", ""));
+        }
+        return toReturn;
+    }
+
     private List<Tuple<string, string>> AddDrugs(Zone zone)
     {
         List<Tuple<string, string>> toReturn = new List<Tuple<string, string>>();

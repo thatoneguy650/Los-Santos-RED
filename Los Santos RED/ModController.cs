@@ -36,7 +36,7 @@ namespace LosSantosRED.lsr
 
         public ModController()
         {
-            ModDataFileManager = new ModDataFileManager();
+            ModDataFileManager = new ModDataFileManager();//test
         }
         public bool IsRunning { get; private set; }
         public bool RunUI { get; set; } = true;
