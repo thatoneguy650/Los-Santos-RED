@@ -99,7 +99,7 @@ public class ZonesTab
         List<ModItem> drugsList = ModItems.AllItems().Where(x => x.ItemType == ItemType.Drugs && x.ItemSubType == ItemSubType.Narcotic).ToList();
         List<string> zoneDrugs = new List<string>();
 
-        // Get economy drug menu. Unsure how to do this.//
+        // Get economy drug menu. Unsure how to do this.
 
         if (GangTerritories.GetGangs(zone.InternalGameName, 0) != null)
         {
