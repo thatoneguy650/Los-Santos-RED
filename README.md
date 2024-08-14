@@ -202,3 +202,6 @@ Enhanced Free Roam Mode
 - You will need to rebuy components if you remove them at the underground gunshops, gang dens, or drug dealers.
 - Vanilla taxi service is not available with LSR active (Downtown Cab Co on the vanilla cell will show Busy forever) use the burner cell to call the LSR taxi service.
 - Loading bodies in the trunk can fail or not attach properly.
+
+## Source code
+[On GitHub](https://github.com/thatoneguy650/Los-Santos-RED)
