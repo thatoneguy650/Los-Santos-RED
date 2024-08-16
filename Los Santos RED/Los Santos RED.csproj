@@ -634,6 +634,7 @@
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\FashionItemLookup.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\OverlayZoneComponent.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\TattooOverlay.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\Other\VoicePreview.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\PedFashionAlias.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugAnimationSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugCrimeSubMenu.cs" />

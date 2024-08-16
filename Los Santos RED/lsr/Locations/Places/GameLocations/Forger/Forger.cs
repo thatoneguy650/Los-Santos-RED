@@ -47,7 +47,7 @@ public class Forger : GameLocation
     public int IdentificationPurchasePrice { get; set; } = 450;
 
 
-    public int MarkedBillsSalesPrice { get; set; } = 2500;
+    public int MarkedBillsSalesPrice { get; set; } = 1500;
 
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {

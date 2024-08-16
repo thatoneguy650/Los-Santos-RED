@@ -174,8 +174,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
         AllowWeaponDropping = true;
         WeaponDroppingSupressPickups = true;
         WeaponDroppingTimeToSuppress = 15000;
-        MaleFreeModeVoice = "A_M_M_BEVHILLS_01_WHITE_FULL_01";
-        FemaleFreeModeVoice = "A_F_M_BEVHILLS_01_WHITE_FULL_01";
+        MaleFreeModeVoice = "A_M_Y_GENSTREET_01_WHITE_FULL_01";// "A_M_M_BEVHILLS_01_WHITE_FULL_01";
+        FemaleFreeModeVoice = "A_F_Y_BUSINESS_01_WHITE_FULL_01";// "A_F_M_BEVHILLS_01_WHITE_FULL_01";
         GenerateStoreItemPreviews = true;
         MeleeDamageModifier = 1.0f;
 

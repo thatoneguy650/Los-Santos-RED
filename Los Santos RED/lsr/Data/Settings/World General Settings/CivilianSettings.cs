@@ -248,11 +248,11 @@ public class CivilianSettings : ISettingsDefaultable
         CowerPercentagePoorZones = 1f;//HAS DESERIALIZED VALUES
 
 
-        MerchantMoneyMin = 500;
-        MerchantMoneyMax = 2000;
+        MerchantMoneyMin = 100;
+        MerchantMoneyMax = 800;
 
         MoneyMin = 15;
-        MoneyMax = 550;
+        MoneyMax = 450;
         PercentageTrustingOfPlayer = 85f;
 
 

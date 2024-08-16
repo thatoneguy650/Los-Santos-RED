@@ -481,7 +481,7 @@ namespace LosSantosRED.lsr
         {
             if (Player.IsWanted)
             {
-                if (!LastSeenLocationBlip.Exists() && EntryPoint.ModController.IsRunning)
+                if (!LastSeenLocationBlip.Exists() && EntryPoint.ModController.IsRunning & Settings.SettingsManager.UIGeneralSettings.CreatePoliceResponseBlip)
                 {
                     LastSeenLocationBlip = new Blip(Player.PlacePoliceLastSeenPlayer, 200f)
                     {
@@ -497,12 +497,10 @@ namespace LosSantosRED.lsr
                 }
                 else if (LastSeenLocationBlip.Exists())
                 {
-
                     LastSeenLocationBlip.Position = Player.PlacePoliceLastSeenPlayer;
                 }
                 if (LastSeenLocationBlip.Exists())
                 {
-
                     if (Player.IsInSearchMode)
                     {
                         LastSeenLocationBlip.Color = Color.Orange;

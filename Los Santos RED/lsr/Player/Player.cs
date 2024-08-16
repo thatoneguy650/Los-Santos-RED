@@ -573,9 +573,15 @@ namespace Mod
         public void Update()
         {
             UpdateVehicleData();
-            GameFiber.Yield();
+            if (!Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            {
+                GameFiber.Yield();
+            }
             UpdateWeaponData();
-            GameFiber.Yield();
+            if (!Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            {
+                GameFiber.Yield();
+            }
             UpdateStateData();
             GameFiber.Yield();
             bool IntoxicationIsPrimary = false;
@@ -584,28 +590,43 @@ namespace Mod
                 IntoxicationIsPrimary = true;
             }
             Intoxication.Update(IntoxicationIsPrimary);
-            GameFiber.Yield();//TR Yield RemovedTest 1
+            if (!Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            {
+                GameFiber.Yield();
+            }
             Injuries.Update(!IntoxicationIsPrimary);
-            GameFiber.Yield();//TR Yield RemovedTest 1
+            if (!Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            {
+                GameFiber.Yield();
+            }
             HumanState.Update();
             BankAccounts.Update();
             HealthManager.Update();
             GroupManager.Update();
-            GameFiber.Yield();//TR Yield RemovedTest 1
+            if (!Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            {
+                GameFiber.Yield();
+            }
             ButtonPrompts.Update();
             MeleeManager.Update();
-            GameFiber.Yield();//TR Yield RemovedTest 1
+            if (!Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            {
+                GameFiber.Yield();
+            }
             PlayerVoice.Update();
             ActivityManager.Update();
             OfficerMIAWatcher.Update();
-            GameFiber.Yield();//TR Yield RemovedTest 1
+            //GameFiber.Yield();//TR Yield RemovedTest 1
             RestrictedAreaManager.Update();//yields in here
             TaxiManager.Update();
 
             GangBackupManager.Update();
             InteriorManager.Update();
             CuffManager.Update();
-            GameFiber.Yield();//TR Yield RemovedTest 1
+            if (!Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            {
+                GameFiber.Yield();
+            }
             RadarDetector.Update();
             IntimidationManager.Update();
         }

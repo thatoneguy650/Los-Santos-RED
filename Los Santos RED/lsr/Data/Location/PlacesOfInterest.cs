@@ -1666,6 +1666,9 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GasStation(new Vector3(-92.79028f, 6409.667f, 31.64035f), 48.08112f, "Xero", "We have Xero gasoline","XeroMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "stores\\xero.png", ScannerFilePath = "01_specific_location\\0x1B81EF89.mp3" },
             new GasStation(new Vector3(46.75933f, 2789.635f, 58.10043f), 139.5097f, "Xero", "We have Xero gasoline","XeroMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "stores\\xero.png", ScannerFilePath = "01_specific_location\\0x18C6F152.mp3" },
 
+            new GasStation(new Vector3(-2072.911f, -327.2192f, 13.31597f), 83.09109f, "Xero", "We have Xero gasoline","XeroMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "stores\\xero.png",  },
+
+
             new GasStation(new Vector3(1705.88f, 6425.68f, 33.37f), 153.9039f, "Globe Oil", "Changing the Climate, Powering The Future","GasStationMenu") { BannerImagePath = "stores\\globeoil.png",ScannerFilePath = "01_specific_location\\0x007AC3FC.mp3" },
 
 
@@ -3497,7 +3500,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Residence(new Vector3(1674.201f, 4658.228f, 43.37114f), 270.4372f, "335E Grapeseed", ""){ InteriorID = 55042,OpenTime = 0,CloseTime = 24,PurchasePrice = 200000,SalesPrice = 150000, RentalFee = 1200, RentalDays = 28,},
             new Residence(new Vector3(1725.289f, 4642.35f, 43.87548f), 115.7792f, "340E Grapeseed", ""){ InteriorID = 55042,OpenTime = 0,CloseTime = 24,PurchasePrice = 250000,SalesPrice = 150000, RentalFee = 1350, RentalDays = 28,},
             new Residence(new Vector3(1881.219f, 3810.713f, 32.77882f), 301.1151f, "370E Niland ", ""){ InteriorID = 55042,OpenTime = 0,CloseTime = 24,PurchasePrice = 150000,SalesPrice = 90000, RentalFee = 950, RentalDays = 28,},
-            new Residence(new Vector3(1899.071f, 3781.417f, 32.8769f), 299.5774f, "380E Niland", ""){ InteriorID = 55042,OpenTime = 0,CloseTime = 24,PurchasePrice = 175000,SalesPrice = 1500000, RentalFee = 1000, RentalDays = 28,},
+            new Residence(new Vector3(1899.071f, 3781.417f, 32.8769f), 299.5774f, "380E Niland", ""){ InteriorID = 55042,OpenTime = 0,CloseTime = 24,PurchasePrice = 175000,SalesPrice = 150000, RentalFee = 1000, RentalDays = 28,},
             new Residence(new Vector3(-3186.93f, 1274.122f, 12.66124f), 257.7415f, "630W Barbareno", ""){ InteriorID = 108290,OpenTime = 0,CloseTime = 24,PurchasePrice = 750000,SalesPrice = 650000, RentalFee = 3000, RentalDays = 28,},
             new Residence(new Vector3(-3194.785f, 1179.539f, 9.659509f), 258.9255f, "632W Barbareno", ""){ InteriorID = 108290,OpenTime = 0,CloseTime = 24,PurchasePrice = 650000,SalesPrice = 550000, RentalFee = 2700, RentalDays = 28,},
             new Residence(new Vector3(-3238.444f, 952.556f, 13.34334f), 281.2452f, "642W Barbareno", ""){ InteriorID = 108290,OpenTime = 0,CloseTime = 24,PurchasePrice = 670000,SalesPrice = 550000, RentalFee = 2800, RentalDays = 28,},

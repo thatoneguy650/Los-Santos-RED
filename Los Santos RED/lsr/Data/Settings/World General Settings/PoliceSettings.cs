@@ -180,6 +180,7 @@ public class PoliceSettings : ISettingsDefaultable
     public uint MinTimeToStopTrains { get; set; }
     public uint MaxTimeToStopTrains { get; set; }
 
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {

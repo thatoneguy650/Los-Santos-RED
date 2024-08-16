@@ -59,6 +59,13 @@ public class UIGeneralSettings : ISettingsDefaultable
     public float CustomGroupIconsSpacingPixelReduction { get; set; }
     public bool ShowVehicleInteractionPrompt { get; set; }
     public bool ShowVehicleInteractionPromptInVehicle { get; set; }
+
+
+
+    public bool CreatePoliceResponseBlip { get; set; }
+    public string DefaultTextColor { get; set; }
+    public string DefaultTextColorNight { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -127,5 +134,9 @@ public class UIGeneralSettings : ISettingsDefaultable
         ShowVehicleInteractionPromptInVehicle = true;
         CustomWantedLevelStarsFlashWhenSearching = true;//HAS DESERIALIZED VALUES
         CustomWantedLevelStarsTimeBetweenFlash = 1000;//HAS DESERIALIZED VALUES
+        CreatePoliceResponseBlip = true;
+
+        DefaultTextColorNight = "~c~";
+        DefaultTextColor = "~s~";
     }
 }

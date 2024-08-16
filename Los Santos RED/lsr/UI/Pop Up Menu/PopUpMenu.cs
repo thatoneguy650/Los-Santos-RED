@@ -101,6 +101,7 @@ public class PopUpMenu
     private uint GameTimeLastPressedSubMenu;
 
     public bool IsActive { get; private set; }
+    public bool VeryRecentlyClosed => Game.GameTime - GameTimeLastClosed <= 200;
     public bool RecentlyClosed => Game.GameTime - GameTimeLastClosed <= 500;
     public PopUpMenu(IActionable player, ISettingsProvideable settings, UI uI, IGestures gestures, IDances dances)
     {
@@ -125,6 +126,10 @@ public class PopUpMenu
             DisableControls();
             FindClosestPositionMap();
             UpdateSelection();
+        }
+        else if (VeryRecentlyClosed)
+        {
+            DisableControls();
         }
     }
     public void Dispose()

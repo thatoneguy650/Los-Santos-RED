@@ -98,6 +98,13 @@ public class GangBackup
                 if (!gangMember.IsAddedToPlayerGroup && gangMember.DistanceToPlayer <= 20f)
                 {
                     GroupMember grpMember = Player.GroupManager.Add(gangMember);
+                    if(grpMember == null && gangMember.IsBackupSquad)
+                    {
+                        gangMember.IsBackupSquad = false;
+                        gangMember.CurrentTask= null;
+                        gangMember.CanBeAmbientTasked = true;
+                        gangMember.CanBeTasked = true;
+                    }
                     //Player.GroupManager.ResetStatus(gangMember, false);
                     //GameFiber.Sleep(500);
                     if(grpMember != null)

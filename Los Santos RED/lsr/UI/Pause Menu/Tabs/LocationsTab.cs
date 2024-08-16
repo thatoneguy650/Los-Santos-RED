@@ -71,7 +71,7 @@ public class LocationsTab : ITabbableMenu
         {
             FilterString = "";
         }
-        List<GameLocation> DirectoryLocations = PlacesOfInterest.AllLocations().Where(x => (x.ShowsOnDirectory || Settings.SettingsManager.WorldSettings.ShowAllLocationsOnDirectory) && x.IsEnabled && x.IsCorrectMap(World.IsMPMapLoaded) && (string.IsNullOrEmpty(FilterString) || FilterString == "" || x.Name.ToLower().Contains(FilterString.ToLower()))).ToList();
+        List<GameLocation> DirectoryLocations = PlacesOfInterest.AllLocations().Where(x => (x.ShowsOnDirectory || Settings.SettingsManager.WorldSettings.ShowAllLocationsOnDirectory) && x.IsEnabled && x.IsCorrectMap(World.IsMPMapLoaded) && (string.IsNullOrEmpty(FilterString) || FilterString == "" || x.FullStreetAddress.ToLower().Contains(FilterString.ToLower()))).ToList();
         foreach (string typeName in DirectoryLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
         {
             List<MissionInformation> missionInfoList = new List<MissionInformation>();

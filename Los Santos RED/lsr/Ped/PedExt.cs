@@ -862,11 +862,21 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public virtual void OnItemPurchased(ILocationInteractable player, ModItem modItem, int numberPurchased, int moneySpent)
     {
+        int preMoney = Money;
+        Money += Math.Abs(moneySpent);
         ItemDesires.OnItemsSoldToPlayer(modItem, numberPurchased);
+        EntryPoint.WriteToConsole($"OnItemPurchased moneySpent:{moneySpent} PreMoney: {preMoney} PostMoney: {Money}");
     }
     public virtual void OnItemSold(ILocationInteractable player, ModItem modItem, int numberPurchased, int moneySpent)
     {
+        int preMoney = Money;
+        Money -= Math.Abs(moneySpent);
+        if (Money < 0)
+        {
+            Money = 0;
+        }
         ItemDesires.OnItemsBoughtFromPlayer(modItem, numberPurchased);
+        EntryPoint.WriteToConsole($"OnItemSold moneySpent:{moneySpent} PreMoney: {preMoney} PostMoney: {Money}");
     }
     public virtual void SetupTransactionItems(ShopMenu shopMenu, bool matchWithMenu)
     {
@@ -1346,7 +1356,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             Status = "Unconscious";
         }
         Output = $"Status: {Status}";
-        if (HasMenu)
+        if (HasMenu && !IsDead && !IsUnconscious)
         {
             Output += $"~n~Can Transact";
         }
@@ -1380,12 +1390,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         GameTimeFirstSeenUnconscious = Game.GameTime;
         EntryPoint.WriteToConsole($"{Handle} first time seen unconscious");
     }
-
     public void ResetPlayerStoodTooClose()
     {
         GameTimeLastTooCloseToPlayer = 0;
     }
-
     public virtual void OnPlayerStoodOnCar(IInteractionable player)
     {
         if (Game.GameTime - GameTimePlayerLastStoodOnCar < 3000)
@@ -1398,7 +1406,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
         EntryPoint.WriteToConsole($"OnHitInsultLimit triggered {Handle}");
     }
-
     public virtual void OnInsultedByPlayer(IInteractionable player)
     {
         if (GameTimeLastInsultedByPlayer == 0 || Game.GameTime - GameTimeLastInsultedByPlayer >= 1000)
@@ -1412,7 +1419,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             }
         }
     }
-
     protected virtual void OnHitInsultLimit(IInteractionable player)
     {
         PlayerPerception.SetFakeSeen();
@@ -1434,7 +1440,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
         EntryPoint.WriteToConsole($"OnHitCollideWithPlayerLimit triggered {Handle}");
     }
-
     public virtual void OnPlayerIsClose(IInteractionable player)
     {
         if(GameTimeLastTooCloseToPlayer == 0)
@@ -1483,7 +1488,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             OnHitCollideWithPlayerLimit(player);
         }
     }
-
     public virtual void OnPlayerDamagedCarOnFoot(IInteractionable player)
     {
         if (Game.GameTime - GameTimePlayerLastDamagedCarOnFoot < 3000)
@@ -1495,8 +1499,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
         EntryPoint.WriteToConsole($"OnPlayerDamagedCarOnFoot triggered {Handle}");
     }
-
-
     public virtual void ControlLandingGear()
     {
         if(!(IsInHelicopter || IsInPlane))
@@ -1554,12 +1556,10 @@ ENDENUM
         AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
         EntryPoint.WriteToConsole($"OnPlayerDidBodilyFunctionsNear triggered {Handle}");
     }
-
     public virtual void OnHeardGunfire(IPoliceRespondable policeRespondable)
     {
 
     }
-
     public virtual void OnSeenDeadBody(IPoliceRespondable policeRespondable)
     {
 

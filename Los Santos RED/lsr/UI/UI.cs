@@ -176,11 +176,13 @@ public class UI : IMenuProvideable
         {
             if (Time.IsNight && Settings.SettingsManager.UIGeneralSettings.GreyOutWhiteFontAtNight)
             {
-                CurrentDefaultTextColor = "~c~";
+                CurrentDefaultTextColor = Settings.SettingsManager.UIGeneralSettings.DefaultTextColorNight;
+                //CurrentDefaultTextColor = "~c~";
             }
             else
             {
-                CurrentDefaultTextColor = "~s~";
+                CurrentDefaultTextColor = Settings.SettingsManager.UIGeneralSettings.DefaultTextColor;
+                //CurrentDefaultTextColor = "~s~";
             }
             LowerRightDisplay.CacheData();
             TopRightMenu.CacheData();

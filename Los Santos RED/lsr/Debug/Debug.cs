@@ -28,6 +28,7 @@ using System.Text;
 using System.Windows.Forms;
 //using System.Windows.Media;
 //using System.Windows.Media;
+//using System.Windows.Media;
 using System.Xml.Linq;
 //using System.Windows.Media;
 //using System.Windows.Media;
@@ -5170,7 +5171,7 @@ private void contacttest()
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
             uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
-            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} WillFightPolice {ped.WillFightPolice} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
+            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} ${ped.Money} MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} WillFightPolice {ped.WillFightPolice} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ CIVIES END", 5);
         EntryPoint.WriteToConsole($"============================================ SECURITY START", 5);
@@ -5204,7 +5205,7 @@ private void contacttest()
             {
                 weaponinventorystring += " Has Long Gun";
             }
-            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} {ped.AssignedAgency?.ID} IsUnconscious:{ped.IsUnconscious} " +
+            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} ${ped.Money} {ped.AssignedAgency?.ID} IsUnconscious:{ped.IsUnconscious} " +
                 $"Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} " +
                 $"IsInVehicle {ped.IsInVehicle} ReactionTier: {ped.PedReactions.ReactionTier} WeaponSet {weaponinventorystring} DebugWeaponState {ped.WeaponInventory.DebugWeaponState}" +
                 $"Weapon {currentWeapon} Stunned {ped.Pedestrian.IsStunned} WasEverSetPersistent:{ped.WasEverSetPersistent} " +
@@ -5236,7 +5237,7 @@ private void contacttest()
 
 
 
-            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} {ped.AssignedAgency?.ID} MENU? {ped.HasMenu} " +
+            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} ${ped.Money} {ped.AssignedAgency?.ID} MENU? {ped.HasMenu} " +
                 $"IsUnconscious:{ped.IsUnconscious} Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  " +
                 $"PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} " +
                 $"IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} " +
@@ -5268,7 +5269,7 @@ private void contacttest()
 
 
 
-            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} {ped.AssignedAgency?.ID} MENU? {ped.HasMenu} " +
+            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} ${ped.Money} {ped.AssignedAgency?.ID} MENU? {ped.HasMenu} " +
                 $"IsUnconscious:{ped.IsUnconscious} Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  " +
                 $"PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} " +
                 $"IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} " +
@@ -5323,7 +5324,7 @@ private void contacttest()
             }
             weaponinventorystring += $" HasHeavyWeaponOnPerson {ped.WeaponInventory.HasHeavyWeaponOnPerson}";
 
-            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WasModSpawned {ped.WasModSpawned} Gang: {ped.Gang.ID} CanBeAmbientTasked {ped.CanBeAmbientTasked} CanBeTasked {ped.CanBeTasked} ", 5);
+            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} ${ped.Money} MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WasModSpawned {ped.WasModSpawned} Gang: {ped.Gang.ID} CanBeAmbientTasked {ped.CanBeAmbientTasked} CanBeTasked {ped.CanBeTasked} ", 5);
             EntryPoint.WriteToConsole($"     weaponinventorystring {weaponinventorystring}  SpawnRequirement {ped.LocationTaskRequirements.TaskRequirements} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} WorstObservedCrime {ped.PedViolations.WorstObservedCrime?.Name} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned}  WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG} CanBeTasked:{ped.CanBeTasked} CanBeAmbientTasked:{ped.CanBeAmbientTasked}", 5);
 
             // SpawnRequirement {ped.LocationTaskRequirements.TaskRequirements}";
@@ -5351,7 +5352,7 @@ private void contacttest()
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
             uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
-            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} " +
+            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} ${ped.Money} " +
                 $"MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} " +
                 $"WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} " +
                 $"Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} " +
@@ -5364,7 +5365,7 @@ private void contacttest()
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
             uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
-            EntryPoint.WriteToConsole($"DEAD !!! Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} IsDead:{ped.Pedestrian.IsDead} LoggedDeath:{ped.CurrentHealthState.HasLoggedDeath} IsUnconscious:{ped.IsUnconscious} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
+            EntryPoint.WriteToConsole($"DEAD !!! Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} ${ped.Money} MENU? {ped.HasMenu} IsDead:{ped.Pedestrian.IsDead} LoggedDeath:{ped.CurrentHealthState.HasLoggedDeath} IsUnconscious:{ped.IsUnconscious} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ DEAD END", 5);
         EntryPoint.WriteToConsole($"============================================ COPS START", 5);
@@ -5425,7 +5426,7 @@ private void contacttest()
 
             if (cop.CurrentTask?.OtherTarget?.Pedestrian.Exists() == true)
             {
-                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} SeePlayer:{canSeePlayer} Name:{cop.Name} {cop.GroupName} " +
+                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} SeePlayer:{canSeePlayer} Name:{cop.Name} {cop.GroupName} ${cop.Money} " +
                     $"weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} " +
                     $"TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} " +
                     $"Target:{cop.CurrentTask.OtherTarget.Pedestrian.Handle} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} ");
@@ -5436,7 +5437,7 @@ private void contacttest()
 
             else
             {
-                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}({cop.Handle})-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} {cop.AssignedAgency?.ShortName} SeePlayer:{canSeePlayer} Name:{cop.Name} {cop.GroupName} " +
+                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}({cop.Handle})-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} {cop.AssignedAgency?.ShortName} SeePlayer:{canSeePlayer} Name:{cop.Name} {cop.GroupName} ${cop.Money} " +
                     $"weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} " +
                     $"TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} " +
                     $"Target:{0} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} ");

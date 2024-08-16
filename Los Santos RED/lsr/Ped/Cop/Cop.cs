@@ -161,7 +161,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                 UpdateCombatFlags();
                 if (!IsUnconscious && PlayerPerception.DistanceToTarget <= 200f)
                 {
-                    if (!PlayerPerception.RanSightThisUpdate)
+                    if (!PlayerPerception.RanSightThisUpdate && !Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
                     {
                         GameFiber.Yield();
                     }
@@ -497,8 +497,6 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         policeRespondable.OfficerMIAWatcher.AddMIA(this, Position);
         EntryPoint.WriteToConsole($"AddPossibleMIA {Handle} IsAlerted{PedAlerts.IsAlerted}");
     }
-
-
     public override string InteractPrompt(IButtonPromptable player)
     {
         return $"Talk to {FormattedName}";
