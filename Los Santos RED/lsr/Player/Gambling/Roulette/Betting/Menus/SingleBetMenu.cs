@@ -60,7 +60,7 @@ namespace Roulette
                 UpdateBetAmount();
             }
         }
-        protected override void UpdateBetAmount()
+        public override void UpdateBetAmount()
         {
             int totalBets = RouletteGame.RouletteRoundBet.SingleBets.Sum(x => x.Amount);
             SetBetLabel(totalBets);

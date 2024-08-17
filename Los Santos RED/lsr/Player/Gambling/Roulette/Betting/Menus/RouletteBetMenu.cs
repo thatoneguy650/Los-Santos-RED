@@ -105,7 +105,7 @@ namespace Roulette
         {
 
         }
-        protected virtual void UpdateBetAmount()
+        public virtual void UpdateBetAmount()
         {
 
         }

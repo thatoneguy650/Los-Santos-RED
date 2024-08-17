@@ -101,7 +101,7 @@ namespace Roulette
                 MainBetsMenu.Visible = true;
             }
         }
-        protected override void UpdateBetAmount()
+        public override void UpdateBetAmount()
         {
             int totalBets = RouletteGame.RouletteRoundBet.CornerBets.Sum(x => x.Amount);
             SetBetLabel(totalBets);

@@ -33,6 +33,7 @@ namespace Roulette
         private StreetBetMenu StreetBetMenu;
         private DoubleStreetBetMenu DoubleStreetBetMenu;
         private List<RouletteBetMenu> RouletteBetMenus = new List<RouletteBetMenu>();
+        //private RouletteRoundBet PreviousRouletteRoundBet;
         public bool IsCancelled { get; private set; }
         public bool IsCompleted { get; private set; }
         public bool IsActive { get; private set; }
@@ -168,11 +169,9 @@ namespace Roulette
             RouletteWheel.Spin();
             RouletteGameUI.OnWheelSpun($"Selected: {RouletteWheel.SelectedPocket.FullDisplay}");
             CheckWins();
+            //PreviousRouletteRoundBet = RouletteRoundBet;
             StartRound();
         }
-
-
-
         private void CheckWins()
         {
             foreach(RouletteBet rb in RouletteRoundBet.RouletteBets)
@@ -209,6 +208,23 @@ namespace Roulette
         }
         private void AddGeneralRoundItems()
         {
+            //UIMenuItem ReBet = new UIMenuItem("Re-Bet", "Select make the same bet as the last round.") { RightBadge = UIMenuItem.BadgeStyle.Alert };
+            //ReBet.Activated += (menu, item) =>
+            //{
+            //    if(PreviousRouletteRoundBet == null)
+            //    {
+            //        return;
+            //    }
+            //    RouletteRoundBet = PreviousRouletteRoundBet;
+            //    foreach (RouletteBetMenu rbm in RouletteBetMenus.OrderBy(x => x.SortOrder))
+            //    {
+            //        rbm.UpdateBetAmount();
+            //    }
+            //};
+            //if (PreviousRouletteRoundBet != null)
+            //{
+            //    BetMenu.AddItem(ReBet);
+            //}
             UIMenuItem MakeBet = new UIMenuItem("Spin Wheel", "Select lock in bets and spin the wheel.") { RightBadge = UIMenuItem.BadgeStyle.Alert };
             MakeBet.Activated += (menu, item) =>
             {
@@ -256,6 +272,5 @@ namespace Roulette
             public int MainPocketID { get; set; }
             public List<int> AdjoiningPockets { get; set; } = new List<int>();
         }
-
     }
 }
