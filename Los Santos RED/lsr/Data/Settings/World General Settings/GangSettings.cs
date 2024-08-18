@@ -213,7 +213,7 @@ public class GangSettings : ISettingsDefaultable
 
 
 
-        TotalSpawnedMembersLimit = 10;////12;// 16;//5
+        TotalSpawnedMembersLimit = 8;// 10;////12;// 16;//5
         TotalSpawnedAmbientMembersLimit = 4;// 5;// 8;
 
         TotalSpawnedAmbientMembersLimit_Downtown = 4;// 5;

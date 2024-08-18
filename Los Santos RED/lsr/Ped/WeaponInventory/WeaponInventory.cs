@@ -169,7 +169,14 @@ public class WeaponInventory
             {
                 if(WeaponOwner.PedAlerts.IsAlerted)
                 {
-                    AutoSetWeapons_Deadly();
+                    if (Player.IsNotWanted || Player.PoliceResponse.IsDeadlyChase)
+                    {
+                        AutoSetWeapons_Deadly();
+                    }
+                    else
+                    {
+                        AutoSetWeapons_Other();
+                    }
                 }
                 else if (Player.IsNotWanted)
                 {
