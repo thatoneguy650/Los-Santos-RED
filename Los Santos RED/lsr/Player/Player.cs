@@ -573,12 +573,12 @@ namespace Mod
         public void Update()
         {
             UpdateVehicleData();
-            if (!Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            if (!Settings.SettingsManager.PerformanceSettings.EnableIncreasedUpdateMode)
             {
                 GameFiber.Yield();
             }
             UpdateWeaponData();
-            if (!Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            if (!Settings.SettingsManager.PerformanceSettings.EnableIncreasedUpdateMode)
             {
                 GameFiber.Yield();
             }
@@ -590,12 +590,12 @@ namespace Mod
                 IntoxicationIsPrimary = true;
             }
             Intoxication.Update(IntoxicationIsPrimary);
-            if (!Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            if (!Settings.SettingsManager.PerformanceSettings.EnableIncreasedUpdateMode)
             {
                 GameFiber.Yield();
             }
             Injuries.Update(!IntoxicationIsPrimary);
-            if (!Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            if (!Settings.SettingsManager.PerformanceSettings.EnableIncreasedUpdateMode)
             {
                 GameFiber.Yield();
             }
@@ -603,13 +603,13 @@ namespace Mod
             BankAccounts.Update();
             HealthManager.Update();
             GroupManager.Update();
-            if (!Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            if (!Settings.SettingsManager.PerformanceSettings.EnableIncreasedUpdateMode)
             {
                 GameFiber.Yield();
             }
             ButtonPrompts.Update();
             MeleeManager.Update();
-            if (!Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            if (!Settings.SettingsManager.PerformanceSettings.EnableIncreasedUpdateMode)
             {
                 GameFiber.Yield();
             }
@@ -623,7 +623,7 @@ namespace Mod
             GangBackupManager.Update();
             InteriorManager.Update();
             CuffManager.Update();
-            if (!Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            if (!Settings.SettingsManager.PerformanceSettings.EnableIncreasedUpdateMode)
             {
                 GameFiber.Yield();
             }
@@ -1151,6 +1151,7 @@ namespace Mod
                 else if (vehicleType?.IsHelicopter == true)
                 {
                     Scanner.OnHelicoptersDeployed();
+                    Dispatcher.LEDispatcher.OnHelicopterSpawnedOrRecalled();
                 }
             }
         }
@@ -1330,7 +1331,7 @@ namespace Mod
                     catch (Exception ex)
                     {
                         EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                        EntryPoint.ModController.CrashUnload();
+                        //EntryPoint.ModController.CrashUnload();
                     }
                 }, "FastForwardWatcher");
             }

@@ -79,10 +79,9 @@ public class DebugMenu : ModUIMenu
         DebugSubMenus.Add(new DebugInventorySubMenu(Debug, MenuPool, Player, Settings, Crimes, Tasker, World, Weapons, ModItems, Time, RadioStations, Names));
         DebugSubMenus.Add(new DebugWeaponsSubMenu(Debug, MenuPool, Player, Settings, Crimes, Tasker, World, Weapons, ModItems, Time, RadioStations, Names));
         DebugSubMenus.Add(new DebugMoneySubMenu(Debug, MenuPool, Player, Settings, Crimes, Tasker, World, Weapons, ModItems, Time, RadioStations, Names, ModDataFileManager));
-
-
         DebugSubMenus.Add(new DebugDispatcherSubMenu(Debug, MenuPool, Player, Agencies, Dispatcher, World, Gangs, ModDataFileManager.Organizations, settings));
         DebugSubMenus.Add(new DebugGangSubMenu(Debug, MenuPool, Player, Gangs, Dispatcher));
+        DebugSubMenus.Add(new DebugMapSubMenu(Debug, MenuPool, Player, World, PlacesOfInterest, Settings, Time, PoliceRespondable, ModDataFileManager, Gangs));
         DebugSubMenus.Add(new DebugRelationshipSubMenu(Debug, MenuPool, Player, ModDataFileManager));
         DebugSubMenus.Add(new DebugOutfitSubMenu(Debug, MenuPool, Player));
         DebugSubMenus.Add(new DebugCrimeSubMenu(Debug, MenuPool, Player, Settings, Crimes, Tasker, World, Weapons));
@@ -90,22 +89,12 @@ public class DebugMenu : ModUIMenu
         DebugSubMenus.Add(new DebugMovementSubMenu(Debug, MenuPool, Player));
         DebugSubMenus.Add(new DebugTimeSubMenu(Debug, MenuPool, Player, Time));
         DebugSubMenus.Add(new DebugVehicleSubMenu(Debug, MenuPool, Player, PlateTypes));
-
         DebugSubMenus.Add(new DebugAnimationSubMenu(Debug, MenuPool, Player, ModDataFileManager, this));
         DebugSubMenus.Add(new DebugHelperSubMenu(Debug, MenuPool, Player, World, PlacesOfInterest, Settings,Time,PoliceRespondable, ModDataFileManager, Gangs));
-        //DebugSubMenus.Add(new DebugOtherSubMenu(Debug, MenuPool, Player));
-
-
         DebugSubMenus.Add(new DebugTrunkSubMenu(Debug, MenuPool, Player, ModDataFileManager, World));
-
         DebugSubMenus.Add(new DebugPerformanceSubMenu(Debug, MenuPool, Player));
-
         DebugSubMenus.Add(new DebugPropAttachSubMenu(Debug, MenuPool, Player, ModDataFileManager, this));
-
-
         DebugSubMenus.Add(new DebugPositionLoggingSubMenu(Debug, MenuPool, Player, ModDataFileManager));
-
-
 #if DEBUG
         DebugSubMenus.Add(new DebugLCYMAPSubMenu(Debug, MenuPool, Player));
 #endif
@@ -141,8 +130,6 @@ public class DebugMenu : ModUIMenu
             debugSubMenu.AddItems();
         }
     } 
-
-
     public string SelectedAnimationDictionary { get; set; }
     public string SelectedAnimationName { get; set; }
 }

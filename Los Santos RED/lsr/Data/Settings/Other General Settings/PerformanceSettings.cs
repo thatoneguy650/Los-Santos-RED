@@ -9,17 +9,11 @@ using System.Threading.Tasks;
 public class PerformanceSettings : ISettingsDefaultable
 {
     [Description("If enabled, lsr will update more items each frame. This should increase respinsiveness but can decrease performance.")]
-    public bool EnableHighPerformanceMode { get; set; }
-
-
-
+    public bool EnableIncreasedUpdateMode { get; set; }
     public bool PrintUpdateTimes { get; set; }
     public bool PrintCivilianOnlyUpdateTimes { get; set; }
     public bool PrintCivilianUpdateTimes { get; set; }
     public bool YieldAfterEveryPedExtUpdate { get; set; }
-
-
-
     public int CivilianUpdateBatch { get; set; }
     public int GangUpdateBatch { get; set; }
     public int EMTsUpdateBatch { get; set; }
@@ -35,7 +29,6 @@ public class PerformanceSettings : ISettingsDefaultable
     public int OtherUpdateIntervalMedium { get; set; }
     public int OtherUpdateIntervalFar { get; set; }
     public int OtherUpdateIntervalVeryFar { get; set; }
-
     public bool CopGetPedToAttackDisable { get; set; }
     public bool CopDisableFootChaseFiber { get; set; }
     [OnDeserialized()]
@@ -49,7 +42,7 @@ public class PerformanceSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
-        EnableHighPerformanceMode = false;
+        EnableIncreasedUpdateMode = false;
 
         PrintUpdateTimes = false;
         PrintCivilianUpdateTimes = false;
@@ -67,7 +60,6 @@ public class PerformanceSettings : ISettingsDefaultable
         CopUpdateIntervalMedium = 250;
         CopUpdateIntervalFar = 750;
         CopUpdateIntervalVeryFar = 2000;
-
 
         OtherUpdateIntervalWanted = 500;
         OtherUpdateIntervalClose = 500;//250;

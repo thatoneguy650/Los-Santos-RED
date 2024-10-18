@@ -3,7 +3,7 @@ using System.Security.Policy;
 
 public class DebugSettings : ISettingsDefaultable
 {
-
+    public int SpawnCarsTestLimit { get; set; }
     public float DebugLastX { get; set; }
     public float DebugLastY { get; set; }
     public float DebugLastZ { get; set; }
@@ -150,26 +150,7 @@ public class DebugSettings : ISettingsDefaultable
     public float BarberRotationYaw { get; set; }
 
 
-    //public float BlendInIdleDrink { get;  set; }
-    //public float BlendOutIdleDrink { get;  set; }
-    //public float BlendInBaseDrink { get;  set; }
-    //public float BlendOutBaseDrink { get;  set; }
-    //public float DrinkAnimBaseEndingPercentage { get; set; }
 
-
-
-
-    //public float BlendInIdleEat { get; set; }
-    //public float BlendOutIdleEat { get; set; }
-    //public float BlendInBaseEat { get; set; }
-    //public float BlendOutBaseEat { get; set; }
-    //public float EatAnimBaseEndingPercentage { get; set; }
-
-
-
-    //public float ObscuredX { get; set; }
-    //public float ObscuredY { get; set; }
-    //public float ObscuredZ { get; set; }
 
 
     [OnDeserialized()]
@@ -184,6 +165,7 @@ public class DebugSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
+        SpawnCarsTestLimit = 90;
         ShowPoliceTaskArrows = false;
         ShowCivilianTaskArrows = false;
         ShowCivilianPerceptionArrows = false;

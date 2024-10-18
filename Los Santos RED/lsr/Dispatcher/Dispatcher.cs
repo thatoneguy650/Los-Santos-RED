@@ -102,19 +102,19 @@ public class Dispatcher
             return;
         }
 
-        int vehicleCount = World.Vehicles.AllVehicleList.Count();
-        int pedCount = World.Pedestrians.PedExts.Count();
-        EntryPoint.WriteToConsole($"VehicleCount:{vehicleCount} PedCount:{pedCount}");
-        if (vehicleCount >= Settings.SettingsManager.WorldSettings.MaxVehiclesBeforeDispatchPause)//75)
-        {
-            EntryPoint.WriteToConsole($"TOO MANY VEHICLES {vehicleCount} NOT DISPATCHING MAX {Settings.SettingsManager.WorldSettings.MaxVehiclesBeforeDispatchPause}");
-            return;
-        }
-        if (pedCount >= Settings.SettingsManager.WorldSettings.MaxPedsBeforeDispatchPause)// 75)
-        {
-            EntryPoint.WriteToConsole($"TOO MANY PEDESTRIANS {pedCount} NOT DISPATCHING MAX {Settings.SettingsManager.WorldSettings.MaxPedsBeforeDispatchPause}");
-            return;
-        }
+        //int vehicleCount = World.Vehicles.AllVehicleList.Count();
+        //int pedCount = World.Pedestrians.PedExts.Count();
+        //EntryPoint.WriteToConsole($"VehicleCount:{vehicleCount} PedCount:{pedCount}");
+        //if (vehicleCount >= Settings.SettingsManager.WorldSettings.MaxVehiclesBeforeDispatchPause)//75)
+        //{
+        //    EntryPoint.WriteToConsole($"TOO MANY VEHICLES {vehicleCount} NOT DISPATCHING MAX {Settings.SettingsManager.WorldSettings.MaxVehiclesBeforeDispatchPause}");
+        //    return;
+        //}
+        //if (pedCount >= Settings.SettingsManager.WorldSettings.MaxPedsBeforeDispatchPause)// 75)
+        //{
+        //    EntryPoint.WriteToConsole($"TOO MANY PEDESTRIANS {pedCount} NOT DISPATCHING MAX {Settings.SettingsManager.WorldSettings.MaxPedsBeforeDispatchPause}");
+        //    return;
+        //}
         if (LEDispatcher.Dispatch())
         {
             GameFiber.Yield();

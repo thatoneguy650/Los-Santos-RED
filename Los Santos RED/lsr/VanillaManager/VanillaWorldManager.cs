@@ -106,20 +106,20 @@ public class VanillaWorldManager
         TerminateAudio();
 
 
-        if (Settings.SettingsManager.VanillaSettings.TerminateVanillaCarRaces)
-        {
-            if (isVanillaCarRaceActive)
-            {
-                TerminateVanillaCarRace();
-            }
-        }
-        else
-        {
-            if (!isVanillaCarRaceActive)
-            {
-                ActivateVanillaCarRace();
-            }
-        }
+        //if (Settings.SettingsManager.VanillaSettings.TerminateVanillaCarRaces)
+        //{
+        //    if (isVanillaCarRaceActive)
+        //    {
+        //        TerminateVanillaCarRace();
+        //    }
+        //}
+        //else
+        //{
+        //    if (!isVanillaCarRaceActive)
+        //    {
+        //        ActivateVanillaCarRace();
+        //    }
+        //}
 
 
 

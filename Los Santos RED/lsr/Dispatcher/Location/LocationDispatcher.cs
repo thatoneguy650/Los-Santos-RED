@@ -1,9 +1,11 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using Mod;
 using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -62,7 +64,7 @@ public class LocationDispatcher
             {
                 foreach (ConditionalGroup cg in ps.PossibleGroupSpawns)
                 {
-                    //EntryPoint.WriteToConsole($"ATTEMPTING GROUP SPAWN AT {ps.Name}");
+                    EntryPoint.WriteToConsole($"ATTEMPTING GROUP SPAWN AT {ps.Name}");
                     cg.AttemptSpawn(Player, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, ps);
                     GameFiber.Yield();
                 }
@@ -72,7 +74,7 @@ public class LocationDispatcher
             {
                 foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
                 {
-                    //EntryPoint.WriteToConsole($"ATTEMPTING PED SPAWN AT {ps.Name}");
+                    EntryPoint.WriteToConsole($"ATTEMPTING PED SPAWN AT {ps.Name}");
                     cl.AttemptSpawn(Player, true, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups,ShopMenus, WeatherReporter, Time, ModItems, ps);
                     GameFiber.Yield();
                 }
@@ -141,7 +143,7 @@ public class LocationDispatcher
         {
             return;
         }
-        List<DispatchableVehicle> priorityList = ps.AssignedAgency.Vehicles.OrderByDescending(x => x.AmbientSpawnChance).ToList();
+        List<DispatchableVehicle> priorityList = ps.AssignedAgency.Vehicles.Where(x=> x.ModelName == "dune5" || x.ModelName == "marshall" || x.ModelName == "jester2" || x.ModelName == "blazer5" || x.ModelName == "tampa3").OrderByDescending(x => x.AmbientSpawnChance).ToList();
         if(!priorityList.Any())
         {
             return;
@@ -150,7 +152,7 @@ public class LocationDispatcher
         {
             EntryPoint.WriteToConsole($"FORCING VEHICLE SPAWN AT {ps.Name}");
 
-            DispatchableVehicle selected = priorityList.OrderByDescending(x => x.AmbientSpawnChance).FirstOrDefault();
+            DispatchableVehicle selected = priorityList.PickRandom();
             if(selected == null)
             {
                 return;
@@ -168,22 +170,27 @@ public class LocationDispatcher
         {
             return;
         }
-        List<DispatchableVehicle> priorityList = agency.Vehicles.OrderByDescending(x => x.AmbientSpawnChance).ToList();
+        List<DispatchableVehicle> priorityList = agency.Vehicles.Where(x => x.ModelName == "dune5" || x.ModelName == "marshall" || x.ModelName == "jester2" || x.ModelName == "blazer5" || x.ModelName == "tampa3").OrderByDescending(x => x.AmbientSpawnChance).ToList();
+        //List<DispatchableVehicle> priorityList = agency.Vehicles.OrderByDescending(x => x.AmbientSpawnChance).ToList();
         if (!priorityList.Any())
         {
             return;
         }
+        int spawns = 0;
         foreach (ConditionalLocation cl in conditionalLocations)
         {
-            DispatchableVehicle selected = priorityList.OrderByDescending(x => x.AmbientSpawnChance).FirstOrDefault();
+            DispatchableVehicle selected = priorityList.PickRandom(); //priorityList.OrderByDescending(x => x.AmbientSpawnChance).FirstOrDefault();
             if (selected == null)
             {
                 return;
             }
             cl.SetVehicle(selected);
-            cl.ForceSpawn(Player, false, true, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, agency.ID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, null);
+
+            cl.ForceSpawn(Player, true, true, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, agency.ID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, null);
             GameFiber.Yield();
-            priorityList.Remove(selected);
+            //priorityList.Remove(selected);
+            spawns++;
+            EntryPoint.WriteToConsole($"EXECUTE SPAWN {spawns}");
         }
     }
 }

@@ -46,7 +46,7 @@ public class LEConditionalLocation : ConditionalLocation
     {
         try
         {
-            EntryPoint.WriteToConsole("ATTEMPT LE SPAWN");
+            EntryPoint.WriteToConsole("ATTEMPT LE SPAWN CONDITIONAL LOCATION");
             LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddOptionalPassengerPercentage), World, ModItems, false);
             spawnTask.AllowAnySpawn = true;
             spawnTask.AllowBuddySpawn = false;

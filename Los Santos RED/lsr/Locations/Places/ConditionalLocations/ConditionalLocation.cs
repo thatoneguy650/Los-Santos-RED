@@ -163,6 +163,9 @@ public class ConditionalLocation
         GameLocation = gameLocation;
         GenerateSpawnLocation();
         GetDispatchableGenerator();
+
+
+       // GenerateSpawnTypes();
         RunSpawnTask();
     }
     private bool IsValidTimeToSpawn()

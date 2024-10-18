@@ -54,18 +54,6 @@ public class DebugHelperSubMenu : DebugSubMenu
         HelperMenuItem.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Various helper items";
 
-        UIMenuItem SetBigMap = new UIMenuItem("Toggle Big MiniMap", "Toggles the big GTAO style mini map");
-        SetBigMap.Activated += (menu, item) =>
-        {
-            IsBigMapActive = !IsBigMapActive;
-            NativeFunction.Natives.SET_BIGMAP_ACTIVE(IsBigMapActive, false);
-            //Game.DisplaySubtitle($"IsBigMapActive:{IsBigMapActive}"); 
-            menu.Visible = false;
-        };
-        HelperMenuItem.AddItem(SetBigMap);
-
-
-
         UIMenuItem setSSMode = new UIMenuItem("Toggle Screenshot", "Toggles Screenshot mode");
         setSSMode.Activated += (menu, item) =>
         {
@@ -217,7 +205,21 @@ public class DebugHelperSubMenu : DebugSubMenu
         HelperMenuItem.AddItem(PrintInteriors);
 
 
+        UIMenuItem PrintZoneStuffMenu = new UIMenuItem("Print Zone Class", "Print some select class stuff to the log. Zone");
+        PrintZoneStuffMenu.Activated += (menu, item) =>
+        {
+            PrintZoneClasses();
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(PrintZoneStuffMenu);
 
+        UIMenuItem PrintStreetStuffMenu = new UIMenuItem("Print Street Class", "Print some select class stuff to the log. Street");
+        PrintStreetStuffMenu.Activated += (menu, item) =>
+        {
+            PrintStreetClasses();
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(PrintStreetStuffMenu);
 
 
         UIMenuItem PrintLocBAseClassStuffMenu = new UIMenuItem("Print Location Class Base", "Print some select class stuff to the log. Locations Base.");
@@ -397,7 +399,8 @@ public class DebugHelperSubMenu : DebugSubMenu
             {
                 continue;
             }
-            if(!vehicleExt.Vehicle.HasSiren)
+            vehicleExt.Vehicle.IsEngineOn = setOn;
+            if (!vehicleExt.Vehicle.HasSiren)
             {
                 continue;
             }
@@ -421,33 +424,52 @@ public class DebugHelperSubMenu : DebugSubMenu
         {
             return;
         }
-        if(Player.Character.DistanceTo(new Vector3(638.7681f, 635.7558f, 128.9111f))>= 100f)
+        List<ConditionalLocation> list = new List<ConditionalLocation>();
+        if (Player.Character.DistanceTo(new Vector3(638.7681f, 635.7558f, 128.9111f)) <= 100f)
         {
-            return;
-        }
-        List<ConditionalLocation> list = new List<ConditionalLocation>()
-        {
-            new LEConditionalLocation(new Vector3(638.7681f, 635.7558f, 128.9111f), 248.3244f, 100f),
-            new LEConditionalLocation(new Vector3(637.551f, 632.4586f, 128.9111f), 249.2319f, 100f),
-            new LEConditionalLocation(new Vector3(636.3085f, 629.0381f, 128.9111f), 247.6597f, 100f),
-            new LEConditionalLocation(new Vector3(634.639f, 626.0833f, 128.9111f), 249.1287f, 100f),
-            new LEConditionalLocation(new Vector3(633.4773f, 622.7151f, 128.9111f), 247.7914f, 100f),
-            new LEConditionalLocation(new Vector3(632.2473f, 619.6294f, 128.9111f), 247.3871f, 100f),
-            new LEConditionalLocation(new Vector3(630.8295f, 616.2911f, 128.9111f), 246.7872f, 100f),
-            new LEConditionalLocation(new Vector3(629.7604f, 612.856f, 128.9111f), 249.0674f, 100f),
-            new LEConditionalLocation(new Vector3(628.8015f, 609.6461f, 128.9111f), 248.2168f, 100f),
-            new LEConditionalLocation(new Vector3(627.4628f, 606.449f, 128.9111f), 245.4982f, 100f),
-            new LEConditionalLocation(new Vector3(622.7714f, 637.9483f, 128.9111f), 248.426f, 100f),
-            new LEConditionalLocation(new Vector3(621.7044f, 634.6458f, 128.9111f), 248.9079f, 100f),
-            new LEConditionalLocation(new Vector3(620.6009f, 631.4076f, 128.9111f), 249.7423f, 100f),
-            new LEConditionalLocation(new Vector3(619.4406f, 627.96f, 128.9111f), 247.8293f, 100f),
-            new LEConditionalLocation(new Vector3(618.3074f, 624.7338f, 128.9111f), 247.3478f, 100f),
-            new LEConditionalLocation(new Vector3(617.0331f, 621.3472f, 128.9111f), 248.2468f, 100f),
-            new LEConditionalLocation(new Vector3(615.9576f, 618.2318f, 128.9111f), 243.997f, 100f),
-            new LEConditionalLocation(new Vector3(614.4206f, 614.8268f, 128.9111f), 246.6588f, 100f),
-            new LEConditionalLocation(new Vector3(613.1279f, 611.5945f, 128.9111f), 248.3828f, 100f),
+            list = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(638.7681f, 635.7558f, 128.9111f), 248.3244f, 100f),
+                new LEConditionalLocation(new Vector3(637.551f, 632.4586f, 128.9111f), 249.2319f, 100f),
+                new LEConditionalLocation(new Vector3(636.3085f, 629.0381f, 128.9111f), 247.6597f, 100f),
+                new LEConditionalLocation(new Vector3(634.639f, 626.0833f, 128.9111f), 249.1287f, 100f),
+                new LEConditionalLocation(new Vector3(633.4773f, 622.7151f, 128.9111f), 247.7914f, 100f),
+                new LEConditionalLocation(new Vector3(632.2473f, 619.6294f, 128.9111f), 247.3871f, 100f),
+                new LEConditionalLocation(new Vector3(630.8295f, 616.2911f, 128.9111f), 246.7872f, 100f),
+                new LEConditionalLocation(new Vector3(629.7604f, 612.856f, 128.9111f), 249.0674f, 100f),
+                new LEConditionalLocation(new Vector3(628.8015f, 609.6461f, 128.9111f), 248.2168f, 100f),
+                new LEConditionalLocation(new Vector3(627.4628f, 606.449f, 128.9111f), 245.4982f, 100f),
+                new LEConditionalLocation(new Vector3(622.7714f, 637.9483f, 128.9111f), 248.426f, 100f),
+                new LEConditionalLocation(new Vector3(621.7044f, 634.6458f, 128.9111f), 248.9079f, 100f),
+                new LEConditionalLocation(new Vector3(620.6009f, 631.4076f, 128.9111f), 249.7423f, 100f),
+                new LEConditionalLocation(new Vector3(619.4406f, 627.96f, 128.9111f), 247.8293f, 100f),
+                new LEConditionalLocation(new Vector3(618.3074f, 624.7338f, 128.9111f), 247.3478f, 100f),
+                new LEConditionalLocation(new Vector3(617.0331f, 621.3472f, 128.9111f), 248.2468f, 100f),
+                new LEConditionalLocation(new Vector3(615.9576f, 618.2318f, 128.9111f), 243.997f, 100f),
+                new LEConditionalLocation(new Vector3(614.4206f, 614.8268f, 128.9111f), 246.6588f, 100f),
+                new LEConditionalLocation(new Vector3(613.1279f, 611.5945f, 128.9111f), 248.3828f, 100f),
 
-        };
+            };
+        }
+        else
+        {
+            Vector3 MainPos = Player.Character.GetOffsetPositionFront(5f);
+            float mainHeading = Player.Character.Heading - 180f;
+            int row = 0;
+            int col = 0;
+            for (int i = 0; i < Settings.SettingsManager.DebugSettings.SpawnCarsTestLimit; i++) 
+            {
+                Vector3 NewPos = MainPos;
+                if(row == 7)
+                {
+                    row = 0;
+                    col++;
+                }
+                list.Add(new LEConditionalLocation(new Vector3(MainPos.X + (7f * col), MainPos.Y + (3f * row), MainPos.Z), mainHeading, 100f));
+                row++;
+            }
+        }
+
         World.Vehicles.ClearSpawned(true);
         bool preSettings = Settings.SettingsManager.WorldSettings.CheckAreaBeforeVehicleSpawn;
         Settings.SettingsManager.WorldSettings.CheckAreaBeforeVehicleSpawn = false;
@@ -1232,6 +1254,27 @@ public class DebugHelperSubMenu : DebugSubMenu
             WriteToClassCreator($"}};", 0, "GangDens");
         }
     }
+    
+    private void PrintZoneClasses()
+    {
+        foreach (Zone dvg in ModDataFileManager.Zones.ZoneList)
+        {
+            WriteToClassCreator($"new Zone() {{", 0, "Zones");
+            PrintClass(dvg, null, "Zones");
+            WriteToClassCreator($"}},", 0, "Zones");
+        }
+    }
+    private void PrintStreetClasses()
+    {
+        foreach (Street dvg in ModDataFileManager.Streets.StreetsList)
+        {
+            WriteToClassCreator($"new Street() {{", 0, "Streets");
+            PrintClass(dvg, null, "Streets");
+            WriteToClassCreator($"}},", 0, "Streets");
+        }
+
+    }
+    
     private void PrintLocationClasses(List<string> AllowedProperties)
     {
         File.WriteAllText(@"Plugins\\LosSantosRED\\Locations.txt", string.Empty);
@@ -1248,6 +1291,9 @@ public class DebugHelperSubMenu : DebugSubMenu
             }
         }
     }
+
+
+
 
 
     private void PrintInteriorClasses(List<string> AllowedProperties)

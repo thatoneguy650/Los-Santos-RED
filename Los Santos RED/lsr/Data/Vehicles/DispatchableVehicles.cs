@@ -140,6 +140,13 @@ public class DispatchableVehicles : IDispatchableVehicles
             DefaultConfig_FullExpandedJurisdiction();
             DefaultConfig();
         }
+
+//#if DEBUG
+//        foreach (DispatchableVehicleGroup dispatchableVehicleGroup in VehicleGroupLookup)
+//        {
+//            dispatchableVehicleGroup.DispatchableVehicles.RemoveAll(x => x.ModelName == "jester2" || x.ModelName == "dune5" || x.ModelName == "blazer5");
+//        }
+//#endif
     }
 
     private void DefaultConfig_FullExpandedJurisdiction()

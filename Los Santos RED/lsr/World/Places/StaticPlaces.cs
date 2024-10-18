@@ -193,5 +193,12 @@ public class StaticPlaces
             basicLocation.Reset();
         }
     }
+    public void DebugDeactivateAllLocations()
+    {
+        foreach (GameLocation loc in Places.ActiveLocations.ToList())
+        {
+            loc.Deactivate(true);
+        }
+    }
 }
 

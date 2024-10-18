@@ -6,37 +6,16 @@ public class PoliceSettings : ISettingsDefaultable
 
     [Description("Attach a blip to any ambient police peds.")]
     public bool AttachBlipsToAmbientPeds { get; set; }
-
-
-
-
-
-
-    //[Description("Enable or disable the non-vanilla wanted system. (Not recommended to disable)")]
-    //public bool UseFakeWantedLevelSystem { get; set; }
     [Description("If enabled, only LSR will be able to set the wanted level.")]
     public bool TakeExclusiveControlOverWantedLevel { get; set; }
     [Description("If enabled, one star wanted levels not set by the mod will be ignored.")]
     public bool TakeExclusiveControlOverWantedLevelOneStarAndBelow { get; set; }
-
-
-
-
-
-
-
-
     [Description("Minimum wanted level allowed while lethal force is authorized.")]
     public int DeadlyChaseMinimumWantedLevel { get; set; }
-
     [Description("Maximum wanted level that the police can still chase without lethal force.")]
     public int UnarmedChaseMaxWantedLevel { get; set; }
-
-
     [Description("Maximum wanted level allowed. Default/Recommended = 6. Maximum = 10.")]
     public int MaxWantedLevel { get; set; }
-
-
     [Description("Enable or Disable accuracy override")]
     public bool OverrideAccuracy { get; set; }
     [Description("Enable or disable health override")]
@@ -61,8 +40,6 @@ public class PoliceSettings : ISettingsDefaultable
     public float AlwaysRecognizeDistance { get; set; }
     [Description("Time (in ms) that you will still be considered seen after police have lost sight.")]
     public int RecentlySeenTime { get; set; }
-
-
     [Description("Additional Time (in ms) that you will still be considered seen after police have lost sight if any are in an aircraft.")]
     public int RecentlySeenTimeAdditionalAircraft { get; set; }
 

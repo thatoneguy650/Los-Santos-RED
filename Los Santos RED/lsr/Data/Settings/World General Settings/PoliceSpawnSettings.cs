@@ -15,8 +15,6 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public float AddOptionalPassengerPercentage { get; set; }
     [Description("Enable or disable ambient spawns around police stations.")]
     public bool AllowLocationSpawning { get; set; }
-    //[Description("Maximum wanted level to spawn ambient peds and vehicles around the station.")]
-    //public int StationSpawning_MaxWanted { get; set; }
     [Description("Ped limit on how many location police can spawn.")]
     public int LocationSpawnedPedLimit { get; set; }
     [Description("Vehicle limit on how many location police can spawn.")]
@@ -302,6 +300,30 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public bool AllowHelicopterPassengerRespawn { get; set; }
     public int HelicopterPassengerRespawnLimit { get; set; }
 
+
+
+    public int PoliceDispatchDelay_Wilderness { get; set; }
+    public int PoliceDispatchDelay_Rural { get; set; }
+    public int PoliceDispatchDelay_Suburb { get; set; }
+    public int PoliceDispatchDelay_Industrial { get; set; }
+    public int PoliceDispatchDelay_Default { get; set; }
+    public int PoliceDispatchDelay_Downtown { get; set; }
+
+
+    public bool UseScalingLogicForSpawnWhenUnseen { get; set; }
+
+    public uint HeliSpawnDelay_Default { get; set; }
+    public uint HeliSpawnDelay_Wanted1 { get; set; }
+    public uint HeliSpawnDelay_Wanted2 { get; set; }
+    public uint HeliSpawnDelay_Wanted3 { get; set; }
+    public uint HeliSpawnDelay_Wanted4 { get; set; }
+    public uint HeliSpawnDelay_Wanted5 { get; set; }
+    public uint HeliSpawnDelay_Wanted6 { get; set; }
+    public uint HeliSpawnDelay_Wanted7 { get; set; }
+    public uint HeliSpawnDelay_Wanted8 { get; set; }
+    public uint HeliSpawnDelay_Wanted9 { get; set; }
+    public uint HeliSpawnDelay_Wanted10 { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -321,22 +343,22 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         ManageDispatching = true;
 
 
-        PedSpawnLimit_Default = 5;
+        PedSpawnLimit_Default = 8;// 5;
         PedSpawnLimit_Default_Wilderness = 2;
         PedSpawnLimit_Default_Rural = 3;
         PedSpawnLimit_Default_Suburb = 4;
         PedSpawnLimit_Default_Industrial = 5;
-        PedSpawnLimit_Default_Downtown = 6;
+        PedSpawnLimit_Default_Downtown = 9;// 6;
 
-        LocationSpawnedPedLimit = 6;
-        LocationSpawnedVehicleLimit = 6;
+        LocationSpawnedPedLimit = 8;// 6;
+        LocationSpawnedVehicleLimit = 8;// 6;
 
 
         PedSpawnLimit_Investigation = 7;
-        PedSpawnLimit_Wanted1 = 7;// 8;
-        PedSpawnLimit_Wanted2 = 8;// 9;// 9;
-        PedSpawnLimit_Wanted3 = 10;// 12;// 14;
-        PedSpawnLimit_Wanted4 = 13;// 16;// 18;
+        PedSpawnLimit_Wanted1 = 8;// 7;// 8;
+        PedSpawnLimit_Wanted2 = 9;// 8;// 9;// 9;
+        PedSpawnLimit_Wanted3 = 12;// 10;// 12;// 14;
+        PedSpawnLimit_Wanted4 = 14;// 13;// 16;// 18;
         PedSpawnLimit_Wanted5 = 15;// 20;// 22;
         PedSpawnLimit_Wanted6 = 17;// 22;// 24;
 
@@ -347,19 +369,19 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
 
 
-        VehicleSpawnLimit_Default = 5;
+        VehicleSpawnLimit_Default = 7;// 5;
         VehicleSpawnLimit_Default_Wilderness = 2;
         VehicleSpawnLimit_Default_Rural = 3;
         VehicleSpawnLimit_Default_Suburb = 3;
         VehicleSpawnLimit_Default_Industrial = 4;
-        VehicleSpawnLimit_Default_Downtown = 5;
+        VehicleSpawnLimit_Default_Downtown = 7;// 5;
 
         VehicleSpawnLimit_Investigation = 6;
-        VehicleSpawnLimit_Wanted1 = 7;// 8;
-        VehicleSpawnLimit_Wanted2 = 7;// 8;// 9;
-        VehicleSpawnLimit_Wanted3 = 9;// 10;// 13;
-        VehicleSpawnLimit_Wanted4 = 12;// 14;// 15;
-        VehicleSpawnLimit_Wanted5 = 13;// 15;// 16;
+        VehicleSpawnLimit_Wanted1 = 8;// 7;// 8;
+        VehicleSpawnLimit_Wanted2 = 9;// 7;// 8;// 9;
+        VehicleSpawnLimit_Wanted3 = 10;// 9;// 10;// 13;
+        VehicleSpawnLimit_Wanted4 = 14;// 12;// 14;// 15;
+        VehicleSpawnLimit_Wanted5 = 14;// 13;// 15;// 16;
         VehicleSpawnLimit_Wanted6 = 15;// 16;// 18;
 
         VehicleSpawnLimit_Wanted7 = 15;// 18;
@@ -388,7 +410,7 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         HeliSpawnLimit_Wanted3 = 1;
         HeliSpawnLimit_Wanted4 = 1;
         HeliSpawnLimit_Wanted5 = 2;
-        HeliSpawnLimit_Wanted6 = 3;// 2;
+        HeliSpawnLimit_Wanted6 = 2;// 3;// 2;
 
         HeliSpawnLimit_Wanted7 = 3;//2;
         HeliSpawnLimit_Wanted8 = 3;//2;
@@ -503,5 +525,27 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
         AllowHelicopterPassengerRespawn = true;
         HelicopterPassengerRespawnLimit = 2;
+
+
+
+        PoliceDispatchDelay_Wilderness = 7000;
+        PoliceDispatchDelay_Rural = 5000;
+        PoliceDispatchDelay_Suburb = 3000;
+        PoliceDispatchDelay_Industrial = 3000;
+        PoliceDispatchDelay_Default = 1000;
+        PoliceDispatchDelay_Downtown = 0;
+        UseScalingLogicForSpawnWhenUnseen = true;
+
+        HeliSpawnDelay_Default = 10000;
+        HeliSpawnDelay_Wanted1 = 125000;
+        HeliSpawnDelay_Wanted2 = 95000;
+        HeliSpawnDelay_Wanted3 = 65000;
+        HeliSpawnDelay_Wanted4 = 45000;
+        HeliSpawnDelay_Wanted5 = 45000;
+        HeliSpawnDelay_Wanted6 = 15000;
+        HeliSpawnDelay_Wanted7 = 15000;
+        HeliSpawnDelay_Wanted8 = 15000;
+        HeliSpawnDelay_Wanted9 = 15000;
+        HeliSpawnDelay_Wanted10 = 15000;
     }
 }

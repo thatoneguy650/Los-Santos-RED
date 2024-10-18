@@ -644,6 +644,7 @@
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugInventorySubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugLCYMAPSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugLocationSubMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugMapSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugMoneySubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugMovementSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugOtherSubMenu.cs" />

@@ -567,7 +567,9 @@ public class FootChase
             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
             NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
         }
-       // EntryPoint.WriteToConsole($"Cop {Ped.Pedestrian.Handle} Doing Task Go TO");
+        // EntryPoint.WriteToConsole($"Cop {Ped.Pedestrian.Handle} Doing Task Go TO");
+
+        
     }
 }
 

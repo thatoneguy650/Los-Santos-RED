@@ -245,14 +245,6 @@ namespace Mod
             {
                 CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted4Multiplier;
             }
-            else if (TotalWantedLevel == 3)
-            {
-                CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted3Multiplier;
-            }
-            else if (TotalWantedLevel == 2)
-            {
-                CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted2Multiplier;
-            }
             if (CurrentSpawnMultiplier != 1.0f && !isSettingDensity)
             {
                 isSettingDensity = true;

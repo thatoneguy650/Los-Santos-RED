@@ -198,7 +198,8 @@ public class LESpawnTask : SpawnTask
     {
         try
         {
-            if(string.IsNullOrEmpty(PersonType.ModelName))
+            EntryPoint.WriteToConsole("LE SPAWN TASK ATTEMPT PERSON SPAWN");
+            if (string.IsNullOrEmpty(PersonType.ModelName))
             {
                 return null;
             }

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 public class Streets : IStreets
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Streets.xml";
-    private List<Street> StreetsList;
+    public List<Street> StreetsList { get; private set; }
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
@@ -34,6 +34,7 @@ public class Streets : IStreets
         {
             EntryPoint.WriteToConsole($"No Streets config found, creating default", 0);
             DefaultConfig_LibertyCity();
+            DefaultConfig_SunshineDream();
             DefaultConfig();
         }
     }
@@ -548,6 +549,608 @@ public class Streets : IStreets
         {
             new Street("Alton Road", 40f, "MPH"),
             new Street("63rd Street",50f,"MPH"),
+
+            new Street() {
+            Name = "Alton Rd",
+
+            },
+            new Street() {
+            Name = "63rd Street",
+            SpeedLimit = 35f,
+            DisplayName = "63rd St",
+            },
+            new Street() {
+            Name = "41st Street",
+            SpeedLimit = 35f,
+            DisplayName = "41st St",
+            },
+            new Street() {
+            Name = "23rd Street",
+            SpeedLimit = 35f,
+            DisplayName = "23rd St",
+            },
+            new Street() {
+            Name = "21st Street",
+            SpeedLimit = 35f,
+            DisplayName = "21st St",
+            },
+            new Street() {
+            Name = "17th Street",
+            SpeedLimit = 30f,
+            DisplayName = "17th St",
+            },
+            new Street() {
+            Name = "16th Street",
+            SpeedLimit = 30f,
+            DisplayName = "16th St",
+            },
+            new Street() {
+            Name = "15th Street",
+            SpeedLimit = 30f,
+            DisplayName = "15th St",
+            },
+            new Street() {
+            Name = "14th Street",
+            SpeedLimit = 30f,
+            DisplayName = "14th St",
+            },
+            new Street() {
+            Name = "14th Place",
+            SpeedLimit = 30f,
+            DisplayName = "14th Pl",
+            },
+            new Street() {
+            Name = "13th Street",
+            SpeedLimit = 30f,
+            DisplayName = "13th St",
+            },
+            new Street() {
+            Name = "12th Street",
+            SpeedLimit = 30f,
+            DisplayName = "12th St",
+            },
+            new Street() {
+            Name = "11th Street",
+            SpeedLimit = 30f,
+            DisplayName = "11th St",
+            },
+            new Street() {
+            Name = "10th Street",
+            SpeedLimit = 30f,
+            DisplayName = "10th St",
+            },
+            new Street() {
+            Name = "9th Street",
+            SpeedLimit = 30f,
+            DisplayName = "9th St",
+            },
+            new Street() {
+            Name = "8th Street",
+            SpeedLimit = 30f,
+            DisplayName = "8th St",
+            },
+            new Street() {
+            Name = "7th Street",
+            SpeedLimit = 30f,
+            DisplayName = "7th St",
+            },
+            new Street() {
+            Name = "6th Street",
+            SpeedLimit = 30f,
+            DisplayName = "6th St",
+            },
+            new Street() {
+            Name = "5th Street",
+            SpeedLimit = 30f,
+            DisplayName = "5th St",
+            },
+            new Street() {
+            Name = "4th Street",
+            SpeedLimit = 30f,
+            DisplayName = "4th St",
+            },
+            new Street() {
+            Name = "3rd Street",
+            SpeedLimit = 30f,
+            DisplayName = "3rd St",
+            },
+            new Street() {
+            Name = "2nd Street",
+            SpeedLimit = 30f,
+            DisplayName = "2nd St",
+            },
+            new Street() {
+            Name = "1st Street",
+            SpeedLimit = 30f,
+            DisplayName = "1st St",
+            },
+            new Street() {
+            Name = "South Point Drive",
+            SpeedLimit = 30f,
+            DisplayName = "South Point Dr",
+            },
+            new Street() {
+            Name = "North Miami Drive",
+            SpeedLimit = 30f,
+            DisplayName = "N Miami Dr",
+            },
+            new Street() {
+            Name = "Ocean Drive",
+            SpeedLimit = 30f,
+            DisplayName = "Ocean Dr",
+            },
+            new Street() {
+            Name = "Washington Ave",
+            SpeedLimit = 35f,
+
+            },
+            new Street() {
+            Name = "Michigan Ave",
+            SpeedLimit = 35f,
+
+            },
+            new Street() {
+            Name = "6th Dilido Terrace",
+            SpeedLimit = 25f,
+            DisplayName = "6th Dilido Tr",
+            },
+            new Street() {
+            Name = "5th Dilido Terrace",
+            SpeedLimit = 25f,
+            DisplayName = "5th Dilido Tr",
+            },
+            new Street() {
+            Name = "4th Dilido Terrace",
+            SpeedLimit = 25f,
+            DisplayName = "4th Dilido Tr",
+            },
+            new Street() {
+            Name = "3rd Dilido Terrace",
+            SpeedLimit = 25f,
+            DisplayName = "3rd Dilido Tr",
+            },
+            new Street() {
+            Name = "2nd Dilido Terrace",
+            SpeedLimit = 25f,
+            DisplayName = "2nd Dilido Tr",
+            },
+            new Street() {
+            Name = "1st Dilido Terrace",
+            SpeedLimit = 25f,
+            DisplayName = "1st Dilido Tr",
+            },
+            new Street() {
+            Name = "East Dilido Drive",
+            SpeedLimit = 25f,
+            DisplayName = "E Dilido Dr",
+            },
+            new Street() {
+            Name = "West Dilido Drive",
+            SpeedLimit = 25f,
+            DisplayName = "W Dilido Dr",
+            },
+            new Street() {
+            Name = "2nd San Marino Terrace",
+            SpeedLimit = 25f,
+            DisplayName = "2nd San Marino Tr",
+            },
+            new Street() {
+            Name = "1st San Marino Terrace",
+            SpeedLimit = 25f,
+            DisplayName = "1st San Marino Tr",
+            },
+            new Street() {
+            Name = "East San Marino Drive",
+            SpeedLimit = 25f,
+            DisplayName = "E San Marino Dr",
+            },
+            new Street() {
+            Name = "West San Marino Drive",
+            SpeedLimit = 25f,
+            DisplayName = "W San Marino Dr",
+            },
+            new Street() {
+            Name = "Española Way",
+            SpeedLimit = 30f,
+            DisplayName = "Española Wy",
+            },
+            new Street() {
+            Name = "Lenox Ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "Asia Way",
+            SpeedLimit = 25f,
+            DisplayName = "Asia Wy",
+            },
+            new Street() {
+            Name = "Australia Way",
+            SpeedLimit = 25f,
+            DisplayName = "Australia Wy",
+            },
+            new Street() {
+            Name = "Bridge Road",
+            SpeedLimit = 30f,
+            DisplayName = "Bridge Rd",
+            },
+            new Street() {
+            Name = "Port Boulevard",
+            SpeedLimit = 30f,
+            DisplayName = "Port Blvd",
+            },
+            new Street() {
+            Name = "Biscayne Boulevard",
+            DisplayName = "Biscayne Blvd",
+            },
+            new Street() {
+            Name = "Lincoln Road",
+            SpeedLimit = 30f,
+            DisplayName = "Lincoln Rd",
+            },
+            new Street() {
+            Name = "Pine Tree Drive",
+            SpeedLimit = 30f,
+            DisplayName = "Pine Tree Dr",
+            },
+            new Street() {
+            Name = "Indian Creek Drive",
+            SpeedLimit = 30f,
+            DisplayName = "Indian Creek Dr",
+            },
+            new Street() {
+            Name = "Convention Center Drive",
+            SpeedLimit = 25f,
+            DisplayName = "Convention Center Dr",
+            },
+            new Street() {
+            Name = "North Venetian Way",
+            SpeedLimit = 30f,
+            DisplayName = "N Venetian Wy",
+            },
+            new Street() {
+            Name = "South Venetian Way",
+            SpeedLimit = 30f,
+            DisplayName = "S Venetian Wy",
+            },
+            new Street() {
+            Name = "Venetian Causway",
+            IsHighway = true,
+            DisplayName = "Venetian Cswy",
+            },
+            new Street() {
+            Name = "Venetian Way",
+            IsHighway = true,
+            DisplayName = "Venetian Wy",
+            },
+            new Street() {
+            Name = "MacArthur Causeway",
+            IsHighway = true,
+            DisplayName = "Venetian Cswy",
+            },
+            new Street() {
+            Name = "West Ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "Collins Ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "Meridian Ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "Prairie Ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "East Flagler St",
+            SpeedLimit = 30f,
+            DisplayName = "E Flagler St",
+            },
+            new Street() {
+            Name = "West Flagler St",
+            SpeedLimit = 30f,
+            DisplayName = "W Flagler St",
+            },
+            new Street() {
+            Name = "Brickell Ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "Coral Way",
+            SpeedLimit = 30f,
+            DisplayName = "Coral Wy",
+            },
+            new Street() {
+            Name = "Hernando St",
+            SpeedLimit = 25f,
+
+            },
+            new Street() {
+            Name = "Biltmore Way",
+            SpeedLimit = 25f,
+            DisplayName = "Biltmore Wy",
+            },
+            new Street() {
+            Name = "De Soto Blvd",
+            SpeedLimit = 25f,
+
+            },
+            new Street() {
+            Name = "Granada Blvd",
+            SpeedLimit = 25f,
+
+            },
+            new Street() {
+            Name = "Alhambra Circle",
+            SpeedLimit = 25f,
+            DisplayName = "Alhambra Cr",
+            },
+            new Street() {
+            Name = "Ferdinand St",
+            SpeedLimit = 25f,
+
+            },
+            new Street() {
+            Name = "Chopin Plaza",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "Grand Ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "Oak Ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "Virginia St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "Mary St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "Tigertail Ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "Matilda St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "Florida Ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "Dolphin East-West Expressway",
+            IsHighway = true,
+            DisplayName = "Dolphin Expwy",
+            },
+            new Street() {
+            Name = "Interstate-95",
+            IsHighway = true,
+            DisplayName = "I-95",
+            },
+            new Street() {
+            Name = "I-95 Northbound",
+            IsHighway = true,
+            DisplayName = "I-95 North",
+            },
+            new Street() {
+            Name = "I-95 Southbound",
+            IsHighway = true,
+            DisplayName = "I-95 South",
+            },
+            new Street() {
+            Name = "Dolphin Expressway Eastbound",
+            IsHighway = true,
+            DisplayName = "Dolphin Expwy East",
+            },
+            new Street() {
+            Name = "Dolphin Expressway Westbound",
+            IsHighway = true,
+            DisplayName = "Dolphin Expwy West",
+            },
+            new Street() {
+            Name = "South Dixie Highway",
+            IsHighway = true,
+            DisplayName = "S Dixie Hwy",
+            },
+            new Street() {
+            Name = "Biscayne Blvd Way",
+            SpeedLimit = 30f,
+            DisplayName = "Biscayne Blvd Wy",
+            },
+            new Street() {
+            Name = "NW 1st St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "NW 3rd St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "NW 6th St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "NW 7th St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "NW 10th St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "NW 12th St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "NW 17th St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "NW 7th Ct",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "NW Miami Ct",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "SW 1st St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "SW 3rd Ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "SW 4th Ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "SW 5th Ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "SW 7th Ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "SW 13th Ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "SW 27th Ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "SW 15th Road",
+            SpeedLimit = 30f,
+            DisplayName = "SW 15th Rd",
+            },
+            new Street() {
+            Name = "NE 1st ave",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "NE 3rd St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "NE 6th St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "NE 8th St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "NE 15th St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "SE 1st St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "SE 2nd St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "SE 3rd St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "SE 4th St",
+            SpeedLimit = 30f,
+
+            },
+            new Street() {
+            Name = "Mercy Way",
+            SpeedLimit = 30f,
+            DisplayName = "Mercy Wy",
+            },
+            new Street() {
+            Name = "Tamiami Trail",
+            SpeedLimit = 30f,
+            DisplayName = "Tamiami Tr",
+            },
+            new Street() {
+            Name = "South Miami Drive",
+            SpeedLimit = 30f,
+            DisplayName = "S Miami Dr",
+            },
+            new Street() {
+            Name = "South Miami Ave",
+            SpeedLimit = 30f,
+            DisplayName = "S Miami Ave",
+            },
+            new Street() {
+            Name = "South Bayshore Drive",
+            SpeedLimit = 30f,
+            DisplayName = "S Bayshore Dr",
+            },
+            new Street() {
+            Name = "North Tamiami Trail",
+            SpeedLimit = 30f,
+            DisplayName = "N Tamiami Tr",
+            },
+            new Street() {
+            Name = "South Tamiami Trail",
+            SpeedLimit = 30f,
+            DisplayName = "S Tamiami Tr",
+            },
+            new Street() {
+            Name = "McDonald St",
+            SpeedLimit = 30f,
+
+            },
+
+
+
         };
         Serialization.SerializeParams(LCStreetsList, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\Streets_SunshineDream.xml");
     }

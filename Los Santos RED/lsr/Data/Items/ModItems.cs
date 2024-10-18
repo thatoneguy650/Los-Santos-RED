@@ -3204,7 +3204,7 @@ public class ModItems : IModItems
             new VehicleItem("Grotti Blade", ItemType.Vehicles) { ModelName = "blade2" },
             new VehicleItem("Vapid Bobcat", ItemType.Vehicles) { ModelName = "bobcat" },
             new VehicleItem("Canis Bodhi (IV)", ItemType.Vehicles) { ModelName = "bodhi" },
-            new VehicleItem("Brute Boxville", ItemType.Vehicles) { ModelName = "boxville6" },
+            new VehicleItem("Brute Boxville 6", ItemType.Vehicles) { ModelName = "boxville6" },
             new VehicleItem("HVY Brickade", ItemType.Vehicles) { ModelName = "brickade3" },
             new VehicleItem("Albany Buccaneer (IV)", ItemType.Vehicles) { ModelName = "buccaneer3" },
             new VehicleItem("Brute Bus (IV)", ItemType.Vehicles) { ModelName = "bus2" },

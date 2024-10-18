@@ -50,8 +50,59 @@ public class LEDispatcher
     private bool IsTunnelSpawn;
     private StoredSpawn SelectedTunnelSpawn;
     private uint GameTimeLastCheckedHeliFill;
+    private uint GameTimeLastSpawnedOrRecalledHeli;
+    private uint DelayBetweenHeliSpawnAfterSpawnOrRecall
+    {
+        get
+        {
+            if (World.TotalWantedLevel == 1)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted1;
+            }
+            else if (World.TotalWantedLevel == 2)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted2;
+            }
+            else if (World.TotalWantedLevel == 3)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted3;
+            }
+            else if (World.TotalWantedLevel == 4)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted4;
+            }
+            else if (World.TotalWantedLevel == 5)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted5;
+            }
+            else if (World.TotalWantedLevel == 6)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted6;
+            }
+            else if (World.TotalWantedLevel == 7)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted7;
+            }
+            else if (World.TotalWantedLevel == 8)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted8;
+            }
+            else if (World.TotalWantedLevel == 9)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted9;
+            }
+            else if (World.TotalWantedLevel == 10)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted10;
+            }
 
-    private bool HasNeedToSpawnHeli => World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit;
+            else
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Default;
+            }
+        }
+    }
+    private bool HasNeedToSpawnHeli => World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit && (GameTimeLastSpawnedOrRecalledHeli == 0 || Game.GameTime - GameTimeLastSpawnedOrRecalledHeli >= DelayBetweenHeliSpawnAfterSpawnOrRecall);
     private bool HasNeedToSpawnBoat => (Player.CurrentVehicle?.IsBoat == true || Player.IsSwimming) && World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit;
     private bool TotalIsWanted => World.TotalWantedLevel > 0;
     public LEDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest, IModItems modItems)
@@ -223,23 +274,50 @@ public class LEDispatcher
             }
 
 
-            int UnseenTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Unseen;
-            int SeenScalarTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Seen_AdditionalTimeScaler;
-            int SeenMinTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Seen_Min;
+            int UnseenTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Unseen;//5000
+            int SeenScalarTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Seen_AdditionalTimeScaler;//1000
+            int SeenMinTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Seen_Min;//3000
+
+
+            int ExtraSpawnTimeByLocationType = Settings.SettingsManager.PoliceSpawnSettings.PoliceDispatchDelay_Default;
+            if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
+            {
+                ExtraSpawnTimeByLocationType = Settings.SettingsManager.PoliceSpawnSettings.PoliceDispatchDelay_Wilderness;
+            }
+            else if (EntryPoint.FocusZone?.Type == eLocationType.Rural)
+            {
+                ExtraSpawnTimeByLocationType = Settings.SettingsManager.PoliceSpawnSettings.PoliceDispatchDelay_Rural;
+            }
+            else if (EntryPoint.FocusZone?.Type == eLocationType.Suburb)
+            {
+                ExtraSpawnTimeByLocationType = Settings.SettingsManager.PoliceSpawnSettings.PoliceDispatchDelay_Suburb;
+            }
+            else if (EntryPoint.FocusZone?.Type == eLocationType.Industrial)
+            {
+                ExtraSpawnTimeByLocationType = Settings.SettingsManager.PoliceSpawnSettings.PoliceDispatchDelay_Industrial;
+            }
+            else if (EntryPoint.FocusZone?.Type == eLocationType.Downtown)
+            {
+                ExtraSpawnTimeByLocationType = Settings.SettingsManager.PoliceSpawnSettings.PoliceDispatchDelay_Downtown;
+            }
+
+
 
             if (World.TotalWantedLevel > Player.WantedLevel)
             {
-                return UnseenTime;
+                return UnseenTime + ExtraSpawnTimeByLocationType;
             }
-            else if (!Player.AnyPoliceRecentlySeenPlayer)
+            else if (!Player.AnyPoliceRecentlySeenPlayer && !Settings.SettingsManager.PoliceSpawnSettings.UseScalingLogicForSpawnWhenUnseen)
             {
-                return UnseenTime;
+                return UnseenTime + ExtraSpawnTimeByLocationType;
             }
             else
             {
                 if (World.TotalWantedLevel <= 6)
                 {
-                    return ((6 - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
+                    int totalTime = ((6 - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime + ExtraSpawnTimeByLocationType;
+                    EntryPoint.WriteToConsole($"Time Between Dispatching when seen {totalTime} WantedLevel{World.TotalWantedLevel} ExtraSpawnTimeByLocationType{ExtraSpawnTimeByLocationType}");
+                    return totalTime;
                 }
                 return SeenMinTime;  
             }
@@ -733,8 +811,6 @@ public class LEDispatcher
             return ambientSpawnPercent;
         }
     }
-
-
     private float CurrentRoadblockSpawnChance()
     {
         if (Player.WantedLevel == 0)
@@ -767,8 +843,6 @@ public class LEDispatcher
         }
         return 0;
     }
-
-
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
@@ -786,7 +860,6 @@ public class LEDispatcher
         HandleHelicopterRefill();
         return HasDispatchedThisTick;
     }
-
     private void HandleHelicopterRefill()
     {
         //EntryPoint.WriteToConsole("CHECK HELI REFIL RAN 0");
@@ -854,7 +927,6 @@ public class LEDispatcher
         HasDispatchedThisTick = true;
         Player.OnLawEnforcementSpawn(Agency, VehicleType, PersonType);
     }
-
     private void HandleAssaultSpawns()
     {
         bool shouldAttempt = GameTimeLastAttemptedAssaultSpawn == 0 || Game.GameTime - GameTimeLastAttemptedAssaultSpawn >= 9000;
@@ -1059,6 +1131,10 @@ public class LEDispatcher
                                 EntryPoint.PersistentVehiclesDeleted++;
                             }
                             EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles 3 DELETE isNearLimit{isNearLimit} TotalPoliceCars{TotalPoliceCars} PossibleSpawnedPoliceCars{PossibleSpawnedPoliceCars}");
+                            if (PoliceCar.IsHeli)
+                            {
+                                OnHelicopterSpawnedOrRecalled();
+                            }
                             PoliceCar.FullyDelete();
                             GameFiber.Yield();
                         }
@@ -1494,6 +1570,10 @@ public class LEDispatcher
                     VehicleExt vehicleExt =  World.Vehicles.GetVehicleExt(Cop.Pedestrian.CurrentVehicle);
                     if (vehicleExt != null)
                     {
+                        if(vehicleExt.IsHeli)
+                        {
+                            OnHelicopterSpawnedOrRecalled();
+                        }
                         vehicleExt.FullyDelete();
                     }
                     else
@@ -1913,5 +1993,11 @@ public class LEDispatcher
        // EntryPoint.WriteToConsole($"DEBUG LE DISPATCH PERSONTYTPE: {PersonType?.ModelName}");
 
         CallSpawnTask(true, true, true, true, TaskRequirements.None, forcek9, IsOffDutySpawn, true);
+    }
+
+    public void OnHelicopterSpawnedOrRecalled()
+    {
+        GameTimeLastSpawnedOrRecalledHeli = Game.GameTime;
+        EntryPoint.WriteToConsole($"OnHelicopterSpawnedOrRecalled {GameTimeLastSpawnedOrRecalledHeli}");
     }
 }

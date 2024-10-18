@@ -19,19 +19,6 @@ public class VanillaSettings : ISettingsDefaultable
     public bool TerminateScanner { get; set; }
     public bool TerminateScenarioCops { get; set; }
     public bool SupressRandomPoliceEvents { get; set; }
-    //public bool BlockGangScenarios { get; set; }
-
-
-    //public bool BlockVanillaPoliceScenarios { get; set; }
-    //public bool BlockVanillaPoliceCarGenerators { get; set; }
-    //public bool BlockVanillaPrisonScenarios { get; set; }
-    //public bool BlockVanillaPrisonCarGenerators { get; set; }
-    //public bool BlockVanillaSecurityScenarios { get; set; }
-    //public bool BlockVanillaOtherScenarios { get; set; }
-
-
-
-
     [Description("Terminates all vanilla shops (LS Customs, Ammunation, Tattoo, Vending Machines). No longer needed to stop r* DLC car despawning. CANNOT BE RE-ENABLED, REQUIRES GAME RESTART.")]
     public bool TerminateVanillaShops { get; set; }
     [Description("Terminates all vanilla blips. CANNOT BE RE-ENABLED, REQUIRES GAME RESTART.")]
@@ -39,7 +26,6 @@ public class VanillaSettings : ISettingsDefaultable
     [Description("Terminates the vanilla character select system (Michael, Franklin, Trevor Wheel). WILL DISABLE THE ROCKSTAR EDITOR WHICH CANNOT BE RE-ENABLED WITHOUT A GAME RESTART.")]
     public bool TerminateSelector { get; set; }
     public bool SupressVanillaCopCrimes { get; set; }
-    public bool TerminateVanillaCarRaces { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -59,36 +45,12 @@ public class VanillaSettings : ISettingsDefaultable
         TerminateWantedMusic = true;
         TerminateScanner = true;
         TerminateScenarioCops = true;
-
         SupressRandomPoliceEvents = true;
-
-
-
-
-
         TerminateVanillaShops = false;
         TerminateVanillaBlips = false;
         TerminateSelector = false;
-
         SupressVanillaCopCrimes = true;
-
         TerminateRespawnGlobalID = 5;
-        TerminateVanillaCarRaces = true;
-
-
-        //BlockVanillaOtherScenarios = true;
-
-        //BlockVanillaPoliceCarGenerators = true;
-        //BlockVanillaPoliceScenarios = true;
-
-        //BlockVanillaPoliceScenarios = true;
-        //BlockVanillaPrisonCarGenerators = true;
-
-
-        //BlockVanillaSecurityScenarios = true;
-
-
-        //TerminateVanillaVendingMachines = true;
     }
 
 }
