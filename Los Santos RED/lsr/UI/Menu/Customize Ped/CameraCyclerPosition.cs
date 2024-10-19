@@ -9,11 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-
+[Serializable]
 public class CameraCyclerPosition
 {
     private Vector3 CurrentBonePosition;
     private Vector3 DesiredCameraPosition;
+    public CameraCyclerPosition()
+    {
+
+    }
     public CameraCyclerPosition(string name, Vector3 cameraPosition, Vector3 cameraFocusPosition, int order)
     {
         Name = name;

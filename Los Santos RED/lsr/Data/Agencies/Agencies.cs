@@ -364,7 +364,10 @@ public class Agencies : IAgencies
     {
         List<Agency> SimpleAgenicesList = new List<Agency>
         {
-            new Agency("~b~", "VCPD","VCPD", "Vice City Police Department", "Blue", Classification.Police, "VCPDPeds", "VCPDVehicles", "ASP ","Tasers","AllSidearms","AllLongGuns", "VCPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1,OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" },
+            new Agency("~b~", "VCPD","VCPD", "Vice City Police Department", "Blue", Classification.Police, "VCPDPeds", "VCPDVehicles", "VC ","Tasers","AllSidearms","AllLongGuns", "VCPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1,OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" },
+            new Agency("~b~", "VDPD","VDPD", "Vice-Dale Police Department", "Blue", Classification.Police, "VDPDPeds", "VDPDVehicles", "VD ","Tasers","AllSidearms","AllLongGuns", "VDPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1,OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" },
+
+
             new Agency("~b~", "VCPD-ASD","VCPD-ASD", "Vice City Police Department - Air Support Division", "Blue", Classification.Police, "VCPDHeliPeds", "VCPDHeliVehicles", "ASD ","Tasers","HeliSidearms","HeliLongGuns", "VCPD Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6  },
             NYSP,
             NOOSE,FIB,DOA,ARMY,USMC,USAF,USMS,

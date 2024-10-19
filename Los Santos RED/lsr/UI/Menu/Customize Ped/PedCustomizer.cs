@@ -49,9 +49,14 @@ public class PedCustomizer
     //public readonly Vector3 DefaultCameraLookAtPosition = new Vector3(402.8473f, -996.3224f, -99.00025f);
 
 
-    public readonly Vector3 DefaultModelPedPosition = new Vector3(402.8473f, -996.7224f, -99.00025f);
-    public readonly float DefaultModelPedHeading = 182.7549f;
-    public readonly Vector3 DefaultPlayerHoldingPosition = new Vector3(402.5164f, -1002.847f, -99.2587f);
+    //public readonly Vector3 DefaultModelPedPosition = new Vector3(402.8473f, -996.7224f, -99.00025f);
+    //public readonly float DefaultModelPedHeading = 182.7549f;
+    //public readonly Vector3 DefaultPlayerHoldingPosition = new Vector3(402.5164f, -1002.847f, -99.2587f);
+
+
+    public PedCustomizerLocation PedCustomizerLocation;
+
+
     public CameraCycler CameraCycler { get; private set; }
     public string WorkingModelName { get; set; } = "S_M_M_GENTRANSPORT";
 
@@ -147,11 +152,22 @@ public class PedCustomizer
     }
     public void Setup()
     {
-        PedCustomizerMenu = new PedCustomizerMenu(MenuPool, PedSwap, Names, Player, World, Settings, this, DispatchablePeople, Heads, Gangs,Agencies, GameSaves, SavedOutfits);
+        PedCustomizerLocation = World.ModDataFileManager.PlacesOfInterest.PossibleLocations.PedCustomizerLocation;
+        if (PedCustomizerLocation == null)
+        {
+            PedCustomizerLocation = new PedCustomizerLocation();
+            PedCustomizerLocation.SetDefault();
+        }
+
+        PedCustomizerMenu = new PedCustomizerMenu(MenuPool, PedSwap, Names, Player, World, Settings, this, DispatchablePeople, Heads, Gangs,Agencies, GameSaves, SavedOutfits, PedCustomizerLocation);
         PedCustomizerMenu.Setup();
 
-        CameraCycler = new CameraCycler(CharCam, Player, this);
+        CameraCycler = new CameraCycler(CharCam, Player, this, PedCustomizerLocation.CameraCyclerPositions);
         CameraCycler.Setup();
+    }
+    private void SetupDefaultPedCustomzerLocation()
+    {
+
     }
     public void Update()
     {
@@ -245,7 +261,7 @@ public class PedCustomizer
         if (Player.ButtonPrompts.IsPressed("ResetCamera") || Player.ButtonPrompts.IsHeld("ResetCamera"))
         {
             //EntryPoint.WriteToConsoleTestLong("ResetCamera");
-            ModelPed.Tasks.AchieveHeading(DefaultModelPedHeading, 5000);
+            ModelPed.Tasks.AchieveHeading(PedCustomizerLocation.DefaultModelPedHeading, 5000);
             CameraCycler.SetDefault();
         }
         if (Player.ButtonPrompts.IsPressed("RotateModelLeft") || Player.ButtonPrompts.IsHeld("RotateModelLeft"))
@@ -284,7 +300,7 @@ public class PedCustomizer
 
         PreviousPos = Player.Character.Position;
         PreviousHeading = Player.Character.Heading;
-        Player.Character.Position = DefaultPlayerHoldingPosition;
+        Player.Character.Position = PedCustomizerLocation.DefaultPlayerHoldingPosition;
     }
     private void CreateModelPed()
     {
@@ -294,7 +310,7 @@ public class PedCustomizer
             {
                 ModelPed.Delete();
             }
-            ModelPed = new Ped(WorkingModelName, DefaultModelPedPosition, DefaultModelPedHeading);//new Vector3(402.8473f, -996.3224f, -99.00025f);
+            ModelPed = new Ped(WorkingModelName, PedCustomizerLocation.DefaultModelPedPosition, PedCustomizerLocation.DefaultModelPedHeading);//new Vector3(402.8473f, -996.3224f, -99.00025f);
             if (ModelPed.Exists())
             {
                 ModelPed.IsPersistent = true;

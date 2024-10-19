@@ -136,8 +136,11 @@ public class DispatchableVehicles : IDispatchableVehicles
             EntryPoint.WriteToConsole($"No Dispatchable Vehicles config found, creating default", 0);
             SetupDefaults();
             DefaultConfig_Simple();
-            DefaultConfig_SunshineDream();
+
             DefaultConfig_FullExpandedJurisdiction();
+
+
+            DefaultConfig_SunshineDream();
             DefaultConfig();
         }
 
@@ -1517,12 +1520,27 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("washington", 50, 50) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
             //new DispatchableVehicle("pmp600", 50, 50) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
         };
-        List<DispatchableVehicle> VCPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 48,35) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("police2", 48, 35),
+
+        DispatchableVehicle vcpdpolice3 = DispatchableVehicles_FEJ.Create_PoliceInterceptor(100, 100, 0, false, PoliceVehicleType.MarkedFlatLightbar, 134, 0, 3, 1, 4, "", "");
+        vcpdpolice3.ModelName = "police3liv";
+        List<DispatchableVehicle> VCPDVehicles = new List<DispatchableVehicle>() 
+        {
+            vcpdpolice3,
+            //new DispatchableVehicle("police", 48,35) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            //new DispatchableVehicle("police2", 48, 35),
             new DispatchableVehicle("police4", 1,1) { RequiredPedGroup = "Detectives", GroupName = "Unmarked" },
             new DispatchableVehicle("fbi2", 1,1),
-            new DispatchableVehicle("policet", 0, 15) { MinOccupants = 3, MaxOccupants = 4, MinWantedLevelSpawn = 3,CaninePossibleSeats = new List<int>{ 1,2 } }};
+            //new DispatchableVehicle("policet", 0, 15) { MinOccupants = 3, MaxOccupants = 4, MinWantedLevelSpawn = 3,CaninePossibleSeats = new List<int>{ 1,2 } } 
+        };
+        DispatchableVehicle vdpdpolice3 = DispatchableVehicles_FEJ.Create_PoliceInterceptor(100, 100, 1, false, PoliceVehicleType.MarkedFlatLightbar, 134, 0, 3, 1, 4, "", "");
+        vdpdpolice3.ModelName = "police3liv";
+        List<DispatchableVehicle> VDPDVehicles = new List<DispatchableVehicle>() 
+        {
+            vdpdpolice3,
+            new DispatchableVehicle("police4", 1,1) { RequiredPedGroup = "Detectives", GroupName = "Unmarked" },
+            new DispatchableVehicle("fbi2", 1,1),
+
+        };
 
         List<DispatchableVehicle> VCPDHeliVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("buzzard2", 1,150) { MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 },
@@ -1537,6 +1555,9 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles),
             new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles),
             new DispatchableVehicleGroup("VCPDVehicles", VCPDVehicles),
+            new DispatchableVehicleGroup("VDPDVehicles", VDPDVehicles),
+
+
             new DispatchableVehicleGroup("VCPDHeliVehicles", VCPDHeliVehicles),
             new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles),
             new DispatchableVehicleGroup("USMCVehicles", USMCVehicles),

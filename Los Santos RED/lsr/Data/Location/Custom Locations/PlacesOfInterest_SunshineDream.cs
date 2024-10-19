@@ -21,6 +21,26 @@ public class PlacesOfInterest_SunshineDream
         //DefaultConfig_Prisons();
         DefaultConfig_Supplied();
         DefaultConfig_GangDens();
+
+
+
+        PedCustomizerLocation DefaultPedCustomizerLocation = new PedCustomizerLocation();
+        DefaultPedCustomizerLocation.DefaultModelPedPosition = new Vector3(-1821.874f, -667.2667f, 2.660995f);
+        DefaultPedCustomizerLocation.DefaultModelPedHeading = 121.216f;
+        DefaultPedCustomizerLocation.DefaultPlayerHoldingPosition = new Vector3(-1835.039f, -661.7596f, 2.660995f);
+        List<CameraCyclerPosition> CameraCyclerPositions = new List<CameraCyclerPosition>();
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Default", new Vector3(-1824.512f, -669.0907f, 3.254323f), new Vector3(0.851868f, 0.5014042f, -0.1513762f), new Rotator(-8.706689f, 4.750499E-06f, -59.5192f), 0));//new Vector3(402.8145f, -998.5043f, -98.29621f), new Vector3(-0.02121102f, 0.9286007f, -0.3704739f), new Rotator(-21.74485f, -5.170386E-07f, 1.308518f), 0));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Face", new Vector3(-1824.512f, -669.0907f, 3.254323f), new Vector3(0.851868f, 0.5014042f, -0.1513762f), new Rotator(-8.706689f, 4.750499E-06f, -59.5192f), 1));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Lower", new Vector3(-1824.512f, -669.0907f, 3.254323f), new Vector3(0.851868f, 0.5014042f, -0.1513762f), new Rotator(-8.706689f, 4.750499E-06f, -59.5192f), 2));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Torso", new Vector3(-1824.512f, -669.0907f, 3.254323f), new Vector3(0.851868f, 0.5014042f, -0.1513762f), new Rotator(-8.706689f, 4.750499E-06f, -59.5192f), 3));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Hands", new Vector3(-1824.512f, -669.0907f, 3.254323f), new Vector3(0.851868f, 0.5014042f, -0.1513762f), new Rotator(-8.706689f, 4.750499E-06f, -59.5192f), 4));
+        DefaultPedCustomizerLocation.CameraCyclerPositions = CameraCyclerPositions;
+
+
+        //CameraPosition = new Vector3(-1824.512f, -669.0907f, 3.254323f), CameraDirection = new Vector3(0.851868f, 0.5014042f, -0.1513762f), CameraRotation = new Rotator(-8.706689f, 4.750499E-06f, -59.5192f)
+
+        SunshineDreamLocations.PedCustomizerLocation = DefaultPedCustomizerLocation;
+
         Serialization.SerializeParam(SunshineDreamLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\Locations_SunshineDream.xml");
     }
 

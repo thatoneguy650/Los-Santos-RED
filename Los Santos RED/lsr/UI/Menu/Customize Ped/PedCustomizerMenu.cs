@@ -28,9 +28,10 @@ public class PedCustomizerMenu
     private CustomizeExistingVariationsMenu CustomizeExistingVariationsMenu;
     private CustomizeAffiliationMenu CustomizeAffiliationMenu;
     private CustomizeVoiceMenu CustomizeVoiceMenu;
+    private PedCustomizerLocation PedCustomizerLocation;
     public bool IsProgramicallySettingFieldValues { get; set; }
     public PedCustomizerMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, IDispatchablePeople dispatchablePeople, IHeads heads, IGangs gangs, 
-        IAgencies agencies, IGameSaves gameSaves, ISavedOutfits savedOutfits)
+        IAgencies agencies, IGameSaves gameSaves, ISavedOutfits savedOutfits, PedCustomizerLocation pedCustomizerLocation)
     {
         PedSwap = pedSwap;
         MenuPool = menuPool;
@@ -39,6 +40,7 @@ public class PedCustomizerMenu
         World = world;
         Settings = settings;
         PedCustomizer = pedCustomizer;
+        PedCustomizerLocation = pedCustomizerLocation; ;
 
         CustomizeDemographicsMenu = new CustomizeDemographicsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
         CustomizeModelMenu = new CustomizeModelMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);

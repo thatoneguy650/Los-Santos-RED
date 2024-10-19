@@ -2175,6 +2175,7 @@ public class DispatchablePeople : IDispatchablePeople
         //
         List<DispatchablePersonGroup> PeopleGroupLookup_Simple = new List<DispatchablePersonGroup>();
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("VCPDPeds", StandardCops_SunshineDream));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("VDPDPeds", StandardCops_SunshineDream));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("VCPDHeliPeds", LSSDASDPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("NOOSEPeds", NOOSEPeds_SunshineDream));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("FIBPeds", FIBPeds_SunshineDream));

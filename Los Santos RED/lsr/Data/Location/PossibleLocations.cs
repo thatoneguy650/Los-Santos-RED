@@ -67,6 +67,12 @@ public class PossibleLocations
     //  public List<InteractableLocation> AllLocationsList { get; private set; } = new List<InteractableLocation>();
 
     public List<StoredSpawn> StoredSpawns { get; private set; } = new List<StoredSpawn>();
+
+
+
+    public PedCustomizerLocation PedCustomizerLocation { get; set; }
+
+
     public List<GameLocation> InteractableLocations()
     {
         List<GameLocation> AllLocations = new List<GameLocation>();

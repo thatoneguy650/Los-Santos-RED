@@ -68,6 +68,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     private List<TattooShop> TattooShopPlaces;
     private List<PlasticSurgeryClinic> PlasticSurgeryClinics;
     private List<BarberShop> BarberShopPlaces;
+    private PedCustomizerLocation DefaultPedCustomizerLocation;
 
     public PossibleLocations PossibleLocations { get; private set; }
     public PlacesOfInterest(IShopMenus shopMenus, IGangs gangs)
@@ -169,6 +170,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     }
     private void DefaultConfig()
     {
+        DefaultConfig_PedCustomizeLocation();
         DefaultConfig_DeadDrops();
         DefaultConfig_CarCrushers();
         DefaultConfig_ScrapYards();
@@ -264,8 +266,27 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.PlasticSurgeryClinics.AddRange(PlasticSurgeryClinics);
         PossibleLocations.TattooShops.AddRange(TattooShopPlaces);
 
-        Serialization.SerializeParam(PossibleLocations, ConfigFileName);
+        PossibleLocations.PedCustomizerLocation = DefaultPedCustomizerLocation;
+
+
+       Serialization.SerializeParam(PossibleLocations, ConfigFileName);
     }
+
+    private void DefaultConfig_PedCustomizeLocation()
+    {
+        DefaultPedCustomizerLocation = new PedCustomizerLocation();
+        DefaultPedCustomizerLocation.DefaultModelPedPosition = new Vector3(402.8473f, -996.7224f, -99.00025f);
+        DefaultPedCustomizerLocation.DefaultModelPedHeading = 182.7549f;
+        DefaultPedCustomizerLocation.DefaultPlayerHoldingPosition = new Vector3(402.5164f, -1002.847f, -99.2587f);
+        List<CameraCyclerPosition> CameraCyclerPositions = new List<CameraCyclerPosition>();
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Default", new Vector3(402.9301f, -998.267f, -98.51537f), new Vector3(0.004358141f, 0.9860916f, -0.1661458f), new Rotator(-9.5638f, -4.058472E-08f, -0.2532234f), 0));//new Vector3(402.8145f, -998.5043f, -98.29621f), new Vector3(-0.02121102f, 0.9286007f, -0.3704739f), new Rotator(-21.74485f, -5.170386E-07f, 1.308518f), 0));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Face", new Vector3(402.8708f, -997.5441f, -98.30454f), new Vector3(-0.005195593f, 0.9991391f, -0.04116036f), new Rotator(-2.358982f, 2.136245E-06f, 0.2979394f), 1));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Lower", new Vector3(402.9348f, -998.0379f, -99.38499f), new Vector3(0.02025275f, 0.9928887f, -0.117311f), new Rotator(-6.736939f, 1.611956E-07f, -1.168546f), 2));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Torso", new Vector3(402.9301f, -998.267f, -98.51537f), new Vector3(0.004358141f, 0.9860916f, -0.1661458f), new Rotator(-9.5638f, -4.058472E-08f, -0.2532234f), 3));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Hands", new Vector3(402.8127f, -997.4653f, -99.04851f), new Vector3(0.0355651f, 0.9914218f, -0.1257696f), new Rotator(-7.225204f, -5.647735E-07f, -2.054481f), 4));
+        DefaultPedCustomizerLocation.CameraCyclerPositions = CameraCyclerPositions;
+    }
+
     private void DefaultConfig_BarberShops()
     {
         BarberShopPlaces = new List<BarberShop>()
@@ -5735,6 +5756,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         OldPossibleLocations.BarberShops.AddRange(BarberShopPlaces);
         OldPossibleLocations.PlasticSurgeryClinics.AddRange(PlasticSurgeryClinics);
         OldPossibleLocations.TattooShops.AddRange(TattooShopPlaces);
+        PossibleLocations.PedCustomizerLocation = DefaultPedCustomizerLocation;
 
         //OldPossibleLocations.GangDens.RemoveAll(x => x.AssignedAssociationID == "AMBIENT_GANG_BALLAS" || x.AssignedAssociationID == "AMBIENT_GANG_FAMILY" || x.AssignedAssociationID == "AMBIENT_GANG_SALVA");
         OldPossibleLocations.GangDens.Add(new GangDen(new Vector3(393.403f, -782.4543f, 29.28772f), 269.1115f, "Ballas Den", "", "BallasDenMenu", "AMBIENT_GANG_BALLAS")
